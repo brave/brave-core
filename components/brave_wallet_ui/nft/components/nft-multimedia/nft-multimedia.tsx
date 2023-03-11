@@ -21,7 +21,7 @@ import {
   MultiMediaWrapper
 } from './nft-multimedia.styles'
 import { NftImage } from '../nft-image/nft-image'
-import placeholderImage from '../../../assets/svg-icons/placeholdr-image.svg'
+import placeholderImage from '../../../assets/svg-icons/nft-placeholder.svg'
 
 const placeholderImageMimeType = 'image/svg+xml'
 

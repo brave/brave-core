@@ -87,6 +87,7 @@ interface ItemProps {
   label: string
   description?: React.ReactNode
   children: React.ReactNode
+  separateChildren?: boolean
 }
 
 export function PanelItem (props: ItemProps) {
@@ -94,7 +95,11 @@ export function PanelItem (props: ItemProps) {
     <style.item>
       <style.itemContent>
         <style.itemLabel>{props.label}</style.itemLabel>
-        <div>{props.children}</div>
+        {
+          props.separateChildren
+            ? props.children
+            : <div>{props.children}</div>
+        }
       </style.itemContent>
       {
         props.description &&

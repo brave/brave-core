@@ -11,7 +11,7 @@ interface Store {
   siteSettings?: SiteSettings
   siteBlockInfo?: SiteBlockInfo
   getSiteSettings?: Function
-  setViewType?: ((viewType: ViewType) => void)
+  setViewType?: (viewType: ViewType) => void
   viewType: ViewType
 }
 

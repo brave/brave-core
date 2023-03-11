@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads/serving/targeting/top_segments_util.h"
 
+#include "base/containers/extend.h"
 #include "bat/ads/internal/ads/serving/targeting/user_model_info.h"
 #include "bat/ads/internal/segments/segment_util.h"
 
@@ -50,20 +51,14 @@ SegmentList GetTopSegments(const UserModelInfo& user_model,
                            const bool parent_only) {
   SegmentList segments;
 
-  const SegmentList interest_segments =
-      GetTopSegments(user_model.interest_segments, max_count, parent_only);
-  segments.insert(segments.cend(), interest_segments.cbegin(),
-                  interest_segments.cend());
+  base::Extend(segments, GetTopSegments(user_model.interest_segments, max_count,
+                                        parent_only));
 
-  const SegmentList latent_interest_segments = GetTopSegments(
-      user_model.latent_interest_segments, max_count, parent_only);
-  segments.insert(segments.cend(), latent_interest_segments.cbegin(),
-                  latent_interest_segments.cend());
+  base::Extend(segments, GetTopSegments(user_model.latent_interest_segments,
+                                        max_count, parent_only));
 
-  const SegmentList purchase_intent_segments = GetTopSegments(
-      user_model.purchase_intent_segments, max_count, parent_only);
-  segments.insert(segments.cend(), purchase_intent_segments.cbegin(),
-                  purchase_intent_segments.cend());
+  base::Extend(segments, GetTopSegments(user_model.purchase_intent_segments,
+                                        max_count, parent_only));
 
   return segments;
 }

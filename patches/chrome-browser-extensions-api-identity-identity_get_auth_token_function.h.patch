@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
-index 72f83840c5fe943ada4fd7e4a2c65c4112fcc734..cc8464aaf8f0d46e2f07b7d5c66ea450dc9fb40e 100644
+index b99b60dfa8316ea4769ce43156111402774ed503..7f07264487491aa2b65ec919e9c66bebc254ff6f 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.h
-@@ -58,6 +58,7 @@ class IdentityGetAuthTokenError;
+@@ -71,6 +71,7 @@ extern const char kGetAuthTokenHistogramSigninSuffix[];
  // successfully, getAuthToken proceeds to the non-interactive flow.
  class IdentityGetAuthTokenFunction : public ExtensionFunction,
                                       public GaiaRemoteConsentFlow::Delegate,
@@ -10,7 +10,7 @@ index 72f83840c5fe943ada4fd7e4a2c65c4112fcc734..cc8464aaf8f0d46e2f07b7d5c66ea450
                                       public IdentityMintRequestQueue::Request,
                                       public signin::IdentityManager::Observer,
                                       public OAuth2MintTokenFlow::Delegate {
-@@ -82,6 +83,11 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+@@ -122,6 +123,11 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
    void OnGaiaRemoteConsentFlowApproved(const std::string& consent_result,
                                         const std::string& gaia_id) override;
  
@@ -22,7 +22,7 @@ index 72f83840c5fe943ada4fd7e4a2c65c4112fcc734..cc8464aaf8f0d46e2f07b7d5c66ea450
    // Starts a login access token request.
    virtual void StartTokenKeyAccountAccessTokenRequest();
  
-@@ -198,6 +204,9 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+@@ -240,6 +246,9 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
    void OnRemoteConsentSuccess(
        const RemoteConsentResolutionData& resolution_data) override;
  
@@ -32,7 +32,7 @@ index 72f83840c5fe943ada4fd7e4a2c65c4112fcc734..cc8464aaf8f0d46e2f07b7d5c66ea450
  #if BUILDFLAG(IS_CHROMEOS)
    // Starts a login access token request for device robot account. This method
    // will be called only in Chrome OS for:
-@@ -246,6 +255,10 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
+@@ -306,6 +315,10 @@ class IdentityGetAuthTokenFunction : public ExtensionFunction,
    // Added for debugging https://crbug.com/1091423.
    bool remote_consent_approved_ = false;
  

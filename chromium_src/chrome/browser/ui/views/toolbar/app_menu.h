@@ -15,7 +15,7 @@
   friend class BraveAppMenu;          \
   virtual views::MenuItemView* AddMenuItem
 
-#include "src/chrome/browser/ui/views/toolbar/app_menu.h"
+#include "src/chrome/browser/ui/views/toolbar/app_menu.h"  // IWYU pragma: export
 
 #undef RunMenu
 #undef AddMenuItem

@@ -83,4 +83,11 @@ PerfPredictorPageMetricsObserver::OnFencedFramesStart(
   return CONTINUE_OBSERVING;
 }
 
+page_load_metrics::PageLoadMetricsObserver::ObservePolicy
+PerfPredictorPageMetricsObserver::OnPrerenderStart(
+    content::NavigationHandle* navigation_handle,
+    const GURL& currently_committed_url) {
+  return STOP_OBSERVING;
+}
+
 }  // namespace brave_perf_predictor

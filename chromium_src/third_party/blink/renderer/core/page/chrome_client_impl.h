@@ -17,7 +17,7 @@
   cursor_overridden_;      \
   mutable display::ScreenInfos screen_infos_
 
-#include "src/third_party/blink/renderer/core/page/chrome_client_impl.h"
+#include "src/third_party/blink/renderer/core/page/chrome_client_impl.h"  // IWYU pragma: export
 
 #undef cursor_overridden_
 #undef GetScreenInfos

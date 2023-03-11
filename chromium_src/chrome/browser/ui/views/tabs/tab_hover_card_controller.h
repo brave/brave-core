@@ -12,7 +12,7 @@
   friend class BraveTabHoverCardController; \
   virtual void CreateHoverCard
 
-#include "src/chrome/browser/ui/views/tabs/tab_hover_card_controller.h"
+#include "src/chrome/browser/ui/views/tabs/tab_hover_card_controller.h"  // IWYU pragma: export
 
 #undef CreateHoverCard
 

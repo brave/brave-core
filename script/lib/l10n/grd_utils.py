@@ -18,6 +18,16 @@ from lib.l10n.grd_string_replacements import (branding_replacements,
                                               main_text_only_replacements)
 from lib.l10n.validation import validate_tags_in_one_string
 
+# Map of google_chrome_strings.grd resources ids to migrate to brave_strings.grd
+# The resources and all translations will be migrated to grd and xtb files.
+# key - id in google_chrome_strings.
+# value - new id in brave_stirngs.
+GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
+    'IDS_SHORTCUT_NAME_BETA': 'IDS_CHROME_SHORTCUT_NAME_BETA',
+    'IDS_SHORTCUT_NAME_DEV': 'IDS_CHROME_SHORTCUT_NAME_DEV'
+}
+
+
 def braveify_grd_text(text, is_main_text, branding_replacements_only):
     """Replaces text string to Brave wording"""
     for (pattern, to) in branding_replacements:
@@ -123,7 +133,16 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
     grd_strings = get_grd_strings(grd_file_path, validate_tags=False)
     chromium_grd_strings = get_grd_strings(
         chromium_grd_file_path, validate_tags=False)
+    # Special treatment for brave_strings.grd
+    brave_strings_string_ids = []
+    if os.path.basename(grd_file_path) == 'brave_strings.grd':
+        assert len(grd_strings) == len(chromium_grd_strings) + \
+            len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
+        brave_strings_string_ids = remove_google_chrome_strings(
+            grd_strings, GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
     assert len(grd_strings) == len(chromium_grd_strings)
+    for idx, grd_string in enumerate(grd_strings):
+        assert chromium_grd_strings[idx][0] == grd_string[0]
 
     fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
               (idx, grd_string) in enumerate(grd_strings)}
@@ -153,6 +172,11 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
                 if new_fp != old_fp:
                     node.attrib['id'] = new_fp
                     # print(f'fp: {old_fp} -> {new_fp}')
+
+        # Special treatment for brave_strings.grd
+        if os.path.basename(grd_file_path) == 'brave_strings.grd':
+            add_google_chrome_translations(xtb_file, xml_tree,
+                                           brave_strings_string_ids)
 
         transformed_content = (b'<?xml version="1.0" ?>\n' +
             lxml.etree.tostring(xml_tree, pretty_print=True,
@@ -255,6 +279,35 @@ def get_grd_strings(grd_file_path, validate_tags=True):
         string_tuple = (string_name, message_value, string_fp, message_desc)
         strings.append(string_tuple)
     return strings
+
+
+def remove_google_chrome_strings(brave_grd_strings, google_chrome_strings_map):
+    string_ids = []
+    string_names = [
+        string_name[4:].lower()
+        for string_name in google_chrome_strings_map.values()
+    ]
+    to_remove = []
+    for string_tuple in brave_grd_strings:
+        if string_tuple[0] in string_names:
+            to_remove.append(string_tuple)
+            string_ids.append(string_tuple[2])
+    assert len(to_remove) == len(google_chrome_strings_map)
+
+    for string_tuple in to_remove:
+        brave_grd_strings.remove(string_tuple)
+
+    return string_ids
+
+
+def add_google_chrome_translations(brave_strings_xtb_file, xml_tree,
+                                   string_ids):
+    brave_xtb_tree = lxml.etree.parse(brave_strings_xtb_file)
+    translationbundle = xml_tree.xpath('//translationbundle')[0]
+    for string_id in string_ids:
+        translation = brave_xtb_tree.xpath(
+            '//translation[@id="{}"]'.format(string_id))[0]
+        translationbundle.append(translation)
 
 
 def get_grd_message_tags(grd_file_path):

@@ -5,8 +5,8 @@
 
 #include "brave/browser/permissions/mock_permission_lifetime_prompt_factory.h"
 
-#include "base/bind.h"
 #include "base/containers/contains.h"
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/run_loop.h"
 #include "base/stl_util.h"

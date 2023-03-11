@@ -7,33 +7,29 @@
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "third_party/skia/include/core/SkColor.h"
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/label_button.h"
 
 // Rename MdTextButton to MdTextButtonBase
 #define MdTextButton MdTextButtonBase
 
-// Define a Brave-specific method to be called from UpdateColors() to extend its
-// functionality instead of defining UpdateColors() "virtual" and overriding it
-// in our version of the MdTextButton class because there are some subclasses
-// that define their own UpdateColors() method (OmniboxChipButton) now, which
-// would not work with the virtual + override approach.
-// Note: We redefine UpdateBackgroundColor because we want it to be protected.
-#define UpdateBackgroundColor              \
-  UpdateBackgroundColor_Unused();          \
-                                           \
- protected:                                \
-  virtual void UpdateColorsForBrave() = 0; \
-  virtual void UpdateIconForBrave() = 0;   \
-  void UpdateBackgroundColor
+// Redefine UpdateTextColor as protected virtual so we can override it.
+#define UpdateTextColor     \
+  UpdateTextColor_Unused(); \
+                            \
+ protected:                 \
+  virtual void UpdateTextColor
 
-#include "src/ui/views/controls/button/md_text_button.h"
+#define UpdateColors virtual UpdateColors
 
-#undef UpdateBackgroundColor
+#include "src/ui/views/controls/button/md_text_button.h"  // IWYU pragma: export
+
+#undef UpdateColors
+#undef UpdateTextColor
 #undef MdTextButton
 
 namespace views {
-
 // Make visual changes to MdTextButton in line with Brave visual style:
 //  - More rounded rectangle (for regular border, focus ring and ink drop)
 //  - Different hover text and boder color for non-prominent button
@@ -41,6 +37,12 @@ namespace views {
 //  - No shadow for prominent background
 class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  public:
+  struct ButtonColors {
+    SkColor background_color;
+    SkColor stroke_color;
+    SkColor text_color;
+  };
+
   enum Kind { kOld, kPrimary, kSecondary, kTertiary };
 
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
@@ -55,27 +57,27 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   Kind GetKind() const;
   void SetKind(Kind kind);
 
-  void SetIcon(const gfx::VectorIcon* icon);
+  void SetIcon(const gfx::VectorIcon* icon, int icon_size = 0);
 
   bool GetLoading() const;
   void SetLoading(bool loading);
 
-  // Until we decide to update the whole UI to use the new Leo colors, we
-  // need to keep this logic around. Currently the new colors are opt-in only.
-  void UpdateOldColorsForBrave();
-
   // MdTextButtonBase:
+  void UpdateTextColor() override;
   void UpdateBackgroundColor() override;
-  void UpdateColorsForBrave() override;
-  void UpdateIconForBrave() override;
+  void UpdateColors() override;
 
  protected:
   // views::Views
   void OnPaintBackground(gfx::Canvas* canvas) override;
 
  private:
+  ButtonColors GetButtonColors();
+
   Kind kind_ = kOld;
   bool loading_ = false;
+
+  int icon_size_ = 0;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };
 

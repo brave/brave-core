@@ -17,16 +17,18 @@ export enum ViewType {
 }
 
 export enum BrowserType {
-  Chrome_Canary = 'Chrome Canary',
-  Chrome = 'Chrome',
+  Chrome_Canary = 'Google Chrome Canary',
+  Chrome_Beta = 'Google Chrome Beta',
+  Chrome_Dev = 'Google Chrome Dev',
+  Chrome = 'Google Chrome',
   Chromium = 'Chromium',
   Safari = 'Safari',
-  Mozilla_Firefox = 'Mozilla Firefox',
+  Mozilla_Firefox = 'Firefox',
   Microsoft_Edge = 'Microsoft Edge',
   Vivaldi = 'Vivaldi',
   Opera = 'Opera',
   Yandex = 'Yandex',
-  Whale = 'Whale',
+  Whale = 'NAVER Whale',
   Microsoft_IE = 'Microsoft Internet Explorer'
 }
 

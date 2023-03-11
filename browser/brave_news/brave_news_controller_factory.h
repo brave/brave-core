@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_CONTROLLER_FACTORY_H_
 
 #include "base/memory/singleton.h"
-#include "brave/components/brave_today/common/brave_news.mojom.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
@@ -41,8 +41,6 @@ class BraveNewsControllerFactory : public BrowserContextKeyedServiceFactory {
   ~BraveNewsControllerFactory() override;
 
   KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* context) const override;
-  content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
 };
 

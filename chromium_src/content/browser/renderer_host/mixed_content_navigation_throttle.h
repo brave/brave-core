@@ -13,7 +13,7 @@
                                                                                \
   void MaybeSendBlinkFeatureUsageReport
 
-#include "src/content/browser/renderer_host/mixed_content_navigation_throttle.h"
+#include "src/content/browser/renderer_host/mixed_content_navigation_throttle.h"  // IWYU pragma: export
 
 #undef MaybeSendBlinkFeatureUsageReport
 

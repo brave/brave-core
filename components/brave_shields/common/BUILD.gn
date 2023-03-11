@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//mojo/public/tools/bindings/mojom.gni")
 
 static_library("common") {
@@ -33,6 +38,7 @@ mojom("mojom") {
     "brave_shields.mojom",
     "brave_shields_panel.mojom",
     "cookie_list_opt_in.mojom",
+    "filter_list.mojom",
   ]
 
   public_deps = [

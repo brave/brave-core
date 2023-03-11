@@ -39,7 +39,7 @@ base::Value::Dict TxMeta::ToValue() const {
   if (group_id_.has_value()) {
     dict.Set("group_id", *group_id_);
   }
-
+  dict.Set("chain_id", chain_id_);
   return dict;
 }
 

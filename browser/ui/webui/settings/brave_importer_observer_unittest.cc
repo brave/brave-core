@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/test/bind.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -19,18 +19,20 @@ class BraveImporterObserverUnitTest : public testing::Test {
  public:
   BraveImporterObserverUnitTest() {}
 
-  void SetExpectedInfo(base::Value value) { expected_info_ = std::move(value); }
+  void SetExpectedInfo(base::Value::Dict value) {
+    expected_info_ = std::move(value);
+  }
   void SetExpectedCalls(int value) { expected_calls_ = value; }
   int GetExpectedCalls() { return expected_calls_; }
   void NotifyImportProgress(const importer::SourceProfile& source_profile,
-                            const base::Value& info) {
+                            const base::Value::Dict& info) {
     EXPECT_EQ(expected_info_, info);
     expected_calls_++;
   }
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  base::Value expected_info_;
+  base::Value::Dict expected_info_;
   int expected_calls_ = 0;
   raw_ptr<BraveExternalProcessImporterHost> _ = nullptr;
 };
@@ -52,7 +54,7 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
   EXPECT_EQ(GetExpectedCalls(), 0);
 
   // Multiple calls for same profile.
-  SetExpectedInfo(*base::JSONReader::Read(R"({
+  SetExpectedInfo(base::test::ParseJsonDict(R"({
     "event": "ImportStarted",
     "importer_name": "importer_name",
     "importer_type": 1,
@@ -66,7 +68,7 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
   // ImportItemStarted event.
   SetExpectedCalls(0);
   EXPECT_EQ(GetExpectedCalls(), 0);
-  SetExpectedInfo(*base::JSONReader::Read(R"({
+  SetExpectedInfo(base::test::ParseJsonDict(R"({
     "event": "ImportItemStarted",
     "importer_name": "importer_name",
     "importer_type": 1,
@@ -80,7 +82,7 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
   // ImportItemEnded event.
   SetExpectedCalls(0);
   EXPECT_EQ(GetExpectedCalls(), 0);
-  SetExpectedInfo(*base::JSONReader::Read(R"({
+  SetExpectedInfo(base::test::ParseJsonDict(R"({
     "event": "ImportItemEnded",
     "importer_name": "importer_name",
     "importer_type": 1,
@@ -94,7 +96,7 @@ TEST_F(BraveImporterObserverUnitTest, ImportEvents) {
   // ImportEnded event.
   SetExpectedCalls(0);
   EXPECT_EQ(GetExpectedCalls(), 0);
-  SetExpectedInfo(*base::JSONReader::Read(R"({
+  SetExpectedInfo(base::test::ParseJsonDict(R"({
     "event": "ImportEnded",
     "importer_name": "importer_name",
     "importer_type": 1,

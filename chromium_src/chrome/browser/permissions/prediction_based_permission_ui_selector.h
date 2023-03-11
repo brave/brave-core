@@ -13,7 +13,7 @@
       permissions::RequestType request_type); \
   bool IsPermissionRequestSupported
 
-#include "src/chrome/browser/permissions/prediction_based_permission_ui_selector.h"
+#include "src/chrome/browser/permissions/prediction_based_permission_ui_selector.h"  // IWYU pragma: export
 #undef IsPermissionRequestSupported
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PREDICTION_BASED_PERMISSION_UI_SELECTOR_H_

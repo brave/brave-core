@@ -63,8 +63,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       break
     }
     case 'cosmeticFilterCreate': {
-      const { host, selector } = msg
-      applyCosmeticFilter(host, selector)
+      if (sender.origin) {
+        applyCosmeticFilter(new URL(sender.origin).host, msg.selector)
+      }
       break
     }
   }

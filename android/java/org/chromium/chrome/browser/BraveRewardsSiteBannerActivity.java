@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
@@ -18,6 +19,7 @@ import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.rewards.BraveRewardsAmountChangeListener;
 import org.chromium.chrome.browser.rewards.BraveRewardsBannerInfo;
 import org.chromium.chrome.browser.rewards.BraveRewardsCreatorPanelFragment;
@@ -26,9 +28,9 @@ import org.chromium.chrome.browser.rewards.BraveRewardsTipConfirmationListener;
 import org.chromium.chrome.browser.rewards.BraveRewardsTipFailureFragment;
 import org.chromium.chrome.browser.rewards.BraveRewardsTippingPanelFragment;
 
-public class BraveRewardsSiteBannerActivity
-        extends FragmentActivity implements BraveRewardsTipConfirmationListener,
-                                            BraveRewardsAmountChangeListener, BraveRewardsObserver {
+public class BraveRewardsSiteBannerActivity extends AsyncInitializationActivity
+        implements BraveRewardsTipConfirmationListener, BraveRewardsAmountChangeListener,
+                   BraveRewardsObserver {
     private ToggleButton radio_tip_amount[] = new ToggleButton[3];
     public static final String TAB_ID_EXTRA = "currentTabId";
     public static final String IS_MONTHLY_CONTRIBUTION = "is_monthly_contribution";
@@ -60,24 +62,32 @@ public class BraveRewardsSiteBannerActivity
     private static final String TAG = "TippingBanner";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
-        //inflate
-        super.onCreate(savedInstanceState);
+    protected void triggerLayoutInflation() {
+        // inflate
         setContentView(R.layout.brave_rewards_site_banner);
         mIsActivityIsActive = true;
         mProgressBar = findViewById(R.id.progressBar);
-        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
 
         currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
         mIsMonthlyContribution =
                 IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
-        if (savedInstanceState == null) {
-            mBraveRewardsNativeWorker.GetPublisherBanner(
-                    mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
-        }
+
         clickOnCloseButton();
+        onInitialLayoutInflationComplete();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        mBraveRewardsNativeWorker.AddObserver(this);
+        mBraveRewardsNativeWorker.GetPublisherBanner(
+                mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
+    }
+
+    @Override
+    public boolean shouldStartGpuProcess() {
+        return true;
     }
 
     private void clickOnCloseButton() {

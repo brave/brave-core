@@ -24,7 +24,7 @@
                              const base::Version& registered_version); \
   void OnUpdateError
 
-#include "src/components/component_updater/component_installer.h"
+#include "src/components/component_updater/component_installer.h"  // IWYU pragma: export
 
 #undef OnUpdateError
 

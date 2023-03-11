@@ -12,7 +12,7 @@
   static std::string GetHistogramNameForId(SidePanelEntry::Id id);        \
   static void PopulateGlobalEntries
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel_util.h"
+#include "src/chrome/browser/ui/views/side_panel/side_panel_util.h"  // IWYU pragma: export
 
 #undef PopulateGlobalEntries
 

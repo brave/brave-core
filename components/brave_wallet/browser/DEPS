@@ -7,9 +7,5 @@ include_rules = [
   "+third_party/re2",
   "+brave/components/constants",
   "+brave/components/version_info",
-  "+brave/third_party/bitcoin-core/src/src/base58.h",
-  "+brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h",
-  "+brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1.h",
-  "+brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h",
   "+tools/json_schema_compiler",
 ]

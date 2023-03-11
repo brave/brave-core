@@ -10,7 +10,8 @@ import {
   Header,
   Title,
   CloseButton,
-  Modal
+  Modal,
+  Divider
 } from './style'
 
 export interface Props {
@@ -18,38 +19,57 @@ export interface Props {
   onClose: () => void
   title: string
   width?: string
+  showDivider?: boolean
+  headerPaddingVertical?: number
+  headerPaddingHorizontal?: number
+  borderRadius?: number
 }
 
 const ESC_KEY = 'Escape'
 
-const PopupModal = (props: Props) => {
-  const { title, width, onClose, children } = props
+const PopupModal = React.forwardRef<HTMLDivElement, Props>(
+  (props: Props, forwardedRef) => {
+    const {
+      title,
+      width,
+      borderRadius,
+      headerPaddingVertical,
+      headerPaddingHorizontal,
+      showDivider,
+      onClose,
+      children
+    } = props
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === ESC_KEY) {
-      onClose()
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === ESC_KEY) {
+        onClose()
+      }
     }
+
+    React.useEffect(() => {
+      document.addEventListener('keydown', handleKeyDown)
+
+      return () => {
+        document.removeEventListener('keydown', handleKeyDown)
+      }
+    }, [])
+
+    return (
+      <StyledWrapper>
+        <Modal width={width} borderRadius={borderRadius} ref={forwardedRef}>
+          <Header
+            headerPaddingHorizontal={headerPaddingHorizontal}
+            headerPaddingVertical={headerPaddingVertical}
+          >
+            <Title>{title}</Title>
+            <CloseButton onClick={onClose} />
+          </Header>
+          {showDivider && <Divider />}
+          {children}
+        </Modal>
+      </StyledWrapper>
+    )
   }
-
-  React.useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [])
-
-  return (
-    <StyledWrapper>
-      <Modal width={width}>
-        <Header>
-          <Title>{title}</Title>
-          <CloseButton onClick={onClose}/>
-        </Header>
-        {children}
-      </Modal>
-    </StyledWrapper>
-  )
-}
+)
 
 export default PopupModal

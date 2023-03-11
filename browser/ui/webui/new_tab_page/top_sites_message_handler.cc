@@ -143,8 +143,7 @@ void TopSitesMessageHandler::OnURLsAvailable(
 
   // Notify listeners of this update (ex: new tab page)
   if (IsJavascriptAllowed()) {
-    FireWebUIListener("most-visited-info-changed",
-                      base::Value(std::move(result)));
+    FireWebUIListener("most-visited-info-changed", result);
   }
 }
 

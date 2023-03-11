@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/resources/tools/optimize_webui.gni b/chrome/browser/resources/tools/optimize_webui.gni
+index b1cb6559945ba9cff1c2874dee29b5b40355c0fc..672dff006a42b8ab7310016f89f40af527cd5d84 100644
+--- a/chrome/browser/resources/tools/optimize_webui.gni
++++ b/chrome/browser/resources/tools/optimize_webui.gni
+@@ -53,6 +53,8 @@ template("optimize_webui") {
+                     root_build_dir)
+     resources_path =
+         rebase_path("$root_gen_dir/ui/webui/resources/tsc/", root_build_dir)
++    brave_resources_path =
++        rebase_path("$root_gen_dir/brave/ui/webui/resources/tsc/", root_build_dir)
+ 
+     external_paths = []
+     if (is_chromeos_ash) {
+@@ -67,10 +69,12 @@ template("optimize_webui") {
+ 
+     external_paths += [
+       "chrome://resources/polymer/v3_0/|$polymer_path",
++      "chrome://resources/brave/|$brave_resources_path",
+       "chrome://resources/|$resources_path",
+ 
+       # Scheme relative versions to work with chrome-untrusted://
+       "//resources/polymer/v3_0/|$polymer_path",
++      "//resources/brave/|$brave_resources_path",
+       "//resources/|$resources_path",
+     ]
+ 

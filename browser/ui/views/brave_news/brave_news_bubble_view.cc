@@ -16,7 +16,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feed_item_view.h"
 #include "brave/browser/ui/views/brave_news/brave_news_feeds_container_view.h"
-#include "brave/components/brave_today/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -78,7 +78,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
   DCHECK(contents);
 
   SetButtons(ui::DIALOG_BUTTON_NONE);
-  SetAccessibleRole(ax::mojom::Role::kDialog);
+  SetAccessibleWindowRole(ax::mojom::Role::kDialog);
   set_adjust_if_offscreen(true);
 
   SetProperty(views::kInternalPaddingKey, gfx::Insets::VH(16, 16));
@@ -128,7 +128,7 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
                                views::MaximumFlexSizeRule::kPreferred));
   manage_feeds_button->SetProperty(views::kCrossAxisAlignmentKey,
                                    views::LayoutAlignment::kEnd);
-  manage_feeds_button->SetIcon(&kBraveNewsArrowRightIcon);
+  manage_feeds_button->SetIcon(&kLeoArrowRightIcon);
   manage_feeds_button->SetHorizontalAlignment(
       gfx::HorizontalAlignment::ALIGN_RIGHT);
 }
@@ -137,7 +137,7 @@ BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
 void BraveNewsBubbleView::OpenManageFeeds() {
   auto* browser = chrome::FindBrowserWithWebContents(contents_);
-  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveToday"),
+  browser->OpenURL({GURL("brave://newtab/?openSettings=BraveNews"),
                     content::Referrer(),
                     WindowOpenDisposition::NEW_FOREGROUND_TAB,
                     ui::PAGE_TRANSITION_LINK, false});

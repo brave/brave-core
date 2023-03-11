@@ -10,6 +10,7 @@
 #include "brave/components/brave_sync/buildflags.h"
 #include "brave/components/variations/buildflags.h"
 #include "build/build_config.h"
+#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/sync/base/command_line_switches.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -52,12 +53,6 @@ void AdjustSyncServiceUrlForAndroid(std::string* brave_sync_service_url) {
 // Because of that, upstream tests won't get BraveMainDelegate instantiated and
 // therefore we won't get any of the features below disabled/enabled when
 // running those browser tests, which is not what we want.
-//
-// For instance, on DCHECK-enabled builds, not enabling the DOM distiller will
-// get all browser tests crashing when dom_distiller::RunIsolatedJavaScript()
-// gets called from AdsTabHelper::RunIsolatedJavaScript() (called via the
-// WebContentsObserver machinery), since the JS World ID won't be set yet when
-// dom_distiller::RunIsolatedJavaScript() gets called.
 absl::optional<int> ChromeMainDelegate::BasicStartupComplete() {
   BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
   command_line.AppendSwitch(switches::kDisableDomainReliability);

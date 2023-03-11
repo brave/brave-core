@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"

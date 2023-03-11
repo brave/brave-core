@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"

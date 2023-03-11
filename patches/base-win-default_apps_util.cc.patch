@@ -1,5 +1,5 @@
 diff --git a/base/win/default_apps_util.cc b/base/win/default_apps_util.cc
-index 5ce1fdf498cb0312121ea7108e4dbec29af1efb4..9274c58d6a30c25266d3d727a94a23c2099424ab 100644
+index 08475da1f40e443f11a27c51e817589405a7a342..c80a4f6ef4d217da9dcef64a4eb2c9f16302949d 100644
 --- a/base/win/default_apps_util.cc
 +++ b/base/win/default_apps_util.cc
 @@ -24,6 +24,7 @@ std::wstring GetTargetForDefaultAppsSettings(base::WStringPiece protocol) {

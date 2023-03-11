@@ -12,6 +12,7 @@ import { WalletCard } from '../'
 
 import { localeStrings } from './locale_strings'
 import * as mojom from '../../../../shared/lib/mojom'
+import { optional } from '../../../../shared/lib/optional'
 
 const locale = createLocaleContextForTesting(localeStrings)
 
@@ -56,7 +57,7 @@ export function Wallet () {
       <WithThemeVariables>
         <div style={{ width: '375px' }}>
           <WalletCard
-            balance={0}
+            balance={optional(0)}
             externalWallet={externalWallet}
             providerPayoutStatus={'complete'}
             earningsThisMonth={0}

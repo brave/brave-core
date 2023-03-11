@@ -23,21 +23,12 @@ namespace brave_wallet::solana_ins_data_decoder {
 
 namespace {
 
-enum class ParamTypes {
-  kUint8,
-  kUint32,
-  kUint64,
-  kPublicKey,
-  kOptionalPublicKey,
-  kString,
-  kAuthorityType,
-};
-
 constexpr uint8_t kAuthorityTypeMax = 3;
 constexpr size_t kMaxStringSize32Bit = 4294967291u;
 
 // Tuple of param name, localized name, and type.
-using ParamNameTypeTuple = std::tuple<std::string, std::string, ParamTypes>;
+using ParamNameTypeTuple =
+    std::tuple<std::string, std::string, mojom::SolanaInstructionParamType>;
 
 const base::flat_map<mojom::SolanaSystemInstruction,
                      std::vector<ParamNameTypeTuple>>&
@@ -46,103 +37,103 @@ GetSystemInstructionParams() {
                                            std::vector<ParamNameTypeTuple>>>
       params(
           {{mojom::SolanaSystemInstruction::kCreateAccount,
-            {{"lamports",
+            {{mojom::kLamports,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS),
-              ParamTypes::kUint64},
+              mojom::SolanaInstructionParamType::kUint64},
              {"space",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SPACE),
-              ParamTypes::kUint64},
+              mojom::SolanaInstructionParamType::kUint64},
              {"owner_program",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kAssign,
             {{"owner_program",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kTransfer,
-            {{"lamports",
+            {{mojom::kLamports,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaSystemInstruction::kCreateAccountWithSeed,
             {{"base",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_BASE),
-              ParamTypes::kPublicKey},
+              mojom::SolanaInstructionParamType::kPublicKey},
              {"seed",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SEED),
-              ParamTypes::kString},
-             {"lamports",
+              mojom::SolanaInstructionParamType::kString},
+             {mojom::kLamports,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS),
-              ParamTypes::kUint64},
+              mojom::SolanaInstructionParamType::kUint64},
              {"space",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SPACE),
-              ParamTypes::kUint64},
+              mojom::SolanaInstructionParamType::kUint64},
              {"owner_program",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kAdvanceNonceAccount, {}},
            {mojom::SolanaSystemInstruction::kWithdrawNonceAccount,
-            {{"lamports",
+            {{mojom::kLamports,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaSystemInstruction::kInitializeNonceAccount,
             {{"authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AUTHORITY),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kAuthorizeNonceAccount,
             {{"new_authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_NEW_AUTHORITY),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kAllocate,
             {{"space",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SPACE),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaSystemInstruction::kAllocateWithSeed,
             {{"base",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_BASE),
-              ParamTypes::kPublicKey},
+              mojom::SolanaInstructionParamType::kPublicKey},
              {"seed",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SEED),
-              ParamTypes::kString},
+              mojom::SolanaInstructionParamType::kString},
              {"space",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SPACE),
-              ParamTypes::kUint64},
+              mojom::SolanaInstructionParamType::kUint64},
              {"owner_program",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kAssignWithSeed,
             {{"base",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_BASE),
-              ParamTypes::kPublicKey},
+              mojom::SolanaInstructionParamType::kPublicKey},
              {"seed",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_SEED),
-              ParamTypes::kString},
+              mojom::SolanaInstructionParamType::kString},
              {"owner_program",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER_PROGRAM),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kTransferWithSeed,
-            {{"lamports",
+            {{mojom::kLamports,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_LAMPORTS),
-              ParamTypes::kUint64},
+              mojom::SolanaInstructionParamType::kUint64},
              {"from_seed",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FROM_SEED),
-              ParamTypes::kString},
+              mojom::SolanaInstructionParamType::kString},
              {"from_owner_program",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FROM_OWNER_PROGRAM),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaSystemInstruction::kUpgradeNonceAccount, {}}});
   DCHECK(params->size() ==
          static_cast<uint32_t>(mojom::SolanaSystemInstruction::kMaxValue) + 1);
@@ -156,120 +147,120 @@ GetTokenInstructionParams() {
                                            std::vector<ParamNameTypeTuple>>>
       params(
           {{mojom::SolanaTokenInstruction::kInitializeMint,
-            {{"decimals",
+            {{mojom::kDecimals,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS),
-              ParamTypes::kUint8},
+              mojom::SolanaInstructionParamType::kUint8},
              {"mint_authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_MINT_AUTHORITY),
-              ParamTypes::kPublicKey},
+              mojom::SolanaInstructionParamType::kPublicKey},
              {"freeze_authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FREEZE_AUTHORITY),
-              ParamTypes::kOptionalPublicKey}}},
+              mojom::SolanaInstructionParamType::kOptionalPublicKey}}},
            {mojom::SolanaTokenInstruction::kInitializeAccount, {}},
            {mojom::SolanaTokenInstruction::kInitializeMultisig,
             {{"num_of_signers",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_NUM_OF_SIGNERS),
-              ParamTypes::kUint8}}},
+              mojom::SolanaInstructionParamType::kUint8}}},
            {mojom::SolanaTokenInstruction::kTransfer,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaTokenInstruction::kApprove,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaTokenInstruction::kRevoke, {}},
            {mojom::SolanaTokenInstruction::kSetAuthority,
             {{"authority_type",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AUTHORITY_TYPE),
-              ParamTypes::kAuthorityType},
+              mojom::SolanaInstructionParamType::kAuthorityType},
              {"new_authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_NEW_AUTHORITY),
-              ParamTypes::kOptionalPublicKey}}},
+              mojom::SolanaInstructionParamType::kOptionalPublicKey}}},
            {mojom::SolanaTokenInstruction::kMintTo,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaTokenInstruction::kBurn,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64}}},
+              mojom::SolanaInstructionParamType::kUint64}}},
            {mojom::SolanaTokenInstruction::kCloseAccount, {}},
            {mojom::SolanaTokenInstruction::kFreezeAccount, {}},
            {mojom::SolanaTokenInstruction::kThawAccount, {}},
            {mojom::SolanaTokenInstruction::kTransferChecked,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64},
-             {"decimals",
+              mojom::SolanaInstructionParamType::kUint64},
+             {mojom::kDecimals,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS),
-              ParamTypes::kUint8}}},
+              mojom::SolanaInstructionParamType::kUint8}}},
            {mojom::SolanaTokenInstruction::kApproveChecked,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64},
-             {"decimals",
+              mojom::SolanaInstructionParamType::kUint64},
+             {mojom::kDecimals,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS),
-              ParamTypes::kUint8}}},
+              mojom::SolanaInstructionParamType::kUint8}}},
            {mojom::SolanaTokenInstruction::kMintToChecked,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64},
-             {"decimals",
+              mojom::SolanaInstructionParamType::kUint64},
+             {mojom::kDecimals,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS),
-              ParamTypes::kUint8}}},
+              mojom::SolanaInstructionParamType::kUint8}}},
            {mojom::SolanaTokenInstruction::kBurnChecked,
-            {{"amount",
+            {{mojom::kAmount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_AMOUNT),
-              ParamTypes::kUint64},
-             {"decimals",
+              mojom::SolanaInstructionParamType::kUint64},
+             {mojom::kDecimals,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS),
-              ParamTypes::kUint8}}},
+              mojom::SolanaInstructionParamType::kUint8}}},
            {mojom::SolanaTokenInstruction::kInitializeAccount2,
             {{"owner",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaTokenInstruction::kSyncNative, {}},
            {mojom::SolanaTokenInstruction::kInitializeAccount3,
             {{"owner",
               l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_SOLANA_INS_PARAM_OWNER),
-              ParamTypes::kPublicKey}}},
+              mojom::SolanaInstructionParamType::kPublicKey}}},
            {mojom::SolanaTokenInstruction::kInitializeMultisig2,
             {{"num_of_signers",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_NUM_OF_SIGNERS),
-              ParamTypes::kUint8}}},
+              mojom::SolanaInstructionParamType::kUint8}}},
            {mojom::SolanaTokenInstruction::kInitializeMint2,
-            {{"decimals",
+            {{mojom::kDecimals,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_DECIMALS),
-              ParamTypes::kUint8},
+              mojom::SolanaInstructionParamType::kUint8},
              {"mint_authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_MINT_AUTHORITY),
-              ParamTypes::kPublicKey},
+              mojom::SolanaInstructionParamType::kPublicKey},
              {"freeze_authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_INS_PARAM_FREEZE_AUTHORITY),
-              ParamTypes::kOptionalPublicKey}}}});
+              mojom::SolanaInstructionParamType::kOptionalPublicKey}}}});
   DCHECK(params->size() ==
          static_cast<uint32_t>(mojom::SolanaTokenInstruction::kMaxValue) + 1);
   return *params;
@@ -281,10 +272,10 @@ GetSystemInstructionAccountParams() {
       base::flat_map<mojom::SolanaSystemInstruction, std::vector<InsParamPair>>>
       params(
           {{mojom::SolanaSystemInstruction::kCreateAccount,
-            {{"from_account",
+            {{mojom::kFromAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT)},
-             {"new_account",
+             {mojom::kNewAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NEW_ACCOUNT)}}},
            {mojom::SolanaSystemInstruction::kAssign,
@@ -292,14 +283,14 @@ GetSystemInstructionAccountParams() {
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ASSIGNED_ACCOUNT)}}},
            {mojom::SolanaSystemInstruction::kTransfer,
-            {{"from_account",
+            {{mojom::kFromAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)}}},
            {mojom::SolanaSystemInstruction::kCreateAccountWithSeed,
-            {{"from_account",
+            {{mojom::kFromAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT)},
              {"created_account",
@@ -309,7 +300,7 @@ GetSystemInstructionAccountParams() {
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_BASE_ACCOUNT)}}},
            {mojom::SolanaSystemInstruction::kAdvanceNonceAccount,
-            {{"nonce_account",
+            {{mojom::kNonceAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_ACCOUNT)},
              {"recentblockhashes_sysvar",
@@ -319,10 +310,10 @@ GetSystemInstructionAccountParams() {
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_AUTHORITY)}}},
            {mojom::SolanaSystemInstruction::kWithdrawNonceAccount,
-            {{"nonce_account",
+            {{mojom::kNonceAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_ACCOUNT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)},
              {"recentblockhashes_sysvar",
@@ -335,7 +326,7 @@ GetSystemInstructionAccountParams() {
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_AUTHORITY)}}},
            {mojom::SolanaSystemInstruction::kInitializeNonceAccount,
-            {{"nonce_account",
+            {{mojom::kNonceAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_ACCOUNT)},
              {"recentblockhashes_sysvar",
@@ -345,7 +336,7 @@ GetSystemInstructionAccountParams() {
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_RENT_SYSVAR)}}},
            {mojom::SolanaSystemInstruction::kAuthorizeNonceAccount,
-            {{"nonce_account",
+            {{mojom::kNonceAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_ACCOUNT)},
              {"nonce_authority",
@@ -370,17 +361,17 @@ GetSystemInstructionAccountParams() {
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_BASE_ACCOUNT)}}},
            {mojom::SolanaSystemInstruction::kTransferWithSeed,
-            {{"from_account",
+            {{mojom::kFromAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT)},
              {"base_account",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_BASE_ACCOUNT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)}}},
            {mojom::SolanaSystemInstruction::kUpgradeNonceAccount,
-            {{"nonce_account",
+            {{mojom::kNonceAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_NONCE_ACCOUNT)}}}});
   DCHECK(params->size() ==
@@ -418,20 +409,22 @@ GetTokenInstructionAccountParams() {
              {"rent_sysvar",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_RENT_SYSVAR)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kTransfer,
-            {{"from_account",
+            {{mojom::kFromAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)},
              {"owner_delegate",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER_DELEGATE)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kApprove,
             {{"account", l10n_util::GetStringUTF8(
                              IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT)},
@@ -439,15 +432,17 @@ GetTokenInstructionAccountParams() {
                               IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_DELEGATE)},
              {"owner", l10n_util::GetStringUTF8(
                            IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kRevoke,
             {{"account", l10n_util::GetStringUTF8(
                              IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT)},
              {"owner", l10n_util::GetStringUTF8(
                            IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kSetAuthority,
             {{"changed_mint_or_account",
               l10n_util::GetStringUTF8(
@@ -455,19 +450,21 @@ GetTokenInstructionAccountParams() {
              {"authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_AUTHORITY)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kMintTo,
             {{"mint", l10n_util::GetStringUTF8(
                           IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_MINT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)},
              {"authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_AUTHORITY)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kBurn,
             {{"burned_account",
               l10n_util::GetStringUTF8(
@@ -478,19 +475,21 @@ GetTokenInstructionAccountParams() {
              {"owner_delegate",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT_OWNER_DELEGATE)},  // NOLINT
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kCloseAccount,
             {{"closed_account",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_CLOSED_ACCOUNT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)},
              {"owner", l10n_util::GetStringUTF8(
                            IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kFreezeAccount,
             {{"frozen_account",
               l10n_util::GetStringUTF8(
@@ -501,8 +500,9 @@ GetTokenInstructionAccountParams() {
              {"authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_AUTHORITY)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kThawAccount,
             {{"frozen_account",
               l10n_util::GetStringUTF8(
@@ -513,23 +513,25 @@ GetTokenInstructionAccountParams() {
              {"authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_AUTHORITY)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kTransferChecked,
-            {{"from_account",
+            {{mojom::kFromAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_FROM_ACCOUNT)},
              {"token_mint",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TOKEN_MINT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)},
              {"owner_delegate",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER_DELEGATE)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kApproveChecked,
             {{"account", l10n_util::GetStringUTF8(
                              IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT)},
@@ -540,19 +542,21 @@ GetTokenInstructionAccountParams() {
                               IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_DELEGATE)},
              {"owner", l10n_util::GetStringUTF8(
                            IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_OWNER)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kMintToChecked,
             {{"mint", l10n_util::GetStringUTF8(
                           IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_MINT)},
-             {"to_account",
+             {mojom::kToAccount,
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_TO_ACCOUNT)},
              {"authority",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_AUTHORITY)},
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kBurnChecked,
             {{"burned_account",
               l10n_util::GetStringUTF8(
@@ -563,8 +567,9 @@ GetTokenInstructionAccountParams() {
              {"owner_delegate",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_ACCOUNT_OWNER_DELEGATE)},  // NOLINT
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kInitializeAccount2,
             {{"initialized_account",
               l10n_util::GetStringUTF8(
@@ -588,8 +593,9 @@ GetTokenInstructionAccountParams() {
             {{"initialized_multisig_account",
               l10n_util::GetStringUTF8(
                   IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_INITIALIZED_MULTISIG_ACCOUNT)},  // NOLINT
-             {"signers", l10n_util::GetStringUTF8(
-                             IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
+             {mojom::kSigners,
+              l10n_util::GetStringUTF8(
+                  IDS_BRAVE_WALLET_SOLANA_ACCOUNT_PARAM_SIGNERS)}}},
            {mojom::SolanaTokenInstruction::kInitializeMint2,
             {{"initialized_mint",
               l10n_util::GetStringUTF8(
@@ -746,26 +752,30 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
   absl::optional<std::string> value;
 
   switch (std::get<2>(name_type_tuple)) {
-    case ParamTypes::kUint8:
+    case mojom::SolanaInstructionParamType::kUint8:
       value = DecodeUint8String(data, offset);
       break;
-    case ParamTypes::kUint32:
+    case mojom::SolanaInstructionParamType::kUint32:
       value = DecodeUint32String(data, offset);
       break;
-    case ParamTypes::kUint64:
+    case mojom::SolanaInstructionParamType::kUint64:
       value = DecodeUint64String(data, offset);
       break;
-    case ParamTypes::kPublicKey:
+    case mojom::SolanaInstructionParamType::kPublicKey:
       value = DecodePublicKey(data, offset);
       break;
-    case ParamTypes::kOptionalPublicKey:
+    case mojom::SolanaInstructionParamType::kOptionalPublicKey:
       value = DecodeOptionalPublicKey(data, offset);
       break;
-    case ParamTypes::kString:
+    case mojom::SolanaInstructionParamType::kString:
       value = DecodeString(data, offset);
       break;
-    case ParamTypes::kAuthorityType:
+    case mojom::SolanaInstructionParamType::kAuthorityType:
       value = DecodeAuthorityTypeString(data, offset);
+      break;
+    case mojom::SolanaInstructionParamType::kUnknown:
+      // Do nothing
+      break;
   }
 
   if (!value)
@@ -773,13 +783,15 @@ bool DecodeParamType(const ParamNameTypeTuple& name_type_tuple,
 
   // Early return to ignore optional public key in the param name-value list
   // if it is not passed.
-  if (std::get<2>(name_type_tuple) == ParamTypes::kOptionalPublicKey &&
+  if (std::get<2>(name_type_tuple) ==
+          mojom::SolanaInstructionParamType::kOptionalPublicKey &&
       value->empty()) {
     return true;
   }
 
   ins_param_tuple.emplace_back(std::get<0>(name_type_tuple),
-                               std::get<1>(name_type_tuple), *value);
+                               std::get<1>(name_type_tuple), *value,
+                               std::get<2>(name_type_tuple));
   return true;
 }
 

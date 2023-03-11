@@ -10,7 +10,7 @@
   BraveGetScreenInfos(LocalFrame& frame) const; \
   virtual const display::ScreenInfos& GetScreenInfos
 
-#include "src/third_party/blink/renderer/core/page/chrome_client.h"
+#include "src/third_party/blink/renderer/core/page/chrome_client.h"  // IWYU pragma: export
 
 #undef GetScreenInfos
 

@@ -164,8 +164,7 @@ void AdblockDOMHandler::HandleGetRegionalLists(const base::Value::List& args) {
   auto regional_lists = g_brave_browser_process->ad_block_service()
                             ->regional_service_manager()
                             ->GetRegionalLists();
-  CallJavascriptFunction("brave_adblock.onGetRegionalLists",
-                         base::Value(std::move(regional_lists)));
+  CallJavascriptFunction("brave_adblock.onGetRegionalLists", regional_lists);
 }
 
 void AdblockDOMHandler::HandleGetListSubscriptions(
@@ -315,8 +314,7 @@ void AdblockDOMHandler::RefreshSubscriptionsList() {
     }
     list_value.Append(std::move(dict));
   }
-  CallJavascriptFunction("brave_adblock.onGetListSubscriptions",
-                         base::Value(std::move(list_value)));
+  CallJavascriptFunction("brave_adblock.onGetListSubscriptions", list_value);
 }
 
 }  // namespace

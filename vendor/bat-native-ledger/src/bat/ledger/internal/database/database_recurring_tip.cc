@@ -7,7 +7,9 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -22,6 +24,13 @@ namespace {
 // TODO(https://github.com/brave/brave-browser/issues/7144):
 //  rename to recurring_tip
 const char kTableName[] = "recurring_donation";
+
+void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
+                                mojom::DBCommandResponsePtr response) {
+  std::move(callback).Run(response &&
+                          response->status ==
+                              mojom::DBCommandResponse::Status::RESPONSE_OK);
+}
 
 }  // namespace
 
@@ -66,18 +75,127 @@ void DatabaseRecurringTip::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
+void DatabaseRecurringTip::InsertOrUpdate(
+    const std::string& publisher_id,
+    double amount,
+    base::OnceCallback<void(bool)> callback) {
+  if (publisher_id.empty()) {
+    BLOG(1, "Publisher ID is empty");
+    std::move(callback).Run(false);
+    return;
+  }
+
+  if (amount <= 0) {
+    BLOG(1, "Invalid contribution amount");
+    std::move(callback).Run(false);
+    return;
+  }
+
+  auto transaction = mojom::DBTransaction::New();
+
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::RUN;
+  command->command = base::StringPrintf(
+      "INSERT OR REPLACE INTO %s "
+      "(publisher_id, amount, added_date, next_contribution_at) "
+      "VALUES (?, ?, ?, ?)",
+      kTableName);
+
+  base::Time added_at = base::Time::Now();
+  base::Time next_date = added_at + base::Seconds(constant::kReconcileInterval);
+
+  BindString(command.get(), 0, publisher_id);
+  BindDouble(command.get(), 1, amount);
+  BindInt64(command.get(), 2, static_cast<int64_t>(added_at.ToDoubleT()));
+  BindInt64(command.get(), 3, static_cast<int64_t>(next_date.ToDoubleT()));
+
+  transaction->commands.push_back(std::move(command));
+
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(MapDatabaseResultToSuccess, std::move(callback)));
+}
+
+void DatabaseRecurringTip::AdvanceMonthlyContributionDates(
+    const std::vector<std::string>& publisher_ids,
+    base::OnceCallback<void(bool)> callback) {
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET next_contribution_at = ? WHERE publisher_id = ?",
+      kTableName);
+
+  auto next = base::Time::Now() + base::Seconds(constant::kReconcileInterval);
+
+  auto transaction = mojom::DBTransaction::New();
+  for (const std::string& publisher_id : publisher_ids) {
+    if (!publisher_id.empty()) {
+      auto command = mojom::DBCommand::New();
+      command->type = mojom::DBCommand::Type::RUN;
+      command->command = query;
+      BindInt64(command.get(), 0, static_cast<int64_t>(next.ToDoubleT()));
+      BindString(command.get(), 1, publisher_id);
+      transaction->commands.push_back(std::move(command));
+    }
+  }
+
+  if (transaction->commands.empty()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(MapDatabaseResultToSuccess, std::move(callback)));
+}
+
+void DatabaseRecurringTip::GetNextMonthlyContributionTime(
+    base::OnceCallback<void(absl::optional<base::Time>)> callback) {
+  auto transaction = mojom::DBTransaction::New();
+
+  auto command = mojom::DBCommand::New();
+  command->type = mojom::DBCommand::Type::READ;
+  command->command = base::StringPrintf(
+      "SELECT MIN(COALESCE(next_contribution_at, ?)) FROM %s", kTableName);
+  command->record_bindings = {mojom::DBCommand::RecordBindingType::INT64_TYPE};
+  BindInt64(command.get(), 0, ledger_->state()->GetReconcileStamp());
+
+  transaction->commands.push_back(std::move(command));
+
+  auto on_completed =
+      [](base::OnceCallback<void(absl::optional<base::Time>)> callback,
+         mojom::DBCommandResponsePtr response) {
+        base::Time time;
+        if (response && !response->result->get_records().empty()) {
+          const auto& record = response->result->get_records().front();
+          int64_t timestamp = GetInt64Column(record.get(), 0);
+          if (timestamp > 0) {
+            time = base::Time::FromDoubleT(static_cast<double>(timestamp));
+            if (time < base::Time::Now()) {
+              time = base::Time::Now();
+            }
+            std::move(callback).Run(time);
+            return;
+          }
+        }
+        std::move(callback).Run(absl::nullopt);
+      };
+
+  ledger_->RunDBTransaction(std::move(transaction),
+                            base::BindOnce(on_completed, std::move(callback)));
+}
+
 void DatabaseRecurringTip::GetAllRecords(
     ledger::PublisherInfoListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-    "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-    "rd.amount, rd.added_date, spi.status, spi.updated_at, pi.provider "
-    "FROM %s as rd "
-    "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
-    "LEFT JOIN server_publisher_info AS spi "
-    "ON spi.publisher_key = pi.publisher_id ",
-    kTableName);
+      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
+      "rd.amount, rd.next_contribution_at, spi.status, spi.updated_at, "
+      "pi.provider "
+      "FROM %s as rd "
+      "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id ",
+      kTableName);
 
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -128,6 +246,12 @@ void DatabaseRecurringTip::OnGetAllRecords(
         static_cast<mojom::PublisherStatus>(GetInt64Column(record_pointer, 6));
     info->status_updated_at = GetInt64Column(record_pointer, 7);
     info->provider = GetStringColumn(record_pointer, 8);
+
+    // If a monthly contribution record does not have a valid "next contribution
+    // date", then use the next auto-contribution date instead.
+    if (!info->reconcile_stamp) {
+      info->reconcile_stamp = ledger_->state()->GetReconcileStamp();
+    }
 
     list.push_back(std::move(info));
   }

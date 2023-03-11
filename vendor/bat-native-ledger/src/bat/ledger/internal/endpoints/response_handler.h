@@ -8,7 +8,7 @@
 
 #include <utility>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/types/expected.h"
 #include "bat/ledger/internal/endpoints/result_for.h"
 #include "bat/ledger/internal/logging/logging_util.h"

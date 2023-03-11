@@ -17,7 +17,7 @@
   brave::FarbledPointerScreenCoordinate( \
       view(), brave::FarbleKey::kPointerScreenY, client_y_, screen_y_);
 
-#include "src/third_party/blink/renderer/core/events/pointer_event.h"
+#include "src/third_party/blink/renderer/core/events/pointer_event.h"  // IWYU pragma: export
 
 #undef screen_x_
 #undef screen_y_

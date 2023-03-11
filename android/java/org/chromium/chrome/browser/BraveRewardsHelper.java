@@ -1,12 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -315,7 +317,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
       return BraveActivity.getChromeTabbedActivity();
     }
 
-    static public BraveActivity getBraveActivity() {
+    static public BraveActivity getBraveActivity() throws ActivityNotFoundException {
       return BraveActivity.getBraveActivity();
     }
 

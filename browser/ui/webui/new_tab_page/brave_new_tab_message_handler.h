@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -70,7 +68,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
   void OnPreferencesChanged();
   void OnPrivatePropertiesChanged();
 
-  base::Value GetAdsDataDictionary() const;
+  base::Value::Dict GetAdsDataDictionary() const;
 
   // brave_ads::AdsServiceObserver:
   void OnNeedsBrowserUpgradeToServeAds() override;

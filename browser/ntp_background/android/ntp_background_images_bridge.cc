@@ -13,9 +13,9 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
-#include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/guid.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"

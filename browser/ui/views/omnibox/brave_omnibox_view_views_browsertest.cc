@@ -6,6 +6,7 @@
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "build/build_config.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"

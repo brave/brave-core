@@ -14,23 +14,13 @@ export const Box = styled.div`
   right: 0;
   left: 0;
   z-index: 2;
+
+  display: flex;
+  flex-direction: column;
 `
 
-export const HeaderBox = styled.section`
-  width: 100%;
-  padding: 24px 17px 16px 17px;
-`
-
-export const TreeBox = styled.section`
+export const Footer = styled.div`
   background-color: ${(p) => p.theme.color.background02};
-  padding: 10px 17px 10px 17px;
-  height: calc(100% - 94px - 96px); /* subtract offset top from height of footer */
-  overflow: auto;
-  position: relative;
-  z-index: 2;
-`
-
-export const Footer = styled.section`
   padding: 19px 22px;
   position: absolute;
   bottom: 0;
@@ -52,6 +42,46 @@ export const Footer = styled.section`
       margin-right: 8px;
     }
   }
+}
+`
+
+export const HeaderBox = styled.section`
+  width: 100%;
+  padding: 24px 17px 0 17px;
+`
+
+export const Scroller = styled.section`
+  --offset-top: 46px;
+  --footer-height: 78px;
+  background-color: ${(p) => p.theme.color.background02};
+  overflow: auto;
+  height: calc(100% - var(--offset-top) - var(--footer-height));
+  position: relative;
+  z-index: 2;
+`
+
+export const ScriptsInfo = styled.div`
+    background-color: ${(p) => p.theme.color.background01};
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 8px;
+    align-items: center;
+    font-family: ${(p) => p.theme.fontFamily.heading};
+    color: ${(p) => p.theme.color.text01};
+    font-size: 14px;
+    font-weight: 600;
+    padding: 16px 17px 16px 17px;
+    span:first-child {
+      text-align: center;
+      overflow: hidden;
+    }
+    span:nth-child(3) {
+      text-align: right;
+    }
+`
+
+export const ScriptsList = styled.div`
+    padding: 10px 17px 10px 17px;
 `
 
 export const SiteTitleBox = styled.div`
@@ -59,7 +89,6 @@ export const SiteTitleBox = styled.div`
   grid-template-columns: 26px 1fr;
   grid-gap: 5px;
   align-items: center;
-  margin-bottom: 15px;
 `
 
 export const SiteTitle = styled.span`
@@ -104,20 +133,5 @@ export const BackButton = styled.button`
 
   svg > path {
     color: currentColor;
-  }
-`
-
-export const Grid = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  color: ${(p) => p.theme.color.text01};
-  font-size: 14px;
-  font-weight: 600;
-
-  span:first-child {
-    text-align: center;
-    overflow: hidden;
   }
 `

@@ -42,7 +42,8 @@ export const TransactionInfo = ({
     isFilecoinTransaction,
     transactionsNetwork,
     sendOptions,
-    hasFeeEstimatesError
+    hasFeeEstimatesError,
+    isLoadingGasFee
   } = usePendingTransactions()
 
   // queries
@@ -56,9 +57,7 @@ export const TransactionInfo = ({
     return null
   }
 
-  const isLoadingGasFee = transactionDetails.gasFee === ''
-  const isLoadingGasFeeFiat =
-    isLoadingDefaultFiatCurrency || transactionDetails.gasFeeFiat === ''
+  const isLoadingGasFeeFiat = isLoadingDefaultFiatCurrency || isLoadingGasFee
 
   /**
    * This will need updating if we ever switch to using per-locale formatting,
@@ -106,7 +105,7 @@ export const TransactionInfo = ({
         <>
           {transactionDetails.gasPremium && (
             <SectionColumn>
-              <TransactionTitle>Gas Premium</TransactionTitle>
+              <TransactionTitle>{getLocale('braveWalletTransactionGasPremium')}</TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasPremium)
@@ -118,7 +117,7 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasLimit && (
             <SectionColumn>
-              <TransactionTitle>Gas Limit</TransactionTitle>
+              <TransactionTitle>{getLocale('braveWalletTransactionGasLimit')}</TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasLimit)
@@ -130,7 +129,7 @@ export const TransactionInfo = ({
 
           {transactionDetails.gasFeeCap && (
             <SectionColumn>
-              <TransactionTitle>Gas Fee Cap</TransactionTitle>
+              <TransactionTitle>{getLocale('braveWalletTransactionGasFeeCap')}</TransactionTitle>
               <TransactionTypeText>
                 {transactionsNetwork &&
                   new Amount(transactionDetails.gasFeeCap)

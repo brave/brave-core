@@ -19,7 +19,8 @@ extern const char kUserVersion[];
 extern const char kCurrentUserVersion[];
 
 extern const char kHideButton[];  // DEPRECATED
-extern const char kShowButton[];
+extern const char kShowButton[];  // DEPRECATED
+extern const char kShowLocationBarButton[];
 extern const char kEnabled[];  // DEPRECATED
 extern const char kDeclaredGeo[];
 extern const char kAdsEnabledTimeDelta[];
@@ -56,6 +57,7 @@ extern const char kNextReconcileStamp[];
 extern const char kCreationStamp[];
 extern const char kRecoverySeed[];  // DEPRECATED
 extern const char kPaymentId[];   // DEPRECATED
+extern const char kInlineTipButtonsEnabled[];
 extern const char kInlineTipRedditEnabled[];
 extern const char kInlineTipTwitterEnabled[];
 extern const char kInlineTipGithubEnabled[];

@@ -11,7 +11,7 @@
   friend class BraveHistoryURLProvider; \
   void DoAutocomplete
 
-#include "src/components/omnibox/browser/history_url_provider.h"
+#include "src/components/omnibox/browser/history_url_provider.h"  // IWYU pragma: export
 
 #undef DoAutocomplete
 

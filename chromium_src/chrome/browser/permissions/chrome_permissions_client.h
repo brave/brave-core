@@ -19,7 +19,7 @@
       content::WebContents* web_contents, ContentSettingsType type, \
       base::WeakPtr<permissions::PermissionPromptAndroid> prompt);  \
   std::unique_ptr<PermissionMessageDelegate> MaybeCreateMessageUI
-#include "src/chrome/browser/permissions/chrome_permissions_client.h"
+#include "src/chrome/browser/permissions/chrome_permissions_client.h"  // IWYU pragma: export
 #undef MaybeCreateMessageUI
 #undef CanBypassEmbeddingOriginCheck
 

@@ -13,6 +13,8 @@ public class BraveSiteSettingsCategory {
         switch (type) {
             case Type.AUTOPLAY:
                 return ContentSettingsType.AUTOPLAY;
+            case Type.BRAVE_GOOGLE_SIGN_IN:
+                return ContentSettingsType.BRAVE_GOOGLE_SIGN_IN;
             default:
                 return SiteSettingsCategory.contentSettingsType(type);
         }
@@ -22,6 +24,8 @@ public class BraveSiteSettingsCategory {
         switch (type) {
             case Type.AUTOPLAY:
                 return "autoplay";
+            case Type.BRAVE_GOOGLE_SIGN_IN:
+                return "brave_google_sign_in";
             default:
                 return SiteSettingsCategory.preferenceKey(type);
         }

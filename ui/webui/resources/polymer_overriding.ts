@@ -5,13 +5,13 @@
 
 // @ts-nocheck TODO(petemill): Define types
 
-import {html as polymerHtml, mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-
 // Global overrides
-import 'chrome://resources/br_elements/br_toolbar/br_toolbar.js'
-import 'chrome://resources/br_elements/br_shared_style.css.js'
+import 'chrome://resources/brave/br_elements/br_toolbar/br_toolbar.js'
+import 'chrome://resources/brave/br_elements/br_shared_style.css.js'
 import './overrides/cr_button_override.css.js'
 import './overrides/cr_toggle_override.css.js'
+
+import {html as polymerHtml, mixinBehaviors, Polymer, PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
 type ModificationsMap = {
   [tagName: string]: (DocumentFragment) => unknown

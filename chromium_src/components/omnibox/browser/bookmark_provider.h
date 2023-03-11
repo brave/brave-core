@@ -11,7 +11,7 @@
   friend class BraveBookmarkProvider; \
   void DoAutocomplete
 
-#include "src/components/omnibox/browser/bookmark_provider.h"
+#include "src/components/omnibox/browser/bookmark_provider.h"  // IWYU pragma: export
 
 #undef DoAutocomplete
 

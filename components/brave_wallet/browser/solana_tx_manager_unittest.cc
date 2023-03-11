@@ -14,6 +14,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_block_tracker.h"
@@ -221,6 +222,7 @@ class SolanaTxManagerUnitTest : public testing::Test {
     return static_cast<SolanaTxManager*>(
         tx_service_->GetTxManager(mojom::CoinType::SOL));
   }
+  PrefService* prefs() { return &prefs_; }
 
   url::Origin GetOrigin() const {
     return url::Origin::Create(GURL("https://brave.com"));
@@ -453,6 +455,9 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   auto tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
+  EXPECT_EQ(tx_meta1->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
+
   EXPECT_EQ(*tx_meta1->tx(), *tx);
   EXPECT_EQ(tx_meta1->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta1->from(), from_account);
@@ -462,6 +467,8 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   AddUnapprovedTransaction(solana_tx_data.Clone(), from_account, &meta_id2);
   auto tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
+  EXPECT_EQ(tx_meta2->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
   EXPECT_EQ(*tx_meta2->tx(), *tx);
   EXPECT_EQ(tx_meta2->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta2->from(), from_account);
@@ -476,6 +483,8 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   tx_meta1 = solana_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
+  EXPECT_EQ(tx_meta1->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
   EXPECT_EQ(*tx_meta1->tx(), *tx);
   EXPECT_EQ(tx_meta1->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta1->from(), from_account);
@@ -490,6 +499,8 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
+  EXPECT_EQ(tx_meta2->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
   EXPECT_EQ(*tx_meta2->tx(), *tx);
   EXPECT_EQ(tx_meta2->signature_status(), SolanaSignatureStatus());
   EXPECT_EQ(tx_meta2->from(), from_account);
@@ -532,6 +543,8 @@ TEST_F(SolanaTxManagerUnitTest, WalletOrigin) {
 
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
   EXPECT_EQ(tx_meta->origin(), url::Origin::Create(GURL("chrome://wallet")));
 }
 
@@ -551,6 +564,8 @@ TEST_F(SolanaTxManagerUnitTest, SomeSiteOrigin) {
 
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
   EXPECT_EQ(tx_meta->origin(),
             url::Origin::Create(GURL("https://some.site.com")));
 }
@@ -570,6 +585,8 @@ TEST_F(SolanaTxManagerUnitTest, AddUnapprovedTransactionWithGroupId) {
 
   auto tx_meta = solana_tx_manager()->GetTxForTesting(meta_id);
   ASSERT_TRUE(tx_meta);
+  EXPECT_EQ(tx_meta->chain_id(),
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
   EXPECT_EQ(tx_meta->group_id(), "mockGroupId");
 }
 
@@ -586,8 +603,9 @@ TEST_F(SolanaTxManagerUnitTest, MakeSystemProgramTransferTxData) {
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
 
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
@@ -651,8 +669,9 @@ TEST_F(SolanaTxManagerUnitTest, MakeTokenProgramTransferTxData) {
   account_metas.push_back(std::move(solana_account_meta2));
   account_metas.push_back(std::move(solana_account_meta3));
 
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("amount", "Amount", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "amount", "Amount", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(
@@ -805,8 +824,9 @@ TEST_F(SolanaTxManagerUnitTest, MakeTxDataFromBase64EncodedTransaction) {
   account_metas.push_back(std::move(solana_account_meta1));
   account_metas.push_back(std::move(solana_account_meta2));
 
-  auto mojom_param =
-      mojom::SolanaInstructionParam::New("lamports", "Lamports", "10000000");
+  auto mojom_param = mojom::SolanaInstructionParam::New(
+      "lamports", "Lamports", "10000000",
+      mojom::SolanaInstructionParamType::kUint64);
   std::vector<mojom::SolanaInstructionParamPtr> mojom_params;
   mojom_params.emplace_back(std::move(mojom_param));
   auto mojom_decoded_data = mojom::DecodedSolanaInstructionData::New(

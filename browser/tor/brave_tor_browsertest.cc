@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/callback_helpers.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback_helpers.h"
 #include "base/path_service.h"
 #include "base/process/process.h"
 #include "base/process/process_iterator.h"
@@ -20,6 +20,7 @@
 #include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/tor/brave_tor_client_updater.h"
 #include "brave/components/tor/brave_tor_pluggable_transport_updater.h"
@@ -28,6 +29,7 @@
 #include "brave/components/tor/tor_profile_service.h"
 #include "brave/components/tor/tor_utils.h"
 #include "build/build_config.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -37,10 +39,12 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/ssl_host_state_delegate.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "gmock/gmock.h"
-#include "third_party/blink/public/common/features.h"
+#include "net/base/features.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -346,25 +350,97 @@ IN_PROC_BROWSER_TEST_F(BraveTorTest, ResetBridges) {
   EXPECT_FALSE(CheckComponentExists(tor::kTorPluggableTransportComponentId));
 }
 
-class BraveTorTest_EnableTorHttpsOnlyFlag : public BraveTorTest {
+IN_PROC_BROWSER_TEST_F(BraveTorTest, HttpAllowlistIsolation) {
+  // Normal window
+  Profile* main_profile = browser()->profile();
+  auto* main_storage_partition = main_profile->GetDefaultStoragePartition();
+  content::SSLHostStateDelegate* main_state =
+      main_profile->GetSSLHostStateDelegate();
+
+  // Incognito window
+  Browser* incognito_browser = CreateIncognitoBrowser(nullptr);
+  Profile* incognito_profile = incognito_browser->profile();
+  auto* incognito_storage_partition =
+      incognito_profile->GetDefaultStoragePartition();
+  content::SSLHostStateDelegate* incognito_state =
+      incognito_profile->GetSSLHostStateDelegate();
+
+  // Tor window
+  EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
+  DownloadTorClient();
+  auto tor = WaitForTorLaunched();
+  Profile* tor_profile = tor.tor_profile;
+  auto* tor_storage_partition = tor_profile->GetDefaultStoragePartition();
+  content::SSLHostStateDelegate* tor_state =
+      tor_profile->GetSSLHostStateDelegate();
+
+  // Confirm that main, incognito, and tor profiles are all different.
+  EXPECT_NE(main_profile, incognito_profile);
+  EXPECT_NE(main_profile, tor_profile);
+  EXPECT_NE(incognito_profile, tor_profile);
+
+  // Test domains, one to "allow http" for each profile.
+  std::string host1("example1.test");
+  std::string host2("example2.test");
+  std::string host3("example3.test");
+  main_state->AllowHttpForHost(host1, main_storage_partition);
+  incognito_state->AllowHttpForHost(host2, incognito_storage_partition);
+  tor_state->AllowHttpForHost(host3, tor_storage_partition);
+
+  // Check that each domain was added to the correct allowlist and
+  // there is no leaking between the three profiles.
+  EXPECT_TRUE(main_state->IsHttpAllowedForHost(host1, main_storage_partition));
+  EXPECT_FALSE(incognito_state->IsHttpAllowedForHost(
+      host1, incognito_storage_partition));
+  EXPECT_FALSE(tor_state->IsHttpAllowedForHost(host1, tor_storage_partition));
+  EXPECT_FALSE(main_state->IsHttpAllowedForHost(host2, main_storage_partition));
+  EXPECT_TRUE(incognito_state->IsHttpAllowedForHost(
+      host2, incognito_storage_partition));
+  EXPECT_FALSE(tor_state->IsHttpAllowedForHost(host2, tor_storage_partition));
+  EXPECT_FALSE(main_state->IsHttpAllowedForHost(host3, main_storage_partition));
+  EXPECT_FALSE(incognito_state->IsHttpAllowedForHost(
+      host3, incognito_storage_partition));
+  EXPECT_TRUE(tor_state->IsHttpAllowedForHost(host3, tor_storage_partition));
+}
+
+class BraveTorTest_EnableTorHttpsOnlyFlag
+    : public BraveTorTest,
+      public ::testing::WithParamInterface<bool> {
  public:
   BraveTorTest_EnableTorHttpsOnlyFlag() {
-    feature_list_.InitAndEnableFeature(
-        blink::features::kBraveTorWindowsHttpsOnly);
+    if (IsBraveHttpsByDefaultEnabled()) {
+      std::vector<base::test::FeatureRef> enabled_features{
+          net::features::kBraveTorWindowsHttpsOnly};
+      std::vector<base::test::FeatureRef> disabled_features;
+      if (IsBraveHttpsByDefaultEnabled()) {
+        enabled_features.push_back(net::features::kBraveHttpsByDefault);
+      } else {
+        disabled_features.push_back(net::features::kBraveHttpsByDefault);
+      }
+      scoped_feature_list_.InitWithFeatures(enabled_features,
+                                            disabled_features);
+    }
   }
 
+  ~BraveTorTest_EnableTorHttpsOnlyFlag() override = default;
+
+  bool IsBraveHttpsByDefaultEnabled() { return GetParam(); }
+
  protected:
-  base::test::ScopedFeatureList feature_list_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveTorTest_EnableTorHttpsOnlyFlag,
+IN_PROC_BROWSER_TEST_P(BraveTorTest_EnableTorHttpsOnlyFlag,
                        TorWindowHttpsOnly) {
   EXPECT_FALSE(TorProfileServiceFactory::IsTorDisabled());
   DownloadTorClient();
 
   Profile* tor_profile = OpenTorWindow();
   PrefService* prefs = tor_profile->GetPrefs();
-
   // Check that HTTPS-Only Mode has been enabled for the Tor window.
   EXPECT_TRUE(prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled));
 }
+
+INSTANTIATE_TEST_SUITE_P(BraveTorTest_EnableTorHttpsOnlyFlag,
+                         BraveTorTest_EnableTorHttpsOnlyFlag,
+                         ::testing::Bool());

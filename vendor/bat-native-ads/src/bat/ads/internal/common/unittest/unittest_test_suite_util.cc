@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 #include "base/strings/stringprintf.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace ads {
 

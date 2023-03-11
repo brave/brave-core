@@ -20,7 +20,7 @@
  public:                               \
   size_t NonceLength
 
-#include "src/crypto/aead.h"
+#include "src/crypto/aead.h"  // IWYU pragma: export
 
 #undef NonceLength
 

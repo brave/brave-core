@@ -11,7 +11,7 @@
 #define TabStripEmpty           \
   TabStripEmpty_ChromiumImpl(); \
   void TabStripEmpty
-#include "src/chrome/browser/ui/unload_controller.h"
+#include "src/chrome/browser/ui/unload_controller.h"  // IWYU pragma: export
 #undef TabStripEmpty
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_UNLOAD_CONTROLLER_H_

@@ -124,7 +124,7 @@ declare namespace NewTab {
     showRewards: boolean
     showBraveTalk: boolean
     hideAllWidgets: boolean
-    isBraveTodayOptedIn: boolean
+    isBraveNewsOptedIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
   }
 
@@ -163,7 +163,7 @@ declare namespace NewTab {
     isUnsupportedRegion: boolean
     declaredCountry: string
     adsSupported?: boolean
-    balance: RewardsBalance
+    balance?: number
     externalWallet?: RewardsExtension.ExternalWallet
     externalWalletProviders?: string[]
     report?: RewardsBalanceReport
@@ -218,11 +218,6 @@ declare namespace NewTab {
     claimableUntil?: number
     expiresAt?: number
     amount: number
-  }
-
-  export interface RewardsBalance {
-    total: number
-    wallets: Record<string, number>
   }
 
   export interface AdsAccountStatement {

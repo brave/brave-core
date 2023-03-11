@@ -8,7 +8,7 @@
 
 #define LocalStorageImpl LocalStorageImpl_ChromiumImpl
 
-#include "src/components/services/storage/dom_storage/local_storage_impl.h"
+#include "src/components/services/storage/dom_storage/local_storage_impl.h"  // IWYU pragma: export
 
 #undef LocalStorageImpl
 

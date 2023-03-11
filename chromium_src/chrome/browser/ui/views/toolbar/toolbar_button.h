@@ -10,7 +10,7 @@
   SetMenuModel(std::unique_ptr<ui::MenuModel> model); \
   virtual void SetHighlight
 #define UpdateColorsAndInsets virtual UpdateColorsAndInsets
-#include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "src/chrome/browser/ui/views/toolbar/toolbar_button.h"  // IWYU pragma: export
 #undef SetHighlight
 #undef UpdateColorsAndInsets
 

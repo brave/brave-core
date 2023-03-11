@@ -12,7 +12,7 @@
   ShouldSave_ChromiumImpl(const PasswordForm& form) const; \
   bool ShouldSave
 
-#include "src/components/password_manager/core/browser/sync_credentials_filter.h"
+#include "src/components/password_manager/core/browser/sync_credentials_filter.h"  // IWYU pragma: export
 
 #undef ShouldSave
 

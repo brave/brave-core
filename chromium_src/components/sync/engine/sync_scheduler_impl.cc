@@ -7,13 +7,13 @@
   HandleBraveConfigurationFailure(model_neutral_state);
 
 #include "src/components/sync/engine/sync_scheduler_impl.cc"
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 
 #undef BRAVE_SYNC_SCHEDULER_IMPL_HANDLE_FAILURE
 
 #include "brave/components/sync/engine/brave_sync_server_commands.h"
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {

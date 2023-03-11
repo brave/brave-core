@@ -5,7 +5,7 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 function queryInAllTemplates(element, selector, onFound) {
   if (!element) {

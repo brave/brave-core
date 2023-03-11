@@ -22,3 +22,15 @@ export const NftImageResponsiveIframe = styled.iframe`
   width: 100%;
   height: 100%;
 `
+
+export const NftIconWrapper = styled.div`
+  position: relative;
+  display: flex;
+`
+
+export const IconWrapper = styled.div<{ disabled?: boolean }>`
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  filter: ${(p) => p.disabled ? 'grayscale(100%)' : 'none'};
+`

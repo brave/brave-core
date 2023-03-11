@@ -53,5 +53,15 @@ BASE_FEATURE(kBravePartitionHSTS,
              "BravePartitionHSTS",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Enables HTTPS-Only Mode in Private Windows with Tor by default.
+BASE_FEATURE(kBraveTorWindowsHttpsOnly,
+             "BraveTorWindowsHttpsOnly",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Enabled HTTPS by Default.
+BASE_FEATURE(kBraveHttpsByDefault,
+             "HttpsByDefault",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
 }  // namespace net

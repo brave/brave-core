@@ -16,8 +16,7 @@
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
-#include "base/test/bind.h"
-#include "bat/ledger/mojom_structs.h"
+#include "bat/ledger/public/interfaces/ledger_types.mojom-shared.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -30,7 +29,6 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
-#include "components/network_session_configurator/common/network_switches.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
@@ -190,14 +188,14 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
         ::testing::UnitTest::GetInstance()->current_test_info();
     ASSERT_NE(nullptr, test_info);
 
-    const auto it = locale_for_tests.find(test_info->name());
-    if (it == locale_for_tests.end()) {
+    const auto iter = locale_for_tests.find(test_info->name());
+    if (iter == locale_for_tests.end()) {
       MaybeMockLocaleForBraveAdsUpgradePath();
       return;
     }
 
     scoped_default_locale_ =
-        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(it->second);
+        std::make_unique<brave_l10n::test::ScopedDefaultLocale>(iter->second);
   }
 
   void MaybeMockLocaleForBraveAdsUpgradePath() {

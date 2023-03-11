@@ -97,7 +97,7 @@
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_page/brave_wallet_page.grd": {
-    "META": {"sizes": {"includes": [100]}},
+    "META": {"sizes": {"includes": [200]}},
     "includes": [54600],
   },
   # This file is generated during the build.
@@ -205,5 +205,13 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_adblock_internals/brave_adblock_internals.grd": {
     "META": {"sizes": {"includes": [50]}},
     "includes": [59840],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-commands/commands.grd": {
+    "META": {"sizes": {"includes": [250]}},
+    "includes": [60090]
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [60100],
   }
 }

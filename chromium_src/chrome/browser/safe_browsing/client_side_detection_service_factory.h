@@ -8,7 +8,7 @@
 
 #define ClientSideDetectionServiceFactory \
   ClientSideDetectionServiceFactory_ChromiumImpl
-#include "src/chrome/browser/safe_browsing/client_side_detection_service_factory.h"
+#include "src/chrome/browser/safe_browsing/client_side_detection_service_factory.h"  // IWYU pragma: export
 #undef ClientSideDetectionServiceFactory
 
 namespace safe_browsing {

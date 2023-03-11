@@ -11,18 +11,21 @@
 namespace brave_rewards {
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
-  const PrefService::Preference* deprecated_hide_button_pref =
-      prefs->FindPreference(prefs::kHideButton);
-  if (!deprecated_hide_button_pref) {
+  const PrefService::Preference* deprecated_show_button_pref =
+      prefs->FindPreference(prefs::kShowButton);
+  if (!deprecated_show_button_pref) {
     return;
   }
 
-  if (!deprecated_hide_button_pref->IsDefaultValue()) {
-    prefs->SetBoolean(prefs::kShowButton,
-                      !prefs->GetBoolean(prefs::kHideButton));
+  if (!deprecated_show_button_pref->IsDefaultValue()) {
+    // This preference was overloaded for showing the location bar button and
+    // tipping buttons
+    const bool value = prefs->GetBoolean(prefs::kShowButton);
+    prefs->SetBoolean(prefs::kShowLocationBarButton, value);
+    prefs->SetBoolean(prefs::kInlineTipButtonsEnabled, value);
   }
 
-  prefs->ClearPref(prefs::kHideButton);
+  prefs->ClearPref(prefs::kShowButton);
 }
 
 }  // namespace brave_rewards

@@ -53,7 +53,7 @@ function Scroller (props: Props) {
   const ref = React.useRef<HTMLDivElement>(null)
   const [rect, setRect] = React.useState<DOMRectReadOnly | undefined>(undefined)
 
-  let scrollHeight: number|null = null
+  let scrollHeight: number | null = null
 
   if (rect && rect.bottom >= window.screen.height) {
     const diff = rect.bottom - window.screen.height

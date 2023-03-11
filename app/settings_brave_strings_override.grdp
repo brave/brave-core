@@ -17,7 +17,7 @@
   <if expr="not is_chromeos">
     </if>
 
-  <if expr="not chromeos_ash">
+    <if expr="not chromeos_ash">
   </if>
   <if expr="chromeos_ash">
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION_V2" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">

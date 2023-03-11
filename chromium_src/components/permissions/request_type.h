@@ -18,7 +18,7 @@
 
 #define IsRequestablePermissionType IsRequestablePermissionType_ChromiumImpl
 
-#include "src/components/permissions/request_type.h"
+#include "src/components/permissions/request_type.h"  // IWYU pragma: export
 
 #undef kStorageAccess
 #undef ContentSettingsTypeToRequestType

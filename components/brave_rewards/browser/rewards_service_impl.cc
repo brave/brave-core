@@ -6,20 +6,19 @@
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
 #include <stdint.h>
-#include <string>
-
 #include <algorithm>
 #include <functional>
 #include <limits>
+#include <string>
 #include <utility>
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
+#include "base/functional/bind.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_string_value_serializer.h"
@@ -299,6 +298,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      json_sanitizer_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskPriority::BEST_EFFORT})),
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
@@ -319,6 +320,11 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 
 #if BUILDFLAG(ENABLE_GREASELION)
   if (greaselion_service_) {
+    // Greaselion's rules may be ready before we register our observer, so check
+    // for that here
+    if (!greaselion_enabled_ && greaselion_service_->rules_ready()) {
+      OnRulesReady(greaselion_service_);
+    }
     greaselion_service_->AddObserver(this);
   }
 #endif
@@ -368,22 +374,6 @@ void RewardsServiceImpl::Init(
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
-  profile_pref_change_registrar_.Add(
-      prefs::kShowButton,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipTwitterEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipRedditEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
-  profile_pref_change_registrar_.Add(
-      prefs::kInlineTipGithubEnabled,
-      base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
-                          base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kAutoContributeEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
@@ -563,9 +553,8 @@ void RewardsServiceImpl::CreateRewardsWallet(
         // automatically turn on AC if for some reason the user has a current
         // balance, as this could result in unintentional BAT transfers.
         auto on_balance = [](base::WeakPtr<RewardsServiceImpl> self,
-                             ledger::mojom::Result result,
-                             ledger::mojom::BalancePtr balance) {
-          if (self && balance && balance->total == 0) {
+                             FetchBalanceResult result) {
+          if (self && result.has_value() && result.value()->total == 0) {
             self->SetAutoContributeEnabled(true);
           }
         };
@@ -634,21 +623,10 @@ void RewardsServiceImpl::GetUserType(
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  auto* prefs = profile_->GetPrefs();
-  std::string country = prefs->GetString(prefs::kDeclaredGeo);
-  if (!country.empty()) {
-    return country;
-  }
-
-  int32_t country_id = country_id_;
-  if (!country_id) {
-    country_id = country_codes::GetCountryIDFromPrefs(prefs);
-  }
-  if (country_id < 0) {
-    return "";
-  }
-  return {base::ToUpperASCII(static_cast<char>(country_id >> 8)),
-          base::ToUpperASCII(static_cast<char>(0xFF & country_id))};
+  std::string declared_geo =
+      profile_->GetPrefs()->GetString(prefs::kDeclaredGeo);
+  return !declared_geo.empty() ? declared_geo
+                               : country_codes::GetCurrentCountryCode();
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
@@ -1112,23 +1090,40 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
   if (response_body && !response_body->empty() && loader->ResponseInfo() &&
       base::Contains(loader->ResponseInfo()->mime_type, "json")) {
-    return data_decoder::JsonSanitizer::Sanitize(
-        *response_body,
+    json_sanitizer_task_runner_->PostTask(
+        FROM_HERE,
         base::BindOnce(
-            [](ledger::client::LoadURLCallback callback,
+            [](std::unique_ptr<std::string> response_body,
+               ledger::client::LoadURLCallback callback,
                ledger::mojom::UrlResponse response,
-               data_decoder::JsonSanitizer::Result result) {
-              if (result.value) {
-                response.body = std::move(*result.value);
-              } else {
-                response.body = {};
-                VLOG(0) << "Response sanitization error: "
-                        << (result.error ? *result.error : "unknown");
-              }
+               scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
+              data_decoder::JsonSanitizer::Sanitize(
+                  *response_body,
+                  base::BindOnce(
+                      [](ledger::client::LoadURLCallback callback,
+                         ledger::mojom::UrlResponse response,
+                         const scoped_refptr<base::SequencedTaskRunner>&
+                             post_response_runner,
+                         data_decoder::JsonSanitizer::Result result) {
+                        if (result.value) {
+                          response.body = std::move(*result.value);
+                        } else {
+                          response.body = {};
+                          VLOG(0) << "Response sanitization error: "
+                                  << (result.error ? *result.error : "unknown");
+                        }
 
-              std::move(callback).Run(response);
+                        post_response_runner->PostTask(
+                            FROM_HERE, base::BindOnce(std::move(callback),
+                                                      std::move(response)));
+                      },
+                      std::move(callback), std::move(response),
+                      std::move(post_response_runner)));
             },
-            std::move(callback), std::move(response)));
+            std::move(response_body), std::move(callback), std::move(response),
+            base::SequencedTaskRunner::GetCurrentDefault()));
+
+    return;
   }
 
   std::move(callback).Run(response);
@@ -1373,7 +1368,7 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)
-void RewardsServiceImpl::EnableGreaseLion() {
+void RewardsServiceImpl::EnableGreaselion() {
   if (!greaselion_service_) {
     return;
   }
@@ -1385,24 +1380,27 @@ void RewardsServiceImpl::EnableGreaseLion() {
   greaselion_service_->SetFeatureEnabled(
       greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
 
-  const bool show_button = profile_->GetPrefs()->GetBoolean(prefs::kShowButton);
+  const bool show_buttons =
+      profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);
   greaselion_service_->SetFeatureEnabled(
       greaselion::TWITTER_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipTwitterEnabled) &&
-          show_button);
+          show_buttons);
   greaselion_service_->SetFeatureEnabled(
       greaselion::REDDIT_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipRedditEnabled) &&
-          show_button);
+          show_buttons);
   greaselion_service_->SetFeatureEnabled(
       greaselion::GITHUB_TIPS,
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipGithubEnabled) &&
-          show_button);
+          show_buttons);
+
+  greaselion_enabled_ = true;
 }
 
 void RewardsServiceImpl::OnRulesReady(
     greaselion::GreaselionService* greaselion_service) {
-  EnableGreaseLion();
+  EnableGreaselion();
 }
 #endif
 
@@ -1885,6 +1883,29 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
                                       AsWeakPtr(), std::move(callback)));
 }
 
+void RewardsServiceImpl::SetMonthlyContribution(
+    const std::string& publisher_key,
+    double amount,
+    base::OnceCallback<void(bool)> callback) {
+  if (!Connected()) {
+    return DeferCallback(FROM_HERE, std::move(callback), false);
+  }
+
+  bat_ledger_->SetMonthlyContribution(
+      publisher_key, amount,
+      base::BindOnce(&RewardsServiceImpl::OnMonthlyContributionSet, AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnMonthlyContributionSet(
+    base::OnceCallback<void(bool)> callback,
+    bool success) {
+  for (auto& observer : observers_) {
+    observer.OnRecurringTipSaved(this, success);
+  }
+  std::move(callback).Run(success);
+}
+
 void RewardsServiceImpl::UpdateMediaDuration(
     const uint64_t window_id,
     const std::string& publisher_key,
@@ -2161,10 +2182,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   if (flags.persist_logs) {
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
   }
-
-  if (flags.country_id) {
-    country_id_ = *flags.country_id;
-  }
 }
 
 void RewardsServiceImpl::GetRewardsInternalsInfo(
@@ -2260,12 +2277,12 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
 #endif
 }
 
-void RewardsServiceImpl::StartMonthlyContributionForTest() {
+void RewardsServiceImpl::StartContributionsForTesting() {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->StartMonthlyContribution();
+  bat_ledger_->StartContributionsForTesting();  // IN-TEST
 }
 
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
@@ -2473,8 +2490,9 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR, nullptr);
+    return DeferCallback(
+        FROM_HERE, std::move(callback),
+        base::unexpected(ledger::mojom::FetchBalanceError::kUnexpected));
   }
 
   bat_ledger_->FetchBalance(std::move(callback));

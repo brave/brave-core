@@ -285,6 +285,7 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/migration/migration_v35.h",
     "src/bat/ledger/internal/database/migration/migration_v36.h",
     "src/bat/ledger/internal/database/migration/migration_v37.h",
+    "src/bat/ledger/internal/database/migration/migration_v38.h",
     "src/bat/ledger/internal/database/migration/migration_v4.h",
     "src/bat/ledger/internal/database/migration/migration_v5.h",
     "src/bat/ledger/internal/database/migration/migration_v6.h",

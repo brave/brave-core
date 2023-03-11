@@ -23,7 +23,7 @@ class BraveTab;
 #define UpdateIconVisibility virtual UpdateIconVisibility
 #define ShouldRenderAsNormalTab virtual ShouldRenderAsNormalTab
 
-#include "src/chrome/browser/ui/views/tabs/tab.h"
+#include "src/chrome/browser/ui/views/tabs/tab.h"  // IWYU pragma: export
 
 #undef ShouldRenderAsNormalTab
 #undef UpdateIconVisibility

@@ -9,7 +9,7 @@
 class Browser;
 class BubbleContentsWrapper;
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 

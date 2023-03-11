@@ -17,7 +17,7 @@
  private:                                                    \
   void RecordModificationInMetrics
 
-#include "src/third_party/blink/renderer/modules/storage/storage_area.h"
+#include "src/third_party/blink/renderer/modules/storage/storage_area.h"  // IWYU pragma: export
 
 #undef RecordModificationInMetrics
 

@@ -78,7 +78,7 @@
 - (void)executeCommand:(id)sender withProfile:(Profile*)profile {
   NSInteger tag = [sender tag];
   if (tag == IDC_COPY_CLEAN_LINK) {
-    chrome::ExecuteCommand([self getBrowser], IDC_COPY_CLEAN_LINK);
+    brave::CleanAndCopySelectedURL([self getBrowser]);
     return;
   }
 

@@ -4,18 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
-import { LAMPORTS_PER_SOL } from '@solana/web3.js'
 
 // utils
-import Amount from '../../../utils/amount'
 import { getSolanaProgramIdName } from '../../../utils/solana-program-id-utils'
-import { findAccountName } from '../../../utils/account-utils'
 import { getLocale } from '../../../../common/locale'
+import { findAccountName } from '../../../utils/account-utils'
+import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
 
 // types
-import { WalletState } from '../../../constants/types'
-import { getSolanaInstructionParamKeyName, SolanaInstructionParamKeys, TypedSolanaInstructionWithParams } from '../../../utils/solana-instruction-utils'
+import { BraveWallet } from '../../../constants/types'
+import {
+  formatSolInstructionParamValue,
+  TypedSolanaInstructionWithParams
+} from '../../../utils/solana-instruction-utils'
+
+// components
+import { CopyTooltip } from '../copy-tooltip/copy-tooltip'
 
 // styles
 import {
@@ -36,115 +41,193 @@ import {
   CodeSnippetText
 } from '../../extension/transaction-box/style'
 
-import Tooltip from '../tooltip'
-
 interface Props {
   typedInstructionWithParams: TypedSolanaInstructionWithParams
 }
 
 export const SolanaTransactionInstruction: React.FC<Props> = ({
   typedInstructionWithParams: {
-    instruction: {
-      programId,
-      data,
-      keys
-    },
+    accountParams,
+    data,
+    programId,
     type,
-    params
+    params,
+    accountMetas
   }
 }) => {
   // redux
-  const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
   // render
+  if (!type) {
+    // instruction not decodable by backend
+    return (
+      <InstructionBox>
+        {programId && (
+          <>
+            <CodeSectionTitle>
+              {getLocale('braveWalletSolanaProgramID')}
+            </CodeSectionTitle>
+            <CodeSnippet>
+              <code>
+                <CodeSnippetText>{JSON.stringify(programId)}</CodeSnippetText>
+              </code>
+            </CodeSnippet>
+          </>
+        )}
+
+        {accountMetas.length > 0 && (
+          <>
+            <Divider />
+
+            <CodeSectionTitle>
+              {getLocale('braveWalletSolanaAccounts')}
+            </CodeSectionTitle>
+
+            {accountMetas.map(({ pubkey }, i) => {
+              // other account metas
+              return (
+                <InstructionParamBox key={`${pubkey}-${i}`}>
+                  <AddressParamValue accounts={accounts} pubkey={pubkey} />
+                </InstructionParamBox>
+              )
+            })}
+          </>
+        )}
+
+        {data && (
+          <>
+            <Divider />
+
+            <CodeSectionTitle>
+              {getLocale('braveWalletSolanaData')}
+            </CodeSectionTitle>
+            <CodeSnippet>
+              <code>
+                <CodeSnippetText>{JSON.stringify(data)}</CodeSnippetText>
+              </code>
+            </CodeSnippet>
+          </>
+        )}
+      </InstructionBox>
+    )
+  }
+
+  // Decoded instructions
   return (
     <InstructionBox>
-      {type === 'Unknown' ? (
-        <>
-          {keys.length > 0 &&
-            <>
-              <CodeSectionTitle>{getLocale('braveWalletSolanaAccounts')}</CodeSectionTitle>
-              {keys.map((entry, i) => {
-                return (
-                  <CodeSnippet
-                    key={i}
-                  >
-                    <code>
-                      <CodeSnippetText>{entry.pubkey.toString()}</CodeSnippetText>
-                    </code>
-                  </CodeSnippet>
-                )
-              })}
-            </>
-          }
-          {data &&
-            <>
-              <CodeSectionTitle>{getLocale('braveWalletSolanaData')}</CodeSectionTitle>
-              <CodeSnippet>
-                <code>
-                  <CodeSnippetText>{JSON.stringify(data)}</CodeSnippetText>
-                </code>
-              </CodeSnippet>
-            </>
-          }
-          {programId &&
-            <>
-              <CodeSectionTitle>{getLocale('braveWalletSolanaProgramID')}</CodeSectionTitle>
-              <CodeSnippet>
-                <code>
-                  <CodeSnippetText>{JSON.stringify(programId)}</CodeSnippetText>
-                </code>
-              </CodeSnippet>
-            </>
-          }
-        </>
-      ) : (
-        <>
-          <SectionRow>
-            <TransactionTitle>
+      <>
+        <SectionRow>
+          <TransactionTitle>
+            <CopyTooltip
+              text={programId}
+              tooltipText={programId}
+              isAddress
+              position="left"
+            >
               {getSolanaProgramIdName(programId)} - {type}
-            </TransactionTitle>
-          </SectionRow>
-          {Object.keys(params).length > 0 && (
-            <>
-              <Divider />
-              {
-                Object.entries(params).map(([key, value]) => {
-                  const paramName = getSolanaInstructionParamKeyName(key as SolanaInstructionParamKeys)
-                  const isAddressParam = key.toString().toLowerCase().includes('pubkey')
-                  const formattedParamValue = (key as SolanaInstructionParamKeys === 'lamports'
-                    // format lamports to SOL
-                    ? new Amount(value.toString()).div(LAMPORTS_PER_SOL).formatAsAsset(9, 'SOL')
+            </CopyTooltip>
+          </TransactionTitle>
+        </SectionRow>
 
-                    // show friendly account address names
-                    : isAddressParam ? findAccountName(accounts, value.toString()) ?? value
+        {accountParams.length > 0 && (
+          <>
+            <Divider />
 
-                      // unformatted param value
-                      : value
-                  ).toString()
+            {accountParams.map(({ localizedName, name, value }) => {
+              // signers param
+              if (name === BraveWallet.SIGNERS) {
+                if (!value) {
+                  return null
+                }
 
-                  return <InstructionParamBox key={key}>
-                    <var>{paramName}</var>
-                    {isAddressParam
-                      ? <Tooltip
-                        isAddress
-                        text={value.toString()}
-                        position='left'
-                      >
-                        <AddressText>{formattedParamValue}</AddressText>
-                      </Tooltip>
-                      : <samp>{formattedParamValue}</samp>
-                    }
+                const signers = value.split(',')
+                if (!signers.length) {
+                  return null
+                }
+
+                return (
+                  <InstructionParamBox key={name}>
+                    <var>{localizedName}</var>
+                    {signers.map((pubkey) => {
+                      return (
+                        <AddressParamValue
+                          key={pubkey}
+                          accounts={accounts}
+                          pubkey={pubkey}
+                        />
+                      )
+                    })}
                   </InstructionParamBox>
-                })
+                )
               }
-            </>
-          )}
-        </>
-      )
-      }
-    </InstructionBox >
+
+              // other account params
+              return (
+                <InstructionParamBox key={name}>
+                  <var>{localizedName}</var>
+                  <AddressParamValue accounts={accounts} pubkey={value} />
+                </InstructionParamBox>
+              )
+            })}
+          </>
+        )}
+        
+        {params.length > 0 && (
+          <>
+            <Divider />
+            {params.map((param) => {
+              const { localizedName, name, value } = param
+              const { formattedValue, valueType } =
+                formatSolInstructionParamValue(param, accounts)
+
+              const isAddressParam = valueType === 'address'
+
+              return (
+                <InstructionParamBox key={name}>
+                  <var>{localizedName}</var>
+                  {isAddressParam ? (
+                    <AddressParamValue accounts={accounts} pubkey={value} />
+                  ) : (
+                    <samp>{formattedValue}</samp>
+                  )}
+                </InstructionParamBox>
+              )
+            })}
+          </>
+        )}
+      </>
+    </InstructionBox>
   )
 }
 
 export default SolanaTransactionInstruction
+
+const AddressParamValue = ({
+  accounts,
+  pubkey
+}: {
+  accounts: Array<{
+    address: string
+    name: string
+  }>
+  pubkey: string
+}) => {
+  // memos
+  const formattedValue = React.useMemo(() => {
+    return findAccountName(accounts, pubkey) ?? pubkey
+  }, [accounts, pubkey])
+
+  // render
+  return (
+    <CopyTooltip
+      key={pubkey}
+      text={pubkey}
+      tooltipText={formattedValue === pubkey ? undefined : pubkey}
+      isAddress
+      position='left'
+    >
+      <AddressText>{formattedValue}</AddressText>
+    </CopyTooltip>
+  )
+}

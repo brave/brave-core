@@ -1,7 +1,7 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
@@ -34,7 +34,7 @@ export type PreInitialRewardsData = {
 
 export type InitialRewardsData = {
   report: NewTab.RewardsBalanceReport
-  balance: NewTab.RewardsBalance
+  balance?: number
   externalWallet?: RewardsExtension.ExternalWallet
   externalWalletProviders?: string[]
   adsAccountStatement: NewTab.AdsAccountStatement
@@ -159,9 +159,11 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       new Promise(resolve => chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(), (report: NewTab.RewardsBalanceReport) => {
         resolve(report)
       })),
-      new Promise(resolve => chrome.braveRewards.fetchBalance((balance: NewTab.RewardsBalance) => {
-        resolve(balance)
-      })),
+      new Promise(resolve => chrome.braveRewards.fetchBalance(
+        (balance?: number) => {
+          resolve(balance)
+        }
+      )),
       new Promise(resolve => chrome.braveRewards.getRewardsParameters((parameters: NewTab.RewardsParameters) => {
         resolve(parameters)
       })),

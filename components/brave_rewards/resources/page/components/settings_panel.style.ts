@@ -34,7 +34,7 @@ export const header = styled.div`
 `
 
 export const title = styled.div`
-  flex: 1 0 auto;
+  flex: 1 1 auto;
   font-weight: 600;
   font-size: 22px;
   line-height: 28px;

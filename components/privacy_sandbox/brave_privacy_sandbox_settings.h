@@ -10,7 +10,7 @@
 
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/privacy_sandbox/privacy_sandbox_settings.h"
+#include "components/privacy_sandbox/privacy_sandbox_settings_impl.h"
 
 class HostContentSettingsMap;
 class PrefService;
@@ -20,7 +20,7 @@ class CookieSettings;
 }
 
 class BravePrivacySandboxSettings
-    : public privacy_sandbox::PrivacySandboxSettings {
+    : public privacy_sandbox::PrivacySandboxSettingsImpl {
  public:
   BravePrivacySandboxSettings(std::unique_ptr<Delegate> delegate,
                               HostContentSettingsMap* host_content_settings_map,

@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
+index 5b071b8aba003fbdf80a2f9bb6bc745dee714571..a8d8a713bf5c9510bc034e2537e8f85e2dfa3cdb 100644
+--- a/ui/webui/resources/cr_elements/BUILD.gn
++++ b/ui/webui/resources/cr_elements/BUILD.gn
+@@ -63,6 +63,7 @@ build_cr_component("build") {
+       web_component_files +=
+           [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ]
+     }
++    else if (!is_android) { web_component_files += [ "cr_searchable_drop_down/cr_searchable_drop_down.ts" ] }
+ 
+     icons_html_files = [
+       "cr_fingerprint/cr_fingerprint_icons.html",

@@ -13,8 +13,8 @@
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_today/browser/brave_news_controller.h"
-#include "brave/components/brave_today/browser/publishers_controller.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/publishers_controller.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 

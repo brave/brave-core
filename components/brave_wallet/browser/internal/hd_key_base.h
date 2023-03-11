@@ -11,14 +11,25 @@
 #include <vector>
 
 namespace brave_wallet {
+
+constexpr char kMasterNode[] = "m";
+
 class HDKeyBase {
  public:
   virtual ~HDKeyBase() = default;
 
-  // index should be 0 to 2^32
-  // 0 to 2^31-1 is normal derivation and 2^31 to 2^32-1 is harden derivation
+  // Returns derivation path for this key if dervived from master key. Returns
+  // empty string for all sorts of imported keys.
+  virtual std::string GetPath() const = 0;
+
+  // index should be 0 to 2^31-1
   // If anything failed, nullptr will be returned
-  virtual std::unique_ptr<HDKeyBase> DeriveChild(uint32_t index) = 0;
+  virtual std::unique_ptr<HDKeyBase> DeriveNormalChild(uint32_t index) = 0;
+
+  // index should be 0 to 2^31-1
+  // If anything failed, nullptr will be returned
+  virtual std::unique_ptr<HDKeyBase> DeriveHardenedChild(uint32_t index) = 0;
+
   // path format: m/[n|n']*/[n|n']*...
   // n: 0 to 2^31-1 (normal derivation)
   // n': n + 2^31 (harden derivation)
@@ -33,6 +44,7 @@ class HDKeyBase {
 
   virtual std::string EncodePrivateKeyForExport() const = 0;
   virtual std::vector<uint8_t> GetPrivateKeyBytes() const = 0;
+  virtual std::vector<uint8_t> GetPublicKeyBytes() const = 0;
 };
 }  // namespace brave_wallet
 

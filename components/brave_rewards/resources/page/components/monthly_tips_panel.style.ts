@@ -45,3 +45,9 @@ export const showAll = styled.div`
     color: #4C54D2;
   }
 `
+
+export const nextContributionDate = styled.div`
+  font-size: 12px;
+  line-height: 18px;
+  color: #858999;
+`

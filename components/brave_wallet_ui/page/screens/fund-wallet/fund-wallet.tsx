@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory, useParams } from 'react-router'
+import { useHistory } from 'react-router'
 import {
   useSelector
 } from 'react-redux'
@@ -19,7 +19,6 @@ import {
   BraveWallet,
   UserAssetInfoType,
   WalletAccountType,
-  WalletRoutes,
   WalletState
 } from '../../../constants/types'
 import { RenderTokenFunc } from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
@@ -55,11 +54,12 @@ import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import SwapInputComponent from '../../../components/buy-send-swap/swap-input-component'
 import SelectHeader from '../../../components/buy-send-swap/select-header'
 import { SelectCurrency } from '../../../components/buy-send-swap/select-currency/select-currency'
+import { BuySendSwapDepositNav } from '../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import { TabHeader } from '../shared-screen-components/tab-header/tab-header'
 
 export const FundWalletScreen = () => {
   // routing
   const history = useHistory()
-  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // redux
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
@@ -99,8 +99,8 @@ export const FundWalletScreen = () => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
       ? allBuyAssetOptions
       : allBuyAssetOptions.filter(({ chainId }) =>
-          selectedNetworkFilter.chainId === chainId
-        )
+        selectedNetworkFilter.chainId === chainId
+      )
 
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, allBuyAssetOptions])
@@ -134,14 +134,6 @@ export const FundWalletScreen = () => {
   const closeAccountSearch = React.useCallback(() => setShowAccountSearch(false), [])
   const onSearchTextChanged = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => setAccountSearchText(e.target.value), [])
 
-  const goToPortfolio = React.useCallback(() => {
-    if (tokenId !== undefined) {
-      history.goBack()
-      return
-    }
-    history.push(WalletRoutes.Portfolio)
-  }, [history, tokenId])
-
   const onSelectAccountFromSearch = React.useCallback((account: WalletAccountType) => () => {
     closeAccountSearch()
     setSelectedAccount(account)
@@ -174,7 +166,7 @@ export const FundWalletScreen = () => {
       buyOption,
       depositAddress: selectedAccount.address
     })
-  }, [selectedAsset, selectedAssetNetwork, buyAmount, selectedAccount])
+  }, [selectedAsset, selectedAssetNetwork, selectedAccount, selectedCurrency])
 
   const goBackToSelectAssets = React.useCallback(() => {
     setShowBuyOptions(false)
@@ -254,19 +246,12 @@ export const FundWalletScreen = () => {
     selectedAccount
   ])
 
-  React.useEffect(() => {
-    if (tokenId !== undefined) {
-      const foundBuyAsset = allBuyAssetOptions.find((asset) => asset.symbol.toLowerCase() === tokenId.toLowerCase())
-      if (foundBuyAsset) {
-        setSelectedAsset(foundBuyAsset)
-      }
-    }
-  }, [tokenId, allBuyAssetOptions])
-
   // render
   return (
-    <CenteredPageLayout>
-      <MainWrapper>
+    <CenteredPageLayout isTabView={true}>
+      <TabHeader title='braveWalletBuy' />
+      <BuySendSwapDepositNav isTab={true} />
+      <MainWrapper isTabView={true}>
         <StyledWrapper>
 
           {/* Hide nav when creating or searching accounts */}
@@ -275,10 +260,9 @@ export const FundWalletScreen = () => {
           ) &&
             <StepsNavigation
               goBack={onBack}
-              onSkip={goToPortfolio}
-              skipButtonText={getLocale('braveWalletButtonDone')}
               steps={[]}
               currentStep=''
+              preventGoBack={!showBuyOptions}
             />
           }
 
@@ -426,7 +410,6 @@ export const FundWalletScreen = () => {
               }
             </>
           }
-
         </StyledWrapper>
       </MainWrapper>
     </CenteredPageLayout>

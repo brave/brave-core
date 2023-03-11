@@ -18,8 +18,11 @@ namespace brave_wallet {
 
 // Pair of param name and it's localized name.
 using InsParamPair = std::pair<std::string, std::string>;
-// Tuple of param name, localized name, and value.
-using InsParamTuple = std::tuple<std::string, std::string, std::string>;
+// Tuple of param name, localized name, value, and type.
+using InsParamTuple = std::tuple<std::string,
+                                 std::string,
+                                 std::string,
+                                 mojom::SolanaInstructionParamType>;
 using InsTypeAndParamTuple =
     std::tuple<absl::optional<mojom::SolanaSystemInstruction>,
                absl::optional<mojom::SolanaTokenInstruction>,

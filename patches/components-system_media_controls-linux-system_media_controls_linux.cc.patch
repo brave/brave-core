@@ -1,0 +1,19 @@
+diff --git a/components/system_media_controls/linux/system_media_controls_linux.cc b/components/system_media_controls/linux/system_media_controls_linux.cc
+index 46b9488bfc0d83060748b7d58d389124e09cb521..448b9a670fd9faf641cebed02bb020627d8653ea 100644
+--- a/components/system_media_controls/linux/system_media_controls_linux.cc
++++ b/components/system_media_controls/linux/system_media_controls_linux.cc
+@@ -46,12 +46,12 @@ constexpr base::TimeDelta kUpdatePositionInterval = base::Milliseconds(100);
+ const char kMprisAPINoTrackPath[] = "/org/mpris/MediaPlayer2/TrackList/NoTrack";
+ 
+ const char kMprisAPICurrentTrackPathFormatString[] =
+-    "/org/chromium/MediaPlayer2/TrackList/Track%s";
++    "/com/brave/MediaPlayer2/TrackList/Track%s";
+ 
+ }  // namespace
+ 
+ const char kMprisAPIServiceNameFormatString[] =
+-    "org.mpris.MediaPlayer2.chromium.instance%i";
++    "org.mpris.MediaPlayer2.brave.instance%i";
+ const char kMprisAPIObjectPath[] = "/org/mpris/MediaPlayer2";
+ const char kMprisAPIInterfaceName[] = "org.mpris.MediaPlayer2";
+ const char kMprisAPIPlayerInterfaceName[] = "org.mpris.MediaPlayer2.Player";

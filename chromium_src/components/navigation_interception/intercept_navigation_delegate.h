@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_NAVIGATION_INTERCEPTION_INTERCEPT_NAVIGATION_DELEGATE_H_
 
 #define ShouldIgnoreNavigation virtual ShouldIgnoreNavigation
-#include "src/components/navigation_interception/intercept_navigation_delegate.h"
+#include "src/components/navigation_interception/intercept_navigation_delegate.h"  // IWYU pragma: export
 #undef ShouldIgnoreNavigation
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_NAVIGATION_INTERCEPTION_INTERCEPT_NAVIGATION_DELEGATE_H_

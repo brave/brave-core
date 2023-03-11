@@ -30,7 +30,7 @@ export default class AppListItem extends React.PureComponent<Props> {
   }
 
   openApp = () => {
-    window.open(this.props.appInfo.url, '_blank')
+    window.open(this.props.appInfo.url, '_blank', 'noreferrer')
   }
 
   render () {

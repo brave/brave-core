@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { FixedSizeList as List } from 'react-window'
+import { VariableSizeList as List } from 'react-window'
 
 // types
 import { BraveWallet } from '../../../../constants/types'
@@ -30,6 +30,7 @@ interface ListItemProps extends Omit<VirtualizedTokensListProps, 'tokenList'> {
   index: number
   data: BraveWallet.BlockchainToken
   style: React.CSSProperties
+  setSize: (index: number, size: number) => void
 }
 
 const getListItemKey = (index: number, tokenList: BraveWallet.BlockchainToken[]) => {
@@ -42,15 +43,24 @@ const ListItem = (props: ListItemProps) => {
     data,
     style,
     networkList,
+    index,
     isCustomToken,
     isAssetSelected,
     onCheckWatchlistItem,
-    onRemoveAsset
+    onRemoveAsset,
+    setSize
   } = props
+
+  const handleSetSize = React.useCallback((ref: HTMLDivElement | null) => {
+    if (ref) {
+      setSize(index, ref.getBoundingClientRect().height)
+    }
+  }, [index, setSize])
 
   return (
     <div style={style}>
       <AssetWatchlistItem
+        ref={handleSetSize}
         isCustom={isCustomToken(data)}
         token={data}
         networkList={networkList}
@@ -72,24 +82,45 @@ export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) 
     onRemoveAsset
   } = props
 
+  const listRef = React.useRef<List | null>(null)
+  const itemSizes = React.useRef<number[]>(new Array(tokenList.length).fill(assetWatchListItemHeight))
+
+  const setSize = React.useCallback((index: number, size: number) => {
+    // Performance: Only update the sizeMap and reset cache if an actual value changed
+    if (itemSizes.current[index] !== size && size > -1) {
+      itemSizes.current[index] = size
+      if (listRef.current) {
+        // Clear cached data and rerender
+        listRef.current.resetAfterIndex(0)
+      }
+    }
+  }, [])
+
+  const getSize = React.useCallback((index) => {
+    return itemSizes.current[index] || assetWatchListItemHeight
+  }, [])
+
   return (
     <List
+      ref={listRef}
       width={'100%'}
       height={tokenListHeight}
       itemData={tokenList}
       itemCount={tokenList.length}
-      itemSize={assetWatchListItemHeight}
+      itemSize={getSize}
       overscanCount={10}
       itemKey={getListItemKey}
-      children={(itemProps) => (
+      children={({ data, index, style }) => (
         <ListItem
-          {...itemProps}
-          data={itemProps.data[itemProps.index]}
+          data={data[index]}
           isCustomToken={isCustomToken}
           networkList={networkList}
           onRemoveAsset={onRemoveAsset}
           isAssetSelected={isAssetSelected}
           onCheckWatchlistItem={onCheckWatchlistItem}
+          setSize={setSize}
+          index={index}
+          style={style}
         />
       )}
     />

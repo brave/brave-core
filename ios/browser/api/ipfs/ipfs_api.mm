@@ -5,15 +5,17 @@
 
 #include "brave/ios/browser/api/ipfs/ipfs_api.h"
 
+#import "brave/base/mac/conversions.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/ios/browser/api/ipfs/ipfs_api+private.h"
 #include "components/user_prefs/user_prefs.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
 #import "net/base/mac/url_conversions.h"
 #include "url/gurl.h"
 
-@implementation IpfsAPI {
+@implementation IpfsAPIImpl {
   ChromeBrowserState* _mainBrowserState;  // NOT OWNED
 }
 
@@ -31,8 +33,21 @@
   }
   GURL output;
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
-  auto gateway_url = ipfs::GetDefaultNFTIPFSGateway(prefs);
+  auto gateway_url = ipfs::GetDefaultIPFSGateway(prefs);
+  if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
+    return net::NSURLWithGURL(output);
+  }
+  return nullptr;
+}
 
+- (NSURL*)resolveGatewayUrlForNft:(NSURL*)input {
+  GURL input_gurl = net::GURLWithNSURL(input);
+  if (!input_gurl.is_valid() && !input_gurl.SchemeIs(ipfs::kIPFSScheme)) {
+    return nullptr;
+  }
+  GURL output;
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  auto gateway_url = ipfs::GetDefaultNFTIPFSGateway(prefs);
   if (ipfs::TranslateIPFSURI(input_gurl, &output, gateway_url, false)) {
     return net::NSURLWithGURL(output);
   }
@@ -49,6 +64,24 @@
   PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
   GURL input_gurl = net::GURLWithNSURL(input);
   ipfs::SetDefaultNFTIPFSGateway(prefs, input_gurl);
+}
+
+- (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash {
+  auto content_hash = brave::ns_to_vector<std::uint8_t>(contentHash);
+  GURL gurl = ipfs::ContentHashToCIDv1URL(content_hash);
+  return net::NSURLWithGURL(gurl);
+}
+
+- (NSURL*)ipfsGateway {
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  auto gateway = ipfs::GetDefaultIPFSGateway(prefs);
+  return net::NSURLWithGURL(gateway);
+}
+
+- (void)setIpfsGateway:(NSURL*)input {
+  PrefService* prefs = user_prefs::UserPrefs::Get(_mainBrowserState);
+  GURL input_gurl = net::GURLWithNSURL(input);
+  ipfs::SetDefaultIPFSGateway(prefs, input_gurl);
 }
 
 @end

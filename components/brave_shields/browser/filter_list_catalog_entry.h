@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_FILTER_LIST_CATALOG_ENTRY_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_FILTER_LIST_CATALOG_ENTRY_H_
 
+#include <functional>
 #include <string>
 #include <vector>
 
@@ -53,8 +54,8 @@ class FilterListCatalogEntry {
 std::vector<FilterListCatalogEntry>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& uuid);
-std::vector<FilterListCatalogEntry>::const_iterator
-FindAdBlockFilterListByLocale(
+std::vector<std::reference_wrapper<FilterListCatalogEntry const>>
+FindAdBlockFilterListsByLocale(
     const std::vector<FilterListCatalogEntry>& region_lists,
     const std::string& locale);
 

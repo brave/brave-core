@@ -111,6 +111,7 @@ public class TokenUtils {
             BlockchainRegistry blockchainRegistry, NetworkInfo selectedNetwork, int coinType,
             TokenType tokenType, boolean userAssetsOnly,
             Callbacks.Callback1<BlockchainToken[]> callback) {
+        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry)) return;
         if (userAssetsOnly)
             getUserAssetsFiltered(braveWalletService, selectedNetwork, coinType, tokenType,
                     userAssets -> { callback.call(userAssets); });
@@ -120,9 +121,9 @@ public class TokenUtils {
     }
 
     public static void getBuyTokensFiltered(BlockchainRegistry blockchainRegistry,
-            NetworkInfo selectedNetwork, TokenType tokenType,
+            NetworkInfo selectedNetwork, TokenType tokenType, int[] rampProviders,
             Callbacks.Callback1<BlockchainToken[]> callback) {
-        blockchainRegistry.getBuyTokens(OnRampProvider.RAMP, selectedNetwork.chainId, tokens -> {
+        blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
             BlockchainToken[] filteredTokens =
                     filterTokens(selectedNetwork, tokens, tokenType, false);
             Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);

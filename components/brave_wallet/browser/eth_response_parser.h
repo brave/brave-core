@@ -42,6 +42,8 @@ absl::optional<std::string> ParseEthCall(const base::Value& json_value);
 absl::optional<std::vector<std::string>> DecodeEthCallResponse(
     const std::string& data,
     const std::vector<std::string>& abi_types);
+absl::optional<std::vector<absl::optional<std::string>>>
+DecodeGetERC20TokenBalancesEthCallResponse(const std::string& data);
 absl::optional<std::string> ParseEthEstimateGas(const base::Value& json_value);
 absl::optional<std::string> ParseEthGasPrice(const base::Value& json_value);
 bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs);

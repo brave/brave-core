@@ -13,7 +13,7 @@
   friend class BraveInfoBarContainerView;         \
   void PlatformSpecificInfoBarStateChanged
 
-#include "src/chrome/browser/ui/views/infobars/infobar_container_view.h"
+#include "src/chrome/browser/ui/views/infobars/infobar_container_view.h"  // IWYU pragma: export
 
 #undef PlatformSpecificInfoBarStateChanged
 

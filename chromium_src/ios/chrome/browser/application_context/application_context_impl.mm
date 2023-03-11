@@ -7,9 +7,9 @@
 
 #include <vector>
 
-#include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_path.h"
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
@@ -44,8 +44,7 @@
 #include "ios/chrome/browser/prefs/browser_prefs.h"
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
 #include "ios/chrome/browser/prefs/pref_names.h"
-#import "ios/chrome/browser/promos_manager/features.h"
-#import "ios/chrome/browser/promos_manager/promos_manager_impl.h"
+#import "ios/chrome/browser/promos_manager/promos_manager.h"
 #include "ios/chrome/browser/push_notification/push_notification_service.h"
 #include "ios/chrome/browser/segmentation_platform/otr_web_state_observer.h"
 #include "ios/chrome/browser/signin/system_identity_manager.h"
@@ -116,6 +115,16 @@ void ApplicationContextImpl::StartTearDown() {
   // Destroy the segmentation OTR observer before
   // `chrome_browser_state_manager_`.
   segmentation_otr_web_state_observer_.reset();
+
+  // We need to destroy the MetricsServicesManager and NetworkTimeTracker before
+  // the IO thread gets destroyed, since the destructor can call the URLFetcher
+  // destructor, which does a PostDelayedTask operation on the IO thread. (The
+  // IO thread will handle that URLFetcher operation before going away.)
+  metrics::MetricsService* metrics_service = GetMetricsService();
+  if (metrics_service) {
+    metrics_service->LogCleanShutdown();
+  }
+  metrics_services_manager_.reset();
 
   // We need to destroy the NetworkTimeTracker before the IO thread gets
   // destroyed, since the destructor can call the URLFetcher destructor,
@@ -238,7 +247,7 @@ metrics::MetricsService* ApplicationContextImpl::GetMetricsService() {
 
 ukm::UkmRecorder* ApplicationContextImpl::GetUkmRecorder() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  return GetMetricsServicesManager()->GetUkmService();
+  return nullptr;
 }
 
 variations::VariationsService* ApplicationContextImpl::GetVariationsService() {
@@ -397,10 +406,7 @@ void ApplicationContextImpl::CreateGCMDriver() {
 
 PromosManager* ApplicationContextImpl::GetPromosManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  if (IsFullscreenPromosManagerEnabled() && !promos_manager_) {
-    promos_manager_ = std::make_unique<PromosManagerImpl>(GetLocalState());
-  }
-  return promos_manager_.get();
+  return nullptr;
 }
 
 PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {

@@ -9,9 +9,9 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_delegate.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
+#include "chrome/browser/profiles/profile.h"
 
 class Profile;
 

@@ -22,7 +22,7 @@
  public:                                                    \
   void SetWindowIcons
 
-#include "src/ui/views/widget/native_widget_mac.h"
+#include "src/ui/views/widget/native_widget_mac.h"  // IWYU pragma: export
 
 #undef SetWindowIcons
 

@@ -141,7 +141,8 @@ export const useMultiChainBuyAssets = () => {
     selectedAsset,
     selectedAssetNetwork,
     getBuyAssetUrl,
-    buyAmount
+    buyAmount,
+    selectedCurrency
   ])
 
   const isReduxSelectedAssetBuySupported = React.useMemo(() => {

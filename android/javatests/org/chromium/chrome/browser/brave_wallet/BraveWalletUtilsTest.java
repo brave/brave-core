@@ -18,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.test.util.Batch;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -36,6 +37,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+@Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveWalletUtilsTest {
     @Test
@@ -376,6 +378,7 @@ public class BraveWalletUtilsTest {
         testStruct.address = "";
         testStruct.name = "";
         testStruct.coin = CoinType.ETH;
+        testStruct.keyringId = BraveWalletConstants.DEFAULT_KEYRING_ID;
         try {
             java.nio.ByteBuffer byteBuffer = testStruct.serialize();
             AccountInfo testStructDeserialized = AccountInfo.deserialize(byteBuffer);

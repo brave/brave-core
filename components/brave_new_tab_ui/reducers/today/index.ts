@@ -1,13 +1,13 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { createReducer } from 'redux-act'
 import * as Actions from '../../actions/today_actions'
 import * as BraveNews from '../../api/brave_news'
 
-export type BraveTodayState = {
+export type BraveNewsState = {
   // Are we in the middle of checking for new data
   isFetching: boolean | string
   isUpdateAvailable: boolean
@@ -30,7 +30,7 @@ function storeInHistoryState (data: Object) {
   history.pushState(newHistoryState, document.title)
 }
 
-const defaultState: BraveTodayState = {
+const defaultState: BraveNewsState = {
   isFetching: true,
   isUpdateAvailable: false,
   hasInteracted: false,
@@ -59,10 +59,10 @@ if (history.state && (history.state.todayArticle || history.state.todayAdPositio
 }
 
 // TODO(petemill): Make sure we don't keep scrolling to the scrolled-to article
-// if it gets removed and rendered again (e.g. if brave today is toggled off and on).
+// if it gets removed and rendered again (e.g. if Brave News is toggled off and on).
 // Reset to defaultState when Today is turned off or refreshed.
 
-const reducer = createReducer<BraveTodayState>({}, defaultState)
+const reducer = createReducer<BraveNewsState>({}, defaultState)
 
 export default reducer
 
@@ -174,9 +174,17 @@ reducer.on(Actions.isUpdateAvailable, (state, payload) => {
 reducer.on(Actions.refresh, (state, payload) => {
   state = {
     ...state,
-    isFetching: true,
-    articleScrollTo: undefined
+    isFetching: true
   }
+  // When hitting the refresh button and subsequently rendering
+  // a new feed, we don't want to scroll again to a
+  // previously-clicked feed item.
+  const isFirstFetch = !state.feed
+  if (!isFirstFetch) {
+    state.articleScrollTo = undefined
+  }
+  // When hasInteracted is true, subsequent user event triggers know not to
+  // record an analytics event to mark that a News session has started.
   if (payload && payload.isFirstInteraction) {
     state.hasInteracted = true
   }

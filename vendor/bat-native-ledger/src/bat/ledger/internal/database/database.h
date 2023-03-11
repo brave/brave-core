@@ -13,6 +13,8 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
+#include "base/time/time.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_balance_report.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
@@ -296,8 +298,21 @@ class Database {
   /**
    * RECURRING TIPS
    */
+
+  // DEPRECATED
   void SaveRecurringTip(mojom::RecurringTipPtr info,
                         ledger::LegacyResultCallback callback);
+
+  void SetMonthlyContribution(const std::string& publisher_id,
+                              double amount,
+                              base::OnceCallback<void(bool)> callback);
+
+  void AdvanceMonthlyContributionDates(
+      const std::vector<std::string>& publisher_ids,
+      base::OnceCallback<void(bool)> callback);
+
+  void GetNextMonthlyContributionTime(
+      base::OnceCallback<void(absl::optional<base::Time>)> callback);
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback);
 

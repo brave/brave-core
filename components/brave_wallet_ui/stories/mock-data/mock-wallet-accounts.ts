@@ -15,7 +15,7 @@ export const mockAccounts: WalletAccountType[] = [
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH,
-    keyringId: undefined
+    keyringId: 'default'
   },
   {
     id: '2',
@@ -27,7 +27,7 @@ export const mockAccounts: WalletAccountType[] = [
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH,
-    keyringId: undefined
+    keyringId: 'default'
   },
   {
     id: '3',
@@ -39,7 +39,7 @@ export const mockAccounts: WalletAccountType[] = [
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH,
-    keyringId: undefined
+    keyringId: 'default'
   }
 ]
 
@@ -54,6 +54,6 @@ export const mockedTransactionAccounts: WalletAccountType[] = [
     accountType: 'Primary',
     tokenBalanceRegistry: {},
     coin: BraveWallet.CoinType.ETH,
-    keyringId: undefined
+    keyringId: 'default'
   }
 ]

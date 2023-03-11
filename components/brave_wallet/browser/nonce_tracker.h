@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"

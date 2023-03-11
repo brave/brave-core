@@ -19,8 +19,5 @@ public class BraveDropdownItemViewInfoListManagerClassAdapter extends BraveClass
 
         redirectConstructor(
                 sDropdownItemViewInfoListManager, sBraveDropdownItemViewInfoListManager);
-
-        deleteMethod(sBraveDropdownItemViewInfoListManager, "removeSuggestionsForGroup");
-        makePublicMethod(sDropdownItemViewInfoListManager, "removeSuggestionsForGroup");
     }
 }

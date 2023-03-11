@@ -15,13 +15,12 @@ group("storybook") {
   # they will be generated before storybook is compiled.
   deps = [
     "//brave/components/brave_new_tab_ui:mojom_js",
+    "//brave/components/brave_news/common:mojom_js",
     "//brave/components/brave_shields/common:mojom_js",
-    "//brave/components/brave_today/common:mojom_js",
     "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/brave_wallet/common:mojom_js",
     "//mojo/public/js:bindings",
     "//mojo/public/js:resources",
-    "//ui/webui/resources/js:preprocess",
   ]
 
   if (enable_speedreader) {

@@ -5,7 +5,7 @@
 
 #include "brave/ios/browser/api/history/brave_history_api.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_types.h"

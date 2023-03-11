@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_ads/notification_ad.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace brave_ads {
 

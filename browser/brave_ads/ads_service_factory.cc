@@ -5,22 +5,18 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 
-#include "base/threading/sequence_bound.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/device_id/device_id_impl.h"
 #include "brave/browser/brave_federated/brave_federated_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
-#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"
-#include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -47,7 +43,6 @@ AdsServiceFactory::AdsServiceFactory()
           "AdsService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(NotificationDisplayServiceFactory::GetInstance());
-  DependsOn(dom_distiller::DomDistillerServiceFactory::GetInstance());
   DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
   DependsOn(HistoryServiceFactory::GetInstance());
   DependsOn(brave_federated::BraveFederatedServiceFactory::GetInstance());

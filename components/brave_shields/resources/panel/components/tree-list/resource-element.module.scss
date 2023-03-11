@@ -1,0 +1,45 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.containerAlignTop {
+  align-items: flex-start;
+}
+
+.permissionButton {
+  font-family: 'Poppins', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  text-decoration-line: underline;
+  color: #737ADE;
+}
+
+.textUrl {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+  cursor: pointer;
+}
+
+.textMultiline {
+  white-space: normal;
+  word-break: break-all;
+  overflow: unset;
+  direction: unset;
+  cursor: unset;
+}
+
+.textHost {
+  direction: unset;
+}

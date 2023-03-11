@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare namespace chrome {
   function getVariableValue (variable: string): string
@@ -82,6 +83,7 @@ declare namespace chrome.braveRewards {
 
   const createRewardsWallet: (country: string, callback: (result?: string) => void) => void
   const getAvailableCountries: (callback: (countries: string[]) => void) => void
+  const getDefaultCountry: (callback: (defaultCountry: string) => void) => void
   const getDeclaredCountry: (callback: (country: string) => void) => void
   const getUserType: (callback: (userType: string) => void) => void
   const getPublishersVisitedCount: (callback: (count: number) => void) => void
@@ -145,7 +147,7 @@ declare namespace chrome.braveRewards {
   const refreshPublisher: (publisherKey: string, callback: (status: number, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
   const getInlineTippingPlatformEnabled: (key: string, callback: (enabled: boolean) => void) => {}
-  const fetchBalance: (callback: (balance: RewardsExtension.Balance) => void) => {}
+  const fetchBalance: (callback: (balance?: number) => void) => {}
   const onReconcileComplete: {
     addListener: (callback: (result: number, type: number) => void) => void
   }
@@ -227,7 +229,7 @@ declare namespace chrome.greaselion {
   const isGreaselionExtension: (id: string, callback: (valid: boolean) => void) => {}
 }
 
-declare namespace chrome.braveToday {
+declare namespace chrome.braveNews {
   const onClearHistory: {
     addListener: (callback: () => any) => void
   }

@@ -221,9 +221,14 @@ class RewardsServiceImpl : public RewardsService,
                         RefreshPublisherCallback callback) override;
 
   void OnSaveRecurringTip(OnTipCallback callback, ledger::mojom::Result result);
+
   void SaveRecurringTip(const std::string& publisher_key,
                         double amount,
                         OnTipCallback callback) override;
+
+  void SetMonthlyContribution(const std::string& publisher_id,
+                              double amount,
+                              base::OnceCallback<void(bool)> callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
@@ -325,7 +330,7 @@ class RewardsServiceImpl : public RewardsService,
   void SetLedgerEnvForTesting();
   void SetLedgerStateTargetVersionForTesting(int version);
   void PrepareLedgerEnvForTesting();
-  void StartMonthlyContributionForTest();
+  void StartContributionsForTesting();
   void ForTestingSetTestResponseCallback(
       const GetTestResponseCallback& callback);
   void StartProcessForTesting(base::OnceClosure callback);
@@ -336,7 +341,7 @@ class RewardsServiceImpl : public RewardsService,
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
 #if BUILDFLAG(ENABLE_GREASELION)
-  void EnableGreaseLion();
+  void EnableGreaselion();
 
   // GreaselionService::Observer:
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
@@ -374,6 +379,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnRestorePublishers(const ledger::mojom::Result result);
 
   void OnRecurringTip(const ledger::mojom::Result result);
+
+  void OnMonthlyContributionSet(base::OnceCallback<void(bool)> callback,
+                                bool success);
 
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,
@@ -599,12 +607,14 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED
+  bool greaselion_enabled_ = false;
 #endif
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;
   mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
+  const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
@@ -625,7 +635,6 @@ class RewardsServiceImpl : public RewardsService,
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   uint32_t next_timer_id_;
-  int32_t country_id_ = 0;
   bool reset_states_;
   bool ledger_for_testing_ = false;
   int ledger_state_target_version_for_testing_ = -1;

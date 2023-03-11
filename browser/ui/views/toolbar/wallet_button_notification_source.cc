@@ -61,7 +61,7 @@ void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
 void WalletButtonNotificationSource::OnTxServiceConnectionError() {
   tx_service_.reset();
   tx_observer_.reset();
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(&WalletButtonNotificationSource::EnsureTxServiceConnected,
                      weak_ptr_factory_.GetWeakPtr()),
@@ -71,7 +71,7 @@ void WalletButtonNotificationSource::OnTxServiceConnectionError() {
 void WalletButtonNotificationSource::OnKeyringServiceConnectionError() {
   keyring_service_.reset();
   keyring_service_observer_.reset();
-  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
       base::BindOnce(
           &WalletButtonNotificationSource::EnsureKeyringServiceConnected,

@@ -2,7 +2,7 @@
  * Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package org.chromium.chrome.browser.vpn.utils;
@@ -25,6 +25,7 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 public class InAppPurchaseWrapper {
+    private static final String TAG = "InAppPurchaseWrapper";
     public static final String NIGHTLY_MONTHLY_SUBSCRIPTION = "nightly.bravevpn.monthly";
     public static final String NIGHTLY_YEARLY_SUBSCRIPTION = "nightly.bravevpn.yearly";
 
@@ -90,7 +92,15 @@ public class InAppPurchaseWrapper {
 
     public void connectToBillingService() {
         if (!mBillingClient.isReady()) {
-            mBillingClient.startConnection(billingClientStateListener);
+            try {
+                mBillingClient.startConnection(billingClientStateListener);
+            } catch (IllegalStateException exc) {
+                // That prevents a crash that some users experience
+                // https://github.com/brave/brave-browser/issues/27751.
+                // It's unknown what causes it, we tried to add retries, but it
+                // didn't help.
+                Log.e(TAG, "connectToBillingService " + exc.getMessage());
+            }
         }
     }
 

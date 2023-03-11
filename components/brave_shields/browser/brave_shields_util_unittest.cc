@@ -17,6 +17,7 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -183,18 +184,16 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   // Set policy to disable shields for specific domain.
-  auto disabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List disabled_list;
   disabled_list.Append("[*.]host2.com");
   disabled_list.Append("*.*");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsDisabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(disabled_list)));
+      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
 
-  auto enabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List enabled_list;
   enabled_list.Append("[*.]host1.com");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsEnabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(enabled_list)));
+      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
 
   // setting should apply block to origin.
   setting =
@@ -222,11 +221,10 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, host2));
 
-  auto disabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List disabled_list;
   disabled_list.Append("[*.]host2.com");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsDisabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(disabled_list)));
+      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
   // only disabled pref set
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, host2));
@@ -234,11 +232,10 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
       profile()->GetTestingPrefService(), map, GURL("http://host1.com")));
 
-  auto enabled_list = base::Value(base::Value::Type::LIST);
+  base::Value::List enabled_list;
   enabled_list.Append("[*.]host1.com");
   profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsEnabledForUrls,
-      base::Value::ToUniquePtrValue(std::move(enabled_list)));
+      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
 
   // both disabled/enabled prefs set
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
@@ -575,13 +572,13 @@ TEST_F(BraveShieldsUtilTest, GetCookieControlType_WithUserSettings) {
          const GURL& url) -> CookieState {
     const auto first_party_blocked =
         cookie_settings->GetCookieSetting(
-            url, url, nullptr,
+            url, url, net::CookieSettingOverrides(), nullptr,
             content_settings::CookieSettings::QueryReason::kCookies) ==
         CONTENT_SETTING_BLOCK;
 
     const auto third_party_blocked =
         cookie_settings->GetCookieSetting(
-            GURL::EmptyGURL(), url, nullptr,
+            GURL::EmptyGURL(), url, net::CookieSettingOverrides(), nullptr,
             content_settings::CookieSettings::QueryReason::kCookies) ==
         CONTENT_SETTING_BLOCK;
 

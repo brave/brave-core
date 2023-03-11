@@ -424,7 +424,7 @@ TEST_F(BraveSyncServiceImplTest, JoinActiveOrNewChain) {
   bool join_chain_callback_invoked = false;
 
   brave_sync_service_impl()->SetJoinChainResultCallback(base::BindOnce(
-      [](bool* join_chain_callback_invoked, const bool& join_succeeded) {
+      [](bool* join_chain_callback_invoked, bool join_succeeded) {
         *join_chain_callback_invoked = true;
         EXPECT_TRUE(join_succeeded);
       },
@@ -450,7 +450,7 @@ TEST_F(BraveSyncServiceImplTest, JoinDeletedChain) {
   bool join_chain_callback_invoked = false;
 
   brave_sync_service_impl()->SetJoinChainResultCallback(base::BindOnce(
-      [](bool* join_chain_callback_invoked, const bool& join_succeeded) {
+      [](bool* join_chain_callback_invoked, bool join_succeeded) {
         *join_chain_callback_invoked = true;
         EXPECT_FALSE(join_succeeded);
       },

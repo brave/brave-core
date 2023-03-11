@@ -1,13 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
 public interface BraveRewardsObserver {
     default public void onCreateRewardsWallet(String result){};
     default public void OnRewardsParameters(){};
-    default public void onBalance(int errorCode){};
+    default public void onBalance(boolean success){};
     default public void OnPublisherInfo(int tabId){};
     default public void OnGetCurrentBalanceReport(double[] report){};
     default public void OnNotificationAdded(String id, int type, long timestamp, String[] args){};

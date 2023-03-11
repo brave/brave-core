@@ -35,12 +35,11 @@
 *.xslt  text eol=lf
 *.xtb   text eol=lf
 
-.clang-format   text eol=lf
-.eslintrc.js   text eol=lf
+.clang*                  text eol=lf
 .git-blame-ignore-revs   text eol=lf
-.gitattributes   text eol=lf
-.gitignore   text eol=lf
-.vpython   text eol=lf
+.gitattributes           text eol=lf
+.gitignore               text eol=lf
+.vpython*                text eol=lf
 
 DEPS   text eol=lf
 LICENSE text eol=lf

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 
 // Selectors
 import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
@@ -59,18 +59,19 @@ interface Props {
 }
 
 export const TokenLists = ({
-  userAssetList,
-  networks,
-  renderToken,
-  hideAddButton,
-  enableScroll,
-  maxListHeight,
-  hideAssetFilter,
-  hideAccountFilter,
-  hideAutoDiscovery
-}: Props) => {
+                             userAssetList,
+                             networks,
+                             renderToken,
+                             hideAddButton,
+                             enableScroll,
+                             maxListHeight,
+                             hideAssetFilter,
+                             hideAccountFilter,
+                             hideAutoDiscovery
+                           }: Props) => {
   // routing
   const history = useHistory()
+  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // unsafe selectors
   const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
@@ -83,7 +84,7 @@ export const TokenLists = ({
   const { computeFiatAmount } = usePricing(tokenSpotPrices)
 
   // state
-  const [searchValue, setSearchValue] = React.useState<string>('')
+  const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
 
   // methods
 
@@ -146,8 +147,8 @@ export const TokenLists = ({
       return [...fungibleTokens].sort(function (a, b) {
         const aBalance = a.assetBalance
         const bBalance = b.assetBalance
-        const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals)
-        const aFiatBalance = computeFiatAmount(aBalance, a.asset.symbol, a.asset.decimals)
+        const bFiatBalance = computeFiatAmount(bBalance, b.asset.symbol, b.asset.decimals, b.asset.contractAddress, b.asset.chainId)
+        const aFiatBalance = computeFiatAmount(aBalance, a.asset.symbol, a.asset.decimals, a.asset.contractAddress, a.asset.chainId)
         return assetFilterItemInfo.id === 'highToLow'
           ? bFiatBalance.toNumber() - aFiatBalance.toNumber()
           : aFiatBalance.toNumber() - bFiatBalance.toNumber()
@@ -199,10 +200,10 @@ export const TokenLists = ({
   // effects
   React.useEffect(() => {
     // reset search field on list update
-    if (userAssetList) {
+    if (userAssetList && !tokenId) {
       setSearchValue('')
     }
-  }, [userAssetList])
+  }, [userAssetList, tokenId])
 
   // render
   return (

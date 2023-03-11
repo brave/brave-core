@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
@@ -68,10 +70,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
 public class PortfolioFragment
         extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
-    private static String TAG = "PortfolioFragment";
+    private static final String TAG = "PortfolioFragment";
     private TextView mBalance;
     private Button mBtnChangeNetwork;
     private HashMap<String, TransactionInfo[]> mPendingTxInfos;
@@ -119,11 +120,13 @@ public class PortfolioFragment
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
         }
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
             mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 
@@ -366,9 +369,12 @@ public class PortfolioFragment
     }
 
     private void openNetworkSelection() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        assert activity != null;
-        activity.openNetworkSelection();
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openNetworkSelection();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "openNetworkSelection " + e);
+        }
     }
 
     private void AdjustTrendControls() {

@@ -15,6 +15,7 @@
 #include "brave/components/tor/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/chrome_notification_types.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"

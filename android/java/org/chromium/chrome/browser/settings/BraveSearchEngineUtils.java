@@ -32,14 +32,16 @@ public class BraveSearchEngineUtils {
     }
 
     static public void initializeBraveSearchEngineStates(Profile profile) {
-        TemplateUrlService templateUrlService =
+        final TemplateUrlService templateUrlService =
                 BraveTemplateUrlServiceFactory.getForProfile(profile);
+        assert templateUrlService != null;
+        if (templateUrlService == null) return;
+
         if (!templateUrlService.isLoaded()) {
             templateUrlService.registerLoadListener(new TemplateUrlService.LoadListener() {
                 @Override
                 public void onTemplateUrlServiceLoaded() {
-                    BraveTemplateUrlServiceFactory.getForProfile(profile).unregisterLoadListener(
-                            this);
+                    templateUrlService.unregisterLoadListener(this);
                     doInitializeBraveSearchEngineStates(profile);
                 }
             });
@@ -55,9 +57,12 @@ public class BraveSearchEngineUtils {
         final String notInitialized = "notInitialized";
         if (notInitialized.equals(ContextUtils.getAppSharedPreferences().getString(
                     BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
-            TemplateUrl templateUrl = BraveTemplateUrlServiceFactory.getForProfile(profile)
-                                              .getDefaultSearchEngineTemplateUrl();
+            final TemplateUrlService templateUrlService =
+                    BraveTemplateUrlServiceFactory.getForProfile(profile);
+            assert templateUrlService != null;
+            if (templateUrlService == null) return;
 
+            TemplateUrl templateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
             SharedPreferences.Editor sharedPreferencesEditor =
                     ContextUtils.getAppSharedPreferences().edit();
             sharedPreferencesEditor.putString(
@@ -69,7 +74,9 @@ public class BraveSearchEngineUtils {
     }
 
     static private void doInitializeBraveSearchEngineStates(Profile profile) {
-        assert BraveTemplateUrlServiceFactory.getForProfile(profile).isLoaded();
+        final TemplateUrlService templateUrlService =
+                BraveTemplateUrlServiceFactory.getForProfile(profile);
+        assert templateUrlService != null && templateUrlService.isLoaded();
 
         initializeDSEPrefs(profile);
         updateActiveDSE(profile);

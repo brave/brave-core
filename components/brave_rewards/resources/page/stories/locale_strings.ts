@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -27,7 +28,7 @@ export const localeStrings = {
 
   braveRewards: 'Brave Rewards',
   pendingContributions: 'Pending Contributions',
-  donationAbility: 'Enable content-level tips on these sites',
+  donationAbility: 'Show Tip buttons on sites',
   donationTitle: 'Tips',
   donationDesc: 'See the one-time tips you\'ve given to websites and creators.',
   donationDescLearnMore: 'Learn more about tipping.',
@@ -36,8 +37,6 @@ export const localeStrings = {
   monthlyTipsEmpty: 'No monthly tips set up yet.',
   monthlyTipsTitle: 'Monthly Tips',
   monthlyTipsDesc: 'Set up recurring monthly tips so you can continually support your favorite creators.',
-  donationTotalMonthlyTips: 'Total monthly tips this month',
-  donationNextDate: 'Next monthly tips date',
   relaunch: 'Relaunch',
   on: 'on',
   site: 'Site',
@@ -54,6 +53,7 @@ export const localeStrings = {
   contributionUpTo: 'Up to',
   contributionNextDate: 'Next contribution date',
   contributionSites: 'Sites viewed',
+  nextContribution: 'Next contribution',
   rewardsContribute: 'Auto-Contribute',
   rewardsContributeAttention: 'Attention',
   contributionMinTime: 'Minimum page time before logging a visit',

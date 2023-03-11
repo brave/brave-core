@@ -9,7 +9,7 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/test/values_test_util.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

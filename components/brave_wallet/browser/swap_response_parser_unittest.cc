@@ -62,6 +62,46 @@ const char* GetJupiterQuoteTemplate() {
       "timeTaken": "0.044471802000089156"
     })";
 }
+
+const char* GetJupiterQuoteTemplateForPriceImpact() {
+  return R"(
+    {
+      "data": [
+        {
+          "inAmount": "10000",
+          "outAmount": "261273",
+          "amount": "10000",
+          "otherAmountThreshold": "258660",
+          "outAmountWithSlippage": "258660",
+          "swapMode": "ExactIn",
+          "priceImpactPct": %s,
+          "marketInfos": [
+            {
+              "id": "2yNwARmTmc3NzYMETCZQjAE5GGCPgviH6hiBsxaeikTK",
+              "label": "Orca",
+              "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+              "outputMint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+              "notEnoughLiquidity": false,
+              "inAmount": "10000",
+              "outAmount": "117001203",
+              "priceImpactPct": %s,
+              "lpFee": {
+                "amount": "10000",
+                "mint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+                "pct": "0.003"
+			  },
+              "platformFee": {
+                "amount": "0",
+                "mint": "MNDEFzGvMt87ueuHvVU9VcTqsAP5b3fTGPsHuuPA5ey",
+                "pct": "0"
+              }
+            }
+          ]
+        }
+      ],
+      "timeTaken": "0.044471802000089156"
+    })";
+}
 }  // namespace
 
 TEST(SwapResponseParserUnitTest, ParsePriceQuote) {
@@ -281,6 +321,31 @@ TEST(SwapResponseParserUnitTest, ParseJupiterQuote) {
 
   // KO: Integer lpFee value overflow (UINT64_MAX + 1)
   json = base::StringPrintf(json_template, "10000", "18446744073709551616");
+  swap_quote = ParseJupiterQuote(ParseJson(json));
+  ASSERT_FALSE(swap_quote);
+}
+
+TEST(SwapResponseParserUnitTest, ParseJupiterQuotePriceImpact) {
+  auto* json_template = GetJupiterQuoteTemplateForPriceImpact();
+  std::string json = base::StringPrintf(json_template, "\"1.1\"", "\"1.1\"");
+  mojom::JupiterQuotePtr swap_quote = ParseJupiterQuote(ParseJson(json));
+  ASSERT_TRUE(swap_quote);
+  ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 1.1);
+  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->price_impact_pct,
+            1.1);
+
+  json = base::StringPrintf(json_template, "null", "null");
+  swap_quote = ParseJupiterQuote(ParseJson(json));
+  ASSERT_TRUE(swap_quote);
+  ASSERT_EQ(swap_quote->routes.at(0)->price_impact_pct, 0.0);
+  ASSERT_EQ(swap_quote->routes.at(0)->market_infos.at(0)->price_impact_pct,
+            0.0);
+
+  json = base::StringPrintf(json_template, "123", "null");
+  swap_quote = ParseJupiterQuote(ParseJson(json));
+  ASSERT_FALSE(swap_quote);
+
+  json = base::StringPrintf(json_template, "null", "123");
   swap_quote = ParseJupiterQuote(ParseJson(json));
   ASSERT_FALSE(swap_quote);
 }

@@ -16,7 +16,7 @@
 #define GetBorderPath virtual GetBorderPath
 #define GetCornerRadius virtual GetCornerRadius
 #define PaintFill virtual PaintFill
-#include "src/chrome/browser/ui/views/tabs/new_tab_button.h"
+#include "src/chrome/browser/ui/views/tabs/new_tab_button.h"  // IWYU pragma: export
 #undef PaintFill
 #undef GetCornerRadius
 #undef GetBorderPath

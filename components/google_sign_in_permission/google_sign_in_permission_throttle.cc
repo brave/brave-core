@@ -64,16 +64,6 @@ GoogleSignInPermissionThrottle::MaybeCreateThrottleFor(
     return nullptr;
   }
 
-  // Check kGoogleLoginControlType pref and return early if false.
-  auto* contents = wc_getter.Run();
-  if (!contents) {
-    return nullptr;
-  }
-  if (!IsGoogleSignInPrefEnabled(
-          user_prefs::UserPrefs::Get(contents->GetBrowserContext()))) {
-    return nullptr;
-  }
-
   const auto& request_url = request.url;
   const auto& request_initiator_url =
       GetRequestInitiatingUrlFromRequest(request);

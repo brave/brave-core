@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -82,7 +83,7 @@ function excludedList (list: Rewards.ExcludedPublisher[]) {
   actions.onExcludedList(list)
 }
 
-function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
+function balanceReport (properties: { month: number, year: number, report: Rewards.BalanceReport }) {
   actions.onBalanceReport(properties)
 }
 
@@ -175,21 +176,18 @@ function excludedSiteChanged () {
   actions.getContributeList()
 }
 
-function balance (properties: {status: number, balance: Rewards.Balance}) {
-  actions.onBalance(properties.status, properties.balance)
+function balance (result: mojom.FetchBalanceResult) {
+  actions.onBalance(result)
 }
 
-function reconcileComplete (properties: {type: number, result: number}) {
+function reconcileComplete (properties: { type: number, result: number }) {
   chrome.send('brave_rewards.getReconcileStamp')
   actions.getContributeList()
   actions.getBalance()
   actions.getRewardsParameters()
+  actions.getTipTable()
 
   getCurrentBalanceReport()
-
-  if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
-    chrome.send('brave_rewards.getOneTimeTips')
-  }
 
   // EXPIRED TOKEN
   if (properties.result === 24) {
@@ -214,7 +212,7 @@ function unblindedTokensReady () {
   actions.getBalance()
 }
 
-function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport}) {
+function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) {
   actions.onMonthlyReport(properties)
 }
 
@@ -247,7 +245,7 @@ function enabledInlineTippingPlatforms (list: string[]) {
 }
 
 function externalWalletLogin (url: string) {
-  window.open(url, '_self')
+  window.open(url, '_self', 'noreferrer')
 }
 
 function onPrefChanged (key: string) {

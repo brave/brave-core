@@ -10,7 +10,7 @@
   BlocklistStatesInteractionUnitTest;      \
   friend class BraveExtensionService
 
-#include "src/chrome/browser/extensions/extension_service.h"
+#include "src/chrome/browser/extensions/extension_service.h"  // IWYU pragma: export
 #undef BlocklistStatesInteractionUnitTest
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_SERVICE_H_

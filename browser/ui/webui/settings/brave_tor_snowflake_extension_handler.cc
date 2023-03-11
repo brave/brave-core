@@ -38,7 +38,6 @@ class SnowflakeWebstoreInstaller final
       const final {
     return nullptr;
   }
-  bool ShouldShowAppInstalledBubble() const final { return false; }
   bool ShouldShowPostInstallUI() const final { return true; }
 };
 

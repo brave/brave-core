@@ -12,89 +12,6 @@
 
 namespace brave_wallet {
 
-const std::vector<mojom::BlockchainToken>& GetWyreBuyTokens() {
-  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
-      {{"", "Avalanche", "", false, false, false, "AVAX", 18, true, "", "",
-        mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
-       {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
-        "bat.png", true, false, false, "BAT", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "USD Coin", "usdc.png",
-        true, false, false, "USDC", 6, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x6B175474E89094C44Da98b954EedeAC495271d0F", "DAI", "dai.png", true,
-        false, false, "DAI", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9", "AAVE", "AAVE.png", true,
-        false, false, "AAVE", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x4Fabb145d64652a948d72533023f6E7A623C7C53", "Binance USD", "busd.png",
-        true, false, false, "BUSD", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0xc00e94cb662c3520282e6f5717214004a7f26888", "Compound", "comp.png",
-        true, false, false, "COMP", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0xD533a949740bb3306d119CC777fa900bA034cd52", "Curve", "curve.png",
-        true, false, false, "CRV", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0xbf0f3ccb8fa385a287106fba22e6bb722f94d686", "Digital USD", "", true,
-        false, false, "ZUSD", 6, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x056Fd409E1d7A124BD7017459dFEa2F387b6d5Cd", "Gemini Dollar",
-        "gusd.png", true, false, false, "GUSD", 2, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0xC08512927D12348F6620a698105e1BAac6EcD911", "Digital JPY", "", true,
-        false, false, "GYEN", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x514910771AF9Ca656af840dff83E8264EcF986CA", "Chainlink",
-        "chainlink.png", true, false, false, "LINK", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2", "Maker", "mkr.png", true,
-        false, false, "MKR", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F", "Synthetix",
-        "synthetix.png", true, false, false, "SNX", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828", "UMA", "UMA.png", true,
-        false, false, "UMA", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "Uniswap", "uni.png",
-        true, false, false, "UNI", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", "USD Coin", "usdc.png",
-        true, false, false, "USDC", 6, true, "", "",
-        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
-       {"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E", "USD Coin", "usdc.png",
-        true, false, false, "USDC", 6, true, "", "",
-        mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
-       {"0x8e870d67f660d95d5be530380d0ec0bd388289e1", "Pax Dollar", "usdp.png",
-        true, false, false, "PAX", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"", "Polygon", "", false, false, false, "MATIC", 18, true, "", "",
-        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
-       {"0xA4Bdb11dc0a2bEC88d24A3aa1E6Bb17201112eBe", "Stably Dollar",
-        "usds.png", true, false, false, "USDS", 6, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
-        true, false, false, "USDT", 6, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599", "Wrapped Bitcoin",
-        "wbtc.png", true, false, false, "WBTC", 8, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e", "Yearn.Finance",
-        "yfi.png", true, false, false, "YFI", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0x9043d4d51C9d2e31e3F169de4551E416970c27Ef", "Palm DAI", "pdai.png",
-        true, false, false, "PDAI", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0x03ab458634910AaD20eF5f1C8ee96F1D6ac54919", "Rai Reflex Index",
-        "rai.png", true, false, false, "RAI", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH}});
-  return *tokens;
-}
-
 const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
   static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
       {{"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
@@ -233,7 +150,7 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
        {"0x0000000000085d4780b73119b644ae5ecd22b376", "TrueUSD", "tusd.png",
         true, false, false, "TUSD", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
-       {"0x0000000000085d4780B73119b644AE5ecd22b376", "The Sandbox", "sand.png",
+       {"0x3845badAde8e6dFF049820680d1F14bD3903a5d0", "The Sandbox", "sand.png",
         true, false, false, "SAND", 18, true, "", "", mojom::kMainnetChainId,
         mojom::CoinType::ETH},
        {"0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "Uniswap", "uni.png",
@@ -508,18 +425,115 @@ const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
   return *tokens;
 }
 
+const std::vector<mojom::BlockchainToken>& GetRampSellTokens() {
+  static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
+      {{"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
+        mojom::kMainnetChainId, mojom::CoinType::ETH},
+       {"0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
+        "bat.png", true, false, false, "BAT", 18, true, "", "",
+        mojom::kMainnetChainId, mojom::CoinType::ETH},
+       {"0x3845badade8e6dff049820680d1f14bd3903a5d0", "The Sandbox", "sand.png",
+        true, false, false, "SAND", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0xc18360217d8f7ab5e7c516566761ea12ce7f9d72", "ENS", "ens.png", true,
+        false, false, "ENS", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0x6B175474E89094C44Da98b954EedeAC495271d0F", "DAI", "dai.png", true,
+        false, false, "DAI", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
+        true, false, false, "USDT", 6, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48", "USD Coin", "usdc.png",
+        true, false, false, "USDC", 6, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0x514910771AF9Ca656af840dff83E8264EcF986CA", "Chainlink",
+        "chainlink.png", true, false, false, "LINK", 18, true, "", "",
+        mojom::kMainnetChainId, mojom::CoinType::ETH},
+       {"0x0f5d2fb29fb7d3cfee444a200298f468908cc942", "Decentraland",
+        "mana.png", true, false, false, "MANA", 18, true, "", "",
+        mojom::kMainnetChainId, mojom::CoinType::ETH},
+       {"0xf1f955016EcbCd7321c7266BccFB96c68ea5E49b", "Rally", "rly.png", true,
+        false, false, "RLY", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"", "BNB", "", false, false, false, "BNB", 18, true, "", "",
+        mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH},
+       {"0xe9e7cea3dedca5984780bafc599bd69add087d56", "Binance USD", "busd.png",
+        true, false, false, "BUSD", 18, true, "", "",
+        mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH},
+       {"", "Celo", "", false, false, false, "CELO", 18, true, "", "",
+        mojom::kCeloMainnetChainId, mojom::CoinType::ETH},
+       {"0x765DE816845861e75A25fCA122bb6898B8B1282a", "Celo Dollar", "cusd.png",
+        true, false, false, "CUSD", 18, true, "", "",
+        mojom::kCeloMainnetChainId, mojom::CoinType::ETH},
+       {"", "Polygon", "", false, false, false, "MATIC", 18, true, "", "",
+        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
+       {"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", "Ethereum", "eth.png",
+        true, false, false, "ETH", 18, true, "", "",
+        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
+       {"0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", "USD Coin", "usdc.png",
+        true, false, false, "USDC", 6, true, "", "",
+        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
+       {"0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", "DAI Stablecoin",
+        "dai.png", true, false, false, "DAI", 18, true, "", "",
+        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
+       {"", "Avalanche", "", false, false, false, "AVAX", 18, true, "", "",
+        mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
+       {"0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E", "USD Coin", "usdc.png",
+        true, false, false, "USDC", 6, true, "", "",
+        mojom::kAvalancheMainnetChainId, mojom::CoinType::ETH},
+       {"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
+        mojom::kArbitrumMainnetChainId, mojom::CoinType::ETH},
+       {"", "Ethereum", "", false, false, false, "ETH", 18, true, "", "",
+        mojom::kOptimismMainnetChainId, mojom::CoinType::ETH},
+       {"0xda10009cbd5d07dd0cecc66161fc93d7c9000da1", "DAI Stablecoin",
+        "dai.png", true, false, false, "DAI", 18, true, "", "",
+        mojom::kOptimismMainnetChainId, mojom::CoinType::ETH},
+       {"", "Fantom", "", false, false, false, "FTM", 18, true, "", "",
+        mojom::kFantomMainnetChainId, mojom::CoinType::ETH},
+       {"", "Solana", "", false, false, false, "SOL", 9, true, "", "",
+        mojom::kSolanaMainnet, mojom::CoinType::SOL}});
+  return *tokens;
+}
+
 const std::vector<mojom::OnRampCurrency>& GetOnRampCurrenciesList() {
-  static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies({
-      {"USD",
-       "United States Dollar",
-       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
-      {"EUR",
-       "Euro",
-       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
-      {"GBP",
-       "British Pound Sterling",
-       {mojom::OnRampProvider::kWyre, mojom::OnRampProvider::kRamp}},
-  });
+  static base::NoDestructor<std::vector<mojom::OnRampCurrency>> currencies(
+      {{"ARS", "Argentine Peso", {mojom::OnRampProvider::kTransak}},
+       {"AUD", "Australian dollar", {mojom::OnRampProvider::kTransak}},
+       {"BMD", "Bermudian Dollar", {mojom::OnRampProvider::kTransak}},
+       {"BRL", "Brazilian Real", {mojom::OnRampProvider::kTransak}},
+       {"GBP",
+        "British pound",
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak}},
+       {"CAD", "Canadian dollar", {mojom::OnRampProvider::kTransak}},
+       {"CLP", "Chilean Peso", {mojom::OnRampProvider::kTransak}},
+       {"CZK", "Czech Koruna", {mojom::OnRampProvider::kTransak}},
+       {"DKK", "Danish Krone", {mojom::OnRampProvider::kTransak}},
+       {"DJF", "Djibouti Franc", {mojom::OnRampProvider::kTransak}},
+       {"EUR",
+        "Euro",
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak}},
+       {"HUF", "Forint", {mojom::OnRampProvider::kTransak}},
+       {"INR", "Indian rupee", {mojom::OnRampProvider::kTransak}},
+       {"IDR", "Indonesian Rupiah", {mojom::OnRampProvider::kTransak}},
+       {"ILS", "Israeli Shekel", {mojom::OnRampProvider::kTransak}},
+       {"JPY", "Japanese Yen", {mojom::OnRampProvider::kTransak}},
+       {"MYR", "Malaysian Ringgit", {mojom::OnRampProvider::kTransak}},
+       {"MXN", "Mexican peso", {mojom::OnRampProvider::kTransak}},
+       {"NZD", "New Zealand dollar", {mojom::OnRampProvider::kTransak}},
+       {"NOK", "Norwegian Krone", {mojom::OnRampProvider::kTransak}},
+       {"PHP", "Philippine Peso", {mojom::OnRampProvider::kTransak}},
+       {"PLN", "Polish Zloty", {mojom::OnRampProvider::kTransak}},
+       {"SGD", "Singapore Dollar", {mojom::OnRampProvider::kTransak}},
+       {"ZAR", "South African Rand", {mojom::OnRampProvider::kTransak}},
+       {"KRW", "South Korean Won", {mojom::OnRampProvider::kTransak}},
+       {"SEK", "Swedish krona", {mojom::OnRampProvider::kTransak}},
+       {"CHF", "Swiss franc", {mojom::OnRampProvider::kTransak}},
+       {"THB", "Thai Baht", {mojom::OnRampProvider::kTransak}},
+       {"TRY", "Turkish Lira", {mojom::OnRampProvider::kTransak}},
+       {"USD",
+        "US Dollar",
+        {mojom::OnRampProvider::kRamp, mojom::OnRampProvider::kTransak}}});
 
   return *currencies;
 }
@@ -554,13 +568,37 @@ const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
   return *endpoints;
 }
 
+const base::flat_map<std::string, std::string>&
+GetEthBalanceScannerContractAddresses() {
+  static base::NoDestructor<base::flat_map<std::string, std::string>>
+      contract_addresses(
+          // Mainnet, Polygon, and Avalanche conctract addresses pulled from
+          // https://github.com/MyCryptoHQ/eth-scan
+          {{mojom::kMainnetChainId,
+            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+           {mojom::kPolygonMainnetChainId,
+            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+           {mojom::kAvalancheMainnetChainId,
+            "0x08A8fDBddc160A7d5b957256b903dCAb1aE512C5"},
+           // BSC, Optimism, and Arbitrum contract addresses pulled from
+           // https://github.com/onyb/x/blob/75800edce88688dcfe59dd6b4a664087862369bb/core/evm/scanner/balances/EVMScanner.ts
+           {mojom::kBinanceSmartChainMainnetChainId,
+            "0x53242a975aa7c607e17138b0e0231162e3e68593"},
+           {mojom::kOptimismMainnetChainId,
+            "0x9e5076DF494FC949aBc4461F4E57592B81517D81"},
+           {mojom::kArbitrumMainnetChainId,
+            "0xa3e7eb35e779f261ca604138d41d0258e995e97b"}});
+
+  return *contract_addresses;
+}
+
 bool HasJupiterFeesForTokenMint(const std::string& mint) {
   static std::vector<std::string> mints(
       {"So11111111111111111111111111111111111111112",     // wSOL
        "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",    // USDC
        "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",    // USDT
-       "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs"     // WETH (Wormhole)
-       "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk"     // ETH (Sollet)
+       "7vfCXTUXx5WJV5JADk17DUJ4ksgau7utNKj4b963voxs",    // WETH (Wormhole)
+       "2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk",    // ETH (Sollet)
        "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E",    // BTC (Sollet)
        "qfnqNqs3nCAHjnyCgLRDbBtq4p2MtHZxw8YjSyYhPoL",     // wWBTC (Wormhole)
        "7dHbWXmci3dT8UFYWYZweBLXgycu7Y3iL6trKn1Y7ARj",    // stSOL

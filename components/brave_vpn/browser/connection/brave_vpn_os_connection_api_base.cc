@@ -8,8 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/check_is_test.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/power_monitor/power_monitor.h"
 #include "brave/components/brave_vpn/browser/api/brave_vpn_api_helper.h"
@@ -50,6 +50,16 @@ void BraveVPNOSConnectionAPIBase::RemoveObserver(Observer* observer) {
 void BraveVPNOSConnectionAPIBase::SetConnectionState(
     mojom::ConnectionState state) {
   UpdateAndNotifyConnectionStateChange(state);
+}
+
+void BraveVPNOSConnectionAPIBase::ResetConnectionState() {
+  // Don't use UpdateAndNotifyConnectionStateChange() to update connection state
+  // and set state directly because we have a logic to ignore disconnected state
+  // when connect failed.
+  connection_state_ = ConnectionState::DISCONNECTED;
+  for (auto& obs : observers_) {
+    obs.OnConnectionStateChanged(connection_state_);
+  }
 }
 
 std::string BraveVPNOSConnectionAPIBase::GetLastConnectionError() const {

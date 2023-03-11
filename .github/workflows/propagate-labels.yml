@@ -1,0 +1,39 @@
+name: Propagate labels
+on:
+  pull_request:
+    types: [closed]
+
+env:
+  GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+  LABELS: "feature/web3/wallet feature/web3/wallet/core"
+
+jobs:
+  propagate:
+    if: github.event.pull_request.merged == true
+    name: propagate labels
+    runs-on: ubuntu-latest
+    steps:
+      - name: propagate labels
+        run: |
+          set -xeEo pipefail
+          shopt -s inherit_errexit
+
+          pr_number="${{ github.event.pull_request.number }}"
+          read -ra relevant_pr_labels <<<"$(gh pr view -R "$GITHUB_REPOSITORY" "$pr_number" --json labels -q ".labels[].name"|\
+            grep -E "${LABELS// /|}"|tr '\n' '\t')"
+
+          if [[ "${relevant_pr_labels[*]}" ]]; then
+            read -ra pr_issues <<<"$(gh api graphql -q ".data.repository.pullRequest.closingIssuesReferences.edges[].node.url" -f query="{
+              repository(owner: \"${GITHUB_REPOSITORY_OWNER:?}\", name: \"${GITHUB_REPOSITORY##*/}\") {
+                pullRequest(number: ${pr_number:?}) { closingIssuesReferences (first: 100) { edges { node { url } } } }
+              } }"|tr '\n' '\t')"
+
+            for label in "${relevant_pr_labels[@]}"; do
+              for issue in "${pr_issues[@]}"; do
+                if [[ "$(gh label list -R "$(echo "${issue:?}"|cut -d/ -f4-5)" -S "${label:?}" \
+                    --json name -q ".[]|select(.name==\"$label\").name")" ]]; then
+                  gh issue edit "$issue" --add-label "$label"
+                fi
+              done
+            done
+          fi

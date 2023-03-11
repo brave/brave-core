@@ -6,6 +6,7 @@
 group("app") {
   deps = [
     "//brave/components/update_client:buildflags",
+    "//components/dom_distiller/content/browser",
     "//google_apis",
     "//media",
   ]

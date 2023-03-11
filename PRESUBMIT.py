@@ -7,9 +7,10 @@ import copy
 import os
 import sys
 
-import import_inline
+import brave_node
 import chromium_presubmit_overrides
 import git_cl
+import import_inline
 import override_utils
 
 USE_PYTHON3 = True
@@ -53,6 +54,39 @@ def CheckPatchFormatted(input_api, output_api):
                                                   suppress_stderr=True)
 
     is_format_required = git_cl_format_code == 2
+
+    if not is_format_required or input_api.PRESUBMIT_FIX:
+        # Use Prettier to format other file types.
+        files_to_check = (
+            # Enable when files will be formatted.
+            # r'.+\.js$',
+            # r'.+\.ts$',
+            # r'.+\.tsx$',
+        )
+        files_to_skip = input_api.DEFAULT_FILES_TO_SKIP
+
+        file_filter = lambda f: input_api.FilterSourceFile(
+            f, files_to_check=files_to_check, files_to_skip=files_to_skip)
+        affected_files = input_api.AffectedFiles(file_filter=file_filter,
+                                                 include_deletes=False)
+        files_to_format = [f.AbsoluteLocalPath() for f in affected_files]
+
+        node_args = [
+            brave_node.PathInNodeModules('prettier', 'bin-prettier'),
+            '--write' if input_api.PRESUBMIT_FIX else '--check',
+        ]
+
+        files_per_command = 25 if input_api.is_windows else 1000
+        for i in range(0, len(files_to_format), files_per_command):
+            args = node_args + files_to_format[i:i + files_per_command]
+            try:
+                brave_node.RunNode(args)
+            except RuntimeError as err:
+                if 'Forgot to run Prettier?' in str(err):
+                    is_format_required = True
+                    break
+                # Raise on unexpected output. Could be node or prettier issues.
+                raise
 
     if is_format_required:
         if input_api.PRESUBMIT_FIX:

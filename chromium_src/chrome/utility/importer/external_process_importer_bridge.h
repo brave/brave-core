@@ -8,7 +8,7 @@
 
 #define BRAVE_EXTERNAL_PROCESS_IMPORTER_BRIDGE_H_ \
     friend class BraveExternalProcessImporterBridge;
-#include "src/chrome/utility/importer/external_process_importer_bridge.h"
+#include "src/chrome/utility/importer/external_process_importer_bridge.h"  // IWYU pragma: export
 #undef BRAVE_EXTERNAL_PROCESS_IMPORTER_BRIDGE_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_UTILITY_IMPORTER_EXTERNAL_PROCESS_IMPORTER_BRIDGE_H_

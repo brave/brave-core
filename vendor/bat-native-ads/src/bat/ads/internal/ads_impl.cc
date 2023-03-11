@@ -194,15 +194,19 @@ void AdsImpl::OnPrefDidChange(const std::string& path) {
 void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
                                         const std::string& html) {
-  TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
-                                                    html);
+  if (IsInitialized()) {
+    TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
+                                                      html);
+  }
 }
 
 void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
                                         const std::string& text) {
-  TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
-                                                    text);
+  if (IsInitialized()) {
+    TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
+                                                      text);
+  }
 }
 
 void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {

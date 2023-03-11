@@ -33,6 +33,9 @@ const char kVPNPanelURL[] = "chrome-untrusted://vpn-panel.top-chrome/";
 const char kVPNPanelHost[] = "vpn-panel.top-chrome";
 const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
+#if BUILDFLAG(IS_ANDROID)
+const char kWalletSwapPagePath[] = "wallet/swap";
+#endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";
 const char kBraveSyncPath[] = "braveSync";
@@ -57,3 +60,4 @@ const char kPlaylistHost[] = "playlist";
 const char kPlaylistURL[] = "chrome-untrusted://playlist/";
 const char kSpeedreaderPanelURL[] = "chrome://brave-speedreader.top-chrome";
 const char kSpeedreaderPanelHost[] = "brave-speedreader.top-chrome";
+const char kCommandsHost[] = "commands";

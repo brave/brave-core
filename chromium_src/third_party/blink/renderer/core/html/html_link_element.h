@@ -13,7 +13,7 @@
   HTMLLinkElement* GetOwner() override; \
   bool IsLinkCreatedByParser
 
-#include "src/third_party/blink/renderer/core/html/html_link_element.h"
+#include "src/third_party/blink/renderer/core/html/html_link_element.h"  // IWYU pragma: export
 
 #undef IsLinkCreatedByParser
 

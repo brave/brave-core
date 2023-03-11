@@ -13,6 +13,8 @@ const char kUserVersion[] = "brave.rewards.user_version";
 const char kCurrentUserVersion[] = "2.5";
 const char kHideButton[] = "brave.hide_brave_rewards_button";
 const char kShowButton[] = "brave.show_brave_rewards_button";
+const char kShowLocationBarButton[] =
+    "brave.rewards.show_brave_rewards_button_in_location_bar";
 const char kEnabled[] = "brave.rewards.enabled";
 const char kDeclaredGeo[] = "brave.rewards.declared_geo";
 const char kAdsEnabledTimeDelta[] = "brave.rewards.ads_enabled_time_delta";
@@ -55,6 +57,8 @@ const char kNextReconcileStamp[] = "brave.rewards.ac.next_reconcile_stamp";
 const char kCreationStamp[] = "brave.rewards.creation_stamp";
 const char kRecoverySeed[] = "brave.rewards.wallet.seed";
 const char kPaymentId[] = "brave.rewards.wallet.payment_id";
+const char kInlineTipButtonsEnabled[] =
+    "brave.rewards.inline_tip_buttons_enabled";
 const char kInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";
 const char kInlineTipTwitterEnabled[] = "brave.rewards.inline_tip.twitter";
 const char kInlineTipGithubEnabled[] = "brave.rewards.inline_tip.github";

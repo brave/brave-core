@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.ntp_background_images;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
@@ -54,6 +56,8 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
+    private static final String TAG = "RewardsBottomSheet";
+
     private static final String BRAVE_TERMS_PAGE = "https://basicattentiontoken.org/user-terms-of-service/";
     private static final String BRAVE_REWARDS_LEARN_MORE = "https://brave.com/faq-rewards";
 
@@ -136,8 +140,10 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             turnOnAdsButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (BraveActivity.getBraveActivity() != null) {
+                    try {
                         BraveActivity.getBraveActivity().openRewardsPanel();
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "onViewCreated turnOnAdsButton click " + e);
                     }
                     dismiss();
                 }

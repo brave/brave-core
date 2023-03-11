@@ -11,7 +11,7 @@
   friend class BraveContentsLayoutManager; \
   void SetContentsResizingStrategy
 
-#include "src/chrome/browser/ui/views/frame/contents_layout_manager.h"
+#include "src/chrome/browser/ui/views/frame/contents_layout_manager.h"  // IWYU pragma: export
 
 #undef SetContentsResizingStrategy
 

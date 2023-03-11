@@ -20,7 +20,7 @@ using string = ::std::string;
 #define throw CHECK(false) <<
 #define ios_base brave
 #define failure string
-#include "src/brave/third_party/bitcoin-core/src/src/serialize.h"
+#include "src/brave/third_party/bitcoin-core/src/src/serialize.h"  // IWYU pragma: export
 #undef throw
 #undef ios_base
 #undef string

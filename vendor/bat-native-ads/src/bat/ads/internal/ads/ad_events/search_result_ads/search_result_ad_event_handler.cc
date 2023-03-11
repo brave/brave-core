@@ -176,7 +176,8 @@ void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
   BLOG(3, "Successfully saved deposits state");
 
   ConversionList conversions;
-  if (const auto conversion = BuildConversion(ad_mojom)) {
+  if (const absl::optional<ConversionInfo> conversion =
+          BuildConversion(ad_mojom)) {
     conversions.push_back(*conversion);
   }
 

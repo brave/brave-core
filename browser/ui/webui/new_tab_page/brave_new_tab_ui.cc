@@ -16,8 +16,8 @@
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
-#include "brave/components/brave_today/browser/brave_news_controller.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
@@ -61,13 +61,13 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   // Let frontend know about feature flags
   source->AddBoolean(
       "featureFlagBraveNewsEnabled",
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature));
+      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature));
   source->AddBoolean("featureFlagBraveNewsPromptEnabled",
                      base::FeatureList::IsEnabled(
-                         brave_today::features::kBraveNewsCardPeekFeature));
+                         brave_news::features::kBraveNewsCardPeekFeature));
   source->AddBoolean(
       "featureFlagBraveNewsV2Enabled",
-      base::FeatureList::IsEnabled(brave_today::features::kBraveNewsV2Feature));
+      base::FeatureList::IsEnabled(brave_news::features::kBraveNewsV2Feature));
 
   web_ui->AddMessageHandler(
       base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
@@ -89,7 +89,7 @@ void BraveNewTabUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature)) {
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature)) {
     // Wire up JS mojom to service
     auto* brave_news_controller =
         brave_news::BraveNewsControllerFactory::GetForContext(profile);

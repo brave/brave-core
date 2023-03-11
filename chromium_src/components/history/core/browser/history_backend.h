@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_HISTORY_BACKEND_H_
 
 #define TypedURLSyncBridge BraveTypedURLSyncBridge
-#include "src/components/history/core/browser/history_backend.h"
+#include "src/components/history/core/browser/history_backend.h"  // IWYU pragma: export
 #undef TypedURLSyncBridge
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_HISTORY_CORE_BROWSER_HISTORY_BACKEND_H_

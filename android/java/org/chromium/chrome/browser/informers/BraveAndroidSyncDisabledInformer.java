@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.informers;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -23,6 +24,8 @@ import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuild
 import org.chromium.chrome.browser.util.TabUtils;
 
 public class BraveAndroidSyncDisabledInformer {
+    private static final String TAG = "SyncDisabled";
+
     public static final String DONT_SHOW_ANDROID_SYSTEM_SYNC_DISABLED_INFORMER =
             "brave_dont_show_android_system_sync_disabled_informer";
 
@@ -60,43 +63,47 @@ public class BraveAndroidSyncDisabledInformer {
     }
 
     private static void showAndroidSyncDisabled() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity == null) return;
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
 
-        Tab tab = activity.getActivityTabProvider().get();
-        if (tab == null) return;
+            Tab tab = activity.getActivityTabProvider().get();
+            if (tab == null) return;
 
-        BraveSimpleConfirmInfoBarBuilder.createInfobarWithDrawable(tab.getWebContents(),
-                new SimpleConfirmInfoBarBuilder.Listener() {
-                    @Override
-                    public void onInfoBarDismissed() {
-                        // Pressing cross
-                    }
+            BraveSimpleConfirmInfoBarBuilder.createInfobarWithDrawable(tab.getWebContents(),
+                    new SimpleConfirmInfoBarBuilder.Listener() {
+                        @Override
+                        public void onInfoBarDismissed() {
+                            // Pressing cross
+                        }
 
-                    @Override
-                    public boolean onInfoBarButtonClicked(boolean isPrimary) {
-                        if (isPrimary) {
-                            // Pressing `Open Settings`
-                            IntentUtils.safeStartActivity(
-                                    activity, new Intent(Settings.ACTION_SYNC_SETTINGS));
-                        } else {
-                            // Pressing `OK`
-                        };
-                        return false;
-                    }
+                        @Override
+                        public boolean onInfoBarButtonClicked(boolean isPrimary) {
+                            if (isPrimary) {
+                                // Pressing `Open Settings`
+                                IntentUtils.safeStartActivity(
+                                        activity, new Intent(Settings.ACTION_SYNC_SETTINGS));
+                            } else {
+                                // Pressing `OK`
+                            };
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onInfoBarLinkClicked() {
-                        // Pressing `Don't show again`
-                        disableInformer();
-                        return false;
-                    }
-                },
-                BraveInfoBarIdentifier.ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR, activity,
-                R.drawable.ic_warning_circle,
-                activity.getString(R.string.brave_sync_android_sync_disabled),
-                activity.getString(R.string.brave_open_system_sync_settings),
-                activity.getString(R.string.brave_android_sync_disabled_ok),
-                "\n\n" + activity.getString(R.string.brave_android_sync_disabled_dont_show), false);
+                        @Override
+                        public boolean onInfoBarLinkClicked() {
+                            // Pressing `Don't show again`
+                            disableInformer();
+                            return false;
+                        }
+                    },
+                    BraveInfoBarIdentifier.ANDROID_SYSTEM_SYNC_DISABLED_INFOBAR, activity,
+                    R.drawable.ic_warning_circle,
+                    activity.getString(R.string.brave_sync_android_sync_disabled),
+                    activity.getString(R.string.brave_open_system_sync_settings),
+                    activity.getString(R.string.brave_android_sync_disabled_ok),
+                    "\n\n" + activity.getString(R.string.brave_android_sync_disabled_dont_show),
+                    false);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showAndroidSyncDisabled " + e);
+        }
     }
 }

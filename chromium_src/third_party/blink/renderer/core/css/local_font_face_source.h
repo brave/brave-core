@@ -12,7 +12,7 @@
   IsLocalFontAvailable_ChromiumImpl(const FontDescription&) const; \
   bool IsLocalFontAvailable
 
-#include "src/third_party/blink/renderer/core/css/local_font_face_source.h"
+#include "src/third_party/blink/renderer/core/css/local_font_face_source.h"  // IWYU pragma: export
 
 #undef IsLocalFontAvailable
 

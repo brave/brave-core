@@ -23,7 +23,7 @@
   NUM
 // clang-format on
 
-#include "src/third_party/blink/public/common/permissions/permission_utils.h"
+#include "src/third_party/blink/public/common/permissions/permission_utils.h"  // IWYU pragma: export
 #undef NUM
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_COMMON_PERMISSIONS_PERMISSION_UTILS_H_

@@ -11,7 +11,7 @@ import { loadTimeData } from '../../common/loadTimeData'
 
 // css
 import 'emptykit.css'
-import '../../../ui/webui/resources/fonts/poppins.css'
+import 'chrome://resources/brave/fonts/poppins.css'
 import './css/market.css'
 
 // theme setup

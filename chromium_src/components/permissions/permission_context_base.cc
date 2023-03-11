@@ -62,6 +62,19 @@ void PermissionContextBase::PermissionDecided(const PermissionRequestID& id,
             content_setting, is_one_time);
       }
     }
+    const auto group_request_it = pending_grouped_requests_.find(id.ToString());
+    if (group_request_it != pending_grouped_requests_.end()) {
+      for (const auto& request : group_request_it->second->Requests()) {
+        const PermissionRequest* permission_request = request.first.get();
+        DCHECK(permission_request);
+        if (auto* permission_lifetime_manager =
+                permission_lifetime_manager_factory_.Run(browser_context_)) {
+          permission_lifetime_manager->PermissionDecided(
+              *permission_request, requesting_origin, embedding_origin,
+              content_setting, is_one_time);
+        }
+      }
+    }
   }
 
   if (!IsGroupedPermissionType(content_settings_type())) {
@@ -105,8 +118,9 @@ void PermissionContextBase::DecidePermission(
       id, requesting_origin, embedding_origin, user_gesture,
       std::move(callback));
 
-  if (!IsGroupedPermissionType(content_settings_type()))
+  if (!IsGroupedPermissionType(content_settings_type())) {
     return;
+  }
 
   // Move added pending request from pending_requests_ to
   // pending_grouped_requests_, because otherwise Chromium will replace this

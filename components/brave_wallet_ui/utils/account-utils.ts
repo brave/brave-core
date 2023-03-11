@@ -5,7 +5,6 @@
 
 // types
 import {
-  AccountInfo,
   BraveWallet,
   WalletAccountType,
   WalletAccountTypeName
@@ -47,8 +46,18 @@ export const findAccountByAddress = <T extends { address: string }>(
   return accounts.find((account) => address === account.address)
 }
 
-export const findAccountName = (accounts: WalletAccountType[], address: string) => {
-  return accounts.find((account) => account.address.toLowerCase() === address.toLowerCase())?.name
+export const findAccountName = <
+  T extends {
+    address: string
+    name: string
+  }
+>(
+  accounts: T[],
+  address: string
+) => {
+  return accounts.find(
+    (account) => account.address.toLowerCase() === address.toLowerCase()
+  )?.name
 }
 
 export const createTokenBalanceRegistryKey = (
@@ -62,7 +71,9 @@ export const createTokenBalanceRegistryKey = (
   return token.isErc721 ? `${token.contractAddress.toLowerCase()}#${token.tokenId}` : token.contractAddress.toLowerCase()
 }
 
-export const getAccountType = (info: AccountInfo): WalletAccountTypeName => {
+export const getAccountType = (
+  info: BraveWallet.AccountInfo
+): WalletAccountTypeName => {
   if (info.hardware) {
     return info.hardware.vendor as 'Ledger' | 'Trezor'
   }
@@ -89,4 +100,8 @@ export const getAddressLabelFromRegistry = (
     accounts.entities[address.toLowerCase()]?.name ??
     reduceAddress(address)
   )
+}
+
+export const getAccountId = (account: { address: string }) => {
+  return account.address
 }

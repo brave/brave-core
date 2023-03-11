@@ -17,9 +17,9 @@ import { SelectCurrencyItem } from '../select-currency-item/select-currency-item
 
 // Styled Components
 import {
-  SelectWrapper,
   SelectScrollSearchContainer
 } from '../shared-styles'
+import { SelectCurrencyWrapper } from './select-currency.style'
 import { WalletActions } from '../../../common/actions'
 
 export interface Props {
@@ -78,7 +78,7 @@ export const SelectCurrency = (props: Props) => {
   }, [currencies, filteredCurrencies])
 
   return (
-    <SelectWrapper>
+    <SelectCurrencyWrapper>
       <Header
         title={getLocale('braveWalletSelectCurrency')}
         onBack={onBack}
@@ -96,6 +96,6 @@ export const SelectCurrency = (props: Props) => {
           )
         }
       </SelectScrollSearchContainer>
-    </SelectWrapper>
+    </SelectCurrencyWrapper>
   )
 }

@@ -9,8 +9,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/values.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
@@ -122,7 +122,7 @@ void BraveWalletHandler::GetSolanaProviderOptions(
                               ::brave_wallet::mojom::DefaultWallet::None));
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(std::move(list)));
+  ResolveJavascriptCallback(args[0], list);
 }
 
 void BraveWalletHandler::RemoveChain(const base::Value::List& args) {
@@ -194,7 +194,7 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
   }
 
   AllowJavascript();
-  ResolveJavascriptCallback(args[0], base::Value(std::move(result)));
+  ResolveJavascriptCallback(args[0], result);
 }
 
 void BraveWalletHandler::GetPrepopulatedNetworksList(
@@ -206,7 +206,7 @@ void BraveWalletHandler::GetPrepopulatedNetworksList(
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (!blockchain_registry) {
-    ResolveJavascriptCallback(args[0], base::Value(std::move(networks)));
+    ResolveJavascriptCallback(args[0], networks);
     return;
   }
 
@@ -214,7 +214,7 @@ void BraveWalletHandler::GetPrepopulatedNetworksList(
     networks.Append(brave_wallet::NetworkInfoToValue(*it));
   }
 
-  ResolveJavascriptCallback(args[0], base::Value(std::move(networks)));
+  ResolveJavascriptCallback(args[0], networks);
 }
 
 void BraveWalletHandler::OnAddChain(base::Value javascript_callback,
@@ -224,8 +224,7 @@ void BraveWalletHandler::OnAddChain(base::Value javascript_callback,
   base::Value::List result;
   result.Append(error == brave_wallet::mojom::ProviderError::kSuccess);
   result.Append(error_message);
-  ResolveJavascriptCallback(javascript_callback,
-                            base::Value(std::move(result)));
+  ResolveJavascriptCallback(javascript_callback, result);
   if (chain_callback_for_testing_)
     std::move(chain_callback_for_testing_).Run();
 }
@@ -245,7 +244,7 @@ void BraveWalletHandler::AddChain(const base::Value::List& args) {
     result.Append(false);
     result.Append(l10n_util::GetStringUTF8(
         IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED));
-    ResolveJavascriptCallback(args[0], base::Value(std::move(result)));
+    ResolveJavascriptCallback(args[0], result);
     return;
   }
 

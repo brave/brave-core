@@ -21,6 +21,10 @@ handler.on(Actions.disconnect.getType(), async () => {
   getPanelBrowserAPI().serviceHandler.disconnect()
 })
 
+handler.on(Actions.resetConnectionState.getType(), async () => {
+  getPanelBrowserAPI().serviceHandler.resetConnectionState()
+})
+
 handler.on(Actions.connectToNewRegion.getType(), async (store) => {
   const state = getState(store)
 

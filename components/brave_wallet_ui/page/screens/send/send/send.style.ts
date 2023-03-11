@@ -70,6 +70,10 @@ export const AddressInput = styled(StyledInput) <{
   width: 100%;
   z-index: 9;
   position: relative;
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
   ::placeholder {
     color: ${(p) => p.theme.color.text03};
   }

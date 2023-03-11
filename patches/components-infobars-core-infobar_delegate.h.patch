@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 6b66e5a7c998377465d6881b9c4bbd9f442d9b16..decd6a95ec4f4545db04e6b5a68fb6ee5512a768 100644
+index b73ffcb9031c88906841fa30925623d101c23964..10795a2f2b4c0d9f2e31293a6d120cdbfba06334 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -184,6 +184,7 @@ class InfoBarDelegate {
-     AUTOFILL_VIRTUAL_CARD_ENROLLMENT_INFOBAR_DELEGATE_MOBILE = 110,
+@@ -185,6 +185,7 @@ class InfoBarDelegate {
      TAILORED_SECURITY_SERVICE_INFOBAR_DELEGATE = 111,
      CHROME_FOR_TESTING_INFOBAR_DELEGATE = 112,
+     EXTENSIONS_WEB_AUTH_FLOW_INFOBAR_DELEGATE = 113,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

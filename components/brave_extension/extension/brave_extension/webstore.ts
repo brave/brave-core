@@ -2,16 +2,21 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { getLocale } from './background/api/localeAPI'
+
 const config = { attributes: true, childList: true, subtree: true }
-const textToMatch: string[] = ['Add to Chrome', 'Remove from Chrome']
 
 const callback = (mutationsList: MutationRecord[], observer: MutationObserver) => {
-  const buttons: NodeListOf<Element> = document.querySelectorAll('div.webstore-test-button-label')
-
+  const buttons = document.querySelectorAll('div.webstore-test-button-label')
   buttons.forEach((button: Element) => {
-    const text: string = button.textContent || ''
-    if (textToMatch.includes(text)) {
-      button.textContent = text.replace('Chrome', 'Brave')
+    const text = button.textContent || ''
+    if (text === getLocale('addToChrome')) {
+      button.textContent =
+        getLocale('addToBrave') || text.replace('Chrome', 'Brave')
+    } else if (text === getLocale('removeFromChrome')) {
+      button.textContent =
+        getLocale('removeFromBrave') || text.replace('Chrome', 'Brave')
     }
   })
 }

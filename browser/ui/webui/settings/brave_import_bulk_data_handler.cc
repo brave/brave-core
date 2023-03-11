@@ -11,9 +11,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -82,9 +82,11 @@ void BraveImportBulkDataHandler::PrepareProfile(
             // Asynchronously creates a new profile in the next available
             // multiprofile directory. Directories are named "profile_1",
             // "profile_2", etc., in sequence of creation.
+            DCHECK_LT(profiles::GetModernAvatarIconStartIndex(),
+                      profiles::GetDefaultAvatarIconCount());
             auto avatar_index =
                 base::RandInt(profiles::GetModernAvatarIconStartIndex(),
-                              profiles::GetDefaultAvatarIconCount());
+                              profiles::GetDefaultAvatarIconCount() - 1);
             ProfileManager::CreateMultiProfileAsync(
                 name, avatar_index, false,
                 base::BindOnce(
@@ -111,7 +113,7 @@ void BraveImportBulkDataHandler::HandleImportDataBulk(
     int browser_index = it.GetInt();
     importing_profiles_.insert(browser_index);
     base::Value::List single_profile_args;
-    single_profile_args.Append(base::Value(browser_index));
+    single_profile_args.Append(browser_index);
     single_profile_args.Append(args[1].Clone());
     BraveImportDataHandler::HandleImportData(single_profile_args);
   }
@@ -158,7 +160,7 @@ void BraveImportBulkDataHandler::StartImport(
 
 void BraveImportBulkDataHandler::NotifyImportProgress(
     const importer::SourceProfile& source_profile,
-    const base::Value& info) {
+    const base::Value::Dict& info) {
   FireWebUIListener("brave-import-data-status-changed", info);
 }
 

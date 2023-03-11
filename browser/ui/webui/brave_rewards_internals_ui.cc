@@ -29,6 +29,9 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+using brave_rewards::FetchBalanceResult;
+using brave_rewards::GetExternalWalletResult;
+
 namespace {
 
 constexpr int kPartialLogMaxLines = 5000;
@@ -53,8 +56,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void HandleGetRewardsInternalsInfo(const base::Value::List& args);
   void OnGetRewardsInternalsInfo(ledger::mojom::RewardsInternalsInfoPtr info);
   void GetBalance(const base::Value::List& args);
-  void OnGetBalance(const ledger::mojom::Result result,
-                    ledger::mojom::BalancePtr balance);
+  void OnGetBalance(FetchBalanceResult result);
   void GetContributions(const base::Value::List& args);
   void OnGetContributions(
       std::vector<ledger::mojom::ContributionInfoPtr> contributions);
@@ -67,7 +69,7 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void ClearLog(const base::Value::List& args);
   void OnClearLog(const bool success);
   void GetExternalWallet(const base::Value::List& args);
-  void OnGetExternalWallet(brave_rewards::GetExternalWalletResult);
+  void OnGetExternalWallet(GetExternalWalletResult result);
   void GetEventLogs(const base::Value::List& args);
   void OnGetEventLogs(std::vector<ledger::mojom::EventLogPtr> logs);
   void GetAdDiagnostics(const base::Value::List& args);
@@ -188,7 +190,7 @@ void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
     }
   }
   CallJavascriptFunction("brave_rewards_internals.onGetRewardsInternalsInfo",
-                         base::Value(std::move(info_dict)));
+                         info_dict);
 }
 
 void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
@@ -203,27 +205,23 @@ void RewardsInternalsDOMHandler::GetBalance(const base::Value::List& args) {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetBalance(
-    const ledger::mojom::Result result,
-    ledger::mojom::BalancePtr balance) {
+void RewardsInternalsDOMHandler::OnGetBalance(FetchBalanceResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::Dict balance_value;
-
-  if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-    balance_value.Set("total", balance->total);
-
-    base::Value::Dict wallets;
-    for (auto const& wallet : balance->wallets) {
-      wallets.Set(wallet.first, wallet.second);
-    }
-    balance_value.Set("wallets", std::move(wallets));
+  base::Value::Dict data;
+  if (const auto balance = std::move(result).value_or(nullptr)) {
+    data.Set("total", balance->total);
+    data.Set("wallets",
+             base::Value::Dict(std::move_iterator(balance->wallets.begin()),
+                               std::move_iterator(balance->wallets.end())));
+  } else {
+    data.Set("total", 0.0);
+    data.Set("wallets", base::Value::Dict());
   }
 
-  CallJavascriptFunction("brave_rewards_internals.balance",
-                         base::Value(std::move(balance_value)));
+  CallJavascriptFunction("brave_rewards_internals.balance", std::move(data));
 }
 
 void RewardsInternalsDOMHandler::GetContributions(
@@ -268,8 +266,7 @@ void RewardsInternalsDOMHandler::OnGetContributions(
     list.Append(std::move(contribution));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.contributions",
-                         base::Value(std::move(list)));
+  CallJavascriptFunction("brave_rewards_internals.contributions", list);
 }
 
 void RewardsInternalsDOMHandler::GetPromotions(const base::Value::List& args) {
@@ -305,8 +302,7 @@ void RewardsInternalsDOMHandler::OnGetPromotions(
     promotions.Append(std::move(dict));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.promotions",
-                         base::Value(std::move(promotions)));
+  CallJavascriptFunction("brave_rewards_internals.promotions", promotions);
 }
 
 void RewardsInternalsDOMHandler::GetPartialLog(const base::Value::List& args) {
@@ -388,7 +384,7 @@ void RewardsInternalsDOMHandler::GetExternalWallet(
 }
 
 void RewardsInternalsDOMHandler::OnGetExternalWallet(
-    brave_rewards::GetExternalWalletResult result) {
+    GetExternalWalletResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -401,8 +397,7 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
     data.Set("type", wallet->type);
   }
 
-  CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards_internals.onGetExternalWallet", data);
 }
 
 void RewardsInternalsDOMHandler::GetEventLogs(const base::Value::List& args) {
@@ -434,8 +429,7 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(
     data.Append(std::move(item));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.eventLogs",
-                         base::Value(std::move(data)));
+  CallJavascriptFunction("brave_rewards_internals.eventLogs", data);
 }
 
 void RewardsInternalsDOMHandler::GetAdDiagnostics(
@@ -478,8 +472,7 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
     diagnostics.Set("entries", std::move(*diagnosticsEntries));
   }
 
-  CallJavascriptFunction("brave_rewards_internals.adDiagnostics",
-                         base::Value(std::move(diagnostics)));
+  CallJavascriptFunction("brave_rewards_internals.adDiagnostics", diagnostics);
 }
 
 void RewardsInternalsDOMHandler::SetAdDiagnosticId(

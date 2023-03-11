@@ -23,12 +23,9 @@ std::string HeadersToString(
 
   const std::string spaces = std::string(indent, ' ');
 
-  for (const auto& header : headers) {
-    const std::string key = header.first;
-    const std::string value = header.second;
-
+  for (const auto& [header, value] : headers) {
     const std::string formatted_header = base::StringPrintf(
-        "%s%s: %s", spaces.c_str(), key.c_str(), value.c_str());
+        "%s%s: %s", spaces.c_str(), header.c_str(), value.c_str());
 
     formatted_headers.push_back(formatted_header);
   }

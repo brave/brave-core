@@ -51,8 +51,7 @@ void CallOnGetDaemonStatus(content::WebUI* web_ui, const std::string& error) {
   value.Set("installed", service->IsIPFSExecutableAvailable());
   value.Set("launched", service->IsDaemonLaunched());
   value.Set("error", error);
-  web_ui->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                       base::Value(std::move(value)));
+  web_ui->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus", value);
 }
 
 }  // namespace
@@ -141,7 +140,7 @@ void IPFSDOMHandler::OnGetConnectedPeers(
   base::Value::Dict stats_value;
   stats_value.Set("peerCount", static_cast<double>(peers.size()));
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetConnectedPeers",
-                                         base::Value(std::move(stats_value)));
+                                         stats_value);
 }
 
 void IPFSDOMHandler::HandleGetAddressesConfig(const base::Value::List& args) {
@@ -173,7 +172,7 @@ void IPFSDOMHandler::OnGetAddressesConfig(bool success,
   config_value.Set("swarm", std::move(swarm_value));
 
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetAddressesConfig",
-                                         base::Value(std::move(config_value)));
+                                         config_value);
 }
 
 void IPFSDOMHandler::HandleGetDaemonStatus(const base::Value::List& args) {
@@ -224,7 +223,7 @@ void IPFSDOMHandler::OnInstallationEvent(ipfs::ComponentUpdaterEvents event) {
         value.Set("downloaded_bytes",
                   static_cast<double>(item.downloaded_bytes));
         web_ui()->CallJavascriptFunctionUnsafe("ipfs.onInstallationProgress",
-                                               base::Value(std::move(value)));
+                                               value);
       }
     }
   } else if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
@@ -232,8 +231,7 @@ void IPFSDOMHandler::OnInstallationEvent(ipfs::ComponentUpdaterEvents event) {
     value.Set("installed", false);
     value.Set("error",
               l10n_util::GetStringUTF8(IDS_IPFS_NODE_INSTALLATION_ERROR));
-    web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus",
-                                           base::Value(std::move(value)));
+    web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetDaemonStatus", value);
   }
 }
 
@@ -297,8 +295,7 @@ void IPFSDOMHandler::OnGetRepoStats(bool success,
   stats_value.Set("path", stats.path);
   stats_value.Set("version", stats.version);
 
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetRepoStats",
-                                         base::Value(std::move(stats_value)));
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetRepoStats", stats_value);
 }
 
 void IPFSDOMHandler::HandleGetNodeInfo(const base::Value::List& args) {
@@ -340,8 +337,7 @@ void IPFSDOMHandler::OnGarbageCollection(bool success,
   result.Set("error", error);
   result.Set("success", success);
   result.Set("started", false);
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGarbageCollection",
-                                         base::Value(std::move(result)));
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGarbageCollection", result);
 }
 std::string IPFSDOMHandler::GetIpfsClientUpdaterVersion() const {
   if (client_updater_version_for_testing_)
@@ -360,6 +356,5 @@ void IPFSDOMHandler::OnGetNodeInfo(bool success, const ipfs::NodeInfo& info) {
   if (!extension_version.empty()) {
     node_value.Set("component_version", extension_version);
   }
-  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetNodeInfo",
-                                         base::Value(std::move(node_value)));
+  web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetNodeInfo", node_value);
 }

@@ -76,14 +76,14 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
 
   // Disabling the shorcut by policy doesn't cause the command to be added.
   prefs->SetManagedPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar,
-                        std::make_unique<base::Value>(false));
+                        base::Value(false));
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT)
                    .has_value());
 
   // And enabling the shortcut by policy doesn't cause the command to be added.
   prefs->SetManagedPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar,
-                        std::make_unique<base::Value>(true));
+                        base::Value(true));
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT)
                    .has_value());
@@ -91,7 +91,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
   // And enabling the shortcut by user doesn't cause the command to be added.
   prefs->RemoveManagedPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar);
   prefs->SetUserPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar,
-                     std::make_unique<base::Value>(true));
+                     base::Value(true));
   EXPECT_FALSE(controller.menu_model()
                    ->GetIndexOfCommandId(IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT)
                    .has_value());

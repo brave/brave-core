@@ -81,7 +81,7 @@ void Bitflyer::ContributionCompleted(ledger::LegacyResultCallback callback,
 void Bitflyer::FetchBalance(FetchBalanceCallback callback) {
   auto wallet = GetWalletIf({mojom::WalletStatus::kConnected});
   if (!wallet) {
-    return std::move(callback).Run(mojom::Result::LEDGER_OK, 0.0);
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR, 0.0);
   }
 
   auto url_callback = base::BindOnce(

@@ -30,7 +30,7 @@ namespace json_rpc_responses {
     DOMString blockHash;
     DOMString cumulativeGasUsed;
     DOMString gasUsed;
-    // contracatAddress can be null
+    // contractAddress can be null
     any contractAddress;
     // TODO(bbondy): logs
     DOMString logsBloom;

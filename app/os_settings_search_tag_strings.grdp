@@ -144,6 +144,22 @@
   <message name="IDS_OS_SETTINGS_TAG_VPN" desc="Text for search result item which, when clicked, navigates the user to VPN settings.">
     VPN
   </message>
+  <!-- TODO(b/260277007): Remove translateble false and upload snapshots when strings finalized. -->
+  <message translateable="false" name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS" desc="Text for search result item which, when clicked, navigates the user to Audio settings.">
+    Audio
+  </message>
+  <message translateable="false" name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT1" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
+    Volume
+  </message>
+  <message translateable="false" name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT2" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
+    Sound
+  </message>
+  <message translateable="false" name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT3" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
+    Speakers
+  </message>
+  <message translateable="false" name="IDS_OS_SETTINGS_TAG_AUDIO_SETTINGS_ALT4" desc="Text for search result item which, when clicked, navigates the user to Audio settings. Alternative phrase for: 'Audio'.">
+    Microphone
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_AUTO_CONNECT_NETWORK" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the device auto-connects to a network. Alternate phrase for: 'Auto connect to network'">
     Automatically connect to network
   </message>
@@ -188,6 +204,24 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_PROXY_ALT4" desc="Text for search result item which, when clicked, navigates the user to network proxy settings. Alternate phrase for: 'Proxy settings', 'Automatic proxy configuration', 'Direct Internet connection', 'Web proxy autodiscovery'">
     Manual proxy configuration
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_HOTSPOT" desc="Text for search result item which, when clicked, navigates the user to hotspot settings.">
+    Hotspot
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_HOTSPOT_TURN_ON" desc="Text for search result item which, when clicked, navigates the user to Hotspot settings, with a toggle to turn on Bluetooth.">
+    Turn on hotspot
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_HOTSPOT_TURN_OFF" desc="Text for search result item which, when clicked, navigates the user to Hotspot settings, with a toggle to turn off Bluetooth.">
+    Turn off hotspot
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_HOTSPOT_AUTO_DISABLED" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the hotspot turns off automatically when no devices is connected to it after a fixed of time. Alternate phrase for: 'Automatically turn off hotspot', 'Automatically disable hotspot'">
+    Turn off hotspot automatically
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_HOTSPOT_AUTO_DISABLED_ALT1" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the hotspot turns off automatically when no devices is connected to it after a fixed of time. Alternate phrase for: 'Automatically turn off hotspot', 'Automatically disable hotspot'">
+    Automatically turn off hotspot
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_HOTSPOT_AUTO_DISABLED_ALT2" desc="Text for search result item which, when clicked, navigates the user to settings to toggle whether the hotspot turns off automatically when no devices is connected to it after a fixed of time. Alternate phrase for: 'Automatically turn off hotspot', 'Automatically disable hotspot'">
+    Automatically disable hotspot
   </message>
 
   <!-- Bluetooth section. -->
@@ -1058,6 +1092,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_FILES_NETWORK_FILE_SHARES_ALT1" desc="Text for search result item which, when clicked, navigates the user to network file share (a.k.a. SMB share) settings. Alternate phrase for: 'Network file shares'">
     SMB share
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_FILES_OFFICE" translateable="false" desc="Text for search result item which, when clicked, navigates the user to the Office file handler settings.">
+    Office file settings
   </message>
 
   <!-- Printing section. -->

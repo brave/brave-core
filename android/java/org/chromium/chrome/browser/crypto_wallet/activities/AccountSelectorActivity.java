@@ -6,12 +6,14 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -26,6 +28,8 @@ import java.util.List;
 
 public class AccountSelectorActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick {
+    private static final String TAG = "AccountSelector";
+
     private KeyringModel mKeyringModel;
     private RecyclerView mRVNetworkSelector;
     private WalletCoinAdapter mWalletCoinAdapter;
@@ -34,9 +38,11 @@ public class AccountSelectorActivity
     @Override
     protected void triggerLayoutInflation() {
         setContentView(R.layout.activity_account_selector);
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mKeyringModel = activity.getWalletModel().getKeyringModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
         }
         assert mKeyringModel != null;
         init();

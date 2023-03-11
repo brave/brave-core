@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/bind.h"
 #include "base/command_line.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/test/launcher/unit_test_launcher.h"
 #include "base/test/test_io_thread.h"
-#include "build/build_config.h"
 #include "brave/test/base/brave_unit_test_suite.h"
+#include "build/build_config.h"
 #include "content/public/test/unittest_test_suite.h"
 #include "mojo/core/embedder/scoped_ipc_support.h"
 

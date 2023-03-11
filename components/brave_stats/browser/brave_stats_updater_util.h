@@ -8,9 +8,9 @@
 
 #include <string>
 
+#include "base/strings/string_piece.h"
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
-#include "components/prefs/pref_service.h"
 
 namespace brave_stats {
 

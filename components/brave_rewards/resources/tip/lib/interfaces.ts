@@ -69,11 +69,6 @@ export interface PublisherInfo {
   status: PublisherStatus
 }
 
-export interface BalanceInfo {
-  total: number
-  wallets: Record<string, number>
-}
-
 export interface ExternalWalletInfo {
   status: mojom.WalletStatus
   type: 'uphold' | 'bitflyer' | 'gemini'
@@ -93,7 +88,7 @@ export interface HostError {
 
 export interface HostState {
   publisherInfo?: PublisherInfo
-  balanceInfo?: BalanceInfo
+  balanceInfo?: mojom.Balance
   externalWalletInfo?: ExternalWalletInfo
   userType?: UserType
   rewardsParameters?: RewardsParameters

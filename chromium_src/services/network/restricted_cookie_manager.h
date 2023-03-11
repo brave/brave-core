@@ -30,7 +30,7 @@
       const net::FirstPartySetMetadata& first_party_set_metadata) const; \
   void RemoveChangeListener
 
-#include "src/services/network/restricted_cookie_manager.h"
+#include "src/services/network/restricted_cookie_manager.h"  // IWYU pragma: export
 
 #undef RemoveChangeListener
 

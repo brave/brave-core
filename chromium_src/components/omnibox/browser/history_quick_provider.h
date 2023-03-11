@@ -11,7 +11,7 @@
   friend class BraveHistoryQuickProvider; \
   void DoAutocomplete
 
-#include "src/components/omnibox/browser/history_quick_provider.h"
+#include "src/components/omnibox/browser/history_quick_provider.h"  // IWYU pragma: export
 
 #undef DoAutocomplete
 

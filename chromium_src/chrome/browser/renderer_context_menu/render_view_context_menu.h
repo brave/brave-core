@@ -24,7 +24,7 @@ class BraveRenderViewContextMenu;
   RegisterMenuShownCallbackForTesting(                           \
       base::OnceCallback<void(BraveRenderViewContextMenu*)> cb); \
   static void RegisterMenuShownCallbackForTesting_unused
-#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"
+#include "src/chrome/browser/renderer_context_menu/render_view_context_menu.h"  // IWYU pragma: export
 #undef RegisterMenuShownCallbackForTesting
 #undef RenderViewContextMenu
 
@@ -45,6 +45,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
 
  private:
+  friend class BraveRenderViewContextMenuTest;
   // RenderViewContextMenuBase:
   void InitMenu() override;
 #if BUILDFLAG(ENABLE_IPFS)

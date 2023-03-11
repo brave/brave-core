@@ -1,6 +1,6 @@
 on:
   pull_request:
-    types: [opened, reopened]
+    types: [opened, reopened, closed]
 name: Pull Request
 
 # Setting permissions for GITHUB_TOKEN for dependabot as default is readonly

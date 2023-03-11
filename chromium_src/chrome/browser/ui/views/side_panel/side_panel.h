@@ -9,7 +9,7 @@
 #define kAlignLeft kHorizontalAlignLeft
 #define kAlignRight kHorizontalAlignRight
 
-#include "src/chrome/browser/ui/views/side_panel/side_panel.h"
+#include "src/chrome/browser/ui/views/side_panel/side_panel.h"  // IWYU pragma: export
 
 #undef kAlignLeft
 #undef kAlignRight

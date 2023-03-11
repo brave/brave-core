@@ -9,6 +9,7 @@ import { getBraveKeyring } from './api/hardware_keyrings'
 import { BraveWallet } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
 import { makeSerializableOriginInfo, makeSerializableTransaction } from '../utils/model-serialization-utils'
+import { WalletPageActions } from '../page/actions'
 
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
@@ -135,8 +136,13 @@ export class WalletApiProxy {
   addBraveWalletPinServiceObserver (store: Store) {
     const braveWalletServiceObserverReceiver = new BraveWallet.BraveWalletPinServiceObserverReceiver({
       onTokenStatusChanged: function (service, token, status) {
+        store.dispatch(WalletPageActions.updateNftPinningStatus({
+          token,
+          status
+        }))
       },
       onLocalNodeStatusChanged: function (status) {
+        store.dispatch(WalletPageActions.updateLocalIpfsNodeStatus(status))
       }
     })
     this.braveWalletPinService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())

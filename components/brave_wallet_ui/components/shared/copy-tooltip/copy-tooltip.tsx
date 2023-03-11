@@ -12,19 +12,25 @@ import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import { getLocale } from '../../../../common/locale'
 
 // components
-import { Tooltip } from '../index'
+import { Tooltip, ToolTipProps } from '../tooltip'
 
 // styled components
 import { StyledWrapper } from './style'
 
-interface Props {
+type Props = {
   children: React.ReactNode
   tooltipText?: string
   actionText?: string
   text?: string
-}
+} & ToolTipProps
 
-export const CopyTooltip = ({ children, tooltipText, actionText, text }: Props) => {
+export const CopyTooltip = ({
+  children,
+  tooltipText,
+  actionText,
+  text,
+  ...tipProps
+}: Props) => {
   const { isCopied, copyToClipboard } = useCopyToClipboard(1500)
 
   const handleClick = React.useCallback(async () => {
@@ -37,8 +43,11 @@ export const CopyTooltip = ({ children, tooltipText, actionText, text }: Props) 
     <StyledWrapper onClick={handleClick}>
       <Tooltip
         text={tooltipText || getLocale('braveWalletToolTipCopyToClipboard')}
-        actionText={actionText || getLocale('braveWalletToolTipCopiedToClipboard')}
+        actionText={
+          actionText || getLocale('braveWalletToolTipCopiedToClipboard')
+        }
         isActionVisible={isCopied}
+        {...tipProps}
       >
         {children}
       </Tooltip>

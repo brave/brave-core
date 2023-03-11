@@ -24,7 +24,7 @@
   virtual uint8_t WorkerGetBraveFarblingLevel(                               \
       const GURL& url, BrowserContext* browser_context);
 
-#include "src/content/public/browser/content_browser_client.h"
+#include "src/content/public/browser/content_browser_client.h"  // IWYU pragma: export
 
 #undef BRAVE_CONTENT_BROWSER_CLIENT_H
 

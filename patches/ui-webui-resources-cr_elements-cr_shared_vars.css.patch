@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/cr_shared_vars.css b/ui/webui/resources/cr_elements/cr_shared_vars.css
-index 2fe906d0d256b8c49ae248121cf8716ed8745446..ddc35c0c8943924915272b6b2c908eaf69a1806d 100644
+index 8d332264f0f170ede92b7a39b82ab04af1cf6c0d..fae30173e57bf4421f7697f240e71cbf6a6f9954 100644
 --- a/ui/webui/resources/cr_elements/cr_shared_vars.css
 +++ b/ui/webui/resources/cr_elements/cr_shared_vars.css
 @@ -5,6 +5,7 @@
  /* #css_wrapper_metadata_start
   * #type=vars
   * #import=//resources/polymer/v3_0/paper-styles/color.js
-+ * #import=//resources/br_elements/br_shared_vars.css.js
++ * #import=//resources/brave/br_elements/br_shared_vars.css.js
   * #scheme=relative
   * #css_wrapper_metadata_end */
  

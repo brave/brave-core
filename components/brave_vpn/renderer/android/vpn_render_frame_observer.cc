@@ -72,14 +72,17 @@ void VpnRenderFrameObserver::DidCreateScriptContext(
 
 void VpnRenderFrameObserver::OnGetPurchaseToken(
     const std::string& purchase_token) {
-  if (!IsAllowed())
+  if (!IsAllowed()) {
     return;
+  }
   auto* frame = render_frame();
-  if (frame && purchase_token.length() > 0) {
-    std::u16string set_local_storage =
-        base::StrCat({u"window.sessionStorage.setItem(\"braveVpn.receipt\", \"",
-                      base::UTF8ToUTF16(purchase_token), u"\");"});
-    frame->ExecuteJavaScript(set_local_storage);
+  if (frame) {
+    if (IsValueAllowed(purchase_token)) {
+      std::u16string set_local_storage = base::StrCat(
+          {u"window.sessionStorage.setItem(\"braveVpn.receipt\", \"",
+           base::UTF8ToUTF16(purchase_token), u"\");"});
+      frame->ExecuteJavaScript(set_local_storage);
+    }
   }
 }
 
@@ -97,6 +100,19 @@ std::string VpnRenderFrameObserver::ExtractParam(
     return std::string(url.query_piece().substr(value.begin, value.len));
   }
   return std::string();
+}
+
+bool VpnRenderFrameObserver::IsValueAllowed(
+    const std::string& purchase_token) const {
+  if (purchase_token.length() > 0) {
+    // Don't allow " in purchase token.
+    // See https://github.com/brave/brave-browser/issues/27524
+    std::size_t found = purchase_token.find("\"");
+    if (found == std::string::npos) {
+      return true;
+    }
+  }
+  return false;
 }
 
 bool VpnRenderFrameObserver::IsAllowed() {

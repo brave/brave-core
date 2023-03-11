@@ -7,14 +7,15 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
@@ -41,7 +42,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         implements TransactionConfirmationListener,
                    AddSwitchChainNetworkFragment.AddSwitchRequestProcessListener {
     public static final String ACTIVITY_TYPE = "activityType";
-    private static final String TAG = BraveWalletBaseActivity.class.getSimpleName();
+    private static final String TAG = "BraveWalletDApps";
     private ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment;
     private PendingTxHelper mPendingTxHelper;
     private Fragment mFragment;
@@ -93,8 +94,8 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
                 intent.getIntExtra("activityType", ActivityType.ADD_ETHEREUM_CHAIN.getValue()));
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mWalletModel.getDappsModel().mProcessNextDAppsRequest.observe(this, activityType -> {
                 if (activityType == null) return;
@@ -110,7 +111,11 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                         break;
                 }
             });
+
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
         }
+
         onInitialLayoutInflationComplete();
     }
 
@@ -248,10 +253,13 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         // need to clear the state for a fresh state next time
         // TODO (pavi): update the flow with dapps model
         // (under-development) and get rid of explicit clear state call
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getDappsModel().clearDappsState();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onDestroy " + e);
         }
+
         if (mPendingTxHelper != null) {
             mPendingTxHelper.destroy();
         }

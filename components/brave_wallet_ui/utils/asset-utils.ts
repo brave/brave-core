@@ -10,7 +10,7 @@ import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wal
 import Amount from './amount'
 import {
   getRampNetworkPrefix,
-  httpifyIpfsUrl
+  addIpfsGateway
 } from './string-utils'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
@@ -32,17 +32,17 @@ export const isSelectedAssetInAssetOptions = (
   }) !== -1
 }
 
-export const getRampAssetSymbol = (asset: BraveWallet.BlockchainToken) => {
+export const getRampAssetSymbol = (asset: BraveWallet.BlockchainToken, isOfframp?: boolean) => {
   if (asset.symbol.toUpperCase() === 'BAT' && asset.chainId === BraveWallet.MAINNET_CHAIN_ID) {
     // BAT is the only token on Ethereum Mainnet with a prefix on Ramp.Network
     return 'ETH_BAT'
   }
 
   if (asset.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID && asset.contractAddress === '') {
-    return asset.symbol // AVAX native token has no prefix
+    return isOfframp ? 'AVAX_AVAX' : asset.symbol // AVAX native token has no prefix for buy
   }
 
-  const rampNetworkPrefix = getRampNetworkPrefix(asset.chainId)
+  const rampNetworkPrefix = getRampNetworkPrefix(asset.chainId, isOfframp)
   return rampNetworkPrefix !== '' ? `${rampNetworkPrefix}_${asset.symbol.toUpperCase()}` : asset.symbol
 }
 
@@ -79,7 +79,7 @@ export const auroraSupportedContractAddresses = [
 
 export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
   const newLogo = token.logo?.startsWith('ipfs://')
-    ? httpifyIpfsUrl(token.logo)
+    ? addIpfsGateway(token.logo)
     : token.logo?.startsWith('data:image/')
       ? token.logo
       : `chrome://erc-token-images/${token.logo}`

@@ -15,7 +15,7 @@
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, void HTMLDocumentParserConstructed();) \
   HTMLParserScriptRunnerHost* AsHTMLParserScriptRunnerHostForTesting
 
-#include "src/third_party/blink/renderer/core/html/parser/html_document_parser.h"
+#include "src/third_party/blink/renderer/core/html/parser/html_document_parser.h"  // IWYU pragma: export
 
 #undef AsHTMLParserScriptRunnerHostForTesting
 

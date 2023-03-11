@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -30,6 +31,7 @@ interface Props {
   initialView: InitialView
   result: OnboardingResult | null
   availableCountries: string[]
+  defaultCountry: string
   onTakeTour: () => void
   onEnable: (country: string) => void
   onHideResult: () => void
@@ -155,6 +157,7 @@ export function RewardsOptInModal (props: Props) {
           <style.selectCountry>
             <CountrySelect
               countries={props.availableCountries}
+              defaultCountry={props.defaultCountry}
               placeholderText={getString('onboardingSelectCountry')}
               value={countryCode}
               onChange={setCountryCode}

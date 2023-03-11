@@ -206,18 +206,19 @@ SyncDeviceFormFactor const SyncDeviceFormFactorTablet =
     for (const auto* session : sessions) {
       // Create a distant session
       IOSOpenDistantSession* distant_session = [[IOSOpenDistantSession alloc]
-              initWithName:base::SysUTF8ToNSString(session->session_name)
-                sessionTag:base::SysUTF8ToNSString(session->session_tag)
-               dateCreated:session->modified_time.ToNSDate()
+              initWithName:base::SysUTF8ToNSString(session->GetSessionName())
+                sessionTag:base::SysUTF8ToNSString(session->GetSessionTag())
+               dateCreated:session->GetModifiedTime().ToNSDate()
           deviceFormFactor:static_cast<SyncDeviceFormFactor>(
                                session->GetDeviceFormFactor())];
 
       // Add tabs to the distant session
       std::vector<const sessions::SessionTab*> open_tabs;
-      open_tabs_delegate->GetForeignSessionTabs(session->session_tag,
+      open_tabs_delegate->GetForeignSessionTabs(session->GetSessionTag(),
                                                 &open_tabs);
       for (const sessions::SessionTab* session_tab : open_tabs) {
-        [distant_session addTab:*session_tab sessionTag:session->session_tag];
+        [distant_session addTab:*session_tab
+                     sessionTag:session->GetSessionTag()];
       }
 
       // Don't display sessions with no tabs.

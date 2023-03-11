@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_CONTENT_SETTINGS_CORE_COMMON_FEATURES_H_
 
-#include "src/components/content_settings/core/common/features.h"
+#include "src/components/content_settings/core/common/features.h"  // IWYU pragma: export
 
 namespace content_settings {
 

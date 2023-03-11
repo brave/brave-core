@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tools/build_webui.gni b/chrome/browser/resources/tools/build_webui.gni
-index 4d3dcda0e79d6648fd45aed743e49171d7a23c70..6f227587e70825d8d4109a1df7fb31e04501d89d 100644
+index 568fd447935225efa177075545638acb35771aae..9345f9b470cb2e212f23dc76c607b2ae1a0fbb76 100644
 --- a/chrome/browser/resources/tools/build_webui.gni
 +++ b/chrome/browser/resources/tools/build_webui.gni
 @@ -132,6 +132,7 @@ template("build_webui") {

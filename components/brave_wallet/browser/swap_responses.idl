@@ -58,7 +58,7 @@ namespace swap_responses {
     boolean notEnoughLiquidity;
     DOMString inAmount;
     DOMString outAmount;
-    DOMString priceImpactPct;
+    any priceImpactPct; // nullable
     JupiterMarketInfoFee lpFee;
     JupiterMarketInfoFee platformFee;
   };
@@ -70,7 +70,7 @@ namespace swap_responses {
     DOMString otherAmountThreshold;
     DOMString outAmountWithSlippage;
     DOMString swapMode;
-    DOMString priceImpactPct;
+    any priceImpactPct; // nullable
     JupiterMarketInfo[] marketInfos;
   };
 

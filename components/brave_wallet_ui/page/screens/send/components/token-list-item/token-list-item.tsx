@@ -69,8 +69,21 @@ export const TokenListItem = (props: Props) => {
   }, [token, networks])
 
   const fiatBalance = React.useMemo(() => {
-    return computeFiatAmount(spotPrices, { decimals: token.decimals, symbol: token.symbol, value: balance })
-  }, [spotPrices, balance, token.symbol, token.decimals])
+    return computeFiatAmount(spotPrices, {
+      decimals: token.decimals,
+      symbol: token.symbol,
+      value: balance,
+      contractAddress: token.contractAddress,
+      chainId: token.chainId
+    })
+  }, [
+    spotPrices,
+    balance,
+    token.symbol,
+    token.decimals,
+    token.contractAddress,
+    token.chainId
+  ])
 
   const formattedFiatBalance = React.useMemo(() => {
     return fiatBalance.formatAsFiat(defaultCurrencies.fiat)

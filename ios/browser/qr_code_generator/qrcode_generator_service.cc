@@ -7,8 +7,8 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include "base/bind.h"
-#include "base/callback.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/strings/string_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "components/qr_code_generator/dino_image.h"

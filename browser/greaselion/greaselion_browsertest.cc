@@ -81,8 +81,9 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
   ~GreaselionServiceWaiter() override = default;
 
   void Wait() {
-    if (!greaselion_service_->ready())
+    if (greaselion_service_->update_in_progress()) {
       run_loop_.Run();
+    }
   }
 
  private:

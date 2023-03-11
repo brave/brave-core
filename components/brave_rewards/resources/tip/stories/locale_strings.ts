@@ -35,17 +35,17 @@ export const localeStrings = {
   on: 'on',
   oneTimeTip: 'One-Time Tip',
   oneTimeTipAmount: 'One-time tip amount:',
+  pendingTipText: 'For now, any tip you make will remain pending ' +
+                  'and retry automatically for 90 days.',
+  pendingTipTitleRegistered: 'You\'re connected to $1, but this creator ' +
+                             'is connected to $2. This means your tip ' +
+                             'can\'t reach this creator.',
   postHeader: '$1’s post',
   postHeaderTwitter: '$1’s tweet',
   rewardsBannerText1: 'You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.',
   sendDonation: 'Send Tip',
   siteBannerNoticeNote: 'NOTE:',
   siteBannerNoticeNotRegistered: 'This creator is not signed up yet. Any tip you make will remain pending and retry automatically for 90 days.',
-  siteBannerNoticeText: 'You\'re connected to $1, but this creator ' +
-                        'is connected to $2. This means your tip ' +
-                        'can\'t reach this creator. For now, any ' +
-                        'tip you make will remain pending and retry ' +
-                        'automatically for 90 days.',
   sorryToSeeYouGo: 'Sorry to see you go…',
   supportThisCreator: 'Support this creator',
   thanksForTheSupport: 'Thanks for the support!',

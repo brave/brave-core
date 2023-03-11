@@ -296,12 +296,12 @@ class SkusServiceTestUnitTest : public testing::Test {
 };
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
-  base::Value state(base::Value::Type::DICT);
+  base::Value::Dict state;
   auto env = skus::GetDefaultEnvironment();
   auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
-  state.SetStringKey("skus:" + env, testing_payload);
-  prefs()->Set(skus::prefs::kSkusState, std::move(state));
+  state.Set("skus:" + env, testing_payload);
+  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   auto credentials = GetCredentialsSummary(domain);
   EXPECT_FALSE(credentials.empty());
   auto credentials_json = base::JSONReader::Read(credentials);
@@ -312,7 +312,7 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummarySuccess) {
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
-  base::Value state(base::Value::Type::DICT);
+  base::Value::Dict state;
   auto env = skus::GetDefaultEnvironment();
   auto domain = skus::GetDomain("vpn", env);
   auto testing_payload = GenerateTestingCreds(domain);
@@ -325,18 +325,18 @@ TEST_F(SkusServiceTestUnitTest, CredentialSummaryFailed) {
   base::JSONWriter::WriteWithOptions(
       payload_value.value(), base::JSONWriter::OPTIONS_PRETTY_PRINT, &json);
   // Save prefs with expired prefs only
-  state.SetStringKey("skus:" + env, json);
+  state.Set("skus:" + env, json);
 
-  prefs()->Set(skus::prefs::kSkusState, std::move(state));
+  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   auto credentials = GetCredentialsSummary(domain);
   EXPECT_EQ(credentials, "{}");
 }
 
 TEST_F(SkusServiceTestUnitTest, CredentialSummaryWrongEnv) {
-  base::Value state(base::Value::Type::DICT);
+  base::Value::Dict state;
   auto testing_payload = GenerateTestingCreds("vpn.brave.software");
-  state.SetStringKey("skus:staging", testing_payload);
-  prefs()->Set(skus::prefs::kSkusState, std::move(state));
+  state.Set("skus:staging", testing_payload);
+  prefs()->SetDict(skus::prefs::kSkusState, std::move(state));
   auto credentials = GetCredentialsSummary("vpn.brave.software");
   EXPECT_EQ(credentials, "{}");
 }

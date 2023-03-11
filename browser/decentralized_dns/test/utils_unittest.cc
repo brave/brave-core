@@ -37,16 +37,16 @@ TEST_F(UtilsUnitTest, IsUnstoppableDomainsTLD) {
 TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodAsk) {
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 
-  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  SetUnstoppableDomainsResolveMethod(local_state(),
+                                     ResolveMethodTypes::ENABLED);
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodAsk(local_state()));
 }
 
 TEST_F(UtilsUnitTest, IsUnstoppableDomainsResolveMethodEnabled) {
   EXPECT_FALSE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
 
-  local_state()->SetInteger(kUnstoppableDomainsResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  SetUnstoppableDomainsResolveMethod(local_state(),
+                                     ResolveMethodTypes::ENABLED);
   EXPECT_TRUE(IsUnstoppableDomainsResolveMethodEnabled(local_state()));
 }
 
@@ -67,17 +67,29 @@ TEST_F(UtilsUnitTest, IsSnsTLD) {
 TEST_F(UtilsUnitTest, IsENSResolveMethodAsk) {
   EXPECT_TRUE(IsENSResolveMethodAsk(local_state()));
 
-  local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  SetENSResolveMethod(local_state(), ResolveMethodTypes::ENABLED);
   EXPECT_FALSE(IsENSResolveMethodAsk(local_state()));
 }
 
 TEST_F(UtilsUnitTest, IsENSResolveMethodEnabledd) {
   EXPECT_FALSE(IsENSResolveMethodEnabled(local_state()));
 
-  local_state()->SetInteger(kENSResolveMethod,
-                            static_cast<int>(ResolveMethodTypes::ENABLED));
+  SetENSResolveMethod(local_state(), ResolveMethodTypes::ENABLED);
   EXPECT_TRUE(IsENSResolveMethodEnabled(local_state()));
+}
+
+TEST_F(UtilsUnitTest, IsSnsResolveMethodAsk) {
+  EXPECT_TRUE(IsSnsResolveMethodAsk(local_state()));
+
+  SetSnsResolveMethod(local_state(), ResolveMethodTypes::ENABLED);
+  EXPECT_FALSE(IsSnsResolveMethodAsk(local_state()));
+}
+
+TEST_F(UtilsUnitTest, IsSnsResolveMethodEnabledd) {
+  EXPECT_FALSE(IsSnsResolveMethodEnabled(local_state()));
+
+  SetSnsResolveMethod(local_state(), ResolveMethodTypes::ENABLED);
+  EXPECT_TRUE(IsSnsResolveMethodEnabled(local_state()));
 }
 
 TEST_F(UtilsUnitTest, ResolveMethodMigration) {

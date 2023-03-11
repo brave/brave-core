@@ -7,14 +7,9 @@ package org.chromium.chrome.browser;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.flags.CachedFlag;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 
 @JNINamespace("chrome::android")
 public abstract class BraveFeatureUtil {
-    public static final CachedFlag sTabSwitcherOnReturn =
-            new CachedFlag(ChromeFeatureList.TAB_SWITCHER_ON_RETURN, false);
-
     // The method sets a feature state that is passed in `enabled` var. However it can
     // set the feature to a Default state if Default state is what is `enabled` var.
     // For example: A feature `dummy_name` has 3 states and a Default value is Disabled:

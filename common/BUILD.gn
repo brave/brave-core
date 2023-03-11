@@ -76,6 +76,7 @@ source_set("common") {
 
     deps += [
       "//brave/components/brave_component_updater/browser",
+      "//brave/components/https_upgrade_exceptions/browser",
       "//extensions/common:common_constants",
     ]
 

@@ -59,8 +59,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void PermanentlyDeleteAccount(
       base::OnceCallback<void(const SyncProtocolError&)> callback);
 
-  void SetJoinChainResultCallback(
-      base::OnceCallback<void(const bool&)> callback);
+  void SetJoinChainResultCallback(base::OnceCallback<void(bool)> callback);
 
  private:
   friend class BraveSyncServiceImplTest;
@@ -110,7 +109,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   bool initiated_self_device_info_deleted_ = false;
 
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
-  base::OnceCallback<void(const bool&)> join_chain_result_callback_;
+  base::OnceCallback<void(bool)> join_chain_result_callback_;
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;
 
   BraveSyncServiceImpl(const BraveSyncServiceImpl&) = delete;

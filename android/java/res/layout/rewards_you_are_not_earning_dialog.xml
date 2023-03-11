@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/you_are_not_earning_rewards_background"
+    android:paddingBottom="28dp"
+    android:paddingTop="16dp"
+    android:paddingHorizontal="24dp"
+    >
+
+    <TextView
+        android:id="@+id/notification_disabled_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/notifications_are_disabled"
+        android:textColor="@color/set_default_text_color"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/notification_disabled_message"
+        android:layout_width="283dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:text="@string/brave_rewards_may_not_work_while_notifications_are_disabled"
+        android:textColor="@color/wallet_secondary_layout_text_color"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_disabled_title" />
+
+    <TextView
+        android:id="@+id/turn_on_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:layout_marginTop="8dp"
+        android:text="@string/turn_on"
+        android:textAllCaps="true"
+        android:textColor="@color/notification_button_color"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notification_disabled_message" />
+
+    <ImageView
+        android:id="@+id/notification_disabled_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="@null"
+        android:focusable="true"
+        app:srcCompat="@drawable/ic_baseline_close_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="@color/onboarding_text_color" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

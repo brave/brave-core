@@ -10,7 +10,7 @@
 
 #define StartListening StartListening_ChromiumImpl(); \
   void StartListening
-#include "src/components/invalidation/impl/fcm_network_handler.h"
+#include "src/components/invalidation/impl/fcm_network_handler.h"  // IWYU pragma: export
 #undef StartListening
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_INVALIDATION_IMPL_FCM_NETWORK_HANDLER_H_

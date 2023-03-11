@@ -217,7 +217,7 @@ public class BraveLocationBarQRDialogFragment
         if (getActivity() != null) {
             final String barcodeValue = barcode.displayValue;
             getActivity().runOnUiThread(() -> {
-                if (URLUtil.isValidUrl(barcodeValue)) {
+                if (URLUtil.isNetworkUrl(barcodeValue)) {
                     mLocationBarMediator.loadUrl(barcodeValue, PageTransition.GENERATED, 0);
                     mLocationBarMediator.clearOmniboxFocus();
                 } else {

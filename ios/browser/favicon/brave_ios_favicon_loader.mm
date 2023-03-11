@@ -7,7 +7,7 @@
 
 #import <UIKit/UIKit.h>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "base/strings/sys_string_conversions.h"

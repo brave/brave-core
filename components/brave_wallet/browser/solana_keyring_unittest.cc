@@ -27,9 +27,6 @@ TEST(SolanaKeyringUnitTest, ConstructRootHDKey) {
       MnemonicToSeed(std::string(mnemonic), "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
-  EXPECT_EQ(keyring.master_key_->EncodePrivateKeyForExport(),
-            "2ZVNHVyrLDCBa6qxWmzDDDQEC9ZGuBt9JTynUBq67FKFp7R5nb32X8d4UN9gKnbgnP"
-            "U4RBmdugcfPxtBbSvJdbM7");
   EXPECT_EQ(keyring.root_->EncodePrivateKeyForExport(),
             "XUPar98T8X5HyvSw4pKk2cFi2zCMxzNcm8CJoQgDa3CjFpFKQic2cAFJhvaMgQCAQj"
             "Rs4sHHjiTqhAZ8F3tVR8D");
@@ -64,9 +61,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
 
   for (size_t i = 0; i < accounts.size(); ++i) {
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
-    EXPECT_EQ(keyring.GetAccountIndex(accounts[i]), i);
   }
-  EXPECT_FALSE(keyring.GetAccountIndex("0x123"));
 
   // remove the last account
   keyring.RemoveAccount();
@@ -78,7 +73,6 @@ TEST(SolanaKeyringUnitTest, Accounts) {
             "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu");
   for (size_t i = 0; i < accounts.size(); ++i) {
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
-    EXPECT_EQ(keyring.GetAccountIndex(accounts[i]), i);
   }
 
   keyring.AddAccounts(1);

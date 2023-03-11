@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
 import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
+import org.chromium.components.browser_ui.accessibility.BraveAccessibilitySettings;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -423,6 +424,7 @@ public class BraveMainPreferencesBase
         if (preference != null) {
             preference.setFragment(BraveHomepageSettings.class.getName());
         }
+        findPreference(PREF_ACCESSIBILITY).setFragment(BraveAccessibilitySettings.class.getName());
     }
 
     private void setPreferenceListeners() {

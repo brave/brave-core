@@ -450,4 +450,54 @@ absl::optional<std::vector<uint8_t>> DnsEncode(const std::string& dotted_name) {
 
 }  // namespace ens
 
+namespace balance_scanner {
+
+absl::optional<std::string> TokensBalance(
+    const std::string& owner_address,
+    const std::vector<std::string>& contract_addresses) {
+  const std::string function_hash =
+      GetFunctionHash("tokensBalance(address,address[])");
+  std::string padded_address;
+  if (!brave_wallet::PadHexEncodedParameter(owner_address, &padded_address)) {
+    return absl::nullopt;
+  }
+
+  // Indicate the next value that encodes the length of the address[] is 64
+  // bytes
+  std::string offset_for_array;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(64), &offset_for_array)) {
+    return absl::nullopt;
+  }
+
+  // Encode the length of the address[] as 64 bytes
+  std::string array_length;
+  if (!PadHexEncodedParameter(Uint256ValueToHex(contract_addresses.size()),
+                              &array_length)) {
+    return absl::nullopt;
+  }
+
+  std::string data;
+  std::vector<std::string> hex_strings = {function_hash, padded_address,
+                                          offset_for_array, array_length};
+
+  // Add the address[] to hex_strings by appending PadHexEncodedParameter of
+  // each address to the end of the vector
+  for (const auto& contract_address : contract_addresses) {
+    std::string padded_contract_address;
+    if (!brave_wallet::PadHexEncodedParameter(contract_address,
+                                              &padded_contract_address)) {
+      return absl::nullopt;
+    }
+    hex_strings.push_back(padded_contract_address);
+  }
+
+  if (!ConcatHexStrings(hex_strings, &data)) {
+    return absl::nullopt;
+  }
+
+  return data;
+}
+
+}  // namespace balance_scanner
+
 }  // namespace brave_wallet

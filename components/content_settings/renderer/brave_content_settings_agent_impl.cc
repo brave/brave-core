@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
@@ -10,9 +10,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/callback_helpers.h"
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -32,6 +32,8 @@
 
 namespace content_settings {
 namespace {
+
+constexpr char kJavascriptExtension[] = ".js";
 
 bool IsFrameWithOpaqueOrigin(blink::WebFrame* frame) {
   // Storage access is keyed off the top origin and the frame's origin.
@@ -68,6 +70,13 @@ bool IsBraveShieldsDown(const blink::WebFrame* frame,
   }
 
   return setting == CONTENT_SETTING_BLOCK;
+}
+
+// Skips everything except main frame domain and javascript urls.
+bool ShouldSkipResource(const GURL& resource_url) {
+  return (resource_url.path_piece().empty() ||
+          ((resource_url.path_piece().size() > 1) &&
+           !base::EndsWith(resource_url.path_piece(), kJavascriptExtension)));
 }
 
 }  // namespace
@@ -112,6 +121,17 @@ bool BraveContentSettingsAgentImpl::IsReduceLanguageEnabled() {
   return reduce_language_enabled_;
 }
 
+void BraveContentSettingsAgentImpl::BraveSpecificDidAllowJavaScriptOnce(
+    const GURL& resource_url) {
+  // This will be called for all resources on a page, we want to notify only
+  // about frame domain and javascript resources.
+  if (ShouldSkipResource(resource_url)) {
+    return;
+  }
+  GetOrCreateBraveShieldsRemote()->OnJavaScriptAllowedOnce(
+      base::UTF8ToUTF16(resource_url.spec()));
+}
+
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
     const std::u16string& details) {
   mojo::AssociatedRemote<brave_shields::mojom::BraveShieldsHost> remote;
@@ -125,15 +145,17 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
 
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL secondary_url(url::Origin(frame->GetSecurityOrigin()).GetURL());
-
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
-  allow = allow || IsBraveShieldsDown(frame, secondary_url) ||
-          IsScriptTemporilyAllowed(secondary_url);
-
+  auto is_shields_down = IsBraveShieldsDown(frame, secondary_url);
+  auto is_script_temprily_allowed = IsScriptTemporilyAllowed(secondary_url);
+  allow = allow || is_shields_down || is_script_temprily_allowed;
   if (!allow) {
     blocked_script_url_ = secondary_url;
+  } else if (!is_shields_down) {
+    if (is_script_temprily_allowed) {
+      BraveSpecificDidAllowJavaScriptOnce(secondary_url);
+    }
   }
-
   return allow;
 }
 
@@ -203,7 +225,6 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     bool enabled_per_settings,
     const blink::WebURL& script_url) {
   const GURL secondary_url(script_url);
-
   bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
 
@@ -212,13 +233,18 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   bool should_white_list = IsAllowlistedForContentSettings(
       blink::WebSecurityOrigin::Create(script_url),
       render_frame()->GetWebFrame()->GetDocument().Url());
-
-  allow = allow || should_white_list ||
-          IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
-          IsScriptTemporilyAllowed(secondary_url);
+  auto is_shields_down =
+      IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url);
+  auto is_script_temprily_allowed = IsScriptTemporilyAllowed(secondary_url);
+  allow = allow || should_white_list || is_shields_down ||
+          is_script_temprily_allowed;
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
+  } else if (!is_shields_down) {
+    if (is_script_temprily_allowed) {
+      BraveSpecificDidAllowJavaScriptOnce(secondary_url);
+    }
   }
 
   return allow;

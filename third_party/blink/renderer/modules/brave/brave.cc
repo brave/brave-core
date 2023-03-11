@@ -10,11 +10,29 @@
 
 namespace blink {
 
+const char Brave::kSupplementName[] = "Brave";
+
+Brave::Brave(NavigatorBase& navigator) : Supplement<NavigatorBase>(navigator) {}
+
+Brave* Brave::brave(NavigatorBase& navigator) {
+  auto* supplement = Supplement<NavigatorBase>::From<Brave>(navigator);
+  if (!supplement) {
+    supplement = MakeGarbageCollected<Brave>(navigator);
+    Supplement<NavigatorBase>::ProvideTo(navigator, supplement);
+  }
+  return supplement;
+}
+
 ScriptPromise Brave::isBrave(ScriptState* script_state) {
   auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
   ScriptPromise promise = resolver->Promise();
   resolver->Resolve(true);
   return promise;
+}
+
+void Brave::Trace(Visitor* visitor) const {
+  ScriptWrappable::Trace(visitor);
+  Supplement<NavigatorBase>::Trace(visitor);
 }
 
 }  // namespace blink

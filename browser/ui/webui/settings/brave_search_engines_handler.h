@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SEARCH_ENGINES_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_SEARCH_ENGINES_HANDLER_H_
 
-#include <memory>
-
 #include "base/values.h"
 #include "chrome/browser/ui/webui/settings/search_engines_handler.h"
 
@@ -27,7 +25,7 @@ class BraveSearchEnginesHandler : public SearchEnginesHandler {
   void OnModelChanged() override;
   base::Value::Dict GetSearchEnginesList() override;
 
-  base::Value GetPrivateSearchEnginesList();
+  base::Value::List GetPrivateSearchEnginesList();
   void HandleGetPrivateSearchEnginesList(const base::Value::List& args);
 };
 

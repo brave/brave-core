@@ -12,12 +12,16 @@
 
 class BraveTabSearchButton : public TabSearchButton {
  public:
-  using TabSearchButton::TabSearchButton;
+  METADATA_HEADER(BraveTabSearchButton);
+
+  explicit BraveTabSearchButton(TabStrip* tab_strip);
   ~BraveTabSearchButton() override;
   BraveTabSearchButton(const BraveTabSearchButton&) = delete;
   BraveTabSearchButton& operator=(const BraveTabSearchButton&) = delete;
 
   void set_fill_color_disabled() { fill_color_disabled_ = true; }
+
+  void SetBubbleArrow(views::BubbleBorder::Arrow arrow);
 
   // TabSearchButton overrides:
   SkPath GetBorderPath(const gfx::Point& origin,

@@ -10,7 +10,7 @@
   ExtensionManagementServiceTest;      \
   friend class BraveExtensionManagement
 
-#include "src/chrome/browser/extensions/extension_management.h"
+#include "src/chrome/browser/extensions/extension_management.h"  // IWYU pragma: export
 #undef ExtensionManagementServiceTest
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_EXTENSION_MANAGEMENT_H_

@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/bind.h"
-#include "base/callback.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/json/json_writer.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/values.h"
@@ -355,7 +355,7 @@ void BraveTorHandler::ResolveBridgesCaptcha(const base::Value::List& args) {
   AllowJavascript();
 
   if (!request_) {
-    RejectJavascriptCallback(args[0].Clone(), base::Value());
+    RejectJavascriptCallback(args[0], base::Value());
     return;
   }
 

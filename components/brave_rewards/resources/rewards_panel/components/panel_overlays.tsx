@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -25,6 +26,8 @@ export function PanelOverlays () {
     React.useState(host.state.declaredCountry)
   const [availableCountries, setAvailableCountries] =
     React.useState(host.state.availableCountries)
+  const [defaultCountry, setDefaultCountry] =
+    React.useState(host.state.defaultCountry)
   const [settings, setSettings] = React.useState(host.state.settings)
   const [options, setOptions] = React.useState(host.state.options)
   const [externalWalletProviders, setExternalWalletProviders] =
@@ -52,6 +55,7 @@ export function PanelOverlays () {
     setRewardsEnabled(state.rewardsEnabled)
     setDeclaredCountry(state.declaredCountry)
     setAvailableCountries(state.availableCountries)
+    setDefaultCountry(state.defaultCountry)
     setSettings(state.settings)
     setOptions(state.options)
     setExternalWalletProviders(state.externalWalletProviders)
@@ -109,6 +113,7 @@ export function PanelOverlays () {
     return (
       <RewardsOptInModal
         availableCountries={availableCountries}
+        defaultCountry={defaultCountry}
         initialView={needsCountry ? 'declare-country' : 'default'}
         result={onboardingResult}
         onEnable={onEnable}

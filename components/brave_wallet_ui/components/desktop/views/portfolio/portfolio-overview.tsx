@@ -156,7 +156,9 @@ export const PortfolioOverview = () => {
           {
             value: item.assetBalance,
             decimals: item.asset.decimals,
-            symbol: item.asset.symbol
+            symbol: item.asset.symbol,
+            contractAddress: item.asset.contractAddress,
+            chainId: item.asset.chainId
           }
         )
       })
@@ -228,7 +230,6 @@ export const PortfolioOverview = () => {
   // render
   return (
     <StyledWrapper>
-
       <Row alignItems='flex-start' justifyContent='flex-start'>
         <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
       </Row>
@@ -292,7 +293,7 @@ export const PortfolioOverview = () => {
             />
           : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
-              token={item}
+              token={item.asset}
               onSelectAsset={() => onSelectAsset(item.asset)}
             />
         }

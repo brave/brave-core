@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -26,6 +27,8 @@ import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuild
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
 
 public class BraveSyncInformers {
+    private static final String TAG = "BraveSyncInformers";
+
     public static void show() {
         showSetupV2IfRequired();
     }
@@ -53,8 +56,13 @@ public class BraveSyncInformers {
     }
 
     public static void showSyncV2NeedsSetup() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity == null) return;
+        BraveActivity activity = null;
+        try {
+            activity = BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "showSyncV2NeedsSetup " + e);
+            return;
+        }
 
         Tab tab = activity.getActivityTabProvider().get();
         if (tab == null) return;

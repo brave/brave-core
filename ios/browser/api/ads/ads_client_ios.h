@@ -52,10 +52,8 @@ class AdsClientIOS : public ads::AdsClient {
   void ClearScheduledCaptcha() override;
   void GetScheduledCaptcha(const std::string& payment_id,
                            ads::GetScheduledCaptchaCallback callback) override;
-  void ShowScheduledCaptchaNotification(
-      const std::string& payment_id,
-      const std::string& captcha_id,
-      const bool should_show_tooltip_notification) override;
+  void ShowScheduledCaptchaNotification(const std::string& payment_id,
+                                        const std::string& captcha_id) override;
   void Log(const char* file,
            const int line,
            const int verbose_level,

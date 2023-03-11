@@ -4,13 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.shields;
-
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
@@ -66,6 +66,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.base.task.PostTask;
@@ -99,6 +100,7 @@ import java.util.Map;
  * Object responsible for handling the creation, showing, hiding of the BraveShields menu.
  */
 public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCallback {
+    private static final String TAG = "BraveShieldsHandler";
 
     private static class BlockersInfo {
         public BlockersInfo() {
@@ -522,8 +524,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             @Override
             public void onClick(View v) {
                 mMainLayout.setVisibility(View.GONE);
-                if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
-                    BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+                try {
+                    if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
+                        BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
+                    }
+                } catch (ActivityNotFoundException e) {
+                    Log.e(TAG, "setUpMainLayout shareImage click " + e);
                 }
             }
         });
@@ -675,14 +681,25 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     BraveShieldsContentSettings.getShieldsValue(mProfile, mHost, layout);
             if (settingOption.equals(BraveShieldsContentSettings.BLOCK_RESOURCE)) {
                 mBlockShieldsOption1.setChecked(true);
-            } else if (settingOption.equals(
-                               layout.equals(BraveShieldsContentSettings
-                                                     .RESOURCE_IDENTIFIER_FINGERPRINTING)
-                                       ? BraveShieldsContentSettings.DEFAULT
-                                       : BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE)) {
-                mBlockShieldsOption2.setChecked(true);
             } else if (settingOption.equals(BraveShieldsContentSettings.ALLOW_RESOURCE)) {
                 mBlockShieldsOption3.setChecked(true);
+            } else {
+                boolean checkOption2 = false;
+                switch (layout) {
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS:
+                        checkOption2 = settingOption.equals(BraveShieldsContentSettings.DEFAULT)
+                                || settingOption.equals(
+                                        BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                        break;
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING:
+                        checkOption2 = settingOption.equals(BraveShieldsContentSettings.DEFAULT);
+                        break;
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES:
+                        checkOption2 = settingOption.equals(
+                                BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE);
+                        break;
+                }
+                if (checkOption2) mBlockShieldsOption2.setChecked(true);
             }
 
             RadioGroup mBlockShieldsOptionGroup =

@@ -29,7 +29,6 @@
 #include "chrome/common/chrome_paths_internal.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/component_updater/component_updater_switches.h"
-#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
 #include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"

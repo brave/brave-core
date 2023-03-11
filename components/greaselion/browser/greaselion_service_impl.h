@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 
-#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -14,14 +13,12 @@
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/path_service.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/version.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "extensions/common/extension_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -57,7 +54,8 @@ class GreaselionServiceImpl : public GreaselionService,
   void UpdateInstalledExtensions() override;
   bool IsGreaselionExtension(const std::string& id) override;
   std::vector<extensions::ExtensionId> GetExtensionIdsForTesting() override;
-  bool ready() override;
+  bool update_in_progress() override;
+  bool rules_ready() override;
   void AddObserver(GreaselionService::Observer* observer) override;
   void RemoveObserver(GreaselionService::Observer* observer) override;
 

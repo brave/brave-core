@@ -12,7 +12,6 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kEarlyHintsPreloadForNavigation, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCm, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCmIframeSupport, base::FEATURE_DISABLED_BY_DEFAULT},
     {kFedCmUserInfo, base::FEATURE_DISABLED_BY_DEFAULT},

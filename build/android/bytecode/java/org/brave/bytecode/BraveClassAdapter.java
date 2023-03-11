@@ -51,12 +51,14 @@ public class BraveClassAdapter {
         chain = new BraveMostVisitedTilesMediatorClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
+        chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);
         chain = new BravePasswordSettingsBaseClassAdapter(chain);
         chain = new BravePermissionDialogDelegateClassAdapter(chain);
         chain = new BravePermissionDialogModelClassAdapter(chain);
         chain = new BravePreferenceFragmentClassAdapter(chain);
+        chain = new BravePreferenceKeyCheckerClassAdapter(chain);
         chain = new BravePureJavaExceptionReporterClassAdapter(chain);
         chain = new BraveQueryTileSectionClassAdapter(chain);
         chain = new BraveReaderModeManagerClassAdapter(chain);
@@ -72,6 +74,7 @@ public class BraveClassAdapter {
         chain = new BraveStartupPaintPreviewHelperClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
+        chain = new BraveTabHelpersClassAdapter(chain);
         chain = new BraveTabSwitcherModeTTCoordinatorClassAdapter(chain);
         chain = new BraveTabSwitcherModeTopToolbarClassAdapter(chain);
         chain = new BraveTabUiThemeProviderClassAdapter(chain);

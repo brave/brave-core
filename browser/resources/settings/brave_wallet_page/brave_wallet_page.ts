@@ -38,6 +38,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         type: Boolean
       },
 
+      isNftPinningEnabled_: {
+        type: Boolean
+      },
+
       isNetworkEditor_: {
         type: Boolean,
         value: false,
@@ -63,6 +67,9 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.getAutoLockMinutes().then(val => {
       this.$.walletAutoLockMinutes.value = val
     })
+    this.browserProxy_.isNftPinningEnabled().then(val => {
+      this.isNftPinningEnabled_ = val
+    });
 
     this.cryptocurrency_list_ = [
       { value: "BTC" },

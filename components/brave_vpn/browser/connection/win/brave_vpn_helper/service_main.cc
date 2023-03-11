@@ -7,18 +7,15 @@
 
 #include <utility>
 
-#include "base/callback.h"
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "base/no_destructor.h"
 #include "base/run_loop.h"
 #include "base/task/single_thread_task_executor.h"
 #include "base/task/thread_pool.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
-#include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/vpn_utils.h"
 
 namespace brave_vpn {
 namespace {
@@ -38,6 +35,13 @@ bool ServiceMain::InitWithCommandLine(const base::CommandLine* command_line) {
     LOG(ERROR) << "No positional parameters expected.";
     return false;
   }
+
+  // Crash itself if crash-me was used.
+  if (command_line->HasSwitch(kBraveVpnHelperCrashMe)) {
+    CHECK(!command_line->HasSwitch(kBraveVpnHelperCrashMe))
+        << "--crash-me was used.";
+  }
+
   // Run interactively if needed.
   if (command_line->HasSwitch(kConsoleSwitchName)) {
     run_routine_ = &ServiceMain::RunInteractive;
@@ -88,7 +92,6 @@ void ServiceMain::ServiceMainImpl() {
     return;
   }
   SetServiceStatus(SERVICE_RUNNING);
-  CountSuccessfulLaunch();
   service_status_.dwWin32ExitCode = ERROR_SUCCESS;
   service_status_.dwCheckPoint = 0;
   service_status_.dwWaitHint = 0;

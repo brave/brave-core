@@ -89,9 +89,6 @@
   <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BOOKMARKS" desc="The label for settings checkbox controlling whether or not bookmarks show up in autocomplete">
     Bookmarks
   </message>
-  <message name="IDS_SETTINGS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
-    Show Brave Rewards icon in address bar
-  </message>
   <message name="IDS_SETTINGS_SHOW_BRAVE_NEWS_BUTTON_LABEL" desc="The label for the settings switch controlling whether the Brave News button is shown in the toolbar">
     Show Brave News button in address bar
   </message>
@@ -102,13 +99,13 @@
     Always
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ALWAYS_DESC" desc="The label for settings switch controlling the permanent visibility of bookmarks bar">
-    Bookmark bar is visible on all pages
+    Bookmarks bar is visible on all pages
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
     Only on the new tab page
   </message>
   <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP_DESC" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP description">
-    Bookmark bar is hidden on all pages except the new tab page
+    Bookmarks bar is hidden on all pages except the new tab page
   </message>
   <message name="IDS_SETTINGS_NEVER_SHOW_BOOKMARK_BAR" desc="The label for settings switch controlling the visibility of bookmarks bar">
     Never
@@ -218,7 +215,7 @@
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2" desc="The description for Brave shields Defaults sub-section in settings.">
     This will block most ads on websites, not Brave Private Ads — those are controlled in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Brave Rewards<ph name="END_LINK">&lt;/a&gt;</ph> settings.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards are disabled.">
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION_2_REWARDS_DISABLED" desc="The description for Brave shields Defaults sub-section in settings when Brave Rewards is disabled.">
     This will block most ads on websites.
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_SHOW_STATS_BLOCKED_BADGE_LABEL" desc="Default Brave show stats blocked badge control setting label">
@@ -269,6 +266,18 @@
   <message name="IDS_SETTINGS_STRICT_FINGERPRINTING" desc="Select value">
     Strict, may break sites
   </message>
+  <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_UPGRADE_CONTROL_LABEL" desc="Default Brave https upgrade control setting label">
+    Upgrade connections to HTTPS
+  </message>
+  <message name="IDS_SETTINGS_STANDARD_HTTPS_UPGRADE" desc="Select value">
+    Standard
+  </message>
+  <message name="IDS_SETTINGS_DISABLED_HTTPS_UPGRADE" desc="Select value">
+    Disabled
+  </message>
+  <message name="IDS_SETTINGS_STRICT_HTTPS_UPGRADE" desc="Select value">
+    Strict
+  </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
     Block cookies
   </message>
@@ -316,8 +325,8 @@
   <message name="IDS_BRAVE_ADBLOCK_ADD_LISTS_BUTTON_LABEL" desc="Label for button that adds filter lists URL">
     Add
   </message>
-  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_URL_HEADER" desc="List URL header label for custom filters table">
-    List URL
+  <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_TITLE_HEADER" desc="List URL header label for custom filters table">
+    List title
   </message>
   <message name="IDS_BRAVE_ADBLOCK_FILTER_LISTS_TABLE_UPDATED_HEADER" desc="Last updated header label for custom filters table">
     Last updated
@@ -367,7 +376,7 @@
     Brave Rewards
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_LABEL" desc="The text label for the Rewards disabled state">
-    Brave Rewards are disabled
+    Brave Rewards is disabled
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_DISABLED_SUB_LABEL" desc="The text sublabel for the Rewards disabled state">
     Open Rewards panel to enable and get started
@@ -420,8 +429,11 @@
   <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
     By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
   </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_TIP_BUTTONS_TITLE" desc="The text label for the Rewards Tip Buttons section">
-    Tip buttons
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
+    Show Brave Rewards icon in address bar
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_REWARDS_SHOW_TIP_BUTTONS_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons">
+    Show Tip buttons on sites
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_REDDIT_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Reddit">
     Reddit
@@ -544,13 +556,16 @@
     Google Sign-In
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
-    Ask when a site wants to use legacy Google Sign-In
+    Sites can ask to use legacy Google Sign-In via third-party cookies
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
-    Block sites from using legacy Google Sign-In
+    Don't allow legacy Google Sign-In via third-party cookies
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW" desc="Label for G sign-in site settings.">
-    Allow sites to use legacy Google Sign-In
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_BLOCK_EXCEPTIONS" desc="Label for G sign-in site settings.">
+    Not allowed to use third-party cookies for legacy Google Sign-In
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
+    Allowed to use third-party cookies for legacy Google Sign-In
   </message>
 
   <!-- Settings / Privacy and security / Safety Check -->
@@ -886,6 +901,39 @@
   <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
     Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.
   </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_LABEL" desc="The label of manage v2 extensions link in settings">
+    Manifest V2 extensions
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_SUBLABEL" desc="The sub label of manage v2 extensions link in settings">
+    The following Manifest V2 extensions will be removed from the Chrome Web Store, but are still supported in Brave. Toggle to download and install, or to uninstall.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
+    Close
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME" desc="Manifest V2 extension toggle's label">
+    Enable NoScript&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_DESC" desc="Manifest V2 extension toggle's sub label">
+    NoScript is a Manifest V2 extension that allows you to block and unblock individual scripts running or attempting to run on a given page.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME" desc="Manifest V2 extension toggle's label">
+    Enable uBlock Origin&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_DESC" desc="Manifest V2 extension toggle's sub label">
+    uBlock Origin is a Manifest V2 extension that provides powerful content blocking tools with lots of options for advanced users.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME" desc="Manifest V2 extension toggle's label">
+    Enable uMatrix&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_DESC" desc="Manifest V2 extension toggle's sub label">
+    uMatrix is a Manifest V2 extension that provides point-and-click matrix-based firewall, with many privacy-enhancing tools.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME" desc="Manifest V2 extension toggle's label">
+    Enable AdGuard&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC" desc="Manifest V2 extension toggle's sub label">
+    AdGuard is a Manifest V2 extension that provides ad blocking, parental control options, and integration with other AdGuard service offerings.
+  </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
     Manage extensions
   </message>
@@ -938,6 +986,13 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_DESC" desc="Reset wallet transactions description">
     Clearing transactions may be useful for developers or when clearing state on a local server
+  </message>
+  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING" desc="Enable NFT pinning">
+    Automatically pin NFTs
+  </message>
+  <message name="IDS_SETTINGS_WALLET_ENABLE_NFT_PINNING_DESC" desc="Enable NFT pinning description">
+    NFTs which are added to the Brave Wallet may be automatically pinned to the local IPFS node.
+    Note: IPFS daemon may be started for the pinning purposes so your local node will share cached data and pinned NFTs to the IPFS network.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset Brave Wallet

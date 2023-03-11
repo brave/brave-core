@@ -70,6 +70,9 @@ interface ServiceHandler {
   CreateSupportTicket(string email, string subject, string body) =>
     (bool success, string response);
 
+  [EnableIfNot=is_android]
+  ResetConnectionState();
+
   [EnableIf=is_android]
   GetPurchaseToken() => (string token);
 };

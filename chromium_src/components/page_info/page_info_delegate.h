@@ -10,7 +10,7 @@
   BraveShouldShowPermission(ContentSettingsType type) = 0; \
   virtual bool IsContentDisplayedInVrHeadset
 
-#include "src/components/page_info/page_info_delegate.h"
+#include "src/components/page_info/page_info_delegate.h"  // IWYU pragma: export
 #undef IsContentDisplayedInVrHeadset
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_PAGE_INFO_PAGE_INFO_DELEGATE_H_

@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import useSwap from './swap'
 import useAssets from './assets'
 import useSend from './send'
 import { useTransactionParser, useTransactionFeesParser } from './transaction-parser'
@@ -31,7 +30,6 @@ export {
   usePrevNetwork,
   usePricing,
   useSend,
-  useSwap,
   useTokenInfo,
   useTransactionFeesParser,
   useTransactionParser,

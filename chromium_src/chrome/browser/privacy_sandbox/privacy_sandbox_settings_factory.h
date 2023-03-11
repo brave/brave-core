@@ -12,7 +12,7 @@
   BuildServiceInstanceFor_ChromiumImpl(content::BrowserContext*) const; \
   KeyedService* BuildServiceInstanceFor
 
-#include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"
+#include "src/chrome/browser/privacy_sandbox/privacy_sandbox_settings_factory.h"  // IWYU pragma: export
 
 #undef BuildServiceInstanceFor
 

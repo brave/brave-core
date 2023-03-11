@@ -85,7 +85,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         ads_service, profile->GetPrefs(), g_browser_process->local_state(),
         std::make_unique<NTPP3AHelperImpl>(
             g_browser_process->local_state(),
-            g_brave_browser_process->brave_p3a_service()),
+            g_brave_browser_process->brave_p3a_service(), ads_service),
         is_supported_locale);
   }
 

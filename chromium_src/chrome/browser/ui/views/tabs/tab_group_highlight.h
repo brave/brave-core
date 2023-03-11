@@ -10,7 +10,7 @@
   GetPath_Unused() { return {}; }      \
   friend class BraveTabGroupHighlight; \
   virtual SkPath GetPath
-#include "src/chrome/browser/ui/views/tabs/tab_group_highlight.h"
+#include "src/chrome/browser/ui/views/tabs/tab_group_highlight.h"  // IWYU pragma: export
 #undef GetPath
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_HIGHLIGHT_H_

@@ -8,11 +8,13 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.ApplicationStatus;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager;
@@ -20,6 +22,8 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingViewPagerAdapter;
 
 public class OnboardingActivity extends AppCompatActivity implements OnViewPagerAction {
+    private static final String TAG = "OnboardingActivity";
+
     private NonSwipeableViewPager viewPager;
 
     @Override
@@ -33,8 +37,10 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
             this, getSupportFragmentManager(), this);
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(onboardingViewPagerAdapter);
-        if (BraveActivity.getBraveActivity() != null ) {
+        try {
             BraveActivity.getBraveActivity().hideRewardsOnboardingIcon();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 
@@ -50,8 +56,10 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
 
     @Override
     public void onContinueToWallet() {
-        if (BraveActivity.getBraveActivity() != null ) {
+        try {
             BraveActivity.getBraveActivity().openRewardsPanel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onContinueToWallet " + e);
         }
         finish();
     }

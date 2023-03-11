@@ -6,17 +6,17 @@
 #include "brave/browser/perf/brave_perf_features_processor.h"
 
 #include "base/command_line.h"
-#include "base/threading/sequenced_task_runner_handle.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/perf/brave_perf_switches.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_today/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/prefs/pref_service.h"
@@ -39,7 +39,7 @@ void EnableAdblockCookieList(base::WeakPtr<Profile> profile) {
   if (!regional_service_manager ||
       !regional_service_manager->IsFilterListAvailable(
           brave_shields::kCookieListUuid)) {
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
         FROM_HERE, base::BindOnce(&EnableAdblockCookieList, profile),
         base::Seconds(1));
     return;
@@ -72,7 +72,7 @@ void MaybeEnableBraveFeatureForPerfTesting(Profile* profile) {
   // Brave news
   profile->GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                   true);
-  profile->GetPrefs()->SetBoolean(brave_news::prefs::kBraveTodayOptedIn, true);
+  profile->GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   // Speedreader

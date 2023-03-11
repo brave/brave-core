@@ -8,7 +8,7 @@
 
 #define PADDED_SEPARATOR BOTH_SIDE_PADDED_SEPARATOR, PADDED_SEPARATOR
 
-#include "src/ui/base/models/menu_separator_types.h"
+#include "src/ui/base/models/menu_separator_types.h"  // IWYU pragma: export
 
 #undef PADDED_SEPARATOR
 

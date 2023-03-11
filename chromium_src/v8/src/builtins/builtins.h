@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_V8_SRC_BUILTINS_BUILTINS_H_
 #define BRAVE_CHROMIUM_SRC_V8_SRC_BUILTINS_BUILTINS_H_
 
-#include "src/v8/src/builtins/builtins.h"
+#include "src/v8/src/builtins/builtins.h"  // IWYU pragma: export
 
 #include "brave/components/brave_page_graph/common/buildflags.h"
 

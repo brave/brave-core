@@ -24,7 +24,9 @@ using views::MenuItemView;
 
 BraveAppMenu::BraveAppMenu(Browser* browser, int run_types)
     : AppMenu(browser, run_types),
-      menu_metrics_(g_brave_browser_process->menu_metrics()) {}
+      menu_metrics_(g_brave_browser_process->menu_metrics()) {
+  DCHECK(menu_metrics_);
+}
 
 BraveAppMenu::~BraveAppMenu() = default;
 
@@ -40,9 +42,7 @@ void BraveAppMenu::ExecuteCommand(int command_id, int mouse_event_flags) {
 
 void BraveAppMenu::OnMenuClosed(views::MenuItemView* menu) {
   AppMenu::OnMenuClosed(menu);
-  if (menu == nullptr) {
-    menu_metrics_->RecordMenuDismiss();
-  }
+  menu_metrics_->RecordMenuDismiss();
 }
 
 MenuItemView* BraveAppMenu::AddMenuItem(views::MenuItemView* parent,
@@ -71,6 +71,7 @@ void BraveAppMenu::RecordMenuUsage(int command_id) {
     case IDC_NEW_TAB:
     case IDC_NEW_INCOGNITO_WINDOW:
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
+    case IDC_OPEN_GUEST_PROFILE:
       group = misc_metrics::MenuGroup::kTabWindow;
       break;
     case IDC_SHOW_BRAVE_WALLET:

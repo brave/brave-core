@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_CHROME_TEST_SUITE_H_
 
 #define ChromeTestSuite ChromeTestSuite_ChromiumImpl
-#include "src/chrome/test/base/chrome_test_suite.h"
+#include "src/chrome/test/base/chrome_test_suite.h"  // IWYU pragma: export
 #undef ChromeTestSuite
 
 class ChromeTestSuite : public ChromeTestSuite_ChromiumImpl {

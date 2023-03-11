@@ -35,8 +35,6 @@
 	          android:layout_height="wrap_content"
 	          android:layout_marginTop="24dp"
 	          android:layout_marginBottom="8dp"
-	          app:drawableStartCompat="@drawable/ic_bat_logo"
-	          android:drawablePadding="8dp"
 	          android:layout_gravity="center"
 	          android:gravity="center"
 	          android:fontFamily="@font/poppins_600"

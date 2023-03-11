@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_main_view.cc b/chrome/browser/ui/views/page_info/page_info_main_view.cc
-index d70c6353eb971864719757a41a8d3c17bd4c210a..7760981a5fd0c6211e54ca96129939405bf958f1 100644
+index 971421e4e47f0b67249f131cc062ef3388fac49f..dbff86ca8c447ae36c44c60d91118a13d1629284 100644
 --- a/chrome/browser/ui/views/page_info/page_info_main_view.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_main_view.cc
 @@ -535,6 +535,7 @@ gfx::Size PageInfoMainView::CalculatePreferredSize() const {

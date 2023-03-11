@@ -25,9 +25,19 @@ NodeScript* ScriptTracker::AddScriptNode(v8::Isolate* isolate,
   const ScriptKey script_key{isolate, script_id};
   auto it = scripts_.find(script_key);
   if (it != scripts_.end()) {
-    CHECK(it->value->GetScriptData() == script_data)
-        << "isolate: " << script_key.first
-        << " script id: " << script_key.second;
+    const auto& cached_script_data = it->value->GetScriptData();
+    bool is_valid_script_data = false;
+    if (script_data == cached_script_data) {
+      is_valid_script_data = true;
+    } else {
+      if (script_data.code == cached_script_data.code &&
+          script_data.source.is_eval && cached_script_data.source.is_eval) {
+        // Simple evals can be cached and shared across v8 contexts.
+        is_valid_script_data = true;
+      }
+    }
+    CHECK(is_valid_script_data) << "isolate: " << script_key.first
+                                << " script id: " << script_key.second;
     return it->value;
   }
   auto* script_node =

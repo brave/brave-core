@@ -12,8 +12,8 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
@@ -39,20 +39,22 @@ using CreateRewardsWalletCallback =
 
 using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
-using FetchBalanceCallback =
-    base::OnceCallback<void(mojom::Result, mojom::BalancePtr)>;
+using ConnectExternalWalletResult =
+    base::expected<void, mojom::ConnectExternalWalletError>;
+
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
+
+using FetchBalanceResult =
+    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
+
+using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
 
 using GetExternalWalletResult =
     base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
 
 using GetExternalWalletCallback =
     base::OnceCallback<void(GetExternalWalletResult)>;
-
-using ConnectExternalWalletResult =
-    base::expected<void, mojom::ConnectExternalWalletError>;
-
-using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
 
 using FetchPromotionCallback =
     base::OnceCallback<void(mojom::Result, std::vector<mojom::PromotionPtr>)>;
@@ -266,8 +268,14 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRewardsInternalsInfo(
       RewardsInternalsInfoCallback callback) = 0;
 
+  // DEPRECATED: Use `SetMonthlyContribution` instead.
   virtual void SaveRecurringTip(mojom::RecurringTipPtr info,
                                 LegacyResultCallback callback) = 0;
+
+  virtual void SetMonthlyContribution(
+      const std::string& publisher_id,
+      double amount,
+      base::OnceCallback<void(bool)> callback) = 0;
 
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
 
@@ -276,7 +284,7 @@ class LEDGER_EXPORT Ledger {
   virtual void RefreshPublisher(const std::string& publisher_key,
                                 OnRefreshPublisherCallback callback) = 0;
 
-  virtual void StartMonthlyContribution() = 0;
+  virtual void StartContributionsForTesting() = 0;
 
   virtual void UpdateMediaDuration(uint64_t window_id,
                                    const std::string& publisher_key,

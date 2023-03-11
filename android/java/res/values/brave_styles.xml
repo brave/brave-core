@@ -269,4 +269,16 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_top</item>
         <item name="android:windowExitAnimation">@anim/slide_out_top</item>
     </style>
+    
+    <!-- Brave Ads Notifications -->
+    <style name="WebNotificationSmallIcon">
+        <item name="android:alpha">0.6</item>
+    </style>
+    <style name="WebNotificationLargeIcon">
+        <item name="android:background">@drawable/notification_template_icon_bg</item>
+    </style>
+    <style name="WebNotificationTitle"
+        parent="@android:style/TextAppearance.StatusBar.EventContent.Title">
+        <item name="android:layout_marginStart">8dp</item>
+    </style>
 </resources>

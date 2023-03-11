@@ -9,17 +9,9 @@ brave-wallet-cxx = { path = "../../components/brave_wallet/rust" }
 challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
-brave-news-cxx = { path = "../../components/brave_today/rust" }
+brave-news-cxx = { path = "../../components/brave_news/rust" }
 json-cxx = { path = "../../components/json/rs" }
 filecoin-cxx = { path = "../../components/filecoin/rs" }
-
-[patch.crates-io.link-cplusplus_v1]
-path = "../../../third_party/rust/link_cplusplus/v1/crate"
-package = "link-cplusplus"
-
-[patch.crates-io.cxx_v1]
-path = "../../third_party/rust/cxx/v1/crate"
-package = "cxx"
 
 [lib]
 crate-type = [ "staticlib" ]
@@ -28,9 +20,60 @@ path = "lib.rs"
 
 [features]
 ios = ["adblock-ffi/ios"]
+chromium = ["adblock-ffi/single_thread_optimizations"]
 
-[profile.dev]
-panic = "abort"
+[patch.crates-io.link-cplusplus_v1]
+path = "../../../third_party/rust/link_cplusplus/v1/crate"
+package = "link-cplusplus"
 
-[profile.release]
-panic = "abort"
+[patch.crates-io.cxx_v1]
+path = "../../../third_party/rust/cxx/v1/crate"
+package = "cxx"
+
+[patch.crates-io.cxxbridge-macro_v1]
+path = "../../../third_party/rust/cxxbridge_macro/v1/crate"
+package = "cxxbridge-macro"
+
+[patch.crates-io.autocfg_v1]
+path = "../../../third_party/rust/autocfg/v1/crate"
+package = "autocfg"
+
+[patch.crates-io.bitflags_v1]
+path = "../../../third_party/rust/bitflags/v1/crate"
+package = "bitflags"
+
+[patch.crates-io.cfg-if_v1]
+path = "../../../third_party/rust/cfg_if/v1/crate"
+package = "cfg-if"
+
+[patch.crates-io.either_v1]
+path = "../../../third_party/rust/either/v1/crate"
+package = "either"
+
+[patch.crates-io.lazy_static_v1]
+path = "../../../third_party/rust/lazy_static/v1/crate"
+package = "lazy_static"
+
+[patch.crates-io.memchr_v2]
+path = "../../../third_party/rust/memchr/v2/crate"
+package = "memchr"
+
+[patch.crates-io.once_cell_v1]
+path = "../../../third_party/rust/once_cell/v1/crate"
+package = "once_cell"
+
+[patch.crates-io.rustc_version_v0_4]
+path = "../../../third_party/rust/rustc_version/v0_4/crate"
+package = "rustc_version"
+
+[patch.crates-io.serde_derive_v1]
+path = "../../../third_party/rust/serde_derive/v1/crate"
+package = "serde_derive"
+
+[patch.crates-io.serde_v1]
+path = "../../../third_party/rust/serde/v1/crate"
+package = "serde"
+
+[patch.crates-io.toml_v0_5]
+path = "../../../third_party/rust/toml/v0_5/crate"
+package = "toml"

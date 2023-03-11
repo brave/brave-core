@@ -55,6 +55,10 @@ namespace debounce {
 class DebounceComponentInstaller;
 }  // namespace debounce
 
+namespace https_upgrade_exceptions {
+class HttpsUpgradeExceptionsService;
+}  // namespace https_upgrade_exceptions
+
 namespace misc_metrics {
 class MenuMetrics;
 }  // namespace misc_metrics
@@ -66,7 +70,7 @@ class NTPBackgroundImagesService;
 namespace tor {
 class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
-}
+}  // namespace tor
 
 namespace ipfs {
 class BraveIpfsClientUpdater;
@@ -77,6 +81,7 @@ class SpeedreaderRewriterService;
 }
 
 namespace brave_ads {
+class BraveStatsHelper;
 class ResourceComponent;
 }
 
@@ -86,6 +91,8 @@ class BraveBrowserProcess {
   virtual ~BraveBrowserProcess();
   virtual void StartBraveServices() = 0;
   virtual brave_shields::AdBlockService* ad_block_service() = 0;
+  virtual https_upgrade_exceptions::HttpsUpgradeExceptionsService*
+  https_upgrade_exceptions_service() = 0;
 #if BUILDFLAG(ENABLE_GREASELION)
   virtual greaselion::GreaselionDownloadService*
   greaselion_download_service() = 0;
@@ -108,6 +115,7 @@ class BraveBrowserProcess {
   virtual brave::BraveP3AService* brave_p3a_service() = 0;
   virtual brave::BraveReferralsService* brave_referrals_service() = 0;
   virtual brave_stats::BraveStatsUpdater* brave_stats_updater() = 0;
+  virtual brave_ads::BraveStatsHelper* ads_brave_stats_helper() = 0;
   virtual ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() = 0;
 #if BUILDFLAG(ENABLE_SPEEDREADER)

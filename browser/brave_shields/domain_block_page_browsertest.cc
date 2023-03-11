@@ -12,6 +12,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "brave/components/constants/pref_names.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/ui/browser.h"
@@ -445,4 +446,62 @@ IN_PROC_BROWSER_TEST_F(DomainBlockTest, ProceedDoesNotAffectOtherDomains) {
   BlockDomainByURL(url_b);
   NavigateTo(url_b);
   ASSERT_TRUE(IsShowingInterstitial());
+}
+
+IN_PROC_BROWSER_TEST_F(DomainBlockTest,
+                       DontWarnAgainDoesNotAffectOtherDomains) {
+  ASSERT_TRUE(InstallDefaultAdBlockExtension());
+  GURL url_a = embedded_test_server()->GetURL("a.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_a);
+  GURL url_b = embedded_test_server()->GetURL("b.com", "/simple.html");
+  SetCosmeticFilteringControlType(content_settings(), ControlType::BLOCK,
+                                  url_b);
+
+  // Navigate to a page on a.com. This should work normally.
+  NavigateTo(url_a);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Block a.com, then attempt to navigate to a page on a.com. This should be
+  // interrupted by the domain block interstitial.
+  BlockDomainByURL(url_a);
+  NavigateTo(url_a);
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Don't warn again" checkbox. This should not navigate.
+  // We should still be on the interstitial page.
+  Click("dont-warn-again-checkbox");
+  ASSERT_TRUE(IsShowingInterstitial());
+
+  // Simulate click on "Proceed anyway" button. This should navigate to the
+  // originally requested page.
+  ClickAndWaitForNavigation("primary-button");
+  WaitForAdBlockServiceThreads();
+  ASSERT_FALSE(IsShowingInterstitial());
+  std::u16string expected_title(u"OK");
+  content::TitleWatcher watcher(web_contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+
+  // Navigate to a page on b.com. This should work normally.
+  NavigateTo(url_b);
+  ASSERT_FALSE(IsShowingInterstitial());
+
+  // Attempt to load a 3rd party iframe from a.com. It should not be allowed by
+  // the exception created from proceeding.
+  uint64_t ads_blocked_count =
+      browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked);
+  std::string iframe_script =
+      "new Promise(resolve => {"
+      "  const e = document.createElement('iframe');"
+      "  e.src = '" +
+      url_a.spec() +
+      "';"
+      "  e.onload = () => { resolve(true) };"
+      "  e.onerror = () => { resolve(false) };"
+      "  document.documentElement.appendChild(e);"
+      "})";
+  EXPECT_EQ(true, EvalJs(web_contents(), iframe_script));
+  WaitForAdBlockServiceThreads();
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked),
+            ads_blocked_count + 1);
 }

@@ -28,7 +28,6 @@ include_rules = [
   "+components/sync/base/command_line_switches.h",
   "+components/translate/core/browser/translate_prefs.h",
   "+components/variations/variations_switches.h",
-  "+components/dom_distiller/core/dom_distiller_switches.h",
   "+google_apis/gaia",
   "+gpu/config",
   "+media/base/media_switches.h",

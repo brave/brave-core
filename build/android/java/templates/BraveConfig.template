@@ -21,12 +21,6 @@ public class BraveConfig {
   public static final boolean P3A_ENABLED = false;
 #endif
 
-#if defined(BRAVE_SAFEBROWSING_API_KEY)
-  public static final String SAFEBROWSING_API_KEY = BRAVE_SAFEBROWSING_API_KEY;
-#else
-  public static final String SAFEBROWSING_API_KEY = "";
-#endif
-
 #if defined(ENABLE_IPFS)
   public static final boolean IPFS_ENABLED = ENABLE_IPFS;
 #else

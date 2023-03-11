@@ -9,6 +9,47 @@ module ledger.mojom;
 // to ensure that `!error` in TypeScript unambiguously means
 // `error === undefined` (as opposed to `error === undefined || error === 0`).
 
+struct ConnectExternalWalletValue {};
+
+enum ConnectExternalWalletError {
+  kDeviceLimitReached = 1, // see comment at the top of the file
+  kFlaggedWallet,
+  kKYCRequired,
+  kMismatchedCountries,
+  kMismatchedProviderAccounts,
+  kProviderUnavailable,
+  kRegionNotSupported,
+  kRequestSignatureVerificationFailure,
+  kUnexpected,
+  kUpholdBATNotAllowed,
+  kUpholdInsufficientCapabilities,
+  kUpholdTransactionVerificationFailure
+};
+
+union ConnectExternalWalletResult {
+  ConnectExternalWalletValue value;
+  ConnectExternalWalletError error;
+};
+
+struct Balance {
+  double total;
+  map<string, double> wallets;
+};
+
+struct FetchBalanceValue {
+  Balance balance;
+};
+
+enum FetchBalanceError {
+  kAccessTokenExpired = 1, // see comment at the top of the file
+  kUnexpected
+};
+
+union FetchBalanceResult {
+  FetchBalanceValue value;
+  FetchBalanceError error;
+};
+
 // WalletStatus definition up until state v12:
 // enum WalletStatus {
 //   NOT_CONNECTED = 0,
@@ -53,28 +94,6 @@ enum GetExternalWalletError {
 union GetExternalWalletResult {
   GetExternalWalletValue value;
   GetExternalWalletError error;
-};
-
-struct ConnectExternalWalletValue {};
-
-enum ConnectExternalWalletError {
-  kDeviceLimitReached = 1, // see comment at the top of the file
-  kFlaggedWallet,
-  kKYCRequired,
-  kMismatchedCountries,
-  kMismatchedProviderAccounts,
-  kProviderUnavailable,
-  kRegionNotSupported,
-  kRequestSignatureVerificationFailure,
-  kUnexpected,
-  kUpholdBATNotAllowed,
-  kUpholdInsufficientCapabilities,
-  kUpholdTransactionVerificationFailure
-};
-
-union ConnectExternalWalletResult {
-  ConnectExternalWalletValue value;
-  ConnectExternalWalletError error;
 };
 
 enum UserType {

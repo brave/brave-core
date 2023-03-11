@@ -5,7 +5,20 @@
 import styled from 'styled-components'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled(WalletButton) <{ disabled: boolean }>`
+export const StyledWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  &:hover {
+    background-color: ${(p) => p.theme.color.background01}85;
+  }
+`
+
+export const ButtonArea = styled(WalletButton) <{ disabled: boolean, rightMargin?: number }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -15,11 +28,7 @@ export const StyledWrapper = styled(WalletButton) <{ disabled: boolean }>`
   outline: none;
   background: none;
   border: none;
-  padding: 12px;
-  border-radius: 10px;
-  &:hover {
-    background-color: ${(p) => p.theme.color.background01}85;
-  }
+  margin-right: ${(p) => p.rightMargin ? p.rightMargin : 0}px;
 `
 
 export const NameAndIcon = styled.div`

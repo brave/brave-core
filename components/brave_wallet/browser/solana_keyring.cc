@@ -27,19 +27,8 @@ constexpr size_t kMaxSeedLen = 32;
 void SolanaKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                        const std::string& hd_path) {
   if (!seed.empty()) {
-    std::unique_ptr<HDKeyEd25519> hd_key = HDKeyEd25519::GenerateFromSeed(seed);
-    master_key_ = std::unique_ptr<HDKeyBase>{hd_key.release()};
-    if (master_key_) {
-      root_ = master_key_->DeriveChildFromPath(hd_path);
-    }
-  }
-}
-
-void SolanaKeyring::AddAccounts(size_t number) {
-  size_t cur_accounts_number = accounts_.size();
-  for (size_t i = cur_accounts_number; i < cur_accounts_number + number; ++i) {
-    if (root_) {
-      accounts_.push_back(root_->DeriveChild(i)->DeriveChild(0));
+    if (auto master_key = HDKeyEd25519::GenerateFromSeed(seed)) {
+      root_ = master_key->DeriveChildFromPath(hd_path);
     }
   }
 }
@@ -190,6 +179,11 @@ absl::optional<std::string> SolanaKeyring::GetAssociatedMetadataAccount(
   seeds.push_back(std::move(token_mint_address_bytes));
 
   return FindProgramDerivedAddress(seeds, mojom::kSolanaMetadataProgramId);
+}
+
+std::unique_ptr<HDKeyBase> SolanaKeyring::DeriveAccount(uint32_t index) const {
+  // m/44'/501/{index}'/0
+  return root_->DeriveHardenedChild(index)->DeriveHardenedChild(0);
 }
 
 }  // namespace brave_wallet

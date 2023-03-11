@@ -156,7 +156,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   if (tip_action == rewards_browsertest_util::TipAction::SetMonthly) {
     WaitForRecurringTipToBeSaved();
     // Trigger contribution process
-    rewards_service_->StartMonthlyContributionForTest();
+    rewards_service_->StartContributionsForTesting();
 
     // Wait for reconciliation to complete
     if (should_contribute) {

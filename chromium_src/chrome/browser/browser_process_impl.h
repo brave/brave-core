@@ -31,7 +31,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #define StartTearDown virtual StartTearDown
 #endif  // !BUILDFLAG(IS_ANDROID)
-#include "src/chrome/browser/browser_process_impl.h"
+#include "src/chrome/browser/browser_process_impl.h"  // IWYU pragma: export
 #if !BUILDFLAG(IS_ANDROID)
 #undef StartTearDown
 #endif  // !BUILDFLAG(IS_ANDROID)

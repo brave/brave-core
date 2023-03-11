@@ -10,7 +10,7 @@
   IsFeatureOverridden_ChromiumImpl(const std::string& feature_name) const; \
   bool IsFeatureOverridden
 
-#include "src/base/feature_list.h"
+#include "src/base/feature_list.h"  // IWYU pragma: export
 
 #undef IsFeatureOverridden
 

@@ -12,7 +12,7 @@
   friend class BraveSyncServerCommands;                                   \
   static void SetProtocolVersion
 
-#include "src/components/sync/engine/syncer_proto_util.h"
+#include "src/components/sync/engine/syncer_proto_util.h"  // IWYU pragma: export
 
 #undef SetProtocolVersion
 

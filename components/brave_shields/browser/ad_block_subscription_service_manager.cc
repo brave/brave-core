@@ -10,9 +10,9 @@
 #include <vector>
 
 #include "base/base64url.h"
-#include "base/bind.h"
 #include "base/containers/contains.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_value_converter.h"
 #include "base/json/values_util.h"
 #include "base/strings/string_util.h"

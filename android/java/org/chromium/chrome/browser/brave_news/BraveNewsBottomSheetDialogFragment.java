@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.UserEnabled;
 import org.chromium.chrome.R;
@@ -107,13 +109,17 @@ public class BraveNewsBottomSheetDialogFragment extends BottomSheetDialogFragmen
         disable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mBraveNewsController != null) {
-                    // Removes the news source from the fetch list by setting a UserEnabled.DISABLED
-                    // prop for the publisher in question
-                    SharedPreferencesManager.getInstance().writeBoolean(
-                            BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
-                    mBraveNewsController.setPublisherPref(mPublisherId, UserEnabled.DISABLED);
-                }
+                PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+                    if (mBraveNewsController != null) {
+                        // Removes the news source from the fetch list by setting a
+                        // UserEnabled.DISABLED prop for the publisher in question
+                        SharedPreferencesManager.getInstance().writeBoolean(
+                                BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
+                        mBraveNewsController.setPublisherPref(mPublisherId, UserEnabled.DISABLED);
+                        BraveNewsUtils.disableFollowingPublisherList(mPublisherId);
+                        BraveNewsUtils.setFollowingPublisherList();
+                    }
+                });
                 dismiss();
                 Toast.makeText(mContext,
                              getResources().getString(

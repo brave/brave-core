@@ -9,10 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/task/thread_pool.h"
-#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
+#include "brave/browser/brave_ads/brave_stats_helper.h"
 #include "brave/browser/brave_referrals/referrals_service_delegate.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
@@ -35,6 +35,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/debounce/browser/debounce_component_installer.h"
 #include "brave/components/debounce/common/features.h"
+#include "brave/components/https_upgrade_exceptions/browser/https_upgrade_exceptions_service.h"
 #include "brave/components/misc_metrics/menu_metrics.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
@@ -53,6 +54,7 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_security_policy.h"
+#include "net/base/features.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
@@ -116,8 +118,8 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   // early initialize referrals
   brave_referrals_service();
 
-  // initialize ads stats updater helper
-  InitBraveStatsUpdaterHelper();
+  // initialize ads stats helper
+  ads_brave_stats_helper();
 
   // early initialize brave stats
   brave_stats_updater();
@@ -200,6 +202,10 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   https_everywhere_service()->Start();
   resource_component();
 
+  if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
+    https_upgrade_exceptions_service();
+  }
+
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
@@ -240,6 +246,16 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
   }
 
   return ntp_background_images_service_.get();
+}
+
+https_upgrade_exceptions::HttpsUpgradeExceptionsService*
+BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
+  if (!https_upgrade_exceptions_service_) {
+    https_upgrade_exceptions_service_ =
+        https_upgrade_exceptions::HttpsUpgradeExceptionsServiceFactory(
+            local_data_files_service());
+  }
+  return https_upgrade_exceptions_service_.get();
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -302,13 +318,6 @@ void BraveBrowserProcessImpl::UpdateBraveDarkMode() {
 
 void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
   UpdateBraveDarkMode();
-}
-
-void BraveBrowserProcessImpl::InitBraveStatsUpdaterHelper() {
-  if (!brave_stats_updater_helper_) {
-    brave_stats_updater_helper_ =
-        std::make_unique<brave_ads::BraveStatsUpdaterHelper>();
-  }
 }
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -378,6 +387,13 @@ brave_stats::BraveStatsUpdater* BraveBrowserProcessImpl::brave_stats_updater() {
   return brave_stats_updater_.get();
 }
 
+brave_ads::BraveStatsHelper* BraveBrowserProcessImpl::ads_brave_stats_helper() {
+  if (!brave_stats_helper_) {
+    brave_stats_helper_ = std::make_unique<brave_ads::BraveStatsHelper>();
+  }
+  return brave_stats_helper_.get();
+}
+
 brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
   if (!resource_component_) {
     resource_component_ = std::make_unique<brave_ads::ResourceComponent>(
@@ -444,7 +460,9 @@ brave::BraveFarblingService* BraveBrowserProcessImpl::brave_farbling_service() {
 }
 
 misc_metrics::MenuMetrics* BraveBrowserProcessImpl::menu_metrics() {
+#if !BUILDFLAG(IS_ANDROID)
   if (!menu_metrics_)
     menu_metrics_ = std::make_unique<misc_metrics::MenuMetrics>(local_state());
+#endif
   return menu_metrics_.get();
 }

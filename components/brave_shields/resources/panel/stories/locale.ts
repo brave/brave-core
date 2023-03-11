@@ -20,6 +20,9 @@ provideStrings({
   braveShieldsCustomizeAdblockLists: 'Filter lists',
   braveShieldsConnectionsUpgraded: 'Upgrade connections to HTTPS',
   braveShieldsHTTPSEnable: 'Enable HTTPS',
+  braveShieldsHttpsUpgradeModeDisabled: 'Don\'t upgrade connections to HTTPS',
+  braveShieldsHttpsUpgradeModeStandard: 'Upgrade connections to HTTPS',
+  braveShieldsHttpsUpgradeModeStrict: 'Only use HTTPS connections',
   braveShieldsScriptsBlocked: 'Block scripts',
   braveShieldsScriptsBlockedEnable: 'Enable Scripts Blocked',
   braveShieldsTrackersAndAds: 'Trackers & ads',
@@ -37,5 +40,8 @@ provideStrings({
   braveShieldsReportSiteDesc: 'Tell us if the site wasn\'t working properly with Shields up.',
   braveShieldsDownDesc: 'You are viewing this site without Brave\'s privacy protection',
   braveShieldsBlockedScriptsLabel: 'Blocked scripts',
-  braveShieldsManaged: 'Settings managed by organization'
+  braveShieldsManaged: 'Settings managed by organization',
+  braveShieldsAllowScriptOnce: 'Allow',
+  braveShieldsAllowScriptsAll: 'Allow all',
+  braveShieldsBlockScriptsAll: 'Block all',
 })

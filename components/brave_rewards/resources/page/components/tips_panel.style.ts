@@ -52,3 +52,12 @@ export const restart = styled.div`
     }
   }
 `
+
+export const panelItemLineBreak = styled.div`
+  flex-basis: 100%;
+  height: 0;
+`
+
+export const inlineTippingSiteItem = styled.div`
+  margin-left: 16px;
+`

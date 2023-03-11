@@ -10,6 +10,7 @@
 #include <string>
 
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/styled_label.h"
 
 // TODO(simonhong): Move common place if needed.
@@ -25,11 +26,14 @@ class CustomStyledLabel : public views::StyledLabel {
 
  private:
   // views::StyledLabel overrides:
+  void Layout() override;
   std::unique_ptr<views::Label> CreateLabel(
       const std::u16string& text,
       const RangeStyleInfo& style_info,
       const gfx::Range& range,
       views::LinkFragment** previous_link_component) const override;
+
+  gfx::Size last_layout_size_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_CUSTOM_STYLED_LABEL_H_

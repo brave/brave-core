@@ -1,8 +1,8 @@
 diff --git a/components/embedder_support/user_agent_utils.cc b/components/embedder_support/user_agent_utils.cc
-index 40148eeaef7d16e06ff7f7af32cb7ec82f61142f..52fc9a5baa9017d9cec58922ae03fc157ee63293 100644
+index e7fe1c565aac5f8d38900018f043369f59646516..ddabb77cb8c6707a2b7530fe4d09bd1d1ca1e17c 100644
 --- a/components/embedder_support/user_agent_utils.cc
 +++ b/components/embedder_support/user_agent_utils.cc
-@@ -280,6 +280,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
+@@ -237,6 +237,7 @@ const blink::UserAgentBrandList GetUserAgentBrandList(
  #if !BUILDFLAG(CHROMIUM_BRANDING)
    brand = version_info::GetProductName();
  #endif

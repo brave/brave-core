@@ -1,19 +1,17 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 
 #include "base/path_service.h"
+#include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/crx_installer.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "extensions/browser/extension_registry.h"
-#include "extensions/browser/notification_types.h"
 #include "extensions/browser/test_extension_registry_observer.h"
 #include "extensions/common/mojom/manifest.mojom.h"
-
-#include "brave/components/constants/brave_paths.h"
-#include "chrome/test/base/ui_test_utils.h"
 
 namespace extensions {
 
@@ -32,11 +30,9 @@ ExtensionFunctionalTest::InstallExtensionSilently(
   installer->set_off_store_install_allow_reason(
       CrxInstaller::OffStoreInstallAllowedInTest);
 
-  observer_->Watch(NOTIFICATION_CRX_INSTALLER_DONE,
-                   content::Source<CrxInstaller>(installer.get()));
   installer->InstallCrx(path);
-  observer_->Wait();
-  observer_->WaitForExtensionViewsToLoad();
+  EXPECT_TRUE(registry_observer.WaitForExtensionInstalled());
+  EXPECT_TRUE(observer_->WaitForExtensionViewsToLoad());
 
   size_t num_after = registry->enabled_extensions().size();
   EXPECT_EQ(num_before + 1, num_after);

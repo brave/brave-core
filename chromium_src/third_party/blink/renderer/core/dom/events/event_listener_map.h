@@ -18,7 +18,7 @@
   void CopyEventListenersNotCreatedFromMarkupToTarget
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/core/dom/events/event_listener_map.h"
+#include "src/third_party/blink/renderer/core/dom/events/event_listener_map.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef CopyEventListenersNotCreatedFromMarkupToTarget

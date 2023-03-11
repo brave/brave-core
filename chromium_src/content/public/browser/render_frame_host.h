@@ -13,7 +13,7 @@ class SkBitmap;
              base::OnceCallback<void(const SkBitmap&)> callback) = 0; \
   virtual void CopyImageAt
 
-#include "src/content/public/browser/render_frame_host.h"
+#include "src/content/public/browser/render_frame_host.h"  // IWYU pragma: export
 
 #undef CopyImageAt
 

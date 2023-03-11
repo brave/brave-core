@@ -36,16 +36,12 @@ struct CookieSettingWithBraveMetadata {
 #define IsCookieSessionOnly                                                    \
   ShouldUseEphemeralStorage(                                                   \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
+      net::CookieSettingOverrides overrides,                                   \
       const absl::optional<url::Origin>& top_frame_origin) const;              \
-  bool IsEphemeralCookieAccessAllowed(                                         \
-      const GURL& url, const GURL& first_party_url,                            \
-      CookieSettingsBase::QueryReason query_reason) const;                     \
   bool IsEphemeralCookieAccessAllowed(                                         \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
       const absl::optional<url::Origin>& top_frame_origin,                     \
-      CookieSettingsBase::QueryReason query_reason) const;                     \
-  bool IsChromiumFullCookieAccessAllowed(                                      \
-      const GURL& url, const GURL& first_party_url,                            \
+      net::CookieSettingOverrides overrides,                                   \
       CookieSettingsBase::QueryReason query_reason) const;                     \
   bool IsChromiumFullCookieAccessAllowed(                                      \
       const GURL& url, const net::SiteForCookies& site_for_cookies,            \
@@ -57,6 +53,7 @@ struct CookieSettingWithBraveMetadata {
       bool is_explicit_setting, bool is_first_party_allowed_scheme) const;     \
   CookieSettingWithBraveMetadata GetCookieSettingWithBraveMetadata(            \
       const GURL& url, const GURL& first_party_url,                            \
+      net::CookieSettingOverrides overrides,                                   \
       CookieSettingsBase::QueryReason query_reason) const;                     \
   CookieSettingWithBraveMetadata* cookie_setting_with_brave_metadata() const { \
     return cookie_setting_with_brave_metadata_.Get();                          \
@@ -75,7 +72,7 @@ struct CookieSettingWithBraveMetadata {
  public:                                                                       \
   bool IsCookieSessionOnly
 
-#include "src/components/content_settings/core/common/cookie_settings_base.h"
+#include "src/components/content_settings/core/common/cookie_settings_base.h"  // IWYU pragma: export
 
 #undef IsCookieSessionOnly
 

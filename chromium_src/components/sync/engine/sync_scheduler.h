@@ -13,7 +13,7 @@
       base::OnceCallback<void(const SyncProtocolError&)> callback) {} \
   virtual void OnCredentialsUpdated
 
-#include "src/components/sync/engine/sync_scheduler.h"
+#include "src/components/sync/engine/sync_scheduler.h"  // IWYU pragma: export
 
 #undef OnCredentialsUpdated
 

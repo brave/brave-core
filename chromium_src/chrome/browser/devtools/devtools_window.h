@@ -10,7 +10,7 @@
   HatsNextWebDialogBrowserTest;      \
   friend class TorProfileManagerUnitTest
 
-#include "src/chrome/browser/devtools/devtools_window.h"
+#include "src/chrome/browser/devtools/devtools_window.h"  // IWYU pragma: export
 
 #undef HatsNextWebDialogBrowserTest
 

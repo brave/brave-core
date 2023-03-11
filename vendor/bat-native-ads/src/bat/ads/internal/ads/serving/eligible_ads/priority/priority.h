@@ -6,8 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_
 
-#include <utility>
-
 #include "base/containers/flat_map.h"
 #include "bat/ads/internal/ads/serving/eligible_ads/priority/priority_util.h"
 #include "bat/ads/internal/common/logging_util.h"
@@ -26,26 +24,15 @@ T PrioritizeCreativeAds(const T& creative_ads) {
     return {};
   }
 
-  const std::pair<unsigned int, T> highest_priority_bucket =
-      GetHighestPriorityBucket(buckets);
-  const unsigned int priority = highest_priority_bucket.first;
-  const T prioritized_creative_ads = highest_priority_bucket.second;
-
-  BLOG(2, prioritized_creative_ads.size()
-              << " ads with a priority of " << priority << " in bucket 1");
-
-  int index = 2;
-  for (const auto& bucket : buckets) {
-    if (bucket.first == priority) {
-      continue;
-    }
-
-    BLOG(3, bucket.second.size() << " ads with a priority of " << bucket.first
-                                 << " in bucket " << index);
-    index++;
+  int bucket_number = 1;
+  for (const auto& [priority, ads] : buckets) {
+    BLOG(3, ads.size() << " ads with a priority of " << priority
+                       << " in bucket " << bucket_number);
+    bucket_number++;
   }
 
-  return prioritized_creative_ads;
+  const auto& [priority, bucket] = GetHighestPriorityBucket(buckets);
+  return bucket;
 }
 
 }  // namespace ads

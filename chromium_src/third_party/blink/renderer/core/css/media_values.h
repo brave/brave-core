@@ -14,7 +14,7 @@
   CalculateDeviceHeight_ChromiumImpl(LocalFrame*); \
   static int CalculateDeviceHeight
 
-#include "src/third_party/blink/renderer/core/css/media_values.h"
+#include "src/third_party/blink/renderer/core/css/media_values.h"  // IWYU pragma: export
 
 #undef CalculateDeviceWidth
 #undef CalculateDeviceHeight

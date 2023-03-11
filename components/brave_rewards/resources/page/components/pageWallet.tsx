@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -8,7 +9,7 @@ import { connect } from 'react-redux'
 // Components
 import {
   ModalActivity,
-  ModalBackupReset
+  ModalReset
 } from '../../ui/components'
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
 import { LayoutKind } from '../lib/layout_context'
@@ -34,7 +35,6 @@ import * as mojom from '../../shared/lib/mojom'
 import { isPublisherVerified } from '../../shared/lib/publisher_status'
 
 interface State {
-  activeTabId: number
   modalActivity: boolean
   modalPendingContribution: boolean
 }
@@ -47,7 +47,6 @@ class PageWallet extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      activeTabId: 0,
       modalActivity: false,
       modalPendingContribution: false
     }
@@ -64,26 +63,20 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.getExternalWalletProviders()
   }
 
-  onModalBackupClose = () => {
+  onModalResetClose = () => {
     // Used the by settings page to clear browsing data.
     if (this.urlHashIs('#manage-wallet')) {
       window.location.hash = ''
     }
-    this.actions.onModalBackupClose()
+    this.actions.onModalResetClose()
   }
 
-  onModalBackupOpen = () => {
-    this.actions.onModalBackupOpen()
+  onModalResetOpen = () => {
+    this.actions.onModalResetOpen()
   }
 
-  onModalBackupTabChange = (newTabId: number) => {
-    this.setState({
-      activeTabId: newTabId
-    })
-  }
-
-  onModalBackupOnReset = () => {
-    this.actions.onModalBackupClose()
+  onModalResetOnReset = () => {
+    this.actions.onModalResetClose()
     this.actions.completeReset()
   }
 
@@ -114,7 +107,7 @@ class PageWallet extends React.Component<Props, State> {
 
   isBackupUrl = () => {
     if (this.urlHashIs('#manage-wallet')) {
-      this.onModalBackupOpen()
+      this.onModalResetOpen()
     }
   }
 
@@ -164,7 +157,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (externalWallet.loginUrl) {
-      window.open(externalWallet.loginUrl, '_self')
+      window.open(externalWallet.loginUrl, '_self', 'noreferrer')
     }
   }
 
@@ -214,7 +207,7 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    window.open(externalWallet.accountUrl, '_self')
+    window.open(externalWallet.accountUrl, '_self', 'noreferrer')
   }
 
   getBalanceToken = (key: string) => {
@@ -486,15 +479,6 @@ class PageWallet extends React.Component<Props, State> {
     )
   }
 
-  getInternalFunds = () => {
-    const { balance } = this.props.rewardsData
-    if (!balance.wallets) {
-      return 0
-    }
-
-    return (balance.wallets.blinded || 0)
-  }
-
   isWalletProviderEnabled = (walletProvider: string) => {
     const { currentCountryCode, parameters } = this.props.rewardsData
     const regions = parameters.walletProviderRegions[walletProvider] || null
@@ -537,8 +521,7 @@ class PageWallet extends React.Component<Props, State> {
       pendingContributions,
       userType
     } = this.props.rewardsData
-    const { total } = balance
-    const { modalBackup, modalConnect } = ui
+    const { modalReset, modalConnect } = ui
 
     let externalWalletInfo: ExternalWallet | null = null
     const walletStatus = this.getExternalWalletStatus()
@@ -565,7 +548,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           userType !== 'unconnected' &&
             <WalletCard
-              balance={total}
+              balance={balance}
               externalWallet={externalWalletInfo}
               providerPayoutStatus={'off'}
               earningsThisMonth={adsData.adsEarningsThisMonth || 0}
@@ -582,14 +565,10 @@ class PageWallet extends React.Component<Props, State> {
             />
         }
         {
-          modalBackup
-            ? <ModalBackupReset
-              activeTabId={this.state.activeTabId}
-              onTabChange={this.onModalBackupTabChange}
-              onClose={this.onModalBackupClose}
-              onVerify={this.onVerifyClick}
-              onReset={this.onModalBackupOnReset}
-              internalFunds={this.getInternalFunds()}
+          modalReset
+            ? <ModalReset
+              onClose={this.onModalResetClose}
+              onReset={this.onModalResetOnReset}
             />
             : null
         }
@@ -607,7 +586,6 @@ class PageWallet extends React.Component<Props, State> {
         {
           modalConnect
             ? <ConnectWalletModal
-                rewardsBalance={balance.total}
                 providers={this.generateExternalWalletProviderList(externalWalletProviderList)}
                 onContinue={this.onConnectWalletContinue}
                 onClose={this.toggleVerifyModal}

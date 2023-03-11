@@ -61,7 +61,7 @@ constexpr char kExpectedUrlRequestContent[] =
     R"(Uzo7S0X//u0RGsO534vCoIbrsXgbzLfWw8CLML0CkgMltEGxM6XwBTICl4dqqfhIcLhD0f1)"
     R"(WFod7JpuEkjw=="},"publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnD)"
     R"(Dk="}],"platform":"windows","totals":[{"ad_format":"ad_notification","v)"
-    R"(iew":"7"}]})";
+    R"(iew":7}]})";
 
 privacy::UnblindedPaymentTokenList GetUnblindedPaymentTokens(const int count) {
   const std::vector<std::string> unblinded_payment_tokens_base64 = {

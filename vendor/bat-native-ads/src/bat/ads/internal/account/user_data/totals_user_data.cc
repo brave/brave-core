@@ -5,10 +5,8 @@
 
 #include "bat/ads/internal/account/user_data/totals_user_data.h"
 
-#include <string>
 #include <utility>
 
-#include "base/strings/string_number_conversions.h"
 #include "bat/ads/internal/account/user_data/totals_user_data_util.h"
 
 namespace ads::user_data {
@@ -25,17 +23,12 @@ base::Value::Dict GetTotals(
   const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
 
   base::Value::List list;
-  for (const auto& bucket : buckets) {
+  for (const auto& [ad_format, confirmations] : buckets) {
     base::Value::Dict total;
 
-    const std::string& ad_format = bucket.first;
     total.Set(kAdFormatKey, ad_format);
 
-    const ConfirmationTypeBucketMap& confirmations = bucket.second;
-    for (const auto& confirmation : confirmations) {
-      const std::string& confirmation_type = confirmation.first;
-      const std::string count = base::NumberToString(confirmation.second);
-
+    for (const auto& [confirmation_type, count] : confirmations) {
       total.Set(confirmation_type, count);
     }
 

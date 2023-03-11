@@ -68,6 +68,8 @@ brave_chrome_browser_visibility = [
 ]
 
 brave_chrome_browser_sources = [
+  "//brave/browser/brave_browser_features.cc",
+  "//brave/browser/brave_browser_features.h",
   "//brave/browser/brave_browser_main_extra_parts.cc",
   "//brave/browser/brave_browser_main_extra_parts.h",
   "//brave/browser/brave_browser_main_parts.cc",
@@ -125,13 +127,13 @@ brave_chrome_browser_deps = [
   "//brave/browser/themes",
   "//brave/browser/ui",
   "//brave/browser/ui/tabs",
-  "//brave/browser/ui/webui/brave_federated:mojo_bindings",
   "//brave/common",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
   "//brave/components/brave_component_updater/browser",
   "//brave/components/brave_federated",
   "//brave/components/brave_new_tab_ui:mojom",
+  "//brave/components/brave_news/common:mojom",
   "//brave/components/brave_perf_predictor/browser",
   "//brave/components/brave_private_new_tab_ui/common",
   "//brave/components/brave_private_new_tab_ui/common:mojom",
@@ -149,7 +151,6 @@ brave_chrome_browser_deps = [
   "//brave/components/brave_sync:features",
   "//brave/components/brave_sync:network_time_helper",
   "//brave/components/brave_sync:prefs",
-  "//brave/components/brave_today/common:mojom",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_vpn/common/mojom",
   "//brave/components/brave_wallet/browser",
@@ -167,6 +168,7 @@ brave_chrome_browser_deps = [
   "//brave/components/decentralized_dns/core",
   "//brave/components/google_sign_in_permission",
   "//brave/components/greaselion/browser/buildflags",
+  "//brave/components/https_upgrade_exceptions/browser",
   "//brave/components/ipfs/buildflags",
   "//brave/components/l10n/common",
   "//brave/components/ntp_background_images/browser",
@@ -195,7 +197,6 @@ brave_chrome_browser_deps = [
   "//components/content_settings/browser",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
-  "//components/dom_distiller/core",
   "//components/embedder_support",
   "//components/feed/core/shared_prefs:feed_shared_prefs",
   "//components/gcm_driver:gcm_buildflags",
@@ -230,6 +231,10 @@ brave_chrome_browser_deps = [
   "//url",
 ]
 
+if (!is_android && !is_ios) {
+  brave_chrome_browser_deps += [ "//brave/components/commands/common" ]
+}
+
 if (is_mac) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_app_controller_mac.h",
@@ -251,7 +256,10 @@ if (enable_sparkle) {
 }
 
 if (enable_speedreader) {
-  brave_chrome_browser_deps += [ "//brave/components/speedreader/common:mojom" ]
+  brave_chrome_browser_deps += [
+    "//brave/components/speedreader/common",
+    "//brave/components/speedreader/common:mojom",
+  ]
 }
 
 if (enable_brave_vpn) {
@@ -272,7 +280,7 @@ if (ethereum_remote_client_enabled) {
 
 if (is_android) {
   brave_chrome_browser_sources += [
-    "//brave/browser/android/brave_stats_updater_android.cc",
+    "//brave/browser/android/brave_init_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.cc",
     "//brave/browser/sync/brave_sync_devices_android.h",
   ]
@@ -283,6 +291,7 @@ if (is_android) {
   brave_chrome_browser_deps += [
     "//brave/browser/android:android_browser_process",
     "//brave/browser/android/preferences",
+    "//brave/browser/android/safe_browsing:buildflags",
     "//brave/build/android:jni_headers",
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",

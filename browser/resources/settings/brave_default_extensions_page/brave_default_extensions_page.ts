@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import './brave_extensions_manifest_v2_subpage.js';
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { WebUiListenerMixin, WebUiListenerMixinInterface } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import { SettingsCheckboxElement } from '../controls/settings_checkbox.js';
@@ -10,9 +11,10 @@ import { loadTimeData } from '../i18n_setup.js';
 import { PrefsMixin, PrefsMixinInterface } from '../prefs/prefs_mixin.js'
 import { BraveDefaultExtensionsBrowserProxyImpl } from './brave_default_extensions_browser_proxy.js'
 import { getTemplate } from './brave_default_extensions_page.html.js'
+import { Router, RouteObserverMixin } from '../router.js';
 
 const SettingBraveDefaultExtensionsPageElementBase =
-  WebUiListenerMixin(PrefsMixin(PolymerElement)) as {
+  WebUiListenerMixin(PrefsMixin(RouteObserverMixin(PolymerElement))) as {
   new (): PolymerElement & WebUiListenerMixinInterface & PrefsMixinInterface
 }
 
@@ -47,16 +49,26 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
           // Maybe add a no-validate attribute instead? This makes little sense.
           return {}
         },
-      }
+      },
+      isExtensionsManifestV2FeatureEnabled_: Boolean,
+      isExtensionsManifestV2Routed_: {
+        type: Boolean,
+        value: false,
+      },
     }
   }
 
   private browserProxy_ = BraveDefaultExtensionsBrowserProxyImpl.getInstance()
   showRestartToast_: boolean
   widevineEnabledPref_: chrome.settingsPrivate.PrefObject
+  isExtensionsManifestV2FeatureEnabled_: boolean
+  isExtensionsManifestV2Routed_: boolean
 
   override ready() {
     super.ready()
+
+    this.isExtensionsManifestV2FeatureEnabled_ =
+      loadTimeData.getBoolean('extensionsManifestV2Feature')
 
     this.addWebUiListener(
       'brave-needs-restart-changed', (needsRestart: boolean) => {
@@ -71,6 +83,13 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
     const setWidevineEnabledPref = (enabled: boolean) => this.setWidevineEnabledPref_(enabled)
     this.addWebUiListener('widevine-enabled-changed', setWidevineEnabledPref)
     this.browserProxy_.isWidevineEnabled().then(setWidevineEnabledPref)
+  }
+
+  /** @protected */
+  currentRouteChanged() {
+    const router = Router.getInstance();
+    this.isExtensionsManifestV2Routed_ =
+      router.getCurrentRoute() == router.getRoutes().EXTENSIONS_V2;
   }
 
   onWebTorrentEnabledChange_() {
@@ -99,6 +118,11 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
     this.browserProxy_.setWidevineEnabled(this.$.widevineEnabled.checked)
   }
 
+  openManageV2ExtensionPage_() {
+    const router = Router.getInstance();
+    router.navigateTo(router.getRoutes().EXTENSIONS_V2);
+  }
+
   openExtensionsPage_() {
     window.open("chrome://extensions", "_self")
   }
@@ -108,7 +132,7 @@ export class SettingBraveDefaultExtensionsPageElement extends SettingBraveDefaul
   }
 
   openWebStoreUrl_() {
-    window.open(loadTimeData.getString('getMoreExtensionsUrl'))
+    window.open(loadTimeData.getString('getMoreExtensionsUrl'), undefined, 'noreferrer')
   }
 
   shouldShowRestartForGoogleLogin_(value: boolean) {

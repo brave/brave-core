@@ -12,6 +12,7 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOnDeviceClustering, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kOnDeviceClusteringKeywordFiltering, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

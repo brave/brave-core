@@ -25,7 +25,7 @@ class BraveWalletPermissionContextUnitTest;
   friend permissions::BraveWalletPermissionContextUnitTest;              \
   KeyedService* BuildServiceInstanceFor
 
-#include "src/chrome/browser/permissions/permission_manager_factory.h"
+#include "src/chrome/browser/permissions/permission_manager_factory.h"  // IWYU pragma: export
 #undef BuildServiceInstanceFor
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PERMISSIONS_PERMISSION_MANAGER_FACTORY_H_

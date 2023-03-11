@@ -14,7 +14,7 @@
 #else
 #define TYPE_EDGE TYPE_WHALE
 #endif
-#include "src/chrome/common/importer/profile_import_process_param_traits_macros.h"
+#include "src/chrome/common/importer/profile_import_process_param_traits_macros.h"  // IWYU pragma: export
 #if !BUILDFLAG(IS_WIN)
 #undef TYPE_BOOKMARKS_FILE
 #else

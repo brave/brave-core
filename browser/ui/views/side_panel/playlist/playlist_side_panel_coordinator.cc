@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_web_view.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/app/vector_icons/vector_icons.h"

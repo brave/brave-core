@@ -11,13 +11,16 @@
 #include "base/containers/span.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
+#include "brave/third_party/bitcoin-core/src/src/bech32.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
+#include "brave/third_party/bitcoin-core/src/src/util/strencodings.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
 #include "crypto/encryptor.h"
 #include "crypto/sha2.h"
@@ -32,10 +35,8 @@ namespace brave_wallet {
 namespace {
 constexpr char kMasterSecret[] = "Bitcoin seed";
 constexpr size_t kSHA512Length = 64;
-#define SERIALIZATION_LEN 78
-#define HARDENED_OFFSET 0x80000000
-#define MAINNET_PUBLIC 0x0488B21E
-#define MAINNET_PRIVATE 0x0488ADE4
+constexpr uint32_t kHardenedOffset = 0x80000000;
+constexpr size_t kSerializationLength = 78;
 
 bool UTCPasswordVerification(const std::string& derived_key,
                              const std::vector<uint8_t>& ciphertext,
@@ -86,6 +87,22 @@ bool UTCDecryptPrivateKey(const std::string& derived_key,
   return true;
 }
 
+std::vector<uint8_t> Hash160(const std::vector<uint8_t>& input) {
+  // BoringSSL in chromium doesn't have ripemd implementation built in BUILD.gn
+  // only header
+  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
+
+  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
+      crypto::SHA256Hash(input);
+  DCHECK(!sha256hash.empty());
+
+  CRIPEMD160()
+      .Write(sha256hash.data(), sha256hash.size())
+      .Finalize(result.data());
+
+  return result;
+}
+
 }  // namespace
 
 HDKey::HDKey()
@@ -123,12 +140,13 @@ std::unique_ptr<HDKey> HDKey::GenerateFromSeed(
   auto IR = hmac_span.last(kSHA512Length / 2);
   hdkey->SetPrivateKey(IL);
   hdkey->SetChainCode(IR);
+  hdkey->path_ = kMasterNode;
   return hdkey;
 }
 
 // static
 std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
-  std::vector<unsigned char> decoded_key(SERIALIZATION_LEN);
+  std::vector<unsigned char> decoded_key(kSerializationLength);
   if (!DecodeBase58Check(key, decoded_key, decoded_key.size())) {
     LOG(ERROR) << __func__ << ": DecodeBase58Check failed";
     return nullptr;
@@ -139,8 +157,8 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(33)
   const uint8_t* ptr = buf.data();
-  int32_t version = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
-  DCHECK(version == MAINNET_PUBLIC || version == MAINNET_PRIVATE);
+  auto version = static_cast<ExtendedKeyVersion>(ptr[0] << 24 | ptr[1] << 16 |
+                                                 ptr[2] << 8 | ptr[3] << 0);
   ptr += sizeof(version);
 
   uint8_t depth = *ptr;
@@ -163,11 +181,11 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
   hdkey->SetChainCode(chain_code);
 
   if (*ptr == 0x00) {
-    DCHECK_EQ(version, MAINNET_PRIVATE);
+    DCHECK_EQ(version, ExtendedKeyVersion::kXprv);
     ptr += 1;  // Skip first zero byte which is not part of private key.
     hdkey->SetPrivateKey(base::make_span(ptr, ptr + 32));
   } else {
-    DCHECK_EQ(version, MAINNET_PUBLIC);
+    DCHECK_EQ(version, ExtendedKeyVersion::kXpub);
     std::vector<uint8_t> public_key(ptr, ptr + 33);
     hdkey->SetPublicKey(public_key);
   }
@@ -193,36 +211,38 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
   auto parsed_json = base::JSONReader::ReadAndReturnValueWithError(json);
-  if (!parsed_json.has_value()) {
+  if (!parsed_json.has_value() || !parsed_json->is_dict()) {
     VLOG(0) << __func__ << ": UTC v3 json parsed failed because "
             << parsed_json.error().message;
     return nullptr;
   }
+
+  auto& dict = parsed_json->GetDict();
   // check version
-  auto version = parsed_json->FindIntKey("version");
+  auto version = dict.FindInt("version");
   if (!version || *version != 3) {
     VLOG(0) << __func__ << ": missing version or version is not 3";
     return nullptr;
   }
 
-  const auto* crypto = parsed_json->FindKey("crypto");
+  const auto* crypto = dict.FindDict("crypto");
   if (!crypto) {
     VLOG(0) << __func__ << ": missing crypto";
     return nullptr;
   }
-  const auto* kdf = crypto->FindStringKey("kdf");
+  const auto* kdf = crypto->FindString("kdf");
   if (!kdf) {
     VLOG(0) << __func__ << ": missing kdf";
     return nullptr;
   }
 
   std::unique_ptr<SymmetricKey> derived_key = nullptr;
-  const auto* kdfparams = crypto->FindKey("kdfparams");
+  const auto* kdfparams = crypto->FindDict("kdfparams");
   if (!kdfparams) {
     VLOG(0) << __func__ << ": missing kdfparams";
     return nullptr;
   }
-  auto dklen = kdfparams->FindIntKey("dklen");
+  auto dklen = kdfparams->FindInt("dklen");
   if (!dklen) {
     VLOG(0) << __func__ << ": missing dklen";
     return nullptr;
@@ -231,7 +251,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     VLOG(0) << __func__ << ": dklen must be >=32";
     return nullptr;
   }
-  const auto* salt = kdfparams->FindStringKey("salt");
+  const auto* salt = kdfparams->FindString("salt");
   if (!salt) {
     VLOG(0) << __func__ << ": missing salt";
     return nullptr;
@@ -242,12 +262,12 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
   if (*kdf == "pbkdf2") {
-    auto c = kdfparams->FindIntKey("c");
+    auto c = kdfparams->FindInt("c");
     if (!c) {
       VLOG(0) << __func__ << ": missing c";
       return nullptr;
     }
-    const auto* prf = kdfparams->FindStringKey("prf");
+    const auto* prf = kdfparams->FindString("prf");
     if (!prf) {
       VLOG(0) << __func__ << ": missing prf";
       return nullptr;
@@ -265,17 +285,17 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
       return nullptr;
     }
   } else if (*kdf == "scrypt") {
-    auto n = kdfparams->FindIntKey("n");
+    auto n = kdfparams->FindInt("n");
     if (!n) {
       VLOG(0) << __func__ << ": missing n";
       return nullptr;
     }
-    auto r = kdfparams->FindIntKey("r");
+    auto r = kdfparams->FindInt("r");
     if (!r) {
       VLOG(0) << __func__ << ": missing r";
       return nullptr;
     }
-    auto p = kdfparams->FindIntKey("p");
+    auto p = kdfparams->FindInt("p");
     if (!p) {
       VLOG(0) << __func__ << ": missing p";
       return nullptr;
@@ -294,12 +314,12 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
     return nullptr;
   }
 
-  const auto* mac = crypto->FindStringKey("mac");
+  const auto* mac = crypto->FindString("mac");
   if (!mac) {
     VLOG(0) << __func__ << ": missing mac";
     return nullptr;
   }
-  const auto* ciphertext = crypto->FindStringKey("ciphertext");
+  const auto* ciphertext = crypto->FindString("ciphertext");
   if (!ciphertext) {
     VLOG(0) << __func__ << ": missing ciphertext";
     return nullptr;
@@ -314,7 +334,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
                                *dklen))
     return nullptr;
 
-  const auto* cipher = crypto->FindStringKey("cipher");
+  const auto* cipher = crypto->FindString("cipher");
   if (!cipher) {
     VLOG(0) << __func__ << ": missing cipher";
     return nullptr;
@@ -326,7 +346,7 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   }
 
   std::vector<uint8_t> iv_bytes;
-  const auto* iv = crypto->FindStringPath("cipherparams.iv");
+  const auto* iv = crypto->FindStringByDottedPath("cipherparams.iv");
   if (!iv) {
     VLOG(0) << __func__ << ": missing cipherparams.iv";
     return nullptr;
@@ -345,6 +365,10 @@ std::unique_ptr<HDKey> HDKey::GenerateFromV3UTC(const std::string& password,
   return GenerateFromPrivateKey(private_key);
 }
 
+std::string HDKey::GetPath() const {
+  return path_;
+}
+
 void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   if (value.size() != 32) {
     LOG(ERROR) << __func__ << ": pivate key must be 32 bytes";
@@ -358,8 +382,9 @@ void HDKey::SetPrivateKey(base::span<const uint8_t> value) {
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
 }
 
-std::string HDKey::GetPrivateExtendedKey() const {
-  return Serialize(MAINNET_PRIVATE, private_key_);
+std::string HDKey::GetPrivateExtendedKey(
+    ExtendedKeyVersion version /*= ExtendedKeyVersion::kXprv*/) const {
+  return Serialize(version, private_key_);
 }
 
 std::string HDKey::EncodePrivateKeyForExport() const {
@@ -368,6 +393,11 @@ std::string HDKey::EncodePrivateKeyForExport() const {
 
 std::vector<uint8_t> HDKey::GetPrivateKeyBytes() const {
   return std::vector<uint8_t>(private_key_.begin(), private_key_.end());
+}
+
+std::vector<uint8_t> HDKey::GetPublicKeyBytes() const {
+  DCHECK(!public_key_.empty());
+  return public_key_;
 }
 
 void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
@@ -390,8 +420,22 @@ void HDKey::SetPublicKey(const std::vector<uint8_t>& value) {
   fingerprint_ = ptr[0] << 24 | ptr[1] << 16 | ptr[2] << 8 | ptr[3] << 0;
 }
 
-std::string HDKey::GetPublicExtendedKey() const {
-  return Serialize(MAINNET_PUBLIC, public_key_);
+std::string HDKey::GetPublicExtendedKey(
+    ExtendedKeyVersion version /*= ExtendedKeyVersion::kXpub*/) const {
+  return Serialize(version, public_key_);
+}
+
+// https://github.com/bitcoin/bips/blob/master/bip-0173.mediawiki#segwit-address-format
+std::string HDKey::GetSegwitAddress() const {
+  auto hash160 = Hash160(public_key_);
+  std::vector<unsigned char> input;
+  input.reserve(33);   // 1 + (160 / 5)
+  input.push_back(0);  // the witness version
+  ConvertBits<8, 5, true>([&](unsigned char c) { input.push_back(c); },
+                          hash160.begin(), hash160.end());
+
+  // TODO(apaymyshev): support testnet
+  return bech32::Encode("bc", input);
 }
 
 std::vector<uint8_t> HDKey::GetUncompressedPublicKey() const {
@@ -460,9 +504,24 @@ void HDKey::SetChainCode(base::span<const uint8_t> value) {
   chain_code_.assign(value.begin(), value.end());
 }
 
-std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
-  std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
-  bool is_hardened = index >= HARDENED_OFFSET;
+std::unique_ptr<HDKeyBase> HDKey::DeriveNormalChild(uint32_t index) {
+  if (index >= kHardenedOffset) {
+    return nullptr;
+  }
+
+  return DeriveChild(index);
+}
+
+std::unique_ptr<HDKeyBase> HDKey::DeriveHardenedChild(uint32_t index) {
+  if (index >= kHardenedOffset) {
+    return nullptr;
+  }
+
+  return DeriveChild(kHardenedOffset + index);
+}
+
+std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
+  bool is_hardened = index >= kHardenedOffset;
   SecureVector data;
 
   if (is_hardened) {
@@ -494,6 +553,7 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
   auto IL = hmac_span.first(kSHA512Length / 2);
   auto IR = hmac_span.last(kSHA512Length / 2);
 
+  std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   hdkey->SetChainCode(IR);
 
   if (!private_key_.empty()) {
@@ -532,63 +592,76 @@ std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
     hdkey->SetPublicKey(public_key);
   }
 
+  if (!path_.empty()) {
+    const std::string node =
+        is_hardened ? base::NumberToString(index - kHardenedOffset) + "'"
+                    : base::NumberToString(index);
+
+    hdkey->path_ = base::StrCat({path_, "/", node});
+  }
   hdkey->depth_ = depth_ + 1;
   hdkey->parent_fingerprint_ = fingerprint_;
   hdkey->index_ = index;
 
-  return std::unique_ptr<HDKeyBase>{hdkey.release()};
+  return hdkey;
 }
 
 std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
-  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
-  if (path == "m") {
-    if (!private_key_.empty())
-      hd_key->SetPrivateKey(private_key_);
-    else
-      hd_key->SetPublicKey(public_key_);
-    hd_key->chain_code_ = chain_code_;
-    return std::unique_ptr<HDKeyBase>{hd_key.release()};
+  if (path_ != kMasterNode) {
+    LOG(ERROR) << __func__ << ": must derive only from master key";
+    return nullptr;
   }
+  if (private_key_.empty()) {
+    LOG(ERROR) << __func__ << ": master key must have private key";
+    return nullptr;
+  }
+
+  std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
   std::vector<std::string> entries =
       base::SplitString(path, "/", base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
-  if (entries.empty())
+  if (entries.empty()) {
     return nullptr;
-  for (size_t i = 0; i < entries.size(); ++i) {
+  }
+
+  // Starting with 'm' node and effectively copying `*this` into `hd_key`.
+  if (entries[0] != kMasterNode) {
+    LOG(ERROR) << __func__ << ": path must start with \"m\"";
+    return nullptr;
+  }
+  hd_key->SetPrivateKey(private_key_);
+  hd_key->SetChainCode(chain_code_);
+  hd_key->path_ = path_;
+
+  for (size_t i = 1; i < entries.size(); ++i) {
     std::string entry = entries[i];
-    if (i == 0) {
-      if (entry != "m") {
-        LOG(ERROR) << __func__ << ": path must starts with \"m\"";
-        return nullptr;
-      }
-      if (!private_key_.empty())
-        hd_key->SetPrivateKey(private_key_);
-      else
-        hd_key->SetPublicKey(public_key_);
-      hd_key->chain_code_ = chain_code_;
-      continue;
-    }
+
     bool is_hardened = entry.length() > 1 && entry.back() == '\'';
-    if (is_hardened)
+    if (is_hardened) {
       entry.pop_back();
+    }
     unsigned child_index = 0;
     if (!base::StringToUint(entry, &child_index)) {
-      LOG(ERROR) << __func__ << ": path must contains number or number'";
+      LOG(ERROR) << __func__ << ": path must contain number or number'";
       return nullptr;
     }
-    if (child_index >= HARDENED_OFFSET) {
-      LOG(ERROR) << __func__ << ": index must be less than " << HARDENED_OFFSET;
+    if (child_index >= kHardenedOffset) {
+      LOG(ERROR) << __func__ << ": index must be less than " << kHardenedOffset;
       return nullptr;
     }
-    if (is_hardened)
-      child_index += HARDENED_OFFSET;
+    if (is_hardened) {
+      child_index += kHardenedOffset;
+    }
 
-    std::unique_ptr<HDKeyBase> child_key = hd_key->DeriveChild(child_index);
-    hd_key = std::unique_ptr<HDKey>{static_cast<HDKey*>(child_key.release())};
-    if (!hd_key)
+    hd_key = hd_key->DeriveChild(child_index);
+    if (!hd_key) {
       return nullptr;
+    }
   }
-  return std::unique_ptr<HDKeyBase>{hd_key.release()};
+
+  DCHECK_EQ(path, hd_key->GetPath());
+
+  return hd_key;
 }
 
 std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {
@@ -714,18 +787,20 @@ void HDKey::GeneratePublicKey() {
 }
 
 // https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki#serialization-format
-std::string HDKey::Serialize(uint32_t version,
+std::string HDKey::Serialize(ExtendedKeyVersion version,
                              base::span<const uint8_t> key) const {
   // version(4) || depth(1) || parent_fingerprint(4) || index(4) || chain(32) ||
   // key(32 or 33)
   SecureVector buf;
 
-  buf.reserve(SERIALIZATION_LEN);
+  buf.reserve(kSerializationLength);
 
-  buf.push_back((version >> 24) & 0xFF);
-  buf.push_back((version >> 16) & 0xFF);
-  buf.push_back((version >> 8) & 0xFF);
-  buf.push_back((version >> 0) & 0xFF);
+  uint32_t version_uint32 = static_cast<uint32_t>(version);
+
+  buf.push_back((version_uint32 >> 24) & 0xFF);
+  buf.push_back((version_uint32 >> 16) & 0xFF);
+  buf.push_back((version_uint32 >> 8) & 0xFF);
+  buf.push_back((version_uint32 >> 0) & 0xFF);
 
   buf.push_back(depth_);
 
@@ -741,31 +816,21 @@ std::string HDKey::Serialize(uint32_t version,
 
   buf.insert(buf.end(), chain_code_.begin(), chain_code_.end());
   if (key.size() == 32) {
+    DCHECK(version == ExtendedKeyVersion::kXprv ||
+           version == ExtendedKeyVersion::kYprv ||
+           version == ExtendedKeyVersion::kZprv);
     // 32-bytes private key is padded with a zero byte.
     buf.insert(buf.end(), 0);
   } else {
+    DCHECK(version == ExtendedKeyVersion::kXpub ||
+           version == ExtendedKeyVersion::kYpub ||
+           version == ExtendedKeyVersion::kZpub);
     DCHECK_EQ(key.size(), 33u);
   }
   buf.insert(buf.end(), key.begin(), key.end());
 
-  DCHECK(buf.size() == SERIALIZATION_LEN);
+  DCHECK(buf.size() == kSerializationLength);
   return EncodeBase58Check(buf);
-}
-
-const std::vector<uint8_t> HDKey::Hash160(const std::vector<uint8_t>& input) {
-  // BoringSSL in chromium doesn't have ripemd implementation built in BUILD.gn
-  // only header
-  std::vector<uint8_t> result(CRIPEMD160::OUTPUT_SIZE);
-
-  std::array<uint8_t, crypto::kSHA256Length> sha256hash =
-      crypto::SHA256Hash(input);
-  DCHECK(!sha256hash.empty());
-
-  CRIPEMD160()
-      .Write(sha256hash.data(), sha256hash.size())
-      .Finalize(result.data());
-
-  return result;
 }
 
 }  // namespace brave_wallet

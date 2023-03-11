@@ -32,6 +32,7 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
   }
   r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
   r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
+  r.EXTENSIONS_V2 = r.EXTENSIONS.createChild('/extensions/v2')
   if (pageVisibility.braveSync) {
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_SYNC_SETUP = r.BRAVE_SYNC.createChild('/braveSync/setup');
@@ -80,6 +81,10 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     r.AUTOFILL.parent = r.ADVANCED
   } else if (!isGuest) {
     console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
+  }
+  // Deleted performance menu and system menu includes it instead.
+  if (r.PERFORMANCE) {
+    delete r.PERFORMANCE
   }
   // Safety check route is moved to advanced.
   if (r.SAFETY_CHECK && r.ADVANCED) {

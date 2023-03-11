@@ -8,9 +8,9 @@
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/common/pref_names.h"
-#include "brave/components/brave_today/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
@@ -115,6 +115,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[brave_rewards::prefs::kEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kShowLocationBarButton] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kAutoContributeEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kAutoContributeAmount] =
@@ -126,6 +128,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[brave_rewards::prefs::kAllowNonVerified] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kAllowVideoContribution] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipButtonsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[brave_rewards::prefs::kInlineTipRedditEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -156,8 +160,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[omnibox::kHistorySuggestionsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[omnibox::kBookmarkSuggestionsEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[brave_rewards::prefs::kShowButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
@@ -310,6 +312,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
+  // NFT pinning pref
+  (*s_brave_allowlist)[kAutoPinEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_allowlist;
 }
 

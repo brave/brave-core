@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/base/load_flags.h"

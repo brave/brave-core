@@ -41,10 +41,12 @@ class VpnRenderFrameObserver : public content::RenderFrameObserver {
  private:
   FRIEND_TEST_ALL_PREFIXES(VpnRenderFrameObserverBrowserTest, IsAllowed);
   FRIEND_TEST_ALL_PREFIXES(VpnRenderFrameObserverTest, ExtractParam);
+  FRIEND_TEST_ALL_PREFIXES(VpnRenderFrameObserverTest, IsValueAllowed);
 
   bool EnsureConnected();
   void OnGetPurchaseToken(const std::string& purchase_token);
   std::string ExtractParam(const GURL& url, const std::string& name) const;
+  bool IsValueAllowed(const std::string& purchase_token) const;
 
   // RenderFrameObserver implementation.
   void OnDestruct() override;

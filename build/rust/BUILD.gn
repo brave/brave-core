@@ -14,18 +14,14 @@ if (is_apple) {
 }
 
 config("strip_rust_symbols") {
-  if (is_apple) {
+  # should match verify_chrome_framework_order
+  if (is_apple && !is_component_build && chrome_pgo_phase != 1 &&
+      !using_sanitizer) {
     ldflags = [
       # prevent export of all rust symbols
       "-Wl,-unexported_symbols_list," +
           rebase_path(unexport_list_path, root_build_dir),
     ]
-
-    # Too many personalities workaround. Will be fixed in llvm see
-    # https://reviews.llvm.org/D135728
-    if (!is_component_build && !use_lld) {
-      ldflags += [ "-Wl,-no_compact_unwind" ]
-    }
   }
 }
 
@@ -44,7 +40,7 @@ cargo_build("rust_lib") {
   # but in order to do that we have to dynamically create the brave rust lib
   deps = [
     "//brave/components/adblock_rust_ffi:rust_lib",
-    "//brave/components/brave_today/rust:rust_lib",
+    "//brave/components/brave_news/rust:rust_lib",
     "//brave/components/brave_wallet/rust:rust_lib",
     "//brave/components/challenge_bypass_ristretto:rust_lib",
     "//brave/components/filecoin:rust_lib",
@@ -83,8 +79,10 @@ config("cxx_cppconfig") {
 
 # The required dependencies for cxx-generated bindings, that must be included
 # on the C++ side.
-source_set("cxx_cppdeps") {
+static_library("cxx_cppdeps") {
   sources = [
+    "//build/rust/std/immediate_crash.h",
+    "//build/rust/std/remap_alloc.cc",
     "//third_party/rust/cxx/v1/crate/include/cxx.h",
     "//third_party/rust/cxx/v1/crate/src/cxx.cc",
   ]

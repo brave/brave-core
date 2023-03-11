@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/mojom/mojom_parser.py b/mojo/public/tools/mojom/mojom_parser.py
-index 00543b5b51440f1c1d800c382baaee74baf7fd8d..1c99033ab6e7cb276a2c39aa4505f4d35043494a 100755
+index 9693090e44ea4bff0c8d0259a4bdf7c1b0ba0b77..0c614ec176b9ab9d9b0a1a33c43c2162697466ec 100755
 --- a/mojo/public/tools/mojom/mojom_parser.py
 +++ b/mojo/public/tools/mojom/mojom_parser.py
 @@ -182,6 +182,7 @@ def _ParseAstHelper(mojom_abspath, enabled_features):

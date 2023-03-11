@@ -13,8 +13,6 @@ void BraveProfileResetter::ResetDefaultSearchEngine() {
   ProfileResetter::ResetDefaultSearchEngine();
 
   if (template_url_service_->loaded()) {
-    // Reset brave default provider prefs.
-    brave::ClearDefaultPrivateSearchProvider(profile_);
-    brave::SetDefaultPrivateSearchProvider(profile_);
+    brave::ResetDefaultPrivateSearchProvider(profile_);
   }
 }

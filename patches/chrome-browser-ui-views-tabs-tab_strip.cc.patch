@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 0a9ffa81d06d4bb284e8aa51758fbafc9e1b6644..65733ea97581eec15cfb116a5eb5d2d3f2ccb5d6 100644
+index 5aed267573ab4c17c08689ec142d6327f9fb1f9e..49ea6719639d73e2d229369066b0f379758cf37f 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -495,6 +495,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -488,6 +488,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<TabSlotView*>& views) override {
@@ -10,7 +10,7 @@ index 0a9ffa81d06d4bb284e8aa51758fbafc9e1b6644..65733ea97581eec15cfb116a5eb5d2d3
      DCHECK(!views.empty());
  
      std::vector<gfx::Rect> bounds;
-@@ -761,6 +762,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -754,6 +755,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  

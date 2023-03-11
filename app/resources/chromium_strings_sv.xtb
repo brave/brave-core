@@ -15,7 +15,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8905049883018921395">När det här alternativet är aktiverat frigörs minne från inaktiva flikar i Brave. Detta förser aktiva flikar och andra appar med mer av datorns resurser, vilket gör att Brave fortsätter att fungera snabbt. De inaktiva flikarna aktiveras automatiskt när du återvänder till dem. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Minnessparläget har gjort Brave snabbare</translation>
 <translation id="4798342026247191171">Konfigurera din nya profil i Brave</translation>
-<translation id="6361779936989026201">Brave Assistent i Brave</translation>
 <translation id="113959764510199339">Brave försöker visa lösenord.</translation>
 <translation id="8132634101975074716">Du är inloggad i Brave.</translation>
 <translation id="4168469784091952813">Få ut mesta möjliga av Brave</translation>
@@ -74,6 +73,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="8208853227947884571">Brave är uppdaterat</translation>
 <translation id="5122472867956731189">Om du utsätts för försök att kapa ditt lösenord på en webbplats eller om du laddar ned en skadlig fil kan webbadresserna skickas från Brave till Säker webbsökning tillsammans med delar av sidinnehållet</translation>
 <translation id="2953892977076487219">Lösenorden i Brave redigeras.</translation>
+<translation id="7982250592423354843">{NUM_DEVICES,plural, =1{Brave är anslutet till en HID-enhet}other{Brave är anslutet till HID-enheter}}</translation>
 <translation id="8755404239607088219">Brave kan inte kontrollera dina lösenord. Försök igen senare.</translation>
 <translation id="8880183781256147665">Lägger till i Brave ...</translation>
 <translation id="3038232873781883849">Väntar på installation …</translation>
@@ -102,7 +102,6 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="5853262807109651878"><ph name="ITEMS_COUNT"/> objekt tas bort från enheten. Logga in i Brave som <ph name="USER_EMAIL"/> om du vill kunna återställa datan senare.</translation>
 <translation id="2024972335338126423">Du kan använda <ph name="SHORTCUT"/> för att byta mellan Brave-profiler</translation>
 <translation id="8703492925273919597">Stäng alla Brave-fönster och försök igen.</translation>
-<translation id="5350485513372498152">Brave Assistent i Brave kan slutföra åtgärder åt dig på webbplatser</translation>
 <translation id="4061445349373849749">För att skydda din integritet raderar vi automatiskt intressen som är äldre än fyra veckor. Medan du surfar kan ett intresse dyka upp på listan igen. Du kan också ta bort intressen som du inte vill att Brave ska inkludera.</translation>
 <translation id="691208314680168371">Webbhistoriken, där webbplatser som du besökt i Brave på den här enheten registreras.</translation>
 <translation id="1384923383737428730">Det finns skadlig programvara på datorn. Den skadliga programvaran kan tas bort, inställningarna återställas och tillägg inaktiveras så att webbläsaren fungerar som den ska igen.</translation>
@@ -185,7 +184,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="232381795826373334">Öppna PDF-filer i Brave</translation>
 <translation id="5381032481466106256">När inställningen är aktiverad loggas du också ut från Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Det finns en uppdatering för Brave}=1{Det finns en uppdatering för Brave}other{Det finns en uppdatering för Brave sedan # dagar}}</translation>
-<translation id="95624393026532554">För Brave krävs Windows 7 eller senare.</translation>
+<translation id="4378573854226202617">För Brave krävs Windows 10 eller senare.</translation>
 <translation id="5646769069113654257">Starta om Brave nu</translation>
 <translation id="2335583906071111058">Visa Brave på det här språket</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
@@ -240,6 +239,7 @@ Vissa funktioner kanske inte är tillgängliga och ändringar i inställningarna
 <translation id="3507835409099344374">Öppna aviseringsinställningarna för Brave</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="245693535809364497">Du behöver ge Brave kamerabehörighet om du vill skapa en 3D-karta över dina omgivningar</translation>
+<translation id="5060669762365466104">Webbplatser fortsätter förmodligen att fungera som förväntat men de kommer inte ihåg dig efter att du stänger alla Brave-fönster</translation>
 <translation id="6676384891291319759">Gå ut på Internet</translation>
 <translation id="1363996462118479832">Det gick inte att synkronisera data med Chrome OS på grund av ett inloggningsfel.</translation>
 <translation id="1257247502847251159">Du behöver ge Brave mikrofonbehörighet för den här webbplatsen</translation>
@@ -249,6 +249,7 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="7870748924073900361">Minnessparläget har gjort Brave snabbare</translation>
 <translation id="6666624454809779082">Brave har redan installerats för alla användare på datorn.</translation>
 <translation id="5360050006043219962">Logga in och aktivera synkronisering om du vill få tillgång till dina saker i Brave på olika enheter.</translation>
+<translation id="3136039682492230890">Den här filen bör genomsökas eftersom den kan vara farlig.</translation>
 <translation id="8291513491595858997">Din förälder har inaktiverat Behörigheter för webbplatser, appar och tillägg för Brave. Det är inte tillåtet att aktivera denna <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
 <translation id="1547295885616600893">Chrome OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8211837073776713955">Om dina lösenord någonsin skulle läcka ut får du veta det i Brave</translation>
@@ -271,7 +272,6 @@ Vissa funktioner är kanske inte tillgängliga. Ange en annan profilkatalog elle
 <translation id="1008530050039597147">Du behöver ge Brave kamerabehörighet för den här webbplatsen</translation>
 <translation id="1197672524850678392">Det gick inte att starta Brave. Försök igen.</translation>
 <translation id="3405035915691517126">Brave kan inte kontrollera dina lösenord. Försök igen om ett dygn.</translation>
-<translation id="5101812148953915496">Webbplatser du besöker kommer ihåg dina uppgifter tills du stänger Brave</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
 <translation id="713191641919118540">Braves uppskattning av dina intressen</translation>
 <translation id="9068395155143628872">Genom annonsmätning kan webbplatser du besöker begära information från Brave som hjälper dem att mäta annonsernas resultat. Med annonsmätning begränsas spårningen från webbplats till webbplats genom att så lite information som möjligt överförs mellan webbplatserna.</translation>
@@ -342,8 +342,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="6283840329609797763">Installationen misslyckades på grund av ett okänt fel. Ladda ned Brave igen.</translation>
 <translation id="2433912322225810055">Det styr också vilken sida som visas när du startar Brave eller söker i adressfältet.</translation>
 <translation id="4100716194836114130">Det här är Brave</translation>
-<translation id="6208136456999964972">När du stänger alla öppna fönster i Brave rensas cookies och webbplatsdata automatiskt</translation>
-<translation id="6371875426681214174">Du <ph name="BEGIN_BOLD"/>loggas ut från de flesta webbplatser<ph name="END_BOLD"/> när du stänger Brave. Om synkronisering har inaktiverats <ph name="BEGIN_BOLD"/>loggas du även ut från Braves tjänster och Brave<ph name="END_BOLD"/>.</translation>
 <translation id="4831743161813926460">Du behöver ge Brave behörighet att använda kameran och mikrofonen på webbplatsen</translation>
 <translation id="6933858244219479645">Chrome OS-system</translation>
 <translation id="4105986395895210872"><ph name="BEGIN_BOLD"/>Vilken data används:<ph name="END_BOLD"/> Webbhistoriken, där webbplatser som du besökt i Brave på den här enheten registreras.</translation>
@@ -370,6 +368,7 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="1611678871603620428">Du behöver macOS 10.13 eller senare för att få kommande uppdateringar av Brave. På den här datorn används OS X 10.11.</translation>
 <translation id="4484434718272972655">Vem ska använda Brave?</translation>
 <translation id="7173394303099002355">Få det bästa skyddet i Brave</translation>
+<translation id="5775101967851558962">Rensa alltid webbplatsdata från enheten när du stänger Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="479793348545936567">Om du bara vill använda det här kontot en gång kan du använda gästläget i Brave-webbläsaren. Om du vill lägga till ett konto för någon annan kan du <ph name="LINK_BEGIN"/>lägga till en ny profil<ph name="LINK_END"/> i din <ph name="DEVICE_TYPE"/>.
 
@@ -388,4 +387,6 @@ Behörigheter du redan har gett till webbplatser och appar kan gälla för det h
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas}=1{Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas. Inkognitofönstret öppnas inte igen.}other{Administratören meddelar att du bör starta om Brave så att uppdateringen tillämpas. De # inkognitofönstren öppnas inte igen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas}=1{Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas. Inkognitofönstret öppnas inte igen.}other{Administratören meddelar att du måste starta om Brave så att en uppdatering tillämpas. De # inkognitofönstren öppnas inte igen.}}</translation>
 <translation id="2176087127109773485">Du kan hantera dina inloggade Brave-synkroniseringskedjor. Dina Brave-synkroniseringskedjor används för Brave-webbläsaren, Play Store, Gmail och mycket mer. Om du vill lägga till ett konto för någon annan, till exempel en familjemedlem, lägger du till en ny profil i din <ph name="DEVICE_TYPE"/> istället. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
+<translation id="137466361146087520">Google Chrome beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 </translationbundle>

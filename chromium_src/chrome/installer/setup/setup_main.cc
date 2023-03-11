@@ -23,8 +23,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE prev_instance,
         base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
         base::FilePath referral_code_path =
             user_data_dir.AppendASCII("promoCode");
-        if (!base::WriteFile(referral_code_path, referral_code.c_str(),
-                             referral_code.size())) {
+        if (!base::WriteFile(referral_code_path, referral_code)) {
           LOG(ERROR) << "Failed to write referral code " << referral_code
                      << " to " << referral_code_path;
         }

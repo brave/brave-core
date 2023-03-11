@@ -51,12 +51,11 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
     // The worker pointer is reference counted. While it is running, the
     // sequence it runs on will hold references it will be automatically
     // freed once all its tasks have finished.
-    base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(
-        protocol)
+    base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(protocol)
         ->StartSetAsDefault(base::NullCallback());
   };
 
-  base::MakeRefCounted<shell_integration::DefaultProtocolClientWorker>(protocol)
+  base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(protocol)
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
 

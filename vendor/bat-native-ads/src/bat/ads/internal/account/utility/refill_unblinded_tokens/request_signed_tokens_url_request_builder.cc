@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/common/crypto/crypto_util.h"
@@ -106,14 +107,14 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildSignatureHeaderValue(
   std::string concatenated_message;
 
   unsigned int index = 0;
-  for (const auto& header : headers) {
+  for (const auto& [header, value] : headers) {
     if (index != 0) {
       concatenated_header += " ";
       concatenated_message += "\n";
     }
 
-    concatenated_header += header.first;
-    concatenated_message += header.first + ": " + header.second;
+    concatenated_header += header;
+    concatenated_message += base::StrCat({header, ": ", value});
 
     index++;
   }
@@ -132,7 +133,8 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   base::Value::List list;
 
   for (const auto& blinded_token : blinded_tokens_) {
-    if (const auto blinded_token_base64 = blinded_token.EncodeBase64()) {
+    if (const absl::optional<std::string> blinded_token_base64 =
+            blinded_token.EncodeBase64()) {
       base::Value value = base::Value(*blinded_token_base64);
       list.Append(std::move(value));
     }

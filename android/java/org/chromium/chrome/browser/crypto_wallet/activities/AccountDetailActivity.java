@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
@@ -47,6 +49,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +59,8 @@ import java.util.concurrent.Executors;
 
 public class AccountDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
+    private static final String TAG = "AccountDetail";
+
     private String mAddress;
     private String mName;
     private boolean mIsImported;
@@ -176,8 +181,8 @@ public class AccountDetailActivity
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                     allNetworks -> {
-                        Utils.getTxExtraInfo(this, allNetworks, selectedNetwork, accounts, null,
-                                false,
+                        Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
+                                selectedNetwork, accounts, null, false,
                                 (assetPrices, fullTokenList, nativeAssetsBalances,
                                         blockchainTokensBalances) -> {
                                     for (AccountInfo accountInfo : accounts) {
@@ -220,9 +225,11 @@ public class AccountDetailActivity
         super.finishNativeInitialization();
 
         initState();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "finishNativeInitialization " + e);
         }
         assert mJsonRpcService != null;
         mJsonRpcService.getNetwork(mCoinType, selectedNetwork -> {
@@ -277,6 +284,7 @@ public class AccountDetailActivity
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
         accountInfo.coin = mCoinType;
+        accountInfo.keyringId = AssetUtils.getKeyringForCoinType(mCoinType);
         return accountInfo;
     }
 

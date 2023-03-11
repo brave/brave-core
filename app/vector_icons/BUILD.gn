@@ -10,15 +10,13 @@ import("//components/vector_icons/vector_icons.gni")
 aggregate_vector_icons("brave_vector_icons") {
   icon_directory = "."
 
+  # Note: Before adding another icon here, check if the icon is available in Leo
+  # https://leo.bravesoftware.com/?path=/story/icon--all-icons
   sources = [
     "bat.icon",
     "brave_ads_close_button.icon",
     "brave_ads_dark_mode_info_button.icon",
     "brave_ads_light_mode_info_button.icon",
-    "brave_news_arrow_right.icon",
-    "brave_news_follow_button.icon",
-    "brave_news_subscribe.icon",
-    "brave_news_unfollow_button.icon",
     "brave_sad.icon",
     "brave_tooltips_stopwatch.icon",
     "brave_translate.icon",
@@ -31,6 +29,17 @@ aggregate_vector_icons("brave_vector_icons") {
     "wallet_toolbar_button.icon",
     "web_discovery_infobar_close_button.icon",
   ]
+
+  # The Skia icon names are transformed to make them easier to use in Brave Core
+  # `arrow-right.svg` becomes `leo_arrow_right.icon`
+  leo_icons = [
+    "leo_arrow_right.icon",
+    "leo_heart_filled.icon",
+    "leo_heart_outline.icon",
+    "leo_rss.icon",
+  ]
+  sources +=
+      rebase_path(leo_icons, ".", "//brave/node_modules/@brave/leo/icons-skia")
 
   if (toolkit_views) {
     sources += [

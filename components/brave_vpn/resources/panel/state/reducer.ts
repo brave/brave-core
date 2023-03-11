@@ -127,6 +127,15 @@ reducer.on(Actions.initialized, (state, payload): RootState => {
   }
 })
 
+reducer.on(Actions.resetConnectionState, (state): RootState => {
+  return {
+    ...state,
+    hasError: false,
+    connectionStatus: ConnectionState.DISCONNECTED,
+    currentView: ViewType.Main
+  }
+})
+
 // TODO(nullhook): The handler doesnt throw an error unless if explicitly
 // defined. Update the type internally so it can be infered.
 reducer.on(Actions.showMainView, (state, payload): RootState => {

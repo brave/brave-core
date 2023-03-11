@@ -290,7 +290,7 @@ void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
 }
 
 void BraveSyncServiceImpl::SetJoinChainResultCallback(
-    base::OnceCallback<void(const bool&)> callback) {
+    base::OnceCallback<void(bool)> callback) {
   join_chain_result_callback_ = std::move(callback);
 
   sync_service_impl_delegate_->SetLocalDeviceAppearedCallback(

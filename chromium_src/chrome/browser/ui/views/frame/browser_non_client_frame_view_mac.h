@@ -11,7 +11,7 @@
   friend class BraveBrowserNonClientFrameViewMac; \
   void PaintThemedFrame
 
-#include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.h"
+#include "src/chrome/browser/ui/views/frame/browser_non_client_frame_view_mac.h"  // IWYU pragma: export
 
 #undef PaintThemedFrame
 

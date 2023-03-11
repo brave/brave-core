@@ -1,3 +1,8 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 # common includes which can help minimize patches for
 # src/third_party/blink/renderer/core/BUILD.gn
 
@@ -50,6 +55,7 @@ brave_blink_sub_modules = [
 brave_static_idl_files_in_modules = [
   "//brave/third_party/blink/renderer/modules/brave/brave.idl",
   "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
+  "//brave/third_party/blink/renderer/modules/brave/worker_navigator_brave.idl",
   "//brave/third_party/blink/renderer/modules/global_privacy_control/navigator_global_privacy_control.idl",
 ]
 

@@ -6,10 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_HTTPS_EVERYWHERE_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_HTTPS_EVERYWHERE_COMPONENT_INSTALLER_H_
 
-#include <string>
-
-#include "base/callback.h"
 #include "base/files/file_path.h"
+#include "base/functional/callback.h"
 
 namespace component_updater {
 class ComponentUpdateService;

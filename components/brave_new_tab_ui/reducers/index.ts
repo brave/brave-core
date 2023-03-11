@@ -1,7 +1,7 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { combineReducers } from 'redux'
 import * as storage from '../storage/new_tab_storage'
@@ -11,10 +11,10 @@ import newTabStateReducer from './new_tab_reducer'
 import gridSitesReducer from './grid_sites_reducer'
 import rewardsReducer from './rewards_reducer'
 import { stackWidgetReducer } from './stack_widget_reducer'
-import todayReducer, { BraveTodayState } from './today'
+import todayReducer, { BraveNewsState } from './today'
 
 export type ApplicationState = NewTab.ApplicationState & {
-  today: BraveTodayState
+  today: BraveNewsState
 }
 
 export const newTabReducers = (state: NewTab.State | undefined, action: any) => {

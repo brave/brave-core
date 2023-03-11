@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
@@ -18,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordUserAction;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -58,6 +60,8 @@ import org.chromium.ui.widget.Toast;
  * toolbar and the tab switcher mode bottom toolbar.
  */
 class BottomToolbarCoordinator implements View.OnLongClickListener {
+    private static final String TAG = "BottomToolbar";
+
     /** The browsing mode bottom toolbar component */
     protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
 
@@ -173,7 +177,12 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 topToolbarRoot, incognitoStateProvider, mThemeColorProvider, newTabClickListener,
                 closeTabsClickListener, mMenuButtonHelperSupplier, tabCountProvider);
 
-        ChromeActivity activity = BraveActivity.getBraveActivity();
+        ChromeActivity activity = null;
+        try {
+            activity = BraveActivity.getBraveActivity();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "initializeWithNative " + e);
+        }
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
         // customized.
         if (!ReturnToChromeUtil.shouldShowStartSurfaceAsTheHomePage(
@@ -242,8 +251,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
             final OnClickListener homeButtonListener = v -> {
                 if (HomepageManager.isHomepageEnabled()) {
-                    if (BraveActivity.getBraveActivity() != null) {
+                    try {
                         BraveActivity.getBraveActivity().setComesFromNewTab(true);
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "HomeButton click " + e);
                     }
                     mOriginalHomeButtonRunnable.run();
                 } else {
@@ -276,10 +287,15 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
      */
     void setBottomToolbarVisible(boolean isVisible) {
         if (mTabSwitcherModeCoordinator != null) {
-            ChromeActivity activity = BraveActivity.getBraveActivity();
-            mTabSwitcherModeCoordinator.showToolbarOnTop(!isVisible,
-                    TabUiFeatureUtilities.isGridTabSwitcherEnabled(
-                            activity != null ? activity : mContext));
+            try {
+                ChromeActivity activity = BraveActivity.getBraveActivity();
+                mTabSwitcherModeCoordinator.showToolbarOnTop(
+                        !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(activity));
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "setBottomToolbarVisible " + e);
+                mTabSwitcherModeCoordinator.showToolbarOnTop(
+                        !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(mContext));
+            }
         }
         mBrowsingModeCoordinator.onVisibilityChanged(isVisible);
     }

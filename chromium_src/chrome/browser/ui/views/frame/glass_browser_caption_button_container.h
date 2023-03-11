@@ -13,7 +13,7 @@
 #define GlassBrowserCaptionButtonContainer \
   GlassBrowserCaptionButtonContainer_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/frame/glass_browser_caption_button_container.h"
+#include "src/chrome/browser/ui/views/frame/glass_browser_caption_button_container.h"  // IWYU pragma: export
 #undef GlassBrowserCaptionButtonContainer
 
 class GlassBrowserCaptionButtonContainer

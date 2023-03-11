@@ -12,7 +12,7 @@
                                               EventListener*);                \
   bool dispatchEventForBindings
 
-#include "src/third_party/blink/renderer/core/dom/events/event_target.h"
+#include "src/third_party/blink/renderer/core/dom/events/event_target.h"  // IWYU pragma: export
 
 #undef dispatchEventForBindings
 

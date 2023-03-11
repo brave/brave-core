@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -129,6 +129,8 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
+
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_SIDEBAR));
 }
 
 // Create private browser and test its brave commands status.

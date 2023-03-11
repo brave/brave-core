@@ -69,7 +69,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   wallet->payment_id = *payment_id;
 
   const auto* seed = dict.FindString("recovery_seed");
-  if (!seed) {
+  if (!seed || seed->empty()) {
     *corrupted = true;
     return nullptr;
   }

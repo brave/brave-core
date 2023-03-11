@@ -30,7 +30,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
-#include "content/public/browser/notification_types.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 
@@ -145,29 +145,13 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   double FetchBalance() {
     double total = -1.0;
     base::RunLoop run_loop;
-    rewards_service_->FetchBalance(base::BindLambdaForTesting(
-        [&](ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
-          total = balance ? balance->total : -1.0;
+    rewards_service_->FetchBalance(
+        base::BindLambdaForTesting([&](ledger::FetchBalanceResult result) {
+          total = result.has_value() ? result.value()->total : -1.0;
           run_loop.Quit();
         }));
     run_loop.Run();
     return total;
-  }
-
-  void WaitForNavigation(const std::string& url_substring) {
-    content::WindowedNotificationObserver window_observer(
-        content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
-        base::BindLambdaForTesting(
-            [&](const content::NotificationSource& source,
-                const content::NotificationDetails&) {
-              auto contents_source =
-                  static_cast<const content::Source<content::WebContents>&>(
-                      source);
-              std::string url = contents_source->GetLastCommittedURL().spec();
-              return url.find(url_substring) != std::string::npos;
-            }));
-
-    window_observer.Wait();
   }
 
   base::test::ScopedFeatureList feature_list_;
@@ -246,15 +230,23 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
       contents(), "[data-test-id=connect-provider-button]");
 
   // Check if we are redirected to uphold
-  WaitForNavigation(ledger::uphold::GetUrl() + "/authorize/");
+  content::DidStartNavigationObserver(contents()).Wait();
+  content::DidFinishNavigationObserver observer(
+      contents(),
+      base::BindLambdaForTesting(
+          [this](content::NavigationHandle* navigation_handle) {
+            DCHECK(navigation_handle->GetURL().spec().find(
+                       ledger::uphold::GetUrl() + "/authorize/") ==
+                   std::string::npos);
 
-  // Fake successful authentication
-  ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
-        browser(),
-        uphold_auth_url(), 1);
+            // Fake successful authentication
+            ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(
+                browser(), uphold_auth_url(), 1);
 
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id=external-wallet-status-text]", "Connected");
+            rewards_browsertest_util::WaitForElementToContain(
+                contents(), "[data-test-id=external-wallet-status-text]",
+                "Connected");
+          }));
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
@@ -290,32 +282,9 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
 
   rewards_browsertest_util::WaitForElementToAppear(contents(), "#modal");
 
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id='settings-modal-tabs-1']");
-
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id='reset-text']",
       "By resetting, your current Brave Rewards profile will be deleted");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=manage-wallet-button]");
-
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#modal");
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id='settings-modal-tabs-1']");
-
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id='funds-warning-text']",
-      "Note: You currently have 30 BAT estimated earnings this month");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {

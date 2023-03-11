@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
 import org.chromium.chrome.browser.search_engines.R;
 import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.search_engines.TemplateUrlService;
 
 import java.util.List;
 
@@ -61,7 +62,12 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
             return;
         }
         String keyword = templateUrl.getKeyword();
-        BraveTemplateUrlServiceFactory.getForProfile(profile).setSearchEngine(keyword);
+        TemplateUrlService templateUrlService =
+                BraveTemplateUrlServiceFactory.getForProfile(profile);
+        if (templateUrlService != null)
+            templateUrlService.setSearchEngine(keyword);
+        else
+            setDSEPrefs(templateUrl, profile);
     }
 
     // when readJavaPrefOnly is true, only read short names from Java preference and
@@ -70,8 +76,12 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         String defaultSearchEngineName = null;
 
         if (!readJavaPrefOnly) {
-            TemplateUrl dseTemplateUrl = BraveTemplateUrlServiceFactory.getForProfile(profile)
-                                                 .getDefaultSearchEngineTemplateUrl();
+            TemplateUrlService templateUrlService =
+                    BraveTemplateUrlServiceFactory.getForProfile(profile);
+            TemplateUrl dseTemplateUrl = null;
+            if (templateUrlService != null) {
+                dseTemplateUrl = templateUrlService.getDefaultSearchEngineTemplateUrl();
+            }
             if (dseTemplateUrl != null) defaultSearchEngineName = dseTemplateUrl.getShortName();
 
             // TODO(sergz): A check, do we need to fetch a default SE from native and avoid
@@ -89,12 +99,15 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
     }
 
     static public TemplateUrl getTemplateUrlByShortName(Profile profile, String name) {
-        List<TemplateUrl> templateUrls =
-                BraveTemplateUrlServiceFactory.getForProfile(profile).getTemplateUrls();
-        for (int index = 0; index < templateUrls.size(); ++index) {
-            TemplateUrl templateUrl = templateUrls.get(index);
-            if (templateUrl.getShortName().equals(name)) {
-                return templateUrl;
+        TemplateUrlService templateUrlService =
+                BraveTemplateUrlServiceFactory.getForProfile(profile);
+        if (templateUrlService != null) {
+            List<TemplateUrl> templateUrls = templateUrlService.getTemplateUrls();
+            for (int index = 0; index < templateUrls.size(); ++index) {
+                TemplateUrl templateUrl = templateUrls.get(index);
+                if (templateUrl.getShortName().equals(name)) {
+                    return templateUrl;
+                }
             }
         }
         assert false : "This should not happen!";
@@ -106,7 +119,9 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
         try {
             runTemplateUrlServiceWithProfile(() -> {
                 super.start();
-                if (!BraveTemplateUrlServiceFactory.getForProfile(mProfile).isLoaded()) {
+                TemplateUrlService templateUrlService =
+                        BraveTemplateUrlServiceFactory.getForProfile(mProfile);
+                if (templateUrlService == null || !templateUrlService.isLoaded()) {
                     // updateActiveDSE needs to be delayed for private because service needs to be
                     // loaded if no private tab is opened already
                     needUpdateActiveDSE = true;
@@ -121,7 +136,17 @@ public class BraveSearchEngineAdapter extends SearchEngineAdapter {
 
     @Override
     public void stop() {
-        runTemplateUrlServiceWithProfile(() -> { super.stop(); });
+        runTemplateUrlServiceWithProfile(() -> {
+            TemplateUrlService templateUrlService =
+                    BraveTemplateUrlServiceFactory.getForProfile(mProfile);
+            // For some reason there is a short period of time when native reference to the profile
+            // has been destroyed but Java reference still exists. The stop() function only removes
+            // listeners on the service, but since the profile is destroyed, the service is
+            // destroyed too
+            if (templateUrlService != null) {
+                super.stop();
+            }
+        });
     }
 
     // OnClickListener:

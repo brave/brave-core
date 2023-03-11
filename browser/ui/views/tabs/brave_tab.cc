@@ -8,7 +8,8 @@
 #include <algorithm>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
@@ -55,8 +56,9 @@ absl::optional<SkColor> BraveTab::GetGroupColor() const {
     return Tab::GetGroupColor();
 
   // Hide tab border with group color as it doesn't go well with vertical tabs.
-  if (tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()))
+  if (tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     return {};
+  }
 
   return Tab::GetGroupColor();
 }
@@ -101,6 +103,6 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
     return false;
 
-  return tabs::features::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
+  return tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;
 }

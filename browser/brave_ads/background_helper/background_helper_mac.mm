@@ -13,7 +13,6 @@
 #include "base/mac/mac_util.h"
 #include "base/mac/scoped_nsautorelease_pool.h"
 #include "base/mac/scoped_nsobject.h"
-#include "base/mac/sdk_forward_declarations.h"
 
 @interface BackgroundHelperDelegateMac : NSObject {
  @private
@@ -31,16 +30,16 @@
   if ((self = [super init])) {
     helper_ = helper;
 
-    NSNotificationCenter* notificationCenter =
+    NSNotificationCenter* notification_center =
         [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(appDidBecomeActive:)
-                               name:NSApplicationDidBecomeActiveNotification
-                             object:nil];
-    [notificationCenter addObserver:self
-                           selector:@selector(appDidResignActive:)
-                               name:NSApplicationDidResignActiveNotification
-                             object:nil];
+    [notification_center addObserver:self
+                            selector:@selector(appDidBecomeActive:)
+                                name:NSApplicationDidBecomeActiveNotification
+                              object:nil];
+    [notification_center addObserver:self
+                            selector:@selector(appDidResignActive:)
+                                name:NSApplicationDidResignActiveNotification
+                              object:nil];
   }
   return self;
 }

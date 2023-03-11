@@ -5,8 +5,9 @@
 
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
-#include "brave/browser/ui/views/tabs/features.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 
 #define BRAVE_GM2_TAB_STYLE_H \
@@ -112,12 +113,10 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
   gfx::RectF aligned_bounds =
       ScaleAndAlignBounds(tab()->bounds(), scale, stroke_thickness);
 
-  constexpr int kHorizontalInset = BraveTabGroupHeader::kPaddingForGroup;
-
   // Calculate the bounds of the actual path.
   float tab_top = aligned_bounds.y();
-  float tab_left = aligned_bounds.x() + kHorizontalInset * scale;
-  float tab_right = aligned_bounds.right() - kHorizontalInset * scale;
+  float tab_left = aligned_bounds.x();
+  float tab_right = aligned_bounds.right();
   float tab_bottom = aligned_bounds.bottom();
 
   const float stroke_adjustment = stroke_thickness * scale;
@@ -134,9 +133,10 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
     tab_bottom -= 0.5f * stroke_adjustment;
   }
 
+  constexpr int kRadius = 8;
   SkPath path;
-  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom},
-                    kHorizontalInset * scale, kHorizontalInset * scale);
+  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom}, kRadius * scale,
+                    kRadius * scale);
 
   // Convert path to be relative to the tab origin.
   gfx::PointF origin(tab()->origin());
@@ -160,19 +160,21 @@ TabStyle::SeparatorBounds BraveVerticalTabStyle::GetSeparatorBounds(
 
 void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
   BraveGM2TabStyle::PaintTab(canvas);
-  if (ShouldShowVerticalTabs() && (tab()->IsActive() || IsHoverActive())) {
+  if (!ShouldShowVerticalTabs()) {
+    return;
+  }
+
+  if (tab()->IsActive() || IsHoverActive() || tab()->data().pinned) {
     const auto* widget = tab()->GetWidget();
     DCHECK(widget);
     const SkColor tab_stroke_color =
         widget->GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator);
     PaintBackgroundStroke(canvas, TabActive::kActive, tab_stroke_color);
-    return;
   }
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
-  return tabs::features::ShouldShowVerticalTabs(
-      tab()->controller()->GetBrowser());
+  return tabs::utils::ShouldShowVerticalTabs(tab()->controller()->GetBrowser());
 }
 
 }  // namespace

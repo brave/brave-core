@@ -19,7 +19,8 @@ bool IsSupportedLocale(const std::string& locale) {
 
   return base::ranges::any_of(geographic::GetSupportedCountryCodes(),
                               [&country_code](const auto& schema) {
-                                return base::Contains(schema.second,
+                                const auto& [version, country_codes] = schema;
+                                return base::Contains(country_codes,
                                                       country_code);
                               });
 }

@@ -11,7 +11,6 @@
 #include "brave/net/decentralized_dns/constants.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
-#include "url/gurl.h"
 
 namespace decentralized_dns {
 
@@ -48,13 +47,25 @@ bool IsUnstoppableDomainsTLD(const base::StringPiece& host) {
   return false;
 }
 
+void SetUnstoppableDomainsResolveMethod(PrefService* local_state,
+                                        ResolveMethodTypes method) {
+  local_state->SetInteger(kUnstoppableDomainsResolveMethod,
+                          static_cast<int>(method));
+}
+
+ResolveMethodTypes GetUnstoppableDomainsResolveMethod(
+    PrefService* local_state) {
+  return static_cast<ResolveMethodTypes>(
+      local_state->GetInteger(kUnstoppableDomainsResolveMethod));
+}
+
 bool IsUnstoppableDomainsResolveMethodAsk(PrefService* local_state) {
   if (!local_state) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kUnstoppableDomainsResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ASK);
+  return GetUnstoppableDomainsResolveMethod(local_state) ==
+         ResolveMethodTypes::ASK;
 }
 
 bool IsUnstoppableDomainsResolveMethodEnabled(PrefService* local_state) {
@@ -62,12 +73,21 @@ bool IsUnstoppableDomainsResolveMethodEnabled(PrefService* local_state) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kUnstoppableDomainsResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ENABLED);
+  return GetUnstoppableDomainsResolveMethod(local_state) ==
+         ResolveMethodTypes::ENABLED;
 }
 
 bool IsENSTLD(const base::StringPiece& host) {
   return base::EndsWith(host, kEthDomain);
+}
+
+void SetENSResolveMethod(PrefService* local_state, ResolveMethodTypes method) {
+  local_state->SetInteger(kENSResolveMethod, static_cast<int>(method));
+}
+
+ResolveMethodTypes GetENSResolveMethod(PrefService* local_state) {
+  return static_cast<ResolveMethodTypes>(
+      local_state->GetInteger(kENSResolveMethod));
 }
 
 bool IsENSResolveMethodAsk(PrefService* local_state) {
@@ -75,8 +95,7 @@ bool IsENSResolveMethodAsk(PrefService* local_state) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kENSResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ASK);
+  return GetENSResolveMethod(local_state) == ResolveMethodTypes::ASK;
 }
 
 bool IsENSResolveMethodEnabled(PrefService* local_state) {
@@ -84,8 +103,7 @@ bool IsENSResolveMethodEnabled(PrefService* local_state) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kENSResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ENABLED);
+  return GetENSResolveMethod(local_state) == ResolveMethodTypes::ENABLED;
 }
 
 void SetEnsOffchainResolveMethod(PrefService* local_state,
@@ -102,13 +120,21 @@ bool IsSnsTLD(const base::StringPiece& host) {
   return base::EndsWith(host, kSolDomain);
 }
 
+void SetSnsResolveMethod(PrefService* local_state, ResolveMethodTypes method) {
+  local_state->SetInteger(kSnsResolveMethod, static_cast<int>(method));
+}
+
+ResolveMethodTypes GetSnsResolveMethod(PrefService* local_state) {
+  return static_cast<ResolveMethodTypes>(
+      local_state->GetInteger(kSnsResolveMethod));
+}
+
 bool IsSnsResolveMethodAsk(PrefService* local_state) {
   if (!local_state) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kSnsResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ASK);
+  return GetSnsResolveMethod(local_state) == ResolveMethodTypes::ASK;
 }
 
 bool IsSnsResolveMethodEnabled(PrefService* local_state) {
@@ -116,8 +142,7 @@ bool IsSnsResolveMethodEnabled(PrefService* local_state) {
     return false;  // Treat it as disabled.
   }
 
-  return local_state->GetInteger(kSnsResolveMethod) ==
-         static_cast<int>(ResolveMethodTypes::ENABLED);
+  return GetSnsResolveMethod(local_state) == ResolveMethodTypes::ENABLED;
 }
 
 }  // namespace decentralized_dns

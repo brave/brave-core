@@ -137,7 +137,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       true);
 
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 
   contribution_->WaitForACReconcileCompleted();
   ASSERT_EQ(contribution_->GetACStatus(), ledger::mojom::Result::LEDGER_OK);
@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       rewards_browsertest_util::GetUrl(https_server_.get(), "3zsistemi.si"),
       true);
 
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 
   contribution_->WaitForACReconcileCompleted();
   ASSERT_EQ(contribution_->GetACStatus(), ledger::mojom::Result::LEDGER_OK);
@@ -238,7 +238,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
           "laurenwags.github.io"),
       true);
 
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 
   contribution_->WaitForACReconcileCompleted();
   ASSERT_EQ(contribution_->GetACStatus(), ledger::mojom::Result::LEDGER_OK);
@@ -265,7 +265,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       "[data-test-id=auto-contribute-panel] "
       "[data-test-id=setting-enabled-toggle] button");
 
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipVerifiedPublisher) {
@@ -310,17 +310,6 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       rewards_browsertest_util::GetUrl(https_server_.get(), "duckduckgo.com"),
       rewards_browsertest_util::TipAction::SetMonthly,
       1);
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
-                       RecurringTipForUnverifiedPublisher) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  contribution_->TipPublisher(
-      rewards_browsertest_util::GetUrl(https_server_.get(), "brave.com"),
-      rewards_browsertest_util::TipAction::SetMonthly);
 }
 
 // Check pending contributions
@@ -532,7 +521,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       verified);
 
   rewards_service_->OnTip("duckduckgo.com", 2.5, true, base::DoNothing());
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
   contribution_->WaitForTipReconcileCompleted();
   ASSERT_EQ(contribution_->GetTipStatus(), ledger::mojom::Result::LEDGER_OK);
 
@@ -562,7 +551,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       !verified);
 
   // Trigger contribution process
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 
   // Wait for reconciliation to complete
   contribution_->WaitForTipReconcileCompleted();
@@ -608,7 +597,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
       verified);
 
   // Trigger contribution process
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 
   // Wait for reconciliation to complete
   contribution_->WaitForMultipleTipReconcileCompleted(3);
@@ -660,7 +649,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
   response_->SetSKUOrder(std::move(order));
 
   // Trigger contribution process
-  rewards_service_->StartMonthlyContributionForTest();
+  rewards_service_->StartContributionsForTesting();
 
   // Wait for reconciliation to complete successfully
   contribution_->WaitForMultipleACReconcileCompleted(2);

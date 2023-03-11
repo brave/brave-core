@@ -62,10 +62,10 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
                    SignMessageCallback callback) override;
   void Request(base::Value::Dict arg, RequestCallback callback) override;
 
-  void IsSolanaKeyringCreated(IsSolanaKeyringCreatedCallback callback) override;
-
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest, GetDeserializedMessage);
+  FRIEND_TEST_ALL_PREFIXES(SolanaProviderImplUnitTest,
+                           ConnectWithNoSolanaAccount);
 
   bool IsAccountConnected(const std::string& account);
   void ContinueConnect(bool is_eagerly_connect,
@@ -147,6 +147,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   ConnectCallback pending_connect_callback_;
   absl::optional<base::Value::Dict> pending_connect_arg_;
 
+  bool account_creation_shown_ = false;
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<BraveWalletService> brave_wallet_service_ = nullptr;

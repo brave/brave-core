@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -103,4 +104,12 @@ export const Input = styled.input`
 
 export const DiagnosticsHeader = styled.h3`
   margin: 20px 0px 10px;
+`
+
+export const BalanceWrapper = styled('div')<{}>`
+  .icon {
+    height: 16px;
+    vertical-align: bottom;
+    margin-right: 2px;
+  }
 `

@@ -108,8 +108,8 @@ class RewardsNotificationBrowserTest
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
-      notification) override {
-    last_added_notification_ = notification;
+          rewards_notification) override {
+    last_added_notification_ = rewards_notification;
     const auto& notifications = rewards_service_->GetAllNotifications();
     for (const auto& notification : notifications) {
       switch (notification.second.type_) {

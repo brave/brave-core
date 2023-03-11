@@ -40,7 +40,8 @@ public class BraveTabCreator extends ChromeTabCreator {
     @Override
     public Tab launchUrl(String url, @TabLaunchType int type) {
         if (url.equals(UrlConstants.NTP_URL)
-                && (type == TabLaunchType.FROM_CHROME_UI || type == TabLaunchType.FROM_STARTUP)) {
+                && (type == TabLaunchType.FROM_CHROME_UI || type == TabLaunchType.FROM_STARTUP
+                        || type == TabLaunchType.FROM_TAB_SWITCHER_UI)) {
             registerPageView();
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {

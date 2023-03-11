@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.toolbar;
 
+import android.content.ActivityNotFoundException;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
+import org.chromium.base.Log;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.ObservableSupplierImpl;
@@ -85,6 +87,8 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import java.util.List;
 
 public class BraveToolbarManager extends ToolbarManager {
+    private static final String TAG = "BraveToolbarManager";
+
     // To delete in bytecode, members from parent class will be used instead.
     private ObservableSupplierImpl<BottomControlsCoordinator> mBottomControlsCoordinatorSupplier;
     private CallbackController mCallbackController;
@@ -140,7 +144,7 @@ public class BraveToolbarManager extends ToolbarManager {
             List<ButtonDataProvider> buttonDataProviders, ActivityTabProvider tabProvider,
             ScrimCoordinator scrimCoordinator, ToolbarActionModeCallback toolbarActionModeCallback,
             FindToolbarManager findToolbarManager, ObservableSupplier<Profile> profileSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkBridgeSupplier,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
@@ -148,7 +152,6 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
-            OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
             Supplier<Boolean> isInOverviewModeSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
@@ -170,16 +173,16 @@ public class BraveToolbarManager extends ToolbarManager {
                 urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
                 shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
                 scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
-                bookmarkBridgeSupplier, canAnimateNativeBrowserControls,
-                layoutStateProviderSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
-                tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
-                intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
-                isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
-                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
-                bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
-                snackbarManager, jankTracker, merchantTrustSignalsCoordinatorSupplier,
-                tabReparentingControllerSupplier, omniboxPedalDelegate,
-                ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors, backPressManager);
+                bookmarkModelSupplier, canAnimateNativeBrowserControls, layoutStateProviderSupplier,
+                appMenuCoordinatorSupplier, shouldShowUpdateBadge, tabModelSelectorSupplier,
+                startSurfaceSupplier, omniboxFocusStateSupplier, promoShownOneshotSupplier,
+                windowAndroid, isInOverviewModeSupplier, modalDialogManagerSupplier,
+                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
+                startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
+                tabContentManager, tabCreatorManager, snackbarManager, jankTracker,
+                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
+                omniboxPedalDelegate, ephemeralTabCoordinatorSupplier,
+                initializeWithIncognitoColors, backPressManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -209,9 +212,11 @@ public class BraveToolbarManager extends ToolbarManager {
             @Override
             public void onStartedShowing(@LayoutType int layoutType, boolean showToolbar) {
                 if (layoutType == LayoutType.TAB_SWITCHER) {
-                    BraveActivity braveActivity = BraveActivity.getBraveActivity();
-                    if (braveActivity != null) {
+                    try {
+                        BraveActivity braveActivity = BraveActivity.getBraveActivity();
                         braveActivity.dismissCookieConsent();
+                    } catch (ActivityNotFoundException e) {
+                        Log.e(TAG, "setLayoutStateProvider onStartedShowing click " + e);
                     }
                 }
             }
@@ -236,8 +241,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     (ViewStub) mActivity.findViewById(R.id.bottom_controls_stub);
             mBottomControls =
                     (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
-            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)
-                    || TabUiFeatureUtilities.isConditionalTabStripEnabled()) {
+            if (TabUiFeatureUtilities.isTabGroupsAndroidEnabled(mActivity)) {
                 mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(mActivity,
                         mBottomControls.findViewById(R.id.bottom_container_slot),
                         mIncognitoStateProvider, mScrimCoordinator, mOmniboxFocusStateSupplier,

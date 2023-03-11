@@ -195,6 +195,7 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
   if (sidebar::CanUseSidebar(browser_)) {
     UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
     UpdateCommandEnabled(IDC_SIDEBAR_TOGGLE_POSITION, true);
+    UpdateCommandEnabled(IDC_TOGGLE_SIDEBAR, true);
   }
 }
 
@@ -310,6 +311,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SIDEBAR_TOGGLE_POSITION:
       brave::ToggleSidebarPosition(browser_);
+      break;
+    case IDC_TOGGLE_SIDEBAR:
+      brave::ToggleSidebar(browser_);
       break;
     case IDC_COPY_CLEAN_LINK:
       brave::CopySanitizedURL(

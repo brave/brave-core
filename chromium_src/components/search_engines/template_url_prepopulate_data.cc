@@ -398,7 +398,7 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
           {country_codes::CountryCharsToCountryID('I', 'N'),
            PREPOPULATED_ENGINE_ID_BRAVE},
       });
-  static constexpr auto kContentV23 =
+  static constexpr auto kContentV25 =
       base::MakeFixedFlatMap<int, BravePrepopulatedEngineID>({
           {country_codes::CountryCharsToCountryID('A', 'M'),
            PREPOPULATED_ENGINE_ID_YANDEX},
@@ -447,9 +447,9 @@ BravePrepopulatedEngineID GetDefaultSearchEngine(int country_id, int version) {
            PREPOPULATED_ENGINE_ID_NAVER},
       });
 
-  if (version > 22) {
-    auto* it = kContentV23.find(country_id);
-    if (it == kContentV23.end()) {
+  if (version > 24) {
+    auto* it = kContentV25.find(country_id);
+    if (it == kContentV25.end()) {
       return default_v6;
     }
     return it->second;

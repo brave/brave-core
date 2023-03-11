@@ -95,8 +95,10 @@ class SidebarContainerView
   void OnEntryHidden(SidePanelEntry* entry) override;
 
   // SidePanelRegistryObserver:
-  void OnEntryRegistered(SidePanelEntry* entry) override;
-  void OnEntryWillDeregister(SidePanelEntry* entry) override;
+  void OnEntryRegistered(SidePanelRegistry* registry,
+                         SidePanelEntry* entry) override;
+  void OnEntryWillDeregister(SidePanelRegistry* registry,
+                             SidePanelEntry* entry) override;
 
  private:
   friend class sidebar::SidebarBrowserTest;

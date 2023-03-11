@@ -10,6 +10,9 @@ import java.util.List;
 public final class WalletConstants {
     public static final long MILLI_SECOND = 1000;
 
+    // USD currency code used by on-ramp providers.
+    public static final String CURRENCY_CODE_USD = "USD";
+
     // Android
     public static final String LINE_SEPARATOR = "line.separator";
 

@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "content/public/browser/render_frame_host.h"
@@ -44,9 +44,10 @@ void WalletPanelHandler::CloseUI() {
 }
 
 void WalletPanelHandler::ConnectToSite(
-    const std::vector<std::string>& accounts) {
+    const std::vector<std::string>& accounts,
+    brave_wallet::mojom::PermissionLifetimeOption option) {
   permissions::BraveWalletPermissionContext::AcceptOrCancel(
-      accounts, active_web_contents_);
+      accounts, option, active_web_contents_);
 }
 
 void WalletPanelHandler::CancelConnectToSite() {
@@ -54,8 +55,9 @@ void WalletPanelHandler::CancelConnectToSite() {
 }
 
 void WalletPanelHandler::SetCloseOnDeactivate(bool close) {
-  if (close_on_deactivation_)
+  if (close_on_deactivation_) {
     close_on_deactivation_.Run(close);
+  }
 }
 
 void WalletPanelHandler::Focus() {

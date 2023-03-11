@@ -7,7 +7,7 @@ import { create } from 'ethereum-blockies'
 import { useHistory } from 'react-router'
 
 // Types
-import { BraveWallet, DefaultCurrencies, WalletRoutes } from '../../../constants/types'
+import { BraveWallet, DefaultCurrencies, WalletRoutes, AssetPriceWithContractAndChainId } from '../../../constants/types'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
@@ -39,11 +39,14 @@ import {
   CopyIcon,
   AddressAndButtonRow
 } from './style'
+import { SellButtonRow, SellButton } from '../../shared/style'
 
 interface Props {
-  spotPrices: BraveWallet.AssetPrice[]
+  spotPrices: AssetPriceWithContractAndChainId[]
   address: string
   defaultCurrencies: DefaultCurrencies
+  assetContractAddress: string
+  assetChainId: string
   assetBalance: string
   assetTicker: string
   assetDecimals: number
@@ -51,10 +54,14 @@ interface Props {
   name: string
   hideBalances?: boolean
   isNft?: boolean
+  isSellSupported: boolean
+  showSellModal: () => void
 }
 
 export const PortfolioAccountItem = (props: Props) => {
   const {
+    assetContractAddress,
+    assetChainId,
     assetBalance,
     address,
     assetTicker,
@@ -64,7 +71,9 @@ export const PortfolioAccountItem = (props: Props) => {
     hideBalances,
     name,
     spotPrices,
-    isNft
+    isNft,
+    isSellSupported,
+    showSellModal
   } = props
 
   // Routing
@@ -89,8 +98,12 @@ export const PortfolioAccountItem = (props: Props) => {
   }, [assetBalance, assetDecimals])
 
   const fiatBalance: Amount = React.useMemo(() => {
-    return computeFiatAmount(assetBalance, assetTicker, assetDecimals)
-  }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker])
+    return computeFiatAmount(assetBalance, assetTicker, assetDecimals, assetContractAddress, assetChainId)
+  }, [computeFiatAmount, assetDecimals, assetBalance, assetTicker, assetContractAddress, assetChainId])
+
+  const isAssetsBalanceZero = React.useMemo(() => {
+    return new Amount(assetBalance).isZero()
+  }, [assetBalance])
 
   // Methods
   const onHideAccountPopup = React.useCallback(() => {
@@ -132,6 +145,11 @@ export const PortfolioAccountItem = (props: Props) => {
             <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
+        <SellButtonRow>
+          {isSellSupported && !isAssetsBalanceZero &&
+            <SellButton onClick={showSellModal}>{getLocale('braveWalletSell')}</SellButton>
+          }
+        </SellButtonRow>
         <MoreButton onClick={() => setShowAccountPopup(true)}>
           <MoreIcon />
         </MoreButton>

@@ -26,15 +26,16 @@ namespace {
 // TODO(https://github.com/brave/brave-browser/issues/24940): Reduce cognitive
 // complexity.
 absl::optional<TransformationVector> ParsePipelineTransformations(
-    base::Value* transformations_value) {
-  if (!transformations_value || !transformations_value->is_list()) {
+    base::Value::List* transformations_value) {
+  if (!transformations_value) {
     return absl::nullopt;
   }
 
   absl::optional<TransformationVector> transformations = TransformationVector();
-  for (const base::Value& transformation : transformations_value->GetList()) {
+  for (const base::Value& item : *transformations_value) {
+    const base::Value::Dict& transformation = item.GetDict();
     const std::string* const transformation_type =
-        transformation.FindStringKey("transformation_type");
+        transformation.FindString("transformation_type");
 
     if (!transformation_type) {
       return absl::nullopt;
@@ -52,28 +53,28 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
     }
 
     if (parsed_transformation_type == "HASHED_NGRAMS") {
-      const base::Value* const transformation_params =
-          transformation.FindKey("params");
+      const base::Value::Dict* const transformation_params =
+          transformation.FindDict("params");
 
       if (!transformation_params) {
         return absl::nullopt;
       }
 
       const absl::optional<int> nb =
-          transformation_params->FindIntKey("num_buckets");
+          transformation_params->FindInt("num_buckets");
       if (!nb) {
         return absl::nullopt;
       }
       const int num_buckets = *nb;
 
-      const base::Value* const ngram_sizes =
-          transformation_params->FindListKey("ngrams_range");
+      const base::Value::List* const ngram_sizes =
+          transformation_params->FindList("ngrams_range");
       if (!ngram_sizes) {
         return absl::nullopt;
       }
 
       std::vector<int> ngram_range;
-      for (const base::Value& n : ngram_sizes->GetList()) {
+      for (const base::Value& n : *ngram_sizes) {
         if (n.is_int()) {
           ngram_range.push_back(n.GetInt());
         } else {
@@ -91,13 +92,13 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
 // TODO(https://github.com/brave/brave-browser/issues/24941): Reduce cognitive
 // complexity.
 absl::optional<model::Linear> ParsePipelineClassifier(
-    base::Value* classifier_value) {
+    base::Value::Dict* classifier_value) {
   if (!classifier_value) {
     return absl::nullopt;
   }
 
   const std::string* const classifier_type =
-      classifier_value->FindStringKey("classifier_type");
+      classifier_value->FindString("classifier_type");
 
   if (!classifier_type) {
     return absl::nullopt;
@@ -109,14 +110,14 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     return absl::nullopt;
   }
 
-  base::Value* specified_classes = classifier_value->FindListKey("classes");
+  base::Value::List* specified_classes = classifier_value->FindList("classes");
   if (!specified_classes) {
     return absl::nullopt;
   }
 
   std::vector<std::string> classes;
-  classes.reserve(specified_classes->GetList().size());
-  for (const base::Value& class_name : specified_classes->GetList()) {
+  classes.reserve(specified_classes->size());
+  for (const base::Value& class_name : *specified_classes) {
     if (!class_name.is_string()) {
       return absl::nullopt;
     }
@@ -129,24 +130,22 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     classes.push_back(class_string);
   }
 
-  base::Value* class_weights = classifier_value->FindDictKey("class_weights");
+  base::Value::Dict* class_weights =
+      classifier_value->FindDict("class_weights");
   if (!class_weights) {
     return absl::nullopt;
   }
 
   std::map<std::string, VectorData> weights;
   for (const std::string& class_string : classes) {
-    base::Value* this_class = class_weights->FindListKey(class_string);
-    if (!this_class) {
+    base::Value::List* list = class_weights->FindList(class_string);
+    if (!list) {
       return absl::nullopt;
     }
 
-    // Consume the list to save memory.
-    const auto list = std::move(this_class->GetList());
-
     std::vector<float> class_coef_weights;
-    class_coef_weights.reserve(list.size());
-    for (const base::Value& weight : list) {
+    class_coef_weights.reserve(list->size());
+    for (const base::Value& weight : *list) {
       if (weight.is_double() || weight.is_int()) {
         class_coef_weights.push_back(weight.GetDouble());
       } else {
@@ -157,18 +156,17 @@ absl::optional<model::Linear> ParsePipelineClassifier(
   }
 
   std::map<std::string, double> specified_biases;
-  base::Value* biases = classifier_value->FindListKey("biases");
+  base::Value::List* biases = classifier_value->FindList("biases");
   if (!biases) {
     return absl::nullopt;
   }
 
-  const auto& biases_list = biases->GetList();
-  if (biases_list.size() != classes.size()) {
+  if (biases->size() != classes.size()) {
     return absl::nullopt;
   }
 
-  for (size_t i = 0; i < biases_list.size(); i++) {
-    const base::Value& this_bias = biases_list[i];
+  for (size_t i = 0; i < biases->size(); i++) {
+    const base::Value& this_bias = (*biases)[i];
     if (this_bias.is_double() || this_bias.is_int()) {
       specified_biases[classes[i]] = this_bias.GetDouble();
     } else {
@@ -186,29 +184,31 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
     return absl::nullopt;
   }
 
-  const absl::optional<int> version = value.FindIntKey("version");
+  base::Value::Dict& dict = value.GetDict();
+
+  const absl::optional<int> version = dict.FindInt("version");
   if (!version) {
     return absl::nullopt;
   }
 
-  const std::string* const timestamp = value.FindStringKey("timestamp");
+  const std::string* const timestamp = dict.FindString("timestamp");
   if (!timestamp) {
     return absl::nullopt;
   }
 
-  const std::string* const locale = value.FindStringKey("locale");
+  const std::string* const locale = dict.FindString("locale");
   if (!locale) {
     return absl::nullopt;
   }
 
   absl::optional<TransformationVector> transformations =
-      ParsePipelineTransformations(value.FindListKey("transformations"));
+      ParsePipelineTransformations(dict.FindList("transformations"));
   if (!transformations) {
     return absl::nullopt;
   }
 
   absl::optional<model::Linear> linear_model =
-      ParsePipelineClassifier(value.FindKey("classifier"));
+      ParsePipelineClassifier(dict.FindDict("classifier"));
   if (!linear_model) {
     return absl::nullopt;
   }

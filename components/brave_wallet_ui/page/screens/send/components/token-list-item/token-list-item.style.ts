@@ -29,6 +29,7 @@ export const NetworkIconWrapper = styled.div`
   background-color: ${(p) => p.theme.color.background02};
   border-radius: 100%;
   padding: 2px;
+  z-index: 3;
 `
 
 export const ButtonWrapper = styled(StyledDiv)`

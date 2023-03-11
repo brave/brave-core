@@ -24,6 +24,7 @@
 #include "third_party/blink/renderer/core/inspector/console_message.h"
 #include "third_party/blink/renderer/core/inspector/protocol/dom.h"
 #include "third_party/blink/renderer/core/inspector/protocol/protocol.h"
+#include "third_party/blink/renderer/platform/allow_discouraged_type.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/heap/member.h"
 #include "third_party/blink/renderer/platform/supplementable.h"
@@ -478,12 +479,15 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   // in JS funcs and methods. This map does not own the references.
   HashMap<MethodName, NodeJSBuiltin*> js_builtin_nodes_;
 
+  using FingerprintingFilterNodes ALLOW_DISCOURAGED_TYPE(
+      "TODO(https://github.com/brave/brave-browser/issues/28238)") =
+      std::map<FingerprintingRule, NodeFingerprintingFilter*>;
+
   // Index structure for looking up filter nodes.
   // These maps do not own the references.
   HashMap<String, NodeAdFilter*> ad_filter_nodes_;
   HashMap<String, NodeTrackerFilter*> tracker_filter_nodes_;
-  std::map<FingerprintingRule, NodeFingerprintingFilter*>
-      fingerprinting_filter_nodes_;
+  FingerprintingFilterNodes fingerprinting_filter_nodes_;
 
   NodeShields* shields_node_;
   NodeShield* ad_shield_node_;

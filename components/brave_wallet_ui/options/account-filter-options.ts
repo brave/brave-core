@@ -13,5 +13,6 @@ export const AllAccountsOption: WalletAccountType = {
   id: 'all',
   name: getLocale('braveWalletAccountFilterAllAccounts'),
   nativeBalanceRegistry: {},
-  tokenBalanceRegistry: {}
+  tokenBalanceRegistry: {},
+  keyringId: ''
 }

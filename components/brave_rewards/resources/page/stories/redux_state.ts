@@ -1,8 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { defaultState } from '../reducers/default_state'
+import { optional } from '../../shared/lib/optional'
 
 export const reduxState: Rewards.ApplicationState = {
   rewardsData: {
@@ -18,9 +20,9 @@ export const reduxState: Rewards.ApplicationState = {
     contributionVideos: true,
     reconcileStamp: 0,
     ui: {
-      modalBackup: false,
       modalConnect: false,
       modalRedirect: 'hide',
+      modalReset: false,
       promosDismissed: {}
     },
     autoContributeList: [
@@ -120,6 +122,7 @@ export const reduxState: Rewards.ApplicationState = {
     adsHistory: [],
     pendingContributionTotal: 4,
     promotions: [],
+    inlineTipsEnabled: true,
     inlineTip: {
       twitter: true,
       reddit: true,
@@ -184,10 +187,7 @@ export const reduxState: Rewards.ApplicationState = {
     }],
     excludedList: [],
     externalWalletProviderList: ['uphold'],
-    balance: {
-      total: 0,
-      wallets: {}
-    },
+    balance: optional<number>(),
     monthlyReport: {
       month: -1,
       year: -1

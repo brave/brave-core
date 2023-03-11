@@ -8,9 +8,8 @@
 
 #include <libxml/tree.h>
 
-#include <string>
-
 #include "base/containers/flat_map.h"
+#include "base/strings/string_piece.h"
 #include "base/time/time.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/types.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
@@ -27,10 +26,7 @@ class GraphMLAttr {
   void AddDefinitionNode(xmlNodePtr parent_node) const;
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
-                    const char* value) const;
-  void AddValueNode(xmlDocPtr doc,
-                    xmlNodePtr parent_node,
-                    const std::string& value) const;
+                    base::StringPiece value) const;
   void AddValueNode(xmlDocPtr doc,
                     xmlNodePtr parent_node,
                     const String& value) const;
@@ -53,7 +49,11 @@ class GraphMLAttr {
                     xmlNodePtr parent_node,
                     const base::TimeDelta value) const;
 
- protected:
+ private:
+  void AddValueNodeXmlChar(xmlDocPtr doc,
+                           xmlNodePtr parent_node,
+                           const xmlChar* value) const;
+
   const uint64_t id_;
   const GraphMLAttrForType for_;
   const String name_;

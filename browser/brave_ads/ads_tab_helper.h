@@ -17,21 +17,11 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser_list_observer.h"
+#include "chrome/browser/ui/browser_list_observer.h"  // IWYU pragma: keep
 #endif
 
 class Browser;
 class GURL;
-
-namespace dom_distiller {
-
-class DistillerPage;
-
-namespace proto {
-class DomDistillerResult;
-}  // namespace proto
-
-}  // namespace dom_distiller
 
 namespace brave_ads {
 

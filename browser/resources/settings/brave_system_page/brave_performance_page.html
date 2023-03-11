@@ -1,0 +1,21 @@
+<style include="settings-shared cr-shared-style iron-flex">
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    height: 68px;
+  }
+</style>
+
+<template is="dom-if" if="[[showPerformancePage_()]]">
+  <div class="cr-row title">$i18n{performancePageTitle}</div>
+  <settings-performance-page prefs="{{prefs}}">
+  </settings-performance-page>
+</template>
+
+<template is="dom-if" if="[[showBatteryPage_()]]">
+  <div hidden="[[!showBatterySettings_]]">
+    <div class="cr-row title">$i18n{batteryPageTitle}</div>
+    <settings-battery-page prefs="{{prefs}}">
+    </settings-battery-page>
+  </div>
+</template>

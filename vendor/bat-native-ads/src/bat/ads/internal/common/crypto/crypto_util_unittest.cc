@@ -7,7 +7,7 @@
 
 #include "base/base64.h"
 #include "bat/ads/internal/common/crypto/key_pair_info.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"                          // NOLINT
 
 // npm run test -- brave_unit_tests --filter=BatAds*

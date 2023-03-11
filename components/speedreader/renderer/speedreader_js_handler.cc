@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/speedreader/common/constants.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/renderer/speedreader_render_frame_observer.h"
 #include "content/public/renderer/render_frame.h"
@@ -36,16 +35,18 @@ SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 
 // static
 void SpeedreaderJSHandler::Install(
-    base::WeakPtr<SpeedreaderRenderFrameObserver> owner) {
+    base::WeakPtr<SpeedreaderRenderFrameObserver> owner,
+    int32_t isolated_world_id) {
   DCHECK(owner);
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
 
   v8::Local<v8::Context> context =
       owner->render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
-          isolate, kIsolatedWorldId);
-  if (context.IsEmpty())
+          isolate, isolated_world_id);
+  if (context.IsEmpty()) {
     return;
+  }
 
   v8::Context::Scope context_scope(context);
   v8::Local<v8::Object> global = context->Global();

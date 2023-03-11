@@ -12,8 +12,6 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "content/public/browser/notification_service.h"
-#include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -46,33 +44,18 @@ RewardsBrowserTestContextHelper::OpenRewardsPopup() {
     return popup_contents_;
   }
 
-  base::WeakPtr<content::WebContents> popup_web_contents;
-
-  // Construct an observer to wait for the popup to load
-  auto check_load_is_rewards_panel =
-      [this](const content::NotificationSource& source,
-             const content::NotificationDetails&) {
-        auto web_contents_source =
-            static_cast<const content::Source<content::WebContents>&>(source);
-        auto* web_contents = web_contents_source.ptr();
-        GURL url = web_contents->GetLastCommittedURL();
-
-        if (RewardsPanelCoordinator::IsRewardsPanelURLForTesting(url)) {
-          popup_contents_ = web_contents->GetWeakPtr();
-          return true;
-        }
-
-        return false;
-      };
-
-  content::WindowedNotificationObserver popup_observer(
-      content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
-      base::BindLambdaForTesting(check_load_is_rewards_panel));
+  content::CreateAndLoadWebContentsObserver popup_observer;
 
   OpenPopup();
 
   // Wait for the popup to load
-  popup_observer.Wait();
+  do {
+    content::WebContents* web_contents = popup_observer.Wait();
+    GURL url = web_contents->GetLastCommittedURL();
+    if (RewardsPanelCoordinator::IsRewardsPanelURLForTesting(url)) {
+      popup_contents_ = web_contents->GetWeakPtr();
+    }
+  } while (!popup_contents_);
 
   rewards_browsertest_util::WaitForElementToAppear(
       popup_contents_.get(), "[data-test-id=rewards-panel]");
@@ -86,9 +69,7 @@ RewardsBrowserTestContextHelper::OpenSiteBanner(
   base::WeakPtr<content::WebContents> popup_contents = OpenRewardsPopup();
 
   // Construct an observer to wait for the site banner to load.
-  content::WindowedNotificationObserver site_banner_observer(
-      content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
-      content::NotificationService::AllSources());
+  content::CreateAndLoadWebContentsObserver site_banner_observer;
 
   std::string button_selector;
   bool open_tip_actions = false;
@@ -120,15 +101,9 @@ RewardsBrowserTestContextHelper::OpenSiteBanner(
   rewards_browsertest_util::WaitForElementThenClick(popup_contents.get(),
                                                     button_selector);
 
-  // Wait for the site banner to load
-  site_banner_observer.Wait();
-
-  // Retrieve the notification source
+  // Wait for the site banner to load and retrieve the notification source
   base::WeakPtr<content::WebContents> banner =
-      static_cast<const content::Source<content::WebContents>&>(
-          site_banner_observer.source())
-          .ptr()
-          ->GetWeakPtr();
+      site_banner_observer.Wait()->GetWeakPtr();
 
   // Allow the site banner to update its UI. We cannot use ExecJs here,
   // because it does not resolve promises.

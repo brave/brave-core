@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/polymer_overriding.js'
+import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
   'settings-cookies-page': (templateContent) => {
@@ -34,9 +34,19 @@ RegisterPolymerTemplateModifications({
         blockThirdPartyIncognitoRadioButton.setAttribute('hidden', 'true')
       }
     }
-    const networkPredictionToggle = templateContent.getElementById('networkPrediction')
+    const preloadingToggleTemplate = templateContent.querySelector(
+      'template[is=dom-if][if="[[!showPreloadingSubPage_]]"]')
+    if (!preloadingToggleTemplate) {
+      console.error(
+        '[Brave Settings Overrides] Could not find preloading toggle template')
+      return
+    }
+    const networkPredictionToggle = preloadingToggleTemplate.content.
+      getElementById('preloadingToggle')
     if (!networkPredictionToggle) {
-      console.error('[Brave Settings Overrides] Could not find networkPrediction id on cookies page.')
+      console.error(
+        '[Brave Settings Overrides] Could not find preloadingToggle id ' +
+        'on cookies page.')
     } else {
       networkPredictionToggle.setAttribute('hidden', 'true')
     }

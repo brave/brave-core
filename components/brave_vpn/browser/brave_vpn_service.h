@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
@@ -98,6 +98,7 @@ class BraveVpnService :
                            const std::string& body,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
+  void ResetConnectionState() override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;

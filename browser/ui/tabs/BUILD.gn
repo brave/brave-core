@@ -1,3 +1,11 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+
 source_set("tabs") {
   # Set due to //chrome/browser and //chrome/browser/ui circular dependencies.
   check_includes = false
@@ -10,14 +18,33 @@ source_set("tabs") {
       "brave_tab_prefs.h",
       "brave_tab_strip_model.cc",
       "brave_tab_strip_model.h",
+      "brave_vertical_tab_color_mixer.cc",
+      "brave_vertical_tab_color_mixer.h",
+      "features.cc",
+      "features.h",
+      "shared_pinned_tab_service.cc",
+      "shared_pinned_tab_service.h",
+      "shared_pinned_tab_service_factory.cc",
+      "shared_pinned_tab_service_factory.h",
     ]
 
     deps = [
+      ":buildflags",
       "//brave/common/",
       "//chrome/app:generated_resources",
       "//components/prefs",
       "//components/sessions",
       "//content/public/browser",
+      "//ui/color",
     ]
+  }
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  if (brave_channel == "development" || brave_channel == "nightly") {
+    flags = [ "VERTICAL_TAB_FLAG_DEFAULT_ON=1" ]
+  } else {
+    flags = [ "VERTICAL_TAB_FLAG_DEFAULT_ON=0" ]
   }
 }

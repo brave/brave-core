@@ -9,10 +9,10 @@
 #include <utility>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/stringprintf.h"
@@ -272,7 +272,8 @@ void GreaselionDownloadService::LoadDirectlyFromResourcePath() {
                      weak_factory_.GetWeakPtr()));
 }
 
-void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
+void GreaselionDownloadService::OnDATFileDataReady(
+    const std::string& contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   rules_.clear();
   if (contents.empty()) {

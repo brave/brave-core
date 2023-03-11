@@ -13,7 +13,7 @@
   network::mojom::URLLoaderFactoryParamsPtr                               \
       CreateNetworkFactoryParamsForSubresources
 
-#include "src/content/browser/worker_host/shared_worker_host.h"
+#include "src/content/browser/worker_host/shared_worker_host.h"  // IWYU pragma: export
 
 #undef CreateNetworkFactoryParamsForSubresources
 

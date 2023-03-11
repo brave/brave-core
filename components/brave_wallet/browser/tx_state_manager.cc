@@ -9,6 +9,7 @@
 
 #include "base/json/values_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "components/prefs/pref_service.h"
@@ -84,6 +85,12 @@ bool TxStateManager::ValueToTxMeta(const base::Value::Dict& value,
   if (group_id) {
     meta->set_group_id(*group_id);
   }
+
+  const auto* chain_id_string = value.FindString("chain_id");
+  if (!chain_id_string) {
+    return false;
+  }
+  meta->set_chain_id(*chain_id_string);
 
   return true;
 }
@@ -195,6 +202,59 @@ void TxStateManager::AddObserver(TxStateManager::Observer* observer) {
 
 void TxStateManager::RemoveObserver(TxStateManager::Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void TxStateManager::MigrateAddChainIdToTransactionInfo(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletTransactionsChainIdMigrated)) {
+    return;
+  }
+  if (!prefs->HasPrefPath(kBraveWalletTransactions)) {
+    prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
+    return;
+  }
+
+  ScopedDictPrefUpdate txs_update(prefs, kBraveWalletTransactions);
+  auto& all_txs = txs_update.Get();
+
+  auto set_chain_id = [&](base::Value::Dict* tx_by_network_ids,
+                          const mojom::CoinType& coin) {
+    for (auto tnid : *tx_by_network_ids) {
+      auto chain_id = GetChainIdByNetworkId(prefs, coin, tnid.first);
+      if (!chain_id.has_value()) {
+        continue;
+      }
+
+      auto* txs = tnid.second.GetIfDict();
+
+      if (!txs || txs->empty()) {
+        return;
+      }
+      for (auto tx : *txs) {
+        auto* ptx = tx.second.GetIfDict();
+
+        if (!ptx) {
+          continue;
+        }
+
+        ptx->Set("chain_id", chain_id.value());
+      }
+    }
+  };
+
+  for (auto txs_coin_type : all_txs) {
+    auto coin = GetCoinTypeFromPrefKey(txs_coin_type.first);
+
+    if (!coin.has_value()) {
+      continue;
+    }
+
+    if (!txs_coin_type.second.is_dict()) {
+      continue;
+    }
+
+    set_chain_id(&txs_coin_type.second.GetDict(), coin.value());
+  }
+  prefs->SetBoolean(kBraveWalletTransactionsChainIdMigrated, true);
 }
 
 }  // namespace brave_wallet

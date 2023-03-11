@@ -21,7 +21,7 @@
       network::mojom::WebClientHintsType type, bool should_send);         \
   bool IsEnabled_Unused
 
-#include "src/third_party/blink/public/common/client_hints/enabled_client_hints.h"
+#include "src/third_party/blink/public/common/client_hints/enabled_client_hints.h"  // IWYU pragma: export
 
 #undef IsEnabled
 

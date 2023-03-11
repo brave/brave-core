@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-#
+
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import json
 import optparse # pylint: disable=deprecated-module
@@ -10,25 +11,20 @@ import os
 import sys
 import subprocess
 
-from deps_config import RUST_DEPS_PACKAGE_VERSION
-
-
 def run_cargo(command, args):
-    rustup_path = args.rustup_path
-
     # Set environment variables for rustup
     env = os.environ.copy()
 
-    rustup_home = os.path.join(rustup_path, RUST_DEPS_PACKAGE_VERSION)
+    rustup_home = args.rustup_home
     env['RUSTUP_HOME'] = rustup_home
     env['CARGO_HOME'] = rustup_home
+    # Enable experimental features in non-nightly builds
+    env['RUSTC_BOOTSTRAP'] = '1'
 
-    rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
-    cargo_exe = os.path.join(rustup_bin, 'cargo')
-    if sys.platform == "win32":
-        cargo_exe += ".exe"
+    rustup_bin_dir = os.path.abspath(os.path.join(rustup_home, 'bin'))
+    cargo_exe = args.exe
 
-    env['PATH'] = rustup_bin + os.pathsep + env['PATH']
+    env['PATH'] = rustup_bin_dir + os.pathsep + env['PATH']
 
     if args.toolchain:
         toolchains_path = os.path.abspath(
@@ -49,10 +45,11 @@ def run_cargo(command, args):
     if args.is_debug == "false":
         env['NDEBUG'] = "1"
 
-    if args.rust_flags is not None:
-        env['RUSTFLAGS'] = " ".join(args.rust_flags)
+    rust_flags = args.rust_flags.copy()
+    rust_flags.append("-Cpanic=" + args.panic)
 
-    env["RUST_BACKTRACE"] = "1"
+    if rust_flags is not None:
+        env['RUSTFLAGS'] = " ".join(rust_flags)
 
     try:
         cargo_args = []
@@ -63,8 +60,18 @@ def run_cargo(command, args):
         cargo_args.append("--manifest-path=" + args.manifest_path)
         cargo_args.append("--target-dir=" + args.build_path)
         cargo_args.append("--target=" + args.target)
-        if command == "build" and args.features is not None:
+        if command == "rustc" and args.features is not None:
             cargo_args.append("--features=" + args.features)
+        # use deployment target as a proxy for mac/ios target_os
+        if (args.mac_deployment_target is not None
+                or args.ios_deployment_target is not None):
+            cargo_args.append("-Z")
+            cargo_args.append("build-std=panic_" + args.panic + ",std")
+        if command == "rustc":
+            cargo_args.append('--lib')
+            cargo_args.append('--crate-type=staticlib')
+            cargo_args.append('--')
+            cargo_args += rust_flags
         subprocess.check_call(cargo_args, env=env)
 
     except subprocess.CalledProcessError as e:
@@ -78,17 +85,25 @@ def build(args):
     # dependencies to rebuild
     build_args_cache_file = os.path.join(args.build_path, ".cargo_args")
     previous_args = {}
+    clean = False
+
     if os.path.exists(build_args_cache_file):
         with open(build_args_cache_file, "r", encoding="utf8") as f:
             previous_args = json.load(f)
 
-    if (previous_args != args.__dict__ or
-            os.path.getmtime(build_args_cache_file) <
-            os.path.getmtime(__file__)):
+        if previous_args != args.__dict__:
+            clean = True
+
+        for filename in args.other_inputs:
+            if (os.path.getmtime(build_args_cache_file) <
+                    os.path.getmtime(filename)):
+                clean = True
+
+    if clean:
         run_cargo('clean', args)
 
     try:
-        run_cargo('build', args)
+        run_cargo('rustc', args)
         with open(build_args_cache_file, "w", encoding="utf8") as f:
             json.dump(args.__dict__, f)
 
@@ -100,20 +115,27 @@ def build(args):
 def parse_args():
     parser = optparse.OptionParser(description='Cargo')
 
-    parser.add_option('--rustup_path')
+    parser.add_option('--exe')
+    parser.add_option('--rustup_home')
     parser.add_option('--manifest_path')
     parser.add_option('--build_path')
     parser.add_option('--target')
     parser.add_option('--toolchain')
     parser.add_option('--is_debug')
     parser.add_option('--profile')
+    parser.add_option('--panic')
     parser.add_option('--clang_bin_path')
+    parser.add_option('--rust_version')
     parser.add_option('--mac_deployment_target')
     parser.add_option('--ios_deployment_target')
     parser.add_option("--rust_flag", action="append",
                                      dest="rust_flags",
                                      default=[])
     parser.add_option('--features')
+    parser.add_option('--inputs',
+                      action="append",
+                      dest="other_inputs",
+                      default=[])
 
     options, _ = parser.parse_args()
 

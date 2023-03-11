@@ -8,7 +8,7 @@
 
 #define GetThirdPartyActionList virtual GetThirdPartyActionList
 
-#include "src/chrome/browser/sharing_hub/sharing_hub_model.h"
+#include "src/chrome/browser/sharing_hub/sharing_hub_model.h"  // IWYU pragma: export
 
 #undef GetThirdPartyActionList
 

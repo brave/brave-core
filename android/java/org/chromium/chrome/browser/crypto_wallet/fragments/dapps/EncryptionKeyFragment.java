@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.DecryptRequest;
 import org.chromium.brave_wallet.mojom.GetEncryptionPublicKeyRequest;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -30,8 +32,9 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class EncryptionKeyFragment extends Fragment implements View.OnClickListener {
+    private static final String TAG = "ConnectAccount";
+
     private static final String ACTIVITY_TYPE = "param1";
     private ImageView mAccountImage;
     private TextView mAccountName;
@@ -69,9 +72,11 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 

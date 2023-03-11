@@ -12,7 +12,7 @@
   virtual void SetMatch
 #define OnSelectionStateChanged virtual OnSelectionStateChanged
 
-#include "src/chrome/browser/ui/views/omnibox/omnibox_result_view.h"
+#include "src/chrome/browser/ui/views/omnibox/omnibox_result_view.h"  // IWYU pragma: export
 
 #undef OnSelectionStateChanged
 #undef SetMatch

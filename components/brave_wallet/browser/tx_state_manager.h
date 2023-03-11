@@ -40,6 +40,8 @@ class TxStateManager {
   void DeleteTx(const std::string& id);
   void WipeTxs();
 
+  static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
+
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       absl::optional<mojom::TransactionStatus> status,
       absl::optional<std::string> from);

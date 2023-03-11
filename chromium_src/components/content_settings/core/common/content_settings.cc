@@ -33,7 +33,8 @@ constexpr int brave_value(int incr) {
   {ContentSettingsType::BRAVE_SPEEDREADER, brave_value(8)},               \
   {ContentSettingsType::BRAVE_ETHEREUM, brave_value(9)},                  \
   {ContentSettingsType::BRAVE_SOLANA, brave_value(10)},                   \
-  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)}
+  {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, brave_value(11)},           \
+  {ContentSettingsType::BRAVE_HTTPS_UPGRADE, brave_value(12)}
 // clang-format on
 
 #define ContentSettingTypeToHistogramValue \

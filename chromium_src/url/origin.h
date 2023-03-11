@@ -15,7 +15,7 @@ class EphemeralStorageOriginUtils;
   friend net::EphemeralStorageOriginUtils; \
   const SchemeHostPort& GetTupleOrPrecursorTupleIfOpaque
 
-#include "src/url/origin.h"
+#include "src/url/origin.h"  // IWYU pragma: export
 
 #undef GetTupleOrPrecursorTupleIfOpaque
 

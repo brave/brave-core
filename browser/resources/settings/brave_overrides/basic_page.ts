@@ -1,12 +1,9 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
-import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/polymer_overriding.js'
-import {loadTimeData} from '../i18n_setup.js'
 
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.js'
@@ -21,6 +18,10 @@ import '../brave_web3_domains_page/brave_web3_domains_page.js'
 import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
+
+import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
+
+import {loadTimeData} from '../i18n_setup.js'
 
 const isGuest = loadTimeData.getBoolean('isGuest')
 
@@ -71,20 +72,6 @@ function createNestedSectionElement(sectionName, nestedUnder, titleName, childNa
       >
       </${childName}>
     </settings-section>
-  `
-}
-
-
-/**
- * Creates a settings-toggle-button element and returns it.
- * @param {string} pref - preference path to handle by toggle
- * @param {string} label - label for the element
- * @returns {Element}
- */
- function createToggleButtonElement (pref, label) {
-  return html`
-    <settings-toggle-button class="cr-row" pref="{{${pref}}}" label="${loadTimeData.getString(label)}">
-    </settings-toggle-button>
   `
 }
 
@@ -274,6 +261,21 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
+
+      // Remove all hidden performance options from basic page.
+      // We moved performance elements in system settings.
+      const performanceTemplate = actualTemplate.content.querySelector(
+        'template[if="[[showPerformancePage_(pageVisibility.performance)]]"]')
+      if (performanceTemplate) {
+        performanceTemplate.remove()
+      }
+
+      const batteryTemplate = actualTemplate.content.querySelector(
+        'template[if="[[showBatteryPage_(pageVisibility.performance)]]"]')
+      if (batteryTemplate) {
+        batteryTemplate.remove()
+      }
+
       // Get Started at top
       let last = basicPageEl.insertAdjacentElement('afterbegin',
         sectionGetStarted)
@@ -328,10 +330,6 @@ RegisterPolymerTemplateModifications({
       // Move help tips after downloads
       const sectionDownloads = getSectionElement(advancedSubSectionsTemplate.content, 'downloads')
       sectionDownloads.insertAdjacentElement('afterend', sectionHelpTips)
-      // Add an element to Chromium's system section
-      const buttonElement = createToggleButtonElement("prefs.brave.enable_closing_last_tab", "braveHelpTipsClosingLastTab")
-      const sectionSystem = getSectionElement(advancedSubSectionsTemplate.content, 'system')
-      sectionSystem.appendChild(buttonElement)
     }
   }
 })

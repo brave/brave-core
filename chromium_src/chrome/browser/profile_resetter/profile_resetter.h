@@ -11,7 +11,7 @@
   friend class BraveProfileResetter; \
   virtual void ResetDefaultSearchEngine
 
-#include "src/chrome/browser/profile_resetter/profile_resetter.h"
+#include "src/chrome/browser/profile_resetter/profile_resetter.h"  // IWYU pragma: export
 
 #undef ResetDefaultSearchEngine
 

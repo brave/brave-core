@@ -201,7 +201,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
     run_loop.Run();
   }
 
-  base::RunLoop run_loop;
+  base::RunLoop idle_loop;
   absl::optional<bool> show_badge_suggest_result;
   absl::optional<size_t> count_result;
   auto notification_source = std::make_unique<WalletButtonNotificationSource>(
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   notification_source->Init();
 
   // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
+  idle_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(1u, count_result.value());
@@ -275,7 +275,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 
   // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
+  idle_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(3u, count_result.value());
@@ -293,7 +293,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 
   // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
+  idle_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(2u, count_result.value());
@@ -311,7 +311,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 
   // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
+  idle_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(1u, count_result.value());
@@ -329,7 +329,7 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
   }
 
   // Wait until WalletButtonNotificationSource checks are finished
-  run_loop.RunUntilIdle();
+  idle_loop.RunUntilIdle();
 
   EXPECT_FALSE(show_badge_suggest_result.value());
   EXPECT_EQ(0u, count_result.value());

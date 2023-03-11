@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/containers/cxx20_erase_vector.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
@@ -57,9 +58,9 @@ BraveShieldsWebContentsObserver::BraveShieldsWebContentsObserver(
       receivers_(web_contents, this) {}
 
 void BraveShieldsWebContentsObserver::RenderFrameCreated(RenderFrameHost* rfh) {
-  if (rfh && allowed_script_origins_.size()) {
+  if (rfh && allowed_scripts_.size()) {
     GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-        allowed_script_origins_);
+        allowed_scripts_);
   }
   if (rfh) {
     if (content::BrowserContext* context = rfh->GetBrowserContext()) {
@@ -172,15 +173,44 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     return;
   shields_data_ctrlr->HandleItemBlocked(block_type, subresource);
 }
+// static
+void BraveShieldsWebContentsObserver::DispatchAllowedOnceEventForWebContents(
+    const std::string& block_type,
+    const std::string& subresource,
+    WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+  auto* shields_data_ctrlr =
+      brave_shields::BraveShieldsDataController::FromWebContents(web_contents);
+  // |shields_data_ctrlr| can be null if the |web_contents| is generated in
+  // component layer - We don't attach any tab helpers in this case.
+  if (!shields_data_ctrlr) {
+    return;
+  }
+  shields_data_ctrlr->HandleItemAllowedOnce(block_type, subresource);
+}
 #endif
+
+void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
+    const std::u16string& details) {
+#if !BUILDFLAG(IS_ANDROID)
+  WebContents* web_contents =
+      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+  if (!web_contents)
+    return;
+  DispatchAllowedOnceEventForWebContents(
+      brave_shields::kJavaScript, base::UTF16ToUTF8(details), web_contents);
+#endif
+}
 
 void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
     const std::u16string& details) {
   WebContents* web_contents =
       WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
-  if (!web_contents)
+  if (!web_contents) {
     return;
-
+  }
   DispatchBlockedEventForWebContents(brave_shields::kJavaScript,
                                      base::UTF16ToUTF8(details), web_contents);
 }
@@ -203,7 +233,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       !navigation_handle->IsSameDocument()) {
     if (reload_type == content::ReloadType::NONE) {
       // For new loads, we reset the counters for both blocked scripts and URLs.
-      allowed_script_origins_.clear();
+      allowed_scripts_.clear();
       blocked_url_paths_.clear();
     } else if (reload_type == content::ReloadType::NORMAL) {
       // For normal reloads (or loads to the current URL, internally converted
@@ -216,7 +246,7 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
   navigation_handle->GetWebContents()->ForEachRenderFrameHost(
       [this](content::RenderFrameHost* rfh) {
         GetBraveShieldsRemote(rfh)->SetAllowScriptsFromOriginsOnce(
-            allowed_script_origins_);
+            allowed_scripts_);
         if (content::BrowserContext* context = rfh->GetBrowserContext()) {
           if (PrefService* pref_service = user_prefs::UserPrefs::Get(context)) {
             GetBraveShieldsRemote(rfh)->SetReduceLanguageEnabled(
@@ -226,10 +256,24 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       });
 }
 
+void BraveShieldsWebContentsObserver::BlockAllowedScripts(
+    const std::vector<std::string>& scripts) {
+  for (const auto& script : scripts) {
+    auto origin = url::Origin::Create(GURL(script));
+    bool is_origin = origin.Serialize() == script;
+    base::EraseIf(allowed_scripts_, [is_origin, script,
+                                     origin](const std::string& value) {
+      // scripts array may have both origins or full scripts paths.
+      return is_origin ? url::Origin::Create(GURL(value)) == origin
+                       : value == script;
+    });
+  }
+}
+
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
-    const std::vector<std::string>& origins,
-    WebContents* contents) {
-  allowed_script_origins_ = std::move(origins);
+    const std::vector<std::string>& origins) {
+  allowed_scripts_.insert(std::end(allowed_scripts_), std::begin(origins),
+                          std::end(origins));
 }
 
 // static

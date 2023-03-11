@@ -39,8 +39,12 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
-    private TabSwitcherModeTTCoordinator mTabSwitcherModeCoordinator;
+    // To delete in bytecode. Variables from the parent class will be used instead.
     private OptionalBrowsingModeButtonController mOptionalButtonController;
+    private TabSwitcherModeTTCoordinator mTabSwitcherModeCoordinator;
+    private ToolbarColorObserverManager mToolbarColorObserverManager;
+
+    // Own members.
     private ToolbarLayout mBraveToolbarLayout;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
     private boolean mIsBottomToolbarVisible;
@@ -61,7 +65,6 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             ButtonDataProvider identityDiscController, Callback<Runnable> invalidatorCallback,
             Supplier<ButtonData> identityDiscButtonSupplier,
             Supplier<ResourceManager> resourceManagerSupplier,
-            ObservableSupplier<Boolean> isProgressBarVisibleSupplier,
             BooleanSupplier isIncognitoModeEnabledSupplier, boolean isGridTabSwitcherEnabled,
             boolean isTabletGtsPolishEnabled, boolean isTabToGtsAnimationEnabled,
             boolean isStartSurfaceEnabled, boolean isTabGroupsAndroidContinuationEnabled,
@@ -79,9 +82,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 browsingModeMenuButtonCoordinator, overviewModeMenuButtonCoordinator,
                 appMenuButtonHelperSupplier, tabModelSelectorSupplier, homepageEnabledSupplier,
                 identityDiscController, invalidatorCallback, identityDiscButtonSupplier,
-                resourceManagerSupplier, isProgressBarVisibleSupplier,
-                isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled, isTabletGtsPolishEnabled,
-                isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
+                resourceManagerSupplier, isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
+                isTabletGtsPolishEnabled, isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
                 partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
                 startSurfaceLogoClickedCallback, isStartSurfaceRefactorEnabled, constraintsSupplier,
@@ -98,7 +100,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                         controlContainer.getRootView().findViewById(R.id.tab_switcher_toolbar_stub),
                         fullscreenToolbarStub, overviewModeMenuButtonCoordinator,
                         isGridTabSwitcherEnabled, isTabletGtsPolishEnabled,
-                        isTabToGtsAnimationEnabled, isIncognitoModeEnabledSupplier);
+                        isTabToGtsAnimationEnabled, isIncognitoModeEnabledSupplier,
+                        mToolbarColorObserverManager);
             }
         }
     }

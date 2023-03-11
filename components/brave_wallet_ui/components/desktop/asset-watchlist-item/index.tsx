@@ -40,72 +40,73 @@ export interface Props {
   networkList: BraveWallet.NetworkInfo[]
 }
 
-const AssetWatchlistItem = (props: Props) => {
-  const {
-    onSelectAsset,
-    onRemoveAsset,
-    isCustom,
-    token,
-    isSelected,
-    networkList
-  } = props
+const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
+  (props: Props, forwardedRef) => {
+    const {
+      onSelectAsset,
+      onRemoveAsset,
+      isCustom,
+      token,
+      isSelected,
+      networkList
+    } = props
 
-  const onCheck = React.useCallback((key: string, selected: boolean) => {
-    onSelectAsset(key, selected, token, isCustom)
-  }, [onSelectAsset, token, isCustom])
+    const onCheck = React.useCallback((key: string, selected: boolean) => {
+      onSelectAsset(key, selected, token, isCustom)
+    }, [onSelectAsset, token, isCustom])
 
-  const onClickAsset = React.useCallback(() => {
-    onSelectAsset(token.contractAddress, !isSelected, token, isCustom)
-  }, [onSelectAsset, token, isSelected, isCustom])
+    const onClickAsset = React.useCallback(() => {
+      onSelectAsset(token.contractAddress, !isSelected, token, isCustom)
+    }, [onSelectAsset, token, isSelected, isCustom])
 
-  const onClickRemoveAsset = React.useCallback(() => {
-    onRemoveAsset(token)
-  }, [token, onRemoveAsset])
+    const onClickRemoveAsset = React.useCallback(() => {
+      onRemoveAsset(token)
+    }, [token, onRemoveAsset])
 
-  const AssetIconWithPlaceholder = React.useMemo(() => {
-    return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
-  }, [token])
+    const AssetIconWithPlaceholder = React.useMemo(() => {
+      return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
+    }, [token])
 
-  const tokensNetwork = React.useMemo(() => {
-    if (!token) {
-      return
-    }
-    return getTokensNetwork(networkList, token)
-  }, [token, networkList])
+    const tokensNetwork = React.useMemo(() => {
+      if (!token) {
+        return
+      }
+      return getTokensNetwork(networkList, token)
+    }, [token, networkList])
 
-  const networkDescription = React.useMemo(() => {
-    return getLocale('braveWalletPortfolioAssetNetworkDescription')
-      .replace('$1', token.symbol)
-      .replace('$2', tokensNetwork?.chainName ?? '')
-  }, [tokensNetwork, token])
+    const networkDescription = React.useMemo(() => {
+      return getLocale('braveWalletPortfolioAssetNetworkDescription')
+        .replace('$1', token.symbol)
+        .replace('$2', tokensNetwork?.chainName ?? '')
+    }, [tokensNetwork, token])
 
-  return (
-    <StyledWrapper>
-      <NameAndIcon onClick={onClickAsset}>
-        <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-        <NameAndSymbol>
-          <AssetName>
-            {token.name} {
-              token.isErc721 && token.tokenId
-                ? '#' + new Amount(token.tokenId).toNumber()
-                : ''
-            }
-          </AssetName>
-          <AssetSymbol>{networkDescription}</AssetSymbol>
-        </NameAndSymbol>
-      </NameAndIcon>
-      <RightSide>
-        {isCustom &&
-          <DeleteButton onClick={onClickRemoveAsset}>
-            <DeleteIcon />
-          </DeleteButton>
-        }
-        <Checkbox value={{ [`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`]: isSelected }} onChange={onCheck}>
-          <div data-key={`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`} />
-        </Checkbox>
-      </RightSide>
-    </StyledWrapper>
-  )
-}
-
+    return (
+      <StyledWrapper ref={forwardedRef}>
+        <NameAndIcon onClick={onClickAsset}>
+          <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+          <NameAndSymbol>
+            <AssetName>
+              {token.name} {
+                token.isErc721 && token.tokenId
+                  ? '#' + new Amount(token.tokenId).toNumber()
+                  : ''
+              }
+            </AssetName>
+            <AssetSymbol>{networkDescription}</AssetSymbol>
+          </NameAndSymbol>
+        </NameAndIcon>
+        <RightSide>
+          {isCustom &&
+            <DeleteButton onClick={onClickRemoveAsset}>
+              <DeleteIcon />
+            </DeleteButton>
+          }
+          <Checkbox value={{ [`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`]: isSelected }} onChange={onCheck}>
+            <div data-key={`${token.contractAddress}-${token.symbol}-${token.chainId}-${token.tokenId}`} />
+          </Checkbox>
+        </RightSide>
+      </StyledWrapper>
+    )
+  }
+)
 export default AssetWatchlistItem

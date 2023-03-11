@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/creatives/geo_targets_database_table.h"
 
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

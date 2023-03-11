@@ -26,9 +26,6 @@ bool IsGoogleAuthRelatedRequest(const GURL& request_url,
                                 const GURL& request_initiator_url);
 // Check if feature flag is enabled.
 bool IsGoogleSignInFeatureEnabled();
-// Check if user preference is enabled (default ON). Caller should make sure
-// feature flag is enabled.
-bool IsGoogleSignInPrefEnabled(PrefService* prefs);
 GURL GetRequestInitiatingUrlFromRequest(
     const network::ResourceRequest& request);
 bool CanCreateWindow(content::RenderFrameHost* opener,

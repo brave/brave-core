@@ -48,12 +48,16 @@ class BraveShieldsWebContentsObserver
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
+  static void DispatchAllowedOnceEventForWebContents(
+      const std::string& block_type,
+      const std::string& subresource,
+      content::WebContents* web_contents);
   static void DispatchBlockedEvent(const GURL& request_url,
                                    int frame_tree_node_id,
                                    const std::string& block_type);
   static GURL GetTabURLFromRenderFrameInfo(int render_frame_tree_node_id);
-  void AllowScriptsOnce(const std::vector<std::string>& origins,
-                        content::WebContents* web_contents);
+  void AllowScriptsOnce(const std::vector<std::string>& origins);
+  void BlockAllowedScripts(const std::vector<std::string>& origins);
   bool IsBlockedSubresource(const std::string& subresource);
   void AddBlockedSubresource(const std::string& subresource);
 
@@ -68,6 +72,7 @@ class BraveShieldsWebContentsObserver
 
   // brave_shields::mojom::BraveShieldsHost.
   void OnJavaScriptBlocked(const std::u16string& details) override;
+  void OnJavaScriptAllowedOnce(const std::u16string& details) override;
 
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
@@ -93,7 +98,7 @@ class BraveShieldsWebContentsObserver
   mojo::AssociatedRemote<brave_shields::mojom::BraveShields>&
   GetBraveShieldsRemote(content::RenderFrameHost* rfh);
 
-  std::vector<std::string> allowed_script_origins_;
+  std::vector<std::string> allowed_scripts_;
   // We keep a set of the current page's blocked URLs in case the page
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;

@@ -11,3 +11,7 @@ export interface AccountTokenBalanceForChainId {
   balance: string
   chainId: EntityId
 }
+
+export interface TokenBalancesForChainId {
+  [contractAddress: string]: string
+}

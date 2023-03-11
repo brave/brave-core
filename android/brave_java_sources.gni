@@ -7,6 +7,7 @@ import("//brave/android/features/tab_ui/brave_tab_management_java_sources.gni")
 import("//brave/android/feed/brave_feed_java_sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/browser/flags/brave_flags_java_sources.gni")
+import("//brave/browser/preferences/brave_preferences_java_sources.gni")
 import("//brave/browser/share/android/java_sources.gni")
 import("//brave/components/permissions/android/java_sources.gni")
 import("//brave/components/safetynet/java_sources.gni")
@@ -32,7 +33,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsOnboardingPagerAdapter.java",
-  "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsPublisher.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsSiteBannerActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsUserWalletActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsVerifyWalletActivity.java",
@@ -46,6 +46,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/AppMenuIconRowFooter.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl.java",
+  "../../brave/android/java/org/chromium/chrome/browser/app/domain/BuyModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/CryptoModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/CryptoSharedActions.java",
   "../../brave/android/java/org/chromium/chrome/browser/app/domain/CryptoSharedData.java",
@@ -93,6 +94,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/BuySendSwapActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/NetworkSelectorActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/NftDetailActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/SelectPurchaseMethodActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/AccountSpinnerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/ApproveTxFragmentPageAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/CreateAccountAdapter.java",
@@ -220,6 +222,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationWarningDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BravePermissionUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/notifications/RewardsYouAreNotEarningDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/permissions/BraveNotificationPermissionRationaleDialogController.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/retention/RetentionNotification.java",
@@ -290,6 +293,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTipConfirmationListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTipFailureFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/rewards/BraveRewardsTippingPanelFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/rewards/CountrySelectionSpinnerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/BraveStandardProtectionSettingsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/safe_browsing/settings/NoGooglePlayServicesDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/searchwidget/SearchWidgetProviderActivity.java",
@@ -347,6 +351,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/CookieListOptInServiceFactory.java",
+  "../../brave/android/java/org/chromium/chrome/browser/shields/FilterListServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletEthereumConnectedSites.java",
@@ -355,10 +360,13 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletSolanaConnectedSites.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/BraveWalletSolanaConnectedSitesPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/speedreader/BraveSpeedReaderUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveMostVisitedTilesMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/suggestions/tile/BraveTileView.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tab/BraveTabHelpers.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
   "../../brave/android/java/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",

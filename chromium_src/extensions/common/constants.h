@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 #define BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 
-#include "src/extensions/common/constants.h"
+#include "src/extensions/common/constants.h"  // IWYU pragma: export
 
 EXTENSIONS_EXPORT extern const int kBraveActionGraphicSize;
 EXTENSIONS_EXPORT extern const int kBraveActionLeftMarginExtra;

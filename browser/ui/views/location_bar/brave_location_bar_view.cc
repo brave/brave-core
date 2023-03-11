@@ -17,7 +17,7 @@
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/components/brave_today/common/features.h"
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -93,7 +93,7 @@ void BraveLocationBarView::Init() {
       focus_ring->SetColorId(color_id.value());
   }
 
-  if (base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature) &&
+  if (base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeature) &&
       !browser_->profile()->IsOffTheRecord()) {
     brave_news_location_view_ =
         AddChildView(std::make_unique<BraveNewsLocationView>(

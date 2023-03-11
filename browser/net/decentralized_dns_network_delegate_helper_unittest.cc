@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "base/callback_helpers.h"
+#include "base/functional/callback_helpers.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"

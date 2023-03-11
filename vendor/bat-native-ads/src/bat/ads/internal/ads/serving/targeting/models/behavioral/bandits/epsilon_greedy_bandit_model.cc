@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/contains.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_map.h"
 #include "base/rand_util.h"
 #include "base/ranges/algorithm.h"
@@ -41,13 +42,13 @@ SegmentList ToSegmentList(const ArmList& arms) {
 }
 
 ArmList ToArmList(const EpsilonGreedyBanditArmMap& arms) {
-  ArmList arm_list;
+  ArmList list;
 
-  for (const auto& arm : arms) {
-    arm_list.push_back(arm.second);
+  for (const auto& [segment, arm] : arms) {
+    list.push_back(arm);
   }
 
-  return arm_list;
+  return list;
 }
 
 ArmBucketMap BucketSortArms(const ArmList& arms) {
@@ -76,12 +77,10 @@ EpsilonGreedyBanditArmMap GetEligibleArms(
 
   EpsilonGreedyBanditArmMap eligible_arms;
 
-  for (const auto& arm : arms) {
-    if (!base::Contains(segments, arm.first)) {
-      continue;
+  for (const auto& [segment, arm] : arms) {
+    if (base::Contains(segments, segment)) {
+      eligible_arms[segment] = arm;
     }
-
-    eligible_arms[arm.first] = arm.second;
   }
 
   return eligible_arms;
@@ -102,20 +101,19 @@ ArmBucketList GetSortedBuckets(const ArmBucketMap& arms) {
 ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
   ArmList top_arms;
 
-  for (const auto& bucket : buckets) {
+  for (auto [value, arms] : buckets) {
     const size_t available_arms = count - top_arms.size();
     if (available_arms < 1) {
       return top_arms;
     }
 
-    ArmList arms = bucket.second;
     if (arms.size() > available_arms) {
       // Sample without replacement
-      base::RandomShuffle(std::begin(arms), std::end(arms));
+      base::RandomShuffle(arms.begin(), arms.end());
       arms.resize(available_arms);
     }
 
-    top_arms.insert(top_arms.cend(), arms.cbegin(), arms.cend());
+    base::Extend(top_arms, arms);
   }
 
   return top_arms;
@@ -124,12 +122,12 @@ ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
 SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
   SegmentList segments;
 
-  for (const auto& arm : arms) {
-    segments.push_back(arm.first);
+  for (const auto& [segment, arm] : arms) {
+    segments.push_back(segment);
   }
 
   if (segments.size() > kTopArmCount) {
-    base::RandomShuffle(std::begin(segments), std::end(segments));
+    base::RandomShuffle(segments.begin(), segments.end());
     segments.resize(kTopArmCount);
   }
 

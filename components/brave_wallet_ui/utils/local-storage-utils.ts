@@ -14,7 +14,6 @@ export const parseJSONFromLocalStorage = <T = any> (
       window.localStorage.getItem(LOCAL_STORAGE_KEYS[storageString]) || ''
     ) as T
   } catch (e) {
-    console.log(e, 'Unable to parse JSON')
     return fallback
   }
 }

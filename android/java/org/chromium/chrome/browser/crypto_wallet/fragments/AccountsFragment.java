@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -44,6 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccountsFragment extends Fragment implements OnWalletListItemClick {
+    private static final String TAG = "AccountsFragment";
+
     private View rootView;
     private WalletCoinAdapter walletCoinAdapter;
     private WalletModel mWalletModel;
@@ -56,9 +60,11 @@ public class AccountsFragment extends Fragment implements OnWalletListItemClick 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 

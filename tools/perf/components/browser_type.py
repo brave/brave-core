@@ -49,12 +49,18 @@ class BraveVersion(_BaseVersion):
   def __str__(self) -> str:
     return 'v' + '.'.join(map(str, self._version))
 
-  def to_chromium_version(self) -> 'ChromiumVersion':
-    return _GetChromiumVersion(self)
+  def to_chromium_version(self, ci_mode: bool) -> 'ChromiumVersion':
+    if not ci_mode:
+      _FetchTag(self)
+    package_json = json.loads(
+        subprocess.check_output(
+            ['git', 'show', f'refs/tags/{self}:package.json'],
+            cwd=path_util.GetBraveDir()))
+    return ChromiumVersion(package_json['config']['projects']['chrome']['tag'])
 
   #Returns a version like 108.1.48.1
-  def to_combined_version(self) -> str:
-    chromium_version = self.to_chromium_version()
+  def to_combined_version(self, ci_mode: bool) -> str:
+    chromium_version = self.to_chromium_version(ci_mode)
     return f'{chromium_version.major()}.' + '.'.join(map(str, self._version))
 
 
@@ -156,8 +162,9 @@ class BrowserType:
     raise NotImplementedError()
 
   # pylint: disable=no-self-use
-  def MakeFieldTrials(self, _tag: BraveVersion, _out_dir: str,
-                      _variations_repo_dir: Optional[str]) -> Optional[str]:
+  def MakeFieldTrials(self, _tag: BraveVersion, _artifacts_dir: str,
+                      _variations_repo_dir: Optional[str],
+                      _ci_mode: bool) -> Optional[str]:
     return None
 
 
@@ -229,55 +236,52 @@ class BraveBrowserTypeImpl(BrowserType):
 
     return _DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag))
 
-  def MakeFieldTrials(self, tag: BraveVersion, out_dir: str,
-                      variations_repo_dir: Optional[str]) -> Optional[str]:
+  def MakeFieldTrials(self, tag: BraveVersion, artifacts_dir: str,
+                      variations_repo_dir: Optional[str],
+                      ci_mode: bool) -> Optional[str]:
     if not self._use_field_trials:
       return None
     if not variations_repo_dir:
       raise RuntimeError('Set --variations-repo-dir to use field trials')
-    return _MakeTestingFieldTrials(out_dir, tag, variations_repo_dir)
+    return _MakeTestingFieldTrials(artifacts_dir, tag, variations_repo_dir,
+                                   'production', ci_mode)
 
 
 def _FetchTag(tag: BraveVersion):
   tag_str = f'refs/tags/{tag}'
   args = ['git', 'fetch', 'origin', tag_str]
   GetProcessOutput(args, cwd=path_util.GetBraveDir(), check=True)
-  return tag_str
 
 
 def _GetBuildDate(tag: BraveVersion) -> str:
-  tag_str = _FetchTag(tag)
+  tag_str = f'refs/tags/{tag}'
   _, output = GetProcessOutput(['git', 'show', '-s', '--format=%ci', tag_str],
                                cwd=path_util.GetBraveDir(),
                                check=True)
-  return output.rstrip()
+  build_date = output.rstrip().split('\n')[-1]
+  logging.debug('Got build date %s', build_date)
+  return build_date
 
 
-def _MakeTestingFieldTrials(out_dir: str,
-                            tag: BraveVersion,
-                            variations_repo_dir: str,
-                            branch: str = 'production') -> str:
-  combined_version = tag.to_combined_version()
+def _MakeTestingFieldTrials(artifacts_dir: str, tag: BraveVersion,
+                            variations_repo_dir: str, branch: str,
+                            ci_mode: bool) -> str:
+  combined_version = tag.to_combined_version(ci_mode)
   logging.debug('combined_version %s', combined_version)
-  target_path = os.path.join(out_dir, 'fieldtrial_testing_config.json')
+  target_path = os.path.join(artifacts_dir, 'fieldtrial_testing_config.json')
+
+  if not ci_mode:
+    _FetchTag(tag)
 
   date = _GetBuildDate(tag)
   args = [
-      'python3', 'seed/fieldtrials_testing_config_generator.py',
-      f'--output={target_path}', f'--target-date={date}',
-      f'--target-branch={branch}', f'--target-version={combined_version}',
-      '--target-channel=NIGHTLY'
+      path_util.GetVpython3Path(),
+      'seed/fieldtrials_testing_config_generator.py', f'--output={target_path}',
+      f'--target-date={date}', f'--target-branch={branch}',
+      f'--target-version={combined_version}', '--target-channel=NIGHTLY'
   ]
   GetProcessOutput(args, cwd=variations_repo_dir, check=True)
   return target_path
-
-
-def _GetChromiumVersion(tag: BraveVersion) -> ChromiumVersion:
-  tag_str = _FetchTag(tag)
-  package_json = json.loads(
-      subprocess.check_output(['git', 'show', f'{tag_str}:package.json'],
-                              cwd=path_util.GetBraveDir()))
-  return ChromiumVersion(package_json['config']['projects']['chrome']['tag'])
 
 
 def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
@@ -285,7 +289,7 @@ def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
   with open(path_util.GetChromeReleasesJsonPath(), 'r') as config_file:
     chrome_versions = json.load(config_file)
 
-  requested_version = tag.to_chromium_version()
+  requested_version = tag.to_chromium_version(False)
   logging.debug('Got requested_version: %s', requested_version)
 
   best_candidate: Optional[ChromiumVersion] = None
@@ -329,10 +333,9 @@ class ChromeBrowserTypeImpl(BrowserType):
 
 def ParseBrowserType(string_type: str) -> BrowserType:
   if string_type == 'chrome':
-    return ChromeBrowserTypeImpl('chrome', 'SxS', ['--restore-last-session'],
-                                 [], True)
+    return ChromeBrowserTypeImpl('chrome', 'SxS', [], [], True)
   if string_type == 'chrome_no_trials':
-    return ChromeBrowserTypeImpl('chrome', 'SxS', ['--restore-last-session'],
+    return ChromeBrowserTypeImpl('chrome', 'SxS', [],
                                  ['--compatibility-mode=no-field-trials'],
                                  False)
   if string_type == 'brave':

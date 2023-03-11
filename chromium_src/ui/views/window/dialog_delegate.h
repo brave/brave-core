@@ -18,7 +18,7 @@
  public:                                                                  \
   void ResetViewShownTimeStampForTesting
 
-#include "src/ui/views/window/dialog_delegate.h"
+#include "src/ui/views/window/dialog_delegate.h"  // IWYU pragma: export
 
 #undef ResetViewShownTimeStampForTesting
 

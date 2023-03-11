@@ -14,7 +14,7 @@ import {
   TipAndChildrenWrapper
 } from './style'
 
-export interface Props {
+export interface ToolTipProps {
   children?: React.ReactNode
   position?: 'left' | 'right'
   actionText?: string
@@ -28,7 +28,7 @@ export interface Props {
   maxWidth?: React.CSSProperties['maxWidth']
 }
 
-export const Tooltip: React.FC<Props> = ({
+export const Tooltip: React.FC<ToolTipProps> = ({
   actionText,
   children,
   disableHoverEvents,

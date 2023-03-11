@@ -5,6 +5,10 @@
 
 #include "brave/browser/ui/brave_browser_window.h"
 
+#include <vector>
+
+#include "ui/base/accelerators/accelerator.h"
+
 // Provide a base implementation (important for `TestBrowserWindow ` in tests)
 // For real implementation, see `BraveBrowserView`.
 
@@ -18,6 +22,11 @@ gfx::Rect BraveBrowserWindow::GetShieldsBubbleRect() {
   return gfx::Rect();
 }
 
+std::map<int, std::vector<ui::Accelerator>>
+BraveBrowserWindow::GetAcceleratedCommands() {
+  return std::map<int, std::vector<ui::Accelerator>>();
+}
+
 // static
 BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
   return static_cast<BraveBrowserWindow*>(window);
@@ -28,7 +37,11 @@ sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
   return nullptr;
 }
 
+void BraveBrowserWindow::ToggleSidebar() {}
+
 bool BraveBrowserWindow::HasSelectedURL() const {
   return false;
 }
+void BraveBrowserWindow::CleanAndCopySelectedURL() {}
+
 #endif

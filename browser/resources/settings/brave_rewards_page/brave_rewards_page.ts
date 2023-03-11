@@ -91,8 +91,8 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
         }
       },
       autoContributeMonthlyLimit_: {
-	type: Array,
-	value: []
+        type: Array,
+        value: []
       },
       shouldAllowAdsSubdivisionTargeting_: {
         type: Boolean,
@@ -106,18 +106,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
         type: Boolean,
         value: false
       },
-      wasInlineTippingForRedditEnabledOnStartup_: {
-        type: Boolean,
-        value: false
-      },
-      wasInlineTippingForTwitterEnabledOnStartup_: {
-        type: Boolean,
-        value: false
-      },
-      wasInlineTippingForGithubEnabledOnStartup_: {
-        type: Boolean,
-        value: false
-      }
     }
   }
 
@@ -127,9 +115,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
   private autoContributeMonthlyLimit_: AutoContributeMonthlyLimit[]
   private shouldAllowAdsSubdivisionTargeting_: boolean
   private shouldShowAutoContributeSettings_: boolean
-  private wasInlineTippingForRedditEnabledOnStartup_: boolean
-  private wasInlineTippingForTwitterEnabledOnStartup_: boolean
-  private wasInlineTippingForGithubEnabledOnStartup_: boolean
   private browserProxy_ = BraveRewardsBrowserProxyImpl.getInstance()
 
   override ready () {
@@ -178,9 +163,6 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
 
   private onRewardsEnabled_ () {
     this.isRewardsEnabled_ = true
-    this.wasInlineTippingForRedditEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.reddit').value
-    this.wasInlineTippingForTwitterEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.twitter').value
-    this.wasInlineTippingForGithubEnabledOnStartup_ = this.getPref('brave.rewards.inline_tip.github').value
     this.maybeShowAutoContributeSettings_()
     this.populateAutoContributeAmountDropdown_()
     this.getAdsDataForSubdivisionTargeting_()
@@ -209,28 +191,16 @@ class SettingsBraveRewardsPage extends SettingsBraveRewardsPageBase {
     })
   }
 
-  private shouldShowRestartButtonForReddit_ (enabled: boolean) {
-    if (!this.isRewardsEnabled_) {
-      return false
-    }
-
-    return enabled !== this.wasInlineTippingForRedditEnabledOnStartup_
-  }
-
-  private shouldShowRestartButtonForTwitter_ (enabled: boolean) {
-    if (!this.isRewardsEnabled_) {
-      return false
-    }
-
-    return enabled !== this.wasInlineTippingForTwitterEnabledOnStartup_
-  }
-
-  private shouldShowRestartButtonForGithub_ (enabled: boolean) {
-    if (!this.isRewardsEnabled_) {
-      return false
-    }
-
-    return enabled !== this.wasInlineTippingForGithubEnabledOnStartup_
+  private shouldShowRestartButtonForTipButtons_(
+    buttonsEnabled: boolean,
+    redditEnabled: boolean,
+    twitterEnabled: boolean,
+    githubEnabled: boolean) {
+    return (
+      buttonsEnabled !== this.browserProxy_.wasInlineTipButtonsEnabledAtStartup() ||
+      redditEnabled !== this.browserProxy_.wasInlineTipRedditEnabledAtStartup() ||
+      twitterEnabled !== this.browserProxy_.wasInlineTipTwitterEnabledAtStartup() ||
+      githubEnabled !== this.browserProxy_.wasInlineTipGithubEnabledAtStartup())
   }
 
   private restartBrowser_ (e: Event) {

@@ -25,6 +25,7 @@ provideStrings({
   braveVpnManageSubscription: 'Manage subscription',
   braveVpnContactSupport: 'Contact technical support',
   braveVpnAbout: 'About',
+  braveVpnErrorPanelHeader: 'Brave VPN',
   braveVpnFeature1: 'Block trackers & ads across all apps',
   braveVpnFeature2: 'Protects you from unwanted network connections',
   braveVpnFeature3: 'Choose your VPN location',

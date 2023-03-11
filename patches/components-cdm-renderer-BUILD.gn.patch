@@ -1,0 +1,12 @@
+diff --git a/components/cdm/renderer/BUILD.gn b/components/cdm/renderer/BUILD.gn
+index 3369afc6e3cbacd1e4acbf7dda8f61b516d74a30..8a3d8be5983c91997f17ff4f71c348e054a21d5e 100644
+--- a/components/cdm/renderer/BUILD.gn
++++ b/components/cdm/renderer/BUILD.gn
+@@ -17,6 +17,7 @@ static_library("renderer") {
+     "//media:media_buildflags",
+     "//third_party/widevine/cdm:buildflags",
+   ]
++  import("//brave/components/cdm/renderer/sources.gni") deps += brave_components_cdm_renderer_deps
+ 
+   if (is_android) {
+     sources += [

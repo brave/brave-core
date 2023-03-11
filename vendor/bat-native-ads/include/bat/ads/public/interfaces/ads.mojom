@@ -78,7 +78,7 @@ struct SearchResultAdInfo {
   string headline_text;
   string description;
   double value;
-  ConversionInfo conversion;
+  ConversionInfo? conversion;
 };
 
 enum SearchResultAdEventType {

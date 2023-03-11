@@ -6,7 +6,9 @@ import * as React from 'react'
 
 import MainPanel from './components/main-panel'
 import TreeList from './components/tree-list'
-import { ViewType } from './state/component_types'
+import {
+  ViewType
+} from './state/component_types'
 import DataContext from './state/context'
 import styled from 'styled-components'
 import { getLocale } from '../../../common/locale'
@@ -17,39 +19,37 @@ const Box = styled.div`
 
 function Container () {
   const { siteBlockInfo, viewType } = React.useContext(DataContext)
-  const detailView = viewType !== ViewType.Main && siteBlockInfo
+  const shouldShowDetailView = viewType !== ViewType.Main && siteBlockInfo
 
-  const renderDetailView = () => {
-    if (viewType === ViewType.AdsList && detailView) {
-      return (<TreeList
-        data={siteBlockInfo?.adsList}
-        totalBlockedCount={siteBlockInfo?.adsList.length}
-        blockedCountTitle={getLocale('braveShieldsTrackersAndAds')}
-      />)
+  let treeListElement = null
+  if (shouldShowDetailView) {
+    if (viewType === ViewType.AdsList) {
+      treeListElement = <TreeList
+        blockedList={siteBlockInfo?.adsList}
+        totalBlockedTitle={getLocale('braveShieldsTrackersAndAds')}
+      />
     }
 
-    if (viewType === ViewType.HttpsList && detailView) {
-      return (<TreeList
-        data={siteBlockInfo?.httpRedirectsList}
-        totalBlockedCount={siteBlockInfo?.httpRedirectsList.length}
-        blockedCountTitle={getLocale('braveShieldsConnectionsUpgraded')}
-      />)
+    if (viewType === ViewType.HttpsList) {
+      treeListElement = <TreeList
+        blockedList={ siteBlockInfo?.httpRedirectsList }
+        totalBlockedTitle={getLocale('braveShieldsConnectionsUpgraded')}
+      />
     }
 
-    if (viewType === ViewType.ScriptsList && detailView) {
-      return (<TreeList
-        data={siteBlockInfo?.jsList}
-        totalBlockedCount={siteBlockInfo?.jsList.length}
-        blockedCountTitle={getLocale('braveShieldsBlockedScriptsLabel')}
-      />)
+    if (viewType === ViewType.ScriptsList) {
+      treeListElement = <TreeList
+          blockedList={ siteBlockInfo?.blockedJsList }
+          allowedList={ siteBlockInfo?.allowedJsList }
+          totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
+          totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
+        />
     }
-
-    return null
   }
 
   return (
     <Box>
-      {renderDetailView()}
+      {treeListElement}
       <MainPanel />
     </Box>
   )

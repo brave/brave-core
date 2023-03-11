@@ -166,10 +166,12 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
                     IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
                 std::make_pair(BraveWalletProviderScriptKeySolanaWeb3,
                                IDR_BRAVE_WALLET_SOLANA_WEB3_JS),
-                std::make_pair(
-                    BraveWalletProviderScriptKeyWalletStandard,
-                    IDR_BRAVE_WALLET_SCRIPT_WALLET_STANDARD_SCRIPT_BUNDLE_JS)};
+                std::make_pair(BraveWalletProviderScriptKeyWalletStandard,
+                               IDR_BRAVE_WALLET_STANDARD_JS)};
       case BraveWalletCoinTypeFil:
+        // Currently not supported
+        return {std::make_pair(@"", 0)};
+      case BraveWalletCoinTypeBtc:
         // Currently not supported
         return {std::make_pair(@"", 0)};
     }

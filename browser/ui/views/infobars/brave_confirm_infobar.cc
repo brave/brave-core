@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/controls/button/checkbox.h"
 

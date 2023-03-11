@@ -6,11 +6,16 @@
 import styled from 'styled-components'
 
 export const root = styled.div`
+  --self-height: var(--toggle-button-height, 24px);
+  --self-width:  var(--toggle-button-width, 48px);
+  --self-handle-margin: var(--toggle-button-handle-margin, 3px);
+  --self-handle-size: calc(var(--self-height) - var(--self-handle-margin) * 2);
+
   button {
     position: relative;
-    height: var(--toggle-button-height, 24px);
-    width: var(--toggle-button-width, 48px);
-    background: #DADCE8;
+    height: var(--self-height);
+    width: var(--self-width);
+    background: #ACAFBB;
     border: none;
     border-radius: 32px;
     margin: 0;
@@ -18,31 +23,34 @@ export const root = styled.div`
     vertical-align: middle;
     cursor: pointer;
 
-    --toggle-handle-margin: 3px;
-    --toggle-handle-size: calc(var(--toggle-button-height, 24px) - 6px);
+    @media (prefers-color-scheme: dark) {
+      background: #585C6D;
+    }
 
     .brave-theme-dark & {
-      background: #84889C;
+      background: #585C6D;
     }
 
     &.checked {
-      background: #4C54D2;
+      background: var(--toggle-button-color, #4C54D2);
     }
   }
 `
 
 export const handle = styled.div`
   position: absolute;
-  top: var(--toggle-handle-margin);
-  left: var(--toggle-handle-margin);
+  top: var(--self-handle-margin);
+  left: var(--self-handle-margin);
+  right: var(--self-handle-margin);
   background: #fff;
-  height: var(--toggle-handle-size);
-  width: var(--toggle-handle-size);
+  height: var(--self-handle-size);
+  width: var(--self-handle-size);
   border-radius: 50%;
   transition: all .3s ease;
 
   button.checked & {
     right: 0;
-    left: calc(100% - var(--toggle-handle-size) - var(--toggle-handle-margin));
+    left: calc(100% - var(--self-handle-size) - var(--self-handle-margin));
+    right: calc(100% - var(--self-handle-size) - var(--self-handle-margin));
   }
 `

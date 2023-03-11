@@ -8,14 +8,20 @@ import * as S from './style'
 import DataContext from '../../state/context'
 import { getLocale } from '../../../../../common/locale'
 import TreeNode from './tree-node'
-import { ViewType } from '../../state/component_types'
+import {
+  ViewType
+} from '../../state/component_types'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Button from '$web-components/button'
+import getPanelBrowserAPI from '../../api/panel_browser_api'
+import { ScriptsInfo, Footer, ScriptsList } from './style'
+
 
 interface Props {
-  data: Url[]
-  totalBlockedCount: number
-  blockedCountTitle: string
+  blockedList: Url[]
+  allowedList?: Url[]
+  totalAllowedTitle?: string
+  totalBlockedTitle: string
 }
 
 function groupByOrigin (data: Url[]) {
@@ -46,34 +52,90 @@ function groupByOrigin (data: Url[]) {
 
 function TreeList (props: Props) {
   const { siteBlockInfo, setViewType } = React.useContext(DataContext)
-  const mappedData = React.useMemo(() => groupByOrigin(props.data), [props.data])
+  const allowedList = props.allowedList ?? [];
+  const allowedScriptsByOrigin = React.useMemo(() =>
+    groupByOrigin(allowedList), [allowedList])
+
+  const blockedScriptsByOrigin = React.useMemo(() =>
+    groupByOrigin(props.blockedList),
+                  [props.blockedList])
+
+  const handleAllowAllScripts = () => {
+    const scripts = props.blockedList.map(entry => entry.url)
+    getPanelBrowserAPI().dataHandler.allowScriptsOnce(scripts)
+  }
+
+  const handleBlockAllScripts = () => {
+    const scripts = allowedList.map(entry => entry.url)
+    getPanelBrowserAPI().dataHandler.blockAllowedScripts(scripts)
+  }
+
+  const handleBlockScript = (url: string) => {
+    getPanelBrowserAPI().dataHandler.blockAllowedScripts([url])
+  }
+
+  const handleAllowScript = !props.allowedList ? undefined
+    : (url: string) => {
+      getPanelBrowserAPI().dataHandler.allowScriptsOnce([url])
+    }
 
   return (
     <S.Box>
       <S.HeaderBox>
         <S.SiteTitleBox>
           <S.FavIconBox>
-            <img key={siteBlockInfo?.faviconUrl.url} src={siteBlockInfo?.faviconUrl.url} />
+            <img src={siteBlockInfo?.faviconUrl.url} />
           </S.FavIconBox>
           <S.SiteTitle>{siteBlockInfo?.host}</S.SiteTitle>
         </S.SiteTitleBox>
-        <S.Grid>
-          <span>{props.totalBlockedCount}</span>
-          <span>{props.blockedCountTitle}</span>
-        </S.Grid>
       </S.HeaderBox>
-      <S.TreeBox>
-        <div>
-          {[...mappedData.keys()].map((origin, idx) => {
+      <S.Scroller>
+        {allowedList.length > 0 && (
+        <>
+          <ScriptsInfo>
+            <span>{allowedList.length}</span>
+            <span>{props.totalAllowedTitle}</span>
+            <span>{<a href="#" onClick={handleBlockAllScripts}>
+                {getLocale('braveShieldsBlockScriptsAll')}
+              </a>
+            }</span>
+          </ScriptsInfo>
+          <ScriptsList>
+            {[...allowedScriptsByOrigin.keys()].map((origin, idx) => {
+              return (<TreeNode
+                key={origin}
+                host={origin}
+                resourceList={allowedScriptsByOrigin.get(origin) ?? []}
+                onPermissionButtonClick={handleBlockScript}
+                permissionButtonTitle={getLocale('braveShieldsBlockScript')}
+              />)
+            })}
+          </ScriptsList>
+        </>
+        )}
+        <ScriptsInfo>
+          <span>{props.blockedList.length}</span>
+          <span>{props.totalBlockedTitle}</span>
+          {props.allowedList && (<span>
+            {<a href="#" onClick={handleAllowAllScripts}>
+                {getLocale('braveShieldsAllowScriptsAll')}
+              </a>
+            }</span>
+          )}
+        </ScriptsInfo>
+        <ScriptsList>
+          {[...blockedScriptsByOrigin.keys()].map((origin, idx) => {
             return (<TreeNode
-              key={idx}
+              key={origin}
               host={origin}
-              resourceList={mappedData.get(origin) ?? []}
+              resourceList={blockedScriptsByOrigin.get(origin) ?? []}
+              onPermissionButtonClick={handleAllowScript}
+              permissionButtonTitle={getLocale('braveShieldsAllowScriptOnce')}
             />)
           })}
-        </div>
-      </S.TreeBox>
-      <S.Footer>
+        </ScriptsList>
+      </S.Scroller>
+      <Footer>
         <Button
           aria-label="Back to previous screen"
           onClick={() => setViewType?.(ViewType.Main)}
@@ -81,7 +143,7 @@ function TreeList (props: Props) {
           <svg fill="currentColor" viewBox="0 0 32 32" aria-hidden="true"><path d="M28 15H6.28l4.85-5.25a1 1 0 0 0-.05-1.42 1 1 0 0 0-1.41.06l-6.4 6.93a.7.7 0 0 0-.1.16.75.75 0 0 0-.09.15 1 1 0 0 0 0 .74.75.75 0 0 0 .09.15.7.7 0 0 0 .1.16l6.4 6.93a1 1 0 0 0 1.41.06 1 1 0 0 0 .05-1.42L6.28 17H28a1 1 0 0 0 0-2z"/></svg>
           <span>{getLocale('braveShieldsStandalone')}</span>
         </Button>
-      </S.Footer>
+      </Footer>
     </S.Box>
   )
 }

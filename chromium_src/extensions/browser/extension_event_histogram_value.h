@@ -24,7 +24,7 @@
   ENUM_BOUNDARY
 // clang-format on
 
-#include "src/extensions/browser/extension_event_histogram_value.h"
+#include "src/extensions/browser/extension_event_histogram_value.h"  // IWYU pragma: export
 
 #undef ENUM_BOUNDARY
 

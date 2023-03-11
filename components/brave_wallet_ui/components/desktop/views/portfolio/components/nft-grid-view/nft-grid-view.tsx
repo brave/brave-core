@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 // Types
-import { UserAssetInfoType } from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../../constants/types'
 
 // Styled Components
 import {
@@ -14,8 +14,8 @@ import {
 } from './style'
 
 interface Props {
-  nonFungibleTokens: UserAssetInfoType[]
-  renderToken: (item: UserAssetInfoType, index: number) => JSX.Element | undefined | null
+  nonFungibleTokens: BraveWallet.BlockchainToken[]
+  renderToken: (item: BraveWallet.BlockchainToken, index: number) => JSX.Element | undefined | null
 }
 
 export const NFTGridView = ({

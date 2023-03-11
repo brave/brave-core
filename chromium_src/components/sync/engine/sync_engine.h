@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_ENGINE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_SYNC_ENGINE_H_
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "components/sync/protocol/sync_protocol_error.h"
 
 #define DisableProtocolEventForwarding                                \
@@ -14,7 +14,7 @@
       base::OnceCallback<void(const SyncProtocolError&)> callback) {} \
   virtual void DisableProtocolEventForwarding
 
-#include "src/components/sync/engine/sync_engine.h"
+#include "src/components/sync/engine/sync_engine.h"  // IWYU pragma: export
 
 #undef DisableProtocolEventForwarding
 

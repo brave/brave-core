@@ -283,6 +283,8 @@ source_set("utils") {
 
 source_set("hd_keyring") {
   sources = [
+    "bitcoin_keyring.cc",
+    "bitcoin_keyring.h",
     "ethereum_keyring.cc",
     "ethereum_keyring.h",
     "filecoin_keyring.cc",

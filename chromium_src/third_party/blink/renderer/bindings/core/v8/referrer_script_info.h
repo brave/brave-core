@@ -49,7 +49,7 @@
   bool IsDefaultValue
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
-#include "src/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h"
+#include "src/third_party/blink/renderer/bindings/core/v8/referrer_script_info.h"  // IWYU pragma: export
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 #undef IsDefaultValue

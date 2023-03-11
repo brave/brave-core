@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
@@ -10,15 +11,25 @@ export function getCountryName (code: string) {
   return countryNames.of(code)
 }
 
-function getCountryOptions (countries: string[]) {
+function getCountryOptions (countries: string[], defaultCountry: string) {
   return countries
-    .map((code) => ({ code, name: countryNames.of(code) || '' }))
+    .map((code) => ({
+      code,
+      name: countryNames.of(code) || '',
+      bold: code === defaultCountry
+    }))
     .filter((item) => Boolean(item.name))
-    .sort((a, b) => a.name?.localeCompare(b.name))
+    .sort((a, b) => {
+      if (a.bold !== b.bold) {
+        return a.bold ? -1 : 1
+      }
+      return a.name.localeCompare(b.name)
+    })
 }
 
 interface Props {
   countries: string[]
+  defaultCountry: string
   placeholderText: string
   value: string
   onChange: (country: string) => void
@@ -43,11 +54,17 @@ export function CountrySelect (props: Props) {
     >
       <option value=''>{props.placeholderText}</option>
       {
-        getCountryOptions(props.countries).map((option) => (
-          <option key={option.code} value={option.code}>
-            {option.name}
-          </option>
-        ))
+        getCountryOptions(props.countries, props.defaultCountry).map(
+          (option) => (
+            <option
+              key={option.code}
+              value={option.code}
+              className={option.bold ? 'bold' : ''}
+            >
+              {option.name}
+            </option>
+          )
+        )
       }
     </select>
   )

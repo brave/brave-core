@@ -18,8 +18,8 @@ brave_browser_brave_news_sources += [
 
 brave_browser_brave_news_deps += [
   "//base",
-  "//brave/components/brave_today/browser",
-  "//brave/components/brave_today/common",
+  "//brave/components/brave_news/browser",
+  "//brave/components/brave_news/common",
   "//chrome/browser/profiles:profile",
   "//components/keyed_service/content",
   "//content/public/browser",

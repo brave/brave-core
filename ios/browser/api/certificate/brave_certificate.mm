@@ -180,10 +180,10 @@
     return false;
   }
 
-  return net::VerifySignedData(*extended_cert_->signature_algorithm(),
-                               extended_cert_->tbs_certificate_tlv(),
-                               extended_cert_->signature_value(),
-                               extended_cert_->tbs().spki_tlv);
+  return net::VerifySignedData(
+      *extended_cert_->signature_algorithm(),
+      extended_cert_->tbs_certificate_tlv(), extended_cert_->signature_value(),
+      extended_cert_->tbs().spki_tlv, /*cache=*/nullptr);
 }
 
 - (bool)is_self_issued {

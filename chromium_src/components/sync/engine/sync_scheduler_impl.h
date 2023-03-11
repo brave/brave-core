@@ -23,7 +23,7 @@ extern const char kNigoriFolderNotReadyError[];
       base::OnceCallback<void(const SyncProtocolError&)> callback);          \
   void DoPollSyncCycleJob
 
-#include "src/components/sync/engine/sync_scheduler_impl.h"
+#include "src/components/sync/engine/sync_scheduler_impl.h"  // IWYU pragma: export
 
 #undef DoPollSyncCycleJob
 

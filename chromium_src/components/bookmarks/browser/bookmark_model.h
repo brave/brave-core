@@ -12,7 +12,7 @@ class BraveSyncServiceTestDelayedLoadModel;
  private: \
   friend class ::BraveSyncServiceTestDelayedLoadModel;
 
-#include "src/components/bookmarks/browser/bookmark_model.h"
+#include "src/components/bookmarks/browser/bookmark_model.h"  // IWYU pragma: export
 
 namespace bookmarks {
 void BraveMigrateOtherNodeFolder(BookmarkModel* model);

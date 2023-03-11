@@ -13,8 +13,10 @@ import shieldsDarkTheme from '../theme/shields-dark'
 import shieldsLightTheme from '../theme/shields-light'
 import ThemeProvider from '../../../../common/BraveCoreThemeProvider'
 import DataContext from '../state/context'
-import { AdBlockMode, FingerprintMode, CookieBlockMode } from '../api/panel_browser_api'
-import { ViewType } from '../state/component_types'
+import { AdBlockMode, FingerprintMode, CookieBlockMode, HttpsUpgradeMode } from '../api/panel_browser_api'
+import {
+  ViewType
+} from '../state/component_types'
 import { getLocale } from '../../../../common/locale'
 
 const LIST_JS = [
@@ -57,7 +59,8 @@ export default {
           isBraveShieldsEnabled: boolean('Enable Shields', true),
           isBraveShieldsManaged: boolean('Shields Managed', false),
           adsList: LIST_ADS,
-          jsList: LIST_JS,
+          blockedJsList: LIST_JS,
+          allowedJsList: LIST_JS,
           httpRedirectsList: [],
           fingerprintsList: [],
           faviconUrl: { url: 'https://brave.com/static-assets/images/brave-favicon.png' }
@@ -67,6 +70,7 @@ export default {
           fingerprintMode: FingerprintMode.ALLOW,
           cookieBlockMode: CookieBlockMode.ALLOW,
           isHttpsEverywhereEnabled: true,
+          httpsUpgradeMode: HttpsUpgradeMode.DISABLED,
           isNoscriptEnabled: false
         },
         viewType: ViewType.Main
@@ -105,9 +109,10 @@ export const _ResourceList = () => {
   return (
     <S.PanelFrame>
       <TreeList
-        data={siteBlockInfo?.jsList}
-        totalBlockedCount={siteBlockInfo?.jsList.length}
-        blockedCountTitle={getLocale('braveShieldsScriptsBlocked')}
+        blockedList={ siteBlockInfo?.blockedJsList }
+        allowedList={ siteBlockInfo?.allowedJsList }
+        totalAllowedTitle={getLocale('braveShieldsAllowedScriptsLabel')}
+        totalBlockedTitle={getLocale('braveShieldsBlockedScriptsLabel')}
       />
     </S.PanelFrame>
   )

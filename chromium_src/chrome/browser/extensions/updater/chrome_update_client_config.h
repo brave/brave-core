@@ -10,7 +10,7 @@
  private:                                    \
   friend class BraveUpdateClientConfig;
 
-#include "src/chrome/browser/extensions/updater/chrome_update_client_config.h"
+#include "src/chrome/browser/extensions/updater/chrome_update_client_config.h"  // IWYU pragma: export
 
 #undef BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
 

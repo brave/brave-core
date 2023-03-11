@@ -69,6 +69,11 @@ TestingBraveBrowserProcess::URLSanitizerComponentInstaller() {
   return nullptr;
 }
 
+https_upgrade_exceptions::HttpsUpgradeExceptionsService*
+TestingBraveBrowserProcess::https_upgrade_exceptions_service() {
+  return nullptr;
+}
+
 brave_shields::HTTPSEverywhereService*
 TestingBraveBrowserProcess::https_everywhere_service() {
   NOTREACHED();
@@ -112,6 +117,12 @@ TestingBraveBrowserProcess::brave_referrals_service() {
 
 brave_stats::BraveStatsUpdater*
 TestingBraveBrowserProcess::brave_stats_updater() {
+  NOTREACHED();
+  return nullptr;
+}
+
+brave_ads::BraveStatsHelper*
+TestingBraveBrowserProcess::ads_brave_stats_helper() {
   NOTREACHED();
   return nullptr;
 }

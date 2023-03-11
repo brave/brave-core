@@ -9,7 +9,7 @@
 #include "brave/browser/ui/brave_browser_window.h"
 
 #define BrowserWindow BraveBrowserWindow
-#include "src/chrome/test/base/test_browser_window.h"
+#include "src/chrome/test/base/test_browser_window.h"  // IWYU pragma: export
 #undef BrowserWindow
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_TEST_BROWSER_WINDOW_H_

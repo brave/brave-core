@@ -11,7 +11,7 @@
   void RemoveMatch(const ACMatches::iterator& it);        \
   void SortAndCull
 
-#include "src/components/omnibox/browser/autocomplete_result.h"
+#include "src/components/omnibox/browser/autocomplete_result.h"  // IWYU pragma: export
 
 #undef SortAndCull
 

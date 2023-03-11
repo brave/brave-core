@@ -3,17 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/brave_welcome_ui.h"
+#include "brave/browser/ui/webui/welcome_page/brave_welcome_ui.h"
 
 #include <algorithm>
 #include <memory>
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
+#include "brave/common/importer/importer_constants.h"
 #include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
@@ -30,6 +34,7 @@
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
+#include "chrome/grit/chromium_strings.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -39,6 +44,7 @@
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/p3a/pref_names.h"
@@ -121,8 +127,11 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
  private:
   void HandleImportNowRequested(const base::Value::List& args);
   void HandleRecordP3A(const base::Value::List& args);
+  void HandleGetDefaultBrowser(const base::Value::List& args);
   void SetLocalStateBooleanEnabled(const std::string& path,
                                    const base::Value::List& args);
+  void OnGetDefaultBrowser(shell_integration::DefaultWebClientState state,
+                           const std::u16string& name);
   void SetP3AEnabled(const base::Value::List& args);
   void HandleOpenSettingsPage(const base::Value::List& args);
   void HandleSetMetricsReportingEnabled(const base::Value::List& args);
@@ -131,95 +140,10 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   int screen_number_ = 0;
   bool finished_ = false;
   bool skipped_ = false;
-  Profile* profile_ = nullptr;
+  std::u16string default_browser_name_;
+  raw_ptr<Profile> profile_ = nullptr;
+  base::WeakPtrFactory<WelcomeDOMHandler> weak_ptr_factory_{this};
 };
-
-WelcomeDOMHandler::WelcomeDOMHandler(Profile* profile) : profile_(profile) {}
-
-WelcomeDOMHandler::~WelcomeDOMHandler() {
-  RecordP3AHistogram(screen_number_, finished_);
-}
-
-Browser* WelcomeDOMHandler::GetBrowser() {
-  return chrome::FindBrowserWithWebContents(web_ui()->GetWebContents());
-}
-
-void WelcomeDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback(
-      "importNowRequested",
-      base::BindRepeating(&WelcomeDOMHandler::HandleImportNowRequested,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "recordP3A", base::BindRepeating(&WelcomeDOMHandler::HandleRecordP3A,
-                                       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setP3AEnabled", base::BindRepeating(&WelcomeDOMHandler::SetP3AEnabled,
-                                           base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "openSettingsPage",
-      base::BindRepeating(&WelcomeDOMHandler::HandleOpenSettingsPage,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "setMetricsReportingEnabled",
-      base::BindRepeating(&WelcomeDOMHandler::HandleSetMetricsReportingEnabled,
-                          base::Unretained(this)));
-}
-
-void WelcomeDOMHandler::HandleImportNowRequested(
-    const base::Value::List& args) {
-  chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(),
-                                             chrome::kImportDataSubPage);
-}
-
-void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
-  if (!args[0].is_int() || !args[1].is_bool() || !args[2].is_bool())
-    return;
-  screen_number_ = args[0].GetInt();
-  finished_ = args[1].GetBool();
-  skipped_ = args[2].GetBool();
-
-  RecordP3AHistogram(screen_number_, finished_);
-}
-
-void WelcomeDOMHandler::HandleOpenSettingsPage(const base::Value::List& args) {
-  DCHECK(profile_);
-  Browser* browser = chrome::FindBrowserWithProfile(profile_);
-  if (browser) {
-    content::OpenURLParams open_params(
-        GURL("brave://settings/privacy"), content::Referrer(),
-        WindowOpenDisposition::NEW_BACKGROUND_TAB,
-        ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-    browser->OpenURL(open_params);
-  }
-}
-
-void WelcomeDOMHandler::HandleSetMetricsReportingEnabled(
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  if (!args[0].is_bool())
-    return;
-  bool enabled = args[0].GetBool();
-  ChangeMetricsReportingState(
-      enabled, ChangeMetricsReportingStateCalledFrom::kUiSettings);
-}
-
-void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
-    const std::string& path,
-    const base::Value::List& args) {
-  CHECK_EQ(args.size(), 1U);
-  if (!args[0].is_bool())
-    return;
-
-  bool enabled = args[0].GetBool();
-  PrefService* local_state = g_browser_process->local_state();
-  local_state->SetBoolean(path, enabled);
-}
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-void WelcomeDOMHandler::SetP3AEnabled(const base::Value::List& args) {
-  SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
-}
-#endif
 
 // Converts Chromium country ID to 2 digit country string
 // For more info see src/components/country_codes/country_codes.h

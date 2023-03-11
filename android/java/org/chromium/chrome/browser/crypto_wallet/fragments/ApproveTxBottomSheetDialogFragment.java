@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -69,6 +70,7 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.url.GURL;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -78,6 +80,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragment {
+    private static final String TAG = "ApproveTx";
+
     public static final String TAG_FRAGMENT = ApproveTxBottomSheetDialogFragment.class.getName();
 
     private TransactionInfo mTxInfo;
@@ -211,9 +215,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreateDialog " + e);
         }
         return dialog;
     }
@@ -310,7 +316,9 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                                                          .mCryptoNetworks,
                                                 allNetworks -> {
                                                     Utils.getTxExtraInfo(
-                                                            (BraveWalletBaseActivity) getActivity(),
+                                                            new WeakReference<>(
+                                                                    (BraveWalletBaseActivity)
+                                                                            getActivity()),
                                                             allNetworks, selectedNetwork, accounts,
                                                             filterByTokens, false,
                                                             (assetPrices, fullTokenList,

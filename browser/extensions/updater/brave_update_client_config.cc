@@ -7,7 +7,7 @@
 
 #include <string>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/no_destructor.h"
 #include "components/update_client/net/network_chromium.h"

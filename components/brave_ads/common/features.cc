@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/common/features.h"
 
-#include "base/feature_list.h"  // IWYU pragma: keep
+#include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 
 namespace brave_ads::features {

@@ -13,7 +13,6 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/omnibox/browser/omnibox_edit_controller.h"
 #include "components/omnibox/browser/omnibox_edit_model.h"
 
 namespace {
@@ -47,6 +46,14 @@ bool BraveOmniboxViewViews::SelectedTextIsURL() {
   return GetURLToCopy().has_value();
 }
 
+void BraveOmniboxViewViews::CleanAndCopySelectedURL() {
+  auto url_to_copy = GetURLToCopy();
+  if (!url_to_copy.has_value()) {
+    return;
+  }
+  CopySanitizedURL(url_to_copy.value());
+}
+
 void BraveOmniboxViewViews::CopySanitizedURL(const GURL& url) {
   OnBeforePossibleChange();
   brave::CopySanitizedURL(chrome::FindLastActive(), url);
@@ -73,6 +80,7 @@ bool BraveOmniboxViewViews::AcceleratorPressed(
   CopySanitizedURL(url_to_copy.value());
   return true;
 }
+#endif  // BUILDFLAG(IS_WIN)
 
 bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
     int command_id,
@@ -89,7 +97,6 @@ bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
   }
   return OmniboxViewViews::GetAcceleratorForCommandId(command_id, accelerator);
 }
-#endif  // BUILDFLAG(IS_WIN)
 
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 void BraveOmniboxViewViews::ExecuteTextEditCommand(

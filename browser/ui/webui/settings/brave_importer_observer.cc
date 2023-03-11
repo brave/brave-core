@@ -38,7 +38,7 @@ void BraveImporterObserver::ImportStarted() {
   data.Set("importer_type", source_profile_.importer_type);
   data.Set("items_to_import", imported_items_);
   data.Set("event", "ImportStarted");
-  callback_.Run(source_profile_, base::Value(std::move(data)));
+  callback_.Run(source_profile_, data);
 }
 
 void BraveImporterObserver::ImportItemStarted(importer::ImportItem item) {
@@ -48,7 +48,7 @@ void BraveImporterObserver::ImportItemStarted(importer::ImportItem item) {
   data.Set("items_to_import", imported_items_);
   data.Set("event", "ImportItemStarted");
   data.Set("item", item);
-  callback_.Run(source_profile_, base::Value(std::move(data)));
+  callback_.Run(source_profile_, data);
 }
 
 void BraveImporterObserver::ImportItemEnded(importer::ImportItem item) {
@@ -58,7 +58,7 @@ void BraveImporterObserver::ImportItemEnded(importer::ImportItem item) {
   data.Set("items_to_import", imported_items_);
   data.Set("event", "ImportItemEnded");
   data.Set("item", item);
-  callback_.Run(source_profile_, base::Value(std::move(data)));
+  callback_.Run(source_profile_, data);
 }
 
 void BraveImporterObserver::ImportEnded() {
@@ -74,7 +74,7 @@ void BraveImporterObserver::ImportEnded() {
 
   importer_host_ = nullptr;
 
-  callback_.Run(source_profile_, base::Value(std::move(data)));
+  callback_.Run(source_profile_, data);
 }
 
 ExternalProcessImporterHost*

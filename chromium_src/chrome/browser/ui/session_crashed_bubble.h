@@ -10,7 +10,7 @@
   ShowIfNotOffTheRecordProfileBrave(Browser* browser, bool skip_tab_checking); \
   static void ShowIfNotOffTheRecordProfile
 
-#include "src/chrome/browser/ui/session_crashed_bubble.h"
+#include "src/chrome/browser/ui/session_crashed_bubble.h"  // IWYU pragma: export
 
 #undef ShowIfNotOffTheRecordProfile
 

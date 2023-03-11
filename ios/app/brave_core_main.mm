@@ -37,6 +37,7 @@
 #include "brave/ios/browser/api/password/brave_password_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/api/web_image/web_image+private.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/component_updater/component_updater_paths.h"
@@ -47,7 +48,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/send_tab_to_self/send_tab_to_self_sync_service.h"
 #include "ios/chrome/app/startup/provider_registration.h"
-#include "ios/chrome/app/startup_tasks.h"
 #include "ios/chrome/browser/application_context/application_context.h"
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
@@ -67,7 +67,6 @@
 #include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/chrome/browser/web_state_list/web_state_list.h"
-#include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/public/provider/chrome/browser/overrides/overrides_api.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
@@ -107,8 +106,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 @property(nonatomic) BraveSyncAPI* syncAPI;
 @property(nonatomic) BraveSyncProfileServiceIOS* syncProfileService;
 @property(nonatomic) BraveTabGeneratorAPI* tabGeneratorAPI;
+@property(nonatomic) WebImageDownloader* webImageDownloader;
 @property(nonatomic) BraveWalletAPI* braveWalletAPI;
-@property(nonatomic) IpfsAPI* ipfsAPI;
+@property(nonatomic) IpfsAPIImpl* ipfsAPI;
 @end
 
 @implementation BraveCoreMain
@@ -242,6 +242,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   _syncProfileService = nil;
   _syncAPI = nil;
   _tabGeneratorAPI = nil;
+  _webImageDownloader = nil;
 
   _otr_browserList =
       BrowserListFactory::GetForBrowserState(_otr_browser->GetBrowserState());
@@ -295,8 +296,9 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // Install overrides
   ios::provider::InstallOverrides();
 
-  // Schedule low priority tasks
-  [StartupTasks scheduleDeferredBrowserStateInitialization:_mainBrowserState];
+  // Make sure the system url request getter is called at least once during
+  // startup in case cleanup is done early before first network request
+  GetApplicationContext()->GetSystemURLRequestContext();
 }
 
 - (void)registerComponentsForUpdate:
@@ -426,6 +428,14 @@ static bool CustomLogHandler(int severity,
   return _tabGeneratorAPI;
 }
 
+- (WebImageDownloader*)webImageDownloader {
+  if (!_webImageDownloader) {
+    _webImageDownloader = [[WebImageDownloader alloc]
+        initWithBrowserState:_otr_browser->GetBrowserState()];
+  }
+  return _webImageDownloader;
+}
+
 - (BraveWalletAPI*)braveWalletAPI {
   if (!_braveWalletAPI) {
     _braveWalletAPI =
@@ -438,9 +448,9 @@ static bool CustomLogHandler(int severity,
   return [[BraveStats alloc] initWithBrowserState:_mainBrowserState];
 }
 
-- (IpfsAPI*)ipfsAPI {
+- (id<IpfsAPI>)ipfsAPI {
   if (!_ipfsAPI) {
-    _ipfsAPI = [[IpfsAPI alloc] initWithBrowserState:_mainBrowserState];
+    _ipfsAPI = [[IpfsAPIImpl alloc] initWithBrowserState:_mainBrowserState];
   }
   return _ipfsAPI;
 }

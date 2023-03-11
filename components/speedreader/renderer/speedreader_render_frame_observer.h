@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_RENDER_FRAME_OBSERVER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_RENDERER_SPEEDREADER_RENDER_FRAME_OBSERVER_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
@@ -16,7 +14,8 @@ namespace speedreader {
 
 class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
  public:
-  explicit SpeedreaderRenderFrameObserver(content::RenderFrame* render_frame);
+  SpeedreaderRenderFrameObserver(content::RenderFrame* render_frame,
+                                 int32_t isolated_world_id);
   SpeedreaderRenderFrameObserver(const SpeedreaderRenderFrameObserver&) =
       delete;
   SpeedreaderRenderFrameObserver& operator=(
@@ -33,6 +32,7 @@ class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
   // RenderFrameObserver implementation.
   void OnDestruct() override;
 
+  int32_t isolated_world_id_;
   bool is_speedreadable_url_ = false;
   base::WeakPtrFactory<SpeedreaderRenderFrameObserver> weak_ptr_factory_{this};
 };

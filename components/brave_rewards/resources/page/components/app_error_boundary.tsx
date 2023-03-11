@@ -11,7 +11,7 @@ interface Props {
 }
 
 interface State {
-  error: Error|null
+  error: Error | null
 }
 
 export class AppErrorBoundary extends React.Component<Props, State> {

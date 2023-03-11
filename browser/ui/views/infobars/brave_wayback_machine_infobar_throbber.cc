@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_throbber.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/location.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/paint_throbber.h"

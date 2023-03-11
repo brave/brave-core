@@ -5,19 +5,25 @@
 
 #include "brave/browser/search_engines/normal_window_search_engine_provider_service.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/template_url_service.h"
 
 NormalWindowSearchEngineProviderService::
-    NormalWindowSearchEngineProviderService(Profile* profile) {
-  // No-op if default provider was set to prefs.
+    NormalWindowSearchEngineProviderService(Profile* profile)
+    : profile_(profile) {
+  private_search_provider_guid_.Init(
+      prefs::kSyncedDefaultPrivateSearchProviderGUID, profile_->GetPrefs(),
+      base::BindRepeating(
+          &NormalWindowSearchEngineProviderService::OnPreferenceChanged,
+          base::Unretained(this)));
 
-  auto* service = TemplateURLServiceFactory::GetForProfile(profile);
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
   if (service->loaded()) {
-    brave::SetDefaultPrivateSearchProvider(profile);
+    PrepareInitialPrivateSearchProvider();
     return;
   }
 
@@ -31,8 +37,22 @@ NormalWindowSearchEngineProviderService::
 NormalWindowSearchEngineProviderService::
     ~NormalWindowSearchEngineProviderService() = default;
 
+void NormalWindowSearchEngineProviderService::Shutdown() {
+  template_url_service_subscription_ = {};
+  private_search_provider_guid_.Destroy();
+}
+
 void NormalWindowSearchEngineProviderService::OnTemplateURLServiceLoaded(
     Profile* profile) {
   template_url_service_subscription_ = {};
-  brave::SetDefaultPrivateSearchProvider(profile);
+  PrepareInitialPrivateSearchProvider();
+}
+
+void NormalWindowSearchEngineProviderService::
+    PrepareInitialPrivateSearchProvider() {
+  brave::PrepareDefaultPrivateSearchProviderDataIfNeeded(profile_);
+}
+
+void NormalWindowSearchEngineProviderService::OnPreferenceChanged() {
+  brave::UpdateDefaultPrivateSearchProviderData(profile_);
 }

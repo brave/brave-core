@@ -29,6 +29,9 @@
   <message name="IDS_HISTORY_CLUSTERS_CLUSTER_LABEL_MULTIPLE_HOSTNAMES" desc="The header used for Journeys that are anchored by multiple host names.">
     <ph name="HOST_NAME">$1<ex>google.com</ex> and more</ph>
   </message>
+  <message name="IDS_HISTORY_CLUSTERS_HIDE_PAGE" desc="Label of the item in drop-down menu that allows the user to hide a history item.">
+    Hide item
+  </message>
   <message name="IDS_HISTORY_CLUSTERS_LOAD_MORE_BUTTON_LABEL" desc="A label for the button that loads more history clusters at the bottom of the history clusters list.">
     Load more
   </message>
@@ -56,7 +59,7 @@
   <message name="IDS_HISTORY_CLUSTERS_REMOVE_ALL_ITEMS" desc="Label of the item in drop-down menu that allows the user to remove a group of history items.">
     Remove all from history
   </message>
-  <message name="IDS_HISTORY_CLUSTERS_REMOVE_PAGE" desc="Label of the item in drop-down menu that allows the user to remove a history item">
+  <message name="IDS_HISTORY_CLUSTERS_REMOVE_PAGE" desc="Label of the item in drop-down menu that allows the user to remove a history item.">
     Remove from history
   </message>
   <message name="IDS_HISTORY_CLUSTERS_REMOVE_ITEM_TOAST" desc="Confirmation message shown after user successfully removes one history item from the item's drop-down menu.">
@@ -70,6 +73,15 @@
   </message>
   <message name="IDS_HISTORY_CLUSTERS_SEARCH_PROMPT" desc="A placeholder for the search bar in the side panel.">
     Search Journeys
+  </message>
+  <message name="IDS_HISTORY_CLUSTERS_CUT" desc="Label of the item in drop-down menu that allows the user to cut the searchbox query">
+    Cut
+  </message>
+  <message name="IDS_HISTORY_CLUSTERS_COPY" desc="Label of the item in drop-down menu that allows the user to copy the searchbox query">
+    Copy
+  </message>
+  <message name="IDS_HISTORY_CLUSTERS_PASTE" desc="Label of the item in drop-down menu that allows the user to paste into the searchbox">
+    Paste
   </message>
   <message name="IDS_HISTORY_CLUSTERS_COPY_LINK" desc="Label of the item in drop-down menu that allows the user to copy a link.">
     Copy Link Address

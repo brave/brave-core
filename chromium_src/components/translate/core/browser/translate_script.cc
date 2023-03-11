@@ -5,7 +5,7 @@
 
 #include "components/translate/core/browser/translate_script.h"
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"

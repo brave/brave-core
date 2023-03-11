@@ -18,7 +18,7 @@
 #define StartInsertTabAnimation virtual StartInsertTabAnimation
 #define ShouldTabBeVisible virtual ShouldTabBeVisible
 
-#include "src/chrome/browser/ui/views/tabs/tab_container_impl.h"
+#include "src/chrome/browser/ui/views/tabs/tab_container_impl.h"  // IWYU pragma: export
 
 #undef ShouldTabBeVisible
 #undef StartInsertTabAnimation

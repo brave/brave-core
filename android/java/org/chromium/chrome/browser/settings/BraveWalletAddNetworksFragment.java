@@ -9,6 +9,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -35,6 +37,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class BraveWalletAddNetworksFragment extends Fragment implements ConnectionErrorHandler {
+    private static final String TAG = "AddNetworksFragment";
+
     interface Refresher {
         void refreshNetworksList();
     }
@@ -335,9 +339,11 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     }
 
     private void refreshNetworksFinishFragment() {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "refreshNetworksFinishFragment " + e);
         }
         getActivity().finish();
     }

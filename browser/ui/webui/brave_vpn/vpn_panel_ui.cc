@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/ui/webui/brave_vpn/brave_vpn_localized_string_provider.h"

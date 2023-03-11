@@ -18,7 +18,7 @@
   IsPrimaryOTRProfile_ChromiumImpl() const; \
   bool IsPrimaryOTRProfile
 
-#include "src/chrome/browser/profiles/profile.h"
+#include "src/chrome/browser/profiles/profile.h"  // IWYU pragma: export
 
 #undef IsPrimaryOTRProfile
 #undef IsIncognitoProfile

@@ -158,4 +158,10 @@ EthereumKeyring::DecryptCipherFromX25519_XSalsa20_Poly1305(
       version, nonce, ephemeral_public_key, ciphertext);
 }
 
+std::unique_ptr<HDKeyBase> EthereumKeyring::DeriveAccount(
+    uint32_t index) const {
+  // m/44'/60'/0'/0/{index}
+  return root_->DeriveNormalChild(index);
+}
+
 }  // namespace brave_wallet

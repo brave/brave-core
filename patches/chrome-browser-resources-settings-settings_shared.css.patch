@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_shared.css b/chrome/browser/resources/settings/settings_shared.css
-index ef08c11e55eeac82b562135a1b8ab889bb32f669..9c5bf0de00fe7742d50c1cc6394bfd473b1e3500 100644
+index 148b05fd7b3d67287d7717c7cdefcf289678eb6b..a5d78196239f903b3025cceb05194cee54a69b3b 100644
 --- a/chrome/browser/resources/settings/settings_shared.css
 +++ b/chrome/browser/resources/settings/settings_shared.css
 @@ -9,7 +9,8 @@
@@ -7,7 +7,7 @@ index ef08c11e55eeac82b562135a1b8ab889bb32f669..9c5bf0de00fe7742d50c1cc6394bfd47
   * #import=./settings_vars.css.js
  <if expr='not chromeos_ash'>
 - * #include=cr-shared-style search-highlight-style
-+ * #import=//resources/page_specific/settings/br_settings_shared.css.js
++ * #import=//resources/brave/page_specific/settings/br_settings_shared.css.js
 + * #include=cr-shared-style search-highlight-style br-settings-shared
  </if>
  <if expr='chromeos_ash'>

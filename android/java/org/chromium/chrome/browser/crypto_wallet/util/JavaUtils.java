@@ -62,4 +62,12 @@ public class JavaUtils {
     public static <T> boolean includes(T[] items, Predicate<T> predicate) {
         return find(items, predicate) != null;
     }
+
+    public static boolean anyNull(Object... items) {
+        if (items == null) return true;
+        for (Object item : items) {
+            if (item == null) return true;
+        }
+        return false;
+    }
 }

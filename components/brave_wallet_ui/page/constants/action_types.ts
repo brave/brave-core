@@ -6,7 +6,8 @@
 import { FilecoinNetwork } from '../../common/hardware/types'
 import {
   BraveWallet,
-  GetPriceHistoryReturnObjectInfo
+  GetPriceHistoryReturnObjectInfo,
+  AssetPriceWithContractAndChainId
 } from '../../constants/types'
 
 export type CreateWalletPayloadType = {
@@ -50,7 +51,6 @@ export type RemoveImportedAccountPayloadType = {
 export type RemoveHardwareAccountPayloadType = {
   address: string
   coin: BraveWallet.CoinType
-  password: string
 }
 
 export type RestoreWalletPayloadType = {
@@ -83,8 +83,8 @@ export type UpdateSelectedAssetType = {
 
 export type SelectAssetPayloadType = {
   priceHistory: GetPriceHistoryReturnObjectInfo | undefined
-  defaultFiatPrice?: BraveWallet.AssetPrice
-  defaultCryptoPrice?: BraveWallet.AssetPrice
+  defaultFiatPrice?: AssetPriceWithContractAndChainId
+  defaultCryptoPrice?: AssetPriceWithContractAndChainId
   timeFrame: BraveWallet.AssetPriceTimeframe
 }
 
@@ -97,4 +97,19 @@ export type ImportWalletErrorPayloadType = {
   hasError: boolean
   errorMessage?: string
   incrementAttempts?: boolean
+}
+
+export type PinningStatusType = {
+  code: BraveWallet.TokenPinStatusCode | undefined
+  error: BraveWallet.PinError | undefined
+}
+
+export type NftsPinningStatusType = {
+  [key: string]: PinningStatusType
+}
+
+export type UpdateNftPinningStatusType = {
+  token: BraveWallet.BlockchainToken
+  status?: BraveWallet.TokenPinStatus | undefined
+  error?: BraveWallet.PinError | undefined
 }

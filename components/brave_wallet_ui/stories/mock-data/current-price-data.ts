@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import { BraveWallet } from '../../constants/types'
+import { AssetPriceWithContractAndChainId } from '../../constants/types'
 
 export const mockedCurrentPriceData = [
   {
@@ -40,17 +40,21 @@ export const mockedCurrentPriceData = [
   }
 ]
 
-export const mockTransactionSpotPrices: BraveWallet.AssetPrice[] = [
+export const mockTransactionSpotPrices: AssetPriceWithContractAndChainId[] = [
   {
     fromAsset: 'ETH',
     toAsset: 'USD',
     price: '3300',
-    assetTimeframeChange: ''
+    assetTimeframeChange: '',
+    contractAddress: '',
+    chainId: '0x1'
   },
   {
     fromAsset: 'BAT',
     toAsset: 'USD',
     price: '0.85',
-    assetTimeframeChange: ''
+    assetTimeframeChange: '',
+    contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
+    chainId: '0x1'
   }
 ]

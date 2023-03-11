@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_forward.h"
 #include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
 #include "base/observer_list.h"
 #include "base/types/expected.h"
 #include "base/version.h"
@@ -67,18 +67,18 @@ using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
-using FetchBalanceCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            ledger::mojom::BalancePtr)>;
+using ConnectExternalWalletResult =
+    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
+using FetchBalanceResult =
+    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>;
+using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
 using GetExternalWalletResult =
     base::expected<ledger::mojom::ExternalWalletPtr,
                    ledger::mojom::GetExternalWalletError>;
 using GetExternalWalletCallback =
     base::OnceCallback<void(GetExternalWalletResult)>;
-using ConnectExternalWalletResult =
-    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
-using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
 using ClaimPromotionCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             const std::string&,
@@ -243,6 +243,12 @@ class RewardsService : public KeyedService {
                      ledger::mojom::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
+
+  virtual void SetMonthlyContribution(
+      const std::string& publisher_id,
+      double amount,
+      base::OnceCallback<void(bool)> callback) = 0;
+
   virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTips(GetOneTimeTipsCallback callback) = 0;
   virtual void SetPublisherExclude(
@@ -271,6 +277,7 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
+  // DEPRECATED: Use `SetMonthlyContribution`.
   virtual void SaveRecurringTip(const std::string& publisher_key,
                                 double amount,
                                 OnTipCallback callback) = 0;

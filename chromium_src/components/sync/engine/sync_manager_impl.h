@@ -16,7 +16,7 @@
   friend class BraveSyncManagerImpl; \
   void ShutdownOnSyncThread
 
-#include "src/components/sync/engine/sync_manager_impl.h"
+#include "src/components/sync/engine/sync_manager_impl.h"  // IWYU pragma: export
 
 #undef ShutdownOnSyncThread
 

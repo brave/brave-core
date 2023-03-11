@@ -9,12 +9,13 @@ import * as React from 'react'
 import { LoadingSkeleton } from '../../shared'
 
 // Styled Components
-import { StyledWrapper, NameAndIcon, NameColumn, Spacer, BalanceColumn } from './style'
+import { StyledWrapper, NameAndIcon, NameColumn, Spacer, BalanceColumn, ButtonArea } from './style'
 import { IconsWrapper } from '../../shared/style'
 
 export const PortfolioAssetItemLoadingSkeleton = () => {
   return (
-    <StyledWrapper disabled={true}>
+    <StyledWrapper>
+      <ButtonArea disabled={true}>
       <NameAndIcon>
         <IconsWrapper>
           <LoadingSkeleton
@@ -34,6 +35,7 @@ export const PortfolioAssetItemLoadingSkeleton = () => {
         <Spacer />
         <LoadingSkeleton width={60} height={18} />
       </BalanceColumn>
+      </ButtonArea>
     </StyledWrapper>
   )
 }

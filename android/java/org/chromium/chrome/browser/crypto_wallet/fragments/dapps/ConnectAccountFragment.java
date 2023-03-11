@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
@@ -50,6 +52,8 @@ import java.util.Locale;
 
 public class ConnectAccountFragment extends BaseDAppsFragment
         implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
+    private static final String TAG = "ConnectAccount";
+
     private TextView mWebSite;
     private TextView mAccountsConnected;
     private TextView mbtNewAccount;
@@ -66,9 +70,11 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onCreate " + e);
         }
     }
 
@@ -125,14 +131,16 @@ public class ConnectAccountFragment extends BaseDAppsFragment
 
     private void initComponents() {
         mFaviconHelper = new FaviconHelper();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             GURL pageUrl = getCurrentHostHttpAddress();
             FaviconImageCallback imageCallback = (bitmap,
                     iconUrl) -> ConnectAccountFragment.this.onFaviconAvailable(pageUrl, bitmap);
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), pageUrl, 0, imageCallback);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "initComponents " + e);
         }
         assert mWalletModel != null;
         mWalletModel.getKeyringModel().mAccountAllAccountsPair.observe(

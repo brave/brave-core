@@ -1,3 +1,8 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 source_set("brave_news") {
   sources = [
     "brave_news_controller_factory.cc",
@@ -7,9 +12,9 @@ source_set("brave_news") {
   deps = [
     "//base",
     "//brave/browser/profiles:util",
-    "//brave/components/brave_today/browser",
-    "//brave/components/brave_today/common",
-    "//brave/components/brave_today/common:mojom",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:mojom",
     "//chrome/browser:browser",
     "//chrome/browser/favicon",
     "//chrome/browser/profiles",
@@ -35,8 +40,8 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/components//brave_rewards/browser",
-      "//brave/components/brave_today/common:common",
-      "//brave/components/brave_today/common:mojom",
+      "//brave/components/brave_news/common:common",
+      "//brave/components/brave_news/common:mojom",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/profiles:profiles",

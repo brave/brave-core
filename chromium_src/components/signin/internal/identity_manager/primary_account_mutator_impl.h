@@ -14,7 +14,7 @@
                                  signin_metrics::SignoutDelete delete_metric); \
   void RevokeSyncConsent
 
-#include "src/components/signin/internal/identity_manager/primary_account_mutator_impl.h"
+#include "src/components/signin/internal/identity_manager/primary_account_mutator_impl.h"  // IWYU pragma: export
 
 #undef RevokeSyncConsent
 

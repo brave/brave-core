@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_
 
+#include <map>
+#include <vector>
+
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_window.h"
 
@@ -24,6 +27,10 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper;
 }  // namespace speedreader
 
+namespace ui {
+class Accelerator;
+}
+
 class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
@@ -37,6 +44,8 @@ class BraveBrowserWindow : public BrowserWindow {
   // the overall screen's height
   virtual gfx::Rect GetShieldsBubbleRect();
 
+  virtual std::map<int, std::vector<ui::Accelerator>> GetAcceleratedCommands();
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
@@ -47,7 +56,9 @@ class BraveBrowserWindow : public BrowserWindow {
 
 #if defined(TOOLKIT_VIEWS)
   virtual sidebar::Sidebar* InitSidebar();
+  virtual void ToggleSidebar();
   virtual bool HasSelectedURL() const;
+  virtual void CleanAndCopySelectedURL();
 #endif
 
   virtual void ShowBraveVPNBubble() {}

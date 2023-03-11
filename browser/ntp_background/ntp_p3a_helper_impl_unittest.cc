@@ -10,10 +10,12 @@
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
+#include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/metric_log_type.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {
@@ -21,6 +23,7 @@ namespace ntp_background_images {
 namespace {
 constexpr char kTestCreativeMetricId[] = "2ba3659a-4737-4c4e-892a-a6a2e0e2a871";
 constexpr char kHistogramPrefix[] = "creativeInstanceId.";
+constexpr char kCreativeTotalHistogramName[] = "creativeInstanceId.total.count";
 
 constexpr char kClicksEventType[] = "clicks";
 constexpr char kViewsEventType[] = "views";
@@ -43,8 +46,8 @@ class NTPP3AHelperImplTest : public testing::Test {
     p3a_service_ = scoped_refptr(
         new brave::BraveP3AService(&local_state_, "release", "2049-01-01"));
 
-    ntp_p3a_helper_.reset(
-        new NTPP3AHelperImpl(&local_state_, p3a_service_.get()));
+    ntp_p3a_helper_ = std::make_unique<NTPP3AHelperImpl>(
+        &local_state_, p3a_service_.get(), &ads_service_);
   }
 
   std::string GetExpectedHistogramName(const std::string& event_type) {
@@ -55,6 +58,7 @@ class NTPP3AHelperImplTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
 
+  brave_ads::MockAdsService ads_service_;
   scoped_refptr<brave::BraveP3AService> p3a_service_;
   TestingPrefServiceSimple local_state_;
 
@@ -62,6 +66,8 @@ class NTPP3AHelperImplTest : public testing::Test {
 };
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
+  EXPECT_CALL(ads_service_, IsEnabled()).Times(testing::AtLeast(1));
+
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
 
   const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
@@ -69,25 +75,37 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReported) {
   ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
 
   histogram_tester_->ExpectTotalCount(histogram_name, 0);
+  histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 0);
 
   // Mock a P3A rotation to trigger just-in-time collection of metrics
   ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
 
-  histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
+  histogram_tester_->ExpectUniqueSample(histogram_name, 1, 1);
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
   ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
   ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
 
   histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
   ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
 
   ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricSent(kCreativeTotalHistogramName);
 
   histogram_tester_->ExpectTotalCount(histogram_name, 2);
+  histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 2);
+
   ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_FALSE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
 }
 
 TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
+  EXPECT_CALL(ads_service_, IsEnabled()).Times(testing::AtLeast(1));
+
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
@@ -96,32 +114,46 @@ TEST_F(NTPP3AHelperImplTest, OneEventTypeCountReportedWhileInflight) {
   ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
 
   histogram_tester_->ExpectTotalCount(histogram_name, 0);
+  histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 0);
 
   ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
 
   histogram_tester_->ExpectBucketCount(histogram_name, 2, 1);
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
   // Recorded a click while recorded count is "in-flight"
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
   ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
 
   ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
 
   ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
 
   ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricSent(kCreativeTotalHistogramName);
+
+  histogram_tester_->ExpectTotalCount(histogram_name, 2);
+  histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 2);
 
   ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
-  histogram_tester_->ExpectTotalCount(histogram_name, 2);
+  ASSERT_FALSE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
 }
 
 TEST_F(NTPP3AHelperImplTest, LandCountReported) {
+  EXPECT_CALL(ads_service_, IsEnabled()).Times(testing::AtLeast(1));
+
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
   const std::string histogram_name = GetExpectedHistogramName(kLandsEventType);
 
   ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_FALSE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
 
   ntp_p3a_helper_->SetLastTabURL(GURL("https://adexample.com/page1"));
 
@@ -134,10 +166,15 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
   task_environment_.FastForwardBy(base::Seconds(5));
 
   histogram_tester_->ExpectTotalCount(histogram_name, 0);
+  histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 0);
 
   ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
   ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
-  histogram_tester_->ExpectBucketCount(histogram_name, 1, 1);
+  ASSERT_TRUE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
+
+  histogram_tester_->ExpectUniqueSample(histogram_name, 1, 1);
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
 
   ntp_p3a_helper_->RecordClickAndMaybeLand(kTestCreativeMetricId);
 
@@ -153,9 +190,64 @@ TEST_F(NTPP3AHelperImplTest, LandCountReported) {
 
   ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
   histogram_tester_->ExpectBucketCount(histogram_name, 1, 2);
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
 
   ASSERT_TRUE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_TRUE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
+
   ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricSent(kCreativeTotalHistogramName);
+
+  histogram_tester_->ExpectBucketCount(histogram_name, 1, 2);
+  histogram_tester_->ExpectTotalCount(kCreativeTotalHistogramName, 2);
+
+  ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
+  ASSERT_FALSE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
+}
+
+TEST_F(NTPP3AHelperImplTest, StopSendingAfterEnablingAds) {
+  EXPECT_CALL(ads_service_, IsEnabled()).Times(testing::AtLeast(1));
+
+  const std::string histogram_name = GetExpectedHistogramName(kViewsEventType);
+
+  ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
+
+  ASSERT_FALSE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
+
+  ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
+
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 1);
+  ASSERT_TRUE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
+
+  ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricSent(kCreativeTotalHistogramName);
+
+  ntp_p3a_helper_->RecordView(kTestCreativeMetricId);
+
+  EXPECT_CALL(ads_service_, IsEnabled())
+      .Times(testing::AtLeast(1))
+      .WillRepeatedly(testing::Return(true));
+
+  ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
+
+  // should send total for any outstanding events
+  // (such as the event before the second rotation above)
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
+  ASSERT_TRUE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
+
+  ntp_p3a_helper_->OnP3AMetricSent(histogram_name);
+  ntp_p3a_helper_->OnP3AMetricSent(kCreativeTotalHistogramName);
+
+  ntp_p3a_helper_->OnP3ARotation(brave::MetricLogType::kExpress);
+
+  histogram_tester_->ExpectUniqueSample(kCreativeTotalHistogramName, 1, 2);
+  ASSERT_FALSE(
+      p3a_service_->IsDynamicMetricRegistered(kCreativeTotalHistogramName));
   ASSERT_FALSE(p3a_service_->IsDynamicMetricRegistered(histogram_name));
 }
 

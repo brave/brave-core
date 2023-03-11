@@ -5,7 +5,7 @@
 
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"

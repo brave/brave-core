@@ -22,7 +22,8 @@
 @class BraveWalletAPI;
 @class AdblockService;
 @class BraveTabGeneratorAPI;
-@class IpfsAPI;
+@class WebImageDownloader;
+@protocol IpfsAPI;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -58,6 +59,8 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 
+@property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
+
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///
 /// When a custom log handler is set, it is the responsibility of the client
@@ -81,7 +84,7 @@ OBJC_EXPORT
 
 @property(readonly) AdblockService* adblockService;
 
-@property(readonly) IpfsAPI* ipfsAPI;
+@property(readonly) id<IpfsAPI> ipfsAPI;
 
 - (void)initializeP3AServiceForChannel:(NSString*)channel
                          weekOfInstall:(NSString*)weekOfInstall;

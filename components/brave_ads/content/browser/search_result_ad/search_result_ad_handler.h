@@ -8,15 +8,17 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/document_metadata/document_metadata.mojom.h"
-#include "url/gurl.h"
+
+class GURL;
 
 namespace content {
 class RenderFrameHost;
@@ -40,7 +42,11 @@ class SearchResultAdHandler final {
                                    const GURL& url,
                                    bool should_trigger_viewed_event);
 
-  void MaybeRetrieveSearchResultAd(content::RenderFrameHost* render_frame_host);
+  void MaybeRetrieveSearchResultAd(
+      content::RenderFrameHost* render_frame_host,
+      base::OnceCallback<void(std::vector<std::string>)> callback);
+
+  void MaybeTriggerSearchResultAdViewedEvent(const std::string& placement_id);
 
   void MaybeTriggerSearchResultAdClickedEvent(const GURL& navigation_url);
 
@@ -52,12 +58,14 @@ class SearchResultAdHandler final {
 
   void OnRetrieveSearchResultAdEntities(
       mojo::Remote<blink::mojom::DocumentMetadata> document_metadata,
+      base::OnceCallback<void(std::vector<std::string>)> callback,
       blink::mojom::WebPagePtr web_page);
 
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
   bool should_trigger_viewed_event_ = true;
 
-  absl::optional<base::flat_map<GURL, ads::mojom::SearchResultAdInfoPtr>>
+  absl::optional<base::flat_map</*placement_id*/ std::string,
+                                ads::mojom::SearchResultAdInfoPtr>>
       search_result_ads_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};

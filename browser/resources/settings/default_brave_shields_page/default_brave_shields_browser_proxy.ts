@@ -52,6 +52,15 @@ export interface DefaultBraveShieldsBrowserProxy {
   setHTTPSEverywhereEnabled(value)
 
   /**
+   * @return {!Promise<string>}
+   */
+  getHttpsUpgradeControlType()
+  /**
+   * @param {string} value name.
+   */
+  setHttpsUpgradeControlType(value)
+
+  /**
    * @param {string} value name.
    */
   setNoScriptControlType(value)
@@ -101,6 +110,16 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
   /** @override */
   setHTTPSEverywhereEnabled(value) {
     chrome.send('setHTTPSEverywhereEnabled', [value]);
+  }
+
+  /** @override */
+  getHttpsUpgradeControlType() {
+    return sendWithPromise('getHttpsUpgradeControlType');
+  }
+
+  /** @override */
+  setHttpsUpgradeControlType(value) {
+    chrome.send('setHttpsUpgradeControlType', [value]);
   }
 
   /** @override */

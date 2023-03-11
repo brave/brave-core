@@ -78,14 +78,17 @@
                         android:textSize="14sp" />
 
                     <FrameLayout
-                        android:id="@+id/btn_vbat_connect_account"
+                        android:id="@+id/layout_vbat_connect_account"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="24dp"
                         android:layout_marginTop="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:background="@drawable/blue_48_rounded_bg">
 
                         <android.widget.Button
+                            android:id="@+id/btn_vbat_connect_account"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"

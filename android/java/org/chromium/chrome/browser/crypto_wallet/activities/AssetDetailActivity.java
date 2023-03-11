@@ -1,12 +1,13 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.chromium.base.Callback;
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -40,6 +42,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -56,6 +59,7 @@ import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +69,8 @@ import java.util.concurrent.Executors;
 
 public class AssetDetailActivity
         extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
+    private static final String TAG = "AssetDetailActivity";
+
     private SmoothLineChartEquallySpaced chartES;
     private int checkedTimeframeType;
     private String mAssetSymbol;
@@ -112,11 +118,12 @@ public class AssetDetailActivity
         }
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "triggerLayoutInflation " + e);
         }
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -224,11 +231,10 @@ public class AssetDetailActivity
                     TabUtils.openLinkWithFocus(this, WalletConstants.URL_RAINBOW_AURORA);
                 }
             });
-        } else {
-            mBtnSwap.setOnClickListener(v
-                    -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                            BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol));
         }
+        mBtnSwap.setOnClickListener(v
+                -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
+                        BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol));
 
         adjustButtonsVisibilities();
 
@@ -322,8 +328,9 @@ public class AssetDetailActivity
                             LiveDataUtil.observeOnce(
                                     mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                                     allNetworks -> {
-                                        Utils.getTxExtraInfo(this, allNetworks, selectedNetwork,
-                                                accountInfos, new BlockchainToken[] {mAsset}, false,
+                                        Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
+                                                selectedNetwork, accountInfos,
+                                                new BlockchainToken[] {mAsset}, false,
                                                 (assetPrices, fullTokenList, nativeAssetsBalances,
                                                         blockchainTokensBalances) -> {
                                                     thisAssetItemModel.setBlockchainToken(mAsset);
@@ -489,9 +496,7 @@ public class AssetDetailActivity
     private void adjustButtonsVisibilities() {
         showHideBuyUi();
         if (Utils.allowSwap(mChainId)) {
-            if (!AssetUtils.isAuroraAddress(mContractAddress, mChainId)) {
-                mBtnSwap.setVisibility(View.VISIBLE);
-            }
+            mBtnSwap.setVisibility(View.VISIBLE);
         } else {
             mBtnSwap.setVisibility(View.GONE);
         }
@@ -506,8 +511,9 @@ public class AssetDetailActivity
 
         LiveDataUtil.observeOnce(mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
                 selectedNetwork -> {
-                    mWalletModel.getCryptoModel().isBuySupported(selectedNetwork, mAssetSymbol,
-                            mContractAddress, mChainId, isBuyEnabled -> {
+                    mWalletModel.getCryptoModel().getBuyModel().isBuySupported(selectedNetwork,
+                            mAssetSymbol, mContractAddress, mChainId,
+                            BuyModel.SUPPORTED_RAMP_PROVIDERS, isBuyEnabled -> {
                                 if (isBuyEnabled) {
                                     AndroidUtils.show(mBtnBuy);
                                 } else {

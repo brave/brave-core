@@ -10,6 +10,11 @@
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
 
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -123,7 +128,15 @@
             android:layout_marginHorizontal="8dp"
             android:fontFamily="@font/poppins_600"
             android:layout_gravity="center_horizontal" />
-
+           
     </LinearLayout>
+
+     <include
+            android:id="@+id/brave_rewards_notification_permission_id"
+            layout="@layout/rewards_notification_permission_request"
+            android:visibility="gone"
+             />
+
+    </FrameLayout>
 
 </androidx.cardview.widget.CardView>

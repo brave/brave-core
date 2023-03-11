@@ -58,10 +58,7 @@ void DomainBlockControllerClient::Proceed() {
       DomainBlockTabStorage::GetOrCreate(web_contents_);
   tab_storage->SetIsProceeding(true);
   if (dont_warn_again_) {
-    std::string custom_filters =
-        ad_block_custom_filters_provider_->GetCustomFilters();
-    ad_block_custom_filters_provider_->UpdateCustomFilters(
-        "@@||" + request_url_.host() + "^\n" + custom_filters);
+    ad_block_custom_filters_provider_->CreateSiteExemption(request_url_.host());
   }
 
   if (!dont_warn_again_ && ephemeral_storage_service_) {

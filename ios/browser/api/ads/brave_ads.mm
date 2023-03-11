@@ -1177,9 +1177,7 @@ ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 }
 
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
-                               captchaId:(const std::string&)captcha_id
-                  shouldShowNotification:
-                      (const bool)should_show_tooltip_notification {
+                               captchaId:(const std::string&)captcha_id {
   [self.captchaHandler
       handleAdaptiveCaptchaForPaymentId:base::SysUTF8ToNSString(payment_id)
                               captchaId:base::SysUTF8ToNSString(captcha_id)];

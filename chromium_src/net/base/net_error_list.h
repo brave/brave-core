@@ -6,7 +6,7 @@
 // NOLINT(build/header_guard)
 // no-include-guard-because-multiply-included
 
-#include "src/net/base/net_error_list.h"
+#include "src/net/base/net_error_list.h"  // IWYU pragma: export
 
 // Error occurs when user tries to access ipfs sites in
 // incognito context

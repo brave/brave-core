@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_WEBGL_WEBGL_SHADER_PRECISION_FORMAT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_WEBGL_WEBGL_SHADER_PRECISION_FORMAT_H_
 
-#include "src/third_party/blink/renderer/modules/webgl/webgl_shader_precision_format.h"
+#include "src/third_party/blink/renderer/modules/webgl/webgl_shader_precision_format.h"  // IWYU pragma: export
 
 #include "third_party/blink/renderer/modules/modules_export.h"
 

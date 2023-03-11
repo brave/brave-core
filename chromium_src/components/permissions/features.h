@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_FEATURES_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_FEATURES_H_
 
-#include "src/components/permissions/features.h"
+#include "src/components/permissions/features.h"  // IWYU pragma: export
 
 namespace permissions {
 namespace features {

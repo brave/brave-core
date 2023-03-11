@@ -25,6 +25,7 @@ source_set("browser_tests") {
     "//brave/common",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:utils",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/common",
     "//chrome/test:test_support_ui",

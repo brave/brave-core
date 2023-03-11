@@ -442,7 +442,9 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     service->AddObserverForTest(&observer);
     service->RecoverLocalDataForItem(
         id,
-        /*update_media_src_before_recovery*/ false);
+        /*update_media_src_before_recovery*/ false,
+        base::BindLambdaForTesting(
+            [](mojom::PlaylistItemPtr item) { EXPECT_FALSE(item->cached); }));
     WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
 
     service->RemoveObserverForTest(&observer);
@@ -473,7 +475,10 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
           // try recovering from the url.
           fake_download_request_manager->SetItemToDiscover(item.Clone());
           service->RecoverLocalDataForItem(
-              id, /*update_media_src_before_recovery=*/true);
+              id, /*update_media_src_before_recovery=*/true,
+              base::BindLambdaForTesting([](mojom::PlaylistItemPtr item) {
+                EXPECT_TRUE(item->cached);
+              }));
           WaitUntil(base::BindLambdaForTesting([&]() { return called; }));
         }));
 
@@ -718,7 +723,8 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
 
         const auto& item = items.front();
         service->RecoverLocalDataForItem(
-            item->id, /*update_media_src_before_recovery*/ false);
+            item->id, /*update_media_src_before_recovery*/ false,
+            base::NullCallback());
 
         base::FilePath media_path;
         ASSERT_TRUE(service->GetMediaPath(item->id, &media_path));
@@ -769,6 +775,7 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
   for (const auto& id : item_ids) {
     auto dummy_item = mojom::PlaylistItem::New();
     dummy_item->id = id;
+    dummy_item->media_source = GURL("http://" + id + "/media");
     service->UpdatePlaylistItemValue(
         id, base::Value(ConvertPlaylistItemToValue(dummy_item)));
   }
@@ -819,6 +826,22 @@ TEST_F(PlaylistServiceUnitTest, AddItemsToList) {
           EXPECT_TRUE(base::Contains(item->parents, kDefaultPlaylistID));
           EXPECT_TRUE(base::Contains(item->parents, another_playlist_id));
         }));
+  }
+
+  // Try adding items with the same media source. This shouldn't add anything.
+  for (const auto& id : item_ids) {
+    const auto old_item_size = GetPlaylist(kDefaultPlaylistID)->items.size();
+    mojom::PlaylistItemPtr item = service->GetPlaylistItem(id);
+    item->id = "new_id";
+
+    std::vector<mojom::PlaylistItemPtr> items;
+    items.push_back(std::move(item));
+
+    service->AddMediaFilesFromItems(kDefaultPlaylistID, /*cache*/ false,
+                                    std::move(items));
+
+    EXPECT_EQ(old_item_size, GetPlaylist(kDefaultPlaylistID)->items.size());
+    EXPECT_FALSE(prefs->GetDict(kPlaylistItemsPref).FindDict("new_id"));
   }
 }
 
@@ -1173,13 +1196,13 @@ TEST_F(PlaylistServiceUnitTest, ResetAll) {
   prototype_item.page_source = GURL("https://foo.com/");
   prototype_item.thumbnail_source = GURL("https://thumbnail.src/");
   prototype_item.thumbnail_path = prototype_item.thumbnail_source;
-  prototype_item.media_source = GURL("https://media.src/");
   prototype_item.media_path = prototype_item.media_source;
   prototype_item.cached = false;
   prototype_item.author = "me";
   for (int i = 0; i < 5; i++) {
     auto item = prototype_item.Clone();
     item->id = base::Token::CreateRandom().ToString();
+    item->media_source = GURL("https://media.src/" + item->id);
     item->name = base::NumberToString(i + 1);
     items.push_back(std::move(item));
   }

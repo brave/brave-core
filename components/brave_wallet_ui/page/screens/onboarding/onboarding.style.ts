@@ -28,7 +28,7 @@ export const NextButtonRow = styled.div`
   margin-bottom: 28px;
 `
 
-export const MainWrapper = styled.div`
+export const MainWrapper = styled.div<{ isTabView?: boolean }>`
   align-self: center;
   width: 100%;
   max-width: 456px;
@@ -38,8 +38,9 @@ export const MainWrapper = styled.div`
   justify-content: center;
   background-color: ${(p) => p.theme.color.background02};
   padding: 30px;
-  border-radius: 8px;
-  margin-top: 10vh;
+  border-radius: ${(p) => p.isTabView ? 24 : 8}px;
+  margin-top: ${(p) => p.isTabView ? '100px' : '10vh'};
+  box-shadow: ${(p) => p.isTabView ? '0px 4px 20px rgba(0, 0, 0, 0.1)' : 'none'};
 `
 
 export const StyledWrapper = styled.div`
@@ -123,7 +124,7 @@ export const PhraseCardBody = styled.div`
   border-radius: 4px;
 `
 
-export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
+export const PhraseCardBottomRow = styled(PhraseCardTopRow) <{
   centered?: boolean
 }>`
   justify-content: ${(p) => p.centered ? 'center' : 'flex-start'};

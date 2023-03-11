@@ -16,6 +16,8 @@ const char kAccessCodeCastLearnMoreURL[] = "https://support.brave.com/";
 const char kAccessibilityLabelsLearnMoreURL[] =
     "https://support.brave.com/";
 
+const char kAdPrivacyLearnMoreURL[] = "https://support.brave.com/";
+
 const char kAutomaticSettingsResetLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
@@ -23,7 +25,8 @@ const char kAutomaticSettingsResetLearnMoreURL[] =
 const char kAdvancedProtectionDownloadLearnMoreURL[] =
     "https://support.brave.com/";
 
-const char kBatterySaverModeLearnMoreUrl[] = "https://support.brave.com/";
+const char kBatterySaverModeLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/13380606172557";
 
 const char kBluetoothAdapterOffHelpURL[] =
     "https://support.brave.com/";
@@ -57,6 +60,8 @@ const char kChromeHelpViaMenuURL[] =
 
 const char kChromeHelpViaWebUIURL[] =
     "https://support.brave.com/";
+
+const char kFirstPartySetsLearnMoreURL[] = "https://support.brave.com/";
 
 const char kIsolatedAppScheme[] = "isolated-app";
 
@@ -135,7 +140,8 @@ const char kLearnMoreReportingURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017905872-How-do-I-enable-or-disable-automatic-crash-reporting-";
 
-const char kHighEfficiencyModeLearnMoreUrl[] = "https://support.brave.com/";
+const char kHighEfficiencyModeLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/13383683902733";
 
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 

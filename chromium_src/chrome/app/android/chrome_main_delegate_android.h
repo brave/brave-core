@@ -9,7 +9,7 @@
 #include "brave/app/brave_main_delegate.h"
 
 #define ChromeMainDelegate BraveMainDelegate
-#include "src/chrome/app/android/chrome_main_delegate_android.h"
+#include "src/chrome/app/android/chrome_main_delegate_android.h"  // IWYU pragma: export
 #undef ChromeMainDelegate
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_APP_ANDROID_CHROME_MAIN_DELEGATE_ANDROID_H_

@@ -15,7 +15,7 @@
   TestingProfileManager;      \
   friend class BraveProfileManager
 
-#include "src/chrome/browser/profiles/profile_manager.h"
+#include "src/chrome/browser/profiles/profile_manager.h"  // IWYU pragma: export
 #undef TestingProfileManager
 #undef LoadProfileByPath
 #undef IsAllowedProfilePath

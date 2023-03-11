@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 6523364f6870b376a65efd1593b5e87ba98fe0d5..8d08f939270da3fdbd4d9f59940270f83f8c2951 100644
+index 6523364f6870b376a65efd1593b5e87ba98fe0d5..3846b1dd1cc9033712e8e20e0851adee99f45f74 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -27,7 +27,7 @@ index 6523364f6870b376a65efd1593b5e87ba98fe0d5..8d08f939270da3fdbd4d9f59940270f8
  chrome_elf.dll: %(VersionDir)s\
  chrome_pwa_launcher.exe: %(VersionDir)s\
  chrome_wer.dll: %(VersionDir)s\
-@@ -63,6 +68,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
+@@ -63,6 +69,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
  
  [HIDPI]
  chrome_200_percent.pak: %(VersionDir)s\

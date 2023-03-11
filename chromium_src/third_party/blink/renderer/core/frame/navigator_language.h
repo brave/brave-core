@@ -13,7 +13,7 @@
  protected:                   \
   virtual void EnsureUpdatedLanguage
 
-#include "src/third_party/blink/renderer/core/frame/navigator_language.h"
+#include "src/third_party/blink/renderer/core/frame/navigator_language.h"  // IWYU pragma: export
 
 #undef EnsureUpdatedLanguage
 #undef NavigatorLanguage

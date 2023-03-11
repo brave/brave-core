@@ -14,7 +14,7 @@
   friend class BraveTabStrip;                                       \
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight); \
   bool IsPositionInWindowCaption
-#include "src/chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "src/chrome/browser/ui/views/frame/tab_strip_region_view.h"  // IWYU pragma: export
 #undef IsPositionInWindowCaption
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_TAB_STRIP_REGION_VIEW_H_

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"

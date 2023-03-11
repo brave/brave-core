@@ -40,11 +40,14 @@ interface DataHandler {
   SetAdBlockMode(AdBlockMode mode);
   SetFingerprintMode(FingerprintMode mode);
   SetCookieBlockMode(CookieBlockMode mode);
+  SetHttpsUpgradeMode(HttpsUpgradeMode mode);
   SetIsNoScriptsEnabled(bool is_enabled);
   SetHTTPSEverywhereEnabled(bool is_enabled);
   SetBraveShieldsEnabled(bool is_enabled);
   OpenWebCompatWindow();
   UpdateFavicon();
+  AllowScriptsOnce(array<string> origins);
+  BlockAllowedScripts(array<string> origins);
 };
 
 struct SiteBlockInfo {
@@ -55,7 +58,8 @@ struct SiteBlockInfo {
   url.mojom.Url favicon_url;
   array<url.mojom.Url> ads_list;
   array<url.mojom.Url> http_redirects_list;
-  array<url.mojom.Url> js_list;
+  array<url.mojom.Url> blocked_js_list;
+  array<url.mojom.Url> allowed_js_list;
   array<url.mojom.Url> fingerprints_list;
 };
 
@@ -64,6 +68,7 @@ struct SiteSettings {
   FingerprintMode fingerprint_mode;
   CookieBlockMode cookie_block_mode;
   bool is_https_everywhere_enabled;
+  HttpsUpgradeMode https_upgrade_mode;
   bool is_noscript_enabled;
 };
 
@@ -83,4 +88,10 @@ enum CookieBlockMode {
   CROSS_SITE_BLOCKED,
   BLOCKED,
   ALLOW
+};
+
+enum HttpsUpgradeMode {
+  STRICT,
+  STANDARD,
+  DISABLED
 };

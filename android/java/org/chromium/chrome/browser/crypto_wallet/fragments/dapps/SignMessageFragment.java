@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -37,8 +39,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
+    private static final String TAG = "SignMessageFragment";
+
     private List<String> mTabTitles;
     private SignMessageRequest mCurrentSignMessageRequest;
     private SignMessagePagerAdapter mSignMessagePagerAdapter;
@@ -124,8 +127,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
     }
 
     private void updateAccount(String address) {
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getKeyringModel().getAccounts(accountInfos -> {
                 if (address == null) return;
                 AccountInfo accountInfo = Utils.findAccount(accountInfos, address);
@@ -133,6 +136,8 @@ public class SignMessageFragment extends BaseDAppsBottomSheetDialogFragment {
                 Utils.setBlockiesBitmapResource(mExecutor, mHandler, mAccountImage, address, true);
                 mAccountName.setText(accountText);
             });
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "updateAccount " + e);
         }
     }
 

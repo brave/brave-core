@@ -78,6 +78,7 @@ public class CryptoModel {
 
     private NetworkModel mNetworkModel;
     private PortfolioModel mPortfolioModel;
+    private BuyModel mBuyModel;
     // Todo: create method to create and return new models for Asset, Account,
     //  TransactionConfirmation, SwapModel, AssetModel, SendModel
 
@@ -134,6 +135,9 @@ public class CryptoModel {
             mPortfolioModel.resetServices(context, mTxService, mKeyringService, mBlockchainRegistry,
                     mJsonRpcService, mEthTxManagerProxy, mSolanaTxManagerProxy, mBraveWalletService,
                     mAssetRatioService);
+            if (mBuyModel != null) {
+                mBuyModel.resetServices(mAssetRatioService, mBlockchainRegistry);
+            }
         }
         init();
     }
@@ -273,6 +277,13 @@ public class CryptoModel {
         return mNetworkModel;
     }
 
+    public BuyModel getBuyModel() {
+        if (mBuyModel == null) {
+            mBuyModel = new BuyModel(mAssetRatioService, mBlockchainRegistry);
+        }
+        return mBuyModel;
+    }
+
     public PortfolioModel getPortfolioModel() {
         return mPortfolioModel;
     }
@@ -324,21 +335,10 @@ public class CryptoModel {
         mNetworkModel.setAccountInfosFromKeyRingModel(accountInfosFromKeyRingModel);
     }
 
-    // TODO: Move to BuyModel class
-    public void isBuySupported(NetworkInfo selectedNetwork, String assetSymbol,
-            String contractAddress, String chainId, Callback1<Boolean> callback) {
-        TokenUtils.getBuyTokensFiltered(
-                mBlockchainRegistry, selectedNetwork, TokenUtils.TokenType.ALL, tokens -> {
-                    callback.call(JavaUtils.includes(tokens,
-                            iToken
-                            -> AssetUtils.Filters.isSameToken(
-                                    iToken, assetSymbol, contractAddress, chainId)));
-                });
-    }
-
     // Clear buy send swap model
     public void clearBSS() {
         mSendModel = null;
+        mBuyModel = null;
     }
 
     /*

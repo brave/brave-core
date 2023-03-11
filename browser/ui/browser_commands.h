@@ -11,6 +11,7 @@ class GURL;
 
 namespace brave {
 bool HasSelectedURL(Browser* browser);
+void CleanAndCopySelectedURL(Browser* browser);
 void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
 void AddNewProfile();
@@ -36,6 +37,7 @@ void ToggleVerticalTabStrip(Browser* browser);
 void ToggleVerticalTabStripFloatingMode(Browser* browser);
 void ToggleActiveTabAudioMute(Browser* browser);
 void ToggleSidebarPosition(Browser* browser);
+void ToggleSidebar(Browser* browser);
 
 }  // namespace brave
 

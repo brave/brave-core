@@ -27,8 +27,10 @@
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/country_codes/country_codes.h"
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/search_engines/search_engines_test_util.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
@@ -81,31 +83,49 @@ std::string GetBraveSearchProviderSyncGUID(PrefService* prefs) {
   return data->sync_guid;
 }
 
+bool PrepopulatedDataHasDDG(PrefService* prefs) {
+  static constexpr TemplateURLPrepopulateData::BravePrepopulatedEngineID
+      alt_search_providers[] = {
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+          TemplateURLPrepopulateData::
+              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE};
+
+  for (const auto& id : alt_search_providers) {
+    if (TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, id)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 }  // namespace
 
 // Set alternative search provider prefs and check it's cleared on next
 // launching.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_PrivateSearchProviderMigrationTest) {
-  auto* profile = browser()->profile();
-  profile->GetPrefs()->SetBoolean(
-      kShowAlternativePrivateSearchEngineProviderToggle, true);
-  profile->GetPrefs()->SetBoolean(kUseAlternativePrivateSearchEngineProvider,
-                                  true);
-  profile->GetPrefs()->ClearPref(
-      prefs::kSyncedDefaultPrivateSearchProviderGUID);
+  auto* prefs = browser()->profile()->GetPrefs();
+  // Set "US" to make prepopluated data include DDG because this migration test
+  // is for checking alternative search provider(DDG) is set to private search
+  // provider properly.
+  prefs->SetInteger(country_codes::kCountryIDAtInstall, 'U' << 8 | 'S');
+
+  ASSERT_TRUE(PrepopulatedDataHasDDG(prefs));
+  prefs->SetBoolean(kShowAlternativePrivateSearchEngineProviderToggle, true);
+  prefs->SetBoolean(kUseAlternativePrivateSearchEngineProvider, true);
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PrivateSearchProviderMigrationTest) {
-  auto* profile = browser()->profile();
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(
-      kShowAlternativePrivateSearchEngineProviderToggle));
-  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(
-      kUseAlternativePrivateSearchEngineProvider));
-  EXPECT_FALSE(profile->GetPrefs()
-                   ->GetString(prefs::kSyncedDefaultPrivateSearchProviderGUID)
-                   .empty());
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetInteger(country_codes::kCountryIDAtInstall, 'U' << 8 | 'S');
+  ASSERT_TRUE(PrepopulatedDataHasDDG(prefs));
+
+  EXPECT_FALSE(
+      prefs->GetBoolean(kShowAlternativePrivateSearchEngineProviderToggle));
+  EXPECT_FALSE(prefs->GetBoolean(kUseAlternativePrivateSearchEngineProvider));
 }
 
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
@@ -146,6 +166,17 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 
   auto* service = TemplateURLServiceFactory::GetForProfile(profile);
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(service));
+
+  // Check TemplateURLData for private window search provider is set
+  // properly.
+  auto* preference = profile->GetPrefs()->FindPreference(
+      prefs::kSyncedDefaultPrivateSearchProviderData);
+  EXPECT_FALSE(preference->IsDefaultValue());
+  // Cache initial private search provider sync guid to compare later
+  // after changing search provider.
+  const auto initial_private_url_data_sync_guid =
+      TemplateURLDataFromDictionary(preference->GetValue()->GetDict())
+          ->sync_guid;
   auto* incognito_service =
       TemplateURLServiceFactory::GetForProfile(incognito_profile);
   const int initial_normal_provider_id =
@@ -167,7 +198,15 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
   // Change private search provider.
-  incognito_service->SetUserSelectedDefaultSearchProvider(test_url.get());
+  const auto new_private_url_data_sync_guid = test_url->sync_guid();
+  service->Add(std::move(test_url));
+  profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
+                                 new_private_url_data_sync_guid);
+
+  // Check url data is updated properly after chaning private search provider.
+  EXPECT_EQ(new_private_url_data_sync_guid,
+            TemplateURLDataFromDictionary(preference->GetValue()->GetDict())
+                ->sync_guid);
   EXPECT_NE(initial_private_provider_id,
             incognito_service->GetDefaultSearchProvider()->prepopulate_id());
 
@@ -188,7 +227,6 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   // properly.
   profile->GetPrefs()->SetString(prefs::kSyncedDefaultPrivateSearchProviderGUID,
                                  "invalid_id");
-  brave::SetDefaultPrivateSearchProvider(profile);
   EXPECT_EQ(GetBraveSearchProviderSyncGUID(profile->GetPrefs()),
             profile->GetPrefs()->GetString(
                 prefs::kSyncedDefaultPrivateSearchProviderGUID));

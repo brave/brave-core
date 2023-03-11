@@ -109,22 +109,16 @@ CovariateManager::CovariateManager() {
 
   SetLogEntry(std::make_unique<LastNotificationAdWasClicked>());
 
-  for (const auto& user_activity_event_to_covariate_types_mapping :
+  for (const auto& [user_activity_event_type, covariate_type] :
        kUserActivityEventToCovariateTypesMapping) {
-    const UserActivityEventType event_type =
-        user_activity_event_to_covariate_types_mapping.first;
+    const auto& [number_of_user_activity_events,
+                 time_since_last_user_activity_event] = covariate_type;
 
-    const brave_federated::mojom::CovariateType
-        number_of_events_covariate_type =
-            user_activity_event_to_covariate_types_mapping.second.first;
     SetLogEntry(std::make_unique<NumberOfUserActivityEvents>(
-        event_type, number_of_events_covariate_type));
+        user_activity_event_type, number_of_user_activity_events));
 
-    const brave_federated::mojom::CovariateType
-        time_since_last_event_covariate_type =
-            user_activity_event_to_covariate_types_mapping.second.second;
     SetLogEntry(std::make_unique<TimeSinceLastUserActivityEvent>(
-        event_type, time_since_last_event_covariate_type));
+        user_activity_event_type, time_since_last_user_activity_event));
   }
 
   for (const auto& average_clickthrough_rate_time_window :
@@ -160,16 +154,16 @@ void CovariateManager::SetLogEntry(
 std::vector<brave_federated::mojom::CovariateInfoPtr>
 CovariateManager::GetTrainingInstance() const {
   std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance;
-  for (const auto& covariate_log_entry : covariate_log_entries_) {
-    const CovariateLogEntryInterface* const entry =
-        covariate_log_entry.second.get();
-    DCHECK(entry);
+  for (const auto& [covariate_type, covariate_log_entry] :
+       covariate_log_entries_) {
+    DCHECK(covariate_log_entry);
 
     brave_federated::mojom::CovariateInfoPtr covariate =
         brave_federated::mojom::CovariateInfo::New();
-    covariate->data_type = entry->GetDataType();
-    covariate->type = entry->GetType();
-    covariate->value = entry->GetValue();
+    covariate->data_type = covariate_log_entry->GetDataType();
+    covariate->type = covariate_log_entry->GetType();
+    covariate->value = covariate_log_entry->GetValue();
+
     training_instance.push_back(std::move(covariate));
   }
 

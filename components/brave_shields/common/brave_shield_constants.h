@@ -17,6 +17,7 @@ const char kAds[] = "shieldsAds";
 const char kCosmeticFiltering[] = "cosmeticFiltering";
 const char kTrackers[] = "trackers";
 const char kHTTPUpgradableResources[] = "httpUpgradableResources";
+const char kHTTPSUpgrades[] = "httpsUpgrades";
 const char kJavaScript[] = "javascript";
 const char kFingerprintingV2[] = "fingerprintingV2";
 const char kBraveShields[] = "braveShields";
@@ -83,13 +84,24 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG},
     {"braveShieldsFingerprintingAllowAll",
      IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL},
+    {"braveShieldsHttpsUpgradeModeDisabled",
+     IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_DISABLED},
+    {"braveShieldsHttpsUpgradeModeStandard",
+     IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STANDARD},
+    {"braveShieldsHttpsUpgradeModeStrict",
+     IDS_BRAVE_SHIELDS_HTTPS_UPGRADE_MODE_STRICT},
     {"braveShieldsReportSite", IDS_BRAVE_SHIELDS_REPORT_SITE},
     {"braveShieldsReportSiteDesc", IDS_BRAVE_SHIELDS_REPORT_SITE_DESC},
     {"braveShieldsDownDesc", IDS_BRAVE_SHIELDS_DOWN_DESC},
     {"braveShieldsBlockedScriptsLabel",
      IDS_BRAVE_SHIELDS_BLOCKED_SCRIPTS_LABEL},
+    {"braveShieldsAllowedScriptsLabel",
+     IDS_BRAVE_SHIELDS_ALLOWED_SCRIPTS_LABEL},
     {"braveShieldsManaged", IDS_BRAVE_SHIELDS_MANAGED},
-};
+    {"braveShieldsAllowScriptOnce", IDS_BRAVE_SHIELDS_ALLOW_SCRIPT_ONCE},
+    {"braveShieldsBlockScript", IDS_BRAVE_SHIELDS_SCRIPT_BLOCK},
+    {"braveShieldsAllowScriptsAll", IDS_BRAVE_SHIELDS_ALLOW_SCRIPTS_ALL},
+    {"braveShieldsBlockScriptsAll", IDS_BRAVE_SHIELDS_BLOCK_SCRIPTS_ALL}};
 
 const char kCookieListEnabledHistogram[] = "Brave.Shields.CookieListEnabled";
 const char kCookieListPromptHistogram[] = "Brave.Shields.CookieListPrompt";

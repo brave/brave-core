@@ -247,7 +247,7 @@
     ],
     "CheckUniquePtrOnUpload": [
       "components/brave_sync/qr_code_data\\.cc",
-      "components/brave_today/browser/direct_feed_controller\\.cc",
+      "components/brave_news/browser/direct_feed_controller\\.cc",
       "components/brave_wallet/browser/tx_service\\.cc",
       "components/brave_wallet/common/eth_sign_typed_data_helper\\.cc",
       "components/tor/tor_profile_service_impl\\.cc",

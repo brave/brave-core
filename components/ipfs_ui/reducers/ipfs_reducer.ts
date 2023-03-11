@@ -21,7 +21,7 @@ const openURlInNewTab = (target: string, api: string) => {
     return
   }
   const port = api.slice(api.lastIndexOf('/') + 1, api.length)
-  window.open(target.replace('{api-port}', port), '_blank')
+  window.open(target.replace('{api-port}', port), '_blank', 'noreferrer')
 }
 
 const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefined, action) => {

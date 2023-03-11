@@ -9,11 +9,31 @@
 #include "src/chrome/browser/ui/tabs/tab_renderer_data.cc"
 #undef FromTabInModel
 
+#include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "url/gurl.h"
 
 TabRendererData TabRendererData::FromTabInModel(TabStripModel* model,
                                                 int index) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSharedPinnedTabs)) {
+    if (index < model->IndexOfFirstNonPinnedTab()) {
+      auto* shared_pinned_tab_service =
+          SharedPinnedTabServiceFactory::GetForProfile(model->GetProfile());
+      DCHECK(shared_pinned_tab_service);
+
+      auto* contents = model->GetWebContentsAt(index);
+      if (shared_pinned_tab_service->IsDummyContents(contents)) {
+        if (const auto* data =
+                shared_pinned_tab_service->GetTabRendererDataForDummyContents(
+                    index, contents)) {
+          return *data;
+        }
+      }
+    }
+  }
+
   auto data = FromTabInModel_ChromiumImpl(model, index);
   if (data.should_themify_favicon) {
     content::WebContents* const contents = model->GetWebContentsAt(index);

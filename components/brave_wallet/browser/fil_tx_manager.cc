@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_transaction.h"
@@ -91,6 +92,8 @@ void FilTxManager::ContinueAddUnapprovedTransaction(
   meta.set_group_id(group_id);
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
+  meta.set_chain_id(GetCurrentChainId(prefs_, mojom::CoinType::FIL));
+
   tx_state_manager_->AddOrUpdateTx(meta);
   std::move(callback).Run(true, meta.id(), "");
 }
@@ -182,7 +185,8 @@ void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
   // have uint256_t overload.
   DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
-  DCHECK(!keyring_service_->IsLocked());
+  DCHECK(!keyring_service_->IsLocked(mojom::kFilecoinKeyringId) ||
+         !keyring_service_->IsLocked(mojom::kFilecoinTestnetKeyringId));
   meta->set_status(mojom::TransactionStatus::Approved);
   tx_state_manager_->AddOrUpdateTx(*meta);
 
@@ -232,8 +236,9 @@ void FilTxManager::OnSendFilecoinTransaction(
 
   tx_state_manager_->AddOrUpdateTx(*meta);
 
-  if (success)
+  if (success) {
     UpdatePendingTransactions();
+  }
   std::move(callback).Run(
       error_message.empty(),
       mojom::ProviderErrorUnion::NewFilecoinProviderError(error),
@@ -306,7 +311,6 @@ void FilTxManager::OnGetNextNonceForHardware(
   // have uint256_t overload.
   DCHECK(nonce <= static_cast<uint256_t>(UINT64_MAX));
   meta->tx()->set_nonce(static_cast<uint64_t>(nonce));
-  DCHECK(!keyring_service_->IsLocked());
   meta->set_status(mojom::TransactionStatus::Approved);
   tx_state_manager_->AddOrUpdateTx(*meta);
 
@@ -359,12 +363,14 @@ void FilTxManager::OnGetFilStateSearchMsgLimited(
     int64_t exit_code,
     mojom::FilecoinProviderError error,
     const std::string& error_message) {
-  if (error != mojom::FilecoinProviderError::kSuccess)
+  if (error != mojom::FilecoinProviderError::kSuccess) {
     return;
+  }
   std::unique_ptr<FilTxMeta> meta =
       GetFilTxStateManager()->GetFilTx(tx_meta_id);
-  if (!meta)
+  if (!meta) {
     return;
+  }
   mojom::TransactionStatus status = (exit_code == 0)
                                         ? mojom::TransactionStatus::Confirmed
                                         : mojom::TransactionStatus::Error;

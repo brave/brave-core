@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_SEARCH_ENGINES_SEARCH_ENGINE_PROVIDER_UTIL_H_
 
 class Profile;
+class PrefService;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -15,6 +16,7 @@ class PrefRegistrySyncable;
 namespace brave {
 
 bool IsRegionForQwant(Profile* profile);
+void SetBraveAsDefaultPrivateSearchProvider(PrefService* prefs);
 
 // For prefs migration.
 void RegisterSearchEngineProviderPrefsForMigration(
@@ -22,8 +24,11 @@ void RegisterSearchEngineProviderPrefsForMigration(
 void MigrateSearchEngineProviderPrefs(Profile* profile);
 
 // Initialize default provider for private profile.
-void SetDefaultPrivateSearchProvider(Profile* profile);
-void ClearDefaultPrivateSearchProvider(Profile* profile);
+void PrepareDefaultPrivateSearchProviderDataIfNeeded(Profile* profile);
+
+// Update TemplareURLData with provider guid.
+void UpdateDefaultPrivateSearchProviderData(Profile* profile);
+void ResetDefaultPrivateSearchProvider(Profile* profile);
 
 }  // namespace brave
 

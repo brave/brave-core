@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
@@ -32,6 +32,7 @@ export const BuySendSwapDepositButton = (props: Props) => {
 
   // Routing
   const history = useHistory()
+  const { pathname: walletLocation } = useLocation()
 
   // Methods
   const onClick = React.useCallback(() => {
@@ -52,6 +53,7 @@ export const BuySendSwapDepositButton = (props: Props) => {
       onMouseLeave={hideTip}
       isTab={isTab}
       onClick={onClick}
+      isSelected={walletLocation === option.route}
     >
       <ButtonIcon isTab={isTab} icon={option.icon} />
       {!isTab && getLocale(option.name)}

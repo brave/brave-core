@@ -832,6 +832,23 @@
         ]
       },
       {
+        "name": "getDefaultCountry",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "defaultCountry",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getDeclaredCountry",
         "type": "function",
         "description": "",
@@ -1368,15 +1385,8 @@
             "parameters": [
               {
                 "name": "balance",
-                "type": "object",
-                "properties": {
-                  "total": {
-                    "type": "any"
-                  },
-                  "wallets": {
-                    "type": "any"
-                  }
-                }
+                "type": "number",
+                "optional": true
               }
             ]
           }

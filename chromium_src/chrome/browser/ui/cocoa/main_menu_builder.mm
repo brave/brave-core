@@ -9,7 +9,8 @@
 
 namespace {
 constexpr int kPasteMacResourceId = IDS_PASTE_MAC;
-}
+constexpr int kMuteSiteResourceId = IDS_MUTE_SITE_MAC;
+}  // namespace
 
 #define BRAVE_BUILD_FILE_MENU                       \
   Item(IDS_NEW_OFFTHERECORD_WINDOW_TOR)             \
@@ -25,7 +26,14 @@ constexpr int kPasteMacResourceId = IDS_PASTE_MAC;
                     .target(app_delegate), \
         Item(kPasteMacResourceId
 
+#undef IDS_MUTE_SITE_MAC
+#define IDS_MUTE_SITE_MAC                          \
+IDS_MUTE_TAB_MAC).command_id(IDC_TOGGLE_TAB_MUTE), \
+              Item(kMuteSiteResourceId
+
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
+#undef IDS_MUTE_SITE_MAC
 #undef BRAVE_WEBCOMPAT_REPORTER_MENU_ENTRY
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC kPasteMacResourceId
+#define IDS_MUTE_SITE_MAC kMuteSiteResourceId

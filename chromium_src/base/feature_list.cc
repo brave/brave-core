@@ -1,24 +1,51 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_list.h"
-#include "base/containers/contains.h"
+
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/feature_override.h"
+#include "base/logging.h"
 #include "base/no_destructor.h"
+#include "base/ranges/algorithm.h"
 
 namespace base {
 namespace internal {
 namespace {
 
 using DefaultStateOverrides =
-    base::flat_map<std::reference_wrapper<const Feature>, FeatureState>;
+    flat_map<std::reference_wrapper<const Feature>, FeatureState>;
 
-DefaultStateOverrides& GetDefaultStateOverrides() {
-  static base::NoDestructor<DefaultStateOverrides> default_state_overrides;
+using UnsortedDefaultStateOverrides =
+    std::vector<DefaultStateOverrides::value_type>;
+
+constexpr size_t kDefaultStateOverridesReserve = 64 * 3;
+
+UnsortedDefaultStateOverrides& GetUnsortedDefaultStateOverrides() {
+  static NoDestructor<UnsortedDefaultStateOverrides>
+      startup_default_state_overrides([] {
+        UnsortedDefaultStateOverrides v;
+        v.reserve(kDefaultStateOverridesReserve);
+        return v;
+      }());
+  return *startup_default_state_overrides;
+}
+
+const DefaultStateOverrides& GetDefaultStateOverrides() {
+  static const NoDestructor<DefaultStateOverrides> default_state_overrides([] {
+    DefaultStateOverrides sorted_overrides =
+        std::move(GetUnsortedDefaultStateOverrides());
+    DCHECK_EQ(GetUnsortedDefaultStateOverrides().capacity(), 0u);
+    DLOG_IF(ERROR, sorted_overrides.size() > kDefaultStateOverridesReserve)
+        << "Please increase kDefaultStateOverridesReserve. Feature overrides "
+           "count: "
+        << sorted_overrides.size()
+        << ", reserve size: " << kDefaultStateOverridesReserve;
+    return sorted_overrides;
+  }());
   return *default_state_overrides;
 }
 
@@ -34,22 +61,26 @@ inline FeatureState GetDefaultOrOverriddenFeatureState(const Feature& feature) {
 
 FeatureDefaultStateOverrider::FeatureDefaultStateOverrider(
     std::initializer_list<FeatureOverrideInfo> overrides) {
-  auto& default_state_overrides = GetDefaultStateOverrides();
+  auto& default_state_overrides = GetUnsortedDefaultStateOverrides();
 #if DCHECK_IS_ON()
   {
-    base::flat_set<std::reference_wrapper<const Feature>> new_overrides;
+    flat_set<std::reference_wrapper<const Feature>> new_overrides;
     new_overrides.reserve(overrides.size());
     for (const auto& override : overrides) {
       DCHECK(new_overrides.insert(override.first).second)
           << "Feature " << override.first.get().name
           << " is duplicated in the current override macros";
-      DCHECK(!base::Contains(default_state_overrides, override.first))
+      DCHECK(!ranges::any_of(default_state_overrides,
+                             [&override](const auto& v) {
+                               return &v.first.get() == &override.first.get();
+                             }))
           << "Feature " << override.first.get().name
           << " has already been overridden";
     }
   }
 #endif
-  default_state_overrides.insert(overrides.begin(), overrides.end());
+  default_state_overrides.insert(default_state_overrides.end(),
+                                 overrides.begin(), overrides.end());
 }
 
 }  // namespace internal

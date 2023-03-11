@@ -10,7 +10,7 @@
   ExperimentalSetNulledName_ChromiumImpl(); \
   void ExperimentalSetNulledName
 
-#include "src/third_party/blink/renderer/core/page/frame_tree.h"
+#include "src/third_party/blink/renderer/core/page/frame_tree.h"  // IWYU pragma: export
 
 #undef ExperimentalSetNulledName
 

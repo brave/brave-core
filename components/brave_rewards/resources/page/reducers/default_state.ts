@@ -1,6 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import {
+  optional
+} from '../../../../brave_rewards/resources/shared/lib/optional'
 
 export function defaultState (): Rewards.State {
   return {
@@ -15,9 +20,9 @@ export function defaultState (): Rewards.State {
     contributionVideos: true,
     reconcileStamp: 0,
     ui: {
-      modalBackup: false,
       modalConnect: false,
       modalRedirect: 'hide',
+      modalReset: false,
       promosDismissed: {}
     },
     autoContributeList: [],
@@ -41,6 +46,7 @@ export function defaultState (): Rewards.State {
     adsHistory: [],
     pendingContributionTotal: 0,
     promotions: [],
+    inlineTipsEnabled: true,
     inlineTip: {
       twitter: true,
       reddit: true,
@@ -49,10 +55,7 @@ export function defaultState (): Rewards.State {
     pendingContributions: [],
     excludedList: [],
     externalWalletProviderList: [],
-    balance: {
-      total: 0,
-      wallets: {}
-    },
+    balance: optional<number>(),
     monthlyReport: {
       month: -1,
       year: -1

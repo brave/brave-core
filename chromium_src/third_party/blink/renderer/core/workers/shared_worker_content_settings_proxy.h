@@ -14,7 +14,7 @@
   BraveFarblingLevel GetBraveFarblingLevel() override; \
   bool AllowStorageAccessSync
 
-#include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h"
+#include "src/third_party/blink/renderer/core/workers/shared_worker_content_settings_proxy.h"  // IWYU pragma: export
 
 #undef AllowStorageAccessSync
 

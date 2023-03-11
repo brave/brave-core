@@ -47,6 +47,7 @@ export interface BraveWalletBrowserProxy {
   getWeb3ProviderList(): Promise<string>
   getSolanaProviderOptions(): Promise<SolanaProvider[]>
   isNativeWalletEnabled(): Promise<boolean>
+  isNftPinningEnabled(): Promise<boolean>
   getAutoLockMinutes(): Promise<number>
   getNetworksList(coin: number): Promise<NetworksList>
   getPrepopulatedNetworksList(): Promise<NetworkInfo[]>
@@ -110,6 +111,11 @@ export class BraveWalletBrowserProxyImpl implements BraveWalletBrowserProxy {
 
   isNativeWalletEnabled() {
     return new Promise<boolean>(resolve => chrome.braveWallet.isNativeWalletEnabled(resolve))
+  }
+
+  isNftPinningEnabled() {
+    return new Promise<boolean>(
+        resolve => chrome.braveWallet.isNftPinningEnabled(resolve))
   }
 
   getAutoLockMinutes () {

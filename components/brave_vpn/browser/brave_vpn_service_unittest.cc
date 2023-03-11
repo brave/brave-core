@@ -7,8 +7,8 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "base/callback_forward.h"
 #include "base/feature_list.h"
+#include "base/functional/callback_forward.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
@@ -451,9 +451,9 @@ class BraveVPNServiceTest : public testing::Test {
                                       bool active_subscription = true) {
     std::string domain = skus::GetDomain("vpn", env);
     auto testing_payload = GenerateTestingCreds(domain, active_subscription);
-    base::Value state(base::Value::Type::DICT);
-    state.SetStringKey("skus:" + env, testing_payload);
-    local_pref_service_.Set(skus::prefs::kSkusState, std::move(state));
+    base::Value::Dict state;
+    state.Set("skus:" + env, testing_payload);
+    local_pref_service_.SetDict(skus::prefs::kSkusState, std::move(state));
     SetInterceptorResponse(GetRegionsData());
     return domain;
   }
@@ -596,6 +596,29 @@ TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   SetPurchasedState(env, PurchasedState::LOADING);
   OnPrepareCredentialsPresentation(domain, "credential=abcdefghijk");
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+}
+
+TEST_F(BraveVPNServiceTest, ResetConnectionStateTest) {
+  // Prepare valid connection info.
+  auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
+
+  // Set failed state before setting observer.
+  test_api->SetConnectionState(ConnectionState::CONNECT_FAILED);
+
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+
+  service_->ResetConnectionState();
+
+  base::RunLoop loop;
+  observer.WaitConnectionStateChange(loop.QuitClosure());
+  loop.Run();
+
+  // Check state is changed to disconnected after reset connection state.
+  EXPECT_EQ(ConnectionState::DISCONNECTED, test_api->GetConnectionState());
+  EXPECT_EQ(ConnectionState::DISCONNECTED, observer.GetConnectionState());
 }
 
 TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {

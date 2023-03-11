@@ -23,6 +23,7 @@ import { ToggleButton } from '../../shared/components/toggle_button'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { PageModal } from './page_modal'
 import { PublisherLink } from './publisher_link'
+import { Checkbox } from 'brave-ui/components'
 
 import * as urls from '../../shared/lib/rewards_urls'
 import * as style from './tips_panel.style'
@@ -37,7 +38,8 @@ export function TipsPanel () {
   const data = useRewardsData((state) => ({
     parameters: state.parameters,
     tipsList: state.tipsList,
-    inlineTip: state.inlineTip
+    inlineTip: state.inlineTip,
+    inlineTipsEnabled: state.inlineTipsEnabled
   }))
 
   const [showAllModal, setShowAllModal] = React.useState(false)
@@ -109,9 +111,16 @@ export function TipsPanel () {
   }
 
   function renderConfig () {
-    const toggleHandler = (site: string) => {
+    const toggleHandler = () => {
       return (enabled: boolean) => {
-        actions.onInlineTipSettingChange(site, enabled)
+        actions.onInlineTipsEnabledChange(enabled)
+        setNeedsRestart(true)
+      }
+    }
+
+    const checkboxHandler = () => {
+      return (site: string, selected: boolean) => {
+        actions.onInlineTipSettingChange(site, selected)
         setNeedsRestart(true)
       }
     }
@@ -121,19 +130,30 @@ export function TipsPanel () {
     return (
       <>
         <ConfigHeader />
-        <style.description>
-          {getString('donationAbility')}
-        </style.description>
-        {
-          Object.keys(data.inlineTip).map((site) => (
-            <PanelItem key={site} label={lookupPublisherPlatformName(site)}>
-              <ToggleButton
-                checked={data.inlineTip[site]}
-                onChange={toggleHandler(site)}
-              />
-            </PanelItem>
-          ))
-        }
+        <PanelItem
+          label={getString('donationAbility')}
+          separateChildren={true}>
+          <ToggleButton
+            checked={data.inlineTipsEnabled}
+            onChange={toggleHandler()}
+          />
+          {
+            data.inlineTipsEnabled &&
+            Object.keys(data.inlineTip).sort().map((site) => (
+              <React.Fragment key={site + 'ItemFragment' }>
+                <style.panelItemLineBreak />
+                <style.inlineTippingSiteItem>
+                  <Checkbox value={{ [site]: data.inlineTip[site] }}
+                    onChange={checkboxHandler()}>
+                    <div data-key={site}>
+                      {lookupPublisherPlatformName(site)}
+                    </div>
+                  </Checkbox>
+                </style.inlineTippingSiteItem>
+              </React.Fragment>
+            ))
+          }
+        </PanelItem>
         {
           needsRestart &&
             <style.restart>

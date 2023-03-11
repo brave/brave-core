@@ -82,6 +82,14 @@
     >
     </cr-input>
   </div>
+  <template is="dom-if" if="[[isNftPinningEnabled_]]" restamp>
+      <settings-toggle-button id="enableNftPinning"
+        class="cr-row"
+        pref="{{prefs.brave.wallet.auto_pin_enabled}}"
+        label="$i18n{enableNftPinning}"
+        sub-label="$i18n{enableNftPinningDesc}">
+      </settings-toggle-button>
+  </template>
 </div>
 <settings-animated-pages id="wallet-networks" section="wallet">
   <div route-path="default">

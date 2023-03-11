@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -83,7 +83,8 @@ void WalletHandler::OnGetWalletInfo(
       default_keyring->is_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
       std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled(), brave_wallet::IsNftPinningEnabled()));
+      brave_wallet::IsSolanaEnabled(), brave_wallet::IsNftPinningEnabled(),
+      brave_wallet::IsPanelV2Enabled()));
 }
 
 void WalletHandler::AddFavoriteApp(

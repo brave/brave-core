@@ -10,7 +10,7 @@
   ClearIOTaskRunnerForTesting(); \
   COMPONENTS_DOWNLOAD_EXPORT void SetIOTaskRunner
 
-#include "src/components/download/public/common/download_task_runner.h"
+#include "src/components/download/public/common/download_task_runner.h"  // IWYU pragma: export
 
 #undef SetIOTaskRunner
 

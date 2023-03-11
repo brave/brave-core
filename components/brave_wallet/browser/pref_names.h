@@ -45,10 +45,12 @@ extern const char kBraveWalletP3AUsedSecondDay[];
 
 extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
-extern const char kBraveWalletNextAssetDiscoveryFromBlocks[];
 extern const char kBraveWalletLastDiscoveredAssetsAt[];
 
 extern const char kBraveWalletLastTransactionSentTimeDict[];
+// Added 02/2023 to migrate transactions to contain the
+// chain_id for each one.
+extern const char kBraveWalletTransactionsChainIdMigrated[];
 
 // DEPRECATED
 extern const char kShowWalletTestNetworksDeprecated[];

@@ -15,7 +15,7 @@ import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
 import { SendScreenWrapper } from './send-screen.style'
 
 // Components
-import { SendHeader } from '../components/header/header'
+import { TabHeader } from '../../shared-screen-components/tab-header/tab-header'
 import { Send } from '../send/send'
 import { BuySendSwapDepositNav } from '../../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
 import { FeatureRequestButton } from '../../../../components/shared/feature-request-button/feature-request-button'
@@ -38,7 +38,7 @@ export const SendScreen = () => {
   // render
   return (
     <SendScreenWrapper>
-      <SendHeader />
+      <TabHeader title='braveWalletSend' />
       <BuySendSwapDepositNav isTab={true} />
       <Send
         onShowSelectTokenModal={() => setShowSelectTokenModal(true)}

@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NOTIFICATIONS_NOTIFICATION_HANDLER_H_
 
 #define NotificationHandler NotificationHandler_ChromiumImpl
-#include "src/chrome/browser/notifications/notification_handler.h"
+#include "src/chrome/browser/notifications/notification_handler.h"  // IWYU pragma: export
 #undef NotificationHandler
 
 #include "chrome/browser/notifications/notification_handler_impl.h"

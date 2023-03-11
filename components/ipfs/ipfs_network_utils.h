@@ -9,8 +9,8 @@
 #include <memory>
 #include <string>
 
-#include "base/callback.h"
 #include "base/files/file_enumerator.h"
+#include "base/functional/callback.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "services/network/public/cpp/resource_request.h"

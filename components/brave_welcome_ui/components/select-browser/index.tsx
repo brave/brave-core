@@ -16,6 +16,8 @@ import { getLocale } from '$web-common/locale'
 
 import ChromeCanarySVG from '../svg/browser-icons/chrome-canary'
 import ChromeSVG from '../svg/browser-icons/chrome'
+import ChromeBetaSVG from '../svg/browser-icons/chrome-beta'
+import ChromeDevSVG from '../svg/browser-icons/chrome-dev'
 import ChromiumSVG from '../svg/browser-icons/chromium'
 import EdgeSVG from '../svg/browser-icons/edge'
 import FirefoxSVG from '../svg/browser-icons/firefox'
@@ -33,15 +35,17 @@ interface BrowserItemButtonProps {
 }
 
 const browserIcons = {
-  'Chrome Canary': <ChromeCanarySVG />,
-  'Chrome': <ChromeSVG />,
+  'Google Chrome Canary': <ChromeCanarySVG />,
+  'Google Chrome': <ChromeSVG />,
+  'Google Chrome Dev': <ChromeDevSVG />,
+  'Google Chrome Beta': <ChromeBetaSVG />,
   'Chromium': <ChromiumSVG />,
   'Microsoft Edge': <EdgeSVG />,
-  'Mozilla Firefox': <FirefoxSVG />,
+  'Firefox': <FirefoxSVG />,
   'Opera': <OperaSVG />,
   'Safari': <SafariSVG />,
   'Vivaldi': <VivaldiSVG />,
-  'Whale': <WhaleSVG />,
+  'NAVER Whale': <WhaleSVG />,
   'Yandex': <YandexSVG />,
   'Microsoft Internet Explorer': <MicrosoftIE />
 }
@@ -78,7 +82,6 @@ function BrowserItemButton (props: BrowserItemButtonProps) {
 function SelectBrowser () {
   const { browserProfiles, currentSelectedBrowser, setCurrentSelectedBrowser, setViewType, incrementCount, scenes } = React.useContext(DataContext)
   const browserTypes = getUniqueBrowserTypes(browserProfiles ?? [])
-
   const handleSelectionChange = (browserName: string) => {
     setCurrentSelectedBrowser?.(browserName)
   }
@@ -106,6 +109,13 @@ function SelectBrowser () {
     setViewType(ViewType.HelpImprove)
     WelcomeBrowserProxyImpl.getInstance().recordP3A({ currentScreen: ViewType.ImportSelectBrowser, isFinished: false, isSkipped: true })
   }
+
+  React.useEffect(() => {
+    WelcomeBrowserProxyImpl.getInstance().getDefaultBrowser().then(
+      (name: string) => {
+      setCurrentSelectedBrowser?.(name)
+    })
+  }, [])
 
   return (
     <S.MainBox>

@@ -16,7 +16,7 @@
       content::BrowserContext* context) const override; \
   KeyedService* BuildServiceInstanceFor
 
-#include "src/chrome/browser/search_engines/template_url_service_factory.h"
+#include "src/chrome/browser/search_engines/template_url_service_factory.h"  // IWYU pragma: export
 
 #undef BuildServiceInstanceFor
 

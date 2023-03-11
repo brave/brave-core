@@ -16,7 +16,7 @@
   friend class BravePermissionManager; \
   GURL forced_requesting_origin_
 
-#include "src/components/permissions/permission_manager.h"
+#include "src/components/permissions/permission_manager.h"  // IWYU pragma: export
 
 #undef subscription_type_counts_
 

@@ -15,7 +15,7 @@
 #define BuildSyncInfo virtual BuildSyncInfo
 #define BuildFeatureButtons virtual BuildFeatureButtons
 
-#include "src/chrome/browser/ui/views/profiles/profile_menu_view.h"
+#include "src/chrome/browser/ui/views/profiles/profile_menu_view.h"  // IWYU pragma: export
 #undef BuildFeatureButtons
 #undef BuildSyncInfo
 #undef BuildIdentity

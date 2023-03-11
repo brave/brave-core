@@ -154,8 +154,7 @@ CreativeNewTabPageAdList GetCreativeAdsFromResponse(
       GroupCreativeAdsFromResponse(std::move(response));
 
   CreativeNewTabPageAdList creative_ads;
-  for (const auto& grouped_creative_ad : grouped_creative_ads) {
-    const CreativeNewTabPageAdInfo creative_ad = grouped_creative_ad.second;
+  for (const auto& [creative_instance_id, creative_ad] : grouped_creative_ads) {
     creative_ads.push_back(creative_ad);
   }
 

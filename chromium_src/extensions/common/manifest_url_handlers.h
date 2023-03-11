@@ -14,7 +14,7 @@
   GetWebStoreURL_Unused(const Extension* extension); \
   static const GURL GetWebStoreURL
 
-#include "src/extensions/common/manifest_url_handlers.h"
+#include "src/extensions/common/manifest_url_handlers.h"  // IWYU pragma: export
 
 #undef GetHomepageURL
 #undef GetWebStoreURL

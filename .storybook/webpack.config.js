@@ -99,7 +99,7 @@ module.exports = async ({ config, mode }) => {
             // build, but has previously made a Component build, then an outdated
             // version of a module will be used. Instead, accept a cli argument
             // or environment variable containing which build target to use.
-            ...getBuildOuptutPathList('gen/ui/webui/resources/preprocessed')
+            ...getBuildOuptutPathList('gen/ui/webui/resources/tsc')
           ]
         },
         {

@@ -1,0 +1,34 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+component("common") {
+  output_name = "commands_common"
+  defines = [ "IS_COMMANDS_COMMON_IMPL" ]
+
+  sources = [
+    "features.cc",
+    "features.h",
+    "key_names.cc",
+    "key_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//ui/events:event_constants",
+    "//ui/events:events_base",
+  ]
+
+  public_deps = [ ":mojom" ]
+}
+
+mojom_component("mojom") {
+  output_prefix = "brave_commands_mojom"
+  macro_prefix = "BRAVE_COMMANDS_MOJOM"
+
+  sources = [ "commands.mojom" ]
+  public_deps = [ "//mojo/public/mojom/base" ]
+}

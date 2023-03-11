@@ -11,7 +11,7 @@
 
 #define WebPreferences WebPreferences_ChromiumImpl
 
-#include "src/third_party/blink/public/common/web_preferences/web_preferences_mojom_traits.h"
+#include "src/third_party/blink/public/common/web_preferences/web_preferences_mojom_traits.h"  // IWYU pragma: export
 
 #undef WebPreferences
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
+#include "base/functional/bind.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/pref_names.h"
 #include "components/prefs/pref_service.h"

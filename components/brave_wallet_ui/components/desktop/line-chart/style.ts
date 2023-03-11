@@ -9,7 +9,7 @@ interface StyleProps {
   labelPosition: 'start' | 'middle' | 'end'
   labelTranslate: number
   isLoading: boolean
-  customStyle?: {[key: string]: string}
+  customStyle?: { [key: string]: string }
 }
 
 export const StyledWrapper = styled.div<Partial<StyleProps>>`

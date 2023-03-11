@@ -199,6 +199,26 @@ void BraveWalletP3A::ReportOnboardingAction(
 
 void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
                                            bool new_send) {
+  const char* histogram_name = nullptr;
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      histogram_name = kEthTransactionSentHistogramName;
+      break;
+    case mojom::CoinType::SOL:
+      histogram_name = kSolTransactionSentHistogramName;
+      break;
+    case mojom::CoinType::FIL:
+      histogram_name = kFilTransactionSentHistogramName;
+      break;
+    case mojom::CoinType::BTC:
+      // TODO(apaymyshev): https://github.com/brave/brave-browser/issues/28464
+      return;
+    default:
+      return;
+  }
+
+  DCHECK(histogram_name);
+
   ScopedDictPrefUpdate last_sent_time_update(
       profile_prefs_, kBraveWalletLastTransactionSentTimeDict);
   base::Value::Dict& last_sent_time_dict = last_sent_time_update.Get();
@@ -221,26 +241,13 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
     last_sent_time_dict.Set(coin_key, now.ToDoubleT());
   }
 
-  const char* histogram_name;
-  switch (coin) {
-    case mojom::CoinType::ETH:
-      histogram_name = kEthTransactionSentHistogramName;
-      break;
-    case mojom::CoinType::SOL:
-      histogram_name = kSolTransactionSentHistogramName;
-      break;
-    case mojom::CoinType::FIL:
-      histogram_name = kFilTransactionSentHistogramName;
-      break;
-  }
-
   base::UmaHistogramExactLinear(histogram_name, answer, 2);
 }
 
 void BraveWalletP3A::RecordActiveWalletCount(int count,
                                              mojom::CoinType coin_type) {
   DCHECK_GE(count, 0);
-  const char* histogram_name;
+  const char* histogram_name = nullptr;
 
   switch (coin_type) {
     case mojom::CoinType::ETH:
@@ -252,9 +259,14 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
     case mojom::CoinType::FIL:
       histogram_name = kFilActiveAccountHistogramName;
       break;
+    case mojom::CoinType::BTC:
+      // TODO(apaymyshev): https://github.com/brave/brave-browser/issues/28464
+      return;
     default:
       return;
   }
+
+  DCHECK(histogram_name);
 
   const base::Value::Dict& active_wallet_dict =
       profile_prefs_->GetDict(kBraveWalletP3AActiveWalletDict);

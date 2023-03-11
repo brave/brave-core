@@ -16,7 +16,7 @@
   BasicStartupComplete_ChromiumImpl(); \
   absl::optional<int> BasicStartupComplete
 
-#include "src/chrome/app/chrome_main_delegate.h"
+#include "src/chrome/app/chrome_main_delegate.h"  // IWYU pragma: export
 
 #undef BasicStartupComplete
 #undef ChromeContentClient

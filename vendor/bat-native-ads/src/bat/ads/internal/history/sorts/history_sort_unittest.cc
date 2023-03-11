@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "bat/ads/history_item_info.h"
 #include "bat/ads/history_sort_types.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

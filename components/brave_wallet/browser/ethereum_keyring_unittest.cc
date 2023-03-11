@@ -31,10 +31,6 @@ TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   keyring.ConstructRootHDKey(seed, "m/44'/60'/0'/0");
-  EXPECT_EQ(
-      static_cast<HDKey*>(keyring.master_key_.get())->GetPrivateExtendedKey(),
-      "xprv9s21ZrQH143K3gWQTKSxNE9PXf6jyGYt2oTP7RNF47NemqwAwWF5nUkCjsYyB5"
-      "adUPLNuu2XQoPCy9P596CdE1Bf3oW7eApGB2DcX3nZUAj");
   EXPECT_EQ(static_cast<HDKey*>(keyring.root_.get())->GetPrivateExtendedKey(),
             "xprvA1YGbmYkUq9KMyPwADQehauc1vG7TSbNLc1dwYbvU7VzyAr7TPhj9VoJJoP2CV"
             "5kDmXXSZvbJ79ieLnD7Pt4rhbuaQjVr2JE3vcDBAvDoUg");
@@ -63,9 +59,7 @@ TEST(EthereumKeyringUnitTest, Accounts) {
             "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
   for (size_t i = 0; i < accounts.size(); ++i) {
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
-    EXPECT_EQ(keyring.GetAccountIndex(accounts[i]), i);
   }
-  EXPECT_FALSE(keyring.GetAccountIndex("0x123"));
 
   // remove the last account
   keyring.RemoveAccount();
@@ -77,7 +71,6 @@ TEST(EthereumKeyringUnitTest, Accounts) {
             "0x2A22ad45446E8b34Da4da1f4ADd7B1571Ab4e4E7");
   for (size_t i = 0; i < accounts.size(); ++i) {
     EXPECT_EQ(accounts[i], keyring.GetAddress(i));
-    EXPECT_EQ(keyring.GetAccountIndex(accounts[i]), i);
   }
 
   keyring.AddAccounts(1);

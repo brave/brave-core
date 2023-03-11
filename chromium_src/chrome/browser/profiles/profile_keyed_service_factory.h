@@ -10,7 +10,7 @@
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 #define final override
-#include "src/chrome/browser/profiles/profile_keyed_service_factory.h"
+#include "src/chrome/browser/profiles/profile_keyed_service_factory.h"  // IWYU pragma: export
 #undef final
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_PROFILES_PROFILE_KEYED_SERVICE_FACTORY_H_

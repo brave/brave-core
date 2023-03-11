@@ -38,7 +38,7 @@ export function LimitedTipForm () {
   }, [host])
 
   function onConnectAccount () {
-    window.open(urls.connectURL, '_blank')
+    window.open(urls.connectURL, '_blank', 'noreferrer')
     host.closeDialog()
   }
 

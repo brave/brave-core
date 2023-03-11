@@ -17,7 +17,7 @@ class ScriptFetchOptions;
   IF_BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH, int parent_script_id_ = 0;) \
   ScriptFetchOptions GetScriptFetchOptions() const
 
-#include "src/third_party/blink/renderer/bindings/core/v8/scheduled_action.h"
+#include "src/third_party/blink/renderer/bindings/core/v8/scheduled_action.h"  // IWYU pragma: export
 
 #undef arguments_
 

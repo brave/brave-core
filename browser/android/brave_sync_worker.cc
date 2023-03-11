@@ -327,7 +327,7 @@ base::android::ScopedJavaLocalRef<jobject> GetJavaBoolean(
 void NativeJoinSyncChainCallback(
     JNIEnv* env,
     const base::android::ScopedJavaGlobalRef<jobject>& callback,
-    const bool& result) {
+    bool result) {
   Java_BraveSyncWorker_onJoinSyncChainResult(env, callback,
                                              GetJavaBoolean(env, result));
 }

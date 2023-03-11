@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/callback_forward.h"
+#include "base/functional/callback_forward.h"
 #include "bat/ledger/ledger.h"
 
 // GET https://bitflyer.com/api/link/v1/account/inventory

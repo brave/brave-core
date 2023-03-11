@@ -23,6 +23,7 @@ interface StyledButtonProps {
   addTopMargin?: boolean
   to?: string // for links & routes
   maxHeight?: string
+  minHeight?: string
   minWidth?: string
 }
 
@@ -32,6 +33,7 @@ const StyledButtonCssMixin = (p: StyledButtonProps) => {
     font-family: Poppins;
     font-style: normal;
     min-width: ${(p) => p?.minWidth || 'unset'};
+    min-height: ${(p) => p?.minHeight || 'unset'};
     max-height: ${(p) => p?.maxHeight || 'unset'};
     display: flex;
     align-items: center;

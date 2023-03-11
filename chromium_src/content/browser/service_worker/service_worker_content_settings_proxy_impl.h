@@ -14,7 +14,7 @@
   GetBraveFarblingLevel(GetBraveFarblingLevelCallback callback) override; \
   void RequestFileSystemAccessSync
 
-#include "src/content/browser/service_worker/service_worker_content_settings_proxy_impl.h"
+#include "src/content/browser/service_worker/service_worker_content_settings_proxy_impl.h"  // IWYU pragma: export
 
 #undef RequestFileSystemAccessSync
 

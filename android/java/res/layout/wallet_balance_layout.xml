@@ -54,15 +54,22 @@
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="0.5"
-            android:paddingStart="32dp">
+            android:layout_weight="0.5">
 
             <LinearLayout
                 android:id="@+id/wallet_balance_layout"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="32dp"
                 android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_600"
+                    android:textColor="@android:color/white"
+                    android:visibility="invisible"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -109,6 +116,26 @@
                     android:textSize="14sp" />
 
             </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/logged_out_state_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="12dp"
+                android:padding="12dp"
+                android:background="@drawable/rewards_logged_out_state_gradient_bg">
+
+                <TextView
+                    android:id="@+id/logged_out_state_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:fontFamily="@font/poppins_600"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp" />
+
+            </FrameLayout>
 
             <ProgressBar
                 android:id="@+id/wallet_balance_progress"

@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 
-#include "base/memory/singleton.h"
 #include "brave/browser/brave_ads/background_helper/background_helper_holder.h"
 #include "build/build_config.h"
 

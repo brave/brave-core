@@ -3,28 +3,28 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as Solana from '@solana/web3.js'
 import { mockSolDappSignAndSendTransactionRequest } from '../common/constants/mocks'
 
 import {
-  getSolanaInstructionParamKeyName,
   getSolanaTransactionInstructionParamsAndType
 } from './solana-instruction-utils'
 
 describe('getSolanaSystemInstructionParamsAndType', () => {
   it('converts a brave wallet instruction to a solana instruction', () => {
     const typedInstruction = getSolanaTransactionInstructionParamsAndType(
-      mockSolDappSignAndSendTransactionRequest.txDataUnion.solanaTxData.instructions[0]
+      mockSolDappSignAndSendTransactionRequest.txDataUnion.solanaTxData!
+        .instructions[0]
     )
 
-    expect(typedInstruction.instruction).toBeInstanceOf(Solana.TransactionInstruction)
-    expect(typedInstruction.params).toBeDefined()
-    expect(typedInstruction.params).toHaveProperty('lamports')
-  })
-})
+    const paramNames = typedInstruction.params.map((p) => p.name)
+    const hasLamportsParam = paramNames.includes('lamports')
+    const accountParamNames = typedInstruction.accountParams.map((p) => p.name)
+    const hasFromPubkeyParam = accountParamNames.includes('from_account')
+    const hasToPubkeyParam = accountParamNames.includes('to_account')
 
-describe('getSolanaInstructionParamKeyName', () => {
-  it('returns the key name if translation/mapping not found', () => {
-    expect(getSolanaInstructionParamKeyName('madeUpKey' as any)).toBe('madeUpKey')
+    expect(typedInstruction.params).toBeDefined()
+    expect(hasLamportsParam).toEqual(true)
+    expect(hasFromPubkeyParam).toEqual(true)
+    expect(hasToPubkeyParam).toEqual(true)
   })
 })

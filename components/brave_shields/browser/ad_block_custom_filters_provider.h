@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/callback.h"
+#include "base/functional/callback.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
@@ -26,6 +26,10 @@ class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
   AdBlockCustomFiltersProvider(const AdBlockCustomFiltersProvider&) = delete;
   AdBlockCustomFiltersProvider& operator=(const AdBlockCustomFiltersProvider&) =
       delete;
+
+  void HideElementOnHost(const std::string& css_selector,
+                         const std::string& host);
+  void CreateSiteExemption(const std::string& host);
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);

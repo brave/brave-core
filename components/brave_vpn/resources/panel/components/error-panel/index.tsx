@@ -7,7 +7,7 @@ import Button from '$web-components/button'
 
 import * as S from './style'
 import { ButtonText, IconBox } from '../general'
-import { AlertCircleIcon } from 'brave-ui/components/icons'
+import { AlertCircleIcon, CaratStrongLeftIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
@@ -19,6 +19,10 @@ interface Props {
 function ErrorPanel (props: Props) {
   const dispatch = useDispatch()
   const currentRegion = useSelector(state => state.currentRegion)
+
+  const handleShowMainView = () => {
+    dispatch(Actions.resetConnectionState())
+  }
 
   const handleTryAgain = () => {
     dispatch(Actions.connect())
@@ -36,6 +40,16 @@ function ErrorPanel (props: Props) {
   return (
     <S.Box>
       <S.PanelContent>
+        <S.PanelHeader>
+          <S.BackButton
+            type='button'
+            onClick={handleShowMainView}
+            aria-label='Go to main'
+          >
+            <i><CaratStrongLeftIcon /></i>
+            <span>{getLocale('braveVpnErrorPanelHeader')}</span>
+          </S.BackButton>
+        </S.PanelHeader>
         <IconBox>
           <AlertCircleIcon color='#84889C' />
         </IconBox>

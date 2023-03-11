@@ -42,6 +42,7 @@ export const purchaseFailed = createAction('purchaseFailed')
 export const showSellView = createAction('showSellView')
 export const showLoadingView = createAction('showLoadingView')
 export const showSubscriptionExpiredView = createAction('showSubscriptionExpiredView')
+export const resetConnectionState = createAction('resetConnectionState')
 
 export const initialized = createAction<initializedPayload>('initialized')
 export const showMainView = createAction<showMainViewPayload>('showMainView')

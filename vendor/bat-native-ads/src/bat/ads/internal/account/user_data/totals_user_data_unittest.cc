@@ -7,7 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "bat/ads/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
-#include "testing/gtest/include/gtest/gtest.h"  // IWYU pragma: keep
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -57,7 +57,7 @@ TEST(BatAdsTotalsUserDataTest, GetTotals) {
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(
-      R"({"totals":[{"ad_format":"ad_notification","click":"1","view":"2"},{"ad_format":"inline_content_ad","view":"1"}]})");
+      R"({"totals":[{"ad_format":"ad_notification","click":1,"view":2},{"ad_format":"inline_content_ad","view":1}]})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);

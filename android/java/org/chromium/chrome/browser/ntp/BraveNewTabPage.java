@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.xsurface.FeedLaunchReliabilityLogger.SurfaceType;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.WindowAndroid;
 
 public class BraveNewTabPage extends NewTabPage {
@@ -72,14 +73,21 @@ public class BraveNewTabPage extends NewTabPage {
         // both
         if (tabModelSelector != null) {
             for (TabModel tabModel : tabModelSelector.getModels()) {
-                if (tabModel.getProfile() != null)
-                    BraveTemplateUrlServiceFactory.getForProfile(tabModel.getProfile())
-                            .removeObserver(this);
+                if (tabModel.getProfile() != null) {
+                    TemplateUrlService templateUrlService =
+                            BraveTemplateUrlServiceFactory.getForProfile(tabModel.getProfile());
+                    if (templateUrlService != null) {
+                        templateUrlService.removeObserver(this);
+                    }
+                }
             }
         }
         // Re-add to the new tab's profile
-        BraveTemplateUrlServiceFactory.getForProfile(Profile.fromWebContents(mTab.getWebContents()))
-                .addObserver(this);
+        TemplateUrlService templateUrlService = BraveTemplateUrlServiceFactory.getForProfile(
+                Profile.fromWebContents(mTab.getWebContents()));
+        if (templateUrlService != null) {
+            templateUrlService.addObserver(this);
+        }
     }
 
     @Override

@@ -10,8 +10,8 @@
 #include <utility>
 
 #include "base/barrier_closure.h"
-#include "base/callback.h"
-#include "base/callback_helpers.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 

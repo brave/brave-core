@@ -15,7 +15,7 @@
   CancelBrowserClose();    \
   void CancelBrowserClose_ChromiumImpl
 
-#include "src/chrome/browser/lifetime/browser_close_manager.h"
+#include "src/chrome/browser/lifetime/browser_close_manager.h"  // IWYU pragma: export
 
 #undef CancelBrowserClose
 #undef StartClosingBrowsers

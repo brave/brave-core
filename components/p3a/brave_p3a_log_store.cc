@@ -115,18 +115,28 @@ void BraveP3ALogStore::RemoveValueIfExists(const std::string& histogram_name) {
 void BraveP3ALogStore::ResetUploadStamps() {
   // Clear log entries flags.
   ScopedDictPrefUpdate update(local_state_, GetPrefName(type_));
-  for (auto& pair : log_) {
-    if (pair.second.sent) {
-      DCHECK(!pair.second.sent_timestamp.is_null());
-      DCHECK(!unsent_entries_.contains(pair.first));
+  for (auto it = log_.begin(); it != log_.end();) {
+    if (it->second.sent) {
+      DCHECK(!it->second.sent_timestamp.is_null());
+      DCHECK(!unsent_entries_.contains(it->first));
 
-      pair.second.ResetSentState();
+      if (delegate_->IsEphemeralMetric(it->first)) {
+        // Ephemeral metrics should only be sent once.
+        // Remove value from log store so it doesn't get
+        // sent again (unless another histogram value is recorded)
+        update->Remove(it->first);
+        it = log_.erase(it);
+        continue;
+      }
+
+      it->second.ResetSentState();
 
       // Update persistent values.
-      base::Value::Dict* log_dict = update->EnsureDict(pair.first);
-      log_dict->Set(kLogSentKey, pair.second.sent);
-      log_dict->Set(kLogTimestampKey, pair.second.sent_timestamp.ToDoubleT());
+      base::Value::Dict* log_dict = update->EnsureDict(it->first);
+      log_dict->Set(kLogSentKey, it->second.sent);
+      log_dict->Set(kLogTimestampKey, it->second.sent_timestamp.ToDoubleT());
     }
+    it++;
   }
 
   // Only record the sent answers count metric for weekly metrics

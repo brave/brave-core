@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
@@ -29,7 +31,7 @@ import java.util.List;
 
 public class CreateAccountBottomSheetFragment extends BottomSheetDialogFragment
         implements CreateAccountAdapter.OnCreateAccountClickListener {
-    public static final String TAG = "CreateAccountBottomSheetFragment";
+    public static final String TAG = "CreateAccount";
     private View rootView;
     private WalletModel mWalletModel;
     private List<CryptoAccountTypeInfo> mSupportedCryptoAccounts;
@@ -54,11 +56,13 @@ public class CreateAccountBottomSheetFragment extends BottomSheetDialogFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mSupportedCryptoAccounts.clear();
-        BraveActivity activity = BraveActivity.getBraveActivity();
-        if (activity != null) {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mSupportedCryptoAccounts =
                     mWalletModel.getCryptoModel().getSupportedCryptoAccountTypes();
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "onViewCreated " + e);
         }
         mRvAccounts = view.findViewById(R.id.fragment_create_account_rv);
 

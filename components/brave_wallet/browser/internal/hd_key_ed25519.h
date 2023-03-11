@@ -20,7 +20,8 @@ namespace brave_wallet {
 // hardened index
 class HDKeyEd25519 : public HDKeyBase {
  public:
-  explicit HDKeyEd25519(rust::Box<Ed25519DalekExtendedSecretKeyResult>);
+  HDKeyEd25519(std::string path,
+               rust::Box<Ed25519DalekExtendedSecretKeyResult>);
   ~HDKeyEd25519() override;
   HDKeyEd25519(const HDKeyEd25519&) = delete;
   HDKeyEd25519& operator=(const HDKeyEd25519&) = delete;
@@ -30,10 +31,10 @@ class HDKeyEd25519 : public HDKeyBase {
   static std::unique_ptr<HDKeyEd25519> GenerateFromPrivateKey(
       const std::vector<uint8_t>& private_key);
 
-  // Always performs harden derivation
-  // index will automatically transformed to hardened index
-  // if index >= 2^31, nullptr will be returned
-  std::unique_ptr<HDKeyBase> DeriveChild(uint32_t index) override;
+  std::string GetPath() const override;
+  std::unique_ptr<HDKeyBase> DeriveNormalChild(uint32_t index) override;
+  std::unique_ptr<HDKeyBase> DeriveHardenedChild(uint32_t index) override;
+
   // If path contains normal index, nullptr will be returned
   std::unique_ptr<HDKeyBase> DeriveChildFromPath(
       const std::string& path) override;
@@ -44,11 +45,13 @@ class HDKeyEd25519 : public HDKeyBase {
 
   std::string EncodePrivateKeyForExport() const override;
   std::vector<uint8_t> GetPrivateKeyBytes() const override;
+  std::vector<uint8_t> GetPublicKeyBytes() const override;
 
   std::string GetBase58EncodedPublicKey() const;
   std::string GetBase58EncodedKeypair() const;
 
  private:
+  std::string path_;
   rust::Box<Ed25519DalekExtendedSecretKeyResult> private_key_;
 };
 

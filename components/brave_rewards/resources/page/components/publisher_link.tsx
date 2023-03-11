@@ -18,6 +18,7 @@ interface Props {
   icon: string
   platform: string
   verified: boolean
+  children?: React.ReactNode
 }
 
 export function PublisherLink (props: Props) {
@@ -46,6 +47,7 @@ export function PublisherLink (props: Props) {
                 &nbsp;{getString('on')}&nbsp;{platformName}
               </style.platform>
           }
+          {props.children && <style.info>{props.children}</style.info>}
         </style.name>
       </NewTabLink>
     </style.root>

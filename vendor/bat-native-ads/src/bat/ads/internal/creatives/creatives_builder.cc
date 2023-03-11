@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/containers/extend.h"
 #include "base/containers/flat_set.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -106,7 +107,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          auto segment_name = base::ToLowerASCII(segment.name);
+          const std::string segment_name = base::ToLowerASCII(segment.name);
           DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
@@ -124,7 +125,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.notification_ads.push_back(info);
           entries++;
 
-          auto top_level_segment_name = segment_name_hierarchy.front();
+          const std::string top_level_segment_name =
+              segment_name_hierarchy.front();
           DCHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
@@ -171,7 +173,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          auto segment_name = base::ToLowerASCII(segment.name);
+          const std::string segment_name = base::ToLowerASCII(segment.name);
           DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
@@ -189,7 +191,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.inline_content_ads.push_back(info);
           entries++;
 
-          auto top_level_segment_name = segment_name_hierarchy.front();
+          const std::string top_level_segment_name =
+              segment_name_hierarchy.front();
           DCHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
@@ -249,7 +252,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          auto segment_name = base::ToLowerASCII(segment.name);
+          const std::string segment_name = base::ToLowerASCII(segment.name);
           DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
@@ -267,7 +270,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.new_tab_page_ads.push_back(info);
           entries++;
 
-          auto top_level_segment_name = segment_name_hierarchy.front();
+          const std::string top_level_segment_name =
+              segment_name_hierarchy.front();
           DCHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
@@ -311,7 +315,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
 
         // Segments
         for (const auto& segment : creative_set.segments) {
-          auto segment_name = base::ToLowerASCII(segment.name);
+          const std::string segment_name = base::ToLowerASCII(segment.name);
           DCHECK(!segment_name.empty());
 
           std::vector<std::string> segment_name_hierarchy =
@@ -329,7 +333,8 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
           creatives.promoted_content_ads.push_back(info);
           entries++;
 
-          auto top_level_segment_name = segment_name_hierarchy.front();
+          const std::string top_level_segment_name =
+              segment_name_hierarchy.front();
           DCHECK(!top_level_segment_name.empty());
 
           if (top_level_segment_name != segment_name) {
@@ -348,9 +353,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       }
 
       // Conversions
-      creatives.conversions.insert(creatives.conversions.cend(),
-                                   creative_set.conversions.cbegin(),
-                                   creative_set.conversions.cend());
+      base::Extend(creatives.conversions, creative_set.conversions);
     }
   }
 

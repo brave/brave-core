@@ -12,8 +12,11 @@
 #include "base/task/thread_pool.h"
 #include "brave/ios/browser/browser_state/brave_browser_state_keyed_service_factories.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
+#include "components/metrics/metrics_service.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "components/variations/service/variations_service.h"
+#include "components/variations/synthetic_trial_registry.h"
+#include "components/variations/synthetic_trials_active_group_id_provider.h"
 #include "components/variations/variations_ids_provider.h"
 #include "components/variations/variations_switches.h"
 #include "ios/chrome/browser/application_context/application_context_impl.h"
@@ -91,6 +94,16 @@ void BraveWebMainParts::PreCreateThreads() {
   application_context_->PreCreateThreads();
 }
 
+void BraveWebMainParts::SetupMetrics() {
+  metrics::MetricsService* metrics = application_context_->GetMetricsService();
+  metrics->GetSyntheticTrialRegistry()->AddSyntheticTrialObserver(
+      variations::VariationsIdsProvider::GetInstance());
+  metrics->GetSyntheticTrialRegistry()->AddSyntheticTrialObserver(
+      variations::SyntheticTrialsActiveGroupIdProvider::GetInstance());
+  // Now that field trials have been created, initializes metrics recording.
+  metrics->InitializeMetricsRecordingState();
+}
+
 void BraveWebMainParts::SetupFieldTrials() {
   base::SetRecordActionTaskRunner(web::GetUIThreadTaskRunner({}));
 
@@ -134,6 +147,12 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
       application_context_->GetChromeBrowserStateManager();
   [[maybe_unused]] ChromeBrowserState* last_used_browser_state =
       browser_state_manager->GetLastUsedBrowserState();
+
+  // This must occur at PreMainMessageLoopRun because `SetupMetrics()` uses the
+  // blocking pool, which is disabled until the CreateThreads phase of startup.
+  // TODO(crbug.com/786494): Investigate whether metrics recording can be
+  // initialized consistently across iOS and non-iOS platforms
+  SetupMetrics();
 }
 
 void BraveWebMainParts::PostMainMessageLoopRun() {
