@@ -55,8 +55,8 @@ namespace {
 // Receiving this value will effectively prevent the metric from transmission
 // to the backend. For now we consider this as a hack for p2a metrics, which
 // should be refactored in better times.
-constexpr int32_t kSuspendedMetricValue = INT_MAX - 1;
-constexpr uint64_t kSuspendedMetricBucket = INT_MAX - 1;
+const int32_t kSuspendedMetricValue = INT_MAX - 1;
+const uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
 constexpr char kLastSlowRotationTimeStampPref[] =
     "p3a.last_slow_rotation_timestamp";
@@ -365,6 +365,11 @@ BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
          p3a::kCollectedExpressHistograms.contains(histogram_name) ||
          p3a::kCollectedSlowHistograms.contains(histogram_name) ||
          dynamic_metric_log_types_.contains(histogram_name);
+}
+
+bool BraveP3AService::IsEphemeralMetric(
+    base::StringPiece histogram_name) const {
+  return p3a::kEphemeralHistograms.contains(histogram_name);
 }
 
 void BraveP3AService::LoadDynamicMetrics() {

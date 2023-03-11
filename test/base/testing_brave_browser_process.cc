@@ -121,6 +121,12 @@ TestingBraveBrowserProcess::brave_stats_updater() {
   return nullptr;
 }
 
+brave_ads::BraveStatsHelper*
+TestingBraveBrowserProcess::ads_brave_stats_helper() {
+  NOTREACHED();
+  return nullptr;
+}
+
 ntp_background_images::NTPBackgroundImagesService*
 TestingBraveBrowserProcess::ntp_background_images_service() {
   NOTREACHED();

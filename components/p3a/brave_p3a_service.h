@@ -85,6 +85,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   // May be accessed from multiple threads, so this is thread-safe.
   bool IsActualMetric(base::StringPiece histogram_name) const override;
 
+  bool IsEphemeralMetric(base::StringPiece histogram_name) const override;
+
   // Invoked by callbacks registered by our service. Since these callbacks
   // can fire on any thread, this method reposts everything to UI thread.
   void OnHistogramChanged(const char* histogram_name,

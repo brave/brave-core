@@ -3,43 +3,56 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
+#include "brave/browser/brave_ads/brave_stats_helper.h"
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
+#include "base/metrics/histogram_macros.h"
+#include "base/time/time.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace brave_ads {
 
-BraveStatsUpdaterHelper::BraveStatsUpdaterHelper()
+namespace {
+
+const int kAdsEnabledInstallationHourBuckets[] = {0, 11, 23, 71};
+
+}  // namespace
+
+const char kAdsEnabledInstallationTimeHistogramName[] =
+    "Brave.Rewards.EnabledInstallationTime";
+
+BraveStatsHelper::BraveStatsHelper()
     : local_state_(g_browser_process->local_state()),
       profile_manager_(g_browser_process->profile_manager()) {
 #if !BUILDFLAG(IS_ANDROID)
   last_used_profile_pref_change_registrar_.Init(local_state_);
   last_used_profile_pref_change_registrar_.Add(
       ::prefs::kProfileLastUsed,
-      base::BindRepeating(&BraveStatsUpdaterHelper::OnLastUsedProfileChanged,
+      base::BindRepeating(&BraveStatsHelper::OnLastUsedProfileChanged,
                           base::Unretained(this)));
 #endif
 
   profile_manager_observer_.Observe(profile_manager_);
 }
 
-BraveStatsUpdaterHelper::~BraveStatsUpdaterHelper() {
+BraveStatsHelper::~BraveStatsHelper() {
   if (current_profile_) {
     current_profile_->RemoveObserver(this);
   }
 }
 
-void BraveStatsUpdaterHelper::RegisterLocalStatePrefs(
-    PrefRegistrySimple* registry) {
+void BraveStatsHelper::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(ads::prefs::kEnabledForLastProfile, false);
+  registry->RegisterBooleanPref(ads::prefs::kEverEnabledForAnyProfile, false);
 }
 
-void BraveStatsUpdaterHelper::OnProfileAdded(Profile* profile) {
+void BraveStatsHelper::OnProfileAdded(Profile* profile) {
 #if BUILDFLAG(IS_ANDROID)
   if (profile == ProfileManager::GetPrimaryUserProfile()) {
 #else
@@ -53,7 +66,7 @@ void BraveStatsUpdaterHelper::OnProfileAdded(Profile* profile) {
   }
 }
 
-void BraveStatsUpdaterHelper::OnProfileWillBeDestroyed(Profile* profile) {
+void BraveStatsHelper::OnProfileWillBeDestroyed(Profile* profile) {
   if (profile != current_profile_) {
     return;
   }
@@ -65,7 +78,7 @@ void BraveStatsUpdaterHelper::OnProfileWillBeDestroyed(Profile* profile) {
   ads_enabled_pref_change_registrar_.RemoveAll();
 }
 
-void BraveStatsUpdaterHelper::OnProfileManagerDestroying() {
+void BraveStatsHelper::OnProfileManagerDestroying() {
   if (current_profile_ != nullptr) {
 #if !BUILDFLAG(IS_ANDROID)
     last_used_profile_pref_change_registrar_.RemoveAll();
@@ -77,7 +90,11 @@ void BraveStatsUpdaterHelper::OnProfileManagerDestroying() {
   profile_manager_observer_.Reset();
 }
 
-PrefService* BraveStatsUpdaterHelper::GetLastUsedProfilePrefs() {
+void BraveStatsHelper::SetFirstRunTimeForTesting(base::Time time) {
+  testing_first_run_time_ = time;
+}
+
+PrefService* BraveStatsHelper::GetLastUsedProfilePrefs() {
 #if BUILDFLAG(IS_ANDROID)
   return ProfileManager::GetPrimaryUserProfile()->GetPrefs();
 #else
@@ -104,7 +121,7 @@ PrefService* BraveStatsUpdaterHelper::GetLastUsedProfilePrefs() {
 #endif
 }
 
-void BraveStatsUpdaterHelper::OnLastUsedProfileChanged() {
+void BraveStatsHelper::OnLastUsedProfileChanged() {
   PrefService* profile_prefs = GetLastUsedProfilePrefs();
   if (profile_prefs == nullptr) {
     return;
@@ -113,20 +130,46 @@ void BraveStatsUpdaterHelper::OnLastUsedProfileChanged() {
   ads_enabled_pref_change_registrar_.Init(profile_prefs);
   ads_enabled_pref_change_registrar_.Add(
       ads::prefs::kEnabled,
-      base::BindRepeating(&BraveStatsUpdaterHelper::UpdateLocalStateAdsEnabled,
-                          base::Unretained(this)));
-  UpdateLocalStateAdsEnabled();
+      base::BindRepeating(&BraveStatsHelper::Update, base::Unretained(this)));
+  Update();
 }
 
-void BraveStatsUpdaterHelper::UpdateLocalStateAdsEnabled() {
+void BraveStatsHelper::Update() {
   PrefService* profile_prefs = GetLastUsedProfilePrefs();
   if (profile_prefs == nullptr) {
     return;
   }
+  bool is_enabled = profile_prefs->GetBoolean(ads::prefs::kEnabled);
+  UpdateLocalStateAdsEnabled(is_enabled);
+  MaybeReportAdsInstallationTimeMetric(is_enabled);
+}
+
+void BraveStatsHelper::UpdateLocalStateAdsEnabled(
+    bool is_enabled_for_current_profile) {
   // Copying enabled pref to local state so the stats updater does not depend on
   // the profile
   local_state_->SetBoolean(ads::prefs::kEnabledForLastProfile,
-                           profile_prefs->GetBoolean(ads::prefs::kEnabled));
+                           is_enabled_for_current_profile);
+}
+
+void BraveStatsHelper::MaybeReportAdsInstallationTimeMetric(
+    bool is_enabled_for_current_profile) {
+  if (!is_enabled_for_current_profile ||
+      local_state_->GetBoolean(ads::prefs::kEverEnabledForAnyProfile)) {
+    // If ads was already enabled for a previous profile or the current profile,
+    // assume the metric was already sent.
+    return;
+  }
+  local_state_->SetBoolean(ads::prefs::kEverEnabledForAnyProfile, true);
+
+  base::Time first_run = !testing_first_run_time_.is_null()
+                             ? testing_first_run_time_
+                             : brave_stats::GetFirstRunTime(local_state_);
+  int hours_from_first_run = (base::Time::Now() - first_run).InHours();
+
+  p3a_utils::RecordToHistogramBucket(kAdsEnabledInstallationTimeHistogramName,
+                                     kAdsEnabledInstallationHourBuckets,
+                                     hours_from_first_run);
 }
 
 }  // namespace brave_ads

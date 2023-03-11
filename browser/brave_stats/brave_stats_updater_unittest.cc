@@ -11,7 +11,7 @@
 #include "base/system/sys_info.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
+#include "brave/browser/brave_ads/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -74,7 +74,7 @@ class BraveStatsUpdaterTest : public testing::Test {
         testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
-    brave_ads::BraveStatsUpdaterHelper::RegisterLocalStatePrefs(
+    brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(
         testing_local_state_.registry());
     SetCurrentTimeForTest(base::Time());
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);

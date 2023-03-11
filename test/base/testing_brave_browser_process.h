@@ -64,6 +64,7 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
   brave::BraveP3AService* brave_p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
+  brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
