@@ -99,8 +99,9 @@ enum ConnectionState {
 enum PurchasedState {
   NOT_PURCHASED,
   PURCHASED,
-  EXPIRED,
+  INVALID,
   LOADING,
+  SESSION_EXPIRED,
   FAILED,
 };
 
