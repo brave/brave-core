@@ -29,6 +29,10 @@ constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";
 constexpr char kBraveVPNSubscriberCredential[] =
     "brave.brave_vpn.subscriber_credential";
 
+// Time that session expired occurs.
+constexpr char kBraveVPNSessionExpiredDate[] =
+    "brave.brave_vpn.session_expired_date";
+
 #if BUILDFLAG(IS_ANDROID)
 extern const char kBraveVPNPurchaseTokenAndroid[];
 extern const char kBraveVPNPackageAndroid[];
