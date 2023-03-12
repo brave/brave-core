@@ -48,6 +48,7 @@ export type UpdateNFtMetadataMessage = CommandMessage & {
     displayMode: DisplayMode
     icon?: string
     nftMetadata?: NFTMetadataReturnType
+    imageCID?: string
   }
 }
 
@@ -63,7 +64,10 @@ export type UpdateTokenNetworkMessage = CommandMessage & {
 }
 
 export type UpdateNftPinningStatus = CommandMessage & {
-  payload: PinningStatusType | undefined
+  payload: {
+    status: PinningStatusType | undefined
+    url: string | undefined
+  }
 }
 
 export type ToggleNftModal = CommandMessage & {

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
+import { extractIpfsUrl, translateToNftGateway } from '../../../common/async/lib'
 import * as React from 'react'
 import { CSSProperties } from 'react'
 
@@ -13,7 +14,7 @@ import {
   UpdateLoadingMessage,
   UpdateNFtMetadataMessage
 } from '../../../nft/nft-ui-messages'
-import { addIpfsGateway, stripERC20TokenImageURL } from '../../../utils/string-utils'
+import { stripERC20TokenImageURL } from '../../../utils/string-utils'
 
 // styles
 import {
@@ -34,9 +35,12 @@ export const NftIcon = (props: NftIconProps) => {
   const nftImageIframeRef = React.useRef<HTMLIFrameElement>(null)
 
   const tokenImageURL = stripERC20TokenImageURL(icon)
+  const [remoteImage, setRemoteImage] = React.useState<string>()
+  const [remoteCid, setRemoteCid] = React.useState<string>()
 
-  const remoteImage = React.useMemo(() => {
-    return addIpfsGateway(tokenImageURL)
+  React.useEffect(() => {
+    translateToNftGateway(tokenImageURL).then((v) => {setRemoteImage(v)})
+    extractIpfsUrl(tokenImageURL).then(setRemoteCid)
   }, [tokenImageURL])
 
   const loadingCommand: UpdateLoadingMessage = {
@@ -50,13 +54,14 @@ export const NftIcon = (props: NftIconProps) => {
         command: NftUiCommand.UpdateNFTMetadata,
         payload: {
           displayMode: 'icon',
-          icon: remoteImage
+          icon: remoteImage,
+          imageCID: remoteCid
         }
       }
       sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, command)
       sendMessageToNftUiFrame(nftImageIframeRef.current.contentWindow, loadingCommand)
     }
-  }, [loaded, remoteImage, nftImageIframeRef])
+  }, [loaded, remoteImage, nftImageIframeRef, remoteCid])
 
   const onIframeLoaded = React.useCallback(() => {
     setLoaded(true)

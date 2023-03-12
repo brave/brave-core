@@ -17,7 +17,7 @@ import { useExplorer } from '../../../common/hooks'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
-import { isNftPinnable, isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
+import { isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
 
 // Styled Components
 import {
@@ -60,10 +60,11 @@ interface Props {
   nftMetadata?: NFTMetadataReturnType
   nftMetadataError?: string
   tokenNetwork?: BraveWallet.NetworkInfo
-  nftPinningStatus?: PinningStatusType
+  nftPinningStatus?: PinningStatusType,
+  imageIpfsUrl?: string
 }
 
-export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork, nftPinningStatus }: Props) => {
+export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork, nftPinningStatus, imageIpfsUrl }: Props) => {
   // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
@@ -201,19 +202,13 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     <Subdivider />
                     <DetailSectionRow>
                       <DetailSectionColumn>
-                        <DetailSectionTitle>{getLocale('braveWalletNFTDetailCid')}</DetailSectionTitle>
-                        <ProjectDetailDescription>{stripERC20TokenImageURL(selectedAsset.logo)?.replace('ipfs://', '')}</ProjectDetailDescription>
-                      </DetailSectionColumn>
-                    </DetailSectionRow>
-                    <DetailSectionRow>
-                      <DetailSectionColumn>
                         <DetailSectionTitle>{getLocale('braveWalletNFTDetailImageAddress')}</DetailSectionTitle>
-                        <HighlightedDetailSectionValue href={stripERC20TokenImageURL(selectedAsset.logo)} target='_blank'>{stripERC20TokenImageURL(selectedAsset.logo)}</HighlightedDetailSectionValue>
+                        <HighlightedDetailSectionValue href={stripERC20TokenImageURL(imageIpfsUrl)} target='_blank'>{stripERC20TokenImageURL(imageIpfsUrl)}</HighlightedDetailSectionValue>
                       </DetailSectionColumn>
                     </DetailSectionRow>
                   </>
                 }
-                {selectedAsset && isNftPinnable(selectedAsset.logo) && nftPinningStatus?.code &&
+                {selectedAsset && nftPinningStatus?.code &&
                   <DetailSectionRow>
                     <DetailSectionColumn>
                       <NftPinningStatus pinningStatusCode={nftPinningStatus.code} />

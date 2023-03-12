@@ -9,7 +9,7 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, addIpfsGateway } from '../../../../../../utils/string-utils'
+import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
 import { getTokensNetwork } from '../../../../../../utils/network-utils'
 
@@ -32,6 +32,8 @@ import {
   DIVForClickableArea,
   NFTSymbol
 } from './style'
+import { translateToNftGateway } from '../../../../../../common/async/lib'
+
 
 interface Props {
   token: BraveWallet.BlockchainToken
@@ -63,10 +65,10 @@ export const NFTGridViewItem = (props: Props) => {
     setShowMore(false)
   }, [])
 
-  // memos
-  const remoteImage = React.useMemo(() => {
+  const [remoteImage, setRemoteImage] = React.useState<string>()
+  React.useEffect(() => {
     const tokenImageURL = stripERC20TokenImageURL(token.logo)
-    return addIpfsGateway(tokenImageURL)
+    translateToNftGateway(tokenImageURL).then((v) => {setRemoteImage(v)})
   }, [token.logo])
 
   return (

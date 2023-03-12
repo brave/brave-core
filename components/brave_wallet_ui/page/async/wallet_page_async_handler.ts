@@ -31,13 +31,13 @@ import {
 import {
   findHardwareAccountInfo,
   getKeyringIdFromAddress,
-  getNFTMetadata
+  getNFTMetadata,
+  translateToNftGateway
 } from '../../common/async/lib'
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
 import { getTokensNetwork } from '../../utils/network-utils'
-import { addIpfsGateway } from '../../utils/string-utils'
 import { getLocale } from '../../../common/locale'
 
 const handler = new AsyncActionHandler()
@@ -298,6 +298,7 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
     const response = result?.response && JSON.parse(result.response)
     const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
     const nftMetadata: NFTMetadataReturnType = {
+      metadataUrl: result?.tokenUrl || '',
       chainName: tokenNetwork.chainName,
       tokenType: payload.coin === BraveWallet.CoinType.ETH
         ? 'ERC721'
@@ -305,7 +306,7 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
           ? 'SPL'
           : '',
       tokenID: payload.tokenId,
-      imageURL: response.image.startsWith('data:image/') ? response.image : addIpfsGateway(response.image),
+      imageURL: response.image.startsWith('data:image/') ? response.image : await translateToNftGateway(response.image),
       imageMimeType: 'image/*',
       floorFiatPrice: '',
       floorCryptoPrice: '',

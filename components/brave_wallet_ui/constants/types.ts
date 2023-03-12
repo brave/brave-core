@@ -821,6 +821,7 @@ export interface CreateAccountOptionsType {
 }
 
 export interface NFTMetadataReturnType {
+  metadataUrl?: string
   chainName: string
   tokenType: string
   tokenID: string
