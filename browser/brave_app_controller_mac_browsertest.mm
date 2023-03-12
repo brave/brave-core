@@ -41,6 +41,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
+  omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
   EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
