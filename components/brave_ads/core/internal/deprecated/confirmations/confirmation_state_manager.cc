@@ -120,7 +120,7 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
 
       // User data
       confirmation_dict.Set("user_data",
-                            confirmation.opted_in->user_data.Clone());
+                            confirmation.opted_in->user_data.fixed.Clone());
 
       // Credential
       if (!confirmation.opted_in->credential_base64url) {
@@ -296,9 +296,9 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
     }
   }
 
-  // User data
+  // User data (opted_in.user_data.dynamic is recreated when redeeming a token)
   if (const base::Value::Dict* const value = dict.FindDict("user_data")) {
-    opted_in.user_data = value->Clone();
+    opted_in.user_data.fixed = value->Clone();
   } else {
     return absl::nullopt;
   }

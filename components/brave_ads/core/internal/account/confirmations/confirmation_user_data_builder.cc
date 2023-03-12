@@ -15,14 +15,12 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/catalog_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/created_at_timestamp_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/diagnostic_id_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/locale_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/mutated_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/odyssey_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/studies_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/system_timestamp_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/version_number_user_data.h"
 
 namespace brave_ads {
@@ -46,20 +44,20 @@ void ConfirmationUserDataBuilder::Build(
                      base::Unretained(this), std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void ConfirmationUserDataBuilder::OnGetConversion(
     UserDataBuilderCallback callback,
     base::Value::Dict user_data) const {
   user_data.Merge(user_data::GetBuildChannel());
   user_data.Merge(user_data::GetCatalog());
   user_data.Merge(user_data::GetCreatedAtTimestamp(created_at_));
-  user_data.Merge(user_data::GetDiagnosticId());
   user_data.Merge(user_data::GetLocale());
   user_data.Merge(user_data::GetMutated());
   user_data.Merge(user_data::GetOdyssey());
   user_data.Merge(user_data::GetPlatform());
   user_data.Merge(user_data::GetRotatingHash(creative_instance_id_));
   user_data.Merge(user_data::GetStudies());
-  user_data.Merge(user_data::GetSystemTimestamp());
   user_data.Merge(user_data::GetVersionNumber());
 
   std::move(callback).Run(std::move(user_data));

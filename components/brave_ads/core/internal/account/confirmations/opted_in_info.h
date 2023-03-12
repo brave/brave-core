@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/values.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
@@ -30,7 +30,7 @@ struct OptedInInfo final {
   privacy::cbr::Token token;
   privacy::cbr::BlindedToken blinded_token;
   privacy::UnblindedTokenInfo unblinded_token;
-  base::Value::Dict user_data;
+  OptedInUserDataInfo user_data;
   absl::optional<std::string> credential_base64url;
 };
 

@@ -10,8 +10,10 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_dynamic_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -91,22 +93,13 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
                         << transaction.id << " and creative instance id "
                         << transaction.creative_instance_id);
 
-  const base::Time created_at = base::Time::Now();
-
-  const ConfirmationUserDataBuilder user_data_builder(
-      created_at, transaction.creative_instance_id,
-      transaction.confirmation_type);
-  user_data_builder.Build(
-      base::BindOnce(&Confirmations::CreateConfirmationAndRedeemToken,
-                     base::Unretained(this), transaction, created_at));
+  ConfirmTransaction(transaction);
 }
 
 void Confirmations::ProcessRetryQueue() {
-  if (retry_timer_.IsRunning()) {
-    return;
+  if (!retry_timer_.IsRunning()) {
+    Retry();
   }
-
-  Retry();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -135,45 +128,91 @@ void Confirmations::OnRetry() {
 
   BLOG(1, "Retry sending failed confirmations");
 
-  const ConfirmationInfo failed_confirmation_copy =
-      failed_confirmations.front();
-  RemoveFromRetryQueue(failed_confirmation_copy);
+  const ConfirmationInfo confirmation_copy = failed_confirmations.front();
+  RemoveFromRetryQueue(confirmation_copy);
 
-  redeem_unblinded_token_->Redeem(failed_confirmation_copy);
+  if (confirmation_copy.opted_in) {
+    return RecreateOptedInDynamicUserDataAndRedeem(confirmation_copy);
+  }
+
+  return Redeem(confirmation_copy);
 }
 
 void Confirmations::StopRetrying() {
   retry_timer_.Stop();
 }
 
-void Confirmations::CreateConfirmationAndRedeemToken(
+void Confirmations::ConfirmTransaction(const TransactionInfo& transaction) {
+  BuildDynamicUserDataForTransaction(transaction);
+}
+
+void Confirmations::BuildDynamicUserDataForTransaction(
+    const TransactionInfo& transaction) {
+  const ConfirmationDynamicUserDataBuilder user_data_builder;
+  user_data_builder.Build(
+      base::BindOnce(&Confirmations::BuildFixedUserDataForTransaction,
+                     base::Unretained(this), transaction));
+}
+
+void Confirmations::BuildFixedUserDataForTransaction(
     const TransactionInfo& transaction,
-    const base::Time& created_at,
-    base::Value::Dict user_data) {
+    base::Value::Dict dynamic_opted_in_user_data) {
+  const ConfirmationUserDataBuilder user_data_builder(
+      transaction.created_at, transaction.creative_instance_id,
+      transaction.confirmation_type);
+  user_data_builder.Build(
+      base::BindOnce(&Confirmations::CreateAndRedeem, base::Unretained(this),
+                     transaction, std::move(dynamic_opted_in_user_data)));
+}
+
+void Confirmations::CreateAndRedeem(
+    const TransactionInfo& transaction,
+    base::Value::Dict dynamic_opted_in_user_data,
+    base::Value::Dict fixed_opted_in_user_data) {
+  OptedInUserDataInfo opted_in_user_data;
+  opted_in_user_data.dynamic = std::move(dynamic_opted_in_user_data);
+  opted_in_user_data.fixed = std::move(fixed_opted_in_user_data);
+
   const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
-      token_generator_, created_at, transaction.id,
+      token_generator_, transaction.created_at, transaction.id,
       transaction.creative_instance_id, transaction.confirmation_type,
-      transaction.ad_type, std::move(user_data));
+      transaction.ad_type, opted_in_user_data);
   if (!confirmation) {
-    BLOG(0, "Failed to confirm confirmation");
+    BLOG(0, "Failed to create and redeem confirmation token");
     return;
   }
 
-  redeem_unblinded_token_->Redeem(*confirmation);
+  Redeem(*confirmation);
 }
 
-void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
+void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
+    const ConfirmationInfo& confirmation) {
+  const ConfirmationDynamicUserDataBuilder user_data_builder;
+  user_data_builder.Build(
+      base::BindOnce(&Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem,
+                     base::Unretained(this), confirmation));
+}
+
+void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
     const ConfirmationInfo& confirmation,
-    base::Value::Dict user_data) {
-  const absl::optional<ConfirmationInfo> new_confirmation = CreateConfirmation(
-      token_generator_, confirmation.created_at, confirmation.transaction_id,
-      confirmation.creative_instance_id, confirmation.type,
-      confirmation.ad_type, std::move(user_data));
-  if (!new_confirmation) {
-    return AppendToRetryQueue(confirmation);
+    base::Value::Dict dynamic_opted_in_user_data) {
+  ConfirmationInfo mutable_confirmation = confirmation;
+
+  if (confirmation.opted_in) {
+    mutable_confirmation.opted_in->user_data.dynamic =
+        std::move(dynamic_opted_in_user_data);
+
+    mutable_confirmation.opted_in->credential_base64url =
+        CreateOptedInCredential(mutable_confirmation);
   }
 
-  AppendToRetryQueue(*new_confirmation);
+  Redeem(mutable_confirmation);
+}
+
+void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
+  DCHECK(IsValid(confirmation));
+
+  redeem_unblinded_token_->Redeem(confirmation);
 }
 
 void Confirmations::OnDidSendConfirmation(
@@ -237,16 +276,7 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
   DCHECK(IsValid(confirmation));
 
   if (should_retry) {
-    if (!confirmation.was_created) {
-      const ConfirmationUserDataBuilder user_data_builder(
-          confirmation.created_at, confirmation.creative_instance_id,
-          confirmation.type);
-      user_data_builder.Build(base::BindOnce(
-          &Confirmations::CreateNewConfirmationAndAppendToRetryQueue,
-          base::Unretained(this), confirmation));
-    } else {
-      AppendToRetryQueue(confirmation);
-    }
+    AppendToRetryQueue(confirmation);
   }
 
   if (delegate_) {
