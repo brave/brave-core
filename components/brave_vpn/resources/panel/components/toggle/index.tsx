@@ -20,7 +20,11 @@ function useIsOnSelector () {
   return isConnectionActive
 }
 
-function Toggle () {
+interface ToggleProps {
+  disabled: boolean
+}
+
+function Toggle (props: ToggleProps) {
   const dispatch = useDispatch()
   const isOn = useIsOnSelector()
   const status = useSelector(state => state.connectionStatus)
@@ -36,6 +40,7 @@ function Toggle () {
         onChange={handleToggleChange}
         isOn={isOn}
         brand="vpn"
+        disabled={props.disabled}
       />
       <S.StatusBox>
         {status === ConnectionState.CONNECTED && <S.ActiveIndicator />}
