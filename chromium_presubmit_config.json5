@@ -74,7 +74,7 @@
     "CheckForRelativeIncludes": ["chromium_src/"],
     "CheckParseErrors": [
       ".*tsconfig\\.json",
-      "vendor/bat-native-ads/data/test/invalid\\.json",
+      "components/brave_ads/core/test/data/invalid\\.json",
     ],
 
     // Checks to be fixed.
@@ -298,6 +298,10 @@
       "components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest\\.cc",
       "components/cosmetic_filters/renderer/cosmetic_filters_js_handler\\.h",
       "components/speedreader/renderer/speedreader_js_handler\\.h",
+    ],
+    // A temporary fix to silence a crashing presubmit check on a deleted file.
+    "CheckStableMojomChanges": [
+      "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
     ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",

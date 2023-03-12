@@ -1,7 +1,5 @@
 
 include_rules = [
-  "+bat/ads",
-  "-bat/ads/internal",
   "+bat/ledger/mojom_structs.h",
   "+brave/components/constants",
   "+content/public/browser",

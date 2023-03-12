@@ -48,7 +48,6 @@ group("browser") {
     "//brave/vendor/bat-native-ledger:headers",
 
     # these are layering violation and need to be fixed
-    "//brave/components/brave_ads/test:brave_ads_unit_tests",
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
     "//brave/components/ipfs/test:*",

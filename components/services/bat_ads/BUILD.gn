@@ -20,10 +20,11 @@ static_library("lib") {
 
   public_deps = [
     "public/interfaces",
-    "//brave/vendor/bat-native-ads",
+    "//brave/components/brave_ads/common/interfaces",
   ]
 
   deps = [
+    "//brave/components/brave_ads/core",
     "//mojo/public/cpp/bindings",
     "//mojo/public/cpp/system",
   ]

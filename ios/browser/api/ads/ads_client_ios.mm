@@ -5,7 +5,7 @@
 
 #import "ads_client_ios.h"
 #import "ads_client_bridge.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)

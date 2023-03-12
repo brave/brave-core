@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "base/types/expected.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
 #include "extensions/browser/extension_function.h"

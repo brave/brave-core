@@ -41,6 +41,7 @@ source_set("favicon_source") {
 source_set("ui") {
   # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
   check_includes = false
+  deps = []
   public_deps = []
   sources = [
     "webui/brave_adblock_internals_ui.cc",
@@ -224,7 +225,9 @@ source_set("ui") {
       ]
     }
 
-    public_deps += [ "//brave/vendor/bat-native-ads" ]
+    deps += [ "//brave/components/brave_ads/core" ]
+
+    public_deps += [ "//brave/components/brave_ads/common/interfaces" ]
   }
 
   if (toolkit_views) {
@@ -393,7 +396,7 @@ source_set("ui") {
     ]
   }
 
-  deps = [
+  deps += [
     "tabs",
     "//base",
     "//brave/app:command_ids",
@@ -413,7 +416,6 @@ source_set("ui") {
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_federated",
     "//brave/components/brave_federated/public/interfaces",

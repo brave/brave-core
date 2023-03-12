@@ -13,7 +13,7 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
-    "//brave/components/brave_ads/core/browser",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_search/common",
     "//components/schema_org/common:mojom",
     "//content/public/browser",
@@ -24,7 +24,7 @@ static_library("browser") {
   ]
 
   public_deps = [
-    "//brave/vendor/bat-native-ads",
+    "//brave/components/brave_ads/common/interfaces",
     "//third_party/blink/public/mojom:mojom_platform_headers",
   ]
 }

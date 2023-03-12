@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ads/build_channel.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/sys_info.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/build_channel.h"
+#include "brave/components/brave_ads/core/sys_info.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
 
 namespace bat_ads {
