@@ -386,6 +386,6 @@
   },
   "overrides": {
     "loader-utils": "2.0.3",
-    "json5": "2.2.2"
+    "json5": "2.2.3"
   }
 }
