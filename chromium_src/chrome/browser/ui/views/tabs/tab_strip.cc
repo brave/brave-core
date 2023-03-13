@@ -34,7 +34,7 @@
 // the class is really hard to be extended with inheritance, so using patch file
 // seems to be the most efficient way for now. If we could split this into
 // another file or child class, that'd be great.
-#define BRAVE_CALCULATE_INSERTION_INDEX                                      \
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX                \
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&    \
       tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {       \
     tabs::UpdateInsertionIndexForVerticalTabs(                               \
@@ -45,13 +45,13 @@
     continue;                                                                \
   }
 
-#define BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS                            \
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS      \
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&   \
       tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {      \
     return tabs::CalculateBoundsForVerticalDraggedViews(views, tab_strip_); \
   }
 
-#define BRAVE_PAINT_CHILDREN                                              \
+#define BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN                        \
   if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) && \
       tabs::utils::ShouldShowVerticalTabs(tab_strip_->GetBrowser())) {    \
     for (const ZOrderableTabContainerElement& child : orderable_children) \

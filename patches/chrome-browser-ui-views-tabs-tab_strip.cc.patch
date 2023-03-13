@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index 5aed267573ab4c17c08689ec142d6327f9fb1f9e..6d688786102d3d88974d1bbb4007f6decb90a2d4 100644
+index 5aed267573ab4c17c08689ec142d6327f9fb1f9e..94cf82ceb5987d220086dfc1e7c3b96babd43cd0 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
 @@ -488,6 +488,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<TabSlotView*>& views) override {
-+    BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
++    BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
      DCHECK(!views.empty());
  
      std::vector<gfx::Rect> bounds;
@@ -14,7 +14,7 @@ index 5aed267573ab4c17c08689ec142d6327f9fb1f9e..6d688786102d3d88974d1bbb4007f6de
      // index.
      std::stable_sort(orderable_children.begin(), orderable_children.end());
  
-+    BRAVE_PAINT_CHILDREN
++    BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN
      for (const ZOrderableTabContainerElement& child : orderable_children)
        child.view()->Paint(paint_info);
    }
@@ -22,7 +22,7 @@ index 5aed267573ab4c17c08689ec142d6327f9fb1f9e..6d688786102d3d88974d1bbb4007f6de
          continue;
        }
  
-+      BRAVE_CALCULATE_INSERTION_INDEX
++      BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.

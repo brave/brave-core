@@ -147,10 +147,6 @@ void BraveTab::Layout() {
       close_button_->SetButtonPadding({});
     }
   }
-
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
-    return;
-  }
 }
 
 void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
