@@ -146,7 +146,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new RewardsPanelUI(web_ui);
 #endif  // !BUILDFLAG(IS_ANDROID)
 #if !BUILDFLAG(IS_ANDROID)
-  } else if (host == kWelcomeHost) {
+  } else if (host == kWelcomeHost && !profile->IsGuestSession()) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
     return new BraveSettingsUI(web_ui, url.host());
