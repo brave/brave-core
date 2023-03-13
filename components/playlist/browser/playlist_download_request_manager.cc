@@ -13,12 +13,14 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/isolated_world_ids.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/page_transition_types.h"
@@ -67,6 +69,16 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
 
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
+  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    blink::UserAgentOverride user_agent(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
+        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
+        "Mobile/15E148 "
+        "Safari/604.1",
+        /* user_agent_metadata */ {});
+    web_contents_->SetUserAgentOverride(user_agent,
+                                        /* override_in_new_tabs= */ true);
+  }
 
   Observe(web_contents_.get());
 }

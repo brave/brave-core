@@ -7,6 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
@@ -295,4 +296,26 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
 
   ASSERT_EQ(net::SchemefulSite(GURL("https://m.youtube.com")),
             net::SchemefulSite(https_server()->GetURL("m.youtube.com", "/")));
+}
+
+class PlaylistDownloadRequestManagerWithFakeUABrowserTest
+    : public PlaylistDownloadRequestManagerBrowserTest {
+ public:
+  PlaylistDownloadRequestManagerWithFakeUABrowserTest()
+      : scoped_feature_list_(playlist::features::kPlaylistFakeUA) {}
+  ~PlaylistDownloadRequestManagerWithFakeUABrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerWithFakeUABrowserTest,
+                       FakeUAStringContainsIPhone) {
+  const auto user_agent_string = request_manager()
+                                     ->GetBackgroundWebContentsForTesting()
+                                     ->GetUserAgentOverride()
+                                     .ua_string_override;
+
+  EXPECT_TRUE(base::Contains(user_agent_string, "iPhone"));
+  EXPECT_FALSE(base::Contains(user_agent_string, "Chrome"));
 }

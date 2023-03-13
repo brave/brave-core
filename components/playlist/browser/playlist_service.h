@@ -183,6 +183,8 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, ResetAll);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest,
                            CleanUpOrphanedPlaylistItemDirs);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
+                           ShouldAlwaysGetMediaFromBackgroundWebContents);
 
   void AddObserverForTest(PlaylistServiceObserver* observer);
   void RemoveObserverForTest(PlaylistServiceObserver* observer);
@@ -207,7 +209,10 @@ class PlaylistService : public KeyedService,
   void OnThumbnailDownloaded(const std::string& id,
                              const base::FilePath& path) override;
 
-  bool ShouldDownloadOnBackground(content::WebContents* contents) const;
+  // Returns true when we should try getting media from a background web
+  // contents that is different from the given |contents|.
+  bool ShouldGetMediaFromBackgroundWebContents(
+      content::WebContents* contents) const;
 
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
   mojom::PlaylistItemPtr GetPlaylistItem(const std::string& id);

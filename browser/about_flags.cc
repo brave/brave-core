@@ -254,15 +254,24 @@
                                  kCryptoWalletsForNewInstallsFeature),      \
       }))
 
-#define PLAYLIST_FEATURE_ENTRIES                                      \
-  IF_BUILDFLAG(ENABLE_PLAYLIST,                                       \
-               EXPAND_FEATURE_ENTRIES({                               \
-                   kPlaylistFeatureInternalName,                      \
-                   "Playlist",                                        \
-                   "Enables Playlist",                                \
-                   kOsMac | kOsWin | kOsLinux | kOsAndroid,           \
-                   FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
-               }))
+#define PLAYLIST_FEATURE_ENTRIES                                       \
+  IF_BUILDFLAG(                                                        \
+      ENABLE_PLAYLIST,                                                 \
+      EXPAND_FEATURE_ENTRIES(                                          \
+          {                                                            \
+              kPlaylistFeatureInternalName,                            \
+              "Playlist",                                              \
+              "Enables Playlist",                                      \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
+          },                                                           \
+          {                                                            \
+              kPlaylistFakeUAFeatureInternalName,                      \
+              "PlaylistFakeUA",                                        \
+              "Use fake UA for playlist",                              \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
+          }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
