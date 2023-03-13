@@ -63,9 +63,9 @@
 
 #include "src/chrome/browser/ui/views/tabs/tab_strip.cc"
 
-#undef BRAVE_PAINT_CHILDREN
-#undef BRAVE_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
-#undef BRAVE_CALCULATE_INSERTION_INDEX
+#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_PAINT_CHILDREN
+#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_BOUNDS_FOR_DRAGGED_VIEWS
+#undef BRAVE_TAB_DRAG_CONTEXT_IMPL_CALCULATE_INSERTION_INDEX
 #undef TabHoverCardController
 #undef CompoundTabContainer
 #undef TabContainerImpl
