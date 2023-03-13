@@ -65,7 +65,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     Browser* guest_browser = CreateGuestBrowser();
     TabStripModel* guest_model = guest_browser->tab_strip_model();
 
-    // Check normal & private window have one blank tab.
+    // Check guest window has one blank tab.
     EXPECT_EQ("about:blank",
               guest_model->GetActiveWebContents()->GetVisibleURL().spec());
     EXPECT_EQ(1, guest_model->count());
