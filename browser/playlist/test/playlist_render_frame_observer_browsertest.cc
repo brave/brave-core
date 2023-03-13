@@ -67,9 +67,9 @@ class PlaylistRenderFrameObserverBrowserTest : public PlatformBrowserTest {
 
     // Instead, we should download contents on backgrounds when we should hide
     // the API.
-    EXPECT_EQ(
-        visibility == APIVisibility::kHidden,
-        playlist_service->ShouldDownloadOnBackground(active_web_contents));
+    EXPECT_EQ(visibility == APIVisibility::kHidden,
+              playlist_service->ShouldGetMediaFromBackgroundWebContents(
+                  active_web_contents));
 
     // Then, the WebContents used for background download always hides the API.
     auto* background_web_contents = playlist_service->download_request_manager_

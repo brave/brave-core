@@ -10,6 +10,7 @@
 #include "build/build_config.h"
 
 constexpr char kPlaylistFeatureInternalName[] = "playlist";
+constexpr char kPlaylistFakeUAFeatureInternalName[] = "playlist-fake-ua";
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 constexpr char kBraveVPNFeatureInternalName[] = "brave-vpn";
 #if BUILDFLAG(IS_WIN)

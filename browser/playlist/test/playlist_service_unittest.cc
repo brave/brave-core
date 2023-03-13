@@ -1340,4 +1340,22 @@ TEST_F(PlaylistServiceUnitTest, CleanUpOrphanedPlaylistItemDirs) {
       service->GetPlaylistItemDirPath(item.id)));
 }
 
+class PlaylistServiceWithFakeUAUnitTest : public PlaylistServiceUnitTest {
+ public:
+  PlaylistServiceWithFakeUAUnitTest()
+      : scoped_feature_list_(playlist::features::kPlaylistFakeUA) {}
+  ~PlaylistServiceWithFakeUAUnitTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(PlaylistServiceWithFakeUAUnitTest,
+       ShouldAlwaysGetMediaFromBackgroundWebContents) {
+  // When this flag is enabled, we should get videos from background web
+  // contents regardless of web contents' state, such as URL.
+  EXPECT_TRUE(
+      playlist_service()->ShouldGetMediaFromBackgroundWebContents(nullptr));
+}
+
 }  // namespace playlist

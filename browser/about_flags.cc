@@ -254,15 +254,24 @@
                                  kCryptoWalletsForNewInstallsFeature),      \
       }))
 
-#define PLAYLIST_FEATURE_ENTRIES                                      \
-  IF_BUILDFLAG(ENABLE_PLAYLIST,                                       \
-               EXPAND_FEATURE_ENTRIES({                               \
-                   kPlaylistFeatureInternalName,                      \
-                   "Playlist",                                        \
-                   "Enables Playlist",                                \
-                   kOsMac | kOsWin | kOsLinux | kOsAndroid,           \
-                   FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
-               }))
+#define PLAYLIST_FEATURE_ENTRIES                                       \
+  IF_BUILDFLAG(                                                        \
+      ENABLE_PLAYLIST,                                                 \
+      EXPAND_FEATURE_ENTRIES(                                          \
+          {                                                            \
+              kPlaylistFeatureInternalName,                            \
+              "Playlist",                                              \
+              "Enables Playlist",                                      \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
+          },                                                           \
+          {                                                            \
+              kPlaylistFakeUAFeatureInternalName,                      \
+              "PlaylistFakeUA",                                        \
+              "Use fake UA for playlist",                              \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
+          }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
@@ -331,10 +340,14 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_SHARED_PINNED_TABS                                        \
-  {"brave-shared-pinned-tabs", "Shared pinned tab",                     \
-   "Pinned tabs are shared across windows", kOsWin | kOsMac | kOsLinux, \
-   FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs)},
+#define BRAVE_SHARED_PINNED_TABS                                  \
+  EXPAND_FEATURE_ENTRIES({                                        \
+      "brave-shared-pinned-tabs",                                 \
+      "Shared pinned tab",                                        \
+      "Pinned tabs are shared across windows",                    \
+      kOsWin | kOsMac | kOsLinux,                                 \
+      FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs), \
+  })
 #else
 #define BRAVE_SHARED_PINNED_TABS
 #endif
