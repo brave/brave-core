@@ -14,7 +14,7 @@
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AdsClientMock : public AdsClient {
  public:
@@ -128,6 +128,6 @@ class AdsClientMock : public AdsClient {
                     const std::string& message));
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_MOCK_H_

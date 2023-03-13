@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::user_activity::features {
+namespace brave_ads::user_activity::features {
 
 TEST(BatAdsUserActivityFeaturesTest, Enabled) {
   // Arrange
@@ -394,4 +394,4 @@ TEST(BatAdsUserActivityFeaturesTest, ShouldDetectScreenWasLockedWhenDisabled) {
             should_detect_screen_was_locked);
 }
 
-}  // namespace ads::user_activity::features
+}  // namespace brave_ads::user_activity::features

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool ShouldAllow(PermissionRuleInterface* permission_rule) {
   DCHECK(permission_rule);
@@ -28,4 +28,4 @@ bool ShouldAllow(PermissionRuleInterface* permission_rule) {
   return false;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

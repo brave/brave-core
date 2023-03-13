@@ -163,63 +163,63 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // process, which interferes with other tests running in parallel.
   // Instead rely on the fact that the EnabledDuration P3A measurement
   // is made by the rewards service preference observer.
-  prefs->SetBoolean(ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
                                        AdsEnabledDuration::kHours, 1);
 
   // Mock turning rewards back on.
-  prefs->SetBoolean(ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   // Adjust the stored timestamp to measure a longer duration.
   auto earlier = base::Time::Now() - base::Minutes(90);
   VLOG(1) << "Backdating timestamp to " << earlier;
   prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, earlier);
 
   // Mock turning rewards off.
-  prefs->SetBoolean(ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
                                        AdsEnabledDuration::kHours, 2);
 
   // Mock turning rewards back on.
-  prefs->SetBoolean(ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto yesterday = base::Time::Now() - base::Days(1);
   VLOG(1) << "Backdating timestamp to " << yesterday;
   prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, yesterday);
 
   // Mock turning rewards off.
-  prefs->SetBoolean(ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
                                        AdsEnabledDuration::kDays, 1);
 
   // Mock turning rewards on for more than a week.
-  prefs->SetBoolean(ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto last_week = base::Time::Now() - base::Days(12);
   VLOG(1) << "Backdating timestamp to " << last_week;
   prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, last_week);
 
   // Mock turning rewards off.
-  prefs->SetBoolean(ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
                                        AdsEnabledDuration::kWeeks, 1);
 
   // Mock turning rewards on for more than a month.
-  prefs->SetBoolean(ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto last_month = base::Time::Now() - base::Days(40);
   VLOG(1) << "Backdating timestamp to " << last_month;
   prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, last_month);
 
   // Mock turning rewards off.
-  prefs->SetBoolean(ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
                                        AdsEnabledDuration::kMonths, 1);
 
   // Mock turning rewards on for our longest measured value.
-  prefs->SetBoolean(ads::prefs::kEnabled, true);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto long_ago = base::Time::Now() - base::Days(128);
   VLOG(1) << "Backdating timestamp to " << long_ago;
   prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, long_ago);
 
   // Mock turning rewards off.
-  prefs->SetBoolean(ads::prefs::kEnabled, false);
+  prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AdsEnabledDuration",
                                        AdsEnabledDuration::kQuarters, 1);
 }

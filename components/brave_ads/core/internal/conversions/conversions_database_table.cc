@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 namespace {
 
@@ -232,4 +232,4 @@ std::string Conversions::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(6, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

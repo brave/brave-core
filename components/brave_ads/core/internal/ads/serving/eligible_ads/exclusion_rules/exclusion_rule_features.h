@@ -12,7 +12,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads::exclusion_rules::features {
+namespace brave_ads::exclusion_rules::features {
 
 BASE_DECLARE_FEATURE(kFeature);
 
@@ -24,6 +24,6 @@ base::TimeDelta ExcludeAdIfDismissedWithinTimeWindow();
 
 base::TimeDelta ExcludeAdIfTransferredWithinTimeWindow();
 
-}  // namespace ads::exclusion_rules::features
+}  // namespace brave_ads::exclusion_rules::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_FEATURES_H_

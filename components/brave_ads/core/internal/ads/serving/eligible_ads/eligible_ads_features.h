@@ -9,7 +9,7 @@
 #include "base/feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 BASE_DECLARE_FEATURE(kEligibleAds);
 
@@ -17,6 +17,6 @@ bool IsEligibleAdsEnabled();
 
 AdPredictorWeightList GetAdPredictorWeights();
 
-}  // namespace ads::features
+}  // namespace brave_ads::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_FEATURES_H_

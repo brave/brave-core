@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeAdInfo {
   CreativeAdInfo();
@@ -54,6 +54,6 @@ struct CreativeAdInfo {
 
 using CreativeAdList = std::vector<CreativeAdInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_AD_INFO_H_

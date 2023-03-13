@@ -11,7 +11,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ConversionInfo final {
   ConversionInfo();
@@ -39,6 +39,6 @@ struct ConversionInfo final {
 
 using ConversionList = std::vector<ConversionInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_INFO_H_

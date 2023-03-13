@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_features.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool MaybeScreenWasLocked(const bool screen_was_locked) {
   return user_activity::features::ShouldDetectScreenWasLocked() &&
@@ -46,4 +46,4 @@ bool MaybeUpdateIdleTimeThreshold() {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

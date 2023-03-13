@@ -21,7 +21,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 class BatAdsNewTabPageAdServingObserver : public ServingObserver {
  public:
@@ -181,4 +181,4 @@ TEST_F(BatAdsNewTabPageAdServingTest,
       base::Unretained(&serving_observer_)));
 }
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

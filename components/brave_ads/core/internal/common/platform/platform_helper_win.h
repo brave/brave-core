@@ -12,7 +12,7 @@
 
 #include "base/no_destructor.h"
 
-namespace ads {
+namespace brave_ads {
 
 class PlatformHelperWin final : public PlatformHelper {
  protected:
@@ -27,6 +27,6 @@ class PlatformHelperWin final : public PlatformHelper {
   PlatformType GetType() const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_PLATFORM_PLATFORM_HELPER_WIN_H_

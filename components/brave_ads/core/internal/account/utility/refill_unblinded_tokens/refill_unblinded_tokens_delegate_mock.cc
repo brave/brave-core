@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 RefillUnblindedTokensDelegateMock::RefillUnblindedTokensDelegateMock() =
     default;
@@ -13,4 +13,4 @@ RefillUnblindedTokensDelegateMock::RefillUnblindedTokensDelegateMock() =
 RefillUnblindedTokensDelegateMock::~RefillUnblindedTokensDelegateMock() =
     default;
 
-}  // namespace ads
+}  // namespace brave_ads

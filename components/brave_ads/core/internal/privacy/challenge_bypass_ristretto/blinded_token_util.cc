@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens) {
   std::vector<BlindedToken> blinded_tokens;
@@ -43,4 +43,4 @@ std::vector<challenge_bypass_ristretto::BlindedToken> ToRawBlindedTokens(
   return raw_tokens;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::confirmations {
+namespace brave_ads::confirmations {
 
 namespace {
 
@@ -71,4 +71,4 @@ TEST_F(BatAdsLegacyConfirmationMigrationTest, AlreadyMigrated) {
   EXPECT_EQ(kMigratedConfirmationJsonHash, GetHash());
 }
 
-}  // namespace ads::confirmations
+}  // namespace brave_ads::confirmations

@@ -10,7 +10,7 @@
 
 #include "base/notreached.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -84,4 +84,4 @@ HistoryItemList ConfirmationHistoryFilter::Apply(
   return filtered_history;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

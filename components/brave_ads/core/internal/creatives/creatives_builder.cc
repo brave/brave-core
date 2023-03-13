@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 // TODO(https://github.com/brave/brave-browser/issues/24938): Reduce cognitive
 // complexity.
@@ -360,4 +360,4 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
   return creatives;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

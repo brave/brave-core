@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 PipelineInfo::PipelineInfo(const int version,
                            std::string timestamp,
@@ -29,4 +29,4 @@ PipelineInfo& PipelineInfo::operator=(PipelineInfo&& other) noexcept = default;
 
 PipelineInfo::~PipelineInfo() = default;
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

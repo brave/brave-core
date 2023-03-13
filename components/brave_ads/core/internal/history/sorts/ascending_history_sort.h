@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AscendingHistorySort final : public HistorySortInterface {
  public:
   HistoryItemList Apply(const HistoryItemList& history) const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_SORTS_ASCENDING_HISTORY_SORT_H_

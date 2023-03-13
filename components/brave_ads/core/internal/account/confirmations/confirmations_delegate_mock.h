@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ConfirmationInfo;
 
@@ -33,6 +33,6 @@ class ConfirmationsDelegateMock : public ConfirmationsDelegate {
   MOCK_METHOD(void, OnFailedToConfirm, (const ConfirmationInfo& confirmation));
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_DELEGATE_MOCK_H_

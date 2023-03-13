@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 EligibleAdsBase::EligibleAdsBase(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -21,4 +21,4 @@ EligibleAdsBase::EligibleAdsBase(
 
 EligibleAdsBase::~EligibleAdsBase() = default;
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

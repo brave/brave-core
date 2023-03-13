@@ -8,7 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 int GetAdsReceivedForDateRange(const TransactionList& transactions,
                                const base::Time from_time,
@@ -21,4 +21,4 @@ int GetAdsReceivedForDateRange(const TransactionList& transactions,
       }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

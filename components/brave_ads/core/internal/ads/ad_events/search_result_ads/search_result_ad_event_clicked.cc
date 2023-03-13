@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 
-namespace ads::search_result_ads {
+namespace brave_ads::search_result_ads {
 
 void AdEventClicked::FireEvent(const SearchResultAdInfo& ad) {
   BLOG(3, "Clicked search result ad with placement id "
@@ -29,4 +29,4 @@ void AdEventClicked::FireEvent(const SearchResultAdInfo& ad) {
              }));
 }
 
-}  // namespace ads::search_result_ads
+}  // namespace brave_ads::search_result_ads

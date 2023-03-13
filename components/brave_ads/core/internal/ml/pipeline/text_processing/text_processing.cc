@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/pipeline_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 // static
 std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
@@ -116,4 +116,4 @@ PredictionMap TextProcessing::ClassifyPage(const std::string& content) const {
   return GetTopPredictions(content);
 }
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

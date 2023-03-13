@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct TransactionInfo final {
   TransactionInfo();
@@ -42,6 +42,6 @@ struct TransactionInfo final {
 
 using TransactionList = std::vector<TransactionInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTION_INFO_H_

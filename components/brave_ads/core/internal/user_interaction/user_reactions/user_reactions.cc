@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 UserReactions::UserReactions(Account* account) : account_(account) {
   DCHECK(account_);
@@ -45,4 +45,4 @@ void UserReactions::OnDidSaveAd(const AdContentInfo& ad_content) {
                     ConfirmationType::kSaved);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_creative_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool CatalogCreativeInfo::operator==(const CatalogCreativeInfo& other) const {
   return creative_instance_id == other.creative_instance_id &&
@@ -16,4 +16,4 @@ bool CatalogCreativeInfo::operator!=(const CatalogCreativeInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

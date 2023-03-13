@@ -8,7 +8,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuersInfo;
 
@@ -31,6 +31,6 @@ class IssuersDelegate {
   virtual ~IssuersDelegate() = default;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_DELEGATE_H_

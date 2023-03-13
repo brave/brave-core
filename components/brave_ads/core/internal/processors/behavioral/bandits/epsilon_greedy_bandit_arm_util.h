@@ -8,11 +8,11 @@
 
 #include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 void SetEpsilonGreedyBanditArms(const EpsilonGreedyBanditArmMap& arms);
 EpsilonGreedyBanditArmMap GetEpsilonGreedyBanditArms();
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARM_UTIL_H_

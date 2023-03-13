@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/promoted_content_ads/promoted_content_ads_per_hour_permission_rule.h"
 
-namespace ads::promoted_content_ads {
+namespace brave_ads::promoted_content_ads {
 
 // static
 bool PermissionRules::HasPermission() {
@@ -32,4 +32,4 @@ bool PermissionRules::HasPermission() {
   return ShouldAllow(&ads_per_hour_permission_rule);
 }
 
-}  // namespace ads::promoted_content_ads
+}  // namespace brave_ads::promoted_content_ads

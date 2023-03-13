@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_types.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_hosts_factory.h"
 
-namespace ads::server {
+namespace brave_ads::server {
 
 namespace {
 
@@ -41,4 +41,4 @@ std::string GetAnonymousHost() {
   return GetHost(ServerHostType::kAnonymous);
 }
 
-}  // namespace ads::server
+}  // namespace brave_ads::server

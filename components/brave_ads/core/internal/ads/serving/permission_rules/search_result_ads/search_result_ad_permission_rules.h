@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_base.h"
 
-namespace ads::search_result_ads {
+namespace brave_ads::search_result_ads {
 
 class PermissionRules final : public PermissionRulesBase {
  public:
   static bool HasPermission();
 };
 
-}  // namespace ads::search_result_ads
+}  // namespace brave_ads::search_result_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_PERMISSION_RULES_H_

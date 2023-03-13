@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 TEST(BatAdsBuildChannelUserDataTest, GetBuildChannel) {
   // Arrange
@@ -28,4 +28,4 @@ TEST(BatAdsBuildChannelUserDataTest, GetBuildChannel) {
   EXPECT_EQ(expected_user_data, user_data);
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

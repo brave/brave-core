@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 EligibleAdsV2::EligibleAdsV2(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -135,4 +135,4 @@ CreativeNotificationAdList EligibleAdsV2::FilterCreativeAds(
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

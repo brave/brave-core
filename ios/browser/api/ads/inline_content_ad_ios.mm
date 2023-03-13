@@ -30,7 +30,7 @@
 @implementation InlineContentAdIOS
 
 - (instancetype)initWithInlineContentAdInfo:
-    (const ads::InlineContentAdInfo&)info {
+    (const brave_ads::InlineContentAdInfo&)info {
   if ((self = [super init])) {
     self.placementID = base::SysUTF8ToNSString(info.placement_id);
     self.creativeInstanceID =

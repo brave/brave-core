@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class HistoryFilterFactory final {
  public:
   static std::unique_ptr<HistoryFilterInterface> Build(HistoryFilterType type);
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_FILTERS_HISTORY_FILTER_FACTORY_H_

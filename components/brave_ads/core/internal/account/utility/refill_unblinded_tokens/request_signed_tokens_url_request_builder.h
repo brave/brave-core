@@ -16,7 +16,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 class RequestSignedTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
@@ -51,6 +51,6 @@ class RequestSignedTokensUrlRequestBuilder final
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_UNBLINDED_TOKENS_REQUEST_SIGNED_TOKENS_URL_REQUEST_BUILDER_H_

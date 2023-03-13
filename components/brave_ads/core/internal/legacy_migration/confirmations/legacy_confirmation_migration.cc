@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration_util.h"
 
-namespace ads::confirmations {
+namespace brave_ads::confirmations {
 
 namespace {
 
@@ -83,4 +83,4 @@ void Migrate(InitializeCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ads::confirmations
+}  // namespace brave_ads::confirmations

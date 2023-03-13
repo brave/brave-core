@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads::locale {
+namespace brave_ads::locale {
 
 bool IsSupportedCountryCodeForSubdivisionTargeting(
     const std::string& country_code);
@@ -17,6 +17,6 @@ std::string GetCountryCode(const std::string& code);
 
 std::string GetSubdivisionCode(const std::string& code);
 
-}  // namespace ads::locale
+}  // namespace brave_ads::locale
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_LOCALE_SUBDIVISION_CODE_UTIL_H_

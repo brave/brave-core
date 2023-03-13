@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsViaHeaderUtilTest : public UnitTestBase {};
 
@@ -42,4 +42,4 @@ TEST_F(BatAdsViaHeaderUtilTest, BuildViaHeaderForABrightFuture) {
   EXPECT_EQ(expect_via_header, via_header);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

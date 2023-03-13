@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_features.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -52,4 +52,4 @@ void LogFeatures() {
               << GetStatus(user_activity::features::IsEnabled()));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

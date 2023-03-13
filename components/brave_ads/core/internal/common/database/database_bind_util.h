@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "sql/statement.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 std::string BuildBindingParameterPlaceholder(size_t parameters_count);
 std::string BuildBindingParameterPlaceholders(size_t parameters_count,
@@ -29,6 +29,6 @@ void BindString(mojom::DBCommandInfo* command,
                 int index,
                 const std::string& value);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_BIND_UTIL_H_

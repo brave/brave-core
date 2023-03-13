@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativePromotedContentAdInfo;
 struct PromotedContentAdInfo;
@@ -20,6 +20,6 @@ PromotedContentAdInfo BuildPromotedContentAd(
     const CreativePromotedContentAdInfo& creative_promoted_content_ad,
     const std::string& placement_id);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_BUILDER_H_

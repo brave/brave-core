@@ -8,10 +8,10 @@
 
 #include "brave/components/brave_ads/core/export.h"
 
-namespace ads::data::resource {
+namespace brave_ads::data::resource {
 
 ADS_EXPORT extern const char kCatalogJsonSchemaFilename[];
 
-}  // namespace ads::data::resource
+}  // namespace brave_ads::data::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_AD_CONSTANTS_H_

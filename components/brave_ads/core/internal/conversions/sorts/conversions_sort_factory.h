@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversion_sort_types.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ConversionsSortFactory final {
  public:
@@ -19,6 +19,6 @@ class ConversionsSortFactory final {
       ConversionSortType type);
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_SORTS_CONVERSIONS_SORT_FACTORY_H_

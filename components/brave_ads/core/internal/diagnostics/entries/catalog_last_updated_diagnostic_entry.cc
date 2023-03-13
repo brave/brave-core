@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kName[] = "Catalog last updated";
@@ -33,4 +33,4 @@ std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
                                  /*use_sentence_style*/ false);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

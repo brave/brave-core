@@ -19,7 +19,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/re2/src/re2/re2.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -135,4 +135,4 @@ void ParseAndReplaceTags(std::string* out_text) {
   ReplaceTagsForText(tags, out_text);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

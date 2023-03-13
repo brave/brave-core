@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 class RedeemUnblindedPaymentTokensDelegate {
  public:
@@ -40,6 +40,6 @@ class RedeemUnblindedPaymentTokensDelegate {
   virtual ~RedeemUnblindedPaymentTokensDelegate() = default;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_DELEGATE_H_

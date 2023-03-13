@@ -21,7 +21,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -186,4 +186,4 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
   return payment_request_dto;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

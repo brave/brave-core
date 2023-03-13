@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 TabManager* g_tab_manager_instance = nullptr;
@@ -285,4 +285,4 @@ void TabManager::NotifyTabDidStopPlayingMedia(const int32_t id) const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

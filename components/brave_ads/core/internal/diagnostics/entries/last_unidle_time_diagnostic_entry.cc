@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -37,4 +37,4 @@ std::string LastUnIdleTimeDiagnosticEntry::GetValue() const {
                                  /*use_sentence_style*/ false);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

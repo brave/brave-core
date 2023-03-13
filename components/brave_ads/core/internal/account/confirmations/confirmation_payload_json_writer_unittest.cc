@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -36,4 +36,4 @@ TEST_F(BatAdsConfirmationPayloadJsonWriterTest, WriteJson) {
   EXPECT_EQ(kExpectedJson, json);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

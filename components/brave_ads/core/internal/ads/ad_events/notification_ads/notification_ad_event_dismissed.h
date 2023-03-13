@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NotificationAdInfo;
 
@@ -20,6 +20,6 @@ class AdEventDismissed final : public AdEventInterface<NotificationAdInfo> {
 };
 
 }  // namespace notification_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_DISMISSED_H_

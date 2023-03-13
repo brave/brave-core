@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
 
-namespace ads::new_tab_page_ads::features {
+namespace brave_ads::new_tab_page_ads::features {
 
 namespace {
 constexpr char kFeatureName[] = "NewTabPageAds";
@@ -17,4 +17,4 @@ bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
 }
 
-}  // namespace ads::new_tab_page_ads::features
+}  // namespace brave_ads::new_tab_page_ads::features

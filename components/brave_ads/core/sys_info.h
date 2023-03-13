@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 // Returns system information. |device_id| containing machine characteristics
 // which should not be stored to disk or transmitted. |is_uncertain_future|
 // containing |true| for guest operating systems otherwise |false|.
 mojom::SysInfo& SysInfo();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_SYS_INFO_H_

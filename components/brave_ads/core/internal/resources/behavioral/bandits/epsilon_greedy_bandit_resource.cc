@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 EpsilonGreedyBandit::EpsilonGreedyBandit(Catalog* catalog) : catalog_(catalog) {
   DCHECK(catalog_);
@@ -53,4 +53,4 @@ void EpsilonGreedyBandit::OnDidUpdateCatalog(const CatalogInfo& catalog) {
   LoadFromCatalog(catalog);
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

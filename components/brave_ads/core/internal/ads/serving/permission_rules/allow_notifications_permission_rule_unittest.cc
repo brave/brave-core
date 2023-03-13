@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {};
 
@@ -38,4 +38,4 @@ TEST_F(BatAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
   EXPECT_FALSE(is_allowed);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

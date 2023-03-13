@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
@@ -145,6 +145,6 @@ class Account final : public PrefManagerObserver,
   std::unique_ptr<Wallet> wallet_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_H_

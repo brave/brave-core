@@ -8,7 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
@@ -22,4 +22,4 @@ bool DoesHistoryRespectRollingTimeConstraint(
   return count < cap;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

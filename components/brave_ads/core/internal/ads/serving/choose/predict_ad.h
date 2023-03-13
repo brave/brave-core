@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 absl::optional<T> PredictAd(const targeting::UserModelInfo& user_model,
@@ -33,6 +33,6 @@ absl::optional<T> PredictAd(const targeting::UserModelInfo& user_model,
   return SampleAdFromPredictors(creative_ad_predictors);
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_PREDICT_AD_H_

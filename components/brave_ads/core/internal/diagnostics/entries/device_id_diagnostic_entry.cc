@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -35,4 +35,4 @@ std::string DeviceIdDiagnosticEntry::GetValue() const {
   return device_id;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

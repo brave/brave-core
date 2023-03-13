@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct VerifiableConversionInfo final {
   bool operator==(const VerifiableConversionInfo& other) const;
@@ -20,6 +20,6 @@ struct VerifiableConversionInfo final {
   std::string public_key;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_VERIFIABLE_CONVERSION_INFO_H_

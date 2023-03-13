@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 PublicKey GetPublicKey() {
   return PublicKey(kPublicKeyBase64);
@@ -22,4 +22,4 @@ PublicKey GetInvalidPublicKey() {
   return PublicKey(kInvalidBase64);
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

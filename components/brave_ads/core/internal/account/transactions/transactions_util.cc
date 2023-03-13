@@ -10,7 +10,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
                                             const base::Time from_time,
@@ -27,4 +27,4 @@ TransactionList GetTransactionsForDateRange(const TransactionList& transactions,
   return filtered_transactions;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

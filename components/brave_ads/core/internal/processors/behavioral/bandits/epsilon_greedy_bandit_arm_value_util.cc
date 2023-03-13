@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 namespace {
 
@@ -86,4 +86,4 @@ EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
   return arms;
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

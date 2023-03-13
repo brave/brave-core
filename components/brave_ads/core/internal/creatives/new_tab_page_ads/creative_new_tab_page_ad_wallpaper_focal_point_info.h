@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_WALLPAPER_FOCAL_POINT_INFO_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_WALLPAPER_FOCAL_POINT_INFO_H_
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeNewTabPageAdWallpaperFocalPointInfo final {
   int x = 0;
@@ -18,6 +18,6 @@ bool operator==(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
 bool operator!=(const CreativeNewTabPageAdWallpaperFocalPointInfo& lhs,
                 const CreativeNewTabPageAdWallpaperFocalPointInfo& rhs);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_WALLPAPER_FOCAL_POINT_INFO_H_

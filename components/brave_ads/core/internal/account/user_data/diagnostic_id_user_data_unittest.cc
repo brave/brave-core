@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 class BatAdsDiagnosticIdUserDataTest : public UnitTestBase {};
 
@@ -54,4 +54,4 @@ TEST_F(BatAdsDiagnosticIdUserDataTest, DoNotGetEmptyDiagnosticId) {
   EXPECT_TRUE(user_data.empty());
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

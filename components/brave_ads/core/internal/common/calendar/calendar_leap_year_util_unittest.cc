@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsCalendarLeapYearUtilTest, IsLeapYear) {
   // Arrange
@@ -42,4 +42,4 @@ TEST(BatAdsCalendarLeapYearUtilTest, IsCommonYear) {
   // Assert
 }
 
-}  // namespace ads
+}  // namespace brave_ads

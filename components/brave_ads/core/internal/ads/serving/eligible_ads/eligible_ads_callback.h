@@ -8,11 +8,11 @@
 
 #include "base/functional/callback.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 using GetEligibleAdsCallback = base::OnceCallback<void(const bool, const T&)>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_CALLBACK_H_

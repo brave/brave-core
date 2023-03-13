@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -53,4 +53,4 @@ TEST_F(BatAdsAdContentUtilTest, Build) {
   EXPECT_EQ(expected_ad_content, ad_content);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

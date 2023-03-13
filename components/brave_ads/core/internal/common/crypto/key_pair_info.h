@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <vector>
 
-namespace ads::crypto {
+namespace brave_ads::crypto {
 
 struct KeyPairInfo final {
   KeyPairInfo();
@@ -31,6 +31,6 @@ struct KeyPairInfo final {
   std::vector<uint8_t> secret_key;
 };
 
-}  // namespace ads::crypto
+}  // namespace brave_ads::crypto
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CRYPTO_KEY_PAIR_INFO_H_

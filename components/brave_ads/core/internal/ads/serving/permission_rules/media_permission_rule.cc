@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -41,4 +41,4 @@ const std::string& MediaPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

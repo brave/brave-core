@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 class PermissionRuleInterface {
  public:
@@ -19,6 +19,6 @@ class PermissionRuleInterface {
   virtual const std::string& GetLastMessage() const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_PERMISSION_RULE_INTERFACE_H_

@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_base.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 class PermissionRules final : public PermissionRulesBase {
  public:
   static bool HasPermission();
 };
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_PERMISSION_RULES_H_

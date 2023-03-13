@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsIdleDetectionUtilTest : public UnitTestBase {};
 
@@ -217,4 +217,4 @@ TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
   EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

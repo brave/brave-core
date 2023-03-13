@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_ios.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kPlatformName[] = "ios";
@@ -25,4 +25,4 @@ PlatformType PlatformHelperIos::GetType() const {
   return PlatformType::kIOS;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

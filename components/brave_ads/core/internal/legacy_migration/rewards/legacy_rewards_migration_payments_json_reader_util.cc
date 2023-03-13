@@ -10,7 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 namespace {
 
@@ -98,4 +98,4 @@ absl::optional<PaymentList> ParsePayments(const base::Value& value) {
   return *payments;
 }
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader

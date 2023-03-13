@@ -11,11 +11,11 @@
 
 #include "base/containers/flat_map.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::flat_map<std::string, std::string> ToUrlResponseHeaders(
     const std::vector<std::string>& headers);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_URL_RESPONSE_HEADERS_UTIL_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_value_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 void SetEpsilonGreedyBanditEligibleSegments(const SegmentList& segments) {
   AdsClientHelper::GetInstance()->SetListPref(
@@ -29,4 +29,4 @@ SegmentList GetEpsilonGreedyBanditEligibleSegments() {
   return SegmentsFromValue(*list);
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

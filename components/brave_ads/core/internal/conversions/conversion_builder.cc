@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 absl::optional<ConversionInfo> BuildConversion(
     const mojom::SearchResultAdInfoPtr& ad_mojom) {
@@ -33,4 +33,4 @@ absl::optional<ConversionInfo> BuildConversion(
   return conversion;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

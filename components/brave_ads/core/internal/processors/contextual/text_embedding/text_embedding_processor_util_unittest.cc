@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 class BatAdsTextEmbeddingProcessorUtilTest : public UnitTestBase {};
 
@@ -71,4 +71,4 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
   }
 }
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor

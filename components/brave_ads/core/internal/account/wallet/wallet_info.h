@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct WalletInfo final {
   bool IsValid() const;
@@ -24,6 +24,6 @@ struct WalletInfo final {
   std::string secret_key;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_WALLET_WALLET_INFO_H_

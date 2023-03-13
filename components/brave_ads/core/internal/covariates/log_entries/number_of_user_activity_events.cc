@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 NumberOfUserActivityEvents::NumberOfUserActivityEvents(
     UserActivityEventType event_type,
@@ -35,4 +35,4 @@ std::string NumberOfUserActivityEvents::GetValue() const {
       GetNumberOfUserActivityEvents(events, event_type_));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

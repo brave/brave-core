@@ -8,11 +8,11 @@
 
 #include <cstdint>
 
-namespace ads::database {
+namespace brave_ads::database {
 
 constexpr int32_t kVersion = 25;
 constexpr int32_t kCompatibleVersion = 25;
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_DATABASE_DATABASE_CONSTANTS_H_

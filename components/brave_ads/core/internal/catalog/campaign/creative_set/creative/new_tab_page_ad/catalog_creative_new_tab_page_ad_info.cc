@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_creative_new_tab_page_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool CatalogCreativeNewTabPageAdInfo::operator==(
     const CatalogCreativeNewTabPageAdInfo& other) const {
@@ -17,4 +17,4 @@ bool CatalogCreativeNewTabPageAdInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -10,7 +10,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
 
@@ -149,4 +149,4 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   return purchase_intent;
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace ml::pipeline {
 class TextProcessing;
@@ -47,6 +47,6 @@ class TextClassification final {
 };
 
 }  // namespace resource
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_CONTEXTUAL_TEXT_CLASSIFICATION_TEXT_CLASSIFICATION_RESOURCE_H_

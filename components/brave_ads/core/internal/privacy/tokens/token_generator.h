@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 namespace cbr {
 class Token;
@@ -21,6 +21,6 @@ class TokenGenerator : public TokenGeneratorInterface {
   std::vector<cbr::Token> Generate(int count) const override;
 };
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_H_

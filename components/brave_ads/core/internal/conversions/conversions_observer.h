@@ -8,7 +8,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ConversionQueueItemInfo;
 
@@ -23,6 +23,6 @@ class ConversionsObserver : public base::CheckedObserver {
       const ConversionQueueItemInfo& conversion_queue_item) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_OBSERVER_H_

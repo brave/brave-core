@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsIssuersUrlRequestBuilderTest : public UnitTestBase {};
 
@@ -34,4 +34,4 @@ TEST_F(BatAdsIssuersUrlRequestBuilderTest, BuildUrl) {
   EXPECT_EQ(expected_url_request, url_request);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

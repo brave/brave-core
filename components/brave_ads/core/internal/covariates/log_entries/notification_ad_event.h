@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/covariates/covariate_log_entry_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class NotificationAdEvent final : public CovariateLogEntryInterface {
  public:
@@ -27,6 +27,6 @@ class NotificationAdEvent final : public CovariateLogEntryInterface {
       mojom::NotificationAdEventType::kTimedOut;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_LOG_ENTRIES_NOTIFICATION_AD_EVENT_H_

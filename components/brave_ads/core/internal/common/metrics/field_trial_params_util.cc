@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string GetFieldTrialParamByFeatureAsString(
     const base::Feature& feature,
@@ -53,4 +53,4 @@ base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
   return *time_delta;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

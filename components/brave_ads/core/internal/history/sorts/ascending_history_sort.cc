@@ -8,7 +8,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 HistoryItemList AscendingHistorySort::Apply(
     const HistoryItemList& history) const {
@@ -20,4 +20,4 @@ HistoryItemList AscendingHistorySort::Apply(
   return sorted_history;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

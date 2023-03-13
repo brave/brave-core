@@ -17,7 +17,7 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
-namespace ads {
+namespace brave_ads {
 
 Database::Database(base::FilePath path) : db_path_(std::move(path)) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
@@ -230,4 +230,4 @@ void Database::OnMemoryPressure(
   db_.TrimMemory();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

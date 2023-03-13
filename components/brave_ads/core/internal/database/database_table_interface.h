@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 class TableInterface {
  public:
@@ -22,6 +22,6 @@ class TableInterface {
                        int to_version) = 0;
 };
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_TABLE_INTERFACE_H_

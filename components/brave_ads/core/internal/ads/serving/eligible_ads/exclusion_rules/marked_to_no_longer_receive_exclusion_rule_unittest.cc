@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kSegment[] = "segment";
@@ -47,4 +47,4 @@ TEST_F(BatAdsMarkedToNoLongerReceiveExclusionRuleTest, DoNotAllowAd) {
   EXPECT_TRUE(should_exclude);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

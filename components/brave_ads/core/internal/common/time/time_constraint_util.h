@@ -13,13 +13,13 @@ class Time;
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 bool DoesHistoryRespectRollingTimeConstraint(
     const std::vector<base::Time>& history,
     base::TimeDelta time_constraint,
     int cap);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_CONSTRAINT_UTIL_H_

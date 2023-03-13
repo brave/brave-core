@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_PERMISSION_RULE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_PERMISSION_RULE_UTIL_H_
 
-namespace ads {
+namespace brave_ads {
 
 class PermissionRuleInterface;
 
 bool ShouldAllow(PermissionRuleInterface* permission_rule);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_PERMISSION_RULE_UTIL_H_

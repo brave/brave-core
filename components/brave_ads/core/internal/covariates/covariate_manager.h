@@ -18,7 +18,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 // |CovariateManager| collects training data for federated services such as
 // learning, tuning and evaluation. A row in the training data set is called
@@ -57,6 +57,6 @@ class CovariateManager final {
       covariate_log_entries_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_MANAGER_H_

@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-namespace ads {
+namespace brave_ads {
 
 // Types of transitions between pages.
 //
@@ -100,6 +100,6 @@ enum PageTransitionType : uint32_t {
   kPageTransitionQualifierMask = 0xFFFFFF00,
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PAGE_TRANSITION_TYPES_H_

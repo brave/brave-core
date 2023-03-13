@@ -11,7 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "third_party/re2/src/re2/re2.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -62,4 +62,4 @@ std::string StripNonAlphaNumericCharacters(const std::string& value) {
   return Strip(value, pattern);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

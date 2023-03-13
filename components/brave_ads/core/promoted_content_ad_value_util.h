@@ -8,13 +8,13 @@
 
 #include "base/values.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct PromotedContentAdInfo;
 
 base::Value::Dict PromotedContentAdToValue(const PromotedContentAdInfo& ad);
 PromotedContentAdInfo PromotedContentAdFromValue(const base::Value::Dict& root);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PROMOTED_CONTENT_AD_VALUE_UTIL_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing_random_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 bool ShouldPaceAd(const T& ad) {
@@ -27,6 +27,6 @@ bool ShouldPaceAd(const T& ad) {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_UTIL_H_

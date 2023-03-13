@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/covariates/covariate_log_entry_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class LastNotificationAdWasClicked final : public CovariateLogEntryInterface {
  public:
@@ -20,6 +20,6 @@ class LastNotificationAdWasClicked final : public CovariateLogEntryInterface {
   std::string GetValue() const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_LOG_ENTRIES_LAST_NOTIFICATION_AD_WAS_CLICKED_H_

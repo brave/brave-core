@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool IsPaymentsIssuerValid(const IssuersInfo& issuers) {
   const absl::optional<IssuerInfo> payments_issuer =
@@ -36,4 +36,4 @@ bool IsPaymentsIssuerValid(const IssuersInfo& issuers) {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

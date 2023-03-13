@@ -13,7 +13,7 @@ class Time;
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogInfo;
 
@@ -36,6 +36,6 @@ bool DoesCatalogExist();
 bool HasCatalogChanged(const std::string& catalog_id);
 bool HasCatalogExpired();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_UTIL_H_

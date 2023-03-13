@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INTERFACE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INTERFACE_H_
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 class AdEventInterface {
@@ -16,6 +16,6 @@ class AdEventInterface {
   virtual void FireEvent(const T&) = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INTERFACE_H_

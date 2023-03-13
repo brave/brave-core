@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 namespace {
 
@@ -85,4 +85,4 @@ TEST_F(BatAdsTextEmbeddingResourceTest, LoadNotInitializedFile) {
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

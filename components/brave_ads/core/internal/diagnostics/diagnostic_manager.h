@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 class DiagnosticManager final {
  public:
@@ -37,6 +37,6 @@ class DiagnosticManager final {
   DiagnosticMap diagnostics_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_MANAGER_H_

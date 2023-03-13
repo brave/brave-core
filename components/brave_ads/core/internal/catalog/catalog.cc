@@ -26,7 +26,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -182,4 +182,4 @@ void Catalog::OnDidMigrateDatabase(const int /*from_version*/,
   ResetCatalog();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

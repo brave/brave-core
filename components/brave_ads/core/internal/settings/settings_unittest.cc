@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsSettingsTest : public UnitTestBase {};
 
@@ -101,4 +101,4 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   EXPECT_EQ(10, ads_per_hour);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

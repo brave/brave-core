@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/export.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   InlineContentAdInfo();
@@ -37,6 +37,6 @@ struct ADS_EXPORT InlineContentAdInfo final : AdInfo {
   std::string cta_text;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INLINE_CONTENT_AD_INFO_H_

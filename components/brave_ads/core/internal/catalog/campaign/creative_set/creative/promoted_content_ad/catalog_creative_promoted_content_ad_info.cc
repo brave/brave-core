@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool CatalogCreativePromotedContentAdInfo::operator==(
     const CatalogCreativePromotedContentAdInfo& other) const {
@@ -17,4 +17,4 @@ bool CatalogCreativePromotedContentAdInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -39,10 +39,10 @@ constexpr base::StringPiece kSegments[] = {"architecture",
                                            "crypto"};
 }  // namespace
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 base::span<const base::StringPiece> GetSegments() {
   return kSegments;
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

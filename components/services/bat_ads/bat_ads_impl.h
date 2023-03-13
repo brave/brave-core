@@ -17,11 +17,11 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 class Ads;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
-}  // namespace ads
+}  // namespace brave_ads
 
 namespace bat_ads {
 
@@ -88,31 +88,31 @@ class BatAdsImpl : public mojom::BatAds {
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::InlineContentAdEventType event_type) override;
+      brave_ads::mojom::InlineContentAdEventType event_type) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::NewTabPageAdEventType event_type) override;
+      brave_ads::mojom::NewTabPageAdEventType event_type) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      ads::mojom::NotificationAdEventType event_type) override;
+      brave_ads::mojom::NotificationAdEventType event_type) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::PromotedContentAdEventType event_type) override;
+      brave_ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      ads::mojom::SearchResultAdEventType event_type) override;
+      brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
+      brave_ads::mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType ad_type,
+      brave_ads::mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetHistory(base::Time from_time,
@@ -137,7 +137,7 @@ class BatAdsImpl : public mojom::BatAds {
 
  private:
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<ads::Ads> ads_;
+  std::unique_ptr<brave_ads::Ads> ads_;
 };
 
 }  // namespace bat_ads

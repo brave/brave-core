@@ -8,10 +8,10 @@
 
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 PredictionMap Softmax(const PredictionMap& predictions);
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_ML_PREDICTION_UTIL_H_

@@ -10,7 +10,7 @@
 #include "base/ranges/algorithm.h"
 #include "components/variations/variations_switches.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -32,4 +32,4 @@ bool DidOverrideCommandLineSwitchValues() {
       });
 }
 
-}  // namespace ads
+}  // namespace brave_ads

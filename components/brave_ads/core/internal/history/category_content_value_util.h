@@ -8,7 +8,7 @@
 
 #include "base/values.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CategoryContentInfo;
 
@@ -16,6 +16,6 @@ base::Value::Dict CategoryContentToValue(
     const CategoryContentInfo& category_content);
 CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_CATEGORY_CONTENT_VALUE_UTIL_H_

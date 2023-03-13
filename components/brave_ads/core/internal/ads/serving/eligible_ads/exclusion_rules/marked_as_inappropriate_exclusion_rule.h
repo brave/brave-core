@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeAdInfo;
 
@@ -27,6 +27,6 @@ class MarkedAsInappropriateExclusionRule final
   std::string last_message_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_MARKED_AS_INAPPROPRIATE_EXCLUSION_RULE_H_

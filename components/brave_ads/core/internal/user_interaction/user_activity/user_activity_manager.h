@@ -18,7 +18,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 struct TabInfo;
 
@@ -65,6 +65,6 @@ class UserActivityManager final : public BrowserManagerObserver,
   UserActivityEventList history_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_MANAGER_H_

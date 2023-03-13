@@ -11,7 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -78,4 +78,4 @@ void AdEventHistory::ResetForId(const std::string& id) {
   history_[id] = {};
 }
 
-}  // namespace ads
+}  // namespace brave_ads

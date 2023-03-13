@@ -14,7 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -84,4 +84,4 @@ std::string UrlRequestHeadersToString(
   return log;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

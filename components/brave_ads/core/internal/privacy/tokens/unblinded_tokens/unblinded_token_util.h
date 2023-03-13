@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 absl::optional<UnblindedTokenInfo> MaybeGetUnblindedToken();
 
@@ -29,6 +29,6 @@ int UnblindedTokenCount();
 
 bool IsValid(const UnblindedTokenInfo& unblinded_token);
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_TOKENS_UNBLINDED_TOKEN_UTIL_H_

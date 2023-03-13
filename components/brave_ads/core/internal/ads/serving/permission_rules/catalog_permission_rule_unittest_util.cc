@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 void ForceCatalogPermissionRuleForTesting() {
   SetCatalogId("573c74fa-623a-4a46-adce-e688dfb7e8f5");
@@ -18,4 +18,4 @@ void ForceCatalogPermissionRuleForTesting() {
   SetCatalogLastUpdated(Now());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

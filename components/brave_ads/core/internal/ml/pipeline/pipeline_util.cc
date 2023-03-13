@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/normalization_transformation.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 namespace {
 
@@ -217,4 +217,4 @@ absl::optional<PipelineInfo> ParsePipelineValue(base::Value value) {
                       std::move(*transformations), std::move(*linear_model));
 }
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

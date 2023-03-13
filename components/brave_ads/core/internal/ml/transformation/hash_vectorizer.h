@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class HashVectorizer final {
  public:
@@ -37,6 +37,6 @@ class HashVectorizer final {
   int bucket_count_;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_HASH_VECTORIZER_H_

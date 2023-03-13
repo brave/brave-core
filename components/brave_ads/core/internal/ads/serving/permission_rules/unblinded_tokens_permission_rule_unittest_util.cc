@@ -7,10 +7,10 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 void ForceUnblindedTokensPermissionRuleForTesting() {
   privacy::SetUnblindedTokens(50);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

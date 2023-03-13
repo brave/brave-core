@@ -8,7 +8,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/string_piece.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 const SupportedSubdivisionCodesMap& GetSupportedSubdivisionCodes() {
   //  Format: { ISO Country Code, { ISO country subdivision codes as defined
@@ -67,4 +67,4 @@ bool IsSupportedSubdivisionCode(const std::string& country_code,
   return subdivisions.find(subdivision_code) != subdivisions.cend();
 }
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic

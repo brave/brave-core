@@ -8,7 +8,7 @@
 
 #include <cstddef>
 
-namespace ads {
+namespace brave_ads {
 
 // Checks that |lhs| and |rhs| contain the same number of elements and each
 // element in |lhs| is present in |rhs| and vice-versa (Uses the == operator for
@@ -35,6 +35,6 @@ bool ContainersEq(const T& lhs, const T& rhs) {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_CONTAINER_UTIL_H_

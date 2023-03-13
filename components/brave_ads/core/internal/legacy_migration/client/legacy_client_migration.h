@@ -8,10 +8,10 @@
 
 #include "brave/components/brave_ads/core/ads_callback.h"
 
-namespace ads::client {
+namespace brave_ads::client {
 
 void Migrate(InitializeCallback callback);
 
-}  // namespace ads::client
+}  // namespace brave_ads::client
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CLIENT_LEGACY_CLIENT_MIGRATION_H_

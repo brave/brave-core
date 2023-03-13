@@ -8,12 +8,12 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 // Returns the build channel. |name| containing the build channel name.
 // |is_release| containing |true| if a release build otherwise |false|.
 mojom::BuildChannelInfo& BuildChannel();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BUILD_CHANNEL_H_

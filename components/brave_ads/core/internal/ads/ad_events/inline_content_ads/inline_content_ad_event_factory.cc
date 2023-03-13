@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_served.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_viewed.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 std::unique_ptr<AdEventInterface<InlineContentAdInfo>> AdEventFactory::Build(
     const mojom::InlineContentAdEventType event_type) {
@@ -32,4 +32,4 @@ std::unique_ptr<AdEventInterface<InlineContentAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads

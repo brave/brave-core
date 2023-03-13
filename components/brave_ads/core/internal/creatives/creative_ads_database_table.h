@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetCreativeAdCallback =
     base::OnceCallback<void(const bool success,
@@ -41,6 +41,6 @@ class CreativeAds final : public TableInterface {
       const CreativeAdList& creative_ads) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_ADS_DATABASE_TABLE_H_

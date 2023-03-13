@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/idle_detection/idle_detection_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 IdleDetectionManager* g_idle_detection_manager_instance = nullptr;
@@ -84,4 +84,4 @@ void IdleDetectionManager::NotifyUserDidBecomeIdle() const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

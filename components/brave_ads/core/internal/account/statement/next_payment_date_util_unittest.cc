@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsNextPaymentDateUtilTest : public UnitTestBase {};
 
@@ -157,4 +157,4 @@ TEST_F(
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

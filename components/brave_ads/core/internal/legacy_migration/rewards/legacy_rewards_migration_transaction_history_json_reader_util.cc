@@ -11,7 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 namespace {
 
@@ -99,4 +99,4 @@ absl::optional<TransactionList> ParseTransactionHistory(
   return GetTransactionsFromList(*list);
 }
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader

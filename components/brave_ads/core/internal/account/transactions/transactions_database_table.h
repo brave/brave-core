@@ -20,7 +20,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetTransactionsCallback =
     base::OnceCallback<void(const bool, const TransactionList&)>;
@@ -53,6 +53,6 @@ class Transactions final : public TableInterface {
       const TransactionList& transactions) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_DATABASE_TABLE_H_

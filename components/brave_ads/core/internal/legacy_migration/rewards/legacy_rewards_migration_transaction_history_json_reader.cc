@@ -9,7 +9,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_history_json_reader_util.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 absl::optional<TransactionList> ReadTransactionHistory(
     const std::string& json) {
@@ -27,4 +27,4 @@ absl::optional<TransactionList> ReadTransactionHistory(
   return *transaction_history;
 }
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader

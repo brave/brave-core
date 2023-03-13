@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-shared.h"
 
-namespace ads {
+namespace brave_ads {
 
 class CovariateLogEntryInterface {
  public:
@@ -21,6 +21,6 @@ class CovariateLogEntryInterface {
   virtual std::string GetValue() const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_LOG_ENTRY_INTERFACE_H_

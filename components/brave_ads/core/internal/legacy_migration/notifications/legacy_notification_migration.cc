@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::notifications {
+namespace brave_ads::notifications {
 
 namespace {
 
@@ -81,4 +81,4 @@ void Migrate(InitializeCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ads::notifications
+}  // namespace brave_ads::notifications

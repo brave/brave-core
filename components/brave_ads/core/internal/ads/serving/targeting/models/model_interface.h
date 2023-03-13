@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads::targeting::model {
+namespace brave_ads::targeting::model {
 
 class ModelInterface {
  public:
@@ -17,6 +17,6 @@ class ModelInterface {
   virtual SegmentList GetSegments() const = 0;
 };
 
-}  // namespace ads::targeting::model
+}  // namespace brave_ads::targeting::model
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_MODELS_MODEL_INTERFACE_H_

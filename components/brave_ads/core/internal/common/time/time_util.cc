@@ -10,7 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -257,4 +257,4 @@ void SetFromLocalExplodedFailedForTesting(const bool set_failed) {
   g_from_local_exploded_failed = set_failed;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

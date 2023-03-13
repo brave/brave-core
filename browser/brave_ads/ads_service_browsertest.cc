@@ -38,6 +38,8 @@
 
 // npm run test -- brave_browser_tests --filter=BraveAdsBrowserTest.*
 
+namespace brave_ads {
+
 using ::testing::NiceMock;
 using ::testing::Return;
 
@@ -122,8 +124,8 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     rewards_browsertest_util::StartProcess(rewards_service_);
 
-    ads_service_ = static_cast<brave_ads::AdsService*>(
-        brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
+    ads_service_ = static_cast<AdsService*>(
+        AdsServiceFactory::GetForProfile(browser_profile));
     ASSERT_NE(nullptr, ads_service_);
   }
 
@@ -331,7 +333,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
   raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 
-  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+  raw_ptr<AdsService> ads_service_ = nullptr;
 
   const std::string newly_supported_locale_ = "en_830";
 
@@ -351,105 +353,87 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsNotSupported) {
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        PRE_BraveAdsMigrateDefaultAdsPerHourFromVersion9) {
-  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
+  GetPrefs()->SetInteger(prefs::kVersion, 9);
 
-  GetPrefs()->SetInt64(ads::prefs::kMaximumNotificationAdsPerHour, -1);
-  ASSERT_TRUE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
+  GetPrefs()->SetInt64(prefs::kMaximumNotificationAdsPerHour, -1);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateDefaultAdsPerHourFromVersion9) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
-  EXPECT_EQ(-1,
-            GetPrefs()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        PRE_BraveAdsMigrateLegacyDefaultPerHourFromVersion9) {
-  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
+  GetPrefs()->SetInteger(prefs::kVersion, 9);
 
-  GetPrefs()->SetInt64(ads::prefs::kMaximumNotificationAdsPerHour, 2);
-  ASSERT_TRUE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
+  GetPrefs()->SetInt64(prefs::kMaximumNotificationAdsPerHour, 2);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateLegacyDefaultPerHourFromVersion9) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
-  EXPECT_EQ(-1,
-            GetPrefs()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsBrowserTest,
     PRE_BraveAdsMigrateAdsPerHourForFreshInstallFromVersion9) {
-  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 9);
+  GetPrefs()->SetInteger(prefs::kVersion, 9);
 
-  ASSERT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
+  ASSERT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateAdsPerHourForFreshInstallFromVersion9) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
-  EXPECT_EQ(-1,
-            GetPrefs()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsBrowserTest,
     PRE_BraveAdsMigrateAdsPerHourForIssue17155FromVersion10) {
-  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
+  GetPrefs()->SetInteger(prefs::kVersion, 10);
 
-  GetPrefs()->SetInt64(ads::prefs::kMaximumNotificationAdsPerHour, 0);
-  ASSERT_TRUE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
+  GetPrefs()->SetInt64(prefs::kMaximumNotificationAdsPerHour, 0);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateAdsPerHourForIssue17155FromVersion10) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
-  EXPECT_EQ(-1,
-            GetPrefs()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        PRE_BraveAdsMigrateDefaultAdsPerHourFromVersion10) {
-  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
+  GetPrefs()->SetInteger(prefs::kVersion, 10);
 
-  GetPrefs()->SetInt64(ads::prefs::kMaximumNotificationAdsPerHour, -1);
-  ASSERT_TRUE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
+  GetPrefs()->SetInt64(prefs::kMaximumNotificationAdsPerHour, -1);
+  ASSERT_TRUE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateDefaultAdsPerHourFromVersion10) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
-  EXPECT_EQ(-1,
-            GetPrefs()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveAdsBrowserTest,
     PRE_BraveAdsMigrateAdsPerHourForFreshInstallFromVersion10) {
-  GetPrefs()->SetInteger(brave_ads::prefs::kVersion, 10);
+  GetPrefs()->SetInteger(prefs::kVersion, 10);
 
-  ASSERT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
+  ASSERT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
                        BraveAdsMigrateAdsPerHourForFreshInstallFromVersion10) {
-  EXPECT_FALSE(
-      GetPrefs()->HasPrefPath(ads::prefs::kMaximumNotificationAdsPerHour));
-  EXPECT_EQ(-1,
-            GetPrefs()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_FALSE(GetPrefs()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour));
+  EXPECT_EQ(-1, GetPrefs()->GetInt64(prefs::kMaximumNotificationAdsPerHour));
 }
 
 class BraveAdsUpgradeBrowserTest
@@ -1054,3 +1038,5 @@ INSTANTIATE_TEST_SUITE_P(BraveAdsBrowserTest,
                          BraveAdsUpgradeBrowserTest,
                          ::testing::ValuesIn(kTests),
                          GetTestCaseName);
+
+}  // namespace brave_ads

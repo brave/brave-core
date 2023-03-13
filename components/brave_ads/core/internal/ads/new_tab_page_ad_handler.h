@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -34,21 +34,21 @@ class Account;
 class Transfer;
 struct NewTabPageAdInfo;
 
-class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
-                           public new_tab_page_ads::ServingObserver {
+class NewTabPageAdHandler final : public new_tab_page_ads::EventHandlerObserver,
+                                  public new_tab_page_ads::ServingObserver {
  public:
-  NewTabPageAd(Account* account,
-               Transfer* transfer,
-               geographic::SubdivisionTargeting* subdivision_targeting,
-               resource::AntiTargeting* anti_targeting_resource);
+  NewTabPageAdHandler(Account* account,
+                      Transfer* transfer,
+                      geographic::SubdivisionTargeting* subdivision_targeting,
+                      resource::AntiTargeting* anti_targeting_resource);
 
-  NewTabPageAd(const NewTabPageAd& other) = delete;
-  NewTabPageAd& operator=(const NewTabPageAd& other) = delete;
+  NewTabPageAdHandler(const NewTabPageAdHandler& other) = delete;
+  NewTabPageAdHandler& operator=(const NewTabPageAdHandler& other) = delete;
 
-  NewTabPageAd(NewTabPageAd&& other) noexcept = delete;
-  NewTabPageAd& operator=(NewTabPageAd&& other) noexcept = delete;
+  NewTabPageAdHandler(NewTabPageAdHandler&& other) noexcept = delete;
+  NewTabPageAdHandler& operator=(NewTabPageAdHandler&& other) noexcept = delete;
 
-  ~NewTabPageAd() override;
+  ~NewTabPageAdHandler() override;
 
   void MaybeServe(MaybeServeNewTabPageAdCallback callback);
 
@@ -75,6 +75,6 @@ class NewTabPageAd final : public new_tab_page_ads::EventHandlerObserver,
   const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NEW_TAB_PAGE_AD_HANDLER_H_

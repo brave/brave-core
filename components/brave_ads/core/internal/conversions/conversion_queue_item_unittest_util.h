@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveConversionQueueItems(
     const ConversionQueueItemList& conversion_queue_items);
@@ -22,6 +22,6 @@ ConversionQueueItemInfo BuildConversionQueueItem(
 void BuildAndSaveConversionQueueItem(const std::string& conversion_id,
                                      const std::string& advertiser_public_key);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_ITEM_UNITTEST_UTIL_H_

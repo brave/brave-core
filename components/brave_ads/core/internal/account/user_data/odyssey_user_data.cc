@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 
@@ -29,4 +29,4 @@ base::Value::Dict GetOdyssey() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveCreativeAds(const CreativeNotificationAdList& creative_ads) {
   database::table::CreativeNotificationAds database_table;
@@ -43,4 +43,4 @@ CreativeNotificationAdInfo BuildCreativeNotificationAd(
   return creative_notification_ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 EventHandler::EventHandler() = default;
 
@@ -139,4 +139,4 @@ void EventHandler::NotifyNotificationAdEventFailed(
   }
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_value_util.h"
 
-namespace ads::json::reader {
+namespace brave_ads::json::reader {
 
 namespace {
 
@@ -29,4 +29,4 @@ absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value) {
   return ValueToIssuers(*list);
 }
 
-}  // namespace ads::json::reader
+}  // namespace brave_ads::json::reader

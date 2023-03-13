@@ -11,10 +11,10 @@
 
 #include "base/values.h"
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 base::Value::List QuestionsToValue(const std::vector<std::string>& questions);
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_P2A_P2A_VALUE_UTIL_H_

@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/system_timestamp_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/version_number_user_data.h"
 
-namespace ads {
+namespace brave_ads {
 
 ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
     const base::Time created_at,
@@ -65,4 +65,4 @@ void ConfirmationUserDataBuilder::OnGetConversion(
   std::move(callback).Run(std::move(user_data));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

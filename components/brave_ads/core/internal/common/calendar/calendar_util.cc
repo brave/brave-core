@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_leap_year_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 int GetLastDayOfMonth(const int year, const int month) {
   DCHECK((month >= 1 && month <= 12));
@@ -63,4 +63,4 @@ int GetDayOfWeek(const base::Time time, const bool is_local) {
   return exploded.day_of_week;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

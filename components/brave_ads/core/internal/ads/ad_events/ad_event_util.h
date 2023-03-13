@@ -13,7 +13,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType;
 struct AdInfo;
@@ -29,6 +29,6 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
     const AdEventList& ad_events,
     const CreativeAdInfo& creative_ad);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_UTIL_H_

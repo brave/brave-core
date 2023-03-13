@@ -19,7 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 namespace {
 
@@ -208,4 +208,4 @@ TEST_F(BatAdsNotificationAdEventHandlerTest, DoNotFireEventIfUuidWasNotFound) {
       0, GetAdEventCount(AdType::kNotificationAd, ConfirmationType::kViewed));
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

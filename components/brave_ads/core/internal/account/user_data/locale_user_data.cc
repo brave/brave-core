@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/locale/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 
@@ -41,4 +41,4 @@ base::Value::Dict GetLocale() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

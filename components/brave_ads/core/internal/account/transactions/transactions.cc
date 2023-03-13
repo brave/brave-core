@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 
-namespace ads::transactions {
+namespace brave_ads::transactions {
 
 TransactionInfo Add(const std::string& creative_instance_id,
                     const double value,
@@ -86,4 +86,4 @@ void RemoveAll(RemoveAllCallback callback) {
       std::move(callback)));
 }
 
-}  // namespace ads::transactions
+}  // namespace brave_ads::transactions

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 
-namespace ads::security {
+namespace brave_ads::security {
 
 VerifiableConversionEnvelopeInfo::VerifiableConversionEnvelopeInfo() = default;
 
@@ -40,4 +40,4 @@ bool VerifiableConversionEnvelopeInfo::IsValid() const {
            ephemeral_public_key.empty() || nonce.empty());
 }
 
-}  // namespace ads::security
+}  // namespace brave_ads::security

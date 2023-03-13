@@ -13,7 +13,7 @@
 
 using ::testing::Eq;
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 namespace {
 
@@ -39,4 +39,4 @@ TEST_F(BatAdsP2ATest, RecordEvent) {
   RecordEvent(kEventName, {"question_1", "question_2"});
 }
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a

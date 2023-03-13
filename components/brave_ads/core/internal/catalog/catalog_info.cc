@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CatalogInfo::CatalogInfo() = default;
 
@@ -28,4 +28,4 @@ bool CatalogInfo::operator!=(const CatalogInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

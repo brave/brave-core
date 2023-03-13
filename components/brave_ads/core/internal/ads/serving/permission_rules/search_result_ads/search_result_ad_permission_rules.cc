@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_day_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/search_result_ads/search_result_ads_per_hour_permission_rule.h"
 
-namespace ads::search_result_ads {
+namespace brave_ads::search_result_ads {
 
 // static
 bool PermissionRules::HasPermission() {
@@ -26,4 +26,4 @@ bool PermissionRules::HasPermission() {
   return ShouldAllow(&ads_per_hour_permission_rule);
 }
 
-}  // namespace ads::search_result_ads
+}  // namespace brave_ads::search_result_ads

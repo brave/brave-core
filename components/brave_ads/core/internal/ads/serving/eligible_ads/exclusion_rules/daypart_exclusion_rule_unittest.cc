@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
@@ -209,4 +209,4 @@ TEST_F(BatAdsDaypartExclusionRuleTest, DisallowIfWrongHours) {
   EXPECT_TRUE(should_exclude);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

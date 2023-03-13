@@ -12,7 +12,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 class ConfirmationType;
@@ -48,6 +48,6 @@ void FireAdEvents(const AdEventInfo& ad_event, int count);
 int GetAdEventCount(const AdType& ad_type,
                     const ConfirmationType& confirmation_type);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_UNITTEST_UTIL_H_

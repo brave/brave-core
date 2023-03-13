@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogOsInfo final {
   std::string code;
@@ -21,6 +21,6 @@ bool operator!=(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs);
 
 using CatalogOsList = std::vector<CatalogOsInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CATALOG_OS_INFO_H_

@@ -9,11 +9,11 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 base::Value::Dict GetTotals(
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_TOTALS_USER_DATA_H_

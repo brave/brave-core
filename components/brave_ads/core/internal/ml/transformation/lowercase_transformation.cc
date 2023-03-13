@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 #include "brave/components/brave_ads/core/internal/ml/data/text_data.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 LowercaseTransformation::LowercaseTransformation()
     : Transformation(TransformationType::kLowercase) {}
@@ -29,4 +29,4 @@ std::unique_ptr<Data> LowercaseTransformation::Apply(
   return std::make_unique<TextData>(std::move(lowercase_text));
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

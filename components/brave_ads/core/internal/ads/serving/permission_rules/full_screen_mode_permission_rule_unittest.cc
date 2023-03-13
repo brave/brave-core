@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {};
 
@@ -94,4 +94,4 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest,
   EXPECT_TRUE(is_allowed);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

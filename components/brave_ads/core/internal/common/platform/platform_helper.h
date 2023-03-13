@@ -11,7 +11,7 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class PlatformHelper {
  public:
@@ -34,6 +34,6 @@ class PlatformHelper {
   static PlatformHelper* GetInstanceImpl();
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_PLATFORM_PLATFORM_HELPER_H_

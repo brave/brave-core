@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsTextEmbeddingHtmlEventsTest : public UnitTestBase {};
 
@@ -84,4 +84,4 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, PurgeEvents) {
       }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,10 +8,10 @@
 
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 using AdPredictorWeightList = std::vector<double>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_ALIAS_H_

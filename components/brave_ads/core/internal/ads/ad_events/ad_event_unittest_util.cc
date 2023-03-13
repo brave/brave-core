@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdEventInfo BuildAdEvent(const CreativeAdInfo& creative_ad,
                          const AdType& ad_type,
@@ -131,4 +131,4 @@ int GetAdEventCount(const AdType& ad_type,
   return ad_events.size();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

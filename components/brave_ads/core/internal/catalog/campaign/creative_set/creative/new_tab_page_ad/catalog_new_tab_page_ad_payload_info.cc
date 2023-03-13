@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_payload_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CatalogNewTabPageAdPayloadInfo::CatalogNewTabPageAdPayloadInfo() = default;
 
@@ -35,4 +35,4 @@ bool CatalogNewTabPageAdPayloadInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

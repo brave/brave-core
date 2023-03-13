@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-namespace ads::targeting::features {
+namespace brave_ads::targeting::features {
 
 BASE_DECLARE_FEATURE(kTextEmbedding);
 
@@ -18,6 +18,6 @@ int GetTextEmbeddingsHistorySize();
 
 int GetTextEmbeddingResourceVersion();
 
-}  // namespace ads::targeting::features
+}  // namespace brave_ads::targeting::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FEATURES_TEXT_EMBEDDING_FEATURES_H_

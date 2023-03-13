@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsTransferTest : public TransferObserver, public UnitTestBase {
  protected:
@@ -204,4 +204,4 @@ TEST_F(BatAdsTransferTest,
   EXPECT_EQ(-1, GetTransferCount());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

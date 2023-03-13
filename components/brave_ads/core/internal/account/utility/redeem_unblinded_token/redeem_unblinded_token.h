@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 struct UnblindedPaymentTokenInfo;
@@ -64,6 +64,6 @@ class RedeemUnblindedToken final {
   raw_ptr<RedeemUnblindedTokenDelegate> delegate_ = nullptr;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_

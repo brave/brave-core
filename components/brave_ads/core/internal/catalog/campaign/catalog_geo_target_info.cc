@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_geo_target_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const CatalogGeoTargetInfo& lhs,
                 const CatalogGeoTargetInfo& rhs) {
@@ -17,4 +17,4 @@ bool operator!=(const CatalogGeoTargetInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

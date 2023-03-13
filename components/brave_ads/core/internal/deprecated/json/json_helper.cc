@@ -13,7 +13,7 @@
 #include "brave/third_party/rapidjson/src/include/rapidjson/schema.h"
 #pragma clang diagnostic pop
 
-namespace ads::helper::json {
+namespace brave_ads::helper::json {
 
 bool Validate(rapidjson::Document* document, const std::string& json_schema) {
   if (!document) {
@@ -48,4 +48,4 @@ std::string GetLastError(rapidjson::Document* document) {
   return description + " (" + error_offset + ")";
 }
 
-}  // namespace ads::helper::json
+}  // namespace brave_ads::helper::json

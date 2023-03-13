@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest
     : public UnitTestBase {};
@@ -44,4 +44,4 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Assert
 }
 
-}  // namespace ads
+}  // namespace brave_ads

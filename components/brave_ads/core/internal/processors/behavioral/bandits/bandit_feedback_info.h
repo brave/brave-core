@@ -10,13 +10,13 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 struct BanditFeedbackInfo final {
   std::string segment;
   mojom::NotificationAdEventType ad_event_type;
 };
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_BANDIT_FEEDBACK_INFO_H_

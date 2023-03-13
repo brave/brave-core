@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdEventInfo::AdEventInfo() = default;
 
@@ -19,4 +19,4 @@ AdEventInfo& AdEventInfo::operator=(AdEventInfo&& other) noexcept = default;
 
 AdEventInfo::~AdEventInfo() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

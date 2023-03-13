@@ -24,7 +24,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 namespace resource {
 class Conversions;
@@ -130,6 +130,6 @@ class Conversions final : public LocaleManagerObserver,
   Timer timer_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_H_

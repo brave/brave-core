@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetConversionsCallback =
     base::OnceCallback<void(const bool, const ConversionList&)>;
@@ -39,6 +39,6 @@ class Conversions final : public TableInterface {
                                        const ConversionList& conversions) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_DATABASE_TABLE_H_

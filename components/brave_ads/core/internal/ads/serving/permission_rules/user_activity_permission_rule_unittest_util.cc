@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 void ForceUserActivityPermissionRuleForTesting() {
   UserActivityManager::GetInstance()->RecordEvent(
@@ -16,4 +16,4 @@ void ForceUserActivityPermissionRuleForTesting() {
       UserActivityEventType::kClosedTab);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -132,4 +132,4 @@ absl::optional<ConfirmationInfo> BuildConfirmation() {
       ConfirmationType::kViewed, AdType::kNotificationAd, /*user_data*/ {});
 }
 
-}  // namespace ads
+}  // namespace brave_ads

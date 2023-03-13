@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 class DatabaseManager final {
  public:
@@ -51,6 +51,6 @@ class DatabaseManager final {
   base::ObserverList<DatabaseManagerObserver> observers_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_

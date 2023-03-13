@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct CategoryContentInfo;
 
 CategoryContentInfo BuildCategoryContent(const std::string& segment);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_CATEGORY_CONTENT_UTIL_H_

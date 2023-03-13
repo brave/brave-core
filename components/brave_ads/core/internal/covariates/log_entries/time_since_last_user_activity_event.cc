@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr base::TimeDelta kTimeWindow = base::Minutes(30);
@@ -39,4 +39,4 @@ std::string TimeSinceLastUserActivityEvent::GetValue() const {
       GetTimeSinceLastUserActivityEvent(events, event_type_));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

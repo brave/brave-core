@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 UnblindedPaymentTokenInfo::UnblindedPaymentTokenInfo() = default;
 
@@ -36,4 +36,4 @@ bool UnblindedPaymentTokenInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

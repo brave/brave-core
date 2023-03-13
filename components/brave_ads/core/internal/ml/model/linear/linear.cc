@@ -12,7 +12,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_prediction_util.h"
 
-namespace ads::ml::model {
+namespace brave_ads::ml::model {
 
 Linear::Linear() = default;
 
@@ -65,4 +65,4 @@ PredictionMap Linear::GetTopPredictions(const VectorData& x,
   return top_predictions;
 }
 
-}  // namespace ads::ml::model
+}  // namespace brave_ads::ml::model

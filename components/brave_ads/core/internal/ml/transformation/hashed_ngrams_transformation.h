@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class HashVectorizer;
 
@@ -38,6 +38,6 @@ class HashedNGramsTransformation final : public Transformation {
   std::unique_ptr<HashVectorizer> hash_vectorizer_;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_HASHED_NGRAMS_TRANSFORMATION_H_

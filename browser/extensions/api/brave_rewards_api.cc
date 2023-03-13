@@ -1318,7 +1318,7 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 }
 
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
-    ads::mojom::StatementInfoPtr statement) {
+    brave_ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
     Respond(WithArguments(false));
   } else {
@@ -1381,7 +1381,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   }
 
   base::Value::List subdivisions;
-  const auto subdivision_infos = ads::GetSupportedSubdivisions();
+  const auto subdivision_infos = brave_ads::GetSupportedSubdivisions();
   for (const auto& info : subdivision_infos) {
     base::Value::Dict subdivision;
     subdivision.Set("value", info.first);

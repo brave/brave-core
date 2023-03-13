@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVES_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVES_BUILDER_H_
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogInfo;
 struct CreativesInfo;
 
 CreativesInfo BuildCreatives(const CatalogInfo& catalog);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVES_BUILDER_H_

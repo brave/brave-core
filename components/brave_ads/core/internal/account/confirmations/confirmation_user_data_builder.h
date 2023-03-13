@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_builder_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
  public:
@@ -31,6 +31,6 @@ class ConfirmationUserDataBuilder final : public UserDataBuilderInterface {
   ConfirmationType confirmation_type_ = ConfirmationType::kUndefined;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_USER_DATA_BUILDER_H_

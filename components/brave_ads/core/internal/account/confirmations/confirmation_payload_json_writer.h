@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct ConfirmationInfo;
 
@@ -17,6 +17,6 @@ namespace json::writer {
 std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation);
 
 }  // namespace json::writer
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_PAYLOAD_JSON_WRITER_H_

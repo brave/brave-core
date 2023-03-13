@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -286,4 +286,4 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
   EXPECT_FALSE(should_exclude);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

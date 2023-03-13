@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool DoesRespectCampaignCap(const CreativeAdInfo& creative_ad,
                             const AdEventList& ad_events,
@@ -61,4 +61,4 @@ bool DoesRespectCreativeCap(const CreativeAdInfo& creative_ad,
   return count < cap;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

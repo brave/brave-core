@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/export.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT PromotedContentAdInfo final : AdInfo {
   bool IsValid() const;
@@ -20,6 +20,6 @@ struct ADS_EXPORT PromotedContentAdInfo final : AdInfo {
   std::string description;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_PROMOTED_CONTENT_AD_INFO_H_

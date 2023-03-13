@@ -14,7 +14,7 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave_base/random.h"
 
-namespace ads {
+namespace brave_ads {
 
 Timer::Timer() : timer_(std::make_unique<base::WallClockTimer>()) {
   DCHECK(timer_);
@@ -59,4 +59,4 @@ bool Timer::Stop() {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -30,4 +30,4 @@ const std::string& AllowNotificationsPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

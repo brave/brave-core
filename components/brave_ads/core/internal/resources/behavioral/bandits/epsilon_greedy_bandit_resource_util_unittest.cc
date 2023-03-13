@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 class BatAdsEpsilonGreedyBanditResourceUtilTest : public UnitTestBase {};
 
@@ -37,4 +37,4 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceUtilTest, SetNoEligibleSegments) {
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 class AdsPerHourPermissionRule final : public PermissionRuleInterface {
  public:
@@ -22,6 +22,6 @@ class AdsPerHourPermissionRule final : public PermissionRuleInterface {
   std::string last_message_;
 };
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_INLINE_CONTENT_ADS_INLINE_CONTENT_ADS_PER_HOUR_PERMISSION_RULE_H_

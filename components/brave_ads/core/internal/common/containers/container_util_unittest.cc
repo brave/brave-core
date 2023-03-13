@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsContainerUtilTest, SplitVectorIntoSingleChunk) {
   // Arrange
@@ -86,4 +86,4 @@ TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
   EXPECT_EQ(expected_vectors, vectors);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

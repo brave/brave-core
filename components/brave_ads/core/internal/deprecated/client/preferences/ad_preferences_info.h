@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/saved_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct AdPreferencesInfo final {
   AdPreferencesInfo();
@@ -39,6 +39,6 @@ struct AdPreferencesInfo final {
   FlaggedAdList flagged_ads;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_PREFERENCES_AD_PREFERENCES_INFO_H_

@@ -30,9 +30,9 @@ namespace bat_ads {
 
 namespace {
 
-ads::CategoryContentOptActionType ToCategoryContentOptActionType(
+brave_ads::CategoryContentOptActionType ToCategoryContentOptActionType(
     const int opt_action_type) {
-  return static_cast<ads::CategoryContentOptActionType>(opt_action_type);
+  return static_cast<brave_ads::CategoryContentOptActionType>(opt_action_type);
 }
 
 }  // namespace
@@ -40,7 +40,7 @@ ads::CategoryContentOptActionType ToCategoryContentOptActionType(
 BatAdsImpl::BatAdsImpl(
     mojo::PendingAssociatedRemote<mojom::BatAdsClient> client)
     : bat_ads_client_mojo_proxy_(new BatAdsClientMojoBridge(std::move(client))),
-      ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
+      ads_(brave_ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
 
 BatAdsImpl::~BatAdsImpl() = default;
 
@@ -119,21 +119,22 @@ void BatAdsImpl::OnDidCloseTab(const int32_t tab_id) {
 void BatAdsImpl::MaybeGetNotificationAd(
     const std::string& placement_id,
     MaybeGetNotificationAdCallback callback) {
-  const absl::optional<ads::NotificationAdInfo> ad =
+  const absl::optional<brave_ads::NotificationAdInfo> ad =
       ads_->MaybeGetNotificationAd(placement_id);
   if (!ad) {
     std::move(callback).Run(/*ad*/ absl::nullopt);
     return;
   }
 
-  absl::optional<base::Value::Dict> dict = ads::NotificationAdToValue(*ad);
+  absl::optional<base::Value::Dict> dict =
+      brave_ads::NotificationAdToValue(*ad);
   std::move(callback).Run(std::move(dict));
 }
 
 void BatAdsImpl::TriggerNotificationAdEvent(
     const std::string& placement_id,
-    const ads::mojom::NotificationAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const brave_ads::mojom::NotificationAdEventType event_type) {
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
@@ -142,13 +143,14 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
     MaybeServeNewTabPageAdCallback callback) {
   ads_->MaybeServeNewTabPageAd(base::BindOnce(
       [](MaybeServeNewTabPageAdCallback callback,
-         const absl::optional<ads::NewTabPageAdInfo>& ad) {
+         const absl::optional<brave_ads::NewTabPageAdInfo>& ad) {
         if (!ad) {
           std::move(callback).Run(/*ad*/ absl::nullopt);
           return;
         }
 
-        absl::optional<base::Value::Dict> dict = ads::NewTabPageAdToValue(*ad);
+        absl::optional<base::Value::Dict> dict =
+            brave_ads::NewTabPageAdToValue(*ad);
         std::move(callback).Run(std::move(dict));
       },
       std::move(callback)));
@@ -157,8 +159,8 @@ void BatAdsImpl::MaybeServeNewTabPageAd(
 void BatAdsImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const ads::mojom::NewTabPageAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const brave_ads::mojom::NewTabPageAdEventType event_type) {
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
                                  event_type);
@@ -167,8 +169,8 @@ void BatAdsImpl::TriggerNewTabPageAdEvent(
 void BatAdsImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const ads::mojom::PromotedContentAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const brave_ads::mojom::PromotedContentAdEventType event_type) {
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
                                       event_type);
@@ -178,45 +180,46 @@ void BatAdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   ads_->MaybeServeInlineContentAd(
-      dimensions, base::BindOnce(
-                      [](MaybeServeInlineContentAdCallback callback,
-                         const std::string& dimensions,
-                         const absl::optional<ads::InlineContentAdInfo>& ad) {
-                        if (!ad) {
-                          std::move(callback).Run(dimensions,
-                                                  /*ads*/ absl::nullopt);
-                          return;
-                        }
+      dimensions,
+      base::BindOnce(
+          [](MaybeServeInlineContentAdCallback callback,
+             const std::string& dimensions,
+             const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
+            if (!ad) {
+              std::move(callback).Run(dimensions,
+                                      /*ads*/ absl::nullopt);
+              return;
+            }
 
-                        absl::optional<base::Value::Dict> dict =
-                            ads::InlineContentAdToValue(*ad);
-                        std::move(callback).Run(dimensions, std::move(dict));
-                      },
-                      std::move(callback)));
+            absl::optional<base::Value::Dict> dict =
+                brave_ads::InlineContentAdToValue(*ad);
+            std::move(callback).Run(dimensions, std::move(dict));
+          },
+          std::move(callback)));
 }
 
 void BatAdsImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const ads::mojom::InlineContentAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const brave_ads::mojom::InlineContentAdEventType event_type) {
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
                                     event_type);
 }
 
 void BatAdsImpl::TriggerSearchResultAdEvent(
-    ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const ads::mojom::SearchResultAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
+    const brave_ads::mojom::SearchResultAdEventType event_type) {
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(event_type));
 
   ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
 }
 
 void BatAdsImpl::PurgeOrphanedAdEventsForType(
-    const ads::mojom::AdType ad_type,
+    const brave_ads::mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(brave_ads::mojom::IsKnownEnumValue(ad_type));
 
   ads_->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
 }
@@ -233,11 +236,11 @@ void BatAdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
 void BatAdsImpl::GetHistory(const base::Time from_time,
                             const base::Time to_time,
                             GetHistoryCallback callback) {
-  const ads::HistoryItemList history_items = ads_->GetHistory(
-      ads::HistoryFilterType::kConfirmationType,
-      ads::HistorySortType::kDescendingOrder, from_time, to_time);
+  const brave_ads::HistoryItemList history_items = ads_->GetHistory(
+      brave_ads::HistoryFilterType::kConfirmationType,
+      brave_ads::HistorySortType::kDescendingOrder, from_time, to_time);
 
-  std::move(callback).Run(ads::HistoryItemsToUIValue(history_items));
+  std::move(callback).Run(brave_ads::HistoryItemsToUIValue(history_items));
 }
 
 void BatAdsImpl::GetStatementOfAccounts(
@@ -251,14 +254,14 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
 
 void BatAdsImpl::ToggleAdThumbUp(base::Value::Dict value,
                                  ToggleAdThumbUpCallback callback) {
-  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
   ad_content.like_action_type = ads_->ToggleAdThumbUp(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
 void BatAdsImpl::ToggleAdThumbDown(base::Value::Dict value,
                                    ToggleAdThumbDownCallback callback) {
-  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
   ad_content.like_action_type = ads_->ToggleAdThumbDown(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
@@ -266,7 +269,7 @@ void BatAdsImpl::ToggleAdThumbDown(base::Value::Dict value,
 void BatAdsImpl::ToggleAdOptIn(const std::string& category,
                                const int opt_action_type,
                                ToggleAdOptInCallback callback) {
-  const ads::CategoryContentOptActionType toggled_opt_action_type =
+  const brave_ads::CategoryContentOptActionType toggled_opt_action_type =
       ads_->ToggleAdOptIn(category,
                           ToCategoryContentOptActionType(opt_action_type));
   std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
@@ -275,7 +278,7 @@ void BatAdsImpl::ToggleAdOptIn(const std::string& category,
 void BatAdsImpl::ToggleAdOptOut(const std::string& category,
                                 const int opt_action_type,
                                 ToggleAdOptOutCallback callback) {
-  const ads::CategoryContentOptActionType toggled_opt_action_type =
+  const brave_ads::CategoryContentOptActionType toggled_opt_action_type =
       ads_->ToggleAdOptOut(category,
                            ToCategoryContentOptActionType(opt_action_type));
   std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
@@ -283,14 +286,14 @@ void BatAdsImpl::ToggleAdOptOut(const std::string& category,
 
 void BatAdsImpl::ToggleSavedAd(base::Value::Dict value,
                                ToggleSavedAdCallback callback) {
-  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
   ad_content.is_saved = ads_->ToggleSavedAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
 void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
                                  ToggleFlaggedAdCallback callback) {
-  ads::AdContentInfo ad_content = ads::AdContentFromValue(value);
+  brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
   ad_content.is_flagged = ads_->ToggleFlaggedAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }

@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_headers_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -114,4 +114,4 @@ absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
                                 ToUrlResponseHeaders(url_request->headers));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

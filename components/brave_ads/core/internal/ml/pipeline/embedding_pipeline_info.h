@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo();
@@ -32,6 +32,6 @@ struct EmbeddingPipelineInfo final {
   std::map<std::string, VectorData> embeddings;
 };
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_EMBEDDING_PIPELINE_INFO_H_

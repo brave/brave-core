@@ -42,7 +42,7 @@ namespace brave_l10n::test {
 class ScopedDefaultLocale;
 }  // namespace brave_l10n::test
 
-namespace ads {
+namespace brave_ads {
 
 class Database;
 
@@ -177,6 +177,6 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_BASE_H_

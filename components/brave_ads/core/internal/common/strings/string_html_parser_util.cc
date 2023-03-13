@@ -12,7 +12,7 @@ namespace {
 constexpr int kPrefixPadding = 2;
 }  // namespace
 
-namespace ads {
+namespace brave_ads {
 
 std::string ParseHtmlTagAttribute(const std::string& html,
                                   const std::string& tag_substr,
@@ -39,4 +39,4 @@ std::string ParseHtmlTagAttribute(const std::string& html,
   return attribute_text;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

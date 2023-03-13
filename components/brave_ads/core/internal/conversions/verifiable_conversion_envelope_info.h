@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads::security {
+namespace brave_ads::security {
 
 struct VerifiableConversionEnvelopeInfo final {
   VerifiableConversionEnvelopeInfo();
@@ -36,6 +36,6 @@ struct VerifiableConversionEnvelopeInfo final {
   std::string nonce;
 };
 
-}  // namespace ads::security
+}  // namespace brave_ads::security
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_VERIFIABLE_CONVERSION_ENVELOPE_INFO_H_

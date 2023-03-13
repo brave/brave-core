@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsCovariateManagerTest : public UnitTestBase {};
 
@@ -41,4 +41,4 @@ TEST_F(BatAdsCovariateManagerTest, GetTrainingInstanceWithSetters) {
   EXPECT_EQ(34U, training_covariates.size());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

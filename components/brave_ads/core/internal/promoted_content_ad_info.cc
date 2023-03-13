@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool PromotedContentAdInfo::IsValid() const {
   if (!AdInfo::IsValid()) {
@@ -19,4 +19,4 @@ bool PromotedContentAdInfo::IsValid() const {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

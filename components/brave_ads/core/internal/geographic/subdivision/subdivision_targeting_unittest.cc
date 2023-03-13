@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsSubdivisionTargetingTest : public UnitTestBase {
  protected:
@@ -156,4 +156,4 @@ INSTANTIATE_TEST_SUITE_P(,
                                            R"({"country":"", "region":"CA"})",
                                            R"({"country":"US", "region":""})"));
 
-}  // namespace ads
+}  // namespace brave_ads

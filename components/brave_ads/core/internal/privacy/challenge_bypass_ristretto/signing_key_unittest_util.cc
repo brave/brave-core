@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/signing_key.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 SigningKey GetSigningKey() {
   return SigningKey(kSigningKeyBase64);
@@ -18,4 +18,4 @@ SigningKey GetInvalidSigningKey() {
   return SigningKey(kInvalidBase64);
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

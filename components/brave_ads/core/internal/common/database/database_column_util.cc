@@ -8,7 +8,7 @@
 #include "base/check_op.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 int ColumnInt(mojom::DBRecordInfo* record, const size_t index) {
   DCHECK(record);
@@ -53,4 +53,4 @@ std::string ColumnString(mojom::DBRecordInfo* record, const size_t index) {
   return record->fields.at(index)->get_string_value();
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

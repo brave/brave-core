@@ -10,7 +10,7 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuersInfo;
 
@@ -19,6 +19,6 @@ namespace json::reader {
 absl::optional<IssuersInfo> ReadIssuers(const std::string& json);
 
 }  // namespace json::reader
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_JSON_READER_H_

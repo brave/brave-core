@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 struct PipelineInfo final {
   PipelineInfo();
@@ -33,6 +33,6 @@ struct PipelineInfo final {
   model::Linear linear_model;
 };
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_PIPELINE_INFO_H_

@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/metrics/field_trial_params_util.h"
 
-namespace ads::exclusion_rules::features {
+namespace brave_ads::exclusion_rules::features {
 
 namespace {
 
@@ -55,4 +55,4 @@ base::TimeDelta ExcludeAdIfTransferredWithinTimeWindow() {
       kDefaultExcludeAdIfTransferredWithinTimeWindow);
 }
 
-}  // namespace ads::exclusion_rules::features
+}  // namespace brave_ads::exclusion_rules::features

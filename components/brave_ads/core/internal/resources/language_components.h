@@ -8,10 +8,10 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 bool IsValidLanguageComponentId(const std::string& id);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_LANGUAGE_COMPONENTS_H_

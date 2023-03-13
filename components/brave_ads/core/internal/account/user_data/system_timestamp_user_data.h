@@ -8,10 +8,10 @@
 
 #include "base/values.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 base::Value::Dict GetSystemTimestamp();
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_SYSTEM_TIMESTAMP_USER_DATA_H_

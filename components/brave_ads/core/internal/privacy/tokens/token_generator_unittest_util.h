@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 namespace cbr {
 class Token;
@@ -16,6 +16,6 @@ class Token;
 
 std::vector<cbr::Token> GetTokens(int count);
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_UNITTEST_UTIL_H_

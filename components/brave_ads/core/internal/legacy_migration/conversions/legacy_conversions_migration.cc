@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::conversions {
+namespace brave_ads::conversions {
 
 namespace {
 
@@ -169,4 +169,4 @@ void Migrate(InitializeCallback callback) {
       kFilename, base::BindOnce(&OnMigrate, std::move(callback)));
 }
 
-}  // namespace ads::conversions
+}  // namespace brave_ads::conversions

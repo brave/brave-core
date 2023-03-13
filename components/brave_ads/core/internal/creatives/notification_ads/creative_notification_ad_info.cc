@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CreativeNotificationAdInfo::CreativeNotificationAdInfo() = default;
 
@@ -24,4 +24,4 @@ bool CreativeNotificationAdInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

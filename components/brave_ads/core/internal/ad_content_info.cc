@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/ad_content_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdContentInfo::AdContentInfo() = default;
 
@@ -54,4 +54,4 @@ bool operator!=(const AdContentInfo& lhs, const AdContentInfo& rhs) {
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,7 +8,7 @@
 
 #include <cstdint>
 
-namespace ads {
+namespace brave_ads {
 
 // WARNING: don't change these numbers. They are provided by the variations
 // service, so will need the same values to match the enums
@@ -40,6 +40,6 @@ enum class UserActivityEventType : int8_t {
   /*17*/ kBrowserDidResignActive
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_EVENT_TYPES_H_

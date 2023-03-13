@@ -8,10 +8,10 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 std::string BoolToString(bool value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_STRINGS_STRING_CONVERSIONS_UTIL_H_

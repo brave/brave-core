@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
-namespace ads::search_result_ads {
+namespace brave_ads::search_result_ads {
 
 namespace {
 
@@ -43,4 +43,4 @@ const std::string& AdsPerHourPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads::search_result_ads
+}  // namespace brave_ads::search_result_ads

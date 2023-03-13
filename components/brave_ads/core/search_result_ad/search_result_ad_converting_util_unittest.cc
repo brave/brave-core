@@ -28,7 +28,7 @@ constexpr const char* kSearchResultAdConversionAttributes[] = {
     "data-conversion-observation-window-value"};
 
 void CheckRequiredAttributes(
-    const ads::mojom::SearchResultAdInfoPtr& search_result_ad) {
+    const mojom::SearchResultAdInfoPtr& search_result_ad) {
   EXPECT_EQ(search_result_ad->placement_id, kTestWebPagePlacementId);
   EXPECT_EQ(search_result_ad->creative_instance_id, "value0");
   EXPECT_EQ(search_result_ad->creative_set_id, "value1");
@@ -41,7 +41,7 @@ void CheckRequiredAttributes(
 }
 
 void CheckConversionAttributes(
-    const ads::mojom::SearchResultAdInfoPtr& search_result_ad) {
+    const mojom::SearchResultAdInfoPtr& search_result_ad) {
   EXPECT_EQ(search_result_ad->conversion->type, "value6");
   EXPECT_EQ(search_result_ad->conversion->url_pattern, "value7");
   EXPECT_EQ(search_result_ad->conversion->advertiser_public_key, "value8");
@@ -58,7 +58,7 @@ TEST(SearchResultAdConvertingTest, ValidWebPage) {
   const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
   EXPECT_EQ(search_result_ads.size(), 1U);
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
+  const mojom::SearchResultAdInfoPtr& search_result_ad =
       search_result_ads.at(kTestWebPagePlacementId);
   ASSERT_TRUE(search_result_ad.get());
   ASSERT_TRUE(search_result_ad->conversion.get());
@@ -140,7 +140,7 @@ TEST(SearchResultAdConvertingTest, AdEntityExtraProperty) {
   const auto search_result_ads =
       ConvertWebPageEntitiesToSearchResultAds(entities);
   ASSERT_EQ(search_result_ads.size(), 1U);
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
+  const mojom::SearchResultAdInfoPtr& search_result_ad =
       search_result_ads.at(kTestWebPagePlacementId);
   ASSERT_TRUE(search_result_ad.get());
   ASSERT_TRUE(search_result_ad->conversion.get());
@@ -164,7 +164,7 @@ TEST(SearchResultAdConvertingTest, AdEntityPropertySkipped) {
     const auto search_result_ads =
         ConvertWebPageEntitiesToSearchResultAds(entities);
     EXPECT_EQ(search_result_ads.size(), 1U);
-    const ads::mojom::SearchResultAdInfoPtr& search_result_ad =
+    const mojom::SearchResultAdInfoPtr& search_result_ad =
         search_result_ads.at(kTestWebPagePlacementId);
     ASSERT_TRUE(search_result_ad.get());
 

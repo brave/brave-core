@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 namespace {
 
@@ -115,4 +115,4 @@ BuildTransactionForReconciledTransactionsLastMonth(
   return BuildTransaction(time, payment->balance);
 }
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards

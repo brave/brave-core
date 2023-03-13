@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/covariates/covariate_log_entry_interface.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_event_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class NumberOfUserActivityEvents final : public CovariateLogEntryInterface {
  public:
@@ -29,6 +29,6 @@ class NumberOfUserActivityEvents final : public CovariateLogEntryInterface {
   brave_federated::mojom::CovariateType covariate_type_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_LOG_ENTRIES_NUMBER_OF_USER_ACTIVITY_EVENTS_H_

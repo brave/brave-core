@@ -105,13 +105,13 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // Rewards/Ads prefs
-  (*s_brave_allowlist)[ads::prefs::kEnabled] =
+  (*s_brave_allowlist)[brave_ads::prefs::kEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[ads::prefs::kMaximumNotificationAdsPerHour] =
+  (*s_brave_allowlist)[brave_ads::prefs::kMaximumNotificationAdsPerHour] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
-  (*s_brave_allowlist)[ads::prefs::kShouldAllowSubdivisionTargeting] =
+  (*s_brave_allowlist)[brave_ads::prefs::kShouldAllowSubdivisionTargeting] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_allowlist)[ads::prefs::kSubdivisionTargetingCode] =
+  (*s_brave_allowlist)[brave_ads::prefs::kSubdivisionTargetingCode] =
       settings_api::PrefType::PREF_TYPE_STRING;
   (*s_brave_allowlist)[brave_rewards::prefs::kEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

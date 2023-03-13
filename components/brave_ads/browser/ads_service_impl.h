@@ -35,15 +35,9 @@
 #include "ui/base/idle/idle.h"
 
 class GURL;
-
 class NotificationDisplayService;
 class PrefService;
 class Profile;
-
-namespace ads {
-class Database;
-struct NewTabPageAdInfo;
-}  // namespace ads
 
 namespace base {
 class OneShotTimer;
@@ -65,7 +59,9 @@ class SimpleURLLoader;
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
+class Database;
 class DeviceId;
+struct NewTabPageAdInfo;
 
 class AdsServiceImpl : public AdsService,
                        public bat_ads::mojom::BatAdsClient,
@@ -265,13 +261,13 @@ class AdsServiceImpl : public AdsService,
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) override;
+      MaybeServeInlineContentAdAsDictCallback callback) override;
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::InlineContentAdEventType event_type) override;
+      mojom::InlineContentAdEventType event_type) override;
 
-  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
+  absl::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
       override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -280,19 +276,19 @@ class AdsServiceImpl : public AdsService,
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::NewTabPageAdEventType event_type) override;
+      mojom::NewTabPageAdEventType event_type) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::PromotedContentAdEventType event_type) override;
+      mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      ads::mojom::SearchResultAdEventType event_type) override;
+      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType ad_type,
+      mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetHistory(base::Time from_time,
@@ -346,7 +342,7 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(mojom::UrlRequestInfoPtr url_request,
                   UrlRequestCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26194) Decouple
@@ -370,7 +366,7 @@ class AdsServiceImpl : public AdsService,
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                         RunDBTransactionCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
@@ -441,9 +437,9 @@ class AdsServiceImpl : public AdsService,
 
   base::OneShotTimer restart_bat_ads_service_timer_;
 
-  ads::mojom::SysInfo sys_info_;
+  mojom::SysInfo sys_info_;
 
-  std::unique_ptr<ads::Database> database_;
+  std::unique_ptr<Database> database_;
 
   base::RepeatingTimer idle_state_timer_;
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;
@@ -452,7 +448,7 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_;
+  absl::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;
 

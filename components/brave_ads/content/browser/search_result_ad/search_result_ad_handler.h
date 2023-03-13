@@ -65,7 +65,7 @@ class SearchResultAdHandler final {
   bool should_trigger_viewed_event_ = true;
 
   absl::optional<base::flat_map</*placement_id*/ std::string,
-                                ads::mojom::SearchResultAdInfoPtr>>
+                                mojom::SearchResultAdInfoPtr>>
       search_result_ads_;
 
   base::WeakPtrFactory<SearchResultAdHandler> weak_factory_{this};

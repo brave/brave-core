@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
@@ -20,6 +20,6 @@ class AdEventServed final : public AdEventInterface<NewTabPageAdInfo> {
 };
 
 }  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_SERVED_H_

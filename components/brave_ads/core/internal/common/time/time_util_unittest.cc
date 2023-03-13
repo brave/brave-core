@@ -20,7 +20,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 #if BUILDFLAG(IS_LINUX)
 
@@ -760,4 +760,4 @@ TEST_P(BatAdsTimeUtilTest,
 
 INSTANTIATE_TEST_SUITE_P(, BatAdsTimeUtilTest, ::testing::Bool());
 
-}  // namespace ads
+}  // namespace brave_ads

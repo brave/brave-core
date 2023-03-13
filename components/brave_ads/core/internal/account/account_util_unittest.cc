@@ -19,7 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsAccountUtilTest : public UnitTestBase {};
 
@@ -108,4 +108,4 @@ TEST_F(BatAdsAccountUtilTest, ResetRewardsWithNoState) {
   // Assert
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,12 +8,12 @@
 
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 struct SearchEngineInfo;
 
 const std::vector<SearchEngineInfo>& GetSearchEngines();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_CONSTANTS_H_

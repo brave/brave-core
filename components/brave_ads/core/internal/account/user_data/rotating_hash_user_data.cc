@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 constexpr char kRotatingHashKey[] = "rotating_hash";
@@ -41,4 +41,4 @@ base::Value::Dict GetRotatingHash(const std::string& creative_instance_id) {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

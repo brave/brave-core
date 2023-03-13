@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuersInfo;
 
@@ -18,6 +18,6 @@ IssuersInfo BuildIssuers(int ping,
 
 void BuildAndSetIssuers();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_UNITTEST_UTIL_H_

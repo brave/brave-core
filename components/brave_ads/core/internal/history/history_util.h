@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType;
 struct AdInfo;
@@ -19,6 +19,6 @@ HistoryItemInfo AddHistory(const AdInfo& ad,
                            const std::string& title,
                            const std::string& description);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_HISTORY_UTIL_H_

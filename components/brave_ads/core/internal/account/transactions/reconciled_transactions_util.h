@@ -12,7 +12,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 bool DidReconcileTransaction(const TransactionInfo& transaction);
 bool DidReconcileTransactionsLastMonth(const TransactionList& transactions);
@@ -21,6 +21,6 @@ bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
                                             base::Time from_time,
                                             base::Time to_time);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_RECONCILED_TRANSACTIONS_UTIL_H_

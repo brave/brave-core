@@ -10,7 +10,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct DepositInfo final {
   bool IsValid() const;
@@ -20,6 +20,6 @@ struct DepositInfo final {
   base::Time expire_at;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSIT_INFO_H_

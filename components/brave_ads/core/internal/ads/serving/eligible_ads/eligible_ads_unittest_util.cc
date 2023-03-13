@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 void ResetEligibleAds(const AdType& type) {
   ClientStateManager::GetInstance()->ResetAllSeenAdsForType(type);
@@ -22,4 +22,4 @@ void ResetEligibleAds(const AdType& type) {
       base::BindOnce([](const bool success) { CHECK(success); }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

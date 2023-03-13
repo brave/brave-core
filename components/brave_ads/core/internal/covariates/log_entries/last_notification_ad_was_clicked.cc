@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/covariates/covariate_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -51,4 +51,4 @@ std::string LastNotificationAdWasClicked::GetValue() const {
   return base::NumberToString(kNotClickedValue);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

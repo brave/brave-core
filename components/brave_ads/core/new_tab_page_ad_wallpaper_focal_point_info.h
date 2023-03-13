@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/export.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT NewTabPageAdWallpaperFocalPointInfo final {
   int x = 0;
@@ -20,6 +20,6 @@ bool operator==(const NewTabPageAdWallpaperFocalPointInfo& lhs,
 bool operator!=(const NewTabPageAdWallpaperFocalPointInfo& lhs,
                 const NewTabPageAdWallpaperFocalPointInfo& rhs);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_NEW_TAB_PAGE_AD_WALLPAPER_FOCAL_POINT_INFO_H_

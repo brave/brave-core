@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 struct CommandLineSwitchInfo final {
   CommandLineSwitchInfo();
@@ -21,6 +21,6 @@ struct CommandLineSwitchInfo final {
 
 using CommandLineSwitchList = std::vector<CommandLineSwitchInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_COMMAND_LINE_SWITCH_INFO_H_

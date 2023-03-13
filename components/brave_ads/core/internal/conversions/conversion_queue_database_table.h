@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetConversionQueueCallback =
     base::OnceCallback<void(const bool, const ConversionQueueItemList&)>;
@@ -67,6 +67,6 @@ class ConversionQueue final : public TableInterface {
   int batch_size_;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_DATABASE_TABLE_H_

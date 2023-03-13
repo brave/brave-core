@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsBrowserManagerTest : public BrowserManagerObserver,
                                  public UnitTestBase {
@@ -112,4 +112,4 @@ TEST_F(BatAdsBrowserManagerTest, BrowserDidEnterBackground) {
   EXPECT_TRUE(browser_did_enter_background_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

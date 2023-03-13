@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/inline_content_ads/inline_content_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -34,21 +34,25 @@ class Account;
 class Transfer;
 struct InlineContentAdInfo;
 
-class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
-                              public inline_content_ads::ServingObserver {
+class InlineContentAdHandler final
+    : public inline_content_ads::EventHandlerObserver,
+      public inline_content_ads::ServingObserver {
  public:
-  InlineContentAd(Account* account,
-                  Transfer* transfer,
-                  geographic::SubdivisionTargeting* subdivision_targeting,
-                  resource::AntiTargeting* anti_targeting_resource);
+  InlineContentAdHandler(
+      Account* account,
+      Transfer* transfer,
+      geographic::SubdivisionTargeting* subdivision_targeting,
+      resource::AntiTargeting* anti_targeting_resource);
 
-  InlineContentAd(const InlineContentAd& other) = delete;
-  InlineContentAd& operator=(const InlineContentAd& other) = delete;
+  InlineContentAdHandler(const InlineContentAdHandler& other) = delete;
+  InlineContentAdHandler& operator=(const InlineContentAdHandler& other) =
+      delete;
 
-  InlineContentAd(InlineContentAd&& other) noexcept = delete;
-  InlineContentAd& operator=(InlineContentAd&& other) noexcept = delete;
+  InlineContentAdHandler(InlineContentAdHandler&& other) noexcept = delete;
+  InlineContentAdHandler& operator=(InlineContentAdHandler&& other) noexcept =
+      delete;
 
-  ~InlineContentAd() override;
+  ~InlineContentAdHandler() override;
 
   void MaybeServe(const std::string& dimensions,
                   MaybeServeInlineContentAdCallback callback);
@@ -76,6 +80,6 @@ class InlineContentAd final : public inline_content_ads::EventHandlerObserver,
   const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_INLINE_CONTENT_AD_HANDLER_H_

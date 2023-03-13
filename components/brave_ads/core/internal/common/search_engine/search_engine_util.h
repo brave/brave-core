@@ -8,10 +8,10 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 bool IsSearchEngine(const GURL& url);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_UTIL_H_

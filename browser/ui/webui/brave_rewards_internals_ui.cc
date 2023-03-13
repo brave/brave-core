@@ -455,7 +455,7 @@ void RewardsInternalsDOMHandler::OnGetAdDiagnostics(
   base::Value::Dict diagnostics;
   const PrefService* prefs = profile_->GetPrefs();
   const std::string& diagnostic_id =
-      prefs->GetString(ads::prefs::kDiagnosticId);
+      prefs->GetString(brave_ads::prefs::kDiagnosticId);
   diagnostics.Set("diagnosticId", diagnostic_id);
 
   if (diagnosticsEntries) {
@@ -483,7 +483,7 @@ void RewardsInternalsDOMHandler::SetAdDiagnosticId(
   }
 
   PrefService* prefs = profile_->GetPrefs();
-  prefs->SetString(ads::prefs::kDiagnosticId, args[0].GetString());
+  prefs->SetString(brave_ads::prefs::kDiagnosticId, args[0].GetString());
 }
 
 void RewardsInternalsDOMHandler::GetEnvironment(const base::Value::List& args) {

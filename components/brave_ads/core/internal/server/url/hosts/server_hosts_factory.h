@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_interface.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ServerHostsFactory final {
  public:
   static std::unique_ptr<ServerHostInterface> Build(ServerHostType type);
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_SERVER_HOSTS_FACTORY_H_

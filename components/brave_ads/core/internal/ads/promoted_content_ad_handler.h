@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_PROMOTED_CONTENT_AD_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_PROMOTED_CONTENT_AD_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_PROMOTED_CONTENT_AD_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_PROMOTED_CONTENT_AD_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace promoted_content_ads {
 class EventHandler;
@@ -51,6 +51,6 @@ class PromotedContentAd final
   const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_PROMOTED_CONTENT_AD_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_PROMOTED_CONTENT_AD_HANDLER_H_

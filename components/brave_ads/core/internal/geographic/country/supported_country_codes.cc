@@ -7,7 +7,7 @@
 
 #include "base/no_destructor.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 const SupportedCountryCodeMap& GetSupportedCountryCodes() {
   // Append newly supported country codes with a new schema version and update
@@ -317,4 +317,4 @@ const SupportedCountryCodeMap& GetSupportedCountryCodes() {
   return *kSupportedCountryCodes;
 }
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic

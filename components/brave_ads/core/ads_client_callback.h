@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 using ResultCallback = base::OnceCallback<void(const bool)>;
 
@@ -36,6 +36,6 @@ using GetBrowsingHistoryCallback =
 using GetScheduledCaptchaCallback =
     base::OnceCallback<void(const std::string&)>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_CALLBACK_H_

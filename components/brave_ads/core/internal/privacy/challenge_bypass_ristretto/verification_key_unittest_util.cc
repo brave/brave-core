@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 VerificationKey GetVerificationKey() {
   const UnblindedToken unblinded_token = GetUnblindedToken();
@@ -22,4 +22,4 @@ VerificationKey GetVerificationKey() {
   return *verification_key;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 TEST(BatAdsSignedTokenUtilTest, TokensToRawTokens) {
   // Arrange
@@ -43,4 +43,4 @@ TEST(BatAdsSignedTokenUtilTest, EmptyTokensToRawTokens) {
   EXPECT_TRUE(raw_tokens.empty());
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

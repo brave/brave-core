@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsIssuersUtilTest : public UnitTestBase {};
 
@@ -260,4 +260,4 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuersInvalid) {
   EXPECT_FALSE(is_valid);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

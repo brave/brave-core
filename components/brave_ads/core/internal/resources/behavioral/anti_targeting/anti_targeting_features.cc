@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 
-namespace ads::resource::features {
+namespace brave_ads::resource::features {
 
 namespace {
 
@@ -30,4 +30,4 @@ int GetAntiTargetingResourceVersion() {
                                           kDefaultResourceVersion);
 }
 
-}  // namespace ads::resource::features
+}  // namespace brave_ads::resource::features

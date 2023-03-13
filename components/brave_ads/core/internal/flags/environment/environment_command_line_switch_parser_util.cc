@@ -10,7 +10,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
-namespace ads {
+namespace brave_ads {
 
 absl::optional<EnvironmentType> ParseEnvironmentCommandLineSwitch() {
   const brave_rewards::RewardsFlags& flags =
@@ -35,4 +35,4 @@ absl::optional<EnvironmentType> ParseEnvironmentCommandLineSwitch() {
   return absl::nullopt;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

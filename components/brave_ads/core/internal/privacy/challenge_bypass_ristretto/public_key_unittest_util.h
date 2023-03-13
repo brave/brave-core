@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_PUBLIC_KEY_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_PUBLIC_KEY_UNITTEST_UTIL_H_
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class PublicKey;
 
@@ -14,6 +14,6 @@ PublicKey GetPublicKey();
 PublicKey GetMismatchingPublicKey();
 PublicKey GetInvalidPublicKey();
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_PUBLIC_KEY_UNITTEST_UTIL_H_

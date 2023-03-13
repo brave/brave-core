@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "base/strings/string_split.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::flat_map<std::string, std::string> ToUrlResponseHeaders(
     const std::vector<std::string>& headers) {
@@ -30,4 +30,4 @@ base::flat_map<std::string, std::string> ToUrlResponseHeaders(
   return response_headers;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

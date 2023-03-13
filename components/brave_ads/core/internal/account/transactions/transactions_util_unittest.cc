@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsTransactionsUtilTest : public UnitTestBase {};
 
@@ -74,4 +74,4 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   EXPECT_EQ(expected_transactions_for_date_range, transactions_for_date_range);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

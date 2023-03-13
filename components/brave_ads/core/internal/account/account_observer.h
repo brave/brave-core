@@ -10,7 +10,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 class ConfirmationType;
@@ -42,6 +42,6 @@ class AccountObserver : public base::CheckedObserver {
   virtual void OnStatementOfAccountsDidChange() {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_OBSERVER_H_

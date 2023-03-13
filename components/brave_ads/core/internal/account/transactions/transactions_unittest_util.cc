@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveTransactions(const TransactionList& transactions) {
   database::table::Transactions database_table;
@@ -61,4 +61,4 @@ int GetTransactionCount() {
   return count;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

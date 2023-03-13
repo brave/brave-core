@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuerInfo;
 
 bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_PUBLIC_KEY_UTIL_H_

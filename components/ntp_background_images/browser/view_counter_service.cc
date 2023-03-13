@@ -92,9 +92,10 @@ ViewCounterService::ViewCounterService(
   ResetModel();
 
   pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(ads::prefs::kEnabled,
+  pref_change_registrar_.Add(
+      brave_ads::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
-      base::Unretained(this)));
+                          base::Unretained(this)));
   pref_change_registrar_.Add(prefs::kNewTabPageSuperReferralThemesOption,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
@@ -120,12 +121,12 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
     if (!ads_service_->IsEnabled()) {
       ads_service_->TriggerNewTabPageAdEvent(
           wallpaper_id, creative_instance_id,
-          ads::mojom::NewTabPageAdEventType::kServed);
+          brave_ads::mojom::NewTabPageAdEventType::kServed);
     }
 
     ads_service_->TriggerNewTabPageAdEvent(
         wallpaper_id, creative_instance_id,
-        ads::mojom::NewTabPageAdEventType::kViewed);
+        brave_ads::mojom::NewTabPageAdEventType::kViewed);
 
     if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
       // Should only report to P3A if ads are disabled, as required by spec.
@@ -214,7 +215,7 @@ absl::optional<base::Value::Dict>
 ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
   DCHECK(ads_service_);
 
-  absl::optional<ads::NewTabPageAdInfo> ad_info =
+  absl::optional<brave_ads::NewTabPageAdInfo> ad_info =
       ads_service_->GetPrefetchedNewTabPageAdForDisplay();
   if (!ad_info) {
     return absl::nullopt;
@@ -310,7 +311,7 @@ void ViewCounterService::ResetModel() {
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
-  if (pref_name == ads::prefs::kEnabled) {
+  if (pref_name == brave_ads::prefs::kEnabled) {
     ResetNotificationState();
     return;
   }
@@ -344,7 +345,7 @@ void ViewCounterService::BrandedWallpaperLogoClicked(
 
   ads_service_->TriggerNewTabPageAdEvent(
       wallpaper_id, creative_instance_id,
-      ads::mojom::NewTabPageAdEventType::kClicked);
+      brave_ads::mojom::NewTabPageAdEventType::kClicked);
 
   if (ntp_p3a_helper_ && !ads_service_->IsEnabled()) {
     // Should only report to P3A if ads are disabled, as required by spec.

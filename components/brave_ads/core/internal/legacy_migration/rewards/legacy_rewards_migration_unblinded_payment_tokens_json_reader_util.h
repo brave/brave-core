@@ -13,11 +13,11 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 absl::optional<privacy::UnblindedPaymentTokenList> ParseUnblindedPaymentTokens(
     const base::Value& value);
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_UNBLINDED_PAYMENT_TOKENS_JSON_READER_UTIL_H_

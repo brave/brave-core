@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 UnblindedPaymentTokens* GetUnblindedPaymentTokens() {
   return ConfirmationStateManager::GetInstance()->GetUnblindedPaymentTokens();
@@ -111,4 +111,4 @@ UnblindedPaymentTokenInfo GetUnblindedPaymentToken() {
   return unblinded_payment_tokens.front();
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

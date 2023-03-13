@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsUrlUtilTest, HttpsSchemeIsSupported) {
   // Arrange
@@ -366,4 +366,4 @@ TEST(BatAdsUrlUtilTest, DomainOrHostDoesNotExist) {
   EXPECT_FALSE(does_exist);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

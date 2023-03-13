@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 // static
 bool PermissionRules::HasPermission() {
@@ -80,4 +80,4 @@ bool PermissionRules::HasPermission() {
   return ShouldAllow(&minimum_wait_time_permission_rule);
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

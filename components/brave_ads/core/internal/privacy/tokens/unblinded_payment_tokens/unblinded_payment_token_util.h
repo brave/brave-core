@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 absl::optional<UnblindedPaymentTokenInfo> MaybeGetUnblindedPaymentToken();
 
@@ -31,6 +31,6 @@ bool UnblindedPaymentTokensIsEmpty();
 
 int UnblindedPaymentTokenCount();
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_UTIL_H_

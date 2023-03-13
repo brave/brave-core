@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class Data;
 
@@ -22,6 +22,6 @@ class LowercaseTransformation final : public Transformation {
       const std::unique_ptr<Data>& input_data) const override;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_LOWERCASE_TRANSFORMATION_H_

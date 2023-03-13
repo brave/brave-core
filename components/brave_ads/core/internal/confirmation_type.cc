@@ -7,7 +7,7 @@
 
 #include "base/notreached.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -125,4 +125,4 @@ std::ostream& operator<<(std::ostream& os, const ConfirmationType& type) {
   return os;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

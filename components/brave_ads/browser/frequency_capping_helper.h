@@ -47,7 +47,7 @@ class FrequencyCappingHelper {
 
   ~FrequencyCappingHelper();
 
-  ads::AdEventHistory history_;
+  AdEventHistory history_;
 };
 
 }  // namespace brave_ads

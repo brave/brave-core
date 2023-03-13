@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsConfirmationHistoryFilterTest, FilterActions) {
   // Arrange
@@ -142,4 +142,4 @@ TEST(BatAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   EXPECT_TRUE(ContainersEq(expected_history, history));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

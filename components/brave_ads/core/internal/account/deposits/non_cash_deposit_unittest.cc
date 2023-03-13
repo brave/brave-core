@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kCreativeInstanceId[] = "b77e16fd-e4bf-4bfb-b033-b8772ec6113b";
@@ -32,4 +32,4 @@ TEST_F(BatAdsNonCashDepositTest, GetValue) {
   // Assert
 }
 
-}  // namespace ads
+}  // namespace brave_ads

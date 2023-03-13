@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetTextEmbeddingHtmlEventsCallback =
     base::OnceCallback<void(const bool, const TextEmbeddingHtmlEventList&)>;
@@ -42,6 +42,6 @@ class TextEmbeddingHtmlEvents final : public TableInterface {
       const TextEmbeddingHtmlEventList& text_embedding_html_events) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENTS_DATABASE_TABLE_H_

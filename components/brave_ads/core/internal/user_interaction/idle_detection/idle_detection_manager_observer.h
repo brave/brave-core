@@ -9,7 +9,7 @@
 #include "base/observer_list_types.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 class IdleDetectionManagerObserver : public base::CheckedObserver {
  public:
@@ -23,6 +23,6 @@ class IdleDetectionManagerObserver : public base::CheckedObserver {
   virtual void OnUserDidBecomeIdle() {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_IDLE_DETECTION_IDLE_DETECTION_MANAGER_OBSERVER_H_

@@ -21,7 +21,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 class BatAdsInlineContentAdServingObserver : public ServingObserver {
  public:
@@ -177,4 +177,4 @@ TEST_F(BatAdsInlineContentAdServingTest,
   // Assert
 }
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads

@@ -16,12 +16,12 @@
 
 #include "brave/third_party/rapidjson/src/include/rapidjson/document.h"
 
-namespace ads::helper::json {
+namespace brave_ads::helper::json {
 
 bool Validate(rapidjson::Document* document, const std::string& json_schema);
 
 std::string GetLastError(rapidjson::Document* document);
 
-}  // namespace ads::helper::json
+}  // namespace brave_ads::helper::json
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_JSON_JSON_HELPER_H_

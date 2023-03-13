@@ -8,11 +8,11 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 // Returns an id for this instance
 const std::string& GetInstanceId();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_INSTANCE_ID_CONSTANTS_H_

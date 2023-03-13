@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 namespace {
 constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
@@ -61,4 +61,4 @@ void Conversions::OnLoadAndParseResource(
        "Successfully initialized " << kResourceId << " conversions resource");
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

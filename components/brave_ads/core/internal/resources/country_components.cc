@@ -140,10 +140,10 @@ constexpr auto kCountryComponentIds = base::MakeFixedFlatSet<base::StringPiece>(
 
 }  // namespace
 
-namespace ads {
+namespace brave_ads {
 
 bool IsValidCountryComponentId(const std::string& id) {
   return base::Contains(kCountryComponentIds, id);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

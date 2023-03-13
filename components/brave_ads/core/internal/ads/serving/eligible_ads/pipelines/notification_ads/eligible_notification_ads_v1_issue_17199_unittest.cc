@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 class BatAdsEligibleNotificationAdsV1Issue17199Test : public UnitTestBase {
  protected:
@@ -50,4 +50,4 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Assert
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

@@ -10,12 +10,12 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string UrlRequestToString(const mojom::UrlRequestInfoPtr& url_request);
 std::string UrlRequestHeadersToString(
     const mojom::UrlRequestInfoPtr& url_request);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_URL_URL_REQUEST_STRING_UTIL_H_

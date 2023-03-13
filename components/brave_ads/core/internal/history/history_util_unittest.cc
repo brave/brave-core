@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsHistoryUtilTest : public UnitTestBase {};
 
@@ -90,4 +90,4 @@ TEST_F(BatAdsHistoryUtilTest, DoNotPurgeHistoryWithinTimeWindow) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

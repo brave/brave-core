@@ -21,7 +21,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 using ::testing::InSequence;
@@ -389,4 +389,4 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
   EXPECT_TRUE(privacy::UnblindedPaymentTokensIsEmpty());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

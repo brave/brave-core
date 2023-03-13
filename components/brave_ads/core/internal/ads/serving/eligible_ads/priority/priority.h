@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/priority/priority_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 T PrioritizeCreativeAds(const T& creative_ads) {
@@ -35,6 +35,6 @@ T PrioritizeCreativeAds(const T& creative_ads) {
   return bucket;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_H_

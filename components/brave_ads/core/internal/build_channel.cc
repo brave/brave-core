@@ -8,11 +8,11 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads {
+namespace brave_ads {
 
 mojom::BuildChannelInfo& BuildChannel() {
   static base::NoDestructor<mojom::BuildChannelInfo> build_channel;
   return *build_channel;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

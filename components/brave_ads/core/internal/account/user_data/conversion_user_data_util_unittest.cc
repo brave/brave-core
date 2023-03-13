@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 
@@ -78,4 +78,4 @@ TEST(BatAdsConversionUserDataUtilTest,
   EXPECT_FALSE(verifiable_conversion_envelope);
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

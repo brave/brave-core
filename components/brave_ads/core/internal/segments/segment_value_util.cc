@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::List SegmentsToValue(const SegmentList& segments) {
   base::Value::List list;
@@ -41,4 +41,4 @@ SegmentList SegmentsFromValue(const base::Value::List& value) {
   return segments;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

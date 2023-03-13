@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 TabInfo::TabInfo() = default;
 
@@ -28,4 +28,4 @@ bool TabInfo::operator!=(const TabInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

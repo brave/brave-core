@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -73,4 +73,4 @@ std::string SanitizeCommandLineSwitch(
       CommandLineSwitchToString(command_line_switch));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

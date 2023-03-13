@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Time GetNextPaymentDate(const TransactionList& transactions) {
   const base::Time next_token_redemption_at =
@@ -46,4 +46,4 @@ int GetAdsReceivedThisMonth(const TransactionList& transactions) {
   return GetAdsReceivedForDateRange(transactions, from_time, to_time);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

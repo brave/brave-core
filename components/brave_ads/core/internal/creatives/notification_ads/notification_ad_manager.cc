@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -149,4 +149,4 @@ void NotificationAdManager::MaybeRemoveAll() {
 #endif  // BUILDFLAG(IS_ANDROID)
 }
 
-}  // namespace ads
+}  // namespace brave_ads

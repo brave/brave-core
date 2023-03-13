@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kSegment[] = "keyword";
@@ -32,4 +32,4 @@ SearchResultAdInfo BuildSearchResultAd(
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

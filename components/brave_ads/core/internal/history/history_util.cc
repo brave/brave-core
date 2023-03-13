@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 HistoryItemInfo AddHistory(const AdInfo& ad,
                            const ConfirmationType& confirmation_type,
@@ -23,4 +23,4 @@ HistoryItemInfo AddHistory(const AdInfo& ad,
   return history_item;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

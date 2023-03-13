@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -89,4 +89,4 @@ PromotedContentAdInfo PromotedContentAdFromValue(
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 bool ExceptionOccurred() {
   const challenge_bypass_ristretto::TokenException e =
@@ -21,4 +21,4 @@ bool ExceptionOccurred() {
   return false;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

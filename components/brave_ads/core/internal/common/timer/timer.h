@@ -17,7 +17,7 @@ class TimeDelta;
 class WallClockTimer;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class Timer final {
  public:
@@ -59,6 +59,6 @@ class Timer final {
   std::unique_ptr<base::WallClockTimer> timer_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_TIMER_H_

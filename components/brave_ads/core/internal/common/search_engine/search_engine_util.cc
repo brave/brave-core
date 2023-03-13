@@ -13,7 +13,7 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -40,4 +40,4 @@ bool IsSearchEngine(const GURL& url) {
   return static_cast<bool>(FindSearchEngine(url));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

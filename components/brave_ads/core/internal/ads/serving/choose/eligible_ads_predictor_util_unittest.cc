@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
   // Arrange
@@ -133,4 +133,4 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   EXPECT_EQ(expected_score, ad_predictor.score);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

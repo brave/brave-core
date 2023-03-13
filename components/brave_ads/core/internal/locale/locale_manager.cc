@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 LocaleManager* g_locale_manager_instance = nullptr;
@@ -68,4 +68,4 @@ void LocaleManager::NotifyLocaleDidChange(const std::string& locale) const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

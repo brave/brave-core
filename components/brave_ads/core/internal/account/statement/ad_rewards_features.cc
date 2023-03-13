@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 namespace {
 
@@ -29,4 +29,4 @@ int GetAdRewardsNextPaymentDay() {
       kAdRewards, kFieldTrialParameterNextPaymentDay, kDefaultNextPaymentDay);
 }
 
-}  // namespace ads::features
+}  // namespace brave_ads::features

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -115,4 +115,4 @@ base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
   return ads;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

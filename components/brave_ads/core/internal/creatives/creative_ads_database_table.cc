@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "url/gurl.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using CreativeAdMap = std::map<std::string, CreativeAdInfo>;
 
@@ -292,4 +292,4 @@ std::string CreativeAds::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(9, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

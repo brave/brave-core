@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 class UnblindedPaymentTokens final {
  public:
@@ -45,6 +45,6 @@ class UnblindedPaymentTokens final {
   UnblindedPaymentTokenList unblinded_payment_tokens_;
 };
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKENS_H_

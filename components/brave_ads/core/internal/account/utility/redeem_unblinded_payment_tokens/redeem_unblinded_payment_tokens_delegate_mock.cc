@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 RedeemUnblindedPaymentTokensDelegateMock::
     RedeemUnblindedPaymentTokensDelegateMock() = default;
@@ -13,4 +13,4 @@ RedeemUnblindedPaymentTokensDelegateMock::
 RedeemUnblindedPaymentTokensDelegateMock::
     ~RedeemUnblindedPaymentTokensDelegateMock() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

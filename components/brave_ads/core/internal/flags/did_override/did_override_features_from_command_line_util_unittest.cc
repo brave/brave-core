@@ -33,7 +33,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -197,4 +197,4 @@ INSTANTIATE_TEST_SUITE_P(,
                          testing::ValuesIn(kTestCases),
                          TestParamToString);
 
-}  // namespace ads
+}  // namespace brave_ads

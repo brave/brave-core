@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 class UnblindedPaymentTokens;
@@ -92,6 +92,6 @@ class ConfirmationStateManager final {
   std::unique_ptr<privacy::UnblindedPaymentTokens> unblinded_payment_tokens_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CONFIRMATIONS_CONFIRMATION_STATE_MANAGER_H_

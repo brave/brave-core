@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/export.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT AdContentInfo final {
   AdContentInfo();
@@ -49,6 +49,6 @@ struct ADS_EXPORT AdContentInfo final {
 bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs);
 bool operator!=(const AdContentInfo& lhs, const AdContentInfo& rhs);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_AD_CONTENT_INFO_H_

@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_CATEGORY_CONTENT_ACTION_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_CATEGORY_CONTENT_ACTION_TYPES_H_
 
-namespace ads {
+namespace brave_ads {
 
 enum class CategoryContentOptActionType { kNone = 0, kOptIn, kOptOut };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_CATEGORY_CONTENT_ACTION_TYPES_H_

@@ -7,7 +7,7 @@
 
 #include "third_party/zlib/zlib.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 namespace {
 
@@ -69,4 +69,4 @@ std::map<uint32_t, double> HashVectorizer::GetFrequencies(
   return frequencies;
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

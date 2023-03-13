@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kAdvertiserId[] = "1d3349f6-6713-4324-a135-b377237450a4";
@@ -50,4 +50,4 @@ TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   EXPECT_TRUE(should_exclude);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 CreativeAdInfo::CreativeAdInfo() = default;
 
@@ -43,4 +43,4 @@ bool CreativeAdInfo::operator!=(const CreativeAdInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

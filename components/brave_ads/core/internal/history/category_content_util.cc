@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/category_content_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 CategoryContentInfo BuildCategoryContent(const std::string& segment) {
   CategoryContentInfo category_content;
@@ -21,4 +21,4 @@ CategoryContentInfo BuildCategoryContent(const std::string& segment) {
   return category_content;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

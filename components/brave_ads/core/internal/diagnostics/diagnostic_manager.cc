@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/locale_diagnostic_entry.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 DiagnosticManager* g_diagnostic_manager_instance = nullptr;
@@ -62,4 +62,4 @@ void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
   std::move(callback).Run(ToValue(diagnostics_));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

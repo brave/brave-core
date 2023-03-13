@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeAdInfo;
 
@@ -41,6 +41,6 @@ class TotalMaxExclusionRule final
   std::string last_message_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_TOTAL_MAX_EXCLUSION_RULE_H_

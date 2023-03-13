@@ -9,11 +9,11 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::List IssuersToValue(const IssuerList& issuers);
 absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_VALUE_UTIL_H_

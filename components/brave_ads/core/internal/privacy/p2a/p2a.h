@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 void RecordEvent(const std::string& name,
                  const std::vector<std::string>& questions);
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_P2A_P2A_H_

@@ -143,7 +143,7 @@ class RewardsDOMHandler
   void GetPendingContributionsTotal(const base::Value::List& args);
   void OnGetPendingContributionsTotal(double amount);
   void GetStatement(const base::Value::List& args);
-  void OnGetStatement(ads::mojom::StatementInfoPtr statement);
+  void OnGetStatement(brave_ads::mojom::StatementInfoPtr statement);
   void GetExcludedSites(const base::Value::List& args);
 
   void OnGetRecurringTips(std::vector<ledger::mojom::PublisherInfoPtr> list);
@@ -534,15 +534,15 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
   pref_change_registrar_.Init(profile->GetPrefs());
 
   pref_change_registrar_.Add(
-      ads::prefs::kEnabled,
+      brave_ads::prefs::kEnabled,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      ads::prefs::kMaximumNotificationAdsPerHour,
+      brave_ads::prefs::kMaximumNotificationAdsPerHour,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      ads::prefs::kSubdivisionTargetingCode,
+      brave_ads::prefs::kSubdivisionTargetingCode,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
 
@@ -1221,7 +1221,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
                ads_service_->NeedsBrowserUpgradeToServeAds());
 
   base::Value::List subdivisions;
-  const auto supported_subdivisions = ads::GetSupportedSubdivisions();
+  const auto supported_subdivisions = brave_ads::GetSupportedSubdivisions();
   for (const auto& subdivision : supported_subdivisions) {
     base::Value::Dict subdivision_dict;
     subdivision_dict.Set("code", subdivision.first);
@@ -1502,7 +1502,8 @@ void RewardsDOMHandler::GetStatement(const base::Value::List& args) {
       &RewardsDOMHandler::OnGetStatement, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetStatement(ads::mojom::StatementInfoPtr statement) {
+void RewardsDOMHandler::OnGetStatement(
+    brave_ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
     return;
   }

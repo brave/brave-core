@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration_util.h"
 
-namespace ads::client {
+namespace brave_ads::client {
 
 namespace {
 
@@ -83,4 +83,4 @@ void Migrate(InitializeCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ads::client
+}  // namespace brave_ads::client

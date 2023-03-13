@@ -10,7 +10,7 @@
 
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogNotificationAdPayloadInfo final {
   bool operator==(const CatalogNotificationAdPayloadInfo& other) const;
@@ -21,6 +21,6 @@ struct CatalogNotificationAdPayloadInfo final {
   GURL target_url;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_NOTIFICATION_AD_CATALOG_NOTIFICATION_AD_PAYLOAD_INFO_H_

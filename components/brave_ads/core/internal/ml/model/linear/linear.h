@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/ml_alias.h"
 
-namespace ads::ml::model {
+namespace brave_ads::ml::model {
 
 class Linear final {
  public:
@@ -40,6 +40,6 @@ class Linear final {
   std::map<std::string, double> biases_;
 };
 
-}  // namespace ads::ml::model
+}  // namespace brave_ads::ml::model
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_MODEL_LINEAR_LINEAR_H_

@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct UserModelInfo final {
   UserModelInfo();
@@ -26,6 +26,6 @@ struct UserModelInfo final {
   SegmentList purchase_intent_segments;
 };
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_INFO_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
   BLOG(3, "Viewed new tab page ad with placement id "
@@ -29,4 +29,4 @@ void AdEventViewed::FireEvent(const NewTabPageAdInfo& ad) {
              }));
 }
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

@@ -12,7 +12,7 @@ namespace {
 absl::optional<double> g_pacing_random_number;
 }  // namespace
 
-namespace ads {
+namespace brave_ads {
 
 double GeneratePacingRandomNumber() {
   if (g_pacing_random_number) {
@@ -31,4 +31,4 @@ ScopedPacingRandomNumberSetter::~ScopedPacingRandomNumberSetter() {
   g_pacing_random_number = absl::nullopt;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

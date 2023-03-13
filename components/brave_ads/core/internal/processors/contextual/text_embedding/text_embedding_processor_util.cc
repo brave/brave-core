@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/strings/string_html_parser_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 namespace {
 
@@ -26,4 +26,4 @@ std::string SanitizeText(const std::string& text) {
   return base::ToLowerASCII(StripNonAlphaCharacters(text));
 }
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor

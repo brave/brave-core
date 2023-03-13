@@ -10,13 +10,13 @@
 #include "base/strings/string_piece_forward.h"
 #include "brave/components/brave_ads/core/export.h"
 
-namespace ads {
+namespace brave_ads {
 
 using SupportedSubdivisions =
     base::flat_map<base::StringPiece, base::StringPiece>;
 
 ADS_EXPORT SupportedSubdivisions GetSupportedSubdivisions();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_SUPPORTED_SUBDIVISIONS_H_

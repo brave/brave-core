@@ -15,7 +15,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 struct ConversionsInfo final {
   ConversionsInfo();
@@ -36,6 +36,6 @@ struct ConversionsInfo final {
   ConversionIdPatternMap id_patterns;
 };
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_INFO_H_

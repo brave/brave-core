@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdsClientMock::AdsClientMock() = default;
 
 AdsClientMock::~AdsClientMock() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

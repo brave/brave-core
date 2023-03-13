@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
 
 #include <utility>
 
@@ -21,9 +21,9 @@
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
-NewTabPageAd::NewTabPageAd(
+NewTabPageAdHandler::NewTabPageAdHandler(
     Account* account,
     Transfer* transfer,
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -40,18 +40,19 @@ NewTabPageAd::NewTabPageAd(
   serving_->AddObserver(this);
 }
 
-NewTabPageAd::~NewTabPageAd() {
+NewTabPageAdHandler::~NewTabPageAdHandler() {
   event_handler_->RemoveObserver(this);
   serving_->RemoveObserver(this);
 }
 
-void NewTabPageAd::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
+void NewTabPageAdHandler::MaybeServe(MaybeServeNewTabPageAdCallback callback) {
   serving_->MaybeServeAd(std::move(callback));
 }
 
-void NewTabPageAd::TriggerEvent(const std::string& placement_id,
-                                const std::string& creative_instance_id,
-                                const mojom::NewTabPageAdEventType event_type) {
+void NewTabPageAdHandler::TriggerEvent(
+    const std::string& placement_id,
+    const std::string& creative_instance_id,
+    const mojom::NewTabPageAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
   event_handler_->FireEvent(placement_id, creative_instance_id, event_type);
@@ -59,28 +60,28 @@ void NewTabPageAd::TriggerEvent(const std::string& placement_id,
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NewTabPageAd::OnOpportunityAroseToServeNewTabPageAd(
+void NewTabPageAdHandler::OnOpportunityAroseToServeNewTabPageAd(
     const SegmentList& /*segments*/) {
   BLOG(1, "Opportunity arose to serve a new tab page ad");
 }
 
-void NewTabPageAd::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnDidServeNewTabPageAd(const NewTabPageAdInfo& ad) {
   TriggerEvent(ad.placement_id, ad.creative_instance_id,
                mojom::NewTabPageAdEventType::kServed);
 }
 
-void NewTabPageAd::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
   ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
-void NewTabPageAd::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 }
 
-void NewTabPageAd::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
+void NewTabPageAdHandler::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
@@ -89,4 +90,4 @@ void NewTabPageAd::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
                     ConfirmationType::kClicked);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

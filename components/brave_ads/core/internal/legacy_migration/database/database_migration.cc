@@ -30,7 +30,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 namespace {
 
@@ -113,4 +113,4 @@ void MigrateFromVersion(const int from_version, ResultCallback callback) {
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

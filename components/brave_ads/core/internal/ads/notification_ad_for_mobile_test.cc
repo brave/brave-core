@@ -20,7 +20,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -211,4 +211,4 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
   ServeNextAd();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

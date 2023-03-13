@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 
@@ -76,8 +76,8 @@ void RecordAdsState(AdsState state) {
 
 void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
                                       const std::string& pref) {
-  const bool ads_enabled = prefs->GetBoolean(ads::prefs::kEnabled);
-  if (pref == ads::prefs::kEnabled) {
+  const bool ads_enabled = prefs->GetBoolean(brave_ads::prefs::kEnabled);
+  if (pref == brave_ads::prefs::kEnabled) {
     if (ads_enabled) {
       RecordAdsState(AdsState::kAdsEnabled);
       prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, false);
@@ -91,7 +91,7 @@ void UpdateAdsStateOnPreferenceChange(PrefService* prefs,
 
 void MaybeRecordInitialAdsState(PrefService* prefs) {
   if (!prefs->GetBoolean(brave_ads::prefs::kHasAdsP3AState)) {
-    const bool ads_state = prefs->GetBoolean(ads::prefs::kEnabled);
+    const bool ads_state = prefs->GetBoolean(brave_ads::prefs::kEnabled);
     RecordAdsState(ads_state ? AdsState::kAdsEnabled : AdsState::kAdsDisabled);
     prefs->SetBoolean(brave_ads::prefs::kHasAdsP3AState, true);
   }

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 void AdEventClicked::FireEvent(const NotificationAdInfo& ad) {
   BLOG(3, "Clicked notification ad with placement id "
@@ -28,4 +28,4 @@ void AdEventClicked::FireEvent(const NotificationAdInfo& ad) {
              }));
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

@@ -14,7 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 int GetNumberOfTabsOpened(const UserActivityEventList& events) {
   return base::ranges::count_if(events, [](const UserActivityEventInfo& event) {
@@ -72,4 +72,4 @@ UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value) {
   return triggers;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

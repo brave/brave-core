@@ -15,7 +15,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 class ConfirmationType;
@@ -41,6 +41,6 @@ std::vector<base::Time> GetAdEventHistory(
     const AdType& ad_type,
     const ConfirmationType& confirmation_type);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENTS_H_

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/campaigns_database_table.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteCampaigns() {
   const table::Campaigns database_table;
@@ -23,4 +23,4 @@ void DeleteCampaigns() {
   }));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

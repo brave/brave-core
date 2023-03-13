@@ -14,7 +14,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 class CreateConfirmationUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
@@ -31,6 +31,6 @@ class CreateConfirmationUrlRequestBuilder final
   ConfirmationInfo confirmation_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_URL_REQUEST_BUILDER_H_

@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/metrics/field_trial_params_util.h"
 
-namespace ads::user_activity::features {
+namespace brave_ads::user_activity::features {
 
 namespace {
 
@@ -72,4 +72,4 @@ bool ShouldDetectScreenWasLocked() {
       kDefaultShouldDetectScreenWasLocked);
 }
 
-}  // namespace ads::user_activity::features
+}  // namespace brave_ads::user_activity::features

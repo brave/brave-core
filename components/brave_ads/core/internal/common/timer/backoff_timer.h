@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 
-namespace ads {
+namespace brave_ads {
 
 class BackoffTimer final {
  public:
@@ -56,6 +56,6 @@ class BackoffTimer final {
   base::TimeDelta max_backoff_delay_ = base::Hours(1);
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIMER_BACKOFF_TIMER_H_

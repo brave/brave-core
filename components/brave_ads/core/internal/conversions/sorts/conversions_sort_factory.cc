@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_ascending_sort.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_descending_sort.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::unique_ptr<ConversionsSortInterface> ConversionsSortFactory::Build(
     const ConversionSortType type) {
@@ -34,4 +34,4 @@ std::unique_ptr<ConversionsSortInterface> ConversionsSortFactory::Build(
   return nullptr;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

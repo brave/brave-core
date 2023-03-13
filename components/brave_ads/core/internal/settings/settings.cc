@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace ads::settings {
+namespace brave_ads::settings {
 
 int GetMaximumNotificationAdsPerHour() {
   int64_t ads_per_hour = AdsClientHelper::GetInstance()->GetInt64Pref(
@@ -31,4 +31,4 @@ int GetMaximumNotificationAdsPerHour() {
   return static_cast<int>(clamped_ads_per_hour);
 }
 
-}  // namespace ads::settings
+}  // namespace brave_ads::settings

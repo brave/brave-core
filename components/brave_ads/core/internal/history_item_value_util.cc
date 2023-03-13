@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_value_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -46,7 +46,7 @@ base::Value::List HistoryItemToDetailRowsValue(
   base::Value::Dict dict;
   dict.Set(kUIAdContentKey, AdContentToValue(history_item.ad_content));
   dict.Set(kUICategoryContentKey,
-           ads::CategoryContentToValue(history_item.category_content));
+           CategoryContentToValue(history_item.category_content));
 
   list.Append(std::move(dict));
 
@@ -122,4 +122,4 @@ HistoryItemList HistoryItemsFromValue(const base::Value::List& list) {
   return history_items;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

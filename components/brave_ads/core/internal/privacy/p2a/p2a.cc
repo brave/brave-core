@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a_value_util.h"
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 void RecordEvent(const std::string& name,
                  const std::vector<std::string>& questions) {
@@ -19,4 +19,4 @@ void RecordEvent(const std::string& name,
                                                  QuestionsToValue(questions));
 }
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a

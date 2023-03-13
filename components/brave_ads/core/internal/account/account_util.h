@@ -8,7 +8,7 @@
 
 #include "base/functional/callback_forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 using ResetRewardsCallback = base::OnceCallback<void(const bool)>;
 
@@ -16,6 +16,6 @@ bool ShouldRewardUser();
 
 void ResetRewards(ResetRewardsCallback callback);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_UTIL_H_

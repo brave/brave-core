@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 using InitializeCallback = base::OnceCallback<void(const bool)>;
 using ShutdownCallback = base::OnceCallback<void(const bool)>;
@@ -38,6 +38,6 @@ using GetDiagnosticsCallback =
 using PurgeOrphanedAdEventsForTypeCallback =
     base::OnceCallback<void(const bool)>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CALLBACK_H_

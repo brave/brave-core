@@ -12,7 +12,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 int GetLocalTimeAsMinutes(base::Time time);
 
@@ -38,6 +38,6 @@ base::Time GetLocalMidnight(base::Time time);
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.
 void SetFromLocalExplodedFailedForTesting(bool set_failed);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_TIME_TIME_UTIL_H_

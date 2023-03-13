@@ -9,13 +9,13 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 base::Value::Dict EpsilonGreedyBanditArmsToValue(
     const EpsilonGreedyBanditArmMap& arms);
 EpsilonGreedyBanditArmMap EpsilonGreedyBanditArmsFromValue(
     const base::Value::Dict& dict);
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARM_VALUE_UTIL_H_

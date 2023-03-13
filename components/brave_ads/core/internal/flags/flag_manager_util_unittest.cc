@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsFlagManagerUtilTest : public UnitTestBase {};
 
@@ -37,4 +37,4 @@ TEST_F(BatAdsFlagManagerUtilTest, IsNotProductionEnvironment) {
   EXPECT_FALSE(IsProductionEnvironment());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

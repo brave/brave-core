@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 namespace {
 
@@ -113,4 +113,4 @@ TEST_F(BatAdsHashVectorizerTest, JapaneseText) {
   RunHashingExtractorTestCase("japanese");
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

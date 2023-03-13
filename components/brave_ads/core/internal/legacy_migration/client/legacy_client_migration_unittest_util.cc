@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 
-namespace ads::client {
+namespace brave_ads::client {
 
 void Migrate(const bool should_migrate) {
   Migrate(base::BindOnce(
@@ -29,4 +29,4 @@ void SetHash(const uint64_t hash) {
   AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash, hash);
 }
 
-}  // namespace ads::client
+}  // namespace brave_ads::client

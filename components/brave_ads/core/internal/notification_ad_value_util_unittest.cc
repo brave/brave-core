@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -94,4 +94,4 @@ TEST_F(BatAdsNotificationAdValueUtilTest, FromListValue) {
   EXPECT_TRUE(base::ranges::equal(expected_ads, ads));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

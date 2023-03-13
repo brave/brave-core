@@ -85,8 +85,8 @@ std::string BraveStatsUpdaterParams::GetReferralCodeParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetAdsEnabledParam() const {
-  return BooleanToString(
-      stats_pref_service_->GetBoolean(ads::prefs::kEnabledForLastProfile));
+  return BooleanToString(stats_pref_service_->GetBoolean(
+      brave_ads::prefs::kEnabledForLastProfile));
 }
 
 std::string BraveStatsUpdaterParams::GetProcessArchParam() const {

@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 namespace {
 constexpr char kCatalog[] = "catalog.json";
@@ -71,4 +71,4 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
   EXPECT_FALSE(resource.IsInitialized());
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

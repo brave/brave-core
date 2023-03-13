@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AdType final {
  public:
@@ -45,6 +45,6 @@ class AdType final {
 
 std::ostream& operator<<(std::ostream& os, const AdType& type);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_AD_TYPE_H_

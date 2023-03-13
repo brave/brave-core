@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 TokenGeneratorMock::TokenGeneratorMock() = default;
 
 TokenGeneratorMock::~TokenGeneratorMock() = default;
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

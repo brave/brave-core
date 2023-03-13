@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/server/url/hosts/non_anonymous_server_host.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/static_server_host.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::unique_ptr<ServerHostInterface> ServerHostsFactory::Build(
     const ServerHostType type) {
@@ -40,4 +40,4 @@ std::unique_ptr<ServerHostInterface> ServerHostsFactory::Build(
   return nullptr;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

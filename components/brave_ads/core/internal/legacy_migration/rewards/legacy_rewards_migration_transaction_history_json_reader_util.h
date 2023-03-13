@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 absl::optional<TransactionList> ParseTransactionHistory(
     const base::Value::Dict& value);
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_TRANSACTION_HISTORY_JSON_READER_UTIL_H_

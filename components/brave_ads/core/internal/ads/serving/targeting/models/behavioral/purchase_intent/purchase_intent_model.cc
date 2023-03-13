@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace ads::targeting::model {
+namespace brave_ads::targeting::model {
 
 namespace {
 
@@ -72,4 +72,4 @@ SegmentList PurchaseIntent::GetSegments() const {
   return segments;
 }
 
-}  // namespace ads::targeting::model
+}  // namespace brave_ads::targeting::model

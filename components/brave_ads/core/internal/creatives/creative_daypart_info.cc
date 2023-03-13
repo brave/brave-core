@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const CreativeDaypartInfo& lhs,
                 const CreativeDaypartInfo& rhs) {
@@ -18,4 +18,4 @@ bool operator!=(const CreativeDaypartInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

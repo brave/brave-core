@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool IsConfirmationsIssuerValid(const IssuersInfo& issuers) {
   const absl::optional<IssuerInfo> confirmations_issuer =
@@ -24,4 +24,4 @@ bool IsConfirmationsIssuerValid(const IssuersInfo& issuers) {
   return confirmations_issuer->public_keys.size() <= kMaximumIssuerPublicKeys;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

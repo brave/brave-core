@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ads {
+namespace brave_ads {
 
 base::Time BackoffTimer::Start(const base::Location& location,
                                const base::TimeDelta delay,
@@ -50,4 +50,4 @@ base::TimeDelta BackoffTimer::CalculateDelay(const base::TimeDelta delay) {
   return backoff_delay;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

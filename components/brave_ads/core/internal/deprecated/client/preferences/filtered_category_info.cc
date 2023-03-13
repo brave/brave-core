@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::Dict FilteredCategoryInfo::ToValue() const {
   base::Value::Dict dict;
@@ -19,4 +19,4 @@ void FilteredCategoryInfo::FromValue(const base::Value::Dict& root) {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

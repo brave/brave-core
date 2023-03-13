@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 SupportedSubdivisions GetSupportedSubdivisions() {
   const std::string country_code = brave_l10n::GetDefaultISOCountryCodeString();
@@ -25,4 +25,4 @@ SupportedSubdivisions GetSupportedSubdivisions() {
   return iter->second;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

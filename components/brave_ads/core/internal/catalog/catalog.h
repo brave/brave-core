@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogInfo;
 
@@ -56,6 +56,6 @@ class Catalog final : public DatabaseManagerObserver {
   BackoffTimer retry_timer_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_

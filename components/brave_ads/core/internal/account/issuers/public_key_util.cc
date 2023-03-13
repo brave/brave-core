@@ -7,10 +7,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
   return issuer.public_keys.find(public_key) != issuer.public_keys.cend();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

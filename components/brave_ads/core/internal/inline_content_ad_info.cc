@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 InlineContentAdInfo::InlineContentAdInfo() = default;
 
@@ -46,4 +46,4 @@ bool InlineContentAdInfo::IsValid() const {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

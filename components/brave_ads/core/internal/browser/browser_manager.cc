@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 BrowserManager* g_browser_manager_instance = nullptr;
@@ -141,4 +141,4 @@ void BrowserManager::LogBrowserForegroundState() const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

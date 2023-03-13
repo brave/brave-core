@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hash_vectorizer.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 HashedNGramsTransformation::HashedNGramsTransformation()
     : Transformation(TransformationType::kHashedNGrams) {
@@ -44,4 +44,4 @@ std::unique_ptr<Data> HashedNGramsTransformation::Apply(
   return std::make_unique<VectorData>(dimension_count, frequences);
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

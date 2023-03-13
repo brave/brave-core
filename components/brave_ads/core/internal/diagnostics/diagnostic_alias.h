@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_interface.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 using DiagnosticMap = base::flat_map<DiagnosticEntryType,
                                      std::unique_ptr<DiagnosticEntryInterface>>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_ALIAS_H_

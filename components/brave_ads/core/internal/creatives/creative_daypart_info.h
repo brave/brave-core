@@ -11,7 +11,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeDaypartInfo final {
   std::string dow = "0123456";
@@ -24,6 +24,6 @@ bool operator!=(const CreativeDaypartInfo& lhs, const CreativeDaypartInfo& rhs);
 
 using CreativeDaypartList = std::vector<CreativeDaypartInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CREATIVE_DAYPART_INFO_H_

@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/core/internal/common/metrics/field_trial_params_util.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 namespace {
 
@@ -158,4 +158,4 @@ int GetBrowsingHistoryDaysAgo() {
       kDefaultBrowsingHistoryDaysAgo);
 }
 
-}  // namespace ads::features
+}  // namespace brave_ads::features

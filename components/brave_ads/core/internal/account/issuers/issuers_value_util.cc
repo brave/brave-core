@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -161,4 +161,4 @@ absl::optional<IssuerList> ValueToIssuers(const base::Value::List& value) {
   return issuers;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

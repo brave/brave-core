@@ -11,11 +11,11 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 std::vector<std::string> CreateAdOpportunityQuestions(
     const SegmentList& segments);
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_QUESTIONS_H_

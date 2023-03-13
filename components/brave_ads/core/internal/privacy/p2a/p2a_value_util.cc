@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a_value_util.h"
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 base::Value::List QuestionsToValue(const std::vector<std::string>& questions) {
   base::Value::List list;
@@ -19,4 +19,4 @@ base::Value::List QuestionsToValue(const std::vector<std::string>& questions) {
   return list;
 }
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a

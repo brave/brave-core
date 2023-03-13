@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -57,4 +57,4 @@ void BuildAndSaveConversionQueueItem(const std::string& conversion_id,
   SaveConversionQueueItems(conversion_queue_items);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data_util.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 
@@ -40,4 +40,4 @@ base::Value::Dict GetTotals(
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

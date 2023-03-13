@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsNetworkConnectionPermissionRuleTest : public UnitTestBase {};
 
@@ -66,4 +66,4 @@ TEST_F(BatAdsNetworkConnectionPermissionRuleTest,
   EXPECT_TRUE(is_allowed);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

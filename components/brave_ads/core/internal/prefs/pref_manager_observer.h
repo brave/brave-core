@@ -10,7 +10,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class PrefManagerObserver : public base::CheckedObserver {
  public:
@@ -18,6 +18,6 @@ class PrefManagerObserver : public base::CheckedObserver {
   virtual void OnPrefDidChange(const std::string& path) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PREFS_PREF_MANAGER_OBSERVER_H_

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_android.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kPlatformName[] = "android";
@@ -25,4 +25,4 @@ PlatformType PlatformHelperAndroid::GetType() const {
   return PlatformType::kAndroid;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

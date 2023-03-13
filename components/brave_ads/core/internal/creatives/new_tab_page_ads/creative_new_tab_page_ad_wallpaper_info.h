@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeNewTabPageAdWallpaperInfo final {
   bool operator==(const CreativeNewTabPageAdWallpaperInfo& other) const;
@@ -24,6 +24,6 @@ struct CreativeNewTabPageAdWallpaperInfo final {
 using CreativeNewTabPageAdWallpaperList =
     std::vector<CreativeNewTabPageAdWallpaperInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_WALLPAPER_INFO_H_

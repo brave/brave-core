@@ -12,7 +12,7 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value) {
   const std::vector<std::string> components = base::SplitString(
@@ -42,4 +42,4 @@ AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value) {
   return weights;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

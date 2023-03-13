@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_domain_extension_constants.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_subdomain_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 const std::string& GetAmazonUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(base::StrCat(
@@ -48,4 +48,4 @@ const std::string& GetYahooUrlPattern() {
   return *kUrlPattern;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

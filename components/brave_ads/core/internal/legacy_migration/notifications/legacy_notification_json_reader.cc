@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 
-namespace ads::json::reader {
+namespace brave_ads::json::reader {
 
 namespace {
 constexpr char kNotificationListKey[] = "notifications";
@@ -32,4 +32,4 @@ absl::optional<base::circular_deque<NotificationAdInfo>> ReadNotificationAds(
   return NotificationAdsFromValue(*value);
 }
 
-}  // namespace ads::json::reader
+}  // namespace brave_ads::json::reader

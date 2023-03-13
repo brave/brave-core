@@ -7,11 +7,11 @@
 
 #include <utility>
 
-namespace ads {
+namespace brave_ads {
 
 CommandLineSwitchInfo::CommandLineSwitchInfo() = default;
 
 CommandLineSwitchInfo::CommandLineSwitchInfo(std::string key, std::string value)
     : key(std::move(key)), value(std::move(value)) {}
 
-}  // namespace ads
+}  // namespace brave_ads

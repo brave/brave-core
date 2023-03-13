@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
   DCHECK_NE(0UL, parameters_count);
@@ -145,4 +145,4 @@ void BindString(mojom::DBCommandInfo* command,
   command->bindings.push_back(std::move(binding));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

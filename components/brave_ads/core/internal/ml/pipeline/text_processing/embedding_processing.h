@@ -16,7 +16,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 struct EmbeddingPipelineInfo;
 
@@ -38,6 +38,6 @@ class EmbeddingProcessing final {
   EmbeddingPipelineInfo embedding_pipeline_;
 };
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_PROCESSING_H_

@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/covariates/log_entries/time_since_last_user_activity_event.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -192,4 +192,4 @@ void CovariateManager::LogTrainingInstance() const {
       std::move(training_instance));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

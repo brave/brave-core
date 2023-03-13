@@ -12,7 +12,7 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::crypto {
+namespace brave_ads::crypto {
 
 struct KeyPairInfo;
 
@@ -39,6 +39,6 @@ std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
                              const std::vector<uint8_t>& public_key,
                              const std::vector<uint8_t>& secret_key);
 
-}  // namespace ads::crypto
+}  // namespace brave_ads::crypto
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CRYPTO_CRYPTO_UTIL_H_

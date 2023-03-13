@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuersInfo;
 
@@ -57,6 +57,6 @@ class Issuers {
   BackoffTimer retry_timer_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_H_

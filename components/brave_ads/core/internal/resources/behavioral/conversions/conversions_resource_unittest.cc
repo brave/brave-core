@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 class BatAdsConversionsResourceTest : public UnitTestBase {};
 
@@ -40,4 +40,4 @@ TEST_F(BatAdsConversionsResourceTest, Get) {
   EXPECT_EQ(2U, conversion_id_patterns.size());
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

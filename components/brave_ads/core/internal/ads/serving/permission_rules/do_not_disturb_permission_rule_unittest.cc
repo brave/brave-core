@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsDoNotDisturbPermissionRuleTest : public UnitTestBase {};
 
@@ -238,4 +238,4 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -207,7 +207,7 @@
     ],
     // A temporary fix to silence a crashing presubmit check on a deleted file.
     "CheckStableMojomChanges": [
-      "components/services/bat_ledger/public/interfaces/bat_ledger\\.mojom",
+      "components/services/bat_ads/public/interfaces/bat_ads\\.mojom",
     ],
     "CheckWebDevStyle": [
       "components/speedreader/resources/speedreader-desktop.css",

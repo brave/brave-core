@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 struct UnblindedTokenInfo final {
   bool operator==(const UnblindedTokenInfo& other) const;
@@ -25,6 +25,6 @@ struct UnblindedTokenInfo final {
 
 using UnblindedTokenList = std::vector<UnblindedTokenInfo>;
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_TOKENS_UNBLINDED_TOKEN_INFO_H_

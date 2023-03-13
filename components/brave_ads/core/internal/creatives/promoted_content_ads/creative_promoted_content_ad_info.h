@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativePromotedContentAdInfo final : CreativeAdInfo {
   CreativePromotedContentAdInfo();
@@ -27,6 +27,6 @@ struct CreativePromotedContentAdInfo final : CreativeAdInfo {
 using CreativePromotedContentAdList =
     std::vector<CreativePromotedContentAdInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_PROMOTED_CONTENT_ADS_CREATIVE_PROMOTED_CONTENT_AD_INFO_H_

@@ -6,10 +6,9 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
 
 #include "base/check.h"
-
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 std::vector<cbr::Token> TokenGenerator::Generate(const int count) const {
   std::vector<cbr::Token> tokens;
@@ -23,4 +22,4 @@ std::vector<cbr::Token> TokenGenerator::Generate(const int count) const {
   return tokens;
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

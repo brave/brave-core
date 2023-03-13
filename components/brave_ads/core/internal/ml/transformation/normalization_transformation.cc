@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 NormalizationTransformation::NormalizationTransformation()
     : Transformation(TransformationType::kNormalization) {}
@@ -26,4 +26,4 @@ std::unique_ptr<Data> NormalizationTransformation::Apply(
   return std::make_unique<VectorData>(std::move(vector_data_copy));
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

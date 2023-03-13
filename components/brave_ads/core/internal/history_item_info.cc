@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
   return DoubleEquals(lhs.created_at.ToDoubleT(), rhs.created_at.ToDoubleT()) &&
@@ -19,4 +19,4 @@ bool operator!=(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs) {
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

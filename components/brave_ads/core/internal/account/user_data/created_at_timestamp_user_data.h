@@ -12,10 +12,10 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 base::Value::Dict GetCreatedAtTimestamp(base::Time created_at);
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CREATED_AT_TIMESTAMP_USER_DATA_H_

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetAdEventsCallback =
     base::OnceCallback<void(const bool, const AdEventList&)>;
@@ -44,6 +44,6 @@ class AdEvents final : public TableInterface {
                                        const AdEventList& ad_events) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENTS_DATABASE_TABLE_H_

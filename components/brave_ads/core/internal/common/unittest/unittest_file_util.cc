@@ -10,7 +10,7 @@
 #include "base/path_service.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -73,4 +73,4 @@ absl::optional<std::string> ReadFileFromDataResourcePathToString(
   return ReadFileToString(path);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

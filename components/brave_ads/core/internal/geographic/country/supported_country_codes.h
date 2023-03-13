@@ -10,13 +10,13 @@
 #include "base/containers/flat_set.h"
 #include "base/strings/string_piece.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 using SupportedCountryCodeSet = base::flat_set<base::StringPiece>;
 using SupportedCountryCodeMap = base::flat_map<int, SupportedCountryCodeSet>;
 
 const SupportedCountryCodeMap& GetSupportedCountryCodes();
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_COUNTRY_SUPPORTED_COUNTRY_CODES_H_

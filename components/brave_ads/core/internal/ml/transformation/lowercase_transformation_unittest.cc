@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class BatAdsLowercaseTransformationTest : public UnitTestBase {};
 
@@ -36,4 +36,4 @@ TEST_F(BatAdsLowercaseTransformationTest, LowercaseTest) {
   EXPECT_EQ(kLowercaseText, lowercase_text_data->GetText());
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

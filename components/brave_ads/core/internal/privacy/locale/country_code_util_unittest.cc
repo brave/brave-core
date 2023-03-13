@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::privacy::locale {
+namespace brave_ads::privacy::locale {
 
 TEST(BatAdsCountryCodeUtilTest, IsCountryCodeMemberOfAnonymitySet) {
   // Arrange
@@ -53,4 +53,4 @@ TEST(BatAdsCountryCodeUtilTest, ShouldNotClassifyCountryCodeAsOther) {
   EXPECT_FALSE(is_anonymous);
 }
 
-}  // namespace ads::privacy::locale
+}  // namespace brave_ads::privacy::locale

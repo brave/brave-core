@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/creatives_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CreativesInfo::CreativesInfo() = default;
 
@@ -20,4 +20,4 @@ CreativesInfo& CreativesInfo::operator=(CreativesInfo&& other) noexcept =
 
 CreativesInfo::~CreativesInfo() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

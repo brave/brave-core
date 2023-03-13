@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads::targeting::model {
+namespace brave_ads::targeting::model {
 
 namespace {
 
@@ -88,4 +88,4 @@ SegmentList TextClassification::GetSegments() const {
   return ToSegmentList(sorted_segment_probabilities);
 }
 
-}  // namespace ads::targeting::model
+}  // namespace brave_ads::targeting::model

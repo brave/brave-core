@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 PurchaseIntentSegmentKeywordInfo::PurchaseIntentSegmentKeywordInfo() = default;
 
@@ -30,4 +30,4 @@ PurchaseIntentSegmentKeywordInfo& PurchaseIntentSegmentKeywordInfo::operator=(
 
 PurchaseIntentSegmentKeywordInfo::~PurchaseIntentSegmentKeywordInfo() = default;
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

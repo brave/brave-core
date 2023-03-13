@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mac.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kPlatformName[] = "macos";
@@ -25,4 +25,4 @@ PlatformType PlatformHelperMac::GetType() const {
   return PlatformType::kMacOS;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

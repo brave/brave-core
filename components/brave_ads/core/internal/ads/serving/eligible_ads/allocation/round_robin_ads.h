@@ -14,7 +14,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 T FilterSeenAds(const T& ads, const std::map<std::string, bool>& seen_ads) {
@@ -29,6 +29,6 @@ T FilterSeenAds(const T& ads, const std::map<std::string, bool>& seen_ads) {
   return unseen_ads;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ALLOCATION_ROUND_ROBIN_ADS_H_

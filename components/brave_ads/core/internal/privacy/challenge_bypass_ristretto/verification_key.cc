@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 VerificationKey::VerificationKey(
     const challenge_bypass_ristretto::VerificationKey& verification_key)
@@ -35,4 +35,4 @@ bool VerificationKey::Verify(
   return verification_key_.verify(verification_signature.get(), message);
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

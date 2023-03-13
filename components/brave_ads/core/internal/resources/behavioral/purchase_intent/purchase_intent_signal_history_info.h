@@ -13,7 +13,7 @@
 
 #include "base/time/time.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct PurchaseIntentSignalHistoryInfo final {
   PurchaseIntentSignalHistoryInfo(base::Time created_at, uint16_t weight);
@@ -32,6 +32,6 @@ using PurchaseIntentSignalHistoryList =
 using PurchaseIntentSignalHistoryMap =
     std::map<std::string, PurchaseIntentSignalHistoryList>;
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SIGNAL_HISTORY_INFO_H_

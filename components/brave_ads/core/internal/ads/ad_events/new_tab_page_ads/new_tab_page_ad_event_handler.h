@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeNewTabPageAdInfo;
 struct NewTabPageAdInfo;
@@ -70,6 +70,6 @@ class EventHandler final : public EventHandlerObserver {
 };
 
 }  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_AD_EVENT_HANDLER_H_

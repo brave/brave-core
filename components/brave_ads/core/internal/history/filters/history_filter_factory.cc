@@ -10,7 +10,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_ads/core/internal/history/filters/confirmation_history_filter.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::unique_ptr<HistoryFilterInterface> HistoryFilterFactory::Build(
     const HistoryFilterType type) {
@@ -29,4 +29,4 @@ std::unique_ptr<HistoryFilterInterface> HistoryFilterFactory::Build(
   return nullptr;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

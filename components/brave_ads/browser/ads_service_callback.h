@@ -19,9 +19,9 @@ using GetDiagnosticsCallback =
     base::OnceCallback<void(absl::optional<base::Value::List>)>;
 
 using GetStatementOfAccountsCallback =
-    base::OnceCallback<void(ads::mojom::StatementInfoPtr)>;
+    base::OnceCallback<void(mojom::StatementInfoPtr)>;
 
-using MaybeServeInlineContentAdCallback =
+using MaybeServeInlineContentAdAsDictCallback =
     base::OnceCallback<void(const std::string&,
                             absl::optional<base::Value::Dict>)>;
 

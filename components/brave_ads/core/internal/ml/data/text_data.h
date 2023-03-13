@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class TextData final : public Data {
  public:
@@ -23,6 +23,6 @@ class TextData final : public Data {
   std::string text_;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_DATA_TEXT_DATA_H_

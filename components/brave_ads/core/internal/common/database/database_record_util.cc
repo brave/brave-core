@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 mojom::DBRecordInfoPtr CreateRecord(
     sql::Statement* statement,
@@ -58,4 +58,4 @@ mojom::DBRecordInfoPtr CreateRecord(
   return record;
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

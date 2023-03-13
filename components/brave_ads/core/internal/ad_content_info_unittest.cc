@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsAdContentInfoTest : public UnitTestBase {};
 
@@ -66,4 +66,4 @@ TEST_F(BatAdsAdContentInfoTest, ToggleThumbDownToNetrual) {
   EXPECT_EQ(AdContentLikeActionType::kNeutral, like_action_type);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

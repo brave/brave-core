@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class CatalogPermissionRule final : public PermissionRuleInterface {
  public:
@@ -24,6 +24,6 @@ class CatalogPermissionRule final : public PermissionRuleInterface {
   std::string last_message_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_CATALOG_PERMISSION_RULE_H_

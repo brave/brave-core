@@ -10,7 +10,7 @@
 
 #include "base/feature_list.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 BASE_DECLARE_FEATURE(kConversions);
 
@@ -20,6 +20,6 @@ int GetConversionsResourceVersion();
 
 std::string GetDefaultConversionIdPattern();
 
-}  // namespace ads::features
+}  // namespace brave_ads::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_FEATURES_H_

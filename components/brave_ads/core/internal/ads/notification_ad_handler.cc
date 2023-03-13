@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/notification_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
 
 #include "base/check.h"
 #include "base/time/time.h"
@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_util.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -33,9 +33,9 @@
 #include "brave/components/brave_ads/core/internal/user_interaction/idle_detection/idle_detection_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
-NotificationAd::NotificationAd(
+NotificationAdHandler::NotificationAdHandler(
     Account* account,
     Transfer* transfer,
     processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
@@ -62,7 +62,7 @@ NotificationAd::NotificationAd(
   IdleDetectionManager::GetInstance()->AddObserver(this);
 }
 
-NotificationAd::~NotificationAd() {
+NotificationAdHandler::~NotificationAdHandler() {
   account_->RemoveObserver(this);
   event_handler_->RemoveObserver(this);
   serving_->RemoveObserver(this);
@@ -71,7 +71,7 @@ NotificationAd::~NotificationAd() {
   IdleDetectionManager::GetInstance()->RemoveObserver(this);
 }
 
-void NotificationAd::MaybeServeAtRegularIntervals() {
+void NotificationAdHandler::MaybeServeAtRegularIntervals() {
   if (!CanServeAtRegularIntervals()) {
     return;
   }
@@ -83,7 +83,7 @@ void NotificationAd::MaybeServeAtRegularIntervals() {
   }
 }
 
-void NotificationAd::TriggerEvent(
+void NotificationAdHandler::TriggerEvent(
     const std::string& placement_id,
     const mojom::NotificationAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
@@ -93,26 +93,27 @@ void NotificationAd::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void NotificationAd::OnWalletDidUpdate(const WalletInfo& /*wallet*/) {
+void NotificationAdHandler::OnWalletDidUpdate(const WalletInfo& /*wallet*/) {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAd::OnBrowserDidEnterForeground() {
+void NotificationAdHandler::OnBrowserDidEnterForeground() {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAd::OnBrowserDidEnterBackground() {
+void NotificationAdHandler::OnBrowserDidEnterBackground() {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAd::OnPrefDidChange(const std::string& path) {
+void NotificationAdHandler::OnPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeServeAtRegularIntervals();
   }
 }
 
-void NotificationAd::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                           const bool screen_was_locked) {
+void NotificationAdHandler::OnUserDidBecomeActive(
+    const base::TimeDelta idle_time,
+    const bool screen_was_locked) {
   if (!CanServeIfUserIsActive() || !ShouldServe()) {
     return;
   }
@@ -130,7 +131,7 @@ void NotificationAd::OnUserDidBecomeActive(const base::TimeDelta idle_time,
   serving_->MaybeServeAd();
 }
 
-void NotificationAd::OnOpportunityAroseToServeNotificationAd(
+void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(
     const SegmentList& segments) {
   BLOG(1, "Opportunity arose to serve a notification ad");
 
@@ -138,17 +139,20 @@ void NotificationAd::OnOpportunityAroseToServeNotificationAd(
                                                segments);
 }
 
-void NotificationAd::OnDidServeNotificationAd(const NotificationAdInfo& ad) {
+void NotificationAdHandler::OnDidServeNotificationAd(
+    const NotificationAdInfo& ad) {
   ShowNotificationAd(ad);
 
   TriggerEvent(ad.placement_id, mojom::NotificationAdEventType::kServed);
 }
 
-void NotificationAd::OnNotificationAdServed(const NotificationAdInfo& ad) {
+void NotificationAdHandler::OnNotificationAdServed(
+    const NotificationAdInfo& ad) {
   ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
-void NotificationAd::OnNotificationAdViewed(const NotificationAdInfo& ad) {
+void NotificationAdHandler::OnNotificationAdViewed(
+    const NotificationAdInfo& ad) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
@@ -159,7 +163,8 @@ void NotificationAd::OnNotificationAdViewed(const NotificationAdInfo& ad) {
   privacy::p2a::RecordAdImpression(ad);
 }
 
-void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
+void NotificationAdHandler::OnNotificationAdClicked(
+    const NotificationAdInfo& ad) {
   CloseNotificationAd(ad.placement_id);
 
   transfer_->SetLastClickedAd(ad);
@@ -177,7 +182,8 @@ void NotificationAd::OnNotificationAdClicked(const NotificationAdInfo& ad) {
   CovariateManager::GetInstance()->LogTrainingInstance();
 }
 
-void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
+void NotificationAdHandler::OnNotificationAdDismissed(
+    const NotificationAdInfo& ad) {
   DismissNotificationAd(ad.placement_id);
 
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kDismissed);
@@ -193,7 +199,8 @@ void NotificationAd::OnNotificationAdDismissed(const NotificationAdInfo& ad) {
   CovariateManager::GetInstance()->LogTrainingInstance();
 }
 
-void NotificationAd::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
+void NotificationAdHandler::OnNotificationAdTimedOut(
+    const NotificationAdInfo& ad) {
   NotificationAdTimedOut(ad.placement_id);
 
   processor::EpsilonGreedyBandit::Process(
@@ -204,4 +211,4 @@ void NotificationAd::OnNotificationAdTimedOut(const NotificationAdInfo& ad) {
   CovariateManager::GetInstance()->LogTrainingInstance();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

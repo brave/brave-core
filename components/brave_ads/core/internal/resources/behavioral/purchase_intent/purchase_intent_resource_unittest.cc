@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 class BatAdsPurchaseIntentResourceTest : public UnitTestBase {};
 
@@ -25,4 +25,4 @@ TEST_F(BatAdsPurchaseIntentResourceTest, Load) {
   EXPECT_TRUE(resource.IsInitialized());
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

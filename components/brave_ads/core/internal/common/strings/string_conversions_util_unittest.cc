@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsStringConversionsUtilTest, TrueBoolToString) {
   // Arrange
@@ -31,4 +31,4 @@ TEST(BatAdsStringConversionsUtilTest, FalseBoolToString) {
   EXPECT_EQ("false", value);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

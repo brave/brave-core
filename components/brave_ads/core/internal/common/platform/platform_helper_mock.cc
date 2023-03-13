@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 PlatformHelperMock::PlatformHelperMock() = default;
 
 PlatformHelperMock::~PlatformHelperMock() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/signed_token.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 SignedToken GetSignedToken() {
   return SignedToken(kSignedTokenBase64);
@@ -32,4 +32,4 @@ std::vector<SignedToken> GetInvalidSignedTokens() {
   return signed_tokens;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

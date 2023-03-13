@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/geo_targets_database_table.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteGeoTargets() {
   const table::GeoTargets database_table;
@@ -23,4 +23,4 @@ void DeleteGeoTargets() {
   }));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

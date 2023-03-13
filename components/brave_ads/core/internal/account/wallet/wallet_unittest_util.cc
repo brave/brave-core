@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -47,4 +47,4 @@ WalletInfo GetWalletForTesting() {
   return wallet.Get();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

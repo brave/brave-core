@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsEarningsUtilTest : public UnitTestBase {};
 
@@ -237,4 +237,4 @@ TEST_F(BatAdsEarningsUtilTest,
   EXPECT_DOUBLE_EQ(0.0, earnings);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

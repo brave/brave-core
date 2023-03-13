@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_migration.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 DatabaseManager* g_database_manager_instance = nullptr;
@@ -184,4 +184,4 @@ void DatabaseManager::NotifyDatabaseIsReady() const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

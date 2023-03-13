@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool SearchResultAdInfo::IsValid() const {
   if (!AdInfo::IsValid()) {
@@ -19,4 +19,4 @@ bool SearchResultAdInfo::IsValid() const {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

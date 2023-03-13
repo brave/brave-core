@@ -14,7 +14,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 std::string GetFieldTrialParamByFeatureAsString(
     const base::Feature& feature,
@@ -26,6 +26,6 @@ base::TimeDelta GetFieldTrialParamByFeatureAsTimeDelta(
     const std::string& param_name,
     base::TimeDelta default_value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_METRICS_FIELD_TRIAL_PARAMS_UTIL_H_

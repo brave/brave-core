@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativePromotedContentAdInfo;
 struct PromotedContentAdInfo;
@@ -72,6 +72,6 @@ class EventHandler final : public EventHandlerObserver {
 };
 
 }  // namespace promoted_content_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_PROMOTED_CONTENT_ADS_PROMOTED_CONTENT_AD_EVENT_HANDLER_H_

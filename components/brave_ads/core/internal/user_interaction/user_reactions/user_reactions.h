@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 class Account;
 struct AdContentInfo;
@@ -36,6 +36,6 @@ class UserReactions final : public HistoryManagerObserver {
   const raw_ptr<Account> account_ = nullptr;  // NOT OWNED
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_REACTIONS_USER_REACTIONS_H_

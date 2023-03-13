@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 namespace {
 
@@ -118,4 +118,4 @@ UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
   return unblinded_tokens;
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

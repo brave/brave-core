@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/history/ad_content_util.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
                                  const ConfirmationType& confirmation_type,
@@ -28,4 +28,4 @@ HistoryItemInfo BuildHistoryItem(const AdInfo& ad,
   return history_item;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

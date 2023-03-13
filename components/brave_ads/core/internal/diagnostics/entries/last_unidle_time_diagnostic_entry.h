@@ -11,7 +11,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
@@ -26,6 +26,6 @@ class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
   base::Time last_unidle_time_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_LAST_UNIDLE_TIME_DIAGNOSTIC_ENTRY_H_

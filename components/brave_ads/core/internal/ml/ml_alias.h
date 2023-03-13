@@ -13,12 +13,12 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 using PredictionMap = std::map<std::string, double>;
 using TransformationPtr = std::unique_ptr<Transformation>;
 using TransformationVector = std::vector<TransformationPtr>;
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_ML_ALIAS_H_

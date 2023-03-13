@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
 
 #include <utility>
 
@@ -22,9 +22,9 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
-namespace ads {
+namespace brave_ads {
 
-InlineContentAd::InlineContentAd(
+InlineContentAdHandler::InlineContentAdHandler(
     Account* account,
     Transfer* transfer,
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -41,17 +41,18 @@ InlineContentAd::InlineContentAd(
   serving_->AddObserver(this);
 }
 
-InlineContentAd::~InlineContentAd() {
+InlineContentAdHandler::~InlineContentAdHandler() {
   event_handler_->RemoveObserver(this);
   serving_->RemoveObserver(this);
 }
 
-void InlineContentAd::MaybeServe(const std::string& dimensions,
-                                 MaybeServeInlineContentAdCallback callback) {
+void InlineContentAdHandler::MaybeServe(
+    const std::string& dimensions,
+    MaybeServeInlineContentAdCallback callback) {
   serving_->MaybeServeAd(dimensions, std::move(callback));
 }
 
-void InlineContentAd::TriggerEvent(
+void InlineContentAdHandler::TriggerEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
@@ -62,21 +63,24 @@ void InlineContentAd::TriggerEvent(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void InlineContentAd::OnOpportunityAroseToServeInlineContentAd(
+void InlineContentAdHandler::OnOpportunityAroseToServeInlineContentAd(
     const SegmentList& /*segments*/) {
   BLOG(1, "Opportunity arose to serve an inline content ad");
 }
 
-void InlineContentAd::OnDidServeInlineContentAd(const InlineContentAdInfo& ad) {
+void InlineContentAdHandler::OnDidServeInlineContentAd(
+    const InlineContentAdInfo& ad) {
   TriggerEvent(ad.placement_id, ad.creative_instance_id,
                mojom::InlineContentAdEventType::kServed);
 }
 
-void InlineContentAd::OnInlineContentAdServed(const InlineContentAdInfo& ad) {
+void InlineContentAdHandler::OnInlineContentAdServed(
+    const InlineContentAdInfo& ad) {
   ClientStateManager::GetInstance()->UpdateSeenAd(ad);
 }
 
-void InlineContentAd::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
+void InlineContentAdHandler::OnInlineContentAdViewed(
+    const InlineContentAdInfo& ad) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.type,
@@ -85,7 +89,8 @@ void InlineContentAd::OnInlineContentAdViewed(const InlineContentAdInfo& ad) {
   privacy::p2a::RecordAdImpression(ad);
 }
 
-void InlineContentAd::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
+void InlineContentAdHandler::OnInlineContentAdClicked(
+    const InlineContentAdInfo& ad) {
   transfer_->SetLastClickedAd(ad);
 
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
@@ -94,4 +99,4 @@ void InlineContentAd::OnInlineContentAdClicked(const InlineContentAdInfo& ad) {
                     ConfirmationType::kClicked);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

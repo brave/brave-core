@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 struct BanditFeedbackInfo;
 
@@ -17,6 +17,6 @@ class EpsilonGreedyBandit final {
   static void Process(const BanditFeedbackInfo& feedback);
 };
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_PROCESSOR_H_

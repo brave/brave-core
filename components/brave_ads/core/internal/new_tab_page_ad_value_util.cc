@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -143,4 +143,4 @@ NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root) {
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

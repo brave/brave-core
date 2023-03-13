@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 GetSignedTokensUrlRequestBuilder::GetSignedTokensUrlRequestBuilder(
     WalletInfo wallet,
@@ -43,4 +43,4 @@ GURL GetSignedTokensUrlRequestBuilder::BuildUrl() const {
   return GURL(spec);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

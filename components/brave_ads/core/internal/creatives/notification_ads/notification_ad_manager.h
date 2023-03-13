@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 class NotificationAdManager final {
  public:
@@ -51,6 +51,6 @@ class NotificationAdManager final {
   base::circular_deque<NotificationAdInfo> ads_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_NOTIFICATION_AD_MANAGER_H_

@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogGeoTargetInfo final {
   std::string code;
@@ -23,6 +23,6 @@ bool operator!=(const CatalogGeoTargetInfo& lhs,
 
 using CatalogGeoTargetList = std::vector<CatalogGeoTargetInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CATALOG_GEO_TARGET_INFO_H_

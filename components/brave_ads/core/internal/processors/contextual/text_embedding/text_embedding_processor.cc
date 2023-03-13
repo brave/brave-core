@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 namespace {
 
@@ -132,4 +132,4 @@ void TextEmbedding::OnHtmlContentDidChange(
   Process(html);
 }
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor

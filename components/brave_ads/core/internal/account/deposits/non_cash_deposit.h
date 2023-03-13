@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class NonCashDeposit final : public DepositInterface {
  public:
@@ -18,6 +18,6 @@ class NonCashDeposit final : public DepositInterface {
                 GetDepositCallback callback) override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_NON_CASH_DEPOSIT_H_

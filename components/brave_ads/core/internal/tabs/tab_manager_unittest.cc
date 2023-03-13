@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsTabManagerTest : public TabManagerObserver, public UnitTestBase {
  protected:
@@ -468,4 +468,4 @@ TEST_F(BatAdsTabManagerTest, DoNotGetTabForMissingId) {
   EXPECT_FALSE(TabManager::GetInstance()->GetForId(2));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

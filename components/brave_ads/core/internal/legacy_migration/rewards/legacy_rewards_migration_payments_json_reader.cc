@@ -9,7 +9,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader_util.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 absl::optional<PaymentList> ReadPayments(const std::string& json) {
   const absl::optional<base::Value> root = base::JSONReader::Read(json);
@@ -25,4 +25,4 @@ absl::optional<PaymentList> ReadPayments(const std::string& json) {
   return *payments;
 }
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader

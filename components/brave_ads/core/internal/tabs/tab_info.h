@@ -11,7 +11,7 @@
 
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct TabInfo final {
   TabInfo();
@@ -32,6 +32,6 @@ struct TabInfo final {
   bool is_playing_media = false;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TABS_TAB_INFO_H_

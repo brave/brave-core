@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads);
 
@@ -16,6 +16,6 @@ CreativeNewTabPageAdList BuildCreativeNewTabPageAds(int count);
 CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
     bool should_use_random_guids = true);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_UNITTEST_UTIL_H_

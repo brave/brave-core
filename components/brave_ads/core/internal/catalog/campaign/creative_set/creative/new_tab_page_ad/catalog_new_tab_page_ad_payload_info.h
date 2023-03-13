@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogNewTabPageAdPayloadInfo final {
   CatalogNewTabPageAdPayloadInfo();
@@ -37,6 +37,6 @@ struct CatalogNewTabPageAdPayloadInfo final {
   CatalogNewTabPageAdWallpaperList wallpapers;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_NEW_TAB_PAGE_AD_CATALOG_NEW_TAB_PAGE_AD_PAYLOAD_INFO_H_

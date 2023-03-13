@@ -86,7 +86,7 @@ class BraveStatsUpdaterTest : public testing::Test {
         GetLocalState(), brave_stats::ProcessArch::kArchSkip);
   }
   void SetEnableAds(bool ads_enabled) {
-    GetLocalState()->SetBoolean(ads::prefs::kEnabledForLastProfile,
+    GetLocalState()->SetBoolean(brave_ads::prefs::kEnabledForLastProfile,
                                 ads_enabled);
   }
 

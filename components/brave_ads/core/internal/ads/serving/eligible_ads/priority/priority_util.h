@@ -11,7 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/ranges/algorithm.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 base::flat_map<unsigned int, T> SortCreativeAdsIntoPrioritizedBuckets(
@@ -45,6 +45,6 @@ std::pair<unsigned int, T> GetHighestPriorityBucket(
   return *iter;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PRIORITY_PRIORITY_UTIL_H_

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_domain_extension_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::span<const base::StringPiece> GetAmazonSearchEngineDomainExtensions() {
   // See https://www.amazon.com/gp/navigation-country/select-country.
@@ -57,4 +57,4 @@ base::span<const base::StringPiece> GetMojeekSearchEngineDomainExtensions() {
   return kExtensions;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

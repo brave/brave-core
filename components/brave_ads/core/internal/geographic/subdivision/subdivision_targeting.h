@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_manager_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 class SubdivisionTargeting final : public LocaleManagerObserver,
                                    public PrefManagerObserver {
@@ -74,6 +74,6 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   mutable absl::optional<std::string> subdivision_code_;
 };
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUBDIVISION_TARGETING_H_

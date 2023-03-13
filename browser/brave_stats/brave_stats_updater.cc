@@ -291,7 +291,7 @@ bool BraveStatsUpdater::IsReferralInitialized() {
 }
 
 bool BraveStatsUpdater::IsAdsEnabled() {
-  return pref_service_->GetBoolean(ads::prefs::kEnabledForLastProfile);
+  return pref_service_->GetBoolean(brave_ads::prefs::kEnabledForLastProfile);
 }
 
 bool BraveStatsUpdater::HasDoneThresholdPing() {

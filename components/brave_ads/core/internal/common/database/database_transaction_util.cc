@@ -10,7 +10,7 @@
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void OnResultCallback(ResultCallback callback,
                       mojom::DBCommandResponseInfoPtr response) {
@@ -25,4 +25,4 @@ void OnResultCallback(ResultCallback callback,
   std::move(callback).Run(/*success*/ true);
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

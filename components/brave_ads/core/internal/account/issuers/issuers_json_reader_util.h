@@ -10,11 +10,11 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::json::reader {
+namespace brave_ads::json::reader {
 
 absl::optional<int> ParsePing(const base::Value& value);
 absl::optional<IssuerList> ParseIssuers(const base::Value::Dict& value);
 
-}  // namespace ads::json::reader
+}  // namespace brave_ads::json::reader
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_JSON_READER_UTIL_H_

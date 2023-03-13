@@ -11,7 +11,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string LongFriendlyDateAndTime(const base::Time time,
                                     const bool use_sentence_style) {
@@ -54,4 +54,4 @@ std::string TimeAsTimestampString(const base::Time time) {
   return base::NumberToString(timestamp);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

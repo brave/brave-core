@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 IssuersDelegateMock::IssuersDelegateMock() = default;
 
 IssuersDelegateMock::~IssuersDelegateMock() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

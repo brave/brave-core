@@ -267,7 +267,7 @@ class BraveRewardsNativeWorker
   void OnBalance(base::expected<ledger::mojom::BalancePtr,
                                 ledger::mojom::FetchBalanceError> result);
 
-  void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
+  void OnGetAdsAccountStatement(brave_ads::mojom::StatementInfoPtr statement);
 
   JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
   raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;

@@ -9,11 +9,11 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::List SegmentsToValue(const SegmentList& segments);
 SegmentList SegmentsFromValue(const base::Value::List& value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_VALUE_UTIL_H_

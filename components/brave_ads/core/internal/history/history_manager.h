@@ -20,7 +20,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType;
 struct AdContentInfo;
@@ -94,6 +94,6 @@ class HistoryManager final {
   base::ObserverList<HistoryManagerObserver> observers_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_HISTORY_MANAGER_H_

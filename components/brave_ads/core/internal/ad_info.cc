@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdInfo::AdInfo() = default;
 
@@ -39,4 +39,4 @@ bool AdInfo::IsValid() const {
          target_url.is_valid();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

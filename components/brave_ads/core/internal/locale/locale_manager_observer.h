@@ -10,7 +10,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class LocaleManagerObserver : public base::CheckedObserver {
  public:
@@ -18,6 +18,6 @@ class LocaleManagerObserver : public base::CheckedObserver {
   virtual void OnLocaleDidChange(const std::string& locale) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LOCALE_LOCALE_MANAGER_OBSERVER_H_

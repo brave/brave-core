@@ -8,10 +8,10 @@
 
 #include <string>
 
-namespace ads::server {
+namespace brave_ads::server {
 
 std::string BuildViaHeader();
 
-}  // namespace ads::server
+}  // namespace brave_ads::server
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_HEADERS_VIA_HEADER_UTIL_H_

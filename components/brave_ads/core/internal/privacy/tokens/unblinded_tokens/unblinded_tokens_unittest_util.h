@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct WalletInfo;
 
@@ -34,6 +34,6 @@ UnblindedTokenList GetUnblindedTokens(int count);
 UnblindedTokenInfo GetUnblindedToken();
 
 }  // namespace privacy
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_TOKENS_UNBLINDED_TOKENS_UNITTEST_UTIL_H_

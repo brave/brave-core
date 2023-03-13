@@ -12,7 +12,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ConversionQueueItemInfo final {
   ConversionQueueItemInfo();
@@ -43,6 +43,6 @@ struct ConversionQueueItemInfo final {
 
 using ConversionQueueItemList = std::vector<ConversionQueueItemInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSION_QUEUE_ITEM_INFO_H_

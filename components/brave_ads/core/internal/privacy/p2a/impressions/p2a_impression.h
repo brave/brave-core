@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 struct AdInfo;
@@ -20,6 +20,6 @@ std::string GetAdImpressionNameForAdType(const AdType& ad_type);
 void RecordAdImpression(const AdInfo& ad);
 
 }  // namespace privacy::p2a
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_P2A_IMPRESSIONS_P2A_IMPRESSION_H_

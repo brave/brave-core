@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuersInfo;
 
@@ -34,6 +34,6 @@ class IssuersDelegateMock : public IssuersDelegate {
   MOCK_METHOD(void, OnDidRetryFetchingIssuers, ());
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_DELEGATE_MOCK_H_

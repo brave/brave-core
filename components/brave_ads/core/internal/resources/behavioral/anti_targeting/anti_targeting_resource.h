@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 class AntiTargeting final : public LocaleManagerObserver,
                             public ResourceManagerObserver {
@@ -52,6 +52,6 @@ class AntiTargeting final : public LocaleManagerObserver,
   base::WeakPtrFactory<AntiTargeting> weak_ptr_factory_{this};
 };
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_

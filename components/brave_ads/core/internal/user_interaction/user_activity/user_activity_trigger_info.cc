@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const UserActivityTriggerInfo& lhs,
                 const UserActivityTriggerInfo& rhs) {
@@ -20,4 +20,4 @@ bool operator!=(const UserActivityTriggerInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

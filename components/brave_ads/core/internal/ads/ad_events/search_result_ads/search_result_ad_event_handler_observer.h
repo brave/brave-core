@@ -9,7 +9,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct SearchResultAdInfo;
 
@@ -33,6 +33,6 @@ class EventHandlerObserver : public base::CheckedObserver {
 };
 
 }  // namespace search_result_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_HANDLER_OBSERVER_H_

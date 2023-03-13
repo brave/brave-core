@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveCreativeAds(const CreativeNewTabPageAdList& creative_ads) {
   database::table::CreativeNewTabPageAds database_table;
@@ -55,4 +55,4 @@ CreativeNewTabPageAdInfo BuildCreativeNewTabPageAd(
   return creative_new_tab_page_ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

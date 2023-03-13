@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 struct ConversionsInfo;
 
@@ -43,6 +43,6 @@ class Conversions final {
   base::WeakPtrFactory<Conversions> weak_ptr_factory_{this};
 };
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_

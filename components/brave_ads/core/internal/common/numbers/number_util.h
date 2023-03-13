@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_NUMBERS_NUMBER_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_NUMBERS_NUMBER_UTIL_H_
 
-namespace ads {
+namespace brave_ads {
 
 bool DoubleEquals(double lhs, double rhs);
 bool DoubleIsGreaterEqual(double lhs, double rhs);
@@ -14,6 +14,6 @@ bool DoubleIsGreater(double lhs, double rhs);
 bool DoubleIsLessEqual(double lhs, double rhs);
 bool DoubleIsLess(double lhs, double rhs);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_NUMBERS_NUMBER_UTIL_H_

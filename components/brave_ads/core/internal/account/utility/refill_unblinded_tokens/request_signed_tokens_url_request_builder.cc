@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -148,4 +148,4 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
   return json;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

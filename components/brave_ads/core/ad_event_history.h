@@ -16,7 +16,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class ADS_EXPORT AdEventHistory final {
  public:
@@ -46,6 +46,6 @@ class ADS_EXPORT AdEventHistory final {
       history_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_AD_EVENT_HISTORY_H_

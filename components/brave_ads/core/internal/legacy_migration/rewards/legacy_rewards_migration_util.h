@@ -11,11 +11,11 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 absl::optional<TransactionList> BuildTransactionsFromJson(
     const std::string& json);
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_UTIL_H_

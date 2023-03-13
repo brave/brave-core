@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogCreativeSetInfo final {
   CatalogCreativeSetInfo();
@@ -53,6 +53,6 @@ struct CatalogCreativeSetInfo final {
 
 using CatalogCreativeSetList = std::vector<CatalogCreativeSetInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CATALOG_CREATIVE_SET_INFO_H_

@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-namespace ads::targeting::features {
+namespace brave_ads::targeting::features {
 
 BASE_DECLARE_FEATURE(kTextClassification);
 
@@ -18,6 +18,6 @@ int GetTextClassificationProbabilitiesHistorySize();
 
 int GetTextClassificationResourceVersion();
 
-}  // namespace ads::targeting::features
+}  // namespace brave_ads::targeting::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FEATURES_TEXT_CLASSIFICATION_FEATURES_H_

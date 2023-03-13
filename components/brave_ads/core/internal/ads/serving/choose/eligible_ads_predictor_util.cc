@@ -9,7 +9,7 @@
 
 #include "base/ranges/algorithm.h"
 
-namespace ads {
+namespace brave_ads {
 
 SegmentList SegmentIntersection(SegmentList lhs, SegmentList rhs) {
   base::ranges::sort(lhs);
@@ -20,4 +20,4 @@ SegmentList SegmentIntersection(SegmentList lhs, SegmentList rhs) {
   return intersection;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -35,7 +35,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -407,4 +407,4 @@ void Account::OnCaptchaRequiredToRefillUnblindedTokens(
       wallet.payment_id, captcha_id);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

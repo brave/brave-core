@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/new_tab_page_ad_wallpaper_focal_point_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
   GURL image_url;
@@ -26,6 +26,6 @@ bool operator!=(const NewTabPageAdWallpaperInfo& lhs,
 
 using NewTabPageAdWallpaperList = std::vector<NewTabPageAdWallpaperInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_NEW_TAB_PAGE_AD_WALLPAPER_INFO_H_

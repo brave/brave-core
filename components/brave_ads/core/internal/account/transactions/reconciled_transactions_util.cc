@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -62,4 +62,4 @@ bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

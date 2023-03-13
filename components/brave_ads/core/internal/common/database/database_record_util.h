@@ -11,12 +11,12 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "sql/statement.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 mojom::DBRecordInfoPtr CreateRecord(
     sql::Statement* statement,
     const std::vector<mojom::DBCommandInfo::RecordBindingType>& bindings);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_RECORD_UTIL_H_

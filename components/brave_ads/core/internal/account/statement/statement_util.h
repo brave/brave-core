@@ -12,7 +12,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 base::Time GetNextPaymentDate(const TransactionList& transactions);
 
@@ -21,6 +21,6 @@ double GetEarningsForLastMonth(const TransactionList& transactions);
 
 int GetAdsReceivedThisMonth(const TransactionList& transactions);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_UTIL_H_

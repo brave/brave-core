@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogCreativeInfo {
   bool operator==(const CatalogCreativeInfo& other) const;
@@ -20,6 +20,6 @@ struct CatalogCreativeInfo {
   CatalogTypeInfo type;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_CATALOG_CREATIVE_INFO_H_

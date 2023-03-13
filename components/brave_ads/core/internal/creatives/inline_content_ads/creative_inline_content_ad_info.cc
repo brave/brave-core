@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CreativeInlineContentAdInfo::CreativeInlineContentAdInfo() = default;
 
@@ -39,4 +39,4 @@ bool CreativeInlineContentAdInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

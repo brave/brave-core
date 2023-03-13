@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 class TokenGeneratorMock : public TokenGenerator {
  public:
@@ -29,6 +29,6 @@ class TokenGeneratorMock : public TokenGenerator {
   MOCK_METHOD(std::vector<cbr::Token>, Generate, (const int count), (const));
 };
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_TOKEN_GENERATOR_MOCK_H_

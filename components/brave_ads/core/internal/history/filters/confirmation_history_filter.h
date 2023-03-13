@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationHistoryFilter final : public HistoryFilterInterface {
  public:
   HistoryItemList Apply(const HistoryItemList& history_items) const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_FILTERS_CONFIRMATION_HISTORY_FILTER_H_
