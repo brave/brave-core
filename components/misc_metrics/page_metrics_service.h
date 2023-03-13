@@ -11,6 +11,7 @@
 
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
+#include "components/history/core/browser/history_types.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class PrefRegistrySimple;
@@ -41,7 +42,9 @@ class PageMetricsService : public KeyedService {
   void ReportDomainsLoaded();
   void ReportPagesLoaded();
 
-  void OnDomainDiversityResult(std::vector<history::DomainMetricSet> metrics);
+  void OnDomainDiversityResult(
+      std::pair<history::DomainDiversityResults,
+                history::DomainDiversityResults> result);
 
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
 

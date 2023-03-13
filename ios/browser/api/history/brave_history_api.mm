@@ -260,34 +260,36 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
         historyAPI->history_service_->GetDomainDiversity(
             base::Time::Now(), /*number_of_days_to_report*/ 1,
             static_cast<history::DomainMetricType>(type),
-            base::BindOnce(^(std::vector<history::DomainMetricSet> metricsSet) {
-              if (!metricsSet.size()) {
-                callback(0);
-                return;
-              }
-              auto metric = metricsSet.front();
-              NSInteger value = 0;
-              switch (metricType) {
-                case DomainMetricTypeIOSNoMetric:
-                  break;
-                case DomainMetricTypeIOSLast1DayMetric:
-                  if (metric.one_day_metric) {
-                    value = metric.one_day_metric.value().count;
+            base::BindOnce(
+                ^(std::pair<history::DomainDiversityResults,
+                            history::DomainDiversityResults> metrics) {
+                  if (!metrics.first.empty()) {
+                    callback(0);
+                    return;
                   }
-                  break;
-                case DomainMetricTypeIOSLast7DayMetric:
-                  if (metric.seven_day_metric) {
-                    value = metric.seven_day_metric.value().count;
+                  auto& metric = metrics.first.front();
+                  NSInteger value = 0;
+                  switch (metricType) {
+                    case DomainMetricTypeIOSNoMetric:
+                      break;
+                    case DomainMetricTypeIOSLast1DayMetric:
+                      if (metric.one_day_metric) {
+                        value = metric.one_day_metric.value().count;
+                      }
+                      break;
+                    case DomainMetricTypeIOSLast7DayMetric:
+                      if (metric.seven_day_metric) {
+                        value = metric.seven_day_metric.value().count;
+                      }
+                      break;
+                    case DomainMetricTypeIOSLast28DayMetric:
+                      if (metric.twenty_eight_day_metric) {
+                        value = metric.twenty_eight_day_metric.value().count;
+                      }
+                      break;
                   }
-                  break;
-                case DomainMetricTypeIOSLast28DayMetric:
-                  if (metric.twenty_eight_day_metric) {
-                    value = metric.twenty_eight_day_metric.value().count;
-                  }
-                  break;
-              }
-              callback(value);
-            }),
+                  callback(value);
+                }),
             &historyAPI->tracker_);
       };
   web::GetUIThreadTaskRunner({})->PostTask(
