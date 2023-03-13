@@ -176,6 +176,9 @@ source_set("ui") {
       "webui/welcome_page/brave_welcome_ui.h",
       "webui/welcome_page/welcome_dom_handler.cc",
       "webui/welcome_page/welcome_dom_handler.h",
+      "whats_new/pref_names.h",
+      "whats_new/whats_new_util.cc",
+      "whats_new/whats_new_util.h",
     ]
 
     if (enable_pin_shortcut) {
