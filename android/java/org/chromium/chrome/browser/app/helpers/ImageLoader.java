@@ -29,9 +29,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.bumptech.glide.request.target.Target;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+import org.xmlpull.v1.XmlSerializer;
 
 import org.chromium.chrome.browser.WebContentsFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -45,6 +46,7 @@ import org.chromium.components.image_fetcher.ImageFetcherFactory;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.url.GURL;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.ByteBuffer;
@@ -56,20 +58,14 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 public class ImageLoader {
     private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
     private static final String UNUSED_CLIENT_NAME = "unused";
     private static final String BASE64_ENCODING_PATTERN =
             "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$";
     private static final String ATT_VALUE_1000_PX = "1000px";
+    private static final String SVG_TAG = "svg";
+    private static final String DATA_IMAGE_SVG_UTF8_PREFIX = "data:image/svg+xml;utf8,";
 
     /**
      * Downloads an image from a given URL, including support for GIF and SVG image types.
@@ -176,40 +172,96 @@ public class ImageLoader {
      * @return sanitized string with 'width' and 'height' attributes set in the 'svg' tag.
      */
     public static String sanitizeSvg(String input) {
-        if (input == null) return null;
         try {
-            // Convert the input string to an XML document.
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            // Protect from XML EXternal Entity (XXE) attacks.
-            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(new InputSource(new StringReader(input)));
-            doc.getDocumentElement().normalize();
+            // Create an XmlPullParser instance.
+            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = factory.newPullParser();
 
-            // Check if the root element is an SVG tag.
-            Element svg = doc.getDocumentElement();
-            if (!svg.getNodeName().equalsIgnoreCase("svg")) {
+            // Set input source for parser.
+            parser.setInput(new StringReader(input));
+
+            // Find start tag.
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.START_TAG) {
+                eventType = parser.next();
+            }
+
+            // Check if the start tag is an SVG tag.
+            if (!parser.getName().equalsIgnoreCase(SVG_TAG)) {
                 // Input is not an SVG image.
                 return null;
             }
 
             // Check if the SVG tag has width and height attributes.
-            String width = svg.getAttribute(ConfigurationUtils.WIDTH);
-            String height = svg.getAttribute(ConfigurationUtils.HEIGHT);
-            if (width.isEmpty()) {
-                svg.setAttribute(ConfigurationUtils.WIDTH, ATT_VALUE_1000_PX);
-            }
-            if (height.isEmpty()) {
-                svg.setAttribute(ConfigurationUtils.HEIGHT, ATT_VALUE_1000_PX);
+            boolean widthFound = false;
+            boolean heightFound = false;
+            String width = null;
+            String height = null;
+
+            for (int i = 0; i < parser.getAttributeCount(); i++) {
+                String attrName = parser.getAttributeName(i);
+                String attrValue = parser.getAttributeValue(i);
+
+                if (attrName.equalsIgnoreCase(ConfigurationUtils.WIDTH)) {
+                    widthFound = true;
+                    width = attrValue;
+                } else if (attrName.equalsIgnoreCase(ConfigurationUtils.HEIGHT)) {
+                    heightFound = true;
+                    height = attrValue;
+                }
             }
 
-            // Serialize the XML document to a string and return it.
-            TransformerFactory tf = TransformerFactory.newInstance();
-            Transformer transformer = tf.newTransformer();
+            if (widthFound && heightFound) {
+                // Width and height attributes are declared.
+                // There's no need to modify the current SVG.
+                return input;
+            }
+
+            // Add missing width and height attributes to SVG tag.
+            if (!widthFound) {
+                width = ATT_VALUE_1000_PX;
+            }
+
+            if (!heightFound) {
+                height = ATT_VALUE_1000_PX;
+            }
+
+            // Serialize the modified XML document to a string and return it.
+            XmlSerializer serializer = XmlPullParserFactory.newInstance().newSerializer();
             StringWriter writer = new StringWriter();
-            transformer.transform(new DOMSource(doc), new StreamResult(writer));
-            return "data:image/svg+xml;utf8," + writer.getBuffer().toString();
-        } catch (Exception e) {
+            serializer.setOutput(writer);
+
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                if (eventType == XmlPullParser.START_TAG) {
+                    serializer.startTag(null, parser.getName());
+
+                    for (int i = 0; i < parser.getAttributeCount(); i++) {
+                        String name = parser.getAttributeName(i);
+                        String value = parser.getAttributeValue(i);
+                        serializer.attribute(null, name, value);
+                    }
+                    if (parser.getName().equalsIgnoreCase(SVG_TAG)) {
+                        if (!widthFound) {
+                            serializer.attribute(null, ConfigurationUtils.WIDTH, width);
+                        }
+                        if (!heightFound) {
+                            serializer.attribute(null, ConfigurationUtils.HEIGHT, height);
+                        }
+                    }
+                } else if (eventType == XmlPullParser.TEXT) {
+                    serializer.text(parser.getText());
+                } else if (eventType == XmlPullParser.END_TAG) {
+                    serializer.endTag(null, parser.getName());
+                } else if (eventType == XmlPullParser.IGNORABLE_WHITESPACE) {
+                    serializer.ignorableWhitespace(parser.getText());
+                }
+
+                eventType = parser.next();
+            }
+
+            serializer.flush();
+            return DATA_IMAGE_SVG_UTF8_PREFIX + writer.toString();
+        } catch (XmlPullParserException | IOException e) {
             return null;
         }
     }
