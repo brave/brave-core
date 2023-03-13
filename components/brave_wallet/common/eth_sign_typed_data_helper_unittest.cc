@@ -119,7 +119,6 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeTypesArrays) {
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
-
   const std::string types_json(R"({
     "Mail": [
         {"name": "from", "type": "Person"},
@@ -179,19 +178,15 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
 }
 
 TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {
-    const std::string data_json(R"({
-    "from":{"name":"Cow","wallet":"0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826"},
-    "to":{"name":"Bob","wallet":"0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB"},
-    "contents":"Hello, Bob!"
-    })");
-    
-    auto data_value =
+  const std::string data_json(R"({"name":"Cow"})");
+
+  auto data_value =
       base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                             base::JSON_ALLOW_TRAILING_COMMAS);
-    ASSERT_TRUE(data_value);
-    auto& data_dict = data_value->GetDict();
+  ASSERT_TRUE(data_value);
+  auto& data_dict = data_value->GetDict();
 
-    for (const std::string& invalid_json : {
+  for (const std::string& invalid_json : {
            R"({
     "Domain": [
         { "name": ["AStringArray", "String2"], "type": "string" }
@@ -213,13 +208,13 @@ TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {
         invalid_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                           base::JSON_ALLOW_TRAILING_COMMAS);
     ASSERT_TRUE(invalid_value);
-    
+
     std::unique_ptr<EthSignTypedDataHelper> invalid_types_helper =
         EthSignTypedDataHelper::Create(invalid_value->GetDict().Clone(),
                                        EthSignTypedDataHelper::Version::kV4);
-  auto encoded_domain_v4 =
-      invalid_types_helper->EncodeData("Domain", *(data_dict.FindDict("name")));
-  ASSERT_FALSE(encoded_domain_v4);
+    auto encoded_domain_v4 =
+        invalid_types_helper->EncodeData("Domain", data_dict);
+    ASSERT_FALSE(encoded_domain_v4);
   }
 }
 
