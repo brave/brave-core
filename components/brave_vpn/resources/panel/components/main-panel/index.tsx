@@ -94,6 +94,7 @@ function MainPanel () {
           <S.SettingsButton
             type='button'
             onClick={handleSettingsButtonClick}
+            title={getLocale('braveVpnSettingsTooltip')}
           >
             <SettingsAdvancedIcon />
           </S.SettingsButton>

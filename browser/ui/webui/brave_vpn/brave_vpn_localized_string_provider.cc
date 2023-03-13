@@ -77,6 +77,7 @@ void AddLocalizedStrings(content::WebUIDataSource* html_source) {
       {"braveVpnSupportTimezone", IDS_BRAVE_VPN_SUPPORT_TIMEZONE},
       {"braveVpnSessionExpiredTitle",
        IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_TITLE},
+      {"braveVpnSettingsTooltip", IDS_BRAVE_VPN_MAIN_PANEL_VPN_SETTINGS_TITLE},
       {"braveVpnSessionExpiredContent",
        IDS_BRAVE_VPN_MAIN_PANEL_SESSION_EXPIRED_PART_CONTENT},
   };
