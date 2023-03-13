@@ -1,5 +1,0 @@
-include_rules = [
-  "-bat/ledger",
-  "+bat/ledger/public",
-  "+mojo/public/cpp",
-]

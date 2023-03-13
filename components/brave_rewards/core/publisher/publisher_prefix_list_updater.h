@@ -1,0 +1,66 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_
+
+#include <functional>
+#include <map>
+#include <memory>
+#include <string>
+
+#include "base/time/time.h"
+#include "base/timer/timer.h"
+#include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
+#include "brave/components/brave_rewards/core/ledger.h"
+
+namespace ledger {
+class LedgerImpl;
+
+namespace publisher {
+
+using PublisherPrefixListUpdatedCallback = std::function<void()>;
+
+// Automatically updates the publisher prefix list store on regular
+// intervals.
+class PublisherPrefixListUpdater {
+ public:
+  explicit PublisherPrefixListUpdater(LedgerImpl* ledger);
+
+  PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
+  PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
+      delete;
+
+  ~PublisherPrefixListUpdater();
+
+  // Starts the auto updater
+  void StartAutoUpdate(PublisherPrefixListUpdatedCallback callback);
+
+  // Cancels the auto updater
+  void StopAutoUpdate();
+
+ private:
+  void StartFetchTimer(const base::Location& posted_from,
+                       base::TimeDelta delay);
+
+  void OnFetchTimerElapsed();
+  void OnFetchCompleted(const mojom::Result result, const std::string& body);
+  void OnPrefixListInserted(const mojom::Result result);
+
+  base::TimeDelta GetAutoUpdateDelay();
+  base::TimeDelta GetRetryAfterFailureDelay();
+
+  LedgerImpl* ledger_;  // NOT OWNED
+  base::OneShotTimer timer_;
+  bool auto_update_ = false;
+  int retry_count_ = 0;
+  PublisherPrefixListUpdatedCallback on_updated_callback_;
+  std::unique_ptr<endpoint::RewardsServer> rewards_server_;
+};
+
+}  // namespace publisher
+}  // namespace ledger
+
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

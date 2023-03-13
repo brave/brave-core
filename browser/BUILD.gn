@@ -44,8 +44,8 @@ group("browser") {
   visibility = [
     "//brave:browser_dependencies",
     "//brave/browser/*",
+    "//brave/components/brave_rewards/core:headers",
     "//brave/test:*",
-    "//brave/vendor/bat-native-ledger:headers",
 
     # these are layering violation and need to be fixed
     "//brave/components/brave_rewards/browser:testutil",

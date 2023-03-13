@@ -12,12 +12,12 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
-#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "chrome/browser/ui/browser.h"
 
 namespace rewards_browsertest {

@@ -13,7 +13,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "bat/ledger/ledger_client.h"
+#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"

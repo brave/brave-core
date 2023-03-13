@@ -202,6 +202,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_perf_predictor/browser",
     "//brave/components/brave_private_cdn",
     "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/core/test",
     "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
@@ -258,7 +259,6 @@ test("brave_unit_tests") {
     "//brave/mojo/brave_ast_patcher:unit_tests",
     "//brave/net:unit_tests",
     "//brave/third_party/blink/renderer:renderer",
-    "//brave/vendor/bat-native-ledger/test:bat_native_ledger_tests",
     "//brave/vendor/brave_base",
     "//chrome:dependencies",
     "//chrome/app:command_ids",
@@ -671,7 +671,6 @@ test("brave_browser_tests") {
   testonly = true
 
   configs += [
-    "//brave/vendor/bat-native-ledger:internal_config",
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
     "//chrome/test:pdb_larger_than_4gb",
@@ -845,6 +844,8 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common:features",
     "//brave/components/brave_rewards/common/buildflags:buildflags",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:publishers_proto",
     "//brave/components/brave_search/browser",
     "//brave/components/brave_search/common",
     "//brave/components/brave_shields/browser",
@@ -882,8 +883,6 @@ test("brave_browser_tests") {
     "//brave/renderer/skus:browser_tests",
     "//brave/renderer/test:browser_tests",
     "//brave/third_party/blink/renderer:renderer",
-    "//brave/vendor/bat-native-ledger",
-    "//brave/vendor/bat-native-ledger:publishers_proto",
     "//build:chromeos_buildflags",
     "//chrome/app:command_ids",
     "//chrome/browser",

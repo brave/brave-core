@@ -103,7 +103,7 @@ function_registration("generated_api_registration") {
 
   deps = [
     "//brave/components/brave_ads/common/interfaces",
-    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces",
+    "//brave/components/brave_rewards/common/mojom",
     "//extensions/common",
   ]
 

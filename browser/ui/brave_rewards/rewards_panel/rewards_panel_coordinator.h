@@ -10,7 +10,7 @@
 
 #include "base/observer_list.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_rewards/common/brave_rewards_panel.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.h"
 #include "chrome/browser/ui/browser_user_data.h"
 #include "url/gurl.h"
 

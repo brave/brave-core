@@ -21,7 +21,6 @@ browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
 browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
 components/brave_rewards/ @brave/rewards-client
 components/services/bat_ledger/ @brave/rewards-client
-vendor/bat-native-ledger/ @brave/rewards-client
 
 # Ads
 browser/brave_ads/**/*.cc @brave/ads-client
