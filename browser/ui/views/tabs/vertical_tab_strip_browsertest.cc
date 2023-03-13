@@ -15,17 +15,23 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/interactive_test_utils.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "ui/base/test/ui_controls.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 
@@ -40,6 +46,13 @@
 
 #if defined(USE_AURA)
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
+#include "ui/aura/test/ui_controls_factory_aura.h"
+#include "ui/aura/window.h"
+#endif
+
+#if BUILDFLAG(IS_OZONE)
+#include "ui/ozone/public/ozone_platform.h"
+#include "ui/platform_window/common/platform_window_defaults.h"
 #endif
 
 namespace {
@@ -117,6 +130,21 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     browser_non_client_frame_view()->Layout();
   }
 
+  TabStrip* GetTabStrip(Browser* browser) {
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    return browser_view->tabstrip();
+  }
+
+  Tab* GetTabAt(Browser* browser, int index) {
+    return GetTabStrip(browser)->tab_at(index);
+  }
+
+  gfx::Rect GetBoundsInScreen(views::View* view, const gfx::Rect& rect) {
+    auto bounds_in_screen = rect;
+    views::View::ConvertRectToScreen(view, &bounds_in_screen);
+    return bounds_in_screen;
+  }
+
   // Returns the visibility of window title is actually changed by a frame or
   // a widget. If we can't access to actual title view, returns a value which
   // window title will be synchronized to.
@@ -149,7 +177,30 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 #endif
   }
 
+  void WaitUntil(base::RepeatingCallback<bool()> condition) {
+    if (condition.Run()) {
+      return;
+    }
+
+    base::RepeatingTimer scheduler;
+    scheduler.Start(FROM_HERE, base::Milliseconds(100),
+                    base::BindLambdaForTesting([this, &condition]() {
+                      if (condition.Run()) {
+                        run_loop_->Quit();
+                      }
+                    }));
+    RunLoop();
+  }
+
+  void RunLoop() {
+    run_loop_ = std::make_unique<base::RunLoop>();
+    run_loop_->Run();
+  }
+
+ private:
   base::test::ScopedFeatureList feature_list_;
+
+  std::unique_ptr<base::RunLoop> run_loop_;
 };
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ToggleVerticalTabStrip) {
@@ -256,7 +307,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, VisualState) {
       browser_view()->vertical_tab_strip_widget_delegate_view_.get();
   ASSERT_TRUE(widget_delegate_view);
 
-  auto* region_view = widget_delegate_view->region_view_.get();
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_EQ(State::kExpanded, region_view->state());
 
@@ -391,4 +442,273 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
                 ->vertical_tab_strip_host_view_->GetPreferredSize()
                 .width();
   }));
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
+  // Pre-conditions ------------------------------------------------------------
+
+  ToggleVerticalTabStrip();
+
+  chrome::AddTabAt(browser(), {}, -1, true);
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+
+  auto* model = browser()->tab_strip_model();
+  ASSERT_EQ(2, model->count());
+  model->SetTabPinned(0, true);
+
+  browser_view()->tabstrip()->StopAnimating(/* layout= */ true);
+
+  // Test if every tabs are laid out inside tab strip region -------------------
+  // This is a regression test for
+  // https://github.com/brave/brave-browser/issues/28084
+  for (int i = 0; i < model->count(); i++) {
+    auto* tab = GetTabAt(browser(), i);
+    EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
+                    .Contains(GetBoundsInScreen(tab, tab->GetLocalBounds())));
+  }
+}
+
+class VerticalTabStripDragAndDropBrowserTest
+    : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripDragAndDropBrowserTest() override = default;
+
+  gfx::Point GetCenterPointInScreen(views::View* view) {
+    return GetBoundsInScreen(view, view->GetLocalBounds()).CenterPoint();
+  }
+
+  void PressTabAt(Browser* browser, int index) {
+    ASSERT_TRUE(ui_test_utils::SendMouseMoveSync(
+        GetCenterPointInScreen(GetTabAt(browser, index))));
+    ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::LEFT,
+                                                   ui_controls::DOWN));
+  }
+
+  void ReleaseMouse() {
+    ASSERT_TRUE(
+        ui_controls::SendMouseEvents(ui_controls::LEFT, ui_controls::UP));
+  }
+
+  void MoveMouseTo(
+      const gfx::Point& point_in_screen,
+      base::OnceClosure task_on_mouse_moved = base::NullCallback()) {
+    bool moved = false;
+    ui_controls::SendMouseMoveNotifyWhenDone(
+        point_in_screen.x(), point_in_screen.y(),
+        base::BindLambdaForTesting([&]() {
+          moved = true;
+          if (task_on_mouse_moved) {
+            std::move(task_on_mouse_moved).Run();
+          }
+        }));
+    WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
+  }
+
+  bool IsDraggingTabStrip(Browser* b) {
+    return GetTabStrip(b)->GetDragContext()->IsDragSessionActive();
+  }
+
+  // VerticalTabStripBrowserTest:
+  void SetUpOnMainThread() override {
+    VerticalTabStripBrowserTest::SetUpOnMainThread();
+
+#if BUILDFLAG(IS_WIN)
+    auto* root_window =
+        browser_view()->GetWidget()->GetNativeWindow()->GetRootWindow();
+    ui_controls::InstallUIControlsAura(
+        aura::test::CreateUIControlsAura(root_window->GetHost()));
+
+    auto* widget_delegate_view =
+        browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+    ASSERT_TRUE(widget_delegate_view);
+
+    root_window =
+        widget_delegate_view->GetWidget()->GetNativeWindow()->GetRootWindow();
+    ui_controls::InstallUIControlsAura(
+        aura::test::CreateUIControlsAura(root_window->GetHost()));
+#endif  // defined(IS_WIN)
+
+#if BUILDFLAG(IS_OZONE)
+    // Notifies the platform that test config is needed. For Wayland, for
+    // example, makes it possible to use emulated input.
+    ui::test::EnableTestConfigForPlatformWindows();
+
+    ui::OzonePlatform::InitParams params;
+    params.single_process = true;
+    ui::OzonePlatform::InitializeForUI(params);
+#endif
+
+    ui_controls::EnableUIControls();
+
+    ToggleVerticalTabStrip();
+
+#if BUILDFLAG(IS_WIN)
+    // Sometimes, the window is not activated and it causes flakiness. In order
+    // to make sure the window is the front, do these.
+    browser()->window()->Minimize();
+    browser()->window()->Restore();
+    browser()->window()->Activate();
+#endif
+  }
+};
+
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+// TODO(sko) On Linux test environment, the test doesn't work well
+// TODO(sko) On Windows CI, SendMouse() doesn't work.
+#define MAYBE_DragTabToReorder DISABLED_DragTabToReorder
+#else
+#define MAYBE_DragTabToReorder DragTabToReorder
+#endif
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
+                       MAYBE_DragTabToReorder) {
+  // Pre-conditions ------------------------------------------------------------
+  chrome::AddTabAt(browser(), {}, -1, true);
+
+  auto* widget_delegate_view =
+      browser_view()->vertical_tab_strip_widget_delegate_view_.get();
+  ASSERT_TRUE(widget_delegate_view);
+
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_EQ(VerticalTabStripRegionView::State::kExpanded, region_view->state());
+
+  // Drag and drop a tab to reorder it -----------------------------------------
+  GetTabStrip(browser())->StopAnimating(
+      /* layout= */ true);  // Drag-and-drop doesn't start when animation is
+                            // running.
+  auto* pressed_tab = GetTabAt(browser(), 0);
+  PressTabAt(browser(), 0);
+  MoveMouseTo(GetCenterPointInScreen(GetTabAt(browser(), 1)));
+  PressTabAt(browser(), 0);  // workaround to trigger tab reorder. We don't need
+                             // this event in the real world.
+
+  EXPECT_TRUE(IsDraggingTabStrip(browser()));
+  ReleaseMouse();
+  GetTabStrip(browser())->StopAnimating(
+      true);  // Drag-and-drop doesn't start when animation is running.
+  {
+    // Regression test for https://github.com/brave/brave-browser/issues/28488
+    // Check if the tab is positioned properly after drag-and-drop.
+    auto* moved_tab = GetTabAt(browser(), 1);
+    EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
+                    .Contains(GetBoundsInScreen(moved_tab,
+                                                moved_tab->GetLocalBounds())));
+    EXPECT_EQ(pressed_tab, moved_tab);
+  }
+}
+
+#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN)
+// TODO(sko) On Linux test environment, the test doesn't work well
+// TODO(sko) On Windows CI, SendMouse() doesn't work.
+#define MAYBE_DragTabToDetach DISABLED_DragTabToDetach
+#else
+#define MAYBE_DragTabToDetach DragTabToDetach
+#endif
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
+                       MAYBE_DragTabToDetach) {
+  // Pre-conditions ------------------------------------------------------------
+  chrome::AddTabAt(browser(), {}, -1, true);
+
+  // Drag a tab out of tab strip to create browser -----------------------------
+  GetTabStrip(browser())->StopAnimating(
+      true);  // Drag-and-drop doesn't start when animation is running.
+  PressTabAt(browser(), 0);
+  gfx::Point point_out_of_tabstrip =
+      GetCenterPointInScreen(GetTabAt(browser(), 0));
+  point_out_of_tabstrip.set_x(point_out_of_tabstrip.x() +
+                              2 * GetTabAt(browser(), 0)->width());
+  MoveMouseTo(point_out_of_tabstrip, base::BindLambdaForTesting([&]() {
+                // Creating new browser during drag-and-drop will create
+                // a nested run loop. So we should do things within callback.
+                auto* browser_list = BrowserList::GetInstance();
+                EXPECT_EQ(2,
+                          base::ranges::count_if(*browser_list, [&](auto* b) {
+                            return b->profile() == browser()->profile();
+                          }));
+                ReleaseMouse();
+                auto* new_browser = browser_list->GetLastActive();
+                new_browser->window()->Close();
+              }));
+}
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
+// TODO(sko) On Linux test environment, the test doesn't work well
+// TODO(sko) On Windows CI, SendMouse() doesn't work.
+#define MAYBE_DragURL DISABLED_DragURL
+#else
+#define MAYBE_DragURL DragURL
+#endif
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest, MAYBE_DragURL) {
+  // Pre-conditions ------------------------------------------------------------
+  auto convert_point_in_screen = [&](views::View* view,
+                                     const gfx::Point& point) {
+    auto point_in_screen = point;
+    views::View::ConvertPointToScreen(view, &point_in_screen);
+    return point_in_screen;
+  };
+
+  auto press_view = [&](views::View* view) {
+    ASSERT_TRUE(ui_test_utils::SendMouseMoveSync(
+        convert_point_in_screen(view, view->GetLocalBounds().CenterPoint())));
+    ASSERT_TRUE(ui_test_utils::SendMouseEventsSync(ui_controls::LEFT,
+                                                   ui_controls::DOWN));
+  };
+
+  auto drag_mouse_to_point_and_drop = [&](const gfx::Point& point_in_screen) {
+    bool moved = false;
+    ui_controls::SendMouseMoveNotifyWhenDone(
+        point_in_screen.x(), point_in_screen.y(),
+        base::BindLambdaForTesting([&]() {
+          moved = true;
+          ui_controls::SendMouseEvents(ui_controls::LEFT, ui_controls::UP);
+        }));
+
+    WaitUntil(base::BindLambdaForTesting([&]() { return moved; }));
+  };
+
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com/")));
+
+  // Test if dragging a URL on browser cause a crash. When this happens, the
+  // browser root view could try inserting a new tab with the given URL.
+  // https://github.com/brave/brave-browser/issues/28592
+  auto* location_icon_view =
+      browser_view()->GetLocationBarView()->location_icon_view();
+  press_view(location_icon_view);
+
+  auto position_to_drag_to =
+      convert_point_in_screen(location_icon_view, location_icon_view->origin());
+  position_to_drag_to.set_x(position_to_drag_to.x() - 3);
+  drag_mouse_to_point_and_drop(
+      position_to_drag_to);  // This shouldn't end up in a crash
+}
+
+class VerticalTabStripWithScrollableTabBrowserTest
+    : public VerticalTabStripBrowserTest {
+ public:
+  VerticalTabStripWithScrollableTabBrowserTest()
+      : feature_list_(features::kScrollableTabStrip) {}
+
+  ~VerticalTabStripWithScrollableTabBrowserTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {
+  // Make sure browser works with both vertical tab and scrollable tab strip
+  // https://github.com/brave/brave-browser/issues/28877
+  ToggleVerticalTabStrip();
+  Browser::Create(Browser::CreateParams(browser()->profile(), true));
 }
