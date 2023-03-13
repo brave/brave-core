@@ -331,12 +331,6 @@ BrowserPolicyConnectorIOS* ApplicationContextImpl::GetBrowserPolicyConnector() {
   return nullptr;
 }
 
-breadcrumbs::BreadcrumbPersistentStorageManager*
-ApplicationContextImpl::GetBreadcrumbPersistentStorageManager() {
-  DCHECK(thread_checker_.CalledOnValidThread());
-  return nullptr;
-}
-
 id<SingleSignOnService> ApplicationContextImpl::GetSSOService() {
   if (!single_sign_on_service_) {
     single_sign_on_service_ = ios::provider::CreateSSOService();
