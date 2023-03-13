@@ -13,7 +13,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {

@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif

@@ -168,7 +168,6 @@ test("brave_unit_tests") {
     "//brave/base:base_unittests",
     "//brave/browser",
     "//brave/browser:unit_tests",
-    "//brave/browser/brave_rewards/rewards_panel:unit_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:unit_tests",
     "//brave/browser/content_settings:unit_tests",
@@ -183,7 +182,7 @@ test("brave_unit_tests") {
     "//brave/browser/safebrowsing",
     "//brave/browser/search:unit_tests",
     "//brave/browser/themes",
-    "//brave/browser/ui",
+    "//brave/browser/ui/brave_rewards/rewards_panel:unit_tests",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/webui/new_tab_page:unit_tests",
     "//brave/browser/web_discovery:unit_tests",
@@ -264,6 +263,7 @@ test("brave_unit_tests") {
     "//chrome:dependencies",
     "//chrome/app:command_ids",
     "//chrome/browser/favicon",
+    "//chrome/browser/ui",
     "//chrome/test:test_support",
     "//components/assist_ranker",
     "//components/assist_ranker/proto",
@@ -594,8 +594,8 @@ static_library("browser_test_support") {
   ]
 
   deps = [
-    "//brave/browser/ui",
     "//chrome/browser",
+    "//chrome/browser/ui",
   ]
 }
 
@@ -631,7 +631,6 @@ if (!is_android) {
 
     deps = [
       "//base",
-      "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
@@ -807,7 +806,6 @@ test("brave_browser_tests") {
     "//brave/browser",
     "//brave/browser/autoplay:browser_tests",
     "//brave/browser/brave_news:browser_tests",
-    "//brave/browser/brave_rewards/rewards_panel",
     "//brave/browser/brave_rewards/test:browser_tests",
     "//brave/browser/brave_wallet",
     "//brave/browser/brave_wallet:browser_tests",
@@ -825,7 +823,6 @@ test("brave_browser_tests") {
     "//brave/browser/sessions:browser_tests",
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
-    "//brave/browser/ui",
     "//brave/browser/ui:browser_tests",
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/tabs",
@@ -1002,7 +999,6 @@ test("brave_browser_tests") {
     deps += [
       "//brave/browser/brave_wallet",
       "//brave/browser/ethereum_remote_client",
-      "//brave/browser/infobars",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//components/infobars/content",

@@ -19,7 +19,6 @@ brave_browser_brave_rewards_sources = [
 brave_browser_brave_rewards_deps = [
   "//base",
   "//brave/browser/brave_rewards:util",
-  "//brave/browser/brave_rewards/rewards_panel",
   "//brave/browser/profiles",
   "//brave/browser/profiles:util",
   "//brave/components/brave_rewards/browser",
@@ -50,7 +49,6 @@ if (enable_extensions) {
 
   brave_browser_brave_rewards_deps += [
     "//brave/browser/extensions",
-    "//brave/browser/ui",
     "//brave/common/extensions/api",
     "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",

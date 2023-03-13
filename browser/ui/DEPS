@@ -1,4 +1,22 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 include_rules = [
-  "+chrome/browser/ui/views/bubble/webui_bubble_manager.h",
-  "+chrome/browser/ui/views/frame/top_container_view.h",
+  "+chrome/browser/ui",
+
+  # Restrict views similar to chrome/browser/ui/DEPS.
+  "-brave/browser/ui/views",
+  "-chrome/browser/ui/views",
 ]
+
+specific_include_rules = {
+  "browser_commands\.cc": [
+    "+brave/browser/ui/views",
+  ],
+  "wallet_bubble_manager_delegate_impl\.cc" : [
+    "+brave/browser/ui/views",
+    "+chrome/browser/ui/views",
+  ],
+}
