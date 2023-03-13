@@ -1153,10 +1153,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     private void showVpnCalloutDialog() {
-        BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
-                new BraveVpnCalloutDialogFragment();
-        braveVpnCalloutDialogFragment.show(
-                getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+        try {
+            BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
+                    new BraveVpnCalloutDialogFragment();
+            braveVpnCalloutDialogFragment.show(
+                    getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+        } catch (IllegalStateException e) {
+            Log.e("showVpnCalloutDialog", e.getMessage());
+        }
     }
 
     private void showLinkVpnSubscriptionDialog() {
