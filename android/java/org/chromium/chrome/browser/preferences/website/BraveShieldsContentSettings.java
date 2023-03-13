@@ -25,6 +25,7 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_COOKIES = "shieldsCookies";
     static public final String RESOURCE_IDENTIFIER_REFERRERS = "referrers";
     static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
+    static public final String RESOURCE_IDENTIFIER_HTTPS_UPGRADE = "httpsUpgrade";
 
     static public final String BLOCK_RESOURCE = "block";
     static public final String BLOCK_THIRDPARTY_RESOURCE = "block_third_party";
@@ -91,6 +92,9 @@ public class BraveShieldsContentSettings {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             BraveShieldsContentSettingsJni.get().setFingerprintingControlType(
                     settingOption, host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
+            BraveShieldsContentSettingsJni.get().setHttpsUpgradeControlType(
+                    settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(settingOption, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -121,6 +125,9 @@ public class BraveShieldsContentSettings {
         if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             settings = BraveShieldsContentSettingsJni.get().getFingerprintingControlType(
                     host, profile);
+        } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTPS_UPGRADE)) {
+            settings =
+                    BraveShieldsContentSettingsJni.get().getHttpsUpgradeControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             settings = BraveShieldsContentSettingsJni.get().getCookieControlType(host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_TRACKERS)) {
@@ -142,6 +149,11 @@ public class BraveShieldsContentSettings {
     public static void setFingerprintingPref(String value) {
         setShieldsValue(Profile.getLastUsedRegularProfile(), "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, value, false);
+    }
+
+    public static void setHttpsUpgradePref(String value) {
+        setShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE, value, false);
     }
 
     public static void setCookiesPref(String value) {
@@ -172,6 +184,11 @@ public class BraveShieldsContentSettings {
     public static String getFingerprintingPref() {
         return getShieldsValue(Profile.getLastUsedRegularProfile(), "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
+    }
+
+    public static String getHttpsUpgradePref() {
+        return getShieldsValue(Profile.getLastUsedRegularProfile(), "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
     }
 
     public static boolean getHTTPSEverywherePref() {
@@ -214,6 +231,8 @@ public class BraveShieldsContentSettings {
         String getFingerprintingControlType(String url, Profile profile);
         void setHTTPSEverywhereEnabled(boolean enabled, String url, Profile profile);
         boolean getHTTPSEverywhereEnabled(String url, Profile profile);
+        void setHttpsUpgradeControlType(String type, String url, Profile profile);
+        String getHttpsUpgradeControlType(String url, Profile profile);
         void setNoScriptControlType(String type, String url, Profile profile);
         String getNoScriptControlType(String url, Profile profile);
 
