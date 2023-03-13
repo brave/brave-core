@@ -13,7 +13,7 @@ namespace playlist::features {
 BASE_FEATURE(kPlaylist, "Playlist", base::FEATURE_DISABLED_BY_DEFAULT);
 
 BASE_FEATURE(kPlaylistFakeUA,
-             "Playlist Fake UA",
+             "PlaylistFakeUA",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace playlist::features
