@@ -135,7 +135,7 @@ export const PortfolioAssetItem = ({
   return (
     <>
       {token.visible &&
-        <StyledWrapper>
+        <StyledWrapper isPanel={isPanel}>
           <ButtonArea disabled={isLoading} rightMargin={isAccountDetails ? 10 : 0} onClick={action}>
             <NameAndIcon>
               <IconsWrapper>

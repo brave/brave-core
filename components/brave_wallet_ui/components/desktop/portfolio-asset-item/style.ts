@@ -5,13 +5,13 @@
 import styled from 'styled-components'
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{isPanel?: boolean}>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: 12px;
+  padding: 12px ${(p) => p.isPanel ? 0 : 12}px;
   border-radius: 10px;
   &:hover {
     background-color: ${(p) => p.theme.color.background01}85;
@@ -36,6 +36,7 @@ export const NameAndIcon = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  text-align: left;
 `
 
 export const AssetName = styled.span`
@@ -51,6 +52,7 @@ export const BalanceColumn = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: column;
+  text-align: right;
 `
 
 export const FiatBalanceText = styled.span`
