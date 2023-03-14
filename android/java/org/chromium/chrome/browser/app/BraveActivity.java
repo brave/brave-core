@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -166,6 +168,7 @@ import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
@@ -1990,5 +1993,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             }
             executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
         }, delay);
+    }
+
+    public void updateBottomSheetPosition(int orientation) {
+        if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+            // Ensure the bottom sheet's container is adjusted to the height of the bottom toolbar.
+            ViewGroup sheetContainer = findViewById(R.id.sheet_container);
+            assert sheetContainer != null;
+
+            if (sheetContainer != null) {
+                CoordinatorLayout.LayoutParams params =
+                        (CoordinatorLayout.LayoutParams) sheetContainer.getLayoutParams();
+                params.bottomMargin = orientation == Configuration.ORIENTATION_LANDSCAPE
+                        ? 0
+                        : getResources().getDimensionPixelSize(R.dimen.bottom_controls_height);
+                sheetContainer.setLayoutParams(params);
+            }
+        }
     }
 }
