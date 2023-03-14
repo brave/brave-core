@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
@@ -54,7 +54,6 @@ import org.chromium.chrome.browser.app.domain.BuyModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -79,6 +78,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private static final String TAG = "EditVisibleAssetsBottomSheetDialogFragment";
     private WalletModel mWalletModel;
     private KeyringServiceObserverImpl mKeyringServiceObserver;
+    private OnEditVisibleItemClickListener mOnEditVisibleItemClickListener;
 
     public interface DismissListener {
         void onDismiss(Boolean isAssetsListChanged);
@@ -143,6 +143,11 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     public void setSelectedNetwork(NetworkInfo selectedNetwork) {
         assert selectedNetwork != null;
         mSelectedNetwork = selectedNetwork;
+    }
+
+    public void setOnAssetClickListener(
+            OnEditVisibleItemClickListener onEditVisibleItemClickListener) {
+        mOnEditVisibleItemClickListener = onEditVisibleItemClickListener;
     }
 
     public void setDismissListener(DismissListener dismissListener) {
@@ -540,22 +545,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     @Override
     public void onAssetClick(BlockchainToken token) {
         List<WalletListItemModel> checkedAssets = walletCoinAdapter.getCheckedAssets();
-        Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity && checkedAssets.size() > 0) {
-            BuySendSwapActivity buySendSwapActivity = (BuySendSwapActivity) activity;
-            if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
-                buySendSwapActivity.updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
-                        checkedAssets.get(0).getBlockchainToken(), true);
-                buySendSwapActivity.updateBalanceMaybeSwap(
-                        buySendSwapActivity.getCurrentSelectedAccountAddr());
-            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST) {
-                buySendSwapActivity.updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
-                        checkedAssets.get(0).getBlockchainToken(), false);
-                buySendSwapActivity.updateBalanceMaybeSwap(
-                        buySendSwapActivity.getCurrentSelectedAccountAddr());
-            }
+        if (mOnEditVisibleItemClickListener != null) {
+            mOnEditVisibleItemClickListener.onAssetClick(checkedAssets.get(0));
         }
         dismiss();
     }
@@ -674,5 +665,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             assetCheck.setTag("noOnClickListener");
             assetCheck.setChecked(walletListItemModel.getIsUserSelected());
         }
+    }
+
+    public interface OnEditVisibleItemClickListener {
+        default void onAssetClick(WalletListItemModel asset) {}
     }
 }
