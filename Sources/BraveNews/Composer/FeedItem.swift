@@ -43,7 +43,7 @@ extension FeedItem {
   
   public struct Source: Hashable, Decodable, Identifiable {
     public var id: String
-    public var isDefault: Bool
+    public var isDefault: Bool?
     public var category: String
     public var name: String
     public var isUserSource = false
@@ -130,7 +130,7 @@ extension FeedItem {
     public var contentType: FeedContentType
     public var publisherID: String
     public var urlHash: String
-    public var baseScore: Double
+    public var baseScore: Double?
     public var offersCategory: String?
     public var creativeInstanceID: String?
     

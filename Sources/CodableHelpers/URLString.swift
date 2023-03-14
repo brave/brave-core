@@ -27,3 +27,14 @@ import Foundation
     }
   }
 }
+
+extension KeyedDecodingContainer {
+  /// URLString's wrapped value type is always an optional URL, therefore should be decoded as if the
+  /// type itself was optional (via `decodeIfPresent` like the usual synthesized version)
+  public func decode(
+    _ type: URLString.Type,
+    forKey key: KeyedDecodingContainer<K>.Key
+  ) throws -> URLString {
+    try decodeIfPresent(type, forKey: key) ?? .init(wrappedValue: nil)
+  }
+}

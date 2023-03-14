@@ -776,7 +776,7 @@ public class FeedDataSource: ObservableObject {
     let followedSources = FeedSourceOverride.all().filter(\.enabled).map(\.publisherID)
     todayQueue.async {
       let items: [FeedItem] = feeds.compactMap { content in
-        var score = content.baseScore
+        var score = content.baseScore ?? Double.greatestFiniteMagnitude
         if let feedBaseDomain = content.url?.baseDomain,
           lastVisitedDomains.contains(feedBaseDomain) {
           score -= 5
