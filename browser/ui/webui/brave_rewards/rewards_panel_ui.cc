@@ -264,6 +264,6 @@ void RewardsPanelUI::CreatePanelHandler(
   auto* rewards = brave_rewards::RewardsServiceFactory::GetForProfile(profile);
 
   panel_handler_ = std::make_unique<RewardsPanelHandler>(
-      std::move(panel), std::move(receiver), embedder(), rewards,
-      panel_coordinator_);
+      std::move(panel), std::move(receiver), web_ui()->GetWebContents(),
+      embedder(), rewards, panel_coordinator_);
 }

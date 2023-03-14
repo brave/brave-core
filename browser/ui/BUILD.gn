@@ -664,6 +664,7 @@ source_set("ui") {
       "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:chromium_strings",
+      "//chrome/browser/devtools:devtools",
       "//chrome/browser/ui/tabs:tab_enums",
       "//components/sync_device_info",
       "//mojo/public/cpp/bindings",

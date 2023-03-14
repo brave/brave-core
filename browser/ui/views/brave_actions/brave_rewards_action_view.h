@@ -108,6 +108,7 @@ class BraveRewardsActionView
   void IsPublisherRegisteredCallback(const std::string& publisher_id,
                                      bool is_registered);
   void UpdateTabHelper(content::WebContents* web_contents);
+  void SetCloseOnDeactivate(bool close);
 
   using WidgetObservation =
       base::ScopedObservation<views::Widget, views::WidgetObserver>;

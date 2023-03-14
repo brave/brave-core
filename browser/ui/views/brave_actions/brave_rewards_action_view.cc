@@ -173,6 +173,9 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
 
   panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(browser_);
   if (panel_coordinator_) {
+    panel_coordinator_->SetDeactivationCallback(
+        base::BindRepeating(&BraveRewardsActionView::SetCloseOnDeactivate,
+                            weak_factory_.GetWeakPtr()));
     panel_observation_.Observe(panel_coordinator_);
   }
 
@@ -330,6 +333,12 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
 
   DCHECK(!bubble_observation_.IsObserving());
   bubble_observation_.Observe(bubble_manager_->GetBubbleWidget());
+}
+
+void BraveRewardsActionView::SetCloseOnDeactivate(bool close) {
+  if (bubble_manager_->bubble_view()) {
+    bubble_manager_->bubble_view()->set_close_on_deactivate(close);
+  }
 }
 
 gfx::ImageSkia BraveRewardsActionView::GetRewardsIcon() {

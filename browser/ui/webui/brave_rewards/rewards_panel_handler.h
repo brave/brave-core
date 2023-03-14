@@ -18,6 +18,10 @@
 
 class Browser;
 
+namespace content {
+class WebContents;
+}
+
 namespace brave_rewards {
 class RewardsService;
 }
@@ -29,6 +33,7 @@ class RewardsPanelHandler
   RewardsPanelHandler(
       mojo::PendingRemote<brave_rewards::mojom::Panel> panel,
       mojo::PendingReceiver<brave_rewards::mojom::PanelHandler> receiver,
+      content::WebContents* web_contents,
       base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
       brave_rewards::RewardsService* rewards_service,
       brave_rewards::RewardsPanelCoordinator* panel_coordinator);
@@ -41,6 +46,7 @@ class RewardsPanelHandler
   // brave_rewards::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
+  void ShowContextMenu(int32_t x, int32_t y) override;
   void GetRewardsPanelArgs(GetRewardsPanelArgsCallback callback) override;
 
   // brave_rewards::RewardsPanelCoordinator::Observer:
@@ -50,6 +56,7 @@ class RewardsPanelHandler
  private:
   mojo::Receiver<brave_rewards::mojom::PanelHandler> receiver_;
   mojo::Remote<brave_rewards::mojom::Panel> panel_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
   base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
   raw_ptr<brave_rewards::RewardsService> rewards_service_ = nullptr;
   raw_ptr<brave_rewards::RewardsPanelCoordinator> panel_coordinator_ = nullptr;

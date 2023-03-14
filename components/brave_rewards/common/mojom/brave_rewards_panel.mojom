@@ -38,6 +38,9 @@ interface PanelHandler {
   // Notify the browser that the panel should be closed.
   CloseUI();
 
+  // Notify the browser that the context menu should be shown.
+  ShowContextMenu(int32 x, int32 y);
+
   // Returns the `RewardsPanelArgs` for the most recent panel request.
   GetRewardsPanelArgs() => (RewardsPanelArgs args);
 };
