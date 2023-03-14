@@ -10,7 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -32,7 +32,15 @@ Result ParseBody(const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  return *status == "completed";
+  if (*status == "processing") {
+    return base::unexpected(Error::kTransactionPending);
+  }
+
+  if (*status != "completed") {
+    return base::unexpected(Error::kUnexpectedTransactionStatus);
+  }
+
+  return {};
 }
 
 }  // namespace
@@ -52,23 +60,9 @@ Result GetTransactionStatusUphold::ProcessResponse(
   }
 }
 
-GetTransactionStatusUphold::GetTransactionStatusUphold(
-    LedgerImpl& ledger,
-    std::string&& token,
-    std::string&& transaction_id)
-    : RequestBuilder(ledger),
-      token_(std::move(token)),
-      transaction_id_(std::move(transaction_id)) {}
-
-GetTransactionStatusUphold::~GetTransactionStatusUphold() = default;
-
 absl::optional<std::string> GetTransactionStatusUphold::Url() const {
   return endpoint::uphold::GetServerUrl(
       base::StringPrintf("/v0/me/transactions/%s", transaction_id_.c_str()));
-}
-
-mojom::UrlMethod GetTransactionStatusUphold::Method() const {
-  return mojom::UrlMethod::GET;
 }
 
 absl::optional<std::vector<std::string>> GetTransactionStatusUphold::Headers(

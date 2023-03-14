@@ -349,6 +349,8 @@ static_library("ledger") {
     "endpoints/get_parameters/get_parameters.h",
     "endpoints/get_parameters/get_parameters_utils.cc",
     "endpoints/get_parameters/get_parameters_utils.h",
+    "endpoints/get_transaction_status/get_transaction_status.cc",
+    "endpoints/get_transaction_status/get_transaction_status.h",
     "endpoints/patch_wallets/patch_wallets.cc",
     "endpoints/patch_wallets/patch_wallets.h",
     "endpoints/post_commit_transaction/post_commit_transaction.cc",

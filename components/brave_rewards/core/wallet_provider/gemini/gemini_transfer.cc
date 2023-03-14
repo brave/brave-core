@@ -56,7 +56,7 @@ void GeminiTransfer::OnCommitTransaction(
     switch (result.error()) {
       case PostCommitTransactionGemini::Error::kTransactionPending:
         return std::move(callback).Run(
-            mojom::Result::RETRY_PENDING_TRANSACTION);
+            mojom::Result::RETRY_PENDING_TRANSACTION_LONG);
       case PostCommitTransactionGemini::Error::kAccessTokenExpired:
         if (!ledger_->gemini()->LogOutWallet()) {
           BLOG(0, "Failed to disconnect " << constant::kWalletGemini
