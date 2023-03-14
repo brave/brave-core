@@ -18,7 +18,7 @@ html {
 }
 
 body {
-  font-family: Poppins, $i18nRaw{fontFamily};
+  font-family: Poppins, $i18nRaw{fontfamily};
   font-size: 81.25%;
 }
 
@@ -29,5 +29,5 @@ h4,
 h5,
 h6,
 button {
-  font-family: Poppins, $i18nRaw{fontFamily};
+  font-family: Poppins, $i18nRaw{fontfamily};
 }
