@@ -3,21 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/frame/glass_browser_caption_button_container.h"
+#include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 
-#define GlassBrowserCaptionButtonContainer \
-  GlassBrowserCaptionButtonContainer_ChromiumImpl
+#define BrowserCaptionButtonContainer \
+  BrowserCaptionButtonContainer_ChromiumImpl
 
-#include "src/chrome/browser/ui/views/frame/glass_browser_caption_button_container.cc"
-#undef GlassBrowserCaptionButtonContainer
+#include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.cc"
+#undef BrowserCaptionButtonContainer
 
-GlassBrowserCaptionButtonContainer::GlassBrowserCaptionButtonContainer(
-    GlassBrowserFrameView* frame_view)
-    : GlassBrowserCaptionButtonContainer_ChromiumImpl(frame_view),
+BrowserCaptionButtonContainer::BrowserCaptionButtonContainer(
+    BrowserFrameViewWin* frame_view)
+    : BrowserCaptionButtonContainer_ChromiumImpl(frame_view),
       frame_view_(frame_view) {
   if (WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
           frame_view_->browser_view()->browser())) {
@@ -26,17 +26,17 @@ GlassBrowserCaptionButtonContainer::GlassBrowserCaptionButtonContainer(
     pref_change_registrar_.Add(
         kTabsSearchShow,
         base::BindRepeating(
-            &GlassBrowserCaptionButtonContainer::OnPreferenceChanged,
+            &BrowserCaptionButtonContainer::OnPreferenceChanged,
             base::Unretained(this)));
     // Show the correct value in settings on initial start
     UpdateSearchTabsButtonState();
   }
 }
 
-GlassBrowserCaptionButtonContainer::~GlassBrowserCaptionButtonContainer() =
+BrowserCaptionButtonContainer::~BrowserCaptionButtonContainer() =
     default;
 
-void GlassBrowserCaptionButtonContainer::OnPreferenceChanged(
+void BrowserCaptionButtonContainer::OnPreferenceChanged(
     const std::string& pref_name) {
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
@@ -44,7 +44,7 @@ void GlassBrowserCaptionButtonContainer::OnPreferenceChanged(
   }
 }
 
-void GlassBrowserCaptionButtonContainer::UpdateSearchTabsButtonState() {
+void BrowserCaptionButtonContainer::UpdateSearchTabsButtonState() {
   auto* tab_search_bubble_host = GetTabSearchBubbleHost();
   if (tab_search_bubble_host) {
     auto* button = tab_search_bubble_host->button();
