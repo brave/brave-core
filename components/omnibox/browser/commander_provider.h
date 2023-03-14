@@ -30,7 +30,11 @@ class CommanderProvider
   void Start(const AutocompleteInput& input, bool minimal_changes) override;
 
  private:
+  // Destructor for AutocompleteProvider must be private or protected as it
+  // extends |base::RefCountedThreadSafe|.
   ~CommanderProvider() override;
+
+  // commander::CommanderFrontendDelegate::Observer:
   void OnCommanderUpdated() override;
 
   raw_ptr<AutocompleteProviderClient> client_;

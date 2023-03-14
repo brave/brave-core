@@ -19,6 +19,7 @@
 #include "brave/components/omnibox/browser/promotion_provider.h"
 #include "brave/components/omnibox/browser/promotion_utils.h"
 #include "brave/components/omnibox/browser/topsites_provider.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/clipboard_provider.h"
@@ -61,16 +62,17 @@ void MaybeShowCommands(AutocompleteResult* result,
   }
 #endif
 }
-}  // namespace
 
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-#define MAYBE_COMMANDER_PROVIDER
-#else
-#define MAYBE_COMMANDER_PROVIDER     \
-  if (commander::CommanderEnabled()) \
-    providers_.push_back(            \
-        new commander::CommanderProvider(provider_client_.get(), this));
+void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
+                               AutocompleteController* controller) {
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  if (commander::CommanderEnabled()) {
+    providers.push_back(new commander::CommanderProvider(
+        controller->autocomplete_provider_client(), controller));
+  }
 #endif
+}
+}  // namespace
 
 #define SearchProvider BraveSearchProvider
 #define HistoryQuickProvider BraveHistoryQuickProvider
@@ -79,7 +81,7 @@ void MaybeShowCommands(AutocompleteResult* result,
 #define BookmarkProvider BraveBookmarkProvider
 #define ShortcutsProvider BraveShortcutsProvider
 #define BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER         \
-  MAYBE_COMMANDER_PROVIDER                                            \
+  MaybeAddCommanderProvider(providers_, this);                        \
   providers_.push_back(new TopSitesProvider(provider_client_.get())); \
   if (IsBraveSearchConversionFetureEnabled() &&                       \
       !provider_client_->IsOffTheRecord())                            \

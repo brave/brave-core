@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/components/commander/common/features.h"
+#include "chrome/browser/ui/ui_features.h"
 
 // We replace Chromium's flag with one of our own, because we want it to be
 // accessible from //components (which //chrome/ui/browser is not).

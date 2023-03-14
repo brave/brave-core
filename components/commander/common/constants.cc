@@ -5,10 +5,10 @@
 
 #include "brave/components/commander/common/constants.h"
 
-#include <iterator>
+#include "base/strings/string_piece.h"
 
 namespace commander {
-const char16_t kCommandPrefix[] = u":>";
-const uint16_t kCommandPrefixLength =
-    std::size(kCommandPrefix) - 1;  // -1 for the \0
-}  // namespace commander
+
+const base::StringPiece16 kCommandPrefix(u":>");
+
+}

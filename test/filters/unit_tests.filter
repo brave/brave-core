@@ -634,3 +634,7 @@
 # This test crashes because AutocompleteClassifier called when TabStripModel
 # was not initialized in test.
 -RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito
+
+# This test fails because we changed the behavior of the fuzzy finder to match
+# the empty string.
+-CommanderFuzzyFinder.EmptyStringDoesNotMatch

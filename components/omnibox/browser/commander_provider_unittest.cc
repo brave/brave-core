@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/notreached.h"
 #include "base/observer_list.h"
+#include "base/strings/strcat.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/commander/common/commander_frontend_delegate.h"
 #include "brave/components/commander/common/commander_item_model.h"
@@ -22,15 +23,14 @@
 #include "brave/components/omnibox/browser/brave_fake_autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
-#include "components/omnibox/browser/autocomplete_provider_listener.h"
-#include "components/omnibox/browser/match_compare.h"
 #include "components/omnibox/browser/test_scheme_classifier.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
 #include "ui/gfx/range/range.h"
 
 namespace {
-const unsigned int kClassificationOffset = 1u + commander::kCommandPrefixLength;
+const unsigned int kClassificationOffset =
+    1u + commander::kCommandPrefix.size();
 
 class FakeCommanderDelegate : public commander::CommanderFrontendDelegate {
  public:
@@ -130,25 +130,27 @@ TEST_F(CommanderProviderTest, PrefixTriggersProvider) {
   provider()->Start(CreateInput(u""), false);
   EXPECT_EQ(0u, provider()->matches().size());
 
-  provider()->Start(CreateInput(commander::kCommandPrefix), false);
+  provider()->Start(CreateInput(commander::kCommandPrefix.data()), false);
   EXPECT_EQ(0u, provider()->matches().size());
 }
 
 TEST_F(CommanderProviderTest, PrefixedCommandTriggersProvider) {
   provider()->Start(
-      CreateInput(commander::kCommandPrefix + std::u16string(u"Hello")), false);
+      CreateInput(base::StrCat({commander::kCommandPrefix, u"Hello"})), false);
   EXPECT_EQ(0u, provider()->matches().size());
 }
 
 TEST_F(CommanderProviderTest, PrefixWhiteSpaceIsStripped) {
   provider()->Start(
-      CreateInput(commander::kCommandPrefix + std::u16string(u"  Hello")),
+      CreateInput(base::StrCat({commander::kCommandPrefix, u"  Hello"})),
       false);
   EXPECT_EQ(0u, provider()->matches().size());
 }
 
 TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
-  provider()->Start(CreateInput(u":> Hello World"), false);
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
+      false);
 
   delegate()->Notify({commander::CommandItemModel(u"First", {}, u"Ctrl+F"),
                       commander::CommandItemModel(u"Second", {}, u"Ctrl+S")});
@@ -180,7 +182,9 @@ TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
 }
 
 TEST_F(CommanderProviderTest, PromptingForMoreInputSetsAnnotation) {
-  provider()->Start(CreateInput(u":> Hello World"), false);
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
+      false);
 
   delegate()->Notify({commander::CommandItemModel(u"Foo", {}, u"")},
                      u"What thing?");
@@ -217,7 +221,9 @@ TEST_F(CommanderProviderTest, ZeroCharMatchIsIgnored) {
 }
 
 TEST_F(CommanderProviderTest, OneCharMatchIsHighlighted) {
-  provider()->Start(CreateInput(u":> Hello World"), false);
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
+      false);
 
   delegate()->Notify(
       {commander::CommandItemModel(u"Foo", {gfx::Range(0, 1)}, u"")},
@@ -244,7 +250,9 @@ TEST_F(CommanderProviderTest, OneCharMatchIsHighlighted) {
 // forth on the same character (i.e one match finishes where another one
 // starts).
 TEST_F(CommanderProviderTest, AdjacentMatchesDontSwitchBackAndForth) {
-  provider()->Start(CreateInput(u":> Hello World"), false);
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
+      false);
 
   delegate()->Notify({commander::CommandItemModel(
                          u"Foo", {gfx::Range(0, 1), gfx::Range(1, 2)}, u"")},
@@ -273,7 +281,9 @@ TEST_F(CommanderProviderTest, AdjacentMatchesDontSwitchBackAndForth) {
 }
 
 TEST_F(CommanderProviderTest, FullLengthMatchIsApplied) {
-  provider()->Start(CreateInput(u":> Hello World"), false);
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
+      false);
 
   delegate()->Notify(
       {commander::CommandItemModel(u"Foo", {gfx::Range(0, 3)}, u"")},
@@ -294,7 +304,8 @@ TEST_F(CommanderProviderTest, FullLengthMatchIsApplied) {
 }
 
 TEST_F(CommanderProviderTest, MatchesCanHaveGaps) {
-  provider()->Start(CreateInput(u":> FoBa"), false);
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u"FoBa"})), false);
 
   delegate()->Notify(
       {commander::CommandItemModel(u"Foo Bar",

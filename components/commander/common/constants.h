@@ -9,12 +9,12 @@
 #include <iterator>
 
 #include "base/component_export.h"
+#include "base/strings/string_piece.h"
 
 namespace commander {
 
-COMPONENT_EXPORT(COMMANDER_COMMON) extern const char16_t kCommandPrefix[];
 COMPONENT_EXPORT(COMMANDER_COMMON)
-extern const uint16_t kCommandPrefixLength;
+extern const base::StringPiece16 kCommandPrefix;
 
 }  // namespace commander
 

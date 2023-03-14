@@ -14,6 +14,7 @@ CommandItemModel::CommandItemModel(
     : title(title), matched_ranges(matched_ranges), annotation(annotation) {}
 
 CommandItemModel::CommandItemModel(const CommandItemModel& other) = default;
+CommandItemModel::CommandItemModel(CommandItemModel&& other) = default;
 
 CommandItemModel::~CommandItemModel() = default;
 

@@ -15,7 +15,6 @@
 #include "brave/components/commander/common/commander_frontend_delegate.h"
 #include "brave/components/commander/common/commander_item_model.h"
 #include "chrome/browser/ui/commander/command_source.h"
-#include "chrome/browser/ui/commander/commander_view_model.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 class OmniboxView;
@@ -60,6 +59,11 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   uint32_t current_result_set_id_ = 0;
   raw_ptr<Browser> last_browser_;
   raw_ptr<Profile> profile_;
+
+  // Some commands have multiple steps (like move tab to window, pick a
+  // window). This allows commands to specify a command provider for a
+  // subsequent step (in the window example, this would be a list of all
+  // available windows).
   CommandItem::CompositeCommandProvider composite_command_provider_;
 
   base::ObserverList<Observer> observers_;

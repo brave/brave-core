@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/commander/common/commander_frontend_delegate.h"
@@ -50,7 +51,7 @@ void CommanderProvider::OnCommanderUpdated() {
   auto* delegate = client_->GetCommanderDelegate();
   matches_.clear();
 
-  if (!last_input_.starts_with(commander::kCommandPrefix)) {
+  if (!last_input_.starts_with(commander::kCommandPrefix.data())) {
     return;
   }
 
@@ -72,7 +73,7 @@ void CommanderProvider::OnCommanderUpdated() {
           ACMatchClassification(0, ACMatchClassification::DIM)};
     }
     match.description =
-        commander::kCommandPrefix + std::u16string(u" ") + option.title;
+        base::StrCat({commander::kCommandPrefix, u" ", option.title});
     match.allowed_to_be_default_match = true;
     match.swap_contents_and_description = true;
     // We don't want to change the prompt at all while the user is going through
@@ -83,7 +84,7 @@ void CommanderProvider::OnCommanderUpdated() {
 
     // All commands have a ":> " prefix added to them, so make sure we take it
     // into account when mapping over the matched ranges.
-    const int offset = commander::kCommandPrefixLength + 1;
+    const int offset = commander::kCommandPrefix.size() + 1;
     for (size_t j = 0; j < option.matched_ranges.size(); ++j) {
       auto range = option.matched_ranges[j];
       // If the match has no length (as in the case of the empty string match)

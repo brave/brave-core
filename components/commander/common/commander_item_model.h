@@ -23,6 +23,9 @@ struct COMPONENT_EXPORT(COMMANDER_COMMON) CommandItemModel {
                    const std::u16string& annotation);
   ~CommandItemModel();
   CommandItemModel(const CommandItemModel& other);
+  CommandItemModel(CommandItemModel&& other);
+  CommandItemModel& operator=(const CommandItemModel& other) = default;
+  CommandItemModel& operator=(CommandItemModel&& other) = default;
 
   std::u16string title;
   std::vector<gfx::Range> matched_ranges;

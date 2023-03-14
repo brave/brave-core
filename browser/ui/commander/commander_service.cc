@@ -20,6 +20,7 @@
 #include "base/location.h"
 #include "base/memory/weak_ptr.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/commander/common/commander_frontend_delegate.h"
@@ -83,7 +84,7 @@ void CommanderService::UpdateText(bool force) {
   }
 
   std::u16string trimmed_text(base::TrimWhitespace(
-      text.substr(kCommandPrefixLength), base::TRIM_LEADING));
+      text.substr(kCommandPrefix.size()), base::TRIM_LEADING));
 
   // If nothing has changed (and we aren't forcing things), don't update the
   // commands.
@@ -106,7 +107,7 @@ void CommanderService::SelectCommand(uint32_t command_index,
   // Increment the current result set id - we don't want any commands from this
   // set to be reused after we've selected a command.
   // Note: This needs to happen before beginning a composite command, to ensure
-  // that the generated model uses right right result_set_id.
+  // that the generated model uses right right |result_set_id|.
   current_result_set_id_++;
 
   auto* item = items_[command_index].get();
@@ -116,8 +117,7 @@ void CommanderService::SelectCommand(uint32_t command_index,
   } else {
     auto composite_command =
         absl::get<CommandItem::CompositeCommand>(item->command);
-    composite_command_provider_ = composite_command.second;
-    prompt_ = composite_command.first;
+    std::tie(prompt_, composite_command_provider_) = composite_command;
     Show();
   }
 }
@@ -148,19 +148,19 @@ void CommanderService::Show() {
   // Note: This posts a task because we can't change the Omnibox text while
   // autocompleting.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<CommanderService> service) {
-                       if (auto* omnibox = service->GetOmnibox()) {
-                         omnibox->SetFocus(true);
+      FROM_HERE,
+      base::BindOnce(
+          [](base::WeakPtr<CommanderService> service) {
+            if (auto* omnibox = service->GetOmnibox()) {
+              omnibox->SetFocus(true);
 
-                         auto text =
-                             commander::kCommandPrefix + std::u16string(u" ");
-                         omnibox->SetUserText(text);
-                         omnibox->SetCaretPos(text.size());
-                         service->UpdateText(true);
-                       }
-                     },
-                     weak_ptr_factory_.GetWeakPtr()));
+              auto text = base::StrCat({commander::kCommandPrefix, u" "});
+              omnibox->SetUserText(text);
+              omnibox->SetCaretPos(text.size());
+              service->UpdateText(true);
+            }
+          },
+          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CommanderService::Hide() {
@@ -200,7 +200,8 @@ OmniboxView* CommanderService::GetOmnibox() const {
 }
 
 bool CommanderService::IsShowing() const {
-  return GetOmnibox() && GetOmnibox()->GetText().starts_with(kCommandPrefix);
+  return GetOmnibox() &&
+         GetOmnibox()->GetText().starts_with(kCommandPrefix.data());
 }
 
 void CommanderService::UpdateCommands() {

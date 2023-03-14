@@ -8,6 +8,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/location.h"
 #include "base/run_loop.h"
+#include "base/strings/strcat.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
@@ -87,8 +88,8 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        CanShowCommanderViaOmniboxText) {
   EXPECT_FALSE(commander()->IsShowing());
 
-  omnibox()->SetUserText(std::u16string(commander::kCommandPrefix) +
-                         u" Hello World");
+  omnibox()->SetUserText(
+      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
   WaitUntil(
       base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
 }
@@ -108,8 +109,8 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CanHideCommander) {
 // interactive UI test.
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, MANUAL_HideClearsText) {
   commander()->Show();
-  omnibox()->SetUserText(std::u16string(commander::kCommandPrefix) +
-                         u" Hello World");
+  omnibox()->SetUserText(
+      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
 
   commander()->Hide();
   WaitUntil(
@@ -122,8 +123,8 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, MANUAL_HideClearsText) {
 // interactive UI test.
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        MANUAL_CanHideCommanderViaText) {
-  omnibox()->SetUserText(std::u16string(commander::kCommandPrefix) +
-                         u" Hello World");
+  omnibox()->SetUserText(
+      base::StrCat({commander::kCommandPrefix, u" Hello World"}));
   WaitUntil(
       base::BindLambdaForTesting([&]() { return commander()->IsShowing(); }));
 
@@ -134,8 +135,8 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        CommandsAreUpdatedViaOmnibox) {
-  omnibox()->SetUserText(std::u16string(commander::kCommandPrefix) +
-                         u" Create tab");
+  omnibox()->SetUserText(
+      base::StrCat({commander::kCommandPrefix, u" Create tab"}));
 
   EXPECT_LE(1, commander()->GetResultSetId());
 
@@ -145,8 +146,8 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
-  omnibox()->SetUserText(std::u16string(commander::kCommandPrefix) +
-                         u" Create tab");
+  omnibox()->SetUserText(
+      base::StrCat({commander::kCommandPrefix, u" Create tab"}));
 
   EXPECT_LE(1, commander()->GetResultSetId());
 
@@ -161,8 +162,8 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
 
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        CompositeCommandsCanBeSelected) {
-  omnibox()->SetUserText(std::u16string(commander::kCommandPrefix) +
-                         u" Pin tab");
+  omnibox()->SetUserText(
+      base::StrCat({commander::kCommandPrefix, u" Pin tab"}));
 
   EXPECT_LE(1, commander()->GetResultSetId());
 
@@ -176,7 +177,7 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 
   // This is retriggered on a different thread normally, but we want to force it
   // here because otherwise the tests get a bit flakey with focus.
-  omnibox()->SetUserText(commander::kCommandPrefix);
+  omnibox()->SetUserText(commander::kCommandPrefix.data());
 
   items = commander()->GetItems();
   ASSERT_EQ(1u, items.size());

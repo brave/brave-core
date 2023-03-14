@@ -11,9 +11,11 @@
 
 namespace features {
 
+// Note: This flag is declared in features rather than commander::features so we
+// can replace the upstream flag with it more easily.
 COMPONENT_EXPORT(COMMANDER_COMMON) BASE_DECLARE_FEATURE(kBraveCommander);
 
-}
+}  // namespace features
 
 namespace commander {
 
