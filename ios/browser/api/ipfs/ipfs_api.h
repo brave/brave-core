@@ -16,9 +16,12 @@ OBJC_EXPORT
 @required
 
 @property(nonatomic, nullable) NSURL* nftIpfsGateway;
+@property(nonatomic, nullable) NSURL* ipfsGateway;
 
+/// Resolve input url using the default IPFS public gateway
 - (nullable NSURL*)resolveGatewayUrlFor:(NSURL*)input;
-
+/// Resolve input url using the default IPFS NFT public gateway
+- (nullable NSURL*)resolveGatewayUrlForNft:(NSURL*)input;
 - (nullable NSURL*)contentHashToCIDv1URLFor:(NSArray<NSNumber*>*)contentHash;
 
 @end
