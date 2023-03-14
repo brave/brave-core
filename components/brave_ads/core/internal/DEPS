@@ -1,20 +1,13 @@
 include_rules = [
-  "+absl/types/optional.h",
   "+third_party/re2",
   "+third_party/zlib",
 ]
 
 specific_include_rules = {
-  "did_override_command_line_switch_values_util.cc": [
-    "+components/variations/variations_switches.h",
-  ],
   "json_helper.h": [
     "+rapidjson",
   ],
-  "browser_util.cc": [
-    "+brave/components/version_info/version_info.h",
-  ],
   "crypto_util.cc": [
-    "+third_party/boringssl/src/include/openssl/curve25519.h",
+    "+third_party/boringssl/src/include/openssl",
   ]
 }
