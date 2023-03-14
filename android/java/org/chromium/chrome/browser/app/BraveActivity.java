@@ -113,6 +113,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -1652,22 +1653,29 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    static public ChromeTabbedActivity getChromeTabbedActivity() {
+    private static Activity getActivityOfType(Class<?> classOfActivity) {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof ChromeTabbedActivity)) continue;
+            if (!classOfActivity.isInstance(ref)) continue;
 
-            return (ChromeTabbedActivity)ref;
+            return ref;
         }
 
         return null;
     }
 
+    static public ChromeTabbedActivity getChromeTabbedActivity() {
+        return (ChromeTabbedActivity) getActivityOfType(ChromeTabbedActivity.class);
+    }
+
+    static public CustomTabActivity getCustomTabActivity() {
+        return (CustomTabActivity) getActivityOfType(CustomTabActivity.class);
+    }
+
     @NonNull
     static public BraveActivity getBraveActivity() throws ActivityNotFoundException {
-        for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof BraveActivity)) continue;
-
-            return (BraveActivity)ref;
+        BraveActivity activity = (BraveActivity) getActivityOfType(BraveActivity.class);
+        if (activity != null) {
+            return activity;
         }
 
         throw new ActivityNotFoundException("BraveActivity Not Found");
