@@ -11,7 +11,7 @@
 namespace commands {
 
 Accelerators GetDefaultAccelerators() {
-  commands::Accelerators defaults;
+  Accelerators defaults;
   for (const auto& accelerator_info : GetAcceleratorList()) {
     defaults[accelerator_info.command_id].push_back(
         ui::Accelerator(accelerator_info.keycode, accelerator_info.modifiers));

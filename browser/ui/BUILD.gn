@@ -860,7 +860,7 @@ source_set("ui") {
       "//brave/components/commands/browser/resources:generated_resources",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
-      "//components/pref_registry:pref_registry",
+      "//components/pref_registry",
     ]
   }
   if (is_android) {

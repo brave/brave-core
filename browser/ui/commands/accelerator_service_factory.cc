@@ -35,7 +35,7 @@ AcceleratorService* AcceleratorServiceFactory::GetForContext(
 
 AcceleratorServiceFactory::AcceleratorServiceFactory()
     : ProfileKeyedServiceFactory(
-          "AcceleratorServiceFactor",
+          "AcceleratorServiceFactory",
           ProfileSelections::BuildRedirectedToOriginal()) {}
 
 AcceleratorServiceFactory::~AcceleratorServiceFactory() = default;

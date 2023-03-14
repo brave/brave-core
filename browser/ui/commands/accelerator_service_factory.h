@@ -12,10 +12,6 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "content/public/browser/browser_context.h"
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 namespace commands {
 
 class AcceleratorServiceFactory : public ProfileKeyedServiceFactory {

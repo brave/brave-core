@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
@@ -29,7 +30,9 @@ void AcceleratorPrefManager::RegisterProfilePrefs(
 }
 
 AcceleratorPrefManager::AcceleratorPrefManager(PrefService* prefs)
-    : prefs_(prefs) {}
+    : prefs_(prefs) {
+  DCHECK(prefs_);
+}
 
 AcceleratorPrefManager::~AcceleratorPrefManager() = default;
 
@@ -64,7 +67,7 @@ AcceleratorPrefManager::GetAccelerators() {
   for (const auto [command_id, shortcuts] : accelerators) {
     int id;
     if (!base::StringToInt(command_id, &id)) {
-      DCHECK(false) << "Failed to parse " << command_id << " as int";
+      NOTREACHED() << "Failed to parse " << command_id << " as int";
       continue;
     }
 

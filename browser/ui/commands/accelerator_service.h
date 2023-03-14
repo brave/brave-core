@@ -35,7 +35,7 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   };
 
   AcceleratorService(PrefService* pref_service,
-                     const Accelerators& default_accelerators);
+                     Accelerators default_accelerators);
   AcceleratorService(const AcceleratorService&) = delete;
   AcceleratorService& operator=(const AcceleratorService&) = delete;
   ~AcceleratorService() override;
@@ -52,6 +52,9 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
       mojo::PendingRemote<mojom::CommandsListener> listener) override;
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+
+  // KeyedService:
+  void Shutdown() override;
 
  private:
   // Returns all the command_ids whose accelerators were affected by the set and

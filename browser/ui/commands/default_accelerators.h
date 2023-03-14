@@ -11,7 +11,7 @@
 namespace commands {
 
 // Gets the default list of accelerators.
-commands::Accelerators GetDefaultAccelerators();
+Accelerators GetDefaultAccelerators();
 
 }  // namespace commands
 

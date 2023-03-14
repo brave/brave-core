@@ -51,8 +51,9 @@ base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
 }  // namespace
 
 AcceleratorService::AcceleratorService(PrefService* pref_service,
-                                       const Accelerators& default_accelerators)
-    : pref_manager_(pref_service), default_accelerators_(default_accelerators) {
+                                       Accelerators default_accelerators)
+    : pref_manager_(pref_service),
+      default_accelerators_(std::move(default_accelerators)) {
   Initialize();
 }
 
@@ -141,6 +142,12 @@ void AcceleratorService::AddObserver(Observer* observer) {
 
 void AcceleratorService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void AcceleratorService::Shutdown() {
+  observers_.Clear();
+  mojo_listeners_.Clear();
+  receivers_.Clear();
 }
 
 std::vector<int> AcceleratorService::AssignAccelerator(
