@@ -825,10 +825,16 @@ void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
   }
 
   prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated, true);
-  prefs->ClearPref(
-      kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated);
-  prefs->ClearPref(
-      kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2);
+  if (prefs->HasPrefPath(
+          kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated)) {
+    prefs->ClearPref(
+        kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated);
+  }
+  if (prefs->HasPrefPath(
+          kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2)) {
+    prefs->ClearPref(
+        kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2);
+  }
 }
 
 // static
