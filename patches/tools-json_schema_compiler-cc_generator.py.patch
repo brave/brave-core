@@ -1,0 +1,21 @@
+diff --git a/tools/json_schema_compiler/cc_generator.py b/tools/json_schema_compiler/cc_generator.py
+index e683040d95174b2f2b1a253b0b096c631ee3b64e..b8b4b313da2fac57fb8a8f24f75fd9c448fd4fd4 100644
+--- a/tools/json_schema_compiler/cc_generator.py
++++ b/tools/json_schema_compiler/cc_generator.py
+@@ -28,6 +28,7 @@ class _Generator(object):
+         util_cc_helper.UtilCCHelper(self._type_helper))
+     self._generate_error_messages = namespace.compiler_options.get(
+         'generate_error_messages', False)
++    self._none_as_absent_optional = namespace.compiler_options.get('none_as_absent_optional', False)
+ 
+   def Generate(self):
+     """Generates a Code object with the .cc for a single namespace.
+@@ -310,7 +311,7 @@ class _Generator(object):
+     c.Append('const base::Value* %(value_var)s = %(src)s.Find("%(key)s");')
+     if prop.optional:
+       (c.Sblock(
+-          'if (%(value_var)s) {')
++          'if ({var}{none_check}) {{'.format(var=value_var, none_check=('' if not self._none_as_absent_optional else ' && !{var}->is_none()'.format(var=value_var))))
+         .Concat(self._GeneratePopulatePropertyFromValue(
+             prop, '(*%s)' % value_var, dst, 'false')))
+       underlying_type = self._type_helper.FollowRef(prop.type_)

@@ -5,7 +5,7 @@
 
 // Schema types used by brave today feed.
 
-[generate_error_messages]
+[generate_error_messages, none_as_absent_optional]
 namespace combined_feed {
 
   // A dictionary with fields representing a feed item.

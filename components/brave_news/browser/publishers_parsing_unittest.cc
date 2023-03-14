@@ -62,4 +62,43 @@ TEST(BraveNewsPublisherParsing, ParsePublisherList) {
   ASSERT_FALSE(publisher_list->contains("444"));
 }
 
+TEST(BraveNewsPublisherParsing, PublisherListWithNoneValuesInOptionalFields) {
+  // Test that we parse expected remote publisher JSON
+  const char json[] = (R"(
+    [
+      {
+        "publisher_id": "111",
+        "publisher_name": "Test Publisher 1",
+        "category": "Tech",
+        "enabled": false,
+        "site_url": "https://one.example.com",
+        "feed_url": "https://one.example.com/feed"
+      },
+      {
+        "publisher_id": "222",
+        "publisher_name": "Test Publisher 2",
+        "category": "Sports",
+        "enabled": true,
+        "site_url": "https://two.example.com",
+        "feed_url": "https://two.example.com/feed",
+        "favicon_url": null,
+        "cover_url": null,
+        "background_color": null
+      },
+      {
+        "publisher_id": "333",
+        "publisher_name": "Test Publisher 3",
+        "category": "Design",
+        "enabled": true,
+        "site_url": "https://three.example.com",
+        "feed_url": "https://three.example.com/feed"
+      }
+    ]
+  )");
+  absl::optional<Publishers> publisher_list =
+      ParseCombinedPublisherList(base::test::ParseJson(json));
+  ASSERT_TRUE(publisher_list);
+  ASSERT_EQ(publisher_list->size(), 3UL);
+}
+
 }  // namespace brave_news
