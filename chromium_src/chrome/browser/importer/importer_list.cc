@@ -47,7 +47,6 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     chrome.importer_name = base::UTF8ToUTF16(base::StrCat({brand, " ", *name}));
     chrome.importer_type = type;
     chrome.services_supported = items;
-    chrome.profile = base::UTF8ToUTF16(brand);
     chrome.source_path = user_data_folder.Append(
         base::FilePath::StringType(profile->begin(), profile->end()));
     profiles->push_back(chrome);
