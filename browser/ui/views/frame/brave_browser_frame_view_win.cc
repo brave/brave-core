@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
@@ -11,24 +11,24 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/glass_browser_caption_button_container.h"
 #include "ui/base/hit_test.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 
-BraveGlassBrowserFrameView::BraveGlassBrowserFrameView(
-    BrowserFrame* frame, BrowserView* browser_view)
-    : GlassBrowserFrameView(frame, browser_view) {
+BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
+                                                   BrowserView* browser_view)
+    : BrowserFrameViewWin(frame, browser_view) {
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
 }
 
-BraveGlassBrowserFrameView::~BraveGlassBrowserFrameView() = default;
+BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
 
-void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
-  GlassBrowserFrameView::OnPaint(canvas);
+void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
+  BrowserFrameViewWin::OnPaint(canvas);
 
   // Don't draw frame graphic over border outline.
   gfx::ScopedCanvas scoped_canvas(canvas);
@@ -43,9 +43,10 @@ void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
 }
 
-int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return GlassBrowserFrameView::GetTopInset(restored);
+int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return BrowserFrameViewWin::GetTopInset(restored);
+  }
 
   if (auto* browser = browser_view()->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
@@ -53,23 +54,23 @@ int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
     return 0;
   }
 
-  return GlassBrowserFrameView::GetTopInset(restored);
+  return BrowserFrameViewWin::GetTopInset(restored);
 }
 
-int BraveGlassBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
-  auto result = GlassBrowserFrameView::NonClientHitTest(point);
+int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
+  auto result = BrowserFrameViewWin::NonClientHitTest(point);
   if (result != HTCLIENT) {
     return result;
   }
 
-  if (caption_button_container()) {
+  if (caption_button_container_) {
     // When we use custom caption button container, it could return HTCLIENT.
     // We shouldn't override it.
     gfx::Point local_point = point;
-    ConvertPointToTarget(parent(), caption_button_container(), &local_point);
-    if (caption_button_container()->HitTestPoint(local_point)) {
+    ConvertPointToTarget(parent(), caption_button_container_, &local_point);
+    if (caption_button_container_->HitTestPoint(local_point)) {
       const int hit_test_result =
-          caption_button_container()->NonClientHitTest(local_point);
+          caption_button_container_->NonClientHitTest(local_point);
       if (hit_test_result != HTNOWHERE) {
         return hit_test_result;
       }

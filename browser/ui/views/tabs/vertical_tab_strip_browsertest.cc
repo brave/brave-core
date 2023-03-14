@@ -40,7 +40,7 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
-#include "chrome/browser/ui/views/frame/glass_browser_frame_view.h"
+#include "chrome/browser/ui/views/frame/browser_frame_view_win.h"
 #endif
 
 #if BUILDFLAG(IS_MAC)
@@ -166,7 +166,7 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
     return native_widget->GetOverriddenWindowTitleVisibility();
 #elif BUILDFLAG(IS_WIN)
     if (browser_view()->GetWidget()->ShouldUseNativeFrame()) {
-      return static_cast<const GlassBrowserFrameView*>(
+      return static_cast<const BrowserFrameViewWin*>(
                  browser_non_client_frame_view())
           ->GetViewByID(VIEW_ID_WINDOW_TITLE)
           ->GetVisible();

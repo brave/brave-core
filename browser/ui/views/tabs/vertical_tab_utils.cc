@@ -120,8 +120,8 @@ std::pair<int, int> GetLeadingTrailingCaptionButtonWidth(
 
 #elif BUILDFLAG(IS_WIN)
   if (frame->ShouldUseNativeFrame()) {
-    // In this case, we usd GlassBrowserFrameView. Native frame will be set to
-    // the HWND and and GlassBrowserFrameView will draw frame and window caption
+    // In this case, we use BrowserFrameViewWin. Native frame will be set to
+    // the HWND and BrowserFrameViewWin will draw frame and window caption
     // button.
     auto size = WindowFrameUtil::GetWindows10GlassCaptionButtonAreaSize();
     if (WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(
