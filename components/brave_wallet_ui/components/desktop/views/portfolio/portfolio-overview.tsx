@@ -193,14 +193,10 @@ export const PortfolioOverview = () => {
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
-      history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+      history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.symbol}`)
       return
-    } else if (asset.isErc721) {
-       history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
-    } else {
-      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
     }
-
+    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
     dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
     if ((asset.isErc721 || asset.isNft) && nftMetadata) {
       // reset nft metadata

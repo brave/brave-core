@@ -514,7 +514,7 @@ export type SerializableSolanaTxData = Omit<
   | 'lamports'
   | 'amount'
   | 'sendOptions'
-  > & {
+> & {
   lastValidBlockHeight: string
   lamports: string
   amount: string
@@ -524,14 +524,14 @@ export type SerializableSolanaTxData = Omit<
 export type SerializableOrigin = Omit<
   BraveWallet.OriginInfo['origin'],
   | 'nonceIfOpaque'
-  > & {
+> & {
   nonceIfOpaque: SerializableUnguessableToken | undefined
 }
 
 export type SerializableOriginInfo = Omit<
   BraveWallet.OriginInfo,
   | 'origin'
-  > & {
+> & {
   origin: SerializableOrigin
 }
 
@@ -747,7 +747,7 @@ export enum WalletRoutes {
 
   // market
   Market = '/crypto/market',
-  MarketSub = '/crypto/market/:id?',
+  MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -781,8 +781,8 @@ export enum WalletRoutes {
 
   // portfolio
   Portfolio = '/crypto/portfolio',
-  PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
-  PortfolioSub = '/crypto/portfolio/:id?',
+  PortfolioAsset = '/crypto/portfolio/:chainIdOrMarketSymbol/:contractOrSymbol?/:tokenId?',
+  PortfolioSub = '/crypto/portfolio/:chainIdOrMarketSymbol?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
