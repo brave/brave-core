@@ -393,8 +393,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
       SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
 
   tx_service_->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
-      tx.message()->fee_payer(), delegate_->GetOrigin(), absl::nullopt,
+      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()), *account,
+      delegate_->GetOrigin(), absl::nullopt,
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
