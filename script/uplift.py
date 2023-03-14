@@ -433,9 +433,7 @@ def submit_pr(channel, top_level_base, remote_base,
     try:
         milestone_number = get_milestone_for_branch(remote_base)
         if milestone_number is None:
-            print('milestone for "' + remote_base + '" was not found!')
-            # test
-            return 0
+            raise Exception('milestone for "' + remote_base + '" was not found!')
 
         print('(' + channel + ') creating pull request')
         pr_title = config.title or ''
