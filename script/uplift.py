@@ -315,13 +315,9 @@ def main():
         print('\nDone!')
     except Exception as e:
         print('\n[ERROR] Unhandled error while creating pull request; ' + str(e))
-        print("XXXX before 1")
         return 1
-        print("XXXX before 1")
 
-    print("XXXX before 0")
     return 0
-    print("XXXX after 0")
 
 
 def is_sha(ref):
