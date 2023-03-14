@@ -9,6 +9,7 @@
 
 #include "Local/BuildId.xcconfig"
 #include "Local/Version.xcconfig"
+#include "Local/Keys.xcconfig"
 
 // Xcode 14.3b1 uses `-strict-concurrency=targeted` as the default. This can be removed when a Xcode build
 // moves this back to `minimal`. See https://github.com/apple/swift/pull/63786
