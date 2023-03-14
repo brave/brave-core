@@ -170,6 +170,8 @@ source_set("ui") {
       "webui/speedreader/speedreader_panel_handler_impl.h",
       "webui/speedreader/speedreader_panel_ui.cc",
       "webui/speedreader/speedreader_panel_ui.h",
+      "webui/webcompat_reporter/webcompat_reporter_dialog.cc",
+      "webui/webcompat_reporter/webcompat_reporter_dialog.h",
       "webui/welcome_page/brave_welcome_ui.cc",
       "webui/welcome_page/brave_welcome_ui.h",
       "webui/welcome_page/welcome_dom_handler.cc",
@@ -390,7 +392,6 @@ source_set("ui") {
     "//brave/browser/ui/brave_ads",
     "//brave/browser/ui/brave_tooltips",
     "//brave/browser/ui/tabs",
-    "//brave/browser/webcompat_reporter",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
@@ -494,6 +495,7 @@ source_set("ui") {
     "//ui/gfx",
     "//ui/resources",
     "//ui/shell_dialogs",
+    "//ui/web_dialogs",
     "//ui/webui",
     "//url",
   ]
