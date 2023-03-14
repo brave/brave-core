@@ -420,7 +420,7 @@ def get_milestone_for_branch(channel_branch):
         config.milestones = get_milestones(
             config.github_token, BRAVE_CORE_REPO)
     for milestone in config.milestones:
-        if (milestone['title'].startswith(channel_branch + ' X ') or
+        if (milestone['title'].startswith(channel_branch + ' - ') or
            milestone['title'].startswith('Android ' + channel_branch + ' - ')):
             return milestone['number']
     return None
