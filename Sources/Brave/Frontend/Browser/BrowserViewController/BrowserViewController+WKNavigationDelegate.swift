@@ -593,7 +593,7 @@ extension BrowserViewController: WKNavigationDelegate {
           let braveSkusHelper = BraveSkusWebHelper(for: url),
           let receiptData = braveSkusHelper.receiptData,
           !tab.isPrivate {
-        tab.injectSessionStorageItem(key: receiptData.key, value: receiptData.value)
+        tab.injectLocalStorageItem(key: receiptData.key, value: receiptData.value)
       }
 
       // Second attempt to inject results to the BraveSearch.
