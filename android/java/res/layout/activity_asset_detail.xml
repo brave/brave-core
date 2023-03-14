@@ -235,7 +235,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginHorizontal="1dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="6dp"
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatButton
@@ -279,15 +279,16 @@
                 android:text="@string/swap"
                 android:layout_marginEnd="8dp"
                 style="@style/BraveWalletButton" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_aurora_bridge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/brave_wallet_aurora_button_text"
-                style="@style/BraveWalletButton"
-                android:visibility="gone"/>
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_aurora_bridge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_wallet_aurora_button_text"
+            style="@style/BraveWalletButton"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="match_parent"
