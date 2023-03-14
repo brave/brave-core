@@ -58,7 +58,6 @@ source_set("extensions") {
     "//brave/browser/brave_rewards:util",
     "//brave/browser/component_updater",
     "//brave/browser/profiles",
-    "//brave/browser/webcompat_reporter",
     "//brave/common",
     "//brave/common/extensions/api",
     "//brave/components/brave_adaptive_captcha",

@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
