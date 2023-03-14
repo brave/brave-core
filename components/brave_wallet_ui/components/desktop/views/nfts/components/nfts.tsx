@@ -74,7 +74,7 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
+    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
     // reset nft metadata
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])

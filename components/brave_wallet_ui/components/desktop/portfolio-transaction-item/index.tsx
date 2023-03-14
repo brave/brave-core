@@ -289,10 +289,10 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
-      history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+      history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.symbol}`)
       return
     }
-    history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
+    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
   }, [history])
 
   const onAssetClick = React.useCallback((symbol?: string) =>
