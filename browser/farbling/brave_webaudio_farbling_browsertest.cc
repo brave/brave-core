@@ -97,11 +97,6 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   GURL top_level_page_url_;
   GURL copy_from_channel_url_;
@@ -115,7 +110,7 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
 // No crash indicates a successful test.
 IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest,
                        CopyFromChannelNoCrash) {
-  NavigateToURLUntilLoadStop(copy_from_channel_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), copy_from_channel_url()));
 }
 
 // Tests results of farbling known values
@@ -123,22 +118,22 @@ IN_PROC_BROWSER_TEST_F(BraveWebAudioFarblingBrowserTest, FarbleWebAudio) {
   // Farbling level: maximum
   // web audio: pseudo-random data with no relation to underlying audio channel
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "405");
   // second time, same as the first (tests that the PRNG properly resets itself
   // at the beginning of each calculation)
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "405");
 
   // Farbling level: balanced (default)
   // web audio: farbled audio data
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "7968");
 
   // Farbling level: off
   // web audio: original audio data
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "8000");
 }

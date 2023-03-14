@@ -105,11 +105,6 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
@@ -120,7 +115,7 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
 // Tests that access to navigator.pdfViewerEnabled attribute does not crash.
 IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        NavigatorPdfViewerEnabledNoCrash) {
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(true, EvalJs(contents(), kNavigatorPdfViewerEnabledCrashTest));
 }
 
@@ -131,20 +126,20 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   // Farbling level: off
   // get real length of navigator.plugins
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
 
   // Farbling level: balanced (default)
   // navigator.plugins should contain all real plugins + 2 fake ones
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int balanced_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(balanced_length, off_length + 2);
 
   // Farbling level: maximum
   // navigator.plugins should contain no real plugins, only 2 fake ones
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int maximum_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(maximum_length, 2);
   EXPECT_EQ(ExecScriptGetStr(
@@ -207,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPluginsBuiltin) {
   // Farbling level: off
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(off_length, 2);
   EXPECT_EQ(ExecScriptGetStr(
@@ -221,7 +216,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
 
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
@@ -239,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPluginsReset) {
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
@@ -251,7 +246,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
 
   // Farbling level: off
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(off_length, 2);
   EXPECT_EQ(ExecScriptGetStr(

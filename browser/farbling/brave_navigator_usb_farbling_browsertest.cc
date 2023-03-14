@@ -227,12 +227,6 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
         https_server()->GetURL(domain, "/"));
   }
 
-  void BlockFingerprinting(std::string domain) {
-    brave_shields::SetFingerprintingControlType(
-        content_settings(), ControlType::BLOCK,
-        https_server()->GetURL(domain, "/"));
-  }
-
   void SetFingerprintingDefault(std::string domain) {
     brave_shields::SetFingerprintingControlType(
         content_settings(), ControlType::DEFAULT,
@@ -241,11 +235,6 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
 
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
-  }
-
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(web_contents());
   }
 
   void AddFakeDevice(const std::string& serial_number) {
@@ -287,7 +276,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,
   GURL url_b = https_server()->GetURL(domain_b, "/simple.html");
   // Farbling level: off
   AllowFingerprinting(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
 
   // Call getDevices with no device permissions. This should return an empty
   // list.
@@ -310,7 +299,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,
 
   // Reload with farbling at default.
   SetFingerprintingDefault(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
 
   // Call getDevices again. The fake device is still included, but now its
   // serial number is farbled.
@@ -321,7 +310,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUsbFarblingBrowserTest,
   std::string domain_z = "z.com";
   GURL url_z = https_server()->GetURL(domain_z, "/simple.html");
   SetFingerprintingDefault(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   EXPECT_EQ("MGi47dt1DgYrVxYM", EvalJs(web_contents(), kRequestDeviceScript));
 }
 
