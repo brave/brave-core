@@ -177,7 +177,7 @@ declare namespace RewardsExtension {
 
   export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
 
-  type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 

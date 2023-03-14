@@ -20,27 +20,15 @@ import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
-source_set("favicon_source") {
-  # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
-  check_includes = false
-  sources = [
-    "//chrome/browser/ui/webui/favicon_source.cc",
-    "//chrome/browser/ui/webui/favicon_source.h",
-  ]
-
-  deps = [
-    "//components/favicon/core",
-    "//components/favicon_base",
-    "//components/history/core/browser",
-    "//net",
-    "//ui/native_theme",
-    "//url",
-  ]
-}
-
 source_set("ui") {
-  # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
-  check_includes = false
+  # Depend on //chrome/browser/ui instead of //brave/browser/ui.
+  visibility = [
+    "//chrome/browser",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/webui:configs",
+  ]
+
+  deps = []
   public_deps = []
   sources = [
     "webui/brave_adblock_internals_ui.cc",
@@ -223,8 +211,6 @@ source_set("ui") {
         "webui/settings/brave_tor_snowflake_extension_handler.h",
       ]
     }
-
-    public_deps += [ "//brave/vendor/bat-native-ads" ]
   }
 
   if (toolkit_views) {
@@ -386,74 +372,115 @@ source_set("ui") {
     }
   }
 
-  if (is_linux) {
-    sources += [
-      "views/brave_views_delegate_linux.cc",
-      "views/brave_views_delegate_linux.h",
-    ]
-  }
-
-  deps = [
-    "tabs",
+  deps += [
     "//base",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources",
     "//brave/app/theme:brave_unscaled_resources",
     "//brave/app/vector_icons:vector_icons",
+    "//brave/browser:browser_process",
     "//brave/browser:sparkle_buildflags",
+    "//brave/browser/brave_rewards:util",
+    "//brave/browser/ethereum_remote_client/buildflags",
     "//brave/browser/gcm_driver",
+    "//brave/browser/net",
     "//brave/browser/profiles",
+    "//brave/browser/shell_integrations/buildflags",
+    "//brave/browser/themes",
+    "//brave/browser/ui/brave_ads",
+    "//brave/browser/ui/brave_tooltips",
+    "//brave/browser/ui/tabs",
+    "//brave/browser/webcompat_reporter",
 
     # //chrome/browser/ui depends on //brave/browser/ui, add this target here
     # to pull in dependencies needed for the overwrite codes in chromium_src.
-    "//brave/browser/shell_integrations/buildflags",
-    "//brave/browser/ui/brave_ads",
-    "//brave/browser/ui/brave_tooltips",
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_adblock_ui/adblock_internals:generated_resources",
     "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_federated",
     "//brave/components/brave_federated/public/interfaces",
+    "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/common/mojom",
+    "//brave/components/brave_rewards/core:headers",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_rewards/resources:internals_generated_resources",
     "//brave/components/brave_rewards/resources:page_generated_resources",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/common",
     "//brave/components/brave_shields/common:mojom",
+    "//brave/components/brave_sync:crypto",
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/brave_sync:time_limited_codes",
     "//brave/components/brave_vpn/common/buildflags",
-    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:pref_names",
+    "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wayback_machine/buildflags",
+    "//brave/components/brave_webtorrent:static_resources",
     "//brave/components/constants",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
+    "//brave/components/de_amp/common",
+    "//brave/components/debounce/browser",
+    "//brave/components/debounce/common",
+    "//brave/components/decentralized_dns/core",
+    "//brave/components/google_sign_in_permission",
+    "//brave/components/infobars/core",
+    "//brave/components/ipfs/buildflags",
     "//brave/components/l10n/common",
+    "//brave/components/misc_metrics",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/common",
     "//brave/components/ntp_widget_utils/browser",
+    "//brave/components/p3a",
     "//brave/components/p3a:buildflags",
+    "//brave/components/p3a_utils",
     "//brave/components/playlist/common/buildflags",
     "//brave/components/resources:static_resources",
     "//brave/components/text_recognition/common/buildflags",
     "//brave/components/time_period_storage",
     "//brave/components/tor/buildflags",
+    "//brave/components/url_sanitizer/browser",
     "//brave/components/vector_icons",
     "//brave/components/webcompat_reporter/browser",
     "//brave/components/webcompat_reporter/ui:generated_resources",
-    "//brave/vendor/bat-native-ledger:headers",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/browser:browser_process",
+    "//chrome/browser:theme_properties",
+    "//chrome/browser/bitmap_fetcher",
+    "//chrome/browser/media/router:media_router_feature",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/color:color_headers",
+    "//chrome/browser/ui/color:mixers",
     "//chrome/common",
     "//chrome/services/qrcode_generator",
+    "//chrome/services/qrcode_generator/public/cpp",
+    "//components/bookmarks/common",
     "//components/content_settings/browser",
+    "//components/country_codes",
+    "//components/favicon/content",
+    "//components/favicon/core",
+    "//components/flags_ui",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/image_fetcher/core",
+    "//components/infobars/content",
+    "//components/omnibox/browser:vector_icons",
     "//components/prefs",
+    "//components/resources:components_resources_grit",
+    "//components/search_engines",
     "//components/sessions",
     "//components/strings:components_strings",
+    "//components/tab_groups",
+    "//components/update_client",
     "//content/public/browser",
     "//content/public/common",
     "//mojo/public/cpp/bindings",
@@ -466,15 +493,26 @@ source_set("ui") {
     "//ui/base/mojom",
     "//ui/gfx",
     "//ui/resources",
+    "//ui/shell_dialogs",
+    "//ui/webui",
     "//url",
   ]
+
+  if (is_linux) {
+    sources += [
+      "views/brave_views_delegate_linux.cc",
+      "views/brave_views_delegate_linux.h",
+    ]
+
+    deps += [ "//chrome/app/theme:chrome_unscaled_resources_grit" ]
+  }
 
   if (toolkit_views) {
     deps += [
       "//brave/browser/ui/views/brave_ads",
       "//brave/browser/ui/views/brave_tooltips",
       "//brave/browser/ui/views/infobars",
-      "//brave/components/brave_shields/common:common",
+      "//ui/views/controls/webview",
     ]
   }
 
@@ -492,7 +530,20 @@ source_set("ui") {
   # This is no longer compiled into Chromium on Android, but we still
   # need it
   if (is_android) {
-    deps += [ ":favicon_source" ]
+    sources += [
+      "//chrome/browser/ui/webui/favicon_source.cc",
+      "//chrome/browser/ui/webui/favicon_source.h",
+    ]
+
+    deps += [
+      "//chrome/browser/favicon",
+      "//components/favicon/core",
+      "//components/favicon_base",
+      "//components/history/core/browser",
+      "//net",
+      "//ui/native_theme",
+      "//url",
+    ]
   }
 
   if (enable_brave_wayback_machine) {
@@ -540,6 +591,7 @@ source_set("ui") {
       "//brave/browser/ui/sidebar",
       "//brave/components/sidebar",
       "//chrome/app:generated_resources",
+      "//chrome/browser/ui/views",
       "//components/favicon_base",
     ]
 
@@ -578,10 +630,10 @@ source_set("ui") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
-      "//brave/browser/brave_rewards:util",
       "//brave/browser/brave_wallet",
       "//brave/browser/resources/settings:resources",
       "//brave/browser/ui/bookmark",
+      "//brave/common/importer",
       "//brave/components/brave_adaptive_captcha",
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_new_tab_ui:mojom",
@@ -591,11 +643,8 @@ source_set("ui") {
       "//brave/components/brave_private_new_tab_ui/common:mojom",
       "//brave/components/brave_private_new_tab_ui/resources/page:generated_resources",
       "//brave/components/brave_rewards/browser",
-      "//brave/components/brave_rewards/common",
-      "//brave/components/brave_rewards/common:mojom",
       "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/components/brave_rewards/resources/rewards_panel:brave_rewards_panel_generated",
-      "//brave/components/brave_shields/common:mojom",
       "//brave/components/brave_shields/resources/cookie_list_opt_in:cookie_list_opt_in_generated",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
       "//brave/components/brave_sync",
@@ -609,10 +658,10 @@ source_set("ui") {
       "//brave/components/speedreader/resources/panel:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:chromium_strings",
+      "//chrome/browser/ui/tabs:tab_enums",
       "//components/sync_device_info",
       "//mojo/public/cpp/bindings",
       "//third_party/blink/public/common",
-      "//ui/webui:webui",
     ]
   }
 
@@ -658,11 +707,7 @@ source_set("ui") {
         "webui/settings/brave_default_extensions_handler.h",
       ]
 
-      deps += [
-        "//brave/browser/ethereum_remote_client/buildflags",
-        "//brave/components/ipfs/buildflags",
-        "//third_party/widevine/cdm:buildflags",
-      ]
+      deps += [ "//third_party/widevine/cdm:buildflags" ]
 
       if (enable_widevine) {
         deps += [ "//brave/browser/widevine" ]
@@ -677,7 +722,9 @@ source_set("ui") {
 
       deps += [
         "//brave/browser/tor",
+        "//brave/components/tor",
         "//brave/components/tor:pref_names",
+        "//brave/components/tor/resources",
       ]
     }
 
@@ -720,6 +767,8 @@ source_set("ui") {
     ]
     deps += [
       "//brave/components/brave_vpn/browser",
+      "//brave/components/brave_vpn/common",
+      "//brave/components/brave_vpn/common/mojom",
       "//brave/components/brave_vpn/resources:panel_resources",
       "//mojo/public/cpp/bindings",
       "//ui/webui:webui",
@@ -758,6 +807,8 @@ source_set("ui") {
 
   if (!is_android) {
     sources += [
+      "brave_rewards/rewards_panel/rewards_panel_coordinator.cc",
+      "brave_rewards/rewards_panel/rewards_panel_coordinator.h",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
@@ -816,8 +867,11 @@ source_set("ui") {
       "webui/brave_wallet/wallet_common_ui.h",
     ]
     deps += [
+      "//brave/browser/brave_wallet",
       "//brave/browser/ui/webui/brave_wallet/common_handler",
+      "//brave/components/brave_wallet/browser:hd_keyring",
       "//brave/components/brave_wallet/common",
+      "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
@@ -829,7 +883,10 @@ source_set("ui") {
       "webui/ethereum_remote_client/ethereum_remote_client_ui.cc",
       "webui/ethereum_remote_client/ethereum_remote_client_ui.h",
     ]
-    deps += [ "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated" ]
+    deps += [
+      "//brave/browser/ethereum_remote_client",
+      "//brave/browser/ui/webui/ethereum_remote_client:ethereum_remote_client_page_generated",
+    ]
   }
 
   if (enable_playlist_webui) {
@@ -864,7 +921,6 @@ source_set("browser_tests") {
 
     deps = [
       "//brave/app:command_ids",
-      "//brave/browser/ui",
       "//brave/components/constants",
       "//chrome/browser",
       "//chrome/browser/devtools:test_support",

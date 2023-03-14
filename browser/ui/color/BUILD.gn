@@ -8,7 +8,7 @@ source_set("unit_tests") {
   sources = [ "color_palette_unittest.cc" ]
 
   deps = [
-    "//brave/browser/ui",
+    "//chrome/browser/ui",
     "//chrome/browser/ui/color:mixers",
     "//testing/gtest",
     "//ui/gfx",

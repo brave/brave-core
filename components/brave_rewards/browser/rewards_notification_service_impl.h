@@ -12,10 +12,10 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/values.h"
-#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "extensions/buildflags/buildflags.h"
 
 class Profile;

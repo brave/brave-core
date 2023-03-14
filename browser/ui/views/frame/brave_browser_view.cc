@@ -10,11 +10,11 @@
 #include <vector>
 
 #include "base/functional/bind.h"
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -404,7 +404,7 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 bool BraveBrowserView::HasSelectedURL() const {
-  if (!GetLocationBarView()) {
+  if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
     return false;
   }
   auto* brave_omnibox_view =

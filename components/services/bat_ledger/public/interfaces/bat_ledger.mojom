@@ -4,9 +4,9 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module bat_ledger.mojom;
 
-import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
-import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
-import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger_database.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 

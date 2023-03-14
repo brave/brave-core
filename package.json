@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.51.26",
+  "version": "1.51.31",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -282,7 +282,7 @@
     "@storybook/react": "6.4.13",
     "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
-    "@types/chrome": "0.0.213",
+    "@types/chrome": "0.0.222",
     "@types/enzyme": "3.10.12",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "26.0.24",
@@ -301,11 +301,11 @@
     "chalk": "4.1.2",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
-    "csstype": "2.6.15",
+    "csstype": "2.6.21",
     "emptykit.css": "1.0.1",
     "enhanced-resolve": "5.8.3",
     "enzyme": "3.11.0",
-    "enzyme-adapter-react-16": "1.15.6",
+    "enzyme-adapter-react-16": "1.15.7",
     "eslint": "8.33.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-config-standard-with-typescript": "34.0.0",
@@ -326,7 +326,7 @@
     "less": "3.13.1",
     "less-loader": "4.1.0",
     "log-update": "3.4.0",
-    "mkdirp": "0.5.5",
+    "mkdirp": "0.5.6",
     "mz": "2.7.0",
     "prettier": "2.8.4",
     "react": "16.14.0",
@@ -386,6 +386,6 @@
   },
   "overrides": {
     "loader-utils": "2.0.3",
-    "json5": "2.2.2"
+    "json5": "2.2.3"
   }
 }

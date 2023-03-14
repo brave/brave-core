@@ -1,6 +1,0 @@
-include_rules = [
-  "+bat/ledger",
-  "-bat/ledger/internal",
-  "+bat/ads",
-  "-bat/ads/internal",
-]

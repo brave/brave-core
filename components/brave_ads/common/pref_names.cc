@@ -41,8 +41,7 @@ const char kSupportedCountryCodesLastSchemaVersion[] =
 }  // namespace brave_ads::prefs
 
 // TODO(https://github.com/brave/brave-browser/issues/13793): Rename ads::prefs
-// namespace to brave_ads::prefs when bat-native-ads is moved to
-// components/brave_ads
+// namespace to brave_ads::prefs
 namespace ads::prefs {
 
 // Stores whether Brave ads is enabled or disabled

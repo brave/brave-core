@@ -12,6 +12,8 @@ namespace playlist::features {
 
 BASE_DECLARE_FEATURE(kPlaylist);
 
+BASE_DECLARE_FEATURE(kPlaylistFakeUA);
+
 }  // namespace playlist::features
 
 #endif  // BRAVE_COMPONENTS_PLAYLIST_COMMON_FEATURES_H_

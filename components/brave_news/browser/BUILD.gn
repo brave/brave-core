@@ -45,8 +45,6 @@ static_library("browser") {
     "//brave/components/api_request_helper",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_news/api",
-    "//brave/components/brave_news/common",
-    "//brave/components/brave_news/common:mojom",
     "//brave/components/brave_private_cdn",
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
@@ -67,5 +65,9 @@ static_library("browser") {
     "//url",
   ]
 
-  public_deps = [ "../rust:rust-rs" ]
+  public_deps = [
+    "../rust:rust-rs",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:mojom",
+  ]
 }

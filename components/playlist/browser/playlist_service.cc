@@ -24,6 +24,7 @@
 #include "brave/components/playlist/browser/playlist_types.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
+#include "brave/components/playlist/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
@@ -102,10 +103,11 @@ void PlaylistService::AddMediaFilesFromContentsToPlaylist(
           << " download media from WebContents to playlist: " << playlist_id;
 
   PlaylistDownloadRequestManager::Request request;
-  if (ShouldDownloadOnBackground(contents))
+  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
     request.url_or_contents = contents->GetVisibleURL().spec();
-  else
+  } else {
     request.url_or_contents = contents->GetWeakPtr();
+  }
 
   request.callback = base::BindOnce(
       &PlaylistService::AddMediaFilesFromItems, weak_factory_.GetWeakPtr(),
@@ -456,7 +458,7 @@ void PlaylistService::FindMediaFilesFromActiveTab(
 
   PlaylistDownloadRequestManager::Request request;
   auto current_url = contents->GetVisibleURL();
-  if (ShouldDownloadOnBackground(contents)) {
+  if (ShouldGetMediaFromBackgroundWebContents(contents)) {
     request.url_or_contents = current_url.spec();
   } else {
     request.url_or_contents = contents->GetWeakPtr();
@@ -553,8 +555,12 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
                      base::NullCallback()));
 }
 
-bool PlaylistService::ShouldDownloadOnBackground(
+bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
     content::WebContents* contents) const {
+  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    return true;
+  }
+
   return download_request_manager_->media_detector_component_manager()
       ->ShouldHideMediaSrcAPI(contents->GetVisibleURL());
 }

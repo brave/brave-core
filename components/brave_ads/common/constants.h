@@ -9,7 +9,7 @@
 #include <cstdint>
 
 // TODO(https://github.com/brave/brave-browser/issues/13793): Rename ads
-// namespace to brave_ads when bat-native-ads is moved to components/brave_ads
+// namespace to brave_ads
 namespace ads {
 
 // Brave Ads current version number

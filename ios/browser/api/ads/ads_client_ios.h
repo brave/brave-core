@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <vector>
-#import "bat/ads/ads_client.h"
+#import "brave/components/brave_ads/core/ads_client.h"
 
 @protocol AdsClientBridge;
 

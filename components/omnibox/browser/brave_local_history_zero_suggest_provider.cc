@@ -24,7 +24,8 @@ BraveLocalHistoryZeroSuggestProvider::~BraveLocalHistoryZeroSuggestProvider() =
 
 void BraveLocalHistoryZeroSuggestProvider::Start(const AutocompleteInput& input,
                                                  bool minimal_changes) {
-  if (!client_->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled)) {
+  if (!client_->GetPrefs()->GetBoolean(omnibox::kHistorySuggestionsEnabled) ||
+      !client_->GetPrefs()->GetBoolean(omnibox::kAutocompleteEnabled)) {
     matches_.clear();
     return;
   }

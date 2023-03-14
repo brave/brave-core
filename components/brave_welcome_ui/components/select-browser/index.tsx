@@ -86,13 +86,13 @@ function SelectBrowser () {
     setCurrentSelectedBrowser?.(browserName)
   }
 
+  // TODO(tali): we're duping this call in SelectProfile component.
+  // Perhaps compute this at root component
+  const filteredProfiles = browserProfiles?.filter(
+    profile => profile.browserType === currentSelectedBrowser)
+
   const handleImport = () => {
-    if (!currentSelectedBrowser) return
-
-    // TODO(tali): we're duping this call in SelectProfile component. Perhaps compute this at root component
-    const filteredProfiles = browserProfiles?.filter(profile => profile.browserType === currentSelectedBrowser)
-
-    if (!filteredProfiles) return
+    if (!currentSelectedBrowser || !filteredProfiles) return
     if (filteredProfiles.length > 1) {
       // If there are multiple profiles, we handle it in a different view
       setViewType(ViewType.ImportSelectProfile)
@@ -116,6 +116,8 @@ function SelectBrowser () {
       setCurrentSelectedBrowser?.(name)
     })
   }, [])
+
+  const hasSelectedBrowser = filteredProfiles && filteredProfiles.length > 0
 
   return (
     <S.MainBox>
@@ -147,13 +149,14 @@ function SelectBrowser () {
         >
           {getLocale('braveWelcomeSkipButtonLabel')}
         </Button>
-        <Button
-          isPrimary={true}
-          onClick={handleImport}
-          scale="jumbo"
-        >
-          {getLocale('braveWelcomeImportButtonLabel')}
-        </Button>
+          <Button
+            isPrimary={true}
+            isDisabled={!hasSelectedBrowser}
+            onClick={handleImport}
+            scale="jumbo"
+          >
+            {getLocale('braveWelcomeImportButtonLabel')}
+          </Button>
       </S.ActionBox>
     </S.MainBox>
   )

@@ -3,8 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_rewards/core/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
-import("//brave/vendor/bat-native-ledger/config.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 static_library("browser") {
@@ -42,11 +42,11 @@ static_library("browser") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
     "//brave/components/resources",
     "//brave/components/services/bat_ledger/public/cpp",
-    "//brave/vendor/bat-native-ads",
     "//mojo/public/cpp/bindings",
     "//net",
     "//services/data_decoder/public/cpp",
@@ -76,7 +76,7 @@ static_library("browser") {
     deps += [ "//brave/components/ipfs" ]
   }
 
-  public_deps += [ "//brave/vendor/bat-native-ledger:headers" ]
+  public_deps += [ "//brave/components/brave_rewards/core:headers" ]
 
   if (is_android) {
     deps += [ "//brave/components/safetynet:android" ]
@@ -89,7 +89,7 @@ source_set("testutil") {
     ":browser",
     "//base",
     "//brave/browser",
-    "//brave/vendor/bat-native-ledger:headers",
+    "//brave/components/brave_rewards/core:headers",
     "//chrome/browser/bitmap_fetcher:bitmap_fetcher",
     "//chrome/test:test_support",
     "//content/public/browser",

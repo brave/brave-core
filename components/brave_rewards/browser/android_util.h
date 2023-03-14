@@ -6,9 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_UTIL_H_
 
-#include <string>
-
-#include "bat/ledger/ledger_client.h"
+#include "brave/components/brave_rewards/core/ledger_client.h"
 
 namespace android_util {
 

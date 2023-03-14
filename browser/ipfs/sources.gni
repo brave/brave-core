@@ -66,8 +66,4 @@ if (enable_ipfs) {
       "//extensions/common",
     ]
   }
-
-  if (!is_android) {
-    brave_browser_ipfs_deps += [ "//brave/browser/infobars" ]
-  }
 }

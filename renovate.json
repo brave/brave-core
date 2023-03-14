@@ -3,6 +3,7 @@
     "config:base"
   ],
   "labels": [
+    "CI/skip",
     "dependencies",
     "renovate"
   ],

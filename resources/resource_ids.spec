@@ -92,7 +92,7 @@
   "brave/components/resources/brave_components_strings.grd": {
     "messages": [50900]
   },
-  "brave/vendor/bat-native-ads/data/resources/bat_ads_resources.grd": {
+  "brave/components/brave_ads/resources/bat_ads_resources.grd": {
     "includes": [51000]
   },
   # This file is generated during the build.
