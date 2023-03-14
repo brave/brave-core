@@ -357,6 +357,13 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             }
         }
 
+        // Add 'read time'
+        {
+            let read_time = dom::create_element_simple(dom, "div", "readtime", None);
+            dom::set_attr("id", "da24e4ef-db57-4b9f-9fa5-548924fc9c32", read_time.clone(), true);
+            dom.append(&metadata_parent, NodeOrText::AppendNode(read_time));
+        }
+
         // Add 'show original'
         {
             let show_original_link = dom::create_element_simple(dom, "div", "show_original", None);

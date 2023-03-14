@@ -393,9 +393,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
-  const std::u16string title = u"\u0022\"script shouldn't fail\"\u0022";
-  speedreader::test::SetShowOriginalLinkTitle(&title);
-
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
@@ -419,7 +416,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
     })();
   )js";
 
-  EXPECT_EQ(base::UTF16ToUTF8(title),
+  EXPECT_EQ("View original",
             content::EvalJs(web_contents, kClickLinkAndGetTitle,
                             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                             ISOLATED_WORLD_ID_BRAVE_INTERNAL)
@@ -436,8 +433,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   content::WaitForLoadStop(web_contents);
   EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
             tab_helper->PageDistillState());
-
-  speedreader::test::SetShowOriginalLinkTitle(nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
