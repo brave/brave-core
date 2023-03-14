@@ -1697,7 +1697,7 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
   EXPECT_CALL(callback,
               Run(ElementsAreArray({"0x1", "0x4e454152", "0x89", "0x38",
                                     "0xa4ec", "0xa86a", "0xfa", "0xa", "0x5",
-                                    "0xaa36a7", "0x539"})));
+                                    "0xaa36a7", "0x539", "0x13a", "0x4cb2f"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
@@ -1709,39 +1709,50 @@ TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   // kLocalhostChainId is active so not listed as hidden.
   EXPECT_CALL(
       callback,
-      Run(ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId})));
+      Run(ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
+                            mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Remove network hidden by default.
   RemoveHiddenNetwork(prefs(), mojom::CoinType::ETH, mojom::kGoerliChainId);
-  EXPECT_CALL(callback, Run(ElementsAreArray({mojom::kSepoliaChainId})));
+  EXPECT_CALL(callback,
+              Run(ElementsAreArray({mojom::kSepoliaChainId,
+                                    mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Making custom network hidden.
   AddHiddenNetwork(prefs(), mojom::CoinType::ETH, "0x123");
-  EXPECT_CALL(callback,
-              Run(ElementsAreArray({mojom::kSepoliaChainId, "0x123"})));
+  EXPECT_CALL(
+      callback,
+      Run(ElementsAreArray({mojom::kSepoliaChainId,
+                            mojom::kFilecoinEthereumTestnetChainId, "0x123"})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Making custom network visible.
   RemoveHiddenNetwork(prefs(), mojom::CoinType::ETH, "0x123");
-  EXPECT_CALL(callback, Run(ElementsAreArray({mojom::kSepoliaChainId})));
+  EXPECT_CALL(callback,
+              Run(ElementsAreArray({mojom::kSepoliaChainId,
+                                    mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Change active network so kLocalhostChainId becomes hidden.
   SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH);
-  EXPECT_CALL(callback, Run(ElementsAreArray({mojom::kSepoliaChainId,
-                                              mojom::kLocalhostChainId})));
+  EXPECT_CALL(
+      callback,
+      Run(ElementsAreArray({mojom::kSepoliaChainId, mojom::kLocalhostChainId,
+                            mojom::kFilecoinEthereumTestnetChainId})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Remove all hidden networks.
   RemoveHiddenNetwork(prefs(), mojom::CoinType::ETH, mojom::kSepoliaChainId);
   RemoveHiddenNetwork(prefs(), mojom::CoinType::ETH, mojom::kLocalhostChainId);
+  RemoveHiddenNetwork(prefs(), mojom::CoinType::ETH,
+                      mojom::kFilecoinEthereumTestnetChainId);
   EXPECT_CALL(callback, Run(ElementsAreArray<std::string>({})));
   json_rpc_service_->GetHiddenNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);

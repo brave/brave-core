@@ -55,6 +55,7 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   eth_hidden.Append(mojom::kGoerliChainId);
   eth_hidden.Append(mojom::kSepoliaChainId);
   eth_hidden.Append(mojom::kLocalhostChainId);
+  eth_hidden.Append(mojom::kFilecoinEthereumTestnetChainId);
   hidden_networks.Set(kEthereumPrefKey, std::move(eth_hidden));
 
   base::Value::List fil_hidden;
@@ -174,6 +175,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 02/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
+
+  // Added 03/2023
+  registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -218,6 +222,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 10/22 to have is_nft set for existing ERC721 tokens.
   BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
+
+  // Added 03/23 to add filecoin evm support.
+  BraveWalletService::MigrateHiddenNetworks(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 

@@ -825,6 +825,10 @@ void BraveWalletService::MigrateUserAssetsAddPreloadingNetworks(
   }
 
   prefs->SetBoolean(kBraveWalletUserAssetsAddPreloadingNetworksMigrated, true);
+  prefs->ClearPref(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated);
+  prefs->ClearPref(
+      kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2);
 }
 
 // static
@@ -862,6 +866,28 @@ void BraveWalletService::MigrateUserAssetsAddIsNFT(PrefService* prefs) {
     }
   }
   prefs->SetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated, true);
+}
+
+// static
+void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
+  auto previous_version_code =
+      prefs->GetInteger(kBraveWalletDefaultHiddenNetworksVersion);
+  if (previous_version_code >= 1) {
+    return;
+  }
+  // Default hidden networks
+  ScopedDictPrefUpdate update(prefs, kBraveWalletHiddenNetworks);
+  auto& hidden_networks_pref = update.Get();
+  base::Value::List* hidden_eth_networks =
+      hidden_networks_pref.FindList(kEthereumPrefKey);
+  auto value = base::Value(mojom::kFilecoinEthereumTestnetChainId);
+  if (std::find_if(hidden_eth_networks->begin(), hidden_eth_networks->end(),
+                   [&value](auto& v) { return value == v; }) ==
+      hidden_eth_networks->end()) {
+    hidden_eth_networks->Append(std::move(value));
+  }
+
+  prefs->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 1);
 }
 
 // static

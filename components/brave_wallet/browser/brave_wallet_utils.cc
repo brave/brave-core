@@ -257,6 +257,38 @@ const mojom::NetworkInfo* GetEthLocalhost() {
   return network_info.get();
 }
 
+const mojom::NetworkInfo* GetFilecoinEthereumMainnet() {
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {brave_wallet::mojom::kFilecoinEthereumMainnetChainId,
+       "Filecoin EVM Mainnet",
+       {"https://filfox.info/en/message"},
+       {},
+       0,
+       {GURL("https://api.node.glif.io/rpc/v1")},
+       "FIL",
+       "Filecoin",
+       18,
+       brave_wallet::mojom::CoinType::ETH,
+       true});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetFilecoinEthereumTestnet() {
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {brave_wallet::mojom::kFilecoinEthereumTestnetChainId,
+       "Filecoin EVM Testnet",
+       {"https://calibration.filfox.info/en/message"},
+       {},
+       0,
+       {GURL("https://api.calibration.node.glif.io/rpc/v1")},
+       "FIL",
+       "Filecoin",
+       18,
+       brave_wallet::mojom::CoinType::ETH,
+       true});
+  return network_info.get();
+}
+
 // Precompiled networks available in native wallet.
 const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
@@ -272,6 +304,8 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
       GetEthLocalhost(),
+      GetFilecoinEthereumMainnet(),
+      GetFilecoinEthereumTestnet()
       // clang-format on
   });
   return *networks.get();

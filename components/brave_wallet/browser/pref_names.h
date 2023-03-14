@@ -30,6 +30,8 @@ extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 extern const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[];
 // Added 10/2022 to set is_nft = true for existing ERC721 tokens.
 extern const char kBraveWalletUserAssetsAddIsNFTMigrated[];
+// Added 03/2023 to add networks hidden by default
+extern const char kBraveWalletDefaultHiddenNetworksVersion[];
 // Added 10/2022 to replace ETH selected network with mainnet if selected
 // network is one of the Ethereum testnets deprecated on 10/5/2022.
 extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
@@ -62,6 +64,8 @@ extern const char kBraveWalletCurrentChainId[];
 extern const char kBraveWalletUserAssetsDeprecated[];
 extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[];
+extern const char
+    kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2[];
 extern const char kPinnedNFTAssets[];
 extern const char kAutoPinEnabled[];
 
