@@ -274,6 +274,7 @@ void NftMetadataFetcher::CompleteGetEthTokenMetadata(
 }
 
 void NftMetadataFetcher::GetSolTokenMetadata(
+    const std::string& chain_id,
     const std::string& token_mint_address,
     GetSolTokenMetadataCallback callback) {
   // Derive metadata PDA for the NFT accounts
@@ -289,8 +290,8 @@ void NftMetadataFetcher::GetSolTokenMetadata(
   auto internal_callback =
       base::BindOnce(&NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  json_rpc_service_->GetSolanaAccountInfo(*associated_metadata_account,
-                                          std::move(internal_callback));
+  json_rpc_service_->GetSolanaAccountInfo(
+      *associated_metadata_account, chain_id, std::move(internal_callback));
 }
 
 void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(

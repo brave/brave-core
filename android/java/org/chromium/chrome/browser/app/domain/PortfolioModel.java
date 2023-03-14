@@ -107,7 +107,8 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                             new AsyncUtils.GetNftSolanaMetadataContext(
                                     nftMetaDataHandler.singleResponseComplete);
                     nftMetadata.asset = userAsset;
-                    mJsonRpcService.getSolTokenMetadata(userAsset.contractAddress, nftMetadata);
+                    mJsonRpcService.getSolTokenMetadata(
+                            userAsset.chainId, userAsset.contractAddress, nftMetadata);
                     nftMetadataList.add(nftMetadata);
 
                 } else {

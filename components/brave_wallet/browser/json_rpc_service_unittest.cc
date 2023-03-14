@@ -1512,7 +1512,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
                                const std::string& expected_error_message) {
     base::RunLoop loop;
     json_rpc_service_->GetSolTokenMetadata(
-        token_mint_address,
+        mojom::kSolanaMainnet, token_mint_address,
         base::BindLambdaForTesting([&](const std::string& url,
                                        const std::string& response,
                                        mojom::SolanaProviderError error,
@@ -6074,7 +6074,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolTokenMetadata) {
     "seller_fee_basis_points": 1000,
     "symbol": ""
   })";
-  auto network_url = GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+  auto network_url = GetNetwork(mojom::kSolanaMainnet, mojom::CoinType::SOL);
   SetSolTokenMetadataInterceptor(
       network_url, get_account_info_response,
       GURL("https://"

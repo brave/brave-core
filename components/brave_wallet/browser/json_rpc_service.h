@@ -389,7 +389,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& token_mint_address,
       const std::string& chain_id,
       GetSPLTokenAccountBalanceCallback callback) override;
-  void GetSolTokenMetadata(const std::string& token_mint_address,
+  void GetSolTokenMetadata(const std::string& chain_id,
+                           const std::string& token_mint_address,
                            GetSolTokenMetadataCallback callback) override;
   using SendSolanaTransactionCallback =
       base::OnceCallback<void(const std::string& tx_hash,
@@ -416,6 +417,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(absl::optional<SolanaAccountInfo> account_info,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
+  void GetSolanaAccountInfo(const std::string& pubkey,
+                            const std::string& chain_id,
+                            GetSolanaAccountInfoCallback callback);
   void GetSolanaAccountInfo(const std::string& pubkey,
                             GetSolanaAccountInfoCallback callback);
   using GetSolanaFeeForMessageCallback =

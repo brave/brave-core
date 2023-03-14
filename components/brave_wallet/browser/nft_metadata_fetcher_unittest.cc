@@ -165,7 +165,7 @@ class NftMetadataFetcherUnitTest : public testing::Test {
                                const std::string& expected_error_message) {
     base::RunLoop loop;
     nft_metadata_fetcher_->GetSolTokenMetadata(
-        token_mint_address,
+        mojom::kSolanaMainnet, token_mint_address,
         base::BindLambdaForTesting([&](const std::string& url,
                                        const std::string& response,
                                        mojom::SolanaProviderError error,

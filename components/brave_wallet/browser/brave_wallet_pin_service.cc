@@ -540,7 +540,7 @@ void BraveWalletPinService::AddPin(mojom::BlockchainTokenPtr token,
                        std::move(callback), token.Clone()));
   } else if (token->is_nft && token->coin == mojom::CoinType::SOL) {
     json_rpc_service_->GetSolTokenMetadata(
-        token->contract_address,
+        token->chain_id, token->contract_address,
         base::BindOnce(&BraveWalletPinService::OnSolTokenMetaDataReceived,
                        weak_ptr_factory_.GetWeakPtr(), service,
                        std::move(callback), token.Clone()));

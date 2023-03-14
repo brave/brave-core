@@ -165,8 +165,9 @@ class MockJsonRpcService : public JsonRpcService {
                     const std::string& chain_id,
                     GetERC721MetadataCallback callback));
 
-  MOCK_METHOD2(GetSolTokenMetadata,
-               void(const std::string& contract_address,
+  MOCK_METHOD3(GetSolTokenMetadata,
+               void(const std::string& chain_id,
+                    const std::string& contract_address,
                     GetSolTokenMetadataCallback callback));
 
   ~MockJsonRpcService() override {}
@@ -246,9 +247,10 @@ TEST_F(BraveWalletPinServiceTest, AddSolPin) {
             }));
   }
   {
-    ON_CALL(*GetJsonRpcService(), GetSolTokenMetadata(_, _))
+    ON_CALL(*GetJsonRpcService(), GetSolTokenMetadata(_, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const std::string& token_mint_address,
+            [](const std::string& chain_id,
+               const std::string& token_mint_address,
                MockJsonRpcService::GetSolTokenMetadataCallback callback) {
               EXPECT_EQ("GdGXUTd9ZctZQdNCsV85ULryafVgMR4Jyiq3zkqwR8kY",
                         token_mint_address);
@@ -299,9 +301,10 @@ TEST_F(BraveWalletPinServiceTest, AddSolPin) {
   }
 
   {
-    ON_CALL(*GetJsonRpcService(), GetSolTokenMetadata(_, _))
+    ON_CALL(*GetJsonRpcService(), GetSolTokenMetadata(_, _, _))
         .WillByDefault(::testing::Invoke(
-            [](const std::string& token_mint_address,
+            [](const std::string& chain_id,
+               const std::string& token_mint_address,
                MockJsonRpcService::GetSolTokenMetadataCallback callback) {
               EXPECT_EQ("9CuEUZkojwfwAhhbPCYH8smidkdFNRAcfJMm2U4kehQk",
                         token_mint_address);

@@ -2718,9 +2718,10 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetSolTokenMetadata(const std::string& token_mint_address,
+void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
+                                         const std::string& token_mint_address,
                                          GetSolTokenMetadataCallback callback) {
-  nft_metadata_fetcher_->GetSolTokenMetadata(token_mint_address,
+  nft_metadata_fetcher_->GetSolTokenMetadata(chain_id, token_mint_address,
                                              std::move(callback));
 }
 
@@ -2894,13 +2895,29 @@ void JsonRpcService::OnGetSolanaSignatureStatuses(
 
 void JsonRpcService::GetSolanaAccountInfo(
     const std::string& pubkey,
+    const std::string& chain_id,
     GetSolanaAccountInfoCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        {}, mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(
-      solana::getAccountInfo(pubkey), true, network_urls_[mojom::CoinType::SOL],
-      std::move(internal_callback), solana::ConverterForGetAccountInfo());
+  RequestInternal(solana::getAccountInfo(pubkey), true, network_url,
+                  std::move(internal_callback),
+                  solana::ConverterForGetAccountInfo());
+}
+
+void JsonRpcService::GetSolanaAccountInfo(
+    const std::string& pubkey,
+    GetSolanaAccountInfoCallback callback) {
+  JsonRpcService::GetSolanaAccountInfo(pubkey, chain_ids_[mojom::CoinType::SOL],
+                                       std::move(callback));
 }
 
 void JsonRpcService::OnGetSolanaAccountInfo(
