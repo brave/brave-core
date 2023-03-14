@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/brave_glass_browser_frame_view.h"
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
 
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
@@ -17,17 +17,17 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_canvas.h"
 
-BraveGlassBrowserFrameView::BraveGlassBrowserFrameView(
-    BrowserFrame* frame, BrowserView* browser_view)
-    : GlassBrowserFrameView(frame, browser_view) {
+BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(BrowserFrame* frame,
+                                                   BrowserView* browser_view)
+    : BrowserFrameViewWin(frame, browser_view) {
   frame_graphic_.reset(
       new BraveWindowFrameGraphic(browser_view->browser()->profile()));
 }
 
-BraveGlassBrowserFrameView::~BraveGlassBrowserFrameView() = default;
+BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
 
-void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
-  GlassBrowserFrameView::OnPaint(canvas);
+void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
+  BrowserFrameViewWin::OnPaint(canvas);
 
   // Don't draw frame graphic over border outline.
   gfx::ScopedCanvas scoped_canvas(canvas);
@@ -42,9 +42,10 @@ void BraveGlassBrowserFrameView::OnPaint(gfx::Canvas* canvas) {
   frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
 }
 
-int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
-  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
-    return GlassBrowserFrameView::GetTopInset(restored);
+int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return BrowserFrameViewWin::GetTopInset(restored);
+  }
 
   if (auto* browser = browser_view()->browser();
       tabs::utils::ShouldShowVerticalTabs(browser) &&
@@ -52,13 +53,13 @@ int BraveGlassBrowserFrameView::GetTopInset(bool restored) const {
     return 0;
   }
 
-  return GlassBrowserFrameView::GetTopInset(restored);
+  return BrowserFrameViewWin::GetTopInset(restored);
 }
-int BraveGlassBrowserFrameView::NonClientHitTest(const gfx::Point& point) {
+int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
   if (auto res = brave::NonClientHitTest(browser_view(), point);
       res != HTNOWHERE) {
     return res;
   }
 
-  return GlassBrowserFrameView::NonClientHitTest(point);
+  return BrowserFrameViewWin::NonClientHitTest(point);
 }
