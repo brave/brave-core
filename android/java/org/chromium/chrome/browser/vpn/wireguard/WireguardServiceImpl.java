@@ -27,6 +27,7 @@ import com.wireguard.config.Config;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
@@ -68,7 +69,11 @@ public class WireguardServiceImpl
     @Override
     public void onCreate() {
         super.onCreate();
-        mBackend = new GoBackend(mContext);
+        try {
+            mBackend = new GoBackend(mContext);
+        } catch (Exception e) {
+            Log.e("WireguardServiceImpl::onCreate", e.getMessage());
+        }
     }
 
     @Override
