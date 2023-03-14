@@ -1024,8 +1024,8 @@ extension Tab {
 
 // MARK: - Brave SKU
 extension Tab {
-  func injectSessionStorageItem(key: String, value: String) {
-    self.webView?.evaluateSafeJavaScript(functionName: "sessionStorage.setItem",
+  func injectLocalStorageItem(key: String, value: String) {
+    self.webView?.evaluateSafeJavaScript(functionName: "localStorage.setItem",
                                          args: [key, value],
                                          contentWorld: BraveSkusScriptHandler.scriptSandbox)
   }
