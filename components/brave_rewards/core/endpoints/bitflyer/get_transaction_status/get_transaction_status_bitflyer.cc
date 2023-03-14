@@ -3,19 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/core/endpoints/uphold/post_commit_transaction/post_commit_transaction_uphold.h"
+#include "brave/components/brave_rewards/core/endpoints/bitflyer/get_transaction_status/get_transaction_status_bitflyer.h"
 
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/endpoint/uphold/uphold_utils.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "base/json/json_writer.h"
+#include "brave/components/brave_rewards/core/endpoint/bitflyer/bitflyer_utils.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
-using Error = PostCommitTransactionUphold::Error;
-using Result = PostCommitTransactionUphold::Result;
+
+using Error = GetTransactionStatusBitFlyer::Error;
+using Result = GetTransactionStatusBitFlyer::Result;
 
 namespace {
 
@@ -26,17 +27,17 @@ Result ParseBody(const std::string& body) {
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  const auto* status = value->GetDict().FindString("status");
-  if (!status || status->empty()) {
+  const auto* transfer_status = value->GetDict().FindString("transfer_status");
+  if (!transfer_status || transfer_status->empty()) {
     BLOG(0, "Failed to parse body!");
     return base::unexpected(Error::kFailedToParseBody);
   }
 
-  if (*status == "processing") {
+  if (*transfer_status == "PENDING") {
     return base::unexpected(Error::kTransactionPending);
   }
 
-  if (*status != "completed") {
+  if (*transfer_status != "EXECUTED") {
     return base::unexpected(Error::kUnexpectedTransactionStatus);
   }
 
@@ -46,7 +47,7 @@ Result ParseBody(const std::string& body) {
 }  // namespace
 
 // static
-Result PostCommitTransactionUphold::ProcessResponse(
+Result GetTransactionStatusBitFlyer::ProcessResponse(
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
@@ -54,24 +55,36 @@ Result PostCommitTransactionUphold::ProcessResponse(
     case net::HTTP_UNAUTHORIZED:  // HTTP 401
       BLOG(0, "Access token expired!");
       return base::unexpected(Error::kAccessTokenExpired);
-    case net::HTTP_NOT_FOUND:  // HTTP 404
-      BLOG(0, "Transaction not found!");
-      return base::unexpected(Error::kTransactionNotFound);
     default:
       BLOG(0, "Unexpected status code! (HTTP " << response.status_code << ')');
       return base::unexpected(Error::kUnexpectedStatusCode);
   }
 }
 
-absl::optional<std::string> PostCommitTransactionUphold::Url() const {
-  return endpoint::uphold::GetServerUrl(base::StringPrintf(
-      "/v0/me/cards/%s/transactions/%s/commit", address_.c_str(),
-      transaction_->transaction_id.c_str()));
+absl::optional<std::string> GetTransactionStatusBitFlyer::Url() const {
+  return endpoint::bitflyer::GetServerUrl(
+      "/api/link/v1/coin/withdraw-to-deposit-id/status");
 }
 
-absl::optional<std::vector<std::string>> PostCommitTransactionUphold::Headers(
+absl::optional<std::vector<std::string>> GetTransactionStatusBitFlyer::Headers(
     const std::string&) const {
-  return endpoint::uphold::RequestAuthorization(token_);
+  return endpoint::bitflyer::RequestAuthorization(token_);
+}
+
+absl::optional<std::string> GetTransactionStatusBitFlyer::Content() const {
+  base::Value::Dict payload;
+  payload.Set("transfer_id", transaction_id_);
+
+  std::string json;
+  if (!base::JSONWriter::Write(payload, &json)) {
+    return absl::nullopt;
+  }
+
+  return json;
+}
+
+std::string GetTransactionStatusBitFlyer::ContentType() const {
+  return kApplicationJson;
 }
 
 }  // namespace brave_rewards::internal::endpoints

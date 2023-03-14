@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_BITFLYER_TRANSFER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_BITFLYER_TRANSFER_H_
 
+#include "brave/components/brave_rewards/core/endpoints/bitflyer/get_transaction_status/get_transaction_status_bitflyer.h"
 #include "brave/components/brave_rewards/core/endpoints/bitflyer/post_commit_transaction/post_commit_transaction_bitflyer.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
@@ -21,7 +22,12 @@ class BitFlyerTransfer final : public wallet_provider::Transfer {
 
   void OnCommitTransaction(
       ResultCallback,
+      std::string&& transaction_id,
       endpoints::PostCommitTransactionBitFlyer::Result&&) const;
+
+  void OnGetTransactionStatus(
+      ResultCallback,
+      endpoints::GetTransactionStatusBitFlyer::Result&&) const;
 };
 
 }  // namespace brave_rewards::internal::bitflyer

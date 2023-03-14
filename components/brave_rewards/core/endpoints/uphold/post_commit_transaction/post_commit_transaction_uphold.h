@@ -106,7 +106,7 @@ class PostCommitTransactionUphold;
 
 template <>
 struct ResultFor<PostCommitTransactionUphold> {
-  using Value = void;
+  using Value = void; // transaction completed
   using Error = mojom::PostCommitTransactionUpholdError;
 };
 

@@ -18,8 +18,19 @@ enum GetParametersError {
   kFailedToParseBody
 };
 
+enum GetTransactionStatusBitFlyerError {
+  kFailedToCreateRequest,
+  kTransactionPending,                  // HTTP 200
+  kUnexpectedTransactionStatus,         // HTTP 200
+  kAccessTokenExpired,                  // HTTP 401
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
+};
+
 enum GetTransactionStatusUpholdError {
   kFailedToCreateRequest,
+  kTransactionPending,                  // HTTP 200
+  kUnexpectedTransactionStatus,         // HTTP 200
   kAccessTokenExpired,                  // HTTP 401
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
@@ -73,9 +84,12 @@ enum PostCommitTransactionGeminiError {
 
 enum PostCommitTransactionUpholdError {
   kFailedToCreateRequest,
+  kTransactionPending,                  // HTTP 200
+  kUnexpectedTransactionStatus,         // HTTP 200
   kAccessTokenExpired,                  // HTTP 401
   kTransactionNotFound,                 // HTTP 404
-  kUnexpectedStatusCode                 // HTTP xxx
+  kUnexpectedStatusCode,                // HTTP xxx
+  kFailedToParseBody
 };
 
 enum PostCreateTransactionUpholdError {

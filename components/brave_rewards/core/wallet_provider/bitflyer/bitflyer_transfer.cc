@@ -13,12 +13,11 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace brave_rewards::internal {
+using brave_rewards::internal::endpoints::GetTransactionStatusBitFlyer;
+using brave_rewards::internal::endpoints::PostCommitTransactionBitFlyer;
+using brave_rewards::internal::endpoints::RequestFor;
 
-using endpoints::PostCommitTransactionBitFlyer;
-using endpoints::RequestFor;
-
-namespace bitflyer {
+namespace brave_rewards::internal::bitflyer {
 
 void BitFlyerTransfer::CommitTransaction(
     ResultCallback callback,
@@ -35,9 +34,9 @@ void BitFlyerTransfer::CommitTransaction(
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  auto on_commit_transaction =
-      base::BindOnce(&BitFlyerTransfer::OnCommitTransaction,
-                     base::Unretained(this), std::move(callback));
+  auto on_commit_transaction = base::BindOnce(
+      &BitFlyerTransfer::OnCommitTransaction, base::Unretained(this),
+      std::move(callback), transaction->transaction_id);
 
   RequestFor<PostCommitTransactionBitFlyer>(*ledger_, std::move(wallet->token),
                                             std::move(wallet->address),
@@ -47,8 +46,11 @@ void BitFlyerTransfer::CommitTransaction(
 
 void BitFlyerTransfer::OnCommitTransaction(
     ResultCallback callback,
+    std::string&& transaction_id,
     PostCommitTransactionBitFlyer::Result&& result) const {
-  if (!ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+  const auto wallet =
+      ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected});
+  if (!wallet) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
@@ -64,9 +66,36 @@ void BitFlyerTransfer::OnCommitTransaction(
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
-  std::move(callback).Run(mojom::Result::LEDGER_OK);
+  RequestFor<GetTransactionStatusBitFlyer>(*ledger_, std::move(wallet->token),
+                                           std::move(transaction_id))
+      .Send(base::BindOnce(&BitFlyerTransfer::OnGetTransactionStatus,
+                           base::Unretained(this), std::move(callback)));
 }
 
-}  // namespace bitflyer
+void BitFlyerTransfer::OnGetTransactionStatus(
+    ResultCallback callback,
+    endpoints::GetTransactionStatusBitFlyer::Result&& result) const {
+  if (!ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected})) {
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+  }
 
-}  // namespace brave_rewards::internal
+  if (result.has_value()) {
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
+  }
+
+  switch (result.error()) {
+    case GetTransactionStatusBitFlyer::Error::kTransactionPending:
+      return std::move(callback).Run(
+          mojom::Result::RETRY_PENDING_TRANSACTION_SHORT);
+    case GetTransactionStatusBitFlyer::Error::kAccessTokenExpired:
+      if (!ledger_->bitflyer()->LogOutWallet()) {
+        BLOG(0, "Failed to disconnect " << constant::kWalletBitflyer
+                                        << " wallet!");
+      }
+      ABSL_FALLTHROUGH_INTENDED;
+    default:
+      return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+  }
+}
+
+}  // namespace brave_rewards::internal::bitflyer
