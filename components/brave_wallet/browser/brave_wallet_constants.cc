@@ -8,6 +8,7 @@
 
 #include "base/containers/contains.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 
 namespace brave_wallet {
@@ -40,8 +41,8 @@ const std::vector<mojom::BlockchainToken>& GetRampBuyTokens() {
        {"0x8f3cf7ad23cd3cadbd9735aff958023239c6a063", "DAI Stablecoin",
         "dai.png", true, false, false, "DAI", 18, true, "", "",
         mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
-       {"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", "Ethereum", "eth.png",
-        true, false, false, "ETH", 18, true, "", "",
+       {"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", "Wrapped Ether", "weth.png",
+        true, false, false, "WETH", 18, true, "", "",
         mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
        {"0xbbba073c31bf03b8acf7c28ef0738decf3695683", "Sandbox", "sand.png",
         true, false, false, "SAND", 18, true, "", "",
@@ -388,9 +389,6 @@ const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
        {"0x70c006878a5A50Ed185ac4C87d837633923De296", "Revv", "revv.png", true,
         false, false, "REVV", 18, true, "", "", mojom::kPolygonMainnetChainId,
         mojom::CoinType::ETH},
-       {"0x7ceb23fd6bc0add59e62ac25578270cff1b9f619", "Weth", "weth.png", true,
-        false, false, "WETH", 18, true, "", "", mojom::kPolygonMainnetChainId,
-        mojom::CoinType::ETH},
        {"0xe6FC6C7CB6d2c31b359A49A33eF08aB87F4dE7CE", "IG Gold", "igg.png",
         true, false, false, "IGG", 18, true, "", "",
         mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
@@ -420,7 +418,16 @@ const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
         mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
        {"CKaKtYvz6dKPyMvYq9Rh3UBrnNqYZAyd7iF4hJtjUvks", "Gari Network",
         "gari.png", true, false, false, "GARI", 9, true, "", "",
-        mojom::kSolanaMainnet, mojom::CoinType::SOL}});
+        mojom::kSolanaMainnet, mojom::CoinType::SOL},
+       {"0xf4d2888d29d722226fafa5d9b24f9164c092421e", "LooksRare", "",
+        true, false, false, "LOOKS", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0x853d955acef822db058eb8505911ed77f175b99e", "Frax", "frax.png", true,
+        false, false, "FRAX", 18, true, "", "", mojom::kMainnetChainId,
+        mojom::CoinType::ETH},
+       {"0x6f06e6bed64cf4c4187c06ee2a4732f6a171bc4e", "FoodChain Global",
+        "", true, false, false, "FOOD", 18, true, "", "",
+        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH}});
 
   return *tokens;
 }
@@ -467,9 +474,6 @@ const std::vector<mojom::BlockchainToken>& GetRampSellTokens() {
         true, false, false, "CUSD", 18, true, "", "",
         mojom::kCeloMainnetChainId, mojom::CoinType::ETH},
        {"", "Polygon", "", false, false, false, "MATIC", 18, true, "", "",
-        mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
-       {"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619", "Ethereum", "eth.png",
-        true, false, false, "ETH", 18, true, "", "",
         mojom::kPolygonMainnetChainId, mojom::CoinType::ETH},
        {"0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", "USD Coin", "usdc.png",
         true, false, false, "USDC", 6, true, "", "",
