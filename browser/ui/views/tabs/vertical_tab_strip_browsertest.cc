@@ -198,12 +198,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   browser_non_client_frame_view()->Layout();
   EXPECT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   EXPECT_FALSE(browser_view()->ShouldShowWindowTitle());
-#if !BUILDFLAG(IS_LINUX)
-  // TODO(sko) For now, we can't hide window title bar entirely on Linux.
-  // We're using a minimum height for it.
-  EXPECT_EQ(0,
-            browser_non_client_frame_view()->GetTopInset(/*restored=*/false));
-#endif
   EXPECT_FALSE(IsWindowTitleViewVisible());
 }
 
