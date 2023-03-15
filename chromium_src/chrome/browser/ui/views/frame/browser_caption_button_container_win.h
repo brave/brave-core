@@ -10,8 +10,7 @@
 
 #include "components/prefs/pref_change_registrar.h"
 
-#define BrowserCaptionButtonContainer \
-  BrowserCaptionButtonContainer_ChromiumImpl
+#define BrowserCaptionButtonContainer BrowserCaptionButtonContainer_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.h"  // IWYU pragma: export
 #undef BrowserCaptionButtonContainer

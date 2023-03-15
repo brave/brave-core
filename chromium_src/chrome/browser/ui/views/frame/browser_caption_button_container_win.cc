@@ -9,8 +9,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 
-#define BrowserCaptionButtonContainer \
-  BrowserCaptionButtonContainer_ChromiumImpl
+#define BrowserCaptionButtonContainer BrowserCaptionButtonContainer_ChromiumImpl
 
 #include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.cc"
 #undef BrowserCaptionButtonContainer
@@ -25,16 +24,14 @@ BrowserCaptionButtonContainer::BrowserCaptionButtonContainer(
         frame_view_->browser_view()->GetProfile()->GetPrefs());
     pref_change_registrar_.Add(
         kTabsSearchShow,
-        base::BindRepeating(
-            &BrowserCaptionButtonContainer::OnPreferenceChanged,
-            base::Unretained(this)));
+        base::BindRepeating(&BrowserCaptionButtonContainer::OnPreferenceChanged,
+                            base::Unretained(this)));
     // Show the correct value in settings on initial start
     UpdateSearchTabsButtonState();
   }
 }
 
-BrowserCaptionButtonContainer::~BrowserCaptionButtonContainer() =
-    default;
+BrowserCaptionButtonContainer::~BrowserCaptionButtonContainer() = default;
 
 void BrowserCaptionButtonContainer::OnPreferenceChanged(
     const std::string& pref_name) {
