@@ -1654,23 +1654,6 @@ void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
   bat_ledger_->SetPublisherAllowNonVerified(allow);
 }
 
-void RewardsServiceImpl::GetPublisherAllowVideos(
-    GetPublisherAllowVideosCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  bat_ledger_->GetPublisherAllowVideos(std::move(callback));
-}
-
-void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->SetPublisherAllowVideos(allow);
-}
-
 void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
   if (!Connected()) {
     return;

@@ -1223,15 +1223,9 @@ BATLedgerBridge(int,
                             GetPublisherAllowNonVerified,
                             SetPublisherAllowNonVerified)
 
-                BATLedgerBridge(BOOL,
-                                allowVideoContributions,
-                                setAllowVideoContributions,
-                                GetPublisherAllowVideos,
-                                SetPublisherAllowVideos)
-
-                    BATLedgerReadonlyBridge(double,
-                                            contributionAmount,
-                                            GetAutoContributionAmount)
+                BATLedgerReadonlyBridge(double,
+                                        contributionAmount,
+                                        GetAutoContributionAmount)
 
     - (void)setContributionAmount : (double)contributionAmount {
   ledger->SetAutoContributionAmount(contributionAmount);

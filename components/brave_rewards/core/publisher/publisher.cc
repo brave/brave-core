@@ -144,20 +144,6 @@ void Publisher::SaveVisit(const std::string& publisher_key,
       });
 }
 
-void Publisher::SaveVideoVisit(const std::string& publisher_id,
-                               const mojom::VisitData& visit_data,
-                               uint64_t duration,
-                               const bool first_visit,
-                               uint64_t window_id,
-                               ledger::PublisherInfoCallback callback) {
-  if (!ledger_->state()->GetPublisherAllowVideos()) {
-    duration = 0;
-  }
-
-  SaveVisit(publisher_id, visit_data, duration, first_visit, window_id,
-            callback);
-}
-
 mojom::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
     const std::string& publisher_id,
     mojom::ExcludeFilter excluded,
@@ -756,8 +742,8 @@ void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
   visit_data.provider = info->provider;
   visit_data.favicon_url = info->favicon_url;
 
-  SaveVideoVisit(info->id, visit_data, duration, first_visit, 0,
-                 [](mojom::Result, mojom::PublisherInfoPtr) {});
+  SaveVisit(info->id, visit_data, duration, first_visit, 0,
+            [](mojom::Result, mojom::PublisherInfoPtr) {});
 }
 
 void Publisher::GetPublisherPanelInfo(

@@ -172,8 +172,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
   void GetPublisherAllowNonVerified(
       GetPublisherAllowNonVerifiedCallback callback) override;
-  void GetPublisherAllowVideos(
-      GetPublisherAllowVideosCallback callback) override;
   void RestorePublishers() override;
   void GetBalanceReport(
       const uint32_t month,
@@ -434,7 +432,6 @@ class RewardsServiceImpl : public RewardsService,
                ledger::client::LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
-  void SetPublisherAllowVideos(bool allow) const override;
   void OnPanelPublisherInfo(const ledger::mojom::Result result,
                             ledger::mojom::PublisherInfoPtr info,
                             uint64_t window_id) override;

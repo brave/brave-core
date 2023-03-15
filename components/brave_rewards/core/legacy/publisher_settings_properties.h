@@ -33,7 +33,6 @@ struct PublisherSettingsProperties {
   uint64_t min_page_time_before_logging_a_visit;
   uint32_t min_visits_for_publisher_relevancy;
   bool allow_non_verified_sites_in_list;
-  bool allow_contribution_to_videos;
   std::map<std::string, ReportBalanceProperties> monthly_balances;
   std::vector<std::string> processed_pending_publishers;
 };

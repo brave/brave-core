@@ -36,7 +36,6 @@ export function AutoContributePanel () {
     contributionMinTime: state.contributionMinTime,
     contributionMinVisits: state.contributionMinVisits,
     contributionNonVerified: state.contributionNonVerified,
-    contributionVideos: state.contributionVideos,
     contributionMonthly: state.contributionMonthly,
     parameters: state.parameters,
     enabledContribute: state.enabledContribute,
@@ -203,12 +202,6 @@ export function AutoContributePanel () {
           <ToggleButton
             checked={data.contributionNonVerified}
             onChange={settingToggleHandler('contributionNonVerified')}
-          />
-        </PanelItem>
-        <PanelItem label={getString('contributionVideos')}>
-          <ToggleButton
-            checked={data.contributionVideos}
-            onChange={settingToggleHandler('contributionVideos')}
           />
         </PanelItem>
       </>

@@ -43,10 +43,6 @@ class State {
 
   bool GetPublisherAllowNonVerified();
 
-  void SetPublisherAllowVideos(const bool allow);
-
-  bool GetPublisherAllowVideos();
-
   void SetScoreValues(double a, double b);
 
   void GetScoreValues(double* a, double* b);

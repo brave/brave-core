@@ -2,7 +2,6 @@
   "min_pubslisher_duration": 5,
   "min_visits": 5,
   "allow_non_verified": false,
-  "allow_videos": false,
   "monthly_balances": [
     {
       "2020_4": {

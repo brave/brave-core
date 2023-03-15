@@ -194,12 +194,9 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visits"),
       5);
-  EXPECT_EQ(profile_->GetPrefs()->GetBoolean(
-      "brave.rewards.ac.allow_non_verified"),
-          false);
-  EXPECT_EQ(profile_->GetPrefs()->GetBoolean(
-      "brave.rewards.ac.allow_video_contributions"),
-          false);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.allow_non_verified"),
+      false);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.a"),
       14500.0);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.b"),

@@ -17,7 +17,6 @@ const char kVersion[] = "version";
 const char kMinVisitTime[] = "ac.min_visit_time";
 const char kMinVisits[] = "ac.min_visits";
 const char kAllowNonVerified[] = "ac.allow_non_verified";
-const char kAllowVideoContribution[] = "ac.allow_video_contributions";
 const char kScoreA[] = "ac.score.a";
 const char kScoreB[] = "ac.score.b";
 const char kAutoContributeEnabled[] = "ac.enabled";

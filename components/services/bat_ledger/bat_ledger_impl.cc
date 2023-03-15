@@ -83,11 +83,6 @@ void BatLedgerImpl::GetPublisherAllowNonVerified(
   std::move(callback).Run(ledger_->GetPublisherAllowNonVerified());
 }
 
-void BatLedgerImpl::GetPublisherAllowVideos(
-    GetPublisherAllowVideosCallback callback) {
-  std::move(callback).Run(ledger_->GetPublisherAllowVideos());
-}
-
 void BatLedgerImpl::GetAutoContributeEnabled(
     GetAutoContributeEnabledCallback callback) {
   std::move(callback).Run(ledger_->GetAutoContributeEnabled());
@@ -172,10 +167,6 @@ void BatLedgerImpl::SetPublisherMinVisits(int visits) {
 
 void BatLedgerImpl::SetPublisherAllowNonVerified(bool allow) {
   ledger_->SetPublisherAllowNonVerified(allow);
-}
-
-void BatLedgerImpl::SetPublisherAllowVideos(bool allow) {
-  ledger_->SetPublisherAllowVideos(allow);
 }
 
 void BatLedgerImpl::SetAutoContributionAmount(double amount) {

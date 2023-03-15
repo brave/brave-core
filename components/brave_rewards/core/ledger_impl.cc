@@ -432,10 +432,6 @@ void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
   WhenReady([this, allow]() { state()->SetPublisherAllowNonVerified(allow); });
 }
 
-void LedgerImpl::SetPublisherAllowVideos(bool allow) {
-  WhenReady([this, allow]() { state()->SetPublisherAllowVideos(allow); });
-}
-
 void LedgerImpl::SetAutoContributionAmount(double amount) {
   WhenReady([this, amount]() { state()->SetAutoContributionAmount(amount); });
 }
@@ -474,14 +470,6 @@ bool LedgerImpl::GetPublisherAllowNonVerified() {
   }
 
   return state()->GetPublisherAllowNonVerified();
-}
-
-bool LedgerImpl::GetPublisherAllowVideos() {
-  if (!IsReady()) {
-    return false;
-  }
-
-  return state()->GetPublisherAllowVideos();
 }
 
 double LedgerImpl::GetAutoContributionAmount() {
@@ -562,7 +550,6 @@ mojom::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
   props->contribution_min_time = state()->GetPublisherMinVisitTime();
   props->contribution_min_visits = state()->GetPublisherMinVisits();
   props->contribution_non_verified = state()->GetPublisherAllowNonVerified();
-  props->contribution_videos = state()->GetPublisherAllowVideos();
   props->reconcile_stamp = state()->GetReconcileStamp();
   return props;
 }

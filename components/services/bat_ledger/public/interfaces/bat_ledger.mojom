@@ -38,7 +38,6 @@ interface BatLedger {
   GetPublisherMinVisitTime() => (int32 min_visit_time);
   GetPublisherMinVisits() => (int32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);
-  GetPublisherAllowVideos() => (bool allowed);
   GetAutoContributeEnabled() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
@@ -64,7 +63,6 @@ interface BatLedger {
   SetPublisherMinVisitTime(int32 duration_in_seconds);
   SetPublisherMinVisits(int32 visits);
   SetPublisherAllowNonVerified(bool allow);
-  SetPublisherAllowVideos(bool allow);
   SetAutoContributionAmount(double amount);
   SetAutoContributeEnabled(bool enabled);
 

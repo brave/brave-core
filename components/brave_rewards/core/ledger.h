@@ -180,8 +180,6 @@ class Ledger {
 
   virtual void SetPublisherAllowNonVerified(bool allow) = 0;
 
-  virtual void SetPublisherAllowVideos(bool allow) = 0;
-
   virtual void SetAutoContributionAmount(double amount) = 0;
 
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
@@ -193,8 +191,6 @@ class Ledger {
   virtual int GetPublisherMinVisits() = 0;
 
   virtual bool GetPublisherAllowNonVerified() = 0;
-
-  virtual bool GetPublisherAllowVideos() = 0;
 
   virtual double GetAutoContributionAmount() = 0;
 

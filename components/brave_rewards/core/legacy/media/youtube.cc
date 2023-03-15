@@ -369,7 +369,7 @@ void YouTube::OnMediaPublisherInfo(
     new_visit_data.favicon_url = publisher_info->favicon_url;
     std::string id = publisher_info->id;
 
-    ledger_->publisher()->SaveVideoVisit(
+    ledger_->publisher()->SaveVisit(
         id, new_visit_data, duration, true, window_id,
         [](ledger::mojom::Result, ledger::mojom::PublisherInfoPtr) {});
   }
@@ -466,7 +466,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   new_visit_data.name = publisher_name;
   new_visit_data.url = url;
 
-  ledger_->publisher()->SaveVideoVisit(
+  ledger_->publisher()->SaveVisit(
       publisher_id, new_visit_data, duration, true, window_id,
       [](ledger::mojom::Result, ledger::mojom::PublisherInfoPtr) {});
 

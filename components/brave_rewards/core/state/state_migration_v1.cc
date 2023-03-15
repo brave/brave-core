@@ -62,9 +62,6 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   ledger_->ledger_client()->SetBooleanState(
       kAllowNonVerified, legacy_publisher_->GetPublisherAllowNonVerified());
 
-  ledger_->ledger_client()->SetBooleanState(
-      kAllowVideoContribution, legacy_publisher_->GetPublisherAllowVideos());
-
   std::vector<mojom::BalanceReportInfoPtr> reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {

@@ -17,7 +17,6 @@ export const reduxState: Rewards.ApplicationState = {
     contributionMinVisits: 1,
     contributionMonthly: 5,
     contributionNonVerified: true,
-    contributionVideos: true,
     reconcileStamp: 0,
     ui: {
       modalConnect: false,

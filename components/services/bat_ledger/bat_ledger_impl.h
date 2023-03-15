@@ -49,8 +49,6 @@ class BatLedgerImpl :
       GetPublisherMinVisitsCallback callback) override;
   void GetPublisherAllowNonVerified(
       GetPublisherAllowNonVerifiedCallback callback) override;
-  void GetPublisherAllowVideos(
-      GetPublisherAllowVideosCallback callback) override;
   void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) override;
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
@@ -86,7 +84,6 @@ class BatLedgerImpl :
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
   void SetPublisherMinVisits(int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
-  void SetPublisherAllowVideos(bool allow) override;
   void SetAutoContributionAmount(double amount) override;
   void SetAutoContributeEnabled(bool enabled) override;
 

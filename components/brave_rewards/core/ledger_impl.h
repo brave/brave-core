@@ -134,8 +134,6 @@ class LedgerImpl : public Ledger {
 
   void SetPublisherAllowNonVerified(bool allow) override;
 
-  void SetPublisherAllowVideos(bool allow) override;
-
   void SetAutoContributionAmount(double amount) override;
 
   void SetAutoContributeEnabled(bool enabled) override;
@@ -147,8 +145,6 @@ class LedgerImpl : public Ledger {
   int GetPublisherMinVisits() override;
 
   bool GetPublisherAllowNonVerified() override;
-
-  bool GetPublisherAllowVideos() override;
 
   double GetAutoContributionAmount() override;
 
