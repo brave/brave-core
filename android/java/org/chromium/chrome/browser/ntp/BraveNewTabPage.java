@@ -24,7 +24,7 @@ import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -74,19 +74,15 @@ public class BraveNewTabPage extends NewTabPage {
             for (TabModel tabModel : tabModelSelector.getModels()) {
                 if (tabModel.getProfile() != null) {
                     TemplateUrlService templateUrlService =
-                            BraveTemplateUrlServiceFactory.getForProfile(tabModel.getProfile());
-                    if (templateUrlService != null) {
-                        templateUrlService.removeObserver(this);
-                    }
+                            TemplateUrlServiceFactory.getForProfile(tabModel.getProfile());
+                    templateUrlService.removeObserver(this);
                 }
             }
         }
         // Re-add to the new tab's profile
-        TemplateUrlService templateUrlService = BraveTemplateUrlServiceFactory.getForProfile(
+        TemplateUrlService templateUrlService = TemplateUrlServiceFactory.getForProfile(
                 Profile.fromWebContents(mTab.getWebContents()));
-        if (templateUrlService != null) {
-            templateUrlService.addObserver(this);
-        }
+        templateUrlService.addObserver(this);
     }
 
     @Override

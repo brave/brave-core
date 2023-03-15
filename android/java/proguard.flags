@@ -38,10 +38,6 @@
     *** setContentSetting(...);
 }
 
--keep class org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory {
-    *** get(...);
-}
-
 -keep class org.chromium.chrome.browser.tab.TabHelpers {
     *** initTabHelpers(...);
 }

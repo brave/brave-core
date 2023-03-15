@@ -289,9 +289,9 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void setDefaultSearchEngineString(RemoteViews views) {
+        final Profile profile = Profile.getLastUsedRegularProfile();
         TemplateUrl templateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                Profile.getLastUsedRegularProfile(),
-                BraveSearchEngineUtils.getDSEShortName(Profile.getLastUsedRegularProfile(), false));
+                profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
         if (templateUrl != null) {
             String searchWithDefaultSearchEngine = ContextUtils.getApplicationContext().getString(
                     R.string.search_with_search_engine, templateUrl.getShortName());
