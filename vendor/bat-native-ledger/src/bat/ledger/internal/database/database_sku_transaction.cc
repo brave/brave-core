@@ -107,7 +107,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     GetSKUTransactionCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
-    callback(nullptr);
+    callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
   auto transaction = mojom::DBTransaction::New();
@@ -145,14 +145,19 @@ void DatabaseSKUTransaction::OnGetRecord(mojom::DBCommandResponsePtr response,
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(nullptr);
+    callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
 
-  if (response->result->get_records().size() != 1) {
-    BLOG(1, "Record size is not correct: " <<
-        response->result->get_records().size());
-    callback(nullptr);
+  if (response->result->get_records().empty()) {
+    callback(base::unexpected(GetSKUTransactionError::kTransactionNotFound));
+    return;
+  }
+
+  if (response->result->get_records().size() > 1) {
+    BLOG(1, "Record size is not correct: "
+                << response->result->get_records().size());
+    callback(base::unexpected(GetSKUTransactionError::kDatabaseError));
     return;
   }
 

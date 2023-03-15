@@ -51,29 +51,67 @@ SKUTransaction::SKUTransaction(LedgerImpl* ledger) :
 
 SKUTransaction::~SKUTransaction() = default;
 
-void SKUTransaction::Create(mojom::SKUOrderPtr order,
-                            const std::string& destination,
-                            const std::string& wallet_type,
-                            ledger::LegacyResultCallback callback) {
+void SKUTransaction::Run(mojom::SKUOrderPtr order,
+                         const std::string& destination,
+                         const std::string& wallet_type,
+                         ledger::LegacyResultCallback callback) {
   if (!order) {
-    BLOG(0, "Order is null");
-    callback(mojom::Result::LEDGER_ERROR);
-    return;
+    BLOG(0, "Order is null!");
+    return callback(mojom::Result::LEDGER_ERROR);
+  }
+
+  DCHECK(!order->contribution_id.empty());
+  auto on_maybe_create_transaction =
+      std::bind(&SKUTransaction::OnTransactionSaved, this, _1, _2, destination,
+                wallet_type, order->contribution_id, std::move(callback));
+
+  MaybeCreateTransaction(std::move(order), wallet_type,
+                         std::move(on_maybe_create_transaction));
+}
+
+void SKUTransaction::MaybeCreateTransaction(
+    mojom::SKUOrderPtr order,
+    const std::string& wallet_type,
+    MaybeCreateTransactionCallback callback) {
+  DCHECK(order);
+  ledger_->database()->GetSKUTransactionByOrderId(
+      order->order_id, std::bind(&SKUTransaction::OnGetSKUTransactionByOrderId,
+                                 this, std::move(callback), order->order_id,
+                                 wallet_type, order->total_amount, _1));
+}
+
+void SKUTransaction::OnGetSKUTransactionByOrderId(
+    MaybeCreateTransactionCallback callback,
+    const std::string& order_id,
+    const std::string& wallet_type,
+    double total_amount,
+    base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
+        result) {
+  if (result.has_value()) {
+    DCHECK(result.value());
+    return callback(mojom::Result::LEDGER_OK, *result.value());
+  }
+
+  switch (result.error()) {
+    case database::GetSKUTransactionError::kDatabaseError:
+      BLOG(0, "Failed to get SKU transaction from database!");
+      return callback(mojom::Result::LEDGER_ERROR, {});
+    case database::GetSKUTransactionError::kTransactionNotFound:
+      break;
   }
 
   auto transaction = mojom::SKUTransaction::New();
   transaction->transaction_id = base::GenerateGUID();
-  transaction->order_id = order->order_id;
+  transaction->order_id = order_id;
   transaction->type = GetTransactionTypeFromWalletType(wallet_type);
-  transaction->amount = order->total_amount;
+  transaction->amount = total_amount;
   transaction->status = mojom::SKUTransactionStatus::CREATED;
 
-  DCHECK(!order->contribution_id.empty());
-  auto save_callback =
-      std::bind(&SKUTransaction::OnTransactionSaved, this, _1, *transaction,
-                destination, wallet_type, order->contribution_id, callback);
+  auto on_save_sku_transaction =
+      std::bind(std::move(callback), _1, *transaction);
 
-  ledger_->database()->SaveSKUTransaction(transaction->Clone(), save_callback);
+  ledger_->database()->SaveSKUTransaction(std::move(transaction),
+                                          std::move(on_save_sku_transaction));
 }
 
 void SKUTransaction::OnTransactionSaved(

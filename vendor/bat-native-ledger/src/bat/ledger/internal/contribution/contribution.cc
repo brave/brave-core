@@ -663,9 +663,9 @@ void Contribution::SetRetryCounter(mojom::ContributionInfoPtr contribution) {
     return;
   }
 
-  if (contribution->retry_count == 3 &&
+  if (contribution->retry_count == 5 &&
       contribution->step != mojom::ContributionStep::STEP_PREPARE) {
-    BLOG(0, "Contribution failed after 3 retries");
+    BLOG(0, "Contribution failed after 5 retries");
     ContributionCompleted(mojom::Result::TOO_MANY_RESULTS,
                           std::move(contribution));
     return;
