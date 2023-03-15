@@ -44,7 +44,8 @@ enum FarbleKey : uint64_t {
 typedef absl::randen_engine<uint64_t> FarblingPRNG;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
-    ExecutionContext* context);
+    ExecutionContext* context,
+    bool require_filled_content_settings_rules = false);
 CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
                          BraveFarblingLevel default_value);
