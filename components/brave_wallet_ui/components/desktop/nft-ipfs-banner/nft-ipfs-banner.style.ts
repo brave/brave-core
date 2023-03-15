@@ -10,30 +10,24 @@ import BannerBackground from '../../../assets/svg-icons/nft-ipfs/banner-backgrou
 
 import { BannerStatus } from './nft-ipfs-banner'
 
-const getSuccessBackground = () => {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? '#15371B' // Leo Value: Dark/SystemFeedback/Success-Background
-    : '#E8F9EB' // Leo Value: Light/SystemFeedback/Success-Background
-}
-
-const getUploadingBackground = () => {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? '#063256' // Leo Value: Dark/SystemFeedback/Info-Background
-    : '#F0F7FC' // Leo Value: Light/SystemFeedback/Info-Background
-}
-
 export const StyledWrapper = styled.div<{ status: BannerStatus }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: flex-start;
+  --success-background: #E8F9EB;
+  --uploading-background: #F0F7FC;
+  @media (prefers-color-scheme: dark) {
+      --success-background: #15371B;
+      --uploading-background: #063256;
+  }
   background: ${(p) =>
     p.status === 'start'
       ? `url(${BannerBackground}) right 80px center/contain no-repeat, #1A1C3B`
       : p.status === 'uploading'
-      ? getUploadingBackground()
-      : getSuccessBackground()};
+      ? 'var(--uploading-background)'
+      : 'var(--success-background)'};
   border-radius: 8px;
   border-width: 0;
   height: 67px;
@@ -48,11 +42,11 @@ export const Text = styled.p<{ status: BannerStatus }>`
   font-size: 14px;
   line-height: 20px;
   align-items: center;
---text-color: #1D1F25;
-@media (prefers-color-scheme: dark) {
-  --text-color: #ECEFF2;
-}
-color: ${(p) => p.status === 'start' ? p.theme.palette.white : var(--text-color)};
+  --text-color: #1D1F25;
+  @media (prefers-color-scheme: dark) {
+    --text-color: #ECEFF2;
+  }
+  color: ${(p) => p.status === 'start' ? p.theme.palette.white : 'var(--text-color)'};
   padding: 0;
   margin: 0;
   max-width: 70%;
