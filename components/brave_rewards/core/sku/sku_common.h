@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "base/types/expected.h"
+#include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
@@ -40,8 +42,10 @@ class SKUCommon {
                               const std::string& order_id,
                               ledger::SKUOrderCallback callback);
 
-  void GetSKUTransactionByOrderId(mojom::SKUTransactionPtr transaction,
-                                  ledger::SKUOrderCallback callback);
+  void GetSKUTransactionByOrderId(
+      base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
+          result,
+      ledger::SKUOrderCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<SKUOrder> order_;

@@ -41,8 +41,7 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
   auto create_callback = std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
                                    order->order_id, callback);
 
-  transaction_->Create(order->Clone(), destination, wallet_type,
-                       create_callback);
+  transaction_->Run(order->Clone(), destination, wallet_type, create_callback);
 }
 
 void SKUCommon::OnTransactionCompleted(const mojom::Result result,
@@ -71,19 +70,22 @@ void SKUCommon::SendExternalTransaction(const std::string& order_id,
   ledger_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
 }
 
-void SKUCommon::GetSKUTransactionByOrderId(mojom::SKUTransactionPtr transaction,
-                                           ledger::SKUOrderCallback callback) {
+void SKUCommon::GetSKUTransactionByOrderId(
+    base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
+        result,
+    ledger::SKUOrderCallback callback) {
+  const auto transaction = std::move(result).value_or(nullptr);
   if (!transaction) {
-    BLOG(0, "Transaction is null");
-    callback(mojom::Result::LEDGER_ERROR, "");
-    return;
+    BLOG(0,
+         "Failed to get SKU transaction from database, or there's no "
+         "transaction with this order_id!");
+    return callback(mojom::Result::LEDGER_ERROR, "");
   }
 
-  auto create_callback = std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
-                                   transaction->order_id, callback);
-
-  transaction_->SendExternalTransaction(mojom::Result::LEDGER_OK, *transaction,
-                                        create_callback);
+  transaction_->SendExternalTransaction(
+      mojom::Result::LEDGER_OK, *transaction,
+      std::bind(&SKUCommon::OnTransactionCompleted, this, _1,
+                transaction->order_id, std::move(callback)));
 }
 
 }  // namespace sku
