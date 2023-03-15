@@ -32,6 +32,7 @@ extern const char kFilTransactionSentHistogramName[];
 extern const char kEthActiveAccountHistogramName[];
 extern const char kSolActiveAccountHistogramName[];
 extern const char kFilActiveAccountHistogramName[];
+extern const char kBraveWalletDailyHistogramName[];
 extern const char kBraveWalletWeeklyHistogramName[];
 extern const char kBraveWalletMonthlyHistogramName[];
 extern const char kBraveWalletNewUserReturningHistogramName[];
@@ -103,10 +104,7 @@ class BraveWalletP3A : public mojom::KeyringServiceObserver,
  private:
   void MigrateUsageProfilePrefsToLocalState();
   void OnUpdateTimerFired();
-  void WriteUsageStatsToHistogram(base::Time wallet_last_used,
-                                  base::Time first_p3a_used,
-                                  base::Time last_p3a_report,
-                                  unsigned use_days_in_week);
+  void WriteUsageStatsToHistogram();
   void RecordInitialBraveWalletP3AState();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;

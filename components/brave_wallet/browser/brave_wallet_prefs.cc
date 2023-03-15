@@ -76,9 +76,6 @@ base::Value::Dict GetDefaultHiddenNetworks() {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
@@ -118,19 +115,17 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
-  // TODO(djandries): remove the following prefs at some point,
-  //                  since they're now maintained in local state
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kPinnedNFTAssets);
   registry->RegisterBooleanPref(kAutoPinEnabled, false);
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
   registry->RegisterBooleanPref(kBraveWalletNftDiscoveryEnabled, false);
+}
+
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+  // Added 04/2023
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -170,6 +165,15 @@ void RegisterProfilePrefsForMigration(
 
   // Added 10/2022
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
+
+  // Added 11/2022
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
 
   // Added 12/2022
   registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
