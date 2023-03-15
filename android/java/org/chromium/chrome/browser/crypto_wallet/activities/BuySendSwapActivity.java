@@ -53,7 +53,6 @@ import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -115,6 +114,9 @@ import java.util.concurrent.Executors;
 public class BuySendSwapActivity extends BraveWalletBaseActivity
         implements AdapterView.OnItemSelectedListener, BarcodeTracker.BarcodeGraphicTrackerCallback,
                    ApprovedTxObserver {
+    public static final String ACTIVITY_TYPE = "activityType";
+    public static final String ASSET_SYMBOL = "swapFromAssetSymbol";
+    public static final String ASSET_CHAIN_ID = "ASSET_CHAIN";
     private static final String TAG = "BuySendSwap";
     private static final int RC_HANDLE_CAMERA_PERM = 113;
     // Intent request code to handle updating play services if needed.
@@ -128,35 +130,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private List<AccountInfo> mAllAccountInfos;
     private List<AccountInfo> mAccountInfos;
     private SendModel mSendModel;
-    private NetworkInfo[] mNetworks;
-
-    public enum ActivityType {
-        BUY(0),
-        SEND(1),
-        SWAP(2);
-
-        private int value;
-        private static Map map = new HashMap<>();
-
-        private ActivityType(int value) {
-            this.value = value;
-        }
-
-        static {
-            for (ActivityType activityType : ActivityType.values()) {
-                map.put(activityType.value, activityType);
-            }
-        }
-
-        public static ActivityType valueOf(int activityType) {
-            return (ActivityType) map.get(activityType);
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
+    private List<NetworkInfo> mNetworks;
+    private String mIntentChainId;
+    private boolean mCanUpdateAssetSymbol;
     public String mActivateAllowanceTxId;
     private ActivityType mActivityType;
     private AccountSpinnerAdapter mCustomAccountAdapter;
@@ -215,8 +191,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         mActivateAllowanceTxId = "";
         Intent intent = getIntent();
         mActivityType = ActivityType.valueOf(
-                intent.getIntExtra("activityType", ActivityType.BUY.getValue()));
-        mToAssetSymbol = getIntent().getStringExtra("swapFromAssetSymbol");
+                intent.getIntExtra(ACTIVITY_TYPE, ActivityType.BUY.getValue()));
+        mToAssetSymbol = getIntent().getStringExtra(ASSET_SYMBOL);
+
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
 
@@ -250,12 +227,14 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mSendModel = mWalletModel.getCryptoModel().createSendModel();
+            mIntentChainId = intent.getStringExtra(ASSET_CHAIN_ID);
+            updateNetworkPerAssetChain(mIntentChainId);
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
         mNetworkSpinner = findViewById(R.id.network_spinner);
-        mNetworkAdapter = new NetworkSpinnerAdapter(this, new NetworkInfo[0]);
+        mNetworkAdapter = new NetworkSpinnerAdapter(this, Collections.emptyList());
         mNetworkSpinner.setAdapter(mNetworkAdapter);
         mNetworkSpinner.setOnItemSelectedListener(this);
         mCustomAccountAdapter =
@@ -741,9 +720,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             getSendSwapQuota(true, false);
         }
     }
-    private void setSelectedNetwork(NetworkInfo networkInfo, NetworkInfo[] networkInfos) {
+    private void setSelectedNetwork(NetworkInfo networkInfo, List<NetworkInfo> networkInfos) {
         if (isSameSelectedNetwork(networkInfo)) return;
-        mNetworkSpinner.setSelection(getIndexOf(networkInfo, networkInfos));
+        mNetworkSpinner.setOnItemSelectedListener(null);
+        mNetworkSpinner.setSelection(getIndexOf(networkInfo, networkInfos), false);
+        mNetworkSpinner.setOnItemSelectedListener(this);
     }
 
     private boolean isSameSelectedNetwork(NetworkInfo networkInfo) {
@@ -754,9 +735,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         return false;
     }
 
-    private int getIndexOf(NetworkInfo selectedNetwork, NetworkInfo[] networksInfos) {
-        for (int i = 0; i < networksInfos.length; i++) {
-            NetworkInfo networkInfo = networksInfos[i];
+    private int getIndexOf(NetworkInfo selectedNetwork, List<NetworkInfo> networksInfos) {
+        for (int i = 0; i < networksInfos.size(); i++) {
+            NetworkInfo networkInfo = networksInfos.get(i);
             if (networkInfo.chainId.equals(selectedNetwork.chainId)
                     && networkInfo.coin == selectedNetwork.coin) {
                 return i;
@@ -1362,6 +1343,33 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         return new FilterTextFromToValueText(from);
     }
 
+    public enum ActivityType {
+        BUY(0),
+        SEND(1),
+        SWAP(2);
+
+        private int value;
+        private static Map map = new HashMap<>();
+
+        private ActivityType(int value) {
+            this.value = value;
+        }
+
+        static {
+            for (ActivityType activityType : ActivityType.values()) {
+                map.put(activityType.value, activityType);
+            }
+        }
+
+        public static ActivityType valueOf(int activityType) {
+            return (ActivityType) map.get(activityType);
+        }
+
+        public int getValue() {
+            return value;
+        }
+    }
+
     private class FilterTextFromToValueText implements TextWatcher {
         boolean mFrom;
 
@@ -1695,8 +1703,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
         mCustomAccountAdapter.setAccounts(mAccountInfos);
         if (mAccountInfos.size() > 0) {
+            mAccountSpinner.setOnItemSelectedListener(null);
             mAccountSpinner.setSelection(
-                    WalletUtils.getSelectedAccountIndex(mSelectedAccount, mAccountInfos));
+                    WalletUtils.getSelectedAccountIndex(mSelectedAccount, mAccountInfos), false);
         }
         mAccountSpinner.setOnItemSelectedListener(this);
         // Before updating, make sure we are on a network with the same coin type
@@ -1710,21 +1719,29 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         super.finishNativeInitialization();
         InitSwapService();
         assert mWalletModel != null;
-        mWalletModel.getCryptoModel().getNetworkModel().mChainNetworkAllNetwork.observe(
-                this, chainAllNetworksAllNetwork -> {
-                    if (mCurrentChainId != null
-                            && !mCurrentChainId.equals(chainAllNetworksAllNetwork.first)) {
-                        mToAssetSymbol = chainAllNetworksAllNetwork.second.symbol;
+        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
+                this, networkInfo -> {
+                    // Only use network symbol after network switch
+                    if (mIntentChainId == null || mCanUpdateAssetSymbol) {
+                        mToAssetSymbol = networkInfo.symbol;
                     }
-                    mCurrentChainId = chainAllNetworksAllNetwork.first;
-                    mSelectedNetwork = chainAllNetworksAllNetwork.second;
+                    if (mIntentChainId != null && mIntentChainId.equals(networkInfo.chainId)) {
+                        mCanUpdateAssetSymbol = true;
+                    }
+                });
+        mWalletModel.getCryptoModel().getNetworkModel().mChainNetworkAllNetwork.observe(
+                this, chainNetworkAllNetwork -> {
+                    if (JavaUtils.anyNull(
+                                chainNetworkAllNetwork.first, chainNetworkAllNetwork.second))
+                        return;
+                    mCurrentChainId = chainNetworkAllNetwork.first;
+                    mSelectedNetwork = chainNetworkAllNetwork.second;
                     mNetworks = mActivityType != ActivityType.SEND
                             ? mWalletModel.getCryptoModel()
                                       .getNetworkModel()
                                       .stripNoBuySwapNetworks(
-                                              chainAllNetworksAllNetwork.third, mActivityType)
-                            : chainAllNetworksAllNetwork.third;
-
+                                              chainNetworkAllNetwork.third, mActivityType)
+                            : chainNetworkAllNetwork.third;
                     mNetworkAdapter.setNetworks(mNetworks);
                     setSelectedNetwork(mSelectedNetwork, mNetworks);
 
@@ -1810,5 +1827,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mActivateAllowanceTxId = "";
             showSwapButtonText();
         }
+    }
+
+    private void updateNetworkPerAssetChain(String assetChainId) {
+        if (TextUtils.isEmpty(assetChainId)) return;
+        mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
+                assetChainId, hasSetNetwork -> {});
     }
 }

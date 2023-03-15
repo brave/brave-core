@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.app;
 
 import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_KEY;
 import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_MODE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -1245,15 +1246,28 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     // should only be called if the wallet is setup and unlocked
     public void openNetworkSelection() {
-        openNetworkSelection(DEFAULT_WALLET_NETWORK);
+        openNetworkSelection(DEFAULT_WALLET_NETWORK, null);
     }
 
-    // should only be called if the wallet is setup and unlocked
-    public void openNetworkSelection(NetworkSelectorModel.Mode mode) {
+    /**
+     * Open the network selector activity with key as an identifier to show the previously selected
+     * local network (if available otherwise All Networks as default) on {@link
+     * NetworkSelectorActivity}.
+     * @param mode Whether to open network selection for default/global network mode or
+     *          in local network selection mode i.e.
+     *          View <=> NetworkSelection state only with All Networks option.
+     * @param key as identifier to bind local state of NetworkSelection with the view. If null then
+     *         use global/default network selection mode.
+     ^ IMP: Should only be called if the wallet is setup and unlocked
+     */
+    public void openNetworkSelection(NetworkSelectorModel.Mode mode, String key) {
         Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // Either in global or local network selection mode
         braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_MODE, mode);
+        // To bind selection between the caller and NetworkSelection Activity for local state of
+        // network selection
+        braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_KEY, key);
         startActivity(braveNetworkSelectionIntent);
     }
 

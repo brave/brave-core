@@ -13,8 +13,6 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.OnRampProvider;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.mojo.bindings.Callbacks;
 
 import java.lang.UnsupportedOperationException;
@@ -127,7 +125,7 @@ public class TokenUtils {
             BlockchainToken[] filteredTokens =
                     filterTokens(selectedNetwork, tokens, tokenType, false);
             Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);
-            callback.call(filteredTokens);
+            callback.call(removeDuplicates(filteredTokens));
         });
     }
 
@@ -219,4 +217,27 @@ public class TokenUtils {
         else
             return token1.symbol.compareTo(token2.symbol);
     };
+
+    // Returns an array of available assets <b>per ramp provider</b> and removes duplicates with the
+    // same contract address using case insensitive contractAddress comparison.
+    private static BlockchainToken[] removeDuplicates(BlockchainToken[] walletListItemModelList) {
+        List<BlockchainToken> result = new ArrayList<>();
+        for (BlockchainToken item : walletListItemModelList) {
+            String contractAddress = item.contractAddress;
+            boolean duplicate = false;
+            for (BlockchainToken itemResult : result) {
+                // IMPORTANT: use `equalsIgnoreCase` to detect two contract addresses with different
+                // capitalization.
+                if (contractAddress.equalsIgnoreCase(itemResult.contractAddress)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            // Do not add duplicated item.
+            if (!duplicate) {
+                result.add(item);
+            }
+        }
+        return result.toArray(new BlockchainToken[0]);
+    }
 }

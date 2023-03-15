@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
+import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
 
@@ -97,5 +98,15 @@ public class AndroidUtils {
      */
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
+    /**
+     * Check if the fragment is safe to update its UI
+     * @param frag instance
+     * @return true if Fragment UI can be updated otherwise false
+     */
+    public static boolean canUpdateFragmentUi(Fragment frag) {
+        return !(frag.isRemoving() || frag.getActivity() == null || frag.isDetached()
+                || !frag.isAdded() || frag.getView() == null);
     }
 }

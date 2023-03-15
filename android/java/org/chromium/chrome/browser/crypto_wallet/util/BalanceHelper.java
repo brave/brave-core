@@ -185,7 +185,7 @@ public class BalanceHelper {
     }
 
     public static void getP3ABalances(WeakReference<BraveWalletBaseActivity> activityRef,
-            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork,
+            List<NetworkInfo> allNetworks, NetworkInfo selectedNetwork,
             Callbacks.Callback1<HashMap<Integer, HashSet<String>>> callback) {
         BraveWalletBaseActivity activity = activityRef.get();
         if (activity == null || activity.isFinishing()) return;

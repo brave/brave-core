@@ -10,6 +10,7 @@ import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -36,6 +37,8 @@ public class WalletListItemModel {
     private String mChainSymbol;
     private int mChainDecimals;
     private PortfolioModel.NftDataModel mNftDataModel;
+    private NetworkInfo mAssetNetwork;
+    private String mBrowserResPath;
 
     public WalletListItemModel(
             int icon, String title, String subTitle, String id, String text1, String text2) {
@@ -206,5 +209,31 @@ public class WalletListItemModel {
 
     public void setNftDataModel(PortfolioModel.NftDataModel mNftDataModel) {
         this.mNftDataModel = mNftDataModel;
+    }
+
+    public NetworkInfo getAssetNetwork() {
+        return mAssetNetwork;
+    }
+
+    public void setAssetNetwork(NetworkInfo mAssetNetwork) {
+        this.mAssetNetwork = mAssetNetwork;
+    }
+
+    public boolean isNativeAsset() {
+        if (mAssetNetwork == null || mBlockchainToken == null) return false;
+        return Utils.isNativeToken(mAssetNetwork, mBlockchainToken);
+    }
+
+    public void setBrowserResourcePath(String resPath) {
+        mBrowserResPath = resPath;
+    }
+
+    public String getBrowserResourcePath() {
+        return mBrowserResPath;
+    }
+
+    public String getNetworkIcon() {
+        if (mAssetNetwork == null || TextUtils.isEmpty(getBrowserResourcePath())) return "";
+        return "file://" + getBrowserResourcePath() + "/" + Utils.getNetworkIconName(mAssetNetwork);
     }
 }
