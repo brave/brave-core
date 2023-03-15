@@ -32,12 +32,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     return getTemplate()
   }
 
-  static get observers(){
-    return [
-      'onShowOptionChanged_(prefs.brave.wallet.auto_pin_enabled.value)'
-    ]
-  }
-
   static get properties() {
     return {
       isNativeWalletEnabled_: {
@@ -68,6 +62,12 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         value: 0,
       },
     }
+  }
+
+  static get observers(){
+    return [
+      'onShowOptionChanged_(prefs.brave.wallet.auto_pin_enabled.value)'
+    ]
   }
 
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
@@ -157,20 +157,12 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       { value: 'XDR' }
     ]
     this.currency_list_.every((x) => x.name = x.value);
-    window.addEventListener('load', this.onLoad_.bind(this));
-    if (document.readyState == 'complete') {
-      this.onLoad_()
-    }
-  }
-
-  onLoad_() {
-    this.onShowOptionChanged_()
   }
 
   private onShowOptionChanged_() {
     this.shouldShowClearNftButton_ =
-        this.isNftPinningEnabled_ &&
         !this.getPref('brave.wallet.auto_pin_enabled').value;
+
     this.browserProxy_.getPinnedNftCount().then(val => {
       this.pinnedNftCount_ = val
       this.shouldEnableClearNftButton_ = this.pinnedNftCount_ > 0
@@ -234,7 +226,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.clearPinnedNft().then(val => {
       this.onShowOptionChanged_()
     })
-    window.alert(this.i18n('walletClearPinnedNftConfirmed'))
   }
 }
 
