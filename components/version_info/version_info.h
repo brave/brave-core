@@ -8,10 +8,16 @@
 
 #include <string>
 
+#include "brave/components/version_info/version_info_values.h"
+
 namespace version_info {
 
 std::string GetBraveVersionWithoutChromiumMajorVersion();
-std::string GetBraveVersionNumberForDisplay();
+
+constexpr std::string GetBraveVersionNumberForDisplay() {
+  return constants::kBraveVersionNumberForDisplay;
+}
+
 std::string GetBraveChromiumVersionNumber();
 
 }  // namespace version_info

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/version_info/version_info.h"
+#include "components/version_info/version_info.h"
 
 #define GetVersionNumber GetBraveVersionNumberForDisplay
 #include "src/chrome/browser/ui/webui/crashes_ui.cc"
