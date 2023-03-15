@@ -128,8 +128,8 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     }
 
     public void discoverAssetsOnAllSupportedChains() {
-        if (mBraveWalletService == null) return;
-        _mIsDiscoveringUserAssets.postValue(true);
+        if (mBraveWalletService == null || _mIsDiscoveringUserAssets.getValue()) return;
+        _mIsDiscoveringUserAssets.setValue(true);
         mBraveWalletService.discoverAssetsOnAllSupportedChains();
     }
 

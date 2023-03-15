@@ -34,7 +34,7 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class PortfolioHelper {
-    private static String TAG = "PortfolioHelper";
+    private static final String TAG = "PortfolioHelper";
     private final WeakReference<BraveWalletBaseActivity> mActivity;
     private NetworkInfo mSelectedNetwork;
     private AccountInfo[] mAccountInfos;
