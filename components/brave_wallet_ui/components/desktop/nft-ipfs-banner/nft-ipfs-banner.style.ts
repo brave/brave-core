@@ -48,7 +48,11 @@ export const Text = styled.p<{ status: BannerStatus }>`
   font-size: 14px;
   line-height: 20px;
   align-items: center;
-  color: ${(p) => (p.status === 'start' ? p.theme.palette.white : window.matchMedia('(prefers-color-scheme: dark)').matches ? '#ECEFF2' : '#1D1F25')};
+--text-color: #1D1F25;
+@media (prefers-color-scheme: dark) {
+  --text-color: #ECEFF2;
+}
+color: ${(p) => p.status === 'start' ? p.theme.palette.white : var(--text-color)};
   padding: 0;
   margin: 0;
   max-width: 70%;
