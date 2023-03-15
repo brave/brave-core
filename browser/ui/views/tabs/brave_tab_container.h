@@ -41,6 +41,7 @@ class BraveTabContainer : public TabContainerImpl {
   void OnTabCloseAnimationCompleted(Tab* tab) override;
   void CompleteAnimationAndLayout() override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
+  void PaintChildren(const views::PaintInfo& paint_info) override;
 
  private:
   void UpdateLayoutOrientation();

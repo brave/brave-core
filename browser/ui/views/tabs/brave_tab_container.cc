@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 
 #include <algorithm>
+#include <vector>
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -325,6 +326,32 @@ void BraveTabContainer::OnPaintBackground(gfx::Canvas* canvas) {
   }
 
   canvas->DrawColor(GetColorProvider()->GetColor(kColorToolbar));
+}
+
+void BraveTabContainer::PaintChildren(const views::PaintInfo& paint_info) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    TabContainerImpl::PaintChildren(paint_info);
+    return;
+  }
+
+  // Exclude tabs that own layer.
+  std::vector<ZOrderableTabContainerElement> orderable_children;
+  for (views::View* child : children()) {
+    if (!ZOrderableTabContainerElement::CanOrderView(child)) {
+      continue;
+    }
+    if (child->layer()) {
+      continue;
+    }
+
+    orderable_children.emplace_back(child);
+  }
+
+  std::stable_sort(orderable_children.begin(), orderable_children.end());
+
+  for (const ZOrderableTabContainerElement& child : orderable_children) {
+    child.view()->Paint(paint_info);
+  }
 }
 
 BEGIN_METADATA(BraveTabContainer, TabContainerImpl)
