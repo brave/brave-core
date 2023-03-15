@@ -1682,6 +1682,30 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddIsNFT) {
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletUserAssetsAddIsNFTMigrated));
 }
 
+TEST_F(BraveWalletServiceUnitTest, MigradeDefaultHiddenNetworks) {
+  ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
+            0);
+  BraveWalletService::MigrateHiddenNetworks(GetPrefs());
+  {
+    auto* list =
+        GetPrefs()->GetDict(kBraveWalletHiddenNetworks).FindList("ethereum");
+    ASSERT_NE(std::find_if(list->begin(), list->end(),
+                           [](const auto& v) { return v == "0x4cb2f"; }),
+              list->end());
+  }
+  ASSERT_EQ(GetPrefs()->GetInteger(kBraveWalletDefaultHiddenNetworksVersion),
+            1);
+  RemoveHiddenNetwork(GetPrefs(), mojom::CoinType::ETH, "0x4cb2f");
+  BraveWalletService::MigrateHiddenNetworks(GetPrefs());
+  {
+    auto* list =
+        GetPrefs()->GetDict(kBraveWalletHiddenNetworks).FindList("ethereum");
+    ASSERT_EQ(std::find_if(list->begin(), list->end(),
+                           [](const auto& v) { return v == "0x4cb2f"; }),
+              list->end());
+  }
+}
+
 TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
   EXPECT_EQ(GetLocalState()->GetTime(kBraveWalletP3ALastReportTime),
             base::Time::Now());
