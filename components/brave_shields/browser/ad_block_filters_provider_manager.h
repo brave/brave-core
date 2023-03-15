@@ -12,7 +12,6 @@
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/singleton.h"
-#include "base/observer_list.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_filters_provider.h"

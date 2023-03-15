@@ -9,11 +9,7 @@
 #include <string>
 
 #include "base/functional/callback.h"
-#include "base/observer_list.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace component_updater {
 class ComponentUpdateService;

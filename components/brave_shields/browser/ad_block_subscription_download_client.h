@@ -23,7 +23,7 @@ class AdBlockSubscriptionDownloadManager;
 
 class AdBlockSubscriptionDownloadClient : public download::Client {
  public:
-  AdBlockSubscriptionDownloadClient(
+  explicit AdBlockSubscriptionDownloadClient(
       AdBlockSubscriptionServiceManager* subscription_manager);
   ~AdBlockSubscriptionDownloadClient() override;
   AdBlockSubscriptionDownloadClient(const AdBlockSubscriptionDownloadClient&) =

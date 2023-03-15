@@ -10,7 +10,6 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
-#include "content/public/browser/browser_task_traits.h"
 
 constexpr char kRegionalCatalogFile[] = "regional_catalog.json";
 

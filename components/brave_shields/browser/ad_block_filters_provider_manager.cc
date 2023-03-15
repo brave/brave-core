@@ -37,7 +37,7 @@ AdBlockFiltersProviderManager* AdBlockFiltersProviderManager::GetInstance() {
   return base::Singleton<AdBlockFiltersProviderManager>::get();
 }
 
-AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() {}
+AdBlockFiltersProviderManager::AdBlockFiltersProviderManager() = default;
 
 AdBlockFiltersProviderManager::~AdBlockFiltersProviderManager() = default;
 

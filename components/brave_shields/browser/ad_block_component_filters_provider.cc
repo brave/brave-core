@@ -10,12 +10,10 @@
 #include <utility>
 
 #include "base/files/file_path.h"
-#include "base/logging.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
 #include "components/component_updater/component_updater_service.h"
-#include "content/public/browser/browser_task_traits.h"
 
 constexpr char kListFile[] = "list.txt";
 
@@ -44,7 +42,7 @@ AdBlockComponentFiltersProvider::AdBlockComponentFiltersProvider(
                                       catalog_entry.base64_public_key,
                                       catalog_entry.title) {}
 
-AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() {}
+AdBlockComponentFiltersProvider::~AdBlockComponentFiltersProvider() = default;
 
 void AdBlockComponentFiltersProvider::UnregisterComponent() {
   // Can be nullptr in unit tests

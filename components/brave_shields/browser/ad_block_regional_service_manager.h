@@ -12,17 +12,12 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_filter_list_catalog_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_filters_provider_manager.h"
 #include "components/prefs/pref_service.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
-#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
-#include "url/gurl.h"
 
 class AdBlockServiceTest;
 

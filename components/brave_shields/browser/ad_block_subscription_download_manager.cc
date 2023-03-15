@@ -12,13 +12,9 @@
 #include "base/functional/bind.h"
 #include "base/guid.h"
 #include "base/metrics/histogram_functions.h"
-#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "build/build_config.h"
 #include "components/download/public/background_service/background_download_service.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
 namespace brave_shields {

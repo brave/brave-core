@@ -12,7 +12,7 @@ namespace brave_shields {
 
 class AdBlockSubscriptionServiceManagerObserver : public base::CheckedObserver {
  public:
-  ~AdBlockSubscriptionServiceManagerObserver() override {}
+  ~AdBlockSubscriptionServiceManagerObserver() override = default;
   virtual void OnServiceUpdateEvent() {}
 };
 
