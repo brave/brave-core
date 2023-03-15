@@ -27,8 +27,10 @@
 {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} = {{const|const_objc_assign}};
 {% endfor %}
 
+{%- if generate_namespace %}
 @implementation _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}}
 @end
+{%- endif %}
 
 {%- for struct in structs %}
 {%    include "private_struct_implementation.tmpl" %}
