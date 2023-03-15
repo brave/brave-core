@@ -20,21 +20,15 @@ class BraveGM2TabStyle : public GM2TabStyle {
 
  protected:
   TabStyle::TabColors CalculateColors() const override;
-  const gfx::FontList& GetFontList() const override;
 
   Tab* tab() { return base::to_address(tab_); }
   const Tab* tab() const { return base::to_address(tab_); }
 
  private:
   raw_ptr<Tab> tab_;
-  gfx::FontList active_tab_font_;
 };
 
-BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab)
-    : GM2TabStyle(tab),
-      tab_(tab),
-      active_tab_font_(
-          normal_font_.DeriveWithWeight(gfx::Font::Weight::MEDIUM)) {}
+BraveGM2TabStyle::BraveGM2TabStyle(Tab* tab) : GM2TabStyle(tab), tab_(tab) {}
 
 TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
   auto colors = GM2TabStyle::CalculateColors();
@@ -47,14 +41,6 @@ TabStyle::TabColors BraveGM2TabStyle::CalculateColors() const {
   SkColor final_bg_color = colors.background_color;
   return {final_fg_color, final_bg_color, colors.focus_ring_color,
           colors.close_button_focus_ring_color};
-}
-
-const gfx::FontList& BraveGM2TabStyle::GetFontList() const {
-  const auto& font_list = GM2TabStyle::GetFontList();
-  if (&font_list == &normal_font_ && tab_->IsActive()) {
-    return active_tab_font_;
-  }
-  return font_list;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
