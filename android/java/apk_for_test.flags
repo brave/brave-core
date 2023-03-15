@@ -84,11 +84,13 @@
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
+    *** mProfile;
     *** getSearchEngineSourceType(...);
     *** sortAndFilterUnnecessaryTemplateUrl(...);
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineSettings {
+    *** mProfile;
     *** mSearchEngineAdapter;
     *** createAdapterIfNecessary(...);
 }

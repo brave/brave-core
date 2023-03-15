@@ -541,9 +541,6 @@ public class BytecodeTest {
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/search_engines/TemplateUrlServiceFactory",
-                        "get", true, TemplateUrlService.class));
-        Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/paint_preview/StartupPaintPreviewHelper",
                         "isEnabled", true, boolean.class));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/tab/TabHelpers",
@@ -917,6 +914,12 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
                 "mToolbarView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "mProfile"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
+                "mProfile"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "mSearchEngineAdapter"));
