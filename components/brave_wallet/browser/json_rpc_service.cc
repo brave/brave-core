@@ -323,6 +323,7 @@ void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
   eth_list->EraseValue(base::Value(mojom::kGoerliChainId));
   eth_list->EraseValue(base::Value(mojom::kSepoliaChainId));
   eth_list->EraseValue(base::Value(mojom::kLocalhostChainId));
+  eth_list->EraseValue(base::Value(mojom::kFilecoinEthereumTestnetChainId));
 
   auto* fil_list = dict.EnsureList(kFilecoinPrefKey);
   fil_list->EraseValue(base::Value(mojom::kFilecoinTestnet));

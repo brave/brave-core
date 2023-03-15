@@ -884,7 +884,8 @@ export const SupportedTestNetworks = [
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
-  BraveWallet.FILECOIN_TESTNET
+  BraveWallet.FILECOIN_TESTNET,
+  BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
 ]
 
 export enum CoinTypesMap {
