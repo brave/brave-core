@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/components/commands/common/accelerator_parsing.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -26,7 +27,7 @@ class AcceleratorPrefManagerTest : public testing::Test {
 };
 
 TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
-  constexpr char accelerator1[] = "Shift+Alt+KeyC";
+  ui::Accelerator accelerator1 = commands::FromCodesString("Shift+Alt+KeyC");
   EXPECT_EQ(0u, manager().GetAccelerators().size());
   manager().AddAccelerator(1, accelerator1);
 
@@ -36,7 +37,7 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
   ASSERT_EQ(1u, accelerators[1].size());
   EXPECT_EQ(accelerator1, accelerators[1][0]);
 
-  constexpr char accelerator2[] = "Ctrl+Cmd+KeyH";
+  ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+Cmd+KeyH");
   manager().AddAccelerator(1, accelerator2);
 
   accelerators = manager().GetAccelerators();
@@ -46,7 +47,7 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
   EXPECT_EQ(accelerator1, accelerators[1][0]);
   EXPECT_EQ(accelerator2, accelerators[1][1]);
 
-  constexpr char accelerator3[] = "Ctrl+KeyM";
+  ui::Accelerator accelerator3 = commands::FromCodesString("Ctrl+KeyM");
   manager().AddAccelerator(100, accelerator3);
 
   accelerators = manager().GetAccelerators();
@@ -61,9 +62,9 @@ TEST_F(AcceleratorPrefManagerTest, CanAddAccelerators) {
 }
 
 TEST_F(AcceleratorPrefManagerTest, CanRemoveAccelerators) {
-  constexpr char accelerator1[] = "Shift+Alt+KeyC";
-  constexpr char accelerator2[] = "Ctrl+Cmd+KeyH";
-  constexpr char accelerator3[] = "Ctrl+KeyM";
+  ui::Accelerator accelerator1 = commands::FromCodesString("Shift+Alt+KeyC");
+  ui::Accelerator accelerator2 = commands::FromCodesString("Ctrl+Cmd+KeyH");
+  ui::Accelerator accelerator3 = commands::FromCodesString("Ctrl+KeyM");
   manager().AddAccelerator(1, accelerator1);
   manager().AddAccelerator(1, accelerator2);
   manager().AddAccelerator(100, accelerator3);
