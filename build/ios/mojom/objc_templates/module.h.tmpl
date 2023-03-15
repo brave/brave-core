@@ -49,11 +49,13 @@ OBJC_EXPORT {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} NS_S
 {# Define a namespace class for Swift types to use.
    We have to define the type as unique to this module even though the renamed Swift type will be
    the same for all wrappers that use the same namespace #}
+{%- if generate_namespace %}
 OBJC_EXPORT
 NS_SWIFT_NAME({{class_prefix}})
 @interface _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}} : NSObject
 - (instancetype)init NS_UNAVAILABLE;
 @end
+{%- endif %}
 
 {%- for struct in structs %}
 {%    include "struct_declaration.tmpl" %}
