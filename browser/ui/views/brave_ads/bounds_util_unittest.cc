@@ -15,20 +15,20 @@ namespace brave_ads {
 
 namespace {
 
-constexpr gfx::Point work_area_origin(20, 10);
-constexpr gfx::Size work_area_size(2000, 1000);
-constexpr gfx::Size bounds_size(100, 50);
-constexpr int shift_x = 300;
-constexpr int shift_y = 200;
+constexpr gfx::Point kWorkAreaOrigin(20, 10);
+constexpr gfx::Size kWorkAreaSize(2000, 1000);
+constexpr gfx::Size kBoundsSize(100, 50);
+constexpr int kShiftX = 300;
+constexpr int kShiftY = 200;
 
 }  // namespace
 
 TEST(BoundsUtilTest, CheckSnapBoundsToEdgeOfWorkArea) {
-  const gfx::Rect work_area(work_area_origin, work_area_size);
-  gfx::Rect bounds(bounds_size);
+  const gfx::Rect work_area(kWorkAreaOrigin, kWorkAreaSize);
+  gfx::Rect bounds(kBoundsSize);
 
   // Position near the left edge.
-  gfx::Point initial_origin(work_area.x() + shift_x,
+  gfx::Point initial_origin(work_area.x() + kShiftX,
                             work_area.y() + work_area.height() / 2);
   bounds.set_origin(initial_origin);
   SnapBoundsToEdgeOfWorkArea(work_area, &bounds);
@@ -36,7 +36,7 @@ TEST(BoundsUtilTest, CheckSnapBoundsToEdgeOfWorkArea) {
   EXPECT_EQ(initial_origin.y(), bounds.y());
 
   // Position near the right edge.
-  initial_origin = gfx::Point(work_area.width() - shift_x,
+  initial_origin = gfx::Point(work_area.width() - kShiftX,
                               work_area.y() + work_area.height() / 2);
   bounds.set_origin(initial_origin);
   SnapBoundsToEdgeOfWorkArea(work_area, &bounds);
@@ -45,7 +45,7 @@ TEST(BoundsUtilTest, CheckSnapBoundsToEdgeOfWorkArea) {
 
   // Position near the top edge.
   initial_origin = gfx::Point(work_area.x() + work_area.height() / 2,
-                              work_area.y() + shift_y);
+                              work_area.y() + kShiftY);
   bounds.set_origin(initial_origin);
   SnapBoundsToEdgeOfWorkArea(work_area, &bounds);
   EXPECT_EQ(initial_origin.x(), bounds.x());
@@ -53,7 +53,7 @@ TEST(BoundsUtilTest, CheckSnapBoundsToEdgeOfWorkArea) {
 
   // Position near the bottom edge.
   initial_origin = gfx::Point(work_area.x() + work_area.height() / 2,
-                              work_area.height() - shift_y);
+                              work_area.height() - kShiftY);
   bounds.set_origin(initial_origin);
   SnapBoundsToEdgeOfWorkArea(work_area, &bounds);
   EXPECT_EQ(initial_origin.x(), bounds.x());
