@@ -9,17 +9,19 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/span.h"
+
 namespace commands {
 
 // Gets the command ids of all commands which don't require parameters and can
 // be executed in the main browser window. This is used for listing the
 // shortcuts available to users and will eventually be used to allow configuring
 // shortcuts.
-const std::vector<int>& GetCommands();
+const base::span<const int>& GetCommands();
 
 // Gets a string representing a command. In future this will be translated, but
 // while we're prototyping the feature it will always returns English strings.
-const std::string& GetCommandName(int command_id);
+std::string GetCommandName(int command_id);
 
 }  // namespace commands
 
