@@ -307,51 +307,42 @@ final public class ContentBlockerManager: Sendable {
     return ruleList
   }
   
-  /// Return the enabled rule types for this domain and the enabled settings
-  @MainActor public func compiledRuleTypes(for domain: Domain) -> Set<RuleTypeWithSourceType> {
+  @MainActor public func enabledRuleTypes(for domain: Domain) -> Set<ContentBlockerManager.BlocklistRuleType> {
     let filterLists = FilterListResourceDownloader.shared.filterLists
     
     if domain.shield_allOff == 1 {
       return []
     }
     
-    var results = Set<RuleTypeWithSourceType>()
+    var results = Set<ContentBlockerManager.BlocklistRuleType>()
 
     // Get domain specific rule types
     if domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) {
-      if let sourceType = self.sourceType(for: .general(.blockAds)) {
-        results.insert(RuleTypeWithSourceType(ruleType: .general(.blockAds), sourceType: sourceType))
-      }
-      
-      if let sourceType = self.sourceType(for: .general(.blockTrackers)) {
-        results.insert(RuleTypeWithSourceType(ruleType: .general(.blockTrackers), sourceType: sourceType))
-      }
+      results.insert(.general(.blockAds))
+      results.insert(.general(.blockTrackers))
     }
     
     // Get filter list specific rule types
     filterLists.forEach { filterList in
       guard filterList.isEnabled else { return }
-      let ruleType = filterList.makeRuleType()
-      
-      guard let sourceType = self.sourceType(for: ruleType) else {
-        return
-      }
-      
-      guard cachedRuleList(for: ruleType) != nil else {
-        return
-      }
-      
-      results.insert(RuleTypeWithSourceType(ruleType: ruleType, sourceType: sourceType))
+      results.insert(filterList.makeRuleType())
     }
     
     // Get global rule types
     if Preferences.Privacy.blockAllCookies.value {
-      if let sourceType = sourceType(for: .general(.blockCookies)) {
-        results.insert(RuleTypeWithSourceType(ruleType: .general(.blockCookies), sourceType: sourceType))
-      }
+      results.insert(.general(.blockCookies))
     }
     
     return results
+  }
+  
+  /// Return the enabled rule types for this domain and the enabled settings
+  @MainActor public func ruleLists(for domain: Domain) -> Set<WKContentRuleList> {
+    let ruleTypes = enabledRuleTypes(for: domain)
+    
+    return Set(ruleTypes.compactMap { ruleType in
+      return self.cachedRuleList(for: ruleType)
+    })
   }
   
   /// Return a source type for the given rule type
@@ -367,41 +358,13 @@ final public class ContentBlockerManager: Sendable {
   }
   
   /// Get the cached rule list for this rule type. Returns nil if it's either not compiled or there were errors during compilation
-  public func cachedRuleList(for ruleType: BlocklistRuleType) -> WKContentRuleList? {
+  private func cachedRuleList(for ruleType: BlocklistRuleType) -> WKContentRuleList? {
     guard let compileResult = cachedCompileResults[ruleType.identifier] else { return nil }
     
     switch compileResult.result {
     case .success(let ruleList): return ruleList
     case .failure: return nil
     }
-  }
-  
-  /// Load the rule lists for the given rule types
-  public func loadRuleLists(for ruleTypes: Set<BlocklistRuleType>) async -> [WKContentRuleList] {
-    return await withTaskGroup(of: WKContentRuleList?.self) { group in
-      for ruleType in ruleTypes {
-        group.addTask {
-          do {
-            return try await self.loadRuleList(for: ruleType)
-          } catch {
-            Self.log.error("\(error.localizedDescription)")
-            return nil
-          }
-        }
-      }
-      
-      var results: [WKContentRuleList] = []
-      for await ruleList in group {
-        guard let ruleList = ruleList else { continue }
-        results.append(ruleList)
-      }
-      return results
-    }
-  }
-  
-  /// Load the rule list for the given rule type
-  public func loadRuleList(for ruleType: BlocklistRuleType) async throws -> WKContentRuleList? {
-    return try await ruleStore.contentRuleList(forIdentifier: ruleType.identifier)
   }
 
   /// Compile the data and set it for the given general type.
@@ -425,45 +388,44 @@ final public class ContentBlockerManager: Sendable {
   #if DEBUG
   /// A method that logs info on the given resources
   private func debug(resources: [String: Resource]) {
-    let resourcesString = resources
+    Self.log.debug("Compiled \(resources.count) block list resources:")
+    
+    resources
       .sorted(by: { lhs, rhs in
         lhs.value.url.absoluteString < rhs.value.url.absoluteString
       })
-      .map { identifier, compiledResource -> String in
-        let sourceString: String
-        let versionString: String
+      .forEach { identifier, compiledResource in
         let resultString: String
-        
-        switch compiledResource.sourceType {
-        case .bundled:
-          sourceString = "bundled"
-          versionString = "nil"
-        case .downloaded(let version):
-          sourceString = "downloaded"
-          versionString = version ?? "nil"
-        }
         
         switch self.cachedCompileResults[identifier]?.result {
         case .failure(let error):
           resultString = error.localizedDescription
         case .success:
-          resultString = "success"
+          resultString = "✔︎"
         case .none:
-          resultString = "nil"
+          resultString = "?"
         }
         
         let resourcesDebugString = [
-          "identifier: \(identifier)",
-          "fileName: \(compiledResource.url.lastPathComponent)",
-          "source: \(sourceString)",
-          "version: \(versionString)",
-          "result: \(resultString)"
-        ].joined(separator: ", ")
+          identifier, compiledResource.sourceType.debugDescription,
+          resultString
+        ].joined(separator: " ")
         
-        return ["{", resourcesDebugString, "}"].joined()
-      }.joined(separator: ", ")
-
-    Self.log.debug("Compiled \(resources.count, privacy: .public) additional block list resources: \(resourcesString, privacy: .public))")
+        Self.log.debug(" \(resourcesDebugString)")
+      }
   }
   #endif
 }
+
+#if DEBUG
+extension ContentBlockerManager.BlocklistSourceType: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    switch self {
+    case .bundled:
+      return "bundled"
+    case .downloaded(let version):
+      return version ?? "nil"
+    }
+  }
+}
+#endif

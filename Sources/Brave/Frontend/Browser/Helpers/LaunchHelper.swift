@@ -27,6 +27,10 @@ public actor LaunchHelper {
     
     // Otherwise prepare the services and await the task
     let task = Task {
+      #if DEBUG
+      let startTime = CFAbsoluteTimeGetCurrent()
+      #endif
+      
       // Load cached data
       // This is done first because compileResources and loadCachedRuleLists need their results
       async let loadBundledResources: Void = ContentBlockerManager.shared.loadBundledResources()
@@ -38,6 +42,11 @@ public actor LaunchHelper {
       async let compiledResourcesCompile: Void = AdBlockEngineManager.shared.compileResources()
       async let cachedRuleListLoad: Void = ContentBlockerManager.shared.loadCachedRuleLists()
       _ = await (compiledResourcesCompile, cachedRuleListLoad)
+      
+      #if DEBUG
+      let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+      ContentBlockerManager.log.debug("Adblock loaded: \(timeElapsed)s")
+      #endif
       
       // This one is non-blocking
       performPostLoadTasks(adBlockService: adBlockService)
