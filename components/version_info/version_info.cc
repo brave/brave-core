@@ -5,19 +5,20 @@
 
 #include "brave/components/version_info/version_info.h"
 
+#include "brave/components/version_info/version_info_values.h"
+
 namespace version_info {
 
 std::string GetBraveVersionWithoutChromiumMajorVersion() {
-  return std::string(BRAVE_BROWSER_VERSION);
+  return constants::kBraveBrowserVersion;
 }
 
 std::string GetBraveVersionNumberForDisplay() {
-  return std::string(BRAVE_BROWSER_VERSION) +
-         "  Chromium: " + BRAVE_CHROMIUM_VERSION;
+  return constants::kBraveVersionNumberForDisplay;
 }
 
 std::string GetBraveChromiumVersionNumber() {
-  return std::string(BRAVE_CHROMIUM_VERSION);
+  return constants::kBraveChromiumVersion;
 }
 
 }  // namespace version_info

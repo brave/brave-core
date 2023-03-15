@@ -1,0 +1,17 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_VERSION_INFO_VERSION_INFO_VALUES_H_
+#define BRAVE_COMPONENTS_VERSION_INFO_VERSION_INFO_VALUES_H_
+
+namespace version_info {
+namespace constants {
+constexpr char kBraveBrowserVersion[] = "@BRAVE_BROWSER_VERSION@";
+constexpr char kBraveChromiumVersion[] = "@BRAVE_CHROMIUM_VERSION@";
+constexpr char kBraveVersionNumberForDisplay[] = "@BRAVE_BROWSER_VERSION@ Chromium: @BRAVE_CHROMIUM_VERSION@";
+}  // namespace constants
+}  // namespace version_info
+
+#endif  // BRAVE_COMPONENTS_VERSION_INFO_VERSION_INFO_VALUES_H_
