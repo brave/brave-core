@@ -26,6 +26,9 @@ def parse_args():
     parser.add_argument('--mojom-module', nargs=1)
     parser.add_argument('--output-dir', nargs=1)
     parser.add_argument('--bytecode-path', nargs=1)
+    parser.add_argument('--no-namespace-generation',
+                        default=False,
+                        action='store_true')
     parser.add_argument('--exclude', nargs=1, required=False)
     return parser.parse_args()
 
@@ -45,6 +48,7 @@ def main():
     mojom_module = args.mojom_module[0]
     output_dir = args.output_dir[0]
     bytecode_path = args.bytecode_path[0]
+    generate_namespace = not args.no_namespace_generation
     excluded = args.exclude[0] if args.exclude else ""
 
     generator_module = importlib.import_module('mojom_objc_generator')
@@ -52,6 +56,7 @@ def main():
     generator = generator_module.Generator(None)
     generator.bytecode_path = bytecode_path
     generator.excludedTypes = excluded.split(',')
+    generator.generateNamespace = generate_namespace
     generator.typemap = load_cpp_typemap_info(mojom_module)
     with open(mojom_module, 'rb') as f:
         generator.module = Module.Load(f)

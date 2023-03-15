@@ -38,6 +38,10 @@ template("ios_objc_mojom_wrappers") {
     ]
   }
 
+  generate_namespace = true
+  if (defined(invoker.generate_namespace)) {
+    generate_namespace = invoker.generate_namespace
+  }
   generate_wrappers_target = "${target_name}_generate_wrappers"
 
   action_foreach(generate_wrappers_target) {
@@ -60,6 +64,9 @@ template("ios_objc_mojom_wrappers") {
       "--output-dir=$mojom_output_dir",
       "--bytecode-path=$bytecode_path",
     ]
+    if (!generate_namespace) {
+      args += [ "--no-namespace-generation" ]
+    }
     if (defined(invoker.exclude_types)) {
       _excluded_types = string_join(",", invoker.exclude_types)
       args += [ "--exclude=$_excluded_types" ]
