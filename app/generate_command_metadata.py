@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import optparse
+import argparse
 from os import path
 
 # Prefix indicating the line is a command
@@ -113,23 +113,23 @@ def generate_command_info(command_definition_files, template_file):
 
 
 def main():
-    parser = optparse.OptionParser(
-        usage="%prog [...command_definition_files] [options]")
-    parser.add_option(
+    parser = argparse.ArgumentParser()
+    parser.add_argument("definitions", nargs='+')
+    parser.add_argument(
         '--output_cc',
         help=
         "The path to output the CC file to. Note: The header is not generated.")
-    parser.add_option(
+    parser.add_argument(
         '--template_cc',
         help="""The path of the CC file template. TEMPLATE_PLACEHOLDER will be
             replaced by the command definitions""")
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    cc_contents = generate_command_info(args, options.template_cc)
+    cc_contents = generate_command_info(args.definitions, args.template_cc)
 
-    if options.output_cc:
-        with open(options.output_cc, 'w') as f:
+    if args.output_cc:
+        with open(args.output_cc, 'w') as f:
             f.write(cc_contents)
     else:
         print(cc_contents)
