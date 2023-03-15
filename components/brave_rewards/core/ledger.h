@@ -263,14 +263,14 @@ class Ledger {
   virtual void GetRewardsInternalsInfo(
       RewardsInternalsInfoCallback callback) = 0;
 
-  // DEPRECATED: Use `SetMonthlyContribution` instead.
+  // DEPRECATED: Use `SendContribution` instead.
   virtual void SaveRecurringTip(mojom::RecurringTipPtr info,
                                 LegacyResultCallback callback) = 0;
 
-  virtual void SetMonthlyContribution(
-      const std::string& publisher_id,
-      double amount,
-      base::OnceCallback<void(bool)> callback) = 0;
+  virtual void SendContribution(const std::string& publisher_id,
+                                double amount,
+                                bool set_monthly,
+                                base::OnceCallback<void(bool)> callback) = 0;
 
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
 

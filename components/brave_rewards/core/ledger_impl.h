@@ -193,9 +193,10 @@ class LedgerImpl : public Ledger {
   void SaveRecurringTip(mojom::RecurringTipPtr info,
                         LegacyResultCallback callback) override;
 
-  void SetMonthlyContribution(const std::string& publisher_id,
-                              double amount,
-                              base::OnceCallback<void(bool)> callback) override;
+  void SendContribution(const std::string& publisher_id,
+                        double amount,
+                        bool set_monthly,
+                        base::OnceCallback<void(bool)> callback) override;
 
   void GetRecurringTips(PublisherInfoListCallback callback) override;
 

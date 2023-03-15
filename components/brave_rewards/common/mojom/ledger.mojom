@@ -221,7 +221,8 @@ enum Result {
   CONTINUE = 32,
   IN_PROGRESS= 33,
   REWARDS_OFF = 34,
-  AC_OFF = 35
+  AC_OFF = 35,
+  RETRY_PENDING_TRANSACTION = 36
 };
 
 enum PublisherStatus {

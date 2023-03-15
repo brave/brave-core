@@ -47,9 +47,10 @@ class Contribution {
 
   void StartContributionsForTesting();
 
-  void SetMonthlyContribution(const std::string& publisher_id,
-                              double amount,
-                              base::OnceCallback<void(bool)> callback);
+  void SendContribution(const std::string& publisher_id,
+                        double amount,
+                        bool set_monthly,
+                        base::OnceCallback<void(bool)> callback);
 
   void ContributionCompleted(const mojom::Result result,
                              mojom::ContributionInfoPtr contribution);
@@ -93,8 +94,30 @@ class Contribution {
 
   void OnNextMonthlyContributionTimeRead(absl::optional<base::Time> time);
 
-  void OnMonthlyContributionSet(base::OnceCallback<void(bool)> callback,
-                                bool success);
+  void OnMonthlyContributionSet(bool success);
+
+  struct ContributionRequest {
+    ContributionRequest(std::string publisher_id,
+                        double amount,
+                        bool set_monthly,
+                        base::OnceCallback<void(bool)> callback);
+
+    ContributionRequest(ContributionRequest&& other);
+    ContributionRequest& operator=(ContributionRequest&& other);
+
+    ~ContributionRequest();
+
+    std::string publisher_id;
+    double amount;
+    bool set_monthly;
+    base::OnceCallback<void(bool)> callback;
+  };
+
+  void OnContributionRequestQueued(ContributionRequest request,
+                                   absl::optional<std::string> queue_id);
+
+  void OnContributionRequestCompleted(const std::string& queue_id,
+                                      bool success);
 
   // Start point for contribution
   // In this step we get balance from the server
@@ -128,7 +151,7 @@ class Contribution {
 
   void Process(mojom::ContributionQueuePtr queue, mojom::BalancePtr balance);
 
-  void MarkContributionQueueAsComplete(const std::string& id);
+  void MarkContributionQueueAsComplete(const std::string& id, bool success);
 
   void OnMarkContributionQueueAsComplete(const mojom::Result result);
 
@@ -137,10 +160,13 @@ class Contribution {
       const std::vector<mojom::CredsBatchType>& types,
       ledger::LegacyResultCallback callback);
 
-  void Result(const mojom::Result result, const std::string& contribution_id);
+  void Result(const mojom::Result result,
+              const std::string& queue_id,
+              const std::string& contribution_id);
 
   void OnResult(mojom::ContributionInfoPtr contribution,
-                const mojom::Result result);
+                const mojom::Result result,
+                const std::string& queue_id);
 
   void SetRetryTimer(const std::string& contribution_id, base::TimeDelta delay);
 
@@ -162,6 +188,7 @@ class Contribution {
   std::unique_ptr<ContributionAC> ac_;
   std::unique_ptr<ContributionTip> tip_;
   std::unique_ptr<ContributionExternalWallet> external_wallet_;
+  std::map<std::string, ContributionRequest> requests_;
   base::OneShotTimer auto_contribute_timer_;
   base::OneShotTimer monthly_contribution_timer_;
   std::map<std::string, base::OneShotTimer> retry_timers_;

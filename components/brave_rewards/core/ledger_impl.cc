@@ -648,15 +648,15 @@ void LedgerImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
   });
 }
 
-void LedgerImpl::SetMonthlyContribution(
-    const std::string& publisher_id,
-    double amount,
-    base::OnceCallback<void(bool)> callback) {
-  WhenReady(
-      [this, publisher_id, amount, callback = std::move(callback)]() mutable {
-        contribution()->SetMonthlyContribution(publisher_id, amount,
-                                               std::move(callback));
-      });
+void LedgerImpl::SendContribution(const std::string& publisher_id,
+                                  double amount,
+                                  bool set_monthly,
+                                  base::OnceCallback<void(bool)> callback) {
+  WhenReady([this, publisher_id, amount, set_monthly,
+             callback = std::move(callback)]() mutable {
+    contribution()->SendContribution(publisher_id, amount, set_monthly,
+                                     std::move(callback));
+  });
 }
 
 void LedgerImpl::GetRecurringTips(PublisherInfoListCallback callback) {
