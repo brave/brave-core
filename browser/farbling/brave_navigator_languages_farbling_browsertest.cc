@@ -139,11 +139,6 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(web_contents());
-  }
-
   void SetAcceptLanguages(const std::string& accept_languages) {
     content::BrowserContext* context =
         static_cast<content::BrowserContext*>(browser()->profile());
@@ -153,10 +148,12 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void MonitorHTTPRequest(const net::test_server::HttpRequest& request) {
-    if (request.relative_url.find("/reduce-language/") == std::string::npos)
+    if (request.relative_url.find("/reduce-language/") == std::string::npos) {
       return;
-    if (expected_http_accept_language_.empty())
+    }
+    if (expected_http_accept_language_.empty()) {
       return;
+    }
     EXPECT_EQ(request.headers.at("accept-language"),
               expected_http_accept_language_);
   }
@@ -181,35 +178,35 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   GURL url2 = https_server_.GetURL(domain2, "/simple.html");
   // Farbling level: off
   AllowFingerprinting(domain1);
-  NavigateToURLUntilLoadStop(url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   std::string testing_languages = "en-US,en,es,la";
   SetAcceptLanguages(testing_languages);
   EXPECT_EQ(testing_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
   AllowFingerprinting(domain2);
-  NavigateToURLUntilLoadStop(url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(testing_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
 
   // Farbling level: default
   SetFingerprintingDefault(domain1);
-  NavigateToURLUntilLoadStop(url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   std::string standard_languages = "en-US";
   EXPECT_EQ(standard_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
   SetFingerprintingDefault(domain2);
-  NavigateToURLUntilLoadStop(url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(standard_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
 
   // Farbling level: maximum
   BlockFingerprinting(domain1);
-  NavigateToURLUntilLoadStop(url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   std::string strict_languages = "en-US,en";
   EXPECT_EQ(strict_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
   BlockFingerprinting(domain2);
-  NavigateToURLUntilLoadStop(url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(strict_languages,
             EvalJs(web_contents(), kNavigatorLanguagesScript));
 }
@@ -223,19 +220,19 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
 
   // Farbling level: off
   AllowFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   TitleWatcher watcher1(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
 
   // Farbling level: default
   SetFingerprintingDefault(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   TitleWatcher watcher2(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
 
   // Farbling level: maximum
   BlockFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   TitleWatcher watcher3(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher3.WaitAndGetTitle());
 }
@@ -249,7 +246,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
       https_server_.GetURL(domain, "/navigator/service-workers-languages.html");
   // Farbling level: default
   SetFingerprintingDefault(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   TitleWatcher watcher2(web_contents(), expected_title);
   EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
 }
@@ -275,26 +272,26 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // HTTP Accept-Language header should not be farbled.
   AllowFingerprinting(domain_b);
   SetExpectedHTTPAcceptLanguage("la,es;q=0.9,en;q=0.8");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   AllowFingerprinting(domain_d);
-  NavigateToURLUntilLoadStop(url_d);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
   // Farbling level: default
   // HTTP Accept-Language header should be farbled by domain.
   SetFingerprintingDefault(domain_b);
   SetExpectedHTTPAcceptLanguage("la;q=0.7");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   SetExpectedHTTPAcceptLanguage("la;q=0.8");
   SetFingerprintingDefault(domain_d);
-  NavigateToURLUntilLoadStop(url_d);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
   // Farbling level: maximum
   // HTTP Accept-Language header should be farbled but the same across domains.
   BlockFingerprinting(domain_b);
   SetExpectedHTTPAcceptLanguage("en-US,en;q=0.9");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   BlockFingerprinting(domain_d);
-  NavigateToURLUntilLoadStop(url_d);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
   // Test with subdivided language code as the primary language.
   SetAcceptLanguages("zh-HK,zh,la");
@@ -303,32 +300,32 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorLanguagesFarblingBrowserTest,
   // HTTP Accept-Language header should not be farbled.
   AllowFingerprinting(domain_b);
   SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.9,la;q=0.8");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   AllowFingerprinting(domain_d);
-  NavigateToURLUntilLoadStop(url_d);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
   // Farbling level: default
   // HTTP Accept-Language header should be farbled by domain.
   SetFingerprintingDefault(domain_b);
   SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.7");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.8");
   SetFingerprintingDefault(domain_d);
-  NavigateToURLUntilLoadStop(url_d);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
   // Farbling level: maximum
   // HTTP Accept-Language header should be farbled but the same across domains.
   BlockFingerprinting(domain_b);
   SetExpectedHTTPAcceptLanguage("en-US,en;q=0.9");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   BlockFingerprinting(domain_d);
-  NavigateToURLUntilLoadStop(url_d);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_d));
 
   // Farbling level: maximum but domain is on exceptions list
   // HTTP Accept-Language header should not be farbled.
   BlockFingerprinting(domain_x);
   SetExpectedHTTPAcceptLanguage("zh-HK,zh;q=0.9,la;q=0.8");
-  NavigateToURLUntilLoadStop(url_x);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_x));
   BlockFingerprinting(domain_y);
-  NavigateToURLUntilLoadStop(url_y);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_y));
 }

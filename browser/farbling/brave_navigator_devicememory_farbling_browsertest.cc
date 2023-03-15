@@ -98,11 +98,6 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
@@ -122,25 +117,25 @@ IN_PROC_BROWSER_TEST_F(BraveDeviceMemoryFarblingBrowserTest,
   EXPECT_EQ(true_value, 8192);
   // Farbling level: off
   AllowFingerprinting(domain1);
-  NavigateToURLUntilLoadStop(url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   EXPECT_EQ(true_value, EvalJs(contents(), kDeviceMemoryScript));
   AllowFingerprinting(domain2);
-  NavigateToURLUntilLoadStop(url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(true_value, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: default
   SetFingerprintingDefault(domain1);
-  NavigateToURLUntilLoadStop(url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   EXPECT_EQ(2048, EvalJs(contents(), kDeviceMemoryScript));
   SetFingerprintingDefault(domain2);
-  NavigateToURLUntilLoadStop(url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(4096, EvalJs(contents(), kDeviceMemoryScript));
 
   // Farbling level: maximum
   BlockFingerprinting(domain1);
-  NavigateToURLUntilLoadStop(url1);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url1));
   EXPECT_EQ(512, EvalJs(contents(), kDeviceMemoryScript));
   AllowFingerprinting(domain2);
-  NavigateToURLUntilLoadStop(url2);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url2));
   EXPECT_EQ(8192, EvalJs(contents(), kDeviceMemoryScript));
 }

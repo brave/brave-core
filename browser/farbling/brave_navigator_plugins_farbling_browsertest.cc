@@ -105,11 +105,6 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
@@ -120,7 +115,7 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
 // Tests that access to navigator.pdfViewerEnabled attribute does not crash.
 IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        NavigatorPdfViewerEnabledNoCrash) {
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(true, EvalJs(contents(), kNavigatorPdfViewerEnabledCrashTest));
 }
 
@@ -131,35 +126,35 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   // Farbling level: off
   // get real length of navigator.plugins
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
 
   // Farbling level: balanced (default)
   // navigator.plugins should contain all real plugins + 2 fake ones
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int balanced_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(balanced_length, off_length + 2);
 
   // Farbling level: maximum
   // navigator.plugins should contain no real plugins, only 2 fake ones
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int maximum_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(maximum_length, 2);
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
-            "8.fPHDhw");
+            "8mTJjRv2");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].filename);",
                 contents()),
-            "06du37du3bt2bNmT");
+            "0iZUpzhYrVxgvf2b");
   EXPECT_EQ(
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[0].description);",
           contents()),
-      "BgwYMmTpUq1aNmTJky5cOnTp069ePnTp");
+      "z8eu2Eh36GLs9mTRIMtWyZrdOuf2bNl5");
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[0].length);",
                 contents()),
@@ -172,20 +167,20 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[0][0].description);",
           contents()),
-      "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
+      "6pc1iZMOHDBny4cOuf2j4FCgYrVpzhYz");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].name);",
                 contents()),
-            "Xr1at27");
+            "JjZUxgv");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].filename);",
                 contents()),
-            "SJEChw48ev3bNGD");
+            "2nyCJECgYrVp7GD");
   EXPECT_EQ(
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[1].description);",
           contents()),
-      "rVqVqVqVqVKlSpUqVqVKlSJEChQIECh");
+      "nb0Do7GLs9mb0DgYzCJMteXq8HiwYUx");
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[1].length);",
                 contents()),
@@ -198,7 +193,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
       ExecScriptGetStr(
           "domAutomationController.send(navigator.plugins[1][0].description);",
           contents()),
-      "HDBAgQo0aNGDBgw48.fvXrVKFiRIkyZM");
+      "pzhQIECgYzCBny4cOuXLFh3Epc1aseXq");
 }
 
 // Tests that names of built-in plugins get farbled by default
@@ -207,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPluginsBuiltin) {
   // Farbling level: off
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(off_length, 2);
   EXPECT_EQ(ExecScriptGetStr(
@@ -221,7 +216,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
 
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
@@ -239,7 +234,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPluginsReset) {
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[0].name);",
                 contents()),
@@ -251,7 +246,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
 
   // Farbling level: off
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
   EXPECT_EQ(off_length, 2);
   EXPECT_EQ(ExecScriptGetStr(

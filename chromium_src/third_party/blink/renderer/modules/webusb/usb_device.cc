@@ -1,0 +1,30 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "third_party/blink/renderer/modules/webusb/usb_device.h"
+
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
+
+#include "src/third_party/blink/renderer/modules/webusb/usb_device.cc"
+
+namespace blink {
+
+String USBDevice::serialNumber() const {
+  String realSerialNumber = serialNumber_ChromiumImpl();
+  if (realSerialNumber.length() > 0) {
+    if (ExecutionContext* context = GetExecutionContext()) {
+      if (brave::GetBraveFarblingLevelFor(context,
+                                          BraveFarblingLevel::BALANCED) !=
+          BraveFarblingLevel::OFF) {
+        return brave::BraveSessionCache::From(*context).GenerateRandomString(
+            "WEBUSB_SERIAL_NUMBER", 16);
+      }
+    }
+  }
+  return realSerialNumber;
+}
+
+}  // namespace blink

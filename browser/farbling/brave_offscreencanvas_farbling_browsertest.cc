@@ -93,11 +93,6 @@ class BraveOffscreenCanvasFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   GURL top_level_page_url_;
   std::unique_ptr<ChromeContentClient> content_client_;
@@ -109,8 +104,8 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   GURL url =
       embedded_test_server()->GetURL("a.com", "/offscreen-farbling.html");
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(url);
-  // NavigateToURLUntilLoadStop() will return before our Worker has a chance
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  // NavigateToURL will return before our Worker has a chance
   // to run its code to completion, so we block here until document.title
   // changes. This will happen relatively quickly if things are going well
   // inside the Worker. If the browser crashes while executing the Worker
@@ -122,13 +117,13 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
 
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
 
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), "pass");
@@ -140,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
       "a.com", "/offscreen-getimagedata-farbling.html");
 
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   // wait for worker thread to complete
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
@@ -148,14 +143,14 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
             kExpectedImageDataHashFarblingOff);
 
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
             kExpectedImageDataHashFarblingMaximum);
 
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
@@ -165,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(BraveOffscreenCanvasFarblingBrowserTest,
   // properly respects shields setting separately from fingerprinting
   // setting.
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()),
