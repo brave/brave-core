@@ -235,6 +235,7 @@ source_set("ui") {
       "views/brave_shields/cookie_list_opt_in_bubble_host.h",
       "views/brave_tab_search_bubble_host.cc",
       "views/brave_tab_search_bubble_host.h",
+      "views/commands/default_accelerators_views.cc",
       "views/crash_report_permission_ask_dialog_view.cc",
       "views/crash_report_permission_ask_dialog_view.h",
       "views/download/brave_download_item_view.cc",
@@ -811,6 +812,11 @@ source_set("ui") {
     sources += [
       "brave_rewards/rewards_panel/rewards_panel_coordinator.cc",
       "brave_rewards/rewards_panel/rewards_panel_coordinator.h",
+      "commands/accelerator_service.cc",
+      "commands/accelerator_service.h",
+      "commands/accelerator_service_factory.cc",
+      "commands/accelerator_service_factory.h",
+      "commands/default_accelerators.h",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
       "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
       "views/toolbar/wallet_button.cc",
@@ -852,9 +858,11 @@ source_set("ui") {
       "//brave/components/brave_wallet_ui/page:brave_wallet_page_generated",
       "//brave/components/brave_wallet_ui/panel:brave_wallet_panel_generated",
       "//brave/components/brave_wallet_ui/trezor:trezor_bridge_generated",
+      "//brave/components/commands/browser",
       "//brave/components/commands/browser/resources:generated_resources",
       "//brave/components/resources:strings_grit",
       "//components/permissions",
+      "//components/pref_registry",
     ]
   }
   if (is_android) {
