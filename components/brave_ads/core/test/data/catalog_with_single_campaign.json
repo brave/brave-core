@@ -116,8 +116,7 @@
               "type": "postview"
             }
           ],
-          "channels": [
-          ],
+          "channels": [],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
           "perWeek": 6,

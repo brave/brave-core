@@ -76,8 +76,7 @@
               "name": "technology & computing"
             }
           ],
-          "oses": [
-          ],
+          "oses": [],
           "conversions": [
             {
               "observationWindow": 30,
@@ -85,8 +84,7 @@
               "type": "postview"
             }
           ],
-          "channels": [
-          ],
+          "channels": [],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
           "perWeek": 6,
@@ -95,8 +93,7 @@
           "value": "1.0"
         }
       ],
-      "dayParts": [
-      ],
+      "dayParts": [],
       "geoTargets": [
         {
           "code": "US",
@@ -155,12 +152,9 @@
               "name": "technology & computing"
             }
           ],
-          "oses": [
-          ],
-          "conversions": [
-          ],
-          "channels": [
-          ],
+          "oses": [],
+          "conversions": [],
+          "channels": [],
           "creativeSetId": "25a11ff2-5dd2-4629-95f0-b717454911e8",
           "perDay": 5,
           "perWeek": 6,
@@ -169,8 +163,7 @@
           "value": "1.0"
         }
       ],
-      "dayParts": [
-      ],
+      "dayParts": [],
       "geoTargets": [
         {
           "code": "US",
@@ -210,8 +203,7 @@
               "name": "food & drink"
             }
           ],
-          "oses": [
-          ],
+          "oses": [],
           "conversions": [
             {
               "observationWindow": 7,
@@ -219,8 +211,7 @@
               "type": "postclick"
             }
           ],
-          "channels": [
-          ],
+          "channels": [],
           "creativeSetId": "3e2e503a-dd38-42d1-9e26-1e5dbb66aada",
           "perDay": 5,
           "perWeek": 6,
@@ -229,8 +220,7 @@
           "value": "1.0"
         }
       ],
-      "dayParts": [
-      ],
+      "dayParts": [],
       "geoTargets": [
         {
           "code": "US",

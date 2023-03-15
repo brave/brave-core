@@ -31,8 +31,7 @@
               "name": "untargeted"
             }
           ],
-          "oses": [
-          ],
+          "oses": [],
           "conversions": [
             {
               "observationWindow": 30,
@@ -40,8 +39,7 @@
               "type": "postview"
             }
           ],
-          "channels": [
-          ],
+          "channels": [],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 1,
           "perWeek": 1,
@@ -50,8 +48,7 @@
           "value": "1.0"
         }
       ],
-      "dayParts": [
-      ],
+      "dayParts": [],
       "geoTargets": [
         {
           "code": "US",
