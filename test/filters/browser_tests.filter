@@ -526,6 +526,9 @@
 -PasswordGenerationPopupViewWithMinimizedStrengthIndicatorTest.ShowsFullPopupWithMoreThanFiveCharWeakPasswordTyped
 -PasswordGenerationPopupViewWithStrengthIndicatorTest.ShowsFullPopupWithWeakPasswordTypedInNonMinimizedExperiment
 
+# Thread profiler is disabled in Brave.
+-ThreadProfilerBrowserTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
