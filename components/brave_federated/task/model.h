@@ -58,10 +58,6 @@ class Model {
   size_t ModelSize();
 
  private:
-  float ComputeNLL(std::vector<float> true_labels,
-                   std::vector<float> predictions);
-  float Activation(float z);
-
   int num_iterations_;
   int batch_size_;
   float learning_rate_;

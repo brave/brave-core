@@ -29,6 +29,8 @@ static_library("brave_federated") {
     "adapters/flower_helper.h",
     "task/federated_task_runner.cc",
     "task/federated_task_runner.h",
+    "task/model_util.cc",
+    "task/model_util.h",
     "task/model.cc",
     "task/model.h",
     "task/typing.cc",
@@ -63,6 +65,9 @@ source_set("brave_federated_tests") {
     "data_stores/data_store_unittest.cc",
     "features_unittest.cc",
     "operational_patterns_util_unittest.cc",
+    "adapters/flower_helper_unittest.cc",
+    "task/model_util_unittest.cc",
+    "util/linear_algebra_util_unittest.cc",
   ]
 
   deps = [

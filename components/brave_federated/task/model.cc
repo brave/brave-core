@@ -10,6 +10,8 @@
 #include <cmath>
 #include <random>
 
+#include "brave/components/brave_federated/task/model_util.h"
+
 namespace brave_federated {
 
 PerformanceReport::PerformanceReport(size_t dataset_size,
@@ -73,7 +75,7 @@ std::vector<float> Model::Predict(const DataSet& dataset) {
     }
     z += bias_;
 
-    prediction[i] = Activation(z);
+    prediction[i] = SigmoidActivation(z);
   }
 
   return prediction;
@@ -208,23 +210,6 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
                            {},                   // parameters
                            metrics               // metrics
   );
-}
-
-float Model::ComputeNLL(std::vector<float> true_labels,
-                        std::vector<float> predictions) {
-  float error = 0.0;
-  size_t batch_size = true_labels.size();
-
-  for (size_t i = 0; i < batch_size; i++) {
-    error += (true_labels[i] * log(predictions[i]) +
-              (1.0 - true_labels[i]) * log(1 - predictions[i]));
-  }
-
-  return -error/batch_size;
-}
-
-float Model::Activation(float z) {
-  return 1.0 / (1 + exp(-1.0 * z));
 }
 
 }  // namespace brave_federated

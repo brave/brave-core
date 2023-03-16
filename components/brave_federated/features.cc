@@ -60,7 +60,7 @@ const bool kDefaultMockCollectionRequests = false;
 
 BASE_FEATURE(kFederatedLearning,
              kFeatureName,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsFederatedLearningEnabled() {
   return base::FeatureList::IsEnabled(kFederatedLearning);
