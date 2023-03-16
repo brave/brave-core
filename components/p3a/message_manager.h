@@ -62,11 +62,14 @@ class MessageManager : public MetricLogStore::Delegate {
     virtual ~Delegate() {}
   };
   MessageManager(PrefService* local_state,
-                 P3AConfig* config,
+                 const P3AConfig* config,
                  Delegate* delegate,
                  std::string channel,
                  std::string week_of_install);
   ~MessageManager() override;
+
+  MessageManager(const MessageManager&) = delete;
+  MessageManager& operator=(const MessageManager&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 

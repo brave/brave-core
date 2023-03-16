@@ -77,11 +77,10 @@ inline void DCheckCurrentlyOnUIThread() {
 P3AService::P3AService(PrefService* local_state,
                        std::string channel,
                        std::string week_of_install,
-                       P3AConfig&& config)
-    : local_state_(local_state),
-      config_(std::make_unique<P3AConfig>(std::move(config))) {
+                       P3AConfig config)
+    : local_state_(local_state), config_(std::move(config)) {
   message_manager_ = std::make_unique<MessageManager>(
-      local_state, config_.get(), this, channel, week_of_install);
+      local_state, &config_, this, channel, week_of_install);
 }
 
 P3AService::~P3AService() = default;
@@ -290,7 +289,7 @@ void P3AService::HandleHistogramChange(base::StringPiece histogram_name,
 }
 
 void P3AService::DisableStarAttestationForTesting() {
-  config_->disable_star_attestation = true;
+  config_.disable_star_attestation = true;
 }
 
 }  // namespace p3a

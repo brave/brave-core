@@ -36,6 +36,9 @@ class RotationScheduler {
 
   ~RotationScheduler();
 
+  RotationScheduler(const RotationScheduler&) = delete;
+  RotationScheduler& operator=(const RotationScheduler&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void InitStarTimer(base::Time next_epoch_time);

@@ -47,6 +47,9 @@ class MetricLogStore : public metrics::LogStore {
                  MetricLogType type);
   ~MetricLogStore() override;
 
+  MetricLogStore(const MetricLogStore&) = delete;
+  MetricLogStore& operator=(const MetricLogStore&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void UpdateValue(const std::string& histogram_name, uint64_t value);

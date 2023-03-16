@@ -43,6 +43,9 @@ class StarHelper {
              const P3AConfig* config);
   ~StarHelper();
 
+  StarHelper(const StarHelper&) = delete;
+  StarHelper& operator=(const StarHelper&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void UpdateRandomnessServerInfo();

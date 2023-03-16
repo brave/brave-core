@@ -37,7 +37,7 @@ bool IsSTAREnabled() {
 }  // namespace
 
 MessageManager::MessageManager(PrefService* local_state,
-                               P3AConfig* config,
+                               const P3AConfig* config,
                                Delegate* delegate,
                                std::string channel,
                                std::string week_of_install)

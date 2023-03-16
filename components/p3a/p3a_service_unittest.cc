@@ -32,7 +32,7 @@ namespace p3a {
 
 namespace {
 
-constexpr size_t kUploadIntervalSeconds = 120;
+constexpr size_t kUploadIntervalSeconds = 60;
 constexpr char kP2APrefix[] = "Brave.P2A";
 constexpr char kTestCreativeMetric1[] = "creativeInstanceId.abc.views";
 constexpr char kTestCreativeMetric2[] = "creativeInstanceId.abc.clicks";
@@ -363,7 +363,7 @@ TEST_F(P3AServiceTest, ShouldNotSendIfDisabled) {
 TEST_F(P3AServiceTest, EphemeralMetricOnlySentOnce) {
   // Increase upload interval to reduce test time (less tasks to execute)
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "6000");
+  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "13000");
   SetUpP3AService();
 
   std::string test_histogram = std::string(*p3a::kEphemeralHistograms.begin());
@@ -379,7 +379,7 @@ TEST_F(P3AServiceTest, EphemeralMetricOnlySentOnce) {
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
   ResetInterceptorStores();
-  task_environment_.FastForwardBy(base::Days(70));
+  task_environment_.FastForwardBy(base::Days(15));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
