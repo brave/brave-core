@@ -123,8 +123,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         }
 
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker != null
-                && braveRewardsNativeWorker.IsSupportedSkipRegionCheck()
+        if (braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             MenuItem rewards =
                     menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
