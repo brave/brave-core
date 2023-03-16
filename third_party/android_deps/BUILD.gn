@@ -67,5 +67,5 @@ android_aar_prebuilt("com_wireguard_android_java") {
 
 android_aar_prebuilt("com_github_bumptech_disklrucache_java") {
   aar_path = "libs/com_github_bumptech_disklrucache/disklrucache-4.12.0.aar"
-  info_path = "libs/com_github_bumptech_glide_gifdecoder/com_github_bumptech_disklrucache.info"
+  info_path = "libs/com_github_bumptech_disklrucache/com_github_bumptech_disklrucache.info"
 }
