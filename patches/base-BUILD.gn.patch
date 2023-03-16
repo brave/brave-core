@@ -1,8 +1,8 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 422702cb196c5fa05d089af2789e90360fe5b006..e33a395145afbd85b5e2e4e54b6595d275bd9a46 100644
+index 7efa2b619f3aaae254ed69c5fa52959e25cd3ac1..aeb4caed55bc18a44923c835d1e257f67ac936a5 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -4253,6 +4253,7 @@ if (is_android) {
+@@ -4328,6 +4328,7 @@ if (is_android) {
        "android/java/src/org/chromium/base/task/TaskTraits.java",
        "android/java/src/org/chromium/base/task/TaskTraitsExtensionDescriptor.java",
      ]
