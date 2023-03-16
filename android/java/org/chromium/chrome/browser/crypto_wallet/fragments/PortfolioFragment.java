@@ -188,6 +188,14 @@ public class PortfolioFragment
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPortfolioModel != null) {
+            mPortfolioModel.clear();
+        }
+    }
+
     private void setUpObservers() {
         mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
@@ -202,7 +210,7 @@ public class PortfolioFragment
                     updatePortfolioGetPendingTx();
                 });
         mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
-            if (nftDataModels.isEmpty() || mPortfolioModel.mPortfolioHelper == null) return;
+            if (mPortfolioModel.mPortfolioHelper == null) return;
             mNftDataModels = nftDataModels;
             setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
                     mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
