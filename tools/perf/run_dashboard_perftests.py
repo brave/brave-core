@@ -59,7 +59,7 @@ def main():
   common_options.report_on_failure = args.report_on_failure
   common_options.local_run = args.local_run
 
-  if args.compare:
+  if not args.compare:
     if len(config.runners) != 1:
       raise RuntimeError('Only one configuration should be specified.')
 

@@ -47,6 +47,7 @@ class BenchmarkConfig:
   name: str
   pageset_repeat: int = 1
   stories: List[str]
+  max_retries: int = 0
 
   def __init__(self, json: Optional[dict] = None):
     if not json:
@@ -54,6 +55,8 @@ class BenchmarkConfig:
     assert isinstance(json, dict)
     self.name = json['name']
     self.pageset_repeat = json['pageset-repeat']
+    if 'max-retries' in json:
+      self.max_retries = json['max-retries']
     self.stories = []
     if 'stories' in json:
       story_list: List[str] = json['stories']

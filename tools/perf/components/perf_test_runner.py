@@ -249,10 +249,17 @@ class RunableConfiguration:
         test_out_dir = os.path.join(self.out_dir, os.pardir, benchmark.name)
       else:
         test_out_dir = os.path.join(self.out_dir, 'results')
-      logging.info('Running test %s', benchmark.name)
 
-      test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
-                                        self.common_options.local_run)
+      attempt = 0
+      test_success = False
+      while not test_success and attempt <= benchmark.max_retries:
+        attempt += 1
+        if not self.common_options.local_run:
+          shutil.rmtree(test_out_dir, ignore_errors=True)
+        logging.info('Running test %s [attempt %d]', benchmark.name, attempt)
+
+        test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
+                                          self.common_options.local_run)
 
       if not test_success:
         has_failure = True
@@ -260,6 +267,7 @@ class RunableConfiguration:
         error += '\nLogs: ' + os.path.join(test_out_dir, benchmark.name,
                                            benchmark.name, 'benchmark_log.txt')
         self.logs.append(error)
+        break
 
     spent_time = time.time() - start_time
     self.status_line += f'Run {spent_time:.2f}s '
