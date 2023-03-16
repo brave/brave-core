@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/extension_creator.cc b/extensions/browser/extension_creator.cc
-index e7a02a2d18b306ee95744e3eef89daca63244a70..abac96041416ec0c4e932b1187fa085d7bab962a 100644
+index 32a4a80c7c08351572f01a14a2171baf92dd6c98..28ad2f03e722ffd9c18d5a5c2cac8df943e4d5ff 100644
 --- a/extensions/browser/extension_creator.cc
 +++ b/extensions/browser/extension_creator.cc
-@@ -226,7 +226,7 @@ bool ExtensionCreator::CreateCrx(
+@@ -225,7 +225,7 @@ bool ExtensionCreator::CreateCrx(
      result = crx_file::CreateCrxWithVerifiedContentsInHeader(
          crx_path, zip_path, private_key, compressed_verified_contents.value());
    } else {

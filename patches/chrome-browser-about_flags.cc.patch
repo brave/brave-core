@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index fd95f0a22edc4335cfa55163f4c9b16f98d683db..11e2c24f6d81542b07440401c06c71507658d1ed 100644
+index ae8fa1793dc0a2c3af02baec95de99ba19b408e1..93e1add1e6d30ee0c0f4c763b1742cd76ecf3144 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3228,6 +3228,7 @@ const FeatureEntry::FeatureVariation kPrivacySandboxSettings4Variations[] = {
+@@ -3294,6 +3294,7 @@ const FeatureEntry::FeatureVariation kWebAuthFlowInBrowserTabVariations[]{
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
