@@ -127,7 +127,7 @@ public class TokenUtils {
             BlockchainToken[] filteredTokens =
                     filterTokens(selectedNetwork, tokens, tokenType, false);
             Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);
-            callback.call(filteredTokens);
+            callback.call(removeDuplicates(filteredTokens));
         });
     }
 
@@ -219,4 +219,31 @@ public class TokenUtils {
         else
             return token1.symbol.compareTo(token2.symbol);
     };
+
+    // Returns an array of available assets <b>per ramp provider</b> and removes duplicates with the
+    // same contract address using case insensitive contractAddress comparison.
+    // The `getProvidersBuyTokens` API can return a merged list containing the available assets
+    // <b>per ramp provider</b>. It's not unusual to have the same asset multiple times with the
+    // same contract address all upper case from a ramp provider and all lower case from another
+    // one. Thus it's important to compare the contract addresses ignoring case.
+    private static BlockchainToken[] removeDuplicates(BlockchainToken[] tokens) {
+        List<BlockchainToken> result = new ArrayList<>();
+        for (BlockchainToken item : tokens) {
+            String contractAddress = item.contractAddress;
+            boolean duplicate = false;
+            for (BlockchainToken itemResult : result) {
+                // IMPORTANT: use `equalsIgnoreCase` to detect two contract addresses with different
+                // capitalization.
+                if (contractAddress.equalsIgnoreCase(itemResult.contractAddress)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            // Do not add duplicated item.
+            if (!duplicate) {
+                result.add(item);
+            }
+        }
+        return result.toArray(new BlockchainToken[0]);
+    }
 }
