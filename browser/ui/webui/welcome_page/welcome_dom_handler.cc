@@ -27,6 +27,11 @@
 
 namespace {
 
+constexpr char16_t kChromeBetaMacBrowserName[] = u"Chrome Beta";
+constexpr char16_t kChromeDevMacBrowserName[] = u"Chrome Dev";
+constexpr char16_t kChromeBetaLinuxBrowserName[] = u"Google Chrome (beta)";
+constexpr char16_t kChromeDevLinuxBrowserName[] = u"Google Chrome (unstable)";
+
 void RecordP3AHistogram(int screen_number, bool finished) {
   int kCurrentScreen = 0;
   int kMaxScreens = 6;
@@ -37,6 +42,20 @@ void RecordP3AHistogram(int screen_number, bool finished) {
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.InteractionStatus", kCurrentScreen,
                              kMaxScreens + 1);
+}
+
+bool IsChromeBeta(const std::u16string& browser_name) {
+  return browser_name ==
+             l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_BETA) ||
+         browser_name == kChromeBetaMacBrowserName ||
+         browser_name == kChromeBetaLinuxBrowserName;
+}
+
+bool IsChromeDev(const std::u16string& browser_name) {
+  return browser_name ==
+             l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_DEV) ||
+         browser_name == kChromeDevMacBrowserName ||
+         browser_name == kChromeDevLinuxBrowserName;
 }
 
 }  // namespace
@@ -100,11 +119,9 @@ void WelcomeDOMHandler::OnGetDefaultBrowser(
     shell_integration::DefaultWebClientState state,
     const std::u16string& name) {
   std::u16string browser_name = name;
-  if (browser_name ==
-      l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_BETA)) {
+  if (IsChromeBeta(browser_name)) {
     browser_name = base::UTF8ToUTF16(std::string(kGoogleChromeBrowserBeta));
-  } else if (browser_name ==
-             l10n_util::GetStringUTF16(IDS_CHROME_SHORTCUT_NAME_DEV)) {
+  } else if (IsChromeDev(browser_name)) {
     browser_name = base::UTF8ToUTF16(std::string(kGoogleChromeBrowserDev));
   }
   default_browser_name_ = browser_name;
