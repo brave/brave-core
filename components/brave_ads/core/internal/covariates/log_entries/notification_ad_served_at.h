@@ -11,7 +11,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/covariates/covariate_log_entry_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class NotificationAdServedAt final : public CovariateLogEntryInterface {
  public:
@@ -26,6 +26,6 @@ class NotificationAdServedAt final : public CovariateLogEntryInterface {
   base::Time time_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_LOG_ENTRIES_NOTIFICATION_AD_SERVED_AT_H_

@@ -7,7 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 
-namespace ads {
+namespace brave_ads {
 
 DateRangeHistoryFilter::DateRangeHistoryFilter(const base::Time from_time,
                                                const base::Time to_time)
@@ -28,4 +28,4 @@ HistoryItemList DateRangeHistoryFilter::Apply(
   return filtered_history;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

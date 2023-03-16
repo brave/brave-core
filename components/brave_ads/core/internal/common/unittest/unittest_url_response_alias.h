@@ -12,12 +12,12 @@
 
 #include "base/containers/flat_map.h"
 
-namespace ads {
+namespace brave_ads {
 
 using URLResponsePair = std::pair<int, std::string>;
 using URLResponseList = std::vector<URLResponsePair>;
 using URLResponseMap = base::flat_map<std::string, URLResponseList>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_URL_RESPONSE_ALIAS_H_

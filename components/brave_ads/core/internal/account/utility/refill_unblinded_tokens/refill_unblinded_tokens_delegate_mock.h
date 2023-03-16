@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads {
+namespace brave_ads {
 
 class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
  public:
@@ -43,6 +43,6 @@ class RefillUnblindedTokensDelegateMock : public RefillUnblindedTokensDelegate {
               (const std::string& captcha_id));
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_MOCK_H_

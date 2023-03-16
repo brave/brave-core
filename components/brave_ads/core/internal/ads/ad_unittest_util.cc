@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -36,4 +36,4 @@ AdInfo BuildAd() {
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

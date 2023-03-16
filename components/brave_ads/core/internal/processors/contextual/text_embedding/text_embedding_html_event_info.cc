@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 TextEmbeddingHtmlEventInfo::TextEmbeddingHtmlEventInfo() = default;
 
@@ -23,4 +23,4 @@ TextEmbeddingHtmlEventInfo& TextEmbeddingHtmlEventInfo::operator=(
 
 TextEmbeddingHtmlEventInfo::~TextEmbeddingHtmlEventInfo() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

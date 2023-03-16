@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_SERVER_HOST_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_SERVER_HOST_TYPES_H_
 
-namespace ads {
+namespace brave_ads {
 
 enum class ServerHostType { kStatic = 0, kGeo, kNonAnonymous, kAnonymous };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_SERVER_HOST_TYPES_H_

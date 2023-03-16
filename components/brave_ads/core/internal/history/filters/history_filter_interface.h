@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/history_item_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 class HistoryFilterInterface {
  public:
@@ -17,6 +17,6 @@ class HistoryFilterInterface {
   virtual HistoryItemList Apply(const HistoryItemList& history) const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_FILTERS_HISTORY_FILTER_INTERFACE_H_

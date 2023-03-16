@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 BlindedToken GetBlindedToken() {
   return BlindedToken(kBlindedTokenBase64);
@@ -32,4 +32,4 @@ std::vector<BlindedToken> GetInvalidBlindedTokens() {
   return blinded_tokens;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

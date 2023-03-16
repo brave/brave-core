@@ -10,12 +10,12 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 absl::optional<mojom::UrlResponseInfo> GetNextUrlResponseForRequest(
     const mojom::UrlRequestInfoPtr& url_request,
     const URLResponseMap& url_responses);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_URL_RESPONSE_UTIL_H_

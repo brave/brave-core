@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kPrefName[] = "FOOBAR";
@@ -56,4 +56,4 @@ TEST_F(BatAdsPrefManagerTest, PrefChanged) {
   EXPECT_TRUE(pref_changed_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

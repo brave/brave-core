@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsSearchEngineUtilTest, IsMultilingualAmazonSearchEngine) {
   // Arrange
@@ -194,4 +194,4 @@ TEST(BatAdsSearchEngineUtilTest, IsNotSearchEngineWithInvalidUrl) {
   EXPECT_FALSE(is_search_engine);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

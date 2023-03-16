@@ -1380,12 +1380,12 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
 
   if (wallet_status == ledger::mojom::WalletStatus::kConnected) {
     ASSERT_TRUE(profile_->GetPrefs()->HasPrefPath(
-        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
     ASSERT_TRUE(profile_->GetPrefs()->GetBoolean(
-        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
   } else {
     ASSERT_FALSE(profile_->GetPrefs()->HasPrefPath(
-        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
   }
 }
 

@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsSearchEngineResultsPageUtilTest, IsSearchEngineResultsPage) {
   // Arrange
@@ -92,4 +92,4 @@ TEST(BatAdsSearchEngineResultsPageUtilTest,
   EXPECT_FALSE(search_term_query_value);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

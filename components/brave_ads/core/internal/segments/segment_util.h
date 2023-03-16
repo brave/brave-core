@@ -11,7 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogInfo;
 
@@ -38,6 +38,6 @@ bool HasChildSegment(const std::string& segment);
 
 bool ShouldFilterSegment(const std::string& segment);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_UTIL_H_

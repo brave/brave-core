@@ -26,7 +26,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 using KeywordList = std::vector<std::string>;
 
@@ -241,4 +241,4 @@ void PurchaseIntent::OnTextContentDidChange(
   Process(url);
 }
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor

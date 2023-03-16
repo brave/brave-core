@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 #include "url/gurl.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 namespace {
 
@@ -34,4 +34,4 @@ mojom::UrlRequestInfoPtr GetSubdivisionUrlRequestBuilder::Build() {
   return url_request;
 }
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic

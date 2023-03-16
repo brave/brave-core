@@ -13,7 +13,7 @@
 #include "base/observer_list_types.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct TabInfo;
 
@@ -48,6 +48,6 @@ class TabManagerObserver : public base::CheckedObserver {
   virtual void OnTabDidStopPlayingMedia(const int32_t tab_id) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TABS_TAB_MANAGER_OBSERVER_H_

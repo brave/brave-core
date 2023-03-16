@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kName[] = "Enabled";
@@ -29,4 +29,4 @@ std::string EnabledDiagnosticEntry::GetValue() const {
   return BoolToString(is_enabled);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -17,11 +17,11 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad.h"
-#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad.h"
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_handler.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog.h"
@@ -65,7 +65,7 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -124,18 +124,18 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   text_embedding_processor_ = std::make_unique<processor::TextEmbedding>(
       text_embedding_resource_.get());
 
-  inline_content_ad_ = std::make_unique<InlineContentAd>(
+  inline_content_ad_handler_ = std::make_unique<InlineContentAdHandler>(
       account_.get(), transfer_.get(), subdivision_targeting_.get(),
       anti_targeting_resource_.get());
-  new_tab_page_ad_ = std::make_unique<NewTabPageAd>(
+  new_tab_page_ad_handler_ = std::make_unique<NewTabPageAdHandler>(
       account_.get(), transfer_.get(), subdivision_targeting_.get(),
       anti_targeting_resource_.get());
-  notification_ad_ = std::make_unique<NotificationAd>(
+  notification_ad_handler_ = std::make_unique<NotificationAdHandler>(
       account_.get(), transfer_.get(), epsilon_greedy_bandit_processor_.get(),
       subdivision_targeting_.get(), anti_targeting_resource_.get());
-  promoted_content_ad_ =
+  promoted_content_ad_handler_ =
       std::make_unique<PromotedContentAd>(account_.get(), transfer_.get());
-  search_result_ad_ =
+  search_result_ad_handler_ =
       std::make_unique<SearchResultAd>(account_.get(), transfer_.get());
 
   user_reactions_ = std::make_unique<UserReactions>(account_.get());
@@ -296,7 +296,7 @@ void AdsImpl::TriggerNotificationAdEvent(
     const mojom::NotificationAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  notification_ad_->TriggerEvent(placement_id, event_type);
+  notification_ad_handler_->TriggerEvent(placement_id, event_type);
 }
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
@@ -305,7 +305,7 @@ void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
     return;
   }
 
-  new_tab_page_ad_->MaybeServe(std::move(callback));
+  new_tab_page_ad_handler_->MaybeServe(std::move(callback));
 }
 
 void AdsImpl::TriggerNewTabPageAdEvent(
@@ -314,8 +314,8 @@ void AdsImpl::TriggerNewTabPageAdEvent(
     const mojom::NewTabPageAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  new_tab_page_ad_->TriggerEvent(placement_id, creative_instance_id,
-                                 event_type);
+  new_tab_page_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
+                                         event_type);
 }
 
 void AdsImpl::TriggerPromotedContentAdEvent(
@@ -324,8 +324,8 @@ void AdsImpl::TriggerPromotedContentAdEvent(
     const mojom::PromotedContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  promoted_content_ad_->TriggerEvent(placement_id, creative_instance_id,
-                                     event_type);
+  promoted_content_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
+                                             event_type);
 }
 
 void AdsImpl::MaybeServeInlineContentAd(
@@ -336,7 +336,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     return;
   }
 
-  inline_content_ad_->MaybeServe(dimensions, std::move(callback));
+  inline_content_ad_handler_->MaybeServe(dimensions, std::move(callback));
 }
 
 void AdsImpl::TriggerInlineContentAdEvent(
@@ -345,8 +345,8 @@ void AdsImpl::TriggerInlineContentAdEvent(
     const mojom::InlineContentAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  inline_content_ad_->TriggerEvent(placement_id, creative_instance_id,
-                                   event_type);
+  inline_content_ad_handler_->TriggerEvent(placement_id, creative_instance_id,
+                                           event_type);
 }
 
 void AdsImpl::TriggerSearchResultAdEvent(
@@ -358,13 +358,13 @@ void AdsImpl::TriggerSearchResultAdEvent(
     return;
   }
 
-  search_result_ad_->TriggerEvent(std::move(ad_mojom), event_type);
+  search_result_ad_handler_->TriggerEvent(std::move(ad_mojom), event_type);
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
     const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(mojom::IsKnownEnumValue(ad_type));
 
   PurgeOrphanedAdEvents(
       ad_type,
@@ -601,7 +601,7 @@ void AdsImpl::Start() {
 
   catalog_->MaybeFetch();
 
-  notification_ad_->MaybeServeAtRegularIntervals();
+  notification_ad_handler_->MaybeServeAtRegularIntervals();
 }
 
 void AdsImpl::OnStatementOfAccountsDidChange() {
@@ -620,4 +620,4 @@ void AdsImpl::OnDidTransferAd(const AdInfo& ad) {
                     ConfirmationType::kTransferred);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -9,7 +9,7 @@
 #include "base/ranges/functional.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 HistoryItemList DescendingHistorySort::Apply(
     const HistoryItemList& history) const {
@@ -21,4 +21,4 @@ HistoryItemList DescendingHistorySort::Apply(
   return sorted_history;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

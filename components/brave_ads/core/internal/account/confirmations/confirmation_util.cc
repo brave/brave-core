@@ -32,7 +32,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -206,4 +206,4 @@ void ResetConfirmations() {
   privacy::RemoveAllUnblindedTokens();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

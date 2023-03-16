@@ -20,7 +20,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsHistoryManagerTest : public HistoryManagerObserver,
                                  public UnitTestBase {
@@ -317,4 +317,4 @@ TEST_F(BatAdsHistoryManagerTest, UnsaveAd) {
   EXPECT_TRUE(did_unsave_ad_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

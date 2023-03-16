@@ -515,11 +515,11 @@ void BraveNewsController::OnPromotedItemView(
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::PromotedContentAdEventType::kServed);
+        brave_ads::mojom::PromotedContentAdEventType::kServed);
 
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::PromotedContentAdEventType::kViewed);
+        brave_ads::mojom::PromotedContentAdEventType::kViewed);
   }
 }
 
@@ -529,7 +529,7 @@ void BraveNewsController::OnPromotedItemVisit(
   if (ads_service_ && !item_id.empty() && !creative_instance_id.empty()) {
     ads_service_->TriggerPromotedContentAdEvent(
         item_id, creative_instance_id,
-        ads::mojom::PromotedContentAdEventType::kClicked);
+        brave_ads::mojom::PromotedContentAdEventType::kClicked);
   }
 }
 
@@ -561,7 +561,7 @@ void BraveNewsController::OnDisplayAdVisit(
   }
   ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
-      ads::mojom::InlineContentAdEventType::kClicked);
+      brave_ads::mojom::InlineContentAdEventType::kClicked);
 }
 
 void BraveNewsController::OnDisplayAdView(
@@ -586,7 +586,7 @@ void BraveNewsController::OnDisplayAdView(
   }
   ads_service_->TriggerInlineContentAdEvent(
       item_id, creative_instance_id,
-      ads::mojom::InlineContentAdEventType::kViewed);
+      brave_ads::mojom::InlineContentAdEventType::kViewed);
 
   p3a::RecordWeeklyDisplayAdsViewedCount(prefs_, true);
 }
@@ -599,7 +599,7 @@ void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
     return;
   }
   ads_service_->PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType::kInlineContentAd, base::DoNothing());
+      brave_ads::mojom::AdType::kInlineContentAd, base::DoNothing());
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {

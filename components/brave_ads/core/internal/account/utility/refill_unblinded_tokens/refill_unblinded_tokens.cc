@@ -37,7 +37,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -419,4 +419,4 @@ void RefillUnblindedTokens::OnRetry() {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

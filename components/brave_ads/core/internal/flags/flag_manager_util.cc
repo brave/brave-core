@@ -8,11 +8,11 @@
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool IsProductionEnvironment() {
   return FlagManager::GetInstance()->GetEnvironmentType() ==
          EnvironmentType::kProduction;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

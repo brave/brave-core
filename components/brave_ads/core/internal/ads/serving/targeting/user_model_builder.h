@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_H_
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct UserModelInfo;
 
 UserModelInfo BuildUserModel();
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_TARGETING_USER_MODEL_BUILDER_H_

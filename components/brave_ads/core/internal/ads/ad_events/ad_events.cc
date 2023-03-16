@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 void LogAdEvent(const AdInfo& ad,
                 const ConfirmationType& confirmation_type,
@@ -61,7 +61,7 @@ void PurgeExpiredAdEvents(AdEventCallback callback) {
 
 void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(mojom::IsKnownEnumValue(ad_type));
 
   const database::table::AdEvents database_table;
   database_table.PurgeOrphaned(
@@ -104,4 +104,4 @@ std::vector<base::Time> GetAdEventHistory(
       ad_type.ToString(), confirmation_type.ToString());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -84,4 +84,4 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   EXPECT_EQ(2, GetTransactionCount());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

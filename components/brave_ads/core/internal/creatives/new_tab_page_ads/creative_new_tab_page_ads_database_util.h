@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteCreativeNewTabPageAds();
 void DeleteCreativeNewTabPageAdWallpapers();
 
 void SaveCreativeNewTabPageAds(const CreativeNewTabPageAdList& creative_ads);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_ADS_DATABASE_UTIL_H_

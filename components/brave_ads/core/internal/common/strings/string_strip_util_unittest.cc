@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsStringStripUtilTest, StripNonAlphaCharactersFromEmptyContent) {
   // Arrange
@@ -118,4 +118,4 @@ TEST(BatAdsStringStripUtilTest, StripNonAlphaNumericCharacters) {
   EXPECT_EQ(expected_stripped_content, stripped_content);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

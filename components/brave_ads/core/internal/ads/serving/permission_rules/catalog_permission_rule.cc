@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool CatalogPermissionRule::ShouldAllow() {
   return DoesRespectCap();
@@ -31,4 +31,4 @@ bool CatalogPermissionRule::DoesRespectCap() {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 namespace {
 constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
@@ -68,4 +68,4 @@ const targeting::PurchaseIntentInfo* PurchaseIntent::Get() const {
   return purchase_intent_.get();
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

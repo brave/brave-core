@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_CONSTANTS_H_
 
-namespace ads {
+namespace brave_ads {
 
 constexpr char kDatabaseFilename[] = "database.sqlite";
 
 constexpr char kDefaultLocale[] = "en_US";
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_CONSTANTS_H_

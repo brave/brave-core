@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct SearchEngineInfo final {
   SearchEngineInfo(std::string url_pattern,
@@ -20,6 +20,6 @@ struct SearchEngineInfo final {
   std::string search_term_query_key;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_INFO_H_

@@ -10,7 +10,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 bool MaybeScreenWasLocked(bool screen_was_locked);
 
@@ -18,6 +18,6 @@ bool HasExceededMaximumIdleTime(base::TimeDelta idle_time);
 
 bool MaybeUpdateIdleTimeThreshold();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_IDLE_DETECTION_IDLE_DETECTION_UTIL_H_

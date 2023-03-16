@@ -9,7 +9,7 @@
 #include "base/command_line.h"
 #include "base/ranges/algorithm.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr const char* kSwitches[] = {"enable-automation"};
@@ -27,4 +27,4 @@ bool DidOverrideCommandLineSwitches() {
                               });
 }
 
-}  // namespace ads
+}  // namespace brave_ads

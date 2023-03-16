@@ -9,12 +9,12 @@
 #include "base/containers/span.h"
 #include "base/strings/string_piece.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::span<const base::StringPiece> GetAmazonSearchEngineDomainExtensions();
 base::span<const base::StringPiece> GetGoogleSearchEngineDomainExtensions();
 base::span<const base::StringPiece> GetMojeekSearchEngineDomainExtensions();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_DOMAIN_EXTENSION_CONSTANTS_H_

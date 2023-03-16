@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class DiagnosticEntryInterface {
  public:
@@ -21,6 +21,6 @@ class DiagnosticEntryInterface {
   virtual std::string GetValue() const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_ENTRY_INTERFACE_H_

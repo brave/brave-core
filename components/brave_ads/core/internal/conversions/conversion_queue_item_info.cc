@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 ConversionQueueItemInfo::ConversionQueueItemInfo() = default;
 
@@ -51,4 +51,4 @@ bool ConversionQueueItemInfo::IsValid() const {
            process_at.is_null());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

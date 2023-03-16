@@ -10,7 +10,7 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 struct UnblindedTokenInfo;
@@ -23,6 +23,6 @@ absl::optional<std::string> WriteOptedInCredential(
     const std::string& payload);
 
 }  // namespace json::writer
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_OPTED_IN_CREDENTIAL_JSON_WRITER_H_

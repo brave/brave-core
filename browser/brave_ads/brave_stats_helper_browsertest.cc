@@ -68,49 +68,45 @@ IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
                        PrimaryProfileEnabledUpdate) {
   Profile* primary_profile = profile_manager_->GetLastUsedProfile();
 
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile),
-            false);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), false);
 
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, true);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), true);
 
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile),
-            false);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), false);
 }
 
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, ProfileSwitch) {
   CreateMultipleProfiles();
-  profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+  profile_one_->GetPrefs()->SetBoolean(prefs::kEnabled, true);
 
   profiles::testing::SwitchToProfileSync(profile_one_path_);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), true);
 
   profiles::testing::SwitchToProfileSync(profile_two_path_);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile),
-            false);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), false);
 
   profiles::testing::SwitchToProfileSync(profile_one_path_);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), true);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, MultiProfileEnabledUpdate) {
   CreateMultipleProfiles();
-  profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+  profile_one_->GetPrefs()->SetBoolean(prefs::kEnabled, true);
 
   profiles::testing::SwitchToProfileSync(profile_one_path_);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), true);
 
-  profile_two_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
+  profile_two_->GetPrefs()->SetBoolean(prefs::kEnabled, true);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), true);
 
-  profile_one_->GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile),
-            false);
+  profile_one_->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), false);
 
   profiles::testing::SwitchToProfileSync(profile_two_path_);
-  EXPECT_EQ(local_state_->GetBoolean(ads::prefs::kEnabledForLastProfile), true);
+  EXPECT_EQ(local_state_->GetBoolean(prefs::kEnabledForLastProfile), true);
 }
 #endif
 
@@ -121,24 +117,24 @@ IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
 
   Profile* primary_profile = profile_manager_->GetLastUsedProfile();
 
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, true);
 
   histogram_tester_.ExpectUniqueSample(kAdsEnabledInstallationTimeHistogramName,
                                        0, 1);
 
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, true);
 
   histogram_tester_.ExpectUniqueSample(kAdsEnabledInstallationTimeHistogramName,
                                        0, 1);
 
   // Reset to test another bucket value
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, false);
-  local_state_->SetBoolean(ads::prefs::kEverEnabledForAnyProfile, false);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+  local_state_->SetBoolean(prefs::kEverEnabledForAnyProfile, false);
   brave_stats_helper_->SetFirstRunTimeForTesting(base::Time::Now() -
                                                  base::Minutes(70));
 
-  primary_profile->GetPrefs()->SetBoolean(ads::prefs::kEnabled, true);
+  primary_profile->GetPrefs()->SetBoolean(prefs::kEnabled, true);
   histogram_tester_.ExpectBucketCount(kAdsEnabledInstallationTimeHistogramName,
                                       1, 1);
 }

@@ -22,7 +22,7 @@
 
 using ::testing::NiceMock;
 
-namespace ads {
+namespace brave_ads {
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
@@ -335,4 +335,4 @@ void UnitTestBase::SetUpIntegrationTest() {
   task_environment_.RunUntilIdle();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

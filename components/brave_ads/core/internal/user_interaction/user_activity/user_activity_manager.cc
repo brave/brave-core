@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -187,4 +187,4 @@ void UserActivityManager::OnTabDidStopPlayingMedia(const int32_t /*id*/) {
   RecordEvent(UserActivityEventType::kTabStoppedPlayingMedia);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

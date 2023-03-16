@@ -10,7 +10,7 @@
 #include "brave/components/version_info/version_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string GetBrowserVersionNumber() {
   return version_info::GetBraveChromiumVersionNumber();
@@ -39,4 +39,4 @@ bool WasBrowserUpgraded() {
   return *was_upgraded;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

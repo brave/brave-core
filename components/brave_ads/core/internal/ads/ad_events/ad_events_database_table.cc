@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 namespace {
 
@@ -235,7 +235,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
 
 void AdEvents::GetForType(const mojom::AdType ad_type,
                           GetAdEventsCallback callback) const {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(mojom::IsKnownEnumValue(ad_type));
 
   const std::string ad_type_as_string = AdType(ad_type).ToString();
 
@@ -281,7 +281,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
 
 void AdEvents::PurgeOrphaned(const mojom::AdType ad_type,
                              ResultCallback callback) const {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(mojom::IsKnownEnumValue(ad_type));
 
   const std::string ad_type_as_string = AdType(ad_type).ToString();
 
@@ -374,4 +374,4 @@ std::string AdEvents::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(8, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct OptedInInfo final {
   OptedInInfo();
@@ -37,6 +37,6 @@ struct OptedInInfo final {
 bool operator==(const OptedInInfo& lhs, const OptedInInfo& rhs);
 bool operator!=(const OptedInInfo& lhs, const OptedInInfo& rhs);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_OPTED_IN_INFO_H_

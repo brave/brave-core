@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_creative_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_notification_ad_payload_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogCreativeNotificationAdInfo final : CatalogCreativeInfo {
   bool operator==(const CatalogCreativeNotificationAdInfo& other) const;
@@ -23,6 +23,6 @@ struct CatalogCreativeNotificationAdInfo final : CatalogCreativeInfo {
 using CatalogCreativeNotificationAdList =
     std::vector<CatalogCreativeNotificationAdInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_NOTIFICATION_AD_CATALOG_CREATIVE_NOTIFICATION_AD_INFO_H_

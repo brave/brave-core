@@ -14,7 +14,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads::user_activity::features {
+namespace brave_ads::user_activity::features {
 
 BASE_DECLARE_FEATURE(kFeature);
 
@@ -29,6 +29,6 @@ base::TimeDelta GetMaximumIdleTime();
 
 bool ShouldDetectScreenWasLocked();
 
-}  // namespace ads::user_activity::features
+}  // namespace brave_ads::user_activity::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_FEATURES_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -57,6 +57,6 @@ class EligibleAdsBase {
 };
 
 }  // namespace notification_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NOTIFICATION_ADS_ELIGIBLE_NOTIFICATION_ADS_BASE_H_

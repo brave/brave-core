@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/data_types.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class Data {
  public:
@@ -28,6 +28,6 @@ class Data {
   const DataType type_;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_DATA_DATA_H_

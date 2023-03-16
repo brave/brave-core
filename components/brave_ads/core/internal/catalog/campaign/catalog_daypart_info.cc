@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_daypart_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs) {
   return lhs.dow == rhs.dow && lhs.start_minute == rhs.start_minute &&
@@ -16,4 +16,4 @@ bool operator!=(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs) {
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

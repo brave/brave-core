@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
-namespace ads {
+namespace brave_ads {
 
 TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
     const ml::pipeline::TextEmbeddingInfo& text_embedding) {
@@ -69,4 +69,4 @@ void GetTextEmbeddingHtmlEventsFromDatabase(
       std::move(callback)));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

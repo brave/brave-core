@@ -9,7 +9,7 @@
 #include "base/containers/contains.h"
 #include "base/ranges/algorithm.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 UnblindedTokens::UnblindedTokens() = default;
 
@@ -77,4 +77,4 @@ bool UnblindedTokens::IsEmpty() const {
   return unblinded_tokens_.empty();
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

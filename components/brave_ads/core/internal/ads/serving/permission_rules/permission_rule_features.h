@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-namespace ads::permission_rules::features {
+namespace brave_ads::permission_rules::features {
 
 BASE_DECLARE_FEATURE(kFeature);
 
@@ -22,6 +22,6 @@ bool ShouldOnlyServeAdsIfMediaIsNotPlaying();
 
 bool ShouldOnlyServeAdsIfBrowserIsActive();
 
-}  // namespace ads::permission_rules::features
+}  // namespace brave_ads::permission_rules::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_PERMISSION_RULE_FEATURES_H_

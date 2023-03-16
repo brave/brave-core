@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_build_channel_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 class Database;
 
@@ -80,6 +80,6 @@ void MockSetListPref(const std::unique_ptr<AdsClientMock>& mock);
 void MockClearPref(const std::unique_ptr<AdsClientMock>& mock);
 void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_MOCK_UTIL_H_

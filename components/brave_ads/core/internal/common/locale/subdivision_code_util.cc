@@ -12,12 +12,12 @@
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
 
-namespace ads::locale {
+namespace brave_ads::locale {
 
 bool IsSupportedCountryCodeForSubdivisionTargeting(
     const std::string& country_code) {
   const auto& supported_subdivision_codes =
-      ::ads::geographic::GetSupportedSubdivisionCodes();
+      geographic::GetSupportedSubdivisionCodes();
   return base::Contains(supported_subdivision_codes, country_code);
 }
 
@@ -39,4 +39,4 @@ std::string GetSubdivisionCode(const std::string& code) {
   return components.back();
 }
 
-}  // namespace ads::locale
+}  // namespace brave_ads::locale

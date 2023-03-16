@@ -9,7 +9,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -128,4 +128,4 @@ std::ostream& operator<<(std::ostream& os, const AdType& type) {
   return os;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

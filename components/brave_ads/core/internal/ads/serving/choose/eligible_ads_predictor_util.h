@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 constexpr size_t kDoesMatchIntentChildSegmentsIndex = 0;
 constexpr size_t kDoesMatchIntentParentSegmentsIndex = 1;
@@ -159,6 +159,6 @@ CreativeAdPredictorMap<T> ComputePredictorFeaturesAndScores(
   return creative_ad_predictors_with_features;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_

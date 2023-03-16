@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
@@ -112,4 +112,4 @@ TEST_F(BatAdsPerHourExclusionRuleTest, DoNotAllowTheSameAdWithin1Hour) {
   EXPECT_TRUE(should_exclude);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

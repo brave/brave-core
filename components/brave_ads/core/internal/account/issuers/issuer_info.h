@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuerInfo final {
   IssuerInfo();
@@ -33,6 +33,6 @@ struct IssuerInfo final {
 
 using IssuerList = std::vector<IssuerInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUER_INFO_H_

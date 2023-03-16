@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_features.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -51,4 +51,4 @@ bool DidOverrideFeaturesFromCommandLine() {
   });
 }
 
-}  // namespace ads
+}  // namespace brave_ads

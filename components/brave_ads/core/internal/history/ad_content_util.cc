@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdContentInfo BuildAdContent(const AdInfo& ad,
                              const ConfirmationType& confirmation_type,
@@ -36,4 +36,4 @@ AdContentInfo BuildAdContent(const AdInfo& ad,
   return ad_content;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

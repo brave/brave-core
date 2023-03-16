@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool Wallet::Set(const std::string& payment_id,
                  const std::vector<uint8_t>& recovery_seed) {
@@ -37,4 +37,4 @@ const WalletInfo& Wallet::Get() const {
   return wallet_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

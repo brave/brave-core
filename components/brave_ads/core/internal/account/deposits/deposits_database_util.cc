@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void PurgeExpiredDeposits() {
   const database::table::Deposits database_table;
@@ -23,4 +23,4 @@ void PurgeExpiredDeposits() {
   }));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

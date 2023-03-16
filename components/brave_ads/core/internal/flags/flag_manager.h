@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class FlagManager final {
  public:
@@ -54,6 +54,6 @@ class FlagManager final {
   EnvironmentType environment_type_ = EnvironmentType::kStaging;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FLAGS_FLAG_MANAGER_H_

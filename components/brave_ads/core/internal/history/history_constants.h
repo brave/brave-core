@@ -8,10 +8,10 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 constexpr base::TimeDelta kHistoryTimeWindow = base::Days(30);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_HISTORY_CONSTANTS_H_

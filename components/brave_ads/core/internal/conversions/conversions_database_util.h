@@ -8,12 +8,12 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void PurgeExpiredConversions();
 
 void SaveConversions(const ConversionList& conversions);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_DATABASE_UTIL_H_

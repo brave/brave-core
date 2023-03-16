@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_HISTORY_FILTER_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_HISTORY_FILTER_TYPES_H_
 
-namespace ads {
+namespace brave_ads {
 
 enum class HistoryFilterType { kNone = 0, kConfirmationType };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_HISTORY_FILTER_TYPES_H_

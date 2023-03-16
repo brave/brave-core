@@ -13,7 +13,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class RedeemUnblindedPaymentTokensDelegateMock
     : public RedeemUnblindedPaymentTokensDelegate {
@@ -48,6 +48,6 @@ class RedeemUnblindedPaymentTokensDelegateMock
   MOCK_METHOD(void, OnDidRetryRedeemingUnblindedPaymentTokens, ());
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_DELEGATE_MOCK_H_

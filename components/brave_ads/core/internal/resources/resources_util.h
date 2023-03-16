@@ -11,7 +11,7 @@
 #include "base/functional/callback.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 template <typename T>
 using LoadAndParseResourceCallback =
@@ -22,6 +22,6 @@ void LoadAndParseResource(const std::string& id,
                           int version,
                           LoadAndParseResourceCallback<T> callback);
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_RESOURCES_UTIL_H_

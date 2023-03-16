@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_util.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool ShouldServe() {
   return ShouldRewardUser();
@@ -53,4 +53,4 @@ void NotificationAdTimedOut(const std::string& placement_id) {
   NotificationAdManager::GetInstance()->Remove(placement_id);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

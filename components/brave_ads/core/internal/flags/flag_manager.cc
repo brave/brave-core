@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -74,4 +74,4 @@ void FlagManager::Initialize() {
   environment_type_ = ChooseEnvironmentType();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

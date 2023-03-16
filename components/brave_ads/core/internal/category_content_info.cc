@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/category_content_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const CategoryContentInfo& lhs,
                 const CategoryContentInfo& rhs) {
@@ -18,4 +18,4 @@ bool operator!=(const CategoryContentInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

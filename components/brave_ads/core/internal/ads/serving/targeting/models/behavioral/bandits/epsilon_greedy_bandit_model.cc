@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/epsilon_greedy_bandit_arms_alias.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource_util.h"
 
-namespace ads::targeting::model {
+namespace brave_ads::targeting::model {
 
 namespace {
 
@@ -177,4 +177,4 @@ SegmentList EpsilonGreedyBandit::GetSegments() const {
   return GetSegmentsForArms(GetEpsilonGreedyBanditArms());
 }
 
-}  // namespace ads::targeting::model
+}  // namespace brave_ads::targeting::model

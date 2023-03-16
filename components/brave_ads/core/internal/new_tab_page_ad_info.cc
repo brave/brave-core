@@ -7,7 +7,7 @@
 
 #include <tuple>
 
-namespace ads {
+namespace brave_ads {
 
 NewTabPageAdInfo::NewTabPageAdInfo() = default;
 
@@ -52,4 +52,4 @@ bool NewTabPageAdInfo::IsValid() const {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

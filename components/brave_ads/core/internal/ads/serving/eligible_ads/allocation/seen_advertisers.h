@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeAdInfo;
 
@@ -42,6 +42,6 @@ T FilterSeenAdvertisersAndRoundRobinIfNeeded(const T& ads, const AdType& type) {
   return ads;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ALLOCATION_SEEN_ADVERTISERS_H_

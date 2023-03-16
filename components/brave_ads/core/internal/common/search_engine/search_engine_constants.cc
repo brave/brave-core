@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_url_pattern_constants.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_url_pattern_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 const std::vector<SearchEngineInfo>& GetSearchEngines() {
   static const base::NoDestructor<std::vector<SearchEngineInfo>> kSearchEngines(
@@ -58,4 +58,4 @@ const std::vector<SearchEngineInfo>& GetSearchEngines() {
   return *kSearchEngines;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

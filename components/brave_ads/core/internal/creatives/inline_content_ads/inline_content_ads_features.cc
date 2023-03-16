@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
 
-namespace ads::inline_content_ads::features {
+namespace brave_ads::inline_content_ads::features {
 
 namespace {
 constexpr char kFeatureName[] = "InlineContentAds";
@@ -17,4 +17,4 @@ bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
 }
 
-}  // namespace ads::inline_content_ads::features
+}  // namespace brave_ads::inline_content_ads::features

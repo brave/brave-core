@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::json::writer {
+namespace brave_ads::json::writer {
 
 namespace {
 
@@ -55,4 +55,4 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
   return json;
 }
 
-}  // namespace ads::json::writer
+}  // namespace brave_ads::json::writer

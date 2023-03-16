@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/history/sorts/ascending_history_sort.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/descending_history_sort.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::unique_ptr<HistorySortInterface> HistorySortFactory::Build(
     const HistorySortType type) {
@@ -34,4 +34,4 @@ std::unique_ptr<HistorySortInterface> HistorySortFactory::Build(
   return nullptr;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

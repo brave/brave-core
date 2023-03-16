@@ -8,10 +8,10 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 void ParseAndReplaceTags(std::string* out_text);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_TAG_PARSER_UTIL_H_

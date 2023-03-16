@@ -9,7 +9,7 @@
 #include "base/containers/circular_deque.h"
 #include "base/values.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NotificationAdInfo;
 
@@ -21,6 +21,6 @@ NotificationAdInfo NotificationAdFromValue(const base::Value::Dict& root);
 base::circular_deque<NotificationAdInfo> NotificationAdsFromValue(
     const base::Value::List& list);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_NOTIFICATION_AD_VALUE_UTIL_H_

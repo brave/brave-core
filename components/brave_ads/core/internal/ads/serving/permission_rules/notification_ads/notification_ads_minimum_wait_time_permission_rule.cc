@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 namespace {
 
@@ -59,4 +59,4 @@ const std::string& MinimumWaitTimePermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

@@ -10,13 +10,13 @@
 
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class StaticServerHost final : public ServerHostInterface {
  public:
   std::string Get() const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_STATIC_SERVER_HOST_H_

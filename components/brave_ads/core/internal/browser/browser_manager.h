@@ -9,7 +9,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 class BrowserManager final {
  public:
@@ -58,6 +58,6 @@ class BrowserManager final {
   bool is_in_foreground_ = false;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_

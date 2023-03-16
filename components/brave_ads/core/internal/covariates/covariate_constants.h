@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_CONSTANTS_H_
 
-namespace ads {
+namespace brave_ads {
 
 constexpr int kCovariateMissingValue = -1;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_CONSTANTS_H_

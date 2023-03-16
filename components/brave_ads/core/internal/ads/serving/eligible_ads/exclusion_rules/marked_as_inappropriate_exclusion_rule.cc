@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -50,4 +50,4 @@ const std::string& MarkedAsInappropriateExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

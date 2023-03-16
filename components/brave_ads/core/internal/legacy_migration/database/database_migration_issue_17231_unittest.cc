@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsDatabaseMigrationIssue17231Test : public UnitTestBase {
  protected:
@@ -559,4 +559,4 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
   // Assert
 }
 
-}  // namespace ads
+}  // namespace brave_ads

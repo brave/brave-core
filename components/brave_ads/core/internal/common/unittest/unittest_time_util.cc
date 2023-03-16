@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "base/time/time_to_iso8601.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Time TimeFromString(const std::string& time_string, const bool is_local) {
   base::Time time;
@@ -48,4 +48,4 @@ std::string DistantFutureAsISO8601() {
   return base::TimeToISO8601(DistantFuture());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

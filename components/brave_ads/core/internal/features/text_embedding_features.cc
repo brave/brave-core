@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 
-namespace ads::targeting::features {
+namespace brave_ads::targeting::features {
 
 namespace {
 
@@ -41,4 +41,4 @@ int GetTextEmbeddingResourceVersion() {
                                           kDefaultResourceVersion);
 }
 
-}  // namespace ads::targeting::features
+}  // namespace brave_ads::targeting::features

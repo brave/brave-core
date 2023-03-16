@@ -12,7 +12,7 @@
 #include "base/json/json_writer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdPreferencesInfo::AdPreferencesInfo() = default;
 
@@ -162,4 +162,4 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

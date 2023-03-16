@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 std::unique_ptr<AdEventInterface<NotificationAdInfo>> AdEventFactory::Build(
     const mojom::NotificationAdEventType event_type) {
@@ -42,4 +42,4 @@ std::unique_ptr<AdEventInterface<NotificationAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

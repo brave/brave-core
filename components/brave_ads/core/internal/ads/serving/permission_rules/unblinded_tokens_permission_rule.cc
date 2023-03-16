@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -37,4 +37,4 @@ const std::string& UnblindedTokensPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

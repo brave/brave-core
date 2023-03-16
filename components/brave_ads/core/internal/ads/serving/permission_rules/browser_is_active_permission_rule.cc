@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -40,4 +40,4 @@ const std::string& BrowserIsActivePermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

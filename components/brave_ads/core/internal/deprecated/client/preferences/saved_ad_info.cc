@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/saved_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::Dict SavedAdInfo::ToValue() const {
   base::Value::Dict dict;
@@ -19,4 +19,4 @@ void SavedAdInfo::FromValue(const base::Value::Dict& root) {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::targeting::model {
+namespace brave_ads::targeting::model {
 
 class BatAdsPurchaseIntentModelTest : public UnitTestBase {};
 
@@ -171,4 +171,4 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   EXPECT_EQ(expected_segments, segments);
 }
 
-}  // namespace ads::targeting::model
+}  // namespace brave_ads::targeting::model

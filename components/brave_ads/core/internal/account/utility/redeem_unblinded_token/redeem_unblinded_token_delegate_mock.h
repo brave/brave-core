@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads {
+namespace brave_ads {
 
 class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
  public:
@@ -48,6 +48,6 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
                const bool should_backoff));
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_DELEGATE_MOCK_H_

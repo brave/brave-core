@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/unblinded_tokens_permission_rule.h"
 
-namespace ads {
+namespace brave_ads {
 
 PermissionRulesBase::PermissionRulesBase() = default;
 
@@ -32,4 +32,4 @@ bool PermissionRulesBase::HasPermission() {
   return ShouldAllow(&catalog_permission_rule);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

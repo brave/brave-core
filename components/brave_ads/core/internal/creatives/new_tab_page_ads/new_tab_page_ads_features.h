@@ -8,12 +8,12 @@
 
 #include "base/feature_list.h"
 
-namespace ads::new_tab_page_ads::features {
+namespace brave_ads::new_tab_page_ads::features {
 
 BASE_DECLARE_FEATURE(kFeature);
 
 bool IsEnabled();
 
-}  // namespace ads::new_tab_page_ads::features
+}  // namespace brave_ads::new_tab_page_ads::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_FEATURES_H_

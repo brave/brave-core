@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_util.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -16,7 +16,7 @@
 
 using ::testing::Invoke;
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -167,4 +167,4 @@ TEST_F(BatAdsNotificationAdUtilTest, NotificationAdTimedOut) {
   BuildAndShowNotificationAd();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

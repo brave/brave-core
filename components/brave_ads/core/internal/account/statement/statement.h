@@ -9,13 +9,13 @@
 #include "base/functional/callback_forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 using BuildStatementCallback =
     base::OnceCallback<void(mojom::StatementInfoPtr)>;
 
 void BuildStatement(BuildStatementCallback callback);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_STATEMENT_H_

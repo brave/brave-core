@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class DeviceIdDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
@@ -20,6 +20,6 @@ class DeviceIdDiagnosticEntry final : public DiagnosticEntryInterface {
   std::string GetValue() const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_DEVICE_ID_DIAGNOSTIC_ENTRY_H_

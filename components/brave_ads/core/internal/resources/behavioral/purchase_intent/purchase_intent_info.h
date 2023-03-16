@@ -19,7 +19,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct PurchaseIntentInfo final {
   PurchaseIntentInfo();
@@ -42,6 +42,6 @@ struct PurchaseIntentInfo final {
   std::vector<PurchaseIntentFunnelKeywordInfo> funnel_keywords;
 };
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_INFO_H_

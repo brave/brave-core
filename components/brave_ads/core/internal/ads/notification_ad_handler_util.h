@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_HANDLER_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_HANDLER_UTIL_H_
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct NotificationAdInfo;
 
@@ -24,6 +24,6 @@ void CloseNotificationAd(const std::string& placement_id);
 void DismissNotificationAd(const std::string& placement_id);
 void NotificationAdTimedOut(const std::string& placement_id);
 
-}  // namespace ads
+}  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_HANDLER_UTIL_H_

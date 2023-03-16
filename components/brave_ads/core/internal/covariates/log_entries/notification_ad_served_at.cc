@@ -8,7 +8,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/internal/covariates/covariate_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 void NotificationAdServedAt::SetTime(const base::Time time) {
   time_ = time;
@@ -30,4 +30,4 @@ std::string NotificationAdServedAt::GetValue() const {
   return base::NumberToString(time_.ToDoubleT());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

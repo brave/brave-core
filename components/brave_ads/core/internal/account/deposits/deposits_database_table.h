@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using GetDepositsCallback =
     base::OnceCallback<void(const bool success,
@@ -48,6 +48,6 @@ class Deposits final : public TableInterface {
                                        const DepositInfo& deposit) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSITS_DATABASE_TABLE_H_

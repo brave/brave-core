@@ -8,7 +8,7 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace security {
 struct VerifiableConversionEnvelopeInfo;
@@ -22,6 +22,6 @@ absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
     const ConversionQueueItemInfo& conversion_queue_item);
 
 }  // namespace user_data
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_UTIL_H_

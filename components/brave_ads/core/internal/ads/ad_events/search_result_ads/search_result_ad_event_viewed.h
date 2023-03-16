@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct SearchResultAdInfo;
 
@@ -20,6 +20,6 @@ class AdEventViewed final : public AdEventInterface<SearchResultAdInfo> {
 };
 
 }  // namespace search_result_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_EVENT_VIEWED_H_

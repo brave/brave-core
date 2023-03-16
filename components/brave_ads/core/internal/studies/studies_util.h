@@ -8,12 +8,12 @@
 
 #include "base/metrics/field_trial.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::FieldTrial::ActiveGroups GetActiveStudies();
 
 void LogActiveStudies();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_STUDIES_STUDIES_UTIL_H_

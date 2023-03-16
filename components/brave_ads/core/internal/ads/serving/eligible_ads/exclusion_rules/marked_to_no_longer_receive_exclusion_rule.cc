@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -43,4 +43,4 @@ const std::string& MarkedToNoLongerReceiveExclusionRule::GetLastMessage()
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

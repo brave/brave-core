@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class Token;
 
@@ -18,6 +18,6 @@ std::vector<Token> GetTokens();
 Token GetInvalidToken();
 std::vector<Token> GetInvalidTokens();
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_TOKEN_UNITTEST_UTIL_H_

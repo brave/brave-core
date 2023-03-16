@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 namespace {
 
@@ -67,4 +67,4 @@ SegmentList GetTopParentPurchaseIntentSegments(
                         /*parent_only*/ true);
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

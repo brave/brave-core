@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 class BatAdsTransactionsDatabaseTableTest : public UnitTestBase {};
 
@@ -205,4 +205,4 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, TableName) {
   EXPECT_EQ(expected_table_name, table_name);
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

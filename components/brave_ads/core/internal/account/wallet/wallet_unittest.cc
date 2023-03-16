@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsWalletTest, SetWallet) {
   // Arrange
@@ -38,4 +38,4 @@ TEST(BatAdsWalletTest, SetWallet) {
   EXPECT_EQ(expected_wallet, wallet.Get());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

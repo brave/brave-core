@@ -9,7 +9,7 @@
 #include <cstdint>
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogTypeInfo final {
   CatalogTypeInfo();
@@ -31,6 +31,6 @@ struct CatalogTypeInfo final {
   uint64_t version = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_CATALOG_TYPE_INFO_H_

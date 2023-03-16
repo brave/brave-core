@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 PurchaseIntentSignalHistoryInfo::PurchaseIntentSignalHistoryInfo(
     const base::Time created_at,
@@ -25,4 +25,4 @@ bool operator!=(const PurchaseIntentSignalHistoryInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

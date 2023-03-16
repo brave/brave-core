@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 OptedInInfo::OptedInInfo() = default;
 
@@ -41,4 +41,4 @@ bool operator!=(const OptedInInfo& lhs, const OptedInInfo& rhs) {
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

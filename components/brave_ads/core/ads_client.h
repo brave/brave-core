@@ -18,7 +18,7 @@
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NotificationAdInfo;
 
@@ -176,6 +176,6 @@ class ADS_EXPORT AdsClient {
                    const std::string& message) = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_H_

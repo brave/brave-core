@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 class Catalog;
 struct CatalogInfo;
@@ -44,6 +44,6 @@ class EpsilonGreedyBandit final : public CatalogObserver {
 };
 
 }  // namespace resource
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_RESOURCE_H_

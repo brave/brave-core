@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/catalog_type_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CatalogTypeInfo::CatalogTypeInfo() = default;
 
@@ -30,4 +30,4 @@ bool CatalogTypeInfo::operator!=(const CatalogTypeInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

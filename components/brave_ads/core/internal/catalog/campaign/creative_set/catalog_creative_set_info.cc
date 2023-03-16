@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
-namespace ads {
+namespace brave_ads {
 
 CatalogCreativeSetInfo::CatalogCreativeSetInfo() = default;
 
@@ -59,4 +59,4 @@ bool CatalogCreativeSetInfo::DoesSupportOS() const {
   });
 }
 
-}  // namespace ads
+}  // namespace brave_ads

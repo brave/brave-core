@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/payment_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 absl::optional<TransactionList> BuildTransactionsFromJson(
     const std::string& json) {
@@ -56,4 +56,4 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
   return transactions;
 }
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards

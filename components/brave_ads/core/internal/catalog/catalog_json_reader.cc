@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/json/json_helper.h"
 #include "url/gurl.h"
 
-namespace ads::json::reader {
+namespace brave_ads::json::reader {
 
 // TODO(https://github.com/brave/brave-browser/issues/25987): Reduce cognitive
 // complexity.
@@ -294,4 +294,4 @@ absl::optional<CatalogInfo> ReadCatalog(const std::string& json) {
   return catalog;
 }
 
-}  // namespace ads::json::reader
+}  // namespace brave_ads::json::reader

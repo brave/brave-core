@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/covariates/covariate_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 AverageClickthroughRate::AverageClickthroughRate(base::TimeDelta time_window)
     : time_window_(time_window) {}
@@ -63,4 +63,4 @@ std::string AverageClickthroughRate::GetValue() const {
   return base::NumberToString(clickthrough_rate);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 bool EpsilonGreedyBanditArmInfo::operator==(
     const EpsilonGreedyBanditArmInfo& other) const {
@@ -24,4 +24,4 @@ bool EpsilonGreedyBanditArmInfo::IsValid() const {
   return !segment.empty() && value >= 0.0 && value <= 1.0 && pulls >= 0;
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

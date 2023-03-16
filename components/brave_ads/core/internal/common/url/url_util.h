@@ -11,7 +11,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 GURL GetUrlWithEmptyQuery(const GURL& url);
 
@@ -22,6 +22,6 @@ bool MatchUrlPattern(const GURL& url, const std::string& pattern);
 bool SameDomainOrHost(const GURL& lhs, const GURL& rhs);
 bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_URL_URL_UTIL_H_

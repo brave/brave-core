@@ -11,7 +11,7 @@
 
 #include "base/values.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct FilteredAdvertiserInfo final {
   base::Value::Dict ToValue() const;
@@ -22,6 +22,6 @@ struct FilteredAdvertiserInfo final {
 
 using FilteredAdvertiserList = std::vector<FilteredAdvertiserInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_PREFERENCES_FILTERED_ADVERTISER_INFO_H_

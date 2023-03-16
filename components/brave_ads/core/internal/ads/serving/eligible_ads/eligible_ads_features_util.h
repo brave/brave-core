@@ -10,10 +10,10 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 AdPredictorWeightList ToAdPredictorWeights(const std::string& param_value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_FEATURES_UTIL_H_

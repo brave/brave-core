@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/conversion_user_data_builder.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 void GetConversion(const std::string& creative_instance_id,
                    const ConfirmationType& confirmation_type,
@@ -34,4 +34,4 @@ void GetConversion(const std::string& creative_instance_id,
           std::move(callback)));
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

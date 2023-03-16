@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
  protected:
@@ -92,4 +92,4 @@ TEST_F(BatAdsUserActivityScoringUtilTest,
   EXPECT_FALSE(was_user_active);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

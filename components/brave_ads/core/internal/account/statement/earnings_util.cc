@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/reconciled_transactions_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -66,4 +66,4 @@ double GetReconciledEarningsForLastMonth(const TransactionList& transactions) {
   return GetReconciledEarningsForDateRange(transactions, from_time, to_time);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

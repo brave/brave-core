@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 #include "build/build_config.h"
 
-namespace ads {
+namespace brave_ads {
 
 #if defined(OFFICIAL_BUILD)
 constexpr EnvironmentType kDefaultEnvironmentType =
@@ -18,6 +18,6 @@ constexpr EnvironmentType kDefaultEnvironmentType =
 constexpr EnvironmentType kDefaultEnvironmentType = EnvironmentType::kStaging;
 #endif  // !OFFICIAL_BUILD
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FLAGS_FLAG_MANAGER_CONSTANTS_H_

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 ExclusionRules::ExclusionRules(
     const AdEventList& ad_events,
@@ -26,4 +26,4 @@ ExclusionRules::ExclusionRules(
 
 ExclusionRules::~ExclusionRules() = default;
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads

@@ -15,7 +15,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
@@ -38,6 +38,6 @@ bool IsValid(const ConfirmationInfo& confirmation);
 
 void ResetConfirmations();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_UTIL_H_

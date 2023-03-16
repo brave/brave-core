@@ -11,7 +11,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class VerificationSignature;
 
@@ -40,6 +40,6 @@ class VerificationKey {
   challenge_bypass_ristretto::VerificationKey verification_key_;
 };
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_VERIFICATION_KEY_H_

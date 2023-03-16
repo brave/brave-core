@@ -8,13 +8,13 @@
 
 #include <cstdint>
 
-namespace ads::confirmations {
+namespace brave_ads::confirmations {
 
 void Migrate(bool should_migrate);
 
 uint64_t GetHash();
 void SetHash(uint64_t hash);
 
-}  // namespace ads::confirmations
+}  // namespace brave_ads::confirmations
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_CONFIRMATIONS_LEGACY_CONFIRMATION_MIGRATION_UNITTEST_UTIL_H_

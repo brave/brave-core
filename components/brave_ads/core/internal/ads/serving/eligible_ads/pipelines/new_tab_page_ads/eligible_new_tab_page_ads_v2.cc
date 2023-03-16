@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 EligibleAdsV2::EligibleAdsV2(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -135,4 +135,4 @@ CreativeNewTabPageAdList EligibleAdsV2::FilterCreativeAds(
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

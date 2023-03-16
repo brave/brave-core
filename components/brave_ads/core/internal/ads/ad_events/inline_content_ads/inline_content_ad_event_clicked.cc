@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 void AdEventClicked::FireEvent(const InlineContentAdInfo& ad) {
   BLOG(3, "Clicked inline content ad with placement id "
@@ -29,4 +29,4 @@ void AdEventClicked::FireEvent(const InlineContentAdInfo& ad) {
              }));
 }
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads

@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsNumberUtilTest, DoubleEquals) {
   // Arrange
@@ -129,4 +129,4 @@ TEST(BatAdsNumberUtilTest, DoubleIsNotLess) {
   EXPECT_FALSE(is_less);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

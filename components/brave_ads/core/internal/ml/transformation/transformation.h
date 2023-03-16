@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation_types.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class Data;
 
@@ -29,6 +29,6 @@ class Transformation {
   const TransformationType type_;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_H_

@@ -27,7 +27,7 @@ class Time;
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class AdsClient;
 struct NotificationAdInfo;
@@ -271,6 +271,6 @@ class ADS_EXPORT Ads {
   virtual bool ToggleFlaggedAd(base::Value::Dict value) = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_H_

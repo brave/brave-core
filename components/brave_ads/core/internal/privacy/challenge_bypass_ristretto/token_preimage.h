@@ -13,7 +13,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 // A |TokenPreimage| is a slice of bytes which can be hashed to a ristretto
 // point. The hash function must ensure the discrete log with respect to other
@@ -60,6 +60,6 @@ class TokenPreimage {
 
 std::ostream& operator<<(std::ostream& os, const TokenPreimage& token_preimage);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_TOKEN_PREIMAGE_H_

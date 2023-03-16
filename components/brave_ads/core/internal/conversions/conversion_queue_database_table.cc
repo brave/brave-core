@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 namespace {
 
@@ -511,4 +511,4 @@ std::string ConversionQueue::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(9, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

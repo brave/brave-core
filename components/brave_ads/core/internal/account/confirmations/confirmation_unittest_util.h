@@ -8,7 +8,7 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ConfirmationInfo;
 
@@ -16,6 +16,6 @@ struct ConfirmationInfo;
 // instead use a mocked |TokenGenerator| and |CreateConfirmation|.
 absl::optional<ConfirmationInfo> BuildConfirmation();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_UNITTEST_UTIL_H_

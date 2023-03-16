@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 mojom::SearchResultAdInfoPtr BuildSearchResultAd() {
   mojom::SearchResultAdInfoPtr ad = mojom::SearchResultAdInfo::New();
@@ -35,4 +35,4 @@ mojom::SearchResultAdInfoPtr BuildSearchResultAd() {
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -9,7 +9,7 @@
 
 #include "base/notreached.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -36,4 +36,4 @@ std::string EnvironmentTypeEnumToString(
   return kUnknownEnvironment;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 namespace {
 
@@ -165,4 +165,4 @@ std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

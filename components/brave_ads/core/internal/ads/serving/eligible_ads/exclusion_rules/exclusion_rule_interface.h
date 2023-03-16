@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 class ExclusionRuleInterface {
@@ -22,6 +22,6 @@ class ExclusionRuleInterface {
   virtual const std::string& GetLastMessage() const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_INTERFACE_H_

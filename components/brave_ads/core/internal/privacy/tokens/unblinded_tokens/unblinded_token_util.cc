@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 namespace {
 
@@ -90,4 +90,4 @@ bool IsValid(const UnblindedTokenInfo& unblinded_token) {
          !unblinded_token.signature.empty();
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

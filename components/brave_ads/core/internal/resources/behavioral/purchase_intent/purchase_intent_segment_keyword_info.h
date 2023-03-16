@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct PurchaseIntentSegmentKeywordInfo final {
   PurchaseIntentSegmentKeywordInfo();
@@ -32,6 +32,6 @@ struct PurchaseIntentSegmentKeywordInfo final {
   std::string keywords;
 };
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SEGMENT_KEYWORD_INFO_H_

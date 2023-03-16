@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool VerifiableConversionInfo::operator==(
     const VerifiableConversionInfo& other) const {
@@ -21,4 +21,4 @@ bool VerifiableConversionInfo::IsValid() const {
   return !(id.empty() || public_key.empty());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

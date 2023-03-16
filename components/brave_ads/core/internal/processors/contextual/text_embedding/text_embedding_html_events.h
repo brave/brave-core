@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
-namespace ads {
+namespace brave_ads {
 
 using TextEmbeddingHtmlEventCallback = base::OnceCallback<void(const bool)>;
 
@@ -28,6 +28,6 @@ void PurgeStaleTextEmbeddingHtmlEvents(TextEmbeddingHtmlEventCallback callback);
 void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_HTML_EVENTS_H_

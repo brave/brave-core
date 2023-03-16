@@ -10,7 +10,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 AntiTargetingInfo::AntiTargetingInfo() = default;
 
@@ -72,4 +72,4 @@ std::unique_ptr<AntiTargetingInfo> AntiTargetingInfo::CreateFromValue(
   return anti_targeting;
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -18,4 +18,4 @@ std::string BoolToString(const bool value) {
   return value ? kTrue : kFalse;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

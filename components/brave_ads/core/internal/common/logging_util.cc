@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace ads {
+namespace brave_ads {
 
 void Log(const char* file,
          const int line,
@@ -20,4 +20,4 @@ void Log(const char* file,
   AdsClientHelper::GetInstance()->Log(file, line, verbose_level, message);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

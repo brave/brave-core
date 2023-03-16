@@ -11,7 +11,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NotificationAdInfo;
 
@@ -42,6 +42,6 @@ class EventHandlerObserver : public base::CheckedObserver {
 };
 
 }  // namespace notification_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_OBSERVER_H_

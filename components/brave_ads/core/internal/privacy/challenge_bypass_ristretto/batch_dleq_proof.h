@@ -14,7 +14,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class BlindedToken;
 class PublicKey;
@@ -80,6 +80,6 @@ class BatchDLEQProof {
 std::ostream& operator<<(std::ostream& os,
                          const BatchDLEQProof& batch_dleq_proof);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_BATCH_DLEQ_PROOF_H_

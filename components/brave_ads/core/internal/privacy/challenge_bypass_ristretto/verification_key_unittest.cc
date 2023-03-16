@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 namespace {
 constexpr char kMessage[] = "The quick brown fox jumps over the lazy dog";
@@ -55,4 +55,4 @@ TEST(BatAdsVerificationKeyTest, FailToVerifyWithInvalidVerificationSignature) {
   EXPECT_FALSE(is_valid);
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

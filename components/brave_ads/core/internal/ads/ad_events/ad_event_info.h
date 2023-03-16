@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct AdEventInfo final {
   AdEventInfo();
@@ -38,6 +38,6 @@ struct AdEventInfo final {
 
 using AdEventList = std::vector<AdEventInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_AD_EVENT_INFO_H_

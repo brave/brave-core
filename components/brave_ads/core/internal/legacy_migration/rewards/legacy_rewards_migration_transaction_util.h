@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 TransactionList GetAllUnreconciledTransactions(
     const TransactionList& transactions,
@@ -24,6 +24,6 @@ BuildTransactionsForReconciledTransactionsThisMonth(
 absl::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(const PaymentList& payments);
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_LEGACY_REWARDS_MIGRATION_TRANSACTION_UTIL_H_

@@ -28,7 +28,7 @@
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 namespace {
 constexpr base::TimeDelta kRetryServingAdAfterDelay = base::Minutes(2);
@@ -39,7 +39,7 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   DCHECK(subdivision_targeting);
   DCHECK(anti_targeting_resource);
 
-  const int version = features::GetServingVersion();
+  const int version = brave_ads::features::GetServingVersion();
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 
@@ -254,4 +254,4 @@ void Serving::OnAdsPerHourPrefChanged() {
   MaybeServeAdAtNextRegularInterval();
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

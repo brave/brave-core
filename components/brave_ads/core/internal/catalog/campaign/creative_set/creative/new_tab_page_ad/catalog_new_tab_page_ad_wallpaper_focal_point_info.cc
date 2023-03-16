@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/new_tab_page_ad/catalog_new_tab_page_ad_wallpaper_focal_point_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const CatalogNewTabPageAdWallpaperFocalPointInfo& lhs,
                 const CatalogNewTabPageAdWallpaperFocalPointInfo& rhs) {
@@ -17,4 +17,4 @@ bool operator!=(const CatalogNewTabPageAdWallpaperFocalPointInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

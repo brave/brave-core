@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
   // Arrange
@@ -181,4 +181,4 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   EXPECT_EQ(expected_last_seen_advertiser_time, *last_seen_advertiser_time);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

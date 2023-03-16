@@ -8,7 +8,7 @@
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 ResourceManager* g_resource_manager_instance = nullptr;
@@ -59,4 +59,4 @@ void ResourceManager::NotifyResourceDidUpdate(const std::string& id) const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

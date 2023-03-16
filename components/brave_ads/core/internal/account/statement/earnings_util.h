@@ -8,12 +8,12 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 double GetUnreconciledEarnings(const TransactionList& transactions);
 double GetReconciledEarningsForThisMonth(const TransactionList& transactions);
 double GetReconciledEarningsForLastMonth(const TransactionList& transactions);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_EARNINGS_UTIL_H_

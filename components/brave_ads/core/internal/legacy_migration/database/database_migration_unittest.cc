@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsDatabaseMigrationTest : public UnitTestBase,
                                     public ::testing::WithParamInterface<int> {
@@ -61,4 +61,4 @@ INSTANTIATE_TEST_SUITE_P(BatAdsDatabaseMigration,
                          testing::Range(0, database::kVersion),
                          TestParamToString);
 
-}  // namespace ads
+}  // namespace brave_ads

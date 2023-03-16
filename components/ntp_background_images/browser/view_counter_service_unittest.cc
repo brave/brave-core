@@ -208,8 +208,8 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     EXPECT_TRUE(view_counter_->IsBackgroundWallpaperActive());
   }
 
-  ads::NewTabPageAdInfo CreateNewTabPageAdInfo() {
-    ads::NewTabPageAdInfo ad_info;
+  brave_ads::NewTabPageAdInfo CreateNewTabPageAdInfo() {
+    brave_ads::NewTabPageAdInfo ad_info;
     ad_info.placement_id = kPlacementdId;
     ad_info.campaign_id = kCampaignId;
     ad_info.creative_instance_id = kCreativeInstanceId;
@@ -217,7 +217,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     ad_info.alt = kAltText;
     ad_info.image_url = GURL(kLogoImageUrl);
     ad_info.target_url = GURL(kDestinationUrl);
-    ads::NewTabPageAdWallpaperInfo wallpaper_info;
+    brave_ads::NewTabPageAdWallpaperInfo wallpaper_info;
     wallpaper_info.image_url = GURL(kSponsoredImageUrl);
     wallpaper_info.focal_point.x = kSponsoredImageFocalPointX;
     wallpaper_info.focal_point.y = kSponsoredImageFocalPointY;
@@ -241,7 +241,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
     return view_counter_->GetCurrentWallpaperForDisplay();
   }
 
-  bool AdInfoMatchesSponsoredImage(const ads::NewTabPageAdInfo& ad_info,
+  bool AdInfoMatchesSponsoredImage(const brave_ads::NewTabPageAdInfo& ad_info,
                                    size_t campaign_index,
                                    size_t background_index) {
     return service_->si_images_data_->AdInfoMatchesSponsoredImage(
@@ -476,7 +476,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdFrequencyCapped) {
 TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
   InitBackgroundAndSponsoredImageWallpapers();
 
-  ads::NewTabPageAdInfo ad_info = CreateNewTabPageAdInfo();
+  brave_ads::NewTabPageAdInfo ad_info = CreateNewTabPageAdInfo();
   EXPECT_TRUE(AdInfoMatchesSponsoredImage(ad_info, 0, 1));
 
   EXPECT_CALL(ads_service_, IsEnabled()).WillRepeatedly(Return(true));
@@ -503,7 +503,7 @@ TEST_F(NTPBackgroundImagesViewCounterTest, SponsoredImageAdServed) {
 TEST_F(NTPBackgroundImagesViewCounterTest, WrongSponsoredImageAdServed) {
   InitBackgroundAndSponsoredImageWallpapers();
 
-  ads::NewTabPageAdInfo ad_info = CreateNewTabPageAdInfo();
+  brave_ads::NewTabPageAdInfo ad_info = CreateNewTabPageAdInfo();
   ad_info.creative_instance_id = "wrong_creative_instance_id";
   EXPECT_FALSE(AdInfoMatchesSponsoredImage(ad_info, 0, 1));
 

@@ -16,7 +16,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 class RedeemUnblindedPaymentTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
@@ -54,6 +54,6 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
   base::Value::Dict user_data_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_URL_REQUEST_BUILDER_H_

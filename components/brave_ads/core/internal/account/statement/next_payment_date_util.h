@@ -12,11 +12,11 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 base::Time CalculateNextPaymentDate(base::Time next_token_redemption_at,
                                     const TransactionList& transactions);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_NEXT_PAYMENT_DATE_UTIL_H_

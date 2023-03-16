@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_geo_target_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_creative_set_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogCampaignInfo final {
   CatalogCampaignInfo();
@@ -43,6 +43,6 @@ struct CatalogCampaignInfo final {
 
 using CatalogCampaignList = std::vector<CatalogCampaignInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CATALOG_CAMPAIGN_INFO_H_

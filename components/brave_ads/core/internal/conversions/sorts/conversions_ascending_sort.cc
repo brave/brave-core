@@ -7,7 +7,7 @@
 
 #include "base/ranges/algorithm.h"
 
-namespace ads {
+namespace brave_ads {
 
 ConversionList ConversionsAscendingSort::Apply(
     const ConversionList& conversions) const {
@@ -21,4 +21,4 @@ ConversionList ConversionsAscendingSort::Apply(
   return sorted_conversions;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

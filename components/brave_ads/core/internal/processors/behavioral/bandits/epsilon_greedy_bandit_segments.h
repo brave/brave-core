@@ -9,10 +9,10 @@
 #include "base/containers/span.h"
 #include "base/strings/string_piece.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 base::span<const base::StringPiece> GetSegments();
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_SEGMENTS_H_

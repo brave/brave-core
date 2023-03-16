@@ -15,7 +15,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 class ConfirmationType;
@@ -43,6 +43,6 @@ void GetForDateRange(base::Time from_time,
 void RemoveAll(RemoveAllCallback callback);
 
 }  // namespace transactions
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_H_

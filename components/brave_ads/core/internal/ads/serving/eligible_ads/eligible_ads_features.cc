@@ -12,7 +12,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features_util.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 namespace {
 
@@ -49,4 +49,4 @@ AdPredictorWeightList GetAdPredictorWeights() {
   return weights;
 }
 
-}  // namespace ads::features
+}  // namespace brave_ads::features

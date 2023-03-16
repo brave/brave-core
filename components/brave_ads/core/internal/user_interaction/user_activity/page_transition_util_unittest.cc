@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsPageTransitionUtilTest, IsNewNavigation) {
   // Arrange
@@ -157,4 +157,4 @@ TEST(BatAdsPageTransitionUtilTest, ToUserActivityGeneratedKeywordEventType) {
   EXPECT_EQ(UserActivityEventType::kGeneratedKeyword, event_type);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

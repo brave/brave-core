@@ -22,16 +22,17 @@
 - (bool)canShowNotificationAds;
 - (void)loadFileResource:(const std::string&)id
                  version:(const int)version
-                callback:(ads::LoadFileCallback)callback;
+                callback:(brave_ads::LoadFileCallback)callback;
 - (void)clearScheduledCaptcha;
 - (void)getScheduledCaptcha:(const std::string&)payment_id
-                   callback:(ads::GetScheduledCaptchaCallback)callback;
+                   callback:(brave_ads::GetScheduledCaptchaCallback)callback;
 - (void)showScheduledCaptchaNotification:(const std::string&)payment_id
                                captchaId:(const std::string&)captcha_id;
 - (void)getBrowsingHistory:(const int)max_count
                    forDays:(const int)days_ago
-                  callback:(ads::GetBrowsingHistoryCallback)callback;
-- (void)load:(const std::string&)name callback:(ads::LoadCallback)callback;
+                  callback:(brave_ads::GetBrowsingHistoryCallback)callback;
+- (void)load:(const std::string&)name
+    callback:(brave_ads::LoadCallback)callback;
 - (std::string)loadDataResource:(const std::string&)name;
 - (void)log:(const char*)file
             line:(const int)line
@@ -39,8 +40,8 @@
          message:(const std::string&)message;
 - (void)save:(const std::string&)name
        value:(const std::string&)value
-    callback:(ads::SaveCallback)callback;
-- (void)showNotificationAd:(const ads::NotificationAdInfo&)info;
+    callback:(brave_ads::SaveCallback)callback;
+- (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type
@@ -50,10 +51,10 @@
                             confirmationType:
                                 (const std::string&)confirmation_type;
 - (void)resetAdEventHistoryForId:(const std::string&)id;
-- (void)UrlRequest:(ads::mojom::UrlRequestInfoPtr)url_request
-          callback:(ads::UrlRequestCallback)callback;
-- (void)runDBTransaction:(ads::mojom::DBTransactionInfoPtr)transaction
-                callback:(ads::RunDBTransactionCallback)callback;
+- (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
+          callback:(brave_ads::UrlRequestCallback)callback;
+- (void)runDBTransaction:(brave_ads::mojom::DBTransactionInfoPtr)transaction
+                callback:(brave_ads::RunDBTransactionCallback)callback;
 - (void)updateAdRewards;
 - (void)setBooleanPref:(const std::string&)path value:(const bool)value;
 - (bool)getBooleanPref:(const std::string&)path;

@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/export.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT AdInfo {
   AdInfo();
@@ -40,6 +40,6 @@ struct ADS_EXPORT AdInfo {
   GURL target_url;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_AD_INFO_H_

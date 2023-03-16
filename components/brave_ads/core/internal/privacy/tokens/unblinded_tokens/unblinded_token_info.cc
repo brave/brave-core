@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 bool UnblindedTokenInfo::operator==(const UnblindedTokenInfo& other) const {
   return public_key == other.public_key && value == other.value &&
@@ -16,4 +16,4 @@ bool UnblindedTokenInfo::operator!=(const UnblindedTokenInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

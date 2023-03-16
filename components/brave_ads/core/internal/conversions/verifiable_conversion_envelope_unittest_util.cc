@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads::security {
+namespace brave_ads::security {
 
 namespace {
 constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
@@ -111,4 +111,4 @@ absl::optional<std::string> OpenEnvelopeForUserDataAndAdvertiserSecretKey(
   return OpenEnvelope(*verifiable_conversion_envelope, advertiser_secret_key);
 }
 
-}  // namespace ads::security
+}  // namespace brave_ads::security

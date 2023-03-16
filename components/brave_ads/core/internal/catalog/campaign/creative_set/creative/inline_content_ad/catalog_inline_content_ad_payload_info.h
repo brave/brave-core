@@ -10,7 +10,7 @@
 
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogInlineContentAdPayloadInfo final {
   CatalogInlineContentAdPayloadInfo();
@@ -38,6 +38,6 @@ struct CatalogInlineContentAdPayloadInfo final {
   GURL target_url;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CREATIVE_SET_CREATIVE_INLINE_CONTENT_AD_CATALOG_INLINE_CONTENT_AD_PAYLOAD_INFO_H_

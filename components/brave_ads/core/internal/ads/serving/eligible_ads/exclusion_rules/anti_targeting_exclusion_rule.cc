@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -73,4 +73,4 @@ bool AntiTargetingExclusionRule::DoesRespectCap(
   return !HasVisitedSiteOnAntiTargetingList(browsing_history_, iter->second);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

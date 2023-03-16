@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression_questions.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a.h"
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 std::string GetAdImpressionNameForAdType(const AdType& ad_type) {
   return base::StringPrintf("%s_impression", ad_type.ToString().c_str());
@@ -28,4 +28,4 @@ void RecordAdImpression(const AdInfo& ad) {
   RecordEvent(name, questions);
 }
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a

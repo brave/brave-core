@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsTimeConstraintUtilTest : public UnitTestBase {};
 
@@ -55,4 +55,4 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesNotRespect) {
   EXPECT_FALSE(does_respect);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

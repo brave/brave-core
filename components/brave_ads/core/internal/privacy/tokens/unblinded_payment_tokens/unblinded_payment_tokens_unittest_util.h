@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 class UnblindedPaymentTokens;
 
@@ -30,6 +30,6 @@ UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
 UnblindedPaymentTokenList GetUnblindedPaymentTokens(int count);
 UnblindedPaymentTokenInfo GetUnblindedPaymentToken();
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNITTEST_UTIL_H_

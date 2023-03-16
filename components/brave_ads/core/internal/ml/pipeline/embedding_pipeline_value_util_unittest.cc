@@ -16,7 +16,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 namespace {
 
@@ -90,4 +90,4 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValueMalformed) {
   EXPECT_TRUE(!pipeline);
 }
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

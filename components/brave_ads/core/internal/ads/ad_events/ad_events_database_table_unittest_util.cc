@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 
-namespace ads::database::table::ad_events {
+namespace brave_ads::database::table::ad_events {
 
 void Reset(ResultCallback callback) {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -39,4 +39,4 @@ void Reset(ResultCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ads::database::table::ad_events
+}  // namespace brave_ads::database::table::ad_events

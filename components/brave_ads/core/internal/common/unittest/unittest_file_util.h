@@ -11,7 +11,7 @@
 #include "base/files/file_path.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::FilePath GetTestPath();
 absl::optional<std::string> ReadFileFromTestPathToString(
@@ -25,6 +25,6 @@ base::FilePath GetDataResourcePath();
 absl::optional<std::string> ReadFileFromDataResourcePathToString(
     const std::string& name);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_FILE_UTIL_H_

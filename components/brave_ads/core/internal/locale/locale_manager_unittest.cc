@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kLocale[] = "en_GB";
@@ -68,4 +68,4 @@ TEST_F(BatAdsLocaleManagerTest, LocaleDidNotChange) {
   EXPECT_FALSE(locale_did_change_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

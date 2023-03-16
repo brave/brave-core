@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 TokenPreimage GetTokenPreimage() {
   return TokenPreimage(kTokenPreimageBase64);
@@ -18,4 +18,4 @@ TokenPreimage GetInvalidTokenPreimage() {
   return TokenPreimage(kInvalidBase64);
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

@@ -10,7 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_event_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct UserActivityEventInfo final {
   UserActivityEventType type;
@@ -24,6 +24,6 @@ bool operator!=(const UserActivityEventInfo& lhs,
 
 using UserActivityEventList = base::circular_deque<UserActivityEventInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_EVENT_INFO_H_

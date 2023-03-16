@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/transformation/transformation.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 Transformation::Transformation(const TransformationType& type) : type_(type) {}
 
@@ -15,4 +15,4 @@ TransformationType Transformation::GetType() const {
   return type_;
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

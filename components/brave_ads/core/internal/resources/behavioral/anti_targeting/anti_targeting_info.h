@@ -18,7 +18,7 @@ namespace base {
 class Value;
 }  // namespace base
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 using AntiTargetingSiteList = std::set<GURL>;
 using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
@@ -42,6 +42,6 @@ struct AntiTargetingInfo final {
   AntiTargetingMap sites;
 };
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_INFO_H_

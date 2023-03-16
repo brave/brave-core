@@ -9,11 +9,11 @@
 #include <string>
 #include <vector>
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 std::vector<std::string> CreateAdImpressionQuestions(
     const std::string& segment);
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_P2A_IMPRESSIONS_P2A_IMPRESSION_QUESTIONS_H_

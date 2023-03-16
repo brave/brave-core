@@ -10,10 +10,10 @@
 
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 using BrowsingHistoryList = std::vector<GURL>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_ALIAS_H_

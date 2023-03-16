@@ -19,7 +19,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -100,4 +100,4 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
   }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

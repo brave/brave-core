@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/ad_constants.h"  // IWYU pragma: keep
 
-namespace ads::data::resource {
+namespace brave_ads::data::resource {
 
 const char kCatalogJsonSchemaFilename[] = "catalog-schema.json";
 
-}  // namespace ads::data::resource
+}  // namespace brave_ads::data::resource

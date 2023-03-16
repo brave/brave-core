@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 namespace {
 
@@ -161,4 +161,4 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

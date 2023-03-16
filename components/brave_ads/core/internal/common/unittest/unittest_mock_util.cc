@@ -34,7 +34,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -567,4 +567,4 @@ void MockHasPrefPath(const std::unique_ptr<AdsClientMock>& mock) {
       }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

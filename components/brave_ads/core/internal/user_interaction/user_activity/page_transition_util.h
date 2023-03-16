@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/page_transition_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool IsNewNavigation(PageTransitionType type);
 
@@ -25,6 +25,6 @@ bool DidTransitionFromExternalApplication(PageTransitionType type);
 absl::optional<UserActivityEventType> ToUserActivityEventType(
     PageTransitionType type);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_PAGE_TRANSITION_UTIL_H_

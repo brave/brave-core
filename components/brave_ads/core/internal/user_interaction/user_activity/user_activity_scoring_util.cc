@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool WasUserActive() {
   const UserActivityTriggerList triggers =
@@ -28,4 +28,4 @@ bool WasUserActive() {
   return score >= threshold;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

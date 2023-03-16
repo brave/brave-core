@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -60,4 +60,4 @@ CreativeAdInfo BuildCreativeAd(const bool should_use_random_guids) {
   return creative_ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

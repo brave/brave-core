@@ -9,7 +9,7 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_unblinded_payment_tokens_json_reader_util.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 absl::optional<privacy::UnblindedPaymentTokenList> ReadUnblindedPaymentTokens(
     const std::string& json) {
@@ -21,4 +21,4 @@ absl::optional<privacy::UnblindedPaymentTokenList> ReadUnblindedPaymentTokens(
   return ParseUnblindedPaymentTokens(*root);
 }
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader

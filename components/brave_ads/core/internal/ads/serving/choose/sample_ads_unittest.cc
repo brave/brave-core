@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
   // Arrange
@@ -166,4 +166,4 @@ TEST(BatAdsSampleAdsTest, ProbabilisticallySampleAdFromPredictors) {
   EXPECT_FALSE((creative_ad_1_count == 0 || creative_ad_2_count == 0));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

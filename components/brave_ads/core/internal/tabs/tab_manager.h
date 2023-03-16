@@ -18,7 +18,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 class TabManager final {
  public:
@@ -94,6 +94,6 @@ class TabManager final {
   std::map<int32_t, TabInfo> tabs_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TABS_TAB_MANAGER_H_

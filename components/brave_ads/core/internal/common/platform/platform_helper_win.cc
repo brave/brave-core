@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_win.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kPlatformName[] = "windows";
@@ -25,4 +25,4 @@ PlatformType PlatformHelperWin::GetType() const {
   return PlatformType::kWindows;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

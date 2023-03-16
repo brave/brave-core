@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/ad_content_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -172,4 +172,4 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& root) {
   return ad_content;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 struct UnblindedPaymentTokenInfo final {
   UnblindedPaymentTokenInfo();
@@ -40,6 +40,6 @@ struct UnblindedPaymentTokenInfo final {
 
 using UnblindedPaymentTokenList = std::vector<UnblindedPaymentTokenInfo>;
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_INFO_H_

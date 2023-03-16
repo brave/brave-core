@@ -10,7 +10,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 // Four digit year "2007", 1-based month (values 1 = January, etc.)
 int GetLastDayOfMonth(int year, int month);
@@ -21,6 +21,6 @@ int GetDayOfWeek(int year, int month, int day);
 
 int GetDayOfWeek(base::Time time, bool is_local);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CALENDAR_CALENDAR_UTIL_H_

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/reconciled_transactions_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
                                     const TransactionList& transactions) {
@@ -81,4 +81,4 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
   return next_payment_date;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

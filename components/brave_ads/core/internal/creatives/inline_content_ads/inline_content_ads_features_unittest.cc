@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::inline_content_ads::features {
+namespace brave_ads::inline_content_ads::features {
 
 TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsEnabled) {
   // Arrange
@@ -42,4 +42,4 @@ TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsDisabled) {
   EXPECT_FALSE(is_enabled);
 }
 
-}  // namespace ads::inline_content_ads::features
+}  // namespace brave_ads::inline_content_ads::features

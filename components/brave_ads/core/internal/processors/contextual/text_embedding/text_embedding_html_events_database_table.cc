@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/features/text_embedding_features.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 namespace {
 
@@ -229,4 +229,4 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

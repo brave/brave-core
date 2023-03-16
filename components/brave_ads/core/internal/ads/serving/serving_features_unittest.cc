@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::features {
+namespace brave_ads::features {
 
 TEST(BatAdsServingFeaturesTest, ServingEnabled) {
   // Arrange
@@ -746,4 +746,4 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
   EXPECT_EQ(expected_serving_version, serving_version);
 }
 
-}  // namespace ads::features
+}  // namespace brave_ads::features

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string GetAnonymousHost(const AdType& ad_type) {
   return base::StringPrintf("%s%s",
@@ -17,4 +17,4 @@ std::string GetAnonymousHost(const AdType& ad_type) {
                             server::GetAnonymousHost().c_str());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

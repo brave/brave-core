@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 namespace {
 
@@ -89,4 +89,4 @@ void Migrate(InitializeCallback callback) {
       base::BindOnce(&OnMigrate, std::move(callback)));
 }
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards

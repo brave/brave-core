@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ConversionsAscendingSort final : public ConversionsSortInterface {
  public:
   ConversionList Apply(const ConversionList& conversions) const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_SORTS_CONVERSIONS_ASCENDING_SORT_H_

@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads {
+namespace brave_ads {
 
 ExclusionRulesBase::ExclusionRulesBase(
     const AdEventList& ad_events,
@@ -149,4 +149,4 @@ void ExclusionRulesBase::AddToCache(const std::string& uuid) {
   uuids_.insert(uuid);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

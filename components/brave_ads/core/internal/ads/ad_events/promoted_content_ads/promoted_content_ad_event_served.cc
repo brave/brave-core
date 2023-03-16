@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-namespace ads::promoted_content_ads {
+namespace brave_ads::promoted_content_ads {
 
 void AdEventServed::FireEvent(const PromotedContentAdInfo& ad) {
   BLOG(3, "Served promoted content ad with placement id "
@@ -29,4 +29,4 @@ void AdEventServed::FireEvent(const PromotedContentAdInfo& ad) {
              }));
 }
 
-}  // namespace ads::promoted_content_ads
+}  // namespace brave_ads::promoted_content_ads

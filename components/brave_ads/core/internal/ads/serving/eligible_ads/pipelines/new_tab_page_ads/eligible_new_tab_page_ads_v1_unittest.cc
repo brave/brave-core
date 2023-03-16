@@ -22,7 +22,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 class BatAdsEligibleNewTabPageAdsV1Test : public UnitTestBase {
  protected:
@@ -319,4 +319,4 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, GetPrioritizedAds) {
           std::move(expected_creative_ads)));
 }
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

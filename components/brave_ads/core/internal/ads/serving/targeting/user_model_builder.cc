@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 UserModelInfo BuildUserModel() {
   UserModelInfo user_model;
@@ -37,4 +37,4 @@ UserModelInfo BuildUserModel() {
   return user_model;
 }
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

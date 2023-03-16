@@ -8,7 +8,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class DatabaseManagerObserver : public base::CheckedObserver {
  public:
@@ -39,6 +39,6 @@ class DatabaseManagerObserver : public base::CheckedObserver {
   virtual void OnDatabaseIsReady() {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_OBSERVER_H_

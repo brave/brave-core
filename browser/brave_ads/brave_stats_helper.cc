@@ -7,7 +7,6 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
-#include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -48,8 +47,8 @@ BraveStatsHelper::~BraveStatsHelper() {
 }
 
 void BraveStatsHelper::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(ads::prefs::kEnabledForLastProfile, false);
-  registry->RegisterBooleanPref(ads::prefs::kEverEnabledForAnyProfile, false);
+  registry->RegisterBooleanPref(prefs::kEnabledForLastProfile, false);
+  registry->RegisterBooleanPref(prefs::kEverEnabledForAnyProfile, false);
 }
 
 void BraveStatsHelper::OnProfileAdded(Profile* profile) {
@@ -129,7 +128,7 @@ void BraveStatsHelper::OnLastUsedProfileChanged() {
   ads_enabled_pref_change_registrar_.RemoveAll();
   ads_enabled_pref_change_registrar_.Init(profile_prefs);
   ads_enabled_pref_change_registrar_.Add(
-      ads::prefs::kEnabled,
+      prefs::kEnabled,
       base::BindRepeating(&BraveStatsHelper::Update, base::Unretained(this)));
   Update();
 }
@@ -139,7 +138,7 @@ void BraveStatsHelper::Update() {
   if (profile_prefs == nullptr) {
     return;
   }
-  bool is_enabled = profile_prefs->GetBoolean(ads::prefs::kEnabled);
+  bool is_enabled = profile_prefs->GetBoolean(prefs::kEnabled);
   UpdateLocalStateAdsEnabled(is_enabled);
   MaybeReportAdsInstallationTimeMetric(is_enabled);
 }
@@ -148,19 +147,19 @@ void BraveStatsHelper::UpdateLocalStateAdsEnabled(
     bool is_enabled_for_current_profile) {
   // Copying enabled pref to local state so the stats updater does not depend on
   // the profile
-  local_state_->SetBoolean(ads::prefs::kEnabledForLastProfile,
+  local_state_->SetBoolean(prefs::kEnabledForLastProfile,
                            is_enabled_for_current_profile);
 }
 
 void BraveStatsHelper::MaybeReportAdsInstallationTimeMetric(
     bool is_enabled_for_current_profile) {
   if (!is_enabled_for_current_profile ||
-      local_state_->GetBoolean(ads::prefs::kEverEnabledForAnyProfile)) {
+      local_state_->GetBoolean(prefs::kEverEnabledForAnyProfile)) {
     // If ads was already enabled for a previous profile or the current profile,
     // assume the metric was already sent.
     return;
   }
-  local_state_->SetBoolean(ads::prefs::kEverEnabledForAnyProfile, true);
+  local_state_->SetBoolean(prefs::kEverEnabledForAnyProfile, true);
 
   base::Time first_run = !testing_first_run_time_.is_null()
                              ? testing_first_run_time_

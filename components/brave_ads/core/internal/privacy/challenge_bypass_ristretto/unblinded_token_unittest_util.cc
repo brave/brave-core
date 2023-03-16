@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 UnblindedToken GetUnblindedToken() {
   return UnblindedToken(kUnblindedTokenBase64);
@@ -21,4 +21,4 @@ std::vector<UnblindedToken> GetUnblindedTokens() {
   return unblinded_tokens;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

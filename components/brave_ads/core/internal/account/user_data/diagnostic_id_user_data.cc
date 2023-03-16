@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 constexpr char kDiagnosticIdKey[] = "diagnosticId";
@@ -31,4 +31,4 @@ base::Value::Dict GetDiagnosticId() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

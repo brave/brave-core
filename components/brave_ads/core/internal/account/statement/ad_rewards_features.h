@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 BASE_DECLARE_FEATURE(kAdRewards);
 
@@ -16,6 +16,6 @@ bool IsAdRewardsEnabled();
 
 int GetAdRewardsNextPaymentDay();
 
-}  // namespace ads::features
+}  // namespace brave_ads::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_AD_REWARDS_FEATURES_H_

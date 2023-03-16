@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 void CashDeposit::GetValue(const std::string& creative_instance_id,
                            GetDepositCallback callback) {
@@ -38,4 +38,4 @@ void CashDeposit::GetValue(const std::string& creative_instance_id,
           std::move(callback)));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

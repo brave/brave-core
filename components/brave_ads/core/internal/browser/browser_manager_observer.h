@@ -8,7 +8,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class BrowserManagerObserver : public base::CheckedObserver {
  public:
@@ -25,6 +25,6 @@ class BrowserManagerObserver : public base::CheckedObserver {
   virtual void OnBrowserDidEnterBackground() {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_OBSERVER_H_

@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 UnblindedTokens* GetUnblindedTokens() {
   return ConfirmationStateManager::GetInstance()->GetUnblindedTokens();
@@ -99,4 +99,4 @@ UnblindedTokenInfo GetUnblindedToken() {
   return unblinded_tokens.front();
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

@@ -537,7 +537,7 @@ class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
+  void OnGetAdsAccountStatement(brave_ads::mojom::StatementInfoPtr statement);
 };
 
 class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {

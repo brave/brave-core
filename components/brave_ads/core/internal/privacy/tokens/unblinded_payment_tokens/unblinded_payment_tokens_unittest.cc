@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 class BatAdsUnblindedPaymentTokensTest : public UnitTestBase {};
 
@@ -222,4 +222,4 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, IsNotEmpty) {
   EXPECT_FALSE(unblinded_payment_tokens.IsEmpty());
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

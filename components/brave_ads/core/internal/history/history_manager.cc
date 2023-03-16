@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 HistoryManager* g_history_manager_instance = nullptr;
@@ -263,4 +263,4 @@ void HistoryManager::NotifyDidUnsaveAd(const AdContentInfo& ad_content) const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

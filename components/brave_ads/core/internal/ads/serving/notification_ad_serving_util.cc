@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 namespace {
 
@@ -56,4 +56,4 @@ base::TimeDelta CalculateDelayBeforeServingAnAd() {
   return delay;
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

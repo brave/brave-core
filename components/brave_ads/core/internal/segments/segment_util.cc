@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -131,4 +131,4 @@ bool ShouldFilterSegment(const std::string& segment) {
   return iter != filtered_segments.cend();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

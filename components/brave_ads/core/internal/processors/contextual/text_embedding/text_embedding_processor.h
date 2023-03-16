@@ -17,7 +17,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 namespace resource {
 class TextEmbedding;
@@ -57,6 +57,6 @@ class TextEmbedding final : public LocaleManagerObserver,
 };
 
 }  // namespace processor
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_CONTEXTUAL_TEXT_EMBEDDING_TEXT_EMBEDDING_PROCESSOR_H_

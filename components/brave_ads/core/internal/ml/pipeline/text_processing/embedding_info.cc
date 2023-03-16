@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 TextEmbeddingInfo::TextEmbeddingInfo() = default;
 
@@ -22,4 +22,4 @@ TextEmbeddingInfo& TextEmbeddingInfo::operator=(
 
 TextEmbeddingInfo::~TextEmbeddingInfo() = default;
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

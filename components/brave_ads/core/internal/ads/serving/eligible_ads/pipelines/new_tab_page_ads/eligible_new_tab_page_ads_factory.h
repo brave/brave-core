@@ -8,7 +8,7 @@
 
 #include <memory>
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -31,6 +31,6 @@ class EligibleAdsFactory final {
 };
 
 }  // namespace new_tab_page_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PIPELINES_NEW_TAB_PAGE_ADS_ELIGIBLE_NEW_TAB_PAGE_ADS_FACTORY_H_

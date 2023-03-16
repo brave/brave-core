@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-namespace ads::promoted_content_ads {
+namespace brave_ads::promoted_content_ads {
 
 namespace {
 
@@ -257,4 +257,4 @@ void EventHandler::NotifyPromotedContentAdEventFailed(
   }
 }
 
-}  // namespace ads::promoted_content_ads
+}  // namespace brave_ads::promoted_content_ads

@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_interface.h"
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
  public:
@@ -22,6 +22,6 @@ class MinimumWaitTimePermissionRule final : public PermissionRuleInterface {
   std::string last_message_;
 };
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_PERMISSION_RULES_NEW_TAB_PAGE_ADS_NEW_TAB_PAGE_ADS_MINIMUM_WAIT_TIME_PERMISSION_RULE_H_

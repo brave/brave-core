@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 ConfirmationsDelegateMock::ConfirmationsDelegateMock() = default;
 
 ConfirmationsDelegateMock::~ConfirmationsDelegateMock() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

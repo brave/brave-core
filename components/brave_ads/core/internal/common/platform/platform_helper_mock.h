@@ -12,7 +12,7 @@
 
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ads {
+namespace brave_ads {
 
 class PlatformHelperMock : public PlatformHelper {
  public:
@@ -31,6 +31,6 @@ class PlatformHelperMock : public PlatformHelper {
   MOCK_CONST_METHOD0(GetType, PlatformType());
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_PLATFORM_PLATFORM_HELPER_MOCK_H_

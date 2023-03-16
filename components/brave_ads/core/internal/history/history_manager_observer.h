@@ -10,7 +10,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct AdContentInfo;
 
@@ -45,6 +45,6 @@ class HistoryManagerObserver : public base::CheckedObserver {
   virtual void OnDidUnsaveAd(const AdContentInfo& ad_content) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_HISTORY_MANAGER_OBSERVER_H_

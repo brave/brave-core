@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsUnblindedTokensPermissionRuleTest : public UnitTestBase {};
 
@@ -50,4 +50,4 @@ TEST_F(BatAdsUnblindedTokensPermissionRuleTest, DoNotAllowAdIfExceedsCap) {
   EXPECT_FALSE(is_allowed);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

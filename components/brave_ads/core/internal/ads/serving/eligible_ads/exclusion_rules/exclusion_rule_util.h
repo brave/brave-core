@@ -17,7 +17,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType;
 struct CreativeAdInfo;
@@ -54,6 +54,6 @@ bool ShouldExclude(const T& ad, ExclusionRuleInterface<T>* exclusion_rule) {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_EXCLUSION_RULES_EXCLUSION_RULE_UTIL_H_

@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 
-namespace ads::server {
+namespace brave_ads::server {
 
 namespace {
 constexpr int kVersion = 1;
@@ -21,4 +21,4 @@ std::string BuildViaHeader() {
       SysInfo().is_uncertain_future ? 1 : 0, kVersion);
 }
 
-}  // namespace ads::server
+}  // namespace brave_ads::server

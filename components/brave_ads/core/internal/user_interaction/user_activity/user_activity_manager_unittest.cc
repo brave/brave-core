@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsUserActivityManagerTest : public UnitTestBase {};
 
@@ -666,4 +666,4 @@ TEST_F(BatAdsUserActivityManagerTest, MaximumHistoryItems) {
   EXPECT_TRUE(base::ranges::equal(expected_events, events));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

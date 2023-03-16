@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -129,4 +129,4 @@ TEST(BatConversionsSortTest, AscendingSortOrderForEmptyList) {
   EXPECT_EQ(expected_conversions, conversions);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -35,7 +35,7 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -599,4 +599,4 @@ void Conversions::OnHtmlContentDidChange(
   MaybeConvert(redirect_chain, content, resource_->get()->id_patterns);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CreativePromotedContentAdInfo::CreativePromotedContentAdInfo() = default;
 
@@ -24,4 +24,4 @@ bool CreativePromotedContentAdInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

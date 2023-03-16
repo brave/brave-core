@@ -183,7 +183,7 @@ class AdsService : public KeyedService {
   // and |base::Value::Dict| containing the ad.
   virtual void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) = 0;
+      MaybeServeInlineContentAdAsDictCallback callback) = 0;
 
   // Called when a user views or interacts with an inline content ad to trigger
   // an |event_type| event for the specified |placement_id| and
@@ -194,13 +194,13 @@ class AdsService : public KeyedService {
   virtual void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::InlineContentAdEventType event_type) = 0;
+      mojom::InlineContentAdEventType event_type) = 0;
 
   // Called to prefetch the next new tab page ad.
   virtual void PrefetchNewTabPageAd() = 0;
 
   // Called to get a prefetched new tab page ad for display.
-  virtual absl::optional<ads::NewTabPageAdInfo>
+  virtual absl::optional<NewTabPageAdInfo>
   GetPrefetchedNewTabPageAdForDisplay() = 0;
 
   // Called when failing to prefetch a new tab page ad for |placement_id| and
@@ -218,7 +218,7 @@ class AdsService : public KeyedService {
   virtual void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::NewTabPageAdEventType event_type) = 0;
+      mojom::NewTabPageAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a promoted content ad to trigger
   // an |event_type| event for the specified |placement_id| and
@@ -229,19 +229,19 @@ class AdsService : public KeyedService {
   virtual void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::PromotedContentAdEventType event_type) = 0;
+      mojom::PromotedContentAdEventType event_type) = 0;
 
   // Called when a user views or interacts with a search result ad to trigger an
   // |event_type| event for the ad specified in |ad_mojom|.
   virtual void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      ads::mojom::SearchResultAdEventType event_type) = 0;
+      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::SearchResultAdEventType event_type) = 0;
 
   // Called to purge orphaned served ad events. NOTE: You should call before
   // triggering new ad events for the specified |ad_type|. The callback takes
   // one argument - |bool| is set to |true| if successful otherwise |false|.
   virtual void PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType ad_type,
+      mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) = 0;
 
   // Called to get history between |from_time| and |to_time| date range. The

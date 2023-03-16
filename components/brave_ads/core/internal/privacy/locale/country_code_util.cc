@@ -207,7 +207,7 @@ constexpr auto kOtherCountryCodes = base::MakeFixedFlatSet<base::StringPiece>({
 
 }  // namespace
 
-namespace ads::privacy::locale {
+namespace brave_ads::privacy::locale {
 
 bool IsCountryCodeMemberOfAnonymitySet(const std::string& country_code) {
   return base::Contains(kCountryCodeAnonymitySet,
@@ -218,4 +218,4 @@ bool ShouldClassifyCountryCodeAsOther(const std::string& country_code) {
   return base::Contains(kOtherCountryCodes, base::ToUpperASCII(country_code));
 }
 
-}  // namespace ads::privacy::locale
+}  // namespace brave_ads::privacy::locale

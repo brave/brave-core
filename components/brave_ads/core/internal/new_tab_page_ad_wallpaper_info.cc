@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/new_tab_page_ad_wallpaper_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const NewTabPageAdWallpaperInfo& lhs,
                 const NewTabPageAdWallpaperInfo& rhs) {
@@ -17,4 +17,4 @@ bool operator!=(const NewTabPageAdWallpaperInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
 
-namespace ads::crypto {
+namespace brave_ads::crypto {
 
 KeyPairInfo::KeyPairInfo() = default;
 
@@ -31,4 +31,4 @@ bool KeyPairInfo::IsValid() const {
   return !public_key.empty() && !secret_key.empty();
 }
 
-}  // namespace ads::crypto
+}  // namespace brave_ads::crypto

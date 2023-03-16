@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_ENTRY_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_ENTRY_TYPES_H_
 
-namespace ads {
+namespace brave_ads {
 
 // Diagnostic entries should be visually sorted based on the enum order.
 enum class DiagnosticEntryType {
@@ -18,6 +18,6 @@ enum class DiagnosticEntryType {
   kLastUnIdleTime
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_DIAGNOSTIC_ENTRY_TYPES_H_

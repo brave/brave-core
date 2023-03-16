@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 struct AdPredictorInfo final {
@@ -29,6 +29,6 @@ struct AdPredictorInfo final {
 template <typename T>
 using CreativeAdPredictorMap = std::map<std::string, AdPredictorInfo<T>>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_AD_PREDICTOR_INFO_H_

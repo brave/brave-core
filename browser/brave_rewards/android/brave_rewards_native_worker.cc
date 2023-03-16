@@ -396,7 +396,7 @@ void BraveRewardsNativeWorker::GetAdsAccountStatement(JNIEnv* env) {
 }
 
 void BraveRewardsNativeWorker::OnGetAdsAccountStatement(
-    ads::mojom::StatementInfoPtr statement) {
+    brave_ads::mojom::StatementInfoPtr statement) {
   JNIEnv* env = base::android::AttachCurrentThread();
   if (!statement) {
     Java_BraveRewardsNativeWorker_OnGetAdsAccountStatement(

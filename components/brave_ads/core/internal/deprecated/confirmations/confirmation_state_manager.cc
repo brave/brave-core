@@ -34,7 +34,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -547,4 +547,4 @@ bool ConfirmationStateManager::ParseUnblindedPaymentTokensFromDictionary(
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

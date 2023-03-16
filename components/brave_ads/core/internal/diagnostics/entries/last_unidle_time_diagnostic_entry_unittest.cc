@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsLastUnIdleTimeDiagnosticEntryTest : public UnitTestBase {};
 
@@ -44,4 +44,4 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, WasNeverUnIdle) {
   EXPECT_EQ("Never", diagnostic_entry.GetValue());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

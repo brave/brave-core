@@ -7,10 +7,10 @@
 
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool ParseDebugCommandLineSwitch() {
   return brave_rewards::RewardsFlags::ForCurrentProcess().debug;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

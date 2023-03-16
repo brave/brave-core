@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
      GetAmazonResultsPageUrlPattern) {
@@ -96,4 +96,4 @@ TEST(BatAdsSearchEngineResultsPageUrlPatternConstantsTest,
       url_pattern);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate_mock.h"
 
-namespace ads {
+namespace brave_ads {
 
 RedeemUnblindedTokenDelegateMock::RedeemUnblindedTokenDelegateMock() = default;
 
 RedeemUnblindedTokenDelegateMock::~RedeemUnblindedTokenDelegateMock() = default;
 
-}  // namespace ads
+}  // namespace brave_ads

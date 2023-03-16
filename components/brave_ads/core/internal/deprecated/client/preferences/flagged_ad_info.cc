@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::Dict FlaggedAdInfo::ToValue() const {
   base::Value::Dict dict;
@@ -19,4 +19,4 @@ void FlaggedAdInfo::FromValue(const base::Value::Dict& root) {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

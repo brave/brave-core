@@ -8,13 +8,13 @@
 
 #include "base/values.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NewTabPageAdInfo;
 
 base::Value::Dict NewTabPageAdToValue(const NewTabPageAdInfo& ad);
 NewTabPageAdInfo NewTabPageAdFromValue(const base::Value::Dict& root);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_NEW_TAB_PAGE_AD_VALUE_UTIL_H_

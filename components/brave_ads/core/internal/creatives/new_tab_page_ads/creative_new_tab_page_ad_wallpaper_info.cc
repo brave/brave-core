@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool CreativeNewTabPageAdWallpaperInfo::operator==(
     const CreativeNewTabPageAdWallpaperInfo& other) const {
@@ -17,4 +17,4 @@ bool CreativeNewTabPageAdWallpaperInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

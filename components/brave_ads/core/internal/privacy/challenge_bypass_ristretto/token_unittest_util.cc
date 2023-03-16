@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 Token GetToken() {
   return Token(kTokenBase64);
@@ -32,4 +32,4 @@ std::vector<Token> GetInvalidTokens() {
   return tokens;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

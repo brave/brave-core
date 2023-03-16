@@ -19,7 +19,7 @@ constexpr char kEmbeddingsKey[] = "embeddings";
 
 }  // namespace
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     const base::Value::Dict& root) {
@@ -73,4 +73,4 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
   return embedding_pipeline;
 }
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

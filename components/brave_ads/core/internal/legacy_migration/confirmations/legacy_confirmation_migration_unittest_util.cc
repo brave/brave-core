@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 
-namespace ads::confirmations {
+namespace brave_ads::confirmations {
 
 void Migrate(const bool should_migrate) {
   Migrate(base::BindOnce(
@@ -31,4 +31,4 @@ void SetHash(const uint64_t hash) {
                                                 hash);
 }
 
-}  // namespace ads::confirmations
+}  // namespace brave_ads::confirmations

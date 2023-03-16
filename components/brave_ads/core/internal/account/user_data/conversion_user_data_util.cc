@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
     const ConversionQueueItemInfo& conversion_queue_item) {
@@ -26,4 +26,4 @@ absl::optional<security::VerifiableConversionEnvelopeInfo> GetEnvelope(
   return security::SealEnvelope(verifiable_conversion);
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

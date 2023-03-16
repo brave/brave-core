@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 int GetHistoryItemCount() {
   const HistoryItemList history_items =
@@ -21,4 +21,4 @@ int GetHistoryItemCount() {
   return history_items.size();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

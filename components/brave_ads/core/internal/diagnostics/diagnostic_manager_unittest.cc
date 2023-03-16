@@ -18,7 +18,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsDiagnosticManagerTest : public UnitTestBase {};
 
@@ -80,4 +80,4 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
       }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

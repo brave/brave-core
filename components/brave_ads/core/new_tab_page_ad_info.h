@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/new_tab_page_ad_wallpaper_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdInfo();
@@ -37,6 +37,6 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdWallpaperList wallpapers;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_NEW_TAB_PAGE_AD_INFO_H_

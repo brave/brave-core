@@ -13,7 +13,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 namespace {
 
@@ -52,4 +52,4 @@ absl::optional<PaymentInfo> GetPaymentForLastMonth(
   return GetPaymentForMonth(payments, time);
 }
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards

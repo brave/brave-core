@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool ShouldRewardUser() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(prefs::kEnabled);
@@ -37,4 +37,4 @@ void ResetRewards(ResetRewardsCallback callback) {
       std::move(callback)));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

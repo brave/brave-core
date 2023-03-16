@@ -10,7 +10,7 @@
 
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class BlindedToken;
 class Token;
@@ -20,6 +20,6 @@ std::vector<BlindedToken> BlindTokens(const std::vector<Token>& tokens);
 std::vector<challenge_bypass_ristretto::BlindedToken> ToRawBlindedTokens(
     const std::vector<BlindedToken>& tokens);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_BLINDED_TOKEN_UTIL_H_

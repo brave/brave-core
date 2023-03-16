@@ -11,7 +11,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogDaypartInfo final {
   std::string dow = "0123456";
@@ -24,6 +24,6 @@ bool operator!=(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs);
 
 using CatalogDaypartList = std::vector<CatalogDaypartInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CAMPAIGN_CATALOG_DAYPART_INFO_H_

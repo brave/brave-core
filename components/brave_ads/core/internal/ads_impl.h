@@ -29,7 +29,7 @@ class Time;
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -67,10 +67,10 @@ class DiagnosticManager;
 class FlagManager;
 class HistoryManager;
 class IdleDetectionManager;
-class InlineContentAd;
+class InlineContentAdHandler;
 class LocaleManager;
-class NewTabPageAd;
-class NotificationAd;
+class NewTabPageAdHandler;
+class NotificationAdHandler;
 class NotificationAdManager;
 class PrefManager;
 class PromotedContentAd;
@@ -263,15 +263,15 @@ class AdsImpl final : public Ads,
   std::unique_ptr<processor::TextClassification> text_classification_processor_;
   std::unique_ptr<processor::TextEmbedding> text_embedding_processor_;
 
-  std::unique_ptr<InlineContentAd> inline_content_ad_;
-  std::unique_ptr<NewTabPageAd> new_tab_page_ad_;
-  std::unique_ptr<NotificationAd> notification_ad_;
-  std::unique_ptr<PromotedContentAd> promoted_content_ad_;
-  std::unique_ptr<SearchResultAd> search_result_ad_;
+  std::unique_ptr<InlineContentAdHandler> inline_content_ad_handler_;
+  std::unique_ptr<NewTabPageAdHandler> new_tab_page_ad_handler_;
+  std::unique_ptr<NotificationAdHandler> notification_ad_handler_;
+  std::unique_ptr<PromotedContentAd> promoted_content_ad_handler_;
+  std::unique_ptr<SearchResultAd> search_result_ad_handler_;
 
   std::unique_ptr<UserReactions> user_reactions_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_IMPL_H_

@@ -9,11 +9,11 @@
 #include "base/containers/span.h"
 #include "base/strings/string_piece.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains();
 base::span<const base::StringPiece> GetYahooSearchEngineSubdomains();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_SUBDOMAIN_CONSTANTS_H_

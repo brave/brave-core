@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 NewTabPageAdInfo BuildNewTabPageAd(
     const CreativeNewTabPageAdInfo& creative_ad) {
@@ -50,4 +50,4 @@ NewTabPageAdInfo BuildNewTabPageAd(const CreativeNewTabPageAdInfo& creative_ad,
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

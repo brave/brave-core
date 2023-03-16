@@ -7,7 +7,7 @@
 
 #include "base/check_op.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 PrefManager* g_pref_manager_instance = nullptr;
@@ -56,4 +56,4 @@ void PrefManager::NotifyPrefChanged(const std::string& path) const {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

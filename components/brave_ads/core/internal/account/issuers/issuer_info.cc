@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 IssuerInfo::IssuerInfo() = default;
 
@@ -27,4 +27,4 @@ bool IssuerInfo::operator!=(const IssuerInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

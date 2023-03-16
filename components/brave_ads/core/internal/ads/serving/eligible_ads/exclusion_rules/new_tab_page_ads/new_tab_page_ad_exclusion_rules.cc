@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 ExclusionRules::ExclusionRules(
     const AdEventList& ad_events,
@@ -20,4 +20,4 @@ ExclusionRules::ExclusionRules(
                          anti_targeting_resource,
                          browsing_history) {}
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

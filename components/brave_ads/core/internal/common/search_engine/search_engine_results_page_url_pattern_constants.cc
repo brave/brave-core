@@ -9,7 +9,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_url_pattern_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 const std::string& GetAmazonResultsPageUrlPattern() {
   static const base::NoDestructor<std::string> kUrlPattern(
@@ -41,4 +41,4 @@ const std::string& GetYahooResultsPageUrlPattern() {
   return *kUrlPattern;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

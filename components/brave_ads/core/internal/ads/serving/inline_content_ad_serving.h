@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -79,6 +79,6 @@ class Serving final {
 };
 
 }  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_INLINE_CONTENT_AD_SERVING_H_

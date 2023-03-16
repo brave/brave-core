@@ -13,7 +13,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 // A |BlindedToken| is sent to the server for signing. It is the result of the
 // scalar multiplication of the point derived from the |TokenPreimage| with the
@@ -60,6 +60,6 @@ class BlindedToken {
 
 std::ostream& operator<<(std::ostream& os, const BlindedToken& blinded_token);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_BLINDED_TOKEN_H_

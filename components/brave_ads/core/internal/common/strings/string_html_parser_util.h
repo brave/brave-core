@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 std::string ParseHtmlTagAttribute(const std::string& html,
                                   const std::string& tag_substr,
                                   const std::string& tag_attribute);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_STRINGS_STRING_HTML_PARSER_UTIL_H_

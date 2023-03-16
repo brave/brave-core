@@ -8,10 +8,10 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 mojom::SearchResultAdInfoPtr BuildSearchResultAd();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_UNITTEST_UTIL_H_

@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/ads_client.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AdsClientHelper final {
  public:
@@ -27,6 +27,6 @@ class AdsClientHelper final {
   static bool HasInstance();
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_HELPER_H_

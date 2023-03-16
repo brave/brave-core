@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 Data::Data(const DataType& type) : type_(type) {}
 
@@ -15,4 +15,4 @@ DataType Data::GetType() const {
   return type_;
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

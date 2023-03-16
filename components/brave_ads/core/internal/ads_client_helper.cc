@@ -7,7 +7,7 @@
 
 #include "base/check.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 AdsClient* g_ads_client_instance = nullptr;
@@ -35,4 +35,4 @@ bool AdsClientHelper::HasInstance() {
   return !!g_ads_client_instance;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

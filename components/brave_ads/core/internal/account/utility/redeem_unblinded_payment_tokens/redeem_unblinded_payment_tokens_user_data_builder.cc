@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data.h"
 
-namespace ads {
+namespace brave_ads {
 
 RedeemUnblindedPaymentTokensUserDataBuilder::
     RedeemUnblindedPaymentTokensUserDataBuilder(
@@ -33,4 +33,4 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
   std::move(callback).Run(std::move(user_data));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 ConversionInfo::ConversionInfo() = default;
 
@@ -40,4 +40,4 @@ bool ConversionInfo::IsValid() const {
            expire_at.is_null());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

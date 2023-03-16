@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 struct UserActivityTriggerInfo final {
   std::string event_sequence;
@@ -23,6 +23,6 @@ bool operator!=(const UserActivityTriggerInfo& lhs,
 
 using UserActivityTriggerList = std::vector<UserActivityTriggerInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_TRIGGER_INFO_H_

@@ -14,7 +14,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads::targeting::features {
+namespace brave_ads::targeting::features {
 
 BASE_DECLARE_FEATURE(kPurchaseIntent);
 
@@ -26,6 +26,6 @@ base::TimeDelta GetPurchaseIntentTimeWindow();
 
 int GetPurchaseIntentResourceVersion();
 
-}  // namespace ads::targeting::features
+}  // namespace brave_ads::targeting::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FEATURES_PURCHASE_INTENT_FEATURES_H_

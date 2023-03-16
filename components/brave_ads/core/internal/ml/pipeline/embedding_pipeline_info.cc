@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/pipeline/embedding_pipeline_info.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 EmbeddingPipelineInfo::EmbeddingPipelineInfo() = default;
 
@@ -23,4 +23,4 @@ EmbeddingPipelineInfo& EmbeddingPipelineInfo::operator=(
 
 EmbeddingPipelineInfo::~EmbeddingPipelineInfo() = default;
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline

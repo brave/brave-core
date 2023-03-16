@@ -12,7 +12,7 @@
 #include "base/strings/string_piece_forward.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 using SupportedSubdivisionCodesMap =
     base::flat_map<base::StringPiece, SupportedSubdivisions>;
@@ -22,6 +22,6 @@ const SupportedSubdivisionCodesMap& GetSupportedSubdivisionCodes();
 bool IsSupportedSubdivisionCode(const std::string& country_code,
                                 const std::string& subdivision_code);
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_SUPPORTED_SUBDIVISION_CODES_H_

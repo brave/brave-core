@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_RANDOM_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_RANDOM_UTIL_H_
 
-namespace ads {
+namespace brave_ads {
 
 double GeneratePacingRandomNumber();
 
@@ -17,6 +17,6 @@ class ScopedPacingRandomNumberSetter final {
   ~ScopedPacingRandomNumberSetter();
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_RANDOM_UTIL_H_

@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeNotificationAdInfo;
 struct NotificationAdInfo;
@@ -20,6 +20,6 @@ NotificationAdInfo BuildNotificationAd(
     const CreativeNotificationAdInfo& creative_ad,
     const std::string& placement_id);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_NOTIFICATION_AD_BUILDER_H_

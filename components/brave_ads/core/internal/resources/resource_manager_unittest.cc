@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kResourceId[] = "bejenkminijgplakmkmcgkhjjnkelbld";
@@ -57,4 +57,4 @@ TEST_F(BatAdsResourceManagerTest, UpdateResource) {
   EXPECT_TRUE(resource_did_update_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

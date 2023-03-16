@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsNonAnonymousServerHostTest : public UnitTestBase {};
 
@@ -40,4 +40,4 @@ TEST_F(BatAdsNonAnonymousServerHostTest, GetStagingHost) {
   EXPECT_EQ(expected_host, host);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -125,4 +125,4 @@ bool HasCatalogExpired() {
   return base::Time::Now() >= GetCatalogLastUpdated() + kCatalogLifespan;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

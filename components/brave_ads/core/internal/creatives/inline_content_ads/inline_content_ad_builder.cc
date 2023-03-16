@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 InlineContentAdInfo BuildInlineContentAd(
     const CreativeInlineContentAdInfo& creative_ad) {
@@ -40,4 +40,4 @@ InlineContentAdInfo BuildInlineContentAd(
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kAdsTrialTag[] = "BraveAds";
@@ -45,4 +45,4 @@ void LogActiveStudies() {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

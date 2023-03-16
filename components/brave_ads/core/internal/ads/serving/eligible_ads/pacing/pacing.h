@@ -11,7 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeAdInfo;
 
@@ -31,6 +31,6 @@ T PaceCreativeAds(const T& creative_ads) {
   return paced_creative_ads;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_PACING_PACING_H_

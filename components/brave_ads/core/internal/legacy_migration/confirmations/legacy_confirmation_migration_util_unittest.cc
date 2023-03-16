@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::confirmations {
+namespace brave_ads::confirmations {
 
 class BatAdsLegacyConfirmationMigrationUtilTest : public UnitTestBase {};
 
@@ -36,4 +36,4 @@ TEST_F(BatAdsLegacyConfirmationMigrationUtilTest, HasNotMigrated) {
   EXPECT_FALSE(HasMigrated());
 }
 
-}  // namespace ads::confirmations
+}  // namespace brave_ads::confirmations

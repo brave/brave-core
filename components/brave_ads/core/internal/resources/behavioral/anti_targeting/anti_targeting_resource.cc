@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 namespace {
 constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
@@ -83,4 +83,4 @@ void AntiTargeting::OnResourceDidUpdate(const std::string& id) {
   }
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

@@ -7,7 +7,7 @@
 
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kName[] = "Locale";
@@ -25,4 +25,4 @@ std::string LocaleDiagnosticEntry::GetValue() const {
   return brave_l10n::GetDefaultLocaleString();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

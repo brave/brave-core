@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsHistoryItemUtilTest : public UnitTestBase {};
 
@@ -54,4 +54,4 @@ TEST_F(BatAdsHistoryItemUtilTest, BuildHistoryItem) {
   EXPECT_EQ(expected_history_item, history_item);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

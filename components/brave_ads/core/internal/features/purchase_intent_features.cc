@@ -9,7 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/metrics/field_trial_params_util.h"
 
-namespace ads::targeting::features {
+namespace brave_ads::targeting::features {
 
 namespace {
 
@@ -50,4 +50,4 @@ int GetPurchaseIntentResourceVersion() {
                                           kDefaultResourceVersion);
 }
 
-}  // namespace ads::targeting::features
+}  // namespace brave_ads::targeting::features

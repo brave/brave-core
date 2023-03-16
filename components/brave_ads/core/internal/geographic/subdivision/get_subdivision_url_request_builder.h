@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/server/url/url_request_builder_interface.h"
 
-namespace ads::geographic {
+namespace brave_ads::geographic {
 
 class GetSubdivisionUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
@@ -17,6 +17,6 @@ class GetSubdivisionUrlRequestBuilder final
   mojom::UrlRequestInfoPtr Build() override;
 };
 
-}  // namespace ads::geographic
+}  // namespace brave_ads::geographic
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_GET_SUBDIVISION_URL_REQUEST_BUILDER_H_

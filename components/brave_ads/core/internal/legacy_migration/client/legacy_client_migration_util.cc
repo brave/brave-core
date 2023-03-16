@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace ads::client {
+namespace brave_ads::client {
 
 bool HasMigrated() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
@@ -24,4 +24,4 @@ void SetHashForJson(const std::string& json) {
   AdsClientHelper::GetInstance()->SetUint64Pref(prefs::kClientHash, hash);
 }
 
-}  // namespace ads::client
+}  // namespace brave_ads::client

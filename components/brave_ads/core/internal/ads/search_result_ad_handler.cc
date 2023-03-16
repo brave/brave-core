@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
 
 #include <string>
 #include <utility>
@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -128,4 +128,4 @@ void SearchResultAd::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
                     ConfirmationType::kClicked);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

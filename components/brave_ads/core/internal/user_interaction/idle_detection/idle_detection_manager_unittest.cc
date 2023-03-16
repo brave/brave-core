@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsIdleDetectionManagerTest : public IdleDetectionManagerObserver,
                                        public UnitTestBase {
@@ -88,4 +88,4 @@ TEST_F(BatAdsIdleDetectionManagerTest, UserDidBecomeIdle) {
   EXPECT_FALSE(user_is_active_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

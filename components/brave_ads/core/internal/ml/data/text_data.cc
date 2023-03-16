@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 TextData::TextData() : Data(DataType::kText) {}
 
@@ -18,4 +18,4 @@ const std::string& TextData::GetText() const {
   return text_;
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

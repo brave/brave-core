@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_builder_interface.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 class RedeemUnblindedPaymentTokensUserDataBuilder final
     : public UserDataBuilderInterface {
@@ -35,6 +35,6 @@ class RedeemUnblindedPaymentTokensUserDataBuilder final
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_USER_DATA_BUILDER_H_

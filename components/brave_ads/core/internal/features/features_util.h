@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FEATURES_FEATURES_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FEATURES_FEATURES_UTIL_H_
 
-namespace ads {
+namespace brave_ads {
 
 void LogFeatures();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FEATURES_FEATURES_UTIL_H_

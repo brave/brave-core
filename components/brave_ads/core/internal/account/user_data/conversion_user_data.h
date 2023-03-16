@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType;
 
@@ -23,6 +23,6 @@ void GetConversion(const std::string& creative_instance_id,
                    ConversionCallback callback);
 
 }  // namespace user_data
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_CONVERSION_USER_DATA_H_

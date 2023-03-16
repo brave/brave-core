@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_scoring_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -40,4 +40,4 @@ const std::string& UserActivityPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

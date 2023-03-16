@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -57,4 +57,4 @@ void BuildAndSetIssuers() {
   SetIssuers(issuers);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

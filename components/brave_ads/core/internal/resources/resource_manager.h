@@ -11,7 +11,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ResourceManager final {
  public:
@@ -40,6 +40,6 @@ class ResourceManager final {
   base::ObserverList<ResourceManagerObserver> observers_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_RESOURCE_MANAGER_H_

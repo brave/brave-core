@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsPriorityTest, PrioritizeNoCreativeAds) {
   // Arrange
@@ -92,4 +92,4 @@ TEST(BatAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {
   EXPECT_EQ(expected_prioritized_creative_ads, prioritized_creative_ads);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

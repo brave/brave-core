@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string GetNamespaceForCurrentTest() {
   const ::testing::TestInfo* const test_info =
@@ -25,4 +25,4 @@ std::string GetUuidForCurrentTestAndValue(const std::string& value) {
                             GetNamespaceForCurrentTest().c_str());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

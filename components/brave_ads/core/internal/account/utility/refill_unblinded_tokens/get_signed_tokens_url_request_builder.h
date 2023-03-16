@@ -14,7 +14,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 class GetSignedTokensUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
@@ -31,6 +31,6 @@ class GetSignedTokensUrlRequestBuilder final
   std::string nonce_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_UNBLINDED_TOKENS_GET_SIGNED_TOKENS_URL_REQUEST_BUILDER_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/promoted_content_ad_info.h"
 
-namespace ads::promoted_content_ads {
+namespace brave_ads::promoted_content_ads {
 
 std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> AdEventFactory::Build(
     const mojom::PromotedContentAdEventType event_type) {
@@ -32,4 +32,4 @@ std::unique_ptr<AdEventInterface<PromotedContentAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace ads::promoted_content_ads
+}  // namespace brave_ads::promoted_content_ads

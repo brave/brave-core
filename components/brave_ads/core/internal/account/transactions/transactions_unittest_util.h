@@ -12,7 +12,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType;
 
@@ -27,6 +27,6 @@ TransactionInfo BuildTransaction(double value,
 
 int GetTransactionCount();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_TRANSACTIONS_TRANSACTIONS_UNITTEST_UTIL_H_

@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -47,4 +47,4 @@ bool DoubleIsLess(const double lhs, const double rhs) {
          RoundDoubleNPlaces(rhs, kDecimalPlaces);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

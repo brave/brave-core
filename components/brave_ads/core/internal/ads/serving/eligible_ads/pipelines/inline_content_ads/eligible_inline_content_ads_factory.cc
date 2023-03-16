@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
     const int version,
@@ -34,4 +34,4 @@ std::unique_ptr<EligibleAdsBase> EligibleAdsFactory::Build(
   }
 }
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads

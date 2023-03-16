@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 class CreativeNewTabPageAdWallpapers final : public TableInterface {
  public:
@@ -32,6 +32,6 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
       const CreativeNewTabPageAdList& creative_ads) const;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_WALLPAPERS_DATABASE_TABLE_H_

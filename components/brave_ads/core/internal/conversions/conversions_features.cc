@@ -8,7 +8,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "brave/components/brave_ads/core/internal/common/metrics/field_trial_params_util.h"
 
-namespace ads::features {
+namespace brave_ads::features {
 
 namespace {
 
@@ -43,4 +43,4 @@ std::string GetDefaultConversionIdPattern() {
       kDefaultConversionIdPattern);
 }
 
-}  // namespace ads::features
+}  // namespace brave_ads::features

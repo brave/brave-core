@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
@@ -42,6 +42,6 @@ void RenameTable(mojom::DBTransactionInfo* transaction,
                  const std::string& from,
                  const std::string& to);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_TABLE_UTIL_H_

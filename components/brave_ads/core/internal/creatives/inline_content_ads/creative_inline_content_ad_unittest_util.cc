@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveCreativeAds(const CreativeInlineContentAdList& creative_ads) {
   database::table::CreativeInlineContentAds database_table;
@@ -47,4 +47,4 @@ CreativeInlineContentAdInfo BuildCreativeInlineContentAd(
   return creative_inline_content_ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

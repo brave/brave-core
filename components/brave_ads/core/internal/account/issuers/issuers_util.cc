@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SetIssuers(const IssuersInfo& issuers) {
   AdsClientHelper::GetInstance()->SetIntegerPref(prefs::kIssuerPing,
@@ -106,4 +106,4 @@ bool PublicKeyExistsForIssuerType(const IssuerType issuer_type,
   return PublicKeyExists(*issuer, public_key);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

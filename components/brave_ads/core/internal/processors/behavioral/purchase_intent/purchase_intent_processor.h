@@ -18,7 +18,7 @@
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 namespace resource {
 class PurchaseIntent;
@@ -71,6 +71,6 @@ class PurchaseIntent final : public LocaleManagerObserver,
 };
 
 }  // namespace processor
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_PROCESSOR_H_

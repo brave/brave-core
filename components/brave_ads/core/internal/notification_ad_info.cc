@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool NotificationAdInfo::IsValid() const {
   if (!AdInfo::IsValid()) {
@@ -19,4 +19,4 @@ bool NotificationAdInfo::IsValid() const {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -31,19 +31,19 @@ void BatAdsServiceImpl::Create(
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
+void BatAdsServiceImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
                                    SetSysInfoCallback callback) {
-  ads::SysInfo().device_id = sys_info->device_id;
-  ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
+  brave_ads::SysInfo().device_id = sys_info->device_id;
+  brave_ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
 
   std::move(callback).Run();
 }
 
 void BatAdsServiceImpl::SetBuildChannel(
-    ads::mojom::BuildChannelInfoPtr build_channel,
+    brave_ads::mojom::BuildChannelInfoPtr build_channel,
     SetBuildChannelCallback callback) {
-  ads::BuildChannel().is_release = build_channel->is_release;
-  ads::BuildChannel().name = build_channel->name;
+  brave_ads::BuildChannel().is_release = build_channel->is_release;
+  brave_ads::BuildChannel().name = build_channel->name;
 
   std::move(callback).Run();
 }

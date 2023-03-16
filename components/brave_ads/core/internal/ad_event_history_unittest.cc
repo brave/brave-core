@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -110,4 +110,4 @@ TEST_F(BatAdsAdEventHistoryTest, PurgeHistoryOlderThan) {
   EXPECT_EQ(expected_history, history);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

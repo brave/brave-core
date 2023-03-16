@@ -10,13 +10,13 @@
 
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class SignedToken;
 
 std::vector<challenge_bypass_ristretto::SignedToken> ToRawSignedTokens(
     const std::vector<SignedToken>& tokens);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_SIGNED_TOKEN_UTIL_H_

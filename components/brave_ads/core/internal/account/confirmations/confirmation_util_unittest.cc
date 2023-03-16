@@ -20,7 +20,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 using ::testing::NiceMock;
@@ -161,4 +161,4 @@ TEST_F(BatAdsConfirmationUtilTest, ResetEmptyConfirmations) {
   EXPECT_TRUE(privacy::UnblindedTokensIsEmpty());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

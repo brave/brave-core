@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest
     : public UnitTestBase {
@@ -46,4 +46,4 @@ TEST_F(BatAdsCreativeNotificationAdsDatabaseTableIntegrationTest,
       }));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

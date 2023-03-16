@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_leap_year_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool IsLeapYear(const int year) {
   return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

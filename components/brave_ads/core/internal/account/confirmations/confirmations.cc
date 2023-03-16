@@ -23,7 +23,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -262,4 +262,4 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
   ProcessRetryQueue();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

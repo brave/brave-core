@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsStringHtmlParserUtilTest : public UnitTestBase {};
 
@@ -71,4 +71,4 @@ TEST_F(BatAdsStringHtmlParserUtilTest, ParseHtmlTagAttributeSimple) {
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,7 +8,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 constexpr char kCreatedAtTimestampKey[] = "createdAtTimestamp";
@@ -23,4 +23,4 @@ base::Value::Dict GetCreatedAtTimestamp(const base::Time created_at) {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

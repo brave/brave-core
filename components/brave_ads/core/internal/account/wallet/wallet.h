@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 class Wallet final {
  public:
@@ -24,6 +24,6 @@ class Wallet final {
   WalletInfo wallet_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_WALLET_WALLET_H_

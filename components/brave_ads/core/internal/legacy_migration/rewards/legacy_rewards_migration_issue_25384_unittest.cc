@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 
@@ -44,4 +44,4 @@ TEST_F(BatAdsLegacyRewardsMigrationIssue25384Test, Migrate) {
       ads_client_mock_->GetBooleanPref(prefs::kHasMigratedRewardsState));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

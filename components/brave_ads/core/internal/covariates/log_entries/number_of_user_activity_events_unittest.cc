@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsNumberOfUserActivityEventsTest : public UnitTestBase {};
 
@@ -74,4 +74,4 @@ TEST_F(BatAdsNumberOfUserActivityEventsTest, GetValue) {
   EXPECT_EQ("2", value);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

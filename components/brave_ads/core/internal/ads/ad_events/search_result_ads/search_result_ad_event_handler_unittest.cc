@@ -27,7 +27,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::search_result_ads {
+namespace brave_ads::search_result_ads {
 
 namespace {
 
@@ -448,4 +448,4 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
                                          ConfirmationType::kServed));
 }
 
-}  // namespace ads::search_result_ads
+}  // namespace brave_ads::search_result_ads

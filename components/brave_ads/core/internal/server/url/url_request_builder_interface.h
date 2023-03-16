@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 class UrlRequestBuilderInterface {
  public:
@@ -17,6 +17,6 @@ class UrlRequestBuilderInterface {
   virtual mojom::UrlRequestInfoPtr Build() = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_URL_REQUEST_BUILDER_INTERFACE_H_

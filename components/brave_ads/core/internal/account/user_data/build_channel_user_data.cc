@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/build_channel.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 constexpr char kBuildChannelKey[] = "buildChannel";
@@ -24,4 +24,4 @@ base::Value::Dict GetBuildChannel() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

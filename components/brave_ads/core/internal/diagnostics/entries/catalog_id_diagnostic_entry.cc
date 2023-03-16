@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kName[] = "Catalog ID";
@@ -25,4 +25,4 @@ std::string CatalogIdDiagnosticEntry::GetValue() const {
   return GetCatalogId();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

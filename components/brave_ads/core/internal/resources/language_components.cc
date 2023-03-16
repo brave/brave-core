@@ -107,10 +107,10 @@ constexpr auto kLanguageComponentIds = base::MakeFixedFlatSet<
 
 }  // namespace
 
-namespace ads {
+namespace brave_ads {
 
 bool IsValidLanguageComponentId(const std::string& id) {
   return base::Contains(kLanguageComponentIds, id);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

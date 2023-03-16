@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
@@ -81,6 +81,6 @@ class RefillUnblindedTokens final {
   base::WeakPtrFactory<RefillUnblindedTokens> weak_ptr_factory_{this};
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_H_

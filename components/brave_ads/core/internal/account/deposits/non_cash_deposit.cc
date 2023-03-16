@@ -9,11 +9,11 @@
 
 #include "base/functional/callback.h"
 
-namespace ads {
+namespace brave_ads {
 
 void NonCashDeposit::GetValue(const std::string& /*creative_instance_id*/,
                               GetDepositCallback callback) {
   std::move(callback).Run(/*success */ true, /* value*/ 0.0);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

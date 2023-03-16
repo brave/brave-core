@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/cash_deposit.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::unique_ptr<DepositInterface> DepositsFactory::Build(
     const AdType& ad_type,
@@ -43,4 +43,4 @@ std::unique_ptr<DepositInterface> DepositsFactory::Build(
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

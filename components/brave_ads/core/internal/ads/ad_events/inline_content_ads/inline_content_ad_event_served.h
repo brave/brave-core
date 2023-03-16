@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct InlineContentAdInfo;
 
@@ -20,6 +20,6 @@ class AdEventServed final : public AdEventInterface<InlineContentAdInfo> {
 };
 
 }  // namespace inline_content_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_INLINE_CONTENT_ADS_INLINE_CONTENT_AD_EVENT_SERVED_H_

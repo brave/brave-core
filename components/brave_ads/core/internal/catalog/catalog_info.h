@@ -11,7 +11,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/catalog_campaign_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CatalogInfo final {
   CatalogInfo();
@@ -33,6 +33,6 @@ struct CatalogInfo final {
   CatalogCampaignList campaigns;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_INFO_H_

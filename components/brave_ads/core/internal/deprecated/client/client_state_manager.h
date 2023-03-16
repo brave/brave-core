@@ -21,7 +21,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/flagged_ad_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 struct AdContentInfo;
@@ -114,6 +114,6 @@ class ClientStateManager final {
   bool is_initialized_ = false;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_STATE_MANAGER_H_

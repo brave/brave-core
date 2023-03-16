@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -79,4 +79,4 @@ TEST(BatAdsSegmentValueUtilTest, NoSegmentsFromValue) {
   EXPECT_TRUE(segments.empty());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

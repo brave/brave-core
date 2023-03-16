@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class BatAdsNormalizationTransformationTest : public UnitTestBase {};
 
@@ -87,4 +87,4 @@ TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
   EXPECT_EQ(kExpectedElementCount, vector_data->GetValuesForTesting().size());
 }
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml

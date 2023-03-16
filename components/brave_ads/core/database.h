@@ -17,7 +17,7 @@
 #include "sql/database.h"
 #include "sql/meta_table.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ADS_EXPORT Database final {
  public:
@@ -67,6 +67,6 @@ class ADS_EXPORT Database final {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_DATABASE_H_

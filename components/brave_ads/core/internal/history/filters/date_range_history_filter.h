@@ -10,7 +10,7 @@
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class DateRangeHistoryFilter final : public HistoryFilterInterface {
  public:
@@ -23,6 +23,6 @@ class DateRangeHistoryFilter final : public HistoryFilterInterface {
   base::Time to_time_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_FILTERS_DATE_RANGE_HISTORY_FILTER_H_

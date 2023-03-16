@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/unblinded_token.h"
 
-namespace ads::rewards::json::reader {
+namespace brave_ads::rewards::json::reader {
 
 namespace {
 
@@ -93,4 +93,4 @@ absl::optional<privacy::UnblindedPaymentTokenList> ParseUnblindedPaymentTokens(
   return *unblinded_payment_tokens;
 }
 
-}  // namespace ads::rewards::json::reader
+}  // namespace brave_ads::rewards::json::reader

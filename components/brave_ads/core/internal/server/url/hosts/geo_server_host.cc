@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -39,4 +39,4 @@ std::string GeoServerHost::Get() const {
   return kStagingHost;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

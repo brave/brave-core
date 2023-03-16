@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_wallpaper_info.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo();
@@ -39,6 +39,6 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
 
 using CreativeNewTabPageAdList = std::vector<CreativeNewTabPageAdInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NEW_TAB_PAGE_ADS_CREATIVE_NEW_TAB_PAGE_AD_INFO_H_

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 CatalogCampaignInfo::CatalogCampaignInfo() = default;
 
@@ -38,4 +38,4 @@ bool CatalogCampaignInfo::operator!=(const CatalogCampaignInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

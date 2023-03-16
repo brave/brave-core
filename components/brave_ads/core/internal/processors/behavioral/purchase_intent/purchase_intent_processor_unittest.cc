@@ -18,7 +18,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsPurchaseIntentProcessorTest : public UnitTestBase {};
 
@@ -267,4 +267,4 @@ TEST_F(BatAdsPurchaseIntentProcessorTest, ProcessSegmentAndFunnelKeywords) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

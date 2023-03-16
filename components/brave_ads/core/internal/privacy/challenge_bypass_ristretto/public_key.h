@@ -13,7 +13,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 // A |PublicKey| is a commitment by the server to a particular |SigningKey|.
 
@@ -55,6 +55,6 @@ class PublicKey {
 
 std::ostream& operator<<(std::ostream& os, const PublicKey& public_key);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_PUBLIC_KEY_H_

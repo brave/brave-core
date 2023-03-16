@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -95,4 +95,4 @@ bool SubdivisionTargetingExclusionRule::DoesRespectCap(
   return DoesAdSupportSubdivisionTargetingCode(creative_ad, subdivision_code);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

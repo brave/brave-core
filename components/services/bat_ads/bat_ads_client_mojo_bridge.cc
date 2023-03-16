@@ -65,9 +65,9 @@ bool BatAdsClientMojoBridge::IsBrowserInFullScreenMode() const {
 }
 
 void BatAdsClientMojoBridge::ShowNotificationAd(
-    const ads::NotificationAdInfo& ad) {
+    const brave_ads::NotificationAdInfo& ad) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->ShowNotificationAd(ads::NotificationAdToValue(ad));
+    bat_ads_client_->ShowNotificationAd(brave_ads::NotificationAdToValue(ad));
   }
 }
 
@@ -118,9 +118,9 @@ void BatAdsClientMojoBridge::ResetAdEventHistoryForId(
   }
 }
 
-void OnUrlRequest(ads::UrlRequestCallback callback,
-                  const ads::mojom::UrlResponseInfoPtr url_response_ptr) {
-  ads::mojom::UrlResponseInfo url_response;
+void OnUrlRequest(brave_ads::UrlRequestCallback callback,
+                  const brave_ads::mojom::UrlResponseInfoPtr url_response_ptr) {
+  brave_ads::mojom::UrlResponseInfo url_response;
 
   if (!url_response_ptr) {
     url_response.status_code = -1;
@@ -136,10 +136,10 @@ void OnUrlRequest(ads::UrlRequestCallback callback,
 }
 
 void BatAdsClientMojoBridge::UrlRequest(
-    ads::mojom::UrlRequestInfoPtr url_request,
-    ads::UrlRequestCallback callback) {
+    brave_ads::mojom::UrlRequestInfoPtr url_request,
+    brave_ads::UrlRequestCallback callback) {
   if (!bat_ads_client_.is_bound()) {
-    ads::mojom::UrlResponseInfo response;
+    brave_ads::mojom::UrlResponseInfo response;
     response.url = url_request->url;
     response.status_code = -1;
     std::move(callback).Run(response);
@@ -153,7 +153,7 @@ void BatAdsClientMojoBridge::UrlRequest(
 
 void BatAdsClientMojoBridge::Save(const std::string& name,
                                   const std::string& value,
-                                  ads::SaveCallback callback) {
+                                  brave_ads::SaveCallback callback) {
   if (!bat_ads_client_.is_bound()) {
     std::move(callback).Run(/*success*/ false);
     return;
@@ -162,9 +162,10 @@ void BatAdsClientMojoBridge::Save(const std::string& name,
   bat_ads_client_->Save(name, value, std::move(callback));
 }
 
-void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
-                                              const int version,
-                                              ads::LoadFileCallback callback) {
+void BatAdsClientMojoBridge::LoadFileResource(
+    const std::string& id,
+    const int version,
+    brave_ads::LoadFileCallback callback) {
   if (!bat_ads_client_.is_bound()) {
     std::move(callback).Run(base::File());
     return;
@@ -176,7 +177,7 @@ void BatAdsClientMojoBridge::LoadFileResource(const std::string& id,
 void BatAdsClientMojoBridge::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
-    ads::GetBrowsingHistoryCallback callback) {
+    brave_ads::GetBrowsingHistoryCallback callback) {
   if (!bat_ads_client_.is_bound()) {
     std::move(callback).Run({});
     return;
@@ -200,7 +201,7 @@ void BatAdsClientMojoBridge::LogTrainingInstance(
 }
 
 void BatAdsClientMojoBridge::Load(const std::string& name,
-                                  ads::LoadCallback callback) {
+                                  brave_ads::LoadCallback callback) {
   if (!bat_ads_client_.is_bound()) {
     std::move(callback).Run(/*success*/ false, /*value*/ {});
     return;
@@ -220,8 +221,8 @@ std::string BatAdsClientMojoBridge::LoadDataResource(const std::string& name) {
 }
 
 void BatAdsClientMojoBridge::RunDBTransaction(
-    ads::mojom::DBTransactionInfoPtr transaction,
-    ads::RunDBTransactionCallback callback) {
+    brave_ads::mojom::DBTransactionInfoPtr transaction,
+    brave_ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
                                     std::move(callback));
 }
@@ -234,7 +235,7 @@ void BatAdsClientMojoBridge::ClearScheduledCaptcha() {
 
 void BatAdsClientMojoBridge::GetScheduledCaptcha(
     const std::string& payment_id,
-    ads::GetScheduledCaptchaCallback callback) {
+    brave_ads::GetScheduledCaptchaCallback callback) {
   if (!bat_ads_client_.is_bound()) {
     return std::move(callback).Run({});
   }

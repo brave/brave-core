@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 namespace {
 
@@ -112,4 +112,4 @@ std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

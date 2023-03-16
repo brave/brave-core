@@ -8,11 +8,11 @@
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads {
+namespace brave_ads {
 
 mojom::SysInfo& SysInfo() {
   static base::NoDestructor<mojom::SysInfo> sys_info;
   return *sys_info;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

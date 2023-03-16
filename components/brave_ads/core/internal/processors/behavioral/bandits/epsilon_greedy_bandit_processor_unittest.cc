@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {};
 
@@ -235,4 +235,4 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest,
   EXPECT_EQ(1U, arms.count("travel"));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

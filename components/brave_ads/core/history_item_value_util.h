@@ -7,15 +7,14 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_HISTORY_ITEM_VALUE_UTIL_H_
 
 #include "base/values.h"
-
 #include "brave/components/brave_ads/core/history_item_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::Value::List HistoryItemsToValue(const HistoryItemList& history_items);
 base::Value::List HistoryItemsToUIValue(const HistoryItemList& history_items);
 HistoryItemList HistoryItemsFromValue(const base::Value::List& list);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_HISTORY_ITEM_VALUE_UTIL_H_

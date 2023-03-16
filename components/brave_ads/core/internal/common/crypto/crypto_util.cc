@@ -17,7 +17,7 @@
 #include "third_party/boringssl/src/include/openssl/curve25519.h"
 #include "tweetnacl.h"  // NOLINT
 
-namespace ads::crypto {
+namespace brave_ads::crypto {
 
 namespace {
 
@@ -172,4 +172,4 @@ std::vector<uint8_t> Decrypt(const std::vector<uint8_t>& ciphertext,
   return plaintext;
 }
 
-}  // namespace ads::crypto
+}  // namespace brave_ads::crypto

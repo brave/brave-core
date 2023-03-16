@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_util.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -97,7 +97,7 @@ class BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest
 };
 
 TEST_P(BatAdsNotificationAdUtilShouldServeAtRegularIntervalsTest,
-       NotificationAd) {
+       NotificationAdHandler) {
   // Arrange
   const ParamInfo param = GetParam();
 
@@ -141,4 +141,4 @@ INSTANTIATE_TEST_SUITE_P(
     testing::ValuesIn(kTests),
     TestParamToString);
 
-}  // namespace ads
+}  // namespace brave_ads

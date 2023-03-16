@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ConversionsSortInterface {
  public:
@@ -17,6 +17,6 @@ class ConversionsSortInterface {
   virtual ConversionList Apply(const ConversionList& conversions) const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_SORTS_CONVERSIONS_SORT_INTERFACE_H_

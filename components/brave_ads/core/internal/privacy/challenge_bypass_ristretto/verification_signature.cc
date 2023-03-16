@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 namespace {
 
@@ -89,4 +89,4 @@ std::ostream& operator<<(std::ostream& os,
   return os;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

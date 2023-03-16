@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsCalendarUtilTest, GetLastDayOfMonth) {
   // Arrange
@@ -74,4 +74,4 @@ TEST(BatAdsCalendarUtilTest, GetDayOfWeek) {
   EXPECT_EQ(expected_day_of_week, day_of_week);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 ConfirmationInfo::ConfirmationInfo() = default;
 
@@ -35,4 +35,4 @@ bool operator!=(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs) {
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

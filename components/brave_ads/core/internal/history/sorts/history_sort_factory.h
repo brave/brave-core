@@ -11,13 +11,13 @@
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class HistorySortFactory final {
  public:
   static std::unique_ptr<HistorySortInterface> Build(HistorySortType type);
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_HISTORY_SORTS_HISTORY_SORT_FACTORY_H_

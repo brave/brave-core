@@ -8,7 +8,7 @@
 #include "base/guid.h"
 #include "base/no_destructor.h"
 
-namespace ads {
+namespace brave_ads {
 
 const std::string& GetInstanceId() {
   static const base::NoDestructor<std::string> kInstanceId(
@@ -16,4 +16,4 @@ const std::string& GetInstanceId() {
   return *kInstanceId;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

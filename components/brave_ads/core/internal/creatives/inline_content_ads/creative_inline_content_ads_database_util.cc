@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteCreativeInlineContentAds() {
   const table::CreativeInlineContentAds database_table;
@@ -37,4 +37,4 @@ void SaveCreativeInlineContentAds(
                       }));
 }
 
-}  // namespace ads::database
+}  // namespace brave_ads::database

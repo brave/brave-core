@@ -37,7 +37,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 RedeemUnblindedToken::RedeemUnblindedToken() = default;
 
@@ -387,4 +387,4 @@ void RedeemUnblindedToken::OnFailedToRedeemUnblindedToken(
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 TEST(BatAdsTokenTest, Random) {
   // Arrange
@@ -156,4 +156,4 @@ TEST(BatAdsTokenTest, OutputStream) {
   EXPECT_EQ(kTokenBase64, ss.str());
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

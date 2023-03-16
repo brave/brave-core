@@ -10,7 +10,7 @@
 
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 class RefillUnblindedTokensDelegate {
  public:
@@ -37,6 +37,6 @@ class RefillUnblindedTokensDelegate {
   virtual ~RefillUnblindedTokensDelegate() = default;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REFILL_UNBLINDED_TOKENS_REFILL_UNBLINDED_TOKENS_DELEGATE_H_

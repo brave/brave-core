@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -34,4 +34,4 @@ base::Value::List ToValue(const DiagnosticMap& diagnostics) {
   return list;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

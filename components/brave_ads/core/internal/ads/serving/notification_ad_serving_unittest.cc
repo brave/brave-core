@@ -20,7 +20,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 class BatAdsNotificationAdServingTest : public ServingObserver,
                                         public UnitTestBase {
@@ -131,4 +131,4 @@ TEST_F(BatAdsNotificationAdServingTest,
   EXPECT_TRUE(failed_to_serve_ad_);
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

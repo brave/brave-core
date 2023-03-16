@@ -11,7 +11,7 @@
 #include "base/observer_list_types.h"
 #include "base/time/time.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct AdInfo;
 
@@ -30,6 +30,6 @@ class TransferObserver : public base::CheckedObserver {
   virtual void OnFailedToTransferAd(const AdInfo& ad) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TRANSFER_TRANSFER_OBSERVER_H_

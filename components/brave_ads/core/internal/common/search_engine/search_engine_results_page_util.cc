@@ -14,7 +14,7 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -71,4 +71,4 @@ absl::optional<std::string> ExtractSearchTermQueryValue(const GURL& url) {
   return search_term_query_value;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

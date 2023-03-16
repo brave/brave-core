@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 
-namespace ads {
+namespace brave_ads {
 
 void NotificationAdEvent::SetEventType(
     const mojom::NotificationAdEventType event_type) {
@@ -32,4 +32,4 @@ std::string NotificationAdEvent::GetValue() const {
   return ss.str();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

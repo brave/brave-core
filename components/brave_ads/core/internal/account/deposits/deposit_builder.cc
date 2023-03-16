@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom) {
   DepositInfo deposit;
@@ -21,4 +21,4 @@ DepositInfo BuildDeposit(const mojom::SearchResultAdInfoPtr& ad_mojom) {
   return deposit;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

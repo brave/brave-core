@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_viewed.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 
-namespace ads::new_tab_page_ads {
+namespace brave_ads::new_tab_page_ads {
 
 std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> AdEventFactory::Build(
     const mojom::NewTabPageAdEventType event_type) {
@@ -32,4 +32,4 @@ std::unique_ptr<AdEventInterface<NewTabPageAdInfo>> AdEventFactory::Build(
   }
 }
 
-}  // namespace ads::new_tab_page_ads
+}  // namespace brave_ads::new_tab_page_ads

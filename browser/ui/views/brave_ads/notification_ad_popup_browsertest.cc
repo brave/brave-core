@@ -30,8 +30,7 @@ namespace brave_ads {
 class NotificationAdPopupBrowserTest : public InProcessBrowserTest {
  public:
   NotificationAdPopupBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_ads::features::kCustomNotificationAds);
+    feature_list_.InitAndEnableFeature(features::kCustomNotificationAds);
   }
 
   void SetUp() override {

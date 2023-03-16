@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsCommandLinePermissionRuleTest : public UnitTestBase {};
 
@@ -79,4 +79,4 @@ TEST_F(BatAdsCommandLinePermissionRuleTest,
   EXPECT_TRUE(is_allowed);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

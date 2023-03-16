@@ -12,7 +12,7 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 base::Time TimeFromString(const std::string& time_string, bool is_local);
 
@@ -25,6 +25,6 @@ std::string NowAsISO8601();
 base::Time DistantFuture();
 std::string DistantFutureAsISO8601();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_TIME_UTIL_H_

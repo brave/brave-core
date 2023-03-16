@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ads {
+namespace brave_ads {
 
 SearchEngineInfo::SearchEngineInfo(std::string url_pattern,
                                    std::string result_page_url_pattern,
@@ -16,4 +16,4 @@ SearchEngineInfo::SearchEngineInfo(std::string url_pattern,
       result_page_url_pattern(std::move(result_page_url_pattern)),
       search_term_query_key(std::move(search_term_query_key)) {}
 
-}  // namespace ads
+}  // namespace brave_ads

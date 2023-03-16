@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 
-namespace ads::resource::features {
+namespace brave_ads::resource::features {
 
 BASE_DECLARE_FEATURE(kAntiTargeting);
 
@@ -16,6 +16,6 @@ bool IsAntiTargetingEnabled();
 
 int GetAntiTargetingResourceVersion();
 
-}  // namespace ads::resource::features
+}  // namespace brave_ads::resource::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_FEATURES_H_

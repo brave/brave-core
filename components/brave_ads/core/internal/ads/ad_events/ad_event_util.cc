@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool HasFiredAdEvent(const AdInfo& ad,
                      const AdEventList& ad_events,
@@ -58,4 +58,4 @@ absl::optional<base::Time> GetLastSeenAdvertiserTime(
   return iter->created_at;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

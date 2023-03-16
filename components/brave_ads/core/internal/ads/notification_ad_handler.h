@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_HANDLER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_HANDLER_H_
 
 #include <memory>
 #include <string>
@@ -23,7 +23,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 namespace geographic {
 class SubdivisionTargeting;
@@ -47,27 +47,29 @@ class Transfer;
 struct NotificationAdInfo;
 struct WalletInfo;
 
-class NotificationAd final : public AccountObserver,
-                             public BrowserManagerObserver,
-                             public IdleDetectionManagerObserver,
-                             public notification_ads::EventHandlerObserver,
-                             public notification_ads::ServingObserver,
-                             public PrefManagerObserver {
+class NotificationAdHandler final
+    : public AccountObserver,
+      public BrowserManagerObserver,
+      public IdleDetectionManagerObserver,
+      public notification_ads::EventHandlerObserver,
+      public notification_ads::ServingObserver,
+      public PrefManagerObserver {
  public:
-  NotificationAd(
+  NotificationAdHandler(
       Account* account,
       Transfer* transfer,
       processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
       geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
 
-  NotificationAd(const NotificationAd& other) = delete;
-  NotificationAd& operator=(const NotificationAd& other) = delete;
+  NotificationAdHandler(const NotificationAdHandler& other) = delete;
+  NotificationAdHandler& operator=(const NotificationAdHandler& other) = delete;
 
-  NotificationAd(NotificationAd&& other) noexcept = delete;
-  NotificationAd& operator=(NotificationAd&& other) noexcept = delete;
+  NotificationAdHandler(NotificationAdHandler&& other) noexcept = delete;
+  NotificationAdHandler& operator=(NotificationAdHandler&& other) noexcept =
+      delete;
 
-  ~NotificationAd() override;
+  ~NotificationAdHandler() override;
 
   void MaybeServeAtRegularIntervals();
 
@@ -111,6 +113,6 @@ class NotificationAd final : public AccountObserver,
       epsilon_greedy_bandit_processor_ = nullptr;  // NOT OWNED
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_NOTIFICATION_AD_HANDLER_H_

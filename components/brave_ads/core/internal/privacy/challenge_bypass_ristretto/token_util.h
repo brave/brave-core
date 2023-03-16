@@ -10,13 +10,13 @@
 
 #include "wrapper.hpp"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 class Token;
 
 std::vector<challenge_bypass_ristretto::Token> ToRawTokens(
     const std::vector<Token>& tokens);
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_CHALLENGE_BYPASS_RISTRETTO_TOKEN_UTIL_H_

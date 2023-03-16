@@ -12,7 +12,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -84,4 +84,4 @@ double GetUserActivityScore(const UserActivityTriggerList& triggers,
   return CalculateScore(sorted_triggers, encoded_events);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

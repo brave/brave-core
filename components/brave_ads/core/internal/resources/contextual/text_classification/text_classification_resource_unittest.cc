@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -106,4 +106,4 @@ TEST_F(BatAdsTextClassificationResourceTest, LoadNotInitializedFile) {
 }
 
 }  // namespace resource
-}  // namespace ads
+}  // namespace brave_ads

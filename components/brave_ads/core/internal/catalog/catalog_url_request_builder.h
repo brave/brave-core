@@ -9,13 +9,13 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/server/url/url_request_builder_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class CatalogUrlRequestBuilder final : public UrlRequestBuilderInterface {
  public:
   mojom::UrlRequestInfoPtr Build() override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_URL_REQUEST_BUILDER_H_

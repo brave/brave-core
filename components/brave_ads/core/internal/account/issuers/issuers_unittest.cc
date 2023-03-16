@@ -18,7 +18,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 using ::testing::NiceMock;
@@ -144,4 +144,4 @@ TEST_F(BatAdsIssuersTest, FetchIssuersNonHttpOkResponse) {
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

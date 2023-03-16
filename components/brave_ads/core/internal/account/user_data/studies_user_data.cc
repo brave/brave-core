@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 
@@ -38,4 +38,4 @@ base::Value::Dict GetStudies() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

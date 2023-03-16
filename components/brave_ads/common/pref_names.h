@@ -25,12 +25,6 @@ extern const char kNotificationAdDidFallbackToCustom[];
 // Migration prefs
 extern const char kSupportedCountryCodesLastSchemaVersion[];
 
-}  // namespace brave_ads::prefs
-
-// TODO(https://github.com/brave/brave-browser/issues/13793): Rename ads::prefs
-// namespace to brave_ads::prefs
-namespace ads::prefs {
-
 // Brave Ads enabled/disabled pref
 extern const char kEnabled[];
 extern const char kEnabledForLastProfile[];
@@ -84,6 +78,6 @@ extern const char kConfirmationsHash[];
 // Client prefs
 extern const char kClientHash[];
 
-}  // namespace ads::prefs
+}  // namespace brave_ads::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_PREF_NAMES_H_

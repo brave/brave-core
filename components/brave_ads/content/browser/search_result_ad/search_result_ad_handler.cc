@@ -92,13 +92,13 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     return;
   }
 
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
+  const mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kClicked);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
 }
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
@@ -136,16 +136,16 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
     return;
   }
 
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
+  const mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kServed);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kServed);
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kViewed);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed);
 }
 
 }  // namespace brave_ads

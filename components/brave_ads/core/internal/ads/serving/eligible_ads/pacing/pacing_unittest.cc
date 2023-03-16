@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -102,4 +102,4 @@ TEST(BatAdsPacingTest, DoNotPaceCreativeAdWhenPacingIsLessThanPassThroughRate) {
   EXPECT_EQ(expected_paced_creative_ads, paced_creative_ads);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

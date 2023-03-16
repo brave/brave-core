@@ -18,7 +18,7 @@
 #include "brave/components/brave_ads/core/internal/server/headers/via_header_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -76,4 +76,4 @@ std::string CreateConfirmationUrlRequestBuilder::BuildBody() const {
   return json::writer::WriteConfirmationPayload(confirmation_);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

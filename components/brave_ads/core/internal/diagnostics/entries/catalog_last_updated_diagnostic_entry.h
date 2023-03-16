@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_interface.h"
 
-namespace ads {
+namespace brave_ads {
 
 class CatalogLastUpdatedDiagnosticEntry final
     : public DiagnosticEntryInterface {
@@ -21,6 +21,6 @@ class CatalogLastUpdatedDiagnosticEntry final
   std::string GetValue() const override;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_CATALOG_LAST_UPDATED_DIAGNOSTIC_ENTRY_H_

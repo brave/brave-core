@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/search_result_ad.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_handler.h"
 
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsSearchResultAdIntegrationTest : public UnitTestBase {
  protected:
@@ -132,4 +132,4 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   EXPECT_EQ(2, GetTransactionCount());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

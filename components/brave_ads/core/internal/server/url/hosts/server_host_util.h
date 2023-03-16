@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads::server {
+namespace brave_ads::server {
 
 // Use for requests that are not user-specific and do not process personal data
 std::string GetStaticHost();
@@ -24,6 +24,6 @@ std::string GetNonAnonymousHost();
 // the request to a wallet in any other way
 std::string GetAnonymousHost();
 
-}  // namespace ads::server
+}  // namespace brave_ads::server
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_SERVER_HOST_UTIL_H_

@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -49,4 +49,4 @@ std::string UrlResponseHeadersToString(
   return base::StringPrintf("  Headers:\n%s", formatted_headers.c_str());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

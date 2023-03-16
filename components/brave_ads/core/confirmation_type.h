@@ -9,7 +9,7 @@
 #include <ostream>
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 class ConfirmationType final {
  public:
@@ -49,6 +49,6 @@ class ConfirmationType final {
 
 std::ostream& operator<<(std::ostream& os, const ConfirmationType& type);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_CONFIRMATION_TYPE_H_

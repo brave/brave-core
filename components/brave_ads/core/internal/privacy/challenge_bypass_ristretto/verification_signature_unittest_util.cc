@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 VerificationSignature GetVerificationSignature() {
   return VerificationSignature(kVerificationSignatureBase64);
@@ -18,4 +18,4 @@ VerificationSignature GetInvalidVerificationSignature() {
   return VerificationSignature(kInvalidBase64);
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

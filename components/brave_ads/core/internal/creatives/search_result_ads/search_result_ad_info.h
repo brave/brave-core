@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct SearchResultAdInfo final : AdInfo {
   bool IsValid() const;
@@ -19,6 +19,6 @@ struct SearchResultAdInfo final : AdInfo {
   std::string description;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_SEARCH_RESULT_ADS_SEARCH_RESULT_AD_INFO_H_

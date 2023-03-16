@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsAverageClickthroughRateTest : public UnitTestBase {};
 
@@ -126,4 +126,4 @@ TEST_F(BatAdsAverageClickthroughRateTest, GetValue) {
   EXPECT_EQ("0.3333333333333333", value);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

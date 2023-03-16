@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/page_transition_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -84,4 +84,4 @@ absl::optional<UserActivityEventType> ToUserActivityEventType(
   }
 }
 
-}  // namespace ads
+}  // namespace brave_ads

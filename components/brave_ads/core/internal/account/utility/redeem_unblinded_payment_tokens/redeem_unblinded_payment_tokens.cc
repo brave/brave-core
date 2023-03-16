@@ -25,7 +25,7 @@
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -228,4 +228,4 @@ void RedeemUnblindedPaymentTokens::OnRetry() {
   Redeem();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

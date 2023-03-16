@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
   ml::pipeline::TextEmbeddingInfo text_embedding;
@@ -22,4 +22,4 @@ ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
   return text_embedding;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

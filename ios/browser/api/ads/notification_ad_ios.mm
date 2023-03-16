@@ -26,7 +26,8 @@
 
 @implementation NotificationAdIOS
 
-- (instancetype)initWithNotificationInfo:(const ads::NotificationAdInfo&)info {
+- (instancetype)initWithNotificationInfo:
+    (const brave_ads::NotificationAdInfo&)info {
   if ((self = [super init])) {
     self.placementID = base::SysUTF8ToNSString(info.placement_id);
     self.creativeInstanceID =

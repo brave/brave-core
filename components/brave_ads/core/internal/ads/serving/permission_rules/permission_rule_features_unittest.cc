@@ -12,7 +12,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::permission_rules::features {
+namespace brave_ads::permission_rules::features {
 
 TEST(BatAdsPermissionRuleFeaturesTest, IsEnabled) {
   // Arrange
@@ -305,4 +305,4 @@ TEST(BatAdsPermissionRuleFeaturesTest,
             should_only_serve_ads_if_browser_is_active);
 }
 
-}  // namespace ads::permission_rules::features
+}  // namespace brave_ads::permission_rules::features

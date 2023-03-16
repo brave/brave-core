@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ads::rewards {
+namespace brave_ads::rewards {
 
 struct PaymentInfo final {
   double balance = 0.0;
@@ -19,6 +19,6 @@ struct PaymentInfo final {
 
 using PaymentList = std::vector<PaymentInfo>;
 
-}  // namespace ads::rewards
+}  // namespace brave_ads::rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_REWARDS_PAYMENT_INFO_H_

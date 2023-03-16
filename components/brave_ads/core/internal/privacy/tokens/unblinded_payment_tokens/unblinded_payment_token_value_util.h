@@ -10,7 +10,7 @@
 
 #include "base/values.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 base::Value::List UnblindedPaymentTokensToValue(
     const UnblindedPaymentTokenList& unblinded_tokens);
@@ -18,6 +18,6 @@ base::Value::List UnblindedPaymentTokensToValue(
 UnblindedPaymentTokenList UnblindedPaymentTokensFromValue(
     const base::Value::List& list);
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_TOKENS_UNBLINDED_PAYMENT_TOKENS_UNBLINDED_PAYMENT_TOKEN_VALUE_UTIL_H_

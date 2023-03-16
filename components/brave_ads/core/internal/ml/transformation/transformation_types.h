@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_TYPES_H_
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 enum class TransformationType { kLowercase = 0, kHashedNGrams, kNormalization };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_TRANSFORMATION_TRANSFORMATION_TYPES_H_

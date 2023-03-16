@@ -6,12 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_UNITTEST_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_UNITTEST_UTIL_H_
 
-namespace ads {
+namespace brave_ads {
 
 struct AdInfo;
 
 AdInfo BuildAd();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_UNITTEST_UTIL_H_

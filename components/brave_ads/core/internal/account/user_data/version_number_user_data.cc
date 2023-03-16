@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/browser/browser_util.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 constexpr char kVersionNumberKey[] = "versionNumber";
@@ -21,4 +21,4 @@ base::Value::Dict GetVersionNumber() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

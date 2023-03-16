@@ -21,7 +21,7 @@ class Time;
 
 class GURL;
 
-namespace ads {
+namespace brave_ads {
 
 struct TabInfo;
 
@@ -71,6 +71,6 @@ class Transfer final : public TabManagerObserver {
   AdInfo last_clicked_ad_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_TRANSFER_TRANSFER_H_

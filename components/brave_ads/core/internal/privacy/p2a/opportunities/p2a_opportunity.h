@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads {
+namespace brave_ads {
 
 class AdType;
 
@@ -22,6 +22,6 @@ void RecordAdOpportunityForSegments(const AdType& ad_type,
                                     const SegmentList& segments);
 
 }  // namespace privacy::p2a
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PRIVACY_P2A_OPPORTUNITIES_P2A_OPPORTUNITY_H_

@@ -18,7 +18,7 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr base::TimeDelta kTransferAdAfter = base::Seconds(10);
@@ -202,4 +202,4 @@ void Transfer::OnDidCloseTab(const int32_t tab_id) {
   Cancel(tab_id);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

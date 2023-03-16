@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/category_content_info.h"
 #include "brave/components/brave_ads/core/export.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT HistoryItemInfo final {
   base::Time created_at;
@@ -25,6 +25,6 @@ bool operator!=(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs);
 
 using HistoryItemList = base::circular_deque<HistoryItemInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_HISTORY_ITEM_INFO_H_

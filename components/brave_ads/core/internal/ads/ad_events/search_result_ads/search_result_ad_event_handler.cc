@@ -27,7 +27,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 
-namespace ads::search_result_ads {
+namespace brave_ads::search_result_ads {
 
 namespace {
 
@@ -348,4 +348,4 @@ void EventHandler::NotifySearchResultAdEventFailed(
   std::move(callback).Run(/*success*/ false, ad.placement_id, event_type);
 }
 
-}  // namespace ads::search_result_ads
+}  // namespace brave_ads::search_result_ads

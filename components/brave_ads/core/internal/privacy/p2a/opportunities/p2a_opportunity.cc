@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity_questions.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a.h"
 
-namespace ads::privacy::p2a {
+namespace brave_ads::privacy::p2a {
 
 std::string GetAdOpportunityNameForAdType(const AdType& ad_type) {
   return base::StringPrintf("%s_opportunity", ad_type.ToString().c_str());
@@ -28,4 +28,4 @@ void RecordAdOpportunityForSegments(const AdType& ad_type,
   RecordEvent(name, questions);
 }
 
-}  // namespace ads::privacy::p2a
+}  // namespace brave_ads::privacy::p2a

@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -130,4 +130,4 @@ TEST(BatAdsHistorySortTest, AscendingSortOrderForEmptyHistory) {
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

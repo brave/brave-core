@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_table_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 namespace {
 
@@ -123,4 +123,4 @@ std::string GeoTargets::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

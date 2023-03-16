@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ClientInfo final {
   ClientInfo();
@@ -44,6 +44,6 @@ struct ClientInfo final {
   targeting::PurchaseIntentSignalHistoryMap purchase_intent_signal_history;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_CLIENT_CLIENT_INFO_H_

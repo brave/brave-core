@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/category_content_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -48,4 +48,4 @@ CategoryContentInfo CategoryContentFromValue(const base::Value::Dict& root) {
   return category_content;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -10,7 +10,7 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 std::vector<cbr::Token> GetTokens(const int count) {
   const std::vector<std::string> tokens_base64 = {
@@ -61,4 +61,4 @@ std::vector<cbr::Token> GetTokens(const int count) {
   return tokens;
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

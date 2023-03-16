@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct IssuersInfo final {
   IssuersInfo();
@@ -28,6 +28,6 @@ struct IssuersInfo final {
   IssuerList issuers;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_INFO_H_

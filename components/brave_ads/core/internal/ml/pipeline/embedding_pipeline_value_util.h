@@ -9,13 +9,13 @@
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 struct EmbeddingPipelineInfo;
 
 absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     const base::Value::Dict& root);
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_EMBEDDING_PIPELINE_VALUE_UTIL_H_

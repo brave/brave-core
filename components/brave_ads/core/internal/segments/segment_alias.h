@@ -9,10 +9,10 @@
 #include <string>
 #include <vector>
 
-namespace ads {
+namespace brave_ads {
 
 using SegmentList = std::vector<std::string>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SEGMENTS_SEGMENT_ALIAS_H_

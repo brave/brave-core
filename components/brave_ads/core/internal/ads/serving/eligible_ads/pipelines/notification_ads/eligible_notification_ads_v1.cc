@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 EligibleAdsV1::EligibleAdsV1(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -259,4 +259,4 @@ CreativeNotificationAdList EligibleAdsV1::FilterCreativeAds(
   return eligible_creative_ads;
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

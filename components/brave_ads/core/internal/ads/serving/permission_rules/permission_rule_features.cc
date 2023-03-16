@@ -7,7 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 
-namespace ads::permission_rules::features {
+namespace brave_ads::permission_rules::features {
 
 namespace {
 
@@ -63,4 +63,4 @@ bool ShouldOnlyServeAdsIfBrowserIsActive() {
       kDefaultShouldOnlyServeAdsIfBrowserIsActive);
 }
 
-}  // namespace ads::permission_rules::features
+}  // namespace brave_ads::permission_rules::features

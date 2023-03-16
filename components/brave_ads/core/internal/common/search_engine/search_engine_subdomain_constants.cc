@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_subdomain_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 base::span<const base::StringPiece> GetWikipediaSearchEngineSubdomains() {
   // See https://www.wikipedia.org/.
@@ -33,4 +33,4 @@ base::span<const base::StringPiece> GetYahooSearchEngineSubdomains() {
   return kExtensions;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

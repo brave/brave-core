@@ -14,7 +14,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kCatalog[] = "catalog_with_multiple_campaigns.json";
@@ -225,4 +225,4 @@ TEST_F(BatAdsSegmentUtilTest, DoesNotHaveChildSegment) {
   EXPECT_FALSE(has_child_segment);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

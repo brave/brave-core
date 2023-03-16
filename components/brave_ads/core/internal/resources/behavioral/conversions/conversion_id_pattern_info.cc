@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const ConversionIdPatternInfo& lhs,
                 const ConversionIdPatternInfo& rhs) {
@@ -18,4 +18,4 @@ bool operator!=(const ConversionIdPatternInfo& lhs,
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

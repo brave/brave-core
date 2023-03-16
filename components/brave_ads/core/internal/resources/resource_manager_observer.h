@@ -10,7 +10,7 @@
 
 #include "base/observer_list_types.h"
 
-namespace ads {
+namespace brave_ads {
 
 class ResourceManagerObserver : public base::CheckedObserver {
  public:
@@ -18,6 +18,6 @@ class ResourceManagerObserver : public base::CheckedObserver {
   virtual void OnResourceDidUpdate(const std::string& id) {}
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_RESOURCE_MANAGER_OBSERVER_H_

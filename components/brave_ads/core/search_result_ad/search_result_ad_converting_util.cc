@@ -20,15 +20,15 @@
 #include "components/schema_org/common/metadata.mojom.h"
 #include "url/gurl.h"
 
-using ads::mojom::ConversionInfo;
-using ads::mojom::ConversionInfoPtr;
-using ads::mojom::SearchResultAdInfo;
-using ads::mojom::SearchResultAdInfoPtr;
-
-using SearchResultAdMap = base::flat_map</*placement_id*/ std::string,
-                                         ads::mojom::SearchResultAdInfoPtr>;
-
 namespace brave_ads {
+
+using mojom::ConversionInfo;
+using mojom::ConversionInfoPtr;
+using mojom::SearchResultAdInfo;
+using mojom::SearchResultAdInfoPtr;
+
+using SearchResultAdMap =
+    base::flat_map</*placement_id*/ std::string, mojom::SearchResultAdInfoPtr>;
 
 namespace {
 

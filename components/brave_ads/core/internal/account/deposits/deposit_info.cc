@@ -5,10 +5,10 @@
 
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool DepositInfo::IsValid() const {
   return !creative_instance_id.empty();
 }
 
-}  // namespace ads
+}  // namespace brave_ads

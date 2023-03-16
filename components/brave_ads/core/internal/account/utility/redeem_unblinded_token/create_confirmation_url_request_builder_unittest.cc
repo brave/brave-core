@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -434,4 +434,4 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

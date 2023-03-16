@@ -9,7 +9,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::resource {
+namespace brave_ads::resource {
 
 ConversionsInfo::ConversionsInfo() = default;
 
@@ -82,4 +82,4 @@ std::unique_ptr<ConversionsInfo> ConversionsInfo::CreateFromValue(
   return conversion;
 }
 
-}  // namespace ads::resource
+}  // namespace brave_ads::resource

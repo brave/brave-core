@@ -12,7 +12,7 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -94,4 +94,4 @@ bool DomainOrHostExists(const std::vector<GURL>& urls, const GURL& url) {
       urls, [&url](const GURL& item) { return SameDomainOrHost(item, url); });
 }
 
-}  // namespace ads
+}  // namespace brave_ads

@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct EpsilonGreedyBanditArmInfo final {
   bool operator==(const EpsilonGreedyBanditArmInfo& other) const;
@@ -21,6 +21,6 @@ struct EpsilonGreedyBanditArmInfo final {
   int pulls = 0;
 };
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PROCESSORS_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARM_INFO_H_

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -105,4 +105,4 @@ InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& root) {
   return ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

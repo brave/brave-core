@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds.*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsCatalogIdDiagnosticEntryTest : public UnitTestBase {};
 
@@ -41,4 +41,4 @@ TEST_F(BatAdsCatalogIdDiagnosticEntryTest, EmptyCatalogId) {
   EXPECT_EQ("", diagnostic_entry.GetValue());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

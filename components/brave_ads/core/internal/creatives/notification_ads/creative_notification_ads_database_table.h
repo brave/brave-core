@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 class Campaigns;
 class CreativeAds;
@@ -83,6 +83,6 @@ class CreativeNotificationAds final : public TableInterface {
   std::unique_ptr<Segments> segments_database_table_;
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_CREATIVE_NOTIFICATION_ADS_DATABASE_TABLE_H_

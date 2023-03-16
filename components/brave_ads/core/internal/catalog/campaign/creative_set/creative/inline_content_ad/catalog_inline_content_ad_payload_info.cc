@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/inline_content_ad/catalog_inline_content_ad_payload_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 CatalogInlineContentAdPayloadInfo::CatalogInlineContentAdPayloadInfo() =
     default;
@@ -37,4 +37,4 @@ bool CatalogInlineContentAdPayloadInfo::operator!=(
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

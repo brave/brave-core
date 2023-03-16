@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsUserActivityUtilTest : public UnitTestBase {};
 
@@ -256,4 +256,4 @@ TEST_F(BatAdsUserActivityUtilTest, ToUserActivityTriggersForEmptyTrigger) {
   EXPECT_EQ(expected_triggers, triggers);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

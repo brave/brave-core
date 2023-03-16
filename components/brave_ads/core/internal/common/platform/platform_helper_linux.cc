@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper_linux.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 constexpr char kPlatformName[] = "linux";
@@ -25,4 +25,4 @@ PlatformType PlatformHelperLinux::GetType() const {
   return PlatformType::kLinux;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

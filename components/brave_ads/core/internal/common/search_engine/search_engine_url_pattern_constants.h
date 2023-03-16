@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 const std::string& GetAmazonUrlPattern();
 const std::string& GetGoogleUrlPattern();
@@ -16,6 +16,6 @@ const std::string& GetMojeekUrlPattern();
 const std::string& GetWikipediaUrlPattern();
 const std::string& GetYahooUrlPattern();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_SEARCH_ENGINE_SEARCH_ENGINE_URL_PATTERN_CONSTANTS_H_

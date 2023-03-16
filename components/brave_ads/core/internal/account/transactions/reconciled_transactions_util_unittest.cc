@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsReconciledTransactionsUtilTest : public UnitTestBase {};
 
@@ -151,4 +151,4 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   EXPECT_FALSE(did_reconcile_transaction);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

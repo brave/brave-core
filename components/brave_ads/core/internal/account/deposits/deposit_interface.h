@@ -10,7 +10,7 @@
 
 #include "base/functional/callback_forward.h"
 
-namespace ads {
+namespace brave_ads {
 
 using GetDepositCallback = base::OnceCallback<void(const bool, const double)>;
 
@@ -22,6 +22,6 @@ class DepositInterface {
                         GetDepositCallback callback) = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_DEPOSITS_DEPOSIT_INTERFACE_H_

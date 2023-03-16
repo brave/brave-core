@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteCreativeInlineContentAds();
 
 void SaveCreativeInlineContentAds(
     const CreativeInlineContentAdList& creative_ads);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_INLINE_CONTENT_ADS_CREATIVE_INLINE_CONTENT_ADS_DATABASE_UTIL_H_

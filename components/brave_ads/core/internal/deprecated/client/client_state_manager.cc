@@ -25,7 +25,7 @@
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -588,4 +588,4 @@ bool ClientStateManager::FromJson(const std::string& json) {
   return true;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

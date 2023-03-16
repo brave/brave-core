@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
-namespace ads::user_data {
+namespace brave_ads::user_data {
 
 namespace {
 
@@ -31,4 +31,4 @@ base::Value::Dict GetCatalog() {
   return user_data;
 }
 
-}  // namespace ads::user_data
+}  // namespace brave_ads::user_data

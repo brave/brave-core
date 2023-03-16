@@ -24,7 +24,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 using ::testing::_;
 using ::testing::InSequence;
@@ -1084,4 +1084,4 @@ TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   EXPECT_EQ(50, privacy::UnblindedTokenCount());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

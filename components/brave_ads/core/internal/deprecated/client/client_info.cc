@@ -17,7 +17,7 @@
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 ClientInfo::ClientInfo() = default;
 
@@ -217,4 +217,4 @@ bool ClientInfo::FromJson(const std::string& json) {
   return FromValue(root->GetDict());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

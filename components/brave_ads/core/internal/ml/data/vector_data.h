@@ -14,7 +14,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/data.h"
 
-namespace ads::ml {
+namespace brave_ads::ml {
 
 class VectorData final : public Data {
  public:
@@ -56,6 +56,6 @@ class VectorData final : public Data {
   std::unique_ptr<class VectorDataStorage> storage_;
 };
 
-}  // namespace ads::ml
+}  // namespace brave_ads::ml
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_DATA_VECTOR_DATA_H_

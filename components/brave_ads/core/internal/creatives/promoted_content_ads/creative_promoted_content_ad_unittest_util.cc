@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_table.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SaveCreativeAds(const CreativePromotedContentAdList& creative_ads) {
   database::table::CreativePromotedContentAds database_table;
@@ -42,4 +42,4 @@ CreativePromotedContentAdInfo BuildCreativePromotedContentAd(
   return creative_promoted_content_ad;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

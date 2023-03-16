@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/signed_token.h"
 
-namespace ads::privacy::cbr {
+namespace brave_ads::privacy::cbr {
 
 std::vector<challenge_bypass_ristretto::SignedToken> ToRawSignedTokens(
     const std::vector<SignedToken>& tokens) {
@@ -23,4 +23,4 @@ std::vector<challenge_bypass_ristretto::SignedToken> ToRawSignedTokens(
   return raw_tokens;
 }
 
-}  // namespace ads::privacy::cbr
+}  // namespace brave_ads::privacy::cbr

@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "url/gurl.h"
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 struct PurchaseIntentSiteInfo final {
   PurchaseIntentSiteInfo();
@@ -35,6 +35,6 @@ struct PurchaseIntentSiteInfo final {
   uint16_t weight = 0;
 };
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_PURCHASE_INTENT_PURCHASE_INTENT_SITE_INFO_H_

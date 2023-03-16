@@ -9,11 +9,11 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void OnResultCallback(ResultCallback callback,
                       mojom::DBCommandResponseInfoPtr response);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_DATABASE_DATABASE_TRANSACTION_UTIL_H_

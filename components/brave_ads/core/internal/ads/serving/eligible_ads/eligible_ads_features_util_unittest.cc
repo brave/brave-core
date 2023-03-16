@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 TEST(BatAdsEligibleAdsFeaturesUtilTest,
      ToAdPredictorWeightsForEmptyParamValue) {
@@ -107,4 +107,4 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   EXPECT_EQ(expected_weights, weights);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

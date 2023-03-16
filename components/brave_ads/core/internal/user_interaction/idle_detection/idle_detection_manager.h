@@ -13,7 +13,7 @@ namespace base {
 class TimeDelta;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
 
 class IdleDetectionManager final {
  public:
@@ -47,6 +47,6 @@ class IdleDetectionManager final {
   base::ObserverList<IdleDetectionManagerObserver> observers_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_IDLE_DETECTION_IDLE_DETECTION_MANAGER_H_

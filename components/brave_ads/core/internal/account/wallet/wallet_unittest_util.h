@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct WalletInfo;
 
@@ -18,6 +18,6 @@ std::string GetInvalidWalletRecoverySeedForTesting();
 
 WalletInfo GetWalletForTesting();
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_WALLET_WALLET_UNITTEST_UTIL_H_

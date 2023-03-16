@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_event_types.h"
 #include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_trigger_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 constexpr int64_t kUserActivityMissingValue = -1;
 
@@ -26,6 +26,6 @@ int64_t GetTimeSinceLastUserActivityEvent(const UserActivityEventList& events,
 
 UserActivityTriggerList ToUserActivityTriggers(const std::string& param_value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_INTERACTION_USER_ACTIVITY_USER_ACTIVITY_UTIL_H_

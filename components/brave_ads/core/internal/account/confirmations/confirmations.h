@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
@@ -79,6 +79,6 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   BackoffTimer retry_timer_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_

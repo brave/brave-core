@@ -20,7 +20,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/epsilon_greedy_bandit_segments.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 
-namespace ads::processor {
+namespace brave_ads::processor {
 
 namespace {
 
@@ -148,4 +148,4 @@ void EpsilonGreedyBandit::Process(const BanditFeedbackInfo& feedback) {
   BLOG(1, "Epsilon greedy bandit processed " << feedback.ad_event_type);
 }
 
-}  // namespace ads::processor
+}  // namespace brave_ads::processor

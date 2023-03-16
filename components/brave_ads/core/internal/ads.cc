@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/geographic/country/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool IsSupportedLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
@@ -31,4 +31,4 @@ Ads* Ads::CreateInstance(AdsClient* ads_client) {
   return new AdsImpl(ads_client);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

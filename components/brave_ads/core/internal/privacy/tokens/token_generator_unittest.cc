@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 TEST(BatAdsTokenGeneratorTest, Generate) {
   // Arrange
@@ -35,4 +35,4 @@ TEST(BatAdsTokenGeneratorTest, GenerateZero) {
   EXPECT_TRUE(tokens.empty());
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

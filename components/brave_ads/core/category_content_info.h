@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/category_content_action_types.h"
 #include "brave/components/brave_ads/core/export.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ADS_EXPORT CategoryContentInfo final {
   std::string category;
@@ -22,6 +22,6 @@ struct ADS_EXPORT CategoryContentInfo final {
 bool operator==(const CategoryContentInfo& lhs, const CategoryContentInfo& rhs);
 bool operator!=(const CategoryContentInfo& lhs, const CategoryContentInfo& rhs);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_CATEGORY_CONTENT_INFO_H_

@@ -8,10 +8,10 @@
 
 #include "brave/components/brave_ads/core/ads_callback.h"
 
-namespace ads::notifications {
+namespace brave_ads::notifications {
 
 void Migrate(InitializeCallback callback);
 
-}  // namespace ads::notifications
+}  // namespace brave_ads::notifications
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LEGACY_MIGRATION_NOTIFICATIONS_LEGACY_NOTIFICATION_MIGRATION_H_

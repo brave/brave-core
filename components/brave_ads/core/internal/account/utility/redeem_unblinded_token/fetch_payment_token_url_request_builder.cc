@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
 #include "url/gurl.h"
 
-namespace ads {
+namespace brave_ads {
 
 FetchPaymentTokenUrlRequestBuilder::FetchPaymentTokenUrlRequestBuilder(
     ConfirmationInfo confirmation)
@@ -43,4 +43,4 @@ GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
   return GURL(spec);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

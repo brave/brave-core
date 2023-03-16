@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
-namespace ads::ml::pipeline {
+namespace brave_ads::ml::pipeline {
 
 struct TextEmbeddingInfo final {
   TextEmbeddingInfo();
@@ -29,6 +29,6 @@ struct TextEmbeddingInfo final {
   VectorData embedding;
 };
 
-}  // namespace ads::ml::pipeline
+}  // namespace brave_ads::ml::pipeline
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ML_PIPELINE_TEXT_PROCESSING_EMBEDDING_INFO_H_

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 double CalculateNormalizingConstant(
@@ -53,6 +53,6 @@ absl::optional<T> SampleAdFromPredictors(
   return absl::nullopt;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_

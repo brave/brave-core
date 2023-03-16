@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace ads {
+namespace brave_ads {
 
 class BatAdsTextClassificationProcessorTest : public UnitTestBase {
  protected:
@@ -107,4 +107,4 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
   EXPECT_EQ(3UL, list.size());
 }
 
-}  // namespace ads
+}  // namespace brave_ads

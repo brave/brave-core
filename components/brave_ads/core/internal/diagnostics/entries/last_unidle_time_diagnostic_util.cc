@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 
-namespace ads {
+namespace brave_ads {
 
 void SetLastUnIdleTimeDiagnosticEntry() {
   auto last_unidle_time_diagnostic_entry =
@@ -23,4 +23,4 @@ void SetLastUnIdleTimeDiagnosticEntry() {
       std::move(last_unidle_time_diagnostic_entry));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

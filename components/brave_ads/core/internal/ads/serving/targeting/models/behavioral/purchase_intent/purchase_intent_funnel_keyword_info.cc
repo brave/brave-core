@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ads::targeting {
+namespace brave_ads::targeting {
 
 PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo() = default;
 
@@ -16,4 +16,4 @@ PurchaseIntentFunnelKeywordInfo::PurchaseIntentFunnelKeywordInfo(
     const uint16_t weight)
     : keywords(std::move(keywords)), weight(weight) {}
 
-}  // namespace ads::targeting
+}  // namespace brave_ads::targeting

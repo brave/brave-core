@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool WalletInfo::IsValid() const {
   return !payment_id.empty() && !public_key.empty() && !secret_key.empty();
@@ -28,4 +28,4 @@ bool WalletInfo::operator!=(const WalletInfo& other) const {
   return !(*this == other);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

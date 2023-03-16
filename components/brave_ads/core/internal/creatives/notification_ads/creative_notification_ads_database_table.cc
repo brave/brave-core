@@ -31,7 +31,7 @@
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "url/gurl.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 using CreativeNotificationAdMap =
     std::map<std::string, CreativeNotificationAdInfo>;
@@ -495,4 +495,4 @@ std::string CreativeNotificationAds::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(5, count).c_str());
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

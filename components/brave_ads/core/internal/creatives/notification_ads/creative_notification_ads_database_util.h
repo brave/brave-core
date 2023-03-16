@@ -8,13 +8,13 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteCreativeNotificationAds();
 
 void SaveCreativeNotificationAds(
     const CreativeNotificationAdList& creative_ads);
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_NOTIFICATION_ADS_CREATIVE_NOTIFICATION_ADS_DATABASE_UTIL_H_

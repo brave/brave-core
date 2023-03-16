@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 namespace {
 
@@ -32,4 +32,4 @@ const std::string& CommandLinePermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace ads
+}  // namespace brave_ads

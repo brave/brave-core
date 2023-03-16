@@ -12,7 +12,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct NotificationAdInfo;
 
@@ -56,6 +56,6 @@ class EventHandler final : public EventHandlerObserver {
 };
 
 }  // namespace notification_ads
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_AD_EVENTS_NOTIFICATION_ADS_NOTIFICATION_AD_EVENT_HANDLER_H_

@@ -8,7 +8,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens.h"
 
-namespace ads::privacy {
+namespace brave_ads::privacy {
 
 namespace {
 
@@ -92,4 +92,4 @@ int UnblindedPaymentTokenCount() {
       ->Count();
 }
 
-}  // namespace ads::privacy
+}  // namespace brave_ads::privacy

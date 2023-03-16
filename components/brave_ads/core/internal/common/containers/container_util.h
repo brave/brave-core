@@ -11,7 +11,7 @@
 
 #include "base/check_op.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
@@ -35,6 +35,6 @@ std::vector<std::vector<T>> SplitVector(const std::vector<T>& elements,
   return result;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_CONTAINERS_CONTAINER_UTIL_H_

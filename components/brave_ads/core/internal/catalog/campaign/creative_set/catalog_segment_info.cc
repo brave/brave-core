@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/catalog_segment_info.h"
 
-namespace ads {
+namespace brave_ads {
 
 bool operator==(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {
   return lhs.code == rhs.code && lhs.name == rhs.name;
@@ -15,4 +15,4 @@ bool operator!=(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs) {
   return !(lhs == rhs);
 }
 
-}  // namespace ads
+}  // namespace brave_ads

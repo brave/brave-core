@@ -338,7 +338,7 @@ absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
 }
 
 absl::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
-    const ads::NewTabPageAdInfo& ad_info) {
+    const brave_ads::NewTabPageAdInfo& ad_info) {
   // Find campaign
   size_t campaign_index = 0;
   for (; campaign_index != campaigns.size(); ++campaign_index) {
@@ -400,7 +400,7 @@ void NTPSponsoredImagesData::PrintCampaignsParsingResult() const {
 }
 
 bool NTPSponsoredImagesData::AdInfoMatchesSponsoredImage(
-    const ads::NewTabPageAdInfo& ad_info,
+    const brave_ads::NewTabPageAdInfo& ad_info,
     size_t campaign_index,
     size_t background_index) const {
   DCHECK(campaign_index < campaigns.size() && background_index >= 0 &&

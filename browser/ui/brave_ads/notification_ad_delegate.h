@@ -24,7 +24,7 @@ class NotificationObserver {
 };
 
 // Ref counted version of NotificationObserver, required to satisfy
-// brave_ads::NotificationAd::delegate_
+// NotificationAd::delegate_
 class NotificationAdDelegate
     : public NotificationObserver,
       public base::RefCountedThreadSafe<NotificationAdDelegate> {

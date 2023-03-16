@@ -9,7 +9,7 @@
 #include <map>
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 struct ConversionIdPatternInfo final {
   std::string id_pattern;
@@ -24,6 +24,6 @@ bool operator!=(const ConversionIdPatternInfo& lhs,
 
 using ConversionIdPatternMap = std::map<std::string, ConversionIdPatternInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSION_ID_PATTERN_INFO_H_

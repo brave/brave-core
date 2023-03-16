@@ -11,7 +11,7 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_manager_observer.h"
 
-namespace ads {
+namespace brave_ads {
 
 class PrefManager final {
  public:
@@ -40,6 +40,6 @@ class PrefManager final {
   base::ObserverList<PrefManagerObserver> observers_;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_PREFS_PREF_MANAGER_H_

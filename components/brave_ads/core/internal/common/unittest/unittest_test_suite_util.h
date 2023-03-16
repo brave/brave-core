@@ -8,12 +8,12 @@
 
 #include <string>
 
-namespace ads {
+namespace brave_ads {
 
 std::string GetNamespaceForCurrentTest();
 
 std::string GetUuidForCurrentTestAndValue(const std::string& value);
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COMMON_UNITTEST_UNITTEST_TEST_SUITE_UTIL_H_

@@ -9,7 +9,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
 
-namespace ads {
+namespace brave_ads {
 
 using UserDataBuilderCallback = base::OnceCallback<void(base::Value::Dict)>;
 
@@ -20,6 +20,6 @@ class UserDataBuilderInterface {
   virtual void Build(UserDataBuilderCallback callback) const = 0;
 };
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_USER_DATA_BUILDER_INTERFACE_H_

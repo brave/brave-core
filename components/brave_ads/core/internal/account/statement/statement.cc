@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 void BuildStatement(BuildStatementCallback callback) {
   const base::Time from_time = GetTimeInDistantPast();
@@ -47,4 +47,4 @@ void BuildStatement(BuildStatementCallback callback) {
           std::move(callback)));
 }
 
-}  // namespace ads
+}  // namespace brave_ads

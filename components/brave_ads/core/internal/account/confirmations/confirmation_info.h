@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 struct ConfirmationInfo final {
   ConfirmationInfo();
@@ -42,6 +42,6 @@ bool operator!=(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
 
 using ConfirmationList = std::vector<ConfirmationInfo>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATION_INFO_H_

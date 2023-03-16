@@ -10,10 +10,10 @@
 
 #include "base/containers/flat_map.h"
 
-namespace ads {
+namespace brave_ads {
 
 using PublicKeyMap = base::flat_map<std::string, double>;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ISSUERS_PUBLIC_KEY_ALIAS_H_

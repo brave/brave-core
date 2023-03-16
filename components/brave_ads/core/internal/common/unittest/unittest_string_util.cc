@@ -11,7 +11,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 
-namespace ads {
+namespace brave_ads {
 
 std::string CapitalizeFirstCharacterOfEachWordAndTrimWhitespace(
     const std::string& value) {
@@ -25,4 +25,4 @@ std::string CapitalizeFirstCharacterOfEachWordAndTrimWhitespace(
   return base::StrCat(components);
 }
 
-}  // namespace ads
+}  // namespace brave_ads
