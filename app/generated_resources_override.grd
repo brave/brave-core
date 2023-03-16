@@ -225,8 +225,14 @@ are declared in tools/grit/grit_rule.gni.
         </if>
 
       <if expr="not use_titlecase">
+        <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions (title case).">
+          Visit Web Store
+        </message>
         </if>
       <if expr="use_titlecase">
+        <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="In Title Case: The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions.">
+          Visit Web Store
+        </message>
         </if>
 
       <if expr="not use_titlecase">
@@ -681,15 +687,6 @@ are declared in tools/grit/grit_rule.gni.
         </if>
       <if expr="not use_titlecase">
         </if>
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
       <if expr="not is_android">
         <if expr="not use_titlecase">
           </if>
@@ -1090,7 +1087,7 @@ are declared in tools/grit/grit_rule.gni.
           =1 {Your Private window won't reopen.}
           other {Your # Private windows won't reopen.}}
       </message>
-    </if>
+      </if>
 
     <if expr="toolkit_views">
       <if expr="is_macosx">

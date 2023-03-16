@@ -509,11 +509,6 @@ Brave is unable to recover your settings.
       </message>
       <!-- Add account dialog -->
       <if expr="chromeos_ash">
-        <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2" desc="Text body for the Welcome screen in ChromeOS 'Add account' dialog.">
-If you want to use this account one-time only, you can use Guest mode in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
-
-Permissions you've already given to websites and apps may apply to this account. You can manage your Brave sync chains in <ph name="SETTINGS_LINK_BEGIN">&lt;a id="osSettingsLink" href="$3<ex>https://google.com/</ex>"&gt;</ph>Settings<ph name="SETTINGS_LINK_END">&lt;/a&gt;</ph>.
-        </message>
         <message name="IDS_ACCOUNT_MANAGER_DIALOG_WELCOME_BODY_V2_WITH_GUEST_MODE" desc="Text body for the Welcome screen in ChromeOS 'Add account' dialog.">
 If you want to use this account one-time only, you can use <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>Guest mode<ph name="GUEST_LINK_END">&lt;/a&gt;</ph> in Brave browser. If you want to add an account for someone else, <ph name="LINK_BEGIN">&lt;a target="_blank" id="newPersonLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>add a new profile<ph name="LINK_END">&lt;/a&gt;</ph> to your <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
 
@@ -621,9 +616,6 @@ Permissions you've already given to websites and apps may apply to this account.
       </if>
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
         Brave isn't your default browser
-      </message>
-      <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_DESCRIPTION" desc="The text of the notification asking if the user wants to enable Enhanced Safe Browsing">
-        You turned on Enhanced Safe Browsing in your account. Now get it for Brave.
       </message>
       <if expr="is_win">
         <!-- Try Brave Toast Dialog -->
@@ -1334,19 +1326,29 @@ Permissions you've already given to websites and apps may apply to this account.
       </message>
       <!-- Idle timeout dialog. -->
       <if expr="not is_android and not is_chromeos">
-        <message name="IDS_IDLE_TIMEOUT_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close.">
-          Brave is inactive
+        <message name="IDS_IDLE_TIMEOUT_CLOSE_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close.">
+          Brave will soon close
         </message>
-        <message name="IDS_IDLE_TIMEOUT_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that all browsers are about to close automatically.">
+        <message name="IDS_IDLE_TIMEOUT_CLEAR_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their browsing data will be lost soon.">
+          Brave will soon delete browsing data
+        </message>
+        <message name="IDS_IDLE_TIMEOUT_CLOSE_AND_CLEAR_TITLE" desc="Title of the Idle Timeout dialog, warning the user that their windows are about to close and their browsing data will be lost.">
+          Brave will soon close and delete data
+        </message>
+        <message name="IDS_IDLE_TIMEOUT_CLOSE_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to close automatically.">
           {COUNT, plural,
-          =1 {Your administrator has configured Brave to close if it is idle for more than 1 minute.}
-          other {Your administrator has configured Brave to close if it is idle for more than # minutes.}}
+          =1 {Your administrator automatically closes Brave when it isn't used for 1 minute.}
+          other {Your administrator automatically closes Brave when it isn't used for # minutes.}}
         </message>
-        <message name="IDS_IDLE_TIMEOUT_COUNTDOWN" desc="In the Idle Timeout dialog, a countdown that ticks every second. When it reaches zero, Brave closes all browsers.">
-          {0, plural,
-          =0 {Brave will close now.}
-          =1 {Brave will close in 1 second.}
-          other {Brave will close in # seconds.}}
+        <message name="IDS_IDLE_TIMEOUT_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to clear data automatically.">
+          {COUNT, plural,
+          =1 {Your administrator automatically deletes browsing data when it isn't used for 1 minute. This could include history, autofill, and downloads. Your existing tabs will remain open.}
+          other {Your administrator automatically deletes browsing data when it isn't used for # minutes. This could include history, autofill, and downloads. Your existing tabs will remain open.}}
+        </message>
+        <message name="IDS_IDLE_TIMEOUT_CLOSE_AND_CLEAR_BODY" desc="First sentence in the Idle Timeout dialog, warning the user that Brave is going to close and clear data automatically.">
+          {COUNT, plural,
+          =1 {Your administrator automatically closes Brave when it isn't used for 1 minute. Browsing data is deleted. This could include history, autofill, and downloads.}
+          other {Your administrator automatically closes Brave when it isn't used for # minutes. Browsing data is deleted. This could include history, autofill, and downloads.}}
         </message>
         <message name="IDS_IDLE_DISMISS_BUTTON" desc="Button label in the Idle Timeout dialog, this button dismisses the dialog and prevents browsers from closing automatically.">
           Continue using Brave
@@ -1379,6 +1381,9 @@ Permissions you've already given to websites and apps may apply to this account.
           </message>
           <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_ACCOUNT_SELECTION_LACROS_SUBTITLE" desc="Profile picker, account selection screen subtitle">
             Sign in to Brave
+          </message>
+          <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_ACCOUNT_SELECTION_LACROS_SUBTITLE_WITH_GUEST" desc="Profile picker, account selection screen subtitle">
+            Sign in to Brave. If you want to sign in an account one-time only, you can <ph name="GUEST_LINK_BEGIN">&lt;a id="guestModeLink" href="#"&gt;</ph>use the device as guest<ph name="GUEST_LINK_END">&lt;/a&gt;</ph>.
           </message>
         </if>
         <if expr="not chromeos_lacros">
