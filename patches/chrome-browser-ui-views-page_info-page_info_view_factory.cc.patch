@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_info/page_info_view_factory.cc b/chrome/browser/ui/views/page_info/page_info_view_factory.cc
-index eed0d6fc6fa89306935f2a6caa4e1f78d71829ef..67286f35507d8d60ef83c5e47aee1cb045a0ef21 100644
+index dffe31039b97189cb0871bbddf59f9b3f6e02739..a4898a138af77cecd43675c1f999cab9bc4fc98c 100644
 --- a/chrome/browser/ui/views/page_info/page_info_view_factory.cc
 +++ b/chrome/browser/ui/views/page_info/page_info_view_factory.cc
 @@ -253,6 +253,7 @@ const ui::ImageModel PageInfoViewFactory::GetPermissionIcon(
