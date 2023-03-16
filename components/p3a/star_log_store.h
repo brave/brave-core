@@ -31,6 +31,9 @@ class StarLogStore : public metrics::LogStore {
   StarLogStore(PrefService* local_state, size_t keep_epoch_count);
   ~StarLogStore() override;
 
+  StarLogStore(const StarLogStore&) = delete;
+  StarLogStore& operator=(const StarLogStore&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void UpdateMessage(const std::string& histogram_name,

@@ -72,11 +72,11 @@ void BraveBrowserMainExtraParts::PostBrowserStart() {
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // Disabled on mobile platforms, see for instance issues/6176
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-  // TODO(iefremov): Maybe find a better place for this initialization.
-  g_brave_browser_process->p3a_service()->Init(
-      g_browser_process->shared_url_loader_factory());
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+  if (g_brave_browser_process->p3a_service() != nullptr) {
+    // TODO(iefremov): Maybe find a better place for this initialization.
+    g_brave_browser_process->p3a_service()->Init(
+        g_browser_process->shared_url_loader_factory());
+  }
 
   RecordInitialP3AValues();
 

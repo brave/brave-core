@@ -18,6 +18,7 @@
 #include "base/strings/string_piece_forward.h"
 #include "brave/components/p3a/message_manager.h"
 #include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/p3a_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefRegistrySimple;
@@ -43,7 +44,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   P3AService(PrefService* local_state,
              std::string channel,
              std::string week_of_install,
-             P3AConfig&& config);
+             P3AConfig config);
 
   P3AService(const P3AService&) = delete;
   P3AService& operator=(const P3AService&) = delete;
@@ -110,7 +111,7 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   bool initialized_ = false;
 
   PrefService* local_state_;
-  std::unique_ptr<P3AConfig> config_;
+  P3AConfig config_;
 
   // Contains metrics added via `RegisterDynamicMetric`
   base::flat_map<std::string, MetricLogType> dynamic_metric_log_types_;

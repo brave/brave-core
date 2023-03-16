@@ -53,17 +53,17 @@ std::string HandleRandomnessRequest(const network::ResourceRequest& request,
 
   EXPECT_NE(rand_result.points.size(), 0U);
 
-  base::Value resp_points_value(base::Value::Type::LIST);
+  base::Value::List resp_points_list;
   for (const constellation::VecU8& resp_point_rust : rand_result.points) {
     std::vector<uint8_t> resp_point;
     std::copy(resp_point_rust.data.cbegin(), resp_point_rust.data.cend(),
               std::back_inserter(resp_point));
-    resp_points_value.Append(base::Base64Encode(resp_point));
+    resp_points_list.Append(base::Base64Encode(resp_point));
   }
 
-  base::Value resp_value(base::Value::Type::DICT);
-  resp_value.SetKey("epoch", base::Value(expected_epoch));
-  resp_value.SetKey("points", std::move(resp_points_value));
+  base::Value::Dict resp_value;
+  resp_value.Set("epoch", base::Value(expected_epoch));
+  resp_value.Set("points", std::move(resp_points_list));
   std::string resp_json;
   base::JSONWriter::Write(resp_value, &resp_json);
   return resp_json;

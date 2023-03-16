@@ -77,13 +77,13 @@ void StarRandomnessPoints::SendRandomnessRequest(
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessServerInfoAnnotation());
 
-  base::Value payload_dict(base::Value::Type::DICT);
-  base::Value points_list(base::Value::Type::LIST);
+  base::Value::Dict payload_dict;
+  base::Value::List points_list;
   for (const auto& point_data : rand_req_points) {
     points_list.Append(base::Base64Encode(point_data.data));
   }
-  payload_dict.SetKey("points", std::move(points_list));
-  payload_dict.SetIntKey("epoch", epoch);
+  payload_dict.Set("points", std::move(points_list));
+  payload_dict.Set("epoch", epoch);
 
   std::string payload_str;
   if (!base::JSONWriter::Write(payload_dict, &payload_str)) {

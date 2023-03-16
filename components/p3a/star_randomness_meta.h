@@ -58,6 +58,9 @@ class StarRandomnessMeta {
       const P3AConfig* config);
   ~StarRandomnessMeta();
 
+  StarRandomnessMeta(const StarRandomnessMeta&) = delete;
+  StarRandomnessMeta& operator=(const StarRandomnessMeta&) = delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   bool VerifyRandomnessCert(network::SimpleURLLoader* url_loader);
