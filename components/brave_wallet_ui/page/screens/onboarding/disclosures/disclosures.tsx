@@ -37,6 +37,7 @@ import { CheckboxText } from './disclosures.style'
 export type OnboardingDisclosuresNextSteps =
   | WalletRoutes.OnboardingCreatePassword
   | WalletRoutes.OnboardingImportOrRestore
+  | WalletRoutes.OnboardingConnectHardwareWalletStart
 
 interface Props {
   nextStep: OnboardingDisclosuresNextSteps

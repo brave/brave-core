@@ -326,6 +326,7 @@ export interface PageState {
   selectedCoinMarket: BraveWallet.CoinMarket | undefined
   nftsPinningStatus: NftsPinningStatusType
   isLocalIpfsNodeRunning: boolean
+  isHardwareOnboarding: boolean
 }
 
 export interface WalletPageState {
@@ -732,6 +733,11 @@ export enum WalletRoutes {
   OnboardingRestoreWallet = '/crypto/onboarding/restore-wallet',
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
   OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
+
+  // onboarding (connect hardware wallet)
+  OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
+  OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
+
 
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',

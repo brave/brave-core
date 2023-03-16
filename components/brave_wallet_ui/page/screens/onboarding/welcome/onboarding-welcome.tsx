@@ -25,7 +25,7 @@ import {
 import { OnboardingAction, PageState, WalletRoutes } from '../../../../constants/types'
 
 // styles
-import { VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
+import { Row, VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
 import { OnboardingWrapper } from '../onboarding.style'
 import {
   Title,
@@ -33,19 +33,28 @@ import {
   LearnMoreLink,
   BlockQuote,
   BlockQuoteTextContainer,
-  VerticalRule
+  VerticalRule,
+  SubDivider,
+  SubDividerText
 } from './onboarding-welcome.style'
 
 export const OnboardingWelcome = () => {
   // redux
   const dispatch = useDispatch()
   const setupStillInProgress = useSelector(({ page }: { page: PageState }) => page.setupStillInProgress)
+  const isHardwareOnboarding = useSelector(({ page }: { page: PageState }) => page.isHardwareOnboarding)
 
   // state
   const [nextStep, setNextStep] = React.useState<OnboardingDisclosuresNextSteps | undefined>(undefined)
 
   // methods
-  const hideDisclosures = React.useCallback(() => setNextStep(undefined), [])
+  const hideDisclosures = React.useCallback(() => {
+    if (isHardwareOnboarding) {
+      dispatch(WalletPageActions.setIsHardwareOnboarding(false))
+    }
+    setNextStep(undefined)
+  }, [isHardwareOnboarding])
+
   const showNewWalletDisclosures = React.useCallback(
     () => setNextStep(WalletRoutes.OnboardingCreatePassword),
     []
@@ -55,6 +64,11 @@ export const OnboardingWelcome = () => {
     () => setNextStep(WalletRoutes.OnboardingImportOrRestore),
     []
   )
+
+  const showConnectHardwareDisclosures = React.useCallback(() => {
+    dispatch(WalletPageActions.setIsHardwareOnboarding(true))
+    setNextStep(WalletRoutes.OnboardingCreatePassword)
+  }, [])
 
   // custom hooks
   const { braveWalletP3A } = useApiProxy()
@@ -117,6 +131,20 @@ export const OnboardingWelcome = () => {
 
       </ButtonContainer>
 
+      <Row>
+        <SubDivider />
+        <SubDividerText>Or</SubDividerText>
+        <SubDivider />
+      </Row>
+
+      <NavButton
+        buttonType='primary'
+        text={getLocale('braveWalletConnectHardwareWallet')}
+        onSubmit={showConnectHardwareDisclosures}
+        maxHeight={'48px'}
+        minWidth={'267px'}
+      />
+
       <VerticalSpace space='20px' />
 
       <LearnMoreLink
@@ -131,3 +159,5 @@ export const OnboardingWelcome = () => {
 
   </WalletPageLayout>
 }
+
+

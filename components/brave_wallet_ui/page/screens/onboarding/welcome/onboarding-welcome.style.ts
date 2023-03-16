@@ -66,3 +66,22 @@ export const BlockQuoteTextContainer = styled(Column)`
   align-items: flex-start;
   gap: 12px;
 `
+
+export const SubDivider = styled.div`
+  width: 234px;
+  height: 1px;
+  background-color: ${(p) => p.theme.color.divider01};
+  margin-bottom: 33px;
+  margin-top: 33px;
+`
+
+export const SubDividerText = styled.div`
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: ${(p) => p.theme.color.text02};
+  padding-left: 24px;
+  padding-right: 24px;
+`

@@ -149,6 +149,7 @@ provideStrings({
   braveWalletLearnMoreAboutBraveWallet: 'Learn more about Brave Wallet',
   braveWalletImportExistingWallet: 'Import existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
+  braveWalletConnectHardwareWallet: 'Connect hardware wallet',
 
   // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Legal stuff',

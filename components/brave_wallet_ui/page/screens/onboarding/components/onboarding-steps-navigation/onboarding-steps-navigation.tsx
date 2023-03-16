@@ -4,9 +4,10 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
-// routes
-import { WalletRoutes } from '../../../../../constants/types'
+// types
+import { PageState, WalletRoutes } from '../../../../../constants/types'
 
 // components
 import { StepsNavigation, StepsNavigationProps } from '../../../../../components/desktop/steps-navigation/steps-navigation'
@@ -32,13 +33,29 @@ const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
   WalletRoutes.OnboardingComplete
 ]
 
+///
+// Connect Hardware Steps
+//
+type OnboardingConnectHardwareWalletSteps =
+  | WalletRoutes.OnboardingComplete
+  | WalletRoutes.OnboardingCreatePassword
+  | WalletRoutes.OnboardingWelcome
+
+const CONNECT_HARDWARE_WALLET_STEPS: OnboardingConnectHardwareWalletSteps[] = [
+  WalletRoutes.OnboardingWelcome,
+  WalletRoutes.OnboardingCreatePassword,
+  WalletRoutes.OnboardingComplete
+]
+
 interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {}
 
 export const OnboardingNewWalletStepsNavigation = (
   props: OnboardingNewWalletStepsNavigationProps
 ) => {
+  const isHardwareOnboarding = useSelector(({ page }: { page: PageState }) => page.isHardwareOnboarding)
+
   return <StepsNavigation
     {...props}
-    steps={NEW_WALLET_STEPS}
+    steps={isHardwareOnboarding ? CONNECT_HARDWARE_WALLET_STEPS : NEW_WALLET_STEPS}
   />
 }

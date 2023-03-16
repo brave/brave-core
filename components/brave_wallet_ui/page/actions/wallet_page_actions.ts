@@ -53,5 +53,6 @@ export const {
   setNftsPinningStatus,
   updateNftPinningStatus,
   getLocalIpfsNodeStatus,
-  updateLocalIpfsNodeStatus
+  updateLocalIpfsNodeStatus,
+  setIsHardwareOnboarding
 } = PageActions

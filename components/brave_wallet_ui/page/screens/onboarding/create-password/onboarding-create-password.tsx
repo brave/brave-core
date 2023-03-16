@@ -12,7 +12,7 @@ import { getLocale } from '../../../../../common/locale'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { OnboardingAction, WalletRoutes, WalletState } from '../../../../constants/types'
+import { OnboardingAction, PageState, WalletRoutes, WalletState } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -40,6 +40,7 @@ export const OnboardingCreatePassword = () => {
   // redux
   const dispatch = useDispatch()
   const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
+  const isHardwareOnboarding = useSelector(({ page }: { page: PageState }) => page.isHardwareOnboarding)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
@@ -64,7 +65,11 @@ export const OnboardingCreatePassword = () => {
   React.useEffect(() => {
     if (isWalletCreated) {
       braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET)
-      history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+      if (isHardwareOnboarding) {
+        history.push(WalletRoutes.OnboardingConnectHardwareWalletStart)
+      } else {
+        history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+      }
     }
   }, [isWalletCreated])
 
