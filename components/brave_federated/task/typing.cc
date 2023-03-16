@@ -4,7 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/typing.h"
+
 #include <vector>
+
 #include "brave/components/brave_federated/task/model.h"
 
 namespace brave_federated {
