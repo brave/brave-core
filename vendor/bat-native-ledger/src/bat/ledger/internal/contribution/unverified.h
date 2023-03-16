@@ -47,8 +47,7 @@ class Unverified {
 
   void ProcessNext();
 
-  void OnContributeUnverifiedBalance(mojom::Result result,
-                                     mojom::BalancePtr properties);
+  void OnContributeUnverifiedBalance(FetchBalanceResult result);
 
   void OnContributeUnverifiedPublishers(
       double balance,

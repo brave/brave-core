@@ -196,15 +196,14 @@ void Contribution::StartAutoContribute(const mojom::Result result,
 }
 
 void Contribution::OnBalance(mojom::ContributionQueuePtr queue,
-                             const mojom::Result result,
-                             mojom::BalancePtr info) {
-  if (result != mojom::Result::LEDGER_OK) {
+                             FetchBalanceResult result) {
+  if (!result.has_value()) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
     return;
   }
 
-  Process(std::move(queue), std::move(info));
+  Process(std::move(queue), std::move(result.value()));
 }
 
 void Contribution::Start(mojom::ContributionQueuePtr info) {

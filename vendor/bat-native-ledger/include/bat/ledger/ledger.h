@@ -39,20 +39,22 @@ using CreateRewardsWalletCallback =
 
 using OnRefreshPublisherCallback = std::function<void(mojom::PublisherStatus)>;
 
-using FetchBalanceCallback =
-    base::OnceCallback<void(mojom::Result, mojom::BalancePtr)>;
+using ConnectExternalWalletResult =
+    base::expected<void, mojom::ConnectExternalWalletError>;
+
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
+
+using FetchBalanceResult =
+    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
+
+using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
 
 using GetExternalWalletResult =
     base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
 
 using GetExternalWalletCallback =
     base::OnceCallback<void(GetExternalWalletResult)>;
-
-using ConnectExternalWalletResult =
-    base::expected<void, mojom::ConnectExternalWalletError>;
-
-using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
 
 using FetchPromotionCallback =
     base::OnceCallback<void(mojom::Result, std::vector<mojom::PromotionPtr>)>;

@@ -9,7 +9,9 @@ declare namespace RewardsInternals {
   }
 
   export interface State {
-    balance: Balance
+    balance: import(
+      'gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js'
+    ).Balance
     info: {
       isKeyInfoSeedValid: boolean
       walletPaymentId: string
@@ -43,11 +45,6 @@ declare namespace RewardsInternals {
     publisherKey: string
     totalAmount: number
     contributedAmount: number
-  }
-
-  export interface Balance {
-    total: number
-    wallets: Record<string, number>
   }
 
   export interface Promotion {

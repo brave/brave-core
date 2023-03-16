@@ -701,7 +701,8 @@ class Generator(generator.Generator):
             "class_prefix": ObjCPrefixFromModule(self.module),
             "structs": all_structs,
             "unions": all_unions,
-            "constants": self.module.constants
+            "constants": self.module.constants,
+            "generate_namespace": self.generateNamespace
         }
 
     @UseJinja("module.h.tmpl")

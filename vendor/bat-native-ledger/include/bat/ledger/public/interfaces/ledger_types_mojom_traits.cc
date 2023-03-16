@@ -12,6 +12,126 @@
 namespace mojo {
 
 // static
+ledger::mojom::ConnectExternalWalletValuePtr
+UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
+            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
+    value(const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
+              result) {
+  DCHECK(result.has_value());
+  return ledger::mojom::ConnectExternalWalletValue::New();
+}
+
+// static
+ledger::mojom::ConnectExternalWalletError
+UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
+            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
+    error(const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
+              result) {
+  DCHECK(!result.has_value());
+  return result.error();
+}
+
+// static
+ledger::mojom::ConnectExternalWalletResultDataView::Tag
+UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
+            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
+    GetTag(
+        const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
+            result) {
+  return result.has_value()
+             ? ledger::mojom::ConnectExternalWalletResultDataView::Tag::kValue
+             : ledger::mojom::ConnectExternalWalletResultDataView::Tag::kError;
+}
+
+// static
+bool UnionTraits<
+    ledger::mojom::ConnectExternalWalletResultDataView,
+    base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
+    Read(ledger::mojom::ConnectExternalWalletResultDataView data,
+         base::expected<void, ledger::mojom::ConnectExternalWalletError>* out) {
+  switch (data.tag()) {
+    case ledger::mojom::ConnectExternalWalletResultDataView::Tag::kValue:
+      *out = {};
+      return true;
+    case ledger::mojom::ConnectExternalWalletResultDataView::Tag::kError:
+      ledger::mojom::ConnectExternalWalletError error;
+      if (data.ReadError(&error)) {
+        *out = base::unexpected(error);
+        return true;
+      }
+
+      break;
+  }
+
+  return false;
+}
+
+// static
+ledger::mojom::FetchBalanceValuePtr
+UnionTraits<ledger::mojom::FetchBalanceResultDataView,
+            base::expected<ledger::mojom::BalancePtr,
+                           ledger::mojom::FetchBalanceError>>::
+    value(const base::expected<ledger::mojom::BalancePtr,
+                               ledger::mojom::FetchBalanceError>& result) {
+  DCHECK(result.has_value());
+  return ledger::mojom::FetchBalanceValue::New(result.value()->Clone());
+}
+
+// static
+ledger::mojom::FetchBalanceError
+UnionTraits<ledger::mojom::FetchBalanceResultDataView,
+            base::expected<ledger::mojom::BalancePtr,
+                           ledger::mojom::FetchBalanceError>>::
+    error(const base::expected<ledger::mojom::BalancePtr,
+                               ledger::mojom::FetchBalanceError>& result) {
+  DCHECK(!result.has_value());
+  return result.error();
+}
+
+// static
+ledger::mojom::FetchBalanceResultDataView::Tag
+UnionTraits<ledger::mojom::FetchBalanceResultDataView,
+            base::expected<ledger::mojom::BalancePtr,
+                           ledger::mojom::FetchBalanceError>>::
+    GetTag(const base::expected<ledger::mojom::BalancePtr,
+                                ledger::mojom::FetchBalanceError>& result) {
+  return result.has_value()
+             ? ledger::mojom::FetchBalanceResultDataView::Tag::kValue
+             : ledger::mojom::FetchBalanceResultDataView::Tag::kError;
+}
+
+// static
+bool UnionTraits<ledger::mojom::FetchBalanceResultDataView,
+                 base::expected<ledger::mojom::BalancePtr,
+                                ledger::mojom::FetchBalanceError>>::
+    Read(ledger::mojom::FetchBalanceResultDataView data,
+         base::expected<ledger::mojom::BalancePtr,
+                        ledger::mojom::FetchBalanceError>* out) {
+  switch (data.tag()) {
+    case ledger::mojom::FetchBalanceResultDataView::Tag::kValue: {
+      ledger::mojom::FetchBalanceValuePtr value;
+      if (data.ReadValue(&value)) {
+        *out = std::move(value->balance);
+        return true;
+      }
+
+      break;
+    }
+    case ledger::mojom::FetchBalanceResultDataView::Tag::kError: {
+      ledger::mojom::FetchBalanceError error;
+      if (data.ReadError(&error)) {
+        *out = base::unexpected(error);
+        return true;
+      }
+
+      break;
+    }
+  }
+
+  return false;
+}
+
+// static
 ledger::mojom::GetExternalWalletValuePtr
 UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
             base::expected<ledger::mojom::ExternalWalletPtr,
@@ -72,61 +192,6 @@ bool UnionTraits<ledger::mojom::GetExternalWalletResultDataView,
 
       break;
     }
-  }
-
-  return false;
-}
-
-// static
-ledger::mojom::ConnectExternalWalletValuePtr
-UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
-            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    value(const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
-              result) {
-  DCHECK(result.has_value());
-  return ledger::mojom::ConnectExternalWalletValue::New();
-}
-
-// static
-ledger::mojom::ConnectExternalWalletError
-UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
-            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    error(const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
-              result) {
-  DCHECK(!result.has_value());
-  return result.error();
-}
-
-// static
-ledger::mojom::ConnectExternalWalletResultDataView::Tag
-UnionTraits<ledger::mojom::ConnectExternalWalletResultDataView,
-            base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    GetTag(
-        const base::expected<void, ledger::mojom::ConnectExternalWalletError>&
-            result) {
-  return result.has_value()
-             ? ledger::mojom::ConnectExternalWalletResultDataView::Tag::kValue
-             : ledger::mojom::ConnectExternalWalletResultDataView::Tag::kError;
-}
-
-// static
-bool UnionTraits<
-    ledger::mojom::ConnectExternalWalletResultDataView,
-    base::expected<void, ledger::mojom::ConnectExternalWalletError>>::
-    Read(ledger::mojom::ConnectExternalWalletResultDataView data,
-         base::expected<void, ledger::mojom::ConnectExternalWalletError>* out) {
-  switch (data.tag()) {
-    case ledger::mojom::ConnectExternalWalletResultDataView::Tag::kValue:
-      *out = {};
-      return true;
-    case ledger::mojom::ConnectExternalWalletResultDataView::Tag::kError:
-      ledger::mojom::ConnectExternalWalletError error;
-      if (data.ReadError(&error)) {
-        *out = base::unexpected(error);
-        return true;
-      }
-
-      break;
   }
 
   return false;

@@ -58,6 +58,9 @@
 #include "content/public/browser/url_data_source.h"
 #endif
 
+using brave_rewards::ConnectExternalWalletResult;
+using brave_rewards::FetchBalanceResult;
+using brave_rewards::GetExternalWalletResult;
 using content::WebUIMessageHandler;
 
 namespace {
@@ -157,14 +160,13 @@ class RewardsDOMHandler
   void RemovePendingContribution(const base::Value::List& args);
   void RemoveAllPendingContributions(const base::Value::List& args);
   void FetchBalance(const base::Value::List& args);
-  void OnFetchBalance(const ledger::mojom::Result result,
-                      ledger::mojom::BalancePtr balance);
+  void OnFetchBalance(FetchBalanceResult result);
 
   void GetExternalWallet(const base::Value::List& args);
-  void OnGetExternalWallet(brave_rewards::GetExternalWalletResult);
+  void OnGetExternalWallet(GetExternalWalletResult result);
 
   void ConnectExternalWallet(const base::Value::List& args);
-  void OnConnectExternalWallet(brave_rewards::ConnectExternalWalletResult);
+  void OnConnectExternalWallet(ConnectExternalWalletResult result);
 
   void GetBalanceReport(const base::Value::List& args);
 
@@ -193,7 +195,7 @@ class RewardsDOMHandler
   void GetExternalWalletProviders(const base::Value::List& args);
   void SetExternalWalletType(const base::Value::List& args);
 
-  void OnExternalWalletTypeUpdated(brave_rewards::GetExternalWalletResult);
+  void OnExternalWalletTypeUpdated(GetExternalWalletResult result);
   void GetIsUnsupportedRegion(const base::Value::List& args);
 
   void GetPluralString(const base::Value::List& args);
@@ -745,7 +747,7 @@ void RewardsDOMHandler::SetExternalWalletType(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnExternalWalletTypeUpdated(
-    brave_rewards::GetExternalWalletResult result) {
+    GetExternalWalletResult result) {
   if (IsJavascriptAllowed()) {
     auto wallet = std::move(result).value_or(nullptr);
     CallJavascriptFunction("brave_rewards.externalWalletLogin",
@@ -1676,33 +1678,27 @@ void RewardsDOMHandler::OnPendingContributionRemoved(
   }
 }
 
-void RewardsDOMHandler::OnFetchBalance(const ledger::mojom::Result result,
-                                       ledger::mojom::BalancePtr balance) {
+void RewardsDOMHandler::OnFetchBalance(FetchBalanceResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
 
-  base::Value::Dict balance_value;
+  base::Value::Dict data;
+  if (result.has_value()) {
+    const auto balance = std::move(result.value());
 
-  if (balance) {
-    balance_value.Set("total", balance->total);
-
-    if (result == ledger::mojom::Result::LEDGER_OK) {
-      base::Value::Dict wallets;
-      for (auto const& wallet : balance->wallets) {
-        wallets.Set(wallet.first, wallet.second);
-      }
-      balance_value.Set("wallets", std::move(wallets));
-    }
+    base::Value::Dict value_balance;
+    value_balance.Set("total", balance->total);
+    value_balance.Set(
+        "wallets",
+        base::Value::Dict(std::move_iterator(balance->wallets.begin()),
+                          std::move_iterator(balance->wallets.end())));
+    data.SetByDottedPath("value.balance", std::move(value_balance));
   } else {
-    balance_value.Set("total", 0.0);
-    balance_value.Set("wallets", base::Value::Dict());
+    data.Set("error", static_cast<int>(result.error()));
   }
 
-  base::Value::Dict data;
-  data.Set("status", static_cast<int>(result));
-  data.Set("balance", std::move(balance_value));
-  CallJavascriptFunction("brave_rewards.balance", data);
+  CallJavascriptFunction("brave_rewards.balance", std::move(data));
 }
 
 void RewardsDOMHandler::FetchBalance(const base::Value::List& args) {
@@ -1723,8 +1719,7 @@ void RewardsDOMHandler::GetExternalWallet(const base::Value::List& args) {
       &RewardsDOMHandler::OnGetExternalWallet, weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetExternalWallet(
-    brave_rewards::GetExternalWalletResult result) {
+void RewardsDOMHandler::OnGetExternalWallet(GetExternalWalletResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -1767,7 +1762,7 @@ void RewardsDOMHandler::ConnectExternalWallet(const base::Value::List& args) {
 }
 
 void RewardsDOMHandler::OnConnectExternalWallet(
-    brave_rewards::ConnectExternalWalletResult result) {
+    ConnectExternalWalletResult result) {
   if (!IsJavascriptAllowed()) {
     return;
   }

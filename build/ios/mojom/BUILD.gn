@@ -1,0 +1,33 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+action("precompile_templates") {
+  script = "precompile_templates.py"
+  args = [
+    "--output-dir",
+    rebase_path(target_gen_dir, root_build_dir),
+  ]
+  sources = [
+    "//brave/build/ios/mojom/objc_templates/enum.tmpl",
+    "//brave/build/ios/mojom/objc_templates/interface_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/interface_macros.tmpl",
+    "//brave/build/ios/mojom/objc_templates/module+private.h.tmpl",
+    "//brave/build/ios/mojom/objc_templates/module.h.tmpl",
+    "//brave/build/ios/mojom/objc_templates/module.mm.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_interface_bridge_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_interface_bridge_implementation.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_interface_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_interface_implementation.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_struct_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_struct_implementation.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_union_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/private_union_implementation.tmpl",
+    "//brave/build/ios/mojom/objc_templates/struct_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/test_interface_declaration.tmpl",
+    "//brave/build/ios/mojom/objc_templates/test_interface_implementation.tmpl",
+    "//brave/build/ios/mojom/objc_templates/union_declaration.tmpl",
+  ]
+  outputs = [ "$target_gen_dir/objc_templates.zip" ]
+}

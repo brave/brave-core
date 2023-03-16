@@ -145,9 +145,9 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   double FetchBalance() {
     double total = -1.0;
     base::RunLoop run_loop;
-    rewards_service_->FetchBalance(base::BindLambdaForTesting(
-        [&](ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
-          total = balance ? balance->total : -1.0;
+    rewards_service_->FetchBalance(
+        base::BindLambdaForTesting([&](ledger::FetchBalanceResult result) {
+          total = result.has_value() ? result.value()->total : -1.0;
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -285,23 +285,6 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id='reset-text']",
       "By resetting, your current Brave Rewards profile will be deleted");
-}
-
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
-  context_helper_->LoadRewardsPage();
-  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
-
-  rewards_browsertest_util::WaitForElementThenClick(
-      contents(), "[data-test-id=manage-wallet-button]");
-
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#modal");
-
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id='funds-warning-text']",
-      "Note: You currently have 30 BAT estimated earnings this month");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, EnableRewardsWithBalance) {

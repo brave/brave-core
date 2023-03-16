@@ -25,7 +25,6 @@ export interface Props {
   testId?: string
   funds?: string
   onReset: () => void
-  internalFunds: number
 }
 
 interface State {
@@ -106,18 +105,6 @@ export default class ModalReset extends React.PureComponent<Props, State> {
       })
     }
 
-    const getFundsWarningText = () => {
-      return formatMessage(getLocale('rewardsResetTextFunds'), {
-        placeholders: {
-          $1: (
-            <b key='amount'>
-              {this.props.internalFunds.toString()} BAT
-            </b>
-          )
-        }
-      })
-    }
-
     return (
       <>
         <StyledTextWrapper>
@@ -125,14 +112,6 @@ export default class ModalReset extends React.PureComponent<Props, State> {
             {getResetText()}
           </StyledText>
         </StyledTextWrapper>
-        {
-          this.props.internalFunds > 0 &&
-          <StyledTextWrapper>
-            <StyledText data-test-id={'funds-warning-text'}>
-              {getFundsWarningText()}
-            </StyledText>
-          </StyledTextWrapper>
-        }
         <Checkbox
           value={{ resetConsent: this.state.resetConsent }}
           onChange={onResetConsentChange}

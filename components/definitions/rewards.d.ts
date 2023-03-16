@@ -34,7 +34,9 @@ declare namespace Rewards {
     adsData: AdsData
     adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
-    balance: Balance
+    balance: import(
+      '../brave_rewards/resources/shared/lib/optional'
+    ).Optional<number>
     balanceReport?: BalanceReport
     contributionMinTime: number
     contributionMinVisits: number
@@ -267,11 +269,6 @@ declare namespace Rewards {
     type: RewardsType
     viewingId: string
     expirationDate: string
-  }
-
-  export interface Balance {
-    total: number
-    wallets: Record<string, number>
   }
 
   type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
