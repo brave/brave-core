@@ -118,7 +118,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         public ArrayList<String> mBlockerNames;
     }
 
-    private final Context mContext;
+    private Context mContext;
     private PopupWindow mPopupWindow;
     private AnimatorSet mMenuItemEnterAnimator;
     private BraveShieldsMenuObserver mMenuObserver;
@@ -282,8 +282,22 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mMenuObserver = menuObserver;
     }
 
+    private void ensureInitializedForCustomTabs() {
+        if (mHardwareButtonMenuAnchor == null && mContext == null) {
+            mContext = BraveActivity.getCustomTabActivity();
+            mHardwareButtonMenuAnchor = ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+        }
+    }
+
     public void show(View anchorView, Tab tab) {
-        if (mHardwareButtonMenuAnchor == null) return;
+        // Current class can  be initialized by WarmupManager.inflateViewHierarchy
+        // prior to creation of proper activity. In such case activity is available later.
+        // Try to find it, and give up if somehow we won't be able.
+        ensureInitializedForCustomTabs();
+
+        if (mHardwareButtonMenuAnchor == null || mContext == null) {
+            return;
+        }
 
         mHost = tab.getUrl().getSpec();
         mTitle = tab.getUrl().getHost();
@@ -297,8 +311,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         updateValues(mTabId);
     }
 
-    public PopupWindow showPopupMenu(View anchorView) {
-        if (mContext == null) return null;
+    private PopupWindow showPopupMenu(View anchorView) {
+        assert (mContext != null);
+        assert (mHardwareButtonMenuAnchor != null);
 
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
