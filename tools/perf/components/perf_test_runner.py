@@ -192,6 +192,7 @@ class RunableConfiguration:
 
       args.append(f'--benchmarks={benchmark_name}')
       assert out_dir
+      shutil.rmtree(os.path.join(out_dir, benchmark_name), ignore_errors=True)
       args.append('--isolated-script-test-output=' +
                   os.path.join(out_dir, benchmark_name, 'output.json'))
 
@@ -254,8 +255,6 @@ class RunableConfiguration:
       test_success = False
       while not test_success and attempt <= benchmark.max_retries:
         attempt += 1
-        if not self.common_options.local_run:
-          shutil.rmtree(test_out_dir, ignore_errors=True)
         logging.info('Running test %s [attempt %d]', benchmark.name, attempt)
 
         test_success = self.RunSingleTest(self.config, benchmark, test_out_dir,
