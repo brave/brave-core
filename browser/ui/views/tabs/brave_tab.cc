@@ -22,6 +22,7 @@
 #include "ui/compositor/paint_recorder.h"
 #include "ui/gfx/favicon_size.h"
 #include "ui/gfx/skia_paint_util.h"
+#include "ui/views/controls/label.h"
 
 namespace {
 
@@ -73,7 +74,13 @@ class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
 
 }  // namespace
 
-BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {}
+BraveTab::BraveTab(TabSlotController* controller)
+    : Tab(controller),
+      normal_font_(views::Label::GetDefaultFontList()),
+      active_tab_font_(
+          normal_font_.DeriveWithWeight(gfx::Font::Weight::MEDIUM)) {
+  title_->SetFontList(IsActive() ? active_tab_font_ : normal_font_);
+}
 
 BraveTab::~BraveTab() = default;
 
@@ -104,6 +111,9 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
 void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
+
+  title_->SetFontList(IsActive() ? active_tab_font_ : normal_font_);
+
   // This should be called whenever acitve state changes
   // see comment on UpdateEnabledForMuteToggle();
   // https://github.com/brave/brave-browser/issues/23476/
