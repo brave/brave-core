@@ -328,20 +328,35 @@ extension Tab: BraveWalletProviderDelegate {
     }
   }
   
-  func showAccountCreation(_ type: BraveWallet.CoinType) {
-    let origin = getOrigin()
-    let accountCreationRequestManager = WalletProviderAccountCreationRequestManager.shared
-    
-    // check if same account creation request exists
-    guard !accountCreationRequestManager.hasPendingRequest(for: origin, coinType: type)
-    else { return }
-    
-    // store the account creation request
-    accountCreationRequestManager.beginRequest(for: origin, coinType: type) { [weak self] in
-      self?.tabDelegate?.updateURLBarWalletButton()
+  func showAccountCreation(_ coin: BraveWallet.CoinType) {
+    let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+    guard let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode) else {
+      return
     }
-    // show wallet notification
-    self.tabDelegate?.showWalletNotification(self, origin: origin)
+    Task { @MainActor in
+      let origin = getOrigin()
+      
+      // check if we receive account creation request without a wallet setup
+      let keyring = await keyringService.keyringInfo(BraveWallet.DefaultKeyringId)
+      if !keyring.isKeyringCreated {
+        // Wallet is not setup. User must onboard / setup wallet first.
+        self.tabDelegate?.showWalletNotification(self, origin: origin)
+        return
+      }
+      
+      let accountCreationRequestManager = WalletProviderAccountCreationRequestManager.shared
+      
+      // check if same account creation request exists
+      guard !accountCreationRequestManager.hasPendingRequest(for: origin, coinType: coin)
+      else { return }
+      
+      // store the account creation request
+      accountCreationRequestManager.beginRequest(for: origin, coinType: coin) { [weak self] in
+        self?.tabDelegate?.updateURLBarWalletButton()
+      }
+      // show wallet notification
+      self.tabDelegate?.showWalletNotification(self, origin: origin)
+    }
   }
   
   func isSolanaAccountConnected(_ account: String) -> Bool {
