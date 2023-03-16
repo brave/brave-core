@@ -514,6 +514,11 @@
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/Default
 -ProfileTypeChoiceUIPixelTest.InvokeUi_default/TS
 
+# These tests fail because we disable HttpsFirstModeV2 feature. They should be
+# re-evaluated once https://github.com/brave/brave-browser/issues/28935 has
+# been addressed.
+-HttpsUpgradesBrowserTest.*
+
 # Flaky upstream.
 -ExtensionWindowCreateTest.AcceptState
 -FirstRunFlowControllerDiceBrowserTest.ButtonsAreDisabledOnClickAndEnabledOnNavigateBack
