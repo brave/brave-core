@@ -19,6 +19,10 @@ component("browser") {
     "//skia",
   ]
 
+  if (is_win) {
+    sources += [ "text_recognition_win.cc" ]
+  }
+
   if (is_mac) {
     sources += [ "text_recognition.mm" ]
 
