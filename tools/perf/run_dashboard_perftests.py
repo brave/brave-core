@@ -39,6 +39,7 @@ def main():
   parser.add_argument('--report-only', action='store_true')
   parser.add_argument('--report-on-failure', action='store_true')
   parser.add_argument('--local-run', action='store_true')
+  parser.add_argument('--compare', action='store_true')
 
   args = parser.parse_args()
 
@@ -58,14 +59,19 @@ def main():
   common_options.report_on_failure = args.report_on_failure
   common_options.local_run = args.local_run
 
-  if len(config.runners) != 1:
-    raise RuntimeError('Only one configuration should be specified.')
+  if args.compare:
+    if len(config.runners) != 1:
+      raise RuntimeError('Only one configuration should be specified.')
 
-  configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
-      targets, config.runners[0])
+    configurations = perf_test_runner.SpawnConfigurationsFromTargetList(
+        targets, config.runners[0])
 
-  return 0 if perf_test_runner.RunConfigurations(
-      configurations, config.benchmarks, common_options) else 1
+    return 0 if perf_test_runner.RunConfigurations(
+        configurations, config.benchmarks, common_options) else 1
+  else:
+    common_options.local_run = True
+    return 0 if perf_test_runner.RunConfigurations(
+        config.runners, config.benchmarks, common_options) else 1
 
 
 if __name__ == '__main__':

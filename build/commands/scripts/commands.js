@@ -319,6 +319,7 @@ program
 
   program
   .command('run_perf_tests <perf_config> <targets>')
+  .option('--compare', 'use compare mode')
   .allowUnknownOption(true)
   .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 
