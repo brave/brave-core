@@ -1,8 +1,8 @@
 diff --git a/tools/typescript/ts_library.gni b/tools/typescript/ts_library.gni
-index 5e95a61c238868b636a0d11b967faca52b14c291..d5ab7e8b76a2b3f629868d7c11e95c215e577bdf 100644
+index 7a9eab7077111538fa36f7ef67d5b8eb474f37bc..bbeeafb0591eee8a6ac8f70be6ae5da8ac8abe1b 100644
 --- a/tools/typescript/ts_library.gni
 +++ b/tools/typescript/ts_library.gni
-@@ -146,6 +146,10 @@ template("ts_library") {
+@@ -142,6 +142,10 @@ template("ts_library") {
      }
  
      path_mappings = [
