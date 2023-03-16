@@ -1482,6 +1482,15 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_SHOW_EXTENSIONS" desc="The show extensions menu in the app menu">
           &amp;Extensions
         </message>
+        <message name="IDS_EXTENSIONS_SUBMENU" desc="The extensions menu in the app menu (title case).">
+          &amp;Extensions
+        </message>
+        <message name="IDS_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS_ITEM" desc="The text for the link in the extensions menu, in the app menu, to visit chrome://extensions to view all extensions installed (title case).">
+          Manage Extensions
+        </message>
+        <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions (title case).">
+          Visit Web Store
+        </message>
         <message name="IDS_SHOW_PERFORMANCE" desc="The text label of the Performance menu item">
           Performance
         </message>
@@ -1522,6 +1531,15 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_SHOW_EXTENSIONS" desc="In Title Case: The show extensions menu in the app menu">
           &amp;Extensions
+        </message>
+        <message name="IDS_EXTENSIONS_SUBMENU" desc="In Title Case: The extensions menu in the app menu.">
+          &amp;Extensions
+        </message>
+        <message name="IDS_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS_ITEM" desc="In Title Case: The text for the link in the extensions menu, in the app menu, to visit chrome://extensions to view all extensions installed.">
+          Manage Extensions
+        </message>
+        <message name="IDS_EXTENSIONS_SUBMENU_CHROME_WEBSTORE_ITEM" desc="In Title Case: The text for the link in the extensions menu, in the app menu, to visit the Web Store to get more extensions.">
+          Visit Web Store
         </message>
         <message name="IDS_SHOW_PERFORMANCE" desc="In Title Case: The text label of the Performance menu item">
           Performance
@@ -5648,8 +5666,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Uninstall
       </message>
 
+      <message name="IDS_APP_HOME_REMOVE_APP" desc="Menu entry label for removing an app from context menu on App Home that isn't locally installed">
+        Remove from Brave
+      </message>
+
       <message name="IDS_APP_HOME_APP_SETTINGS" desc="Menu entry label for navigation to App Settings page for an app from context menu on App Home">
         App settings
+      </message>
+
+      <message name="IDS_ACCNAME_APP_HOME_NOT_INSTALLED" desc="Accessability label that goes after an apps title that is not locally installed">
+        not locally installed
       </message>
       <!-- End App Home WebUI strings. -->
 
@@ -6973,6 +6999,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_SHOW_ALL" desc="A label for the show all button in NTP Quests Module.">
         Show all
       </message>
+      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_INFO" desc="Text shown in the body of the info dialog of the history clusters module.">
+        You’re seeing pages you've visited and suggested searches to help you easily get back to your most recent activity in Brave Journeys.
+        <ph name="BREAK">&lt;br&gt;</ph>
+        <ph name="BREAK">&lt;br&gt;</ph>
+        You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
+      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_SENTENCE2" desc="Variant of the name of the History Clusters module in sentence case shown in various UIs.">
+        Journeys
+      </message>
+      <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_DISABLE_TEXT" desc="A label to append to the disable text in the dropdown.">
+        Journeys card
+      </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -7287,6 +7325,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_READING_MODE_BLUE_COLOR_LABEL" desc="Combobox option for setting the color theme for the reading mode feature.">
         Blue
+      </message>
+      <message name="IDS_READ_ANYTHING_LOADING" desc="Message to show while Read Anything is figuring out what text to display.">
+        Getting ready
       </message>
 
       <!-- User note strings -->
@@ -7987,35 +8028,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TAILORED_SECURITY_DISPLAY_SOURCE" desc="The name of the source showing the notification">
         Safe Browsing
       </message>
-      <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_TITLE" desc="The title of the notification asking if the user wants to enable Enhanced Safe Browsing">
-        Turn on enhanced security?
-      </message>
-      <if expr="use_titlecase">
-        <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_ACCEPT" desc="The text on the 'accept' button asking if the user wants to enable Enhanced Safe Browsing">
-          Turn On
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_TAILORED_SECURITY_CONSENTED_ENABLE_NOTIFICATION_ACCEPT" desc="The text on the 'accept' button asking if the user wants to enable Enhanced Safe Browsing">
-          Turn on
-        </message>
-      </if>
-      <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_TITLE" desc="The title of the notification telling the user that Enhanced Safe Browsing was disabled">
-        Turn off enhanced security?
-      </message>
-      <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_DESCRIPTION" desc="The text of the notification telling the user that Enhanced Safe Browsing was disabled">
-        You turned off Enhanced Safe Browsing in your account.
-      </message>
-      <if expr="use_titlecase">
-        <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_TURN_OFF" desc="The text on the 'turn off' button asking if the user wants to enable Enhanced Safe Browsing">
-          Turn Off
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_TAILORED_SECURITY_CONSENTED_DISABLE_NOTIFICATION_TURN_OFF" desc="The text on the 'turn off' button asking if the user wants to enable Enhanced Safe Browsing">
-          Turn off
-        </message>
-      </if>
 
       <!-- Password Manager -->
       <if expr="use_titlecase">
@@ -11660,6 +11672,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MANAGE_PASSWORDS_HIDE_PASSWORD" desc="The tooltip of a button that is used in the manage pending password bubble for hiding the password.">
         Hide password
       </message>
+      <message name="IDS_MANAGE_PASSWORDS_EMPTY_NOTE" desc="The text displayed in the note label when the note is empty in the credential details view of the password management bubble.">
+        No note added
+      </message>
+      <message name="IDS_MANAGE_PASSWORDS_EDIT_USERNAME_TOOLTIP" desc="The tooltip of a button that is used in the credential details view of the password management bubble for editing the username.">
+        Edit username
+      </message>
+      <message name="IDS_MANAGE_PASSWORDS_EDIT_NOTE_TOOLTIP" desc="The tooltip of a button that is used in the credential details view of the password management bubble for editing the note attached to the password.">
+        Edit note
+      </message>
+      <message name="IDS_MANAGE_PASSWORDS_UPDATE" desc="The text of the button to update the credential details in the password management bubble.">
+        Update
+      </message>
 
       <message name="IDS_MANAGE_PASSWORDS_AUTO_SIGNIN_TITLE_MD" desc="The title of the auto-signin toast in Material Design mode.">
         Signing in as
@@ -12975,6 +12999,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
         {COUNT, plural,
           =1 {Your Private window won't reopen.}
           other {Your # Private windows won't reopen.}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_CLOSE_COUNTDOWN" desc="In the Idle Timeout dialog, a countdown that ticks every second. When it reaches zero, Brave closes all browsers.">
+        {0, plural,
+          =0 {Closing now.}
+          =1 {Closing in: 1 second}
+          other {Closing in: # seconds}}
+      </message>
+      <message name="IDS_IDLE_TIMEOUT_CLEAR_COUNTDOWN" desc="In the Idle Timeout dialog, a countdown that ticks every second. When it reaches zero, Brave clears browsing data.">
+        {0, plural,
+          =0 {Deleting now.}
+          =1 {Deleting in: 1 second}
+          other {Deleting in: # seconds}}
       </message>
     </if>
 
