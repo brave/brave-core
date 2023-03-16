@@ -4,9 +4,9 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.7.5"
+version = "0.7.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cd1931ebfdd243e303e815119c115c275198a98bab68c86dd157ee7c0c464a06"
+checksum = "9969c31ec1bea023bc9f6095ff7fc61b81c2771ed9045b5e5fde18b696757b47"
 dependencies = [
  "base64 0.13.0",
  "bitflags",
@@ -15,6 +15,7 @@ dependencies = [
  "idna 0.2.3",
  "itertools",
  "lifeguard",
+ "memchr",
  "once_cell",
  "percent-encoding",
  "regex",
@@ -24,7 +25,7 @@ dependencies = [
  "selectors 0.23.0",
  "serde",
  "serde_json",
- "twoway",
+ "thiserror",
  "url",
 ]
 
@@ -2652,26 +2653,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "twoway"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c57ffb460d7c24cd6eda43694110189030a3d1dfe418416d9468fd1c1d290b47"
-dependencies = [
- "memchr",
- "unchecked-index",
-]
-
-[[package]]
 name = "typenum"
 version = "1.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dcf81ac59edc17cc8697ff311e8f5ef2d99fcbd9817b34cec66f90b6c3dfd987"
-
-[[package]]
-name = "unchecked-index"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eeba86d422ce181a719445e51872fa30f1f7413b62becb52e95ec91aa262d85c"
 
 [[package]]
 name = "unicode-bidi"
