@@ -109,6 +109,9 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   results.push_back(result);
   PostTaskResults(results);
   delete task_runner;
+  delete model;
+  delete local_training_data;
+  delete local_test_data;
 }
 
 void LearningService::PostTaskResults(TaskResultList results) {
