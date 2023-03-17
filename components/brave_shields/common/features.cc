@@ -77,7 +77,7 @@ BASE_FEATURE(kBraveReduceLanguage,
 // to localhost.
 BASE_FEATURE(kBraveLocalhostAccessPermission,
              "BraveLocalhostAccessPermission",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+             base::FEATURE_DISABLED_BY_DEFAULT);
 // When enabled, Brave will always report Light in Fingerprinting: Strict mode
 BASE_FEATURE(kBraveDarkModeBlock,
              "BraveDarkModeBlock",

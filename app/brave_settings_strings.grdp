@@ -593,7 +593,7 @@
   </message>
 
   <!-- Localhost access setting -->
-  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS" desc="Label for G sign-in site settings.">
+  <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS" desc="Label for localhost site settings.">
     Localhost Access
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_LOCALHOST_ACCESS_ASK" desc="Label for localhost access site settings.">

@@ -26,7 +26,6 @@ namespace brave {
 
 void OnPermissionRequestStatus(
     content::WebContents* contents,
-    const GURL& request_initiator_url,
     const std::vector<blink::mojom::PermissionStatus>& permission_statuses) {
   DCHECK_EQ(1u, permission_statuses.size());
   if (contents &&
@@ -37,6 +36,7 @@ void OnPermissionRequestStatus(
 
 bool IsLocalhostRequest(const GURL& request_url,
                         const GURL& request_initiator_url) {
+
   return request_initiator_url.is_valid() && request_url.is_valid() &&
          net::IsLocalhost(request_url) &&
          !net::IsLocalhost(request_initiator_url);
@@ -51,6 +51,18 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
     return net::OK;
   }
 
+  if (ctx->blocked_by == kAdBlocked) {
+    // If request is already blocked by adblock, return.
+    return net::OK;
+  }
+
+  // Only throttle subresource requests and WebSockets.
+  // https://github.com/brave/brave-browser/issues/26302
+  if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
+      !ctx->request_url.SchemeIsWSOrWSS()) {
+    return net::OK;
+  }
+
   const auto& request_initiator_url = ctx->initiator_url;
   const auto& request_url = ctx->request_url;
 
@@ -60,10 +72,9 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
 
   content::PermissionControllerDelegate* permission_controller =
       contents->GetBrowserContext()->GetPermissionControllerDelegate();
-  auto current_status =
-      permission_controller->GetPermissionStatusForCurrentDocument(
-          blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
-          contents->GetPrimaryMainFrame());
+  auto current_status = permission_controller->GetPermissionStatusForOrigin(
+      blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
+      /* rfh */ contents->GetPrimaryMainFrame(), request_url);
 
   switch (current_status) {
     case blink::mojom::PermissionStatus::GRANTED: {
@@ -75,11 +86,11 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
     }
 
     case blink::mojom::PermissionStatus::ASK: {
-      permission_controller->RequestPermissionsFromCurrentDocument(
+      permission_controller->RequestPermissionsForOrigin(
           {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
-          contents->GetPrimaryMainFrame(), true,
-          base::BindOnce(&OnPermissionRequestStatus, contents,
-                         request_initiator_url));
+          /* rfh */ contents->GetPrimaryMainFrame(),
+          /* requesting_origin */ request_url, true,
+          base::BindOnce(&OnPermissionRequestStatus, contents));
 
       return net::ERR_ACCESS_DENIED;
     }
