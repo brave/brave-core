@@ -5,10 +5,14 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
+import android.text.TextUtils;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class JavaUtils {
     public static <T> List<T> safeVal(List<T> list) {
@@ -69,5 +73,19 @@ public class JavaUtils {
             if (item == null) return true;
         }
         return false;
+    }
+
+    /**
+     * Returns a combined string with a separator or an empty string. Empty and null values are
+     * ignored e.g. concatStrings(#,a,b,c,"",null) => a#b#c
+     * @param separator to append after each string.
+     * @param items of string values.
+     * @return a combined or empty string.
+     */
+    public static String concatStrings(String separator, String... items) {
+        if (items == null) return "";
+        return Arrays.stream(items)
+                .filter(item -> !TextUtils.isEmpty(item))
+                .collect(Collectors.joining(separator));
     }
 }
