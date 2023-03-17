@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsLauncherImpl;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.modules.ledger_hw.LedgerHwInstallListener;
 import org.chromium.chrome.modules.ledger_hw.LedgerHwModuleProvider;
 import org.chromium.components.browser_ui.settings.SettingsLauncher;
@@ -92,8 +93,10 @@ public class AccountsFragment extends Fragment
         });
         TextView importHwAccountBtn = view.findViewById(R.id.import_hardware_account_btn);
         importHwAccountBtn.setOnClickListener(v -> {
-            mLedgerHwInstallListener = new LedgerHwInstallListener(this);
-            LedgerHwModuleProvider.installModule(mLedgerHwInstallListener);
+            // mLedgerHwInstallListener = new LedgerHwInstallListener(this);
+            // LedgerHwModuleProvider.installModule(mLedgerHwInstallListener);
+            TabUtils.openUrlInNewTab(false, "brave://wallet/ledger");
+            TabUtils.bringChromeTabbedActivityToTheTop(getActivity());
         });
 
         TextView backupBtn = view.findViewById(R.id.accounts_backup);

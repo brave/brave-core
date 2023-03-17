@@ -38,6 +38,7 @@ extern const char kBraveUIWalletPageURL[];
 extern const char kWalletPageHost[];
 #if BUILDFLAG(IS_ANDROID)
 extern const char kWalletSwapPagePath[];
+extern const char kWalletLedgerPagePath[];
 #endif  // BUILDFLAG(IS_ANDROID)
 extern const char kExtensionSettingsURL[];
 extern const char kWalletSettingsURL[];

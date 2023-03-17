@@ -35,6 +35,7 @@ const char kBraveUIWalletPageURL[] = "chrome://wallet/";
 const char kWalletPageHost[] = "wallet";
 #if BUILDFLAG(IS_ANDROID)
 const char kWalletSwapPagePath[] = "wallet/swap";
+const char kWalletLedgerPagePath[] = "wallet/ledger";
 #endif  // BUILDFLAG(IS_ANDROID)
 const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletSettingsURL[] = "brave://settings/wallet";

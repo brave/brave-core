@@ -52,6 +52,7 @@
 #endif
 
 #if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/webui/brave_wallet/android/ledger_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/android/swap_page_ui.h"
 #endif
 
@@ -179,6 +180,14 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
                                                content::kBraveUIScheme,
                                                kWalletSwapPagePath))) {
     return new SwapPageUI(web_ui, url.host());
+  } else if (url.is_valid() &&
+             (url.spec() == base::StringPrintf("%s://%s",
+                                               content::kChromeUIScheme,
+                                               kWalletLedgerPagePath) ||
+              url.spec() == base::StringPrintf("%s://%s",
+                                               content::kBraveUIScheme,
+                                               kWalletLedgerPagePath))) {
+    return new LedgerPageUI(web_ui, url.host());
 #endif
   }
   return nullptr;
@@ -204,7 +213,11 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
        (url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
                                          kWalletSwapPagePath) ||
         url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
-                                         kWalletSwapPagePath))) ||
+                                         kWalletSwapPagePath) ||
+        url.spec() == base::StringPrintf("%s://%s", content::kChromeUIScheme,
+                                         kWalletLedgerPagePath) ||
+        url.spec() == base::StringPrintf("%s://%s", content::kBraveUIScheme,
+                                         kWalletLedgerPagePath))) ||
 #endif  // BUILDFLAG(IS_ANDROID)
       url.host_piece() == kShieldsPanelHost ||
       (url.host_piece() == kCookieListOptInHost &&

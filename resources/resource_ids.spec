@@ -213,5 +213,9 @@
   "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_swap_page/brave_wallet_swap_page.grd": {
     "META": {"sizes": {"includes": [100]}},
     "includes": [60100],
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_wallet_ledger_page/brave_wallet_ledger_page.grd": {
+    "META": {"sizes": {"includes": [100]}},
+    "includes": [60200],
   }
 }

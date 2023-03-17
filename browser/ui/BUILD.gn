@@ -870,6 +870,8 @@ source_set("ui") {
   }
   if (is_android) {
     sources += [
+      "webui/brave_wallet/android/ledger_page_ui.cc",
+      "webui/brave_wallet/android/ledger_page_ui.h",
       "webui/brave_wallet/android/swap_page_ui.cc",
       "webui/brave_wallet/android/swap_page_ui.h",
       "webui/brave_wallet/common_handler/wallet_handler.cc",
@@ -887,6 +889,7 @@ source_set("ui") {
       "//brave/components/brave_wallet/common:common_utils",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wallet_ui:resources",
+      "//brave/components/brave_wallet_ui/page/screens/ledger/android:brave_wallet_ledger_page_generated",
       "//brave/components/brave_wallet_ui/page/screens/swap/android:brave_wallet_swap_page_generated",
     ]
   }

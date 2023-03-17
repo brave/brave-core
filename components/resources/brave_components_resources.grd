@@ -48,6 +48,7 @@
       <!-- WebUI swap page resources for Android -->
       <if expr="is_android">
         <include name="IDR_BRAVE_WALLET_SWAP_PAGE_HTML" file="../brave_wallet_ui/page/screens/swap/android/swap.html" type="BINDATA" />
+        <include name="IDR_BRAVE_WALLET_LEDGER_PAGE_HTML" file="../brave_wallet_ui/page/screens/ledger/android/ledger.html" type="BINDATA" />
       </if>
       <!-- WebUI vpn resources -->
       <if expr="not is_android">

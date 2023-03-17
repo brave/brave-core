@@ -351,6 +351,7 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
+    "@backpacker69/hw-transport-webusb": "^6.11.2",
     "@brave/leo": "github:brave/leo#342a641",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "~0.0.6",
