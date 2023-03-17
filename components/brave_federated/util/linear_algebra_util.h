@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_UTIL_LINEAR_ALGEBRA_UTIL_H_
 
 #include <vector>
+#include <Eigen/Dense>
 
 namespace brave_federated {
 
@@ -31,7 +32,14 @@ class LinearAlgebraUtil {
 
   static Vector MultiplyVectorScalar(Vector v, float a);
 
-  static Matrix TransposeVector(Matrix v);
+  static Matrix TransposeMatrix(Matrix mat);
+
+ private:
+  static Vector MatrixXfToVector(Eigen::MatrixXf v);
+
+  static Matrix MatrixXfToMatrix(Eigen::MatrixXf mat);
+
+  static Eigen::MatrixXf MatrixToMatrixXf(Matrix mat);
 };
 
 }  // namespace brave_federated

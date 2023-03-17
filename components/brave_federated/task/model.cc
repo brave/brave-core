@@ -128,7 +128,7 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     err = LinearAlgebraUtil::SubtractVector(y, pred);
 
     d_w = LinearAlgebraUtil::MultiplyMatrixVector(
-        LinearAlgebraUtil::TransposeVector(x), err);
+        LinearAlgebraUtil::TransposeMatrix(x), err);
     d_w = LinearAlgebraUtil::MultiplyVectorScalar(d_w, (-2.0 / batch_size_));
 
     d_b = (-2.0 / batch_size_) * std::accumulate(err.begin(), err.end(), 0.0);

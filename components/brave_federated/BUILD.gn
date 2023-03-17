@@ -56,6 +56,10 @@ static_library("brave_federated") {
     "//sql",
     "//third_party/grpc:grpc++",
   ]
+
+  configs += [
+    "//third_party/eigen3:eigen_includes",
+  ]
 }
 
 source_set("brave_federated_tests") {
@@ -79,5 +83,9 @@ source_set("brave_federated_tests") {
     "//sql",
     "//sql:test_support",
     "//third_party/re2",
+  ]
+
+  configs += [
+    "//third_party/eigen3:eigen_includes",
   ]
 }
