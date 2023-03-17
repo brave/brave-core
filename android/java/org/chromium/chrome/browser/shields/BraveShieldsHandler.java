@@ -187,7 +187,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     public void loadDisconnectEntityList(Context context) {
         if (context == null) return;
-        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
             try {
                 String jsonString = loadDisconnectEntityJSONFromAsset(context);
                 if (jsonString == null) return;

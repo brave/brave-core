@@ -119,7 +119,6 @@
     *** mFullscreenManager;
     *** mActivityTabProvider;
     *** mAppThemeColorProvider;
-    *** mShareDelegateSupplier;
     *** mScrimCoordinator;
     *** mShowStartSurfaceSupplier;
     *** mMenuButtonCoordinator;

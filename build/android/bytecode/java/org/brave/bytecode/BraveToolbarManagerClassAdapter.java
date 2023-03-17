@@ -35,9 +35,6 @@ public class BraveToolbarManagerClassAdapter extends BraveClassVisitor {
         deleteField(sBraveToolbarManagerClassName, "mAppThemeColorProvider");
         makeProtectedField(sToolbarManagerClassName, "mAppThemeColorProvider");
 
-        deleteField(sBraveToolbarManagerClassName, "mShareDelegateSupplier");
-        makeProtectedField(sToolbarManagerClassName, "mShareDelegateSupplier");
-
         deleteField(sBraveToolbarManagerClassName, "mScrimCoordinator");
         makeProtectedField(sToolbarManagerClassName, "mScrimCoordinator");
 

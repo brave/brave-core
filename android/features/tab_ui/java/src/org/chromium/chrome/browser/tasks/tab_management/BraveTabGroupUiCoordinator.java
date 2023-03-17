@@ -54,14 +54,13 @@ public class BraveTabGroupUiCoordinator extends TabGroupUiCoordinator {
             @NonNull TabContentManager tabContentManager, @NonNull ViewGroup rootView,
             @NonNull Supplier<DynamicResourceLoader> dynamicResourceLoaderSupplier,
             @NonNull TabCreatorManager tabCreatorManager,
-            @NonNull Supplier<ShareDelegate> shareDelegateSupplier,
             @NonNull OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             @NonNull SnackbarManager snackbarManager) {
         super(activity, parentView, incognitoStateProvider, scrimCoordinator,
                 omniboxFocusStateSupplier, bottomSheetController, activityLifecycleDispatcher,
                 isWarmOnResumeSupplier, tabModelSelector, tabContentManager, rootView,
-                dynamicResourceLoaderSupplier, tabCreatorManager, shareDelegateSupplier,
-                layoutStateProviderSupplier, snackbarManager);
+                dynamicResourceLoaderSupplier, tabCreatorManager, layoutStateProviderSupplier,
+                snackbarManager);
 
         mIncognitoStateProvider = incognitoStateProvider;
 

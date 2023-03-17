@@ -287,7 +287,7 @@ public class BraveNewsUtils {
 
     public static void getBraveNewsSettingsData(BraveNewsController braveNewsController,
             BraveNewsPreferencesDataListener braveNewsPreferencesDataListener) {
-        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
             if (braveNewsController != null) {
                 braveNewsController.getLocale((locale) -> {
                     setLocale(locale);
