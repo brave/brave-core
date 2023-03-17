@@ -557,6 +557,10 @@ group("tools") {
   }
 }
 
+group("szilard") {
+  deps = [ "//brave/mojo_examples" ]
+}
+
 if (is_redirect_cc_build) {
   group("redirect_cc") {
     deps = [ "//brave/tools/redirect_cc" ]
