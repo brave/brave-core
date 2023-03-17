@@ -1,18 +1,25 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//testing/test.gni")
 
 static_library("brave_federated") {
   sources = [
+    "adapters/flower_helper.cc",
+    "adapters/flower_helper.h",
     "brave_federated_service.cc",
     "brave_federated_service.h",
+    "communication_adapter.cc",
+    "communication_adapter.h",
     "data_store_service.cc",
     "data_store_service.h",
     "data_stores/async_data_store.cc",
     "data_stores/async_data_store.h",
     "data_stores/data_store.cc",
     "data_stores/data_store.h",
-    "communication_adapter.h",
-    "communication_adapter.cc",
     "eligibility_service.cc",
     "eligibility_service.h",
     "eligibility_service_observer.h",
@@ -25,14 +32,12 @@ static_library("brave_federated") {
     "operational_patterns.h",
     "operational_patterns_util.cc",
     "operational_patterns_util.h",
-    "adapters/flower_helper.cc",
-    "adapters/flower_helper.h",
     "task/federated_task_runner.cc",
     "task/federated_task_runner.h",
-    "task/model_util.cc",
-    "task/model_util.h",
     "task/model.cc",
     "task/model.h",
+    "task/model_util.cc",
+    "task/model_util.h",
     "task/typing.cc",
     "task/typing.h",
     "util/linear_algebra_util.cc",
@@ -51,25 +56,24 @@ static_library("brave_federated") {
     "//components/keyed_service/core",
     "//components/metrics",
     "//components/prefs",
+    "//content/public/browser",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//sql",
     "//third_party/grpc:grpc++",
   ]
 
-  configs += [
-    "//third_party/eigen3:eigen_includes",
-  ]
+  configs += [ "//third_party/eigen3:eigen_includes" ]
 }
 
 source_set("brave_federated_tests") {
   testonly = true
 
   sources = [
+    "adapters/flower_helper_unittest.cc",
     "data_stores/data_store_unittest.cc",
     "features_unittest.cc",
     "operational_patterns_util_unittest.cc",
-    "adapters/flower_helper_unittest.cc",
     "task/model_util_unittest.cc",
     "util/linear_algebra_util_unittest.cc",
   ]
@@ -85,7 +89,5 @@ source_set("brave_federated_tests") {
     "//third_party/re2",
   ]
 
-  configs += [
-    "//third_party/eigen3:eigen_includes",
-  ]
+  configs += [ "//third_party/eigen3:eigen_includes" ]
 }

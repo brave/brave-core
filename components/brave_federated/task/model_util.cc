@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/model_util.h"
 
@@ -9,16 +9,19 @@
 
 namespace brave_federated {
 
-float ComputeNLL(std::vector<float> true_labels, std::vector<float> predictions) {
+// TODO(lminto): What is this function actually computing? Mean cross entropy?
+float ComputeNLL(std::vector<float> true_labels,
+                 std::vector<float> predictions) {
   float error = 0.0;
   size_t batch_size = true_labels.size();
 
+  // TODO(lminto): Should we guard against log(0) here?
   for (size_t i = 0; i < batch_size; i++) {
     error += (true_labels[i] * log(predictions[i]) +
               (1.0 - true_labels[i]) * log(1 - predictions[i]));
   }
 
-  return -error/batch_size;
+  return -error / batch_size;
 }
 
 float SigmoidActivation(float z) {

@@ -7,6 +7,7 @@ include_rules = [
   "+components/keyed_service/core",
   "+components/metrics",
   "+components/prefs",
+  "+content/public/browser",
   "+services/network/public",
   "+sql",
   "+url",

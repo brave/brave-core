@@ -1,11 +1,9 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
-#include <Eigen/Dense>
-#include <vector>
 
 namespace brave_federated {
 
@@ -19,7 +17,8 @@ Vector LinearAlgebraUtil::MatrixXfToVector(Eigen::MatrixXf v) {
 Matrix LinearAlgebraUtil::MatrixXfToMatrix(Eigen::MatrixXf mat) {
   Matrix returned_mat = Matrix(mat.rows(), Vector(mat.cols(), 0.0f));
   for (size_t i = 0; i < returned_mat.size(); ++i) {
-    Eigen::VectorXf::Map(returned_mat.at(i).data(), mat.row(i).cols()) = mat.row(i);
+    Eigen::VectorXf::Map(returned_mat.at(i).data(), mat.row(i).cols()) =
+        mat.row(i);
   }
 
   return returned_mat;
@@ -28,7 +27,8 @@ Matrix LinearAlgebraUtil::MatrixXfToMatrix(Eigen::MatrixXf mat) {
 Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix mat) {
   Eigen::MatrixXf mat_(mat.size(), mat.at(0).size());
   for (size_t i = 0; i < mat.size(); ++i) {
-    mat_.row(i) = Eigen::Map<Eigen::VectorXf>(mat.at(i).data(), mat.at(i).size());
+    mat_.row(i) =
+        Eigen::Map<Eigen::VectorXf>(mat.at(i).data(), mat.at(i).size());
   }
 
   return mat_;
@@ -79,7 +79,7 @@ Vector LinearAlgebraUtil::MultiplyVectorScalar(Vector v, float a) {
   Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
 
   auto array_ = v_.array();
-  array_ += a;
+  array_ *= a;
   v_ = array_.matrix();
   v = MatrixXfToVector(v_);
 
@@ -94,4 +94,5 @@ Matrix LinearAlgebraUtil::TransposeMatrix(Matrix mat) {
 
   return matT;
 }
+
 }  // namespace brave_federated

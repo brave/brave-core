@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/model.h"
 
@@ -100,10 +100,13 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 
   auto data_end_ts = std::chrono::high_resolution_clock::now();
 
-  data_prep_cumulative_duration += std::chrono::duration_cast<std::chrono::duration<double>>(data_end_ts - data_start_ts).count();
+  data_prep_cumulative_duration +=
+      std::chrono::duration_cast<std::chrono::duration<double>>(data_end_ts -
+                                                                data_start_ts)
+          .count();
 
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
-    auto data_start_ts = std::chrono::high_resolution_clock::now();
+    data_start_ts = std::chrono::high_resolution_clock::now();
     std::random_device rd;
     std::mt19937 g(rd());
     std::shuffle(data_indices.begin(), data_indices.end(), g);
@@ -142,8 +145,14 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     }
     auto exec_end_ts = std::chrono::high_resolution_clock::now();
 
-    data_prep_cumulative_duration += std::chrono::duration_cast<std::chrono::duration<double>>(exec_start_ts - data_start_ts).count();
-    train_exec_cumulative_duration += std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts - exec_start_ts).count();
+    data_prep_cumulative_duration +=
+        std::chrono::duration_cast<std::chrono::duration<double>>(
+            exec_start_ts - data_start_ts)
+            .count();
+    train_exec_cumulative_duration +=
+        std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts -
+                                                                  exec_start_ts)
+            .count();
   }
 
   float accuracy = training_loss;
@@ -197,8 +206,14 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
 
   auto exec_end_ts = std::chrono::high_resolution_clock::now();
 
-  auto data_prep_duration = std::chrono::duration_cast<std::chrono::duration<double>>(exec_start_ts - data_start_ts).count();
-  auto train_exec_duration = std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts - exec_start_ts).count();
+  auto data_prep_duration =
+      std::chrono::duration_cast<std::chrono::duration<double>>(exec_start_ts -
+                                                                data_start_ts)
+          .count();
+  auto train_exec_duration =
+      std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts -
+                                                                exec_start_ts)
+          .count();
 
   std::map<std::string, double> metrics = std::map<std::string, double>();
   metrics.insert({"data_prep_duration", data_prep_duration});

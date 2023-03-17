@@ -43,10 +43,14 @@ message PullTaskInsResponse {
 }
 
 // PushTaskRes messages
-message PushTaskResRequest { repeated TaskRes task_res_list = 1; }
+message PushTaskResRequest {
+  repeated TaskRes task_res_list = 1;
+}
 message PushTaskResResponse {
   Reconnect reconnect = 1;
   map<string, uint32> results = 2;
 }
 
-message Reconnect { uint64 reconnect = 1; }
+message Reconnect {
+  uint64 reconnect = 1;
+}

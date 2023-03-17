@@ -1,10 +1,10 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TASK_RUNNER_H_
-#define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TASK_RUNNER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_RUNNER_H_
+#define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_RUNNER_H_
 
 #include <memory>
 #include <string>
@@ -15,7 +15,6 @@
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
-// #include "brave/third_party/flower/src/cc/flwr/include/client.h"
 
 namespace brave_federated {
 
@@ -25,7 +24,7 @@ using ModelWeights = std::tuple<Weights, float>;
 
 class FederatedTaskRunner final {
  public:
-  FederatedTaskRunner(Task task, Model* model);
+  FederatedTaskRunner(Task task, std::unique_ptr<Model> model);
   ~FederatedTaskRunner();
 
   Model* GetModel();
@@ -43,11 +42,11 @@ class FederatedTaskRunner final {
   PerformanceReport Train();
 
   Task task_;
-  raw_ptr<Model> model_ = nullptr;
+  std::unique_ptr<Model> model_;
   DataSet training_data_;
   DataSet test_data_;
 };
 
 }  // namespace brave_federated
 
-#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_TASK_RUNNER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_FEDERATED_TASK_RUNNER_H_

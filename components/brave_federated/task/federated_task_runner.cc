@@ -1,12 +1,13 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/task/federated_task_runner.h"
 
 #include <list>
 #include <map>
+#include <utility>
 
 #include "base/check.h"
 
@@ -15,15 +16,16 @@
 
 namespace brave_federated {
 
-FederatedTaskRunner::FederatedTaskRunner(Task task, Model* model)
-    : task_(task), model_(model) {
+FederatedTaskRunner::FederatedTaskRunner(Task task,
+                                         std::unique_ptr<Model> model)
+    : task_(task), model_(std::move(model)) {
   DCHECK(model_);
 }
 
 FederatedTaskRunner::~FederatedTaskRunner() = default;
 
 Model* FederatedTaskRunner::GetModel() {
-  return model_;
+  return model_.get();
 }
 
 TaskResult FederatedTaskRunner::Run() {
