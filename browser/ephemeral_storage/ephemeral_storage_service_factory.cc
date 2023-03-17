@@ -41,7 +41,7 @@ EphemeralStorageServiceFactory::~EphemeralStorageServiceFactory() = default;
 void EphemeralStorageServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(
-      ephemeral_storage::kFirstPartyStorageURLsToCleanup);
+      ephemeral_storage::kFirstPartyStorageOriginsToCleanup);
 }
 
 KeyedService* EphemeralStorageServiceFactory::BuildServiceInstanceFor(

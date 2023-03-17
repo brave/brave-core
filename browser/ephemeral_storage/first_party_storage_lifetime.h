@@ -24,6 +24,8 @@ namespace ephemeral_storage {
 using FirstPartyStorageLifetimeKey =
     std::pair<content::BrowserContext*, url::Origin>;
 
+// Tracks first party storage lifetime to perform storage cleanup if "Forget by
+// default" mode is active.
 class FirstPartyStorageLifetime
     : public base::RefCounted<FirstPartyStorageLifetime> {
  public:

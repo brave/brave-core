@@ -62,6 +62,10 @@ class EphemeralStorageService : public KeyedService {
                              bool can_enable_1pes);
   bool IsDefaultCookieSetting(const GURL& url) const;
 
+  // If a website was closed, but not yet cleaned-up because of storage lifetime
+  // keepalive, we store the origin into a pref to perform a cleanup on browser
+  // startup. It's impossible to do a cleanup on shutdown, because the process
+  // is asynchronous and cannot block the browser shutdown.
   void CleanupFirstPartyStorageAreasOnStartup();
   void CleanupFirstPartyStorageAreaByTimer(const url::Origin& origin);
   void CleanupFirstPartyStorageArea(const url::Origin& origin);

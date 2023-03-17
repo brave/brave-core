@@ -152,7 +152,7 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
   }
 
   ScopedListPrefUpdate pref_update(user_prefs::UserPrefs::Get(context_),
-                                   kFirstPartyStorageURLsToCleanup);
+                                   kFirstPartyStorageOriginsToCleanup);
   pref_update->EraseValue(base::Value(origin.Serialize()));
 }
 
@@ -183,13 +183,13 @@ void EphemeralStorageService::FirstPartyStorageAreaNotInUse(
   first_party_storage_areas_to_cleanup_.emplace(origin,
                                                 std::move(cleanup_timer));
   ScopedListPrefUpdate pref_update(user_prefs::UserPrefs::Get(context_),
-                                   kFirstPartyStorageURLsToCleanup);
+                                   kFirstPartyStorageOriginsToCleanup);
   pref_update->Append(base::Value(origin.Serialize()));
 }
 
 void EphemeralStorageService::CleanupFirstPartyStorageAreasOnStartup() {
   ScopedListPrefUpdate urls_to_cleanup(user_prefs::UserPrefs::Get(context_),
-                                       kFirstPartyStorageURLsToCleanup);
+                                       kFirstPartyStorageOriginsToCleanup);
   for (const auto& url_to_cleanup : urls_to_cleanup.Get()) {
     const auto* url_string = url_to_cleanup.GetIfString();
     if (!url_string) {
@@ -212,7 +212,7 @@ void EphemeralStorageService::CleanupFirstPartyStorageAreaByTimer(
 
   first_party_storage_areas_to_cleanup_.erase(origin);
   ScopedListPrefUpdate pref_update(user_prefs::UserPrefs::Get(context_),
-                                   kFirstPartyStorageURLsToCleanup);
+                                   kFirstPartyStorageOriginsToCleanup);
   pref_update->EraseValue(base::Value(origin.Serialize()));
 }
 

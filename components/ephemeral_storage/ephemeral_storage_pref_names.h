@@ -8,7 +8,7 @@
 
 namespace ephemeral_storage {
 
-extern const char kFirstPartyStorageURLsToCleanup[];
+extern const char kFirstPartyStorageOriginsToCleanup[];
 
 }  // namespace ephemeral_storage
 

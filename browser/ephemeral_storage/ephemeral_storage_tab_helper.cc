@@ -112,10 +112,14 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
   std::string previous_domain =
       net::URLToEphemeralStorageDomain(last_committed_url);
   if (new_domain != previous_domain) {
+    // Create new storage areas for new ephemeral storage domain.
     CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
   }
 
   if (!url::IsSameOriginWith(new_url, last_committed_url)) {
+    // Create new FirstPartyStorage lifetime if an origin has changed. This
+    // differs from eTLD+1 (EphemeralStorageDomain) comparison above, because
+    // shield settings are bound to the host, not domain.
     CreateFirstPartyStorageLifetime(new_url);
   }
 }
