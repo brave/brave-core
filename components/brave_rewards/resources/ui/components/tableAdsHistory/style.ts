@@ -55,7 +55,7 @@ export const StyledAdLink = styled('a')<{}>`
   text-decoration: none;
   cursor: pointer;
   display: flex;
-  color: ${p => p.theme.color.text};
+  color: ${p => p.theme.color.text} !important;
 `
 
 export const StyledAdTable = styled('table')<{}>`
