@@ -4,79 +4,94 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
-
+#include <Eigen/Dense>
 #include <vector>
 
 namespace brave_federated {
 
-Vector LinearAlgebraUtil::SubtractVector(Vector v1, Vector v2) {
-  Vector result(v1.size(), 0.0);
-  for (size_t i = 0; i < v1.size(); i++) {
-    result[i] = v1[i] - v2[i];
+Vector LinearAlgebraUtil::MatrixXfToVector(Eigen::MatrixXf v) {
+  Vector returned_v = Vector(v.rows());
+  Eigen::VectorXf::Map(returned_v.data(), v.rows()) = v;
+
+  return returned_v;
+}
+
+Matrix LinearAlgebraUtil::MatrixXfToMatrix(Eigen::MatrixXf mat) {
+  Matrix returned_mat = Matrix(mat.rows(), Vector(mat.cols(), 0.0f));
+  for (size_t i = 0; i < returned_mat.size(); ++i) {
+    Eigen::VectorXf::Map(returned_mat.at(i).data(), mat.row(i).cols()) = mat.row(i);
   }
 
-  return result;
+  return returned_mat;
+}
+
+Eigen::MatrixXf LinearAlgebraUtil::MatrixToMatrixXf(Matrix mat) {
+  Eigen::MatrixXf mat_(mat.size(), mat.at(0).size());
+  for (size_t i = 0; i < mat.size(); ++i) {
+    mat_.row(i) = Eigen::Map<Eigen::VectorXf>(mat.at(i).data(), mat.at(i).size());
+  }
+
+  return mat_;
+}
+
+Vector LinearAlgebraUtil::SubtractVector(Vector v1, Vector v2) {
+  Eigen::Map<Eigen::VectorXf> v1_(v1.data(), v1.size());
+  Eigen::Map<Eigen::VectorXf> v2_(v2.data(), v2.size());
+
+  v1_ -= v2_;
+  v1 = MatrixXfToVector(v1_);
+
+  return v1;
 }
 
 Vector LinearAlgebraUtil::MultiplyMatrixVector(Matrix mat, Vector v) {
-  Vector result(mat.size(), 0.0);
-  for (size_t i = 0; i < mat.size(); i++) {
-    result[i] = 0;
-    for (size_t j = 0; j < mat[0].size(); j++) {
-      result[i] += mat[i][j] * v[j];
-    }
-  }
+  Eigen::MatrixXf mat_ = MatrixToMatrixXf(mat);
+  Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
+
+  Eigen::MatrixXf result_ = mat_ * v_;
+  Vector result = MatrixXfToVector(result_);
 
   return result;
 }
 
 Vector LinearAlgebraUtil::AddVectorScalar(Vector v, float a) {
-  for (size_t i = 0; i < v.size(); i++) {
-    v[i] += a;
-  }
+  Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
+
+  auto array_ = v_.array();
+  array_ += a;
+  v_ = array_.matrix();
+  v = MatrixXfToVector(v_);
 
   return v;
 }
 
 Vector LinearAlgebraUtil::AddVectors(Vector v1, Vector v2) {
-  for (size_t i = 0; i < v1.size(); i++) {
-    v1[i] += v2[i];
-  }
+  Eigen::Map<Eigen::VectorXf> v1_(v1.data(), v1.size());
+  Eigen::Map<Eigen::VectorXf> v2_(v2.data(), v2.size());
+
+  v1_ += v2_;
+  v1 = MatrixXfToVector(v1_);
 
   return v1;
 }
 
 Vector LinearAlgebraUtil::MultiplyVectorScalar(Vector v, float a) {
-  for (size_t i = 0; i < v.size(); i++) {
-    v[i] *= a;
-  }
+  Eigen::Map<Eigen::VectorXf> v_(v.data(), v.size());
+
+  auto array_ = v_.array();
+  array_ += a;
+  v_ = array_.matrix();
+  v = MatrixXfToVector(v_);
 
   return v;
 }
 
-Matrix LinearAlgebraUtil::MultiplyMatrices(Matrix mat1, Matrix mat2) {
-  Matrix result(mat1.size(), Vector(mat2[0].size(), 0.0));
+Matrix LinearAlgebraUtil::TransposeMatrix(Matrix mat) {
+  Eigen::MatrixXf mat_ = MatrixToMatrixXf(mat);
 
-  for (size_t i = 0; i < mat1.size(); i++) {
-    for (size_t j = 0; j < mat2[0].size(); j++) {
-      for (size_t k = 0; k < mat1[0].size(); k++) {
-        result[i][j] += mat1[i][k] * mat2[k][j];
-      }
-    }
-  }
+  mat_.transposeInPlace();
+  Matrix matT = MatrixXfToMatrix(mat_);
 
-  return result;
+  return matT;
 }
-
-Matrix LinearAlgebraUtil::TransposeVector(Matrix v) {
-  Matrix vT(v[0].size(), Vector(v.size()));
-  for (size_t i = 0; i < v.size(); i++) {
-    for (size_t j = 0; j < v[0].size(); j++) {
-      vT[j][i] = v[i][j];
-    }
-  }
-
-  return vT;
-}
-
 }  // namespace brave_federated
