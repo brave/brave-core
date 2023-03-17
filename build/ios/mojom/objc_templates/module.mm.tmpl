@@ -28,7 +28,7 @@
 {% endfor %}
 
 {%- if generate_namespace %}
-@implementation _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}}
+@implementation {{class_prefix}}
 @end
 {%- endif %}
 
