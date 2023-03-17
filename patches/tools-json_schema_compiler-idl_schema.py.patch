@@ -1,8 +1,8 @@
 diff --git a/tools/json_schema_compiler/idl_schema.py b/tools/json_schema_compiler/idl_schema.py
-index 7491d25ab2bf6afa662e3d066b1d59ea98b2d717..5110110152116ff1d6e7cd6a04df988b4b111e3e 100755
+index c8bfe1fb3ed1954cb832cc871c43c5ef1847e6c3..659fff9a132a4c6effb2f5c992671b9c0484cca3 100755
 --- a/tools/json_schema_compiler/idl_schema.py
 +++ b/tools/json_schema_compiler/idl_schema.py
-@@ -555,6 +555,8 @@ class IDLSchema(object):
+@@ -557,6 +557,8 @@ class IDLSchema(object):
            documentation_options['namespace'] = node.value
          elif node.name == 'documented_in':
            documentation_options['documented_in'] = node.value

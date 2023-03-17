@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
-index 7149e2a5de14777ef5cdfe567546d2ccd70307ad..ad7013b2dd89873fad5257171ec75e86b2594496 100644
+index 1ccbec87789fcaf25ba4306d4a3ac71778d4ffd8..03856f04397d846006a55cc1e7e58dba5f812eae 100644
 --- a/third_party/blink/renderer/modules/BUILD.gn
 +++ b/third_party/blink/renderer/modules/BUILD.gn
-@@ -15,6 +15,7 @@ if (is_android) {
+@@ -19,6 +19,7 @@ if (is_ios) {
  }
  
  visibility = [ "//third_party/blink/renderer/*" ]
@@ -10,7 +10,7 @@ index 7149e2a5de14777ef5cdfe567546d2ccd70307ad..ad7013b2dd89873fad5257171ec75e86
  
  config("modules_implementation") {
    defines = [ "BLINK_MODULES_IMPLEMENTATION=1" ]
-@@ -168,6 +169,7 @@ component("modules") {
+@@ -172,6 +173,7 @@ component("modules") {
    # generating the snapshot for android, blink is compiled with
    # current_os="linux" and target_os="android". Using target_os is necessary as
    # we need to compile in the same way as would happen when current_os="android".

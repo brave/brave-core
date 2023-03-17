@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 6cd22798170dbcbda00aeb2370f49277a862db88..73e5b36ffc158bc8086fcd834779047fe733d96d 100644
+index 416ff5e99a7b2fa0020b72d14d6f9145e5085113..a2f07d211d2f7d2a30b20ed925182268abb2900c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 @@ -55,7 +55,7 @@ import org.chromium.ui.text.SpanApplier;
@@ -11,7 +11,7 @@ index 6cd22798170dbcbda00aeb2370f49277a862db88..73e5b36ffc158bc8086fcd834779047f
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
      private static final String PREF_PRELOAD_PAGES = "preload_pages";
      private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
-@@ -288,6 +288,7 @@ public class PrivacySettings
+@@ -294,6 +294,7 @@ public class PrivacySettings
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,7 +19,7 @@ index 6cd22798170dbcbda00aeb2370f49277a862db88..73e5b36ffc158bc8086fcd834779047f
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(TraceEventVectorDrawableCompat.create(
-@@ -302,6 +303,6 @@ public class PrivacySettings
+@@ -308,6 +309,6 @@ public class PrivacySettings
                      null);
              return true;
          }
