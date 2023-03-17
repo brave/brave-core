@@ -26,7 +26,6 @@ import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImp
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.BraveTemplateUrlServiceFactory;
 import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.share.crow.CrowButtonDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -57,11 +56,11 @@ public class BraveNewTabPage extends NewTabPage {
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, WindowAndroid windowAndroid,
             JankTracker jankTracker, Supplier<Toolbar> toolbarSupplier,
-            SettingsLauncher settingsLauncher, CrowButtonDelegate crowButtonDelegate) {
+            SettingsLauncher settingsLauncher) {
         super(activity, browserControlsStateProvider, activityTabProvider, snackbarManager,
                 lifecycleDispatcher, tabModelSelector, isTablet, uma, isInNightMode, nativePageHost,
                 tab, url, bottomSheetController, shareDelegateSupplier, windowAndroid, jankTracker,
-                toolbarSupplier, settingsLauncher, crowButtonDelegate);
+                toolbarSupplier, settingsLauncher);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -93,8 +92,7 @@ public class BraveNewTabPage extends NewTabPage {
     @Override
     protected void initializeMainView(Activity activity, WindowAndroid windowAndroid,
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
-            Supplier<ShareDelegate> shareDelegateSupplier, CrowButtonDelegate crowButtonDelegate,
-            String url) {
+            Supplier<ShareDelegate> shareDelegateSupplier, String url) {
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 

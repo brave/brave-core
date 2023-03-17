@@ -47,7 +47,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.night_mode.NightModeStateProvider;
 import org.chromium.chrome.browser.omnibox.LocationBar;
-import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.SadTab;
@@ -96,7 +96,6 @@ public class BraveToolbarManager extends ToolbarManager {
     private FullscreenManager mFullscreenManager;
     private ActivityTabProvider mActivityTabProvider;
     private AppThemeColorProvider mAppThemeColorProvider;
-    private Supplier<ShareDelegate> mShareDelegateSupplier;
     private ScrimCoordinator mScrimCoordinator;
     private Supplier<Boolean> mShowStartSurfaceSupplier;
     private MenuButtonCoordinator mMenuButtonCoordinator;
@@ -166,7 +165,7 @@ public class BraveToolbarManager extends ToolbarManager {
             @NonNull Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
-            @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
+            @NonNull ActionChipsDelegate actionChipsDelegate,
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors, @Nullable BackPressManager backPressManager) {
         super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
@@ -181,8 +180,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
                 tabContentManager, tabCreatorManager, snackbarManager, jankTracker,
                 merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
-                omniboxPedalDelegate, ephemeralTabCoordinatorSupplier,
-                initializeWithIncognitoColors, backPressManager);
+                actionChipsDelegate, ephemeralTabCoordinatorSupplier, initializeWithIncognitoColors,
+                backPressManager);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -248,8 +247,7 @@ public class BraveToolbarManager extends ToolbarManager {
                         mBottomSheetController, mActivityLifecycleDispatcher,
                         mIsWarmOnResumeSupplier, mTabModelSelector, mTabContentManager,
                         mCompositorViewHolder, mCompositorViewHolder::getDynamicResourceLoader,
-                        mTabCreatorManager, mShareDelegateSupplier, mLayoutStateProviderSupplier,
-                        mSnackbarManager);
+                        mTabCreatorManager, mLayoutStateProviderSupplier, mSnackbarManager);
             }
             mBottomControlsCoordinatorSupplier.set(new BraveBottomControlsCoordinator(
                     mLayoutStateProviderSupplier,

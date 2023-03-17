@@ -22,7 +22,7 @@ import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinat
 import org.chromium.chrome.browser.omnibox.LocationBarMediator.OmniboxUma;
 import org.chromium.chrome.browser.omnibox.LocationBarMediator.SaveOfflineButtonState;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
-import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
@@ -60,7 +60,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             @NonNull BooleanSupplier isToolbarMicEnabledSupplier, JankTracker jankTracker,
             @Nullable Supplier<MerchantTrustSignalsCoordinator>
                     merchantTrustSignalsCoordinatorSupplier,
-            @NonNull OmniboxPedalDelegate omniboxPedalDelegate,
+            @NonNull ActionChipsDelegate actionChipsDelegate,
             BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
             Callback<Throwable> reportExceptionCallback,
             @Nullable BackPressManager backPressManager,
@@ -73,7 +73,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 overrideUrlLoadingDelegate, backKeyBehavior, searchEngineLogoUtils, pageInfoAction,
                 bringTabToFrontCallback, saveOfflineButtonState, omniboxUma,
                 tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier, jankTracker,
-                merchantTrustSignalsCoordinatorSupplier, omniboxPedalDelegate,
+                merchantTrustSignalsCoordinatorSupplier, actionChipsDelegate,
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
                 omniboxSuggestionsDropdownScrollListener);
 

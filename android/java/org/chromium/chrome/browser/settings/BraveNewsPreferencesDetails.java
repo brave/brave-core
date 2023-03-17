@@ -140,7 +140,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
 
     @Override
     public void onChannelSubscribed(int position, Channel channel, boolean isSubscribed) {
-        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
             if (mBraveNewsController != null) {
                 newsChangeSource();
                 mBraveNewsController.setChannelSubscribed(BraveNewsUtils.getLocale(),
@@ -152,7 +152,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
 
     @Override
     public void onPublisherPref(String publisherId, int userEnabled) {
-        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
             if (mBraveNewsController != null) {
                 newsChangeSource();
                 mBraveNewsController.setPublisherPref(publisherId, userEnabled);
@@ -163,7 +163,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
 
     @Override
     public void findFeeds(String url) {
-        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
             if (mBraveNewsController != null) {
                 Url searchUrl = new Url();
                 searchUrl.url = url;
@@ -197,7 +197,7 @@ public class BraveNewsPreferencesDetails extends BravePreferenceFragment
 
     @Override
     public void subscribeToNewDirectFeed(int position, Url feedUrl, boolean isFromFeed) {
-        PostTask.postTask(TaskTraits.THREAD_POOL_BEST_EFFORT, () -> {
+        PostTask.postTask(TaskTraits.BEST_EFFORT, () -> {
             if (mBraveNewsController != null) {
                 mBraveNewsController.subscribeToNewDirectFeed(
                         feedUrl, ((isValidFeed, isDuplicate, publishers) -> {
