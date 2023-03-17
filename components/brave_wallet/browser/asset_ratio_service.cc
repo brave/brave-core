@@ -427,18 +427,18 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
 
 void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
                                          APIRequestResult api_request_result) {
-  std::vector<brave_wallet::mojom::CoinMarketPtr> values;
   if (!api_request_result.Is2XXResponseCode()) {
-    std::move(callback).Run(false, std::move(values));
+    std::move(callback).Run(false, {});
     return;
   }
 
-  if (!ParseCoinMarkets(api_request_result.value_body(), &values)) {
-    std::move(callback).Run(false, std::move(values));
+  auto values = ParseCoinMarkets(api_request_result.value_body());
+  if (!values) {
+    std::move(callback).Run(false, {});
     return;
   }
 
-  std::move(callback).Run(true, std::move(values));
+  std::move(callback).Run(true, std::move(*values));
 }
 
 }  // namespace brave_wallet
