@@ -28,8 +28,8 @@ message Task {
   string ttl = 5;
   repeated string ancestry = 6;
 
-  ServerMessage legacy_server_message = 101 [ deprecated = true ];
-  ClientMessage legacy_client_message = 102 [ deprecated = true ];
+  ServerMessage legacy_server_message = 101 [deprecated = true];
+  ClientMessage legacy_client_message = 102 [deprecated = true];
 }
 
 message TaskIns {
