@@ -12,6 +12,7 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
+#include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
@@ -25,16 +26,31 @@ class SKUTransaction {
   explicit SKUTransaction(LedgerImpl* ledger);
   ~SKUTransaction();
 
-  void Create(mojom::SKUOrderPtr order,
-              const std::string& destination,
-              const std::string& wallet_type,
-              ledger::LegacyResultCallback callback);
+  void Run(mojom::SKUOrderPtr order,
+           const std::string& destination,
+           const std::string& wallet_type,
+           ledger::LegacyResultCallback callback);
 
   void SendExternalTransaction(mojom::Result result,
                                const mojom::SKUTransaction& transaction,
                                ledger::LegacyResultCallback callback);
 
  private:
+  using MaybeCreateTransactionCallback =
+      std::function<void(mojom::Result, const mojom::SKUTransaction&)>;
+
+  void MaybeCreateTransaction(mojom::SKUOrderPtr order,
+                              const std::string& wallet_type,
+                              MaybeCreateTransactionCallback callback);
+
+  void OnGetSKUTransactionByOrderId(
+      MaybeCreateTransactionCallback callback,
+      const std::string& order_id,
+      const std::string& wallet_type,
+      double total_amount,
+      base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
+          result);
+
   void OnTransactionSaved(mojom::Result result,
                           const mojom::SKUTransaction& transaction,
                           const std::string& destination,
