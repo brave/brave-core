@@ -4,35 +4,32 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { BraveWallet } from '../constants/types'
-import {
-  BNBIconUrl,
-  ETHIconUrl,
-  SOLIconUrl,
-  FILECOINIconUrl,
-  MATICIconUrl,
-  AVAXIconUrl
-} from '../assets/asset-icons'
-import {
-  AuroraIcon,
-  CeloIcon,
-  FantomIcon,
-  OptimismIcon
-} from '../assets/network-icons'
 import { AllNetworksOption } from './network-filter-options'
 
-export const getNetworkLogo = (network: BraveWallet.NetworkInfo): string => {
+export const getNetworkLogo = (chainId: string, symbol: string): string => {
   switch (true) {
-    case network.chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID: return AuroraIcon
-    case network.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID: return OptimismIcon
-    case network.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID: return MATICIconUrl
-    case network.chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID: return BNBIconUrl
-    case network.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID: return AVAXIconUrl
-    case network.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID: return FantomIcon
-    case network.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID: return CeloIcon
-    case network.chainId === AllNetworksOption.chainId: return AllNetworksOption.iconUrls[0]
-    case network.symbol.toUpperCase() === 'SOL': return SOLIconUrl
-    case network.symbol.toUpperCase() === 'FIL': return FILECOINIconUrl
-    case network.symbol.toUpperCase() === 'ETH': return ETHIconUrl
+    case chainId === BraveWallet.AURORA_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/aurora.png'
+    case chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/op.png'
+    case chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/matic.png'
+    case chainId === BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/bnb.png'
+    case chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/avax.png'
+    case chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/ftm.png'
+    case chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/celo.png'
+    case chainId === AllNetworksOption.chainId:
+      return AllNetworksOption.iconUrls[0]
+    case symbol.toUpperCase() === 'SOL':
+      return 'chrome://erc-token-images/sol.png'
+    case symbol.toUpperCase() === 'FIL':
+      return 'chrome://erc-token-images/fil.png'
+    case symbol.toUpperCase() === 'ETH':
+      return 'chrome://erc-token-images/eth.png'
     default: return ''
   }
 }
@@ -49,7 +46,7 @@ export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
     contractAddress: '',
     name: network.symbolName,
     symbol: network.symbol,
-    logo: getNetworkLogo(network),
+    logo: getNetworkLogo(network.chainId, network.symbol),
     isErc20: false,
     isErc721: false,
     isNft: false,
@@ -61,34 +58,3 @@ export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
     coin: network.coin
   } as UndefinedIf<BraveWallet.BlockchainToken, T>
 }
-
-export const ETH = {
-  contractAddress: '',
-  name: 'Ethereum',
-  symbol: 'ETH',
-  logo: ETHIconUrl,
-  isErc20: false,
-  isErc721: false,
-  isNft: false,
-  decimals: 18,
-  visible: true,
-  tokenId: '',
-  coingeckoId: '',
-  chainId: '0x1',
-  coin: BraveWallet.CoinType.ETH
-} as BraveWallet.BlockchainToken
-
-export const BAT = {
-  contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
-  name: 'Basic Attention Token',
-  symbol: 'BAT',
-  logo: 'chrome://erc-token-images/bat.png',
-  isErc20: true,
-  isErc721: false,
-  isNft: false,
-  decimals: 18,
-  visible: false,
-  tokenId: '',
-  coingeckoId: '',
-  coin: BraveWallet.CoinType.ETH
-} as BraveWallet.BlockchainToken

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // asset
-import { USDCIconUrl } from '../../assets/asset-icons'
+import { USDCIconUrl } from './asset-icons'
 
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'

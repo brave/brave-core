@@ -6,7 +6,7 @@ import { BraveWallet } from '../../constants/types'
 import {
   ETHIconUrl,
   SOLIconUrl
-} from '../../assets/asset-icons'
+} from './asset-icons'
 
 export const mockEthMainnet: BraveWallet.NetworkInfo = {
   activeRpcEndpointIndex: 0,
