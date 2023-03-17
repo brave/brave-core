@@ -58,8 +58,9 @@ MultichainCall<ResultType>::GetEffectiveResponse() {
     return nullptr;
   }
 
-  if (polygon_result->second.result || polygon_result->second.error)
+  if (polygon_result->second.result || polygon_result->second.error) {
     return &polygon_result->second;
+  }
 
   return &eth_mainnet_result->second;
 }
@@ -67,8 +68,9 @@ MultichainCall<ResultType>::GetEffectiveResponse() {
 template <class ResultType>
 bool MultichainCall<ResultType>::MaybeResolveCallbacks() {
   auto* response = GetEffectiveResponse();
-  if (!response)
+  if (!response) {
     return false;
+  }
 
   for (auto& callback : callbacks_) {
     std::move(callback).Run(
@@ -102,8 +104,9 @@ void MultichainCalls<KeyType, ResultType>::SetNoResult(
     const KeyType& key,
     const std::string& chain_id) {
   auto call = calls_.find(key);
-  if (call == calls_.end())
+  if (call == calls_.end()) {
     return;
+  }
 
   if (call->second.SetNoResult(chain_id)) {
     calls_.erase(call);
@@ -116,8 +119,9 @@ void MultichainCalls<KeyType, ResultType>::SetResult(
     const std::string& chain_id,
     ResultType result) {
   auto call = calls_.find(key);
-  if (call == calls_.end())
+  if (call == calls_.end()) {
     return;
+  }
 
   if (call->second.SetResult(chain_id, std::move(result))) {
     calls_.erase(call);
@@ -130,8 +134,9 @@ void MultichainCalls<KeyType, ResultType>::SetError(const KeyType& key,
                                                     mojom::ProviderError error,
                                                     std::string error_message) {
   auto call = calls_.find(key);
-  if (call == calls_.end())
+  if (call == calls_.end()) {
     return;
+  }
 
   if (call->second.SetError(chain_id, std::move(error),
                             std::move(error_message))) {
@@ -141,6 +146,6 @@ void MultichainCalls<KeyType, ResultType>::SetError(const KeyType& key,
 
 template class MultichainCalls<std::string, std::string>;
 template class MultichainCalls<WalletAddressKey, std::string>;
-template class MultichainCalls<std::string, GURL>;
+template class MultichainCalls<std::string, absl::optional<GURL>>;
 
 }  // namespace brave_wallet::unstoppable_domains
