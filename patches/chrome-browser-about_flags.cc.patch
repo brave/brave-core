@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index ae8fa1793dc0a2c3af02baec95de99ba19b408e1..93e1add1e6d30ee0c0f4c763b1742cd76ecf3144 100644
+index f4d455d5dd7a24c1e50008f0a45cd614356bc6b0..84f3e7ef923b802a3fc3fef725d359a5c70c1065 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3294,6 +3294,7 @@ const FeatureEntry::FeatureVariation kWebAuthFlowInBrowserTabVariations[]{
+@@ -3338,6 +3338,7 @@ const FeatureEntry::FeatureVariation kVcSegmentationModelVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
