@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index e2db2b58dabb41f0cf80684fc2beb9897b934f7e..4e3c603869f890a28a61d43b0e536e2116a31520 100644
+index 72dad8ee6b7301d395d8b953239000fda3d121d8..aee59fcf5319247843e015192c9e3dc2ca13d59a 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -415,6 +415,7 @@ StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
- #elif !BUILDFLAG(IS_CHROMEOS_ASH)
+@@ -414,6 +414,7 @@ StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
    welcome_enabled =
        welcome::IsEnabled(profile_) && welcome::HasModulesToShow(profile_);
+ #endif  // BUILDFLAG(ENABLE_DICE_SUPPORT)
 +  BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH
- #endif  // !BUILDFLAG(IS_CHROMEOS_ASH)
  
    const bool whats_new_enabled =
+       whats_new::ShouldShowForState(local_state, promotional_tabs_enabled);

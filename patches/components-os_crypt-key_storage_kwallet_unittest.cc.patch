@@ -12,4 +12,4 @@ index 73d6a5125e37f087f1431253fadcd41e1592cda6..e48e29fb5d3c8c47b4556767abd1ed61
 +const char kExpectedEntryName[] = "Brave Safe Storage";
  #endif
  
- // Environment-specific behavior is handled and tested with KWalletDBus, not
+ const char kAppName[] = "test-app";
