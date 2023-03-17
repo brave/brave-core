@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:contentDescription="@null"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_onboarding_bg"/>
+        app:srcCompat="@drawable/ic_onboarding_bg"/>
 
     <View
         android:id="@+id/view_leaf_top_align"
