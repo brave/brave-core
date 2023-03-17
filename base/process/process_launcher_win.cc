@@ -64,8 +64,7 @@ absl::optional<std::string> ProcessLauncher::ReadAppOutput(
   scoped_out_write.Close();
 
   bool read_result = base::ReadStreamToString(
-      base::FileToFILE(base::File(out_read), "r"), &result);
-  scoped_out_read.Close();
+      base::FileToFILE(base::File(std::move(scoped_out_read)), "r"), &result);
 
   base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
   exited =
