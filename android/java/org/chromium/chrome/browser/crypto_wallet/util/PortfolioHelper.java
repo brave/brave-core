@@ -26,9 +26,11 @@ import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class PortfolioHelper {
     private static String TAG = "PortfolioHelper";
@@ -173,14 +175,21 @@ public class PortfolioHelper {
 
     public void calculateFiatHistory(Runnable runWhenDone) {
         mFiatHistory = new AssetTimePrice[0];
+        var nonZeroBalanceAssetList =
+                Arrays.stream(mUserAssets)
+                        .filter(token -> {
+                            var assetBalance = mPerTokenCryptoSum.get(Utils.tokenToString(token));
+                            return assetBalance != null && assetBalance > 0;
+                        })
+                        .collect(Collectors.toList());
 
         AsyncUtils.MultiResponseHandler historyMultiResponse =
-                new AsyncUtils.MultiResponseHandler(mUserAssets.length);
+                new AsyncUtils.MultiResponseHandler(nonZeroBalanceAssetList.size());
 
         ArrayList<AsyncUtils.GetPriceHistoryResponseContext> pricesHistoryContexts =
                 new ArrayList<AsyncUtils.GetPriceHistoryResponseContext>();
 
-        for (BlockchainToken userAsset : mUserAssets) {
+        for (BlockchainToken userAsset : nonZeroBalanceAssetList) {
             AsyncUtils.GetPriceHistoryResponseContext priceHistoryContext =
                     new AsyncUtils.GetPriceHistoryResponseContext(
                             historyMultiResponse.singleResponseComplete);
@@ -188,10 +197,11 @@ public class PortfolioHelper {
             priceHistoryContext.userAsset = userAsset;
             pricesHistoryContexts.add(priceHistoryContext);
 
-            if (mActivity.get() != null && !mActivity.get().isFinishing())
+            if (mActivity.get() != null && !mActivity.get().isFinishing()) {
                 mActivity.get().getAssetRatioService().getPriceHistory(
-                        userAsset.symbol.toLowerCase(Locale.getDefault()), "usd",
-                        mFiatHistoryTimeframe, priceHistoryContext);
+                        AssetUtils.assetRatioId(userAsset), "usd", mFiatHistoryTimeframe,
+                        priceHistoryContext);
+            }
         }
 
         historyMultiResponse.setWhenAllCompletedAction(() -> {

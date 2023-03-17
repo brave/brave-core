@@ -207,4 +207,12 @@ public class AssetUtils {
                 ? trimedUrl.replace("ipfs://", "https://ipfs.io/ipfs/")
                 : trimedUrl;
     }
+
+    public static String assetRatioId(BlockchainToken token) {
+        if (!TextUtils.isEmpty(token.coingeckoId)) return token.coingeckoId;
+        if (BraveWalletConstants.MAINNET_CHAIN_ID.equals(token.chainId)
+                || TextUtils.isEmpty(token.contractAddress))
+            return token.symbol;
+        return token.contractAddress;
+    }
 }
