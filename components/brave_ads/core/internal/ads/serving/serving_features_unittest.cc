@@ -79,7 +79,7 @@ TEST(BatAdsServingFeaturesTest, DefaultDefaultNotificationAdsPerHour) {
       GetDefaultNotificationAdsPerHour();
 
   // Assert
-  const int expected_default_notification_ads_per_hour = 5;
+  const int expected_default_notification_ads_per_hour = 10;
   EXPECT_EQ(expected_default_notification_ads_per_hour,
             default_notification_ads_per_hour);
 }
@@ -100,7 +100,7 @@ TEST(BatAdsServingFeaturesTest, DisabledDefaultNotificationAdsPerHour) {
       GetDefaultNotificationAdsPerHour();
 
   // Assert
-  const int expected_default_notification_ads_per_hour = 5;
+  const int expected_default_notification_ads_per_hour = 10;
   EXPECT_EQ(expected_default_notification_ads_per_hour,
             default_notification_ads_per_hour);
 }
@@ -142,7 +142,7 @@ TEST(BatAdsServingFeaturesTest, DefaultMaximumNotificationAdsPerDay) {
       GetMaximumNotificationAdsPerDay();
 
   // Assert
-  const int expected_maximum_notification_ads_per_day = 40;
+  const int expected_maximum_notification_ads_per_day = 100;
   EXPECT_EQ(expected_maximum_notification_ads_per_day,
             maximum_notification_ads_per_day);
 }
@@ -163,7 +163,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumNotificationAdsPerDay) {
       GetMaximumNotificationAdsPerDay();
 
   // Assert
-  const int expected_maximum_notification_ads_per_day = 40;
+  const int expected_maximum_notification_ads_per_day = 100;
   EXPECT_EQ(expected_maximum_notification_ads_per_day,
             maximum_notification_ads_per_day);
 }
@@ -205,7 +205,7 @@ TEST(BatAdsServingFeaturesTest, DefaultMaximumInlineContentAdsPerHour) {
       GetMaximumInlineContentAdsPerHour();
 
   // Assert
-  const int expected_maximum_inline_content_ads_per_hour = 4;
+  const int expected_maximum_inline_content_ads_per_hour = 6;
   EXPECT_EQ(expected_maximum_inline_content_ads_per_hour,
             maximum_inline_content_ads_per_hour);
 }
@@ -226,7 +226,7 @@ TEST(BatAdsServingFeaturesTest, DisabledMaximumInlineContentAdsPerHour) {
       GetMaximumInlineContentAdsPerHour();
 
   // Assert
-  const int expected_maximum_inline_content_ads_per_hour = 4;
+  const int expected_maximum_inline_content_ads_per_hour = 6;
   EXPECT_EQ(expected_maximum_inline_content_ads_per_hour,
             maximum_inline_content_ads_per_hour);
 }
@@ -742,7 +742,7 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
   const int serving_version = GetServingVersion();
 
   // Assert
-  const int expected_serving_version = 1;
+  const int expected_serving_version = 2;
   EXPECT_EQ(expected_serving_version, serving_version);
 }
 
