@@ -42,6 +42,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
     private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
+    private static final String PREF_HTTPS_UPGRADE = "https_upgrade";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
@@ -71,6 +72,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_CLEAR_BROWSING_DATA);
         checkPreferenceExists(PREF_DO_NOT_TRACK);
         checkPreferenceExists(PREF_HTTPS_FIRST_MODE);
+        checkPreferenceExists(PREF_HTTPS_UPGRADE);
         checkPreferenceExists(PREF_SAFE_BROWSING);
         checkPreferenceExists(PREF_SECURE_DNS);
         checkPreferenceExists(PREF_INCOGNITO_LOCK);

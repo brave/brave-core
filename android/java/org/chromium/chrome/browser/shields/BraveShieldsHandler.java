@@ -66,6 +66,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
@@ -76,6 +77,7 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
@@ -614,6 +616,12 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
         detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
+            detailsLayouts.add(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
+        } else {
+            mPopupView.findViewById(R.id.brave_shields_secondary_https_upgrade_layout_id)
+                    .setVisibility(View.GONE);
+        }
 
         int layoutId = 0;
         int mSecondaryLayoutId = 0;
@@ -625,6 +633,15 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
         for (final String layout : detailsLayouts) {
             switch (layout) {
+                case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE:
+                    layoutId = R.id.brave_shields_https_upgrade_layout_id;
+                    mSecondaryLayoutId = R.id.brave_shields_secondary_https_upgrade_layout_id;
+                    titleStringId = R.string.https_upgrade_title;
+                    subtitleStringId = R.string.https_upgrade_summary;
+                    option1StringId = R.string.https_upgrade_option_1;
+                    option2StringId = R.string.https_upgrade_option_2;
+                    option3StringId = R.string.https_upgrade_option_3;
+                    break;
                 case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS:
                     layoutId = R.id.brave_shields_block_cross_trackers_layout_id;
                     mSecondaryLayoutId = R.id.brave_shields_cross_site_trackers_layout_id;
@@ -701,6 +718,8 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             } else {
                 boolean checkOption2 = false;
                 switch (layout) {
+                    case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE:
+                    // fall through
                     case BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS:
                         checkOption2 = settingOption.equals(BraveShieldsContentSettings.DEFAULT)
                                 || settingOption.equals(
@@ -756,12 +775,18 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
     }
 
     private void setUpSwitchLayouts() {
-
-        LinearLayout mUpgradeHttpsLayout = mSecondaryLayout.findViewById(R.id.brave_shields_upgrade_https_id);
-        TextView mUpgradeHttpsText = mUpgradeHttpsLayout.findViewById(R.id.brave_shields_switch_text);
-        mBraveShieldsHTTPSEverywhereSwitch = mUpgradeHttpsLayout.findViewById(R.id.brave_shields_switch);
-        mUpgradeHttpsText.setText(R.string.brave_shields_https_everywhere_switch);
-        setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
+        LinearLayout upgradeHttpsLayout =
+                mSecondaryLayout.findViewById(R.id.brave_shields_upgrade_https_id);
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.HTTPS_BY_DEFAULT)) {
+            TextView upgradeHttpsText =
+                    upgradeHttpsLayout.findViewById(R.id.brave_shields_switch_text);
+            mBraveShieldsHTTPSEverywhereSwitch =
+                    upgradeHttpsLayout.findViewById(R.id.brave_shields_switch);
+            upgradeHttpsText.setText(R.string.brave_shields_https_everywhere_switch);
+            setupHTTPSEverywhereSwitchClick(mBraveShieldsHTTPSEverywhereSwitch);
+        } else {
+            upgradeHttpsLayout.setVisibility(View.GONE);
+        }
 
         LinearLayout mBlockScriptsLayout = mSecondaryLayout.findViewById(R.id.brave_shields_block_scripts_id);
         TextView mBlockScriptsText = mBlockScriptsLayout.findViewById(R.id.brave_shields_switch_text);

@@ -25,4 +25,5 @@ public abstract class BraveFeatureList {
     public static final String BRAVE_GOOGLE_SIGN_IN_PERMISSION = "BraveGoogleSignInPermission";
     public static final String BRAVE_PLAYLIST = "Playlist";
     public static final String BRAVE_SPEEDREADER = "Speedreader";
+    public static final String HTTPS_BY_DEFAULT = "HttpsByDefault";
 }
