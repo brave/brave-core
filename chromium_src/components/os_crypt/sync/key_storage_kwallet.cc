@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/os_crypt/key_storage_kwallet.h"
+#include "components/os_crypt/sync/key_storage_kwallet.h"
 
 #include <string>
 
@@ -25,7 +25,7 @@ void Dummy(const int handle,
   handle_, GetFolderName(), app_name_, &has_folder); \
   if (false) Dummy(
 
-#include "src/components/os_crypt/key_storage_kwallet.cc"
+#include "src/components/os_crypt/sync/key_storage_kwallet.cc"
 #undef BRAVE_KEY_STORAGE_KWALLET_INIT_FOLDER
 #undef BRAVE_KEY_STORAGE_KWALLET_GET_KEY_IMPL
 
@@ -52,4 +52,3 @@ const char* KeyStorageKWallet::GetKeyName() {
     return KeyStorageLinux::kKey;
   }
 }
-

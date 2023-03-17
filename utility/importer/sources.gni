@@ -29,7 +29,7 @@ if (!is_android) {
     "//brave/common/importer:importer",
     "//brave/common/importer:interfaces",
     "//chrome/app:chromium_strings",
-    "//components/os_crypt",
+    "//components/os_crypt/sync",
     "//components/password_manager/core/browser",
     "//components/webdata/common",
   ]

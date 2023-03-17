@@ -1,7 +1,7 @@
-diff --git a/components/os_crypt/key_storage_kwallet.cc b/components/os_crypt/key_storage_kwallet.cc
-index fdb25d3eaa94d118225c3e562011741bf7dc74f6..18a20c7504f9ce9f2ac8c561a7a166b07d04cc3a 100644
---- a/components/os_crypt/key_storage_kwallet.cc
-+++ b/components/os_crypt/key_storage_kwallet.cc
+diff --git a/components/os_crypt/sync/key_storage_kwallet.cc b/components/os_crypt/sync/key_storage_kwallet.cc
+index 7f300c07675e8e9b47c2445e6bdb9e6b1a19603c..a0f64c1f3f624edea8f035d5fcf05d9f3bb62502 100644
+--- a/components/os_crypt/sync/key_storage_kwallet.cc
++++ b/components/os_crypt/sync/key_storage_kwallet.cc
 @@ -95,6 +95,7 @@ absl::optional<std::string> KeyStorageKWallet::GetKeyImpl() {
    // Read password
    absl::optional<std::string> password;

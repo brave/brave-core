@@ -20,7 +20,7 @@
 #include "chrome/common/importer/importer_url_row.h"
 #include "chrome/common/importer/mock_importer_bridge.h"
 #include "components/favicon_base/favicon_usage_data.h"
-#include "components/os_crypt/os_crypt_mocker.h"
+#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using base::UTF16ToASCII;

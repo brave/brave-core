@@ -1,7 +1,7 @@
-diff --git a/components/os_crypt/key_storage_keyring.cc b/components/os_crypt/key_storage_keyring.cc
-index 70040e4c9449487037b09fd901498d4514f27813..40294f7a2fe4ea36d44c12f4f2e8641cb3228a35 100644
---- a/components/os_crypt/key_storage_keyring.cc
-+++ b/components/os_crypt/key_storage_keyring.cc
+diff --git a/components/os_crypt/sync/key_storage_keyring.cc b/components/os_crypt/sync/key_storage_keyring.cc
+index c24d7980d70071a80d537c1d4c3d14076b9cbdbd..9a909b51dc5edaad28e310e0d0c2367134b839ce 100644
+--- a/components/os_crypt/sync/key_storage_keyring.cc
++++ b/components/os_crypt/sync/key_storage_keyring.cc
 @@ -45,6 +45,7 @@ absl::optional<std::string> KeyStorageKeyring::GetKeyImpl() {
    gchar* password_c = nullptr;
    GnomeKeyringResult result =

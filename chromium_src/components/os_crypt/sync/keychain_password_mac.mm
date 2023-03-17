@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/os_crypt/keychain_password_mac.h"
+#include "components/os_crypt/sync/keychain_password_mac.h"
 
 #include <utility>
 
@@ -17,11 +17,11 @@ const char kBraveDefaultAccountName[] = "Brave";
 KeychainPassword::KeychainNameType& GetBraveServiceName();
 KeychainPassword::KeychainNameType& GetBraveAccountName();
 
-}
+}  // namespace
 
 #define BRAVE_GET_SERVICE_NAME return GetBraveServiceName();
 #define BRAVE_GET_ACCOUNT_NAME return GetBraveAccountName();
-#include "src/components/os_crypt/keychain_password_mac.mm"
+#include "src/components/os_crypt/sync/keychain_password_mac.mm"
 #undef BRAVE_GET_SERVICE_NAME
 #undef BRAVE_GET_ACCOUNT_NAME
 
@@ -71,4 +71,4 @@ KeychainPassword::KeychainNameType& GetBraveAccountName() {
   return *account_name;
 }
 
-}
+}  // namespace

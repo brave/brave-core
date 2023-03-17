@@ -12,7 +12,7 @@
 #include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "build/build_config.h"
-#include "components/os_crypt/os_crypt_mocker.h"
+#include "components/os_crypt/sync/os_crypt_mocker.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
