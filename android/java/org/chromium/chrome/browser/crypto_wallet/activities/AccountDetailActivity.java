@@ -274,6 +274,8 @@ public class AccountDetailActivity
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
+
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
