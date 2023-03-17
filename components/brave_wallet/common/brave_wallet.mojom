@@ -1564,8 +1564,8 @@ interface BraveWalletService {
 
 // For reporting wallet related P3A metrics.
 interface BraveWalletP3A {
-  // Called when the ethereum provider type is evaluated after page load.
-  ReportEthereumProvider(EthereumProviderType provider_type);
+  // Called when the wallet provider type is evaluated after page load.
+  ReportJSProvider(JSProviderType provider_type, CoinType coin_type, bool use_native_wallet_enabled, bool allow_provider_overwrite);
 
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
@@ -1583,7 +1583,7 @@ enum OnboardingAction {
   RestoredWallet = 2
 };
 
-enum EthereumProviderType {
+enum JSProviderType {
   None = 0,
   ThirdParty = 1,
   Native = 2

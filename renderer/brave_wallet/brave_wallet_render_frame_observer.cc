@@ -65,7 +65,7 @@ void BraveWalletRenderFrameObserver::DidFinishLoad() {
 
   auto dynamic_params = get_dynamic_params_callback_.Run();
 
-  p3a_util_.ReportEthereumProvider(render_frame(), dynamic_params);
+  p3a_util_.ReportJSProviders(render_frame(), dynamic_params);
 #endif
 }
 

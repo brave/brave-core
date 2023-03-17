@@ -25,6 +25,7 @@ extern const char kDefaultSolanaWalletHistogramName[];
 extern const char kKeyringCreatedHistogramName[];
 extern const char kOnboardingConversionHistogramName[];
 extern const char kEthProviderHistogramName[];
+extern const char kSolProviderHistogramName[];
 extern const char kEthTransactionSentHistogramName[];
 extern const char kSolTransactionSentHistogramName[];
 extern const char kFilTransactionSentHistogramName[];
@@ -37,6 +38,16 @@ extern const char kBraveWalletNewUserReturningHistogramName[];
 
 class BraveWalletService;
 class KeyringService;
+
+enum class JSProviderAnswer {
+  kNoWallet = 0,
+  kWalletDisabled = 1,
+  kNativeNotOverridden = 2,
+  kNativeOverridingDisallowed = 3,
+  kThirdPartyNotOverriding = 4,
+  kThirdPartyOverriding = 5,
+  kMaxValue = kThirdPartyOverriding
+};
 
 // Reports BraveWallet related P3A data
 class BraveWalletP3A : public mojom::KeyringServiceObserver,
@@ -61,8 +72,10 @@ class BraveWalletP3A : public mojom::KeyringServiceObserver,
   void AddObservers();
 
   void ReportUsage(bool unlocked);
-  void ReportEthereumProvider(
-      mojom::EthereumProviderType provider_type) override;
+  void ReportJSProvider(mojom::JSProviderType provider_type,
+                        mojom::CoinType coin_type,
+                        bool use_native_wallet_enabled,
+                        bool allow_provider_overwrite) override;
   void ReportOnboardingAction(
       mojom::OnboardingAction onboarding_action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
