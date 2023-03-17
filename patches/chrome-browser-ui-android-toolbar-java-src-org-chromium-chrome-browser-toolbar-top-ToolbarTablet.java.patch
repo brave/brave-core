@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index e9133168973746836d6d618cc06f73aa602e953f..846fecdebb442d8b364f8b0a0e7439f5be097318 100644
+index dc2d85fc7286f96b1cecc4a60eeabbf62d13e97c..cd22204b286c7b24d3dfbb2176735786871f78a6 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -369,10 +369,12 @@ public class ToolbarTablet
+@@ -367,10 +367,12 @@ public class ToolbarTablet
              mOfflineDownloader.downloadPage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
@@ -15,7 +15,7 @@ index e9133168973746836d6d618cc06f73aa602e953f..846fecdebb442d8b364f8b0a0e7439f5
          String description = null;
          Context context = getContext();
          Resources resources = context.getResources();
-@@ -478,6 +480,7 @@ public class ToolbarTablet
+@@ -476,6 +478,7 @@ public class ToolbarTablet
          mLocationBar.getTabletCoordinator().tintBackground(textBoxColor);
          mLocationBar.updateVisualsForState();
          setToolbarHairlineColor(color);

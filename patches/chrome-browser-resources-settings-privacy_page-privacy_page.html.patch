@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index e6d69a2cc203d24644c15ac416494ed3a2e9f816..7bc1c30d33437d7814ea6194feb4322cff48e96e 100644
+index e1312ec28f5f04413d2f08c71685419e582e28d0..34a747fe7b553d775541ee5169753575b5c3fb11 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -34,6 +34,7 @@
