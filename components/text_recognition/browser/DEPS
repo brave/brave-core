@@ -1,5 +1,7 @@
 include_rules = [
   "+base",
+  "+content/public/browser",
   "+skia",
   "+third_party/skia",
+  "+services/shape_detection",
 ]

@@ -20,7 +20,20 @@ component("browser") {
   ]
 
   if (is_win) {
-    sources += [ "text_recognition_win.cc" ]
+    sources += [
+      "text_recognition_helper_win.cc",
+      "text_recognition_helper_win.h",
+      "text_recognition_win.cc",
+      "text_recognizer_win.cc",
+      "text_recognizer_win.h",
+    ]
+
+    deps += [
+      "//brave/components/l10n/common",
+      "//content/public/browser",
+      "//services/shape_detection:lib",
+      "//services/shape_detection/public/mojom",
+    ]
   }
 
   if (is_mac) {

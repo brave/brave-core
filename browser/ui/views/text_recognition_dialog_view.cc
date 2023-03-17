@@ -17,6 +17,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/text_recognition/browser/text_recognition.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -26,6 +27,10 @@
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_client_view.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/components/text_recognition/browser/text_recognition_helper_win.h"
+#endif
 
 namespace brave {
 
@@ -90,12 +95,21 @@ void TextRecognitionDialogView::StartExtractingText(const SkBitmap& image) {
   header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
       IDS_TEXT_RECOGNITION_DIALOG_HEADER_IN_PROGRESS));
 
+#if BUILDFLAG(IS_MAC)
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&text_recognition::GetTextFromImage, image),
       base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
                      weak_factory_.GetWeakPtr()));
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  helper_ = std::make_unique<text_recognition::TextRecognitionHelperWin>();
+  helper_->GetTextFromImage(
+      image, base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
+                            weak_factory_.GetWeakPtr()));
+#endif
 }
 
 void TextRecognitionDialogView::OnGetTextFromImage(

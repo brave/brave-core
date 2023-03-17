@@ -6,12 +6,14 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TEXT_RECOGNITION_DIALOG_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TEXT_RECOGNITION_DIALOG_VIEW_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "build/build_config.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -21,6 +23,12 @@ namespace views {
 class Label;
 class ScrollView;
 }  // namespace views
+
+#if BUILDFLAG(IS_WIN)
+namespace text_recognition {
+class TextRecognitionHelperWin;
+}  // namespace text_recognition
+#endif
 
 class TextRecognitionDialogView : public views::DialogDelegateView {
  public:
@@ -45,6 +53,10 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
 
   raw_ptr<views::Label> header_label_ = nullptr;
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+
+#if BUILDFLAG(IS_WIN)
+  std::unique_ptr<text_recognition::TextRecognitionHelperWin> helper_;
+#endif
 
   base::OnceCallback<void(const std::vector<std::string>&)>
       on_get_text_callback_for_test_;

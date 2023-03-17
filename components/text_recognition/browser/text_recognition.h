@@ -10,14 +10,32 @@
 #include <vector>
 
 #include "base/component_export.h"
+#include "base/containers/flat_set.h"
+#include "base/functional/callback_forward.h"
+#include "build/build_config.h"
 
 class SkBitmap;
 
 namespace text_recognition {
 
-// Returns recognized texts from |image|.
+#if BUILDFLAG(IS_MAC)
+// Returns recognized texts from |image| synchronously.
 COMPONENT_EXPORT(TEXT_RECOGNITION_BROWSER)
 std::vector<std::string> GetTextFromImage(const SkBitmap& image);
+#endif
+
+#if BUILDFLAG(IS_WIN)
+COMPONENT_EXPORT(TEXT_RECOGNITION_BROWSER)
+base::flat_set<std::string> GetAvailableRecognizerLanguages();
+
+// Recognized text is delivered by running |callback_run_on_ui_thread| on UI
+// thread. On failure, |callback| runs with empty set.
+COMPONENT_EXPORT(TEXT_RECOGNITION_BROWSER)
+void GetTextFromImage(const std::string& lang_code,
+                      const SkBitmap& image,
+                      base::OnceCallback<void(const std::vector<std::string>&)>
+                          callback_run_on_ui_thread);
+#endif
 
 }  // namespace text_recognition
 
