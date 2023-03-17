@@ -59,6 +59,9 @@ ios_objc_mojom_wrappers("ads_mojom_wrappers") {
     "DBTransactionInfo",
     "DBValue",
   ]
+
+  # The module name is `BraveAds` now which matches the class we already have
+  generate_namespace = false
 }
 
 bundle_data("ads_resources") {
