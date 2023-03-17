@@ -152,7 +152,7 @@ const mojom::NetworkInfo* GetAvalancheMainnet() {
        {"https://snowtrace.io"},
        {},
        0,
-       {GURL("https://api.avax.network/ext/bc/C/rpc")},
+       {},
        "AVAX",
        "Avalanche",
        18,
@@ -457,6 +457,7 @@ const base::flat_set<std::string> kInfuraChains = {
     brave_wallet::mojom::kPolygonMainnetChainId,
     brave_wallet::mojom::kOptimismMainnetChainId,
     brave_wallet::mojom::kAuroraMainnetChainId,
+    brave_wallet::mojom::kAvalancheMainnetChainId,
     brave_wallet::mojom::kSepoliaChainId,
     brave_wallet::mojom::kGoerliChainId};
 
