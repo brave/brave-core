@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
 
@@ -26,7 +26,7 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
   std::uniform_int_distribution<> distrtime(0, 144);
 
   std::default_random_engine generator;
-  generator.seed(base::Time::Now().ToInternalValue());
+  generator.seed(base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
 
   std::vector<float> cov_x(num_features, 0.0);
   for (int j = 0; j < num_features; j++) {

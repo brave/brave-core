@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/communication_adapter.h"
 
@@ -96,14 +96,15 @@ void CommunicationAdapter::OnGetTasks(
   if (response_code == net::HTTP_OK) {
     TaskList task_list = ParseTaskListFromResponseBody(*response_body);
     VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
-
     if (task_list.empty()) {
       VLOG(1) << "No tasks received from FL service, retrying in 60s";
-      std::move(callback).Run({}, features::GetFederatedLearningUpdateCycleInSeconds());
+      std::move(callback).Run(
+          {}, features::GetFederatedLearningUpdateCycleInSeconds());
       return;
     }
 
-    std::move(callback).Run(task_list, features::GetFederatedLearningUpdateCycleInSeconds());
+    std::move(callback).Run(
+        task_list, features::GetFederatedLearningUpdateCycleInSeconds());
     return;
   }
 

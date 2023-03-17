@@ -1,7 +1,7 @@
-/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_federated/learning_service.h"
 
@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/communication_adapter.h"
@@ -18,6 +19,7 @@
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -78,11 +80,11 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   }
 
   ModelSpec spec{
-      32,    // num_params
-      64,    // batch_size
-      lr,    // learning_rate
-      500,   // num_iterations
-      0.5    // threshold
+      32,   // num_params
+      64,   // batch_size
+      lr,   // learning_rate
+      500,  // num_iterations
+      0.5   // threshold
   };
 
   if (spec.num_params != static_cast<int>(task.GetParameters().at(0).size())) {
@@ -91,27 +93,37 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   }
   VLOG(2) << "Task model and client model match!";
 
-  Model* model = new Model(spec);
+  std::unique_ptr<Model> model = std::make_unique<Model>(spec);
   model->SetWeights(task.GetParameters().at(0));
   model->SetBias(task.GetParameters().at(1).at(0));
-  FederatedTaskRunner* task_runner = new FederatedTaskRunner(task, model);
+  auto task_runner =
+      std::make_unique<FederatedTaskRunner>(task, std::move(model));
 
-  SyntheticDataset* local_training_data = new SyntheticDataset(500);
-  SyntheticDataset* local_test_data = new SyntheticDataset(50);
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+      base::BindOnce(
+          [](std::unique_ptr<FederatedTaskRunner> task_runner) -> TaskResult {
+            auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
+            SyntheticDataset test_dataset =
+                synthetic_dataset->SeparateTestData(50);
 
-  task_runner->SetTrainingData(local_training_data->GetDataPoints());
-  task_runner->SetTestData(local_test_data->GetDataPoints());
-  VLOG(2) << "Model and data set. Task runner initialized.";
+            task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
+            task_runner->SetTestData(test_dataset.GetDataPoints());
+            VLOG(2) << "Model and data set. Task runner initialized.";
 
-  // TODO(lminto): should we run the task runner on another thread?
+            return task_runner->Run();
+          },
+          std::move(task_runner)),
+      base::BindOnce(&LearningService::OnTaskResultComputed,
+                     base::Unretained(this)));
+}
+
+void LearningService::OnTaskResultComputed(TaskResult result) {
   TaskResultList results;
-  TaskResult result = task_runner->Run();
   results.push_back(result);
   PostTaskResults(results);
-  delete task_runner;
-  delete model;
-  delete local_training_data;
-  delete local_test_data;
 }
 
 void LearningService::PostTaskResults(TaskResultList results) {
@@ -129,7 +141,7 @@ void LearningService::OnPostTaskResults(TaskResultResponse response) {
     reconnect = features::GetFederatedLearningUpdateCycleInSeconds();
     VLOG(2) << "Task results posted successfully";
   } else {
-    reconnect = features::GetFederatedLearningUpdateCycleInSeconds()/2;
+    reconnect = features::GetFederatedLearningUpdateCycleInSeconds() / 2;
     VLOG(2) << "Task results posting failed";
   }
 

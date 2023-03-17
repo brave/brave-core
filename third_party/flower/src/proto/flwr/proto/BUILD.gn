@@ -2,10 +2,11 @@ import("//third_party/grpc/grpc_library.gni")
 import("//third_party/protobuf/proto_library.gni")
 
 grpc_library("transport_grpc_proto") {
-  sources = [ "transport.proto",
-              "task.proto",
-              "fleet.proto",
-              "node.proto",
-              "driver.proto"
-            ]
+  sources = [
+    "driver.proto",
+    "fleet.proto",
+    "node.proto",
+    "task.proto",
+    "transport.proto",
+  ]
 }
