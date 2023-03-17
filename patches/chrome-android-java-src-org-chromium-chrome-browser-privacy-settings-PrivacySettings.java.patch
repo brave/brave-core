@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 416ff5e99a7b2fa0020b72d14d6f9145e5085113..a2f07d211d2f7d2a30b20ed925182268abb2900c 100644
+index e64c0b3460fbdf1c79bef470f1e3da5361fa9818..73c468691d7f75c99632eb6fc8875e8d90f98ac4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 @@ -55,7 +55,7 @@ import org.chromium.ui.text.SpanApplier;
+ /**
   * Fragment to keep track of the all the privacy related preferences.
   */
- public class PrivacySettings
--        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
-+        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+-public class PrivacySettings extends PreferenceFragmentCompat
++public class PrivacySettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements Preference.OnPreferenceChangeListener, FragmentHelpAndFeedbackLauncher {
      private static final String PREF_CAN_MAKE_PAYMENT = "can_make_payment";
      private static final String PREF_PRELOAD_PAGES = "preload_pages";
-     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
-@@ -294,6 +294,7 @@ public class PrivacySettings
+@@ -296,6 +296,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
      @Override
      public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
          menu.clear();
@@ -19,11 +19,12 @@ index 416ff5e99a7b2fa0020b72d14d6f9145e5085113..a2f07d211d2f7d2a30b20ed925182268
          MenuItem help =
                  menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
          help.setIcon(TraceEventVectorDrawableCompat.create(
-@@ -308,6 +309,6 @@ public class PrivacySettings
-                     null);
+@@ -309,7 +310,7 @@ public class PrivacySettings extends PreferenceFragmentCompat
+                     getActivity(), getString(R.string.help_context_privacy), null);
              return true;
          }
 -        return false;
 +        return super.onOptionsItemSelected(item);
      }
- }
+ 
+     @Override

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 1e2a289fca11f254647fecd10a016232f9cde311..492309aa9cd399152096144f3372da9d8255153c 100644
+index f2b0bd4099b4f89557e454ff7a1a371cd3b5692e..e59f7befaffd2debd93347157328f8245f623f33 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -343,6 +343,7 @@ void ToolbarView::Init() {
-   if (side_panel_button)
+@@ -354,6 +354,7 @@ void ToolbarView::Init() {
      side_panel_button_ = AddChildView(std::move(side_panel_button));
+   }
  
 +  BRAVE_TOOLBAR_VIEW_INIT
    avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
