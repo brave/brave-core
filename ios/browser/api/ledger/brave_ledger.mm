@@ -34,7 +34,7 @@
 #import "brave/ios/browser/api/ledger/legacy_database/legacy_ledger_database.h"
 #import "brave/ios/browser/api/ledger/promotion_solution.h"
 #import "brave/ios/browser/api/ledger/rewards_notification.h"
-#include "components/os_crypt/os_crypt.h"
+#include "components/os_crypt/sync/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 #include "url/origin.h"

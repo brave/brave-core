@@ -1,7 +1,7 @@
-diff --git a/components/os_crypt/key_storage_linux.cc b/components/os_crypt/key_storage_linux.cc
-index 4231f58a606601850abd8696bb0a66884f1113bb..b5ecbd24501baa55632ad7c1d3b9e7f7d92ab21a 100644
---- a/components/os_crypt/key_storage_linux.cc
-+++ b/components/os_crypt/key_storage_linux.cc
+diff --git a/components/os_crypt/sync/key_storage_linux.cc b/components/os_crypt/sync/key_storage_linux.cc
+index ebe788b6e5848e605dc3cdab38d6d96226352ed6..a167e5e9892ad18b68152f3cebbed89b2ba7f540 100644
+--- a/components/os_crypt/sync/key_storage_linux.cc
++++ b/components/os_crypt/sync/key_storage_linux.cc
 @@ -32,8 +32,7 @@
  const char KeyStorageLinux::kFolderName[] = "Chrome Keys";
  const char KeyStorageLinux::kKey[] = "Chrome Safe Storage";

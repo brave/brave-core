@@ -18,4 +18,4 @@ bool IsEncryptionDisabled(const std::string& input_text,
 }
 
 }  // namespace
-#include "src/components/os_crypt/os_crypt_win.cc"
+#include "src/components/os_crypt/sync/os_crypt_win.cc"
