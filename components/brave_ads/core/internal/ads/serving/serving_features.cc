@@ -22,11 +22,11 @@ constexpr int kDefaultDefaultNotificationAdsPerHour =
     kDefaultNotificationAdsPerHour;
 constexpr char kFieldTrialParameterMaximumNotificationAdsPerDay[] =
     "maximum_ad_notifications_per_day";
-constexpr int kDefaultMaximumNotificationAdsPerDay = 40;
+constexpr int kDefaultMaximumNotificationAdsPerDay = 100;
 
 constexpr char kFieldTrialParameterMaximumInlineContentAdsPerHour[] =
     "maximum_inline_content_ads_per_hour";
-constexpr int kDefaultMaximumInlineContentAdsPerHour = 4;
+constexpr int kDefaultMaximumInlineContentAdsPerHour = 6;
 constexpr char kFieldTrialParameterMaximumInlineContentAdsPerDay[] =
     "maximum_inline_content_ads_per_day";
 constexpr int kDefaultMaximumInlineContentAdsPerDay = 20;
@@ -65,7 +65,7 @@ constexpr char kFieldTrialParameterBrowsingHistoryDaysAgo[] =
 constexpr int kDefaultBrowsingHistoryDaysAgo = 180;
 
 constexpr char kFieldTrialParameterServingVersion[] = "ad_serving_version";
-constexpr int kDefaultServingVersion = 1;
+constexpr int kDefaultServingVersion = 2;
 
 }  // namespace
 
