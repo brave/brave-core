@@ -76,8 +76,7 @@ void OnGetAll(GetConversionQueueCallback callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    std::move(callback).Run(/*success*/ false, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, {});
   }
 
   ConversionQueueItemList conversion_queue_items;
@@ -98,8 +97,7 @@ void OnGetForCreativeInstanceId(
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get conversion queue");
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   ConversionQueueItemList conversion_queue_items;
@@ -238,8 +236,7 @@ void ConversionQueue::Save(
     const ConversionQueueItemList& conversion_queue_items,
     ResultCallback callback) {
   if (conversion_queue_items.empty()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -388,8 +385,7 @@ void ConversionQueue::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetConversionQueueForCreativeInstanceIdCallback callback) const {
   if (creative_instance_id.empty()) {
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const std::string query = base::StringPrintf(

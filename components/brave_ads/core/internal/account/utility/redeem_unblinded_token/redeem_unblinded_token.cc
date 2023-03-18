@@ -52,14 +52,12 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 
   if (ShouldRewardUser() && !HasIssuers()) {
     BLOG(1, "Failed to redeem unblinded token due to missing issuers");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   if (!confirmation.was_created) {
-    CreateConfirmation(confirmation);
-    return;
+    return CreateConfirmation(confirmation);
   }
 
   FetchPaymentToken(confirmation);
@@ -93,16 +91,14 @@ void RedeemUnblindedToken::OnCreateConfirmation(
 
   if (!confirmation.opted_in) {
     if (url_response.status_code == net::kHttpImATeapot) {
-      OnDidSendConfirmation(confirmation);
-      return;
+      return OnDidSendConfirmation(confirmation);
     }
 
     const bool should_retry =
         url_response.status_code != net::HTTP_CONFLICT &&
         url_response.status_code != net::HTTP_BAD_REQUEST &&
         url_response.status_code != net::HTTP_CREATED;
-    OnFailedToSendConfirmation(confirmation, should_retry);
-    return;
+    return OnFailedToSendConfirmation(confirmation, should_retry);
   }
 
   ConfirmationInfo new_confirmation = confirmation;
@@ -144,30 +140,27 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     ConfirmationInfo new_confirmation = confirmation;
     new_confirmation.was_created = false;
 
-    OnFailedToRedeemUnblindedToken(new_confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(new_confirmation,
+                                          /*should_retry*/ true,
+                                          /*should_backoff*/ false);
   }
 
   if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     BLOG(1, "Credential is invalid");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                          /*should_backoff*/ false);
   }
 
   if (url_response.status_code == net::HTTP_ACCEPTED) {
     BLOG(1, "Payment token is not ready");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ false);
   }
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch payment token");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   // Parse JSON response
@@ -175,18 +168,16 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
       base::JSONReader::Read(url_response.body);
   if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   // Get id
   const std::string* const id = root->FindStringKey("id");
   if (!id) {
     BLOG(0, "Response is missing id");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   // Validate id
@@ -194,18 +185,16 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     BLOG(0, "Response id " << *id
                            << " does not match confirmation transaction id "
                            << confirmation.transaction_id);
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                          /*should_backoff*/ false);
   }
 
   // Get payment token
   const base::Value* const payment_token = root->FindDictKey("paymentToken");
   if (!payment_token) {
     BLOG(1, "Response is missing paymentToken");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   // Get public key
@@ -213,9 +202,8 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
       payment_token->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey in paymentToken dictionary");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   const privacy::cbr::PublicKey public_key =
@@ -223,18 +211,16 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   if (!public_key.has_value()) {
     BLOG(0, "Invalid public key");
     NOTREACHED();
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   if (!PublicKeyExistsForIssuerType(IssuerType::kPayments,
                                     *public_key_base64)) {
     BLOG(0, "Response public key " << *public_key_base64 << " does not exist "
                                    << "in payments issuer public keys");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   // Get batch dleq proof
@@ -242,18 +228,16 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
       payment_token->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
   privacy::cbr::BatchDLEQProof batch_dleq_proof =
       privacy::cbr::BatchDLEQProof(*batch_dleq_proof_base64);
   if (!batch_dleq_proof.has_value()) {
     BLOG(0, "Invalid batch DLEQ proof");
     NOTREACHED();
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   // Get signed tokens
@@ -261,9 +245,8 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
       payment_token->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   std::vector<privacy::cbr::SignedToken> signed_tokens;
@@ -284,25 +267,22 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   // Verify and unblind tokens
   if (!confirmation.opted_in) {
     BLOG(0, "Missing confirmation opted-in");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                          /*should_backoff*/ false);
   }
 
   if (!confirmation.opted_in->token.has_value()) {
     BLOG(0, "Missing confirmation opted-in token");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                          /*should_backoff*/ false);
   }
   const std::vector<privacy::cbr::Token> tokens = {
       confirmation.opted_in->token};
 
   if (!confirmation.opted_in->blinded_token.has_value()) {
     BLOG(0, "Missing confirmation opted-in blinded token");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                          /*should_backoff*/ false);
   }
   const std::vector<privacy::cbr::BlindedToken> blinded_tokens = {
       confirmation.opted_in->blinded_token};
@@ -315,9 +295,8 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << *public_key_base64);
 
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
-                                   /*should_backoff*/ true);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ true,
+                                          /*should_backoff*/ true);
   }
 
   privacy::UnblindedPaymentTokenInfo unblinded_payment_token;

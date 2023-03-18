@@ -29,8 +29,7 @@ void BuildStatement(BuildStatementCallback callback) {
              const TransactionList& transactions) {
             if (!success) {
               BLOG(0, "Failed to get transactions");
-              std::move(callback).Run(/*statement*/ nullptr);
-              return;
+              return std::move(callback).Run(/*statement*/ nullptr);
             }
 
             mojom::StatementInfoPtr statement = mojom::StatementInfo::New();

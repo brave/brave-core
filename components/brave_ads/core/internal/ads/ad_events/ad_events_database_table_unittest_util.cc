@@ -28,8 +28,7 @@ void Reset(ResultCallback callback) {
             if (!command_response ||
                 command_response->status !=
                     mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-              std::move(callback).Run(/*success*/ false);
-              return;
+              return std::move(callback).Run(/*success*/ false);
             }
 
             RebuildAdEventHistoryFromDatabase();

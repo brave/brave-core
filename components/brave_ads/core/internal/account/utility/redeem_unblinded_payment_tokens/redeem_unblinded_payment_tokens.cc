@@ -83,8 +83,7 @@ void RedeemUnblindedPaymentTokens::MaybeRedeemAfterDelay(
 
   if (!wallet.IsValid()) {
     BLOG(0, "Failed to redeem unblinded payment tokens due to invalid wallet");
-    FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ false);
-    return;
+    return FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ false);
   }
 
   wallet_ = wallet;
@@ -107,8 +106,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
 
   if (privacy::UnblindedPaymentTokensIsEmpty()) {
     BLOG(1, "No unblinded payment tokens to redeem");
-    ScheduleNextTokenRedemption();
-    return;
+    return ScheduleNextTokenRedemption();
   }
 
   BLOG(2, "PUT /v3/confirmation/payment/{paymentId}");
@@ -152,8 +150,7 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ true);
-    return;
+    return FailedToRedeemUnblindedPaymentTokens(/*should_retry*/ true);
   }
 
   SuccessfullyRedeemedUnblindedPaymentTokens(unblinded_payment_tokens);

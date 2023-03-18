@@ -42,8 +42,7 @@ void OnMigrate(InitializeCallback callback,
                const std::string& json) {
   if (!success) {
     // Confirmations state does not exist
-    SuccessfullyMigrated(std::move(callback));
-    return;
+    return SuccessfullyMigrated(std::move(callback));
   }
 
   BLOG(3, "Successfully loaded confirmations state");
@@ -54,8 +53,7 @@ void OnMigrate(InitializeCallback callback,
       BuildTransactionsFromJson(json);
   if (!transactions) {
     BLOG(0, "Failed to parse rewards state");
-    FailedToMigrate(std::move(callback));
-    return;
+    return FailedToMigrate(std::move(callback));
   }
 
   database::table::Transactions database_table;
@@ -64,8 +62,7 @@ void OnMigrate(InitializeCallback callback,
                           [](InitializeCallback callback, const bool success) {
                             if (!success) {
                               BLOG(0, "Failed to save rewards state");
-                              FailedToMigrate(std::move(callback));
-                              return;
+                              return FailedToMigrate(std::move(callback));
                             }
 
                             BLOG(3, "Successfully migrated rewards state");
@@ -78,8 +75,7 @@ void OnMigrate(InitializeCallback callback,
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   BLOG(3, "Loading confirmations state");

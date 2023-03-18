@@ -126,8 +126,7 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative ad");
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const CreativeAdList creative_ads =
@@ -135,8 +134,7 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative ad");
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const CreativeAdInfo& creative_ad = creative_ads.front();
@@ -202,9 +200,8 @@ void CreativeAds::GetForCreativeInstanceId(
   const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
-    std::move(callback).Run(/*success*/ false, creative_instance_id,
-                            creative_ad);
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id,
+                                   creative_ad);
   }
 
   const std::string query = base::StringPrintf(

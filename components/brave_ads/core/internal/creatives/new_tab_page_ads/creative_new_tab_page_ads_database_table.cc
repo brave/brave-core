@@ -167,8 +167,7 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ad");
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const CreativeNewTabPageAdList creative_ads =
@@ -176,8 +175,7 @@ void OnGetForCreativeInstanceId(const std::string& creative_instance_id,
 
   if (creative_ads.size() != 1) {
     BLOG(0, "Failed to get creative new tab page ad");
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const CreativeNewTabPageAdInfo& creative_ad = creative_ads.front();
@@ -191,8 +189,7 @@ void OnGetForSegments(const SegmentList& segments,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative new tab page ads");
-    std::move(callback).Run(/*success*/ false, segments, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, segments, {});
   }
 
   const CreativeNewTabPageAdList creative_ads =
@@ -206,8 +203,7 @@ void OnGetAll(GetCreativeNewTabPageAdsCallback callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative new tab page ads");
-    std::move(callback).Run(/*success*/ false, {}, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, {}, {});
   }
 
   const CreativeNewTabPageAdList creative_ads =
@@ -257,8 +253,7 @@ CreativeNewTabPageAds::~CreativeNewTabPageAds() = default;
 void CreativeNewTabPageAds::Save(const CreativeNewTabPageAdList& creative_ads,
                                  ResultCallback callback) {
   if (creative_ads.empty()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -305,8 +300,7 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeNewTabPageAdCallback callback) const {
   if (creative_instance_id.empty()) {
-    std::move(callback).Run(/*success*/ false, creative_instance_id, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 
   const std::string query = base::StringPrintf(
@@ -407,8 +401,7 @@ void CreativeNewTabPageAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNewTabPageAdsCallback callback) const {
   if (segments.empty()) {
-    std::move(callback).Run(/*success*/ true, segments, {});
-    return;
+    return std::move(callback).Run(/*success*/ true, segments, {});
   }
 
   const std::string query = base::StringPrintf(

@@ -54,8 +54,7 @@ void EligibleAdsV1::OnGetForUserModel(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Failed to get ad events");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   GetBrowsingHistory(std::move(user_model), dimensions, ad_events,
@@ -96,9 +95,8 @@ void EligibleAdsV1::GetForChildSegments(
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   const SegmentList segments = targeting::GetTopChildSegments(user_model);
   if (segments.empty()) {
-    GetForParentSegments(user_model, dimensions, ad_events, browsing_history,
-                         std::move(callback));
-    return;
+    return GetForParentSegments(user_model, dimensions, ad_events,
+                                browsing_history, std::move(callback));
   }
 
   BLOG(1, "Get eligible ads for child segments:");
@@ -125,8 +123,7 @@ void EligibleAdsV1::OnGetForChildSegments(
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for child segments");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   const CreativeInlineContentAdList eligible_creative_ads =
@@ -134,9 +131,8 @@ void EligibleAdsV1::OnGetForChildSegments(
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size()
                                       << " ads for child segments");
-    GetForParentSegments(user_model, dimensions, ad_events, browsing_history,
-                         std::move(callback));
-    return;
+    return GetForParentSegments(user_model, dimensions, ad_events,
+                                browsing_history, std::move(callback));
   }
 
   BLOG(1, eligible_creative_ads.size()
@@ -154,9 +150,8 @@ void EligibleAdsV1::GetForParentSegments(
     GetEligibleAdsCallback<CreativeInlineContentAdList> callback) {
   const SegmentList segments = targeting::GetTopParentSegments(user_model);
   if (segments.empty()) {
-    GetForUntargeted(dimensions, ad_events, browsing_history,
-                     std::move(callback));
-    return;
+    return GetForUntargeted(dimensions, ad_events, browsing_history,
+                            std::move(callback));
   }
 
   BLOG(1, "Get eligible ads for parent segments:");
@@ -182,8 +177,7 @@ void EligibleAdsV1::OnGetForParentSegments(
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for parent segments");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   const CreativeInlineContentAdList eligible_creative_ads =
@@ -191,9 +185,8 @@ void EligibleAdsV1::OnGetForParentSegments(
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size()
                                       << " ads for parent segments");
-    GetForUntargeted(dimensions, ad_events, browsing_history,
-                     std::move(callback));
-    return;
+    return GetForUntargeted(dimensions, ad_events, browsing_history,
+                            std::move(callback));
   }
 
   BLOG(1, eligible_creative_ads.size()
@@ -226,8 +219,7 @@ void EligibleAdsV1::OnGetForUntargeted(
     const CreativeInlineContentAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads for untargeted segment");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   const CreativeInlineContentAdList eligible_creative_ads =
@@ -235,8 +227,7 @@ void EligibleAdsV1::OnGetForUntargeted(
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size()
                                       << " ads for untargeted segment");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   BLOG(1, eligible_creative_ads.size()

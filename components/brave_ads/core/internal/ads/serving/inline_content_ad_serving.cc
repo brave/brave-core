@@ -52,21 +52,18 @@ void Serving::MaybeServeAd(const std::string& dimensions,
                            MaybeServeInlineContentAdCallback callback) {
   if (!features::IsEnabled()) {
     BLOG(1, "Inline content ad not served: Feature is disabled");
-    FailedToServeAd(dimensions, std::move(callback));
-    return;
+    return FailedToServeAd(dimensions, std::move(callback));
   }
 
   if (!IsSupported()) {
     BLOG(1, "Inline content ad not served: Unsupported version");
-    FailedToServeAd(dimensions, std::move(callback));
-    return;
+    return FailedToServeAd(dimensions, std::move(callback));
   }
 
   if (!PermissionRules::HasPermission()) {
     BLOG(1,
          "Inline content ad not served: Not allowed due to permission rules");
-    FailedToServeAd(dimensions, std::move(callback));
-    return;
+    return FailedToServeAd(dimensions, std::move(callback));
   }
 
   const targeting::UserModelInfo user_model = targeting::BuildUserModel();
@@ -91,8 +88,7 @@ void Serving::OnGetForUserModel(
 
   if (creative_ads.empty()) {
     BLOG(1, "Inline content ad not served: No eligible ads found");
-    FailedToServeAd(dimensions, std::move(callback));
-    return;
+    return FailedToServeAd(dimensions, std::move(callback));
   }
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
@@ -114,8 +110,7 @@ void Serving::ServeAd(const InlineContentAdInfo& ad,
                       MaybeServeInlineContentAdCallback callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve inline content ad");
-    FailedToServeAd(ad.dimensions, std::move(callback));
-    return;
+    return FailedToServeAd(ad.dimensions, std::move(callback));
   }
 
   BLOG(1, "Served inline content ad:\n"

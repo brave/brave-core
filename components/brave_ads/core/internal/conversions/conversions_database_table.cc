@@ -67,8 +67,7 @@ void OnGetConversions(GetConversionsCallback callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative conversions");
-    std::move(callback).Run(/*success*/ false, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, {});
   }
 
   ConversionList conversions;
@@ -109,8 +108,7 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
 void Conversions::Save(const ConversionList& conversions,
                        ResultCallback callback) {
   if (conversions.empty()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();

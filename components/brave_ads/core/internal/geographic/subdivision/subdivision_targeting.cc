@@ -121,15 +121,13 @@ const std::string& SubdivisionTargeting::GetLazySubdivisionCode() const {
 void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
   if (!locale::IsSupportedCountryCodeForSubdivisionTargeting(country_code)) {
-    AdsClientHelper::GetInstance()->SetBooleanPref(
+    return AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);
-    return;
   }
 
   if (IsDisabled()) {
-    AdsClientHelper::GetInstance()->SetBooleanPref(
+    return AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, true);
-    return;
   }
 
   const std::string& subdivision_code = GetSubdivisionCode();
@@ -140,9 +138,8 @@ void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   }
   if (country_code != subdivision_country_code) {
     MaybeResetSubdivisionCodeToAutoDetect();
-    AdsClientHelper::GetInstance()->SetBooleanPref(
+    return AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);
-    return;
   }
 
   if (!IsSupportedSubdivisionCode(country_code, subdivision_code)) {
@@ -189,10 +186,8 @@ void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
     BLOG(1, "Ads subdivision targeting is not supported for " << locale
                                                               << " locale");
 
-    AdsClientHelper::GetInstance()->SetBooleanPref(
+    return AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);
-
-    return;
   }
 
   if (IsDisabled()) {
@@ -234,16 +229,14 @@ void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch subdivision target");
-    Retry();
-    return;
+    return Retry();
   }
 
   BLOG(1, "Successfully fetched subdivision target");
 
   if (!ParseJson(url_response.body)) {
     BLOG(1, "Failed to parse subdivision target");
-    Retry();
-    return;
+    return Retry();
   }
 
   retry_timer_.Stop();

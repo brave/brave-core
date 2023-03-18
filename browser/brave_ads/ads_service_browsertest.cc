@@ -192,8 +192,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     const auto iter = locale_for_tests.find(test_info->name());
     if (iter == locale_for_tests.end()) {
-      MaybeMockLocaleForBraveAdsUpgradePath();
-      return;
+      return MaybeMockLocaleForBraveAdsUpgradePath();
     }
 
     scoped_default_locale_ =

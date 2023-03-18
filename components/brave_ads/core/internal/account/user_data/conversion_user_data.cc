@@ -21,8 +21,7 @@ void GetConversion(const std::string& creative_instance_id,
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
 
   if (confirmation_type != ConfirmationType::kConversion) {
-    std::move(callback).Run(base::Value::Dict());
-    return;
+    return std::move(callback).Run(base::Value::Dict());
   }
 
   builder::BuildConversion(

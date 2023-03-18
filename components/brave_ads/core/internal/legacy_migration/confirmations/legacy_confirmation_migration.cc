@@ -34,8 +34,7 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   BLOG(3, "Loading confirmation state");
@@ -47,14 +46,12 @@ void Migrate(InitializeCallback callback) {
              const std::string& json) {
             if (!success) {
               // Confirmation state does not exist
-              SuccessfullyMigrated(std::move(callback));
-              return;
+              return SuccessfullyMigrated(std::move(callback));
             }
 
             if (!ConfirmationStateManager::GetInstance()->FromJson(json)) {
               BLOG(0, "Failed to load confirmation state");
-              FailedToMigrate(std::move(callback));
-              return;
+              return FailedToMigrate(std::move(callback));
             }
 
             BLOG(3, "Successfully loaded confirmation state");
@@ -71,8 +68,7 @@ void Migrate(InitializeCallback callback) {
                     [](InitializeCallback callback, const bool success) {
                       if (!success) {
                         BLOG(0, "Failed to save confirmation state");
-                        FailedToMigrate(std::move(callback));
-                        return;
+                        return FailedToMigrate(std::move(callback));
                       }
 
                       BLOG(3, "Successfully migrated confirmation state");

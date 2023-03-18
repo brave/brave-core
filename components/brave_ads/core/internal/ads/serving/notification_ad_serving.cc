@@ -93,14 +93,12 @@ void Serving::MaybeServeAd() {
 
   if (!IsSupported()) {
     BLOG(1, "Notification ad not served: Unsupported version");
-    FailedToServeAd();
-    return;
+    return FailedToServeAd();
   }
 
   if (!PermissionRules::HasPermission()) {
     BLOG(1, "Notification ad not served: Not allowed due to permission rules");
-    FailedToServeAd();
-    return;
+    return FailedToServeAd();
   }
 
   const targeting::UserModelInfo user_model = targeting::BuildUserModel();
@@ -124,8 +122,7 @@ void Serving::OnGetForUserModel(
 
   if (creative_ads.empty()) {
     BLOG(1, "Notification ad not served: No eligible ads found");
-    FailedToServeAd();
-    return;
+    return FailedToServeAd();
   }
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
@@ -180,8 +177,7 @@ base::Time Serving::MaybeServeAdAfter(const base::TimeDelta delay) {
 void Serving::ServeAd(const NotificationAdInfo& ad) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve notification ad");
-    FailedToServeAd();
-    return;
+    return FailedToServeAd();
   }
 
   BLOG(1, "Served notification ad:\n"
@@ -247,8 +243,7 @@ void Serving::OnAdsPerHourPrefChanged() {
   }
 
   if (ads_per_hour == 0) {
-    StopServingAdsAtRegularIntervals();
-    return;
+    return StopServingAdsAtRegularIntervals();
   }
 
   MaybeServeAdAtNextRegularInterval();

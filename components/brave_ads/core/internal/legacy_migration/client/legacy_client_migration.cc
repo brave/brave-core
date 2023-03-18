@@ -34,8 +34,7 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   BLOG(3, "Loading client state");
@@ -47,15 +46,13 @@ void Migrate(InitializeCallback callback) {
              const std::string& json) {
             if (!success) {
               // Client state does not exist
-              SuccessfullyMigrated(std::move(callback));
-              return;
+              return SuccessfullyMigrated(std::move(callback));
             }
 
             ClientInfo client;
             if (!client.FromJson(json)) {
               BLOG(0, "Failed to load client state");
-              FailedToMigrate(std::move(callback));
-              return;
+              return FailedToMigrate(std::move(callback));
             }
 
             BLOG(3, "Successfully loaded client state");
@@ -71,8 +68,7 @@ void Migrate(InitializeCallback callback) {
                     [](InitializeCallback callback, const bool success) {
                       if (!success) {
                         BLOG(0, "Failed to save client state");
-                        FailedToMigrate(std::move(callback));
-                        return;
+                        return FailedToMigrate(std::move(callback));
                       }
 
                       BLOG(3, "Successfully migrated client state");

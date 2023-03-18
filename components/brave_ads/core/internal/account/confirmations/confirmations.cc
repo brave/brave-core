@@ -170,8 +170,7 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
       confirmation.creative_instance_id, confirmation.type,
       confirmation.ad_type, std::move(user_data));
   if (!new_confirmation) {
-    AppendToRetryQueue(confirmation);
-    return;
+    return AppendToRetryQueue(confirmation);
   }
 
   AppendToRetryQueue(*new_confirmation);
@@ -207,9 +206,8 @@ void Confirmations::OnDidRedeemUnblindedToken(
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
   if (privacy::UnblindedPaymentTokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
-    OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                   /*should_backoff*/ false);
-    return;
+    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
+                                          /*should_backoff*/ false);
   }
 
   privacy::AddUnblindedPaymentTokens({unblinded_payment_token});

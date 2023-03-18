@@ -43,8 +43,7 @@ void SuccessfullyMigrated(InitializeCallback callback) {
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   BLOG(3, "Loading notification state");
@@ -56,16 +55,14 @@ void Migrate(InitializeCallback callback) {
              const std::string& json) {
             if (!success) {
               // Notification state does not exist
-              SuccessfullyMigrated(std::move(callback));
-              return;
+              return SuccessfullyMigrated(std::move(callback));
             }
 
             const absl::optional<base::circular_deque<NotificationAdInfo>> ads =
                 json::reader::ReadNotificationAds(json);
             if (!ads) {
               BLOG(0, "Failed to load notification state");
-              FailedToMigrate(std::move(callback));
-              return;
+              return FailedToMigrate(std::move(callback));
             }
 
             BLOG(3, "Successfully loaded notification state");

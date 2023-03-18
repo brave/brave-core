@@ -42,8 +42,7 @@ TransactionInfo Add(const std::string& creative_instance_id,
           [](AddCallback callback, const TransactionInfo& transaction,
              const bool success) {
             if (!success) {
-              std::move(callback).Run(/*success*/ false, {});
-              return;
+              return std::move(callback).Run(/*success*/ false, {});
             }
 
             std::move(callback).Run(/*success*/ true, transaction);
@@ -63,8 +62,7 @@ void GetForDateRange(const base::Time from_time,
           [](GetCallback callback, const bool success,
              const TransactionList& transactions) {
             if (!success) {
-              std::move(callback).Run(/*success*/ false, {});
-              return;
+              return std::move(callback).Run(/*success*/ false, {});
             }
 
             std::move(callback).Run(/*success*/ true, transactions);
@@ -77,8 +75,7 @@ void RemoveAll(RemoveAllCallback callback) {
   database_table.Delete(base::BindOnce(
       [](RemoveAllCallback callback, const bool success) {
         if (!success) {
-          std::move(callback).Run(/*success*/ false);
-          return;
+          return std::move(callback).Run(/*success*/ false);
         }
 
         std::move(callback).Run(/*success*/ true);
