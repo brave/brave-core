@@ -13,16 +13,15 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_bubble_manager.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -123,11 +122,9 @@ BraveRewardsActionView::BraveRewardsActionView(Browser* browser)
           nullptr,
           false),
       browser_(browser),
-      bubble_manager_(std::make_unique<WebUIBubbleManagerT<RewardsPanelUI>>(
-          this,
-          browser_->profile(),
-          GURL(kBraveRewardsPanelURL),
-          IDS_BRAVE_UI_BRAVE_REWARDS)) {
+      bubble_manager_(
+          std::make_unique<BraveRewardsBubbleManager>(this,
+                                                      browser_->profile())) {
   DCHECK(browser_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(

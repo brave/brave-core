@@ -680,6 +680,8 @@ source_set("ui") {
       "views/brave_actions/brave_actions_container.h",
       "views/brave_actions/brave_rewards_action_view.cc",
       "views/brave_actions/brave_rewards_action_view.h",
+      "views/brave_actions/brave_rewards_bubble_manager.cc",
+      "views/brave_actions/brave_rewards_bubble_manager.h",
       "views/brave_actions/brave_shields_action_view.cc",
       "views/brave_actions/brave_shields_action_view.h",
       "views/frame/vertical_tab_strip_region_view.cc",
