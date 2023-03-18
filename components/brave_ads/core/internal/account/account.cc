@@ -124,8 +124,8 @@ void Account::Deposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type) const {
   DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(AdType::kUndefined, ad_type.value());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
+  DCHECK_NE(AdType::kUndefined, ad_type);
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(ad_type, confirmation_type);

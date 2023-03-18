@@ -40,12 +40,12 @@ class ConfirmationType final {
   Value value() const;
   std::string ToString() const;
 
-  bool operator==(const ConfirmationType& other) const;
-  bool operator!=(const ConfirmationType& other) const;
-
  private:
   Value value_ = kUndefined;
 };
+
+bool operator==(const ConfirmationType& lhs, const ConfirmationType& rhs);
+bool operator!=(const ConfirmationType& lhs, const ConfirmationType& rhs);
 
 std::ostream& operator<<(std::ostream& os, const ConfirmationType& type);
 

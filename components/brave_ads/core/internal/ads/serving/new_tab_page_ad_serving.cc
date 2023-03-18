@@ -73,6 +73,8 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
                      std::move(callback), user_model));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
                                 const targeting::UserModelInfo& user_model,
                                 const bool had_opportunity,
@@ -95,8 +97,6 @@ void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
   ServeAd(ad, std::move(callback));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 bool Serving::IsSupported() const {
   return static_cast<bool>(eligible_ads_);

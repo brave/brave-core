@@ -75,6 +75,8 @@ void Serving::MaybeServeAd(const std::string& dimensions,
                      user_model, dimensions, std::move(callback)));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void Serving::OnGetForUserModel(
     const targeting::UserModelInfo& user_model,
     const std::string& dimensions,
@@ -99,8 +101,6 @@ void Serving::OnGetForUserModel(
   const InlineContentAdInfo ad = BuildInlineContentAd(creative_ad);
   ServeAd(ad, std::move(callback));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 bool Serving::IsSupported() const {
   return static_cast<bool>(eligible_ads_);

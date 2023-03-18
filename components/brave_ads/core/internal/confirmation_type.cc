@@ -112,12 +112,12 @@ std::string ConfirmationType::ToString() const {
   return kUndefinedType;
 }
 
-bool ConfirmationType::operator==(const ConfirmationType& other) const {
-  return value_ == other.value_;
+bool operator==(const ConfirmationType& lhs, const ConfirmationType& rhs) {
+  return lhs.value() == rhs.value();
 }
 
-bool ConfirmationType::operator!=(const ConfirmationType& other) const {
-  return value_ != other.value_;
+bool operator!=(const ConfirmationType& lhs, const ConfirmationType& rhs) {
+  return !(lhs == rhs);
 }
 
 std::ostream& operator<<(std::ostream& os, const ConfirmationType& type) {

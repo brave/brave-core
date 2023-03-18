@@ -115,12 +115,12 @@ std::string AdType::ToString() const {
   return kUndefinedType;
 }
 
-bool AdType::operator==(const AdType& other) const {
-  return value_ == other.value_;
+bool operator==(const AdType& lhs, const AdType& rhs) {
+  return lhs.value() == rhs.value();
 }
 
-bool AdType::operator!=(const AdType& other) const {
-  return value_ != other.value_;
+bool operator!=(const AdType& lhs, const AdType& rhs) {
+  return !(lhs == rhs);
 }
 
 std::ostream& operator<<(std::ostream& os, const AdType& type) {
