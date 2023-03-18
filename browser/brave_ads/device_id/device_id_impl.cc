@@ -41,14 +41,12 @@ void OnGetRawDeviceId(DeviceIdCallback callback, std::string raw_device_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (raw_device_id.empty()) {
-    std::move(callback).Run("");
-    return;
+    return std::move(callback).Run({});
   }
 
   std::string device_id;
   if (!ComputeHmacSha256(raw_device_id, "FOOBAR", &device_id)) {
-    std::move(callback).Run("");
-    return;
+    return std::move(callback).Run({});
   }
 
   std::move(callback).Run(std::move(device_id));

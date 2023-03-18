@@ -61,8 +61,8 @@ void GetTextEmbeddingHtmlEventsFromDatabase(
          const TextEmbeddingHtmlEventList& text_embedding_html_events) {
         if (!success) {
           BLOG(1, "Failed to get text embedding HTML events");
-          std::move(callback).Run(success, /* text_embedding_html_events */ {});
-          return;
+          return std::move(callback).Run(success,
+                                         /* text_embedding_html_events */ {});
         }
         std::move(callback).Run(success, text_embedding_html_events);
       },

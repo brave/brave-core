@@ -68,13 +68,11 @@ void OnGetForCreativeInstanceId(const std::string& /*creative_instance_id*/,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get deposit value");
-    std::move(callback).Run(/*success*/ false, absl::nullopt);
-    return;
+    return std::move(callback).Run(/*success*/ false, absl::nullopt);
   }
 
   if (response->result->get_records().empty()) {
-    std::move(callback).Run(/*success*/ true, absl::nullopt);
-    return;
+    return std::move(callback).Run(/*success*/ true, absl::nullopt);
   }
 
   const mojom::DBRecordInfoPtr record =
@@ -106,8 +104,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
 
 void Deposits::Save(const DepositInfo& deposit, ResultCallback callback) {
   if (!deposit.IsValid()) {
-    std::move(callback).Run(/*success*/ false);
-    return;
+    return std::move(callback).Run(/*success*/ false);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -149,8 +146,7 @@ void Deposits::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
 void Deposits::GetForCreativeInstanceId(const std::string& creative_instance_id,
                                         GetDepositsCallback callback) const {
   if (creative_instance_id.empty()) {
-    std::move(callback).Run(/*success*/ false, absl::nullopt);
-    return;
+    return std::move(callback).Run(/*success*/ false, absl::nullopt);
   }
 
   const std::string query = base::StringPrintf(

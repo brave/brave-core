@@ -51,20 +51,17 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
   if (!features::IsEnabled()) {
     BLOG(1, "New tab page ad not served: Feature is disabled");
-    FailedToServeAd(std::move(callback));
-    return;
+    return FailedToServeAd(std::move(callback));
   }
 
   if (!IsSupported()) {
     BLOG(1, "New tab page ad not served: Unsupported version");
-    FailedToServeAd(std::move(callback));
-    return;
+    return FailedToServeAd(std::move(callback));
   }
 
   if (!PermissionRules::HasPermission()) {
     BLOG(1, "New tab page ad not served: Not allowed due to permission rules");
-    FailedToServeAd(std::move(callback));
-    return;
+    return FailedToServeAd(std::move(callback));
   }
 
   const targeting::UserModelInfo user_model = targeting::BuildUserModel();
@@ -87,8 +84,7 @@ void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
 
   if (creative_ads.empty()) {
     BLOG(1, "New tab page ad not served: No eligible ads found");
-    FailedToServeAd(std::move(callback));
-    return;
+    return FailedToServeAd(std::move(callback));
   }
 
   BLOG(1, "Found " << creative_ads.size() << " eligible ads");
@@ -110,8 +106,7 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
                       MaybeServeNewTabPageAdCallback callback) {
   if (!ad.IsValid()) {
     BLOG(1, "Failed to serve new tab page ad");
-    FailedToServeAd(std::move(callback));
-    return;
+    return FailedToServeAd(std::move(callback));
   }
 
   BLOG(1, "Served new tab page ad:\n"

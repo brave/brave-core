@@ -26,8 +26,7 @@ void ResetRewards(ResetRewardsCallback callback) {
       [](ResetRewardsCallback callback, const bool success) {
         if (!success) {
           BLOG(0, "Failed to remove transactions");
-          std::move(callback).Run(/*success*/ false);
-          return;
+          return std::move(callback).Run(/*success*/ false);
         }
 
         ResetConfirmations();

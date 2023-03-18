@@ -72,8 +72,7 @@ void OnGetTransactions(GetTransactionsCallback callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get transactions");
-    std::move(callback).Run(/*success*/ false, /*transactions*/ {});
-    return;
+    return std::move(callback).Run(/*success*/ false, /*transactions*/ {});
   }
 
   TransactionList transactions;
@@ -113,8 +112,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
 void Transactions::Save(const TransactionList& transactions,
                         ResultCallback callback) {
   if (transactions.empty()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();

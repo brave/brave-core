@@ -122,8 +122,7 @@ void DatabaseManager::OnMigrate(const int from_version,
     BLOG(1, "Failed to migrate database from schema version "
                 << from_version << " to schema version " << to_version);
     NotifyFailedToMigrateDatabase(from_version, to_version);
-    std::move(callback).Run(/*success*/ false);
-    return;
+    return std::move(callback).Run(/*success*/ false);
   }
 
   BLOG(1, "Migrated database from schema version "

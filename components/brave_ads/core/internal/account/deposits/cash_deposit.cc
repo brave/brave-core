@@ -24,13 +24,13 @@ void CashDeposit::GetValue(const std::string& creative_instance_id,
           [](GetDepositCallback callback, const bool success,
              const absl::optional<DepositInfo>& deposit) {
             if (!success) {
-              std::move(callback).Run(/*success */ false, /* value*/ 0.0);
-              return;
+              return std::move(callback).Run(/*success */ false,
+                                             /* value*/ 0.0);
             }
 
             if (!deposit) {
-              std::move(callback).Run(/*success */ false, /* value*/ 0.0);
-              return;
+              return std::move(callback).Run(/*success */ false,
+                                             /* value*/ 0.0);
             }
 
             std::move(callback).Run(/*success*/ true, deposit->value);

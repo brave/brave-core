@@ -197,8 +197,7 @@ void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
 
       BLOG(3, "Failed to parse confirmations state: " << json);
 
-      std::move(callback).Run(/*success*/ false);
-      return;
+      return std::move(callback).Run(/*success*/ false);
     }
 
     BLOG(3, "Successfully loaded confirmations state");

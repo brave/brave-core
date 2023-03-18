@@ -122,16 +122,14 @@ void OnMigrate(InitializeCallback callback,
                const std::string& json) {
   if (!success) {
     // Conversion state does not exist
-    SuccessfullyMigrated(std::move(callback));
-    return;
+    return SuccessfullyMigrated(std::move(callback));
   }
 
   const absl::optional<ConversionQueueItemList> conversion_queue_items =
       FromJson(json);
   if (!conversion_queue_items) {
     BLOG(0, "Failed to parse conversion state");
-    FailedToMigrate(std::move(callback));
-    return;
+    return FailedToMigrate(std::move(callback));
   }
 
   BLOG(3, "Successfully loaded conversion state");
@@ -145,8 +143,7 @@ void OnMigrate(InitializeCallback callback,
           [](InitializeCallback callback, const bool success) {
             if (!success) {
               BLOG(0, "Failed to save conversion state");
-              FailedToMigrate(std::move(callback));
-              return;
+              return FailedToMigrate(std::move(callback));
             }
 
             BLOG(3, "Successfully migrated conversion state");
@@ -159,8 +156,7 @@ void OnMigrate(InitializeCallback callback,
 
 void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   BLOG(3, "Loading conversion state");

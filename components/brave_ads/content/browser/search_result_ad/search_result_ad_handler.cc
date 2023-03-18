@@ -108,8 +108,7 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
   DCHECK(ads_service_);
 
   if (!ads_service_->IsEnabled() || !web_page) {
-    std::move(callback).Run({});
-    return;
+    return std::move(callback).Run({});
   }
 
   search_result_ads_ =

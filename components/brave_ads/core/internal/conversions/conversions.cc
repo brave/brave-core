@@ -428,8 +428,7 @@ void Conversions::OnSaveConversionQueue(const bool success) {
 void Conversions::ProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
   if (!conversion_queue_item.IsValid()) {
-    RemoveInvalidQueueItem(conversion_queue_item);
-    return;
+    return RemoveInvalidQueueItem(conversion_queue_item);
   }
 
   MarkQueueItemAsProcessed(conversion_queue_item);

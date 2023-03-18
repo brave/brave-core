@@ -92,15 +92,13 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
 
   if (url_response.status_code == net::HTTP_NOT_MODIFIED) {
     BLOG(1, "Catalog is up to date");
-    FetchAfterDelay();
-    return;
+    return FetchAfterDelay();
   }
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch catalog");
     NotifyFailedToUpdateCatalog();
-    Retry();
-    return;
+    return Retry();
   }
 
   BLOG(1, "Successfully fetched catalog");
@@ -111,23 +109,20 @@ void Catalog::OnFetch(const mojom::UrlResponseInfo& url_response) {
   if (!catalog) {
     BLOG(1, "Failed to parse catalog");
     NotifyFailedToUpdateCatalog();
-    Retry();
-    return;
+    return Retry();
   }
 
   if (catalog->version != kCatalogVersion) {
     BLOG(1, "Catalog version mismatch");
     NotifyFailedToUpdateCatalog();
-    Retry();
-    return;
+    return Retry();
   }
 
   SetCatalogLastUpdated(base::Time::Now());
 
   if (!HasCatalogChanged(catalog->id)) {
     BLOG(1, "Catalog id " << catalog->id << " is up to date");
-    FetchAfterDelay();
-    return;
+    return FetchAfterDelay();
   }
 
   SaveCatalog(*catalog);

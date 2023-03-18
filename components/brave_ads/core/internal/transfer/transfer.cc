@@ -91,15 +91,13 @@ void Transfer::OnTransferAd(const int32_t tab_id,
   transferring_ad_tab_id_ = 0;
 
   if (!TabManager::GetInstance()->IsVisible(tab_id)) {
-    FailedToTransferAd(ad);
-    return;
+    return FailedToTransferAd(ad);
   }
 
   const absl::optional<TabInfo> tab =
       TabManager::GetInstance()->GetForId(tab_id);
   if (!tab) {
-    FailedToTransferAd(ad);
-    return;
+    return FailedToTransferAd(ad);
   }
 
   if (tab->redirect_chain.empty()) {
@@ -113,8 +111,7 @@ void Transfer::OnTransferAd(const int32_t tab_id,
   }
 
   if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
-    FailedToTransferAd(ad);
-    return;
+    return FailedToTransferAd(ad);
   }
 
   LogAdEvent(
@@ -125,8 +122,7 @@ void Transfer::OnTransferAd(const int32_t tab_id,
 void Transfer::OnLogAdEvent(const AdInfo& ad, const bool success) {
   if (!success) {
     BLOG(1, "Failed to log transferred ad event");
-    FailedToTransferAd(ad);
-    return;
+    return FailedToTransferAd(ad);
   }
 
   BLOG(6, "Successfully logged transferred ad event");

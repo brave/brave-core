@@ -149,14 +149,12 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
 
   if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to request signed tokens as a browser upgrade is required");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   if (url_response.status_code != net::HTTP_CREATED) {
     BLOG(1, "Failed to request signed tokens");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ true);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ true);
   }
 
   // Parse JSON response
@@ -164,16 +162,14 @@ void RefillUnblindedTokens::OnRequestSignedTokens(
       base::JSONReader::Read(url_response.body);
   if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Get nonce
   const std::string* const nonce = root->FindStringKey("nonce");
   if (!nonce) {
     BLOG(0, "Response is missing nonce");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
   nonce_ = *nonce;
 
@@ -204,15 +200,13 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   if (url_response.status_code == net::kHttpUpgradeRequired) {
     BLOG(1, "Failed to get signed tokens as a browser upgrade is required");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   if (url_response.status_code != net::HTTP_OK &&
       url_response.status_code != net::HTTP_UNAUTHORIZED) {
     BLOG(0, "Failed to get signed tokens");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ true);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ true);
   }
 
   // Parse JSON response
@@ -220,8 +214,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       base::JSONReader::Read(url_response.body);
   if (!root || !root->is_dict()) {
     BLOG(3, "Failed to parse response: " << url_response.body);
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Captcha required, retrieve captcha id from response
@@ -230,8 +223,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     const std::string* const captcha_id = root->FindStringKey("captcha_id");
     if (!captcha_id || captcha_id->empty()) {
       BLOG(0, "Response is missing captcha_id");
-      OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-      return;
+      return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
     }
 
     BLOG(1, "Captcha is required to refill unblinded tokens");
@@ -247,16 +239,14 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   const std::string* const public_key_base64 = root->FindStringKey("publicKey");
   if (!public_key_base64) {
     BLOG(0, "Response is missing publicKey");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
   const privacy::cbr::PublicKey public_key =
       privacy::cbr::PublicKey(*public_key_base64);
   if (!public_key.has_value()) {
     BLOG(0, "Invalid public key");
     NOTREACHED();
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Validate public key
@@ -265,8 +255,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     BLOG(0, "Response public key "
                 << *public_key_base64
                 << " does not exist in confirmations issuer public keys");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Get batch dleq proof
@@ -274,8 +263,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       root->FindStringKey("batchProof");
   if (!batch_dleq_proof_base64) {
     BLOG(0, "Response is missing batchProof");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   privacy::cbr::BatchDLEQProof batch_dleq_proof =
@@ -283,8 +271,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   if (!batch_dleq_proof.has_value()) {
     BLOG(0, "Invalid batch DLEQ proof");
     NOTREACHED();
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Get signed tokens
@@ -292,8 +279,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
       root->FindListKey("signedTokens");
   if (!signed_tokens_list) {
     BLOG(0, "Response is missing signedTokens");
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   std::vector<privacy::cbr::SignedToken> signed_tokens;
@@ -319,8 +305,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     BLOG(1, "  Batch proof: " << *batch_dleq_proof_base64);
     BLOG(1, "  Public key: " << public_key);
 
-    OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
-    return;
+    return OnFailedToRefillUnblindedTokens(/*should_retry*/ false);
   }
 
   // Add unblinded tokens
@@ -386,8 +371,7 @@ void RefillUnblindedTokens::OnFailedToRefillUnblindedTokens(
   }
 
   if (should_retry) {
-    Retry();
-    return;
+    return Retry();
   }
 
   is_processing_ = false;

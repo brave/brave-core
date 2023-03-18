@@ -262,8 +262,7 @@ void MockUrlResponses(const std::unique_ptr<AdsClientMock>& mock,
                 GetNextUrlResponseForRequest(url_request, url_responses);
             if (!url_response) {
               // URL request should not be mocked.
-              std::move(callback).Run({});
-              return;
+              return std::move(callback).Run({});
             }
 
             std::move(callback).Run(*url_response);
@@ -292,8 +291,7 @@ void MockLoad(const std::unique_ptr<AdsClientMock>& mock,
 
             std::string value;
             if (!base::ReadFileToString(path, &value)) {
-              std::move(callback).Run(/*success*/ false, value);
-              return;
+              return std::move(callback).Run(/*success*/ false, value);
             }
 
             std::move(callback).Run(/*success*/ true, value);

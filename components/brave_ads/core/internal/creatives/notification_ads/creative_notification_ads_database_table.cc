@@ -153,8 +153,7 @@ void OnGetForSegments(const SegmentList& segments,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get creative notification ads");
-    std::move(callback).Run(/*success*/ false, segments, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, segments, {});
   }
 
   const CreativeNotificationAdList creative_ads =
@@ -168,8 +167,7 @@ void OnGetAll(GetCreativeNotificationAdsCallback callback,
   if (!response || response->status !=
                        mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
     BLOG(0, "Failed to get all creative notification ads");
-    std::move(callback).Run(/*success*/ false, {}, {});
-    return;
+    return std::move(callback).Run(/*success*/ false, {}, {});
   }
 
   const CreativeNotificationAdList creative_ads =
@@ -217,8 +215,7 @@ void CreativeNotificationAds::Save(
     const CreativeNotificationAdList& creative_ads,
     ResultCallback callback) {
   if (creative_ads.empty()) {
-    std::move(callback).Run(/*success*/ true);
-    return;
+    return std::move(callback).Run(/*success*/ true);
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -263,8 +260,7 @@ void CreativeNotificationAds::GetForSegments(
     const SegmentList& segments,
     GetCreativeNotificationAdsCallback callback) const {
   if (segments.empty()) {
-    std::move(callback).Run(/*success*/ true, segments, {});
-    return;
+    return std::move(callback).Run(/*success*/ true, segments, {});
   }
 
   const std::string query = base::StringPrintf(

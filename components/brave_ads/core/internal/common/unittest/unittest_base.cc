@@ -175,8 +175,7 @@ void UnitTestBase::Initialize() {
   SetUpMocks();
 
   if (is_integration_test_) {
-    SetUpIntegrationTest();
-    return;
+    return SetUpIntegrationTest();
   }
 
   browser_manager_ = std::make_unique<BrowserManager>();

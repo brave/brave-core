@@ -160,8 +160,7 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 
   if (IsInitialized()) {
     BLOG(1, "Already initialized ads");
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   CreateOrOpenDatabase(std::move(callback));
@@ -170,8 +169,7 @@ void AdsImpl::Initialize(InitializeCallback callback) {
 void AdsImpl::Shutdown(ShutdownCallback callback) {
   if (!is_initialized_) {
     BLOG(0, "Shutdown failed as not initialized");
-    std::move(callback).Run(/*success*/ false);
-    return;
+    return std::move(callback).Run(/*success*/ false);
   }
 
   NotificationAdManager::GetInstance()->CloseAll();
@@ -301,8 +299,7 @@ void AdsImpl::TriggerNotificationAdEvent(
 
 void AdsImpl::MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) {
   if (!IsInitialized()) {
-    std::move(callback).Run(/*ads*/ absl::nullopt);
-    return;
+    return std::move(callback).Run(/*ads*/ absl::nullopt);
   }
 
   new_tab_page_ad_handler_->MaybeServe(std::move(callback));
@@ -332,8 +329,7 @@ void AdsImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
     MaybeServeInlineContentAdCallback callback) {
   if (!IsInitialized()) {
-    std::move(callback).Run(dimensions, absl::nullopt);
-    return;
+    return std::move(callback).Run(dimensions, absl::nullopt);
   }
 
   inline_content_ad_handler_->MaybeServe(dimensions, std::move(callback));
@@ -354,11 +350,9 @@ void AdsImpl::TriggerSearchResultAdEvent(
     const mojom::SearchResultAdEventType event_type) {
   DCHECK(mojom::IsKnownEnumValue(event_type));
 
-  if (!IsInitialized()) {
-    return;
+  if (IsInitialized()) {
+    search_result_ad_handler_->TriggerEvent(std::move(ad_mojom), event_type);
   }
-
-  search_result_ad_handler_->TriggerEvent(std::move(ad_mojom), event_type);
 }
 
 void AdsImpl::PurgeOrphanedAdEventsForType(
@@ -374,8 +368,7 @@ void AdsImpl::PurgeOrphanedAdEventsForType(
              const bool success) {
             if (!success) {
               BLOG(0, "Failed to purge orphaned ad events for " << ad_type);
-              std::move(callback).Run(/*success*/ false);
-              return;
+              return std::move(callback).Run(/*success*/ false);
             }
 
             RebuildAdEventHistoryFromDatabase();
@@ -405,8 +398,7 @@ HistoryItemList AdsImpl::GetHistory(const HistoryFilterType filter_type,
 
 void AdsImpl::GetStatementOfAccounts(GetStatementOfAccountsCallback callback) {
   if (!IsInitialized()) {
-    std::move(callback).Run(/*statement*/ nullptr);
-    return;
+    return std::move(callback).Run(/*statement*/ nullptr);
   }
 
   Account::GetStatement(std::move(callback));
@@ -460,8 +452,7 @@ void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
                                      const bool success) {
   if (!success) {
     BLOG(0, "Failed to create or open database");
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::OnPurgeExpiredAdEvents,
@@ -472,8 +463,7 @@ void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
 void AdsImpl::OnPurgeExpiredAdEvents(InitializeCallback callback,
                                      const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   PurgeOrphanedAdEvents(
@@ -485,8 +475,7 @@ void AdsImpl::OnPurgeExpiredAdEvents(InitializeCallback callback,
 void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
                                       const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   RebuildAdEventHistoryFromDatabase();
@@ -499,8 +488,7 @@ void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
 void AdsImpl::OnMigrateConversions(InitializeCallback callback,
                                    const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   rewards::Migrate(base::BindOnce(&AdsImpl::OnMigrateRewards,
@@ -510,8 +498,7 @@ void AdsImpl::OnMigrateConversions(InitializeCallback callback,
 void AdsImpl::OnMigrateRewards(InitializeCallback callback,
                                const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   client::Migrate(base::BindOnce(&AdsImpl::OnMigrateClientState,
@@ -521,8 +508,7 @@ void AdsImpl::OnMigrateRewards(InitializeCallback callback,
 void AdsImpl::OnMigrateClientState(InitializeCallback callback,
                                    const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   ClientStateManager::GetInstance()->Initialize(
@@ -533,8 +519,7 @@ void AdsImpl::OnMigrateClientState(InitializeCallback callback,
 void AdsImpl::OnLoadClientState(InitializeCallback callback,
                                 const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   confirmations::Migrate(base::BindOnce(&AdsImpl::OnMigrateConfirmationState,
@@ -545,8 +530,7 @@ void AdsImpl::OnLoadClientState(InitializeCallback callback,
 void AdsImpl::OnMigrateConfirmationState(InitializeCallback callback,
                                          const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   ConfirmationStateManager::GetInstance()->Initialize(
@@ -558,8 +542,7 @@ void AdsImpl::OnMigrateConfirmationState(InitializeCallback callback,
 void AdsImpl::OnLoadConfirmationState(InitializeCallback callback,
                                       const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   notifications::Migrate(base::BindOnce(&AdsImpl::OnMigrateNotificationState,
@@ -570,8 +553,7 @@ void AdsImpl::OnLoadConfirmationState(InitializeCallback callback,
 void AdsImpl::OnMigrateNotificationState(InitializeCallback callback,
                                          const bool success) {
   if (!success) {
-    FailedToInitialize(std::move(callback));
-    return;
+    return FailedToInitialize(std::move(callback));
   }
 
   BLOG(1, "Successfully initialized ads");
@@ -596,7 +578,6 @@ void AdsImpl::Start() {
   conversions_->Process();
 
   subdivision_targeting_->MaybeAllow();
-
   subdivision_targeting_->MaybeFetch();
 
   catalog_->MaybeFetch();

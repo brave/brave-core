@@ -87,7 +87,6 @@ bool IsMutated(const std::string& value) {
 void OnSaved(const bool success) {
   if (!success) {
     BLOG(0, "Failed to save client state");
-
     return;
   }
 
@@ -560,8 +559,7 @@ void ClientStateManager::OnLoaded(InitializeCallback callback,
 
       BLOG(3, "Failed to parse client state: " << json);
 
-      std::move(callback).Run(/*success*/ false);
-      return;
+      return std::move(callback).Run(/*success*/ false);
     }
 
     BLOG(3, "Successfully loaded client state");

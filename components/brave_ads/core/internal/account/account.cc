@@ -83,16 +83,14 @@ void Account::SetWallet(const std::string& payment_id,
       base::Base64Decode(recovery_seed);
   if (!raw_recovery_seed) {
     BLOG(0, "Failed to set wallet");
-    NotifyInvalidWallet();
-    return;
+    return NotifyInvalidWallet();
   }
 
   const WalletInfo last_wallet_copy = GetWallet();
 
   if (!wallet_->Set(payment_id, *raw_recovery_seed)) {
     BLOG(0, "Failed to set wallet");
-    NotifyInvalidWallet();
-    return;
+    return NotifyInvalidWallet();
   }
 
   const WalletInfo& wallet = GetWallet();
@@ -102,8 +100,7 @@ void Account::SetWallet(const std::string& payment_id,
   }
 
   if (wallet.HasChanged(last_wallet_copy)) {
-    WalletDidChange(wallet);
-    return;
+    return WalletDidChange(wallet);
   }
 
   TopUpUnblindedTokens();
@@ -145,8 +142,7 @@ void Account::Deposit(const std::string& creative_instance_id,
 // static
 void Account::GetStatement(GetStatementOfAccountsCallback callback) {
   if (!ShouldRewardUser()) {
-    std::move(callback).Run(/*statement*/ nullptr);
-    return;
+    return std::move(callback).Run(/*statement*/ nullptr);
   }
 
   return BuildStatement(std::move(callback));
@@ -168,8 +164,8 @@ void Account::OnGetDepositValue(const std::string& creative_instance_id,
                                 const bool success,
                                 const double value) const {
   if (!success) {
-    FailedToProcessDeposit(creative_instance_id, ad_type, confirmation_type);
-    return;
+    return FailedToProcessDeposit(creative_instance_id, ad_type,
+                                  confirmation_type);
   }
 
   ProcessDeposit(creative_instance_id, ad_type, confirmation_type, value);
@@ -191,8 +187,8 @@ void Account::OnDepositProcessed(const std::string& creative_instance_id,
                                  const bool success,
                                  const TransactionInfo& transaction) const {
   if (!success) {
-    FailedToProcessDeposit(creative_instance_id, ad_type, confirmation_type);
-    return;
+    return FailedToProcessDeposit(creative_instance_id, ad_type,
+                                  confirmation_type);
   }
 
   BLOG(3, "Successfully processed deposit for "

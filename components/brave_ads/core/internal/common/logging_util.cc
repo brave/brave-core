@@ -13,11 +13,9 @@ void Log(const char* file,
          const int line,
          const int verbose_level,
          const std::string& message) {
-  if (!AdsClientHelper::HasInstance()) {
-    return;
+  if (AdsClientHelper::HasInstance()) {
+    AdsClientHelper::GetInstance()->Log(file, line, verbose_level, message);
   }
-
-  AdsClientHelper::GetInstance()->Log(file, line, verbose_level, message);
 }
 
 }  // namespace brave_ads

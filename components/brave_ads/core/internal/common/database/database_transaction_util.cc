@@ -18,8 +18,7 @@ void OnResultCallback(ResultCallback callback,
 
   if (response->status !=
       mojom::DBCommandResponseInfo::StatusType::RESPONSE_OK) {
-    std::move(callback).Run(/*success*/ false);
-    return;
+    return std::move(callback).Run(/*success*/ false);
   }
 
   std::move(callback).Run(/*success*/ true);

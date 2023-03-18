@@ -77,16 +77,14 @@ void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
   BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
-    FailedToFetchIssuers(/*should_retry*/ true);
-    return;
+    return FailedToFetchIssuers(/*should_retry*/ true);
   }
 
   const absl::optional<IssuersInfo> issuers =
       json::reader::ReadIssuers(url_response.body);
   if (!issuers) {
     BLOG(3, "Failed to parse response: " << url_response.body);
-    FailedToFetchIssuers(/*should_retry*/ true);
-    return;
+    return FailedToFetchIssuers(/*should_retry*/ true);
   }
 
   SuccessfullyFetchedIssuers(*issuers);

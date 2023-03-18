@@ -97,9 +97,7 @@ void TabManager::OnDidChange(const int32_t id,
 
     tabs_[id].redirect_chain = redirect_chain;
 
-    NotifyTabDidChange(tabs_[id]);
-
-    return;
+    return NotifyTabDidChange(tabs_[id]);
   }
 
   BLOG(2, "Tab id " << id << " is visible");
@@ -112,8 +110,8 @@ void TabManager::OnDidChange(const int32_t id,
     BLOG(2, "Focused on existing tab id " << id);
 
     Update(*tab);
-    NotifyTabDidChangeFocus(id);
-    return;
+
+    return NotifyTabDidChangeFocus(id);
   }
 
   BLOG(2, "Opened a new tab with id " << id);
