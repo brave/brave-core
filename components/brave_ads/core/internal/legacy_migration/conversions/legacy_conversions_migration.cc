@@ -132,8 +132,6 @@ void OnMigrate(InitializeCallback callback,
     return FailedToMigrate(std::move(callback));
   }
 
-  BLOG(3, "Successfully loaded conversion state");
-
   BLOG(1, "Migrating conversion state");
 
   database::table::ConversionQueue conversion_queue;
@@ -158,8 +156,6 @@ void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
     return std::move(callback).Run(/*success*/ true);
   }
-
-  BLOG(3, "Loading conversion state");
 
   AdsClientHelper::GetInstance()->Load(
       kFilename, base::BindOnce(&OnMigrate, std::move(callback)));
