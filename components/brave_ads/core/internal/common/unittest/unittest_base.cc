@@ -311,6 +311,8 @@ void UnitTestBase::SetDefaultPrefs() {
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedConversionState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedNotificationState, true);
   ads_client_mock_->SetBooleanPref(prefs::kHasMigratedRewardsState, true);
+  ads_client_mock_->SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
+                                   false);
 
   ads_client_mock_->SetUint64Pref(prefs::kConfirmationsHash, 0);
   ads_client_mock_->SetUint64Pref(prefs::kClientHash, 0);
