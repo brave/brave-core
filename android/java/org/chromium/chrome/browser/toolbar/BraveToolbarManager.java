@@ -327,6 +327,12 @@ public class BraveToolbarManager extends ToolbarManager {
             boolean isBottomToolbarVisible = newOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBottomToolbarVisible(isBottomToolbarVisible);
         }
+
+        assert mActivity instanceof BraveActivity;
+
+        if (mActivity instanceof BraveActivity) {
+            ((BraveActivity) mActivity).updateBottomSheetPosition(newOrientation);
+        }
     }
 
     protected void updateBookmarkButtonStatus() {

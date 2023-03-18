@@ -11,10 +11,12 @@ brave_history_non_web_component_files = [
 ]
 
 # Also include the .html sibling files
-brave_history_local_files =
+brave_history_local_ts_files =
     brave_history_web_component_files + brave_history_non_web_component_files
+
+brave_history_local_html_files = []
 foreach(component_file, brave_history_web_component_files) {
-  brave_history_local_files +=
+  brave_history_local_html_files +=
       [ string_replace(component_file, ".ts", ".html") ]
 }
 

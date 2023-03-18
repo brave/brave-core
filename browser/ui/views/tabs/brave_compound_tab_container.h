@@ -38,7 +38,8 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
               int model_index,
               TabPinned pinned) override;
   int GetUnpinnedContainerIdealLeadingX() const override;
-  TabContainer* GetTabContainerAt(gfx::Point point_in_local_coords) override;
+  TabContainer* GetTabContainerAt(
+      gfx::Point point_in_local_coords) const override;
   gfx::Rect ConvertUnpinnedContainerIdealBoundsToLocal(
       gfx::Rect ideal_bounds) const override;
   BrowserRootView::DropTarget* GetDropTarget(

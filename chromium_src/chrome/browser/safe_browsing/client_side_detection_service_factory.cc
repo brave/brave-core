@@ -18,4 +18,10 @@ ClientSideDetectionService* ClientSideDetectionServiceFactory::GetForProfile(
   return nullptr;
 }
 
+// static
+ClientSideDetectionServiceFactory*
+ClientSideDetectionServiceFactory::GetInstance() {
+  return nullptr;
+}
+
 }  // namespace safe_browsing

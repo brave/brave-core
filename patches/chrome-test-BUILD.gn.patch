@@ -1,8 +1,8 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index a5a8685b9627dc85f96a00eb87115604f239d4ee..d1e04077700dc6e85a73480133eefdc2813470da 100644
+index f426627840a68ecb9b66d5ac4226a70f7478b781..6c232d6e95123aa5603f99568df854922817aee1 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -343,6 +343,7 @@ static_library("test_support") {
+@@ -392,6 +392,7 @@ static_library("test_support") {
      "//ui/gl",
    ]
  
@@ -10,12 +10,3 @@ index a5a8685b9627dc85f96a00eb87115604f239d4ee..d1e04077700dc6e85a73480133eefdc2
    data_deps = []
  
    if (enable_pdf) {
-@@ -5230,7 +5231,7 @@ config("disable_thinlto_cache_flags") {
- }
- 
- config("pdb_larger_than_4gb") {
--  if (is_win && symbol_level == 2 && use_thin_lto) {
-+  if (is_win) {
-     # These binaries create PDBs larger than 4 GiB. Increasing the PDB page
-     # size allows larger PDBs, but not all tools can handle such large PDBs
-     # yet.

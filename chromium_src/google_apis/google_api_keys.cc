@@ -12,4 +12,11 @@ void SetAPIKeyForTesting(const std::string& api_key) {
   g_api_key_cache.Get().set_api_key_for_testing(api_key);
 }
 
+bool BraveHasAPIKeyConfigured() {
+  // Google API key is not used in brave for translation service, always return
+  // true for the API key check so the flow won't be blocked because of missing
+  // keys.
+  return true;
+}
+
 }  // namespace google_apis

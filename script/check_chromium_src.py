@@ -30,10 +30,10 @@ BRAVE_SRC = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 BRAVE_CHROMIUM_SRC = os.path.join(BRAVE_SRC, 'chromium_src')
 CHROMIUM_SRC = os.path.abspath(os.path.dirname(BRAVE_SRC))
 
-# pylint: disable-next=line-too-long
+# pylint: disable=line-too-long
 NORMAL_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+[^\s\(]*)(?:[ \t]+\\\s*|[ \t])+([a-zA-Z0-9_]+[^\s\(]*)'
-# pylint: disable-next=line-too-long
 FUNCTION_LIKE_DEFINITIONS_REGEXP = r'#define[\s\\]+([a-zA-Z0-9_]+)[\s\\]*\(.*?\)(?:[ \t]+\\\s*|[ \t])([a-zA-Z0-9_]*[\s\\]*\(.*?\))'
+# pylint: enable=line-too-long
 
 EXCLUDES = [
     '.*/BUILD.gn',
@@ -47,8 +47,6 @@ EXCLUDES = [
     'chrome/installer/setup/brave_behaviors.cc',
     'content/browser/tld_ephemeral_lifetime.cc',
     'content/public/browser/tld_ephemeral_lifetime.h',
-    'third_party/blink/common/origin_trials/origin_trials.cc',
-    'third_party/blink/renderer/bindings/modules/v8/v8_navigator.cc',
     'third_party/blink/renderer/modules/storage/brave_dom_window_storage.h',
 ]
 
@@ -56,10 +54,7 @@ GRIT_EXCLUDES = [
     '.*/DEPS'
 ]
 
-GRIT_INCLUDES = [
-    'third_party/blink/common/origin_trials/origin_trials.cc',
-    'third_party/blink/renderer/bindings/modules/v8/v8_navigator.cc',
-]
+GRIT_INCLUDES = []
 
 
 def do_check_includes(override_filepath):
@@ -88,6 +83,18 @@ def do_check_includes(override_filepath):
                           " include that doesn't point to the expected file:")
                     print(f"         Include: {line}" +
                           "         Expected include target: src/" +
+                          f"{normalized_override_filepath}")
+                    print("-------------------------")
+                continue
+            gen_regexp = r'^#include "../gen/(.*)"'
+            line_match = re.search(gen_regexp, line)
+            if line_match:
+                if line_match.group(1) != normalized_override_filepath:
+                    print(f"WARNING: {override_filepath} uses a ../gen/" +
+                          "-prefixed include that doesn't point to the " +
+                          "expected file:")
+                    print(f"         Include: {line}" +
+                          "         Expected include target: ../gen/" +
                           f"{normalized_override_filepath}")
                     print("-------------------------")
                 continue
@@ -171,7 +178,10 @@ def do_check_defines(override_filepath, original_filepath):
                     print("-------------------------")
 
 
-def do_check_overrides(overrides_list, search_dir, check_includes=False):
+def do_check_overrides(overrides_list,
+                       search_dir,
+                       check_includes=False,
+                       gen_dir=None):
     """
     Checks that each path in the passed in list |overrides_list| exists in
     the passed in directory (|search_dir|), optionally checking includes too.
@@ -180,8 +190,17 @@ def do_check_overrides(overrides_list, search_dir, check_includes=False):
     print(f"Checking overrides in {search_dir} ...")
     print("--------------------------------------------------")
     for override_filepath in overrides_list:
+        original_filepath_found = False
         original_filepath = os.path.join(search_dir, override_filepath)
         if not os.path.isfile(original_filepath):
+            if gen_dir is not None:
+                gen_filepath = os.path.join(gen_dir, override_filepath)
+                if os.path.isfile(gen_filepath):
+                    original_filepath = gen_filepath
+                    original_filepath_found = True
+        else:
+            original_filepath_found = True
+        if not original_filepath_found:
             print(f"WARNING: No source for override {override_filepath}")
             print("-------------------------")
             continue
@@ -230,7 +249,7 @@ def filter_chromium_src_filepaths(include_regexp=None, exclude_regexp=None):
             if exclude_regexp and re.search(exclude_regexp, normalized_path):
                 continue
 
-            # Append the OS-dependant relative path instead of the normalized
+            # Append the OS-dependent relative path instead of the normalized
             # one as that's what functions using this list of paths expect.
             result.append(relative_path)
 
@@ -266,8 +285,9 @@ def main(args):
 
     # Check non-GRIT overrides.
     src_overrides = filter_chromium_src_filepaths(
-        exclude_regexp='|'.join(EXCLUDES + ['python_modules|.*grit.*']))
-    do_check_overrides(src_overrides, CHROMIUM_SRC, True)
+        exclude_regexp='|'.join(EXCLUDES + GRIT_INCLUDES +
+                                ['python_modules|.*grit.*']))
+    do_check_overrides(src_overrides, CHROMIUM_SRC, True, gen_buildir)
 
     # Check GRIT overrides.
     grit_overrides = filter_chromium_src_filepaths(

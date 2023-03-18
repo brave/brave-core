@@ -89,6 +89,8 @@ source_set("browser_tests") {
       "//components/permissions",
       "//components/privacy_sandbox",
       "//components/reading_list/features:flags",
+      "//components/safe_browsing/core/common",
+      "//components/search",
       "//components/segmentation_platform/public",
       "//components/send_tab_to_self",
       "//components/subresource_filter/core/common",
