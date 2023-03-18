@@ -14,16 +14,21 @@
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/promoted_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/search_result_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
 #include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
@@ -53,7 +58,19 @@ struct ParamInfo final {
                               features::kAdRewards.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {switches::kEnableFeatures,
-                              features::kServing.name},
+                              notification_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {switches::kEnableFeatures,
+                              inline_content_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {switches::kEnableFeatures,
+                              search_result_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {switches::kEnableFeatures,
+                              new_tab_page_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {switches::kEnableFeatures,
+                              promoted_content_ads::features::kServing.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {switches::kEnableFeatures,
                               resource::features::kAntiTargeting.name},
@@ -75,6 +92,9 @@ struct ParamInfo final {
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {switches::kEnableFeatures,
                               new_tab_page_ads::features::kFeature.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {switches::kEnableFeatures,
+                              notification_ads::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {switches::kEnableFeatures,
                               permission_rules::features::kFeature.name},
@@ -103,7 +123,19 @@ struct ParamInfo final {
                               features::kAdRewards.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
-                              features::kServing.name},
+                              inline_content_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
+                              promoted_content_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
+                              new_tab_page_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
+                              search_result_ads::features::kServing.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
+                              notification_ads::features::kServing.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
                               resource::features::kAntiTargeting.name},

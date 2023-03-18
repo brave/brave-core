@@ -20,7 +20,7 @@ IdleDetectionManager::IdleDetectionManager() {
   DCHECK(!g_idle_detection_manager_instance);
   g_idle_detection_manager_instance = this;
 
-  MaybeUpdateIdleTimeThreshold();
+  idle_detection::MaybeUpdateIdleTimeThreshold();
 }
 
 IdleDetectionManager::~IdleDetectionManager() {
@@ -55,7 +55,7 @@ void IdleDetectionManager::UserDidBecomeActive(
     const bool screen_was_locked) const {
   BLOG(1, "User is active after " << idle_time);
 
-  MaybeUpdateIdleTimeThreshold();
+  idle_detection::MaybeUpdateIdleTimeThreshold();
 
   SetLastUnIdleTimeDiagnosticEntry();
 

@@ -1,9 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 
 #include <vector>
 
@@ -12,9 +12,9 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::inline_content_ads::features {
+namespace brave_ads::notification_ads::features {
 
-TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsEnabled) {
+TEST(BatAdsNotificationAdsFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -24,7 +24,7 @@ TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsEnabled) {
   EXPECT_TRUE(is_enabled);
 }
 
-TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsDisabled) {
+TEST(BatAdsNotificationAdsFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -42,4 +42,4 @@ TEST(BatAdsInlineContentAdsFeaturesTest, InlineContentAdsDisabled) {
   EXPECT_FALSE(is_enabled);
 }
 
-}  // namespace brave_ads::inline_content_ads::features
+}  // namespace brave_ads::notification_ads::features

@@ -13,7 +13,6 @@ namespace brave_ads::resource::features {
 BASE_DECLARE_FEATURE(kAntiTargeting);
 
 bool IsAntiTargetingEnabled();
-
 int GetAntiTargetingResourceVersion();
 
 }  // namespace brave_ads::resource::features

@@ -14,7 +14,7 @@
 
 namespace brave_ads::user_activity::features {
 
-TEST(BatAdsUserActivityFeaturesTest, Enabled) {
+TEST(BatAdsUserActivityFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
@@ -24,7 +24,7 @@ TEST(BatAdsUserActivityFeaturesTest, Enabled) {
   EXPECT_TRUE(is_enabled);
 }
 
-TEST(BatAdsUserActivityFeaturesTest, Disabled) {
+TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -215,183 +215,6 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
   // Assert
   const double expected_threshold = 0.0;
   EXPECT_EQ(expected_threshold, threshold);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, IdleTimeThreshold) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["idle_time_threshold"] = "7s";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const base::TimeDelta idle_time_threshold = GetIdleTimeThreshold();
-
-  // Assert
-  const base::TimeDelta expected_idle_time_threshold = base::Seconds(7);
-  EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThreshold) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const base::TimeDelta idle_time_threshold = GetIdleTimeThreshold();
-
-  // Assert
-  const base::TimeDelta expected_idle_time_threshold = base::Seconds(5);
-  EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, DefaultIdleTimeThresholdWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const base::TimeDelta idle_time_threshold = GetIdleTimeThreshold();
-
-  // Assert
-  const base::TimeDelta expected_idle_time_threshold = base::Seconds(5);
-  EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, MaximumIdleTime) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["maximum_idle_time"] = "30m";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const base::TimeDelta maximum_idle_time = GetMaximumIdleTime();
-
-  // Assert
-  const base::TimeDelta expected_maximum_idle_time = base::Minutes(30);
-  EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, DefaultMaximumIdleTime) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const base::TimeDelta maximum_idle_time = GetMaximumIdleTime();
-
-  // Assert
-  const base::TimeDelta expected_maximum_idle_time = base::Seconds(0);
-  EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const base::TimeDelta maximum_idle_time = GetMaximumIdleTime();
-
-  // Assert
-  const base::TimeDelta expected_maximum_idle_time = base::Seconds(0);
-  EXPECT_EQ(expected_maximum_idle_time, maximum_idle_time);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, ShouldDetectScreenWasLocked) {
-  // Arrange
-  base::FieldTrialParams params;
-  params["should_detect_was_locked"] = "false";
-  std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kFeature, params);
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const bool should_detect_screen_was_locked = ShouldDetectScreenWasLocked();
-
-  // Assert
-  const bool expected_should_detect_screen_was_locked = false;
-  EXPECT_EQ(expected_should_detect_screen_was_locked,
-            should_detect_screen_was_locked);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, DefaultShouldDetectScreenWasLocked) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const bool should_detect_screen_was_locked = ShouldDetectScreenWasLocked();
-
-  // Assert
-  const bool expected_should_detect_screen_was_locked = false;
-  EXPECT_EQ(expected_should_detect_screen_was_locked,
-            should_detect_screen_was_locked);
-}
-
-TEST(BatAdsUserActivityFeaturesTest, ShouldDetectScreenWasLockedWhenDisabled) {
-  // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kFeature);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
-
-  // Act
-  const bool should_detect_screen_was_locked = ShouldDetectScreenWasLocked();
-
-  // Assert
-  const bool expected_should_detect_screen_was_locked = false;
-  EXPECT_EQ(expected_should_detect_screen_was_locked,
-            should_detect_screen_was_locked);
 }
 
 }  // namespace brave_ads::user_activity::features

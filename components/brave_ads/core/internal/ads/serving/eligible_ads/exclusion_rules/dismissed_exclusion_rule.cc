@@ -41,7 +41,7 @@ bool DoesRespectCap(const AdEventList& ad_events) {
 AdEventList FilterAdEvents(const AdEventList& ad_events,
                            const CreativeAdInfo& creative_ad) {
   const base::TimeDelta time_constraint =
-      exclusion_rules::features::ExcludeAdIfDismissedWithinTimeWindow();
+      exclusion_rules::features::GetExcludeAdIfDismissedWithinTimeWindow();
   if (time_constraint.is_zero()) {
     return {};
   }

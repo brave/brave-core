@@ -11,22 +11,21 @@ namespace brave_ads::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "AdRewards";
-constexpr char kFieldTrialParameterNextPaymentDay[] = "next_payment_day";
-
-constexpr int kDefaultNextPaymentDay = 7;
+constexpr char kNextPaymentDayFieldTrialParamName[] = "next_payment_day";
+constexpr int kNextPaymentDayDefaultValue = 7;
 
 }  // namespace
 
-BASE_FEATURE(kAdRewards, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAdRewards, "AdRewards", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAdRewardsEnabled() {
   return base::FeatureList::IsEnabled(kAdRewards);
 }
 
 int GetAdRewardsNextPaymentDay() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kAdRewards, kFieldTrialParameterNextPaymentDay, kDefaultNextPaymentDay);
+  return GetFieldTrialParamByFeatureAsInt(kAdRewards,
+                                          kNextPaymentDayFieldTrialParamName,
+                                          kNextPaymentDayDefaultValue);
 }
 
 }  // namespace brave_ads::features

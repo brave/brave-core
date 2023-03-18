@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/new_tab_page_ads/new_tab_page_ads_minimum_wait_time_permission_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -33,7 +33,7 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
+  AdvanceClockBy(features::GetMinimumWaitTime());
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;
@@ -48,8 +48,7 @@ TEST_F(BatAdsNewTabPageAdsMinimumWaitTimePermissionRuleTest,
   // Arrange
   RecordAdEvent(AdType::kNewTabPageAd, ConfirmationType::kServed);
 
-  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime() -
-                 base::Seconds(1));
+  AdvanceClockBy(features::GetMinimumWaitTime() - base::Seconds(1));
 
   // Act
   MinimumWaitTimePermissionRule permission_rule;

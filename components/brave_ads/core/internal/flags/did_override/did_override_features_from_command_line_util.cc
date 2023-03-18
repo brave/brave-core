@@ -8,13 +8,18 @@
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/promoted_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/search_result_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
 #include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
@@ -30,11 +35,16 @@ const base::Feature* const kFeatures[] = {
     &features::kAdRewards,
     &features::kConversions,
     &features::kEligibleAds,
-    &features::kServing,
     &inline_content_ads::features::kFeature,
+    &inline_content_ads::features::kServing,
     &new_tab_page_ads::features::kFeature,
+    &new_tab_page_ads::features::kServing,
+    &notification_ads::features::kFeature,
+    &notification_ads::features::kServing,
     &permission_rules::features::kFeature,
+    &promoted_content_ads::features::kServing,
     &resource::features::kAntiTargeting,
+    &search_result_ads::features::kServing,
     &targeting::features::kEpsilonGreedyBandit,
     &targeting::features::kPurchaseIntent,
     &targeting::features::kTextClassification,

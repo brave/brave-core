@@ -11,15 +11,13 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "EpsilonGreedyBandit";
-
-constexpr char kFieldTrialParameterEpsilonValue[] = "epsilon_value";
-constexpr double kDefaultEpsilonValue = 0.25;
+constexpr char kEpsilonValueFieldTrialParamName[] = "epsilon_value";
+constexpr double kEpsilonValueDefaultValue = 0.25;
 
 }  // namespace
 
 BASE_FEATURE(kEpsilonGreedyBandit,
-             kFeatureName,
+             "EpsilonGreedyBandit",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsEpsilonGreedyBanditEnabled() {
@@ -28,8 +26,8 @@ bool IsEpsilonGreedyBanditEnabled() {
 
 double GetEpsilonGreedyBanditEpsilonValue() {
   return GetFieldTrialParamByFeatureAsDouble(kEpsilonGreedyBandit,
-                                             kFieldTrialParameterEpsilonValue,
-                                             kDefaultEpsilonValue);
+                                             kEpsilonValueFieldTrialParamName,
+                                             kEpsilonValueDefaultValue);
 }
 
 }  // namespace brave_ads::targeting::features

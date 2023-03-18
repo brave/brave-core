@@ -116,7 +116,7 @@ TEST(BatAdsExclusionRuleFeaturesTest, ExcludeAdIfDismissedWithinTimeWindow) {
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = ExcludeAdIfDismissedWithinTimeWindow();
+  const base::TimeDelta time_window = GetExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
   const base::TimeDelta expected_time_window = base::Days(1);
@@ -135,7 +135,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = ExcludeAdIfDismissedWithinTimeWindow();
+  const base::TimeDelta time_window = GetExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
   const base::TimeDelta expected_time_window = base::Hours(0);
@@ -155,7 +155,7 @@ TEST(BatAdsExclusionRuleFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = ExcludeAdIfDismissedWithinTimeWindow();
+  const base::TimeDelta time_window = GetExcludeAdIfDismissedWithinTimeWindow();
 
   // Assert
   const base::TimeDelta expected_time_window = base::Hours(0);
@@ -176,7 +176,8 @@ TEST(BatAdsUserActivityFeaturesTest, ExcludeAdIfTransferredWithinTimeWindow) {
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = ExcludeAdIfTransferredWithinTimeWindow();
+  const base::TimeDelta time_window =
+      GetExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
   const base::TimeDelta expected_time_window = base::Days(1);
@@ -195,7 +196,8 @@ TEST(BatAdsUserActivityFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = ExcludeAdIfTransferredWithinTimeWindow();
+  const base::TimeDelta time_window =
+      GetExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
   const base::TimeDelta expected_time_window = base::Hours(0);
@@ -215,7 +217,8 @@ TEST(BatAdsUserActivityFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = ExcludeAdIfTransferredWithinTimeWindow();
+  const base::TimeDelta time_window =
+      GetExcludeAdIfTransferredWithinTimeWindow();
 
   // Assert
   const base::TimeDelta expected_time_window = base::Hours(0);

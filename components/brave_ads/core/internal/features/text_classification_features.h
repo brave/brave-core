@@ -13,10 +13,8 @@ namespace brave_ads::targeting::features {
 BASE_DECLARE_FEATURE(kTextClassification);
 
 bool IsTextClassificationEnabled();
-
-int GetTextClassificationProbabilitiesHistorySize();
-
 int GetTextClassificationResourceVersion();
+int GetTextClassificationProbabilitiesHistorySize();
 
 }  // namespace brave_ads::targeting::features
 

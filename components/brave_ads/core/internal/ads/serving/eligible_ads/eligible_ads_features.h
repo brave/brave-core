@@ -17,6 +17,9 @@ bool IsEligibleAdsEnabled();
 
 AdPredictorWeightList GetAdPredictorWeights();
 
+int GetBrowsingHistoryMaxCount();
+int GetBrowsingHistoryDaysAgo();
+
 }  // namespace brave_ads::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_ELIGIBLE_ADS_ELIGIBLE_ADS_FEATURES_H_

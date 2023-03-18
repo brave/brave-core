@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/promoted_content_ads/promoted_content_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/promoted_content_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
@@ -297,7 +297,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = features::GetMaximumPromotedContentAdsPerHour();
+  const int ads_per_hour = features::GetMaximumAdsPerHour();
 
   FireAdEvents(ad_event, ads_per_hour - 1);
 
@@ -323,7 +323,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = features::GetMaximumPromotedContentAdsPerHour();
+  const int ads_per_hour = features::GetMaximumAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour);
 
   const std::string placement_id =
@@ -348,7 +348,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = features::GetMaximumPromotedContentAdsPerDay();
+  const int ads_per_day = features::GetMaximumAdsPerDay();
 
   FireAdEvents(ad_event, ads_per_day - 1);
 
@@ -376,7 +376,7 @@ TEST_F(BatAdsPromotedContentAdEventHandlerTest,
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kServed, Now());
 
-  const int ads_per_day = features::GetMaximumPromotedContentAdsPerDay();
+  const int ads_per_day = features::GetMaximumAdsPerDay();
 
   FireAdEvents(ad_event, ads_per_day);
 

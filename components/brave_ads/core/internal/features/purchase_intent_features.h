@@ -19,12 +19,9 @@ namespace brave_ads::targeting::features {
 BASE_DECLARE_FEATURE(kPurchaseIntent);
 
 bool IsPurchaseIntentEnabled();
-
-uint16_t GetPurchaseIntentThreshold();
-
-base::TimeDelta GetPurchaseIntentTimeWindow();
-
 int GetPurchaseIntentResourceVersion();
+uint16_t GetPurchaseIntentThreshold();
+base::TimeDelta GetPurchaseIntentTimeWindow();
 
 }  // namespace brave_ads::targeting::features
 

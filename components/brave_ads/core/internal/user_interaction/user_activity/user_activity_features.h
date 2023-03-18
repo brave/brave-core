@@ -19,15 +19,9 @@ namespace brave_ads::user_activity::features {
 BASE_DECLARE_FEATURE(kFeature);
 
 bool IsEnabled();
-
 std::string GetTriggers();
 base::TimeDelta GetTimeWindow();
 double GetThreshold();
-
-base::TimeDelta GetIdleTimeThreshold();
-base::TimeDelta GetMaximumIdleTime();
-
-bool ShouldDetectScreenWasLocked();
 
 }  // namespace brave_ads::user_activity::features
 

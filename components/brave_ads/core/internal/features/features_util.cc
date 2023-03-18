@@ -5,51 +5,30 @@
 
 #include "brave/components/brave_ads/core/internal/features/features_util.h"
 
-#include <string>
-
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/features/text_embedding_features.h"
 
 namespace brave_ads {
 
-namespace {
-
-std::string GetStatus(const bool status) {
-  return status ? "enabled" : "disabled";
-}
-
-}  // namespace
-
 void LogFeatures() {
-  BLOG(1,
-       "Ad rewards feature is " << GetStatus(features::IsAdRewardsEnabled()));
+  if (targeting::features::IsEpsilonGreedyBanditEnabled()) {
+    BLOG(3, "Epsilon greedy bandit ad targeting feature is enabled");
+  }
 
-  BLOG(1, "Ad serving feature is " << GetStatus(features::IsServingEnabled()));
+  if (targeting::features::IsPurchaseIntentEnabled()) {
+    BLOG(3, "Purchase intent ad targeting feature is enabled");
+  }
 
-  BLOG(1, "Text classification feature is "
-              << GetStatus(targeting::features::IsTextClassificationEnabled()));
+  if (targeting::features::IsTextClassificationEnabled()) {
+    BLOG(3, "Text classification ad targeting feature is enabled");
+  }
 
-  BLOG(1, "Epsilon greedy bandit feature is " << GetStatus(
-              targeting::features::IsEpsilonGreedyBanditEnabled()));
-
-  BLOG(1, "Purchase intent feature is "
-              << GetStatus(targeting::features::IsPurchaseIntentEnabled()));
-
-  BLOG(1, "Permission rule feature is "
-              << GetStatus(permission_rules::features::IsEnabled()));
-
-  BLOG(1, "Exclusion rule feature is "
-              << GetStatus(exclusion_rules::features::IsEnabled()));
-
-  BLOG(1, "User activity feature is "
-              << GetStatus(user_activity::features::IsEnabled()));
+  if (targeting::features::IsTextEmbeddingEnabled()) {
+    BLOG(3, "Text embedding ad targeting feature is enabled");
+  }
 }
 
 }  // namespace brave_ads

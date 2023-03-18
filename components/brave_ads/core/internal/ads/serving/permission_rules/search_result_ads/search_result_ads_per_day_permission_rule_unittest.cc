@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/search_result_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -46,7 +46,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumSearchResultAdsPerDay() - 1;
+  const int count = features::GetMaximumAdsPerDay() - 1;
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
   // Act
@@ -60,7 +60,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  const int count = features::GetMaximumSearchResultAdsPerDay();
+  const int count = features::GetMaximumAdsPerDay();
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
   AdvanceClockBy(base::Days(1));
@@ -76,7 +76,7 @@ TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsSearchResultAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  const int count = features::GetMaximumSearchResultAdsPerDay();
+  const int count = features::GetMaximumAdsPerDay();
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed, count);
 
   AdvanceClockBy(base::Days(1) - base::Seconds(1));

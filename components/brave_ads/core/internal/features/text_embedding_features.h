@@ -13,10 +13,8 @@ namespace brave_ads::targeting::features {
 BASE_DECLARE_FEATURE(kTextEmbedding);
 
 bool IsTextEmbeddingEnabled();
-
-int GetTextEmbeddingsHistorySize();
-
 int GetTextEmbeddingResourceVersion();
+int GetTextEmbeddingsHistorySize();
 
 }  // namespace brave_ads::targeting::features
 

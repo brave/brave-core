@@ -14,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
@@ -263,7 +263,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
-  const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
+  const int ads_per_hour = features::GetMaximumAdsPerHour();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -273,7 +273,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_hour - 1);
 
-  AdvanceClockBy(features::GetNewTabPageAdsMinimumWaitTime());
+  AdvanceClockBy(features::GetMinimumWaitTime());
 
   event_handler_->FireEvent(placement_id, creative_ad.creative_instance_id,
                             mojom::NewTabPageAdEventType::kServed);
@@ -294,7 +294,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_hour = features::GetMaximumNewTabPageAdsPerHour();
+  const int ads_per_hour = features::GetMaximumAdsPerHour();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -323,7 +323,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_day = features::GetMaximumNewTabPageAdsPerDay();
+  const int ads_per_day = features::GetMaximumAdsPerDay();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -357,7 +357,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
   // Arrange
   ForcePermissionRulesForTesting();
 
-  const int ads_per_day = features::GetMaximumNewTabPageAdsPerDay();
+  const int ads_per_day = features::GetMaximumAdsPerDay();
 
   const CreativeNewTabPageAdInfo creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo served_ad_event = BuildAdEvent(

@@ -32,7 +32,7 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   if (absl::optional<int> version = resource->FindInt("version")) {
-    if (targeting::features::GetPurchaseIntentResourceVersion() != *version) {
+    if (features::GetPurchaseIntentResourceVersion() != *version) {
       *error_message = "Failed to load from JSON, version missing";
       return {};
     }

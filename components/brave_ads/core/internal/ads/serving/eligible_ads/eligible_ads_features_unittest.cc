@@ -15,7 +15,7 @@ namespace {
 constexpr unsigned int kNumberOfServingFeatures = 7U;
 }  // namespace
 
-TEST(BatAdsEligibleAdsFeaturesTest, EligibleAdsEnabled) {
+TEST(BatAdsEligibleAdsFeaturesTest, IsEligibleAdsEnabled) {
   // Arrange
 
   // Act

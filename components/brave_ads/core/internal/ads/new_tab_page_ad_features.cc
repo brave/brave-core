@@ -3,15 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 
 namespace brave_ads::new_tab_page_ads::features {
 
-namespace {
-constexpr char kFeatureName[] = "NewTabPageAds";
-}  // namespace
-
-BASE_FEATURE(kFeature, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kFeature, "NewTabPageAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);

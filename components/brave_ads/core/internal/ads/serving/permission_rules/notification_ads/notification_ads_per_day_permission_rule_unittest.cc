@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -46,7 +46,7 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const size_t count = features::GetMaximumNotificationAdsPerDay() - 1;
+  const size_t count = features::GetMaximumAdsPerDay() - 1;
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
 
   // Act
@@ -60,7 +60,7 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
-  const size_t count = features::GetMaximumNotificationAdsPerDay();
+  const size_t count = features::GetMaximumAdsPerDay();
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
 
   AdvanceClockBy(base::Days(1));
@@ -76,7 +76,7 @@ TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
 TEST_F(BatAdsNotificationAdsPerDayPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
-  const size_t count = features::GetMaximumNotificationAdsPerDay();
+  const size_t count = features::GetMaximumAdsPerDay();
   RecordAdEvents(AdType::kNotificationAd, ConfirmationType::kServed, count);
 
   AdvanceClockBy(base::Days(1) - base::Seconds(1));

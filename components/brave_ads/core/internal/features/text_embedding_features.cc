@@ -11,34 +11,34 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "TextEmbedding";
-
-constexpr char kFieldTrialParameterResourceVersion[] =
+constexpr char kResourceVersionFieldTrialParamName[] =
     "text_embedding_resource_version";
-constexpr int kDefaultResourceVersion = 1;
+constexpr int kResourceVersionDefaultValue = 1;
 
-constexpr char kFieldTrialParameterTextEmbeddingsHistorySize[] =
+constexpr char kTextEmbeddingsHistorySizeFieldTrialParamName[] =
     "text_embeddings_history_size";
-constexpr int kDefaultTextEmbeddingsHistorySize = 10;
+constexpr int kTextEmbeddingsHistorySizeDefaultValue = 10;
 
 }  // namespace
 
-BASE_FEATURE(kTextEmbedding, kFeatureName, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kTextEmbedding,
+             "TextEmbedding",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsTextEmbeddingEnabled() {
   return base::FeatureList::IsEnabled(kTextEmbedding);
 }
 
-int GetTextEmbeddingsHistorySize() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kTextEmbedding, kFieldTrialParameterTextEmbeddingsHistorySize,
-      kDefaultTextEmbeddingsHistorySize);
-}
-
 int GetTextEmbeddingResourceVersion() {
   return GetFieldTrialParamByFeatureAsInt(kTextEmbedding,
-                                          kFieldTrialParameterResourceVersion,
-                                          kDefaultResourceVersion);
+                                          kResourceVersionFieldTrialParamName,
+                                          kResourceVersionDefaultValue);
+}
+
+int GetTextEmbeddingsHistorySize() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kTextEmbedding, kTextEmbeddingsHistorySizeFieldTrialParamName,
+      kTextEmbeddingsHistorySizeDefaultValue);
 }
 
 }  // namespace brave_ads::targeting::features

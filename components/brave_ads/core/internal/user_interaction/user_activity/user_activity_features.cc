@@ -13,28 +13,19 @@ namespace brave_ads::user_activity::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "UserActivity";
-
-constexpr char kFieldTrialParameterTriggers[] = "triggers";
-constexpr char kDefaultTriggers[] =
+constexpr char kTriggersFieldTrialParamName[] = "triggers";
+constexpr char kTriggersDefaultValue[] =
     "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
-constexpr char kFieldTrialParameterTimeWindow[] = "time_window";
-constexpr base::TimeDelta kDefaultTimeWindow = base::Minutes(15);
-constexpr char kFieldTrialParameterThreshold[] = "threshold";
-constexpr double kDefaultTreshold = 0.0;
 
-constexpr char kFieldTrialParameterIdleTimeThreshold[] = "idle_time_threshold";
-constexpr base::TimeDelta kDefaultIdleTimeThreshold = base::Seconds(5);
-constexpr char kFieldTrialParameterMaximumIdleTime[] = "maximum_idle_time";
-constexpr base::TimeDelta kDefaultMaximumIdleTime = base::Seconds(0);
+constexpr char kTimeWindowFieldTrialParamName[] = "time_window";
+constexpr base::TimeDelta kTimeWindowDefaultValue = base::Minutes(15);
 
-constexpr char kFieldTrialParameterShouldDetectScreenWasLocked[] =
-    "should_detect_was_locked";
-constexpr bool kDefaultShouldDetectScreenWasLocked = false;
+constexpr char kThresholdFieldTrialParamName[] = "threshold";
+constexpr double kTresholdDefaultValue = 0.0;
 
 }  // namespace
 
-BASE_FEATURE(kFeature, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kFeature, "UserActivity", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
@@ -42,34 +33,17 @@ bool IsEnabled() {
 
 std::string GetTriggers() {
   return GetFieldTrialParamByFeatureAsString(
-      kFeature, kFieldTrialParameterTriggers, kDefaultTriggers);
+      kFeature, kTriggersFieldTrialParamName, kTriggersDefaultValue);
 }
 
 base::TimeDelta GetTimeWindow() {
   return GetFieldTrialParamByFeatureAsTimeDelta(
-      kFeature, kFieldTrialParameterTimeWindow, kDefaultTimeWindow);
+      kFeature, kTimeWindowFieldTrialParamName, kTimeWindowDefaultValue);
 }
 
 double GetThreshold() {
   return GetFieldTrialParamByFeatureAsDouble(
-      kFeature, kFieldTrialParameterThreshold, kDefaultTreshold);
-}
-
-base::TimeDelta GetIdleTimeThreshold() {
-  return GetFieldTrialParamByFeatureAsTimeDelta(
-      kFeature, kFieldTrialParameterIdleTimeThreshold,
-      kDefaultIdleTimeThreshold);
-}
-
-base::TimeDelta GetMaximumIdleTime() {
-  return GetFieldTrialParamByFeatureAsTimeDelta(
-      kFeature, kFieldTrialParameterMaximumIdleTime, kDefaultMaximumIdleTime);
-}
-
-bool ShouldDetectScreenWasLocked() {
-  return GetFieldTrialParamByFeatureAsBool(
-      kFeature, kFieldTrialParameterShouldDetectScreenWasLocked,
-      kDefaultShouldDetectScreenWasLocked);
+      kFeature, kThresholdFieldTrialParamName, kTresholdDefaultValue);
 }
 
 }  // namespace brave_ads::user_activity::features

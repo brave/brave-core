@@ -118,12 +118,12 @@ void NotificationAdHandler::OnUserDidBecomeActive(
     return;
   }
 
-  if (MaybeScreenWasLocked(screen_was_locked)) {
+  if (idle_detection::MaybeScreenWasLocked(screen_was_locked)) {
     BLOG(1, "Notification ad not served: Screen was locked");
     return;
   }
 
-  if (HasExceededMaximumIdleTime(idle_time)) {
+  if (idle_detection::HasExceededMaximumIdleTime(idle_time)) {
     BLOG(1, "Notification ad not served: Exceeded maximum idle time");
     return;
   }

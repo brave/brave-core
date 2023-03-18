@@ -11,28 +11,27 @@ namespace brave_ads::permission_rules::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "PermissionRules";
-
-constexpr char kFieldTrialParameterShouldOnlyServeAdsInWindowedMode[] =
+constexpr char kShouldOnlyServeAdsInWindowedModeFieldTrialParamName[] =
     "should_only_serve_ads_in_windowed_mode";
-constexpr bool kDefaultShouldOnlyServeAdsInWindowedMode = true;
+constexpr bool kShouldOnlyServeAdsInWindowedModeDefaultValue = true;
 
 constexpr char
-    kFieldTrialParameterShouldOnlyServeAdsWithValidInternetConnection[] =
+    kShouldOnlyServeAdsWithValidInternetConnectionFieldTrialParamName[] =
         "should_only_serve_ads_with_valid_internet_connection";
-constexpr bool kDefaultShouldOnlyServeAdsWithValidInternetConnection = true;
+constexpr bool kShouldOnlyServeAdsWithValidInternetConnectionDefaultValue =
+    true;
 
-constexpr char kFieldTrialParameterShouldOnlyServeAdsIfMediaIsNotPlaying[] =
+constexpr char kShouldOnlyServeAdsIfMediaIsNotPlayingFieldTrialParamName[] =
     "should_only_serve_ads_if_media_is_not_playing";
-constexpr bool kDefaultShouldOnlyServeAdsIfMediaIsNotPlaying = true;
+constexpr bool kShouldOnlyServeAdsIfMediaIsNotPlayingDefaultValue = true;
 
-constexpr char kFieldTrialParameterShouldOnlyServeAdsIfBrowserIsActive[] =
+constexpr char kShouldOnlyServeAdsIfBrowserIsActiveFieldTrialParamName[] =
     "should_only_serve_ads_if_browser_is_active";
-constexpr bool kDefaultShouldOnlyServeAdsIfBrowserIsActive = true;
+constexpr bool kShouldOnlyServeAdsIfBrowserIsActiveDefaultValue = true;
 
 }  // namespace
 
-BASE_FEATURE(kFeature, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kFeature, "PermissionRules", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
@@ -40,27 +39,27 @@ bool IsEnabled() {
 
 bool ShouldOnlyServeAdsInWindowedMode() {
   return GetFieldTrialParamByFeatureAsBool(
-      kFeature, kFieldTrialParameterShouldOnlyServeAdsInWindowedMode,
-      kDefaultShouldOnlyServeAdsInWindowedMode);
+      kFeature, kShouldOnlyServeAdsInWindowedModeFieldTrialParamName,
+      kShouldOnlyServeAdsInWindowedModeDefaultValue);
 }
 
 bool ShouldOnlyServeAdsWithValidInternetConnection() {
   return GetFieldTrialParamByFeatureAsBool(
       kFeature,
-      kFieldTrialParameterShouldOnlyServeAdsWithValidInternetConnection,
-      kDefaultShouldOnlyServeAdsWithValidInternetConnection);
+      kShouldOnlyServeAdsWithValidInternetConnectionFieldTrialParamName,
+      kShouldOnlyServeAdsWithValidInternetConnectionDefaultValue);
 }
 
 bool ShouldOnlyServeAdsIfMediaIsNotPlaying() {
   return GetFieldTrialParamByFeatureAsBool(
-      kFeature, kFieldTrialParameterShouldOnlyServeAdsIfMediaIsNotPlaying,
-      kDefaultShouldOnlyServeAdsIfMediaIsNotPlaying);
+      kFeature, kShouldOnlyServeAdsIfMediaIsNotPlayingFieldTrialParamName,
+      kShouldOnlyServeAdsIfMediaIsNotPlayingDefaultValue);
 }
 
 bool ShouldOnlyServeAdsIfBrowserIsActive() {
   return GetFieldTrialParamByFeatureAsBool(
-      kFeature, kFieldTrialParameterShouldOnlyServeAdsIfBrowserIsActive,
-      kDefaultShouldOnlyServeAdsIfBrowserIsActive);
+      kFeature, kShouldOnlyServeAdsIfBrowserIsActiveFieldTrialParamName,
+      kShouldOnlyServeAdsIfBrowserIsActiveDefaultValue);
 }
 
 }  // namespace brave_ads::permission_rules::features

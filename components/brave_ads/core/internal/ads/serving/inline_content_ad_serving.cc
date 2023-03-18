@@ -10,17 +10,17 @@
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/inline_content_ads/inline_content_ad_permission_rules.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 
@@ -31,7 +31,7 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   DCHECK(subdivision_targeting);
   DCHECK(anti_targeting_resource);
 
-  const int version = brave_ads::features::GetServingVersion();
+  const int version = features::GetServingVersion();
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 }

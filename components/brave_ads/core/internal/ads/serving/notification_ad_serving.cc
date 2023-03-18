@@ -10,11 +10,12 @@
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/notification_ads/notification_ad_permission_rules.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
@@ -39,7 +40,7 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   DCHECK(subdivision_targeting);
   DCHECK(anti_targeting_resource);
 
-  const int version = brave_ads::features::GetServingVersion();
+  const int version = features::GetServingVersion();
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 
@@ -90,6 +91,12 @@ void Serving::MaybeServeAd() {
   }
 
   is_serving_ = true;
+
+  if (!features::IsEnabled()) {
+    BLOG(1, "Notification ad not served: Feature is disabled");
+    FailedToServeAd();
+    return;
+  }
 
   if (!IsSupported()) {
     BLOG(1, "Notification ad not served: Unsupported version");

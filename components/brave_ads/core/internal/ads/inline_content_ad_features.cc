@@ -3,15 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 
 namespace brave_ads::inline_content_ads::features {
 
-namespace {
-constexpr char kFeatureName[] = "InlineContentAds";
-}  // namespace
-
-BASE_FEATURE(kFeature, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kFeature, "InlineContentAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);

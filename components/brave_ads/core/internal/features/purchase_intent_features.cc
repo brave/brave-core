@@ -13,41 +13,40 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "PurchaseIntent";
-
-constexpr char kFieldTrialParameterThreshold[] = "threshold";
-constexpr uint16_t kDefaultThreshold = 3;
-
-constexpr char kFieldTrialParameterTimeWindow[] = "time_window_in_seconds";
-constexpr base::TimeDelta kDefaultTimeWindow = base::Days(7);
-
-constexpr char kFieldTrialParameterResourceVersion[] =
+constexpr char kResourceVersionFieldTrialParamName[] =
     "purchase_intent_resource_version";
+constexpr int kResourceVersionDefaultValue = 1;
 
-constexpr int kDefaultResourceVersion = 1;
+constexpr char kThresholdFieldTrialParamName[] = "threshold";
+constexpr uint16_t kThresholdDefaultValue = 3;
+
+constexpr char kTimeWindowFieldTrialParamName[] = "time_window_in_seconds";
+constexpr base::TimeDelta kTimeWindowDefaultValue = base::Days(7);
 
 }  // namespace
 
-BASE_FEATURE(kPurchaseIntent, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kPurchaseIntent,
+             "PurchaseIntent",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsPurchaseIntentEnabled() {
   return base::FeatureList::IsEnabled(kPurchaseIntent);
 }
 
+int GetPurchaseIntentResourceVersion() {
+  return GetFieldTrialParamByFeatureAsInt(kPurchaseIntent,
+                                          kResourceVersionFieldTrialParamName,
+                                          kResourceVersionDefaultValue);
+}
+
 uint16_t GetPurchaseIntentThreshold() {
   return GetFieldTrialParamByFeatureAsInt(
-      kPurchaseIntent, kFieldTrialParameterThreshold, kDefaultThreshold);
+      kPurchaseIntent, kThresholdFieldTrialParamName, kThresholdDefaultValue);
 }
 
 base::TimeDelta GetPurchaseIntentTimeWindow() {
   return GetFieldTrialParamByFeatureAsTimeDelta(
-      kPurchaseIntent, kFieldTrialParameterTimeWindow, kDefaultTimeWindow);
-}
-
-int GetPurchaseIntentResourceVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kPurchaseIntent,
-                                          kFieldTrialParameterResourceVersion,
-                                          kDefaultResourceVersion);
+      kPurchaseIntent, kTimeWindowFieldTrialParamName, kTimeWindowDefaultValue);
 }
 
 }  // namespace brave_ads::targeting::features

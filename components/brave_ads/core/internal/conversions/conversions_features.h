@@ -15,9 +15,7 @@ namespace brave_ads::features {
 BASE_DECLARE_FEATURE(kConversions);
 
 bool IsConversionsEnabled();
-
 int GetConversionsResourceVersion();
-
 std::string GetDefaultConversionIdPattern();
 
 }  // namespace brave_ads::features

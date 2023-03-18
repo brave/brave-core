@@ -13,25 +13,23 @@ namespace brave_ads::exclusion_rules::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "FrequencyCapping";
-
-constexpr char kFieldTrialParameterShouldExcludeAdIfConverted[] =
+constexpr char kShouldExcludeAdIfConvertedFieldTrialParamName[] =
     "should_exclude_ad_if_converted";
-constexpr bool kDefaultShouldExcludeAdIfConverted = true;
+constexpr bool kShouldExcludeAdIfConvertedDefaultValue = true;
 
-constexpr char kFieldTrialParameterExcludeAdIfDismissedWithinTimeWindow[] =
+constexpr char kExcludeAdIfDismissedWithinTimeWindowFieldTrialParamName[] =
     "exclude_ad_if_dismissed_within_time_window";
-constexpr base::TimeDelta kDefaultExcludeAdIfDismissedWithinTimeWindow =
+constexpr base::TimeDelta kExcludeAdIfDismissedWithinTimeWindowDefaultValue =
     base::Hours(0);
 
-constexpr char kFieldTrialParameterExcludeAdIfTransferredWithinTimeWindow[] =
+constexpr char kExcludeAdIfTransferredWithinTimeWindowFieldTrialParamName[] =
     "exclude_ad_if_transferred_within_time_window";
-constexpr base::TimeDelta kDefaultExcludeAdIfTransferredWithinTimeWindow =
+constexpr base::TimeDelta kExcludeAdIfTransferredWithinTimeWindowDefaultValue =
     base::Hours(0);
 
 }  // namespace
 
-BASE_FEATURE(kFeature, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kFeature, "ExclusionRules", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsEnabled() {
   return base::FeatureList::IsEnabled(kFeature);
@@ -39,20 +37,20 @@ bool IsEnabled() {
 
 bool ShouldExcludeAdIfConverted() {
   return GetFieldTrialParamByFeatureAsBool(
-      kFeature, kFieldTrialParameterShouldExcludeAdIfConverted,
-      kDefaultShouldExcludeAdIfConverted);
+      kFeature, kShouldExcludeAdIfConvertedFieldTrialParamName,
+      kShouldExcludeAdIfConvertedDefaultValue);
 }
 
-base::TimeDelta ExcludeAdIfDismissedWithinTimeWindow() {
+base::TimeDelta GetExcludeAdIfDismissedWithinTimeWindow() {
   return GetFieldTrialParamByFeatureAsTimeDelta(
-      kFeature, kFieldTrialParameterExcludeAdIfDismissedWithinTimeWindow,
-      kDefaultExcludeAdIfDismissedWithinTimeWindow);
+      kFeature, kExcludeAdIfDismissedWithinTimeWindowFieldTrialParamName,
+      kExcludeAdIfDismissedWithinTimeWindowDefaultValue);
 }
 
-base::TimeDelta ExcludeAdIfTransferredWithinTimeWindow() {
+base::TimeDelta GetExcludeAdIfTransferredWithinTimeWindow() {
   return GetFieldTrialParamByFeatureAsTimeDelta(
-      kFeature, kFieldTrialParameterExcludeAdIfTransferredWithinTimeWindow,
-      kDefaultExcludeAdIfTransferredWithinTimeWindow);
+      kFeature, kExcludeAdIfTransferredWithinTimeWindowFieldTrialParamName,
+      kExcludeAdIfTransferredWithinTimeWindowDefaultValue);
 }
 
 }  // namespace brave_ads::exclusion_rules::features

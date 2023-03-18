@@ -11,37 +11,34 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "TextClassification";
-
-constexpr char kFieldTrialParameterPageProbabilitiesHistorySize[] =
-    "page_probabilities_history_size";
-constexpr int kDefaultPageProbabilitiesHistorySize = 5;
-
-constexpr char kFieldTrialParameterResourceVersion[] =
+constexpr char kResourceVersionFieldTrialParamName[] =
     "text_classification_resource_version";
+constexpr int kResourceVersionDefaultValue = 1;
 
-constexpr int kDefaultResourceVersion = 1;
+constexpr char kPageProbabilitiesHistorySizeFieldTrialParamName[] =
+    "page_probabilities_history_size";
+constexpr int kPageProbabilitiesHistorySizeDefaultValue = 5;
 
 }  // namespace
 
 BASE_FEATURE(kTextClassification,
-             kFeatureName,
+             "TextClassification",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsTextClassificationEnabled() {
   return base::FeatureList::IsEnabled(kTextClassification);
 }
 
-int GetTextClassificationProbabilitiesHistorySize() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kTextClassification, kFieldTrialParameterPageProbabilitiesHistorySize,
-      kDefaultPageProbabilitiesHistorySize);
-}
-
 int GetTextClassificationResourceVersion() {
   return GetFieldTrialParamByFeatureAsInt(kTextClassification,
-                                          kFieldTrialParameterResourceVersion,
-                                          kDefaultResourceVersion);
+                                          kResourceVersionFieldTrialParamName,
+                                          kResourceVersionDefaultValue);
+}
+
+int GetTextClassificationProbabilitiesHistorySize() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kTextClassification, kPageProbabilitiesHistorySizeFieldTrialParamName,
+      kPageProbabilitiesHistorySizeDefaultValue);
 }
 
 }  // namespace brave_ads::targeting::features

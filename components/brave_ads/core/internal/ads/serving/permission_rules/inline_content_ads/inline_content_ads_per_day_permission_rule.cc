@@ -11,10 +11,10 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
-namespace brave_ads {
+namespace brave_ads::inline_content_ads {
 
 namespace {
 
@@ -22,7 +22,7 @@ constexpr base::TimeDelta kTimeConstraint = base::Days(1);
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumInlineContentAdsPerDay());
+      history, kTimeConstraint, features::GetMaximumAdsPerDay());
 }
 
 }  // namespace
@@ -43,4 +43,4 @@ const std::string& AdsPerDayPermissionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::inline_content_ads
