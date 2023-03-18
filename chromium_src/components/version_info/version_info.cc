@@ -13,14 +13,12 @@
 
 namespace version_info {
 
-const std::string& GetProductNameAndVersionForUserAgent() {
-  static const base::NoDestructor<std::string> product_and_version(
-      "Chrome/" + std::string(BRAVE_CHROMIUM_VERSION));
-  return *product_and_version;
+constexpr std::string GetProductNameAndVersionForUserAgent() {
+  return "Chrome/" + std::string(BRAVE_CHROMIUM_VERSION);
 }
 
 // We use |nightly| instead of |canary|.
-std::string GetChannelString(Channel channel) {
+constexpr std::string GetChannelString(Channel channel) {
   if (channel == Channel::CANARY)
     return "nightly";
 
