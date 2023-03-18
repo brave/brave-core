@@ -1,6 +1,7 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "chrome/common/chrome_constants.h"
 
@@ -143,8 +144,6 @@ const base::FilePath::CharType kSingletonCookieFilename[] =
 const base::FilePath::CharType kSingletonLockFilename[] = FPL("SingletonLock");
 const base::FilePath::CharType kSingletonSocketFilename[] =
     FPL("SingletonSocket");
-const base::FilePath::CharType kSupervisedUserSettingsFilename[] =
-    FPL("Managed Mode Settings");
 const base::FilePath::CharType kThemePackFilename[] = FPL("Cached Theme.pak");
 const base::FilePath::CharType kTransportSecurityPersisterFilename[] =
     FPL("TransportSecurity");

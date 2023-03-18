@@ -59,8 +59,8 @@ void BraveOmniboxResultView::OnSelectionStateChanged() {
 }
 
 void BraveOmniboxResultView::OpenMatch() {
-  popup_contents_view_->OpenMatch(
-      model_index_, WindowOpenDisposition::CURRENT_TAB, base::TimeTicks::Now());
+  model_->OpenMatch(match_, WindowOpenDisposition::CURRENT_TAB, GURL(), u"",
+                    model_index_, base::TimeTicks::Now());
 }
 
 void BraveOmniboxResultView::Dismiss() {
@@ -76,8 +76,8 @@ void BraveOmniboxResultView::Dismiss() {
 void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
   if (brave_search_promotion_view_ && IsBraveSearchPromotionMatch(match_)) {
     brave_search_promotion_view_->OnSelectionStateChanged(
-        GetMatchSelected() && popup_contents_view_->GetSelection().state ==
-                                  OmniboxPopupSelection::NORMAL);
+        GetMatchSelected() &&
+        popup_view_->GetSelection().state == OmniboxPopupSelection::NORMAL);
   }
 }
 

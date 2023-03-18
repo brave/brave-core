@@ -18,8 +18,7 @@
     net::CertPrincipal rdns;  // relative_distinquished_name_sequence;
     auto string_handling =
         net::CertPrincipal::PrintableStringHandling::kDefault;
-    if (!rdns.ParseDistinguishedName(berName.UnsafeData(), berName.Length(),
-                                     string_handling)) {
+    if (!rdns.ParseDistinguishedName(berName, string_handling)) {
       _stateOrProvince = [[NSString alloc] init];
       _locality = [[NSString alloc] init];
       _organization = [[NSArray alloc] init];

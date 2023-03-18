@@ -399,7 +399,9 @@ public class WelcomeOnboardingActivity extends FirstRunActivityBase {
     }
 
     @Override
-    public void handleBackPress() {}
+    public @BackPressResult int handleBackPress() {
+        return BackPressResult.SUCCESS;
+    }
 
     @Override
     public void triggerLayoutInflation() {

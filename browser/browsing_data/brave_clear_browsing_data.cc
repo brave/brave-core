@@ -68,9 +68,6 @@ bool BrowsingDataRemovalWatcher::GetClearBrowsingDataOnExitSettings(
 
   uint64_t site_data_mask = chrome_browsing_data_remover::DATA_TYPE_SITE_DATA;
   // Don't try to clear LSO data if it's not supported.
-  if (!prefs->GetBoolean(prefs::kClearPluginLSODataEnabled))
-    site_data_mask &= ~chrome_browsing_data_remover::DATA_TYPE_PLUGIN_DATA;
-
   if (prefs->GetBoolean(browsing_data::prefs::kDeleteBrowsingHistoryOnExit) &&
       prefs->GetBoolean(prefs::kAllowDeletingBrowserHistory))
     *remove_mask |= chrome_browsing_data_remover::DATA_TYPE_HISTORY;

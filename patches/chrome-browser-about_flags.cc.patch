@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 057c0d9ebc37d60e34fb6ee928c00698290d05ef..d104e15b169da5d2802181ba91627ba470a3169f 100644
+index dd798ff1a8f0d1df849f5abce10f99a6e83a4e3f..fe0c2748bcbd075c86611cf6c202e2d64efb446b 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -3210,6 +3210,7 @@ const FeatureEntry::FeatureVariation kPrivacySandboxSettings4Variations[] = {
+@@ -3231,6 +3231,7 @@ const FeatureEntry::FeatureVariation kPrivacySandboxSettings4Variations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

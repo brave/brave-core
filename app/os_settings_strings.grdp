@@ -2160,6 +2160,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BRUSCHETTA_SUBTEXT" desc="Description for the section for enabling and managing Bruschetta (codename).">
     Run Bruschetta on your device.
   </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_REMOVE" desc="Label for the row to open a dialog confirming removal of Bruschetta (codename).">
+    Remove Bruschetta
+  </message>
+  <message name="IDS_SETTINGS_BRUSCHETTA_REMOVE_BUTTON" desc="Label for the button to open a dialog confirming removal of Bruschetta.">
+    Remove
+  </message>
 
   <!-- Android apps page (OS settings) -->
   <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
@@ -2455,14 +2461,80 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_AUDIO_TITLE" desc="In Device Settings, the title of the audio settings subpage.">
     Audio
   </message>
+  <message name="IDS_SETTINGS_AUDIO_VOLUME_TITLE" desc="In Device Settings, the title of the volume row under the output section in audio settings subpage." translateable="false">
+    Volume
+  </message>
   <message name="IDS_SETTINGS_AUDIO_OUTPUT_TITLE" desc="In Device Settings, the title of the output section of the audio settings subpage.">
     Output
   </message>
-  <message name="IDS_SETTINGS_AUDIO_VOLUME_TITLE" desc="In Device Settings, the title of the volume row under the output section in audio settings subpage.">
-    Volume
+  <message name="IDS_SETTINGS_AUDIO_OUTPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the output section in audio settings subpage." translateable="false">
+    Speaker
   </message>
-  <message name="IDS_SETTINGS_AUDIO_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the output section in audio settings subpage.">
-    Device
+  <message name="IDS_SETTINGS_AUDIO_INPUT_TITLE" desc="In Device Settings, the title of the input section of the audio settings subpage." translateable="false">
+    Input
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the input section in audio settings subpage." translateable="false">
+    Microphone
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_GAIN_TITLE" desc="In Device Settings, the title of the slider under the input section in audio settings subpage. This slider controls the microphone's gain setting." translateable="false">
+    Gain
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_NOT_MUTED" desc="In Device Settings, the aria label for the input mute button when not muted." translateable="false">
+    Toggle mic. Mic is on, toggling will mute input.
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the input mute button when muted." translateable="false">
+    Toggle mic. Mic is muted.
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_MUTED_BY_HARDWARE_SWITCH" desc="In Device Settings, the aria label for the input mute button when microphone mute switch is turned on." translateable="false">
+    Device's microphone button is turned off.
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_INPUT_NOISE_CANCELLATION_TITLE" desc="In Device Settings, the title of the noise cancellation toggle under the input section in audio settings subpage." translateable="false">
+    Noise Cancellation
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_FRONT_MIC_LABEL" desc="In Device Settings, the label used for the front microphone.">
+    Front microphone
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_HEADPHONE_LABEL" desc="In Device Settings, the label used for the audio headphone.">
+    Headphones
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_INTERNAL_SPEAKERS_LABEL" desc="In Device Settings, the label used for the internal audio speaker.">
+    Speaker (internal)
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_INTERNAL_MIC_LABEL" desc="In Device Settings, the label used for the internal microphone.">
+    Microphone (internal)
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_REAR_MIC_LABEL" desc="In Device Settings, the label used for the rear microphone.">
+    Rear microphone
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_USB_LABEL" desc="In Device Settings, the label used for the USB audio device.">
+    <ph name="device_name">$1<ex>Headphone</ex></ph> (USB)
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_BLUETOOTH_LABEL" desc="In Device Settings, the label used for the bluetooth audio device.">
+    <ph name="device_name">$1<ex>Headphone</ex></ph> (Bluetooth)
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_HDMI_LABEL" desc="In Device Settings, the label used for the HDMI audio device.">
+    <ph name="device_name">$1<ex>Speaker</ex></ph> (HDMI/DP)
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_DEVICE_MIC_JACK_LABEL" desc="In Device Settings, the label used for the mic jack device.">
+    Mic jack
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_TOGGLE_TO_MUTE_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is unmuted." translateable="false">
+    Toggle to mute
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_TOGGLE_TO_UNMUTE_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted." translateable="false">
+    Toggle to unmute
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_MUTED_BY_POLICY_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted by enterprise policy." translateable="false">
+    Muted by policy
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_MUTED_EXTERNALLY_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted by hardware/switch." translateable="false">
+    Muted by hardware/switch
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_NOT_MUTED" desc="In Device Settings, the aria label for the output mute button when not muted." translateable="false">
+    Toggle volume. Volume is on, toggling will mute audio.
+  </message>
+  <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the output mute button when not muted." translateable="false">
+    Toggle volume. Volume is muted.
   </message>
 
   <!-- Device pointer page (OS settings) -->
@@ -2721,7 +2793,7 @@ Press an assigned switch or key to remove assignment.
     View printer PPD
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_VIEW_PPD_ERROR_MESSAGE" desc="The message shown when the request to view a PPD is unsuccessful.">
-    Unable to retrieve PPD.
+    Unable to retrieve PPD for <ph name="PRINTER_NAME">$1<ex>Acme Printer</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_PPD_INTRO" desc="Text used to introduce the PPD for an active printer.">
     PPD for <ph name="PRINTER_NAME">$1<ex>Acme Printer</ex></ph>
@@ -2806,6 +2878,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_EULA_NOTICE" desc="The message shown to users if a printer has a EULA agreement attached to it.">
     End User License Agreement
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_CUPS_EULA_NOTICE_HEADER" desc="The message shown to users if a printer has a EULA agreement attached to it.">
+    End User License Agreement: <ph name="EULA_LINK">$1<ex>chrome://os-credits/#license</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_IPP_URI_UNREACHABLE" desc="The message shown on the uri field of the add/edit printer dialogs when attempting to connect to an IPP printer that is not found on the network.">
     Couldn't detect a printer. Please enter printer address again.
@@ -3919,6 +3994,20 @@ Press an assigned switch or key to remove assignment.
     Kerberos tickets
   </message>
 
+  <!-- Kerberos In-Browser dialog -->
+  <message name="IDS_SETTINGS_KERBEROS_IN_BROWSER_DIALOG_TITLE" desc="The title of the Kerberos In-Browser dialog">
+  Kerberos authentication failed
+  </message>
+  <message name="IDS_SETTINGS_KERBEROS_IN_BROWSER_DIALOG_DESCRIPTION" desc="The description of the Kerberos In-Browser dialog">
+  The page you are trying to visit couldn't verify your Kerberos tickets
+  </message>
+  <message name="IDS_SETTINGS_KERBEROS_IN_BROWSER_DIALOG_VISIT_WITHOUT_TICKET_BUTTON" desc="The text on the 'Visit without a ticket' button of the Kerberos In-Browser dialog">
+  Visit without a ticket
+  </message>
+  <message name="IDS_SETTINGS_KERBEROS_IN_BROWSER_DIALOG_MANAGE_TICKETS_BUTTON" desc="The text on the 'Manage tickets' button of the Kerberos In-Browser dialog">
+  Manage tickets
+  </message>
+
   <!-- Power -->
   <message name="IDS_SETTINGS_POWER_TITLE" desc="In Device Settings, the title for power management.">
     Power
@@ -4352,6 +4441,32 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_TITLE" translateable="false" desc="In Device Settings, the title of the new Per-device keyboard settings subpage.">
     Per-device Keyboard
   </message>
+  <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_ROW_LABEL" translateable="false" desc="In per-device keyboard Settings, the label of the Remap Keyboard Keys row.">
+    Remap keyboard keys
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_ROW_SUB_LABEL" translateable="false" desc="Sub-label with number of remapped keys for the Remap Keyboard Keys row.">
+    {COUNT, plural,
+     =1 {1 remapped key}
+     other {{COUNT} remapped keys}}
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_DESCRIPTION" translateable="false" desc="In Keyboard remap keys subpage, the description label above remapping keys to describe the actions user can perform.">
+    For each key listed below, choose the action you want it to perform
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_SEND_INVERTED_FUNCTION_KEYS" translateable="false" desc="In Device Settings, the inverted checkbox label for interpreting the top-row keys as function keys instead.">
+    Convert F keys to ChromeOS top-row keys
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_SEND_INVERTED_FUNCTION_KEYS_DESCRIPTION" translateable="false" desc="In Device Settings, the inverted label describing how to use the top-row keys' original actions when they are set to behave like function keys.">
+    Change the behavior of F keys to ChromeOS top-row actions
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_BLOCK_META_FUNCTION_KEY_REWRITES" translateable="false" desc="In Device Settings, the checkbox label to enable the meta key to switch the behavior of the top-row keys.">
+    Enable System/Launcher key to switch the behavior of the top-row keys
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_BLOCK_META_FUNCTION_KEY_REWRITES_DESCRIPTION" translateable="false" desc="In Device Settings, the label describing how to use the meta key to switch the behavior of the top-row keys.">
+    Hold the key to switch between F keys and ChromeOS actions
+  </message>
+  <message name="IDS_SETTINGS_KEYBOARD_REMAP_RESTORE_BUTTON_LABEL" translateable="false" desc="In Keyboard remap keys subpage, the restore defaults button label.">
+    Restore defaults
+  </message>
   <!-- Device Keyboard page (OS settings) -->
   <message name="IDS_SETTINGS_KEYBOARD_TITLE" desc="In Device Settings, the title of the keyboard settings subpage.">
     Keyboard
@@ -4542,6 +4657,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_STORAGE_ITEM_APPS" desc="In Device Settings &gt; Storage, label for the total size of Android apps and web store apps and extensions.">
     Apps and extensions
+  </message>
+  <message name="IDS_SETTINGS_STORAGE_ITEM_OFFLINE" desc="In Device Settings &gt; Storage, label for the total size of pinned files in Google Drive.">
+    Offline files
   </message>
   <message name="IDS_SETTINGS_STORAGE_ITEM_CROSTINI" desc="In Device Settings &gt; Storage, label for the total size of Crostini VMs, apps and cache.">
     Linux storage

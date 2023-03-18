@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index 4cbfed424dd46b8e37c488b25f24c1ccb223edb4..98df3358c07f54e07d9766ee21435032c18453e5 100644
+index 77734c8f9d6e30796a6c49f19a3371aad01897e4..8f65324dc61c2c33800722277d0bda698d5dc0d7 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -113,6 +113,7 @@ constexpr HistogramValue kHistogramValue[] = {
-      91},
-     {ContentSettingsType::REVOKED_UNUSED_SITE_PERMISSIONS, 92},
-     {ContentSettingsType::TOP_LEVEL_STORAGE_ACCESS, 93},
-+    BRAVE_HISTOGRAM_VALUE_LIST
+@@ -117,6 +117,7 @@ constexpr HistogramValue kHistogramValue[] = {
+     {ContentSettingsType::FEDERATED_IDENTITY_IDENTITY_PROVIDER_REGISTRATION,
+      95},
+     {ContentSettingsType::ANTI_ABUSE, 96},
++     BRAVE_HISTOGRAM_VALUE_LIST
  };
  
  void FilterRulesForType(ContentSettingsForOneType& settings,

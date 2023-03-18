@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
+import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
@@ -63,6 +64,7 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
+import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.FaviconFetcher;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
@@ -95,10 +97,12 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
 import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.ToolbarTablet.OfflineDownloader;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController;
+import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
@@ -109,6 +113,7 @@ import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsDelegate;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
+import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.browser_ui.widget.scrim.ScrimCoordinator;
 import org.chromium.components.omnibox.AutocompleteMatch;
@@ -117,6 +122,8 @@ import org.chromium.components.permissions.PermissionDialogController;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.content_public.browser.BrowserContextHandle;
 import org.chromium.ui.ViewProvider;
+import org.chromium.ui.base.ActivityWindowAndroid;
+import org.chromium.ui.base.IntentRequestTracker;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.base.WindowDelegate;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -129,6 +136,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 
 /**
  * Tests to check whether classes, methods and fields exist for bytecode manipulation.
@@ -307,6 +315,10 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/settings/BravePreferenceFragment"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/preferences/ChromePreferenceKeyChecker"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator"));
     }
 
     @Test
@@ -648,10 +660,11 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator",
-                Context.class, AutocompleteDelegate.class, UrlBarEditingTextStateProvider.class,
-                PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
-                LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
-                JankTracker.class, OmniboxPedalDelegate.class));
+                Context.class, AutocompleteControllerProvider.class, AutocompleteDelegate.class,
+                UrlBarEditingTextStateProvider.class, PropertyModel.class, Handler.class,
+                Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
+                Callback.class, Supplier.class, BookmarkState.class, JankTracker.class,
+                OmniboxPedalDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
@@ -731,6 +744,22 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/notifications/StandardNotificationBuilder",
                 "org/chromium/chrome/browser/notifications/BraveNotificationBuilder",
                 Context.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator",
+                "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator",
+                AppCompatActivity.class, Callback.class, ObservableSupplier.class,
+                ActivityTabProvider.class, ObservableSupplier.class, ObservableSupplier.class,
+                ObservableSupplier.class, Supplier.class, ObservableSupplier.class,
+                OneshotSupplier.class, OneshotSupplier.class, OneshotSupplier.class,
+                OneshotSupplier.class, Supplier.class, BrowserControlsManager.class,
+                ActivityWindowAndroid.class, JankTracker.class, ActivityLifecycleDispatcher.class,
+                ObservableSupplier.class, MenuOrKeyboardActionController.class, Supplier.class,
+                ObservableSupplier.class, AppMenuBlocker.class, BooleanSupplier.class,
+                BooleanSupplier.class, Supplier.class, FullscreenManager.class, Supplier.class,
+                Supplier.class, Supplier.class, int.class, Supplier.class, Supplier.class,
+                AppMenuDelegate.class, StatusBarColorProvider.class, ObservableSupplierImpl.class,
+                IntentRequestTracker.class, int.class, Supplier.class, Function.class,
+                OneshotSupplier.class, boolean.class, BackPressManager.class));
     }
 
     @Test

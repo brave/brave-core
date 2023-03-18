@@ -8,6 +8,8 @@
 # providers we don't need.
 group("brave_providers") {
   deps = [
+    "//brave/ios/browser/providers/lottie:chromium_lottie_animation",
+
     # The individual API implementations.
     "//ios/chrome/browser/providers/app_distribution:chromium_app_distribution",
     "//ios/chrome/browser/providers/app_utils:chromium_app_utils",
@@ -24,7 +26,9 @@ group("brave_providers") {
     "//ios/chrome/browser/providers/modals:chromium_modals",
     "//ios/chrome/browser/providers/omaha:chromium_omaha",
     "//ios/chrome/browser/providers/overrides:chromium_overrides",
+    "//ios/chrome/browser/providers/partial_translate:chromium_partial_translate",
     "//ios/chrome/browser/providers/password_auto_fill:chromium_password_auto_fill",
+    "//ios/chrome/browser/providers/primes:chromium_primes",
     "//ios/chrome/browser/providers/push_notification:chromium_push_notification",
     "//ios/chrome/browser/providers/risk_data:chromium_risk_data",
     "//ios/chrome/browser/providers/signin:chromium_signin_error",
