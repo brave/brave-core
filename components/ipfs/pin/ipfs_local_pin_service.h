@@ -129,6 +129,8 @@ class IpfsLocalPinService : public KeyedService {
   IpfsLocalPinService();
   ~IpfsLocalPinService() override;
 
+  virtual void Reset(base::OnceCallback<void(bool)> callback);
+
   // Pins provided cids and stores related record in the prefs.
   virtual void AddPins(const std::string& key,
                        const std::vector<std::string>& cids,
@@ -144,6 +146,10 @@ class IpfsLocalPinService : public KeyedService {
   void SetIpfsBasePinServiceForTesting(std::unique_ptr<IpfsBasePinService>);
 
  private:
+  void OnLsPinCliResult(base::OnceCallback<void(bool)> callback,
+                        absl::optional<std::string> result);
+  void OnRemovePinCliResult(base::OnceCallback<void(bool)> callback,
+                            bool result);
   void AddGcTask();
   void OnRemovePinsFinished(RemovePinCallback callback, bool status);
   void OnAddJobFinished(AddPinCallback callback, bool status);

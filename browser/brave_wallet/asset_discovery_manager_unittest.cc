@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -78,17 +79,10 @@ const std::vector<std::string>& GetAssetDiscoverySupportedEthChainsForTest() {
 }  // namespace
 
 class TestBraveWalletServiceObserverForAssetDiscovery
-    : public brave_wallet::mojom::BraveWalletServiceObserver {
+    : public brave_wallet::BraveWalletServiceObserverBase {
  public:
   TestBraveWalletServiceObserverForAssetDiscovery() = default;
 
-  void OnDefaultEthereumWalletChanged(mojom::DefaultWallet wallet) override {}
-  void OnDefaultSolanaWalletChanged(mojom::DefaultWallet wallet) override {}
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
-  void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
-  void OnDefaultBaseCryptocurrencyChanged(
-      const std::string& cryptocurrency) override {}
-  void OnNetworkListChanged() override {}
   void OnDiscoverAssetsCompleted(
       std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {
     ASSERT_EQ(expected_contract_addresses_.size(), discovered_assets.size());

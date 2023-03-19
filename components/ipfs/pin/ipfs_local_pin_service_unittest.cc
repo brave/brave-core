@@ -6,6 +6,7 @@
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
 #include <memory>
+#include <set>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -41,6 +42,10 @@ class MockIpfsService : public IpfsService {
                     const std::string& type,
                     bool quiet,
                     IpfsService::GetPinsCallback callback));
+  MOCK_METHOD2(RemovePinCli,
+               void(std::set<std::string> cid,
+                    IpfsService::BoolCallback callback));
+  MOCK_METHOD1(LsPinCli, void(IpfsService::NodeCallback callback));
 };
 
 class MockIpfsBasePinService : public IpfsBasePinService {
@@ -456,6 +461,99 @@ TEST_F(IpfsLocalPinServiceTest, GcJobTest) {
 
     EXPECT_FALSE(success.value());
   }
+}
+
+TEST_F(IpfsLocalPinServiceTest, ResetTest) {
+  {
+    std::string base = R"({
+                                    "Qma" : ["a", "b"],
+                                    "Qmb" : ["a", "b"],
+                                    "Qmc" : ["a", "b"],
+                                    "Qmd" : ["b"]
+                                 })";
+    absl::optional<base::Value> base_value = base::JSONReader::Read(
+        base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                  base::JSONParserOptions::JSON_PARSE_RFC);
+    GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
+  }
+
+  ON_CALL(*GetIpfsService(), LsPinCli(_))
+      .WillByDefault(::testing::Invoke([](IpfsService::NodeCallback callback) {
+        std::move(callback).Run("bafy1\nbafy2\nbafy3");
+      }));
+  ON_CALL(*GetIpfsService(), RemovePinCli(_, _))
+      .WillByDefault(::testing::Invoke(
+          [](std::set<std::string> cid, IpfsService::BoolCallback callback) {
+            EXPECT_EQ(3u, cid.size());
+            EXPECT_NE(cid.end(), cid.find("bafy1"));
+            EXPECT_NE(cid.end(), cid.find("bafy2"));
+            EXPECT_NE(cid.end(), cid.find("bafy3"));
+            std::move(callback).Run(true);
+          }));
+  absl::optional<bool> reset_result;
+  service()->Reset(base::BindLambdaForTesting(
+      [&reset_result](bool result) { reset_result = result; }));
+  EXPECT_EQ(0u, GetPrefs()->GetDict(kIPFSPinnedCids).size());
+  ASSERT_TRUE(reset_result.value());
+}
+
+TEST_F(IpfsLocalPinServiceTest, ResetTest_UnpinFailed) {
+  {
+    std::string base = R"({
+                                    "Qma" : ["a", "b"],
+                                    "Qmb" : ["a", "b"],
+                                    "Qmc" : ["a", "b"],
+                                    "Qmd" : ["b"]
+                                 })";
+    absl::optional<base::Value> base_value = base::JSONReader::Read(
+        base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                  base::JSONParserOptions::JSON_PARSE_RFC);
+    GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
+  }
+
+  ON_CALL(*GetIpfsService(), LsPinCli(_))
+      .WillByDefault(::testing::Invoke([](IpfsService::NodeCallback callback) {
+        std::move(callback).Run("bafy1\nbafy2\nbafy3");
+      }));
+  ON_CALL(*GetIpfsService(), RemovePinCli(_, _))
+      .WillByDefault(::testing::Invoke(
+          [](std::set<std::string> cid, IpfsService::BoolCallback callback) {
+            EXPECT_EQ(3u, cid.size());
+            EXPECT_NE(cid.end(), cid.find("bafy1"));
+            EXPECT_NE(cid.end(), cid.find("bafy2"));
+            EXPECT_NE(cid.end(), cid.find("bafy3"));
+            std::move(callback).Run(false);
+          }));
+  absl::optional<bool> reset_result;
+  service()->Reset(base::BindLambdaForTesting(
+      [&reset_result](bool result) { reset_result = result; }));
+  EXPECT_EQ(4u, GetPrefs()->GetDict(kIPFSPinnedCids).size());
+  ASSERT_FALSE(reset_result.value());
+}
+
+TEST_F(IpfsLocalPinServiceTest, ResetTest_NoPinnedItems) {
+  {
+    std::string base = R"({
+                                    "Qma" : ["a", "b"],
+                                    "Qmb" : ["a", "b"],
+                                    "Qmc" : ["a", "b"],
+                                    "Qmd" : ["b"]
+                                 })";
+    absl::optional<base::Value> base_value = base::JSONReader::Read(
+        base, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                  base::JSONParserOptions::JSON_PARSE_RFC);
+    GetPrefs()->SetDict(kIPFSPinnedCids, base_value.value().GetDict().Clone());
+  }
+
+  ON_CALL(*GetIpfsService(), LsPinCli(_))
+      .WillByDefault(::testing::Invoke([](IpfsService::NodeCallback callback) {
+        std::move(callback).Run("");
+      }));
+  absl::optional<bool> reset_result;
+  service()->Reset(base::BindLambdaForTesting(
+      [&reset_result](bool result) { reset_result = result; }));
+  EXPECT_EQ(0u, GetPrefs()->GetDict(kIPFSPinnedCids).size());
+  ASSERT_TRUE(reset_result.value());
 }
 
 }  // namespace ipfs
