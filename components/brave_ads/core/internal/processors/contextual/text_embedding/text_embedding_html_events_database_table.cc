@@ -13,12 +13,12 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_bind_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/features/text_embedding_features.h"
 
 namespace brave_ads::database::table {
 

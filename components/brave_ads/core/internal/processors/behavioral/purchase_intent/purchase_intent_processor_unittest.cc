@@ -8,7 +8,7 @@
 #include <cstdint>
 
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"

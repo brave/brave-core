@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 

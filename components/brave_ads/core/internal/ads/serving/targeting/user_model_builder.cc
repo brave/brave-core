@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/behavioral/bandits/epsilon_greedy_bandit_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/behavioral/purchase_intent/purchase_intent_model.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_model.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
-#include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
-#include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
-#include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
 
 namespace brave_ads::targeting {
 

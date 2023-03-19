@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
 
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_model.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
