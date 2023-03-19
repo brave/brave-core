@@ -754,8 +754,6 @@ source_set("internal") {
     "diagnostics/entries/locale_diagnostic_entry.h",
     "features/epsilon_greedy_bandit_features.cc",
     "features/epsilon_greedy_bandit_features.h",
-    "features/features_util.cc",
-    "features/features_util.h",
     "features/purchase_intent_features.cc",
     "features/purchase_intent_features.h",
     "features/text_classification_features.cc",

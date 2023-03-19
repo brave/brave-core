@@ -34,7 +34,6 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/features/features_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -569,8 +568,6 @@ void AdsImpl::OnMigrateNotificationState(InitializeCallback callback,
 }
 
 void AdsImpl::Start() {
-  LogFeatures();
-
   LogActiveStudies();
 
   account_->Process();
