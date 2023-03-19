@@ -5,43 +5,44 @@
 
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 
-#include <string>
-
+#include "base/ranges/algorithm.h"
+#include "base/strings/string_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 
 namespace brave_ads {
 
 namespace {
-constexpr char kAdsTrialTag[] = "BraveAds";
+constexpr char kStudyPrefixTag[] = "BraveAds.";
 }  // namespace
 
-base::FieldTrial::ActiveGroups GetActiveStudies() {
-  base::FieldTrial::ActiveGroups active_groups;
-  base::FieldTrialList::GetActiveFieldTrialGroups(&active_groups);
+base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies() {
+  base::FieldTrial::ActiveGroups active_field_trial_groups;
+  base::FieldTrialList::GetActiveFieldTrialGroups(&active_field_trial_groups);
 
-  base::FieldTrial::ActiveGroups filtered_active_groups;
+  base::FieldTrial::ActiveGroups filtered_active_field_trial_groups;
 
-  for (const auto& active_group : active_groups) {
-    if (active_group.trial_name.find(kAdsTrialTag) == std::string::npos) {
-      continue;
-    }
+  base::ranges::copy_if(active_field_trial_groups,
+                        std::back_inserter(filtered_active_field_trial_groups),
+                        [](const base::FieldTrial::ActiveGroup& active_group) {
+                          return base::StartsWith(active_group.trial_name,
+                                                  kStudyPrefixTag,
+                                                  base::CompareCase::SENSITIVE);
+                        });
 
-    filtered_active_groups.push_back(active_group);
-  }
-
-  return filtered_active_groups;
+  return filtered_active_field_trial_groups;
 }
 
 void LogActiveStudies() {
-  const base::FieldTrial::ActiveGroups active_groups = GetActiveStudies();
-  if (active_groups.empty()) {
+  const base::FieldTrial::ActiveGroups active_field_trial_groups =
+      GetActiveFieldTrialGroupsForActiveStudies();
+  if (active_field_trial_groups.empty()) {
     BLOG(1, "No active studies");
     return;
   }
 
-  for (const auto& active_group : active_groups) {
-    BLOG(1, "Study " << active_group.trial_name << " is active ("
-                     << active_group.group_name << ")");
+  for (const auto& active_field_trial_group : active_field_trial_groups) {
+    BLOG(1, "Study " << active_field_trial_group.trial_name << " is active ("
+                     << active_field_trial_group.group_name << ")");
   }
 }
 
