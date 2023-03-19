@@ -114,15 +114,6 @@ class BraveWalletIsNativeWalletEnabledFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveWalletIsNftPinningEnabledFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.isNftPinningEnabled", UNKNOWN)
-
- protected:
-  ~BraveWalletIsNftPinningEnabledFunction() override {}
-  ResponseAction Run() override;
-};
-
 }  // namespace api
 }  // namespace extensions
 

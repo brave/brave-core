@@ -36,6 +36,20 @@ BraveWalletAutoPinService::BraveWalletAutoPinService(
       kAutoPinEnabled,
       base::BindRepeating(&BraveWalletAutoPinService::OnAutoPinStatusChanged,
                           weak_ptr_factory_.GetWeakPtr()));
+  brave_wallet_service->AddObserver(
+      brave_wallet_service_observer_.BindNewPipeAndPassRemote());
+}
+
+void BraveWalletAutoPinService::OnResetWallet() {
+  Reset();
+}
+
+void BraveWalletAutoPinService::Reset() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  queue_.clear();
+  current_.reset();
+  SetAutoPinEnabled(false);
+  brave_wallet_pin_service_->Reset(base::DoNothing());
 }
 
 void BraveWalletAutoPinService::OnAutoPinStatusChanged() {

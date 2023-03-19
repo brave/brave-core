@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/json/values_util.h"
+#include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -327,6 +328,24 @@ BraveWalletPinService::BraveWalletPinService() = default;
 
 void BraveWalletPinService::Restore() {
   local_pin_service_->ScheduleGcTask();
+}
+
+void BraveWalletPinService::Reset(base::OnceCallback<void(bool)> callback) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  local_pin_service_->Reset(
+      base::BindOnce(&BraveWalletPinService::OnResetLocalPinService,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void BraveWalletPinService::OnResetLocalPinService(
+    base::OnceCallback<void(bool)> callback,
+    bool result) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+  prefs_->ClearPref(kPinnedNFTAssets);
+  std::move(callback).Run(true);
 }
 
 BraveWalletPinService::~BraveWalletPinService() {
@@ -864,18 +883,11 @@ absl::optional<std::vector<std::string>> BraveWalletPinService::ResolvePinItems(
 }
 
 mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
-    const absl::optional<std::string>& service,
-    const mojom::BlockchainTokenPtr& token) {
+    const std::string& path) {
   const base::Value::Dict& pinned_assets_pref =
       prefs_->GetDict(kPinnedNFTAssets);
 
-  auto path = GetTokenPrefPath(service, token);
-  if (!path) {
-    return nullptr;
-  }
-
-  auto* token_data_as_dict =
-      pinned_assets_pref.FindDictByDottedPath(path.value());
+  auto* token_data_as_dict = pinned_assets_pref.FindDictByDottedPath(path);
   if (!token_data_as_dict) {
     return mojom::TokenPinStatus::New(
         mojom::TokenPinStatusCode::STATUS_NOT_PINNED, nullptr, base::Time());
@@ -915,6 +927,17 @@ mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
 
   return mojom::TokenPinStatus::New(pin_status, std::move(error),
                                     validate_timestamp);
+}
+
+mojom::TokenPinStatusPtr BraveWalletPinService::GetTokenStatus(
+    const absl::optional<std::string>& service,
+    const mojom::BlockchainTokenPtr& token) {
+  auto path = GetTokenPrefPath(service, token);
+  if (!path) {
+    return nullptr;
+  }
+
+  return GetTokenStatus(path.value());
 }
 
 absl::optional<base::Time> BraveWalletPinService::GetLastValidateTime(
@@ -981,6 +1004,14 @@ std::set<std::string> BraveWalletPinService::GetTokens(
   }
 
   return result;
+}
+
+size_t BraveWalletPinService::GetPinnedTokensCount() {
+  return base::ranges::count_if(GetTokens(absl::nullopt), [this](auto& v) {
+    auto status = this->GetTokenStatus(v);
+    return !status.is_null() &&
+           status->code == mojom::TokenPinStatusCode::STATUS_PINNED;
+  });
 }
 
 }  // namespace brave_wallet

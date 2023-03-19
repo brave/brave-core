@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -38,8 +39,8 @@ class BraveWalletService;
 class KeyringService;
 
 // Reports BraveWallet related P3A data
-class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
-                       public mojom::KeyringServiceObserver,
+class BraveWalletP3A : public mojom::KeyringServiceObserver,
+                       public brave_wallet::BraveWalletServiceObserverBase,
                        public mojom::BraveWalletP3A {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
@@ -81,17 +82,10 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void SelectedAccountChanged(mojom::CoinType coin) override {}
 
   // BraveWalletServiceObserver
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultEthereumWalletChanged(
       brave_wallet::mojom::DefaultWallet wallet) override;
   void OnDefaultSolanaWalletChanged(
       brave_wallet::mojom::DefaultWallet wallet) override;
-  void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
-  void OnDefaultBaseCryptocurrencyChanged(
-      const std::string& cryptocurrency) override {}
-  void OnNetworkListChanged() override {}
-  void OnDiscoverAssetsCompleted(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
 
  private:
   void MigrateUsageProfilePrefsToLocalState();

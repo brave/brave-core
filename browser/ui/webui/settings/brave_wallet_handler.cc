@@ -96,6 +96,17 @@ void BraveWalletHandler::RegisterMessages() {
       "removeHiddenNetwork",
       base::BindRepeating(&BraveWalletHandler::RemoveHiddenNetwork,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "isNftPinningEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsNftPinningEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getPinnedNftCount",
+      base::BindRepeating(&BraveWalletHandler::GetPinnedNftCount,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "clearPinnedNft", base::BindRepeating(&BraveWalletHandler::ClearPinnedNft,
+                                            base::Unretained(this)));
 }
 
 void BraveWalletHandler::GetAutoLockMinutes(const base::Value::List& args) {
@@ -305,4 +316,45 @@ void BraveWalletHandler::RemoveHiddenNetwork(const base::Value::List& args) {
 
 PrefService* BraveWalletHandler::GetPrefs() {
   return Profile::FromWebUI(web_ui())->GetPrefs();
+}
+
+brave_wallet::BraveWalletPinService*
+BraveWalletHandler::GetBraveWalletPinService() {
+  return brave_wallet::BraveWalletPinServiceFactory::GetInstance()
+      ->GetServiceForContext(Profile::FromWebUI(web_ui()));
+}
+
+void BraveWalletHandler::IsNftPinningEnabled(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0],
+                            base::Value(::brave_wallet::IsNftPinningEnabled()));
+}
+
+void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+
+  auto* service = GetBraveWalletPinService();
+  if (!service) {
+    ResolveJavascriptCallback(args[0], base::Value());
+    return;
+  }
+  ResolveJavascriptCallback(
+      args[0], base::Value(static_cast<int>(service->GetPinnedTokensCount())));
+}
+
+void BraveWalletHandler::ClearPinnedNft(const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  auto* service = GetBraveWalletPinService();
+  service->Reset(
+      base::BindOnce(&BraveWalletHandler::OnBraveWalletPinServiceReset,
+                     weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
+}
+
+void BraveWalletHandler::OnBraveWalletPinServiceReset(
+    base::Value javascript_callback,
+    bool result) {
+  ResolveJavascriptCallback(javascript_callback, base::Value(result));
 }

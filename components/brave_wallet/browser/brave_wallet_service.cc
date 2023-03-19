@@ -1572,6 +1572,10 @@ void BraveWalletService::Reset() {
 
   if (keyring_service_)
     keyring_service_->Reset();
+
+  for (const auto& observer : observers_) {
+    observer->OnResetWallet();
+  }
 }
 
 }  // namespace brave_wallet

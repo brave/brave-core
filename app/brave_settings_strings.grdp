@@ -997,17 +997,30 @@
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset Brave Wallet
   </message>
+  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT" desc="Clear pinned NFTs item text">
+    Clear pinned NFTs
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT_DESC" desc="CL item text">
+    Pinned NFTs are hosted to the IPFS network when local IPFS node is launched.
+    You have <ph name="NFT_COUNT">$1<ex>2</ex></ph> pinned NFTs at the moment.
+  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
     Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
     Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
   </message>
+  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION" desc="Clear pinned NFTs confirmation message text">
+    Are you sure you want to clear your pinned NFTs? Some of NFTs may be lost forever if there is no other hosters in the IPFS network. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet was reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet transaction information was reset.
+  </message>
+  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED" desc="Clear pinned NFTs confirmed message text">
+    Your pinned NFTs were reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
     Yes

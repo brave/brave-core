@@ -89,6 +89,14 @@
         label="$i18n{enableNftPinning}"
         sub-label="$i18n{enableNftPinningDesc}">
       </settings-toggle-button>
+
+      <div class="settings-box " hidden="[[!shouldShowClearNftButton_]]"
+         disabled="[[!shouldEnableClearNftButton_]]" on-click="onClearPinnedNftTapped_">
+        <div class="flex cr-padded-text reset-transaction-info">
+          <div>$i18n{clearPinnedNft}</div>
+          <div class="secondary">[[i18n('clearPinnedNftDesc', pinnedNftCount_)]]</div>
+        </div>
+      </div>
   </template>
 </div>
 <settings-animated-pages id="wallet-networks" section="wallet">
@@ -109,6 +117,7 @@
     </settings-subpage>
   </template>
 </settings-animated-pages>
+
 <template is="dom-if" if="[[!isNetworkEditor_]]">
   <div class="settings-box " on-click="onResetTransactionInfo_">
     <div class="flex cr-padded-text reset-transaction-info">

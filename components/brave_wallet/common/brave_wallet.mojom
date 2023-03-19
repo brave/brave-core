@@ -1357,6 +1357,9 @@ interface BraveWalletServiceObserver {
 
   // Fired when a discovered asset query completes
   OnDiscoverAssetsCompleted(array<BlockchainToken> discovered_assets);
+
+  // Fired when wallet service is being reset
+  OnResetWallet();
 };
 
 interface BraveWalletServiceTokenObserver {
