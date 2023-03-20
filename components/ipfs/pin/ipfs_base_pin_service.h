@@ -23,6 +23,7 @@ class IpfsBaseJob {
   virtual ~IpfsBaseJob();
   virtual void Start() = 0;
   virtual void Cancel();
+
  protected:
   bool is_canceled_ = false;
 };

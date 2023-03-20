@@ -96,8 +96,8 @@ TEST_F(IpfsBasePinServiceTest, OnIpfsShutdown) {
   service()->OnGetConnectedPeers(true, {});
   EXPECT_TRUE(service()->daemon_ready_);
 
-  std::unique_ptr<MockJob> first_job = std::make_unique<MockJob>(
-      base::DoNothing());
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
   std::unique_ptr<MockJob> second_job =
       std::make_unique<MockJob>(base::DoNothing());
 
@@ -119,8 +119,8 @@ TEST_F(IpfsBasePinServiceTest, OnGetConnectedPeers) {
   service()->OnGetConnectedPeers(true, {});
   EXPECT_TRUE(service()->daemon_ready_);
 
-  std::unique_ptr<MockJob> first_job = std::make_unique<MockJob>(
-      base::DoNothing());
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
   std::unique_ptr<MockJob> second_job =
       std::make_unique<MockJob>(base::DoNothing());
 
@@ -145,6 +145,5 @@ TEST_F(IpfsBasePinServiceTest, OnGetConnectedPeers) {
   EXPECT_EQ(0u, service()->jobs_.size());
   EXPECT_FALSE(service()->current_job_);
 }
-
 
 }  // namespace ipfs
