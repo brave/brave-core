@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
@@ -703,6 +704,14 @@
           "server including transitions of link, bookmark, reload, etc",       \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(brave_sync::features::kBraveSyncSendAllHistory),  \
+      },                                                                       \
+      {                                                                        \
+          "brave-copy-clean-link-by-default",                                  \
+          "Override default copy hotkey with copy clean link",                 \
+          "Sanitize url before copying, replaces default ctrl+c hotkey for "   \
+          "url ",                                                              \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault),          \
       },                                                                       \
       {                                                                        \
           "https-by-default",                                                  \
