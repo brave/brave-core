@@ -557,7 +557,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       if let requestURL = navigationAction.request.url,
          let targetFrame = navigationAction.targetFrame {
         tab.currentPageData?.addSubframeURL(forRequestURL: requestURL, isForMainFrame: targetFrame.isMainFrame)
-        let scriptTypes = await tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+        let scriptTypes = tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
         tab.setCustomUserScript(scripts: scriptTypes)
       }
       
@@ -584,8 +584,8 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         domainForShields.shield_adblockAndTp = true
         
         // Load block lists
-        let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domainForShields)
-        tab.contentBlocker.set(ruleLists: ruleLists)
+        let enabledRuleTypes = ContentBlockerManager.shared.compiledRuleTypes(for: domainForShields)
+        tab.contentBlocker.ruleListTypes = enabledRuleTypes
 
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
         preferences.allowsContentJavaScript = isScriptsEnabled
@@ -593,6 +593,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
 
       // Cookie Blocking code below
       tab.setScript(script: .cookieBlocking, enabled: Preferences.Privacy.blockAllCookies.value)
+
       return (.allow, preferences)
     }
 
@@ -613,7 +614,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     if let responseURL = responseURL,
        tab.currentPageData?.upgradeFrameURL(forResponseURL: responseURL, isForMainFrame: navigationResponse.isForMainFrame) == true,
        let domain = tab.currentPageData?.domain(persistent: false) {
-      let scriptTypes = await tab.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
+      let scriptTypes = tab.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
       tab.setCustomUserScript(scripts: scriptTypes)
     }
 

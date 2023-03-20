@@ -45,8 +45,12 @@ enum BlockingStrength: String {
 class ContentBlockerHelper {
   private(set) weak var tab: Tab?
   
-  /// The rule lists that are loaded into the current tab
-  private var setRuleLists: Set<WKContentRuleList> = []
+  /// The rule types and source types that are currently loaded in this tab
+  private(set) var loadedRuleTypeWithSourceTypes: Set<ContentBlockerManager.RuleTypeWithSourceType> = []
+  /// The rule types with their source types that should be  loaded in this tab
+  var ruleListTypes: Set<ContentBlockerManager.RuleTypeWithSourceType> = [] {
+    didSet { reloadNeededRuleLists() }
+  }
 
   var stats: TPPageStats = TPPageStats() {
     didSet {
@@ -65,31 +69,58 @@ class ContentBlockerHelper {
     self.tab = tab
   }
   
-  @MainActor func set(ruleLists: Set<WKContentRuleList>) {
-    guard ruleLists != setRuleLists else { return }
-    #if DEBUG
-    ContentBlockerManager.log.debug("Set rule lists:")
-    #endif
-    
-    // Remove unwanted rule lists
-    for ruleList in setRuleLists.subtracting(ruleLists) {
-      // It's added but we don't want it. So we remove it.
+  private func reloadNeededRuleLists() {
+    // Remove old values that were previously added
+    for loadedRuleTypeWithSourceType in loadedRuleTypeWithSourceTypes {
+      // Check if should be removed or if the source type doesn't match, otherwise don't do anything
+      guard !ruleListTypes.contains(loadedRuleTypeWithSourceType) else {
+        continue
+      }
+      
+      guard let ruleList = ContentBlockerManager.shared.cachedRuleList(for: loadedRuleTypeWithSourceType.ruleType) else {
+        // For some reason the rule is not cached. Shouldn't happen.
+        // But if it does we have to remove all the rule lists
+        // We will add back all the necessary ones below
+        tab?.webView?.configuration.userContentController.removeAllContentRuleLists()
+        loadedRuleTypeWithSourceTypes = []
+        assertionFailure("This shouldn't happen!")
+        break
+      }
+      
+      // Since either it shouldn't be included or the source type doesn't match, we remove it
       tab?.webView?.configuration.userContentController.remove(ruleList)
-      setRuleLists.remove(ruleList)
-      
-      #if DEBUG
-      ContentBlockerManager.log.debug(" - \(ruleList.identifier)")
-      #endif
+      loadedRuleTypeWithSourceTypes.remove(loadedRuleTypeWithSourceType)
     }
     
-    // Add missing rule lists
-    for ruleList in ruleLists.subtracting(setRuleLists) {
+    // Add new values that are not yet added (or were removed above because the source type didn't match)
+    for ruleTypeWithSourceType in ruleListTypes {
+      // Only add rule lists that are missing
+      guard !loadedRuleTypeWithSourceTypes.contains(ruleTypeWithSourceType) else { continue }
+      guard let ruleList = ContentBlockerManager.shared.cachedRuleList(for: ruleTypeWithSourceType.ruleType) else { continue }
       tab?.webView?.configuration.userContentController.add(ruleList)
-      setRuleLists.insert(ruleList)
-      
-      #if DEBUG
-      ContentBlockerManager.log.debug(" + \(ruleList.identifier)")
-      #endif
+      loadedRuleTypeWithSourceTypes.insert(ruleTypeWithSourceType)
     }
+    
+    #if DEBUG
+    let rulesString = loadedRuleTypeWithSourceTypes.map { ruleTypeWithSourceType -> String in
+      let ruleTypeString: String
+      
+      switch ruleTypeWithSourceType.ruleType {
+      case .general(let type):
+        ruleTypeString = type.rawValue
+      case .filterList(let uuid):
+        ruleTypeString = "filterList(\(uuid))"
+      }
+      
+      let rulesDebugString = [
+        "ruleType: \(ruleTypeString)",
+        "sourceType: \(ruleTypeWithSourceType.sourceType)"
+      ].joined(separator: ", ")
+      
+      return ["{", rulesDebugString, "}"].joined()
+    }.joined(separator: ", ")
+    
+    log.debug("Loaded \(self.loadedRuleTypeWithSourceTypes.count, privacy: .public) tab rules: \(rulesString, privacy: .public)")
+    #endif
   }
 }

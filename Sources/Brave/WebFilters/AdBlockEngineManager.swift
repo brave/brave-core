@@ -184,39 +184,41 @@ public actor AdBlockEngineManager: Sendable {
 }
 
 #if DEBUG
-private extension AdBlockEngineManager {
+extension AdBlockEngineManager {
   /// A method that logs info on the given resources
-  func debug(compiledResults: [ResourceWithVersion: Result<Void, Error>]) {
-    log.debug("Loaded \(compiledResults.count) (total) engine resources:")
-    
-    compiledResults.sorted(by: { $0.key.order < $1.key.order })
-      .forEach { (resourceWithVersion, compileResult) in
+  fileprivate func debug(compiledResults: [ResourceWithVersion: Result<Void, Error>]) {
+    let resourcesString = compiledResults.sorted(by: { $0.key.order < $1.key.order })
+      .map { (resourceWithVersion, compileResult) -> String in
         let resultString: String
         
         switch compileResult {
         case .success:
-          resultString = "✔︎"
+          resultString = "success"
         case .failure(let error):
-          resultString = "\(error)"
+          resultString = error.localizedDescription
         }
         
         let sourceDebugString = [
-          "", resourceWithVersion.debugDescription,
-          "\(resultString)",
-        ].joined(separator: " ")
+          resourceWithVersion.debugDescription,
+          "result: \(resultString)",
+        ].joined(separator: ", ")
         
-        log.debug("\(sourceDebugString)")
-      }
+        return ["{", sourceDebugString, "}"].joined()
+      }.joined(separator: ", ")
+
+    log.debug("Loaded \(self.enabledResources.count, privacy: .public) (total) engine resources: \(resourcesString, privacy: .public)")
   }
 }
 
 extension AdBlockEngineManager.ResourceWithVersion: CustomDebugStringConvertible {
   public var debugDescription: String {
     return [
-      "#\(order)",
-      "\(resource.source.debugDescription).\(resource.type.debugDescription)",
-      "v\(version ?? "nil")",
-    ].joined(separator: " ")
+      "order: \(order)",
+      "fileName: \(fileURL.lastPathComponent)",
+      "source: \(resource.source.debugDescription)",
+      "version: \(version ?? "nil")",
+      "type: \(resource.type.debugDescription)"
+    ].joined(separator: ", ")
   }
 }
 

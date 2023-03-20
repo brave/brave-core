@@ -70,7 +70,7 @@ struct PageData {
   }
   
   /// Return all the user script types for this page. The number of script types grows as more frames are loaded.
-  @MainActor func makeUserScriptTypes(domain: Domain) async -> Set<UserScriptType> {
+  @MainActor func makeUserScriptTypes(domain: Domain) -> Set<UserScriptType> {
     var userScriptTypes: Set<UserScriptType> = [.siteStateListener]
 
     // Handle dynamic domain level scripts on the main document.
@@ -98,26 +98,18 @@ struct PageData {
       }
     }
     
-    let allEngineScriptTypes = await makeAllEngineScripts(for: domain)
-    return userScriptTypes.union(allEngineScriptTypes)
-  }
-  
-  func makeMainFrameEngineScriptTypes(domain: Domain) async -> Set<UserScriptType> {
-    return await adBlockStats.makeEngineScriptTypes(frameURL: mainFrameURL, isMainFrame: true, domain: domain)
-  }
-  
-  func makeAllEngineScripts(for domain: Domain) async -> Set<UserScriptType> {
     // Add engine scripts for the main frame
-    async let engineScripts = adBlockStats.makeEngineScriptTypes(frameURL: mainFrameURL, isMainFrame: true, domain: domain)
+    userScriptTypes = userScriptTypes.union(
+      adBlockStats.makeEngineScriptTypes(frameURL: mainFrameURL, isMainFrame: true, domain: domain)
+    )
     
     // Add engine scripts for all of the known sub-frames
-    async let additionalScriptTypes = allSubframeURLs.asyncConcurrentCompactMap({ frameURL in
-      return await self.adBlockStats.makeEngineScriptTypes(frameURL: frameURL, isMainFrame: false, domain: domain)
+    let additionalScriptTypes = allSubframeURLs.map({ frameURL in
+      return self.adBlockStats.makeEngineScriptTypes(frameURL: frameURL, isMainFrame: false, domain: domain)
     }).reduce(Set<UserScriptType>(), { partialResult, scriptTypes in
       return partialResult.union(scriptTypes)
     })
     
-    let allEngineScripts = await (mainFrame: engineScripts, subFrames: additionalScriptTypes)
-    return allEngineScripts.mainFrame.union(allEngineScripts.subFrames)
+    return userScriptTypes.union(additionalScriptTypes)
   }
 }

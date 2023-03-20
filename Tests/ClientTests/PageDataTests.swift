@@ -22,7 +22,7 @@ final class PageDataTests: XCTestCase {
       // When
       // We get the script types for the main frame
       let domain = pageData.domain(persistent: false)
-      let mainFrameRequestTypes = await pageData.makeUserScriptTypes(domain: domain)
+      let mainFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
       
       // Then
       // We get only entries of the main frame
@@ -34,7 +34,7 @@ final class PageDataTests: XCTestCase {
       
       // When
       // Nothing has changed
-      let unchangedScriptTypes = await pageData.makeUserScriptTypes(domain: domain)
+      let unchangedScriptTypes = pageData.makeUserScriptTypes(domain: domain)
       
       // Then
       // We get the same result as before
@@ -48,7 +48,7 @@ final class PageDataTests: XCTestCase {
       // We get an aditional scripts for sub-frame
       // NOTE: This is because we have no engines on AdBlockStats.
       // If we were to add some engines we might see additional types
-      let addedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(domain: domain)
+      let addedSubFrameFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
       let expectedMainAndSubFrameTypes: Set<UserScriptType> = [
         .siteStateListener, .nacl, .farblingProtection(etld: "example.com")
       ]
@@ -61,7 +61,7 @@ final class PageDataTests: XCTestCase {
       // Then
       // We get the same result as before
       XCTAssertTrue(isUpgradedMainFrame)
-      let upgradedMainFrameRequestTypes = await pageData.makeUserScriptTypes(domain: domain)
+      let upgradedMainFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
       XCTAssertEqual(upgradedMainFrameRequestTypes, unchangedScriptTypes)
       
       // When
@@ -71,7 +71,7 @@ final class PageDataTests: XCTestCase {
       // Then
       // We get the same result as before
       XCTAssertTrue(isUpgradedSubFrame)
-      let upgradedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(domain: domain)
+      let upgradedSubFrameFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)
       XCTAssertEqual(upgradedSubFrameFrameRequestTypes, unchangedScriptTypes)
       
       expectation.fulfill()
