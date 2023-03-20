@@ -32,6 +32,10 @@ const char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
 const bool kDefaultOperationalPatternsEnabled = false;
 
+const char kFieldTrialParameterInitFederatedServiceWaitTimeInSeconds[] =
+    "init_federated_service_wait_time_in_seconds";
+const uint32_t kDefaultInitFederatedServiceWaitTimeInSeconds = 30;
+
 const char kFieldTrialParameterCollectionIDLifetimeInSeconds[] =
     "collection_id_lifetime_in_seconds";
 const int kDefaultCollectionIdLifetimeInSeconds = 1 * base::Time::kHoursPerDay *
@@ -91,6 +95,12 @@ std::string GetFederatedLearningResultsEndpoint() {
     return kDefaultFederatedLearningResultsEndpoint;
   }
   return results_endpoint;
+}
+
+uint32_t GetInitFederatedServiceWaitTimeInSeconds() {
+    return GetFieldTrialParamByFeatureAsInt(
+      kFederatedLearning, kFieldTrialParameterInitFederatedServiceWaitTimeInSeconds,
+      kDefaultInitFederatedServiceWaitTimeInSeconds);
 }
 
 bool IsOperationalPatternsEnabled() {

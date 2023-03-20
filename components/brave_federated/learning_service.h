@@ -34,6 +34,8 @@ class LearningService : public Observer {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~LearningService() override;
 
+  void Init();
+
   void StartParticipating();
   void StopParticipating();
 
@@ -52,6 +54,7 @@ class LearningService : public Observer {
       url_loader_factory_;  // NOT OWNED
   EligibilityService* eligibility_service_;
   CommunicationAdapter* communication_adapter_;
+  std::unique_ptr<base::OneShotTimer> init_task_timer_;
 
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
   bool participating_;
