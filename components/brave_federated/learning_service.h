@@ -13,6 +13,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "net/base/backoff_entry.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
 #include "brave/components/brave_federated/task/typing.h"
 
@@ -58,6 +60,9 @@ class LearningService : public Observer {
 
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
   bool participating_;
+
+  std::unique_ptr<const net::BackoffEntry::Policy> post_results_policy_;
+  std::unique_ptr<net::BackoffEntry> post_results_backoff_entry_;
 };
 
 }  // namespace brave_federated
