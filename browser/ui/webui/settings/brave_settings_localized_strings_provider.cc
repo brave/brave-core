@@ -381,8 +381,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10},
     {"braveRewardsAutoContributeShowNonVerifiedSitesLabel",
      IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_SHOW_NON_VERIFIED_SITES_LABEL},
-    {"braveRewardsAutoContributeAllowVideoContributionsLabel",
-     IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_ALLOW_VIDEO_CONTRIBUTIONS_LABEL},  // NOLINT
     {"braveRewardsShowBraveRewardsButtonLabel",
      IDS_SETTINGS_BRAVE_REWARDS_SHOW_BRAVE_REWARDS_BUTTON_LABEL},
     {"braveRewardsShowTipButtonsLabel",

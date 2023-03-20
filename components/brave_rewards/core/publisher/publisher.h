@@ -46,13 +46,6 @@ class Publisher {
                  uint64_t window_id,
                  const ledger::PublisherInfoCallback callback);
 
-  void SaveVideoVisit(const std::string& publisher_id,
-                      const mojom::VisitData& visit_data,
-                      uint64_t duration,
-                      const bool first_visit,
-                      uint64_t window_id,
-                      ledger::PublisherInfoCallback callback);
-
   void SetPublisherExclude(const std::string& publisher_id,
                            const mojom::PublisherExclude& exclude,
                            ledger::ResultCallback callback);

@@ -203,17 +203,6 @@ bool State::GetPublisherAllowNonVerified() {
   return ledger_->ledger_client()->GetBooleanState(kAllowNonVerified);
 }
 
-void State::SetPublisherAllowVideos(const bool allow) {
-  ledger_->database()->SaveEventLog(kAllowVideoContribution,
-                                    std::to_string(allow));
-  ledger_->ledger_client()->SetBooleanState(kAllowVideoContribution, allow);
-  ledger_->publisher()->SynopsisNormalizer();
-}
-
-bool State::GetPublisherAllowVideos() {
-  return ledger_->ledger_client()->GetBooleanState(kAllowVideoContribution);
-}
-
 void State::SetScoreValues(double a, double b) {
   ledger_->database()->SaveEventLog(kScoreA, std::to_string(a));
   ledger_->database()->SaveEventLog(kScoreB, std::to_string(b));

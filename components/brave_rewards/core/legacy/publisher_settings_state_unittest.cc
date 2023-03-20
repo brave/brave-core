@@ -21,7 +21,6 @@ TEST(PublisherSettingsStateTest, ToJsonSerialization) {
   publisher_settings_properties.min_visits_for_publisher_relevancy =
       std::numeric_limits<uint32_t>::max();
   publisher_settings_properties.allow_non_verified_sites_in_list = true;
-  publisher_settings_properties.allow_contribution_to_videos = true;
 
   ReportBalanceProperties report_balance_properties;
   report_balance_properties.grants = 1;
@@ -51,7 +50,6 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
   publisher_settings_properties.min_visits_for_publisher_relevancy =
       std::numeric_limits<uint32_t>::max();
   publisher_settings_properties.allow_non_verified_sites_in_list = true;
-  publisher_settings_properties.allow_contribution_to_videos = true;
 
   ReportBalanceProperties report_balance_properties;
   report_balance_properties.grants = 1;
@@ -67,7 +65,7 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
 
   const std::string json =
       "{\"min_pubslisher_duration\":4294967295,\"min_visits\":4294967295,"
-      "\"allow_non_verified\":true,\"allow_videos\":true,\"monthly_balances\":["
+      "\"allow_non_verified\":true,\"monthly_balances\":["
       "{\"Date\":{\"grants\":1,\"earning_from_ads\":1,\"auto_contribute\":1,"
       "\"recurring_donation\":1,\"one_time_donation\":1}}],\"processed_pending_"
       "publishers\":[\"ProcessedPendingPublisher\"]}";  // NOLINT

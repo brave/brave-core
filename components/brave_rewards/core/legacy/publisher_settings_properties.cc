@@ -21,7 +21,6 @@ namespace {
 
 // Do not change these values as they are required to transition legacy state
 const char kAllowNonVerifiedSitesInListKey[] = "allow_non_verified";
-const char kAllowContributionToVideosKey[] = "allow_videos";
 // There is a spelling error with min_pubslisher_duration, however we cannot
 // change this otherwise we will break legacy installs. This will be resolved as
 // part of https://github.com/brave/brave-browser/issues/7024
@@ -35,8 +34,7 @@ const char kProcessedPendingPublishersKey[] = "processed_pending_publishers";
 PublisherSettingsProperties::PublisherSettingsProperties()
     : min_page_time_before_logging_a_visit(8),
       min_visits_for_publisher_relevancy(1),
-      allow_non_verified_sites_in_list(true),
-      allow_contribution_to_videos(true) {}
+      allow_non_verified_sites_in_list(true) {}
 
 PublisherSettingsProperties::PublisherSettingsProperties(
     const PublisherSettingsProperties& properties) {
@@ -46,7 +44,6 @@ PublisherSettingsProperties::PublisherSettingsProperties(
       properties.min_visits_for_publisher_relevancy;
   allow_non_verified_sites_in_list =
       properties.allow_non_verified_sites_in_list;
-  allow_contribution_to_videos = properties.allow_contribution_to_videos;
   monthly_balances = properties.monthly_balances;
   processed_pending_publishers = properties.processed_pending_publishers;
 }
@@ -61,7 +58,6 @@ bool PublisherSettingsProperties::operator==(
              rhs.min_visits_for_publisher_relevancy &&
          allow_non_verified_sites_in_list ==
              rhs.allow_non_verified_sites_in_list &&
-         allow_contribution_to_videos == rhs.allow_contribution_to_videos &&
          monthly_balances == rhs.monthly_balances &&
          processed_pending_publishers == rhs.processed_pending_publishers;
 }
@@ -79,7 +75,6 @@ base::Value::Dict PublisherSettingsProperties::ToValue() const {
   dict.Set(kMinVisitsForPublisherRelevancy,
            base::Int64ToValue(min_visits_for_publisher_relevancy));
   dict.Set(kAllowNonVerifiedSitesInListKey, allow_non_verified_sites_in_list);
-  dict.Set(kAllowContributionToVideosKey, allow_contribution_to_videos);
 
   base::Value::List monthly_balances_list;
   for (const auto& [key, value] : monthly_balances) {
@@ -133,14 +128,6 @@ bool PublisherSettingsProperties::FromValue(const base::Value::Dict& dict) {
   // Allow Non Verified
   if (auto value = dict.FindBool(kAllowNonVerifiedSitesInListKey)) {
     allow_non_verified_sites_in_list = *value;
-  } else {
-    NOTREACHED();
-    return false;
-  }
-
-  // Allow Videos
-  if (auto value = dict.FindBool(kAllowContributionToVideosKey)) {
-    allow_contribution_to_videos = *value;
   } else {
     NOTREACHED();
     return false;

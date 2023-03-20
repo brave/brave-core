@@ -566,10 +566,6 @@ void RewardsDOMHandler::InitPrefChangeRegistrar() {
       brave_rewards::prefs::kAllowNonVerified,
       base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
                           base::Unretained(this)));
-  pref_change_registrar_.Add(
-      brave_rewards::prefs::kAllowVideoContribution,
-      base::BindRepeating(&RewardsDOMHandler::OnPrefChanged,
-                          base::Unretained(this)));
 
   pref_change_registrar_.Add(
       brave_rewards::prefs::kInlineTipButtonsEnabled,
@@ -766,7 +762,6 @@ void RewardsDOMHandler::OnGetAutoContributeProperties(
              static_cast<int>(properties->contribution_min_time));
   values.Set("contributionMinVisits", properties->contribution_min_visits);
   values.Set("contributionNonVerified", properties->contribution_non_verified);
-  values.Set("contributionVideos", properties->contribution_videos);
 
   CallJavascriptFunction("brave_rewards.autoContributeProperties", values);
 }
@@ -987,10 +982,6 @@ void RewardsDOMHandler::SaveSetting(const base::Value::List& args) {
 
     if (key == "contributionNonVerified") {
       rewards_service_->SetPublisherAllowNonVerified(value == "true");
-    }
-
-    if (key == "contributionVideos") {
-      rewards_service_->SetPublisherAllowVideos(value == "true");
     }
 
     if (key == "enabledContribute") {

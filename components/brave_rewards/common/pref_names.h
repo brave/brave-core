@@ -48,7 +48,7 @@ extern const char kVersion[];
 extern const char kMinVisitTime[];
 extern const char kMinVisits[];
 extern const char kAllowNonVerified[];
-extern const char kAllowVideoContribution[];
+extern const char kAllowVideoContribution[];  // DEPRECATED
 extern const char kScoreA[];
 extern const char kScoreB[];
 extern const char kAutoContributeEnabled[];

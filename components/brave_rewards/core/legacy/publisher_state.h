@@ -33,8 +33,6 @@ class LegacyPublisherState {
 
   bool GetPublisherAllowNonVerified() const;
 
-  bool GetPublisherAllowVideos() const;
-
   void Load(ledger::LegacyResultCallback callback);
 
   std::vector<std::string> GetAlreadyProcessedPublishers() const;

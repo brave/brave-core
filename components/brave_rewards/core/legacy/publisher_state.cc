@@ -33,10 +33,6 @@ bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
   return state_->allow_non_verified_sites_in_list;
 }
 
-bool LegacyPublisherState::GetPublisherAllowVideos() const {
-  return state_->allow_contribution_to_videos;
-}
-
 void LegacyPublisherState::Load(ledger::LegacyResultCallback callback) {
   auto load_callback =
       std::bind(&LegacyPublisherState::OnLoad, this, _1, _2, callback);
