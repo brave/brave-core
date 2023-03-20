@@ -130,10 +130,16 @@ void BraveTab::UpdateIconVisibility() {
       showing_icon_ = !showing_alert_indicator_;
       showing_close_button_ = false;
     } else {
-      const bool is_active = IsActive();
       center_icon_ = true;
-      showing_icon_ = !is_active && !showing_alert_indicator_;
-      showing_close_button_ = is_active;
+
+      const bool is_active = IsActive();
+      const bool can_enter_floating_mode =
+          tabs::utils::IsFloatingVerticalTabsEnabled(
+              controller()->GetBrowser());
+      // When floating mode enabled, we don't show close button as the tab strip
+      // will be expanded as soon as mouse hovers onto the tab.
+      showing_close_button_ = !can_enter_floating_mode && is_active;
+      showing_icon_ = !showing_close_button_;
     }
   }
 }
