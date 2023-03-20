@@ -968,39 +968,7 @@ public class Utils {
     public static BlockchainToken makeNetworkAsset(NetworkInfo network) {
         String logo;
 
-        // TODO: Add missing logos
-        //             case "SOL":
-        //                 logo = "sol.png";
-        //                 break;
-        //             case "FIL":
-        //                 logo = "fil.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
-        //                 logo = "optimism.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
-        //                 logo = "avax.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID:
-        //                 logo = "fantom.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
-        //                 logo = "celo.png";
-        //                 break;
-        if (network.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
-            logo = "eth.png";
-        } else if (network.chainId.equals(BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID)) {
-            logo = "matic.png";
-        } else if (network.chainId.equals(
-                           BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)) {
-            logo = "bnb.png";
-        } else if (network.chainId.equals(BraveWalletConstants.SOLANA_MAINNET)
-                || network.chainId.equals(BraveWalletConstants.SOLANA_TESTNET)
-                || network.chainId.equals(BraveWalletConstants.SOLANA_DEVNET)) {
-            logo = "sol.png";
-        } else {
-            logo = "eth.png";
-        }
+        logo = getNetworkIconName(network);
 
         BlockchainToken asset = new BlockchainToken();
         asset.name = network.symbolName;
@@ -1015,6 +983,48 @@ public class Utils {
         asset.chainId = network.chainId;
         asset.coin = network.coin;
         return asset;
+    }
+
+    @NonNull
+    public static String getNetworkIconName(NetworkInfo network) {
+        String logo;
+        switch (network.chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+                logo = "eth.png";
+                break;
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                logo = "matic.png";
+                break;
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+                logo = "bnb.png";
+                break;
+            case BraveWalletConstants.SOLANA_MAINNET:
+            case BraveWalletConstants.SOLANA_TESTNET:
+            case BraveWalletConstants.SOLANA_DEVNET:
+                logo = "sol.png";
+                break;
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
+                logo = "aurora.png";
+                break;
+            case BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID:
+                logo = "arb.png";
+                break;
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                logo = "avax.png";
+                break;
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+                logo = "celo.png";
+                break;
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                logo = "op.png";
+                break;
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+                logo = "ftm.png";
+                break;
+            default:
+                logo = "eth.png";
+        }
+        return logo;
     }
 
     // Replace USDC and DAI contract addresses for Goerli network
