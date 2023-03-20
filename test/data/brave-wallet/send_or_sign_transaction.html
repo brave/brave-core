@@ -102,6 +102,14 @@
   function getIsConnected() {
     window.domAutomationController.send(window.ethereum.isConnected())
   }
+  function getIsConnectedViaProxy() {
+    proxy = new Proxy(window.ethereum, {})
+    window.domAutomationController.send(proxy.isConnected())
+  }
+  function getIsBraveWalletViaProxy() {
+    proxy = new Proxy(window.ethereum, {})
+    window.domAutomationController.send(proxy.isBraveWallet)
+  }
 </script>
 
 <body>
