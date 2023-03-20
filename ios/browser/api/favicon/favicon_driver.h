@@ -21,7 +21,7 @@ NS_SWIFT_NAME(FaviconDriver)
 
 - (instancetype)initWithWebState:(WebState*)webState NS_DESIGNATED_INITIALIZER;
 
-- (void)setMaximumFaviconImageSize:(NSUInteger)maxImageSize;
+- (void)setMaximumFaviconImageSize:(CGSize)maxImageSize;
 - (void)webView:(WKWebView*)webView
        scriptMessage:(WKScriptMessage*)scriptMessage
     onFaviconUpdated:(void (^)(NSURL* _Nullable, UIImage* _Nullable))callback;

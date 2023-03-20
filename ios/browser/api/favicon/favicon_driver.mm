@@ -103,14 +103,14 @@ void FaviconDriverObserver::OnFaviconUpdated(
   }
 }
 
-- (void)setMaximumFaviconImageSize:(NSUInteger)maxImageSize {
+- (void)setMaximumFaviconImageSize:(CGSize)maxImageSize {
   web::WebState* real_web_state = [self.webState internalWebState].get();
   DCHECK(real_web_state);
 
   brave_favicon::BraveIOSWebFaviconDriver* driver =
       brave_favicon::BraveIOSWebFaviconDriver::FromWebState(real_web_state);
   DCHECK(driver);
-  driver->SetMaximumFaviconImageSize(maxImageSize);
+  driver->SetMaximumFaviconImageSize(maxImageSize.width, maxImageSize.height);
 }
 
 - (void)webView:(WKWebView*)webView
