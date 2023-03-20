@@ -69,6 +69,27 @@ extension BrowserViewController {
     present(popup, animated: false)
   }
   
+  func presentLinkReceiptCallout() {
+    // Show this onboarding only if the VPN has been purchased
+    guard case .purchased = BraveVPN.vpnState else { return }
+    
+    guard shouldShowCallout(calloutType: .linkReceipt) else {
+      return
+    }
+    
+    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+      return
+    }
+    
+    var linkReceiptView = OnboardingLinkReceiptView()
+    linkReceiptView.linkReceiptAction = {
+      self.openURLInNewTab(BraveUX.braveVPNLinkReceiptProd, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing, isPrivileged: false)
+    }
+    let popup = PopupViewController(rootView: linkReceiptView, isDismissable: true)
+    isOnboardingOrFullScreenCalloutPresented = true
+    present(popup, animated: false)
+  }
+  
   func presentP3AScreenCallout() {
     // Check the blockCookieConsentNotices callout can be shown
     guard shouldShowCallout(calloutType: .p3a) else {
