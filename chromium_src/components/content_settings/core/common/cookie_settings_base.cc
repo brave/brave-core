@@ -6,6 +6,7 @@
 #include "components/content_settings/core/common/cookie_settings_base.h"
 
 #include "base/auto_reset.h"
+#include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/types/optional_util.h"
@@ -15,6 +16,7 @@
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/abseil-cpp/absl/base/attributes.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -25,6 +27,10 @@ namespace {
 
 constexpr char kWp[] = "https://[*.]wp.com/*";
 constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
+
+// The thread local brave metadata pointer.
+ABSL_CONST_INIT thread_local CookieSettingWithBraveMetadata*
+    current_cookie_settings_with_brave_metadata = nullptr;
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
@@ -255,13 +261,24 @@ CookieSettingsBase::GetCookieSettingWithBraveMetadata(
     const GURL& first_party_url,
     net::CookieSettingOverrides overrides) const {
   CookieSettingWithBraveMetadata setting_brave_metadata;
-  cookie_setting_with_brave_metadata_.Set(&setting_brave_metadata);
+  const base::AutoReset<CookieSettingWithBraveMetadata*> resetter(
+      &current_cookie_settings_with_brave_metadata, &setting_brave_metadata);
   // GetCookieSetting fills metadata structure implicitly (implemented in
   // GetCookieSettingInternal), the setting value is set explicitly here.
   setting_brave_metadata.setting =
       GetCookieSetting(url, first_party_url, overrides, nullptr);
-  cookie_setting_with_brave_metadata_.Set(nullptr);
   return setting_brave_metadata;
+}
+
+CookieSettingWithBraveMetadata*
+CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
+  // Workaround false-positive MSAN use-of-uninitialized-value on
+  // thread_local storage for loaded libraries:
+  // https://github.com/google/sanitizers/issues/1265
+  MSAN_UNPOISON(&current_cookie_settings_with_brave_metadata,
+                sizeof(CookieSettingWithBraveMetadata*));
+
+  return current_cookie_settings_with_brave_metadata;
 }
 
 }  // namespace content_settings
