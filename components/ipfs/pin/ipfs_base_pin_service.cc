@@ -14,6 +14,10 @@ IpfsBaseJob::IpfsBaseJob() = default;
 
 IpfsBaseJob::~IpfsBaseJob() = default;
 
+void IpfsBaseJob::Cancel() {
+  is_canceled_ = true;
+}
+
 IpfsBasePinService::IpfsBasePinService(IpfsService* ipfs_service)
     : ipfs_service_(ipfs_service) {
   ipfs_service_->AddObserver(this);
@@ -25,12 +29,16 @@ IpfsBasePinService::~IpfsBasePinService() = default;
 
 void IpfsBasePinService::OnIpfsShutdown() {
   daemon_ready_ = false;
+  if (current_job_) {
+    current_job_->Cancel();
+    current_job_.reset();
+  }
 }
 
 void IpfsBasePinService::OnGetConnectedPeers(
     bool success,
     const std::vector<std::string>& peers) {
-  if (success) {
+  if (success && !daemon_ready_) {
     daemon_ready_ = true;
     DoNextJob();
   }

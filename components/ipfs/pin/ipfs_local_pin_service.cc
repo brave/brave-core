@@ -41,6 +41,11 @@ void AddLocalPinJob::Start() {
 }
 
 void AddLocalPinJob::OnAddPinResult(absl::optional<AddPinResult> result) {
+  if (is_canceled_) {
+    std::move(callback_).Run(false);
+    return;
+  }
+
   if (!result) {
     std::move(callback_).Run(false);
     return;
@@ -117,6 +122,11 @@ void VerifyLocalPinJob::Start() {
 }
 
 void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
+  if (is_canceled_) {
+    std::move(callback_).Run(absl::nullopt);
+    return;
+  }
+
   if (!result) {
     std::move(callback_).Run(absl::nullopt);
     return;
@@ -161,6 +171,11 @@ void GcJob::Start() {
 }
 
 void GcJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
+  if (is_canceled_) {
+    std::move(callback_).Run(false);
+    return;
+  }
+
   if (!result) {
     std::move(callback_).Run(false);
     return;

@@ -22,6 +22,9 @@ class IpfsBaseJob {
   IpfsBaseJob();
   virtual ~IpfsBaseJob();
   virtual void Start() = 0;
+  virtual void Cancel();
+ protected:
+  bool is_canceled_ = false;
 };
 
 // Manages a queue of IpfsService-related tasks.
@@ -43,6 +46,9 @@ class IpfsBasePinService : public IpfsServiceObserver {
   IpfsBasePinService();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsBasePinServiceTest, OnGetConnectedPeers);
+  FRIEND_TEST_ALL_PREFIXES(IpfsBasePinServiceTest, OnIpfsShutdown);
+
   bool IsDaemonReady();
   void MaybeStartDaemon();
   void OnDaemonStarted();
