@@ -58,7 +58,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
         
         let selectorArrays = await cachedEngines.asyncConcurrentMap { cachedEngine -> [String] in
           do {
-            return try await cachedEngine.selectorsForCosmeticRules(
+            return try cachedEngine.selectorsForCosmeticRules(
               frameURL: frameURL,
               ids: dto.data.ids,
               classes: dto.data.classes

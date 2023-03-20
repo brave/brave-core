@@ -82,7 +82,7 @@ extension ContentBlockerHelper: TabContentScript {
         guard let requestURL = NSURL(idnString: dto.data.resourceURL) as URL? else { return }
         guard let sourceURL = NSURL(idnString: dto.data.sourceURL) as URL? else { return }
         guard let domainURLString = domain.url else { return }
-        let loadedRuleTypes = ContentBlockerManager.shared.enabledRuleTypes(for: domain)
+        let loadedRuleTypes = Set(self.loadedRuleTypeWithSourceTypes.map({ $0.ruleType }))
         
         let blockedType = await TPStatsBlocklistChecker.shared.blockedTypes(
           requestURL: requestURL,

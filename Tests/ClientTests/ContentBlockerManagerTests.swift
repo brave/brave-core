@@ -5,7 +5,6 @@
 
 import XCTest
 import WebKit
-import Data
 @testable import Brave
 
 class ContentBlockerManagerTests: XCTestCase {
@@ -23,7 +22,6 @@ class ContentBlockerManagerTests: XCTestCase {
     let downloadedSourceType = ContentBlockerManager.BlocklistSourceType.downloaded(version: "123")
     let expectation = XCTestExpectation(description: "Test loading resources")
     let manager = ContentBlockerManager(ruleStore: ruleStore)
-    let domain = Domain.getOrCreate(forUrl: URL(string: "https://example.com")!, persistent: false)
     
     Task.detached {
       // When
@@ -34,25 +32,22 @@ class ContentBlockerManagerTests: XCTestCase {
       ), for: downloadedRuleType)
       
       await manager.compilePendingResources()
-      let returnedCachedRuleLists = await manager.ruleLists(for: domain)
       
       await MainActor.run {
         // Then
         // Check for the correct source and cached rule list
         for generalType in ContentBlockerManager.GeneralBlocklistTypes.allCases {
           let returnedSourceType = manager.sourceType(for: .general(generalType))
-          
+          let returnedCachedRuleList = manager.cachedRuleList(for: .general(generalType))
           switch generalType {
           case .blockAds:
             // Check for downloaded rule type
             XCTAssertEqual(returnedSourceType, downloadedSourceType)
-            XCTAssertTrue(returnedCachedRuleLists.contains(where: {
-              $0.identifier == ContentBlockerManager.BlocklistRuleType.general(generalType).identifier
-            }))
+            XCTAssertNotNil(returnedCachedRuleList)
           case .blockCookies, .blockTrackers:
             // Check for bundled rule type
             XCTAssertEqual(returnedSourceType, .bundled)
-            XCTAssertNotNil(returnedSourceType)
+            XCTAssertNotNil(returnedCachedRuleList)
           }
         }
       }
@@ -66,10 +61,9 @@ class ContentBlockerManagerTests: XCTestCase {
           manager.sourceType(for: downloadedRuleType), .bundled
         )
         
-        let returnedCachedRuleLists = manager.ruleLists(for: domain)
-        XCTAssertTrue(returnedCachedRuleLists.contains(where: {
-          $0.identifier == downloadedRuleType.identifier
-        }))
+        XCTAssertNotNil(
+          manager.cachedRuleList(for: .general(.blockAds))
+        )
         
         expectation.fulfill()
       }
