@@ -1511,9 +1511,10 @@ public class Utils {
     public static String tokenToString(BlockchainToken token) {
         if (token == null) return "";
 
-        final String symbolLowerCase = token.symbol.toLowerCase(Locale.getDefault());
-        return token.isErc721 ? Utils.formatErc721TokenTitle(symbolLowerCase, token.tokenId)
-                              : symbolLowerCase;
+        final String symbolLowerCase = token.symbol.toLowerCase(Locale.ENGLISH);
+        final String contractAddress = token.contractAddress.toLowerCase(Locale.ENGLISH);
+        return JavaUtils.concatStrings(
+                "#", symbolLowerCase, contractAddress, token.tokenId, token.chainId);
     }
 
     // Please only use this function when you need all the info (tokens, prices and balances) at the
