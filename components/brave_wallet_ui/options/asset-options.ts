@@ -22,6 +22,8 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
       return 'chrome://erc-token-images/ftm.png'
     case chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
       return 'chrome://erc-token-images/celo.png'
+    case chainId === BraveWallet.ARBITRUM_MAINNET_CHAIN_ID:
+      return 'chrome://erc-token-images/arb.png'
     case chainId === AllNetworksOption.chainId:
       return AllNetworksOption.iconUrls[0]
     case symbol.toUpperCase() === 'SOL':
