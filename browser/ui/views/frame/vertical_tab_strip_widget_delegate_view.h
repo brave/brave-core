@@ -61,8 +61,6 @@ class VerticalTabStripWidgetDelegateView : public views::WidgetDelegateView,
   void OnWidgetDestroying(views::Widget* widget) override;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
-
   VerticalTabStripWidgetDelegateView(BrowserView* browser_view,
                                      views::View* host);
   void UpdateWidgetBounds();

@@ -1,3 +1,10 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ozone.gni")
+
 source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
@@ -15,5 +22,13 @@ source_set("browser_tests") {
     "//chrome/test",
     "//chrome/test:test_support",
     "//components/prefs",
+    "//ui/base:test_support",
   ]
+
+  if (use_ozone) {
+    public_deps = [
+      "//ui/ozone",
+      "//ui/platform_window/common",
+    ]
+  }
 }

@@ -98,9 +98,12 @@ class BraveBrowserView : public BrowserView,
   class TabCyclingEventHandler;
   friend class WindowClosingConfirmBrowserTest;
   friend class sidebar::SidebarBrowserTest;
+  friend class VerticalTabStripDragAndDropBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, VisualState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, Fullscreen);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripDragAndDropBrowserTest,
+                           DragTabToReorder);
 
   static void SetDownloadConfirmReturnForTesting(bool allow);
 
