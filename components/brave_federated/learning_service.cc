@@ -30,18 +30,29 @@ LearningService::LearningService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       eligibility_service_(eligibility_service) {
-  DCHECK(url_loader_factory);
-  DCHECK(eligibility_service);
 
-  communication_adapter_ = new CommunicationAdapter(url_loader_factory);
-  eligibility_service_->AddObserver(this);
-
-  StartParticipating();
+    DCHECK(!init_task_timer_);
+    const int init_federated_service_wait_time_in_seconds =
+      brave_federated::features::GetInitFederatedServiceWaitTimeInSeconds();
+    init_task_timer_ = std::make_unique<base::OneShotTimer>();
+    init_task_timer_->Start(FROM_HERE,
+                            base::Seconds(init_federated_service_wait_time_in_seconds),
+                            this, &LearningService::Init);
 }
 
 LearningService::~LearningService() {
   StopParticipating();
   eligibility_service_->RemoveObserver(this);
+}
+
+void LearningService::Init() {
+  DCHECK(url_loader_factory_);
+  DCHECK(eligibility_service_);
+  DCHECK(init_task_timer_);
+  communication_adapter_ = new CommunicationAdapter(url_loader_factory_);
+  eligibility_service_->AddObserver(this);
+
+  StartParticipating();
 }
 
 void LearningService::StartParticipating() {

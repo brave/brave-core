@@ -20,6 +20,7 @@ bool IsFederatedLearningEnabled();
 int GetFederatedLearningUpdateCycleInSeconds();
 std::string GetFederatedLearningTaskEndpoint();
 std::string GetFederatedLearningResultsEndpoint();
+uint32_t GetInitFederatedServiceWaitTimeInSeconds();
 
 // Operational Patterns
 bool IsOperationalPatternsEnabled();
