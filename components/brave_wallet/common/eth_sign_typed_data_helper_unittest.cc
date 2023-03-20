@@ -214,7 +214,7 @@ TEST(EthSignedTypedDataHelperUnitTest, InvalidEncodedData) {
                                        EthSignTypedDataHelper::Version::kV4);
     auto encoded_domain_v4 =
         invalid_types_helper->EncodeData("Domain", data_dict);
-    ASSERT_FALSE(encoded_domain_v4);
+    EXPECT_FALSE(encoded_domain_v4);
   }
 }
 
