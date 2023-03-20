@@ -892,6 +892,20 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, IsConnected) {
                   .ExtractBool());
 }
 
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, CallViaProxy) {
+  RestoreWallet();
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsConnectedViaProxy()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsBraveWalletViaProxy()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+}
+
 IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest,
                        EthSendTransactionEIP1559Tx) {
   SetNetworkForTesting("0x1");  // mainnet
