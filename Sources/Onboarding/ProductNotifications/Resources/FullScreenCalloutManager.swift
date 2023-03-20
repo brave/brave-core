@@ -11,7 +11,7 @@ import Growth
 public struct FullScreenCalloutManager {
 
   public enum FullScreenCalloutType {
-    case bottomBar, p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices
+    case bottomBar, p3a, vpn, rewards, defaultBrowser, blockCookieConsentNotices, linkReceipt
 
     /// The number of days passed to show certain type of callout
     var period: Int {
@@ -22,6 +22,7 @@ public struct FullScreenCalloutManager {
       case .rewards: return 8
       case .defaultBrowser: return 10
       case .blockCookieConsentNotices: return 0
+      case .linkReceipt: return 0
       }
     }
 
@@ -40,6 +41,8 @@ public struct FullScreenCalloutManager {
         return Preferences.DefaultBrowserIntro.completed
       case .blockCookieConsentNotices:
         return Preferences.FullScreenCallout.blockCookieConsentNoticesCalloutCompleted
+      case .linkReceipt:
+        return Preferences.Onboarding.linkReceiptShown
       }
     }
   }

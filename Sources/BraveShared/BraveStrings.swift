@@ -387,6 +387,27 @@ extension Strings {
         tableName: "BraveShared", bundle: .module,
         value: "See the Brave difference:\nNo ads. No trackers. Way faster page load.",
         comment: "Description for the Omnibox (URL Bar) pop-over that describes faster load times.")
+    
+    public static let linkReceiptTitle =
+      NSLocalizedString(
+        "onboarding.linkReceiptTitle",
+        tableName: "BraveShared", bundle: .module,
+        value: "Extend your Brave Firewall + VPN protection",
+        comment: "Popup title to let users know they can use the vpn on all their devices")
+    
+    public static let linkReceiptDescription =
+      NSLocalizedString(
+        "onboarding.linkReceiptDescription",
+        tableName: "BraveShared", bundle: .module,
+        value: "Your Brave VPN subscription can protect up to 5 devices, across Android, iOS, and desktop. Just link your App Store subscription to your Brave account.",
+        comment: "Popup description to let users know they can use the vpn on all their devices")
+    
+    public static let linkReceiptButton =
+      NSLocalizedString(
+        "onboarding.linkReceiptButton",
+        tableName: "BraveShared", bundle: .module,
+        value: "Link your VPN subscription",
+        comment: "Button text to let users know they can use the vpn on all their devices")
   }
 }
 
