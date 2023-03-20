@@ -1444,16 +1444,16 @@ public class Utils {
         return hostOrigin;
     }
 
-    public static WalletCoinAdapter setupVisibleAssetList(BlockchainToken[] userAssets,
+    public static WalletCoinAdapter setupVisibleAssetList(List<BlockchainToken> userAssets,
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
-            String tokensPath) {
+            String tokensPath, Resources resources, List<NetworkInfo> allNetworkInfos) {
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
         for (BlockchainToken userAsset : userAssets) {
-            WalletListItemModel walletListItemModel = mapToWalletListItemModel(
-                    perTokenCryptoSum, perTokenFiatSum, tokensPath, userAsset);
+            WalletListItemModel walletListItemModel = mapToWalletListItemModel(perTokenCryptoSum,
+                    perTokenFiatSum, tokensPath, userAsset, resources, allNetworkInfos);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -1465,14 +1465,15 @@ public class Utils {
 
     public static WalletCoinAdapter setupVisibleNftAssetList(
             List<PortfolioModel.NftDataModel> userAssets, HashMap<String, Double> perTokenCryptoSum,
-            HashMap<String, Double> perTokenFiatSum, String tokensPath) {
+            HashMap<String, Double> perTokenFiatSum, String tokensPath, Resources resources,
+            List<NetworkInfo> allNetworkInfos) {
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
         for (PortfolioModel.NftDataModel userAsset : userAssets) {
-            WalletListItemModel walletListItemModel = mapToWalletListItemModel(
-                    perTokenCryptoSum, perTokenFiatSum, tokensPath, userAsset.token);
+            WalletListItemModel walletListItemModel = mapToWalletListItemModel(perTokenCryptoSum,
+                    perTokenFiatSum, tokensPath, userAsset.token, resources, allNetworkInfos);
             walletListItemModel.setNftDataModel(userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
@@ -1486,22 +1487,29 @@ public class Utils {
     @NonNull
     private static WalletListItemModel mapToWalletListItemModel(
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
-            String tokensPath, BlockchainToken userAsset) {
+            String tokensPath, BlockchainToken userAsset, Resources resources,
+            List<NetworkInfo> allNetworkInfos) {
         String currentAssetKey = Utils.tokenToString(userAsset);
         Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetKey, 0.0d);
         String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
         Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
+        NetworkInfo assetNetwork = NetworkUtils.findNetwork(allNetworkInfos, userAsset.chainId);
+        String subtitle = assetNetwork == null
+                ? userAsset.symbol
+                : resources.getString(R.string.brave_wallet_portfolio_asset_network_description,
+                        userAsset.symbol, assetNetwork.chainName);
         String cryptoBalanceString =
                 String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-        WalletListItemModel walletListItemModel =
-                new WalletListItemModel(Utils.getCoinIcon(userAsset.coin), userAsset.name,
-                        userAsset.symbol, userAsset.tokenId,
-                        // Amount in USD
-                        fiatBalanceString,
-                        // Amount in current crypto currency/token
-                        cryptoBalanceString);
+        WalletListItemModel walletListItemModel = new WalletListItemModel(
+                Utils.getCoinIcon(userAsset.coin), userAsset.name, subtitle, userAsset.tokenId,
+                // Amount in USD
+                fiatBalanceString,
+                // Amount in current crypto currency/token
+                cryptoBalanceString);
 
+        walletListItemModel.setBrowserResourcePath(tokensPath);
+        walletListItemModel.setAssetNetwork(assetNetwork);
         walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
         walletListItemModel.setBlockchainToken(userAsset);
         return walletListItemModel;

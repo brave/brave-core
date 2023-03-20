@@ -97,6 +97,7 @@ public class PortfolioFragment
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
+    private List<NetworkInfo> mAllNetworkInfos;
     private List<PortfolioModel.NftDataModel> mNftDataModels;
 
     public static PortfolioFragment newInstance() {
@@ -197,6 +198,9 @@ public class PortfolioFragment
     }
 
     private void setUpObservers() {
+        mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
+                getViewLifecycleOwner(),
+                allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
         mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
@@ -313,12 +317,12 @@ public class PortfolioFragment
         editVisibleNft.setOnClickListener(v -> { onEditVisibleAssetsClick(); });
     }
 
-    private void setUpCoinList(BlockchainToken[] userAssets,
+    private void setUpCoinList(List<BlockchainToken> userAssets,
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-        mWalletCoinAdapter = Utils.setupVisibleAssetList(
-                userAssets, perTokenCryptoSum, perTokenFiatSum, tokensPath);
+        mWalletCoinAdapter = Utils.setupVisibleAssetList(userAssets, perTokenCryptoSum,
+                perTokenFiatSum, tokensPath, getResources(), mAllNetworkInfos);
         mWalletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
         mRvCoins.setAdapter(mWalletCoinAdapter);
         mRvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -333,8 +337,8 @@ public class PortfolioFragment
         }
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-        mWalletNftAdapter = Utils.setupVisibleNftAssetList(
-                nftDataModels, perTokenCryptoSum, perTokenFiatSum, tokensPath);
+        mWalletNftAdapter = Utils.setupVisibleNftAssetList(nftDataModels, perTokenCryptoSum,
+                perTokenFiatSum, tokensPath, getResources(), mAllNetworkInfos);
         mWalletNftAdapter.setOnWalletListItemClick(PortfolioFragment.this);
         mRvNft.setAdapter(mWalletNftAdapter);
         mRvNft.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -482,8 +486,7 @@ public class PortfolioFragment
                                                 tokens.add(token);
                                             }
                                         }
-
-                                        setUpCoinList(tokens.toArray(new BlockchainToken[0]),
+                                        setUpCoinList(tokens,
                                                 mPortfolioHelper.getPerTokenCryptoSum(),
                                                 mPortfolioHelper.getPerTokenFiatSum());
 
