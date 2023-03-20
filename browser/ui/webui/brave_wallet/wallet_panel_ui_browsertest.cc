@@ -54,8 +54,8 @@ std::string DoubleClickOn(const std::string& element) {
          ";return e;})())";
 }
 
-std::string CeloNetwork() {
-  return "[data-test-chain-id='chain-0xa4ec']";
+std::string FantomNetwork() {
+  return "[data-test-chain-id='chain-0xfa']";
 }
 
 std::string PolygonNetwork() {
@@ -66,12 +66,12 @@ std::string NetworkNameSpan() {
   return "[class|='NetworkName']";
 }
 
-std::string CeloNetworkHideButton() {
-  return CeloNetwork() + " .hide-network-button";
+std::string FantomNetworkHideButton() {
+  return FantomNetwork() + " .hide-network-button";
 }
 
-std::string CeloNetworkChainName() {
-  return CeloNetwork() + " .chainName";
+std::string FantomNetworkChainName() {
+  return FantomNetwork() + " .chainName";
 }
 
 std::string NetworksButton() {
@@ -139,10 +139,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
 
     SetEthChainIdInterceptor(
         {GURL(kSomeEndpoint),
-         GetKnownChain(profile->GetPrefs(), mojom::kCeloMainnetChainId,
+         GetKnownChain(profile->GetPrefs(), mojom::kFantomMainnetChainId,
                        mojom::CoinType::ETH)
              ->rpc_endpoints.front()},
-        mojom::kCeloMainnetChainId);
+        mojom::kFantomMainnetChainId);
 
     CreateWalletTab();
   }
@@ -198,10 +198,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
         }));
   }
 
-  void WaitForCeloNetworkUrl(const GURL& url) {
+  void WaitForFantomNetworkUrl(const GURL& url) {
     auto* prefs = browser()->profile()->GetPrefs();
 
-    if (GetNetworkURL(prefs, mojom::kCeloMainnetChainId,
+    if (GetNetworkURL(prefs, mojom::kFantomMainnetChainId,
                       mojom::CoinType::ETH) == url) {
       return;
     }
@@ -212,9 +212,10 @@ class WalletPanelUIBrowserTest : public InProcessBrowserTest {
     pref_change_registrar.Add(
         kBraveWalletCustomNetworks,
         base::BindLambdaForTesting([&run_loop, &prefs, &url] {
-          if (GetNetworkURL(prefs, mojom::kCeloMainnetChainId,
-                            mojom::CoinType::ETH) == url)
+          if (GetNetworkURL(prefs, mojom::kFantomMainnetChainId,
+                            mojom::CoinType::ETH) == url) {
             run_loop.Quit();
+          }
         }));
     run_loop.Run();
   }
@@ -246,28 +247,30 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
-  // Both Polygon and Celo are listed.
+  // Both Polygon and Fantom are listed.
   ASSERT_TRUE(WaitFor(wallet(), QuerySelectorJS(PolygonNetwork())));
   ASSERT_TRUE(
       EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).value.is_dict());
-  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(CeloNetwork())).value.is_dict());
+  ASSERT_TRUE(
+      EvalJs(wallet(), QuerySelectorJS(FantomNetwork())).value.is_dict());
 
-  // Wait and click on hide button for Celo network in settings.
+  // Wait and click on hide button for Fantom network in settings.
   CreateSettingsTab();
   ActivateSettingsTab();
   ASSERT_TRUE(WaitAndClickElement(
-      settings(), SelectInNetworkList(CeloNetworkHideButton())));
+      settings(), SelectInNetworkList(FantomNetworkHideButton())));
 
   ActivateWalletTab();
   wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
-  // Polygon is listed but Celo is not.
+  // Polygon is listed but Fantom is not.
   ASSERT_TRUE(WaitFor(wallet(), QuerySelectorJS(PolygonNetwork())));
   ASSERT_TRUE(
       EvalJs(wallet(), QuerySelectorJS(PolygonNetwork())).value.is_dict());
-  ASSERT_TRUE(EvalJs(wallet(), QuerySelectorJS(CeloNetwork())).value.is_none());
+  ASSERT_TRUE(
+      EvalJs(wallet(), QuerySelectorJS(FantomNetwork())).value.is_none());
 }
 
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
@@ -277,23 +280,24 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
-  // Celo Mainnet is listed in wallet.
-  ASSERT_TRUE(WaitFor(wallet(), Select(CeloNetwork(), NetworkNameSpan()) +
-                                    "?.innerText === 'Celo Mainnet'"));
+  // Fantom is listed in wallet.
+  ASSERT_TRUE(WaitFor(wallet(), Select(FantomNetwork(), NetworkNameSpan()) +
+                                    "?.innerText === 'Fantom Opera'"));
 
-  // Go to wallet network settings and wait for Celo network to appear.
+  // Go to wallet network settings and wait for Fantom network to appear.
   ActivateSettingsTab();
-  ASSERT_TRUE(WaitFor(settings(), SelectInNetworkList(CeloNetworkChainName()) +
-                                      "?.innerText === 'Celo Mainnet'"));
-
-  // Double click on Celo network.
   ASSERT_TRUE(
-      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(CeloNetwork())))
+      WaitFor(settings(), SelectInNetworkList(FantomNetworkChainName()) +
+                              "?.innerText === 'Fantom Opera'"));
+
+  // Double-click on Fantom network.
+  ASSERT_TRUE(
+      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(FantomNetwork())))
           .ExtractBool());
 
-  // Wait for edit network dialog with Celo Mainnet as chain name.
+  // Wait for edit network dialog with Fantom as chain name.
   ASSERT_TRUE(WaitFor(settings(), SelectInAddNetworkDialog("#chainName") +
-                                      "?.value === 'Celo Mainnet'"));
+                                      "?.value === 'Fantom Opera'"));
 
   // Change name to 'Custom Network'.
   ASSERT_EQ("Custom Network",
@@ -302,16 +306,17 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
                 .ExtractString());
 
   // Click on submit button.
-  ASSERT_TRUE(WaitAndClickElement(
-      settings(), SelectInAddNetworkDialog("cr-button.action-button")));
+  ASSERT_TRUE(WaitAndClickElement(settings(),
+                                  SelectInAddNetworkDialog(".action-button")));
 
-  // Chain name for Celo changes to 'Custom Network' in settings.
-  ASSERT_TRUE(WaitFor(settings(), SelectInNetworkList(CeloNetworkChainName()) +
-                                      "?.innerText === 'Custom Network'"));
+  // Chain name for Fantom changes to 'Custom Network' in settings.
+  ASSERT_TRUE(
+      WaitFor(settings(), SelectInNetworkList(FantomNetworkChainName()) +
+                              "?.innerText === 'Custom Network'"));
 
-  // Chain name for Celo changes to 'Custom Network' in wallet.
+  // Chain name for Fantom changes to 'Custom Network' in wallet.
   ActivateWalletTab();
-  ASSERT_TRUE(WaitFor(wallet(), Select(CeloNetwork(), NetworkNameSpan()) +
+  ASSERT_TRUE(WaitFor(wallet(), Select(FantomNetwork(), NetworkNameSpan()) +
                                     "?.innerText === 'Custom Network'"));
 }
 
@@ -319,25 +324,26 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   CreateSettingsTab();
   auto* prefs = browser()->profile()->GetPrefs();
 
-  auto known_celo_rpc =
-      GetKnownChain(prefs, mojom::kCeloMainnetChainId, mojom::CoinType::ETH)
+  auto known_fantom_rpc =
+      GetKnownChain(prefs, mojom::kFantomMainnetChainId, mojom::CoinType::ETH)
           ->rpc_endpoints.front();
-  // Celo rpc is from known info.
-  WaitForCeloNetworkUrl(known_celo_rpc);
+  // Fantom rpc is from known info.
+  WaitForFantomNetworkUrl(known_fantom_rpc);
 
-  // Go to wallet network settings and wait for Celo network to appear.
+  // Go to wallet network settings and wait for Fantom network to appear.
   ActivateSettingsTab();
-  ASSERT_TRUE(WaitFor(settings(), SelectInNetworkList(CeloNetworkChainName()) +
-                                      "?.innerText === 'Celo Mainnet'"));
-
-  // Double click on Celo network.
   ASSERT_TRUE(
-      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(CeloNetwork())))
+      WaitFor(settings(), SelectInNetworkList(FantomNetworkChainName()) +
+                              "?.innerText === 'Fantom Opera'"));
+
+  // Double-click on Fantom network.
+  ASSERT_TRUE(
+      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(FantomNetwork())))
           .ExtractBool());
 
-  // Wait for edit network dialog with Celo Mainnet as chain name.
+  // Wait for edit network dialog with Fantom as chain name.
   ASSERT_TRUE(WaitFor(settings(), SelectInAddNetworkDialog("#chainName") +
-                                      "?.value === 'Celo Mainnet'"));
+                                      "?.value === 'Fantom Opera'"));
 
   // Click rpc + button.
   ASSERT_TRUE(WaitAndClickElement(
@@ -360,21 +366,21 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
   ASSERT_TRUE(WaitAndClickElement(
       settings(), SelectInAddNetworkDialog("cr-button.action-button")));
 
-  // Wait for custom endpoint for Celo.
-  WaitForCeloNetworkUrl(GURL(kSomeEndpoint));
+  // Wait for custom endpoint for Fantom.
+  WaitForFantomNetworkUrl(GURL(kSomeEndpoint));
 
-  // Wait for custom endpoint listed for Celo.
-  ASSERT_TRUE(WaitFor(
-      settings(), SelectInNetworkList(CeloNetwork() + " .secondary") +
-                      "?.innerText === '0xa4ec https://some.endpoint.com/'"));
+  // Wait for custom endpoint listed for Fantom.
+  ASSERT_TRUE(WaitFor(settings(),
+                      SelectInNetworkList(FantomNetwork() + " .secondary") +
+                          "?.innerText === '0xfa https://some.endpoint.com/'"));
 
-  // Double click on Celo network.
+  // Double-click on Fantom network.
   ASSERT_TRUE(
-      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(CeloNetwork())))
+      EvalJs(settings(), DoubleClickOn(SelectInNetworkList(FantomNetwork())))
           .ExtractBool());
-  // Wait for edit network dialog with Celo Mainnet as chain name.
+  // Wait for edit network dialog with Fantom as chain name.
   ASSERT_TRUE(WaitFor(settings(), SelectInAddNetworkDialog("#chainName") +
-                                      "?.value === 'Celo Mainnet'"));
+                                      "?.value === 'Fantom Opera'"));
   // Click on second item(known rpc) in rpc list.
   ASSERT_TRUE(WaitAndClickElement(
       settings(),
@@ -385,7 +391,7 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, SelectRpcEndpoint) {
       settings(), SelectInAddNetworkDialog("cr-button.action-button")));
 
   // Wait for endpoint to become known one.
-  WaitForCeloNetworkUrl(known_celo_rpc);
+  WaitForFantomNetworkUrl(known_fantom_rpc);
 }
 
 }  // namespace brave_wallet

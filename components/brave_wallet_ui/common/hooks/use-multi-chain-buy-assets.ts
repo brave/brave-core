@@ -8,6 +8,7 @@ import * as React from 'react'
 // utils
 import { getNetworkInfo } from '../../utils/network-utils'
 import {
+  filterTokensByNetworks,
   getRampAssetSymbol,
   isSelectedAssetInAssetOptions
 } from '../../utils/asset-utils'
@@ -101,10 +102,15 @@ export const useMultiChainBuyAssets = () => {
     getAllBuyAssets()
       .then(result => {
         if (isMounted && result) {
-          setOptions(result)
+          setOptions({
+            rampAssetOptions: filterTokensByNetworks(result.rampAssetOptions, buyAssetNetworks),
+            sardineAssetOptions: filterTokensByNetworks(result.sardineAssetOptions, buyAssetNetworks),
+            transakAssetOptions: filterTokensByNetworks(result.transakAssetOptions, buyAssetNetworks),
+            allAssetOptions: filterTokensByNetworks(result.allAssetOptions, buyAssetNetworks)
+          })
         }
       })
-  }, [getAllBuyAssets, isMounted])
+  }, [getAllBuyAssets, buyAssetNetworks, isMounted])
 
   const openBuyAssetLink = React.useCallback(({ buyOption, depositAddress }: {
     buyOption: BraveWallet.OnRampProvider

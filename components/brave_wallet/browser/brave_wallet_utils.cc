@@ -129,22 +129,6 @@ const mojom::NetworkInfo* GetBscMainnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetCeloMainnet() {
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kCeloMainnetChainId,
-       "Celo Mainnet",
-       {"https://explorer.celo.org"},
-       {},
-       0,
-       {GURL("https://forno.celo.org")},
-       "CELO",
-       "CELO",
-       18,
-       brave_wallet::mojom::CoinType::ETH,
-       false});
-  return network_info.get();
-}
-
 const mojom::NetworkInfo* GetAvalancheMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {brave_wallet::mojom::kAvalancheMainnetChainId,
@@ -297,7 +281,6 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetAuroraMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
-      GetCeloMainnet(),
       GetAvalancheMainnet(),
       GetFantomOperaMainnet(),
       GetOptimismMainnet(),

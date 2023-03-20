@@ -856,7 +856,6 @@ export const SupportedOnRampNetworks = [
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -870,7 +869,6 @@ export const SupportedOffRampNetworks = [
   BraveWallet.MAINNET_CHAIN_ID, // ETH
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
