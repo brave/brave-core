@@ -403,6 +403,7 @@ test("brave_unit_tests") {
     ]
     deps += [
       "//brave/app:brave_generated_resources_grit",
+      "//brave/browser/renderer_context_menu/test:unit_tests",
       "//brave/browser/ui/bookmark",
       "//brave/browser/ui/bookmark:unittest",
       "//brave/browser/ui/color:unit_tests",
