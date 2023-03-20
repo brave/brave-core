@@ -28,9 +28,10 @@ class BraveOmniboxViewViews : public OmniboxViewViews {
 #if BUILDFLAG(IS_WIN)
   // View overrides:
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
+#endif  // BUILDFLAG(IS_WIN)
   bool GetAcceleratorForCommandId(int command_id,
                                   ui::Accelerator* accelerator) const override;
-#endif  // BUILDFLAG(IS_WIN)
+
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
   // ui::views::Textfield
   void ExecuteTextEditCommand(ui::TextEditCommand command) override;
