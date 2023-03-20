@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -297,6 +298,22 @@ class BlobUrlPartitionEnabledBrowserTest : public BlobUrlBrowserTestBase {
 };
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
+                       BlobsArePartitioned) {
+  TestBlobsArePartitioned();
+}
+
+class BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest
+    : public BlobUrlPartitionEnabledBrowserTest {
+ public:
+  BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest() = default;
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    BlobUrlPartitionEnabledBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kDisableSiteIsolation);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest,
                        BlobsArePartitioned) {
   TestBlobsArePartitioned();
 }
