@@ -20,6 +20,7 @@
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "net/base/backoff_entry.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -30,14 +31,26 @@ LearningService::LearningService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       eligibility_service_(eligibility_service) {
-
-    DCHECK(!init_task_timer_);
-    const int init_federated_service_wait_time_in_seconds =
+  DCHECK(!init_task_timer_);
+  const int init_federated_service_wait_time_in_seconds =
       brave_federated::features::GetInitFederatedServiceWaitTimeInSeconds();
-    init_task_timer_ = std::make_unique<base::OneShotTimer>();
-    init_task_timer_->Start(FROM_HERE,
-                            base::Seconds(init_federated_service_wait_time_in_seconds),
-                            this, &LearningService::Init);
+
+  post_results_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
+      /*.num_errors_to_ignore = */ 0,
+      /*.initial_delay_ms = */
+      features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+      /*.multiply_factor =*/2.0,
+      /*.jitter_factor =*/0.0,
+      /*.maximum_backoff_ms =*/16 *
+          features::GetFederatedLearningUpdateCycleInSeconds() * 1000,
+      /*.always_use_initial_delay =*/true);
+  post_results_backoff_entry_ =
+      std::make_unique<net::BackoffEntry>(post_results_policy_.get());
+
+  init_task_timer_ = std::make_unique<base::OneShotTimer>();
+  init_task_timer_->Start(
+      FROM_HERE, base::Seconds(init_federated_service_wait_time_in_seconds),
+      this, &LearningService::Init);
 }
 
 LearningService::~LearningService() {
@@ -57,6 +70,7 @@ void LearningService::Init() {
 
 void LearningService::StartParticipating() {
   participating_ = true;
+
   GetTasks();
 }
 
@@ -71,6 +85,10 @@ void LearningService::GetTasks() {
 }
 
 void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
+  // net::BackoffEntry handle_or_reconnect_backoff_entry =
+  //   net::BackoffEntry(&handle_or_reconnect_policy_);
+  // handle_or_reconnect_backoff_entry.InformOfRequest(tasks.size());
+
   if (tasks.size() == 0) {
     reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
     reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
@@ -146,20 +164,20 @@ void LearningService::PostTaskResults(TaskResultList results) {
 }
 
 void LearningService::OnPostTaskResults(TaskResultResponse response) {
-  int reconnect = 0;
+  post_results_backoff_entry_->InformOfRequest(response.IsSuccessful());
 
   if (response.IsSuccessful()) {
-    reconnect = features::GetFederatedLearningUpdateCycleInSeconds();
     VLOG(2) << "Task results posted successfully";
   } else {
-    reconnect = features::GetFederatedLearningUpdateCycleInSeconds() / 2;
     VLOG(2) << "Task results posting failed";
   }
 
+  base::TimeDelta reconnect =
+      post_results_backoff_entry_->GetTimeUntilRelease();
   reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
-  reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
+  reconnect_timer_->Start(FROM_HERE, reconnect, this,
                           &LearningService::GetTasks);
-  VLOG(2) << "Reconnecting in " << reconnect << "s";
+  VLOG(2) << "Reconnecting in " << reconnect.InSeconds() << "s";
 }
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {
