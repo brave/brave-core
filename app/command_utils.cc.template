@@ -7,43 +7,43 @@
 
 #include <string>
 
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/span.h"
 #include "base/feature_list.h"
+#include "base/strings/string_piece.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "base/containers/fixed_flat_map.h"
-#include "base/containers/span.h"
 
 namespace commands {
 namespace {
 
-constexpr auto kCommandInfos = base::MakeFixedFlatMap<int, base::StringPiece>({
+constexpr auto kCommandInfos =
+    base::MakeFixedFlatMap<int, base::StringPiece>({
 COMMAND_NAMES
 });
 
-
-constexpr int kCommandIdsRaw[] = {
+constexpr int kCommandIds[] = {
 COMMAND_IDS
 };
 
-constexpr base::span<const int> kCommandIds(kCommandIdsRaw);
-
 }  // namespace
 
-const base::span<const int>& GetCommands() {
+base::span<const int> GetCommands() {
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
       << "This should only be used when |kBraveCommands| is enabled.";
   return kCommandIds;
 }
 
-std::string GetCommandName(int command_id) {
+base::StringPiece GetCommandName(int command_id) {
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
       << "This should only be used when |kBraveCommands| is enabled.";
   auto it = kCommandInfos.find(command_id);
-  CHECK(it != kCommandInfos.end()) << "Unknown command " << command_id
-    << ". This function should only be used for known "
-      "commands (i.e. commands in |GetCommandInfo|). "
-      "This command should probably be added.";
+  CHECK(it != kCommandInfos.end())
+      << "Unknown command " << command_id
+      << ". This function should only be used for known "
+         "commands (i.e. commands in |GetCommandInfo|). "
+         "This command should probably be added.";
   return it->second.data();
 }
 

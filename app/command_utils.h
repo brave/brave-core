@@ -6,10 +6,8 @@
 #ifndef BRAVE_APP_COMMAND_UTILS_H_
 #define BRAVE_APP_COMMAND_UTILS_H_
 
-#include <string>
-#include <vector>
-
 #include "base/containers/span.h"
+#include "base/strings/string_piece_forward.h"
 
 namespace commands {
 
@@ -17,11 +15,11 @@ namespace commands {
 // be executed in the main browser window. This is used for listing the
 // shortcuts available to users and will eventually be used to allow configuring
 // shortcuts.
-const base::span<const int>& GetCommands();
+base::span<const int> GetCommands();
 
 // Gets a string representing a command. In future this will be translated, but
 // while we're prototyping the feature it will always returns English strings.
-std::string GetCommandName(int command_id);
+base::StringPiece GetCommandName(int command_id);
 
 }  // namespace commands
 

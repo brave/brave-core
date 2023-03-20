@@ -32,7 +32,7 @@ mojom::CommandPtr ToMojoCommand(
     const std::vector<ui::Accelerator>& accelerators) {
   auto command = mojom::Command::New();
   command->id = command_id;
-  command->name = commands::GetCommandName(command_id);
+  command->name = std::string(commands::GetCommandName(command_id));
   for (const auto& accelerator : accelerators) {
     auto a = mojom::Accelerator::New();
     a->codes = commands::ToCodesString(accelerator);
