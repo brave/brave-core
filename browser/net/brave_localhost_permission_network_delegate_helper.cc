@@ -36,7 +36,6 @@ void OnPermissionRequestStatus(
 
 bool IsLocalhostRequest(const GURL& request_url,
                         const GURL& request_initiator_url) {
-
   return request_initiator_url.is_valid() && request_url.is_valid() &&
          net::IsLocalhost(request_url) &&
          !net::IsLocalhost(request_initiator_url);

@@ -526,8 +526,8 @@
           "Enable Localhost access permission prompt",                         \
           "Enable permissioning access to localhost connections",              \
           kOsAll,                                                              \
-          FEATURE_VALUE_TYPE(brave_shields::features::                         \
-                            kBraveLocalhostAccessPermission),                  \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveLocalhostAccessPermission),       \
       },                                                                       \
       {                                                                        \
           "brave-extension-network-blocking",                                  \

@@ -49,6 +49,7 @@
   case PermissionType::BRAVE_COOKIES:                   \
   case PermissionType::BRAVE_SPEEDREADER:               \
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
+  case PermissionType::BRAVE_LOCALHOST_ACCESS:          \
     return absl::nullopt
 
 #include "src/third_party/blink/common/permissions/permission_utils.cc"
