@@ -35,7 +35,8 @@ class PlaylistCarplayController: NSObject {
   private var assetLoadingStateObservers = Set<AnyCancellable>()
   private var playlistObservers = Set<AnyCancellable>()
   private let savedFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID)
-  private let frc = PlaylistFolder.frc(savedFolder: false, sharedFolders: true)
+  private let foldersFRC = PlaylistFolder.frc(savedFolder: false, sharedFolders: false)
+  private let sharedFoldersFRC = PlaylistFolder.frc(savedFolder: false, sharedFolders: true)
 
   // For now, I have absolutely ZERO idea why the API says:
   // CPAllowedTemplates = CPAlertTemplate, invalid object CPActionSheetTemplate
@@ -49,7 +50,8 @@ class PlaylistCarplayController: NSObject {
     self.mediaStreamer = mediaStreamer
     super.init()
 
-    frc.delegate = self
+    foldersFRC.delegate = self
+    sharedFoldersFRC.delegate = self
     interfaceController.delegate = self
 
     observeFolderStates()
@@ -236,7 +238,8 @@ class PlaylistCarplayController: NSObject {
 
   private func doLayout() {
     do {
-      try frc.performFetch()
+      try foldersFRC.performFetch()
+      try sharedFoldersFRC.performFetch()
     } catch {
       Logger.module.error("\(error.localizedDescription)")
       displayErrorAlert(error: error)
@@ -281,7 +284,8 @@ class PlaylistCarplayController: NSObject {
     }
 
     do {
-      try frc.performFetch()
+      try foldersFRC.performFetch()
+      try sharedFoldersFRC.performFetch()
     } catch {
       Logger.module.error("\(error.localizedDescription)")
     }
@@ -311,7 +315,8 @@ class PlaylistCarplayController: NSObject {
 
   private func generatePlaylistFolderListTemplate() -> CPTemplate {
     // Fetch all Playlist Folders
-    let folders = frc.fetchedObjects ?? []
+    let folders = foldersFRC.fetchedObjects ?? []
+    let sharedFolders = sharedFoldersFRC.fetchedObjects ?? []
 
     // Construct Folders UI
     let itemCount = savedFolder?.playlistItems?.count ?? 0
@@ -331,7 +336,26 @@ class PlaylistCarplayController: NSObject {
       $0.userInfo = ["uuid": self.savedFolder?.uuid]
     }
 
-    let otherFolders = folders.compactMap { folder -> CPListItem? in
+    let folderItems = folders.compactMap { folder -> CPListItem? in
+      let itemCount = folder.playlistItems?.count ?? 0
+      return CPListItem(
+        text: folder.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
+        detailText: "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+        image: nil,
+        accessoryImage: nil,
+        accessoryType: .disclosureIndicator
+      ).then {
+        $0.handler = { _, completion in
+          // Display items in this folder
+          PlaylistManager.shared.currentFolder = folder
+          completion()
+        }
+
+        $0.userInfo = ["uuid": folder.uuid]
+      }
+    }
+    
+    let sharedFolderItems = sharedFolders.compactMap { folder -> CPListItem? in
       let itemCount = folder.playlistItems?.count ?? 0
       return CPListItem(
         text: folder.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
@@ -355,7 +379,8 @@ class PlaylistCarplayController: NSObject {
       title: Strings.PlayList.playlistCarplayTitle,
       sections: [
         CPListSection(items: [savedFolder]),
-        CPListSection(items: otherFolders),
+        CPListSection(items: folderItems),
+        CPListSection(items: sharedFolderItems)
       ]
     ).then {
       $0.tabImage = UIImage(systemName: "list.star")
