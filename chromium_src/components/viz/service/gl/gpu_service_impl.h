@@ -1,0 +1,24 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_VIZ_SERVICE_GL_GPU_SERVICE_IMPL_H_
+#define BRAVE_CHROMIUM_SRC_COMPONENTS_VIZ_SERVICE_GL_GPU_SERVICE_IMPL_H_
+
+#define InitializeWithHost                                             \
+  InitializeWithHost_ChromiumImpl(                                     \
+      mojo::PendingRemote<mojom::GpuHost> pending_gpu_host,            \
+      gpu::GpuProcessActivityFlags activity_flags,                     \
+      scoped_refptr<gl::GLSurface> default_offscreen_surface,          \
+      gpu::SyncPointManager* sync_point_manager,                       \
+      gpu::SharedImageManager* shared_image_manager,                   \
+      gpu::Scheduler* scheduler, base::WaitableEvent* shutdown_event); \
+                                                                       \
+  void InitializeWithHost
+
+#include "src/components/viz/service/gl/gpu_service_impl.h"  // IWYU pragma: export
+
+#undef InitializeWithHost
+
+#endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_VIZ_SERVICE_GL_GPU_SERVICE_IMPL_H_

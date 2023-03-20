@@ -1,0 +1,20 @@
+diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
+index 7ce4efe5cbaac724cf747d5bdb8bba2800204bae..cc56251c48ab3d7808ee5cb0a14c6c696723c3da 100644
+--- a/content/browser/gpu/gpu_internals_ui.cc
++++ b/content/browser/gpu/gpu_internals_ui.cc
+@@ -337,6 +337,7 @@ base::Value::Dict GetGpuInfo() {
+ #if BUILDFLAG(IS_WIN)
+   base::Value::List dx_info;
+   if (gpu_info.dx_diagnostics.children.size())
++  
+     dx_info = DxDiagNodeToList(gpu_info.dx_diagnostics);
+   info.Set("diagnostics", std::move(dx_info));
+ #endif
+@@ -832,6 +833,7 @@ base::Value::Dict GpuMessageHandler::OnRequestClientInfo() {
+            std::string("Skia/" STRINGIZE(SK_MILESTONE) " " SKIA_COMMIT_HASH));
+   dict.Set("revision_identifier", GPU_LISTS_VERSION);
+ 
++  BRAVE_GPU_MESSAGE_HANDLER_ON_REQUEST_CLIENT_INFO
+   return dict;
+ }
+ 
