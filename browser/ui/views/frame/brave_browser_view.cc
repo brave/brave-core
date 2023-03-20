@@ -387,7 +387,7 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 bool BraveBrowserView::HasSelectedURL() const {
-  if (!GetLocationBarView()) {
+  if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
     return false;
   }
   auto* brave_omnibox_view =
