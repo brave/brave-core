@@ -6,6 +6,7 @@
 #import "brave/browser/brave_app_controller_mac.h"
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser.h"
@@ -60,7 +61,11 @@
   }
   if ([self shouldShowCleanLinkItem]) {
     [_copyCleanLinkMenuItem setHidden:NO];
-    [self setKeyEquivalentToItem:_copyCleanLinkMenuItem];
+    if (base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkByDefault)) {
+      [self setKeyEquivalentToItem:_copyCleanLinkMenuItem];
+    } else {
+      [self setKeyEquivalentToItem:_copyMenuItem];
+    }
   } else {
     [_copyCleanLinkMenuItem setHidden:YES];
     [self setKeyEquivalentToItem:_copyMenuItem];
