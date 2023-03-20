@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_
 
+#include <numeric>
 #include <ostream>
 #include <vector>
 
@@ -19,22 +20,16 @@ namespace brave_ads {
 
 template <typename T>
 T CalculateNormalizingConstantBase(const std::vector<T> scores) {
-  T normalizing_constant = 0.0;
-  for (const auto& votes : scores) {
-    normalizing_constant += votes;
-  }
-
-  return normalizing_constant;
+  return std::accumulate(scores.begin(), scores.end(), 0.0);
 }
 
 template <typename T>
 double CalculateNormalizingConstant(
     const CreativeAdPredictorMap<T>& creative_ad_predictors) {
   std::vector<double> scores;
-  scores.assign(creative_ad_predictors.size(), 0);
+  scores.reserve(creative_ad_predictors.size());
 
-  for (const auto& creative_ad_predictor : creative_ad_predictors) {
-    const AdPredictorInfo<T>& ad_predictor = creative_ad_predictor.second;
+  for (const auto& [segment, ad_predictor] : creative_ad_predictors) {
     scores.push_back(ad_predictor.score);
   }
 
@@ -66,14 +61,15 @@ absl::optional<T> SampleAdFromPredictors(
   return absl::nullopt;
 }
 
-inline std::vector<double> ComputeProbabilities(std::vector<int> scores) {
+inline std::vector<double> ComputeProbabilities(
+    const std::vector<int>& scores) {
   std::vector<double> probabilities;
+  probabilities.reserve(scores.size());
 
   const double normalizing_constant = CalculateNormalizingConstantBase(scores);
 
-  probabilities.reserve(scores.size());
-  for (const auto& votes : scores) {
-    probabilities.push_back(votes / normalizing_constant);
+  for (const auto& score : scores) {
+    probabilities.push_back(score / normalizing_constant);
   }
 
   return probabilities;

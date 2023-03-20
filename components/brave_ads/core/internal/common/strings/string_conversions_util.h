@@ -9,14 +9,27 @@
 #include <string>
 #include <vector>
 
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+
 namespace brave_ads {
 
 std::string BoolToString(bool value);
 
-std::vector<float> ConvertStringToVector(const std::string& string,
-                                         const std::string& delimiter);
-std::string ConvertVectorToString(const std::vector<float>& vector,
-                                  const std::string& delimiter);
+std::vector<float> ConvertDelimitedStringToVector(const std::string& string,
+                                                  const std::string& delimiter);
+
+template <typename T>
+std::string ConvertVectorToDelimitedString(const std::vector<T>& vector,
+                                           const std::string& delimiter) {
+  std::vector<std::string> list;
+  list.reserve(vector.size());
+  for (const auto& item : vector) {
+    list.emplace_back(base::NumberToString(item));
+  }
+
+  return base::JoinString(list, delimiter);
+}
 
 }  // namespace brave_ads
 

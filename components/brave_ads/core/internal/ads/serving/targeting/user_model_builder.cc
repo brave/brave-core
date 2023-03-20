@@ -22,7 +22,27 @@
 
 namespace brave_ads::targeting {
 
-void BuildUserModel(GetUserModelCallback callback) {
+namespace {
+
+void OnGetTextEmbeddingHtmlEvents(
+    UserModelInfo user_model,
+    BuildUserModelCallback callback,
+    bool success,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  if (!success) {
+    BLOG(1, "Failed to get text embedding events");
+    std::move(callback).Run(user_model);
+    return;
+  }
+
+  user_model.embeddings_history = text_embedding_html_events;
+
+  std::move(callback).Run(user_model);
+}
+
+}  // namespace
+
+void BuildUserModel(BuildUserModelCallback callback) {
   UserModelInfo user_model;
 
   if (features::IsTextClassificationEnabled()) {
@@ -47,22 +67,6 @@ void BuildUserModel(GetUserModelCallback callback) {
   } else {
     std::move(callback).Run(user_model);
   }
-}
-
-void OnGetTextEmbeddingHtmlEvents(
-    UserModelInfo user_model,
-    GetUserModelCallback callback,
-    bool success,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-  if (!success) {
-    BLOG(1, "Failed to get text embedding events");
-    std::move(callback).Run(user_model);
-    return;
-  }
-
-  user_model.embeddings_history = text_embedding_html_events;
-
-  std::move(callback).Run(user_model);
 }
 
 }  // namespace brave_ads::targeting

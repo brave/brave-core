@@ -38,8 +38,7 @@ TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   ASSERT_EQ(kDefaultBucketCount, hashed_vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount,
-            hashed_vector_data->GetAsFloatVector().size());
+  EXPECT_EQ(kExpectedElementCount, hashed_vector_data->GetData().size());
 }
 
 TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
@@ -63,7 +62,7 @@ TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {
   // Assert
   ASSERT_EQ(kHashBucketCount, hashed_vector_data->GetDimensionCount());
   EXPECT_EQ(kHashBucketCount,
-            static_cast<int>(hashed_vector_data->GetAsFloatVector().size()));
+            static_cast<int>(hashed_vector_data->GetData().size()));
 }
 
 }  // namespace brave_ads::ml

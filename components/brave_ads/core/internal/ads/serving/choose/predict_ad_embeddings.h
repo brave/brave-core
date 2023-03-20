@@ -8,7 +8,6 @@
 
 #include <vector>
 
-#include "absl/types/optional.h"
 #include "base/check_op.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/eligible_ads_predictor_util.h"
@@ -17,8 +16,9 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/numbers/number_util.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_event_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads {
+namespace brave_ads {
 
 template <typename T>
 absl::optional<T> MaybePredictAdUsingEmbeddings(
@@ -35,12 +35,11 @@ absl::optional<T> MaybePredictAdUsingEmbeddings(
   const std::vector<int> votes_registry =
       ComputeVoteRegistry(paced_creative_ads, user_model.embeddings_history);
 
-  DCHECK_EQ(votes_registry.size(), paced_creative_ads.size());
   const std::vector<double> probabilities =
       ComputeProbabilities(votes_registry);
 
   const double rand = base::RandDouble();
-  double sum = 0;
+  double sum = 0.0;
 
   for (size_t i = 0; i < paced_creative_ads.size(); i++) {
     sum += probabilities.at(i);
@@ -53,6 +52,6 @@ absl::optional<T> MaybePredictAdUsingEmbeddings(
   return absl::nullopt;
 }
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_PREDICT_AD_EMBEDDINGS_H_

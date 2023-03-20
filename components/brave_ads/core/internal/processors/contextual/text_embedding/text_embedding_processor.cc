@@ -8,11 +8,14 @@
 #include <algorithm>
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
+#include "brave/components/brave_ads/core/internal/features/text_embedding_features.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
@@ -62,8 +65,8 @@ void TextEmbedding::Process(const std::string& html) {
   const ml::pipeline::TextEmbeddingInfo text_embedding =
       embedding_proc_pipeline->EmbedText(text);
   const std::vector<float> vector = text_embedding.embedding;
-  if (*std::min_element(vector.begin(), vector.end()) == 0.0 &&
-      *std::max_element(vector.begin(), vector.end()) == 0.0) {
+  if (*base::ranges::min_element(vector) == 0.0 &&
+      *base::ranges::max_element(vector) == 0.0) {
     BLOG(1, "Not enough words to embed text");
     return;
   }

@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad_embeddings.h"
@@ -20,8 +19,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::notification_ads {
+namespace brave_ads::notification_ads {
 
 EligibleAdsV3::EligibleAdsV3(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -145,4 +145,4 @@ CreativeNotificationAdList EligibleAdsV3::FilterCreativeAds(
                              &exclusion_rules);
 }
 
-}  // namespace ads::notification_ads
+}  // namespace brave_ads::notification_ads

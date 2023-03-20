@@ -6,10 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_EMBEDDINGS_DATABASE_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_EMBEDDINGS_DATABASE_UTIL_H_
 
-namespace ads::database {
+namespace brave_ads::database {
 
 void DeleteEmbeddings();
 
-}  // namespace ads::database
+}  // namespace brave_ads::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_EMBEDDINGS_DATABASE_UTIL_H_

@@ -19,12 +19,12 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 namespace {
 
 constexpr char kTableName[] = "embeddings";
-constexpr char kDelimiter[] = " ";
+constexpr char kDelimiter[] = ",";
 
 int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeAdList& creative_ads) {
@@ -36,8 +36,8 @@ int BindParameters(mojom::DBCommandInfo* command,
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_set_id);
     BindString(command, index++,
-               base::ToLowerASCII(
-                   ConvertVectorToString(creative_ad.embedding, kDelimiter)));
+               base::ToLowerASCII(ConvertVectorToDelimitedString(
+                   creative_ad.embedding, kDelimiter)));
 
     count++;
   }
@@ -126,4 +126,4 @@ void Embeddings::MigrateToV26(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table

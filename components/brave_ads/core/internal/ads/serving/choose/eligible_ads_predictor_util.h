@@ -10,6 +10,7 @@
 #include <cstddef>
 #include <vector>
 
+#include "base/check_op.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
@@ -170,7 +171,7 @@ std::vector<int> ComputeVoteRegistry(
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   DCHECK(!creative_ads.empty());
 
-  std::vector<int> vote_registry(creative_ads.size(), 0);
+  std::vector<int> vote_registry(creative_ads.size());
 
   for (const auto& text_embedding_html_event : text_embedding_html_events) {
     std::vector<float> similarity_scores;
@@ -190,7 +191,7 @@ std::vector<int> ComputeVoteRegistry(
         [](const auto& a, const auto& b) { return a < b; });
 
     while (iter != similarity_scores.end()) {
-      size_t index = std::distance(similarity_scores.cbegin(), iter);
+      const size_t index = std::distance(similarity_scores.cbegin(), iter);
       vote_registry[index]++;
 
       iter =
@@ -198,6 +199,7 @@ std::vector<int> ComputeVoteRegistry(
     }
   }
 
+  DCHECK_EQ(vote_registry.size(), creative_ads.size());
   return vote_registry;
 }
 

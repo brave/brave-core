@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 
-namespace ads::database::table {
+namespace brave_ads::database::table {
 
 class Embeddings final : public TableInterface {
  public:
@@ -34,6 +34,6 @@ class Embeddings final : public TableInterface {
   static void MigrateToV26(mojom::DBTransactionInfo* transaction);
 };
 
-}  // namespace ads::database::table
+}  // namespace brave_ads::database::table
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_EMBEDDINGS_DATABASE_TABLE_H_

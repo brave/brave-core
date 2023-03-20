@@ -152,19 +152,19 @@ void VectorData::AddElementWise(const VectorData& other) {
     return;
   }
 
-  size_t index = 0;
+  size_t this_index = 0;
   size_t other_index = 0;
-  while (index < storage_->GetSize() &&
+  while (this_index < storage_->GetSize() &&
          other_index < other.storage_->GetSize()) {
-    if (storage_->GetPointAt(index) ==
+    if (storage_->GetPointAt(this_index) ==
         other.storage_->GetPointAt(other_index)) {
-      storage_->values()[index] += other.storage_->values()[other_index];
-      ++index;
+      storage_->values()[this_index] += other.storage_->values()[other_index];
+      ++this_index;
       ++other_index;
     } else {
-      if (storage_->GetPointAt(index) <
+      if (storage_->GetPointAt(this_index) <
           other.storage_->GetPointAt(other_index)) {
-        ++index;
+        ++this_index;
       } else {
         ++other_index;
       }
@@ -177,26 +177,26 @@ void VectorData::DivideByScalar(const float scalar) {
     return;
   }
 
-  size_t index = 0;
-  while (index < storage_->GetSize()) {
-    storage_->values()[index] /= scalar;
-    ++index;
+  size_t this_index = 0;
+  while (this_index < storage_->GetSize()) {
+    storage_->values()[this_index] /= scalar;
+    ++this_index;
   }
 }
 
 double VectorData::GetMagnitude() const {
   return sqrt(std::accumulate(storage_->values().cbegin(),
                               storage_->values().cend(), 0.0,
-                              [](const double& lhs, float v) -> double {
-                                return lhs + double{v} * v;
+                              [](const double& lhs, float rhs) -> double {
+                                return lhs + double{rhs} * rhs;
                               }));
 }
 
 void VectorData::Normalize() {
-  const auto vector_length = GetMagnitude();
+  const double vector_length = GetMagnitude();
   if (vector_length > kMinimumVectorLength) {
-    for (float& entry : storage_->values()) {
-      entry /= static_cast<float>(vector_length);
+    for (float& item : storage_->values()) {
+      item /= static_cast<float>(vector_length);
     }
   }
 }
@@ -217,10 +217,10 @@ int VectorData::GetNonZeroElementCount() const {
   }
 
   return base::ranges::count_if(storage_->values(),
-                                [](float value) { return value != 0; });
+                                [](const float value) { return value != 0; });
 }
 
-std::vector<float> VectorData::GetAsFloatVector() const {
+std::vector<float> VectorData::GetData() const {
   return storage_->values();
 }
 

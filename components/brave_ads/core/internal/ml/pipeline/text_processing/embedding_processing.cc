@@ -107,7 +107,7 @@ TextEmbeddingInfo EmbeddingProcessing::EmbedText(
   const auto scalar = static_cast<float>(in_vocab_tokens.size());
   embedding_accumulator.DivideByScalar(scalar);
 
-  text_embedding.embedding = embedding_accumulator.GetAsFloatVector();
+  text_embedding.embedding = embedding_accumulator.GetData();
   return text_embedding;
 }
 

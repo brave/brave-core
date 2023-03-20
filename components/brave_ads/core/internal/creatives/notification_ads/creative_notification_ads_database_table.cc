@@ -87,7 +87,7 @@ CreativeNotificationAdInfo GetFromRecord(mojom::DBRecordInfo* record) {
   creative_ad.split_test_group = ColumnString(record, 14);
   creative_ad.segment = ColumnString(record, 15);
   creative_ad.embedding =
-      ConvertStringToVector(ColumnString(record, 16), kDelimiter);
+      ConvertDelimitedStringToVector(ColumnString(record, 16), kDelimiter);
   creative_ad.geo_targets.insert(ColumnString(record, 17));
   creative_ad.target_url = GURL(ColumnString(record, 18));
   creative_ad.title = ColumnString(record, 19);

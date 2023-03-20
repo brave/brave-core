@@ -7,7 +7,6 @@
 
 #include <utility>
 
-#include "absl/types/optional.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
@@ -21,8 +20,9 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ads::inline_content_ads {
+namespace brave_ads::inline_content_ads {
 
 EligibleAdsV3::EligibleAdsV3(
     geographic::SubdivisionTargeting* subdivision_targeting,
@@ -141,4 +141,4 @@ CreativeInlineContentAdList EligibleAdsV3::FilterCreativeAds(
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
-}  // namespace ads::inline_content_ads
+}  // namespace brave_ads::inline_content_ads

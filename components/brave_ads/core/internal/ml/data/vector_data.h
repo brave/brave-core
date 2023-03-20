@@ -52,7 +52,7 @@ class VectorData final : public Data {
   int GetNonZeroElementCount() const;
   double GetMagnitude() const;
 
-  std::vector<float> GetAsFloatVector() const;
+  std::vector<float> GetData() const;
   std::string GetVectorAsString() const;
 
  private:

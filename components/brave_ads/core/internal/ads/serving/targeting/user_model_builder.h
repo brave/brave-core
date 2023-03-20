@@ -13,15 +13,10 @@ namespace brave_ads::targeting {
 
 struct UserModelInfo;
 
-using GetUserModelCallback =
+using BuildUserModelCallback =
     base::OnceCallback<void(const targeting::UserModelInfo& user_model)>;
 
-void BuildUserModel(GetUserModelCallback callback);
-void OnGetTextEmbeddingHtmlEvents(
-    UserModelInfo user_model,
-    GetUserModelCallback callback,
-    bool success,
-    const TextEmbeddingHtmlEventList& text_embedding_html_events);
+void BuildUserModel(BuildUserModelCallback callback);
 
 }  // namespace brave_ads::targeting
 

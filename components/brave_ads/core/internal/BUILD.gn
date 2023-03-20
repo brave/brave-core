@@ -270,6 +270,7 @@ source_set("internal") {
     "ads/serving/choose/eligible_ads_predictor_util.cc",
     "ads/serving/choose/eligible_ads_predictor_util.h",
     "ads/serving/choose/predict_ad.h",
+    "ads/serving/choose/predict_ad_embeddings.h",
     "ads/serving/choose/sample_ads.h",
     "ads/serving/eligible_ads/allocation/round_robin_ads.h",
     "ads/serving/eligible_ads/allocation/round_robin_advertisers.h",
