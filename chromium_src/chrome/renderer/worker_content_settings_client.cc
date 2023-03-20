@@ -70,4 +70,8 @@ WorkerContentSettingsClient::GetEphemeralStorageOriginSync() {
           : blink::WebSecurityOrigin());
 }
 
+bool WorkerContentSettingsClient::HasContentSettingsRules() const {
+  return content_setting_rules_.get();
+}
+
 #include "src/chrome/renderer/worker_content_settings_client.cc"

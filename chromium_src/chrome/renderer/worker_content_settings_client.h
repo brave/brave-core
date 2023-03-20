@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_RENDERER_WORKER_CONTENT_SETTINGS_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_RENDERER_WORKER_CONTENT_SETTINGS_CLIENT_H_
 
-#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H         \
-  BraveFarblingLevel GetBraveFarblingLevel() override; \
-  blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override;
+#define BRAVE_WORKER_CONTENT_SETTINGS_CLIENT_H                       \
+  BraveFarblingLevel GetBraveFarblingLevel() override;               \
+  blink::WebSecurityOrigin GetEphemeralStorageOriginSync() override; \
+  bool HasContentSettingsRules() const override;
 
 #include "src/chrome/renderer/worker_content_settings_client.h"
 

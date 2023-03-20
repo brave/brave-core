@@ -24,4 +24,8 @@ ContentSetting GetContentSettingFromRulesImpl(
   return GetContentSettingFromRules(rules, secondary_url);
 }
 
+bool ContentSettingsAgentImpl::HasContentSettingsRules() const {
+  return content_setting_rules_.get();
+}
+
 }  // namespace content_settings
