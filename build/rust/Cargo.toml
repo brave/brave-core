@@ -6,7 +6,7 @@ edition = "2018"
 [dependencies]
 adblock-ffi = { path = "../../components/adblock_rust_ffi" }
 brave-wallet-cxx = { path = "../../components/brave_wallet/rust" }
-challenge-bypass-ristretto-ffi = { path = "../../components/challenge_bypass_ristretto" }
+challenge-bypass-ristretto-ffi = { path = "../../third_party/challenge_bypass_ristretto" }
 speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 brave-news-cxx = { path = "../../components/brave_news/rust" }

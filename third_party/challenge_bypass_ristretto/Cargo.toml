@@ -15,7 +15,7 @@ crate-type = [
     "rlib",
 ]
 name = "challenge_bypass_ristretto_ffi"
-path = "../../vendor/challenge_bypass_ristretto_ffi/src/lib.rs"
+path = "../../third_party/challenge_bypass_ristretto/src/lib.rs"
 
 [features]
 nightly = ["challenge-bypass-ristretto/nightly"]

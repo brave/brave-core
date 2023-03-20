@@ -22,7 +22,7 @@
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
 
-#include "wrapper.hpp"  // NOLINT
+#include "brave/third_party/challenge_bypass_ristretto/src/wrapper.h"
 
 using std::placeholders::_1;
 

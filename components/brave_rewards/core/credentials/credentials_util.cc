@@ -9,8 +9,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
-
-#include "wrapper.hpp"  // NOLINT
+#include "brave/third_party/challenge_bypass_ristretto/src/wrapper.h"
 
 namespace ledger {
 namespace credential {

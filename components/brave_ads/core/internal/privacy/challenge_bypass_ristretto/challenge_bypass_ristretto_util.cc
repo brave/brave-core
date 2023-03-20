@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/challenge_bypass_ristretto_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "wrapper.hpp"
+#include "brave/third_party/challenge_bypass_ristretto/src/wrapper.h"
 
 namespace brave_ads::privacy::cbr {
 
