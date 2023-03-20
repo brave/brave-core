@@ -578,3 +578,6 @@
 -WebUsbServiceImplTest.*
 -WellKnownChangePasswordNavigationThrottleTest.*
 -ZipFileInstallerTest.*
+
+# Crash because of starting search provider
+-RenderViewContextMenuPrefsTest.ShowAllPasswordsIncognito

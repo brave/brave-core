@@ -45,6 +45,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void AddAccessibilityLabelsServiceItem(bool is_checked) override;
 
  private:
+  friend class BraveRenderViewContextMenuTest;
   // RenderViewContextMenuBase:
   void InitMenu() override;
 #if BUILDFLAG(ENABLE_IPFS)
