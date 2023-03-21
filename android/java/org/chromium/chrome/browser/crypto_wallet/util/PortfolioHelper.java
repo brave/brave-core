@@ -231,8 +231,6 @@ public class PortfolioHelper {
                 return;
             }
 
-            assert !pricesHistoryContexts.isEmpty();
-
             AsyncUtils.GetPriceHistoryResponseContext shortestPriceHistoryContext =
                     Collections.min(pricesHistoryContexts, (l, r) -> {
                         return Integer.compare(l.timePrices.length, r.timePrices.length);
@@ -252,9 +250,7 @@ public class PortfolioHelper {
                         pricesHistoryContexts) {
                     thisDateFiatSum += Float.parseFloat(priceHistoryContext.timePrices[i].price)
                             * Utils.getOrDefault(mPerTokenCryptoSum,
-                                    priceHistoryContext.userAsset.symbol.toLowerCase(
-                                            Locale.getDefault()),
-                                    0.0d);
+                                    Utils.tokenToString(priceHistoryContext.userAsset), 0.0d);
                 }
                 mFiatHistory[i].price = Double.toString(thisDateFiatSum);
             }
