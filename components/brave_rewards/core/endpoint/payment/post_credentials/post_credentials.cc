@@ -86,9 +86,10 @@ void PostCredentials::Request(const std::string& order_id,
 }
 
 void PostCredentials::OnRequest(PostCredentialsCallback callback,
-                                const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
-  std::move(callback).Run(CheckStatusCode(response.status_code));
+                                mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment

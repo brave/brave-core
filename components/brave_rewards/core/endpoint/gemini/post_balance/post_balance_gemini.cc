@@ -82,10 +82,11 @@ void PostBalance::Request(const std::string& token,
 }
 
 void PostBalance::OnRequest(PostBalanceCallback callback,
-                            const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                            mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, 0.0);
@@ -93,7 +94,7 @@ void PostBalance::OnRequest(PostBalanceCallback callback,
   }
 
   double available;
-  result = ParseBody(response.body, &available);
+  result = ParseBody(response->body, &available);
   std::move(callback).Run(result, available);
 }
 

@@ -59,7 +59,7 @@ class Uphold {
   void TransferFunds(double amount,
                      const std::string& address,
                      const std::string& contribution_id,
-                     client::LegacyResultCallback);
+                     LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ledger::ConnectExternalWalletCallback);

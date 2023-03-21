@@ -107,17 +107,18 @@ void GetCredentials::Request(const std::string& order_id,
 }
 
 void GetCredentials::OnRequest(GetCredentialsCallback callback,
-                               const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                               mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nullptr);
     return;
   }
 
   auto batch = mojom::CredsBatch::New();
-  result = ParseBody(response.body, batch.get());
+  result = ParseBody(response->body, batch.get());
   std::move(callback).Run(result, std::move(batch));
 }
 

@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 
-#include <string>
-
 namespace ledger {
 
 BATLedgerTest::BATLedgerTest() = default;
@@ -17,12 +15,13 @@ void BATLedgerTest::AddNetworkResultForTesting(const std::string& url,
                                                mojom::UrlMethod method,
                                                mojom::UrlResponsePtr response) {
   DCHECK(response);
-  client_.AddNetworkResultForTesting(url, method, std::move(response));
+  GetTestRewardsService()->AddNetworkResultForTesting(url, method,
+                                                      std::move(response));
 }
 
 void BATLedgerTest::SetLogCallbackForTesting(
-    TestLedgerClient::LogCallback callback) {
-  client_.SetLogCallbackForTesting(callback);
+    TestRewardsService::LogCallback callback) {
+  GetTestRewardsService()->SetLogCallbackForTesting(callback);
 }
 
 }  // namespace ledger

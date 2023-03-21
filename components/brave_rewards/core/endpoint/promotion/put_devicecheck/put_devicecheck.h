@@ -62,7 +62,7 @@ class PutDevicecheck {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PutDevicecheckCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

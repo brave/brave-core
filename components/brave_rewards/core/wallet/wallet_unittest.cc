@@ -54,7 +54,7 @@ TEST_F(WalletTest, GetWallet) {
 
   // When there is no current wallet information, `GetWallet` returns empty and
   // sets the corrupted flag to false.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
+  ledger->SetState(state::kWalletBrave, std::string());
   corrupted = true;
   mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
@@ -62,19 +62,18 @@ TEST_F(WalletTest, GetWallet) {
 
   // When there is invalid wallet information, `GetWallet` returns empty, sets
   // the corrupted flag to true, and does not modify prefs.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  ledger->SetState(state::kWalletBrave, std::string("BAD-DATA"));
   wallet = ledger->wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
   EXPECT_TRUE(corrupted);
-  EXPECT_EQ(GetTestLedgerClient()->GetStringState(state::kWalletBrave),
-            "BAD-DATA");
+  EXPECT_EQ(ledger->GetState<std::string>(state::kWalletBrave), "BAD-DATA");
 }
 
 TEST_F(WalletTest, CreateWallet) {
   auto* ledger = GetLedgerImpl();
 
   // Create a wallet when there is no current wallet information.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
+  ledger->SetState(state::kWalletBrave, std::string());
   mojom::CreateRewardsWalletResult result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet();
@@ -83,7 +82,7 @@ TEST_F(WalletTest, CreateWallet) {
   EXPECT_TRUE(!wallet->recovery_seed.empty());
 
   // Create a wallet when there is corrupted wallet information.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  ledger->SetState(state::kWalletBrave, std::string("BAD-DATA"));
   result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   wallet = ledger->wallet()->GetWallet();

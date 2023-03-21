@@ -159,73 +159,73 @@ State::State(LedgerImpl* ledger)
 
 State::~State() = default;
 
-void State::Initialize(ledger::LegacyResultCallback callback) {
-  migration_->Start(callback);
+void State::Initialize(ledger::ResultCallback callback) {
+  migration_->Start(std::move(callback));
 }
 
 void State::SetVersion(const int version) {
   ledger_->database()->SaveEventLog(kVersion, std::to_string(version));
-  ledger_->ledger_client()->SetIntegerState(kVersion, version);
+  ledger_->SetState(kVersion, version);
 }
 
 int State::GetVersion() {
-  return ledger_->ledger_client()->GetIntegerState(kVersion);
+  return ledger_->GetState<int>(kVersion);
 }
 
 void State::SetPublisherMinVisitTime(const int duration) {
   ledger_->database()->SaveEventLog(kMinVisitTime, std::to_string(duration));
-  ledger_->ledger_client()->SetIntegerState(kMinVisitTime, duration);
+  ledger_->SetState(kMinVisitTime, duration);
   ledger_->publisher()->CalcScoreConsts(duration);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 int State::GetPublisherMinVisitTime() {
-  return ledger_->ledger_client()->GetIntegerState(kMinVisitTime);
+  return ledger_->GetState<int>(kMinVisitTime);
 }
 
 void State::SetPublisherMinVisits(const int visits) {
   ledger_->database()->SaveEventLog(kMinVisits, std::to_string(visits));
-  ledger_->ledger_client()->SetIntegerState(kMinVisits, visits);
+  ledger_->SetState(kMinVisits, visits);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 int State::GetPublisherMinVisits() {
-  return ledger_->ledger_client()->GetIntegerState(kMinVisits);
+  return ledger_->GetState<int>(kMinVisits);
 }
 
 void State::SetPublisherAllowNonVerified(const bool allow) {
   ledger_->database()->SaveEventLog(kAllowNonVerified, std::to_string(allow));
-  ledger_->ledger_client()->SetBooleanState(kAllowNonVerified, allow);
+  ledger_->SetState(kAllowNonVerified, allow);
   ledger_->publisher()->SynopsisNormalizer();
 }
 
 bool State::GetPublisherAllowNonVerified() {
-  return ledger_->ledger_client()->GetBooleanState(kAllowNonVerified);
+  return ledger_->GetState<bool>(kAllowNonVerified);
 }
 
 void State::SetScoreValues(double a, double b) {
   ledger_->database()->SaveEventLog(kScoreA, std::to_string(a));
   ledger_->database()->SaveEventLog(kScoreB, std::to_string(b));
-  ledger_->ledger_client()->SetDoubleState(kScoreA, a);
-  ledger_->ledger_client()->SetDoubleState(kScoreB, b);
+  ledger_->SetState(kScoreA, a);
+  ledger_->SetState(kScoreB, b);
 }
 
 void State::GetScoreValues(double* a, double* b) {
   DCHECK(a && b);
-  *a = ledger_->ledger_client()->GetDoubleState(kScoreA);
-  *b = ledger_->ledger_client()->GetDoubleState(kScoreB);
+  *a = ledger_->GetState<double>(kScoreA);
+  *b = ledger_->GetState<double>(kScoreB);
 }
 
 void State::SetAutoContributeEnabled(bool enabled) {
   // Auto-contribute is not supported for regions where bitFlyer is the external
   // wallet provider. If AC is not supported, then always set the pref to false.
-  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion)) {
+  if (ledger_->GetOption<bool>(option::kIsBitflyerRegion)) {
     enabled = false;
   }
 
   ledger_->database()->SaveEventLog(kAutoContributeEnabled,
                                     std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(kAutoContributeEnabled, enabled);
+  ledger_->SetState(kAutoContributeEnabled, enabled);
 
   if (enabled) {
     ledger_->publisher()->CalcScoreConsts(GetPublisherMinVisitTime());
@@ -235,22 +235,21 @@ void State::SetAutoContributeEnabled(bool enabled) {
 bool State::GetAutoContributeEnabled() {
   // Auto-contribute is not supported for regions where bitFlyer is the external
   // wallet provider. If AC is not supported, then always report AC as disabled.
-  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion)) {
+  if (ledger_->GetOption<bool>(option::kIsBitflyerRegion)) {
     return false;
   }
 
-  return ledger_->ledger_client()->GetBooleanState(kAutoContributeEnabled);
+  return ledger_->GetState<bool>(kAutoContributeEnabled);
 }
 
 void State::SetAutoContributionAmount(const double amount) {
   ledger_->database()->SaveEventLog(kAutoContributeAmount,
                                     std::to_string(amount));
-  ledger_->ledger_client()->SetDoubleState(kAutoContributeAmount, amount);
+  ledger_->SetState(kAutoContributeAmount, amount);
 }
 
 double State::GetAutoContributionAmount() {
-  double amount =
-      ledger_->ledger_client()->GetDoubleState(kAutoContributeAmount);
+  double amount = ledger_->GetState<double>(kAutoContributeAmount);
   if (amount == 0.0) {
     amount = GetAutoContributeChoice();
   }
@@ -259,10 +258,10 @@ double State::GetAutoContributionAmount() {
 }
 
 uint64_t State::GetReconcileStamp() {
-  auto stamp = ledger_->ledger_client()->GetUint64State(kNextReconcileStamp);
+  auto stamp = ledger_->GetState<uint64_t>(kNextReconcileStamp);
   if (stamp == 0) {
     ResetReconcileStamp();
-    stamp = ledger_->ledger_client()->GetUint64State(kNextReconcileStamp);
+    stamp = ledger_->GetState<uint64_t>(kNextReconcileStamp);
   }
 
   return stamp;
@@ -278,27 +277,25 @@ void State::SetReconcileStamp(const int reconcile_interval) {
 
   ledger_->database()->SaveEventLog(kNextReconcileStamp,
                                     std::to_string(reconcile_stamp));
-  ledger_->ledger_client()->SetUint64State(kNextReconcileStamp,
-                                           reconcile_stamp);
-  ledger_->ledger_client()->ReconcileStampReset();
+  ledger_->SetState(kNextReconcileStamp, reconcile_stamp);
+  ledger_->rewards_service()->ReconcileStampReset();
 }
 void State::ResetReconcileStamp() {
   SetReconcileStamp(ledger::reconcile_interval);
 }
 
 uint64_t State::GetCreationStamp() {
-  return ledger_->ledger_client()->GetUint64State(kCreationStamp);
+  return ledger_->GetState<uint64_t>(kCreationStamp);
 }
 
 void State::SetCreationStamp(const uint64_t stamp) {
   ledger_->database()->SaveEventLog(kCreationStamp, std::to_string(stamp));
-  ledger_->ledger_client()->SetUint64State(kCreationStamp, stamp);
+  ledger_->SetState(kCreationStamp, stamp);
 }
 
 bool State::GetInlineTippingPlatformEnabled(
     const mojom::InlineTipsPlatforms platform) {
-  return ledger_->ledger_client()->GetBooleanState(
-      ConvertInlineTipPlatformToKey(platform));
+  return ledger_->GetState<bool>(ConvertInlineTipPlatformToKey(platform));
 }
 
 void State::SetInlineTippingPlatformEnabled(
@@ -306,30 +303,26 @@ void State::SetInlineTippingPlatformEnabled(
     const bool enabled) {
   const std::string platform_string = ConvertInlineTipPlatformToKey(platform);
   ledger_->database()->SaveEventLog(platform_string, std::to_string(enabled));
-  ledger_->ledger_client()->SetBooleanState(platform_string, enabled);
+  ledger_->SetState(platform_string, enabled);
 }
 
 void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {
-  ledger_->ledger_client()->SetDoubleState(kParametersRate, parameters.rate);
-  ledger_->ledger_client()->SetDoubleState(kParametersAutoContributeChoice,
-                                           parameters.auto_contribute_choice);
-  ledger_->ledger_client()->SetStringState(
-      kParametersAutoContributeChoices,
-      VectorDoubleToString(parameters.auto_contribute_choices));
-  ledger_->ledger_client()->SetStringState(
-      kParametersTipChoices, VectorDoubleToString(parameters.tip_choices));
-  ledger_->ledger_client()->SetStringState(
-      kParametersMonthlyTipChoices,
-      VectorDoubleToString(parameters.monthly_tip_choices));
-  ledger_->ledger_client()->SetStringState(
-      kParametersPayoutStatus, PayoutStatusToString(parameters.payout_status));
-  ledger_->ledger_client()->SetValueState(
+  ledger_->SetState(kParametersRate, parameters.rate);
+  ledger_->SetState(kParametersAutoContributeChoice,
+                    parameters.auto_contribute_choice);
+  ledger_->SetState(kParametersAutoContributeChoices,
+                    VectorDoubleToString(parameters.auto_contribute_choices));
+  ledger_->SetState(kParametersTipChoices,
+                    VectorDoubleToString(parameters.tip_choices));
+  ledger_->SetState(kParametersMonthlyTipChoices,
+                    VectorDoubleToString(parameters.monthly_tip_choices));
+  ledger_->SetState(kParametersPayoutStatus,
+                    PayoutStatusToString(parameters.payout_status));
+  ledger_->SetState(
       kParametersWalletProviderRegions,
       WalletProviderRegionsToValue(parameters.wallet_provider_regions));
-  ledger_->ledger_client()->SetTimeState(kParametersVBatDeadline,
-                                         parameters.vbat_deadline);
-  ledger_->ledger_client()->SetBooleanState(kParametersVBatExpired,
-                                            parameters.vbat_expired);
+  ledger_->SetState(kParametersVBatDeadline, parameters.vbat_deadline);
+  ledger_->SetState(kParametersVBatExpired, parameters.vbat_expired);
 }
 
 mojom::RewardsParametersPtr State::GetRewardsParameters() {
@@ -348,17 +341,16 @@ mojom::RewardsParametersPtr State::GetRewardsParameters() {
 }
 
 double State::GetRate() {
-  return ledger_->ledger_client()->GetDoubleState(kParametersRate);
+  return ledger_->GetState<double>(kParametersRate);
 }
 
 double State::GetAutoContributeChoice() {
-  return ledger_->ledger_client()->GetDoubleState(
-      kParametersAutoContributeChoice);
+  return ledger_->GetState<double>(kParametersAutoContributeChoice);
 }
 
 std::vector<double> State::GetAutoContributeChoices() {
-  const std::string amounts_string = ledger_->ledger_client()->GetStringState(
-      kParametersAutoContributeChoices);
+  const std::string amounts_string =
+      ledger_->GetState<std::string>(kParametersAutoContributeChoices);
   std::vector<double> amounts = StringToVectorDouble(amounts_string);
 
   const double current_amount = GetAutoContributionAmount();
@@ -366,8 +358,8 @@ std::vector<double> State::GetAutoContributeChoices() {
     amounts.push_back(current_amount);
     std::sort(amounts.begin(), amounts.end());
 
-    ledger_->ledger_client()->SetStringState(kParametersAutoContributeChoices,
-                                             VectorDoubleToString(amounts));
+    ledger_->SetState(kParametersAutoContributeChoices,
+                      VectorDoubleToString(amounts));
   }
 
   return amounts;
@@ -375,76 +367,75 @@ std::vector<double> State::GetAutoContributeChoices() {
 
 std::vector<double> State::GetTipChoices() {
   return StringToVectorDouble(
-      ledger_->ledger_client()->GetStringState(kParametersTipChoices));
+      ledger_->GetState<std::string>(kParametersTipChoices));
 }
 
 std::vector<double> State::GetMonthlyTipChoices() {
   return StringToVectorDouble(
-      ledger_->ledger_client()->GetStringState(kParametersMonthlyTipChoices));
+      ledger_->GetState<std::string>(kParametersMonthlyTipChoices));
 }
 
 base::flat_map<std::string, std::string> State::GetPayoutStatus() {
   return StringToPayoutStatus(
-      ledger_->ledger_client()->GetStringState(kParametersPayoutStatus));
+      ledger_->GetState<std::string>(kParametersPayoutStatus));
 }
 
 base::flat_map<std::string, mojom::RegionsPtr>
 State::GetWalletProviderRegions() {
-  return ValueToWalletProviderRegions(ledger_->ledger_client()->GetValueState(
-      kParametersWalletProviderRegions));
+  return ValueToWalletProviderRegions(
+      ledger_->GetState<base::Value>(kParametersWalletProviderRegions));
 }
 
 base::Time State::GetVBatDeadline() {
-  return ledger_->ledger_client()->GetTimeState(kParametersVBatDeadline);
+  return ledger_->GetState<base::Time>(kParametersVBatDeadline);
 }
 
 bool State::GetVBatExpired() {
-  return ledger_->ledger_client()->GetBooleanState(kParametersVBatExpired);
+  return ledger_->GetState<bool>(kParametersVBatExpired);
 }
 
 void State::SetEmptyBalanceChecked(const bool checked) {
   ledger_->database()->SaveEventLog(kEmptyBalanceChecked,
                                     std::to_string(checked));
-  ledger_->ledger_client()->SetBooleanState(kEmptyBalanceChecked, checked);
+  ledger_->SetState(kEmptyBalanceChecked, checked);
 }
 
 bool State::GetEmptyBalanceChecked() {
-  return ledger_->ledger_client()->GetBooleanState(kEmptyBalanceChecked);
+  return ledger_->GetState<bool>(kEmptyBalanceChecked);
 }
 
 void State::SetServerPublisherListStamp(const uint64_t stamp) {
-  ledger_->ledger_client()->SetUint64State(kServerPublisherListStamp, stamp);
+  ledger_->SetState(kServerPublisherListStamp, stamp);
 }
 
 uint64_t State::GetServerPublisherListStamp() {
-  return ledger_->ledger_client()->GetUint64State(kServerPublisherListStamp);
+  return ledger_->GetState<uint64_t>(kServerPublisherListStamp);
 }
 
 void State::SetPromotionCorruptedMigrated(const bool migrated) {
   ledger_->database()->SaveEventLog(kPromotionCorruptedMigrated,
                                     std::to_string(migrated));
-  ledger_->ledger_client()->SetBooleanState(kPromotionCorruptedMigrated,
-                                            migrated);
+  ledger_->SetState(kPromotionCorruptedMigrated, migrated);
 }
 
 bool State::GetPromotionCorruptedMigrated() {
-  return ledger_->ledger_client()->GetBooleanState(kPromotionCorruptedMigrated);
+  return ledger_->GetState<bool>(kPromotionCorruptedMigrated);
 }
 
 void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
-  ledger_->ledger_client()->SetUint64State(kPromotionLastFetchStamp, stamp);
+  ledger_->SetState(kPromotionLastFetchStamp, stamp);
 }
 
 void State::ResetWalletType() {
-  ledger_->ledger_client()->SetStringState(kExternalWalletType, "");
+  ledger_->SetState(kExternalWalletType, std::string());
 }
 
 uint64_t State::GetPromotionLastFetchStamp() {
-  return ledger_->ledger_client()->GetUint64State(kPromotionLastFetchStamp);
+  return ledger_->GetState<uint64_t>(kPromotionLastFetchStamp);
 }
 
 absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
-  std::string value = ledger_->ledger_client()->GetStringState(key);
+  std::string value = ledger_->GetState<std::string>(key);
 
   // If the state value is empty, then we consider this a successful read of a
   // default empty string.
@@ -457,7 +448,7 @@ absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
     return {};
   }
 
-  auto decrypted = ledger_->ledger_client()->DecryptString(value);
+  auto decrypted = ledger_->DecryptString(value);
   if (!decrypted) {
     BLOG(0, "Decryption failed for " << key);
     return {};
@@ -468,7 +459,7 @@ absl::optional<std::string> State::GetEncryptedString(const std::string& key) {
 
 bool State::SetEncryptedString(const std::string& key,
                                const std::string& value) {
-  auto encrypted = ledger_->ledger_client()->EncryptString(value);
+  auto encrypted = ledger_->EncryptString(value);
   if (!encrypted) {
     BLOG(0, "Encryption failed for " << key);
     return false;
@@ -477,7 +468,7 @@ bool State::SetEncryptedString(const std::string& key,
   std::string base64_string;
   base::Base64Encode(*encrypted, &base64_string);
 
-  ledger_->ledger_client()->SetStringState(key, base64_string);
+  ledger_->SetState(key, base64_string);
   return true;
 }
 

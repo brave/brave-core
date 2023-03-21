@@ -341,7 +341,7 @@ void DatabasePromotion::CredentialCompleted(
 }
 
 void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
-                                   client::GetPromotionListCallback callback) {
+                                   GetPromotionListCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback({});
@@ -384,9 +384,8 @@ void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePromotion::OnGetRecords(
-    mojom::DBCommandResponsePtr response,
-    client::GetPromotionListCallback callback) {
+void DatabasePromotion::OnGetRecords(mojom::DBCommandResponsePtr response,
+                                     GetPromotionListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
