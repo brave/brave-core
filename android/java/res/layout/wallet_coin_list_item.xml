@@ -26,8 +26,8 @@
 
         <ImageView
             android:id="@+id/iv_network_Icon"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_gravity="center_vertical"
             android:contentDescription="@null"
             android:visibility="gone"
