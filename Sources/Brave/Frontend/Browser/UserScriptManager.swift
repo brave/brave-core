@@ -278,18 +278,21 @@ class UserScriptManager {
         }
       }
       
-      if let solanaProvider = tab.walletSolProvider {
-        solanaProvider.isSolanaKeyringCreated { isSolanaKeyringCreated in
-          guard isSolanaKeyringCreated, // don't inject if Solana keyring is not created.
-                let walletStandardScript = tab.walletSolProviderScripts[.walletStandard]
-          else { return }
-          let wkScript = WKUserScript(
-            source: walletStandardScript,
-            injectionTime: .atDocumentEnd,
-            forMainFrameOnly: true,
-            in: SolanaProviderScriptHandler.scriptSandbox)
-          scriptController.addUserScript(wkScript)
-        }
+      if let walletStandardScript = tab.walletSolProviderScripts[.walletStandard] {
+        let script = """
+        window.__firefox__.execute(function($, $Object) {
+           \(walletStandardScript)
+           window.addEventListener('wallet-standard:app-ready', (e) => {
+              walletStandardBrave.initialize(window.braveSolana);
+          })
+        });
+        """
+        let wkScript = WKUserScript(
+          source: script,
+          injectionTime: .atDocumentStart,
+          forMainFrameOnly: true,
+          in: SolanaProviderScriptHandler.scriptSandbox)
+        scriptController.addUserScript(wkScript)
       }
       
       // TODO: Refactor this and get rid of the `UserScriptType`

@@ -339,7 +339,8 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(true)
   }
 
-  func removeHardwareAccount(_ address: String, password: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func removeHardwareAccount(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+    completion(true)
   }
 
   func notifyUserInteraction() {
@@ -361,7 +362,7 @@ extension BraveWallet.AccountInfo {
     isImported: false,
     hardware: nil,
     coin: .eth,
-    keyringId: nil
+    keyringId: BraveWallet.DefaultKeyringId
   )
   
   static let mockSolAccount: BraveWallet.AccountInfo = .init(
@@ -370,7 +371,7 @@ extension BraveWallet.AccountInfo {
     isImported: false,
     hardware: nil,
     coin: .sol,
-    keyringId: nil
+    keyringId: BraveWallet.SolanaKeyringId
   )
   
   static let mockFilAccount: BraveWallet.AccountInfo = .init(
@@ -379,7 +380,7 @@ extension BraveWallet.AccountInfo {
     isImported: false,
     hardware: nil,
     coin: .fil,
-    keyringId: nil
+    keyringId: BraveWallet.FilecoinKeyringId
   )
 }
 
