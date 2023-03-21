@@ -1,0 +1,20 @@
+diff --git a/components/sync_preferences/common_syncable_prefs_database.cc b/components/sync_preferences/common_syncable_prefs_database.cc
+index 2cc046e4a64acfe4e1693a0b7a67100fc7b153e2..1f6eec04a74990beec73688e09158a968bf18981 100644
+--- a/components/sync_preferences/common_syncable_prefs_database.cc
++++ b/components/sync_preferences/common_syncable_prefs_database.cc
+@@ -95,6 +95,7 @@ enum {
+   kPrefAlwaysTranslateList = 59,
+   kPrefNeverPromptSitesWithTime = 60,
+   kPrefTranslateRecentTarget = 61
++  BRAVE_SYNCABLE_PREFS_IDS
+ };
+ }  // namespace syncable_prefs_ids
+ 
+@@ -229,6 +230,7 @@ const auto& SyncablePreferences() {
+             syncable_prefs_ids::kSyncablePrefForTesting
+           }
+         }
++        BRAVE_COMMON_SYNCABLE_PREFS_ALLOW_LIST
+       });
+   return kCommonSyncablePrefsAllowlist;
+ }
