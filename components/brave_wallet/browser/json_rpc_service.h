@@ -178,13 +178,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& chain_id,
       GetERC20TokenBalancesCallback callback) override;
 
-  using UnstoppableDomainsResolveDnsCallback =
-      base::OnceCallback<void(const GURL& url,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
   void UnstoppableDomainsResolveDns(
       const std::string& domain,
-      UnstoppableDomainsResolveDnsCallback callback);
+      UnstoppableDomainsResolveDnsCallback callback) override;
 
   void UnstoppableDomainsGetWalletAddr(
       const std::string& domain,
@@ -615,7 +611,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   unstoppable_domains::MultichainCalls<unstoppable_domains::WalletAddressKey,
                                        std::string>
       ud_get_eth_addr_calls_;
-  unstoppable_domains::MultichainCalls<std::string, GURL> ud_resolve_dns_calls_;
+  unstoppable_domains::MultichainCalls<std::string, absl::optional<GURL>>
+      ud_resolve_dns_calls_;
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
