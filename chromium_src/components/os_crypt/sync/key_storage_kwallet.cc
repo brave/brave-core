@@ -16,10 +16,12 @@ void Dummy(const int handle,
            bool* has_folder_ptr) {}
 }  // namespace
 
-#define BRAVE_KEY_STORAGE_KWALLET_GET_KEY_IMPL                               \
-  true ? kwallet_dbus_->ReadPassword(handle_, GetFolderName(), GetKeyName(), \
-                                     app_name_, &password)                   \
-       :
+#define BRAVE_KEY_STORAGE_KWALLET_GET_KEY_IMPL                             \
+  if (!kwallet_dbus_->ReadPassword(handle_, GetFolderName(), GetKeyName(), \
+                                   app_name_, &password)) {                \
+    return absl::nullopt;                                                  \
+    /* NOLINTNEXTLINE */                                                   \
+  } else if (false)
 
 #define BRAVE_KEY_STORAGE_KWALLET_INIT_FOLDER        \
   handle_, GetFolderName(), app_name_, &has_folder); \
