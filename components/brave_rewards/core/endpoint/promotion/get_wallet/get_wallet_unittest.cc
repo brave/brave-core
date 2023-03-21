@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
 
-#include <memory>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -20,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=*GetWalletTest*
 
 using ::testing::_;
+using ::testing::MockFunction;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -43,19 +43,10 @@ using GetWalletParamType = std::tuple<
 >;
 
 struct GetWalletTest : TestWithParam<GetWalletParamType> {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<GetWallet> get_wallet_;
-
-  GetWalletTest()
-      : mock_ledger_client_{std::make_unique<MockLedgerClient>()},
-        mock_ledger_impl_{std::make_unique<MockLedgerImpl>(
-            mock_ledger_client_.get())},
-        get_wallet_{std::make_unique<GetWallet>(mock_ledger_impl_.get())} {}
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  GetWallet get_wallet_{&mock_ledger_impl_};
 };
 
 INSTANTIATE_TEST_SUITE_P(
@@ -178,18 +169,20 @@ TEST_P(GetWalletTest, Paths) {
   const auto& expected_custodian = std::get<3>(params);
   const auto expected_linked = std::get<4>(params);
 
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            std::move(callback).Run(rewards_services_get_wallet_response);
-          });
-
-  get_wallet_->Request(
-      [&](mojom::Result result, const std::string& custodian, bool linked) {
-        EXPECT_EQ(result, expected_result);
-        EXPECT_EQ(custodian, expected_custodian);
-        EXPECT_EQ(linked, expected_linked);
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
+        std::move(callback).Run(
+            mojom::UrlResponse::New(rewards_services_get_wallet_response));
       });
+
+  MockFunction<GetWalletCallback> callback;
+  EXPECT_CALL(callback,
+              Call(expected_result, expected_custodian, expected_linked))
+      .Times(1);
+  get_wallet_.Request(callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

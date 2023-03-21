@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -210,19 +211,20 @@ void GetAvailable::Request(const std::string& platform,
 }
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,
-                             const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                             mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
   std::vector<mojom::PromotionPtr> list;
   std::vector<std::string> corrupted_promotions;
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, std::move(list), corrupted_promotions);
     return;
   }
 
-  result = ParseBody(response.body, &list, &corrupted_promotions);
+  result = ParseBody(response->body, &list, &corrupted_promotions);
   std::move(callback).Run(result, std::move(list), corrupted_promotions);
 }
 

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace ledger::wallet_provider {

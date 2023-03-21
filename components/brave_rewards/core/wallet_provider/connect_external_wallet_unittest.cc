@@ -3,21 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+#include <utility>
+
 #include "base/containers/flat_map.h"
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*ConnectExternalWalletTest*
 
-using testing::Return;
-using testing::TestParamInfo;
-using testing::TestWithParam;
-using testing::Values;
+using ::testing::_;
+using ::testing::TestParamInfo;
+using ::testing::TestWithParam;
+using ::testing::Values;
 
 namespace ledger::flows::test {
 using Result = endpoints::PostConnect::Result;
@@ -55,31 +60,9 @@ using ConnectExternalWalletTestParamType = std::tuple<
 
 class ConnectExternalWalletTest
     : public TestWithParam<ConnectExternalWalletTestParamType> {
- public:
-  ConnectExternalWalletTest(const ConnectExternalWalletTest&) = delete;
-  ConnectExternalWalletTest& operator=(const ConnectExternalWalletTest&) =
-      delete;
-
-  ConnectExternalWalletTest(ConnectExternalWalletTest&&) = delete;
-  ConnectExternalWalletTest& operator=(ConnectExternalWalletTest&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  ConnectExternalWalletTest()
-      : mock_ledger_client_(),
-        mock_ledger_impl_(&mock_ledger_client_),
-        mock_database_(&mock_ledger_impl_) {}
-
-  void SetUp() override {
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(Return(&mock_database_));
-  }
-
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  database::MockDatabase mock_database_;
 };
 
 TEST_P(ConnectExternalWalletTest, Paths) {
@@ -91,15 +74,23 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(mock_ledger_client_, GetStringState("wallets.test"))
-      .WillByDefault(Return(std::move(test_wallet)));
+  ON_CALL(*mock_ledger_impl_.mock_client(), GetStringState("wallets.test", _))
+      .WillByDefault([&](const std::string&, auto callback) {
+        std::move(callback).Run(test_wallet);
+      });
+
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
+
+  base::MockCallback<ConnectExternalWalletCallback> callback;
+  EXPECT_CALL(callback, Run(expected_result)).Times(1);
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
-      .Run(query_parameters,
-           base::BindLambdaForTesting([expected_result = expected_result](
-                                          ConnectExternalWalletResult result) {
-             EXPECT_EQ(result, expected_result);
-           }));
+      .Run(query_parameters, callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

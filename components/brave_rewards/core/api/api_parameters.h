@@ -11,7 +11,7 @@
 
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

@@ -68,9 +68,10 @@ void PatchCard::Request(const std::string& token,
 }
 
 void PatchCard::OnRequest(PatchCardCallback callback,
-                          const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
-  std::move(callback).Run(CheckStatusCode(response.status_code));
+                          mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace ledger::endpoint::uphold

@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -125,8 +127,8 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
-  uint64_t interval_sec = ledger_->ledger_client()->GetUint64Option(
-      option::kPublisherListRefreshInterval);
+  uint64_t interval_sec =
+      ledger_->GetOption<uint64_t>(option::kPublisherListRefreshInterval);
 
   auto now = base::Time::Now();
   auto fetch_time =

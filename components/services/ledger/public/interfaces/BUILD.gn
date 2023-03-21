@@ -3,14 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-source_set("cpp") {
-  sources = [
-    "ledger_client_mojo_bridge.cc",
-    "ledger_client_mojo_bridge.h",
-  ]
+import("//mojo/public/tools/bindings/mojom.gni")
 
-  deps = [
-    "//brave/components/brave_rewards/core",
-    "//brave/components/services/bat_ledger/public/interfaces",
-  ]
+mojom("interfaces") {
+  sources = [ "ledger_factory.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+
+  deps = [ "//brave/components/brave_rewards/common/mojom:interfaces" ]
 }

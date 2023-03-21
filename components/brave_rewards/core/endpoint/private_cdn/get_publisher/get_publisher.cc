@@ -217,11 +217,12 @@ void GetPublisher::Request(const std::string& publisher_key,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetPublisher::OnRequest(const mojom::UrlResponse& response,
+void GetPublisher::OnRequest(mojom::UrlResponsePtr response,
                              const std::string& publisher_key,
                              GetPublisherCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  auto result = CheckStatusCode(response.status_code);
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  auto result = CheckStatusCode(response->status_code);
 
   auto info = mojom::ServerPublisherInfo::New();
   if (result == mojom::Result::NOT_FOUND) {
@@ -235,7 +236,7 @@ void GetPublisher::OnRequest(const mojom::UrlResponse& response,
     return;
   }
 
-  result = ParseBody(response.body, publisher_key, info.get());
+  result = ParseBody(response->body, publisher_key, info.get());
 
   if (result != mojom::Result::LEDGER_OK) {
     callback(result, nullptr);

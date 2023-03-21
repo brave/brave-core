@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <map>
-#include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
+#include "base/containers/flat_map.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
@@ -22,106 +22,114 @@
 // npm run test -- brave_unit_tests --filter=PromotionTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
+using ::testing::Field;
+using ::testing::HasSubstr;
+using ::testing::Pointee;
 
-namespace ledger {
-namespace promotion {
-
-std::string GetResponse(const std::string& url) {
-  std::map<std::string, std::string> response;
-
-  // Fetch promotions
-  response.insert(std::make_pair(
-      endpoint::promotion::GetServerUrl(
-          "/v1/promotions"
-          "?migrate=true&paymentId=fa5dea51-6af4-44ca-801b-07b6df3dcfe4"
-          "&platform="),
-      R"({
-      "promotions":[{
-        "id":"36baa4c3-f92d-4121-b6d9-db44cb273a02",
-        "createdAt":"2019-10-30T23:17:15.681226Z",
-        "expiresAt":"2020-02-29T23:17:15.681226Z",
-        "version":5,
-        "suggestionsPerGrant":70,
-        "approximateValue":"17.5",
-        "type":"ugp",
-        "available":true,
-        "platform":"desktop",
-        "publicKeys":["vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE="],
-        "legacyClaimed":false
-      }]})"));
-
-  return response[url];
-}
+namespace ledger::promotion {
 
 class PromotionTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<Promotion> promotion_;
-  std::unique_ptr<database::MockDatabase> mock_database_;
-
-  PromotionTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    promotion_ = std::make_unique<Promotion>(mock_ledger_impl_.get());
-    mock_database_ =
-        std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
-  }
-
   void SetUp() override {
-    const std::string wallet = R"({
-      "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-      "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-    })";
-    ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-        .WillByDefault(testing::Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_client(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::move(callback).Run(R"(
+            {
+              "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+              "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+            }
+          )");
+        });
 
-    ON_CALL(*mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(mock_database_.get()));
-
-    ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-        .WillByDefault(Invoke(
-            [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-              mojom::UrlResponse response;
-              response.status_code = 200;
-              response.url = request->url;
-              response.body = GetResponse(request->url);
-              std::move(callback).Run(response);
-            }));
+    ON_CALL(*mock_ledger_impl_.mock_client(), GetClientInfo(_))
+        .WillByDefault([](auto callback) {
+          std::move(callback).Run(mojom::ClientInfo::New());
+        });
   }
+
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  Promotion promotion_{&mock_ledger_impl_};
 };
 
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
+  EXPECT_CALL(
+      *mock_ledger_impl_.mock_client(),
+      LoadURL(Pointee(Field(&mojom::UrlRequest::url,
+                            HasSubstr("/v1/promotions"
+                                      "?migrate=true&paymentId=fa5dea51-"
+                                      "6af4-44ca-801b-07b6df3dcfe4"
+                                      "&platform="))),
+              _))
+      .Times(2)
+      .WillRepeatedly([](mojom::UrlRequestPtr, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->body = R"(
+          {
+            "promotions": [
+              {
+                "id":"36baa4c3-f92d-4121-b6d9-db44cb273a02",
+                "createdAt":"2019-10-30T23:17:15.681226Z",
+                "expiresAt":"2020-02-29T23:17:15.681226Z",
+                "version":5,
+                "suggestionsPerGrant":70,
+                "approximateValue":"17.5",
+                "type":"ugp",
+                "available":true,
+                "platform":"desktop",
+                "publicKeys":["vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE="],
+                "legacyClaimed":false
+              }
+            ]
+          }
+        )";
+        std::move(callback).Run(std::move(response));
+      });
+
   bool inserted = false;
-  ON_CALL(*mock_database_, GetAllPromotions(_))
-      .WillByDefault(
-          Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
-            auto promotion = mojom::Promotion::New();
-            base::flat_map<std::string, mojom::PromotionPtr> map;
-            if (inserted) {
-              const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
-              promotion->id = id;
-              promotion->public_keys =
-                  "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
-              promotion->legacy_claimed = true;
-              promotion->status = mojom::PromotionStatus::ATTESTED;
-              map.insert(std::make_pair(id, std::move(promotion)));
-            }
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(), GetAllPromotions(_))
+      .Times(2)
+      .WillRepeatedly([&inserted](auto callback) {
+        base::flat_map<std::string, mojom::PromotionPtr> map;
+        if (inserted) {
+          std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
+          auto promotion = mojom::Promotion::New();
+          promotion->id = id;
+          promotion->public_keys =
+              "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
+          promotion->legacy_claimed = true;
+          promotion->status = mojom::PromotionStatus::ATTESTED;
+          map.emplace(std::move(id), std::move(promotion));
+        }
 
-            callback(std::move(map));
-          }));
+        callback(std::move(map));
+      });
 
-  EXPECT_CALL(*mock_database_, SavePromotion(_, _)).Times(1);
+  // to suppress the Fetch(base::DoNothing()) calls
+  // triggered by Promotion::OnLastCheckTimerElapsed()
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+              GetUint64State(state::kPromotionLastFetchStamp, _))
+      .Times(2)
+      .WillRepeatedly([](const std::string&, auto callback) {
+        std::move(callback).Run(util::GetCurrentTimeStamp());
+      });
 
-  promotion_->Fetch(base::DoNothing());
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(), SavePromotion(_, _)).Times(1);
+
+  base::MockCallback<FetchPromotionsCallback> callback;
+  EXPECT_CALL(callback, Run).Times(2);
+
+  // to avoid fulfilling the fetch request from database in Promotion::Fetch()
+  ledger::is_testing = true;
+  promotion_.Fetch(callback.Get());
+  task_environment_.RunUntilIdle();
+
   inserted = true;
-  promotion_->Fetch(base::DoNothing());
+  promotion_.Fetch(callback.Get());
+  task_environment_.RunUntilIdle();
+  ledger::is_testing = false;
 }
 
-}  // namespace promotion
-}  // namespace ledger
+}  // namespace ledger::promotion

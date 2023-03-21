@@ -80,24 +80,25 @@ void PostRecipientId::Request(const std::string& token,
 }
 
 void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
-                                const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                                mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  auto header = response.headers.find("www-authenticate");
-  if (header != response.headers.end()) {
+  auto header = response->headers.find("www-authenticate");
+  if (header != response->headers.end()) {
     std::string auth_header = header->second;
     if (auth_header.find("unverified_account") != std::string::npos) {
       return std::move(callback).Run(mojom::Result::NOT_FOUND, "");
     }
   }
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     return std::move(callback).Run(result, "");
   }
 
   std::string recipient_id;
-  result = ParseBody(response.body, &recipient_id);
+  result = ParseBody(response->body, &recipient_id);
   std::move(callback).Run(result, std::move(recipient_id));
 }
 

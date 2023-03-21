@@ -24,7 +24,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_tip.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/contribution/unverified.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -69,7 +69,7 @@ class Contribution {
                      const std::string& destination,
                      const std::string& wallet_type,
                      const std::string& contribution_id,
-                     client::LegacyResultCallback callback);
+                     LegacyResultCallback callback);
 
   void SKUAutoContribution(const std::string& contribution_id,
                            const std::string& wallet_type,
@@ -83,7 +83,7 @@ class Contribution {
                       const std::string& contribution_id,
                       ledger::LegacyResultCallback callback);
 
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback);
+  void GetRecurringTips(ledger::GetRecurringTipsCallback callback);
 
  private:
   enum class MonthlyContributionOptions { kDefault, kSendAllContributions };

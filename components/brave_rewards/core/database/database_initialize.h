@@ -10,7 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/database/database_migration.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -31,9 +31,9 @@ class DatabaseInitialize {
 
   void GetCreateScript(ledger::LegacyResultCallback callback);
 
-  void ExecuteCreateScript(const std::string& script,
-                           int table_version,
-                           ledger::LegacyResultCallback callback);
+  void ExecuteCreateScript(LegacyResultCallback callback,
+                           const std::string& script,
+                           int table_version);
 
   void OnExecuteCreateScript(mojom::DBCommandResponsePtr response,
                              int table_version,

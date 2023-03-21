@@ -10,6 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -122,9 +123,9 @@ void Uphold::OnFetchBalance(FetchBalanceCallback callback,
 void Uphold::TransferFunds(double amount,
                            const std::string& address,
                            const std::string& contribution_id,
-                           client::LegacyResultCallback callback) {
+                           LegacyResultCallback callback) {
   transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](client::LegacyResultCallback callback,
+                 base::BindOnce([](LegacyResultCallback callback,
                                    mojom::Result result) { callback(result); },
                                 std::move(callback)));
 }

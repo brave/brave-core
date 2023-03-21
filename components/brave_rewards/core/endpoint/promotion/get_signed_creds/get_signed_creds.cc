@@ -107,10 +107,11 @@ void GetSignedCreds::Request(const std::string& promotion_id,
 }
 
 void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
-                               const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                               mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nullptr);
@@ -118,7 +119,7 @@ void GetSignedCreds::OnRequest(GetSignedCredsCallback callback,
   }
 
   mojom::CredsBatch batch;
-  result = ParseBody(response.body, &batch);
+  result = ParseBody(response->body, &batch);
   std::move(callback).Run(result, mojom::CredsBatch::New(batch));
 }
 

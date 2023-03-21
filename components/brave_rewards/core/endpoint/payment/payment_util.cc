@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_util.h"
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_impl.h"
 
 namespace ledger {
 namespace endpoint {

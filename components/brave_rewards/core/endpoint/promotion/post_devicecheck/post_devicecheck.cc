@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -99,18 +100,19 @@ void PostDevicecheck::Request(const std::string& key,
 }
 
 void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
-                                const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                                mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
   std::string nonce;
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nonce);
     return;
   }
 
-  result = ParseBody(response.body, &nonce);
+  result = ParseBody(response->body, &nonce);
   std::move(callback).Run(result, nonce);
 }
 

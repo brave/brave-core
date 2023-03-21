@@ -44,18 +44,19 @@ void GetPrefixList::Request(GetPrefixListCallback callback) {
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetPrefixList::OnRequest(const mojom::UrlResponse& response,
+void GetPrefixList::OnRequest(mojom::UrlResponsePtr response,
                               GetPrefixListCallback callback) {
-  ledger::LogUrlResponse(__func__, response, true);
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response, true);
 
-  if (CheckStatusCode(response.status_code) != mojom::Result::LEDGER_OK ||
-      response.body.empty()) {
+  if (CheckStatusCode(response->status_code) != mojom::Result::LEDGER_OK ||
+      response->body.empty()) {
     BLOG(0, "Invalid server response for publisher prefix list");
     callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(mojom::Result::LEDGER_OK, response.body);
+  callback(mojom::Result::LEDGER_OK, response->body);
 }
 
 }  // namespace rewards

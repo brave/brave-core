@@ -15,7 +15,7 @@
 
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {

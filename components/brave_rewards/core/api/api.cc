@@ -7,14 +7,12 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-
 namespace ledger {
 namespace api {
 
 API::API(LedgerImpl* ledger)
-    : ledger_(ledger), parameters_(std::make_unique<APIParameters>(ledger)) {
-  DCHECK(ledger_ && parameters_);
+    : parameters_(std::make_unique<APIParameters>(ledger)) {
+  DCHECK(parameters_);
 }
 
 API::~API() = default;
