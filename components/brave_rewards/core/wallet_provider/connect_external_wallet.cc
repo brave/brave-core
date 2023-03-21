@@ -9,6 +9,7 @@
 
 #include "base/containers/contains.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
@@ -160,8 +161,8 @@ void ConnectExternalWallet::OnConnect(
   }
 
   from_status == mojom::WalletStatus::kNotConnected
-      ? ledger_->ledger_client()->ExternalWalletConnected()
-      : ledger_->ledger_client()->ExternalWalletReconnected();
+      ? ledger_->client()->ExternalWalletConnected()
+      : ledger_->client()->ExternalWalletReconnected();
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + abbreviated_address);

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PUT /v2/attestations/safetynet/{nonce}
 //
@@ -58,8 +58,7 @@ class PutSafetynet {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(PutSafetynetCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PutSafetynetCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://api.sandbox.gemini.com/v1/account
 //
@@ -59,7 +59,7 @@ class PostAccount {
                           std::string* linking_info,
                           std::string* user_name);
 
-  void OnRequest(PostAccountCallback, const mojom::UrlResponse&);
+  void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -70,7 +70,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
 }
 
 void DatabasePendingContribution::GetReservedAmount(
-    ledger::PendingContributionsTotalCallback callback) {
+    ledger::GetPendingContributionsTotalCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query =
       base::StringPrintf("SELECT SUM(amount) FROM %s", kTableName);
@@ -91,7 +91,7 @@ void DatabasePendingContribution::GetReservedAmount(
 
 void DatabasePendingContribution::OnGetReservedAmount(
     mojom::DBCommandResponsePtr response,
-    ledger::PendingContributionsTotalCallback callback) {
+    ledger::GetPendingContributionsTotalCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -110,7 +110,7 @@ void DatabasePendingContribution::OnGetReservedAmount(
 }
 
 void DatabasePendingContribution::GetAllRecords(
-    ledger::PendingContributionInfoListCallback callback) {
+    ledger::GetPendingContributionsCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
@@ -149,7 +149,7 @@ void DatabasePendingContribution::GetAllRecords(
 
 void DatabasePendingContribution::OnGetAllRecords(
     mojom::DBCommandResponsePtr response,
-    ledger::PendingContributionInfoListCallback callback) {
+    ledger::GetPendingContributionsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

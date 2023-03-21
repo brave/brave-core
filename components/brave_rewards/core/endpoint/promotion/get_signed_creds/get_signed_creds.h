@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/promotions/{promotion_id}/claims/{claim_id}
 //
@@ -69,7 +69,7 @@ class GetSignedCreds {
   mojom::Result ParseBody(const std::string& body, mojom::CredsBatch* batch);
 
   void OnRequest(GetSignedCredsCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

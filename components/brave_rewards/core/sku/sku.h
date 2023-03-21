@@ -6,27 +6,54 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_
 
-#include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/sku/sku_common.h"
 
 namespace ledger {
+class LedgerImpl;
+
 namespace sku {
 
 class SKU {
  public:
-  virtual ~SKU() = default;
+  explicit SKU(LedgerImpl* ledger);
+  ~SKU();
 
-  virtual void Retry(const std::string& order_id,
-                     const std::string& wallet_type,
-                     ledger::SKUOrderCallback callback) = 0;
+  void Process(const std::vector<mojom::SKUOrderItem>& items,
+               const std::string& wallet_type,
+               ledger::SKUOrderCallback callback,
+               const std::string& contribution_id = "");
 
-  virtual void Process(const std::vector<mojom::SKUOrderItem>& items,
-                       const std::string& wallet_type,
-                       ledger::SKUOrderCallback callback,
-                       const std::string& contribution_id = "") = 0;
+  void Retry(const std::string& order_id,
+             const std::string& wallet_type,
+             ledger::SKUOrderCallback callback);
+
+ private:
+  void OrderCreated(const mojom::Result result,
+                    const std::string& order_id,
+                    const std::string& wallet_type,
+                    const std::string& contribution_id,
+                    ledger::SKUOrderCallback callback);
+
+  void ContributionIdSaved(const mojom::Result result,
+                           const std::string& order_id,
+                           const std::string& wallet_type,
+                           ledger::SKUOrderCallback callback);
+
+  void CreateTransaction(mojom::SKUOrderPtr order,
+                         const std::string& wallet_type,
+                         ledger::SKUOrderCallback callback);
+
+  void OnOrder(mojom::SKUOrderPtr order,
+               const std::string& wallet_type,
+               ledger::SKUOrderCallback callback);
+
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<SKUCommon> common_;
 };
 
 }  // namespace sku

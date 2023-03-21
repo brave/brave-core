@@ -11,7 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
 namespace ledger {
@@ -84,7 +84,7 @@ class YouTube {
                        const std::string& media_url,
                        const ledger::mojom::VisitData& visit_data,
                        const uint64_t window_id,
-                       const ledger::mojom::UrlResponse& response);
+                       ledger::mojom::UrlResponsePtr response);
 
   void OnPublisherPage(const uint64_t duration,
                        const std::string& media_key,
@@ -92,7 +92,7 @@ class YouTube {
                        std::string publisher_name,
                        const ledger::mojom::VisitData& visit_data,
                        const uint64_t window_id,
-                       const ledger::mojom::UrlResponse& response);
+                       ledger::mojom::UrlResponsePtr response);
 
   void SavePublisherInfo(const uint64_t duration,
                          const std::string& media_key,
@@ -104,7 +104,7 @@ class YouTube {
                          const std::string& channel_id);
 
   void FetchDataFromUrl(const std::string& url,
-                        ledger::client::LegacyLoadURLCallback callback);
+                        ledger::LegacyLoadURLCallback callback);
 
   void WatchPath(uint64_t window_id,
                  const ledger::mojom::VisitData& visit_data);
@@ -131,7 +131,7 @@ class YouTube {
   void GetChannelHeadlineVideo(uint64_t window_id,
                                const ledger::mojom::VisitData& visit_data,
                                bool is_custom_path,
-                               const ledger::mojom::UrlResponse& response);
+                               ledger::mojom::UrlResponsePtr response);
 
   void ChannelPath(uint64_t window_id,
                    const ledger::mojom::VisitData& visit_data);
@@ -147,7 +147,7 @@ class YouTube {
   void OnChannelIdForUser(uint64_t window_id,
                           const ledger::mojom::VisitData& visit_data,
                           const std::string& media_key,
-                          const ledger::mojom::UrlResponse& response);
+                          ledger::mojom::UrlResponsePtr response);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
 

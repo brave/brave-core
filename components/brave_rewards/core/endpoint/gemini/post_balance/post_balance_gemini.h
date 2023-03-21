@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://gemini.jp/api/link/v1/account/inventory
 //
@@ -62,8 +62,7 @@ class PostBalance {
 
   mojom::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(PostBalanceCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PostBalanceCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

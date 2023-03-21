@@ -70,10 +70,11 @@ void PostClobberedClaims::Request(base::Value::List corrupted_claims,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostClobberedClaims::OnRequest(const mojom::UrlResponse& response,
+void PostClobberedClaims::OnRequest(mojom::UrlResponsePtr response,
                                     PostClobberedClaimsCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion

@@ -19,7 +19,6 @@
 // npm run test -- brave_unit_tests --filter=*GetRecipientIDGemini*
 
 using ::testing::_;
-using ::testing::Invoke;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -39,36 +38,23 @@ using GetRecipientIDGeminiParamType = std::tuple<
 
 class GetRecipientIDGemini
     : public TestWithParam<GetRecipientIDGeminiParamType> {
- public:
-  GetRecipientIDGemini(const GetRecipientIDGemini&) = delete;
-  GetRecipientIDGemini& operator=(const GetRecipientIDGemini&) = delete;
-
-  GetRecipientIDGemini(GetRecipientIDGemini&&) = delete;
-  GetRecipientIDGemini& operator=(GetRecipientIDGemini&&) = delete;
-
- private:
-  base::test::TaskEnvironment task_environment_;
-
  protected:
-  GetRecipientIDGemini()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(GetRecipientIDGemini, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
+  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .WillByDefault(
           [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
-            mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
-            std::move(callback).Run(response);
-          }));
+              mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = status_code;
+            response->body = std::move(body);
+            std::move(callback).Run(std::move(response));
+          });
 
   RequestFor<endpoints::GetRecipientIDGemini>(&mock_ledger_impl_, "token")
       .Send(base::BindLambdaForTesting(

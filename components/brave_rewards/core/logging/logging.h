@@ -9,15 +9,13 @@
 #include <ostream>
 #include <string>
 
-#include "brave/components/brave_rewards/core/logging/logging_util.h"
-
 #include "base/logging.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
+#include "brave/components/brave_rewards/core/logging/logging_util.h"
 
 namespace ledger {
 
-class LedgerClient;
-
-void set_ledger_client_for_logging(LedgerClient* ledger_client);
+void set_ledger_client_for_logging(mojom::LedgerClient* ledger_client);
 
 void Log(const char* file,
          const int line,

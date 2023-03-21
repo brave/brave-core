@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://bitflyer.com/api/link/v1/token
 //
@@ -76,7 +76,7 @@ class PostOauth {
                           std::string* address,
                           std::string* linking_info);
 
-  void OnRequest(PostOauthCallback, const mojom::UrlResponse&);
+  void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

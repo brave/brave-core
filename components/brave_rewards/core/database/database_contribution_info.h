@@ -34,7 +34,7 @@ class DatabaseContributionInfo : public DatabaseTable {
 
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
-                      ledger::PublisherInfoListCallback callback);
+                      ledger::GetOneTimeTipsCallback callback);
 
   void GetContributionReport(const mojom::ActivityMonth month,
                              const int year,
@@ -67,7 +67,7 @@ class DatabaseContributionInfo : public DatabaseTable {
       GetContributionInfoCallback callback);
 
   void OnGetOneTimeTips(mojom::DBCommandResponsePtr response,
-                        ledger::PublisherInfoListCallback callback);
+                        ledger::GetOneTimeTipsCallback callback);
 
   void OnGetContributionReport(mojom::DBCommandResponsePtr response,
                                ledger::GetContributionReportCallback callback);

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ledger {

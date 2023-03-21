@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

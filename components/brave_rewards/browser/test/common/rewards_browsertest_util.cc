@@ -13,6 +13,7 @@
 #include "base/run_loop.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom-test-utils.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/constants/brave_paths.h"
@@ -137,9 +138,12 @@ absl::optional<std::string> EncryptPrefString(
     brave_rewards::RewardsServiceImpl* rewards_service,
     const std::string& value) {
   DCHECK(rewards_service);
-  auto encrypted = rewards_service->EncryptString(value);
-  if (!encrypted)
+
+  auto encrypted = ledger::mojom::LedgerClientAsyncWaiter(rewards_service)
+                       .EncryptString(value);
+  if (!encrypted) {
     return {};
+  }
   std::string encoded;
   base::Base64Encode(*encrypted, &encoded);
   return encoded;
@@ -150,10 +154,12 @@ absl::optional<std::string> DecryptPrefString(
     const std::string& value) {
   DCHECK(rewards_service);
   std::string decoded;
-  if (!base::Base64Decode(value, &decoded))
+  if (!base::Base64Decode(value, &decoded)) {
     return {};
+  }
 
-  return rewards_service->DecryptString(decoded);
+  return ledger::mojom::LedgerClientAsyncWaiter(rewards_service)
+      .DecryptString(decoded);
 }
 
 }  // namespace rewards_browsertest_util

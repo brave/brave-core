@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/promotions?migrate=true&paymentId={payment_id}&platform={platform}
 //
@@ -70,8 +70,7 @@ class GetAvailable {
                           std::vector<mojom::PromotionPtr>* list,
                           std::vector<std::string>* corrupted_promotions);
 
-  void OnRequest(GetAvailableCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(GetAvailableCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

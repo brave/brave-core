@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/security_util.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 namespace util {
