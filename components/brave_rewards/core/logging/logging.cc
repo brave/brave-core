@@ -5,26 +5,25 @@
 
 #include "brave/components/brave_rewards/core/logging/logging.h"
 
-#include "brave/components/brave_rewards/core/ledger_client.h"
-
 namespace ledger {
 
-LedgerClient* g_ledger_client = nullptr;  // NOT OWNED
+rewards::mojom::RewardsService* g_rewards_service = nullptr;  // NOT OWNED
 
-void set_ledger_client_for_logging(LedgerClient* ledger_client) {
-  DCHECK(ledger_client);
-  g_ledger_client = ledger_client;
+void set_ledger_client_for_logging(
+    rewards::mojom::RewardsService* rewards_service) {
+  DCHECK(rewards_service);
+  g_rewards_service = rewards_service;
 }
 
 void Log(const char* file,
          const int line,
          const int verbose_level,
          const std::string& message) {
-  if (!g_ledger_client) {
+  if (!g_rewards_service) {
     return;
   }
 
-  g_ledger_client->Log(file, line, verbose_level, message);
+  g_rewards_service->Log(file, line, verbose_level, message);
 }
 
 }  // namespace ledger

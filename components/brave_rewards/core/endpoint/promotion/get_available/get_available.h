@@ -70,8 +70,7 @@ class GetAvailable {
                           std::vector<mojom::PromotionPtr>* list,
                           std::vector<std::string>* corrupted_promotions);
 
-  void OnRequest(GetAvailableCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(GetAvailableCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

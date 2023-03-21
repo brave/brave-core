@@ -12,8 +12,10 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
+#include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "build/build_config.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -22,7 +24,7 @@
 namespace ledger {
 using database::DatabaseMigration;
 
-class LedgerDatabaseMigrationTest : public testing::Test {
+class LedgerDatabaseMigrationTest : public BATLedgerTest {
  public:
   LedgerDatabaseMigrationTest() { ledger::is_testing = true; }
 
@@ -33,10 +35,8 @@ class LedgerDatabaseMigrationTest : public testing::Test {
 
  protected:
   sql::Database* GetDB() {
-    return client_.database()->GetInternalDatabaseForTesting();
+    return GetTestRewardsService()->database()->GetInternalDatabaseForTesting();
   }
-
-  Ledger* ledger() { return &ledger_; }
 
   std::string GetExpectedSchema() {
     base::FilePath path =
@@ -88,7 +88,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
   void InitializeLedger() {
     base::RunLoop run_loop;
     mojom::Result result;
-    ledger()->Initialize(false, [&result, &run_loop](auto r) {
+    GetLedgerImpl()->Initialize(false, [&result, &run_loop](auto r) {
       result = r;
       run_loop.Quit();
     });
@@ -102,10 +102,6 @@ class LedgerDatabaseMigrationTest : public testing::Test {
     sql::Statement s(GetDB()->GetUniqueStatement(sql.c_str()));
     return s.Step() ? static_cast<int>(s.ColumnInt64(0)) : -1;
   }
-
-  base::test::TaskEnvironment task_environment_;
-  TestLedgerClient client_;
-  LedgerImpl ledger_{&client_};
 };
 
 TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
@@ -759,7 +755,8 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  GetTestRewardsService()->SetOptionForTesting(option::kIsBitflyerRegion,
+                                               base::Value(true));
   InitializeLedger();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
@@ -782,7 +779,8 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  GetTestRewardsService()->SetOptionForTesting(option::kIsBitflyerRegion,
+                                               base::Value(true));
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }

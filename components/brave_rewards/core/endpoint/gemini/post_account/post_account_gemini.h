@@ -59,7 +59,7 @@ class PostAccount {
                           std::string* linking_info,
                           std::string* user_name);
 
-  void OnRequest(PostAccountCallback, const mojom::UrlResponse&);
+  void OnRequest(PostAccountCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

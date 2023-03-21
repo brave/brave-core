@@ -24,14 +24,13 @@ LegacyBatState::LegacyBatState(ledger::LedgerImpl* ledger)
 LegacyBatState::~LegacyBatState() = default;
 
 void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
-  auto load_callback =
-      std::bind(&LegacyBatState::OnLoad, this, _1, _2, callback);
-  ledger_->ledger_client()->LoadLedgerState(load_callback);
+  ledger_->rewards_service()->LoadLedgerState(base::BindOnce(
+      &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 
-void LegacyBatState::OnLoad(ledger::mojom::Result result,
-                            const std::string& data,
-                            ledger::LegacyResultCallback callback) {
+void LegacyBatState::OnLoad(ledger::LegacyResultCallback callback,
+                            ledger::mojom::Result result,
+                            const std::string& data) {
   if (result != ledger::mojom::Result::LEDGER_OK) {
     callback(result);
     return;

@@ -43,7 +43,7 @@ bool Publisher::ShouldFetchServerPublisherInfo(
 
 void Publisher::FetchServerPublisherInfo(
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    database::GetServerPublisherInfoCallback callback) {
   server_publisher_fetcher_->Fetch(publisher_key, callback);
 }
 
@@ -78,7 +78,7 @@ void Publisher::SetPublisherServerListTimer() {
     // Attempt to reprocess any contributions for previously
     // unverified publishers that are now verified.
     ledger_->contribution()->ContributeUnverifiedPublishers();
-    ledger_->ledger_client()->OnPublisherRegistryUpdated();
+    ledger_->rewards_service()->OnPublisherRegistryUpdated();
   });
 }
 
@@ -242,10 +242,10 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
   std::string fav_icon = visit_data.favicon_url;
   if (is_verified && !fav_icon.empty()) {
     if (fav_icon.find(".invalid") == std::string::npos) {
-      ledger_->ledger_client()->FetchFavIcon(
+      ledger_->rewards_service()->FetchFavIcon(
           fav_icon, "https://" + base::GenerateGUID() + ".invalid",
-          std::bind(&Publisher::onFetchFavIcon, this, publisher_info->id,
-                    window_id, _1, _2));
+          base::BindOnce(&Publisher::onFetchFavIcon, base::Unretained(this),
+                         publisher_info->id, window_id));
     } else {
       publisher_info->favicon_url = fav_icon;
     }
@@ -586,8 +586,8 @@ void Publisher::OnPanelPublisherInfo(mojom::Result result,
                                      uint64_t windowId,
                                      const mojom::VisitData& visit_data) {
   if (result == mojom::Result::LEDGER_OK) {
-    ledger_->ledger_client()->OnPanelPublisherInfo(result, std::move(info),
-                                                   windowId);
+    ledger_->rewards_service()->OnPanelPublisherInfo(result, std::move(info),
+                                                     windowId);
     return;
   }
 
@@ -660,14 +660,14 @@ void Publisher::OnGetPublisherBannerPublisher(
 
 void Publisher::GetServerPublisherInfo(
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    database::GetServerPublisherInfoCallback callback) {
   GetServerPublisherInfo(publisher_key, false, std::move(callback));
 }
 
 void Publisher::GetServerPublisherInfo(
     const std::string& publisher_key,
     bool use_prefix_list,
-    client::GetServerPublisherInfoCallback callback) {
+    database::GetServerPublisherInfoCallback callback) {
   ledger_->database()->GetServerPublisherInfo(
       publisher_key, std::bind(&Publisher::OnServerPublisherInfoLoaded, this,
                                _1, publisher_key, use_prefix_list, callback));
@@ -677,7 +677,7 @@ void Publisher::OnServerPublisherInfoLoaded(
     mojom::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
     bool use_prefix_list,
-    client::GetServerPublisherInfoCallback callback) {
+    database::GetServerPublisherInfoCallback callback) {
   if (!server_info && use_prefix_list) {
     // If we don't have a record in the database for this publisher, search the
     // prefix list. If the prefix list indicates that the publisher is likely

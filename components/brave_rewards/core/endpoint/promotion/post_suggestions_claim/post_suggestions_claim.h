@@ -57,7 +57,7 @@ class PostSuggestionsClaim {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostSuggestionsClaimCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

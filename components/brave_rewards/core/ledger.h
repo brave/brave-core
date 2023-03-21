@@ -16,17 +16,16 @@
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
-#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace ledger {
 
-extern mojom::Environment _environment;
-extern bool is_debug;
-extern bool is_testing;
-extern int state_migration_target_version_for_testing;
-extern int reconcile_interval;  // minutes
-extern int retry_interval;      // seconds
+inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
+inline bool is_debug = false;
+inline bool is_testing = false;
+inline int state_migration_target_version_for_testing = -1;
+inline int reconcile_interval = 0;  // minutes
+inline int retry_interval = 0;      // seconds
 
 using PublisherBannerCallback = std::function<void(mojom::PublisherBannerPtr)>;
 
@@ -125,6 +124,16 @@ using PostSuggestionsClaimCallback =
 using GetDrainCallback =
     std::function<void(mojom::Result result, mojom::DrainStatus status)>;
 
+using RunDBTransactionCallback =
+    base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
+
+using LegacyRunDBTransactionCallback =
+    std::function<void(mojom::DBCommandResponsePtr)>;
+
+using LoadURLCallback = base::OnceCallback<void(mojom::UrlResponsePtr)>;
+
+using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
+
 class Ledger {
  public:
   Ledger() = default;
@@ -132,8 +141,6 @@ class Ledger {
 
   Ledger(const Ledger&) = delete;
   Ledger& operator=(const Ledger&) = delete;
-
-  static Ledger* CreateInstance(LedgerClient* client);
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 

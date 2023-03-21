@@ -18,7 +18,7 @@ class StateMigrationV4 {
   explicit StateMigrationV4(LedgerImpl* ledger);
   ~StateMigrationV4();
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(ledger::ResultCallback callback);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED

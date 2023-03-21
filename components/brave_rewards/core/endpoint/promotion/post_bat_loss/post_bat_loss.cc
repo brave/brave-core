@@ -84,10 +84,11 @@ void PostBatLoss::Request(const double amount,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostBatLoss::OnRequest(const mojom::UrlResponse& response,
+void PostBatLoss::OnRequest(mojom::UrlResponsePtr response,
                             PostBatLossCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion

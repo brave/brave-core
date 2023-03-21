@@ -62,8 +62,7 @@ class PutCaptcha {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(PutCaptchaCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PutCaptchaCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

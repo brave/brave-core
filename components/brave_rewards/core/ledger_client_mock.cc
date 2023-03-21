@@ -5,20 +5,24 @@
 
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 
+#include <utility>
+
+#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+
 namespace ledger {
 
-MockLedgerClient::MockLedgerClient() = default;
+MockRewardsService::MockRewardsService() = default;
 
-MockLedgerClient::~MockLedgerClient() = default;
+MockRewardsService::~MockRewardsService() = default;
 
-absl::optional<std::string> MockLedgerClient::EncryptString(
-    const std::string& value) {
-  return FakeEncryption::EncryptString(value);
+void MockRewardsService::EncryptString(const std::string& value,
+                                       EncryptStringCallback callback) {
+  std::move(callback).Run(FakeEncryption::EncryptString(value));
 }
 
-absl::optional<std::string> MockLedgerClient::DecryptString(
-    const std::string& value) {
-  return FakeEncryption::DecryptString(value);
+void MockRewardsService::DecryptString(const std::string& value,
+                                       DecryptStringCallback callback) {
+  std::move(callback).Run(FakeEncryption::DecryptString(value));
 }
 
 }  // namespace ledger

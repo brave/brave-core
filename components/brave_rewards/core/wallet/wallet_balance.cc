@@ -49,7 +49,7 @@ void WalletBalance::OnGetUnblindedTokens(
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
   const auto wallet_type =
-      ledger_->ledger_client()->GetStringState(state::kExternalWalletType);
+      ledger_->GetState<std::string>(state::kExternalWalletType);
   if (wallet_type.empty() ||
       !wallet::GetWalletIf(ledger_, wallet_type,
                            {mojom::WalletStatus::kConnected})) {
