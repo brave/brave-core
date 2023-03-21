@@ -330,11 +330,12 @@ public class Utils {
         return categories.toArray(new String[0]);
     }
 
-    public static NetworkInfo getNetworkInfoByChainId(String chainId, NetworkInfo[] allNetworks) {
+    public static NetworkInfo getNetworkInfoByChainId(
+            String chainId, List<NetworkInfo> allNetworks) {
         for (NetworkInfo network : allNetworks)
             if (network.chainId.equals(chainId)) return network;
         // Fall back to mainnet
-        return allNetworks[0];
+        return allNetworks.get(0);
     }
 
     public static NetworkInfo[] getNetworkInfosByChainIds(
@@ -1538,7 +1539,7 @@ public class Utils {
     // Please only use this function when you need all the info (tokens, prices and balances) at the
     // same time!
     public static void getTxExtraInfo(WeakReference<BraveWalletBaseActivity> activityRef,
-            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
+            List<NetworkInfo> allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
@@ -1618,7 +1619,7 @@ public class Utils {
     }
 
     public static void getP3ANetworks(
-            NetworkInfo[] allNetworks, Callbacks.Callback1<NetworkInfo[]> callback) {
+            List<NetworkInfo> allNetworks, Callbacks.Callback1<List<NetworkInfo>> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
         boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
                 BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
@@ -1632,7 +1633,7 @@ public class Utils {
             }
         }
 
-        callback.call(relevantNetworks.toArray(new NetworkInfo[0]));
+        callback.call(relevantNetworks);
     }
 
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {

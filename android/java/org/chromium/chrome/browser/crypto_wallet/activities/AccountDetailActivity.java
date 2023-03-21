@@ -152,7 +152,7 @@ public class AccountDetailActivity
                     portfolioHelper.calculateBalances(() -> {
                         RecyclerView rvAssets = findViewById(R.id.rv_assets);
 
-                        BlockchainToken[] userAssets = portfolioHelper.getUserAssets();
+                        List<BlockchainToken> userAssets = portfolioHelper.getUserAssets();
                         HashMap<String, Double> perTokenCryptoSum =
                                 portfolioHelper.getPerTokenCryptoSum();
                         HashMap<String, Double> perTokenFiatSum =
@@ -161,8 +161,9 @@ public class AccountDetailActivity
                         String tokensPath =
                                 BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-                        WalletCoinAdapter walletCoinAdapter = Utils.setupVisibleAssetList(
-                                userAssets, perTokenCryptoSum, perTokenFiatSum, tokensPath);
+                        WalletCoinAdapter walletCoinAdapter =
+                                Utils.setupVisibleAssetList(userAssets, perTokenCryptoSum,
+                                        perTokenFiatSum, tokensPath, getResources(), allNetworks);
                         walletCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
                         rvAssets.setAdapter(walletCoinAdapter);
                         rvAssets.setLayoutManager(new LinearLayoutManager(this));

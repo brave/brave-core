@@ -6,10 +6,13 @@
 package org.chromium.chrome.browser.crypto_wallet.util;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.url.mojom.Url;
+
+import java.util.List;
 
 public class NetworkUtils {
     private static NetworkInfo sAllNetworksOption;
@@ -31,5 +34,16 @@ public class NetworkUtils {
             sAllNetworksOption = allNetworkInfo;
         }
         return sAllNetworksOption;
+    }
+
+    /**
+     * Get the NetworkInfo object of given chainId
+     * @param networkInfos all networks
+     * @param chainId of network to be found
+     * @return found network or null
+     */
+    public static NetworkInfo findNetwork(List<NetworkInfo> networkInfos, String chainId) {
+        if (networkInfos.isEmpty() || TextUtils.isEmpty(chainId)) return null;
+        return JavaUtils.find(networkInfos, networkInfo -> networkInfo.chainId.equals(chainId));
     }
 }

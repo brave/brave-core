@@ -128,7 +128,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private List<AccountInfo> mAllAccountInfos;
     private List<AccountInfo> mAccountInfos;
     private SendModel mSendModel;
-    private NetworkInfo[] mNetworks;
+    private List<NetworkInfo> mNetworks;
 
     public enum ActivityType {
         BUY(0),
@@ -255,7 +255,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
 
         mNetworkSpinner = findViewById(R.id.network_spinner);
-        mNetworkAdapter = new NetworkSpinnerAdapter(this, new NetworkInfo[0]);
+        mNetworkAdapter = new NetworkSpinnerAdapter(this, Collections.emptyList());
         mNetworkSpinner.setAdapter(mNetworkAdapter);
         mNetworkSpinner.setOnItemSelectedListener(this);
         mCustomAccountAdapter =
@@ -741,7 +741,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             getSendSwapQuota(true, false);
         }
     }
-    private void setSelectedNetwork(NetworkInfo networkInfo, NetworkInfo[] networkInfos) {
+    private void setSelectedNetwork(NetworkInfo networkInfo, List<NetworkInfo> networkInfos) {
         if (isSameSelectedNetwork(networkInfo)) return;
         mNetworkSpinner.setSelection(getIndexOf(networkInfo, networkInfos));
     }
@@ -754,9 +754,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         return false;
     }
 
-    private int getIndexOf(NetworkInfo selectedNetwork, NetworkInfo[] networksInfos) {
-        for (int i = 0; i < networksInfos.length; i++) {
-            NetworkInfo networkInfo = networksInfos[i];
+    private int getIndexOf(NetworkInfo selectedNetwork, List<NetworkInfo> networksInfos) {
+        for (int i = 0; i < networksInfos.size(); i++) {
+            NetworkInfo networkInfo = networksInfos.get(i);
             if (networkInfo.chainId.equals(selectedNetwork.chainId)
                     && networkInfo.coin == selectedNetwork.coin) {
                 return i;
