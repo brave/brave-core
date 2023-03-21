@@ -166,8 +166,6 @@ bool ConfirmationStateManager::HasInstance() {
 
 void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
                                           InitializeCallback callback) {
-  DCHECK(wallet.IsValid());
-
   BLOG(3, "Loading confirmations state");
 
   wallet_ = wallet;
@@ -286,6 +284,7 @@ absl::optional<OptedInInfo> ConfirmationStateManager::GetOptedIn(
         return absl::nullopt;
       }
 
+      DCHECK(wallet_.IsValid());
       const absl::optional<std::string> signature =
           crypto::Sign(*unblinded_token_base64, wallet_.secret_key);
       if (!signature) {
@@ -513,19 +512,22 @@ bool ConfirmationStateManager::ParseUnblindedTokensFromDictionary(
   privacy::UnblindedTokenList filtered_unblinded_tokens =
       privacy::UnblindedTokensFromValue(*unblinded_tokens);
 
-  const std::string public_key = wallet_.public_key;
+  if (!filtered_unblinded_tokens.empty()) {
+    DCHECK(wallet_.IsValid());
+    const std::string public_key = wallet_.public_key;
 
-  filtered_unblinded_tokens.erase(
-      base::ranges::remove_if(
-          filtered_unblinded_tokens,
-          [&public_key](const privacy::UnblindedTokenInfo& unblinded_token) {
-            const absl::optional<std::string> unblinded_token_base64 =
-                unblinded_token.value.EncodeBase64();
-            return !unblinded_token_base64 ||
-                   !crypto::Verify(*unblinded_token_base64, public_key,
-                                   unblinded_token.signature);
-          }),
-      filtered_unblinded_tokens.cend());
+    filtered_unblinded_tokens.erase(
+        base::ranges::remove_if(
+            filtered_unblinded_tokens,
+            [&public_key](const privacy::UnblindedTokenInfo& unblinded_token) {
+              const absl::optional<std::string> unblinded_token_base64 =
+                  unblinded_token.value.EncodeBase64();
+              return !unblinded_token_base64 ||
+                     !crypto::Verify(*unblinded_token_base64, public_key,
+                                     unblinded_token.signature);
+            }),
+        filtered_unblinded_tokens.cend());
+  }
 
   unblinded_tokens_->SetTokens(filtered_unblinded_tokens);
 
