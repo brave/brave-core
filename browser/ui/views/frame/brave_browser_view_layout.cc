@@ -53,7 +53,9 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
 #if BUILDFLAG(IS_MAC)
   // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
   // that line
-  insets.set_left(1);
+  if (!browser_view_->IsFullscreen()) {
+    insets.set_left(1);
+  }
 #endif
 
   if (insets.IsEmpty())
