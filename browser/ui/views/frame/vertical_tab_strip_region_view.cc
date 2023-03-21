@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -403,7 +404,7 @@ gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
 
 void VerticalTabStripRegionView::Layout() {
   // As we have to update ScrollView's viewport size and its contents size,
-  // layouting children manually will be more handy.
+  // laying out children manually will be more handy.
 
   // 1. New tab should be fixed at the bottom of container.
   auto contents_bounds = GetContentsBounds();
@@ -439,7 +440,8 @@ void VerticalTabStripRegionView::Layout() {
   } else {
     scroll_contents_view_->SetSize(
         {scroll_view_->width(),
-         scroll_contents_view_->GetPreferredSize().height()});
+         std::max(scroll_viewport_height,
+                  scroll_contents_view_->GetPreferredSize().height())});
   }
   UpdateTabSearchButtonVisibility();
 }
@@ -560,6 +562,10 @@ void VerticalTabStripRegionView::UpdateNewTabButtonVisibility() {
 
 TabSearchBubbleHost* VerticalTabStripRegionView::GetTabSearchBubbleHost() {
   return scroll_view_header_->tab_search_button()->tab_search_bubble_host();
+}
+
+int VerticalTabStripRegionView::GetScrollViewViewportHeight() const {
+  return scroll_view_->GetMaxHeight();
 }
 
 void VerticalTabStripRegionView::UpdateTabSearchButtonVisibility() {
