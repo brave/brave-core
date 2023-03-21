@@ -127,7 +127,7 @@ function InsertLocalhostAccessSubpage (
         localhostAccessTemplate.content.getElementById('localhostExceptions')
       if (!localhostExceptions) {
         console.error(
-          '[Brave Settings Overrides] Couldn\'t find localhost access exceptions')
+          '[Brave Settings Overrides] Couldn\'t find localhost exceptions')
       } else {
         localhostExceptions.setAttribute(
           'block-header',
@@ -433,7 +433,8 @@ RegisterPolymerTemplateModifications({
       if (isGoogleSignInFeatureEnabled) {
         InsertGoogleSignInSubpage(templateContent, pages)
       }
-      const isLocalhostAccessFeatureEnabled = loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+      const isLocalhostAccessFeatureEnabled = 
+        loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
       if (isLocalhostAccessFeatureEnabled) {
         InsertLocalhostAccessSubpage(templateContent, pages)
       }
