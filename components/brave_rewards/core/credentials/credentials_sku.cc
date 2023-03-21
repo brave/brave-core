@@ -333,18 +333,16 @@ void CredentialsSKU::Unblind(ledger::ResultCallback callback,
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  std::string error;
-  bool result;
   if (ledger::is_testing) {
-    result = UnBlindCredsMock(*creds, &unblinded_encoded_creds);
+    unblinded_encoded_creds = UnBlindCredsMock(*creds);
   } else {
-    result = UnBlindCreds(*creds, &unblinded_encoded_creds, &error);
-  }
-
-  if (!result) {
-    BLOG(0, "UnBlindTokens: " << error);
-    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
-    return;
+    auto result = UnBlindCreds(*creds);
+    if (!result.has_value()) {
+      BLOG(0, "UnBlindTokens: " << result.error());
+      std::move(callback).Run(mojom::Result::LEDGER_ERROR);
+      return;
+    }
+    unblinded_encoded_creds = std::move(result).value();
   }
 
   auto save_callback =

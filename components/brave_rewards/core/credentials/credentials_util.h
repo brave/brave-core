@@ -10,12 +10,13 @@
 #include <string>
 #include <vector>
 
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-#include "brave/third_party/challenge_bypass_ristretto/src/wrapper.h"
+#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
 using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::Token;
@@ -34,12 +35,10 @@ std::string GetBlindedCredsJSON(const std::vector<BlindedToken>& blinded);
 absl::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list);
 
-bool UnBlindCreds(const mojom::CredsBatch& creds,
-                  std::vector<std::string>* unblinded_encoded_creds,
-                  std::string* error);
+base::expected<std::vector<std::string>, std::string> UnBlindCreds(
+    const mojom::CredsBatch& creds);
 
-bool UnBlindCredsMock(const mojom::CredsBatch& creds,
-                      std::vector<std::string>* unblinded_encoded_creds);
+std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds);
 
 std::string ConvertRewardTypeToString(const mojom::RewardsType type);
 

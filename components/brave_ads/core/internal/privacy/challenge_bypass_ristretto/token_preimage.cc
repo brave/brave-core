@@ -17,14 +17,9 @@ absl::optional<challenge_bypass_ristretto::TokenPreimage> Create(
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::TokenPreimage raw_token_preimage =
+  return ValueOrLogError(
       challenge_bypass_ristretto::TokenPreimage::decode_base64(
-          token_preimage_base64);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_token_preimage;
+          token_preimage_base64));
 }
 
 }  // namespace
@@ -67,12 +62,7 @@ absl::optional<std::string> TokenPreimage::EncodeBase64() const {
     return absl::nullopt;
   }
 
-  const std::string encoded_base64 = token_preimage_->encode_base64();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return encoded_base64;
+  return ValueOrLogError(token_preimage_->encode_base64());
 }
 
 std::ostream& operator<<(std::ostream& os,

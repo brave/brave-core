@@ -22,7 +22,7 @@
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
 
-#include "brave/third_party/challenge_bypass_ristretto/src/wrapper.h"
+#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
 using std::placeholders::_1;
 
@@ -602,12 +602,9 @@ void Promotion::CheckForCorruptedCreds(std::vector<mojom::CredsBatchPtr> list) {
       continue;
     }
 
-    std::vector<std::string> unblinded_encoded_tokens;
-    std::string error;
-    bool result =
-        credential::UnBlindCreds(*item, &unblinded_encoded_tokens, &error);
+    auto unblinded_encoded_tokens = credential::UnBlindCreds(*item);
 
-    if (!result) {
+    if (!unblinded_encoded_tokens.has_value()) {
       BLOG(1, "Promotion corrupted " << item->trigger_id);
       corrupted_promotions.push_back(item->trigger_id);
     }

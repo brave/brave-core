@@ -17,15 +17,9 @@ absl::optional<challenge_bypass_ristretto::VerificationSignature> Create(
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::VerificationSignature
-      raw_verification_signature =
-          challenge_bypass_ristretto::VerificationSignature::decode_base64(
-              verification_signature_base64);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_verification_signature;
+  return ValueOrLogError(
+      challenge_bypass_ristretto::VerificationSignature::decode_base64(
+          verification_signature_base64));
 }
 
 }  // namespace
@@ -75,12 +69,7 @@ absl::optional<std::string> VerificationSignature::EncodeBase64() const {
     return absl::nullopt;
   }
 
-  const std::string encoded_base64 = verification_signature_->encode_base64();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return encoded_base64;
+  return ValueOrLogError(verification_signature_->encode_base64());
 }
 
 std::ostream& operator<<(std::ostream& os,

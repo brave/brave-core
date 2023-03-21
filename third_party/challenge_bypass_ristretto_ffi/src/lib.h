@@ -1,5 +1,10 @@
-#ifndef _CHALLENGE_BYPASS_RISTRETTO_LIB_H
-#define _CHALLENGE_BYPASS_RISTRETTO_LIB_H
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_THIRD_PARTY_CHALLENGE_BYPASS_RISTRETTO_FFI_SRC_LIB_H_
+#define BRAVE_THIRD_PARTY_CHALLENGE_BYPASS_RISTRETTO_FFI_SRC_LIB_H_
 
 #include <stdarg.h>
 #include <stdbool.h>
@@ -436,4 +441,4 @@ void verification_signature_destroy(C_VerificationSignature* sig);
  */
 char* verification_signature_encode_base64(const C_VerificationSignature* t);
 
-#endif /* _CHALLENGE_BYPASS_RISTRETTO_LIB_H */
+#endif /* BRAVE_THIRD_PARTY_CHALLENGE_BYPASS_RISTRETTO_FFI_SRC_LIB_H_ */

@@ -101,26 +101,21 @@ class PromotionUtilTest : public testing::Test {
 };
 
 TEST_F(PromotionUtilTest, UnBlindCredsWorksCorrectly) {
-  std::vector<std::string> unblinded_encoded_tokens;
-  std::string error;
+  auto unblinded_encoded_tokens = UnBlindCreds(GetCredsBatch());
 
-  UnBlindCreds(GetCredsBatch(), &unblinded_encoded_tokens, &error);
-
-  EXPECT_EQ(error, "");
-  EXPECT_EQ(unblinded_encoded_tokens.size(), 20u);
+  EXPECT_TRUE(unblinded_encoded_tokens.has_value());
+  EXPECT_EQ(unblinded_encoded_tokens->size(), 20u);
 }
 
 TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
-  std::vector<std::string> unblinded_encoded_tokens;
-  std::string error;
-
   auto creds = GetCredsBatch();
   creds.blinded_creds = creds.signed_creds;
 
-  UnBlindCreds(std::move(creds), &unblinded_encoded_tokens, &error);
+  auto unblinded_encoded_tokens = UnBlindCreds(std::move(creds));
 
-  EXPECT_EQ(error, "Unblinded creds size does not match signed creds sent in!");
-  EXPECT_EQ(unblinded_encoded_tokens.size(), 0u);
+  EXPECT_FALSE(unblinded_encoded_tokens.has_value());
+  EXPECT_EQ(unblinded_encoded_tokens.error(),
+            "Unblinded creds size does not match signed creds sent in!");
 }
 
 }  // namespace credential

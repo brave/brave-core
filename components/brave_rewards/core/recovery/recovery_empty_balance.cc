@@ -108,22 +108,18 @@ void EmptyBalance::OnCreds(std::vector<mojom::CredsBatchPtr> list) {
   }
 
   std::string error;
-  std::vector<std::string> unblinded_encoded_creds;
   std::vector<mojom::UnblindedTokenPtr> token_list;
   mojom::UnblindedTokenPtr unblinded;
   const uint64_t expires_at = 0ul;
   for (auto& creds_batch : list) {
-    unblinded_encoded_creds.clear();
-    error = "";
-    bool result = credential::UnBlindCreds(*creds_batch,
-                                           &unblinded_encoded_creds, &error);
+    auto unblinded_encoded_creds = credential::UnBlindCreds(*creds_batch);
 
-    if (!result) {
-      BLOG(0, "UnBlindTokens: " << error);
+    if (!unblinded_encoded_creds.has_value()) {
+      BLOG(0, "UnBlindTokens: " << std::move(unblinded_encoded_creds).error());
       continue;
     }
 
-    for (auto& cred : unblinded_encoded_creds) {
+    for (auto& cred : *unblinded_encoded_creds) {
       unblinded = mojom::UnblindedToken::New();
       unblinded->token_value = cred;
       unblinded->public_key = creds_batch->public_key;

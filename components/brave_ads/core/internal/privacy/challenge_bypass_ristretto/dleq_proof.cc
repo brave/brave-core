@@ -24,14 +24,8 @@ absl::optional<challenge_bypass_ristretto::DLEQProof> Create(
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::DLEQProof raw_dleq_proof =
-      challenge_bypass_ristretto::DLEQProof(
-          blinded_token.get(), signed_token.get(), signing_key.get());
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_dleq_proof;
+  return ValueOrLogError(challenge_bypass_ristretto::DLEQProof::Create(
+      blinded_token.get(), signed_token.get(), signing_key.get()));
 }
 
 absl::optional<challenge_bypass_ristretto::DLEQProof> Create(
@@ -40,13 +34,8 @@ absl::optional<challenge_bypass_ristretto::DLEQProof> Create(
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::DLEQProof raw_dleq_proof =
-      challenge_bypass_ristretto::DLEQProof::decode_base64(dleq_proof_base64);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_dleq_proof;
+  return ValueOrLogError(
+      challenge_bypass_ristretto::DLEQProof::decode_base64(dleq_proof_base64));
 }
 
 }  // namespace
@@ -80,12 +69,7 @@ absl::optional<std::string> DLEQProof::EncodeBase64() const {
     return absl::nullopt;
   }
 
-  const std::string encoded_base64 = dleq_proof_->encode_base64();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return encoded_base64;
+  return ValueOrLogError(dleq_proof_->encode_base64());
 }
 
 bool DLEQProof::Verify(const BlindedToken& blinded_token,
@@ -96,10 +80,10 @@ bool DLEQProof::Verify(const BlindedToken& blinded_token,
     return false;
   }
 
-  const bool is_valid = dleq_proof_->verify(
-      blinded_token.get(), signed_token.get(), public_key.get());
-
-  return !ExceptionOccurred() && is_valid;
+  return ValueOrLogError(dleq_proof_->verify(blinded_token.get(),
+                                             signed_token.get(),
+                                             public_key.get()))
+      .value_or(false);
 }
 
 std::ostream& operator<<(std::ostream& os, const DLEQProof& dleq_proof) {

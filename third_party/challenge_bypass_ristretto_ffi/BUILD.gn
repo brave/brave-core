@@ -4,15 +4,7 @@
 
 import("//brave/build/cargo.gni")
 
-config("external_config") {
-  defines = [ "NO_CXXEXCEPTIONS=1" ]
-
-  include_dirs = [ "src" ]
-}
-
-rust_ffi("challenge_bypass_ristretto") {
-  public_configs = [ ":external_config" ]
-
+rust_ffi("challenge_bypass_ristretto_ffi") {
   sources = [
     "src/lib.h",
     "src/wrapper.cc",

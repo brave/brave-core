@@ -9,7 +9,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
-#include "brave/third_party/challenge_bypass_ristretto/src/wrapper.h"
+#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
 namespace ledger {
 namespace credential {
@@ -27,7 +27,9 @@ std::vector<Token> GenerateCreds(const int count) {
 
   for (auto i = 0; i < count; i++) {
     auto cred = Token::random();
-    creds.push_back(cred);
+    if (cred.has_value()) {
+      creds.emplace_back(std::move(cred).value());
+    }
   }
 
   return creds;
@@ -36,7 +38,9 @@ std::vector<Token> GenerateCreds(const int count) {
 std::string GetCredsJSON(const std::vector<Token>& creds) {
   base::Value::List creds_list;
   for (auto& cred : creds) {
-    creds_list.Append(cred.encode_base64());
+    if (auto value = cred.encode_base64(); value.has_value()) {
+      creds_list.Append(std::move(value).value());
+    }
   }
 
   std::string json;
@@ -49,9 +53,9 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& creds) {
 
   std::vector<BlindedToken> blinded_creds;
   for (auto cred : creds) {
-    auto blinded_cred = cred.blind();
-
-    blinded_creds.push_back(blinded_cred);
+    if (auto blinded_cred = cred.blind(); blinded_cred.has_value()) {
+      blinded_creds.push_back(std::move(blinded_cred).value());
+    }
   }
 
   return blinded_creds;
@@ -61,7 +65,9 @@ std::string GetBlindedCredsJSON(
     const std::vector<BlindedToken>& blinded_creds) {
   base::Value::List blinded_list;
   for (auto& cred : blinded_creds) {
-    blinded_list.Append(cred.encode_base64());
+    if (auto result = cred.encode_base64(); result.has_value()) {
+      blinded_list.Append(std::move(result).value());
+    }
   }
 
   std::string json;
@@ -79,101 +85,89 @@ absl::optional<base::Value::List> ParseStringToBaseList(
   return value->GetList().Clone();
 }
 
-bool UnBlindCreds(const mojom::CredsBatch& creds_batch,
-                  std::vector<std::string>* unblinded_encoded_creds,
-                  std::string* error) {
-  DCHECK(error && unblinded_encoded_creds);
+base::expected<std::vector<std::string>, std::string> UnBlindCreds(
+    const mojom::CredsBatch& creds_batch) {
+  std::vector<std::string> unblinded_encoded_creds;
 
   auto batch_proof = BatchDLEQProof::decode_base64(creds_batch.batch_proof);
-
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
-    *error = std::string(e.what());
-    return false;
+  if (!batch_proof.has_value()) {
+    return base::unexpected(std::move(batch_proof).error());
   }
 
   auto creds_base64 = ParseStringToBaseList(creds_batch.creds);
   DCHECK(creds_base64.has_value());
   std::vector<Token> creds;
   for (auto& item : creds_base64.value()) {
-    const auto cred = Token::decode_base64(item.GetString());
-    creds.push_back(cred);
-  }
-
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
-    *error = std::string(e.what());
-    return false;
+    if (auto cred = Token::decode_base64(item.GetString()); cred.has_value()) {
+      creds.push_back(std::move(cred).value());
+    } else {
+      return base::unexpected(std::move(cred).error());
+    }
   }
 
   auto blinded_creds_base64 = ParseStringToBaseList(creds_batch.blinded_creds);
   DCHECK(blinded_creds_base64.has_value());
   std::vector<BlindedToken> blinded_creds;
   for (auto& item : blinded_creds_base64.value()) {
-    const auto blinded_cred = BlindedToken::decode_base64(item.GetString());
-    blinded_creds.push_back(blinded_cred);
-  }
-
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
-    *error = std::string(e.what());
-    return false;
+    if (auto blinded_cred = BlindedToken::decode_base64(item.GetString());
+        blinded_cred.has_value()) {
+      blinded_creds.push_back(std::move(blinded_cred).value());
+    } else {
+      return base::unexpected(std::move(blinded_cred).error());
+    }
   }
 
   auto signed_creds_base64 = ParseStringToBaseList(creds_batch.signed_creds);
   DCHECK(signed_creds_base64.has_value());
   std::vector<SignedToken> signed_creds;
   for (auto& item : signed_creds_base64.value()) {
-    const auto signed_cred = SignedToken::decode_base64(item.GetString());
-    signed_creds.push_back(signed_cred);
+    if (auto signed_cred = SignedToken::decode_base64(item.GetString());
+        signed_cred.has_value()) {
+      signed_creds.push_back(std::move(signed_cred).value());
+    } else {
+      return base::unexpected(std::move(signed_cred).error());
+    }
   }
 
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
-    *error = std::string(e.what());
-    return false;
+  auto public_key = PublicKey::decode_base64(creds_batch.public_key);
+  if (!public_key.has_value()) {
+    return base::unexpected(std::move(public_key).error());
   }
 
-  const auto public_key = PublicKey::decode_base64(creds_batch.public_key);
+  auto unblinded_cred = batch_proof->verify_and_unblind(
+      creds, blinded_creds, signed_creds, *public_key);
 
-  auto unblinded_cred = batch_proof.verify_and_unblind(
-      creds, blinded_creds, signed_creds, public_key);
-
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
-    *error = std::string(e.what());
-    return false;
+  if (!unblinded_cred.has_value()) {
+    return base::unexpected(std::move(unblinded_cred).error());
   }
 
-  for (auto& cred : unblinded_cred) {
-    unblinded_encoded_creds->push_back(cred.encode_base64());
+  for (auto& cred : *unblinded_cred) {
+    if (auto result = cred.encode_base64(); result.has_value()) {
+      unblinded_encoded_creds.push_back(std::move(result).value());
+    } else {
+      return base::unexpected(std::move(result).error());
+    }
   }
 
-  if (signed_creds.size() != unblinded_encoded_creds->size()) {
-    *error = "Unblinded creds size does not match signed creds sent in!";
-    return false;
+  if (signed_creds.size() != unblinded_encoded_creds.size()) {
+    return base::unexpected(
+        "Unblinded creds size does not match signed creds sent in!");
   }
 
-  return true;
+  return unblinded_encoded_creds;
 }
 
-bool UnBlindCredsMock(const mojom::CredsBatch& creds,
-                      std::vector<std::string>* unblinded_encoded_creds) {
-  DCHECK(unblinded_encoded_creds);
+std::vector<std::string> UnBlindCredsMock(const mojom::CredsBatch& creds) {
+  std::vector<std::string> unblinded_encoded_creds;
 
   auto signed_creds_base64 = ParseStringToBaseList(creds.signed_creds);
   DCHECK(signed_creds_base64.has_value());
 
   for (auto& item : signed_creds_base64.value()) {
-    unblinded_encoded_creds->push_back(item.GetString());
+    unblinded_encoded_creds.push_back(item.GetString());
   }
 
-  return true;
+  return unblinded_encoded_creds;
 }
 
 std::string ConvertRewardTypeToString(const mojom::RewardsType type) {
@@ -225,21 +219,28 @@ absl::optional<base::Value::Dict> GenerateSuggestion(
     return absl::nullopt;
   }
 
-  UnblindedToken unblinded = UnblindedToken::decode_base64(token_value);
-  VerificationKey verification_key = unblinded.derive_verification_key();
-  VerificationSignature signature = verification_key.sign(body);
-  const std::string pre_image = unblinded.preimage().encode_base64();
+  auto unblinded = UnblindedToken::decode_base64(token_value);
+  if (!unblinded.has_value()) {
+    return absl::nullopt;
+  }
 
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
+  VerificationKey verification_key = unblinded->derive_verification_key();
+  auto signature = verification_key.sign(body);
+  if (!signature.has_value()) {
+    return absl::nullopt;
+  }
+
+  auto pre_image = unblinded->preimage().encode_base64();
+  auto enconded_signature = signature->encode_base64();
+
+  if (!pre_image.has_value() || !enconded_signature.has_value()) {
     return absl::nullopt;
   }
 
   base::Value::Dict dict;
-  dict.Set("t", pre_image);
+  dict.Set("t", std::move(pre_image).value());
   dict.Set("publicKey", public_key);
-  dict.Set("signature", signature.encode_base64());
+  dict.Set("signature", std::move(enconded_signature).value());
   return dict;
 }
 
