@@ -106,6 +106,14 @@ bool IsValidCredentialSummary(const base::Value& summary) {
   return active && remaining_credential_count > 0;
 }
 
+bool IsValidCredentialSummaryButNeedActivation(const base::Value& summary) {
+  DCHECK(summary.is_dict());
+  const bool active = summary.GetDict().FindBool("active").value_or(false);
+  const int remaining_credential_count =
+      summary.GetDict().FindInt("remaining_credential_count").value_or(0);
+  return !active && remaining_credential_count > 0;
+}
+
 bool HasSubscriberCredential(PrefService* local_prefs) {
   const base::Value::Dict& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);

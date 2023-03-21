@@ -103,3 +103,23 @@ export const ConnectNotAllowedNote = styled.section`
     border-radius: 8px;
   }
 `
+
+export const SessionExpiredNote = styled.section`
+  color: ${(p) => p.theme.color.text01};
+  font-family: ${(p) => p.theme.fontFamily.heading};
+  font-size: 14px;
+  text-align: center;
+  line-height: 24px;
+  padding: 12px;
+  margin: 0 24px 32px 24px;
+  border-radius: 8px;
+  background-color: ${(p) => p.theme.color.warningBackground};
+
+  a {
+    color: ${(p) => p.theme.color.text01};
+  }
+ `
+
+export const SessionExpiredNoteTitle = styled.div`
+  font-weight: 600;
+`
