@@ -99,18 +99,19 @@ void PostSafetynet::Request(PostSafetynetCallback callback) {
 }
 
 void PostSafetynet::OnRequest(PostSafetynetCallback callback,
-                              const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                              mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
   std::string nonce;
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, nonce);
     return;
   }
 
-  result = ParseBody(response.body, &nonce);
+  result = ParseBody(response->body, &nonce);
   std::move(callback).Run(result, nonce);
 }
 

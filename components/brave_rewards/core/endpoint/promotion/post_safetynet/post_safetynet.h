@@ -57,7 +57,7 @@ class PostSafetynet {
   mojom::Result ParseBody(const std::string& body, std::string* nonce);
 
   void OnRequest(PostSafetynetCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

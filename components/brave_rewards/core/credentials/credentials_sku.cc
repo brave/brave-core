@@ -365,7 +365,7 @@ void CredentialsSKU::Completed(ledger::ResultCallback callback,
     return;
   }
 
-  ledger_->ledger_client()->UnblindedTokensReady();
+  ledger_->rewards_service()->UnblindedTokensReady();
   std::move(callback).Run(result);
 }
 

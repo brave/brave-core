@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -18,46 +17,32 @@
 // npm run test -- brave_unit_tests --filter=DatabaseActivityInfoTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
+using ::testing::Return;
 
 namespace ledger {
 namespace database {
 
 class DatabaseActivityInfoTest : public ::testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
+  void SetUp() override {
+    ON_CALL(mock_ledger_impl_, database())
+        .WillByDefault(Return(&mock_database_));
+  }
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::string execute_script_;
-  std::unique_ptr<DatabaseActivityInfo> activity_;
-  std::unique_ptr<database::MockDatabase> mock_database_;
-
-  DatabaseActivityInfoTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    activity_ = std::make_unique<DatabaseActivityInfo>(mock_ledger_impl_.get());
-    mock_database_ =
-        std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
-  }
-
-  ~DatabaseActivityInfoTest() override = default;
-
-  void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(mock_database_.get()));
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  DatabaseActivityInfo activity_{&mock_ledger_impl_};
+  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(0);
 
   std::vector<mojom::PublisherInfoPtr> list;
   list.push_back(nullptr);
 
-  activity_->InsertOrUpdate(nullptr, [](const mojom::Result) {});
+  activity_.InsertOrUpdate(nullptr, [](const mojom::Result) {});
 }
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
@@ -75,30 +60,30 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
       "weight, reconcile_stamp, visits) "
       "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::RUN);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .WillByDefault([&](mojom::DBTransactionPtr transaction,
+                         ledger::RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
+      });
 
-  activity_->InsertOrUpdate(std::move(info), [](const mojom::Result) {});
+  activity_.InsertOrUpdate(std::move(info), [](const mojom::Result) {});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(0);
 
-  activity_->GetRecordsList(0, 0, nullptr,
-                            [](std::vector<mojom::PublisherInfoPtr>) {});
+  activity_.GetRecordsList(0, 0, nullptr,
+                           [](std::vector<mojom::PublisherInfoPtr>) {});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(1);
 
   const std::string query =
       "SELECT ai.publisher_id, ai.duration, ai.score, "
@@ -112,27 +97,26 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE 1 = 1 AND pi.excluded = ?";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::READ);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .WillByDefault([&](mojom::DBTransactionPtr transaction,
+                         ledger::RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
+      });
 
   auto filter = mojom::ActivityInfoFilter::New();
 
-  activity_->GetRecordsList(0, 0, std::move(filter),
-                            [](std::vector<mojom::PublisherInfoPtr>) {});
+  activity_.GetRecordsList(0, 0, std::move(filter),
+                           [](std::vector<mojom::PublisherInfoPtr>) {});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(1);
 
   const std::string query =
       "SELECT ai.publisher_id, ai.duration, ai.score, "
@@ -146,58 +130,58 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE 1 = 1 AND ai.publisher_id = ? AND pi.excluded = ?";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::READ);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .WillByDefault([&](mojom::DBTransactionPtr transaction,
+                         ledger::RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
+      });
 
   auto filter = mojom::ActivityInfoFilter::New();
   filter->id = "publisher_key";
 
-  activity_->GetRecordsList(0, 0, std::move(filter),
-                            [](std::vector<mojom::PublisherInfoPtr>) {});
+  activity_.GetRecordsList(0, 0, std::move(filter),
+                           [](std::vector<mojom::PublisherInfoPtr>) {});
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(0);
 
   const std::string query =
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?";
 
-  activity_->DeleteRecord("", [](const mojom::Result) {});
+  activity_.DeleteRecord("", [](const mojom::Result) {});
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(1);
 
-  ON_CALL(*mock_ledger_client_, GetUint64State(_))
-      .WillByDefault(testing::Return(1597744617));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), GetUint64State(_, _))
+      .WillByDefault([](const std::string&, auto callback) {
+        std::move(callback).Run(1597744617);
+      });
 
   const std::string query =
       "DELETE FROM activity_info "
       "WHERE publisher_id = ? AND reconcile_stamp = ?";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::RUN);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .WillByDefault([&](mojom::DBTransactionPtr transaction,
+                         ledger::RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
+      });
 
-  activity_->DeleteRecord("publisher_key", [](const mojom::Result) {});
+  activity_.DeleteRecord("publisher_key", [](const mojom::Result) {});
 }
 
 }  // namespace database

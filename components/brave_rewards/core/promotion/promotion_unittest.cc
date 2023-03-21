@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -22,7 +21,6 @@
 // npm run test -- brave_unit_tests --filter=PromotionTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace promotion {
@@ -55,72 +53,64 @@ std::string GetResponse(const std::string& url) {
 }
 
 class PromotionTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<Promotion> promotion_;
-  std::unique_ptr<database::MockDatabase> mock_database_;
-
-  PromotionTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    promotion_ = std::make_unique<Promotion>(mock_ledger_impl_.get());
-    mock_database_ =
-        std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
-  }
-
   void SetUp() override {
-    const std::string wallet = R"({
-      "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-      "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-    })";
-    ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
-        .WillByDefault(testing::Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::string wallet = R"(
+            {
+              "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+              "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+            }
+          )";
+          std::move(callback).Run(std::move(wallet));
+        });
 
-    ON_CALL(*mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(mock_database_.get()));
+    ON_CALL(mock_ledger_impl_, database())
+        .WillByDefault(testing::Return(&mock_database_));
 
-    ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-        .WillByDefault(Invoke(
-            [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-              mojom::UrlResponse response;
-              response.status_code = 200;
-              response.url = request->url;
-              response.body = GetResponse(request->url);
-              std::move(callback).Run(response);
-            }));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+        .WillByDefault(
+            [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+              auto response = mojom::UrlResponse::New();
+              response->status_code = 200;
+              response->url = request->url;
+              response->body = GetResponse(request->url);
+              std::move(callback).Run(std::move(response));
+            });
   }
+
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  Promotion promotion_{&mock_ledger_impl_};
+  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   bool inserted = false;
-  ON_CALL(*mock_database_, GetAllPromotions(_))
-      .WillByDefault(
-          Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
-            auto promotion = mojom::Promotion::New();
-            base::flat_map<std::string, mojom::PromotionPtr> map;
-            if (inserted) {
-              const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
-              promotion->id = id;
-              promotion->public_keys =
-                  "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
-              promotion->legacy_claimed = true;
-              promotion->status = mojom::PromotionStatus::ATTESTED;
-              map.insert(std::make_pair(id, std::move(promotion)));
-            }
+  ON_CALL(mock_database_, GetAllPromotions(_))
+      .WillByDefault([&inserted](ledger::GetAllPromotionsCallback callback) {
+        auto promotion = mojom::Promotion::New();
+        base::flat_map<std::string, mojom::PromotionPtr> map;
+        if (inserted) {
+          const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
+          promotion->id = id;
+          promotion->public_keys =
+              "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
+          promotion->legacy_claimed = true;
+          promotion->status = mojom::PromotionStatus::ATTESTED;
+          map.insert(std::make_pair(id, std::move(promotion)));
+        }
 
-            callback(std::move(map));
-          }));
+        callback(std::move(map));
+      });
 
-  EXPECT_CALL(*mock_database_, SavePromotion(_, _)).Times(1);
+  EXPECT_CALL(mock_database_, SavePromotion(_, _)).Times(1);
 
-  promotion_->Fetch(base::DoNothing());
+  promotion_.Fetch(base::DoNothing());
   inserted = true;
-  promotion_->Fetch(base::DoNothing());
+  promotion_.Fetch(base::DoNothing());
 }
 
 }  // namespace promotion

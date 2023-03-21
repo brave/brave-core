@@ -291,4 +291,10 @@ def CheckMPArchApiUsage(original_check, input_api, output_api, **kwargs):
         return original_check(input_api, output_api, **kwargs)
 
 
+@override_utils.override_function(globals())
+def _ChangeHasSecurityReviewer(*_):
+    # We don't have Gerrit API available to check for reviewers.
+    return False
+
+
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().

@@ -69,7 +69,7 @@ class GetCredentials {
   mojom::Result ParseBody(const std::string& body, mojom::CredsBatch* batch);
 
   void OnRequest(GetCredentialsCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

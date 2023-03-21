@@ -50,7 +50,7 @@ class GetPublisher {
                           const std::string& publisher_key,
                           mojom::ServerPublisherInfo* info);
 
-  void OnRequest(const mojom::UrlResponse& response,
+  void OnRequest(mojom::UrlResponsePtr response,
                  const std::string& publisher_key,
                  GetPublisherCallback callback);
 

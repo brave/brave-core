@@ -409,7 +409,7 @@ void Database::PromotionCredentialCompleted(
 }
 
 void Database::GetPromotionList(const std::vector<std::string>& ids,
-                                client::GetPromotionListCallback callback) {
+                                GetPromotionListCallback callback) {
   promotion_->GetRecords(ids, callback);
 }
 
@@ -506,9 +506,8 @@ void Database::InsertServerPublisherInfo(
   server_publisher_info_->InsertOrUpdate(server_info, callback);
 }
 
-void Database::GetServerPublisherInfo(
-    const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+void Database::GetServerPublisherInfo(const std::string& publisher_key,
+                                      GetServerPublisherInfoCallback callback) {
   server_publisher_info_->GetRecord(publisher_key, callback);
 }
 

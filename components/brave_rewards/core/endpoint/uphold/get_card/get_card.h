@@ -96,7 +96,7 @@ class GetCard {
 
   mojom::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(GetCardCallback callback, const mojom::UrlResponse& response);
+  void OnRequest(GetCardCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

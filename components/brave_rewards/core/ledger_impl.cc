@@ -22,8 +22,10 @@ using std::placeholders::_1;
 
 namespace ledger {
 
-LedgerImpl::LedgerImpl(LedgerClient* client)
-    : ledger_client_(client),
+LedgerImpl::LedgerImpl(
+    mojo::PendingAssociatedRemote<rewards::mojom::RewardsService>
+        rewards_service)
+    : rewards_service_(std::move(rewards_service)),
       promotion_(std::make_unique<promotion::Promotion>(this)),
       publisher_(std::make_unique<publisher::Publisher>(this)),
       media_(std::make_unique<braveledger_media::Media>(this)),
@@ -39,13 +41,13 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
       gemini_(std::make_unique<gemini::Gemini>(this)),
       uphold_(std::make_unique<uphold::Uphold>(this)) {
   DCHECK(base::ThreadPoolInstance::Get());
-  set_ledger_client_for_logging(ledger_client_);
+  set_ledger_client_for_logging(rewards_service_.get());
 }
 
 LedgerImpl::~LedgerImpl() = default;
 
-LedgerClient* LedgerImpl::ledger_client() const {
-  return ledger_client_;
+rewards::mojom::RewardsService* LedgerImpl::rewards_service() const {
+  return rewards_service_.get();
 }
 
 state::State* LedgerImpl::state() const {
@@ -100,9 +102,6 @@ uphold::Uphold* LedgerImpl::uphold() const {
   return uphold_.get();
 }
 
-template <typename>
-inline constexpr bool dependent_false_v = false;
-
 template <typename LoadURLCallback>
 void LedgerImpl::LoadURLImpl(mojom::UrlRequestPtr request,
                              LoadURLCallback callback) {
@@ -117,32 +116,32 @@ void LedgerImpl::LoadURLImpl(mojom::UrlRequestPtr request,
                                request->content_type, request->method));
   }
 
-  if constexpr (std::is_same_v<LoadURLCallback,
-                               ledger::client::LegacyLoadURLCallback>) {
-    ledger_client_->LoadURL(
+  if constexpr (std::is_same_v<LoadURLCallback, LegacyLoadURLCallback>) {
+    rewards_service_->LoadURL(
         std::move(request),
         base::BindOnce(
-            [](ledger::client::LegacyLoadURLCallback callback,
-               const mojom::UrlResponse& response) { callback(response); },
+            [](LegacyLoadURLCallback callback, mojom::UrlResponsePtr response) {
+              callback(std::move(response));
+            },
             std::move(callback)));
   } else if constexpr (std::is_same_v<LoadURLCallback,  // NOLINT
-                                      ledger::client::LoadURLCallback>) {
-    ledger_client_->LoadURL(std::move(request), std::move(callback));
+                                      ledger::LoadURLCallback>) {
+    rewards_service_->LoadURL(std::move(request), std::move(callback));
   } else {
-    static_assert(dependent_false_v<LoadURLCallback>,
+    static_assert(base::AlwaysFalse<LoadURLCallback>,
                   "LoadURLCallback must be either "
-                  "ledger::client::LegacyLoadURLCallback, or "
-                  "ledger::client::LoadURLCallback!");
+                  "ledger::LegacyLoadURLCallback, or "
+                  "ledger::LoadURLCallback!");
   }
 }
 
 void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
-                         client::LegacyLoadURLCallback callback) {
+                         LegacyLoadURLCallback callback) {
   LoadURLImpl(std::move(request), std::move(callback));
 }
 
 void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
-                         client::LoadURLCallback callback) {
+                         LoadURLCallback callback) {
   LoadURLImpl(std::move(request), std::move(callback));
 }
 
@@ -151,36 +150,35 @@ void LedgerImpl::RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
                                       RunDBTransactionCallback callback) {
   if constexpr (std::is_same_v<  // NOLINT
                     RunDBTransactionCallback,
-                    ledger::client::LegacyRunDBTransactionCallback>) {
-    ledger_client_->RunDBTransaction(
+                    ledger::LegacyRunDBTransactionCallback>) {
+    rewards_service_->RunDBTransaction(
         std::move(transaction),
         base::BindOnce(
-            [](ledger::client::LegacyRunDBTransactionCallback callback,
+            [](ledger::LegacyRunDBTransactionCallback callback,
                mojom::DBCommandResponsePtr response) {
               callback(std::move(response));
             },
             std::move(callback)));
   } else if constexpr (std::is_same_v<  // NOLINT
                            RunDBTransactionCallback,
-                           ledger::client::RunDBTransactionCallback>) {
-    ledger_client_->RunDBTransaction(std::move(transaction),
-                                     std::move(callback));
+                           ledger::RunDBTransactionCallback>) {
+    rewards_service_->RunDBTransaction(std::move(transaction),
+                                       std::move(callback));
   } else {
-    static_assert(dependent_false_v<RunDBTransactionCallback>,
+    static_assert(base::AlwaysFalse<RunDBTransactionCallback>,
                   "RunDBTransactionCallback must be either "
-                  "ledger::client::LegacyRunDBTransactionCallback, or "
-                  "ledger::client::RunDBTransactionCallback!");
+                  "ledger::LegacyRunDBTransactionCallback, or "
+                  "ledger::RunDBTransactionCallback!");
   }
 }
 
-void LedgerImpl::RunDBTransaction(
-    mojom::DBTransactionPtr transaction,
-    client::LegacyRunDBTransactionCallback callback) {
+void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                  LegacyRunDBTransactionCallback callback) {
   RunDBTransactionImpl(std::move(transaction), std::move(callback));
 }
 
 void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                  client::RunDBTransactionCallback callback) {
+                                  RunDBTransactionCallback callback) {
   RunDBTransactionImpl(std::move(transaction), std::move(callback));
 }
 
@@ -252,14 +250,13 @@ void LedgerImpl::OnDatabaseInitialized(mojom::Result result,
     return;
   }
 
-  auto state_callback =
-      std::bind(&LedgerImpl::OnStateInitialized, this, _1, callback);
-
-  state()->Initialize(state_callback);
+  state()->Initialize(base::BindOnce(&LedgerImpl::OnStateInitialized,
+                                     base::Unretained(this),
+                                     std::move(callback)));
 }
 
-void LedgerImpl::OnStateInitialized(mojom::Result result,
-                                    LegacyResultCallback callback) {
+void LedgerImpl::OnStateInitialized(LegacyResultCallback callback,
+                                    mojom::Result result) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result != mojom::Result::LEDGER_OK) {
@@ -896,7 +893,7 @@ void LedgerImpl::Shutdown(LegacyResultCallback callback) {
   }
 
   ready_state_ = ReadyState::kShuttingDown;
-  ledger_client_->ClearAllNotifications();
+  rewards_service_->ClearAllNotifications();
 
   database()->FinishAllInProgressContributions(
       std::bind(&LedgerImpl::OnAllDone, this, _1, callback));

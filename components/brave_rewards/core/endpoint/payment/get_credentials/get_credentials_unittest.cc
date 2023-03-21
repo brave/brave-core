@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -19,37 +18,26 @@
 // npm run test -- brave_unit_tests --filter=GetCredentialsTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
 namespace payment {
 
 class GetCredentialsTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<GetCredentials> creds_;
-
-  GetCredentialsTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    creds_ = std::make_unique<GetCredentials>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  GetCredentials creds_{&mock_ledger_impl_};
 };
 
 TEST_F(GetCredentialsTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"({
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = R"({
              "id": "9c9aed7f-b349-452e-80a8-95faf2b1600d",
              "orderId": "f2e6494e-fb21-44d1-90e9-b5408799acd8",
              "issuerId": "138bf9ca-69fe-4540-9ac4-bc65baddc4a0",
@@ -61,10 +49,10 @@ TEST_F(GetCredentialsTest, ServerOK) {
              "batchProof": "zx0cdJhaB/OdYcUtnyXdi+lsoniN2KNgFU",
              "publicKey": "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I="
             })";
-            std::move(callback).Run(response);
-          }));
+            std::move(callback).Run(std::move(response));
+          });
 
-  creds_->Request(
+  creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
@@ -81,17 +69,17 @@ TEST_F(GetCredentialsTest, ServerOK) {
 }
 
 TEST_F(GetCredentialsTest, ServerError202) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 202;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 202;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
-  creds_->Request(
+  creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
@@ -100,17 +88,17 @@ TEST_F(GetCredentialsTest, ServerError202) {
 }
 
 TEST_F(GetCredentialsTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
-  creds_->Request(
+  creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
@@ -119,17 +107,17 @@ TEST_F(GetCredentialsTest, ServerError400) {
 }
 
 TEST_F(GetCredentialsTest, ServerError404) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 404;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 404;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
-  creds_->Request(
+  creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
@@ -138,17 +126,17 @@ TEST_F(GetCredentialsTest, ServerError404) {
 }
 
 TEST_F(GetCredentialsTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 500;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
-  creds_->Request(
+  creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
@@ -157,17 +145,17 @@ TEST_F(GetCredentialsTest, ServerError500) {
 }
 
 TEST_F(GetCredentialsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
-  creds_->Request(
+  creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
