@@ -7,7 +7,7 @@ import * as React from 'react'
 import MainPanel from './components/main-panel'
 import SellPanel from './components/sell-panel'
 import LoadingPanel from './components/loading-panel'
-import ErrorSubscriptionExpired from './components/error-subscription-failed-panel'
+import InvalidSubscription from './components/error-subscription-failed-panel'
 import { ViewType } from './state/component_types'
 import { useSelector } from './state/hooks'
 import PurchaseFailedPanel from './components/purchase-failed-panel'
@@ -33,9 +33,9 @@ function Main () {
     )
   }
 
-  if (currentView === ViewType.Expired) {
+  if (currentView === ViewType.Invalid) {
     return (
-      <ErrorSubscriptionExpired />
+      <InvalidSubscription />
     )
   }
 

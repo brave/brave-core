@@ -541,6 +541,56 @@ TEST_F(BraveVPNServiceTest, RegionDataTest) {
   EXPECT_EQ(regions()[0], device_region());
 }
 
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
+  std::string env = skus::GetDefaultEnvironment();
+  std::string domain = skus::GetDomain("vpn", env);
+
+  // Treat as not purchased when active is false but there is remained
+  // credentials. In this situation, user should activate vpn account.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 1 } )");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  // Treat as not purchased.
+  // Although zero credential credential string received, we think it's
+  // fresh user as there is no cached data such as regions list.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  auto session_expired_time =
+      local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
+  EXPECT_TRUE(session_expired_time.is_null());
+
+  // Session expired state for non-fresh user.
+  OnFetchRegionList(false, GetRegionsData(), true);
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::SESSION_EXPIRED, GetPurchasedStateSync());
+  // Check session expired start date is set.
+  session_expired_time =
+      local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
+  EXPECT_FALSE(session_expired_time.is_null());
+
+  // Check not purchased state is set after 30 days passed since session expired
+  // starts.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  local_pref_service_.SetTime(prefs::kBraveVPNSessionExpiredDate,
+                              session_expired_time - base::Days(31));
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  // Checks cached time data is cleared when received vaild credential.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": true, "remaining_credential_count": 1 } )");
+  session_expired_time =
+      local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
+  EXPECT_TRUE(session_expired_time.is_null());
+}
+
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
   std::string env = skus::GetDefaultEnvironment();
   std::string domain = skus::GetDomain("vpn", env);
@@ -752,7 +802,7 @@ TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
 }
 
 // Test connection check is asked only when purchased state.
@@ -778,8 +828,8 @@ TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
 
-  SetPurchasedState(env, PurchasedState::EXPIRED);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  SetPurchasedState(env, PurchasedState::INVALID);
+  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
 
   SetPurchasedState(env, PurchasedState::FAILED);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
@@ -795,7 +845,7 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::INVALID);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
   SetAndExpectPurchasedStateChange(&observer, env,
                                    PurchasedState::NOT_PURCHASED);
