@@ -1,5 +1,5 @@
 # Multi-armed Bandit Resources
 
-Manage resources for multi-armed bandits.
+Manage multi-armed bandits resources.
 
 Please add to it!

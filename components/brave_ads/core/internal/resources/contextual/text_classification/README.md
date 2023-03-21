@@ -1,5 +1,5 @@
 # Text Classification Resources
 
-Manage resources for text classification.
+Manage text classification resources.
 
 Please add to it!

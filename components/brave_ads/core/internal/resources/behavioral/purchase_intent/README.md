@@ -1,5 +1,5 @@
 # Purchase Intent Resources
 
-Manage resources for purchase intent.
+Manage purchase intent resources.
 
 Please add to it!

@@ -1,5 +1,5 @@
 # Text Embedding Resources
 
-Manage resources for text embedding.
+Manage text embedding resources.
 
 Please add to it!
