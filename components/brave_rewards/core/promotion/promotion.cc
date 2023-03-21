@@ -123,7 +123,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   auto url_callback = base::BindOnce(
       &Promotion::OnFetch, base::Unretained(this), std::move(callback));
 
-  auto client_info = ledger_->ledger_client()->GetClientInfo();
+  auto client_info = ledger_->GetClientInfo();
   const std::string client = ParseClientInfoToString(std::move(client_info));
   promotion_server_->get_available()->Request(client, std::move(url_callback));
 }

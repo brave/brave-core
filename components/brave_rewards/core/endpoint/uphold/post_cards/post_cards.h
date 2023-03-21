@@ -100,7 +100,7 @@ class PostCards {
 
   mojom::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(PostCardsCallback, const mojom::UrlResponse&);
+  void OnRequest(PostCardsCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

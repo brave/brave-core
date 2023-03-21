@@ -113,6 +113,7 @@ source_set("test") {
     "//base/test:test_support",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:publishers_proto",
+    "//brave/components/services/bat_ledger/public/interfaces:interfaces",
     "//brave/third_party/challenge_bypass_ristretto_ffi",
     "//brave/third_party/rapidjson",
     "//net:net",

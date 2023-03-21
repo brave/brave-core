@@ -33,7 +33,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
-        ledger_->ledger_client()->GetIntegerState(kMinVisitTime));
+        ledger_->GetState<int>(kMinVisitTime));
 
     callback(mojom::Result::LEDGER_OK);
     return;
@@ -41,7 +41,7 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 
   if (result != mojom::Result::LEDGER_OK) {
     ledger_->publisher()->CalcScoreConsts(
-        ledger_->ledger_client()->GetIntegerState(kMinVisitTime));
+        ledger_->GetState<int>(kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
     callback(mojom::Result::LEDGER_OK);
@@ -50,17 +50,16 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
 
   legacy_data_migrated_ = true;
 
-  ledger_->ledger_client()->SetIntegerState(
+  ledger_->SetState(
       kMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
-  ledger_->publisher()->CalcScoreConsts(
-      ledger_->ledger_client()->GetIntegerState(kMinVisitTime));
+  ledger_->publisher()->CalcScoreConsts(ledger_->GetState<int>(kMinVisitTime));
 
-  ledger_->ledger_client()->SetIntegerState(
+  ledger_->SetState(
       kMinVisits, static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
-  ledger_->ledger_client()->SetBooleanState(
-      kAllowNonVerified, legacy_publisher_->GetPublisherAllowNonVerified());
+  ledger_->SetState(kAllowNonVerified,
+                    legacy_publisher_->GetPublisherAllowNonVerified());
 
   std::vector<mojom::BalanceReportInfoPtr> reports;
   legacy_publisher_->GetAllBalanceReports(&reports);

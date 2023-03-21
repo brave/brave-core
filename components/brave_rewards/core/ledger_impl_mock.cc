@@ -7,9 +7,18 @@
 
 namespace ledger {
 
-MockLedgerImpl::MockLedgerImpl(ledger::LedgerClient* client)
-    : LedgerImpl(client) {}
+AddMockRewardsService::AddMockRewardsService() = default;
+
+AddMockRewardsService::~AddMockRewardsService() = default;
+
+MockLedgerImpl::MockLedgerImpl()
+    : LedgerImpl(mock_rewards_service_receiver_
+                     .BindNewEndpointAndPassDedicatedRemote()) {}
 
 MockLedgerImpl::~MockLedgerImpl() = default;
+
+MockRewardsService* MockLedgerImpl::mock_rewards_service() {
+  return &mock_rewards_service_;
+}
 
 }  // namespace ledger

@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 
-#include <stdint.h>
-
 #include <memory>
 #include <string>
 #include <utility>
@@ -15,28 +13,47 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
-namespace bat_ledger {
+namespace ledger {
+class Ledger;
+}
 
-class BatLedgerClientMojoBridge;
+namespace rewards {
 
-class BatLedgerImpl :
-    public mojom::BatLedger,
-    public base::SupportsWeakPtr<BatLedgerImpl> {
+class RewardsUtilityServiceImpl
+    : public mojom::RewardsUtilityService,
+      public base::SupportsWeakPtr<RewardsUtilityServiceImpl> {
  public:
-  explicit BatLedgerImpl(
-      mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info);
-  ~BatLedgerImpl() override;
+  explicit RewardsUtilityServiceImpl(
+      mojo::PendingReceiver<mojom::RewardsUtilityService>
+          bat_ledger_pending_receiver);
+  ~RewardsUtilityServiceImpl() override;
 
-  BatLedgerImpl(const BatLedgerImpl&) = delete;
-  BatLedgerImpl& operator=(const BatLedgerImpl&) = delete;
+  RewardsUtilityServiceImpl(const RewardsUtilityServiceImpl&) = delete;
+  RewardsUtilityServiceImpl& operator=(const RewardsUtilityServiceImpl&) =
+      delete;
 
-  // bat_ledger::mojom::BatLedger
-  void Initialize(
-    const bool execute_create_script,
-    InitializeCallback callback) override;
+  // rewards::mojom::RewardsUtilityService
+  void CreateLedger(
+      mojo::PendingAssociatedRemote<mojom::RewardsService> rewards_service,
+      CreateLedgerCallback callback) override;
+  void SetEnvironment(ledger::mojom::Environment environment) override;
+  void SetDebug(bool isDebug) override;
+  void SetReconcileInterval(const int32_t interval) override;
+  void SetRetryInterval(int32_t interval) override;
+  void SetTesting() override;
+  void SetStateMigrationTargetVersionForTesting(int32_t version) override;
+  void GetEnvironment(GetEnvironmentCallback callback) override;
+  void GetDebug(GetDebugCallback callback) override;
+  void GetReconcileInterval(GetReconcileIntervalCallback callback) override;
+  void GetRetryInterval(GetRetryIntervalCallback callback) override;
+
+  void InitializeLedger(const bool execute_create_script,
+                        InitializeLedgerCallback callback) override;
   void CreateRewardsWallet(const std::string& country,
                            CreateRewardsWalletCallback callback) override;
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
@@ -230,14 +247,15 @@ class BatLedgerImpl :
   template <typename Callback>
   class CallbackHolder {
    public:
-    CallbackHolder(base::WeakPtr<BatLedgerImpl> client, Callback callback)
+    CallbackHolder(base::WeakPtr<RewardsUtilityServiceImpl> client,
+                   Callback callback)
         : client_(client), callback_(std::move(callback)) {}
     ~CallbackHolder() = default;
     bool is_valid() { return !!client_.get(); }
     Callback& get() { return callback_; }
 
    private:
-    base::WeakPtr<BatLedgerImpl> client_;
+    base::WeakPtr<RewardsUtilityServiceImpl> client_;
     Callback callback_;
   };
 
@@ -259,8 +277,9 @@ class BatLedgerImpl :
       const ledger::mojom::Result result,
       ledger::mojom::BalanceReportInfoPtr report_info);
 
-  static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
-                           ledger::mojom::Result result);
+  static void OnInitializeLedger(
+      CallbackHolder<InitializeLedgerCallback>* holder,
+      ledger::mojom::Result result);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
@@ -359,10 +378,10 @@ class BatLedgerImpl :
       CallbackHolder<GetRewardsWalletCallback>* holder,
       ledger::mojom::RewardsWalletPtr wallet);
 
-  std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
+  mojo::Receiver<mojom::RewardsUtilityService> utility_service_receiver_;
   std::unique_ptr<ledger::Ledger> ledger_;
 };
 
-}  // namespace bat_ledger
+}  // namespace rewards
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_

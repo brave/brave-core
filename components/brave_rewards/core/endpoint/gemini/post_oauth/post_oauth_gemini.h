@@ -62,7 +62,7 @@ class PostOauth {
 
   mojom::Result ParseBody(const std::string& body, std::string* token);
 
-  void OnRequest(PostOauthCallback, const mojom::UrlResponse&);
+  void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

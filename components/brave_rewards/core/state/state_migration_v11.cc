@@ -26,8 +26,7 @@ void StateMigrationV11::Migrate(LegacyResultCallback callback) {
   const auto decrypted_wallet =
       ledger_->state()->GetEncryptedString(kWalletBrave);
   if (decrypted_wallet) {
-    ledger_->ledger_client()->SetStringState(kWalletBrave,
-                                             decrypted_wallet.value());
+    ledger_->SetState(kWalletBrave, decrypted_wallet.value());
   }
 
   callback(mojom::Result::LEDGER_OK);

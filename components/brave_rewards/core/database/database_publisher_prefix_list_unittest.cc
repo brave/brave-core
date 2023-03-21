@@ -16,34 +16,15 @@
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 
-// npm run test -- brave_unit_tests --filter='DatabasePublisherPrefixListTest.*'
+// npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::string execute_script_;
-  std::unique_ptr<DatabasePublisherPrefixList> database_prefix_list_;
-
-  DatabasePublisherPrefixListTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    database_prefix_list_ =
-        std::make_unique<DatabasePublisherPrefixList>(mock_ledger_impl_.get());
-  }
-
-  ~DatabasePublisherPrefixListTest() override = default;
-
   std::unique_ptr<publisher::PrefixListReader> CreateReader(
       uint32_t prefix_count) {
     auto reader = std::make_unique<publisher::PrefixListReader>();
@@ -70,47 +51,41 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
     return reader;
   }
 
-  void ExpectStartsWith(const std::string& subject, const std::string& prefix) {
-    EXPECT_EQ(subject.size() > prefix.size() ? subject.substr(0, prefix.size())
-                                             : subject,
-              prefix);
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  DatabasePublisherPrefixList database_prefix_list_{&mock_ledger_impl_};
 };
 
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
-  std::vector<std::string> commands;
+  EXPECT_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .Times(2)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
+        EXPECT_TRUE(transaction);
+        EXPECT_EQ(transaction->commands.size(), 2u);
+        EXPECT_EQ(transaction->commands[0]->command,
+                  "DELETE FROM publisher_prefix_list");
+        EXPECT_TRUE(base::StartsWith(
+            transaction->commands[1]->command,
+            "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
+            "VALUES (x'00000000'),(x'00000001'),(x'00000002'),"));
 
-  auto on_run_db_transaction =
-      [&](mojom::DBTransactionPtr transaction,
-          ledger::client::RunDBTransactionCallback callback) {
-        ASSERT_TRUE(transaction);
-        if (transaction) {
-          for (auto& command : transaction->commands) {
-            commands.push_back(std::move(command->command));
-          }
-        }
-        commands.push_back("---");
         auto response = mojom::DBCommandResponse::New();
         response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
         std::move(callback).Run(std::move(response));
-      };
+      })
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
+        EXPECT_TRUE(transaction);
+        EXPECT_EQ(transaction->commands.size(), 1u);
+        EXPECT_EQ(transaction->commands[0]->command,
+                  "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
+                  "VALUES (x'000186A0')");
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(Invoke(on_run_db_transaction));
+        std::move(callback).Run(nullptr);
+      });
 
-  database_prefix_list_->Reset(CreateReader(100'001),
-                               [](const mojom::Result) {});
+  database_prefix_list_.Reset(CreateReader(100'001), [](mojom::Result) {});
 
-  ASSERT_EQ(commands.size(), 5u);
-  EXPECT_EQ(commands[0], "DELETE FROM publisher_prefix_list");
-  ExpectStartsWith(commands[1],
-                   "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
-                   "VALUES (x'00000000'),(x'00000001'),(x'00000002'),");
-  EXPECT_EQ(commands[2], "---");
-  EXPECT_EQ(commands[3],
-            "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
-            "VALUES (x'000186A0')");
-  EXPECT_EQ(commands[4], "---");
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace database

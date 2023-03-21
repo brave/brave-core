@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at http://mozilla.org/MPL/2.0/.
-module bat_ledger.mojom;
+module rewards.mojom;
 
 import "brave/components/brave_rewards/common/mojom/ledger.mojom";
 import "brave/components/brave_rewards/common/mojom/ledger_database.mojom";
@@ -10,9 +10,9 @@ import "brave/components/brave_rewards/common/mojom/ledger_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
-interface BatLedgerService {
-  Create(pending_associated_remote<BatLedgerClient> bat_ledger_client,
-         pending_associated_receiver<BatLedger> database) => ();
+interface RewardsUtilityService {
+  CreateLedger(
+      pending_associated_remote<RewardsService> rewards_service) => ();
   SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
   SetReconcileInterval(int32 interval);
@@ -24,10 +24,8 @@ interface BatLedgerService {
   GetDebug() => (bool debug);
   GetReconcileInterval() => (int32 interval);
   GetRetryInterval() => (int32 retry_interval);
-};
 
-interface BatLedger {
-  Initialize(bool execute_create_script) => (ledger.mojom.Result result);
+  InitializeLedger(bool execute_create_script) => (ledger.mojom.Result result);
 
   CreateRewardsWallet(string country) =>
       (ledger.mojom.CreateRewardsWalletResult result);
@@ -157,8 +155,7 @@ interface BatLedger {
   GetRewardsWallet() => (ledger.mojom.RewardsWallet? wallet);
 };
 
-interface BatLedgerClient {
-  [Sync]
+interface RewardsService {
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
 
@@ -209,9 +206,9 @@ interface BatLedgerClient {
   [Sync]
   SetValueState(string name, mojo_base.mojom.Value value) => ();
   [Sync]
-  GetTimeState(string name) => (mojo_base.mojom.Time time);
+  GetTimeState(string name) => (mojo_base.mojom.Time value);
   [Sync]
-  SetTimeState(string name, mojo_base.mojom.Time time) => ();
+  SetTimeState(string name, mojo_base.mojom.Time value) => ();
   [Sync]
   ClearState(string name) => ();
 

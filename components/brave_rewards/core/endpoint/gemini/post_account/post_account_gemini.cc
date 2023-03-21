@@ -88,17 +88,18 @@ void PostAccount::Request(const std::string& token,
 }
 
 void PostAccount::OnRequest(PostAccountCallback callback,
-                            const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                            mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     return std::move(callback).Run(result, "", "");
   }
 
   std::string linking_info;
   std::string user_name;
-  result = ParseBody(response.body, &linking_info, &user_name);
+  result = ParseBody(response->body, &linking_info, &user_name);
   std::move(callback).Run(result, std::move(linking_info),
                           std::move(user_name));
 }
