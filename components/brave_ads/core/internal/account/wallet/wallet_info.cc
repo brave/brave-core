@@ -11,6 +11,10 @@ bool WalletInfo::IsValid() const {
   return !payment_id.empty() && !public_key.empty() && !secret_key.empty();
 }
 
+bool WalletInfo::WasCreated(const WalletInfo& other) const {
+  return !other.IsValid() && WasUpdated(other);
+}
+
 bool WalletInfo::WasUpdated(const WalletInfo& other) const {
   return *this != other;
 }
