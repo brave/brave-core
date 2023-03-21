@@ -92,4 +92,58 @@ TEST_F(IpfsBasePinServiceTest, TasksExecuted) {
   EXPECT_TRUE(second_method_called.value());
 }
 
+TEST_F(IpfsBasePinServiceTest, OnIpfsShutdown) {
+  service()->OnGetConnectedPeers(true, {});
+  EXPECT_TRUE(service()->daemon_ready_);
+
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
+  std::unique_ptr<MockJob> second_job =
+      std::make_unique<MockJob>(base::DoNothing());
+
+  service()->AddJob(std::move(first_job));
+  service()->AddJob(std::move(second_job));
+
+  service()->OnIpfsShutdown();
+
+  EXPECT_EQ(1u, service()->jobs_.size());
+  EXPECT_FALSE(service()->current_job_);
+
+  service()->OnJobDone(false);
+
+  EXPECT_EQ(1u, service()->jobs_.size());
+  EXPECT_FALSE(service()->current_job_);
+}
+
+TEST_F(IpfsBasePinServiceTest, OnGetConnectedPeers) {
+  service()->OnGetConnectedPeers(true, {});
+  EXPECT_TRUE(service()->daemon_ready_);
+
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
+  std::unique_ptr<MockJob> second_job =
+      std::make_unique<MockJob>(base::DoNothing());
+
+  service()->AddJob(std::move(first_job));
+
+  service()->OnGetConnectedPeers(true, {});
+
+  service()->AddJob(std::move(second_job));
+
+  service()->OnGetConnectedPeers(true, {});
+
+  EXPECT_EQ(1u, service()->jobs_.size());
+  EXPECT_TRUE(service()->current_job_);
+
+  service()->OnJobDone(true);
+
+  EXPECT_EQ(0u, service()->jobs_.size());
+  EXPECT_TRUE(service()->current_job_);
+
+  service()->OnJobDone(true);
+
+  EXPECT_EQ(0u, service()->jobs_.size());
+  EXPECT_FALSE(service()->current_job_);
+}
+
 }  // namespace ipfs
