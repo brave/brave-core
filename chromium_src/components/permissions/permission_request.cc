@@ -38,10 +38,13 @@
     message_id = IDS_LOCALHOST_ACCESS_PERMISSION_FRAGMENT; \
     break;
 
-#define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID       \
-  BRAVE_ENUM_ITEMS_FOR_SWITCH                     \
-  case RequestType::kBraveGoogleSignInPermission: \
-    message_id = IDS_GOOGLE_SIGN_IN_INFOBAR_TEXT; \
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH_ANDROID          \
+  BRAVE_ENUM_ITEMS_FOR_SWITCH                        \
+  case RequestType::kBraveGoogleSignInPermission:    \
+    message_id = IDS_GOOGLE_SIGN_IN_INFOBAR_TEXT;    \
+    break;                                           \
+  case RequestType::kBraveLocalhostAccessPermission: \
+    message_id = IDS_LOCALHOST_ACCESS_INFOBAR_TEXT;  \
     break;
 
 namespace {
