@@ -55,6 +55,7 @@ struct SiteBlockInfo {
   int32 total_blocked_resources;
   bool is_brave_shields_enabled;
   bool is_brave_shields_managed;
+  bool is_forget_first_party_storage_feature_enabled;
   url.mojom.Url favicon_url;
   array<url.mojom.Url> ads_list;
   array<url.mojom.Url> http_redirects_list;
@@ -86,6 +87,7 @@ enum FingerprintMode {
 
 enum CookieBlockMode {
   CROSS_SITE_BLOCKED,
+  FORGET_FIRST_PARTY,
   BLOCKED,
   ALLOW
 };

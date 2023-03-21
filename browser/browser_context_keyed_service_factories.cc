@@ -19,6 +19,7 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
@@ -130,6 +131,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::BraveWalletPinServiceFactory::GetInstance();
 #endif
 
+  EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   skus::SkusServiceFactory::GetInstance();

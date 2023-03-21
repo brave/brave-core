@@ -109,6 +109,10 @@
     Block cross-site cookies
   </message>
 
+  <message name="IDS_BRAVE_SHIELDS_FORGET_FIRST_PARTY_COOKIES" desc="Menu option that would forget first party website cookies.">
+    Forget first-party cookies
+  </message>
+
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED" desc="Menu option that would block current website cookies.">
     Block all cookies
   </message>

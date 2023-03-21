@@ -30,6 +30,7 @@ provideStrings({
   braveShieldsTrackersAndAdsBlockedAgg: 'Aggressively block trackers & ads',
   braveShieldsTrackersAndAdsAllowAll: 'Allow all trackers & ads',
   braveShieldsCrossCookiesBlocked: 'Block cross-site cookies',
+  braveShieldsForgetFirstPartyCookies: 'Forget first-party cookies',
   braveShieldsCookiesBlockAll: 'Block all cookies',
   braveShieldsCookiesAllowedAll: 'Allow all cookies',
   braveShieldsFingerprintingBlocked: 'Fingerprinting blocked',

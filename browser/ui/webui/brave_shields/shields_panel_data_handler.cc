@@ -190,6 +190,9 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetBraveShieldsEnabled();
   site_block_info_.is_brave_shields_managed =
       active_shields_data_controller_->IsBraveShieldsManaged();
+  site_block_info_.is_forget_first_party_storage_feature_enabled =
+      active_shields_data_controller_
+          ->IsForgetFirstPartyStorageFeatureEnabled();
 
   // This method gets called from various callsites. Constantly updating favicon
   // url will replace the hashed version too. So, we update this once only

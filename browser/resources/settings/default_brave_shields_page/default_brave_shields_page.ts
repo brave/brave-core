@@ -48,11 +48,18 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           readOnly: true,
           type: Array,
           value: function () {
-            return [
+            let types = [
                 { value: 'block', name: loadTimeData.getString('blockAllCookies') },
                 { value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies') },
                 { value: 'allow', name: loadTimeData.getString('allowAllCookies') }
             ];
+            if (loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')) {
+              // Insert after 'block'.
+              types.splice(1, 0, {
+                value: 'forget_first_party', name: loadTimeData.getString('forgetFirstPartyCookies')
+              });
+            }
+            return types;
           }
       },
       fingerprintingControlTypes_: {

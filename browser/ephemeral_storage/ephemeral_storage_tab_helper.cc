@@ -13,9 +13,13 @@
 #include "base/hash/md5.h"
 #include "base/ranges/ranges.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/browser/ephemeral_storage/first_party_storage_lifetime.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
@@ -84,12 +88,14 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
   const GURL& url = web_contents->GetLastCommittedURL();
   CreateEphemeralStorageAreasForDomainAndURL(
       net::URLToEphemeralStorageDomain(url), url);
+  CreateFirstPartyStorageLifetime(url);
 }
 
 EphemeralStorageTabHelper::~EphemeralStorageTabHelper() = default;
 
 void EphemeralStorageTabHelper::WebContentsDestroyed() {
   keep_alive_tld_ephemeral_lifetime_list_.clear();
+  first_party_storage_lifetime_.reset();
 }
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
@@ -100,14 +106,22 @@ void EphemeralStorageTabHelper::ReadyToCommitNavigation(
     return;
 
   const GURL& new_url = navigation_handle->GetURL();
+  const GURL& last_committed_url = web_contents()->GetLastCommittedURL();
 
   std::string new_domain = net::URLToEphemeralStorageDomain(new_url);
   std::string previous_domain =
-      net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
-  if (new_domain == previous_domain)
-    return;
+      net::URLToEphemeralStorageDomain(last_committed_url);
+  if (new_domain != previous_domain) {
+    // Create new storage areas for new ephemeral storage domain.
+    CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
+  }
 
-  CreateEphemeralStorageAreasForDomainAndURL(new_domain, new_url);
+  if (!url::IsSameOriginWith(new_url, last_committed_url)) {
+    // Create new FirstPartyStorage lifetime if an origin has changed. This
+    // differs from eTLD+1 (EphemeralStorageDomain) comparison above, because
+    // shield settings are bound to the host, not domain.
+    CreateFirstPartyStorageLifetime(new_url);
+  }
 }
 
 void EphemeralStorageTabHelper::ClearEphemeralLifetimeKeepalive(
@@ -179,6 +193,24 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
       std::make_unique<BraveTLDEphemeralLifetimeDelegate>(
           CookieSettingsFactory::GetForProfile(
               Profile::FromBrowserContext(browser_context))));
+}
+
+void EphemeralStorageTabHelper::CreateFirstPartyStorageLifetime(
+    const GURL& url) {
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveForgetFirstPartyStorage)) {
+    return;
+  }
+
+  if (url.is_valid() && brave_shields::GetBraveShieldsEnabled(
+                            HostContentSettingsMapFactory::GetForProfile(
+                                GetWebContents().GetBrowserContext()),
+                            url)) {
+    first_party_storage_lifetime_ = FirstPartyStorageLifetime::GetOrCreate(
+        web_contents()->GetBrowserContext(), url::Origin::Create(url));
+  } else {
+    first_party_storage_lifetime_.reset();
+  }
 }
 
 // static

@@ -21,6 +21,7 @@ const adBlockModeOptions = [
 
 const cookieBlockModeOptions = [
   { value: CookieBlockMode.BLOCKED, text: getLocale('braveShieldsCookiesBlockAll') },
+  { value: CookieBlockMode.FORGET_FIRST_PARTY, text: getLocale('braveShieldsForgetFirstPartyCookies') },
   { value: CookieBlockMode.CROSS_SITE_BLOCKED, text: getLocale('braveShieldsCrossCookiesBlocked') },
   { value: CookieBlockMode.ALLOW, text: getLocale('braveShieldsCookiesAllowedAll') }
 ]
@@ -220,6 +221,10 @@ function AdvancedControlsContent () {
               disabled={siteBlockInfo?.isBraveShieldsManaged}
             >
               {cookieBlockModeOptions.map(entry => {
+                if (entry.value === CookieBlockMode.FORGET_FIRST_PARTY &&
+                    !siteBlockInfo?.isForgetFirstPartyStorageFeatureEnabled) {
+                    return
+                }
                 return (
                   <option key={entry.value} value={entry.value}>{entry.text}</option>
                 )
