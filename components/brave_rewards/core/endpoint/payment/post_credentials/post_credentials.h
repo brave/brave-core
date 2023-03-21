@@ -64,7 +64,7 @@ class PostCredentials {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostCredentialsCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

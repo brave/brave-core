@@ -50,8 +50,7 @@ class PostBatLoss {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response,
-                 PostBatLossCallback callback);
+  void OnRequest(mojom::UrlResponsePtr response, PostBatLossCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

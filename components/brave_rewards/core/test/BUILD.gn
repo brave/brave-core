@@ -93,8 +93,6 @@ source_set("test") {
     "//brave/components/brave_rewards/core/legacy/report_balance_state_unittest.cc",
     "//brave/components/brave_rewards/core/legacy/wallet_info_state_unittest.cc",
     "//brave/components/brave_rewards/core/logging/logging_util_unittest.cc",
-    "//brave/components/brave_rewards/core/promotion/promotion_mock.cc",
-    "//brave/components/brave_rewards/core/promotion/promotion_mock.h",
     "//brave/components/brave_rewards/core/promotion/promotion_unittest.cc",
     "//brave/components/brave_rewards/core/publisher/prefix_list_reader_unittest.cc",
     "//brave/components/brave_rewards/core/publisher/publisher_unittest.cc",
@@ -111,6 +109,7 @@ source_set("test") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/brave_rewards/common/mojom:interfaces",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:publishers_proto",
     "//brave/third_party/challenge_bypass_ristretto_ffi",

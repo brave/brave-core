@@ -20,8 +20,6 @@
 // npm run test -- brave_unit_tests --filter=*PostConnect*
 
 using ::testing::_;
-using ::testing::Invoke;
-using ::testing::Return;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -49,55 +47,38 @@ using PostConnectParamType = std::tuple<
 // clang-format on
 
 class PostConnect : public TestWithParam<PostConnectParamType> {
- public:
-  PostConnect(const PostConnect&) = delete;
-  PostConnect& operator=(const PostConnect&) = delete;
-
-  PostConnect(PostConnect&&) = delete;
-  PostConnect& operator=(PostConnect&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  PostConnect()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
   void SetUp() override {
-    const std::string wallet =
-        R"(
-          {
-            "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-            "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-          }
-        )";
-
-    ON_CALL(mock_ledger_client_, GetStringState(state::kWalletBrave))
-        .WillByDefault(Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::move(callback).Run(R"(
+            {
+              "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+              "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+            }
+          )");
+        });
   }
 
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(PostConnect, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
-            mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault([&](mojom::UrlRequestPtr, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = status_code;
+        response->body = body;
+        std::move(callback).Run(std::move(response));
+      });
 
   RequestFor<PostConnectMock>(&mock_ledger_impl_)
       .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
-            EXPECT_EQ(result, expected_result);
-          }));
+          [&](Result&& result) { EXPECT_EQ(result, expected_result); }));
 }
 
 // clang-format off

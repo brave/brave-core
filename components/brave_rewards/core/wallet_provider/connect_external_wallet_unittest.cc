@@ -10,14 +10,16 @@
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*ConnectExternalWalletTest*
 
-using testing::Return;
-using testing::TestParamInfo;
-using testing::TestWithParam;
-using testing::Values;
+using ::testing::_;
+using ::testing::Return;
+using ::testing::TestParamInfo;
+using ::testing::TestWithParam;
+using ::testing::Values;
 
 namespace ledger::flows::test {
 using Result = endpoints::PostConnect::Result;
@@ -55,31 +57,9 @@ using ConnectExternalWalletTestParamType = std::tuple<
 
 class ConnectExternalWalletTest
     : public TestWithParam<ConnectExternalWalletTestParamType> {
- public:
-  ConnectExternalWalletTest(const ConnectExternalWalletTest&) = delete;
-  ConnectExternalWalletTest& operator=(const ConnectExternalWalletTest&) =
-      delete;
-
-  ConnectExternalWalletTest(ConnectExternalWalletTest&&) = delete;
-  ConnectExternalWalletTest& operator=(ConnectExternalWalletTest&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  ConnectExternalWalletTest()
-      : mock_ledger_client_(),
-        mock_ledger_impl_(&mock_ledger_client_),
-        mock_database_(&mock_ledger_impl_) {}
-
-  void SetUp() override {
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(Return(&mock_database_));
-  }
-
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  database::MockDatabase mock_database_;
 };
 
 TEST_P(ConnectExternalWalletTest, Paths) {
@@ -91,8 +71,12 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(mock_ledger_client_, GetStringState("wallets.test"))
-      .WillByDefault(Return(std::move(test_wallet)));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+          GetStringState("wallets.test", _))
+      .WillByDefault([test_wallet = std::move(test_wallet)](const std::string&,
+                                                            auto callback) {
+        std::move(callback).Run(std::move(test_wallet));
+      });
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
       .Run(query_parameters,

@@ -31,9 +31,9 @@ class DatabaseInitialize {
 
   void GetCreateScript(ledger::LegacyResultCallback callback);
 
-  void ExecuteCreateScript(const std::string& script,
-                           int table_version,
-                           ledger::LegacyResultCallback callback);
+  void ExecuteCreateScript(ledger::LegacyResultCallback callback,
+                           const std::string& script,
+                           int table_version);
 
   void OnExecuteCreateScript(mojom::DBCommandResponsePtr response,
                              int table_version,

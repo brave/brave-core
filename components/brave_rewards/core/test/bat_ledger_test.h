@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ledger {
@@ -23,12 +24,14 @@ class BATLedgerTest : public testing::Test {
   BATLedgerTest();
   ~BATLedgerTest() override;
 
+  void InitializeLedger();
+
  protected:
   // Returns the |TaskEnvironment| for this test.
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
 
-  // Returns the |TestLedgerClient| instance for this test.
-  TestLedgerClient* GetTestLedgerClient() { return &client_; }
+  // Returns the |TestRewardsService| instance for this test.
+  TestRewardsService* GetTestRewardsService() { return &test_rewards_service_; }
 
   // Returns the |LedgerImpl| instance for this test.
   LedgerImpl* GetLedgerImpl() { return &ledger_; }
@@ -39,12 +42,14 @@ class BATLedgerTest : public testing::Test {
                                   mojom::UrlResponsePtr response);
 
   // Sets a callback that is executed when a message is logged to the client.
-  void SetLogCallbackForTesting(TestLedgerClient::LogCallback callback);
+  void SetLogCallbackForTesting(TestRewardsService::LogCallback callback);
 
  private:
   base::test::TaskEnvironment task_environment_;
-  TestLedgerClient client_;
-  LedgerImpl ledger_{&client_};
+  TestRewardsService test_rewards_service_;
+  mojo::AssociatedReceiver<rewards::mojom::RewardsService>
+      test_rewards_service_receiver_{&test_rewards_service_};
+  LedgerImpl ledger_;
 };
 
 }  // namespace ledger

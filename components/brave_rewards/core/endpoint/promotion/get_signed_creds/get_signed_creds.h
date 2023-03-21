@@ -69,7 +69,7 @@ class GetSignedCreds {
   mojom::Result ParseBody(const std::string& body, mojom::CredsBatch* batch);
 
   void OnRequest(GetSignedCredsCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

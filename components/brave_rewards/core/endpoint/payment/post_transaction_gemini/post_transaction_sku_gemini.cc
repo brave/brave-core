@@ -89,16 +89,17 @@ void PostTransactionGemini::Request(const mojom::SKUTransaction& transaction,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostTransactionGemini::OnRequest(const mojom::UrlResponse& response,
+void PostTransactionGemini::OnRequest(mojom::UrlResponsePtr response,
                                       PostTransactionGeminiCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  BLOG_IF(0, CheckStatusCode(response.status_code) != mojom::Result::LEDGER_OK,
+  BLOG_IF(0, CheckStatusCode(response->status_code) != mojom::Result::LEDGER_OK,
           "Error creating gemini transaction on the payment server");
-  BLOG_IF(0, CheckStatusCode(response.status_code) == mojom::Result::LEDGER_OK,
+  BLOG_IF(0, CheckStatusCode(response->status_code) == mojom::Result::LEDGER_OK,
           "Gemini transaction successful on the payment server");
 
-  callback(CheckStatusCode(response.status_code));
+  callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment
