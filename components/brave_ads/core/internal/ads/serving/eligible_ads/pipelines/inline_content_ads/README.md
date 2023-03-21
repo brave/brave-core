@@ -1,4 +1,4 @@
-# Eligible Inline Content Ads Pipeline
+# Eligible Inline Content Ads
 
 Decide which inline content ads are eligible for delivery to the user.
 

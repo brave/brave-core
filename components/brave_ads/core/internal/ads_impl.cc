@@ -58,9 +58,9 @@
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/idle_detection/idle_detection_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_reactions/user_reactions.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "url/gurl.h"
 

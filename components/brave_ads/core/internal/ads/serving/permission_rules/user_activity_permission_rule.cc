@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/common/platform/platform_helper.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_scoring_util.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 
 namespace brave_ads {
 

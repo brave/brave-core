@@ -3,25 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/user_activity_permission_rule.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_scoring_util.h"
 
 #include <vector>
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
 
-class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
+class BatAdsUserActivityScoringUtilTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
     base::FieldTrialParams params;
-    params["triggers"] = "0D=1.0;0E=1.0;08=1.0";
+    params["triggers"] = "0D=1.0;08=1.0";
     params["time_window"] = "1h";
     params["threshold"] = "2.0";
     std::vector<base::test::FeatureRefAndParams> enabled_features;
@@ -36,8 +37,7 @@ class BatAdsUserActivityPermissionRuleTest : public UnitTestBase {
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
-TEST_F(BatAdsUserActivityPermissionRuleTest,
-       AllowAdIfUserActivityScoreIsEqualToTheThreshold) {
+TEST_F(BatAdsUserActivityScoringUtilTest, WasUserActive) {
   // Arrange
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
@@ -45,43 +45,51 @@ TEST_F(BatAdsUserActivityPermissionRuleTest,
       UserActivityEventType::kClosedTab);
 
   // Act
-  UserActivityPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  const bool was_user_active = WasUserActive();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(was_user_active);
 }
 
-TEST_F(BatAdsUserActivityPermissionRuleTest,
-       AllowAdIfUserActivityScoreIsGreaterThanTheThreshold) {
+TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactive) {
+  // Arrange
+
+  // Act
+  const bool was_user_active = WasUserActive();
+
+  // Assert
+  EXPECT_FALSE(was_user_active);
+}
+
+TEST_F(BatAdsUserActivityScoringUtilTest, WasUserInactiveIfBelowThreshold) {
   // Arrange
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kOpenedNewTab);
+
+  // Act
+  const bool was_user_active = WasUserActive();
+
+  // Assert
+  EXPECT_FALSE(was_user_active);
+}
+
+TEST_F(BatAdsUserActivityScoringUtilTest,
+       WasUserInactiveAfterTimeWindowHasElapsed) {
+  // Arrange
   UserActivityManager::GetInstance()->RecordEvent(
-      UserActivityEventType::kTabStartedPlayingMedia);
+      UserActivityEventType::kOpenedNewTab);
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kClosedTab);
 
-  // Act
-  UserActivityPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
-  // Assert
-  EXPECT_TRUE(is_allowed);
-}
-
-TEST_F(BatAdsUserActivityPermissionRuleTest,
-       DoNotAllowAdIfUserActivityScoreIsLessThanTheThreshold) {
-  // Arrange
-  UserActivityManager::GetInstance()->RecordEvent(
-      UserActivityEventType::kOpenedNewTab);
+  const base::TimeDelta elapsed_time_window =
+      user_activity::features::GetTimeWindow() + base::Seconds(1);
+  AdvanceClockBy(elapsed_time_window);
 
   // Act
-  UserActivityPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  const bool was_user_active = WasUserActive();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(was_user_active);
 }
 
 }  // namespace brave_ads

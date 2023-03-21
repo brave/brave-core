@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
 
 namespace brave_ads {
 
