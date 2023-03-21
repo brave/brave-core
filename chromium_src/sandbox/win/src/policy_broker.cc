@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "base/feature_list.h"
-#include "content/browser/renderer_host/render_frame_host_impl.h"
+
 #define SetupBasicInterceptions SetupBasicInterceptions_ChromiumImpl
 
 #include "src/sandbox/win/src/policy_broker.cc"
@@ -19,14 +19,11 @@
 
 namespace sandbox {
 
-features::BASE_DECLARE_FEATURE()
-
-bool SetupBasicInterceptions(InterceptionManager* manager,
-                             bool is_csrss_connected) {
-  if (!SetupBasicInterceptions_ChromiumImpl(manager, is_csrss_connected)) {
-    return false;
+namespace {
+bool SetupModuleFilenameInterceptions(InterceptionManager* manager) {
+  if (!base::FeatureList::IsEnabled(kModuleFileNamePatch)) {
+    return true;
   }
-
   if (!INTERCEPT_EAT(manager, kKerneldllName, GetModuleFileNameA,
                      GET_MODULE_FILENAME_A_ID, 3)) {
     return false;
@@ -56,6 +53,20 @@ bool SetupBasicInterceptions(InterceptionManager* manager,
     return false;
   }
 #endif
+
+  return true;
+}
+}  // namespace
+
+bool SetupBasicInterceptions(InterceptionManager* manager,
+                             bool is_csrss_connected) {
+  if (!SetupBasicInterceptions_ChromiumImpl(manager, is_csrss_connected)) {
+    return false;
+  }
+
+  if (!SetupModuleFilenameInterceptions(manager)) {
+    return false;
+  }
 
   return true;
 }

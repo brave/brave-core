@@ -19,6 +19,8 @@
 
 namespace sandbox {
 
+BASE_DECLARE_FEATURE(kModuleFileNamePatch);
+
 using GetModuleFileNameAFunction = decltype(&::GetModuleFileNameA);
 using GetModuleFileNameWFunction = decltype(&::GetModuleFileNameW);
 using GetModuleFileNameExAFunction = decltype(&::GetModuleFileNameExA);

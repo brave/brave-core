@@ -69,6 +69,10 @@ DWORD PatchFilename(StringType filename, DWORD length, DWORD size) {
 
 namespace sandbox {
 
+BASE_FEATURE(kModuleFileNamePatch,
+             "ModuleFileNamePatch",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 SANDBOX_INTERCEPT DWORD WINAPI
 TargetGetModuleFileNameA(GetModuleFileNameAFunction orig,
                          HMODULE hModule,

@@ -62,6 +62,10 @@
 #include "brave/components/commands/common/features.h"
 #endif
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/sandbox/win/src/module_file_name_interception.h"
+#endif
+
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -110,6 +114,17 @@
           kOsDesktop | kOsAndroid,                                         \
           FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
       }))
+
+#define BRAVE_MODULE_FILENAME_PATCH                                           \
+  IF_BUILDFLAG(IS_WIN,                                                        \
+               EXPAND_FEATURE_ENTRIES({                                       \
+                   "brave-module-filename-patch",                             \
+                   "Enable Module Filename patch",                            \
+                   "Enables patching of executable's name from brave.exe to " \
+                   "chrome.exe in sandboxed processes.",                      \
+                   kOsWin,                                                    \
+                   FEATURE_VALUE_TYPE(sandbox::kModuleFileNamePatch),         \
+               }))
 
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
   IF_BUILDFLAG(                                                            \
@@ -738,6 +753,7 @@
   BRAVE_VPN_DNS_FEATURE_ENTRIES                                                \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
+  BRAVE_MODULE_FILENAME_PATCH                                                  \
   BRAVE_FEDERATED_FEATURE_ENTRIES                                              \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \
