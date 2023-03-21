@@ -9,6 +9,9 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -17,6 +20,7 @@
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/paint_recorder.h"
+#include "ui/gfx/favicon_size.h"
 #include "ui/gfx/skia_paint_util.h"
 
 namespace {
@@ -183,6 +187,43 @@ void BraveTab::OnBoundsChanged(const gfx::Rect& previous_bounds) {
   if (shadow_layer_ && shadow_layer_->parent()) {
     LayoutShadowLayer();
   }
+}
+
+void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
+                                           int visual_width) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
+      !tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
+    return;
+  }
+
+  if (!ShouldRenderAsNormalTab()) {
+    // In case it's pinned tab, use the same calculation with the upstream.
+    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
+    return;
+  }
+
+  auto* browser_view =
+      BrowserView::GetBrowserViewForBrowser(controller_->GetBrowser());
+  if (!browser_view) {
+    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
+    return;
+  }
+
+  auto* widget_delegate_view = static_cast<BraveBrowserView*>(browser_view)
+                                   ->vertical_tab_strip_widget_delegate_view();
+  DCHECK(widget_delegate_view);
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  DCHECK(region_view);
+
+  if (region_view->state() == VerticalTabStripRegionView::State::kFloating) {
+    // In case we're in floating mode, set the same left padding with the one
+    // we use for the collapsed state, so that the favicon doesn't moves left
+    // and right.
+    bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
+  }
+
+  // For else cases(non-pinned tabs), we don't do anything just like upstream.
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {
