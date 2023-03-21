@@ -77,7 +77,7 @@ export const ConnectWithSiteWrapper = styled.div`
   align-items: center;
   justify-content: center;
   background-color: ${(p) => p.theme.color.background01};
-  width: 320px;
+  width: 390px;
   height: 100%;
 `
 

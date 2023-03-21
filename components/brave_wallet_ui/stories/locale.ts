@@ -543,10 +543,23 @@ provideStrings({
   braveWalletTransactionDetailBoxBytes: 'BYTES',
 
   // Connect With Site Panel
-  braveWalletConnectWithSiteTitle: 'Select accounts(s)',
-  braveWalletConnectWithSiteDescription: 'View the addressess of your permitted accounts (required)',
   braveWalletConnectWithSiteNext: 'Next',
-  braveWalletConnectWithSiteHeaderTitle: 'Connect with Brave Wallet',
+  braveWalletConnectWallet: 'Connect wallet',
+  braveWalletConnectWithSite: 'or connect with:',
+  braveWalletConnectPermittedLabel: 'This app will be able to:',
+  braveWalletConnectNotPermittedLabel: 'It will not be able to:',
+  braveWalletConnectPermissionBalanceAndActivity: 'Check wallet balance and activity',
+  braveWalletConnectPermissionRequestApproval: 'Request approval for transactions and signatures',
+  braveWalletConnectPermissionAddress: 'View your permitted wallet address',
+  braveWalletConnectPermissionMoveFunds: 'Move funds without your permission',
+  braveWalletConnectTrustWarning: 'Make sure you trust this site.',
+
+  // Permission Duration
+  braveWalletPermissionDuration: 'Permission duration',
+  braveWalletPermissionUntilClose: 'Until I close this site',
+  braveWalletPermissionOneDay: 'For 24 hours',
+  braveWalletPermissionOneWeek: 'For 1 week',
+  braveWalletPermissionForever: 'Forever',
 
   // Import from Legacy Wallet
   braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',

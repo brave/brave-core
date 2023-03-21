@@ -1020,3 +1020,12 @@ export type NetworkFilterType = {
 }
 
 export type SortingOrder = 'ascending' | 'descending'
+
+export type DAppPermissionDurationOption = {
+  name: string
+  id: BraveWallet.PermissionLifetimeOption
+}
+
+export type DAppConnectedPermissionsOption = {
+  name: string
+}

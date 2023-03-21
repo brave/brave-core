@@ -6,6 +6,7 @@
 import { FC } from 'react'
 import styled, { css, CSSProperties } from 'styled-components'
 import { Link } from 'react-router-dom'
+import * as leo from '@brave/leo/tokens/css'
 
 // types
 import { BraveWallet, StringWithAutocomplete } from '../../constants/types'
@@ -118,6 +119,7 @@ export const Row = styled.div<FlexProps & {
   position: relative;
   ${makePaddingMixin(0)}
   margin-bottom: ${(p) => p.marginBottom ?? 0}px;
+  box-sizing: border-box;
 `
 
 export const Column = styled.div<FlexProps & {
@@ -139,6 +141,7 @@ export const Column = styled.div<FlexProps & {
   margin: ${(p) => p.margin ?? 0};
   ${(p) => p?.color && backgroundColorMixin};
   ${makePaddingMixin(0)}
+  box-sizing: border-box;
 `
 
 export const ScrollableColumn = styled(Column) <{
@@ -521,4 +524,10 @@ export const BannerWrapper = styled.div`
   flex-direction: row;
   margin-bottom: 24px;
   width: 100%;
+`
+
+export const VerticalDivider = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: ${leo.color.divider.subtle};
 `
