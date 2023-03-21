@@ -52,6 +52,9 @@ class BraveTabContextMenuContents : public ui::SimpleMenuModel::Delegate {
   void ExecuteCommand(int command_id, int event_flags) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripStringBrowserTest,
+                           ContextMenuString);
+
   bool IsBraveCommandIdEnabled(int command_id) const;
   void ExecuteBraveCommand(int command_id);
   bool IsBraveCommandId(int command_id) const;
