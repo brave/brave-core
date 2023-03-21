@@ -9,7 +9,7 @@
 #include "src/sandbox/win/src/interceptors_64.h"  // IWYU pragma: export
 
 #if !defined(PSAPI_VERSION)
-static_assert(!"<Psapi.h> should be included.");
+#error <Psapi.h> should be included.
 #endif
 
 namespace sandbox {

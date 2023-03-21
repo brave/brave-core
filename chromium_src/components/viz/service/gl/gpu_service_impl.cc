@@ -13,7 +13,9 @@
 
 #if BUILDFLAG(IS_WIN)
 #include <Psapi.h>
+
 #include "base/strings/strcat.h"
+#include "base/strings/sys_string_conversions.h"
 #endif
 
 namespace viz {
@@ -37,7 +39,9 @@ void GpuServiceImpl::InitializeWithHost(
       CHAR path[MAX_PATH] = {0};
       GetModuleFileNameExA(base::Process::Current().Handle(), nullptr, path,
                            MAX_PATH);
-      base::StrAppend(&result, {"GetModuleFileNameExA = ", path});
+      base::StrAppend(&result,
+                      {"GetModuleFileNameExA = ",
+                       base::WideToUTF8(base::SysNativeMBToWide(path))});
     }
     {
       WCHAR path[MAX_PATH] = {0};
@@ -49,13 +53,15 @@ void GpuServiceImpl::InitializeWithHost(
     {
       CHAR path[MAX_PATH] = {0};
       GetModuleFileNameA(nullptr, path, MAX_PATH);
-      base::StrAppend(&result, {"\nGetModuleFileNameA = ", path});
+      base::StrAppend(&result,
+                      {"\nGetModuleFileNameA = ",
+                       base::WideToUTF8(base::SysNativeMBToWide(path))});
     }
     {
       WCHAR path[MAX_PATH] = {0};
       GetModuleFileNameW(nullptr, path, MAX_PATH);
       base::StrAppend(&result,
-                      {"\nGetModuleFileNameW =  ", base::WideToUTF8(path)});
+                      {"\nGetModuleFileNameW = ", base::WideToUTF8(path)});
     }
     gpu_host_->DidGetExecutablePath(result);
   }

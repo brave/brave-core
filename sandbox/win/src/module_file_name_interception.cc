@@ -14,6 +14,7 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
+#include "base/win/windows_types.h"
 #include "sandbox/win/src/sandbox_types.h"
 
 namespace {
@@ -73,8 +74,8 @@ TargetGetModuleFileNameA(GetModuleFileNameAFunction orig,
                          HMODULE hModule,
                          LPSTR lpFilename,
                          DWORD nSize) {
-  auto result = orig(hModule, lpFilename, nSize);
-  if (hModule == nullptr && result != 0) {
+  const auto result = orig(hModule, lpFilename, nSize);
+  if (result != 0) {
     return PatchFilename(lpFilename, result, nSize);
   }
   return result;
@@ -85,8 +86,8 @@ TargetGetModuleFileNameW(GetModuleFileNameWFunction orig,
                          HMODULE hModule,
                          LPWSTR lpFilename,
                          DWORD nSize) {
-  auto result = orig(hModule, lpFilename, nSize);
-  if (hModule == nullptr && result != 0) {
+  const auto result = orig(hModule, lpFilename, nSize);
+  if (result != 0) {
     return PatchFilename(lpFilename, result, nSize);
   }
   return result;
@@ -98,8 +99,8 @@ TargetGetModuleFileNameExA(GetModuleFileNameExAFunction orig,
                            HMODULE hModule,
                            LPSTR lpFilename,
                            DWORD nSize) {
-  auto result = orig(hProcess, hModule, lpFilename, nSize);
-  if (hModule == nullptr && result != 0) {
+  const auto result = orig(hProcess, hModule, lpFilename, nSize);
+  if (result != 0) {
     return PatchFilename(lpFilename, result, nSize);
   }
   return result;
@@ -111,8 +112,8 @@ TargetGetModuleFileNameExW(GetModuleFileNameExWFunction orig,
                            HMODULE hModule,
                            LPWSTR lpFilename,
                            DWORD nSize) {
-  auto result = orig(hProcess, hModule, lpFilename, nSize);
-  if (hModule == nullptr && result != 0) {
+  const auto result = orig(hProcess, hModule, lpFilename, nSize);
+  if (result != 0) {
     return PatchFilename(lpFilename, result, nSize);
   }
   return result;

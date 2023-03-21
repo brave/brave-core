@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_list.h"
+#include "content/browser/renderer_host/render_frame_host_impl.h"
 #define SetupBasicInterceptions SetupBasicInterceptions_ChromiumImpl
 
 #include "src/sandbox/win/src/policy_broker.cc"
@@ -12,10 +14,12 @@
 #include "brave/sandbox/win/src/module_file_name_interception.h"
 
 #if !defined(PSAPI_VERSION)
-static_assert(!"<Psapi.h> should be included.");
+#error <Psapi.h> should be included.
 #endif
 
 namespace sandbox {
+
+features::BASE_DECLARE_FEATURE()
 
 bool SetupBasicInterceptions(InterceptionManager* manager,
                              bool is_csrss_connected) {
