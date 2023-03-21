@@ -29,11 +29,11 @@ class Report {
   void GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback);
 
  private:
-  void OnBalance(const mojom::Result result,
-                 mojom::BalanceReportInfoPtr balance_report,
+  void OnBalance(ledger::GetMonthlyReportCallback callback,
                  const mojom::ActivityMonth month,
                  const uint32_t year,
-                 ledger::GetMonthlyReportCallback callback);
+                 const mojom::Result result,
+                 mojom::BalanceReportInfoPtr balance_report);
 
   void OnTransactions(
       std::vector<mojom::TransactionReportInfoPtr> transaction_report,

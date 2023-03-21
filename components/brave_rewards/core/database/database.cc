@@ -119,7 +119,7 @@ void Database::SaveBalanceReportInfoItem(
 void Database::GetBalanceReportInfo(mojom::ActivityMonth month,
                                     int year,
                                     ledger::GetBalanceReportCallback callback) {
-  balance_report_->GetRecord(month, year, callback);
+  balance_report_->GetRecord(month, year, std::move(callback));
 }
 
 void Database::GetAllBalanceReports(

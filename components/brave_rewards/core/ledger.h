@@ -68,7 +68,7 @@ using AttestPromotionCallback =
     base::OnceCallback<void(mojom::Result, mojom::PromotionPtr)>;
 
 using GetBalanceReportCallback =
-    std::function<void(mojom::Result, mojom::BalanceReportInfoPtr)>;
+    base::OnceCallback<void(mojom::Result, mojom::BalanceReportInfoPtr)>;
 
 using GetBalanceReportListCallback =
     std::function<void(std::vector<mojom::BalanceReportInfoPtr>)>;

@@ -27,17 +27,17 @@ Report::~Report() = default;
 void Report::GetMonthly(const mojom::ActivityMonth month,
                         const int year,
                         ledger::GetMonthlyReportCallback callback) {
-  auto balance_callback =
-      std::bind(&Report::OnBalance, this, _1, _2, month, year, callback);
-
-  ledger_->database()->GetBalanceReportInfo(month, year, balance_callback);
+  ledger_->database()->GetBalanceReportInfo(
+      month, year,
+      base::BindOnce(&Report::OnBalance, base::Unretained(this),
+                     std::move(callback), month, year));
 }
 
-void Report::OnBalance(const mojom::Result result,
-                       mojom::BalanceReportInfoPtr balance_report,
+void Report::OnBalance(ledger::GetMonthlyReportCallback callback,
                        const mojom::ActivityMonth month,
                        const uint32_t year,
-                       ledger::GetMonthlyReportCallback callback) {
+                       const mojom::Result result,
+                       mojom::BalanceReportInfoPtr balance_report) {
   if (result != mojom::Result::LEDGER_OK || !balance_report) {
     BLOG(0, "Could not get balance report");
     callback(result, nullptr);

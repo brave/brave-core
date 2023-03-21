@@ -186,25 +186,10 @@ void BatLedgerImpl::SetAutoContributeEnabled(bool enabled) {
   ledger_->SetAutoContributeEnabled(enabled);
 }
 
-// static
-void BatLedgerImpl::OnGetBalanceReport(
-    CallbackHolder<GetBalanceReportCallback>* holder,
-    const ledger::mojom::Result result,
-    ledger::mojom::BalanceReportInfoPtr report_info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(report_info));
-  delete holder;
-}
 void BatLedgerImpl::GetBalanceReport(const ledger::mojom::ActivityMonth month,
                                      const int32_t year,
                                      GetBalanceReportCallback callback) {
-  auto* holder = new CallbackHolder<GetBalanceReportCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetBalanceReport(
-      month,
-      year,
-      std::bind(BatLedgerImpl::OnGetBalanceReport, holder, _1, _2));
+  ledger_->GetBalanceReport(month, year, std::move(callback));
 }
 
 void BatLedgerImpl::GetPublisherActivityFromUrl(

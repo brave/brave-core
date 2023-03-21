@@ -256,11 +256,6 @@ class BatLedgerImpl :
       const ledger::mojom::Result result,
       ledger::mojom::PublisherInfoPtr info);
 
-  static void OnGetBalanceReport(
-      CallbackHolder<GetBalanceReportCallback>* holder,
-      const ledger::mojom::Result result,
-      ledger::mojom::BalanceReportInfoPtr report_info);
-
   static void OnInitialize(CallbackHolder<InitializeCallback>* holder,
                            ledger::mojom::Result result);
 

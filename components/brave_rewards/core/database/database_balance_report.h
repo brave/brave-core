@@ -40,8 +40,8 @@ class DatabaseBalanceReport : public DatabaseTable {
   void DeleteAllRecords(ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ledger::GetBalanceReportCallback callback);
+  void OnGetRecord(ledger::GetBalanceReportCallback callback,
+                   mojom::DBCommandResponsePtr response);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
                        ledger::GetBalanceReportListCallback callback);

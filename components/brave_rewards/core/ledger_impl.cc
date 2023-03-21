@@ -542,8 +542,8 @@ void LedgerImpl::AttestPromotion(const std::string& promotion_id,
 void LedgerImpl::GetBalanceReport(mojom::ActivityMonth month,
                                   int year,
                                   GetBalanceReportCallback callback) {
-  WhenReady([this, month, year, callback]() {
-    database()->GetBalanceReportInfo(month, year, callback);
+  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
+    database()->GetBalanceReportInfo(month, year, std::move(callback));
   });
 }
 

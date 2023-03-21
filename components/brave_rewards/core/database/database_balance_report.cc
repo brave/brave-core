@@ -175,7 +175,7 @@ void DatabaseBalanceReport::GetRecord(
     ledger::GetBalanceReportCallback callback) {
   if (month == mojom::ActivityMonth::ANY || year == 0) {
     BLOG(1, "Record size is not correct " << month << "/" << year);
-    callback(mojom::Result::LEDGER_ERROR, {});
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -216,25 +216,25 @@ void DatabaseBalanceReport::GetRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback =
-      std::bind(&DatabaseBalanceReport::OnGetRecord, this, _1, callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseBalanceReport::OnGetRecord,
+                     base::Unretained(this), std::move(callback)));
 }
 void DatabaseBalanceReport::OnGetRecord(
-    mojom::DBCommandResponsePtr response,
-    ledger::GetBalanceReportCallback callback) {
+    ledger::GetBalanceReportCallback callback,
+    mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::LEDGER_ERROR, {});
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(1, "Record size is not correct: "
                 << response->result->get_records().size());
-    callback(mojom::Result::LEDGER_ERROR, {});
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR, {});
     return;
   }
 
@@ -248,7 +248,7 @@ void DatabaseBalanceReport::OnGetRecord(
   info->recurring_donation = GetDoubleColumn(record, 4);
   info->one_time_donation = GetDoubleColumn(record, 5);
 
-  callback(mojom::Result::LEDGER_OK, std::move(info));
+  std::move(callback).Run(mojom::Result::LEDGER_OK, std::move(info));
 }
 
 void DatabaseBalanceReport::GetAllRecords(
