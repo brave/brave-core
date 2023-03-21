@@ -28,7 +28,7 @@ class DatabaseActivityInfo : public DatabaseTable {
   void GetRecordsList(const int start,
                       const int limit,
                       mojom::ActivityInfoFilterPtr filter,
-                      ledger::PublisherInfoListCallback callback);
+                      ledger::GetActivityInfoListCallback callback);
 
   void DeleteRecord(const std::string& publisher_key,
                     ledger::LegacyResultCallback callback);
@@ -40,7 +40,7 @@ class DatabaseActivityInfo : public DatabaseTable {
                             mojom::PublisherInfoPtr info);
 
   void OnGetRecordsList(mojom::DBCommandResponsePtr response,
-                        ledger::PublisherInfoListCallback callback);
+                        ledger::GetActivityInfoListCallback callback);
 };
 
 }  // namespace database

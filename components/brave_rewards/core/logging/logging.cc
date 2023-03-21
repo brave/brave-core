@@ -5,13 +5,11 @@
 
 #include "brave/components/brave_rewards/core/logging/logging.h"
 
-#include "brave/components/brave_rewards/core/ledger_client.h"
-
 namespace ledger {
 
-LedgerClient* g_ledger_client = nullptr;  // NOT OWNED
+mojom::LedgerClient* g_ledger_client = nullptr;  // NOT OWNED
 
-void set_ledger_client_for_logging(LedgerClient* ledger_client) {
+void set_ledger_client_for_logging(mojom::LedgerClient* ledger_client) {
   DCHECK(ledger_client);
   g_ledger_client = ledger_client;
 }

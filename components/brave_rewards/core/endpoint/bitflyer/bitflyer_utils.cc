@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_impl.h"
 
 namespace ledger {
 namespace endpoint {

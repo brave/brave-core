@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 
 namespace ledger {
 namespace recovery {

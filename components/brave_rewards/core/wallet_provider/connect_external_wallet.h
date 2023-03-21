@@ -11,7 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

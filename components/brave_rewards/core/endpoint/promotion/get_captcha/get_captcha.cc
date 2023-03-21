@@ -78,18 +78,19 @@ void GetCaptcha::Request(const std::string& captcha_id,
 }
 
 void GetCaptcha::OnRequest(GetCaptchaCallback callback,
-                           const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response, true);
+                           mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response, true);
 
   std::string image;
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, image);
     return;
   }
 
-  result = ParseBody(response.body, &image);
+  result = ParseBody(response->body, &image);
   std::move(callback).Run(result, image);
 }
 

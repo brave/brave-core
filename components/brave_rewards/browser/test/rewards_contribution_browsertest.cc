@@ -502,8 +502,8 @@ IN_PROC_BROWSER_TEST_F(
   total_amount += amount;
 
   base::RunLoop run_loop_first;
-  rewards_service_->GetExternalWallet(
-      base::BindLambdaForTesting([&](ledger::GetExternalWalletResult result) {
+  rewards_service_->GetExternalWallet(base::BindLambdaForTesting(
+      [&](brave_rewards::GetExternalWalletResult result) {
         const auto wallet = std::move(result).value_or(nullptr);
         ASSERT_TRUE(wallet);
         ASSERT_EQ(wallet->fees.size(), 2UL);

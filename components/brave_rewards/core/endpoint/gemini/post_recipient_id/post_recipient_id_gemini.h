@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://api.gemini.com/v1/payments/recipientIds
 // Payload:
@@ -57,7 +57,7 @@ class PostRecipientId {
 
   mojom::Result ParseBody(const std::string& body, std::string* recipient_id);
 
-  void OnRequest(PostRecipientIdCallback, const mojom::UrlResponse&);
+  void OnRequest(PostRecipientIdCallback, mojom::UrlResponsePtr);
   std::string GeneratePayload();
 
   LedgerImpl* ledger_;  // NOT OWNED

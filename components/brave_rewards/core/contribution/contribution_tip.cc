@@ -12,7 +12,10 @@
 #include "base/functional/callback.h"
 #include "base/guid.h"
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
 
 namespace ledger::contribution {
 
@@ -108,7 +111,7 @@ void ContributionTip::OnPendingTipSaved(mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
   } else {
-    ledger_->ledger_client()->PendingContributionSaved(result);
+    ledger_->client()->PendingContributionSaved(result);
   }
 }
 

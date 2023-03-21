@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/captchas
 //
@@ -58,8 +58,7 @@ class PostCaptcha {
                           std::string* hint,
                           std::string* captcha_id);
 
-  void OnRequest(PostCaptchaCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PostCaptchaCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

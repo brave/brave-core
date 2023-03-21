@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://bitflyer.com/api/link/v1/account/inventory
 //
@@ -64,8 +64,7 @@ class GetBalance {
 
   mojom::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(GetBalanceCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(GetBalanceCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

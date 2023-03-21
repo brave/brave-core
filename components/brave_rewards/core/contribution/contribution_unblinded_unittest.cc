@@ -3,15 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <utility>
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
-#include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
@@ -27,29 +24,9 @@ namespace ledger {
 namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
- protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<Unblinded> unblinded_;
-  std::unique_ptr<database::MockDatabase> mock_database_;
-
-  UnblindedTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    unblinded_ = std::make_unique<Unblinded>(mock_ledger_impl_.get());
-    mock_database_ =
-        std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
-  }
-
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(mock_database_.get()));
-
-    ON_CALL(*mock_database_, GetContributionInfo(contribution_id, _))
+    ON_CALL(*mock_ledger_impl_.mock_database(),
+            GetContributionInfo(contribution_id, _))
         .WillByDefault(
             Invoke([](const std::string& id,
                       database::GetContributionInfoCallback callback) {
@@ -63,10 +40,15 @@ class UnblindedTest : public ::testing::Test {
               callback(std::move(info));
             }));
   }
+
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  Unblinded unblinded_{&mock_ledger_impl_};
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(*mock_database_, GetReservedUnblindedTokens(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_database(), GetReservedUnblindedTokens(_, _))
       .WillByDefault(
           Invoke([](const std::string&,
                     database::GetUnblindedTokenListCallback callback) {
@@ -82,10 +64,12 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
             callback(std::move(list));
           }));
 
-  unblinded_->Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                    [](const mojom::Result result) {
-                      ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
-                    });
+  unblinded_.Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
+                   [](const mojom::Result result) {
+                     ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
+                   });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
@@ -128,10 +112,12 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
 
   for (auto& entry : cases) {
     const std::string publisher_key =
-        unblinded_->GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
-                                                         publisher_list);
+        unblinded_.GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
+                                                        publisher_list);
     EXPECT_STREQ(publisher_key.c_str(), entry.publisher_key);
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace contribution

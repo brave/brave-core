@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/wallets/{payment_id}/events/batloss/{version}
 //
@@ -50,8 +50,7 @@ class PostBatLoss {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response,
-                 PostBatLossCallback callback);
+  void OnRequest(mojom::UrlResponsePtr response, PostBatLossCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

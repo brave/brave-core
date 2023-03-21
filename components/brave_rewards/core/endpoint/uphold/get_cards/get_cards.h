@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://api.uphold.com/v0/me/cards?q=currency:BAT
 //
@@ -93,7 +93,7 @@ class GetCards {
 
   mojom::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(GetCardsCallback, const mojom::UrlResponse&);
+  void OnRequest(GetCardsCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

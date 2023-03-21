@@ -82,16 +82,17 @@ void PostOauth::Request(const std::string& external_account_id,
 }
 
 void PostOauth::OnRequest(PostOauthCallback callback,
-                          const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response, true);
+                          mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response, true);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     return std::move(callback).Run(result, "");
   }
 
   std::string token;
-  result = ParseBody(response.body, &token);
+  result = ParseBody(response->body, &token);
   std::move(callback).Run(result, std::move(token));
 }
 

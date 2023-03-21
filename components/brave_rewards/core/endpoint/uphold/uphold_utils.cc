@@ -7,7 +7,7 @@
 
 #include "base/base64.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 namespace ledger {

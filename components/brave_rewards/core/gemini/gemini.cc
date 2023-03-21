@@ -9,6 +9,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_server.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
@@ -120,9 +121,9 @@ void Gemini::OnFetchBalance(FetchBalanceCallback callback,
 void Gemini::TransferFunds(double amount,
                            const std::string& address,
                            const std::string& contribution_id,
-                           client::LegacyResultCallback callback) {
+                           LegacyResultCallback callback) {
   transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](client::LegacyResultCallback callback,
+                 base::BindOnce([](LegacyResultCallback callback,
                                    mojom::Result result) { callback(result); },
                                 std::move(callback)));
 }

@@ -11,7 +11,7 @@
 #include "base/containers/flat_map.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_oauth/post_oauth_uphold.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"

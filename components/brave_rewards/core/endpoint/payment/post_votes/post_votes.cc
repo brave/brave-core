@@ -88,10 +88,11 @@ void PostVotes::Request(const credential::CredentialsRedeem& redeem,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostVotes::OnRequest(const mojom::UrlResponse& response,
+void PostVotes::OnRequest(mojom::UrlResponsePtr response,
                           PostVotesCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment

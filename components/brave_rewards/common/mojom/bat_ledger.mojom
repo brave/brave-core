@@ -1,8 +1,8 @@
 // Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at http://mozilla.org/MPL/2.0/.
-module bat_ledger.mojom;
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+module ledger.mojom;
 
 import "brave/components/brave_rewards/common/mojom/ledger.mojom";
 import "brave/components/brave_rewards/common/mojom/ledger_database.mojom";
@@ -10,24 +10,29 @@ import "brave/components/brave_rewards/common/mojom/ledger_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
-interface BatLedgerService {
-  Create(pending_associated_remote<BatLedgerClient> bat_ledger_client,
-         pending_associated_receiver<BatLedger> database) => ();
+interface Ledger {
+  Initialize(
+      bool execute_create_script) => (ledger.mojom.Result result);
+
   SetEnvironment(ledger.mojom.Environment environment);
-  SetDebug(bool isDebug);
+
+  SetDebug(bool debug);
+
   SetReconcileInterval(int32 interval);
+
   SetRetryInterval(int32 interval);
+
   SetTesting();
+
   SetStateMigrationTargetVersionForTesting(int32 version);
 
   GetEnvironment() => (ledger.mojom.Environment environment);
-  GetDebug() => (bool debug);
-  GetReconcileInterval() => (int32 interval);
-  GetRetryInterval() => (int32 retry_interval);
-};
 
-interface BatLedger {
-  Initialize(bool execute_create_script) => (ledger.mojom.Result result);
+  GetDebug() => (bool debug);
+
+  GetReconcileInterval() => (int32 interval);
+
+  GetRetryInterval() => (int32 retry_interval);
 
   CreateRewardsWallet(string country) =>
       (ledger.mojom.CreateRewardsWalletResult result);
@@ -35,18 +40,29 @@ interface BatLedger {
   GetRewardsParameters() => (ledger.mojom.RewardsParameters properties);
 
   GetAutoContributeProperties() => (ledger.mojom.AutoContributeProperties props);
+
   GetPublisherMinVisitTime() => (int32 min_visit_time);
+
   GetPublisherMinVisits() => (int32 min_visits);
+
   GetPublisherAllowNonVerified() => (bool allowed);
+
   GetAutoContributeEnabled() => (bool auto_contribute);
+
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
   OnLoad(ledger.mojom.VisitData visit_data, uint64 current_time);
+
   OnUnload(uint32 tab_id, uint64 current_time);
+
   OnShow(uint32 tab_id, uint64 current_time);
+
   OnHide(uint32 tab_id, uint64 current_time);
+
   OnForeground(uint32 tab_id, uint64 current_time);
+
   OnBackground(uint32 tab_id, uint64 current_time);
+
   OnXHRLoad(uint32 tab_id,
             string url,
             map<string, string> parts,
@@ -55,15 +71,23 @@ interface BatLedger {
             ledger.mojom.VisitData visit_data);
 
   SetPublisherExclude(string publisher_key, ledger.mojom.PublisherExclude exclude) => (ledger.mojom.Result result);
+
   RestorePublishers() => (ledger.mojom.Result result);
+
   FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
+
   ClaimPromotion(string promotion_id, string payload) => (ledger.mojom.Result result, string response);
+
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
 
   SetPublisherMinVisitTime(int32 duration_in_seconds);
+
   SetPublisherMinVisits(int32 visits);
+
   SetPublisherAllowNonVerified(bool allow);
+
   SetAutoContributionAmount(double amount);
+
   SetAutoContributeEnabled(bool enabled);
 
   GetBalanceReport(ledger.mojom.ActivityMonth month, int32 year) =>
@@ -72,13 +96,16 @@ interface BatLedger {
   GetPublisherActivityFromUrl(uint64 window_id,
       ledger.mojom.VisitData visit_data,
       string publisher_blob);
+
   GetAutoContributionAmount() => (double contribution_amount);
+
   GetPublisherBanner(string publisher_id) =>
       (ledger.mojom.PublisherBanner? banner);
 
   OneTimeTip(string publisher_id, double amount) => (ledger.mojom.Result result);
 
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
+
   GetCreationStamp() => (uint64 boot_stamp);
 
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
@@ -157,9 +184,9 @@ interface BatLedger {
   GetRewardsWallet() => (ledger.mojom.RewardsWallet? wallet);
 };
 
-interface BatLedgerClient {
-  [Sync]
+interface LedgerClient {
   LoadLedgerState() => (ledger.mojom.Result result, string data);
+
   LoadPublisherState() => (ledger.mojom.Result result, string data);
 
   OnReconcileComplete(ledger.mojom.Result result, ledger.mojom.ContributionInfo contribution);
@@ -167,6 +194,7 @@ interface BatLedgerClient {
   OnPanelPublisherInfo(ledger.mojom.Result result,
                        ledger.mojom.PublisherInfo publisher_info,
                        uint64 window_id);
+
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
 
@@ -178,53 +206,75 @@ interface BatLedgerClient {
   PublisherListNormalized(array<ledger.mojom.PublisherInfo> list);
 
   OnPublisherRegistryUpdated();
+
   OnPublisherUpdated(string publisher_id);
 
   [Sync]
   GetBooleanState(string name) => (bool value);
+
   [Sync]
   SetBooleanState(string name, bool value) => ();
+
   [Sync]
   GetIntegerState(string name) => (int32 value);
+
   [Sync]
   SetIntegerState(string name, int32 value) => ();
+
   [Sync]
   GetDoubleState(string name) => (double value);
+
   [Sync]
   SetDoubleState(string name, double value) => ();
+
   [Sync]
   GetStringState(string name) => (string value);
+
   [Sync]
   SetStringState(string name, string value) => ();
+
   [Sync]
   GetInt64State(string name) => (int64 value);
+
   [Sync]
   SetInt64State(string name, int64 value) => ();
+
   [Sync]
   GetUint64State(string name) => (uint64 value);
+
   [Sync]
   SetUint64State(string name, uint64 value) => ();
+
   [Sync]
   GetValueState(string name) => (mojo_base.mojom.Value value);
+
   [Sync]
   SetValueState(string name, mojo_base.mojom.Value value) => ();
+
   [Sync]
-  GetTimeState(string name) => (mojo_base.mojom.Time time);
+  GetTimeState(string name) => (mojo_base.mojom.Time value);
+
   [Sync]
-  SetTimeState(string name, mojo_base.mojom.Time time) => ();
+  SetTimeState(string name, mojo_base.mojom.Time value) => ();
+
   [Sync]
   ClearState(string name) => ();
 
   [Sync]
   GetBooleanOption(string name) => (bool value);
+
   [Sync]
   GetIntegerOption(string name) => (int32 value);
+
   [Sync]
   GetDoubleOption(string name) => (double value);
+
   [Sync]
   GetStringOption(string name) => (string value);
+
   [Sync]
   GetInt64Option(string name) => (int64 value);
+
   [Sync]
   GetUint64Option(string name) => (uint64 value);
 
@@ -238,6 +288,7 @@ interface BatLedgerClient {
 
   [Sync]
   GetClientInfo() => (ledger.mojom.ClientInfo info);
+
   UnblindedTokensReady();
 
   ReconcileStampReset();

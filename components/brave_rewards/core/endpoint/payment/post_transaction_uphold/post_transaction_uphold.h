@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/orders/{order_id}/transactions/uphold
 //
@@ -64,7 +64,7 @@ class PostTransactionUphold {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response,
+  void OnRequest(mojom::UrlResponsePtr response,
                  PostTransactionUpholdCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
