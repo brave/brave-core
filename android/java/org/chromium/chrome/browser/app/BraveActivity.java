@@ -232,6 +232,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
 
+    public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
+
     /**
      * Settings for sending local notification reminders.
      */
@@ -798,6 +800,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
+        int appOpenCountForWidgetPromo = SharedPreferencesManager.getInstance().readInt(
+                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO);
+        if (appOpenCountForWidgetPromo < APP_OPEN_COUNT_FOR_WIDGET_PROMO) {
+            SharedPreferencesManager.getInstance().writeInt(
+                    BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO,
+                    appOpenCountForWidgetPromo + 1);
+        }
     }
 
     @Override

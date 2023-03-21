@@ -1165,7 +1165,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
         // Delay showing the panel. Otherwise there are ANRs on holding onUrlFocusChange
         PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
-            if (hasFocus) mSearchWidgetPromoPanel.showIfNeeded(this);
+            int appOpenCountForWidgetPromo = SharedPreferencesManager.getInstance().readInt(
+                    BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO);
+            if (hasFocus
+                    && appOpenCountForWidgetPromo >= BraveActivity.APP_OPEN_COUNT_FOR_WIDGET_PROMO)
+                mSearchWidgetPromoPanel.showIfNeeded(this);
         });
 
         if (OnboardingPrefManager.getInstance().getUrlFocusCount() == 0) {
