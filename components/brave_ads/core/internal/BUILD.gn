@@ -173,6 +173,7 @@ source_set("internal") {
     "ad_content_value_util.cc",
     "ad_event_history.cc",
     "ad_info.cc",
+    "ad_switches.cc",
     "ad_type.cc",
     "ads.cc",
     "ads/ad_events/ad_event_info.cc",

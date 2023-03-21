@@ -5,8 +5,15 @@
 
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_features_from_command_line_util.h"
 
+#include <string>
+
 #include "base/check.h"
+#include "base/command_line.h"
+#include "base/containers/flat_set.h"
+#include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_split.h"
+#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
@@ -44,6 +51,22 @@ const base::Feature* const kFeatures[] = {
     &targeting::features::kTextClassification,
     &user_activity::features::kFeature};
 
+constexpr char kFeaturesSeparators[] = ",:<";
+
+bool IsFeatureOverridden(const std::string& feature) {
+  const base::NoDestructor<base::flat_set<std::string>> brave_ad_features(
+      []() -> base::flat_set<std::string> {
+        const auto* const command_line = base::CommandLine::ForCurrentProcess();
+        const std::string features_switch =
+            command_line->GetSwitchValueASCII(switches::kFeaturesSwitch);
+        base::flat_set<std::string> features =
+            base::SplitString(features_switch, kFeaturesSeparators,
+                              base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+        return features;
+      }());
+  return brave_ad_features->contains(feature);
+}
+
 }  // namespace
 
 bool DidOverrideFeaturesFromCommandLine() {
@@ -51,7 +74,8 @@ bool DidOverrideFeaturesFromCommandLine() {
     DCHECK(feature);
 
     return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
-        feature->name);
+               feature->name) ||
+           IsFeatureOverridden(feature->name);
   });
 }
 

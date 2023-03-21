@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/base_switches.h"
 #include "base/check.h"
 #include "base/containers/circular_deque.h"
 #include "base/containers/contains.h"
@@ -23,6 +24,7 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
@@ -43,6 +45,7 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
+#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/ads.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
@@ -107,6 +110,10 @@ constexpr unsigned int kMaximumNumberOfTimesToRetryNetworkRequests = 1;
 constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
+
+constexpr char kFeaturesValueSeparator[] = ",";
+
+constexpr char kSwitchValueSeparator[] = "=";
 
 BASE_FEATURE(kFeature, "NotificationAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
@@ -283,6 +290,20 @@ std::vector<std::string> ExtraCommandLineSwitches() {
       brave_rewards::RewardsFlags::GetCommandLineSwitchASCII();
   if (!rewards_command_line_switch.empty()) {
     command_line_switches.push_back(rewards_command_line_switch);
+  }
+
+  const base::CommandLine* command_line =
+      base::CommandLine::ForCurrentProcess();
+  const std::string enabled_features =
+      command_line->GetSwitchValueASCII(::switches::kEnableFeatures);
+  const std::string disabled_features =
+      command_line->GetSwitchValueASCII(::switches::kDisableFeatures);
+
+  if (!enabled_features.empty() || !disabled_features.empty()) {
+    const std::string affected_features = base::StrCat(
+        {enabled_features, kFeaturesValueSeparator, disabled_features});
+    command_line_switches.push_back(base::StrCat(
+        {switches::kFeaturesSwitch, kSwitchValueSeparator, enabled_features}));
   }
 
   return command_line_switches;

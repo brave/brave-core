@@ -10,9 +10,11 @@
 #include <utility>
 
 #include "base/base_switches.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
@@ -48,59 +50,74 @@ struct ParamInfo final {
     {/*command_line_switch*/ {kFooBarSwitch, {}},
 
      /*expected_did_override_from_command_line*/ false},
-    {/*command_line_switch*/ {switches::kEnableFeatures, "FooBar"},
+    {/*command_line_switch*/ {::switches::kEnableFeatures, "FooBar"},
      /*expected_did_override_from_command_line*/ false},
-    {/*command_line_switch*/ {switches::kEnableFeatures, {}},
+    {/*command_line_switch*/ {::switches::kEnableFeatures, {}},
      /*expected_did_override_from_command_line*/ false},
     {/*command_line_switch*/ {
-         switches::kEnableFeatures,
+         ::switches::kEnableFeatures,
          base::JoinString(
              {"Foo", user_activity::features::kFeature.name, "Bar"},
              ",")},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               exclusion_rules::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               features::kAccount.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               features::kConversions.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               features::kEligibleAds.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               inline_content_ads::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               new_tab_page_ads::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               notification_ads::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               permission_rules::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               promoted_content_ads::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               resource::features::kAntiTargeting.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {
+         ::switches::kEnableFeatures,
+         base::StrCat(
+             {resource::features::kAntiTargeting.name, ":param/value"})},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               search_result_ads::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               targeting::features::kEpsilonGreedyBandit.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {
+         ::switches::kEnableFeatures,
+         base::StrCat({targeting::features::kEpsilonGreedyBandit.name,
+                       "<TrialName:param/value"})},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               targeting::features::kPurchaseIntent.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               targeting::features::kTextClassification.name},
      /*expected_did_override_from_command_line*/ true},
-    {/*command_line_switch*/ {switches::kEnableFeatures,
+    {/*command_line_switch*/ {
+         ::switches::kEnableFeatures,
+         base::StrCat({targeting::features::kTextClassification.name,
+                       "<TrialName.GroupName:param/value"})},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {::switches::kEnableFeatures,
                               user_activity::features::kFeature.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams, {}},
@@ -170,6 +187,13 @@ class BatAdsDidOverrideFeaturesFromCommandLineUtilTest
     const ParamInfo param = GetParam();
 
     AppendCommandLineSwitches({param.command_line_switch});
+
+    if (param.command_line_switch.key == ::switches::kEnableFeatures) {
+      CommandLineSwitchInfo command_line_switch;
+      command_line_switch.key = switches::kFeaturesSwitch;
+      command_line_switch.value = param.command_line_switch.value;
+      AppendCommandLineSwitches({command_line_switch});
+    }
 
     std::unique_ptr<base::FeatureList> feature_list =
         std::make_unique<base::FeatureList>();
