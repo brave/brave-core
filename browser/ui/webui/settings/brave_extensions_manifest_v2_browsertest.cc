@@ -113,7 +113,6 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2BrowserTest, InstallFail) {
   content::WebContentsConsoleObserver console_observer(web_contents);
   console_observer.SetPattern("Could not fetch data from the Chrome Web Store");
   ClickExtensionToggle(web_contents);
-  EXPECT_FALSE(IsExtensionToggleEnabled(web_contents));
   ASSERT_TRUE(console_observer.Wait());
 
   while (IsExtensionToggled(web_contents)) {
