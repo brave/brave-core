@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_API_IDENTITY_BRAVE_WEB_AUTH_FLOW_H_
 
 #include <memory>
+#include <optional>
 #include <set>
 #include <string>
 
@@ -27,6 +28,7 @@ class BraveWebAuthFlow : public WebAuthFlow::Delegate {
   BraveWebAuthFlow();
   ~BraveWebAuthFlow() override;
 
+  static void SetTokenForTesting(const std::string& token);
   // Used only if Google API keys aren't set up.
   // WebAuthFlow::Delegate implementation:
   void OnAuthFlowFailure(WebAuthFlow::Failure failure) override;
@@ -43,6 +45,8 @@ class BraveWebAuthFlow : public WebAuthFlow::Delegate {
       bool interactive);
 
  private:
+  static absl::optional<std::string> token_for_testing_;
+
   raw_ptr<Profile> profile_;
   ExtensionTokenKey token_key_{/*extension_id=*/"",
                                /*account_info=*/CoreAccountInfo(),

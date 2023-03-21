@@ -27,6 +27,13 @@ constexpr char kGoogleOauth2Url[] =
 BraveWebAuthFlow::BraveWebAuthFlow() {}
 BraveWebAuthFlow::~BraveWebAuthFlow() {}
 
+// static
+absl::optional<std::string> BraveWebAuthFlow::token_for_testing_;
+// static
+void BraveWebAuthFlow::SetTokenForTesting(const std::string& token) {
+  token_for_testing_ = token;
+}
+
 void BraveWebAuthFlow::StartWebAuthFlow(
     Profile* profile,
     base::OnceClosure complete_mint_token_flow_callback,
@@ -42,6 +49,12 @@ void BraveWebAuthFlow::StartWebAuthFlow(
       std::move(complete_mint_token_flow_callback);
   token_key_ = token_key;
 
+  if (token_for_testing_.has_value()) {
+    std::move(complete_mint_token_flow_callback_).Run();
+    std::move(complete_with_result_callback_)
+        .Run(token_for_testing_.value(), token_key_.scopes);
+    return;
+  }
   // Compute the reverse DNS notation of the client ID and use it as a custom
   // URI scheme.
   std::vector<std::string> client_id_components = base::SplitString(
