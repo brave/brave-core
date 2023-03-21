@@ -10,7 +10,7 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "net/http/http_status_code.h"
@@ -19,37 +19,26 @@
 // npm run test -- brave_unit_tests --filter=BitflyerPostOauthTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
 namespace bitflyer {
 
 class BitflyerPostOauthTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostOauth> oauth_;
-
-  BitflyerPostOauthTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    oauth_ = std::make_unique<PostOauth>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostOauth oauth_{&mock_ledger_impl_};
 };
 
 TEST_F(BitflyerPostOauthTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"({
+  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = R"({
              "access_token": "mock_access_token",
              "refresh_token": "mock_refresh_token",
              "expires_in": 259002,
@@ -59,10 +48,10 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
              "linking_info": "mock_linking_info",
              "deposit_id": "339dc5ff-1167-4d69-8dd8-aa77ccb12d74"
             })";
-            std::move(callback).Run(response);
-          }));
+            std::move(callback).Run(std::move(response));
+          });
 
-  oauth_->Request(
+  oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
       base::BindOnce([](mojom::Result result, std::string&& token,
@@ -72,20 +61,22 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
         EXPECT_EQ(address, "339dc5ff-1167-4d69-8dd8-aa77ccb12d74");
         EXPECT_EQ(linking_info, "mock_linking_info");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .WillByDefault(
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
-  oauth_->Request(
+  oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
       base::BindOnce([](mojom::Result result, std::string&& token,
@@ -93,6 +84,8 @@ TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(token, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace bitflyer

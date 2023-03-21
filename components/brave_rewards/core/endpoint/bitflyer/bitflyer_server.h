@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/get_balance/get_balance_bitflyer.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

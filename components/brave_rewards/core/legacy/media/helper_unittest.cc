@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

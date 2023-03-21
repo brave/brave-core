@@ -12,7 +12,7 @@
 
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 #include "brave/components/brave_rewards/core/sku/sku_transaction.h"
 

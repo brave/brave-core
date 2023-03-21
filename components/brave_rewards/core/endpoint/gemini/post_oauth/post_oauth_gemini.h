@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST https://exchange.sandbox.gemini.com/auth/token
 //
@@ -62,7 +62,7 @@ class PostOauth {
 
   mojom::Result ParseBody(const std::string& body, std::string* token);
 
-  void OnRequest(PostOauthCallback, const mojom::UrlResponse&);
+  void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

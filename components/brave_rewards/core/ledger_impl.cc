@@ -3,27 +3,47 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <utility>
+#include "brave/components/brave_rewards/core/ledger_impl.h"
+
+#include <vector>
 
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "base/types/always_false.h"
+#include "brave/components/brave_rewards/core/api/api.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
-#include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/legacy/media/helper.h"
+#include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
-#include "brave/components/brave_rewards/core/sku/sku_factory.h"
-#include "brave/components/brave_rewards/core/sku/sku_merchant.h"
-#include "brave/components/brave_rewards/core/wallet/wallet_util.h"
+#include "brave/components/brave_rewards/core/recovery/recovery.h"
+#include "brave/components/brave_rewards/core/report/report.h"
+#include "brave/components/brave_rewards/core/state/state.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 using std::placeholders::_1;
 
+namespace {
+
+bool testing() {
+  return ledger::is_testing;
+}
+
+}  // namespace
+
 namespace ledger {
 
-LedgerImpl::LedgerImpl(LedgerClient* client)
-    : ledger_client_(client),
+LedgerImpl::LedgerImpl(
+    mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
+    : ledger_client_(std::move(ledger_client_remote)),
       promotion_(std::make_unique<promotion::Promotion>(this)),
       publisher_(std::make_unique<publisher::Publisher>(this)),
       media_(std::make_unique<braveledger_media::Media>(this)),
@@ -31,7 +51,6 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
       wallet_(std::make_unique<wallet::Wallet>(this)),
       database_(std::make_unique<database::Database>(this)),
       report_(std::make_unique<report::Report>(this)),
-      sku_(sku::SKUFactory::Create(this, sku::SKUType::kMerchant)),
       state_(std::make_unique<state::State>(this)),
       api_(std::make_unique<api::API>(this)),
       recovery_(std::make_unique<recovery::Recovery>(this)),
@@ -39,235 +58,65 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
       gemini_(std::make_unique<gemini::Gemini>(this)),
       uphold_(std::make_unique<uphold::Uphold>(this)) {
   DCHECK(base::ThreadPoolInstance::Get());
-  set_ledger_client_for_logging(ledger_client_);
+  set_ledger_client_for_logging(ledger_client_.get());
 }
 
 LedgerImpl::~LedgerImpl() = default;
 
-LedgerClient* LedgerImpl::ledger_client() const {
-  return ledger_client_;
-}
-
-state::State* LedgerImpl::state() const {
-  return state_.get();
-}
-
-promotion::Promotion* LedgerImpl::promotion() const {
-  return promotion_.get();
-}
-
-publisher::Publisher* LedgerImpl::publisher() const {
-  return publisher_.get();
-}
-
-braveledger_media::Media* LedgerImpl::media() const {
-  return media_.get();
-}
-
-contribution::Contribution* LedgerImpl::contribution() const {
-  return contribution_.get();
-}
-
-wallet::Wallet* LedgerImpl::wallet() const {
-  return wallet_.get();
-}
-
-report::Report* LedgerImpl::report() const {
-  return report_.get();
-}
-
-sku::SKU* LedgerImpl::sku() const {
-  return sku_.get();
-}
-
-api::API* LedgerImpl::api() const {
-  return api_.get();
-}
-
-database::Database* LedgerImpl::database() const {
-  return database_.get();
-}
-
-bitflyer::Bitflyer* LedgerImpl::bitflyer() const {
-  return bitflyer_.get();
-}
-
-gemini::Gemini* LedgerImpl::gemini() const {
-  return gemini_.get();
-}
-
-uphold::Uphold* LedgerImpl::uphold() const {
-  return uphold_.get();
-}
-
-template <typename>
-inline constexpr bool dependent_false_v = false;
-
-template <typename LoadURLCallback>
-void LedgerImpl::LoadURLImpl(mojom::UrlRequestPtr request,
-                             LoadURLCallback callback) {
-  DCHECK(request);
-  if (IsShuttingDown()) {
-    BLOG(1, request->url + " will not be executed as we are shutting down");
-    return;
-  }
-
-  if (!request->skip_log) {
-    BLOG(5, UrlRequestToString(request->url, request->headers, request->content,
-                               request->content_type, request->method));
-  }
-
-  if constexpr (std::is_same_v<LoadURLCallback,
-                               ledger::client::LegacyLoadURLCallback>) {
-    ledger_client_->LoadURL(
-        std::move(request),
-        base::BindOnce(
-            [](ledger::client::LegacyLoadURLCallback callback,
-               const mojom::UrlResponse& response) { callback(response); },
-            std::move(callback)));
-  } else if constexpr (std::is_same_v<LoadURLCallback,  // NOLINT
-                                      ledger::client::LoadURLCallback>) {
-    ledger_client_->LoadURL(std::move(request), std::move(callback));
-  } else {
-    static_assert(dependent_false_v<LoadURLCallback>,
-                  "LoadURLCallback must be either "
-                  "ledger::client::LegacyLoadURLCallback, or "
-                  "ledger::client::LoadURLCallback!");
-  }
-}
-
-void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
-                         client::LegacyLoadURLCallback callback) {
-  LoadURLImpl(std::move(request), std::move(callback));
-}
-
-void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
-                         client::LoadURLCallback callback) {
-  LoadURLImpl(std::move(request), std::move(callback));
-}
-
-template <typename RunDBTransactionCallback>
-void LedgerImpl::RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
-                                      RunDBTransactionCallback callback) {
-  if constexpr (std::is_same_v<  // NOLINT
-                    RunDBTransactionCallback,
-                    ledger::client::LegacyRunDBTransactionCallback>) {
-    ledger_client_->RunDBTransaction(
-        std::move(transaction),
-        base::BindOnce(
-            [](ledger::client::LegacyRunDBTransactionCallback callback,
-               mojom::DBCommandResponsePtr response) {
-              callback(std::move(response));
-            },
-            std::move(callback)));
-  } else if constexpr (std::is_same_v<  // NOLINT
-                           RunDBTransactionCallback,
-                           ledger::client::RunDBTransactionCallback>) {
-    ledger_client_->RunDBTransaction(std::move(transaction),
-                                     std::move(callback));
-  } else {
-    static_assert(dependent_false_v<RunDBTransactionCallback>,
-                  "RunDBTransactionCallback must be either "
-                  "ledger::client::LegacyRunDBTransactionCallback, or "
-                  "ledger::client::RunDBTransactionCallback!");
-  }
-}
-
-void LedgerImpl::RunDBTransaction(
-    mojom::DBTransactionPtr transaction,
-    client::LegacyRunDBTransactionCallback callback) {
-  RunDBTransactionImpl(std::move(transaction), std::move(callback));
-}
-
-void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                  client::RunDBTransactionCallback callback) {
-  RunDBTransactionImpl(std::move(transaction), std::move(callback));
-}
-
-void LedgerImpl::StartServices() {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  publisher()->SetPublisherServerListTimer();
-  contribution()->SetAutoContributeTimer();
-  contribution()->SetMonthlyContributionTimer();
-  promotion()->Refresh(false);
-  contribution()->Initialize();
-  promotion()->Initialize();
-  api()->Initialize();
-  recovery_->Check();
-}
-
 void LedgerImpl::Initialize(bool execute_create_script,
-                            LegacyResultCallback callback) {
+                            InitializeCallback callback) {
   if (ready_state_ != ReadyState::kUninitialized) {
     BLOG(0, "Ledger already initializing");
-    callback(mojom::Result::LEDGER_ERROR);
-    return;
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   ready_state_ = ReadyState::kInitializing;
-  InitializeDatabase(execute_create_script, callback);
+  InitializeDatabase(execute_create_script,
+                     ToLegacyCallback(std::move(callback)));
 }
 
-void LedgerImpl::InitializeDatabase(bool execute_create_script,
-                                    LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  LegacyResultCallback finish_callback =
-      std::bind(&LedgerImpl::OnInitialized, this, _1, std::move(callback));
-
-  auto database_callback =
-      std::bind(&LedgerImpl::OnDatabaseInitialized, this, _1, finish_callback);
-  database()->Initialize(execute_create_script, database_callback);
+void LedgerImpl::SetEnvironment(mojom::Environment environment) {
+  DCHECK(IsUninitialized() || testing());
+  ledger::_environment = environment;
 }
 
-void LedgerImpl::OnInitialized(mojom::Result result,
-                               LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  if (result == mojom::Result::LEDGER_OK) {
-    StartServices();
-  } else {
-    BLOG(0, "Failed to initialize wallet " << result);
-  }
-
-  while (!ready_callbacks_.empty()) {
-    auto ready_callback = std::move(ready_callbacks_.front());
-    ready_callbacks_.pop();
-    ready_callback();
-  }
-
-  ready_state_ = ReadyState::kReady;
-
-  callback(result);
+void LedgerImpl::SetDebug(bool debug) {
+  DCHECK(IsUninitialized() || testing());
+  ledger::is_debug = debug;
 }
 
-void LedgerImpl::OnDatabaseInitialized(mojom::Result result,
-                                       LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Database could not be initialized. Error: " << result);
-    callback(result);
-    return;
-  }
-
-  auto state_callback =
-      std::bind(&LedgerImpl::OnStateInitialized, this, _1, callback);
-
-  state()->Initialize(state_callback);
+void LedgerImpl::SetReconcileInterval(int32_t interval) {
+  DCHECK(IsUninitialized() || testing());
+  ledger::reconcile_interval = interval;
 }
 
-void LedgerImpl::OnStateInitialized(mojom::Result result,
-                                    LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
+void LedgerImpl::SetRetryInterval(int32_t interval) {
+  DCHECK(IsUninitialized() || testing());
+  ledger::retry_interval = interval;
+}
 
-  if (result != mojom::Result::LEDGER_OK) {
-    BLOG(0, "Failed to initialize state");
-    return;
-  }
+void LedgerImpl::SetTesting() {
+  ledger::is_testing = true;
+}
 
-  callback(mojom::Result::LEDGER_OK);
+void LedgerImpl::SetStateMigrationTargetVersionForTesting(int32_t version) {
+  ledger::state_migration_target_version_for_testing = version;
+}
+
+void LedgerImpl::GetEnvironment(GetEnvironmentCallback callback) {
+  std::move(callback).Run(ledger::_environment);
+}
+
+void LedgerImpl::GetDebug(GetDebugCallback callback) {
+  std::move(callback).Run(ledger::is_debug);
+}
+
+void LedgerImpl::GetReconcileInterval(GetReconcileIntervalCallback callback) {
+  std::move(callback).Run(ledger::reconcile_interval);
+}
+
+void LedgerImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
+  std::move(callback).Run(ledger::retry_interval);
 }
 
 void LedgerImpl::CreateRewardsWallet(const std::string& country,
@@ -280,12 +129,78 @@ void LedgerImpl::CreateRewardsWallet(const std::string& country,
   });
 }
 
-void LedgerImpl::OneTimeTip(const std::string& publisher_key,
-                            double amount,
-                            LegacyResultCallback callback) {
-  WhenReady([this, publisher_key, amount, callback]() {
-    contribution()->OneTimeTip(publisher_key, amount, callback);
+void LedgerImpl::GetRewardsParameters(GetRewardsParametersCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    auto params = state()->GetRewardsParameters();
+    if (params->rate == 0.0) {
+      // A rate of zero indicates that the rewards parameters have
+      // not yet been successfully initialized from the server.
+      BLOG(1, "Rewards parameters not set - fetching from server");
+      api()->FetchParameters(std::move(callback));
+      return;
+    }
+
+    std::move(callback).Run(std::move(params));
   });
+}
+
+void LedgerImpl::GetAutoContributeProperties(
+    GetAutoContributePropertiesCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(mojom::AutoContributeProperties::New());
+  }
+
+  auto props = mojom::AutoContributeProperties::New();
+  props->enabled_contribute = state()->GetAutoContributeEnabled();
+  props->amount = state()->GetAutoContributionAmount();
+  props->contribution_min_time = state()->GetPublisherMinVisitTime();
+  props->contribution_min_visits = state()->GetPublisherMinVisits();
+  props->contribution_non_verified = state()->GetPublisherAllowNonVerified();
+  props->reconcile_stamp = state()->GetReconcileStamp();
+  std::move(callback).Run(std::move(props));
+}
+
+void LedgerImpl::GetPublisherMinVisitTime(
+    GetPublisherMinVisitTimeCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(0);
+  }
+
+  std::move(callback).Run(state()->GetPublisherMinVisitTime());
+}
+
+void LedgerImpl::GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(0);
+  }
+
+  std::move(callback).Run(state()->GetPublisherMinVisits());
+}
+
+void LedgerImpl::GetPublisherAllowNonVerified(
+    GetPublisherAllowNonVerifiedCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(false);
+  }
+
+  std::move(callback).Run(state()->GetPublisherAllowNonVerified());
+}
+
+void LedgerImpl::GetAutoContributeEnabled(
+    GetAutoContributeEnabledCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(false);
+  }
+
+  std::move(callback).Run(state()->GetAutoContributeEnabled());
+}
+
+void LedgerImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(0);
+  }
+
+  std::move(callback).Run(state()->GetReconcileStamp());
 }
 
 void LedgerImpl::OnLoad(mojom::VisitDataPtr visit_data, uint64_t current_time) {
@@ -394,112 +309,23 @@ void LedgerImpl::OnXHRLoad(
   media()->ProcessMedia(parts, type, std::move(visit_data));
 }
 
-void LedgerImpl::GetActivityInfoList(uint32_t start,
-                                     uint32_t limit,
-                                     mojom::ActivityInfoFilterPtr filter,
-                                     PublisherInfoListCallback callback) {
-  WhenReady([this, start, limit, filter = std::move(filter),
-             callback]() mutable {
-    database()->GetActivityInfoList(start, limit, std::move(filter), callback);
-  });
-}
-
-void LedgerImpl::GetPublishersVisitedCount(
-    base::OnceCallback<void(int)> callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    database()->GetPublishersVisitedCount(std::move(callback));
-  });
-}
-
-void LedgerImpl::GetExcludedList(PublisherInfoListCallback callback) {
-  WhenReady([this, callback]() { database()->GetExcludedList(callback); });
-}
-
-void LedgerImpl::SetPublisherMinVisitTime(int duration) {
+void LedgerImpl::SetPublisherExclude(const std::string& publisher_key,
+                                     mojom::PublisherExclude exclude,
+                                     SetPublisherExcludeCallback callback) {
   WhenReady(
-      [this, duration]() { state()->SetPublisherMinVisitTime(duration); });
+      [this, publisher_key, exclude, callback = std::move(callback)]() mutable {
+        publisher()->SetPublisherExclude(publisher_key, exclude,
+                                         std::move(callback));
+      });
 }
 
-void LedgerImpl::SetPublisherMinVisits(int visits) {
-  WhenReady([this, visits]() { state()->SetPublisherMinVisits(visits); });
-}
-
-void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
-  WhenReady([this, allow]() { state()->SetPublisherAllowNonVerified(allow); });
-}
-
-void LedgerImpl::SetAutoContributionAmount(double amount) {
-  WhenReady([this, amount]() { state()->SetAutoContributionAmount(amount); });
-}
-
-void LedgerImpl::SetAutoContributeEnabled(bool enabled) {
-  WhenReady([this, enabled]() { state()->SetAutoContributeEnabled(enabled); });
-}
-
-uint64_t LedgerImpl::GetReconcileStamp() {
-  if (!IsReady()) {
-    return 0;
-  }
-
-  return state()->GetReconcileStamp();
-}
-
-int LedgerImpl::GetPublisherMinVisitTime() {
-  if (!IsReady()) {
-    return 0;
-  }
-
-  return state()->GetPublisherMinVisitTime();
-}
-
-int LedgerImpl::GetPublisherMinVisits() {
-  if (!IsReady()) {
-    return 0;
-  }
-
-  return state()->GetPublisherMinVisits();
-}
-
-bool LedgerImpl::GetPublisherAllowNonVerified() {
-  if (!IsReady()) {
-    return false;
-  }
-
-  return state()->GetPublisherAllowNonVerified();
-}
-
-double LedgerImpl::GetAutoContributionAmount() {
-  if (!IsReady()) {
-    return 0;
-  }
-
-  return state()->GetAutoContributionAmount();
-}
-
-bool LedgerImpl::GetAutoContributeEnabled() {
-  if (!IsReady()) {
-    return false;
-  }
-
-  return state()->GetAutoContributeEnabled();
-}
-
-void LedgerImpl::GetRewardsParameters(GetRewardsParametersCallback callback) {
+void LedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
-    auto params = state()->GetRewardsParameters();
-    if (params->rate == 0.0) {
-      // A rate of zero indicates that the rewards parameters have
-      // not yet been successfully initialized from the server.
-      BLOG(1, "Rewards parameters not set - fetching from server");
-      api()->FetchParameters(std::move(callback));
-      return;
-    }
-
-    std::move(callback).Run(std::move(params));
+    database()->RestorePublishers(std::move(callback));
   });
 }
 
-void LedgerImpl::FetchPromotions(FetchPromotionCallback callback) {
+void LedgerImpl::FetchPromotions(FetchPromotionsCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     promotion()->Fetch(std::move(callback));
   });
@@ -523,46 +349,34 @@ void LedgerImpl::AttestPromotion(const std::string& promotion_id,
       });
 }
 
-void LedgerImpl::GetBalanceReport(mojom::ActivityMonth month,
-                                  int year,
-                                  GetBalanceReportCallback callback) {
-  WhenReady([this, month, year, callback]() {
-    database()->GetBalanceReportInfo(month, year, callback);
+void LedgerImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
+  WhenReady([this, duration_in_seconds]() {
+    state()->SetPublisherMinVisitTime(duration_in_seconds);
   });
 }
 
-void LedgerImpl::GetAllBalanceReports(GetBalanceReportListCallback callback) {
-  WhenReady([this, callback]() { database()->GetAllBalanceReports(callback); });
+void LedgerImpl::SetPublisherMinVisits(int visits) {
+  WhenReady([this, visits]() { state()->SetPublisherMinVisits(visits); });
 }
 
-mojom::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
-  if (!IsReady()) {
-    return nullptr;
-  }
-
-  auto props = mojom::AutoContributeProperties::New();
-  props->enabled_contribute = state()->GetAutoContributeEnabled();
-  props->amount = state()->GetAutoContributionAmount();
-  props->contribution_min_time = state()->GetPublisherMinVisitTime();
-  props->contribution_min_visits = state()->GetPublisherMinVisits();
-  props->contribution_non_verified = state()->GetPublisherAllowNonVerified();
-  props->reconcile_stamp = state()->GetReconcileStamp();
-  return props;
+void LedgerImpl::SetPublisherAllowNonVerified(bool allow) {
+  WhenReady([this, allow]() { state()->SetPublisherAllowNonVerified(allow); });
 }
 
-void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
-                                     mojom::PublisherExclude exclude,
-                                     ResultCallback callback) {
-  WhenReady(
-      [this, publisher_id, exclude, callback = std::move(callback)]() mutable {
-        publisher()->SetPublisherExclude(publisher_id, exclude,
-                                         std::move(callback));
-      });
+void LedgerImpl::SetAutoContributionAmount(double amount) {
+  WhenReady([this, amount]() { state()->SetAutoContributionAmount(amount); });
 }
 
-void LedgerImpl::RestorePublishers(ResultCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    database()->RestorePublishers(std::move(callback));
+void LedgerImpl::SetAutoContributeEnabled(bool enabled) {
+  WhenReady([this, enabled]() { state()->SetAutoContributeEnabled(enabled); });
+}
+
+void LedgerImpl::GetBalanceReport(mojom::ActivityMonth month,
+                                  int32_t year,
+                                  GetBalanceReportCallback callback) {
+  WhenReady([this, month, year,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetBalanceReportInfo(month, year, std::move(callback));
   });
 }
 
@@ -577,37 +391,57 @@ void LedgerImpl::GetPublisherActivityFromUrl(
   });
 }
 
+void LedgerImpl::GetAutoContributionAmount(
+    GetAutoContributionAmountCallback callback) {
+  if (!IsReady()) {
+    return std::move(callback).Run(0);
+  }
+
+  std::move(callback).Run(state()->GetAutoContributionAmount());
+}
+
 void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
-                                    PublisherBannerCallback callback) {
-  WhenReady([this, publisher_id, callback]() {
-    publisher()->GetPublisherBanner(publisher_id, callback);
+                                    GetPublisherBannerCallback callback) {
+  WhenReady([this, publisher_id,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    publisher()->GetPublisherBanner(publisher_id, std::move(callback));
+  });
+}
+
+void LedgerImpl::OneTimeTip(const std::string& publisher_key,
+                            double amount,
+                            OneTimeTipCallback callback) {
+  WhenReady([this, publisher_key, amount,
+             callback = ToLegacyCallback(std::move(callback))]() {
+    contribution()->OneTimeTip(publisher_key, amount, std::move(callback));
   });
 }
 
 void LedgerImpl::RemoveRecurringTip(const std::string& publisher_key,
-                                    LegacyResultCallback callback) {
-  WhenReady([this, publisher_key, callback]() {
-    database()->RemoveRecurringTip(publisher_key, callback);
+                                    RemoveRecurringTipCallback callback) {
+  WhenReady([this, publisher_key,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->RemoveRecurringTip(publisher_key, std::move(callback));
   });
 }
 
-uint64_t LedgerImpl::GetCreationStamp() {
+void LedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
   if (!IsReady()) {
-    return 0;
+    return std::move(callback).Run(0);
   }
 
-  return state()->GetCreationStamp();
+  std::move(callback).Run(state()->GetCreationStamp());
 }
 
 void LedgerImpl::GetRewardsInternalsInfo(
-    RewardsInternalsInfoCallback callback) {
-  WhenReady([this, callback]() {
+    GetRewardsInternalsInfoCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     auto info = mojom::RewardsInternalsInfo::New();
 
     mojom::RewardsWalletPtr wallet = wallet_->GetWallet();
     if (!wallet) {
       BLOG(0, "Wallet is null");
-      callback(std::move(info));
+      std::move(callback).Run(std::move(info));
       return;
     }
 
@@ -629,15 +463,17 @@ void LedgerImpl::GetRewardsInternalsInfo(
           secret_key, &public_key, &new_secret_key);
     }
 
-    callback(std::move(info));
+    std::move(callback).Run(std::move(info));
   });
 }
 
 void LedgerImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
-                                  LegacyResultCallback callback) {
-  WhenReady([this, info = std::move(info), callback]() mutable {
+                                  SaveRecurringTipCallback callback) {
+  WhenReady([this, info = std::move(info),
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
     database()->SaveRecurringTip(
-        std::move(info), [this, callback](mojom::Result result) {
+        std::move(info),
+        [this, callback = std::move(callback)](mojom::Result result) {
           contribution()->SetMonthlyContributionTimer();
           callback(result);
         });
@@ -647,7 +483,7 @@ void LedgerImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
 void LedgerImpl::SendContribution(const std::string& publisher_id,
                                   double amount,
                                   bool set_monthly,
-                                  base::OnceCallback<void(bool)> callback) {
+                                  SendContributionCallback callback) {
   WhenReady([this, publisher_id, amount, set_monthly,
              callback = std::move(callback)]() mutable {
     contribution()->SendContribution(publisher_id, amount, set_monthly,
@@ -655,21 +491,48 @@ void LedgerImpl::SendContribution(const std::string& publisher_id,
   });
 }
 
-void LedgerImpl::GetRecurringTips(PublisherInfoListCallback callback) {
-  WhenReady([this, callback]() { contribution()->GetRecurringTips(callback); });
+void LedgerImpl::GetRecurringTips(GetRecurringTipsCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    contribution()->GetRecurringTips(std::move(callback));
+  });
 }
 
-void LedgerImpl::GetOneTimeTips(PublisherInfoListCallback callback) {
-  WhenReady([this, callback]() {
+void LedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
     database()->GetOneTimeTips(util::GetCurrentMonth(), util::GetCurrentYear(),
-                               callback);
+                               std::move(callback));
+  });
+}
+
+void LedgerImpl::GetActivityInfoList(uint32_t start,
+                                     uint32_t limit,
+                                     mojom::ActivityInfoFilterPtr filter,
+                                     GetActivityInfoListCallback callback) {
+  WhenReady([this, start, limit, filter = std::move(filter),
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetActivityInfoList(start, limit, std::move(filter),
+                                    std::move(callback));
+  });
+}
+
+void LedgerImpl::GetPublishersVisitedCount(
+    GetPublishersVisitedCountCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    database()->GetPublishersVisitedCount(std::move(callback));
+  });
+}
+
+void LedgerImpl::GetExcludedList(GetExcludedListCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetExcludedList(std::move(callback));
   });
 }
 
 void LedgerImpl::RefreshPublisher(const std::string& publisher_key,
-                                  OnRefreshPublisherCallback callback) {
-  WhenReady([this, publisher_key, callback]() {
-    publisher()->RefreshPublisher(publisher_key, callback);
+                                  RefreshPublisherCallback callback) {
+  WhenReady([this, publisher_key,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    publisher()->RefreshPublisher(publisher_key, std::move(callback));
   });
 }
 
@@ -690,11 +553,12 @@ void LedgerImpl::UpdateMediaDuration(uint64_t window_id,
 }
 
 void LedgerImpl::IsPublisherRegistered(const std::string& publisher_id,
-                                       std::function<void(bool)> callback) {
-  WhenReady([this, publisher_id, callback]() {
+                                       IsPublisherRegisteredCallback callback) {
+  WhenReady([this, publisher_id,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
     publisher()->GetServerPublisherInfo(
         publisher_id, true /* use_prefix_list */,
-        [callback](mojom::ServerPublisherInfoPtr info) {
+        [callback = std::move(callback)](mojom::ServerPublisherInfoPtr info) {
           callback(info &&
                    info->status != mojom::PublisherStatus::NOT_VERIFIED);
         });
@@ -702,26 +566,29 @@ void LedgerImpl::IsPublisherRegistered(const std::string& publisher_id,
 }
 
 void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
-                                  PublisherInfoCallback callback) {
-  WhenReady([this, publisher_key, callback]() {
-    database()->GetPublisherInfo(publisher_key, callback);
+                                  GetPublisherInfoCallback callback) {
+  WhenReady([this, publisher_key,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetPublisherInfo(publisher_key, std::move(callback));
   });
 }
 
 void LedgerImpl::GetPublisherPanelInfo(const std::string& publisher_key,
-                                       PublisherInfoCallback callback) {
-  WhenReady([this, publisher_key, callback]() {
-    publisher()->GetPublisherPanelInfo(publisher_key, callback);
+                                       GetPublisherPanelInfoCallback callback) {
+  WhenReady([this, publisher_key,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    publisher()->GetPublisherPanelInfo(publisher_key, std::move(callback));
   });
 }
 
 void LedgerImpl::SavePublisherInfo(uint64_t window_id,
                                    mojom::PublisherInfoPtr publisher_info,
-                                   LegacyResultCallback callback) {
-  WhenReady(
-      [this, window_id, info = std::move(publisher_info), callback]() mutable {
-        publisher()->SavePublisherInfo(window_id, std::move(info), callback);
-      });
+                                   SavePublisherInfoCallback callback) {
+  WhenReady([this, window_id, info = std::move(publisher_info),
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    publisher()->SavePublisherInfo(window_id, std::move(info),
+                                   std::move(callback));
+  });
 }
 
 void LedgerImpl::SetInlineTippingPlatformEnabled(
@@ -732,53 +599,60 @@ void LedgerImpl::SetInlineTippingPlatformEnabled(
   });
 }
 
-bool LedgerImpl::GetInlineTippingPlatformEnabled(
-    mojom::InlineTipsPlatforms platform) {
+void LedgerImpl::GetInlineTippingPlatformEnabled(
+    mojom::InlineTipsPlatforms platform,
+    GetInlineTippingPlatformEnabledCallback callback) {
   if (!IsReady()) {
-    return false;
+    return std::move(callback).Run(false);
   }
 
-  return state()->GetInlineTippingPlatformEnabled(platform);
+  std::move(callback).Run(state()->GetInlineTippingPlatformEnabled(platform));
 }
 
-std::string LedgerImpl::GetShareURL(
-    const base::flat_map<std::string, std::string>& args) {
+void LedgerImpl::GetShareURL(
+    const base::flat_map<std::string, std::string>& args,
+    GetShareURLCallback callback) {
   if (!IsReady()) {
-    return "";
+    return std::move(callback).Run("");
   }
 
-  return publisher()->GetShareURL(args);
+  std::move(callback).Run(publisher()->GetShareURL(args));
 }
 
 void LedgerImpl::GetPendingContributions(
-    PendingContributionInfoListCallback callback) {
-  WhenReady([this, callback]() {
+    GetPendingContributionsCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
     database()->GetPendingContributions(
-        [this, callback](std::vector<mojom::PendingContributionInfoPtr> list) {
+        [this, callback = std::move(callback)](
+            std::vector<mojom::PendingContributionInfoPtr> list) mutable {
           // The publisher status field may be expired. Attempt to refresh
           // expired publisher status values before executing callback.
-          publisher::RefreshPublisherStatus(this, std::move(list), callback);
+          publisher::RefreshPublisherStatus(this, std::move(list),
+                                            std::move(callback));
         });
   });
 }
 
-void LedgerImpl::RemovePendingContribution(uint64_t id,
-                                           LegacyResultCallback callback) {
-  WhenReady([this, id, callback]() {
-    database()->RemovePendingContribution(id, callback);
-  });
+void LedgerImpl::RemovePendingContribution(
+    uint64_t id,
+    RemovePendingContributionCallback callback) {
+  WhenReady(
+      [this, id, callback = ToLegacyCallback(std::move(callback))]() mutable {
+        database()->RemovePendingContribution(id, std::move(callback));
+      });
 }
 
-void LedgerImpl::RemoveAllPendingContributions(LegacyResultCallback callback) {
-  WhenReady([this, callback]() {
-    database()->RemoveAllPendingContributions(callback);
+void LedgerImpl::RemoveAllPendingContributions(
+    RemovePendingContributionCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->RemoveAllPendingContributions(std::move(callback));
   });
 }
 
 void LedgerImpl::GetPendingContributionsTotal(
-    PendingContributionsTotalCallback callback) {
-  WhenReady([this, callback]() {
-    database()->GetPendingContributionsTotal(callback);
+    GetPendingContributionsTotalCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetPendingContributionsTotal(std::move(callback));
   });
 }
 
@@ -833,86 +707,81 @@ void LedgerImpl::ConnectExternalWallet(
       });
 }
 
-void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  WhenReady([this, callback]() { database()->GetAllPromotions(callback); });
-}
-
 void LedgerImpl::GetTransactionReport(mojom::ActivityMonth month,
                                       int year,
                                       GetTransactionReportCallback callback) {
-  WhenReady([this, month, year, callback]() {
-    database()->GetTransactionReport(month, year, callback);
+  WhenReady([this, month, year,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetTransactionReport(month, year, std::move(callback));
   });
 }
 
 void LedgerImpl::GetContributionReport(mojom::ActivityMonth month,
                                        int year,
                                        GetContributionReportCallback callback) {
-  WhenReady([this, month, year, callback]() {
-    database()->GetContributionReport(month, year, callback);
+  WhenReady([this, month, year,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetContributionReport(month, year, std::move(callback));
   });
 }
 
-void LedgerImpl::GetAllContributions(ContributionInfoListCallback callback) {
-  WhenReady([this, callback]() { database()->GetAllContributions(callback); });
+void LedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetAllContributions(std::move(callback));
+  });
 }
 
-void LedgerImpl::SavePublisherInfoForTip(mojom::PublisherInfoPtr info,
-                                         LegacyResultCallback callback) {
-  WhenReady([this, info = std::move(info), callback]() mutable {
-    database()->SavePublisherInfo(std::move(info), callback);
+void LedgerImpl::SavePublisherInfoForTip(
+    mojom::PublisherInfoPtr info,
+    SavePublisherInfoForTipCallback callback) {
+  WhenReady([this, info = std::move(info),
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->SavePublisherInfo(std::move(info), std::move(callback));
   });
 }
 
 void LedgerImpl::GetMonthlyReport(mojom::ActivityMonth month,
                                   int year,
                                   GetMonthlyReportCallback callback) {
-  WhenReady([this, month, year, callback]() {
-    report()->GetMonthly(month, year, callback);
+  WhenReady([this, month, year,
+             callback = ToLegacyCallback(std::move(callback))]() mutable {
+    report()->GetMonthly(month, year, std::move(callback));
   });
 }
 
 void LedgerImpl::GetAllMonthlyReportIds(
     GetAllMonthlyReportIdsCallback callback) {
-  WhenReady([this, callback]() { report()->GetAllMonthlyIds(callback); });
-}
-
-void LedgerImpl::ProcessSKU(const std::vector<mojom::SKUOrderItem>& items,
-                            const std::string& wallet_type,
-                            SKUOrderCallback callback) {
-  WhenReady([this, items, wallet_type, callback]() {
-    sku()->Process(items, wallet_type, callback);
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    report()->GetAllMonthlyIds(std::move(callback));
   });
 }
 
-void LedgerImpl::Shutdown(LegacyResultCallback callback) {
+void LedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetAllPromotions(std::move(callback));
+  });
+}
+
+void LedgerImpl::Shutdown(ShutdownCallback callback) {
   if (!IsReady()) {
-    callback(mojom::Result::LEDGER_ERROR);
-    return;
+    return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
   }
 
   ready_state_ = ReadyState::kShuttingDown;
   ledger_client_->ClearAllNotifications();
 
-  database()->FinishAllInProgressContributions(
-      std::bind(&LedgerImpl::OnAllDone, this, _1, callback));
-}
-
-void LedgerImpl::OnAllDone(mojom::Result result,
-                           LegacyResultCallback callback) {
-  database()->Close(callback);
+  database()->FinishAllInProgressContributions(std::bind(
+      &LedgerImpl::OnAllDone, this, _1, ToLegacyCallback(std::move(callback))));
 }
 
 void LedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
-  WhenReady([this, callback]() { database()->GetLastEventLogs(callback); });
-}
-
-bool LedgerImpl::IsShuttingDown() const {
-  return ready_state_ == ReadyState::kShuttingDown;
+  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() mutable {
+    database()->GetLastEventLogs(std::move(callback));
+  });
 }
 
 void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
-  WhenReady([this, callback]() {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     auto rewards_wallet = wallet()->GetWallet();
     if (rewards_wallet) {
       // While the wallet creation flow is running, the Rewards wallet data may
@@ -922,23 +791,228 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
         rewards_wallet = nullptr;
       }
     }
-    callback(std::move(rewards_wallet));
+    std::move(callback).Run(std::move(rewards_wallet));
   });
 }
 
-void LedgerImpl::GetDrainStatus(const std::string& drain_id,
-                                GetDrainCallback callback) {
-  WhenReady([this, drain_id, callback]() {
-    promotion()->GetDrainStatus(drain_id, callback);
-  });
+mojom::LedgerClient* LedgerImpl::client() {
+  return ledger_client_.get();
 }
 
-void LedgerImpl::SetInitializedForTesting() {
-  ready_state_ = ReadyState::kReady;
+state::State* LedgerImpl::state() {
+  return state_.get();
+}
+
+promotion::Promotion* LedgerImpl::promotion() {
+  return promotion_.get();
+}
+
+publisher::Publisher* LedgerImpl::publisher() {
+  return publisher_.get();
+}
+
+braveledger_media::Media* LedgerImpl::media() {
+  return media_.get();
+}
+
+contribution::Contribution* LedgerImpl::contribution() {
+  return contribution_.get();
+}
+
+wallet::Wallet* LedgerImpl::wallet() {
+  return wallet_.get();
+}
+
+report::Report* LedgerImpl::report() {
+  return report_.get();
+}
+
+api::API* LedgerImpl::api() {
+  return api_.get();
+}
+
+database::Database* LedgerImpl::database() {
+  return database_.get();
+}
+
+bitflyer::Bitflyer* LedgerImpl::bitflyer() {
+  return bitflyer_.get();
+}
+
+gemini::Gemini* LedgerImpl::gemini() {
+  return gemini_.get();
+}
+
+uphold::Uphold* LedgerImpl::uphold() {
+  return uphold_.get();
+}
+
+template <typename LoadURLCallback>
+void LedgerImpl::LoadURLImpl(mojom::UrlRequestPtr request,
+                             LoadURLCallback callback) {
+  DCHECK(request);
+  if (IsShuttingDown()) {
+    BLOG(1, request->url + " will not be executed as we are shutting down");
+    return;
+  }
+
+  if (!request->skip_log) {
+    BLOG(5, UrlRequestToString(request->url, request->headers, request->content,
+                               request->content_type, request->method));
+  }
+
+  if constexpr (std::is_same_v<LoadURLCallback, LegacyLoadURLCallback>) {
+    ledger_client_->LoadURL(
+        std::move(request),
+        base::BindOnce(
+            [](LegacyLoadURLCallback callback, mojom::UrlResponsePtr response) {
+              callback(std::move(response));
+            },
+            std::move(callback)));
+  } else if constexpr (std::is_same_v<LoadURLCallback,  // NOLINT
+                                      ledger::LoadURLCallback>) {
+    ledger_client_->LoadURL(std::move(request), std::move(callback));
+  } else {
+    static_assert(base::AlwaysFalse<LoadURLCallback>,
+                  "LoadURLCallback must be either "
+                  "ledger::LegacyLoadURLCallback, or "
+                  "ledger::LoadURLCallback!");
+  }
+}
+
+void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
+                         LegacyLoadURLCallback callback) {
+  LoadURLImpl(std::move(request), std::move(callback));
+}
+
+void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
+                         LoadURLCallback callback) {
+  LoadURLImpl(std::move(request), std::move(callback));
+}
+
+template <typename RunDBTransactionCallback>
+void LedgerImpl::RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
+                                      RunDBTransactionCallback callback) {
+  if constexpr (std::is_same_v<  // NOLINT
+                    RunDBTransactionCallback, LegacyRunDBTransactionCallback>) {
+    ledger_client_->RunDBTransaction(
+        std::move(transaction), base::BindOnce(
+                                    [](LegacyRunDBTransactionCallback callback,
+                                       mojom::DBCommandResponsePtr response) {
+                                      callback(std::move(response));
+                                    },
+                                    std::move(callback)));
+  } else if constexpr (std::is_same_v<  // NOLINT
+                           RunDBTransactionCallback,
+                           ledger::RunDBTransactionCallback>) {
+    ledger_client_->RunDBTransaction(std::move(transaction),
+                                     std::move(callback));
+  } else {
+    static_assert(base::AlwaysFalse<RunDBTransactionCallback>,
+                  "RunDBTransactionCallback must be either "
+                  "ledger::LegacyRunDBTransactionCallback, or "
+                  "ledger::RunDBTransactionCallback!");
+  }
+}
+
+void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                  LegacyRunDBTransactionCallback callback) {
+  RunDBTransactionImpl(std::move(transaction), std::move(callback));
+}
+
+void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                  RunDBTransactionCallback callback) {
+  RunDBTransactionImpl(std::move(transaction), std::move(callback));
+}
+
+bool LedgerImpl::IsShuttingDown() const {
+  return ready_state_ == ReadyState::kShuttingDown;
+}
+
+bool LedgerImpl::IsUninitialized() const {
+  return ready_state_ == ReadyState::kUninitialized;
 }
 
 bool LedgerImpl::IsReady() const {
   return ready_state_ == ReadyState::kReady;
+}
+
+void LedgerImpl::InitializeDatabase(bool execute_create_script,
+                                    LegacyResultCallback callback) {
+  DCHECK(ready_state_ == ReadyState::kInitializing);
+
+  LegacyResultCallback finish_callback =
+      std::bind(&LedgerImpl::OnInitialized, this, _1, std::move(callback));
+
+  auto database_callback =
+      std::bind(&LedgerImpl::OnDatabaseInitialized, this, _1, finish_callback);
+  database()->Initialize(execute_create_script, database_callback);
+}
+
+void LedgerImpl::OnDatabaseInitialized(mojom::Result result,
+                                       LegacyResultCallback callback) {
+  DCHECK(ready_state_ == ReadyState::kInitializing);
+
+  if (result != mojom::Result::LEDGER_OK) {
+    BLOG(0, "Database could not be initialized. Error: " << result);
+    callback(result);
+    return;
+  }
+
+  state()->Initialize(base::BindOnce(&LedgerImpl::OnStateInitialized,
+                                     base::Unretained(this),
+                                     std::move(callback)));
+}
+
+void LedgerImpl::OnStateInitialized(LegacyResultCallback callback,
+                                    mojom::Result result) {
+  DCHECK(ready_state_ == ReadyState::kInitializing);
+
+  if (result != mojom::Result::LEDGER_OK) {
+    BLOG(0, "Failed to initialize state");
+    return;
+  }
+
+  callback(mojom::Result::LEDGER_OK);
+}
+
+void LedgerImpl::OnInitialized(mojom::Result result,
+                               LegacyResultCallback callback) {
+  DCHECK(ready_state_ == ReadyState::kInitializing);
+
+  if (result == mojom::Result::LEDGER_OK) {
+    StartServices();
+  } else {
+    BLOG(0, "Failed to initialize wallet " << result);
+  }
+
+  while (!ready_callbacks_.empty()) {
+    auto ready_callback = std::move(ready_callbacks_.front());
+    ready_callbacks_.pop();
+    ready_callback();
+  }
+
+  ready_state_ = ReadyState::kReady;
+
+  callback(result);
+}
+
+void LedgerImpl::StartServices() {
+  DCHECK(ready_state_ == ReadyState::kInitializing);
+
+  publisher()->SetPublisherServerListTimer();
+  contribution()->SetAutoContributeTimer();
+  contribution()->SetMonthlyContributionTimer();
+  promotion()->Refresh(false);
+  contribution()->Initialize();
+  promotion()->Initialize();
+  api()->Initialize();
+  recovery_->Check();
+}
+
+void LedgerImpl::OnAllDone(mojom::Result result,
+                           LegacyResultCallback callback) {
+  database()->Close(std::move(callback));
 }
 
 template <typename T>

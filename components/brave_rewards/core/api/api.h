@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/components/brave_rewards/core/api/api_parameters.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace ledger {
@@ -27,7 +27,6 @@ class API {
   void FetchParameters(ledger::GetRewardsParametersCallback callback);
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<APIParameters> parameters_;
 };
 

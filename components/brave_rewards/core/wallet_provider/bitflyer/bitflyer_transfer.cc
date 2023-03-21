@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/global_constants.h"

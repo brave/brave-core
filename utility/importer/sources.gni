@@ -1,3 +1,8 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
@@ -5,7 +10,7 @@ brave_utility_importer_sources = []
 brave_utility_importer_deps = []
 brave_utility_importer_public_deps = [
   "//brave/components/services/bat_ads:lib",
-  "//brave/components/services/bat_ledger:lib",
+  "//brave/components/services/ledger:lib",
 ]
 
 if (!is_android) {

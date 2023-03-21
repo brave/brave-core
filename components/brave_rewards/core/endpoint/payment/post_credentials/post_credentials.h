@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/orders/{order_id}/credentials
 //
@@ -64,7 +64,7 @@ class PostCredentials {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostCredentialsCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

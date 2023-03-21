@@ -20,8 +20,6 @@
 // npm run test -- brave_unit_tests --filter=*PatchWallets*
 
 using ::testing::_;
-using ::testing::Invoke;
-using ::testing::Return;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -40,49 +38,37 @@ using PatchWalletsParamType = std::tuple<
 // clang-format on
 
 class PatchWallets : public TestWithParam<PatchWalletsParamType> {
- public:
-  PatchWallets(const PatchWallets&) = delete;
-  PatchWallets& operator=(const PatchWallets&) = delete;
-
-  PatchWallets(PatchWallets&&) = delete;
-  PatchWallets& operator=(PatchWallets&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  PatchWallets()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
   void SetUp() override {
-    const std::string wallet =
-        R"(
-          {
-            "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-            "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-          }
-        )";
-
-    ON_CALL(mock_ledger_client_, GetStringState(state::kWalletBrave))
-        .WillByDefault(Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_client(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::string wallet = R"(
+            {
+              "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+              "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+            }
+          )";
+          std::move(callback).Run(std::move(wallet));
+        });
   }
 
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(PatchWallets, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
+  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .WillByDefault(
           [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
-            mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
-            std::move(callback).Run(response);
-          }));
+              mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = status_code;
+            response->body = std::move(body);
+            std::move(callback).Run(std::move(response));
+          });
 
   RequestFor<endpoints::PatchWallets>(&mock_ledger_impl_, "country_code")
       .Send(base::BindLambdaForTesting(

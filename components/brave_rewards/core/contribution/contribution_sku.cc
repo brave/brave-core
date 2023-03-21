@@ -7,11 +7,12 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/sku/sku_brave.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -79,7 +80,7 @@ ContributionSKU::ContributionSKU(LedgerImpl* ledger) : ledger_(ledger) {
   credentials_ = credential::CredentialsFactory::Create(
       ledger_, mojom::CredsBatchType::SKU);
   DCHECK(credentials_);
-  sku_ = sku::SKUFactory::Create(ledger_, sku::SKUType::kBrave);
+  sku_ = std::make_unique<sku::SKU>(ledger);
   DCHECK(sku_);
 }
 
@@ -200,7 +201,7 @@ void ContributionSKU::CredsStepSaved(mojom::Result result,
 }
 
 void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
-                               client::LegacyResultCallback callback) {
+                               LegacyResultCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens, this, _1,
                                 transaction, callback);
 
@@ -211,7 +212,7 @@ void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
 void ContributionSKU::GetUnblindedTokens(
     std::vector<mojom::UnblindedTokenPtr> list,
     const mojom::SKUTransaction& transaction,
-    client::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(0, "List is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -250,7 +251,7 @@ void ContributionSKU::GetUnblindedTokens(
 void ContributionSKU::GetOrderMerchant(
     mojom::SKUOrderPtr order,
     const credential::CredentialsRedeem& redeem,
-    client::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -267,7 +268,7 @@ void ContributionSKU::GetOrderMerchant(
 }
 
 void ContributionSKU::OnRedeemTokens(mojom::Result result,
-                                     client::LegacyResultCallback callback) {
+                                     LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem redeeming tokens");
     callback(result);

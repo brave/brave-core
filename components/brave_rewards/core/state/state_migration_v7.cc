@@ -7,6 +7,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace ledger {
@@ -17,16 +18,14 @@ StateMigrationV7::StateMigrationV7(LedgerImpl* ledger) : ledger_(ledger) {}
 StateMigrationV7::~StateMigrationV7() = default;
 
 void StateMigrationV7::Migrate(ledger::LegacyResultCallback callback) {
-  const std::string brave =
-      ledger_->ledger_client()->GetStringState(kWalletBrave);
+  const std::string brave = ledger_->GetState<std::string>(kWalletBrave);
 
   if (!ledger_->state()->SetEncryptedString(kWalletBrave, brave)) {
     callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  const std::string uphold =
-      ledger_->ledger_client()->GetStringState(kWalletUphold);
+  const std::string uphold = ledger_->GetState<std::string>(kWalletUphold);
 
   if (!ledger_->state()->SetEncryptedString(kWalletUphold, uphold)) {
     callback(mojom::Result::LEDGER_ERROR);

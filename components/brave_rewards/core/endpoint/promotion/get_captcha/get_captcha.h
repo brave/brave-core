@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /v1/captchas/{captcha_id}.png
 //
@@ -46,8 +46,7 @@ class GetCaptcha {
 
   mojom::Result ParseBody(const std::string& body, std::string* image);
 
-  void OnRequest(GetCaptchaCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(GetCaptchaCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

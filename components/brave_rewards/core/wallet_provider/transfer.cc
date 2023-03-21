@@ -9,6 +9,7 @@
 
 #include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
 namespace ledger::wallet_provider {

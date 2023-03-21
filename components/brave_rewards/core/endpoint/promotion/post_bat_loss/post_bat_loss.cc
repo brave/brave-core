@@ -10,6 +10,7 @@
 #include "brave/components/brave_rewards/core/common/request_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -84,10 +85,11 @@ void PostBatLoss::Request(const double amount,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostBatLoss::OnRequest(const mojom::UrlResponse& response,
+void PostBatLoss::OnRequest(mojom::UrlResponsePtr response,
                             PostBatLossCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion

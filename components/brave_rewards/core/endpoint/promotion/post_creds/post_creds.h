@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/promotions/{promotion_id}
 //
@@ -65,8 +65,7 @@ class PostCreds {
 
   mojom::Result ParseBody(const std::string& body, std::string* claim_id);
 
-  void OnRequest(PostCredsCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PostCredsCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

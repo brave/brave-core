@@ -212,7 +212,7 @@ void DatabaseContributionInfo::GetAllRecords(
 void DatabaseContributionInfo::GetOneTimeTips(
     const mojom::ActivityMonth month,
     const int year,
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetOneTimeTipsCallback callback) {
   if (year == 0) {
     BLOG(1, "Year is 0");
     callback({});
@@ -267,7 +267,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetOneTimeTipsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");

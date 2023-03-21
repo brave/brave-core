@@ -6,7 +6,7 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 
 #include "brave/components/brave_rewards/core/buildflags.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_impl.h"
 
 namespace ledger {
 namespace endpoint {

@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
 
 using std::placeholders::_1;
 
@@ -87,8 +88,9 @@ void DatabasePublisherInfo::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
-                                      ledger::PublisherInfoCallback callback) {
+void DatabasePublisherInfo::GetRecord(
+    const std::string& publisher_key,
+    ledger::GetPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR, {});
@@ -131,7 +133,7 @@ void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
 
 void DatabasePublisherInfo::OnGetRecord(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoCallback callback) {
+    ledger::GetPublisherInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -162,7 +164,7 @@ void DatabasePublisherInfo::OnGetRecord(
 
 void DatabasePublisherInfo::GetPanelRecord(
     mojom::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
+    ledger::GetPublisherPanelInfoCallback callback) {
   if (!filter || filter->id.empty()) {
     BLOG(1, "Filter is empty");
     callback(mojom::Result::LEDGER_ERROR, {});
@@ -211,7 +213,7 @@ void DatabasePublisherInfo::GetPanelRecord(
 
 void DatabasePublisherInfo::OnGetPanelRecord(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoCallback callback) {
+    ledger::GetPublisherPanelInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -275,7 +277,7 @@ void DatabasePublisherInfo::OnRestorePublishers(
 }
 
 void DatabasePublisherInfo::GetExcludedList(
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetExcludedListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, spi.status, pi.name,"
@@ -307,7 +309,7 @@ void DatabasePublisherInfo::GetExcludedList(
 
 void DatabasePublisherInfo::OnGetExcludedList(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetExcludedListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

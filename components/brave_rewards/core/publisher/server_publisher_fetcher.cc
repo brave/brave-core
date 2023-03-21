@@ -12,6 +12,7 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
@@ -31,7 +32,7 @@ int64_t GetCacheExpiryInSeconds(ledger::LedgerImpl* ledger) {
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
-  return ledger->ledger_client()->GetUint64Option(
+  return ledger->GetOption<uint64_t>(
       ledger::option::kPublisherListRefreshInterval);
 }
 
@@ -51,7 +52,7 @@ ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
 void ServerPublisherFetcher::Fetch(
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    database::GetServerPublisherInfoCallback callback) {
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
   callbacks.push_back(callback);
   if (callbacks.size() > 1) {
@@ -140,7 +141,7 @@ void ServerPublisherFetcher::RunCallbacks(
   for (auto& callback : callbacks) {
     callback(server_info ? server_info.Clone() : nullptr);
   }
-  ledger_->ledger_client()->OnPublisherUpdated(publisher_key);
+  ledger_->client()->OnPublisherUpdated(publisher_key);
 }
 
 }  // namespace publisher

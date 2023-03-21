@@ -15,6 +15,7 @@
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
 using std::placeholders::_1;
@@ -365,7 +366,7 @@ void CredentialsSKU::Completed(ledger::ResultCallback callback,
     return;
   }
 
-  ledger_->ledger_client()->UnblindedTokensReady();
+  ledger_->client()->UnblindedTokensReady();
   std::move(callback).Run(result);
 }
 

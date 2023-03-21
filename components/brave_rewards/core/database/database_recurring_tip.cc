@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_recurring_tip.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 
 using std::placeholders::_1;
 
@@ -180,7 +181,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
 }
 
 void DatabaseRecurringTip::GetAllRecords(
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetRecurringTipsCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -217,7 +218,7 @@ void DatabaseRecurringTip::GetAllRecords(
 
 void DatabaseRecurringTip::OnGetAllRecords(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetRecurringTipsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
