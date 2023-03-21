@@ -446,7 +446,7 @@
 - (void)remove {
   DCHECK(node_);
   DCHECK(model_);
-  model_->Remove(node_);
+  model_->Remove(node_, bookmarks::metrics::BookmarkEditSource::kOther);
   node_ = nil;
   model_ = nil;
 }

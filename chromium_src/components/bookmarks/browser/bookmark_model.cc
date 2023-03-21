@@ -27,7 +27,8 @@ void BraveMigrateOtherNodeFolder(BookmarkModel* model) {
       model->Move(possible_other_node_folder->children().front().get(),
                   model->other_node(), i);
     }
-    model->Remove(possible_other_node_folder);
+    model->Remove(possible_other_node_folder,
+                  bookmarks::metrics::BookmarkEditSource::kOther);
   }
 }
 
