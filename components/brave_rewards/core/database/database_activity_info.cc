@@ -170,8 +170,7 @@ void DatabaseActivityInfo::NormalizeList(
           return;
         }
 
-        ledger_->ledger_client()->PublisherListNormalized(
-            std::move(*shared_list));
+        ledger_->client()->PublisherListNormalized(std::move(*shared_list));
 
         callback(mojom::Result::LEDGER_OK);
       });

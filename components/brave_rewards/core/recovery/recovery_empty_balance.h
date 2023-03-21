@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
 namespace ledger {
@@ -27,10 +28,10 @@ class EmptyBalance {
  private:
   void OnAllContributions(std::vector<mojom::ContributionInfoPtr> list);
 
-  void GetPromotions(client::GetPromotionListCallback callback);
+  void GetPromotions(database::GetPromotionListCallback callback);
 
   void OnPromotions(base::flat_map<std::string, mojom::PromotionPtr> promotions,
-                    client::GetPromotionListCallback callback);
+                    database::GetPromotionListCallback callback);
 
   void GetCredsByPromotions(std::vector<mojom::PromotionPtr> list);
 

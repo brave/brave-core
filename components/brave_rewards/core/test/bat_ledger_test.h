@@ -12,6 +12,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ledger {
@@ -23,12 +24,14 @@ class BATLedgerTest : public testing::Test {
   BATLedgerTest();
   ~BATLedgerTest() override;
 
+  void InitializeLedger();
+
  protected:
   // Returns the |TaskEnvironment| for this test.
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
 
   // Returns the |TestLedgerClient| instance for this test.
-  TestLedgerClient* GetTestLedgerClient() { return &client_; }
+  TestLedgerClient* GetTestLedgerClient() { return &test_ledger_client_; }
 
   // Returns the |LedgerImpl| instance for this test.
   LedgerImpl* GetLedgerImpl() { return &ledger_; }
@@ -43,8 +46,10 @@ class BATLedgerTest : public testing::Test {
 
  private:
   base::test::TaskEnvironment task_environment_;
-  TestLedgerClient client_;
-  LedgerImpl ledger_{&client_};
+  TestLedgerClient test_ledger_client_;
+  mojo::AssociatedReceiver<mojom::LedgerClient> test_ledger_client_receiver_{
+      &test_ledger_client_};
+  LedgerImpl ledger_;
 };
 
 }  // namespace ledger

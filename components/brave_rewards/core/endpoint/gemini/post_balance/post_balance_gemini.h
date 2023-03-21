@@ -62,8 +62,7 @@ class PostBalance {
 
   mojom::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(PostBalanceCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PostBalanceCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

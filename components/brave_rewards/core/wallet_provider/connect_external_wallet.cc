@@ -160,8 +160,8 @@ void ConnectExternalWallet::OnConnect(
   }
 
   from_status == mojom::WalletStatus::kNotConnected
-      ? ledger_->ledger_client()->ExternalWalletConnected()
-      : ledger_->ledger_client()->ExternalWalletReconnected();
+      ? ledger_->client()->ExternalWalletConnected()
+      : ledger_->client()->ExternalWalletReconnected();
   ledger_->database()->SaveEventLog(
       log::kWalletVerified,
       WalletType() + std::string("/") + abbreviated_address);

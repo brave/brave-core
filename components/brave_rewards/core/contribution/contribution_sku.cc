@@ -200,7 +200,7 @@ void ContributionSKU::CredsStepSaved(mojom::Result result,
 }
 
 void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
-                               client::LegacyResultCallback callback) {
+                               LegacyResultCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens, this, _1,
                                 transaction, callback);
 
@@ -211,7 +211,7 @@ void ContributionSKU::Merchant(const mojom::SKUTransaction& transaction,
 void ContributionSKU::GetUnblindedTokens(
     std::vector<mojom::UnblindedTokenPtr> list,
     const mojom::SKUTransaction& transaction,
-    client::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(0, "List is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -250,7 +250,7 @@ void ContributionSKU::GetUnblindedTokens(
 void ContributionSKU::GetOrderMerchant(
     mojom::SKUOrderPtr order,
     const credential::CredentialsRedeem& redeem,
-    client::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -267,7 +267,7 @@ void ContributionSKU::GetOrderMerchant(
 }
 
 void ContributionSKU::OnRedeemTokens(mojom::Result result,
-                                     client::LegacyResultCallback callback) {
+                                     LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem redeeming tokens");
     callback(result);

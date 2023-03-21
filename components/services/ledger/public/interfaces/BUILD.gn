@@ -8,12 +8,9 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("interfaces") {
   support_lazy_serialization = true
 
-  sources = [ "bat_ledger.mojom" ]
+  sources = [ "ledger_factory.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 
-  deps = [
-    "//brave/components/brave_rewards/common/mojom:ledger_interfaces",
-    "//brave/components/brave_rewards/common/mojom:ledger_types",
-  ]
+  deps = [ "//brave/components/brave_rewards/common/mojom:interfaces" ]
 }

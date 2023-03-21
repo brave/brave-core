@@ -65,8 +65,7 @@ class PostCreds {
 
   mojom::Result ParseBody(const std::string& body, std::string* claim_id);
 
-  void OnRequest(PostCredsCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PostCredsCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

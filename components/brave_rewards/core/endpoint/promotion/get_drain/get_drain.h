@@ -25,9 +25,9 @@
 //
 // Response body:
 // {
-//     “drainId”: <drain id>,   // uuidv4
-//     “status”: <status enum>, // Status enum -> (“pending”, “in-progress”,
-//     “delayed”, “complete”)
+//     "drainId": <drain id>,   // uuidv4
+//     "status": <status enum>, // Status enum -> ("pending", "in-progress",
+//     "delayed", "complete")
 // }
 
 namespace ledger {
@@ -48,7 +48,7 @@ class GetDrain {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response, GetDrainCallback callback);
+  void OnRequest(mojom::UrlResponsePtr response, GetDrainCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

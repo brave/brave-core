@@ -74,7 +74,7 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   if (balance == 0) {
     BLOG(0, "Not enough funds");
-    ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+    ledger_->client()->OnContributeUnverifiedPublishers(
         mojom::Result::PENDING_NOT_ENOUGH_FUNDS, "", "");
     return ProcessingCompleted();
   }
@@ -128,7 +128,7 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   if (balance < current->amount) {
     BLOG(0, "Not enough funds");
-    ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+    ledger_->client()->OnContributeUnverifiedPublishers(
         mojom::Result::PENDING_NOT_ENOUGH_FUNDS, "", "");
     return ProcessingCompleted();
   }
@@ -198,7 +198,7 @@ void Unverified::WasPublisherProcessed(const mojom::Result result,
 void Unverified::ProcessedPublisherSaved(const mojom::Result result,
                                          const std::string& publisher_key,
                                          const std::string& name) {
-  ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+  ledger_->client()->OnContributeUnverifiedPublishers(
       mojom::Result::VERIFIED_PUBLISHER, publisher_key, name);
 }
 
@@ -208,7 +208,7 @@ void Unverified::OnRemovePendingContribution(mojom::Result result) {
     return ProcessingCompleted();
   }
 
-  ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+  ledger_->client()->OnContributeUnverifiedPublishers(
       mojom::Result::PENDING_PUBLISHER_REMOVED, "", "");
 }
 

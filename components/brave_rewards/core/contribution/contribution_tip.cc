@@ -108,7 +108,7 @@ void ContributionTip::OnPendingTipSaved(mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
   } else {
-    ledger_->ledger_client()->PendingContributionSaved(result);
+    ledger_->client()->PendingContributionSaved(result);
   }
 }
 
