@@ -77,16 +77,16 @@ void SpeedReaderThrottle::WillProcessResponse(
   VLOG(2) << "Speedreader throttling: " << response_url;
 
   if (speedreader_delegate_->IsPageContentPresent()) {
-    // We've got the content, installing the local source body producer.
-    InstallSpeedReaderLocalUrlLoader(response_url);
+    // We've got the content, starting the local source body producer.
+    StartSpeedReaderLocalUrlLoader(response_url);
   } else {
     *defer = true;
-    // Install the loader which actually performs the distillation.
-    InstallSpeedReaderUrlLoader(response_url);
+    // Start the loader which actually performs the distillation.
+    StartSpeedReaderUrlLoader(response_url);
   }
 }
 
-void SpeedReaderThrottle::InstallSpeedReaderLocalUrlLoader(
+void SpeedReaderThrottle::StartSpeedReaderLocalUrlLoader(
     const GURL& response_url) {
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
@@ -113,8 +113,7 @@ void SpeedReaderThrottle::InstallSpeedReaderLocalUrlLoader(
   speedreader_local_loader->Start(std::move(page_content));
 }
 
-void SpeedReaderThrottle::InstallSpeedReaderUrlLoader(
-    const GURL& response_url) {
+void SpeedReaderThrottle::StartSpeedReaderUrlLoader(const GURL& response_url) {
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
   raw_ptr<SpeedReaderURLLoader> speedreader_loader = nullptr;

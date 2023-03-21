@@ -21,6 +21,9 @@ namespace speedreader {
 
 class SpeedreaderThrottleDelegate;
 
+// Local url loader is a content source that replaces network source, it takes
+// the content of the pre-distilled page |body_content| and sends it to the
+// consumer.
 class SpeedReaderLocalURLLoader : public network::mojom::URLLoaderClient,
                                   public network::mojom::URLLoader {
  public:

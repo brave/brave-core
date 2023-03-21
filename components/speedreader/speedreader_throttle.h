@@ -59,8 +59,8 @@ class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
                            bool* defer) override;
 
  private:
-  void InstallSpeedReaderLocalUrlLoader(const GURL& response_url);
-  void InstallSpeedReaderUrlLoader(const GURL& response_url);
+  void StartSpeedReaderLocalUrlLoader(const GURL& response_url);
+  void StartSpeedReaderUrlLoader(const GURL& response_url);
 
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;  // not owned

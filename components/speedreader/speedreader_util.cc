@@ -95,6 +95,9 @@ void DistillPage(const GURL& url,
     rewriter->End();
     const std::string& transformed = rewriter->GetOutput();
 
+    // If the distillation failed, the rewriter returns an empty string. Also,
+    // if the output is too small, we assume that the content of the distilled
+    // page does not contain enough text to read.
     if (transformed.length() < 1024) {
       return {DistillationResult::kFail, std::move(data), std::string()};
     }
