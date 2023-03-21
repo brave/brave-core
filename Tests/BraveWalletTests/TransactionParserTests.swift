@@ -897,7 +897,7 @@ class TransactionParserTests: XCTestCase {
         accountParams: [
           .init(name: "from_account", localizedName: "From Account"),
           .init(name: "to_account", localizedName: "To Account"),],
-        params: [.init(name: "lamports", localizedName: "Lamports", value: "10000")]
+        params: [.init(name: "lamports", localizedName: "Lamports", value: "10000", type: .uint64)]
       )
     )
     let expectedParsedTransfer = SolanaTxDetails.ParsedSolanaInstruction(
@@ -932,7 +932,7 @@ class TransactionParserTests: XCTestCase {
           .init(name: "nonce_authority", localizedName: "Nonce Authority")
         ],
         params: [
-          .init(name: "lamports", localizedName: "Lamports", value: "40")
+          .init(name: "lamports", localizedName: "Lamports", value: "40", type: .uint64)
         ]
       )
     )
@@ -965,9 +965,9 @@ class TransactionParserTests: XCTestCase {
           .init(name: "new_account", localizedName: "New Account"),
         ],
         params: [
-          .init(name: "lamports", localizedName: "Lamports", value: "2000"),
-          .init(name: "space", localizedName: "Space", value: "1"),
-          .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey)
+          .init(name: "lamports", localizedName: "Lamports", value: "2000", type: .uint64),
+          .init(name: "space", localizedName: "Space", value: "1", type: .unknown),
+          .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey, type: .unknown)
         ]
       )
     )
@@ -999,11 +999,11 @@ class TransactionParserTests: XCTestCase {
           .init(name: "created_account", localizedName: "Created Account"),
         ],
         params: [
-          .init(name: "lamports", localizedName: "Lamports", value: "300"),
-          .init(name: "base", localizedName: "Base", value: toPubkey),
-          .init(name: "seed", localizedName: "Seed", value: ""),
-          .init(name: "space", localizedName: "Space", value: "1"),
-          .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey)
+          .init(name: "lamports", localizedName: "Lamports", value: "300", type: .uint64),
+          .init(name: "base", localizedName: "Base", value: toPubkey, type: .unknown),
+          .init(name: "seed", localizedName: "Seed", value: "", type: .unknown),
+          .init(name: "space", localizedName: "Space", value: "1", type: .unknown),
+          .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey, type: .unknown)
         ]
       )
     )
