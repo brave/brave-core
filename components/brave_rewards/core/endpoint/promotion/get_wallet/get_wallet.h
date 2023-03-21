@@ -55,7 +55,7 @@ class GetWallet {
  private:
   std::string GetUrl() const;
 
-  void OnRequest(const mojom::UrlResponse& response,
+  void OnRequest(mojom::UrlResponsePtr response,
                  GetWalletCallback callback) const;
 
   mojom::Result CheckStatusCode(int status_code) const;

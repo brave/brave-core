@@ -86,10 +86,11 @@ void PostTransactionUphold::Request(const mojom::SKUTransaction& transaction,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostTransactionUphold::OnRequest(const mojom::UrlResponse& response,
+void PostTransactionUphold::OnRequest(mojom::UrlResponsePtr response,
                                       PostTransactionUpholdCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  callback(CheckStatusCode(response.status_code));
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  callback(CheckStatusCode(response->status_code));
 }
 
 }  // namespace payment

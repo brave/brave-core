@@ -58,16 +58,17 @@ void GetDrain::Request(const std::string& drain_id, GetDrainCallback callback) {
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void GetDrain::OnRequest(const mojom::UrlResponse& response,
+void GetDrain::OnRequest(mojom::UrlResponsePtr response,
                          GetDrainCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
-  auto result = CheckStatusCode(response.status_code);
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  auto result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);
     return;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(response.body);
+  absl::optional<base::Value> value = base::JSONReader::Read(response->body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);

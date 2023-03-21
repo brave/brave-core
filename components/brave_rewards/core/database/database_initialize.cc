@@ -64,22 +64,22 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
 
 void DatabaseInitialize::GetCreateScript(
     ledger::LegacyResultCallback callback) {
-  auto script_callback = std::bind(&DatabaseInitialize::ExecuteCreateScript,
-                                   this, _1, _2, callback);
-  ledger_->ledger_client()->GetCreateScript(script_callback);
+  ledger_->client()->GetCreateScript(
+      base::BindOnce(&DatabaseInitialize::ExecuteCreateScript,
+                     base::Unretained(this), std::move(callback)));
 }
 
 void DatabaseInitialize::ExecuteCreateScript(
+    ledger::LegacyResultCallback callback,
     const std::string& script,
-    int table_version,
-    ledger::LegacyResultCallback callback) {
+    int table_version) {
   if (script.empty()) {
     BLOG(1, "Script is empty");
     callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  ledger_->ledger_client()->ClearState(state::kServerPublisherListStamp);
+  ledger_->client()->ClearState(state::kServerPublisherListStamp);
 
   auto script_callback = std::bind(&DatabaseInitialize::OnExecuteCreateScript,
                                    this, _1, table_version, callback);

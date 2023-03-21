@@ -76,7 +76,7 @@ class PostOauth {
                           std::string* address,
                           std::string* linking_info);
 
-  void OnRequest(PostOauthCallback, const mojom::UrlResponse&);
+  void OnRequest(PostOauthCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

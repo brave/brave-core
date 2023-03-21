@@ -102,7 +102,7 @@ class PatchCard {
 
   mojom::Result CheckStatusCode(int status_code);
 
-  void OnRequest(PatchCardCallback, const mojom::UrlResponse&);
+  void OnRequest(PatchCardCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

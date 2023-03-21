@@ -44,8 +44,7 @@ mojom::RewardsWalletPtr Wallet::GetWallet(bool* corrupted) {
   DCHECK(corrupted);
   *corrupted = false;
 
-  const std::string json =
-      ledger_->ledger_client()->GetStringState(state::kWalletBrave);
+  const std::string json = ledger_->GetState<std::string>(state::kWalletBrave);
 
   if (json.empty()) {
     return nullptr;
@@ -112,7 +111,7 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
 
-  ledger_->ledger_client()->SetStringState(state::kWalletBrave, json);
+  ledger_->SetState(state::kWalletBrave, json);
 
   ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
 

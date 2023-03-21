@@ -190,7 +190,7 @@ class GetCapabilities {
   using CapabilityMap = std::map<std::string, Capability>;
 
   void OnRequest(GetCapabilitiesCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   std::pair<mojom::Result, CapabilityMap> ProcessResponse(
       const mojom::UrlResponse& response);

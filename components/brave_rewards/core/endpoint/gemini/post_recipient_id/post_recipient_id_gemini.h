@@ -57,7 +57,7 @@ class PostRecipientId {
 
   mojom::Result ParseBody(const std::string& body, std::string* recipient_id);
 
-  void OnRequest(PostRecipientIdCallback, const mojom::UrlResponse&);
+  void OnRequest(PostRecipientIdCallback, mojom::UrlResponsePtr);
   std::string GeneratePayload();
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -99,15 +99,16 @@ void PostSuggestionsClaim::Request(const credential::CredentialsRedeem& redeem,
 }
 
 void PostSuggestionsClaim::OnRequest(PostSuggestionsClaimCallback callback,
-                                     const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
-  auto result = CheckStatusCode(response.status_code);
+                                     mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  auto result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, "");
     return;
   }
 
-  absl::optional<base::Value> value = base::JSONReader::Read(response.body);
+  absl::optional<base::Value> value = base::JSONReader::Read(response->body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR, "");

@@ -46,8 +46,7 @@ class GetCaptcha {
 
   mojom::Result ParseBody(const std::string& body, std::string* image);
 
-  void OnRequest(GetCaptchaCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(GetCaptchaCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -16,17 +16,16 @@
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
-#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace ledger {
 
-extern mojom::Environment _environment;
-extern bool is_debug;
-extern bool is_testing;
-extern int state_migration_target_version_for_testing;
-extern int reconcile_interval;  // minutes
-extern int retry_interval;      // seconds
+inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
+inline bool is_debug = false;
+inline bool is_testing = false;
+inline int state_migration_target_version_for_testing = -1;
+inline int reconcile_interval = 0;  // minutes
+inline int retry_interval = 0;      // seconds
 
 using PublisherBannerCallback = std::function<void(mojom::PublisherBannerPtr)>;
 
@@ -125,247 +124,15 @@ using PostSuggestionsClaimCallback =
 using GetDrainCallback =
     std::function<void(mojom::Result result, mojom::DrainStatus status)>;
 
-class Ledger {
- public:
-  Ledger() = default;
-  virtual ~Ledger() = default;
+using RunDBTransactionCallback =
+    base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 
-  Ledger(const Ledger&) = delete;
-  Ledger& operator=(const Ledger&) = delete;
+using LegacyRunDBTransactionCallback =
+    std::function<void(mojom::DBCommandResponsePtr)>;
 
-  static Ledger* CreateInstance(LedgerClient* client);
+using LoadURLCallback = base::OnceCallback<void(mojom::UrlResponsePtr)>;
 
-  virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
-
-  virtual void CreateRewardsWallet(const std::string& country,
-                                   CreateRewardsWalletCallback callback) = 0;
-
-  virtual void OneTimeTip(const std::string& publisher_key,
-                          double amount,
-                          LegacyResultCallback callback) = 0;
-
-  virtual void OnLoad(mojom::VisitDataPtr visit_data,
-                      uint64_t current_time) = 0;
-
-  virtual void OnUnload(uint32_t tab_id, uint64_t current_time) = 0;
-
-  virtual void OnShow(uint32_t tab_id, uint64_t current_time) = 0;
-
-  virtual void OnHide(uint32_t tab_id, uint64_t current_time) = 0;
-
-  virtual void OnForeground(uint32_t tab_id, uint64_t current_time) = 0;
-
-  virtual void OnBackground(uint32_t tab_id, uint64_t current_time) = 0;
-
-  virtual void OnXHRLoad(uint32_t tab_id,
-                         const std::string& url,
-                         const base::flat_map<std::string, std::string>& parts,
-                         const std::string& first_party_url,
-                         const std::string& referrer,
-                         mojom::VisitDataPtr visit_data) = 0;
-
-  virtual void GetActivityInfoList(uint32_t start,
-                                   uint32_t limit,
-                                   mojom::ActivityInfoFilterPtr filter,
-                                   PublisherInfoListCallback callback) = 0;
-
-  virtual void GetPublishersVisitedCount(
-      base::OnceCallback<void(int)> callback) = 0;
-
-  virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
-
-  virtual void SetPublisherMinVisitTime(int duration_in_seconds) = 0;
-
-  virtual void SetPublisherMinVisits(int visits) = 0;
-
-  virtual void SetPublisherAllowNonVerified(bool allow) = 0;
-
-  virtual void SetAutoContributionAmount(double amount) = 0;
-
-  virtual void SetAutoContributeEnabled(bool enabled) = 0;
-
-  virtual uint64_t GetReconcileStamp() = 0;
-
-  virtual int GetPublisherMinVisitTime() = 0;  // In milliseconds
-
-  virtual int GetPublisherMinVisits() = 0;
-
-  virtual bool GetPublisherAllowNonVerified() = 0;
-
-  virtual double GetAutoContributionAmount() = 0;
-
-  virtual bool GetAutoContributeEnabled() = 0;
-
-  virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
-
-  virtual void FetchPromotions(FetchPromotionCallback callback) = 0;
-
-  // |payload|:
-  // desktop and Android: empty
-  // iOS: { "publicKey": "{{publicKey}}" }
-  // =====================================
-  // |callback| returns result as json
-  // desktop: { "captchaImage": "{{captchaImage}}", "hint": "{{hint}}" }
-  // iOS and Android: { "nonce": "{{nonce}}" }
-  virtual void ClaimPromotion(const std::string& promotion_id,
-                              const std::string& payload,
-                              ClaimPromotionCallback callback) = 0;
-
-  // |solution|:
-  // desktop:
-  //  {
-  //    "captchaId": "{{captchaId}}",
-  //    "x": "{{x}}",
-  //    "y": "{{y}}"
-  //  }
-  // iOS:
-  //  {
-  //    "nonce": "{{nonce}}",
-  //    "blob": "{{blob}}",
-  //    "signature": "{{signature}}"
-  //  }
-  // android:
-  //  {
-  //    "nonce": "{{nonce}}",
-  //    "token": "{{token}}"
-  //  }
-  virtual void AttestPromotion(const std::string& promotion_id,
-                               const std::string& solution,
-                               AttestPromotionCallback callback) = 0;
-
-  virtual void GetBalanceReport(mojom::ActivityMonth month,
-                                int year,
-                                GetBalanceReportCallback callback) = 0;
-
-  virtual void GetAllBalanceReports(GetBalanceReportListCallback callback) = 0;
-
-  virtual mojom::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
-
-  virtual void SetPublisherExclude(const std::string& publisher_id,
-                                   mojom::PublisherExclude exclude,
-                                   ResultCallback callback) = 0;
-
-  virtual void RestorePublishers(ResultCallback callback) = 0;
-
-  virtual void GetPublisherActivityFromUrl(
-      uint64_t window_id,
-      mojom::VisitDataPtr visit_data,
-      const std::string& publisher_blob) = 0;
-
-  virtual void GetPublisherBanner(const std::string& publisher_id,
-                                  PublisherBannerCallback callback) = 0;
-
-  virtual void RemoveRecurringTip(const std::string& publisher_key,
-                                  LegacyResultCallback callback) = 0;
-
-  virtual uint64_t GetCreationStamp() = 0;
-
-  virtual void GetRewardsInternalsInfo(
-      RewardsInternalsInfoCallback callback) = 0;
-
-  // DEPRECATED: Use `SendContribution` instead.
-  virtual void SaveRecurringTip(mojom::RecurringTipPtr info,
-                                LegacyResultCallback callback) = 0;
-
-  virtual void SendContribution(const std::string& publisher_id,
-                                double amount,
-                                bool set_monthly,
-                                base::OnceCallback<void(bool)> callback) = 0;
-
-  virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
-
-  virtual void GetOneTimeTips(PublisherInfoListCallback callback) = 0;
-
-  virtual void RefreshPublisher(const std::string& publisher_key,
-                                OnRefreshPublisherCallback callback) = 0;
-
-  virtual void StartContributionsForTesting() = 0;
-
-  virtual void UpdateMediaDuration(uint64_t window_id,
-                                   const std::string& publisher_key,
-                                   uint64_t duration,
-                                   bool first_visit) = 0;
-
-  virtual void IsPublisherRegistered(const std::string& publisher_id,
-                                     std::function<void(bool)> callback) = 0;
-
-  virtual void GetPublisherInfo(const std::string& publisher_key,
-                                GetPublisherInfoCallback callback) = 0;
-
-  virtual void GetPublisherPanelInfo(const std::string& publisher_key,
-                                     GetPublisherInfoCallback callback) = 0;
-
-  virtual void SavePublisherInfo(uint64_t window_id,
-                                 mojom::PublisherInfoPtr publisher_info,
-                                 LegacyResultCallback callback) = 0;
-
-  virtual void SetInlineTippingPlatformEnabled(
-      mojom::InlineTipsPlatforms platform,
-      bool enabled) = 0;
-
-  virtual bool GetInlineTippingPlatformEnabled(
-      mojom::InlineTipsPlatforms platform) = 0;
-
-  virtual std::string GetShareURL(
-      const base::flat_map<std::string, std::string>& args) = 0;
-
-  virtual void GetPendingContributions(
-      PendingContributionInfoListCallback callback) = 0;
-
-  virtual void RemovePendingContribution(uint64_t id,
-                                         LegacyResultCallback callback) = 0;
-
-  virtual void RemoveAllPendingContributions(LegacyResultCallback callback) = 0;
-
-  virtual void GetPendingContributionsTotal(
-      PendingContributionsTotalCallback callback) = 0;
-
-  virtual void FetchBalance(FetchBalanceCallback callback) = 0;
-
-  virtual void GetExternalWallet(const std::string& wallet_type,
-                                 GetExternalWalletCallback) = 0;
-
-  virtual void ConnectExternalWallet(
-      const std::string& wallet_type,
-      const base::flat_map<std::string, std::string>& args,
-      ConnectExternalWalletCallback) = 0;
-
-  virtual void GetAllPromotions(GetAllPromotionsCallback callback) = 0;
-
-  virtual void GetTransactionReport(mojom::ActivityMonth month,
-                                    int year,
-                                    GetTransactionReportCallback callback) = 0;
-
-  virtual void GetContributionReport(
-      mojom::ActivityMonth month,
-      int year,
-      GetContributionReportCallback callback) = 0;
-
-  virtual void GetAllContributions(ContributionInfoListCallback callback) = 0;
-
-  virtual void SavePublisherInfoForTip(mojom::PublisherInfoPtr info,
-                                       LegacyResultCallback callback) = 0;
-
-  virtual void GetMonthlyReport(mojom::ActivityMonth month,
-                                int year,
-                                GetMonthlyReportCallback callback) = 0;
-
-  virtual void GetAllMonthlyReportIds(
-      GetAllMonthlyReportIdsCallback callback) = 0;
-
-  virtual void ProcessSKU(const std::vector<mojom::SKUOrderItem>& items,
-                          const std::string& wallet_type,
-                          SKUOrderCallback callback) = 0;
-
-  virtual void Shutdown(LegacyResultCallback callback) = 0;
-
-  virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
-
-  virtual void GetRewardsWallet(GetRewardsWalletCallback callback) = 0;
-
-  virtual void GetDrainStatus(const std::string& drain_id,
-                              GetDrainCallback callback) = 0;
-};
+using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
 
 }  // namespace ledger
 

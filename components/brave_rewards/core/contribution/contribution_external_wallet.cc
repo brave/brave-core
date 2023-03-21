@@ -104,7 +104,7 @@ void ContributionExternalWallet::OnSavePendingContribution(
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Problem saving pending");
   }
-  ledger_->ledger_client()->PendingContributionSaved(result);
+  ledger_->client()->PendingContributionSaved(result);
 }
 
 void ContributionExternalWallet::OnServerPublisherInfo(
