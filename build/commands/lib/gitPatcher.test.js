@@ -137,6 +137,7 @@ describe('Apply Patches', function () {
     await fs.unlink(testFile1PatchPath)
     // remove target file
     await fs.unlink(testFile1Path)
+    await runGitAsyncWithErrorLog(repoPath, ['rm', testFile1Path])
     await runGitAsyncWithErrorLog(repoPath, ['commit', '-a', '-m', '"remove target"'])
     // apply again
     const status = await gitPatcher.applyPatches()
