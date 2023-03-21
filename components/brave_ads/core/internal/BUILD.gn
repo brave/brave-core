@@ -782,6 +782,8 @@ source_set("internal") {
     "geographic/subdivision/get_subdivision_url_request_builder.h",
     "geographic/subdivision/subdivision_targeting.cc",
     "geographic/subdivision/subdivision_targeting.h",
+    "geographic/subdivision/subdivision_targeting_util.cc",
+    "geographic/subdivision/subdivision_targeting_util.h",
     "geographic/subdivision/supported_subdivision_codes.cc",
     "geographic/subdivision/supported_subdivision_codes.h",
     "history/ad_content_util.cc",

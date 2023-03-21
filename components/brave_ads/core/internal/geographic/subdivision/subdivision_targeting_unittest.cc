@@ -15,18 +15,17 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads {
+namespace brave_ads::geographic {
 
 class BatAdsSubdivisionTargetingTest : public UnitTestBase {
  protected:
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    subdivision_targeting_ =
-        std::make_unique<geographic::SubdivisionTargeting>();
+    subdivision_targeting_ = std::make_unique<SubdivisionTargeting>();
   }
 
-  std::unique_ptr<geographic::SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
 };
 
 TEST_F(BatAdsSubdivisionTargetingTest,
@@ -40,7 +39,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_TRUE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 
@@ -59,7 +58,7 @@ TEST_F(BatAdsSubdivisionTargetingTest, AutoDetectSubdivisionTargetingNoRegion) {
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_TRUE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_TRUE(subdivision_targeting_->IsDisabled());
   EXPECT_FALSE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -75,7 +74,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -89,7 +88,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeFetch();
 
   // Assert
-  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -103,7 +102,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeAllow();
 
   // Assert
-  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -118,7 +117,7 @@ TEST_F(BatAdsSubdivisionTargetingTest,
   subdivision_targeting_->MaybeAllow();
 
   // Assert
-  EXPECT_FALSE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_FALSE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
   EXPECT_TRUE(subdivision_targeting_->ShouldAutoDetect());
 }
@@ -141,7 +140,7 @@ TEST_P(BatAdsSubdivisionTargetingRetryOnInvalidResponseTest,
   FastForwardClockToNextPendingTask();
 
   // Assert
-  EXPECT_TRUE(geographic::SubdivisionTargeting::ShouldAllow());
+  EXPECT_TRUE(SubdivisionTargeting::ShouldAllow());
   EXPECT_FALSE(subdivision_targeting_->IsDisabled());
 
   EXPECT_EQ("US-AL", AdsClientHelper::GetInstance()->GetStringPref(
@@ -156,4 +155,4 @@ INSTANTIATE_TEST_SUITE_P(,
                                            R"({"country":"", "region":"CA"})",
                                            R"({"country":"US", "region":""})"));
 
-}  // namespace brave_ads
+}  // namespace brave_ads::geographic

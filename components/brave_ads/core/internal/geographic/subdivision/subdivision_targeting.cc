@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/supported_subdivision_codes.h"
 #include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/prefs/pref_manager.h"
@@ -120,7 +121,7 @@ const std::string& SubdivisionTargeting::GetLazySubdivisionCode() const {
 
 void SubdivisionTargeting::MaybeAllowForLocale(const std::string& locale) {
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
-  if (!locale::IsSupportedCountryCodeForSubdivisionTargeting(country_code)) {
+  if (!IsSupportedCountryCodeForSubdivisionTargeting(country_code)) {
     return AdsClientHelper::GetInstance()->SetBooleanPref(
         prefs::kShouldAllowSubdivisionTargeting, false);
   }
@@ -182,7 +183,7 @@ void SubdivisionTargeting::MaybeFetchForLocale(const std::string& locale) {
   }
 
   const std::string country_code = brave_l10n::GetISOCountryCode(locale);
-  if (!locale::IsSupportedCountryCodeForSubdivisionTargeting(country_code)) {
+  if (!IsSupportedCountryCodeForSubdivisionTargeting(country_code)) {
     BLOG(1, "Ads subdivision targeting is not supported for " << locale
                                                               << " locale");
 

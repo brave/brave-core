@@ -315,6 +315,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/flags/flag_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/flags/flag_manager_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting_unittest.cc",
+    "//brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/ad_content_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/category_content_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/history/category_content_value_util_unittest.cc",
