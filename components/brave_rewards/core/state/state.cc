@@ -159,8 +159,8 @@ State::State(LedgerImpl* ledger)
 
 State::~State() = default;
 
-void State::Initialize(ledger::LegacyResultCallback callback) {
-  migration_->Start(callback);
+void State::Initialize(ledger::ResultCallback callback) {
+  migration_->Start(std::move(callback));
 }
 
 void State::SetVersion(const int version) {

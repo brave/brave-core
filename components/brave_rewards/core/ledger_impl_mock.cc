@@ -5,11 +5,17 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 
+#include <memory>
+
 namespace ledger {
 
-MockLedgerImpl::MockLedgerImpl(ledger::LedgerClient* client)
-    : LedgerImpl(client) {}
+MockLedgerImpl::MockLedgerImpl()
+    : LedgerImpl(std::make_unique<MockLedgerClient>()) {}
 
 MockLedgerImpl::~MockLedgerImpl() = default;
+
+MockLedgerClient* MockLedgerImpl::ledger_client() const {
+  return static_cast<MockLedgerClient*>(LedgerImpl::ledger_client());
+}
 
 }  // namespace ledger

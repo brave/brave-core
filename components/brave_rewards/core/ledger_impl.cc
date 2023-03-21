@@ -22,8 +22,8 @@ using std::placeholders::_1;
 
 namespace ledger {
 
-LedgerImpl::LedgerImpl(LedgerClient* client)
-    : ledger_client_(client),
+LedgerImpl::LedgerImpl(std::unique_ptr<LedgerClient> client)
+    : ledger_client_(std::move(client)),
       promotion_(std::make_unique<promotion::Promotion>(this)),
       publisher_(std::make_unique<publisher::Publisher>(this)),
       media_(std::make_unique<braveledger_media::Media>(this)),
@@ -39,13 +39,13 @@ LedgerImpl::LedgerImpl(LedgerClient* client)
       gemini_(std::make_unique<gemini::Gemini>(this)),
       uphold_(std::make_unique<uphold::Uphold>(this)) {
   DCHECK(base::ThreadPoolInstance::Get());
-  set_ledger_client_for_logging(ledger_client_);
+  set_ledger_client_for_logging(ledger_client_.get());
 }
 
 LedgerImpl::~LedgerImpl() = default;
 
 LedgerClient* LedgerImpl::ledger_client() const {
-  return ledger_client_;
+  return ledger_client_.get();
 }
 
 state::State* LedgerImpl::state() const {
@@ -252,14 +252,13 @@ void LedgerImpl::OnDatabaseInitialized(mojom::Result result,
     return;
   }
 
-  auto state_callback =
-      std::bind(&LedgerImpl::OnStateInitialized, this, _1, callback);
-
-  state()->Initialize(state_callback);
+  state()->Initialize(base::BindOnce(&LedgerImpl::OnStateInitialized,
+                                     base::Unretained(this),
+                                     std::move(callback)));
 }
 
-void LedgerImpl::OnStateInitialized(mojom::Result result,
-                                    LegacyResultCallback callback) {
+void LedgerImpl::OnStateInitialized(LegacyResultCallback callback,
+                                    mojom::Result result) {
   DCHECK(ready_state_ == ReadyState::kInitializing);
 
   if (result != mojom::Result::LEDGER_OK) {

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace payment {
 
 class PostVotesTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostVotes> votes_;
-
-  PostVotesTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    votes_ = std::make_unique<PostVotes>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostVotes votes_{&mock_ledger_impl_};
 };
 
 TEST_F(PostVotesTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -68,13 +57,13 @@ TEST_F(PostVotesTest, ServerOK) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
+  votes_.Request(redeem, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
 }
 
 TEST_F(PostVotesTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -99,13 +88,13 @@ TEST_F(PostVotesTest, ServerError400) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
+  votes_.Request(redeem, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
   });
 }
 
 TEST_F(PostVotesTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -130,13 +119,13 @@ TEST_F(PostVotesTest, ServerError500) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
+  votes_.Request(redeem, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
   });
 }
 
 TEST_F(PostVotesTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -161,7 +150,7 @@ TEST_F(PostVotesTest, ServerErrorRandom) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
+  votes_.Request(redeem, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }

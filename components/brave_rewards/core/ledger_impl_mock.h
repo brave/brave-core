@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_MOCK_H_
 
 #include "brave/components/brave_rewards/core/ledger_client.h"
+#include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -14,9 +15,11 @@ namespace ledger {
 
 class MockLedgerImpl : public LedgerImpl {
  public:
-  explicit MockLedgerImpl(ledger::LedgerClient* client);
+  MockLedgerImpl();
 
   ~MockLedgerImpl() override;
+
+  MockLedgerClient* ledger_client() const;
 
   MOCK_CONST_METHOD0(database, database::Database*());
 

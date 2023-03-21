@@ -49,20 +49,7 @@ using PostConnectParamType = std::tuple<
 // clang-format on
 
 class PostConnect : public TestWithParam<PostConnectParamType> {
- public:
-  PostConnect(const PostConnect&) = delete;
-  PostConnect& operator=(const PostConnect&) = delete;
-
-  PostConnect(PostConnect&&) = delete;
-  PostConnect& operator=(PostConnect&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  PostConnect()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
   void SetUp() override {
     const std::string wallet =
         R"(
@@ -72,18 +59,19 @@ class PostConnect : public TestWithParam<PostConnectParamType> {
           }
         )";
 
-    ON_CALL(mock_ledger_client_, GetStringState(state::kWalletBrave))
+    ON_CALL(*mock_ledger_impl_.ledger_client(),
+            GetStringState(state::kWalletBrave))
         .WillByDefault(Return(wallet));
   }
 
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(PostConnect, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [status_code = status_code, body = body](
               mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {

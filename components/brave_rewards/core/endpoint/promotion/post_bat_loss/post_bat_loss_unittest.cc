@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_bat_loss/post_bat_loss.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -27,33 +26,24 @@ namespace endpoint {
 namespace promotion {
 
 class PostBatLossTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostBatLoss> loss_;
-
-  PostBatLossTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    loss_ = std::make_unique<PostBatLoss>(mock_ledger_impl_.get());
-  }
-
   void SetUp() override {
     const std::string wallet = R"({
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
     })";
-    ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletBrave))
+    ON_CALL(*mock_ledger_impl_.ledger_client(),
+            GetStringState(state::kWalletBrave))
         .WillByDefault(testing::Return(wallet));
   }
+
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostBatLoss loss_{&mock_ledger_impl_};
 };
 
 TEST_F(PostBatLossTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -63,13 +53,13 @@ TEST_F(PostBatLossTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  loss_->Request(30.0, 1, [](const mojom::Result result) {
+  loss_.Request(30.0, 1, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
 }
 
 TEST_F(PostBatLossTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -79,13 +69,13 @@ TEST_F(PostBatLossTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  loss_->Request(30.0, 1, [](const mojom::Result result) {
+  loss_.Request(30.0, 1, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostBatLossTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -95,7 +85,7 @@ TEST_F(PostBatLossTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  loss_->Request(30.0, 1, [](const mojom::Result result) {
+  loss_.Request(30.0, 1, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }

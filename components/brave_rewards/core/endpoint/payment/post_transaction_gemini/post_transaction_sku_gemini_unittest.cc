@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace payment {
 
 class PostTransactionGeminiTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostTransactionGemini> order_;
-
-  PostTransactionGeminiTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    order_ = std::make_unique<PostTransactionGemini>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostTransactionGemini order_{&mock_ledger_impl_};
 };
 
 TEST_F(PostTransactionGeminiTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -57,13 +46,13 @@ TEST_F(PostTransactionGeminiTest, ServerOK) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const mojom::Result result) {
+  order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -77,13 +66,13 @@ TEST_F(PostTransactionGeminiTest, ServerError400) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const mojom::Result result) {
+  order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError404) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -97,13 +86,13 @@ TEST_F(PostTransactionGeminiTest, ServerError404) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const mojom::Result result) {
+  order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::NOT_FOUND);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError409) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -117,13 +106,13 @@ TEST_F(PostTransactionGeminiTest, ServerError409) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const mojom::Result result) {
+  order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -137,13 +126,13 @@ TEST_F(PostTransactionGeminiTest, ServerError500) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const mojom::Result result) {
+  order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -157,7 +146,7 @@ TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
   transaction.external_transaction_id = "d382d3ae-8462-4b2c-9b60-b669539f41b2";
 
-  order_->Request(transaction, [](const mojom::Result result) {
+  order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }

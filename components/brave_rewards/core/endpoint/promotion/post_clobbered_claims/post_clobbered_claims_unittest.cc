@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_clobbered_claims/post_clobbered_claims.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace promotion {
 
 class PostClobberedClaimsTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostClobberedClaims> claims_;
-
-  PostClobberedClaimsTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    claims_ = std::make_unique<PostClobberedClaims>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostClobberedClaims claims_{&mock_ledger_impl_};
 };
 
 TEST_F(PostClobberedClaimsTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -56,13 +45,13 @@ TEST_F(PostClobberedClaimsTest, ServerOK) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+  claims_.Request(std::move(corrupted_claims), [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
 }
 
 TEST_F(PostClobberedClaimsTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -75,13 +64,13 @@ TEST_F(PostClobberedClaimsTest, ServerError400) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+  claims_.Request(std::move(corrupted_claims), [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostClobberedClaimsTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -94,13 +83,13 @@ TEST_F(PostClobberedClaimsTest, ServerError500) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+  claims_.Request(std::move(corrupted_claims), [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }
 
 TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -113,7 +102,7 @@ TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
   base::Value::List corrupted_claims;
   corrupted_claims.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  claims_->Request(std::move(corrupted_claims), [](const mojom::Result result) {
+  claims_.Request(std::move(corrupted_claims), [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
 }

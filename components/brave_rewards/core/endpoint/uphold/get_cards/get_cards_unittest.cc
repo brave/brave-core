@@ -26,24 +26,14 @@ namespace endpoint {
 namespace uphold {
 
 class GetCardsTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<GetCards> card_;
-
-  GetCardsTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    card_ = std::make_unique<GetCards>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  GetCards card_{&mock_ledger_impl_};
 };
 
 TEST_F(GetCardsTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -103,15 +93,15 @@ TEST_F(GetCardsTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result, std::string&& id) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-                   EXPECT_EQ(id, "3ed3b2c4-a715-4c01-b302-fa2681a971ea");
-                 }));
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result, std::string&& id) {
+                  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+                  EXPECT_EQ(id, "3ed3b2c4-a715-4c01-b302-fa2681a971ea");
+                }));
 }
 
 TEST_F(GetCardsTest, CardNotFound) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -171,15 +161,15 @@ TEST_F(GetCardsTest, CardNotFound) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result, std::string&& id) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                   EXPECT_EQ(id, "");
-                 }));
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result, std::string&& id) {
+                  EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                  EXPECT_EQ(id, "");
+                }));
 }
 
 TEST_F(GetCardsTest, ServerError401) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -189,15 +179,15 @@ TEST_F(GetCardsTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result, std::string&& id) {
-                   EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
-                   EXPECT_EQ(id, "");
-                 }));
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result, std::string&& id) {
+                  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+                  EXPECT_EQ(id, "");
+                }));
 }
 
 TEST_F(GetCardsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -207,11 +197,11 @@ TEST_F(GetCardsTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result, std::string&& id) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                   EXPECT_EQ(id, "");
-                 }));
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result, std::string&& id) {
+                  EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                  EXPECT_EQ(id, "");
+                }));
 }
 
 }  // namespace uphold

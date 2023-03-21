@@ -18,7 +18,7 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
-namespace bat_ledger {
+namespace rewards {
 
 class BatLedgerClientMojoBridge :
     public ledger::LedgerClient,
@@ -97,7 +97,7 @@ class BatLedgerClientMojoBridge :
 
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
-                        ledger::client::LegacyResultCallback callback) override;
+                        ledger::client::ResultCallback callback) override;
 
   ledger::mojom::ClientInfoPtr GetClientInfo() override;
 
@@ -129,7 +129,7 @@ class BatLedgerClientMojoBridge :
 
   void ExternalWalletReconnected() const override;
 
-  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
+  void DeleteLog(ledger::client::ResultCallback callback) override;
 
   absl::optional<std::string> EncryptString(const std::string& name) override;
 
@@ -141,6 +141,6 @@ class BatLedgerClientMojoBridge :
   mojo::AssociatedRemote<mojom::BatLedgerClient> bat_ledger_client_;
 };
 
-}  // namespace bat_ledger
+}  // namespace rewards
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_BRIDGE_H_

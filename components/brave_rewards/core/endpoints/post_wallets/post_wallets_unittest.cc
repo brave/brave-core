@@ -40,20 +40,7 @@ using PostWalletsParamType = std::tuple<
 // clang-format on
 
 class PostWallets : public TestWithParam<PostWalletsParamType> {
- public:
-  PostWallets(const PostWallets&) = delete;
-  PostWallets& operator=(const PostWallets&) = delete;
-
-  PostWallets(PostWallets&&) = delete;
-  PostWallets& operator=(PostWallets&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  PostWallets()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
   void SetUp() override {
     const std::string wallet =
         R"(
@@ -63,18 +50,19 @@ class PostWallets : public TestWithParam<PostWalletsParamType> {
           }
         )";
 
-    ON_CALL(mock_ledger_client_, GetStringState(state::kWalletBrave))
+    ON_CALL(*mock_ledger_impl_.ledger_client(),
+            GetStringState(state::kWalletBrave))
         .WillByDefault(Return(wallet));
   }
 
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(PostWallets, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [status_code = status_code, body = body](
               mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {

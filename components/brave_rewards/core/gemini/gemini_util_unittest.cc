@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 
 #include "base/strings/strcat.h"
@@ -26,20 +25,9 @@ namespace ledger {
 namespace gemini {
 
 class GeminiUtilTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-
-  GeminiUtilTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-  }
-
-  ~GeminiUtilTest() override = default;
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_F(GeminiUtilTest, GetClientId) {
@@ -131,9 +119,10 @@ TEST_F(GeminiUtilTest, GetActivityUrl) {
 
 TEST_F(GeminiUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletGemini))
+  ON_CALL(*mock_ledger_impl_.ledger_client(),
+          GetStringState(state::kWalletGemini))
       .WillByDefault(testing::Return(""));
-  auto result = mock_ledger_impl_.get()->gemini()->GetWallet();
+  auto result = mock_ledger_impl_.gemini()->GetWallet();
   ASSERT_TRUE(!result);
 
   const std::string wallet = FakeEncryption::Base64EncryptString(R"({
@@ -147,11 +136,12 @@ TEST_F(GeminiUtilTest, GetWallet) {
     "user_name": "test"
   })");
 
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletGemini))
+  ON_CALL(*mock_ledger_impl_.ledger_client(),
+          GetStringState(state::kWalletGemini))
       .WillByDefault(testing::Return(wallet));
 
   // Gemini wallet
-  result = mock_ledger_impl_.get()->gemini()->GetWallet();
+  result = mock_ledger_impl_.gemini()->GetWallet();
   ASSERT_TRUE(result);
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");

@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
 
@@ -29,24 +28,13 @@ namespace uphold {
 
 class GetCapabilitiesTest : public testing::Test {
  protected:
-  GetCapabilitiesTest()
-      : mock_ledger_client_(std::make_unique<ledger::MockLedgerClient>()),
-        mock_ledger_impl_(std::make_unique<ledger::MockLedgerImpl>(
-            mock_ledger_client_.get())),
-        get_capabilities_(
-            std::make_unique<GetCapabilities>(mock_ledger_impl_.get())) {}
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
- protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<GetCapabilities> get_capabilities_;
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  GetCapabilities get_capabilities_{&mock_ledger_impl_};
 };
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -74,7 +62,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -84,7 +72,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -114,7 +102,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -124,7 +112,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -152,7 +140,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
             std::move(callback).Run(std::move(response));
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -162,7 +150,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -192,7 +180,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -202,7 +190,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -230,7 +218,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -240,7 +228,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -272,7 +260,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -282,7 +270,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -310,7 +298,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -320,7 +308,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -328,7 +316,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
             std::move(callback).Run(std::move(response));
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
@@ -338,7 +326,7 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(
           Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -346,7 +334,7 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
             std::move(callback).Run(response);
           }));
 
-  get_capabilities_->Request(
+  get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       base::BindOnce([](mojom::Result result, Capabilities capabilities) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);

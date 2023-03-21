@@ -136,9 +136,20 @@ absl::optional<std::string> EncryptPrefString(
     brave_rewards::RewardsServiceImpl* rewards_service,
     const std::string& value) {
   DCHECK(rewards_service);
-  auto encrypted = rewards_service->EncryptString(value);
-  if (!encrypted)
+
+  absl::optional<std::string> encrypted;
+  base::RunLoop run_loop;
+  rewards_service->EncryptString(
+      value, base::BindLambdaForTesting(
+                 [&](const absl::optional<std::string>& result) {
+                   encrypted = result;
+                   run_loop.Quit();
+                 }));
+  run_loop.Run();
+
+  if (!encrypted) {
     return {};
+  }
   std::string encoded;
   base::Base64Encode(*encrypted, &encoded);
   return encoded;
@@ -149,10 +160,21 @@ absl::optional<std::string> DecryptPrefString(
     const std::string& value) {
   DCHECK(rewards_service);
   std::string decoded;
-  if (!base::Base64Decode(value, &decoded))
+  if (!base::Base64Decode(value, &decoded)) {
     return {};
+  }
 
-  return rewards_service->DecryptString(decoded);
+  absl::optional<std::string> decrypted;
+  base::RunLoop run_loop;
+  rewards_service->DecryptString(
+      decoded, base::BindLambdaForTesting(
+                   [&](const absl::optional<std::string>& result) {
+                     decrypted = result;
+                     run_loop.Quit();
+                   }));
+  run_loop.Run();
+
+  return decrypted;
 }
 
 }  // namespace rewards_browsertest_util

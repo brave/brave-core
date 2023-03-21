@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_captcha/get_captcha.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace promotion {
 
 class GetCaptchaTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<GetCaptcha> captcha_;
-
-  GetCaptchaTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    captcha_ = std::make_unique<GetCaptcha>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  GetCaptcha captcha_{&mock_ledger_impl_};
 };
 
 TEST_F(GetCaptchaTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke([](mojom::UrlRequestPtr request,
                                client::LoadURLCallback callback) {
         mojom::UrlResponse response;
@@ -53,7 +42,7 @@ TEST_F(GetCaptchaTest, ServerOK) {
         std::move(callback).Run(response);
       }));
 
-  captcha_->Request(
+  captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
       base::BindOnce([](mojom::Result result, const std::string& image) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -64,7 +53,7 @@ TEST_F(GetCaptchaTest, ServerOK) {
 }
 
 TEST_F(GetCaptchaTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -74,7 +63,7 @@ TEST_F(GetCaptchaTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
+  captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
       base::BindOnce([](mojom::Result result, const std::string& image) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
@@ -82,7 +71,7 @@ TEST_F(GetCaptchaTest, ServerError400) {
 }
 
 TEST_F(GetCaptchaTest, ServerError404) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -92,7 +81,7 @@ TEST_F(GetCaptchaTest, ServerError404) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
+  captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
       base::BindOnce([](mojom::Result result, const std::string& image) {
         EXPECT_EQ(result, mojom::Result::NOT_FOUND);
@@ -101,7 +90,7 @@ TEST_F(GetCaptchaTest, ServerError404) {
 }
 
 TEST_F(GetCaptchaTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -111,7 +100,7 @@ TEST_F(GetCaptchaTest, ServerError500) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
+  captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
       base::BindOnce([](mojom::Result result, const std::string& image) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
@@ -120,7 +109,7 @@ TEST_F(GetCaptchaTest, ServerError500) {
 }
 
 TEST_F(GetCaptchaTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -130,7 +119,7 @@ TEST_F(GetCaptchaTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  captcha_->Request(
+  captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
       base::BindOnce([](mojom::Result result, const std::string& image) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);

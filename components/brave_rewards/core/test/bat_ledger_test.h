@@ -28,7 +28,9 @@ class BATLedgerTest : public testing::Test {
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
 
   // Returns the |TestLedgerClient| instance for this test.
-  TestLedgerClient* GetTestLedgerClient() { return &client_; }
+  TestLedgerClient* GetTestLedgerClient() {
+    return static_cast<TestLedgerClient*>(ledger_.ledger_client());
+  }
 
   // Returns the |LedgerImpl| instance for this test.
   LedgerImpl* GetLedgerImpl() { return &ledger_; }
@@ -43,8 +45,7 @@ class BATLedgerTest : public testing::Test {
 
  private:
   base::test::TaskEnvironment task_environment_;
-  TestLedgerClient client_;
-  LedgerImpl ledger_{&client_};
+  LedgerImpl ledger_;
 };
 
 }  // namespace ledger

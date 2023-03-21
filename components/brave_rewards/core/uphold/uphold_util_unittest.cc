@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <memory>
 #include <utility>
 
 #include "base/strings/strcat.h"
@@ -28,20 +27,9 @@ namespace ledger {
 namespace uphold {
 
 class UpholdUtilTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-
-  UpholdUtilTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-  }
-
-  ~UpholdUtilTest() override = default;
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_F(UpholdUtilTest, GetClientId) {
@@ -126,9 +114,10 @@ TEST_F(UpholdUtilTest, GetActivityUrl) {
 
 TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_impl_.ledger_client(),
+          GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(""));
-  auto result = mock_ledger_impl_.get()->uphold()->GetWallet();
+  auto result = mock_ledger_impl_.uphold()->GetWallet();
   ASSERT_TRUE(!result);
 
   const std::string wallet = FakeEncryption::Base64EncryptString(R"({
@@ -142,11 +131,12 @@ TEST_F(UpholdUtilTest, GetWallet) {
     "user_name":"test"
   })");
 
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_impl_.ledger_client(),
+          GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(wallet));
 
   // uphold wallet
-  result = mock_ledger_impl_.get()->uphold()->GetWallet();
+  result = mock_ledger_impl_.uphold()->GetWallet();
   ASSERT_TRUE(result);
   ASSERT_EQ(result->address, "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af");
   ASSERT_EQ(result->user_name, "test");

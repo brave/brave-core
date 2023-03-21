@@ -38,7 +38,7 @@ namespace ledger {
 
 class LedgerImpl : public Ledger {
  public:
-  explicit LedgerImpl(LedgerClient* client);
+  explicit LedgerImpl(std::unique_ptr<LedgerClient> client);
   ~LedgerImpl() override;
 
   LedgerImpl(const LedgerImpl&) = delete;
@@ -305,7 +305,7 @@ class LedgerImpl : public Ledger {
 
   void StartServices();
 
-  void OnStateInitialized(mojom::Result result, LegacyResultCallback callback);
+  void OnStateInitialized(LegacyResultCallback callback, mojom::Result result);
 
   void InitializeDatabase(bool execute_create_script,
                           LegacyResultCallback callback);
@@ -325,7 +325,7 @@ class LedgerImpl : public Ledger {
   void RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
                             RunDBTransactionCallback callback);
 
-  LedgerClient* ledger_client_;
+  std::unique_ptr<LedgerClient> ledger_client_;
 
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;

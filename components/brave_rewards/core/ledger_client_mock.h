@@ -124,7 +124,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(ShowNotification,
                void(const std::string& type,
                     const std::vector<std::string>& args,
-                    client::LegacyResultCallback callback));
+                    client::ResultCallback callback));
 
   MOCK_METHOD0(GetClientInfo, mojom::ClientInfoPtr());
 
@@ -147,7 +147,7 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_CONST_METHOD0(ExternalWalletReconnected, void());
 
-  MOCK_METHOD1(DeleteLog, void(client::LegacyResultCallback callback));
+  MOCK_METHOD1(DeleteLog, void(client::ResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
 };

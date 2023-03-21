@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace uphold {
 
 class PatchCardTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PatchCard> card_;
-
-  PatchCardTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    card_ = std::make_unique<PatchCard>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PatchCard card_{&mock_ledger_impl_};
 };
 
 TEST_F(PatchCardTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -102,15 +91,15 @@ TEST_F(PatchCardTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                 "4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-                 }));
+  card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                "4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result) {
+                  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+                }));
 }
 
 TEST_F(PatchCardTest, ServerError401) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -120,15 +109,15 @@ TEST_F(PatchCardTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                 "4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
-                 }));
+  card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                "4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result) {
+                  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
+                }));
 }
 
 TEST_F(PatchCardTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -138,11 +127,11 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  card_->Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
-                 "4c2b665ca060d912fec5c735c734859a06118cc8",
-                 base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                 }));
+  card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
+                "4c2b665ca060d912fec5c735c734859a06118cc8",
+                base::BindOnce([](mojom::Result result) {
+                  EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                }));
 }
 
 }  // namespace uphold

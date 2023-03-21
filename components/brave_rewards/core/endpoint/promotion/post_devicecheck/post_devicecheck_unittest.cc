@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_devicecheck/post_devicecheck.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace promotion {
 
 class PostDevicecheckTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostDevicecheck> devicecheck_;
-
-  PostDevicecheckTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    devicecheck_ = std::make_unique<PostDevicecheck>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostDevicecheck devicecheck_{&mock_ledger_impl_};
 };
 
 TEST_F(PostDevicecheckTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -55,7 +44,7 @@ TEST_F(PostDevicecheckTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
+  devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -64,7 +53,7 @@ TEST_F(PostDevicecheckTest, ServerOK) {
 }
 
 TEST_F(PostDevicecheckTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -74,7 +63,7 @@ TEST_F(PostDevicecheckTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
+  devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
@@ -83,7 +72,7 @@ TEST_F(PostDevicecheckTest, ServerError400) {
 }
 
 TEST_F(PostDevicecheckTest, ServerError401) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -93,7 +82,7 @@ TEST_F(PostDevicecheckTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
+  devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
@@ -102,7 +91,7 @@ TEST_F(PostDevicecheckTest, ServerError401) {
 }
 
 TEST_F(PostDevicecheckTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -112,7 +101,7 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  devicecheck_->Request(
+  devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
