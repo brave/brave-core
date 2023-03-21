@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_safetynet/post_safetynet.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace promotion {
 
 class PostSafetynetTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostSafetynet> safetynet_;
-
-  PostSafetynetTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    safetynet_ = std::make_unique<PostSafetynet>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostSafetynet safetynet_{&mock_ledger_impl_};
 };
 
 TEST_F(PostSafetynetTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -55,7 +44,7 @@ TEST_F(PostSafetynetTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
+  safetynet_.Request(
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
@@ -63,7 +52,7 @@ TEST_F(PostSafetynetTest, ServerOK) {
 }
 
 TEST_F(PostSafetynetTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -73,7 +62,7 @@ TEST_F(PostSafetynetTest, ServerError400) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
+  safetynet_.Request(
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
@@ -81,7 +70,7 @@ TEST_F(PostSafetynetTest, ServerError400) {
 }
 
 TEST_F(PostSafetynetTest, ServerError401) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -91,7 +80,7 @@ TEST_F(PostSafetynetTest, ServerError401) {
             std::move(callback).Run(response);
           }));
 
-  safetynet_->Request(
+  safetynet_.Request(
       base::BindOnce([](mojom::Result result, const std::string& nonce) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace payment {
 
 class PostCredentialsTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostCredentials> creds_;
-
-  PostCredentialsTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    creds_ = std::make_unique<PostCredentials>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostCredentials creds_{&mock_ledger_impl_};
 };
 
 TEST_F(PostCredentialsTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -56,15 +45,15 @@ TEST_F(PostCredentialsTest, ServerOK) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](mojom::Result result) {
-                    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-                  }));
+  creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                 "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                 std::move(blinded), base::BindOnce([](mojom::Result result) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+                 }));
 }
 
 TEST_F(PostCredentialsTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -77,15 +66,15 @@ TEST_F(PostCredentialsTest, ServerError400) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](mojom::Result result) {
-                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                  }));
+  creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                 "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                 std::move(blinded), base::BindOnce([](mojom::Result result) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                 }));
 }
 
 TEST_F(PostCredentialsTest, ServerError409) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -98,15 +87,15 @@ TEST_F(PostCredentialsTest, ServerError409) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](mojom::Result result) {
-                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                  }));
+  creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                 "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                 std::move(blinded), base::BindOnce([](mojom::Result result) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                 }));
 }
 
 TEST_F(PostCredentialsTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -119,15 +108,15 @@ TEST_F(PostCredentialsTest, ServerError500) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](mojom::Result result) {
-                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                  }));
+  creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                 "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                 std::move(blinded), base::BindOnce([](mojom::Result result) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                 }));
 }
 
 TEST_F(PostCredentialsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -140,11 +129,11 @@ TEST_F(PostCredentialsTest, ServerErrorRandom) {
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
-  creds_->Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
-                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                  std::move(blinded), base::BindOnce([](mojom::Result result) {
-                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                  }));
+  creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
+                 "ff50981d-47de-4210-848d-995e186901a1", "single-use",
+                 std::move(blinded), base::BindOnce([](mojom::Result result) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                 }));
 }
 
 }  // namespace payment

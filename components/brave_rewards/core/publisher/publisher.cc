@@ -244,8 +244,8 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
     if (fav_icon.find(".invalid") == std::string::npos) {
       ledger_->ledger_client()->FetchFavIcon(
           fav_icon, "https://" + base::GenerateGUID() + ".invalid",
-          std::bind(&Publisher::onFetchFavIcon, this, publisher_info->id,
-                    window_id, _1, _2));
+          base::BindOnce(&Publisher::onFetchFavIcon, base::Unretained(this),
+                         publisher_info->id, window_id));
     } else {
       publisher_info->favicon_url = fav_icon;
     }

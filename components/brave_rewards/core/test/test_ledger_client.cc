@@ -83,11 +83,11 @@ void TestLedgerClient::OnReconcileComplete(
     mojom::ContributionInfoPtr contribution) {}
 
 void TestLedgerClient::LoadLedgerState(client::OnLoadCallback callback) {
-  callback(mojom::Result::NO_LEDGER_STATE, "");
+  std::move(callback).Run(mojom::Result::NO_LEDGER_STATE, "");
 }
 
 void TestLedgerClient::LoadPublisherState(client::OnLoadCallback callback) {
-  callback(mojom::Result::NO_PUBLISHER_STATE, "");
+  std::move(callback).Run(mojom::Result::NO_PUBLISHER_STATE, "");
 }
 
 void TestLedgerClient::OnPanelPublisherInfo(
@@ -102,7 +102,7 @@ void TestLedgerClient::OnPublisherUpdated(const std::string& publisher_id) {}
 void TestLedgerClient::FetchFavIcon(const std::string& url,
                                     const std::string& favicon_key,
                                     client::FetchIconCallback callback) {
-  callback(true, favicon_key);
+  std::move(callback).Run(true, favicon_key);
 }
 
 std::string TestLedgerClient::URIEncode(const std::string& value) {
@@ -275,8 +275,7 @@ std::string TestLedgerClient::GetLegacyWallet() {
 
 void TestLedgerClient::ShowNotification(const std::string& type,
                                         const std::vector<std::string>& args,
-                                        client::LegacyResultCallback callback) {
-}
+                                        client::ResultCallback callback) {}
 
 mojom::ClientInfoPtr TestLedgerClient::GetClientInfo() {
   auto info = mojom::ClientInfo::New();
@@ -300,7 +299,7 @@ void TestLedgerClient::RunDBTransaction(
 
 void TestLedgerClient::GetCreateScript(
     client::GetCreateScriptCallback callback) {
-  callback("", 0);
+  std::move(callback).Run("", 0);
 }
 
 void TestLedgerClient::PendingContributionSaved(const mojom::Result result) {}
@@ -313,8 +312,8 @@ void TestLedgerClient::ExternalWalletLoggedOut() const {}
 
 void TestLedgerClient::ExternalWalletReconnected() const {}
 
-void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
-  callback(mojom::Result::LEDGER_OK);
+void TestLedgerClient::DeleteLog(client::ResultCallback callback) {
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
 absl::optional<std::string> TestLedgerClient::EncryptString(

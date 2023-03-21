@@ -24,7 +24,10 @@ using database::DatabaseMigration;
 
 class LedgerDatabaseMigrationTest : public testing::Test {
  public:
-  LedgerDatabaseMigrationTest() { ledger::is_testing = true; }
+  LedgerDatabaseMigrationTest()
+      : ledger_(std::make_unique<TestLedgerClient>()) {
+    ledger::is_testing = true;
+  }
 
   ~LedgerDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
@@ -33,10 +36,14 @@ class LedgerDatabaseMigrationTest : public testing::Test {
 
  protected:
   sql::Database* GetDB() {
-    return client_.database()->GetInternalDatabaseForTesting();
+    return ledger_client()->database()->GetInternalDatabaseForTesting();
   }
 
   Ledger* ledger() { return &ledger_; }
+
+  TestLedgerClient* ledger_client() {
+    return static_cast<TestLedgerClient*>(ledger_.ledger_client());
+  }
 
   std::string GetExpectedSchema() {
     base::FilePath path =
@@ -104,8 +111,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  TestLedgerClient client_;
-  LedgerImpl ledger_{&client_};
+  LedgerImpl ledger_;
 };
 
 TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
@@ -759,7 +765,8 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_30_NotBitflyerRegion) {
 TEST_F(LedgerDatabaseMigrationTest, Migration_30_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(30);
   InitializeDatabaseAtVersion(29);
-  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  ledger_client()->SetOptionForTesting(option::kIsBitflyerRegion,
+                                       base::Value(true));
   InitializeLedger();
   EXPECT_EQ(CountTableRows("unblinded_tokens"), 0);
   EXPECT_EQ(CountTableRows("unblinded_tokens_bap"), 1);
@@ -782,7 +789,8 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_32_NotBitflyerRegion) {
 TEST_F(LedgerDatabaseMigrationTest, Migration_32_BitflyerRegion) {
   DatabaseMigration::SetTargetVersionForTesting(32);
   InitializeDatabaseAtVersion(30);
-  client_.SetOptionForTesting(option::kIsBitflyerRegion, base::Value(true));
+  ledger_client()->SetOptionForTesting(option::kIsBitflyerRegion,
+                                       base::Value(true));
   InitializeLedger();
   EXPECT_EQ(CountTableRows("balance_report_info"), 0);
 }

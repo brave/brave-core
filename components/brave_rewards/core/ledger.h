@@ -21,12 +21,12 @@
 
 namespace ledger {
 
-extern mojom::Environment _environment;
-extern bool is_debug;
-extern bool is_testing;
-extern int state_migration_target_version_for_testing;
-extern int reconcile_interval;  // minutes
-extern int retry_interval;      // seconds
+inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
+inline bool is_debug = false;
+inline bool is_testing = false;
+inline int state_migration_target_version_for_testing = -1;
+inline int reconcile_interval = 0;  // minutes
+inline int retry_interval = 0;      // seconds
 
 using PublisherBannerCallback = std::function<void(mojom::PublisherBannerPtr)>;
 
@@ -132,8 +132,6 @@ class Ledger {
 
   Ledger(const Ledger&) = delete;
   Ledger& operator=(const Ledger&) = delete;
-
-  static Ledger* CreateInstance(LedgerClient* client);
 
   virtual void Initialize(bool execute_create_script, LegacyResultCallback) = 0;
 

@@ -26,24 +26,14 @@ namespace endpoint {
 namespace bitflyer {
 
 class BitflyerPostOauthTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostOauth> oauth_;
-
-  BitflyerPostOauthTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    oauth_ = std::make_unique<PostOauth>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostOauth oauth_{&mock_ledger_impl_};
 };
 
 TEST_F(BitflyerPostOauthTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -62,7 +52,7 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
             std::move(callback).Run(response);
           }));
 
-  oauth_->Request(
+  oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
       base::BindOnce([](mojom::Result result, std::string&& token,
@@ -75,7 +65,7 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
 }
 
 TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -85,7 +75,7 @@ TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
             std::move(callback).Run(response);
           }));
 
-  oauth_->Request(
+  oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
       "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
       base::BindOnce([](mojom::Result result, std::string&& token,

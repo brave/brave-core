@@ -38,30 +38,15 @@ using PostCommitTransactionGeminiParamType = std::tuple<
 
 class PostCommitTransactionGemini
     : public TestWithParam<PostCommitTransactionGeminiParamType> {
- public:
-  PostCommitTransactionGemini(const PostCommitTransactionGemini&) = delete;
-  PostCommitTransactionGemini& operator=(const PostCommitTransactionGemini&) =
-      delete;
-
-  PostCommitTransactionGemini(PostCommitTransactionGemini&&) = delete;
-  PostCommitTransactionGemini& operator=(PostCommitTransactionGemini&&) =
-      delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  PostCommitTransactionGemini()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(PostCommitTransactionGemini, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [status_code = status_code, body = body](
               mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +25,14 @@ namespace endpoint {
 namespace payment {
 
 class PostOrderTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostOrder> order_;
-
-  PostOrderTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    order_ = std::make_unique<PostOrder>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostOrder order_{&mock_ledger_impl_};
 };
 
 TEST_F(PostOrderTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -84,8 +73,8 @@ TEST_F(PostOrderTest, ServerOK) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(items, [](const mojom::Result result,
-                            mojom::SKUOrderPtr order) {
+  order_.Request(items, [](const mojom::Result result,
+                           mojom::SKUOrderPtr order) {
     auto expected_order_item = mojom::SKUOrderItem::New();
     expected_order_item->order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
     expected_order_item->sku = "asdfasfasfdsdf";
@@ -107,7 +96,7 @@ TEST_F(PostOrderTest, ServerOK) {
 }
 
 TEST_F(PostOrderTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -124,15 +113,15 @@ TEST_F(PostOrderTest, ServerError400) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(items,
-                  [](const mojom::Result result, mojom::SKUOrderPtr order) {
-                    EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
-                    EXPECT_TRUE(!order);
-                  });
+  order_.Request(items,
+                 [](const mojom::Result result, mojom::SKUOrderPtr order) {
+                   EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
+                   EXPECT_TRUE(!order);
+                 });
 }
 
 TEST_F(PostOrderTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -149,15 +138,15 @@ TEST_F(PostOrderTest, ServerError500) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(items,
-                  [](const mojom::Result result, mojom::SKUOrderPtr order) {
-                    EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
-                    EXPECT_TRUE(!order);
-                  });
+  order_.Request(items,
+                 [](const mojom::Result result, mojom::SKUOrderPtr order) {
+                   EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
+                   EXPECT_TRUE(!order);
+                 });
 }
 
 TEST_F(PostOrderTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke(
           [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
             mojom::UrlResponse response;
@@ -174,11 +163,11 @@ TEST_F(PostOrderTest, ServerErrorRandom) {
   std::vector<mojom::SKUOrderItem> items;
   items.push_back(item);
 
-  order_->Request(items,
-                  [](const mojom::Result result, mojom::SKUOrderPtr order) {
-                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                    EXPECT_TRUE(!order);
-                  });
+  order_.Request(items,
+                 [](const mojom::Result result, mojom::SKUOrderPtr order) {
+                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
+                   EXPECT_TRUE(!order);
+                 });
 }
 
 }  // namespace payment

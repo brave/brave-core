@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 
-// npm run test -- brave_unit_tests --filter='DatabasePublisherPrefixListTest.*'
+// npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
 using ::testing::_;
 using ::testing::Invoke;
@@ -25,25 +25,7 @@ namespace ledger {
 namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::string execute_script_;
-  std::unique_ptr<DatabasePublisherPrefixList> database_prefix_list_;
-
-  DatabasePublisherPrefixListTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    database_prefix_list_ =
-        std::make_unique<DatabasePublisherPrefixList>(mock_ledger_impl_.get());
-  }
-
-  ~DatabasePublisherPrefixListTest() override = default;
-
   std::unique_ptr<publisher::PrefixListReader> CreateReader(
       uint32_t prefix_count) {
     auto reader = std::make_unique<publisher::PrefixListReader>();
@@ -75,6 +57,10 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
                                              : subject,
               prefix);
   }
+
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  DatabasePublisherPrefixList database_prefix_list_{&mock_ledger_impl_};
 };
 
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
@@ -95,11 +81,11 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
         std::move(callback).Run(std::move(response));
       };
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
       .WillByDefault(Invoke(on_run_db_transaction));
 
-  database_prefix_list_->Reset(CreateReader(100'001),
-                               [](const mojom::Result) {});
+  database_prefix_list_.Reset(CreateReader(100'001),
+                              [](const mojom::Result) {});
 
   ASSERT_EQ(commands.size(), 5u);
   EXPECT_EQ(commands[0], "DELETE FROM publisher_prefix_list");

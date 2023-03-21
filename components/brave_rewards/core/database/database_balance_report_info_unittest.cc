@@ -22,24 +22,10 @@ namespace ledger {
 namespace database {
 
 class DatabaseBalanceReportTest : public ::testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::string execute_script_;
-  std::unique_ptr<DatabaseBalanceReport> balance_report_;
-
-  DatabaseBalanceReportTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    balance_report_ =
-        std::make_unique<DatabaseBalanceReport>(mock_ledger_impl_.get());
-  }
-
-  ~DatabaseBalanceReportTest() override = default;
+  base::test::TaskEnvironment scoped_task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  DatabaseBalanceReport balance_report_{&mock_ledger_impl_};
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
@@ -57,7 +43,7 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
       "tip_recurring, tip) "
       "VALUES (?, ?, ?, ?, ?, ?)";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
       .WillByDefault(
           Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
@@ -69,18 +55,19 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
             ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
           }));
 
-  balance_report_->InsertOrUpdate(std::move(info), [](const mojom::Result) {});
+  balance_report_.InsertOrUpdate(std::move(info), [](const mojom::Result) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
+      .Times(1);
 
   const std::string query =
       "SELECT balance_report_id, grants_ugp, grants_ads, "
       "auto_contribute, tip_recurring, tip "
       "FROM balance_report_info";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
       .WillByDefault(
           Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
@@ -93,12 +80,13 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
             ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
           }));
 
-  balance_report_->GetAllRecords(
+  balance_report_.GetAllRecords(
       [](std::vector<mojom::BalanceReportInfoPtr>) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
+      .Times(1);
 
   const std::string query =
       "SELECT balance_report_id, grants_ugp, grants_ads, "
@@ -106,7 +94,7 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
       "FROM balance_report_info "
       "WHERE balance_report_id = ?";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
       .WillByDefault(
           Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
@@ -119,16 +107,17 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
             ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
           }));
 
-  balance_report_->GetRecord(mojom::ActivityMonth::MAY, 2020,
-                             [](mojom::Result, mojom::BalanceReportInfoPtr) {});
+  balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020,
+                            [](mojom::Result, mojom::BalanceReportInfoPtr) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
+      .Times(1);
 
   const std::string query = "DELETE FROM balance_report_info";
 
-  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
       .WillByDefault(
           Invoke([&](mojom::DBTransactionPtr transaction,
                      ledger::client::RunDBTransactionCallback callback) {
@@ -141,7 +130,7 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
             ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
           }));
 
-  balance_report_->DeleteAllRecords([](mojom::Result) {});
+  balance_report_.DeleteAllRecords([](mojom::Result) {});
 }
 
 }  // namespace database

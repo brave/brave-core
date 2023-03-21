@@ -14,8 +14,6 @@ static_library("lib") {
     "bat_ledger_client_mojo_bridge.h",
     "bat_ledger_impl.cc",
     "bat_ledger_impl.h",
-    "bat_ledger_service_impl.cc",
-    "bat_ledger_service_impl.h",
   ]
 
   public_deps = [

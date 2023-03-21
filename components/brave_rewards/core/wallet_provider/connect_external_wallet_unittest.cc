@@ -55,31 +55,15 @@ using ConnectExternalWalletTestParamType = std::tuple<
 
 class ConnectExternalWalletTest
     : public TestWithParam<ConnectExternalWalletTestParamType> {
- public:
-  ConnectExternalWalletTest(const ConnectExternalWalletTest&) = delete;
-  ConnectExternalWalletTest& operator=(const ConnectExternalWalletTest&) =
-      delete;
-
-  ConnectExternalWalletTest(ConnectExternalWalletTest&&) = delete;
-  ConnectExternalWalletTest& operator=(ConnectExternalWalletTest&&) = delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  ConnectExternalWalletTest()
-      : mock_ledger_client_(),
-        mock_ledger_impl_(&mock_ledger_client_),
-        mock_database_(&mock_ledger_impl_) {}
-
   void SetUp() override {
     ON_CALL(mock_ledger_impl_, database())
         .WillByDefault(Return(&mock_database_));
   }
 
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  database::MockDatabase mock_database_;
+  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_P(ConnectExternalWalletTest, Paths) {
@@ -91,7 +75,7 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(mock_ledger_client_, GetStringState("wallets.test"))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), GetStringState("wallets.test"))
       .WillByDefault(Return(std::move(test_wallet)));
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)

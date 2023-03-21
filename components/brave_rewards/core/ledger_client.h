@@ -21,14 +21,14 @@
 namespace ledger {
 namespace client {
 
-using FetchIconCallback = std::function<void(bool, const std::string&)>;
+using FetchIconCallback = base::OnceCallback<void(bool, const std::string&)>;
 
 using LegacyLoadURLCallback = std::function<void(const mojom::UrlResponse&)>;
 
 using LoadURLCallback = base::OnceCallback<void(const mojom::UrlResponse&)>;
 
 using OnLoadCallback =
-    std::function<void(const mojom::Result, const std::string&)>;
+    base::OnceCallback<void(const mojom::Result, const std::string&)>;
 
 using LegacyRunDBTransactionCallback =
     std::function<void(mojom::DBCommandResponsePtr)>;
@@ -37,7 +37,7 @@ using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 
 using GetCreateScriptCallback =
-    std::function<void(const std::string&, const int)>;
+    base::OnceCallback<void(const std::string&, const int)>;
 
 using LegacyResultCallback = std::function<void(mojom::Result)>;
 
@@ -147,7 +147,7 @@ class LedgerClient {
 
   virtual void ShowNotification(const std::string& type,
                                 const std::vector<std::string>& args,
-                                client::LegacyResultCallback callback) = 0;
+                                client::ResultCallback callback) = 0;
 
   virtual mojom::ClientInfoPtr GetClientInfo() = 0;
 
@@ -170,7 +170,7 @@ class LedgerClient {
 
   virtual void ExternalWalletReconnected() const = 0;
 
-  virtual void DeleteLog(client::LegacyResultCallback callback) = 0;
+  virtual void DeleteLog(client::ResultCallback callback) = 0;
 
   virtual absl::optional<std::string> EncryptString(
       const std::string& value) = 0;

@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_drain/get_drain.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -29,28 +28,7 @@ namespace endpoint {
 namespace promotion {
 
 class GetDrainTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<GetDrain> drain_;
-  const char* test_drain_id_ = "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b";
-  const char* drain_json_ = R"(
-    {
-      "drainId": "%s",
-      "status": "%s"
-    }
-  )";
-
-  GetDrainTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    drain_ = std::make_unique<GetDrain>(mock_ledger_impl_.get());
-  }
-
   std::string MakeDrainBody(const std::string& url, const char* status) {
     auto params =
         base::SplitString(url, "/", base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -59,10 +37,21 @@ class GetDrainTest : public testing::Test {
     EXPECT_EQ(params[params.size() - 1], test_drain_id_);
     return base::StringPrintf(drain_json_, test_drain_id_, status);
   }
+
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  GetDrain drain_{&mock_ledger_impl_};
+  const char* test_drain_id_ = "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b";
+  const char* drain_json_ = R"(
+    {
+      "drainId": "%s",
+      "status": "%s"
+    }
+  )";
 };
 
 TEST_F(GetDrainTest, DrainComplete) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
                                    client::LoadURLCallback callback) {
         mojom::UrlResponse response;
@@ -72,15 +61,15 @@ TEST_F(GetDrainTest, DrainComplete) {
         std::move(callback).Run(response);
       }));
 
-  drain_->Request(test_drain_id_, [](const mojom::Result result,
-                                     const mojom::DrainStatus status) {
+  drain_.Request(test_drain_id_, [](const mojom::Result result,
+                                    const mojom::DrainStatus status) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
     EXPECT_EQ(status, mojom::DrainStatus::COMPLETE);
   });
 }
 
 TEST_F(GetDrainTest, DrainPending) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
                                    client::LoadURLCallback callback) {
         mojom::UrlResponse response;
@@ -90,15 +79,15 @@ TEST_F(GetDrainTest, DrainPending) {
         std::move(callback).Run(response);
       }));
 
-  drain_->Request(test_drain_id_, [](const mojom::Result result,
-                                     const mojom::DrainStatus status) {
+  drain_.Request(test_drain_id_, [](const mojom::Result result,
+                                    const mojom::DrainStatus status) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
     EXPECT_EQ(status, mojom::DrainStatus::PENDING);
   });
 }
 
 TEST_F(GetDrainTest, DrainInvalidResponse) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
       .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
                                    client::LoadURLCallback callback) {
         mojom::UrlResponse response;
@@ -108,8 +97,8 @@ TEST_F(GetDrainTest, DrainInvalidResponse) {
         std::move(callback).Run(response);
       }));
 
-  drain_->Request(test_drain_id_, [](const mojom::Result result,
-                                     const mojom::DrainStatus status) {
+  drain_.Request(test_drain_id_, [](const mojom::Result result,
+                                    const mojom::DrainStatus status) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
     EXPECT_EQ(status, mojom::DrainStatus::INVALID);
   });
