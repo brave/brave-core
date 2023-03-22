@@ -3108,6 +3108,13 @@ extension Strings {
         bundle: .module,
         value: "Saved Logins",
         comment: "The header title displayed over the login list")
+    public static let loginListNeverSavedHeaderTitle =
+      NSLocalizedString(
+        "login.loginListNeverSavedHeaderTitle",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Never Saved",
+        comment: "The header title displayed over the never saved login list entry")
     public static let loginInfoDetailsHeaderTitle =
       NSLocalizedString(
         "login.loginInfoDetailsHeaderTitle",
