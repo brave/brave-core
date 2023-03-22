@@ -522,6 +522,16 @@ class DisplayTextField: UITextField {
   required init(coder: NSCoder) {
     fatalError()
   }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    leadingClippingFade.gradientLayer.colors = [
+      UIColor.braveBackground,
+      UIColor.braveBackground.withAlphaComponent(0.0)
+    ].map {
+      $0.resolvedColor(with: traitCollection).cgColor
+    }
+  }
 
   override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
     get {
