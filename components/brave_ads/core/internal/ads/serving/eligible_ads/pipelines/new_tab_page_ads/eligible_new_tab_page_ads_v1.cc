@@ -240,9 +240,7 @@ CreativeNewTabPageAdList EligibleAdsV1::FilterCreativeAds(
 
   eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
 
-  eligible_creative_ads = PrioritizeCreativeAds(eligible_creative_ads);
-
-  return eligible_creative_ads;
+  return PrioritizeCreativeAds(eligible_creative_ads);
 }
 
 }  // namespace brave_ads::new_tab_page_ads
