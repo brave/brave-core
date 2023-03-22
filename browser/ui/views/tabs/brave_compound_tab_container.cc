@@ -12,12 +12,14 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_utils.h"
 
 BraveCompoundTabContainer::BraveCompoundTabContainer(
     raw_ref<TabContainerController> controller,
@@ -130,7 +132,22 @@ gfx::Size BraveCompoundTabContainer::CalculatePreferredSize() const {
   }
 
   // We use flex layout manager so let it do its job.
-  return views::View::CalculatePreferredSize();
+  auto preferred_size = views::View::CalculatePreferredSize();
+
+  // Check if we can expand height to fill the entire scroll area's viewport.
+  for (auto* parent_view = parent(); parent_view;
+       parent_view = parent_view->parent()) {
+    auto* region_view =
+        views::AsViewClass<VerticalTabStripRegionView>(parent_view);
+    if (!region_view) {
+      continue;
+    }
+    preferred_size.set_height(std::max(
+        region_view->GetScrollViewViewportHeight(), preferred_size.height()));
+    break;
+  }
+
+  return preferred_size;
 }
 
 gfx::Size BraveCompoundTabContainer::GetMinimumSize() const {

@@ -69,6 +69,8 @@ class VerticalTabStripRegionView : public views::View,
 
   TabSearchBubbleHost* GetTabSearchBubbleHost();
 
+  int GetScrollViewViewportHeight() const;
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
