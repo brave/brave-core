@@ -942,6 +942,34 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
   }
 
+  void SetGetEthNftStandardInterceptor(
+      const GURL& expected_url,
+      const std::map<std::string, std::string>& interface_id_to_response) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, expected_url,
+         interface_id_to_response](const network::ResourceRequest& request) {
+          EXPECT_EQ(request.url, expected_url);
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          // Check if any of the interface ids are in the request
+          // if so, return the response for that interface id
+          // if not, do nothing
+          for (const auto& [interface_id, response] :
+               interface_id_to_response) {
+            bool request_is_checking_interface =
+                request_string.find(interface_id.substr(2)) !=
+                std::string::npos;
+            if (request_is_checking_interface) {
+              url_loader_factory_.ClearResponses();
+              url_loader_factory_.AddResponse(expected_url.spec(), response);
+              return;
+            }
+          }
+        }));
+  }
+
   void SetSolTokenMetadataInterceptor(
       const GURL& expected_rpc_url,
       const std::string& get_account_info_response,
@@ -1229,6 +1257,27 @@ class JsonRpcServiceUnitTest : public testing::Test {
                           expected_results[i]->contract_address);
                 EXPECT_EQ(results[i]->balance, expected_results[i]->balance);
               }
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
+  void TestGetEthNftStandard(
+      const std::string& contract_address,
+      const std::string& chain_id,
+      std::vector<std::string>& interfaces,
+      const absl::optional<std::string>& expected_standard,
+      mojom::ProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetEthNftStandard(
+        contract_address, chain_id, interfaces,
+        base::BindLambdaForTesting(
+            [&](const absl::optional<std::string>& standard,
+                mojom::ProviderError error, const std::string& error_message) {
+              EXPECT_EQ(standard, expected_standard);
               EXPECT_EQ(error, expected_error);
               EXPECT_EQ(error_message, expected_error_message);
               run_loop.Quit();
@@ -6311,6 +6360,84 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenUri) {
                      mojom::kMainnetChainId, kERC721MetadataInterfaceId,
                      GURL("https://invisiblefriends.io/api/1817"),
                      mojom::ProviderError::kSuccess, "");
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetEthNftStandard) {
+  std::vector<std::string> interfaces;
+  // Empty interface IDs yields invalid params error
+  TestGetEthNftStandard(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", mojom::kMainnetChainId,
+      interfaces, absl::nullopt, mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Empty contract address yields invalid params error
+  interfaces.push_back(kERC721InterfaceId);
+  TestGetEthNftStandard(
+      "", mojom::kMainnetChainId, interfaces, absl::nullopt,
+      mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Empty chain ID yields invalid params error
+  TestGetEthNftStandard(
+      "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "", interfaces,
+      absl::nullopt, mojom::ProviderError::kInvalidParams,
+      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  // Valid inputs but HTTP Timeout
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetEthNftStandard("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+                        mojom::kMainnetChainId, interfaces, absl::nullopt,
+                        mojom::ProviderError::kInternalError,
+                        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+
+  // Valid inputs, invalid provider JSON yields parsing error
+  SetInvalidJsonInterceptor();
+  TestGetEthNftStandard("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+                        mojom::kMainnetChainId, interfaces, absl::nullopt,
+                        mojom::ProviderError::kParsingError,
+                        l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // Valid inputs, supported response returned for the first interface ID
+  auto network = GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH);
+  std::map<std::string, std::string> responses;
+  const std::string interface_supported_response = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000001"
+  })";
+  responses[kERC721InterfaceId] = interface_supported_response;
+  SetGetEthNftStandardInterceptor(network, responses);
+  TestGetEthNftStandard("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+                        mojom::kMainnetChainId, interfaces, kERC721InterfaceId,
+                        mojom::ProviderError::kSuccess, "");
+
+  // Valid inputs, supported response returned for the second interface ID
+  // (ERC1155)
+  interfaces.clear();
+  interfaces.push_back(kERC721InterfaceId);
+  interfaces.push_back(kERC1155InterfaceId);
+  const std::string interface_not_supported_response = R"({
+      "jsonrpc":"2.0",
+      "id":1,
+      "result":"0x0000000000000000000000000000000000000000000000000000000000000000"
+  })";
+  responses[kERC721InterfaceId] = interface_not_supported_response;
+  responses[kERC1155InterfaceId] = interface_supported_response;
+  SetGetEthNftStandardInterceptor(network, responses);
+  TestGetEthNftStandard("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+                        mojom::kMainnetChainId, interfaces, kERC1155InterfaceId,
+                        mojom::ProviderError::kSuccess, "");
+
+  // Valid inputs, but no interfaces are supported yields success / nullopt
+  interfaces.clear();
+  interfaces.push_back(kERC1155InterfaceId);
+  interfaces.push_back(kERC721InterfaceId);
+  responses[kERC721InterfaceId] = interface_not_supported_response;
+  responses[kERC1155InterfaceId] = interface_not_supported_response;
+  SetGetEthNftStandardInterceptor(network, responses);
+  TestGetEthNftStandard("0x06012c8cf97BEaD5deAe237070F9587f8E7A266d",
+                        mojom::kMainnetChainId, interfaces, absl::nullopt,
+                        mojom::ProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

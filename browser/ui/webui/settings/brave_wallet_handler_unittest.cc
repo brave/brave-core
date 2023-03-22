@@ -226,6 +226,7 @@ TEST(TestBraveWalletHandler, AddChain) {
   EXPECT_EQ(*list[0].GetDict().FindString("symbol"), "symbol");
   EXPECT_EQ(*list[0].GetDict().FindBool("is_erc20"), false);
   EXPECT_EQ(*list[0].GetDict().FindBool("is_erc721"), false);
+  EXPECT_EQ(*list[0].GetDict().FindBool("is_erc1155"), false);
   EXPECT_EQ(*list[0].GetDict().FindInt("decimals"), 11);
   EXPECT_EQ(*list[0].GetDict().FindString("logo"), "https://url1.com");
   EXPECT_EQ(*list[0].GetDict().FindBool("visible"), true);

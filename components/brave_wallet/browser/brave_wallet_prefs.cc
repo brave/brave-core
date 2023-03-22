@@ -178,6 +178,10 @@ void RegisterProfilePrefsForMigration(
 
   // Added 03/2023
   registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
+
+  // Added 03/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -224,6 +228,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 03/23 to add filecoin evm support.
   BraveWalletService::MigrateHiddenNetworks(prefs);
+
+  // Added 03/23 to have is_erc1155 set false for existing ERC1155 tokens.
+  BraveWalletService::MigrateUserAssetsAddIsERC1155(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 

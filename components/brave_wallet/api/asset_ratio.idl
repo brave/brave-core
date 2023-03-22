@@ -8,7 +8,8 @@ namespace asset_ratio {
 
   enum TokenType {
     ERC20,
-    ERC721
+    ERC721,
+    ERC1155
   };
 
   // A token info result dictionary. The whole dictionary looks like:

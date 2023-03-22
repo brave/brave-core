@@ -174,6 +174,7 @@ export const AddNftForm = (props: Props) => {
         decimals: 0,
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
         isErc721: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID,
+        isErc1155: false,
         isNft: true,
         name: tokenName,
         symbol: tokenSymbol,

@@ -68,6 +68,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
             "0x0D8775F648430679A709E98d2b0Cb6250d2887EF");
   EXPECT_TRUE(mainnet_token_list[1]->is_erc20);
   EXPECT_FALSE(mainnet_token_list[1]->is_erc721);
+  EXPECT_FALSE(mainnet_token_list[1]->is_erc1155);
   EXPECT_FALSE(mainnet_token_list[1]->is_nft);
   EXPECT_EQ(mainnet_token_list[1]->symbol, "BAT");
   EXPECT_EQ(mainnet_token_list[1]->logo, "bat.svg");
@@ -80,6 +81,7 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
             "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984");
   EXPECT_TRUE(goerli_token_list[0]->is_erc20);
   EXPECT_FALSE(goerli_token_list[0]->is_erc721);
+  EXPECT_FALSE(goerli_token_list[0]->is_erc1155);
   EXPECT_FALSE(goerli_token_list[0]->is_nft);
   EXPECT_EQ(goerli_token_list[0]->symbol, "UNI");
   EXPECT_EQ(goerli_token_list[0]->logo, "uni.svg");
@@ -121,15 +123,15 @@ TEST(ParseTokenListUnitTest, ParseTokenList) {
   auto wrapped_sol = mojom::BlockchainToken::New(
       "So11111111111111111111111111111111111111112", "Wrapped SOL",
       "So11111111111111111111111111111111111111112.png", false, false, false,
-      "SOL", 9, true, "", "solana", "0x65", mojom::CoinType::SOL);
+      false, "SOL", 9, true, "", "solana", "0x65", mojom::CoinType::SOL);
   auto usdc = mojom::BlockchainToken::New(
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "USD Coin",
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png", false, false, false,
-      "USDC", 6, true, "", "usd-coin", "0x65", mojom::CoinType::SOL);
+      false, "USDC", 6, true, "", "usd-coin", "0x65", mojom::CoinType::SOL);
   auto tsla = mojom::BlockchainToken::New(
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "Tesla Inc.",
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png", false, false, false,
-      "TSLA", 8, true, "", "", "0x65", mojom::CoinType::SOL);
+      false, "TSLA", 8, true, "", "", "0x65", mojom::CoinType::SOL);
   std::vector<mojom::BlockchainTokenPtr> solana_token_list;
   solana_token_list.push_back(std::move(tsla));
   solana_token_list.push_back(std::move(usdc));

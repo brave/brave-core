@@ -32,6 +32,8 @@ extern const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[];
 extern const char kBraveWalletUserAssetsAddIsNFTMigrated[];
 // Added 03/2023 to add networks hidden by default
 extern const char kBraveWalletDefaultHiddenNetworksVersion[];
+// Added 03/2023 to set is_erc1155 = false for all existing tokens.
+extern const char kBraveWalletUserAssetsAddIsERC1155Migrated[];
 // Added 10/2022 to replace ETH selected network with mainnet if selected
 // network is one of the Ethereum testnets deprecated on 10/5/2022.
 extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
