@@ -12,10 +12,10 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "net/base/backoff_entry.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/learning_service.h"
 #include "brave/components/brave_federated/task/typing.h"
+#include "net/base/backoff_entry.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
 namespace network {

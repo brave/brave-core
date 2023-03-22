@@ -13,10 +13,10 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "net/base/backoff_entry.h"
-#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/typing.h"
+#include "net/base/backoff_entry.h"
 
 namespace network {
 

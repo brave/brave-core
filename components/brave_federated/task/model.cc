@@ -6,10 +6,11 @@
 #include "brave/components/brave_federated/task/model.h"
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
-#include <random>
+#include <numeric>
 
+#include "base/rand_util.h"
+#include "base/time/time.h"
 #include "brave/components/brave_federated/task/model_util.h"
 
 namespace brave_federated {
@@ -33,14 +34,13 @@ Model::Model(ModelSpec model_spec)
       batch_size_(model_spec.batch_size),
       learning_rate_(model_spec.learning_rate),
       threshold_(model_spec.threshold) {
-  std::random_device rd;
-  std::mt19937 mt(rd());
-  std::uniform_int_distribution<> distribution(-10.0, 10.0);
+  const double max_weight = 10.0;
+  const double min_weight = -10.0;
 
   for (int i = 0; i < model_spec.num_params; i++) {
-    weights_.push_back(distribution(mt));
+    weights_.push_back(base::RandInt(min_weight, max_weight));
   }
-  bias_ = distribution(mt);
+  bias_ = base::RandInt(min_weight, max_weight);
 }
 
 Model::~Model() = default;
@@ -82,10 +82,10 @@ std::vector<float> Model::Predict(const DataSet& dataset) {
 }
 
 PerformanceReport Model::Train(const DataSet& train_dataset) {
-  double data_prep_cumulative_duration = 0;
-  double train_exec_cumulative_duration = 0;
+  auto data_prep_cumulative_duration = base::TimeDelta();
+  auto train_exec_cumulative_duration = base::TimeDelta();
 
-  auto data_start_ts = std::chrono::high_resolution_clock::now();
+  auto data_start_ts = base::ThreadTicks::Now();
 
   int features = train_dataset[0].size() - 1;
   std::vector<float> data_indices(train_dataset.size());
@@ -98,23 +98,18 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   Weights p_w(features);
   float training_loss = 0.0;
 
-  auto data_end_ts = std::chrono::high_resolution_clock::now();
+  auto data_end_ts = base::ThreadTicks::Now();
 
-  data_prep_cumulative_duration +=
-      std::chrono::duration_cast<std::chrono::duration<double>>(data_end_ts -
-                                                                data_start_ts)
-          .count();
+  data_prep_cumulative_duration += base::TimeDelta(data_end_ts - data_start_ts);
 
   for (int iteration = 0; iteration < num_iterations_; iteration++) {
-    data_start_ts = std::chrono::high_resolution_clock::now();
-    std::random_device rd;
-    std::mt19937 g(rd());
-    std::shuffle(data_indices.begin(), data_indices.end(), g);
+    data_start_ts = base::ThreadTicks::Now();
+    base::RandomShuffle(data_indices.begin(), data_indices.end());
 
     DataSet x(batch_size_, std::vector<float>(features));
     std::vector<float> y(batch_size_);
 
-    auto exec_start_ts = std::chrono::high_resolution_clock::now();
+    auto exec_start_ts = base::ThreadTicks::Now();
     for (int i = 0; i < batch_size_; i++) {
       std::vector<float> point = train_dataset[data_indices[i]];
       y[i] = point.back();
@@ -143,23 +138,21 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
     if (iteration % 250 == 0) {
       training_loss = ComputeNLL(y, Predict(x));
     }
-    auto exec_end_ts = std::chrono::high_resolution_clock::now();
+    auto exec_end_ts = base::ThreadTicks::Now();
 
     data_prep_cumulative_duration +=
-        std::chrono::duration_cast<std::chrono::duration<double>>(
-            exec_start_ts - data_start_ts)
-            .count();
+        base::TimeDelta(exec_start_ts - data_start_ts);
     train_exec_cumulative_duration +=
-        std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts -
-                                                                  exec_start_ts)
-            .count();
+        base::TimeDelta(exec_end_ts - exec_start_ts);
   }
 
   float accuracy = training_loss;
 
   std::map<std::string, double> metrics = std::map<std::string, double>();
-  metrics.insert({"data_prep_duration", data_prep_cumulative_duration});
-  metrics.insert({"train_duration", train_exec_cumulative_duration});
+  metrics.insert(
+      {"data_prep_duration", data_prep_cumulative_duration.InSecondsF()});
+  metrics.insert(
+      {"train_duration", train_exec_cumulative_duration.InSecondsF()});
 
   std::vector<Weights> reported_model;
   reported_model.push_back(weights_);
@@ -173,7 +166,7 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 }
 
 PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
-  auto data_start_ts = std::chrono::high_resolution_clock::now();
+  auto data_start_ts = base::ThreadTicks::Now();
 
   int num_features = test_dataset[0].size();
   DataSet X(test_dataset.size(), std::vector<float>(num_features));
@@ -186,7 +179,7 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
     X[i] = point;
   }
 
-  auto exec_start_ts = std::chrono::high_resolution_clock::now();
+  auto exec_start_ts = base::ThreadTicks::Now();
 
   std::vector<float> predicted_value = Predict(X);
   int total_correct = 0;
@@ -204,20 +197,14 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
   float accuracy = total_correct * 1.0 / test_dataset.size();
   float test_loss = ComputeNLL(y, Predict(X));
 
-  auto exec_end_ts = std::chrono::high_resolution_clock::now();
+  auto exec_end_ts = base::ThreadTicks::Now();
 
-  auto data_prep_duration =
-      std::chrono::duration_cast<std::chrono::duration<double>>(exec_start_ts -
-                                                                data_start_ts)
-          .count();
-  auto train_exec_duration =
-      std::chrono::duration_cast<std::chrono::duration<double>>(exec_end_ts -
-                                                                exec_start_ts)
-          .count();
+  auto data_prep_duration = base::TimeDelta(exec_start_ts - data_start_ts);
+  auto train_exec_duration = base::TimeDelta(exec_end_ts - exec_start_ts);
 
   std::map<std::string, double> metrics = std::map<std::string, double>();
-  metrics.insert({"data_prep_duration", data_prep_duration});
-  metrics.insert({"eval_duration", train_exec_duration});
+  metrics.insert({"data_prep_duration", data_prep_duration.InSecondsF()});
+  metrics.insert({"eval_duration", train_exec_duration.InSecondsF()});
 
   return PerformanceReport(test_dataset.size(),  // dataset_size
                            test_loss,            // loss

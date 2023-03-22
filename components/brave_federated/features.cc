@@ -98,8 +98,9 @@ std::string GetFederatedLearningResultsEndpoint() {
 }
 
 uint32_t GetInitFederatedServiceWaitTimeInSeconds() {
-    return GetFieldTrialParamByFeatureAsInt(
-      kFederatedLearning, kFieldTrialParameterInitFederatedServiceWaitTimeInSeconds,
+  return GetFieldTrialParamByFeatureAsInt(
+      kFederatedLearning,
+      kFieldTrialParameterInitFederatedServiceWaitTimeInSeconds,
       kDefaultInitFederatedServiceWaitTimeInSeconds);
 }
 

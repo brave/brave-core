@@ -10,6 +10,7 @@
 #include <fstream>
 #include <random>
 
+#include "base/rand_util.h"
 #include "base/time/time.h"
 
 namespace brave_federated {
@@ -22,11 +23,8 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
                                    int num_features,
                                    size_t size) {
   // Generate time of day and day of week uniformly.
-  std::uniform_int_distribution<> distrday(0, 7);
-  std::uniform_int_distribution<> distrtime(0, 144);
-
-  std::default_random_engine generator;
-  generator.seed(base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
+  const int max_day = 7;
+  const int max_time = 144;
 
   std::vector<float> cov_x(num_features, 0.0);
   for (int j = 0; j < num_features; j++) {
@@ -39,8 +37,8 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
                                      std::vector<float>(num_features, 0.0));
 
   for (size_t j = 0; j < size; j++) {
-    int day_index = distrday(generator);
-    int time_index = distrtime(generator);
+    int day_index = base::RandInt(0, max_day);
+    int time_index = base::RandInt(0, max_time);
 
     xs[j][0] = sin(day_index * 2.0 * M_PI / 7.0);
     xs[j][1] = cos(day_index * 2.0 * M_PI / 7.0);
@@ -48,6 +46,8 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
     xs[j][2] = sin(time_index * 2.0 * M_PI / 144.0);
     xs[j][3] = cos(time_index * 2.0 * M_PI / 144.0);
   }
+
+  std::default_random_engine generator(base::RandDouble());
 
   for (int i = 4; i < num_features; i++) {
     std::normal_distribution<float> normal_i(mean_x[i], cov_x[i]);
