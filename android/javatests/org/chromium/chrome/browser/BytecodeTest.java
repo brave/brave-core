@@ -706,7 +706,8 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarCoordinator", View.class,
-                View.class, ObservableSupplier.class, PrivacyPreferencesManager.class,
+                View.class, ObservableSupplier.class,
+                BraveLocationBarMediator.getPrivacyPreferencesManagerClass(),
                 LocationBarDataProvider.class, ActionMode.Callback.class, WindowDelegate.class,
                 WindowAndroid.class, Supplier.class, Supplier.class, Supplier.class,
                 IncognitoStateProvider.class, ActivityLifecycleDispatcher.class,
