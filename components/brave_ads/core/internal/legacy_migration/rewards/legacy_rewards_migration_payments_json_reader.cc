@@ -17,7 +17,7 @@ absl::optional<PaymentList> ReadPayments(const std::string& json) {
     return absl::nullopt;
   }
 
-  const absl::optional<PaymentList> payments = ParsePayments(*root);
+  const absl::optional<PaymentList> payments = ParsePayments(root->GetDict());
   if (!payments) {
     return absl::nullopt;
   }
