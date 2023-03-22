@@ -140,13 +140,16 @@ class CustomScrollView : public views::ScrollView {
 BEGIN_METADATA(CustomScrollView, views::ScrollView)
 END_METADATA
 
-class ScrollContentsView : public views::View {
- public:
-  METADATA_HEADER(ScrollContentsView);
+}  // namespace
 
-  ScrollContentsView(VerticalTabStripRegionView* container, TabStrip* tab_strip)
+class VerticalTabStripScrollContentsView : public views::View {
+ public:
+  METADATA_HEADER(VerticalTabStripScrollContentsView);
+
+  VerticalTabStripScrollContentsView(VerticalTabStripRegionView* container,
+                                     TabStrip* tab_strip)
       : container_(container), tab_strip_(tab_strip) {}
-  ~ScrollContentsView() override = default;
+  ~VerticalTabStripScrollContentsView() override = default;
 
   // views::View:
   void ChildPreferredSizeChanged(views::View* child) override {
@@ -159,6 +162,7 @@ class ScrollContentsView : public views::View {
     // Prevent reentrance caused by container_->Layout()
     base::AutoReset<bool> in_preferred_size_change(&in_preferred_size_changed_,
                                                    true);
+    container_->set_layout_dirty({});
     container_->Layout();
   }
 
@@ -173,10 +177,8 @@ class ScrollContentsView : public views::View {
   bool in_preferred_size_changed_ = false;
 };
 
-BEGIN_METADATA(ScrollContentsView, views::View)
+BEGIN_METADATA(VerticalTabStripScrollContentsView, views::View)
 END_METADATA
-
-}  // namespace
 
 class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
  public:
@@ -292,7 +294,8 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
           this));
 
   scroll_contents_view_ = scroll_view_->SetContents(
-      std::make_unique<ScrollContentsView>(this, region_view_->tab_strip_));
+      std::make_unique<VerticalTabStripScrollContentsView>(
+          this, region_view_->tab_strip_));
   scroll_contents_view_->SetLayoutManager(
       std::make_unique<views::FillLayout>());
   scroll_view_->SetVerticalScrollBarMode(
@@ -405,6 +408,13 @@ gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
 }
 
 void VerticalTabStripRegionView::Layout() {
+  if (!layout_dirty_ && last_size_ == size()) {
+    return;
+  }
+
+  layout_dirty_ = false;
+  last_size_ = size();
+
   // As we have to update ScrollView's viewport size and its contents size,
   // laying out children manually will be more handy.
 
@@ -449,6 +459,7 @@ void VerticalTabStripRegionView::Layout() {
 }
 
 void VerticalTabStripRegionView::UpdateLayout(bool in_destruction) {
+  layout_dirty_ = true;
   if (tabs::utils::ShouldShowVerticalTabs(browser_) && !in_destruction) {
     if (!Contains(region_view_)) {
       original_parent_of_region_view_ = region_view_->parent();
@@ -543,6 +554,11 @@ void VerticalTabStripRegionView::OnBoundsChanged(
     const gfx::Rect& previous_bounds) {
   if (previous_bounds.size() != size())
     ScrollActiveTabToBeVisible();
+}
+
+void VerticalTabStripRegionView::PreferredSizeChanged() {
+  layout_dirty_ = true;
+  views::View::PreferredSizeChanged();
 }
 
 void VerticalTabStripRegionView::OnTabStripModelChanged(

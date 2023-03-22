@@ -11,10 +11,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
+#include "base/types/pass_key.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
-
 namespace views {
 class ScrollView;
 }
@@ -22,6 +22,7 @@ class ScrollView;
 class BraveNewTabButton;
 class BrowserView;
 class TabStripScrollContainer;
+class VerticalTabStripScrollContentsView;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
@@ -71,6 +72,10 @@ class VerticalTabStripRegionView : public views::View,
 
   int GetScrollViewViewportHeight() const;
 
+  void set_layout_dirty(base::PassKey<VerticalTabStripScrollContentsView>) {
+    layout_dirty_ = true;
+  }
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -79,6 +84,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+  void PreferredSizeChanged() override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -136,6 +142,9 @@ class VerticalTabStripRegionView : public views::View,
   base::OneShotTimer mouse_enter_timer_;
 
   bool mouse_events_for_test_ = false;
+
+  bool layout_dirty_ = false;
+  gfx::Size last_size_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };
