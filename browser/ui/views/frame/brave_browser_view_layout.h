@@ -29,6 +29,9 @@ class BraveBrowserViewLayout : public BrowserViewLayout {
  private:
   bool ShouldPushBookmarkBarForVerticalTabs();
   gfx::Insets GetInsetsConsideringVerticalTabHost();
+#if BUILDFLAG(IS_MAC)
+  gfx::Insets AdjustInsetsConsideringFrameBorder(const gfx::Insets& insets);
+#endif
 
   raw_ptr<views::View> vertical_tab_strip_host_ = nullptr;
 };
