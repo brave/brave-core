@@ -18,7 +18,7 @@ import { getTokensNetwork } from '../../../../../utils/network-utils'
 import Amount from '../../../../../utils/amount'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import { formatTokenBalanceWithSymbol } from '../../../../../utils/balance-utils'
-
+import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
 // Components
 import {
   withPlaceholderIcon,
@@ -112,11 +112,13 @@ export const TokenListItem = (props: Props) => {
         <IconAndName horizontalAlign='flex-start'>
           <IconsWrapper>
             <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-            {tokensNetwork && token?.contractAddress !== '' && (
+            {
+              tokensNetwork &&
+              checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
               <NetworkIconWrapper>
                 <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
               </NetworkIconWrapper>
-            )}
+            }
           </IconsWrapper>
           <Column horizontalAlign='flex-start'>
             <Text textColor='text01' textSize='14px' isBold={true} textAlign='left'>

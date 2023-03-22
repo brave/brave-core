@@ -11,6 +11,7 @@ import { BraveWallet } from '../../../constants/types'
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
+import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
 // components
 import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
@@ -112,7 +113,9 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
       <NameAndIcon>
         <IconsWrapper marginRight='14px'>
           <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
-          {tokenNetwork && token.contractAddress !== '' && !isPanel &&
+          {
+            tokenNetwork &&
+            !isPanel && checkIfTokenNeedsNetworkIcon(tokenNetwork, token.contractAddress) &&
             <NetworkIconWrapper>
               <CreateNetworkIcon network={tokenNetwork} marginRight={0} />
             </NetworkIconWrapper>

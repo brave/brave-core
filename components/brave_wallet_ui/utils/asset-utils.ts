@@ -13,6 +13,8 @@ import {
   addIpfsGateway
 } from './string-utils'
 
+import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
+
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
     return index === assets.findIndex(item => {
@@ -252,4 +254,16 @@ export function filterTokensByNetworks (assets: BraveWallet.BlockchainToken[], n
   return assets.filter(asset =>
     networks.some(network =>
       asset.chainId === network.chainId && asset.coin === network.coin))
+}
+
+export const checkIfTokenNeedsNetworkIcon = (
+  network: BraveWallet.NetworkInfo,
+  contractAddress: string
+) => {
+  return contractAddress !== '' || // non-native asset
+
+    // Checks if the network is not the official Ethereum network,
+    // but uses ETH as gas.
+    getNetworkLogo(network.chainId, network.symbol) !==
+    makeNativeAssetLogo(network.symbol, network.chainId)
 }

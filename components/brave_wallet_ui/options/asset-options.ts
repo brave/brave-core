@@ -36,6 +36,15 @@ export const getNetworkLogo = (chainId: string, symbol: string): string => {
   }
 }
 
+export const makeNativeAssetLogo = (symbol: string, chainId: string) => {
+  return getNetworkLogo(
+    symbol.toUpperCase() === 'ETH'
+      ? BraveWallet.MAINNET_CHAIN_ID
+      : chainId,
+    symbol
+  )
+}
+
 type UndefinedIf<R, T> = T extends undefined ? undefined : R
 export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
   network: T
@@ -48,7 +57,7 @@ export const makeNetworkAsset = <T extends BraveWallet.NetworkInfo | undefined>(
     contractAddress: '',
     name: network.symbolName,
     symbol: network.symbol,
-    logo: getNetworkLogo(network.chainId, network.symbol),
+    logo: makeNativeAssetLogo(network.symbol, network.chainId),
     isErc20: false,
     isErc721: false,
     isNft: false,

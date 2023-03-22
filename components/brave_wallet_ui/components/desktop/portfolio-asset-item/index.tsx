@@ -15,6 +15,7 @@ import { getTokensNetwork } from '../../../utils/network-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 import { isDataURL } from '../../../utils/string-utils'
+import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
 // Components
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
@@ -147,7 +148,10 @@ export const PortfolioAssetItem = ({
                   />
                   : <>
                     <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-                    {tokensNetwork && token.contractAddress !== '' && !isPanel &&
+                    {
+                      !isPanel &&
+                      tokensNetwork &&
+                      checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
                       <NetworkIconWrapper>
                         <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
                       </NetworkIconWrapper>

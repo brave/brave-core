@@ -22,7 +22,7 @@ import {
 import { IconWrapper, PlaceholderText } from './style'
 
 // Options
-import { getNetworkLogo } from '../../../options/asset-options'
+import { makeNativeAssetLogo } from '../../../options/asset-options'
 
 interface Config {
   size: 'big' | 'medium' | 'small'
@@ -49,7 +49,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       return null
     }
 
-    const networkLogo = getNetworkLogo(network.chainId, network.symbol)
+    const nativeAssetLogo = makeNativeAssetLogo(network.symbol, network.chainId)
 
     const isNativeAsset = React.useMemo(() =>
       asset.symbol.toLowerCase() === network.symbol.toLowerCase(),
@@ -73,7 +73,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
     }, [isRemoteURL, tokenImageURL, asset.logo, isStorybook])
 
     const needsPlaceholder = isNativeAsset
-      ? (tokenImageURL === '' || !isValidIcon) && networkLogo === ''
+      ? (tokenImageURL === '' || !isValidIcon) && nativeAssetLogo === ''
       : tokenImageURL === '' || !isValidIcon
 
     const bg = React.useMemo(() => {
@@ -112,8 +112,8 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       >
         <WrappedComponent
           icon={
-            isNativeAsset && networkLogo
-              ? networkLogo
+            isNativeAsset && nativeAssetLogo
+              ? nativeAssetLogo
               : isRemoteURL ? remoteImage : asset.logo
           }
         />
