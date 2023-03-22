@@ -124,10 +124,10 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, TokenType tokenType, int[] rampProviders,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
-            BlockchainToken[] filteredTokens =
-                    filterTokens(selectedNetwork, tokens, tokenType, false);
-            Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);
-            callback.call(removeDuplicates(filteredTokens));
+            // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
+            // allowed to buy by given rampProviders.
+            Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);
+            callback.call(removeDuplicates(tokens));
         });
     }
 
