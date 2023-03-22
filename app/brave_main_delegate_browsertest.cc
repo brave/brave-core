@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_list.h"
 #include "brave/components/update_client/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
-#include "chrome/browser/preloading/prefetch/prefetch_proxy/prefetch_proxy_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
