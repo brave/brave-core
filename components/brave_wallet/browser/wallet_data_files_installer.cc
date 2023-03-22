@@ -54,16 +54,12 @@ absl::optional<base::Version> last_installed_wallet_version;
 void OnSanitizedTokenList(mojom::CoinType coin,
                           data_decoder::JsonSanitizer::Result result) {
   TokenListMap lists;
-  if (result.error) {
-    VLOG(1) << "TokenList JSON validation error:" << *result.error;
+  if (!result.has_value()) {
+    VLOG(1) << "TokenList JSON validation error:" << result.error();
     return;
   }
 
-  std::string json;
-  if (result.value.has_value()) {
-    json = result.value.value();
-  }
-  if (!ParseTokenList(json, &lists, coin)) {
+  if (!ParseTokenList(*result, &lists, coin)) {
     VLOG(1) << "Can't parse token list.";
     return;
   }
@@ -76,16 +72,12 @@ void OnSanitizedTokenList(mojom::CoinType coin,
 
 void OnSanitizedChainList(data_decoder::JsonSanitizer::Result result) {
   ChainList chains;
-  if (result.error) {
-    VLOG(1) << "TokenList JSON validation error:" << *result.error;
+  if (!result.has_value()) {
+    VLOG(1) << "TokenList JSON validation error:" << result.error();
     return;
   }
 
-  std::string json;
-  if (result.value.has_value()) {
-    json = result.value.value();
-  }
-  if (!ParseChainList(json, &chains)) {
+  if (!ParseChainList(*result, &chains)) {
     VLOG(1) << "Can't parse chain list.";
     return;
   }
