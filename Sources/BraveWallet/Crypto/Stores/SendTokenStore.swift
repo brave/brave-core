@@ -17,6 +17,8 @@ public class SendTokenStore: ObservableObject {
   @Published var selectedSendToken: BraveWallet.BlockchainToken? {
     didSet {
       update() // need to update `selectedSendTokenBalance` and `selectedSendNFTMetadata`
+      // Unstoppable Domains are resolved based on currently selected token.
+      validateSendAddress()
     }
   }
   /// The current selected NFT metadata. Default with nil value.
@@ -75,6 +77,7 @@ public class SendTokenStore: ObservableObject {
     case notSolAddress
     case snsError(domain: String)
     case ensError(domain: String)
+    case udError(domain: String)
 
     var errorDescription: String? {
       switch self {
@@ -93,6 +96,8 @@ public class SendTokenStore: ObservableObject {
       case .snsError:
         return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.sol.localizedTitle)
       case .ensError:
+        return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.eth.localizedTitle)
+      case .udError:
         return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.eth.localizedTitle)
       }
     }
@@ -264,6 +269,7 @@ public class SendTokenStore: ObservableObject {
     let normalizedFromAddress = fromAddress.lowercased()
     let normalizedToAddress = sendAddress.lowercased()
     let isSupportedENSExtension = sendAddress.endsWithSupportedENSExtension
+    let isSupportedUDExtension = sendAddress.endsWithSupportedUDExtension
     if isSupportedENSExtension {
       self.resolvedAddress = nil
       self.isResolvingAddress = true
@@ -292,6 +298,8 @@ public class SendTokenStore: ObservableObject {
       // store address for sending
       resolvedAddress = address
       addressError = nil
+    } else if isSupportedUDExtension {
+      await resolveUnstoppableDomain(sendAddress)
     } else {
       if !sendAddress.isETHAddress {
         // 1. check if send address is a valid eth address
@@ -320,6 +328,31 @@ public class SendTokenStore: ObservableObject {
     }
   }
   
+  @MainActor private func resolveUnstoppableDomain(_ domain: String) async {
+    guard selectedSendToken != nil else {
+      // token is required for `unstoppableDomainsGetWalletAddr`
+      // else it returns `invalidParams` error immediately
+      return
+    }
+    self.resolvedAddress = nil
+    self.isResolvingAddress = true
+    defer { self.isResolvingAddress = false }
+    let token = selectedSendToken
+    let (address, status, _) = await rpcService.unstoppableDomainsGetWalletAddr(domain, token: token)
+    guard !Task.isCancelled else { return }
+    if status != .success || address.isEmpty {
+      addressError = .udError(domain: sendAddress)
+      return
+    }
+    guard domain == sendAddress, token == selectedSendToken, !Task.isCancelled else {
+      // address changed while resolving, or validation cancelled.
+      return
+    }
+    // store address for sending
+    resolvedAddress = address
+    addressError = nil
+  }
+  
   public func enableENSOffchainLookup() {
     Task { @MainActor in
       rpcService.setEnsOffchainLookupResolveMethod(.enabled)
@@ -332,6 +365,7 @@ public class SendTokenStore: ObservableObject {
     let normalizedFromAddress = fromAddress.lowercased()
     let normalizedToAddress = sendAddress.lowercased()
     let isSupportedSNSExtension = sendAddress.endsWithSupportedSNSExtension
+    let isSupportedUDExtension = sendAddress.endsWithSupportedUDExtension
     if isSupportedSNSExtension {
       self.resolvedAddress = nil
       self.isResolvingAddress = true
@@ -355,6 +389,8 @@ public class SendTokenStore: ObservableObject {
       // store address for sending
       resolvedAddress = address
       addressError = nil
+    } else if isSupportedUDExtension {
+      await resolveUnstoppableDomain(sendAddress)
     } else { // not supported SNS extension, validate address
       let isValid = await walletService.isBase58EncodedSolanaPubkey(sendAddress)
       if !isValid {

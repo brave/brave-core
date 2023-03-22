@@ -312,4 +312,9 @@ public extension String {
   var endsWithSupportedSNSExtension: Bool {
     WalletConstants.supportedSNSExtensions.contains(where: hasSuffix)
   }
+  
+  /// Returns true if the string ends with a supported UD extension.
+  var endsWithSupportedUDExtension: Bool {
+    WalletConstants.supportedUDExtensions.contains(where: hasSuffix)
+  }
 }
