@@ -242,6 +242,10 @@ gfx::Rect TabDragController::CalculateNonMaximizedDraggedBrowserBounds(
   }
 #endif
 
+  if (is_showing_vertical_tabs_) {
+    bounds.set_size(widget->GetTopLevelWidget()->GetRestoredBounds().size());
+  }
+
   return bounds;
 }
 
@@ -274,6 +278,7 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
     bounds.Offset(GetVerticalTabStripWidgetOffset());
     bounds.Offset(-widget_delegate_view->vertical_tab_strip_region_view()
                        ->GetOffsetForDraggedTab());
+    bounds.set_size(browser_view->GetRestoredBounds().size());
   }
 
   return bounds;
