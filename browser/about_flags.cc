@@ -6,6 +6,7 @@
 #include "chrome/browser/about_flags.h"
 
 #include "base/strings/string_util.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
@@ -689,6 +690,12 @@ constexpr char kRestrictEventSourcePoolDescription[] =
      flag_descriptions::kUseDevUpdaterUrlName,                              \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,               \
      FEATURE_VALUE_TYPE(brave_component_updater::kUseDevUpdaterUrl)},       \
+    {"brave-copy-clean-link-by-default",                                    \
+     "Override default copy hotkey with copy clean link",                   \
+     "Sanitize url before copying, replaces default ctrl+c hotkey for "     \
+     "url ",                                                                \
+     kOsWin | kOsLinux | kOsMac,                                            \
+     FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault)},           \
     {"allow-certain-client-hints",                                          \
       flag_descriptions::kAllowCertainClientHintsName,                      \
       flag_descriptions::kAllowCertainClientHintsDescription, kOsAll,       \

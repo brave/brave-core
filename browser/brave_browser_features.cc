@@ -12,4 +12,9 @@ BASE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore,
              "BraveCleanupSessionCookiesOnSessionRestore",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
+// Sanitize url before copying, replaces default ctrl+c hotkey for urls.
+BASE_FEATURE(kBraveCopyCleanLinkByDefault,
+             "brave-copy-clean-link-by-default",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
 }  // namespace features
