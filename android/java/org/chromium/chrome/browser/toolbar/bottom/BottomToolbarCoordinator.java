@@ -32,6 +32,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
@@ -277,8 +278,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         if (mScrollingBottomView != null && activity != null) {
             Supplier<CompositorViewHolder> cvh = activity.getCompositorViewHolderSupplier();
-            mScrollingBottomView.setSwipeDetector(
-                    cvh.get().getLayoutManager().getToolbarSwipeHandler());
+            LayoutManagerImpl layoutManager = cvh.get().getLayoutManager();
+            if (layoutManager != null) {
+                mScrollingBottomView.setSwipeDetector(layoutManager.getToolbarSwipeHandler());
+            }
         }
     }
 
