@@ -29,15 +29,8 @@ import com.brave.playlist.model.PlaylistOptionsModel;
 import com.brave.playlist.util.ConstantUtils;
 import com.brave.playlist.util.PlaylistUtils;
 import com.brave.playlist.view.bottomsheet.MoveOrCopyToPlaylistBottomSheet;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import org.chromium.base.BraveFeatureList;
-import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
@@ -54,6 +47,9 @@ import org.chromium.playlist.mojom.PlaylistEvent;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.playlist.mojom.PlaylistServiceObserver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
         implements ConnectionErrorHandler, PlaylistOptionsListener, PlaylistServiceObserver {
@@ -305,31 +301,19 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
             return;
         }
         mPlaylistService.getPlaylist(playlistId, playlist -> {
-            JSONObject playlistJson = new JSONObject();
-            try {
-                playlistJson.put("id", playlist.id);
-                playlistJson.put("name", playlist.name);
-                JSONArray playlistItemsJsonArray = new JSONArray();
-                for (PlaylistItem playlistItem : playlist.items) {
-                    JSONObject playlistItemObject = new JSONObject();
-                    playlistItemObject.put("id", playlistItem.id);
-                    playlistItemObject.put("name", playlistItem.name);
-                    playlistItemObject.put("page_source", playlistItem.pageSource.url);
-                    playlistItemObject.put("media_path", playlistItem.mediaPath.url);
-                    playlistItemObject.put("media_src", playlistItem.mediaSource.url);
-                    playlistItemObject.put("thumbnail_path", playlistItem.thumbnailPath.url);
-                    playlistItemObject.put("cached", playlistItem.cached);
-                    playlistItemObject.put("author", playlistItem.author);
-                    playlistItemObject.put("duration", playlistItem.duration);
-                    playlistItemObject.put("last_played_position", playlistItem.lastPlayedPosition);
-                    playlistItemsJsonArray.put(playlistItemObject);
-                }
-                playlistJson.put("items", playlistItemsJsonArray);
-                if (mPlaylistViewModel != null) {
-                    mPlaylistViewModel.setPlaylistData(playlistJson.toString(2));
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "PlaylistHostActivity -> JSONException error " + e);
+            List<PlaylistItemModel> playlistItems = new ArrayList();
+            for (PlaylistItem playlistItem : playlist.items) {
+                PlaylistItemModel playlistItemModel = new PlaylistItemModel(playlistItem.id,
+                        playlist.id, playlistItem.name, playlistItem.pageSource.url,
+                        playlistItem.mediaPath.url, playlistItem.mediaSource.url,
+                        playlistItem.thumbnailPath.url, playlistItem.author, playlistItem.duration,
+                        playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
+                playlistItems.add(playlistItemModel);
+            }
+            PlaylistModel playlistModel =
+                    new PlaylistModel(playlist.id, playlist.name, playlistItems);
+            if (mPlaylistViewModel != null) {
+                mPlaylistViewModel.setPlaylistData(playlistModel);
             }
         });
     }
@@ -353,37 +337,24 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
             return;
         }
         mPlaylistService.getAllPlaylists(playlists -> {
-            try {
-                JSONArray playlistsJson = new JSONArray();
-                for (Playlist playlist : playlists) {
-                    JSONObject playlistJsonObject = new JSONObject();
-
-                    playlistJsonObject.put("id", playlist.id);
-                    playlistJsonObject.put("name", playlist.name);
-                    JSONArray playlistItemsJsonArray = new JSONArray();
-                    for (PlaylistItem playlistItem : playlist.items) {
-                        JSONObject playlistItemObject = new JSONObject();
-                        playlistItemObject.put("id", playlistItem.id);
-                        playlistItemObject.put("name", playlistItem.name);
-                        playlistItemObject.put("page_source", playlistItem.pageSource.url);
-                        playlistItemObject.put("media_path", playlistItem.mediaPath.url);
-                        playlistItemObject.put("media_src", playlistItem.mediaSource.url);
-                        playlistItemObject.put("thumbnail_path", playlistItem.thumbnailPath.url);
-                        playlistItemObject.put("cached", playlistItem.cached);
-                        playlistItemObject.put("author", playlistItem.author);
-                        playlistItemObject.put("duration", playlistItem.duration);
-                        playlistItemObject.put(
-                                "last_played_position", playlistItem.lastPlayedPosition);
-                        playlistItemsJsonArray.put(playlistItemObject);
-                    }
-                    playlistJsonObject.put("items", playlistItemsJsonArray);
-                    playlistsJson.put(playlistJsonObject);
+            List<PlaylistModel> allPlaylists = new ArrayList();
+            for (Playlist playlist : playlists) {
+                List<PlaylistItemModel> playlistItems = new ArrayList();
+                for (PlaylistItem playlistItem : playlist.items) {
+                    PlaylistItemModel playlistItemModel =
+                            new PlaylistItemModel(playlistItem.id, playlist.id, playlistItem.name,
+                                    playlistItem.pageSource.url, playlistItem.mediaPath.url,
+                                    playlistItem.mediaSource.url, playlistItem.thumbnailPath.url,
+                                    playlistItem.author, playlistItem.duration,
+                                    playlistItem.lastPlayedPosition, playlistItem.cached, false, 0);
+                    playlistItems.add(playlistItemModel);
                 }
-                if (mPlaylistViewModel != null) {
-                    mPlaylistViewModel.setAllPlaylistData(playlistsJson.toString(2));
-                }
-            } catch (Exception e) {
-                Log.e(TAG, "PlaylistHostActivity -> JSONException error " + e);
+                PlaylistModel playlistModel =
+                        new PlaylistModel(playlist.id, playlist.name, playlistItems);
+                allPlaylists.add(playlistModel);
+            }
+            if (mPlaylistViewModel != null) {
+                mPlaylistViewModel.setAllPlaylistData(allPlaylists);
             }
         });
     }
