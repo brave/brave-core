@@ -11,7 +11,6 @@
 #include "services/viz/privileged/mojom/gl/gpu_host.mojom.h"
 
 #if BUILDFLAG(IS_WIN)
-// https://github.com/brave/brave-core/pull/17671
 // |executable_path_| used as storage for GPU process executable path.
 #define DidFailInitialize                                 \
   DidGetExecutablePath(const std::string& path) override; \

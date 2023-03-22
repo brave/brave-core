@@ -7,8 +7,7 @@ module viz.mojom;
 
 [BraveExtend]
 interface GpuHost {
-  // https://github.com/brave/brave-core/pull/17671
-  // Added to check GPU executable path spoofing works.
+  // Added to check GPU's executable path spoofing works.
   [EnableIf=is_win]
   DidGetExecutablePath(string path);
 };
