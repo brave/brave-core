@@ -224,9 +224,10 @@ class RewardsServiceImpl : public RewardsService,
                         double amount,
                         OnTipCallback callback) override;
 
-  void SetMonthlyContribution(const std::string& publisher_id,
-                              double amount,
-                              base::OnceCallback<void(bool)> callback) override;
+  void SendContribution(const std::string& publisher_id,
+                        double amount,
+                        bool set_monthly,
+                        base::OnceCallback<void(bool)> callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
@@ -378,8 +379,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRecurringTip(const ledger::mojom::Result result);
 
-  void OnMonthlyContributionSet(base::OnceCallback<void(bool)> callback,
-                                bool success);
+  void OnContributionSent(bool set_monthly,
+                          base::OnceCallback<void(bool)> callback,
+                          bool success);
 
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,

@@ -86,9 +86,11 @@ interface BatLedger {
   // DEPRECATED
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
 
-  SetMonthlyContribution(string publisher_id, double amount) => (bool success);
+  SendContribution(string publisher_id, double amount, bool set_monthly) =>
+        (bool success);
 
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
+
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>

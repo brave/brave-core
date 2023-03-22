@@ -8,9 +8,12 @@
 
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "brave/components/brave_rewards/core/ledger.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ledger {
+
 class LedgerImpl;
 
 namespace contribution {
@@ -21,28 +24,28 @@ class ContributionTip {
 
   ~ContributionTip();
 
-  void Process(const std::string& publisher_key,
+  using ProcessCallback = base::OnceCallback<void(absl::optional<std::string>)>;
+
+  void Process(const std::string& publisher_id,
                double amount,
-               ledger::LegacyResultCallback callback);
+               ProcessCallback callback);
 
  private:
-  void ServerPublisher(mojom::ServerPublisherInfoPtr server_info,
-                       const std::string& publisher_key,
-                       double amount,
-                       ledger::LegacyResultCallback callback);
+  void OnPublisherDataRead(const std::string& publisher_id,
+                           double amount,
+                           ProcessCallback callback,
+                           mojom::ServerPublisherInfoPtr server_info);
 
-  void QueueSaved(mojom::Result result, ledger::LegacyResultCallback callback);
+  void OnQueueSaved(const std::string& queue_id,
+                    ProcessCallback callback,
+                    mojom::Result result);
 
-  void SavePending(const std::string& publisher_key,
-                   double amount,
-                   ledger::LegacyResultCallback callback);
-
-  void OnSavePending(mojom::Result result,
-                     ledger::LegacyResultCallback callback);
+  void OnPendingTipSaved(mojom::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace contribution
 }  // namespace ledger
+
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_TIP_H_

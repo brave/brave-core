@@ -240,10 +240,10 @@ class RewardsService : public KeyedService {
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
 
-  virtual void SetMonthlyContribution(
-      const std::string& publisher_id,
-      double amount,
-      base::OnceCallback<void(bool)> callback) = 0;
+  virtual void SendContribution(const std::string& publisher_id,
+                                double amount,
+                                bool set_monthly,
+                                base::OnceCallback<void(bool)> callback) = 0;
 
   virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTips(GetOneTimeTipsCallback callback) = 0;

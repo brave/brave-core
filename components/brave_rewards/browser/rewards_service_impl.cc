@@ -1869,25 +1869,29 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
                                       AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::SetMonthlyContribution(
+void RewardsServiceImpl::SendContribution(
     const std::string& publisher_key,
     double amount,
+    bool set_monthly,
     base::OnceCallback<void(bool)> callback) {
   if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback), false);
   }
 
-  bat_ledger_->SetMonthlyContribution(
-      publisher_key, amount,
-      base::BindOnce(&RewardsServiceImpl::OnMonthlyContributionSet, AsWeakPtr(),
-                     std::move(callback)));
+  bat_ledger_->SendContribution(
+      publisher_key, amount, set_monthly,
+      base::BindOnce(&RewardsServiceImpl::OnContributionSent, AsWeakPtr(),
+                     set_monthly, std::move(callback)));
 }
 
-void RewardsServiceImpl::OnMonthlyContributionSet(
+void RewardsServiceImpl::OnContributionSent(
+    bool set_monthly,
     base::OnceCallback<void(bool)> callback,
     bool success) {
-  for (auto& observer : observers_) {
-    observer.OnRecurringTipSaved(this, success);
+  if (set_monthly) {
+    for (auto& observer : observers_) {
+      observer.OnRecurringTipSaved(this, success);
+    }
   }
   std::move(callback).Run(success);
 }

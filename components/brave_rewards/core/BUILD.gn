@@ -108,6 +108,7 @@ static_library("ledger") {
     "bitflyer/bitflyer_util.h",
     "common/brotli_util.cc",
     "common/brotli_util.h",
+    "common/legacy_callback_helpers.h",
     "common/random_util.cc",
     "common/random_util.h",
     "common/request_util.cc",
