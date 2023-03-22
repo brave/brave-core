@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActi
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 public class EncryptionKeyFragment extends Fragment implements View.OnClickListener {
@@ -110,10 +111,10 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
             mWalletModel.getCryptoModel().getNetworkModel().mPairChainAndNetwork.observe(
                     getViewLifecycleOwner(), chainIdAndInfosPair -> {
                         String chainId = chainIdAndInfosPair.first;
-                        NetworkInfo[] cryptoNetworks = chainIdAndInfosPair.second;
+                        List<NetworkInfo> cryptoNetworks = chainIdAndInfosPair.second;
                         NetworkInfo network =
                                 Utils.getNetworkInfoByChainId(chainId, cryptoNetworks);
-                        if (!TextUtils.isEmpty(chainId) && cryptoNetworks.length > 0) {
+                        if (!TextUtils.isEmpty(chainId) && cryptoNetworks.size() > 0) {
                             mNetworkName.setText(network.chainName);
                         }
                     });

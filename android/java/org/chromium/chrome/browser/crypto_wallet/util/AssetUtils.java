@@ -68,7 +68,13 @@ public class AssetUtils {
         public static boolean isSameNFT(
                 BlockchainToken token, String tokenId, String contractAddress) {
             if (token.isErc721) {
-                return token.tokenId.equals(tokenId);
+                boolean isSameContractAddress = TextUtils.isEmpty(token.contractAddress)
+                        && TextUtils.isEmpty(contractAddress);
+                if (!isSameContractAddress && !TextUtils.isEmpty(token.contractAddress)
+                        && !TextUtils.isEmpty(contractAddress)) {
+                    isSameContractAddress = token.contractAddress.equalsIgnoreCase(contractAddress);
+                }
+                return token.tokenId.equals(tokenId) && isSameContractAddress;
             } else if (token.isNft) { // Solana
                 return token.contractAddress.equals(contractAddress);
             }

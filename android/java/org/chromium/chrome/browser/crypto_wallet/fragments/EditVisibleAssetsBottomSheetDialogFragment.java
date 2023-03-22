@@ -59,8 +59,10 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
+import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.util.LiveDataUtil;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,6 +81,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private WalletModel mWalletModel;
     private KeyringServiceObserverImpl mKeyringServiceObserver;
     private OnEditVisibleItemClickListener mOnEditVisibleItemClickListener;
+    private List<NetworkInfo> mCryptoNetworks;
 
     public interface DismissListener {
         void onDismiss(Boolean isAssetsListChanged);
@@ -264,31 +267,43 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         if (blockchainRegistry != null) {
             BraveWalletService braveWalletService = getBraveWalletService();
             assert braveWalletService != null;
-            if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-                assert mSelectedNetwork != null;
-                TokenUtils.getUserAssetsFiltered(braveWalletService, mSelectedNetwork,
-                        mSelectedNetwork.coin, TokenUtils.TokenType.ALL, userAssets -> {
+            LiveDataUtil.observeOnce(
+                    mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
+                    networkInfos -> {
+                        mCryptoNetworks = networkInfos;
+                        if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
+                            assert mSelectedNetwork != null;
+                            TokenUtils.getUserAssetsFiltered(braveWalletService, mSelectedNetwork,
+                                    mSelectedNetwork.coin, TokenUtils.TokenType.ALL, userAssets -> {
+                                        TokenUtils.getAllTokensFiltered(braveWalletService,
+                                                blockchainRegistry, mSelectedNetwork,
+                                                mSelectedNetwork.coin, TokenUtils.TokenType.ALL,
+                                                tokens -> {
+                                                    setUpAssetsList(view, tokens, userAssets);
+                                                });
+                                    });
+                        } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
+                            assert mSelectedNetwork != null;
+                            TokenUtils.getUserAssetsFiltered(braveWalletService, mSelectedNetwork,
+                                    mSelectedNetwork.coin, TokenUtils.TokenType.ALL, tokens -> {
+                                        setUpAssetsList(view, tokens, new BlockchainToken[0]);
+                                    });
+                        } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
+                                || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
+                            assert mSelectedNetwork != null;
                             TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
                                     mSelectedNetwork, mSelectedNetwork.coin,
-                                    TokenUtils.TokenType.ALL,
-                                    tokens -> { setUpAssetsList(view, tokens, userAssets); });
-                        });
-            } else if (mType == WalletCoinAdapter.AdapterType.SEND_ASSETS_LIST) {
-                assert mSelectedNetwork != null;
-                TokenUtils.getUserAssetsFiltered(braveWalletService, mSelectedNetwork,
-                        mSelectedNetwork.coin, TokenUtils.TokenType.ALL,
-                        tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
-            } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST
-                    || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
-                assert mSelectedNetwork != null;
-                TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry,
-                        mSelectedNetwork, mSelectedNetwork.coin, TokenUtils.TokenType.ERC20,
-                        tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
-            } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
-                TokenUtils.getBuyTokensFiltered(blockchainRegistry, mSelectedNetwork,
-                        TokenUtils.TokenType.ALL, BuyModel.SUPPORTED_RAMP_PROVIDERS,
-                        tokens -> { setUpAssetsList(view, tokens, new BlockchainToken[0]); });
-            }
+                                    TokenUtils.TokenType.ERC20, tokens -> {
+                                        setUpAssetsList(view, tokens, new BlockchainToken[0]);
+                                    });
+                        } else if (mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST) {
+                            TokenUtils.getBuyTokensFiltered(blockchainRegistry, mSelectedNetwork,
+                                    TokenUtils.TokenType.ALL, BuyModel.SUPPORTED_RAMP_PROVIDERS,
+                                    tokens -> {
+                                        setUpAssetsList(view, tokens, new BlockchainToken[0]);
+                                    });
+                        }
+                    });
         }
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
@@ -497,14 +512,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         for (int i = 0; i < tokens.length; i++) {
-            WalletListItemModel itemModel =
-                    new WalletListItemModel(Utils.getCoinIcon(tokens[i].coin), tokens[i].name,
-                            tokens[i].symbol, tokens[i].tokenId, "", "");
-            itemModel.setBlockchainToken(tokens[i]);
-            itemModel.setIconPath("file://" + tokensPath + "/" + tokens[i].logo);
-
-            boolean isUserSelected = selectedTokensSymbols.contains(Utils.tokenToString(tokens[i]));
-            itemModel.setIsUserSelected(isUserSelected);
+            BlockchainToken token = tokens[i];
+            WalletListItemModel itemModel = new WalletListItemModel(
+                    Utils.getCoinIcon(token.coin), token.name, token.symbol, token.tokenId, "", "");
+            itemModel.setBlockchainToken(token);
+            itemModel.setAssetNetwork(NetworkUtils.findNetwork(mCryptoNetworks, token.chainId));
+            itemModel.setBrowserResourcePath(tokensPath);
+            itemModel.setIconPath("file://" + tokensPath + "/" + token.logo);
+            itemModel.setIsUserSelected(selectedTokensSymbols.contains(Utils.tokenToString(token)));
             walletListItemModelList.add(itemModel);
         }
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);

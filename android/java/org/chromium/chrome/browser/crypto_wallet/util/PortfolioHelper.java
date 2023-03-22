@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -39,19 +40,20 @@ public class PortfolioHelper {
     private AccountInfo[] mAccountInfos;
 
     // Data supplied as result
-    private BlockchainToken[] mUserAssets; // aka selected assets
+    private List<BlockchainToken> mUserAssets; // aka selected assets
     private Double mTotalFiatSum;
     private HashMap<String, Double> mPerTokenFiatSum;
     private HashMap<String, Double> mPerTokenCryptoSum;
     private AssetTimePrice[] mFiatHistory;
     private int mFiatHistoryTimeframe;
-    private NetworkInfo[] mCryptoNetworks;
+    private List<NetworkInfo> mCryptoNetworks;
 
-    public PortfolioHelper(BraveWalletBaseActivity activity, NetworkInfo[] cryptoNetworks,
+    public PortfolioHelper(BraveWalletBaseActivity activity, List<NetworkInfo> cryptoNetworks,
             AccountInfo[] accountInfos) {
         mActivity = new WeakReference<BraveWalletBaseActivity>(activity);
         mCryptoNetworks = cryptoNetworks;
         mAccountInfos = accountInfos;
+        mUserAssets = new ArrayList<>();
     }
 
     public void setSelectedNetwork(NetworkInfo selectedNetwork) {
@@ -63,7 +65,7 @@ public class PortfolioHelper {
         mFiatHistoryTimeframe = timeframe;
     }
 
-    public BlockchainToken[] getUserAssets() {
+    public List<BlockchainToken> getUserAssets() {
         return mUserAssets;
     }
 
@@ -111,7 +113,7 @@ public class PortfolioHelper {
         Utils.getTxExtraInfo(mActivity, mCryptoNetworks, mSelectedNetwork, mAccountInfos, null,
                 true,
                 (assetPrices, userAssetsList, nativeAssetsBalances, blockchainTokensBalances) -> {
-                    mUserAssets = userAssetsList;
+                    mUserAssets = Arrays.asList(userAssetsList);
 
                     // Sum accross accounts
                     for (AccountInfo accountInfo : mAccountInfos) {
@@ -150,7 +152,7 @@ public class PortfolioHelper {
     }
 
     private void resetResultData() {
-        mUserAssets = new BlockchainToken[0];
+        mUserAssets = Collections.emptyList();
         mTotalFiatSum = 0.0d;
         mPerTokenFiatSum = new HashMap<String, Double>();
         mPerTokenCryptoSum = new HashMap<String, Double>();
@@ -176,7 +178,7 @@ public class PortfolioHelper {
     public void calculateFiatHistory(Runnable runWhenDone) {
         mFiatHistory = new AssetTimePrice[0];
         var nonZeroBalanceAssetList =
-                Arrays.stream(mUserAssets)
+                mUserAssets.stream()
                         .filter(token -> {
                             var assetBalance = mPerTokenCryptoSum.get(Utils.tokenToString(token));
                             return assetBalance != null && assetBalance > 0;
@@ -229,8 +231,6 @@ public class PortfolioHelper {
                 return;
             }
 
-            assert !pricesHistoryContexts.isEmpty();
-
             AsyncUtils.GetPriceHistoryResponseContext shortestPriceHistoryContext =
                     Collections.min(pricesHistoryContexts, (l, r) -> {
                         return Integer.compare(l.timePrices.length, r.timePrices.length);
@@ -250,9 +250,7 @@ public class PortfolioHelper {
                         pricesHistoryContexts) {
                     thisDateFiatSum += Float.parseFloat(priceHistoryContext.timePrices[i].price)
                             * Utils.getOrDefault(mPerTokenCryptoSum,
-                                    priceHistoryContext.userAsset.symbol.toLowerCase(
-                                            Locale.getDefault()),
-                                    0.0d);
+                                    Utils.tokenToString(priceHistoryContext.userAsset), 0.0d);
                 }
                 mFiatHistory[i].price = Double.toString(thisDateFiatSum);
             }

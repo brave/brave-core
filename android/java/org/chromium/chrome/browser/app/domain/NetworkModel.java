@@ -31,6 +31,7 @@ import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,14 +39,14 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private JsonRpcService mJsonRpcService;
     private final Object mLock = new Object();
     private final MediatorLiveData<String> _mChainId;
-    private final MediatorLiveData<NetworkInfo[]> _mDefaultCoinCryptoNetworks;
-    private final MutableLiveData<NetworkInfo[]> _mCryptoNetworks;
+    private final MediatorLiveData<List<NetworkInfo>> _mDefaultCoinCryptoNetworks;
+    private final MutableLiveData<List<NetworkInfo>> _mCryptoNetworks;
     private final CryptoSharedData mSharedData;
     private final CryptoSharedActions mCryptoActions;
-    private final MediatorLiveData<Pair<String, NetworkInfo[]>> _mPairChainAndNetwork;
+    private final MediatorLiveData<Pair<String, List<NetworkInfo>>> _mPairChainAndNetwork;
     private final MediatorLiveData<NetworkInfo> _mNeedToCreateAccountForNetwork;
     private final MediatorLiveData<NetworkInfo> _mDefaultNetwork;
-    private final MediatorLiveData<Triple<String, NetworkInfo, NetworkInfo[]>>
+    private final MediatorLiveData<Triple<String, NetworkInfo, List<NetworkInfo>>>
             _mChainNetworkAllNetwork;
     private final Context mContext;
     private final MediatorLiveData<String[]> _mCustomNetworkIds;
@@ -54,11 +55,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
     private NetworkSelectorModel mNetworkSelectorModel;
     public final LiveData<String[]> mCustomNetworkIds;
     public LiveData<NetworkInfo> mNeedToCreateAccountForNetwork;
-    public final LiveData<Triple<String, NetworkInfo, NetworkInfo[]>> mChainNetworkAllNetwork;
-    public final LiveData<Pair<String, NetworkInfo[]>> mPairChainAndNetwork;
+    public final LiveData<Triple<String, NetworkInfo, List<NetworkInfo>>> mChainNetworkAllNetwork;
+    public final LiveData<Pair<String, List<NetworkInfo>>> mPairChainAndNetwork;
     public final LiveData<String> mChainId;
-    public final LiveData<NetworkInfo[]> mDefaultCoinCryptoNetworks;
-    public final LiveData<NetworkInfo[]> mCryptoNetworks;
+    public final LiveData<List<NetworkInfo>> mDefaultCoinCryptoNetworks;
+    public final LiveData<List<NetworkInfo>> mCryptoNetworks;
     public final LiveData<NetworkInfo> mDefaultNetwork;
     public final LiveData<List<NetworkInfo>> mPrimaryNetworks;
     public final LiveData<List<NetworkInfo>> mSecondaryNetworks;
@@ -74,7 +75,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mDefaultCoinCryptoNetworks = new MediatorLiveData<>();
         mChainId = _mChainId;
         mDefaultCoinCryptoNetworks = _mDefaultCoinCryptoNetworks;
-        _mCryptoNetworks = new MutableLiveData<>(new NetworkInfo[0]);
+        _mCryptoNetworks = new MutableLiveData<>(Collections.emptyList());
         mCryptoNetworks = _mCryptoNetworks;
         _mPairChainAndNetwork = new MediatorLiveData<>();
         mPairChainAndNetwork = _mPairChainAndNetwork;
@@ -93,7 +94,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         mSecondaryNetworks = _mSecondaryNetworks;
         jsonRpcService.addObserver(this);
         mNetworkSelectorModel = new NetworkSelectorModel(this, mContext);
-        _mPairChainAndNetwork.setValue(Pair.create("", new NetworkInfo[] {}));
+        _mPairChainAndNetwork.setValue(Pair.create("", Collections.emptyList()));
         _mPairChainAndNetwork.addSource(_mChainId, chainId -> {
             _mPairChainAndNetwork.setValue(
                     Pair.create(chainId, _mDefaultCoinCryptoNetworks.getValue()));
@@ -103,7 +104,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
         });
         _mDefaultNetwork.addSource(_mPairChainAndNetwork, chainIdAndInfosPair -> {
             String chainId = chainIdAndInfosPair.first;
-            NetworkInfo[] cryptoNetworks = chainIdAndInfosPair.second;
+            List<NetworkInfo> cryptoNetworks = chainIdAndInfosPair.second;
             if (chainId == null || cryptoNetworks == null) return;
             for (NetworkInfo networkInfo : cryptoNetworks) {
                 if (networkInfo.chainId.equals(chainId)
@@ -126,7 +127,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         });
         _mDefaultCoinCryptoNetworks.addSource(mSharedData.getCoinTypeLd(), coinType -> {
             mJsonRpcService.getAllNetworks(coinType, networkInfos -> {
-                _mDefaultCoinCryptoNetworks.postValue(stripDebugNetwork(context, networkInfos));
+                _mDefaultCoinCryptoNetworks.postValue(
+                        stripDebugNetwork(context, Arrays.asList(networkInfos)));
             });
         });
 
@@ -227,7 +229,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
                     new NetworkResponsesCollector(mJsonRpcService, coins);
             networkResponsesCollector.getNetworks(networkInfos -> {
                 _mCryptoNetworks.postValue(
-                        stripDebugNetwork(mContext, networkInfos.toArray(new NetworkInfo[0])));
+                        stripDebugNetwork(mContext, new ArrayList<>(networkInfos)));
             });
         }
     }
@@ -268,8 +270,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         _mNeedToCreateAccountForNetwork.postValue(null);
     }
 
-    public NetworkInfo[] stripNoBuySwapNetworks(
-            NetworkInfo[] networkInfos, BuySendSwapActivity.ActivityType type) {
+    public List<NetworkInfo> stripNoBuySwapNetworks(
+            List<NetworkInfo> networkInfos, BuySendSwapActivity.ActivityType type) {
         List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
         for (NetworkInfo networkInfo : networkInfos) {
             if (type == BuySendSwapActivity.ActivityType.BUY && Utils.allowBuy(networkInfo.chainId)
@@ -279,10 +281,10 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         }
 
-        return networkInfosFiltered.toArray(new NetworkInfo[networkInfosFiltered.size()]);
+        return networkInfosFiltered;
     }
 
-    private NetworkInfo[] stripDebugNetwork(Context context, NetworkInfo[] networkInfos) {
+    private List<NetworkInfo> stripDebugNetwork(Context context, List<NetworkInfo> networkInfos) {
         if ((context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
             return networkInfos;
         } else {
@@ -293,13 +295,13 @@ public class NetworkModel implements JsonRpcServiceObserver {
                     networkInfosFiltered.add(networkInfo);
                 }
             }
-            return networkInfosFiltered.toArray(new NetworkInfo[0]);
+            return networkInfosFiltered;
         }
     }
 
     List<NetworkInfo> getSubTestNetworks(NetworkInfo networkInfo) {
-        NetworkInfo[] cryptoNws = _mCryptoNetworks.getValue();
-        if (cryptoNws == null || cryptoNws.length == 0
+        List<NetworkInfo> cryptoNws = _mCryptoNetworks.getValue();
+        if (cryptoNws == null || cryptoNws.size() == 0
                 || !WalletConstants.SUPPORTED_TOP_LEVEL_CHAIN_IDS.contains(networkInfo.chainId))
             return Collections.emptyList();
         List<NetworkInfo> list = new ArrayList<>();

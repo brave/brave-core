@@ -330,11 +330,12 @@ public class Utils {
         return categories.toArray(new String[0]);
     }
 
-    public static NetworkInfo getNetworkInfoByChainId(String chainId, NetworkInfo[] allNetworks) {
+    public static NetworkInfo getNetworkInfoByChainId(
+            String chainId, List<NetworkInfo> allNetworks) {
         for (NetworkInfo network : allNetworks)
             if (network.chainId.equals(chainId)) return network;
         // Fall back to mainnet
-        return allNetworks[0];
+        return allNetworks.get(0);
     }
 
     public static NetworkInfo[] getNetworkInfosByChainIds(
@@ -968,39 +969,7 @@ public class Utils {
     public static BlockchainToken makeNetworkAsset(NetworkInfo network) {
         String logo;
 
-        // TODO: Add missing logos
-        //             case "SOL":
-        //                 logo = "sol.png";
-        //                 break;
-        //             case "FIL":
-        //                 logo = "fil.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.OPTIMISM_MAINNET_CHAIN_ID:
-        //                 logo = "optimism.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.AVALANCHE_MAINNET_CHAIN_ID:
-        //                 logo = "avax.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.FANTOM_MAINNET_CHAIN_ID:
-        //                 logo = "fantom.png";
-        //                 break;
-        //             case network.chainId === BraveWallet.CELO_MAINNET_CHAIN_ID:
-        //                 logo = "celo.png";
-        //                 break;
-        if (network.chainId.equals(BraveWalletConstants.MAINNET_CHAIN_ID)) {
-            logo = "eth.png";
-        } else if (network.chainId.equals(BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID)) {
-            logo = "matic.png";
-        } else if (network.chainId.equals(
-                           BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID)) {
-            logo = "bnb.png";
-        } else if (network.chainId.equals(BraveWalletConstants.SOLANA_MAINNET)
-                || network.chainId.equals(BraveWalletConstants.SOLANA_TESTNET)
-                || network.chainId.equals(BraveWalletConstants.SOLANA_DEVNET)) {
-            logo = "sol.png";
-        } else {
-            logo = "eth.png";
-        }
+        logo = getNetworkIconName(network);
 
         BlockchainToken asset = new BlockchainToken();
         asset.name = network.symbolName;
@@ -1015,6 +984,48 @@ public class Utils {
         asset.chainId = network.chainId;
         asset.coin = network.coin;
         return asset;
+    }
+
+    @NonNull
+    public static String getNetworkIconName(NetworkInfo network) {
+        String logo;
+        switch (network.chainId) {
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+                logo = "eth.png";
+                break;
+            case BraveWalletConstants.POLYGON_MAINNET_CHAIN_ID:
+                logo = "matic.png";
+                break;
+            case BraveWalletConstants.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID:
+                logo = "bnb.png";
+                break;
+            case BraveWalletConstants.SOLANA_MAINNET:
+            case BraveWalletConstants.SOLANA_TESTNET:
+            case BraveWalletConstants.SOLANA_DEVNET:
+                logo = "sol.png";
+                break;
+            case BraveWalletConstants.AURORA_MAINNET_CHAIN_ID:
+                logo = "aurora.png";
+                break;
+            case BraveWalletConstants.ARBITRUM_MAINNET_CHAIN_ID:
+                logo = "arb.png";
+                break;
+            case BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID:
+                logo = "avax.png";
+                break;
+            case BraveWalletConstants.CELO_MAINNET_CHAIN_ID:
+                logo = "celo.png";
+                break;
+            case BraveWalletConstants.OPTIMISM_MAINNET_CHAIN_ID:
+                logo = "op.png";
+                break;
+            case BraveWalletConstants.FANTOM_MAINNET_CHAIN_ID:
+                logo = "ftm.png";
+                break;
+            default:
+                logo = "eth.png";
+        }
+        return logo;
     }
 
     // Replace USDC and DAI contract addresses for Goerli network
@@ -1434,16 +1445,16 @@ public class Utils {
         return hostOrigin;
     }
 
-    public static WalletCoinAdapter setupVisibleAssetList(BlockchainToken[] userAssets,
+    public static WalletCoinAdapter setupVisibleAssetList(List<BlockchainToken> userAssets,
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
-            String tokensPath) {
+            String tokensPath, Resources resources, List<NetworkInfo> allNetworkInfos) {
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
         for (BlockchainToken userAsset : userAssets) {
-            WalletListItemModel walletListItemModel = mapToWalletListItemModel(
-                    perTokenCryptoSum, perTokenFiatSum, tokensPath, userAsset);
+            WalletListItemModel walletListItemModel = mapToWalletListItemModel(perTokenCryptoSum,
+                    perTokenFiatSum, tokensPath, userAsset, resources, allNetworkInfos);
             walletListItemModelList.add(walletListItemModel);
         }
 
@@ -1455,14 +1466,15 @@ public class Utils {
 
     public static WalletCoinAdapter setupVisibleNftAssetList(
             List<PortfolioModel.NftDataModel> userAssets, HashMap<String, Double> perTokenCryptoSum,
-            HashMap<String, Double> perTokenFiatSum, String tokensPath) {
+            HashMap<String, Double> perTokenFiatSum, String tokensPath, Resources resources,
+            List<NetworkInfo> allNetworkInfos) {
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
         for (PortfolioModel.NftDataModel userAsset : userAssets) {
-            WalletListItemModel walletListItemModel = mapToWalletListItemModel(
-                    perTokenCryptoSum, perTokenFiatSum, tokensPath, userAsset.token);
+            WalletListItemModel walletListItemModel = mapToWalletListItemModel(perTokenCryptoSum,
+                    perTokenFiatSum, tokensPath, userAsset.token, resources, allNetworkInfos);
             walletListItemModel.setNftDataModel(userAsset);
             walletListItemModelList.add(walletListItemModel);
         }
@@ -1476,22 +1488,29 @@ public class Utils {
     @NonNull
     private static WalletListItemModel mapToWalletListItemModel(
             HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
-            String tokensPath, BlockchainToken userAsset) {
+            String tokensPath, BlockchainToken userAsset, Resources resources,
+            List<NetworkInfo> allNetworkInfos) {
         String currentAssetKey = Utils.tokenToString(userAsset);
         Double fiatBalance = Utils.getOrDefault(perTokenFiatSum, currentAssetKey, 0.0d);
         String fiatBalanceString = String.format(Locale.getDefault(), "$%,.2f", fiatBalance);
         Double cryptoBalance = Utils.getOrDefault(perTokenCryptoSum, currentAssetKey, 0.0d);
+        NetworkInfo assetNetwork = NetworkUtils.findNetwork(allNetworkInfos, userAsset.chainId);
+        String subtitle = assetNetwork == null
+                ? userAsset.symbol
+                : resources.getString(R.string.brave_wallet_portfolio_asset_network_description,
+                        userAsset.symbol, assetNetwork.chainName);
         String cryptoBalanceString =
                 String.format(Locale.getDefault(), "%.4f %s", cryptoBalance, userAsset.symbol);
 
-        WalletListItemModel walletListItemModel =
-                new WalletListItemModel(Utils.getCoinIcon(userAsset.coin), userAsset.name,
-                        userAsset.symbol, userAsset.tokenId,
-                        // Amount in USD
-                        fiatBalanceString,
-                        // Amount in current crypto currency/token
-                        cryptoBalanceString);
+        WalletListItemModel walletListItemModel = new WalletListItemModel(
+                Utils.getCoinIcon(userAsset.coin), userAsset.name, subtitle, userAsset.tokenId,
+                // Amount in USD
+                fiatBalanceString,
+                // Amount in current crypto currency/token
+                cryptoBalanceString);
 
+        walletListItemModel.setBrowserResourcePath(tokensPath);
+        walletListItemModel.setAssetNetwork(assetNetwork);
         walletListItemModel.setIconPath("file://" + tokensPath + "/" + userAsset.logo);
         walletListItemModel.setBlockchainToken(userAsset);
         return walletListItemModel;
@@ -1520,7 +1539,7 @@ public class Utils {
     // Please only use this function when you need all the info (tokens, prices and balances) at the
     // same time!
     public static void getTxExtraInfo(WeakReference<BraveWalletBaseActivity> activityRef,
-            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
+            List<NetworkInfo> allNetworks, NetworkInfo selectedNetwork, AccountInfo[] accountInfos,
             BlockchainToken[] filterByTokens, boolean userAssetsOnly,
             Callbacks.Callback4<HashMap<String, Double>, BlockchainToken[], HashMap<String, Double>,
                     HashMap<String, HashMap<String, Double>>> callback) {
@@ -1600,7 +1619,7 @@ public class Utils {
     }
 
     public static void getP3ANetworks(
-            NetworkInfo[] allNetworks, Callbacks.Callback1<NetworkInfo[]> callback) {
+            List<NetworkInfo> allNetworks, Callbacks.Callback1<List<NetworkInfo>> callback) {
         ArrayList<NetworkInfo> relevantNetworks = new ArrayList<NetworkInfo>();
         boolean countTestNetworks = CommandLine.getInstance().hasSwitch(
                 BraveWalletConstants.P3A_COUNT_TEST_NETWORKS_SWITCH);
@@ -1614,7 +1633,7 @@ public class Utils {
             }
         }
 
-        callback.call(relevantNetworks.toArray(new NetworkInfo[0]));
+        callback.call(relevantNetworks);
     }
 
     public static boolean isNativeToken(NetworkInfo selectedNetwork, BlockchainToken token) {

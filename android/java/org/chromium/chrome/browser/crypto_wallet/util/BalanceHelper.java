@@ -185,7 +185,7 @@ public class BalanceHelper {
     }
 
     public static void getP3ABalances(WeakReference<BraveWalletBaseActivity> activityRef,
-            NetworkInfo[] allNetworks, NetworkInfo selectedNetwork,
+            List<NetworkInfo> allNetworks, NetworkInfo selectedNetwork,
             Callbacks.Callback1<HashMap<Integer, HashSet<String>>> callback) {
         BraveWalletBaseActivity activity = activityRef.get();
         if (activity == null || activity.isFinishing()) return;
@@ -283,7 +283,7 @@ public class BalanceHelper {
     }
 
     private static HashMap<Integer, ArrayList<NetworkInfo>> filterAndSortNetworksP3A(
-            NetworkInfo[] relevantNetworks, NetworkInfo selectedNetwork) {
+            List<NetworkInfo> relevantNetworks, NetworkInfo selectedNetwork) {
         HashMap<Integer, ArrayList<NetworkInfo>> networksPerCoin =
                 new HashMap<Integer, ArrayList<NetworkInfo>>();
         networksPerCoin.put(CoinType.ETH, new ArrayList<NetworkInfo>());
