@@ -106,8 +106,6 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
 void CommunicationAdapter::OnGetTasks(
     GetTaskCallback callback,
     const std::unique_ptr<std::string> response_body) {
-  // const int default_update_cycle =
-  // features::GetFederatedLearningUpdateCycleInSeconds();
   bool failed_request =
       !url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers;
   reconnect_backoff_entry_->InformOfRequest(!failed_request);

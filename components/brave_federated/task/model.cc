@@ -5,10 +5,12 @@
 
 #include "brave/components/brave_federated/task/model.h"
 
-#include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <numeric>
+#include <utility>
 
+#include "base/check_op.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/task/model_util.h"
@@ -46,12 +48,11 @@ Model::Model(ModelSpec model_spec)
 Model::~Model() = default;
 
 Weights Model::GetWeights() {
-  std::vector<float> copy_of_weights(weights_);
-  return copy_of_weights;
+  return weights_;
 }
 
 void Model::SetWeights(Weights new_weights) {
-  weights_.assign(new_weights.begin(), new_weights.end());
+  weights_ = std::move(new_weights);
 }
 
 float Model::GetBias() {
@@ -62,8 +63,12 @@ void Model::SetBias(float new_bias) {
   bias_ = new_bias;
 }
 
-size_t Model::ModelSize() {
+size_t Model::GetModelSize() const {
   return weights_.size();
+}
+
+size_t Model::GetBatchSize() const {
+  return batch_size_;
 }
 
 std::vector<float> Model::Predict(const DataSet& dataset) {
@@ -92,6 +97,8 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   for (size_t i = 0; i < train_dataset.size(); i++) {
     data_indices.push_back(i);
   }
+
+  DCHECK_LE(GetBatchSize(), train_dataset.size());
 
   Weights d_w(features);
   std::vector<float> err(batch_size_, 10000);
