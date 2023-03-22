@@ -14,10 +14,12 @@
 
 namespace brave_federated {
 
+bool ValidatePullTaskInsResponse(const flower::PullTaskInsResponse response);
 TaskList ParseTaskListFromResponseBody(const std::string& response_body);
-std::string BuildGetTasksPayload();
 
+std::string BuildGetTasksPayload();
 std::string BuildPostTaskResultsPayload(TaskResult result);
+
 }  // namespace brave_federated
 
 #endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_ADAPTERS_FLOWER_HELPER_H_

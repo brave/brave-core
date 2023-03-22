@@ -15,7 +15,7 @@
 #include "brave/third_party/flower/src/proto/flwr/proto/node.pb.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests -filter=BraveFederatedLearning*
+// npm run test -- brave_unit_tests --filter=BraveFederatedLearning*
 
 namespace brave_federated {
 
