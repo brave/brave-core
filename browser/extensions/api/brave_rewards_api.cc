@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
@@ -130,6 +131,27 @@ BraveRewardsGetLocaleFunction::~BraveRewardsGetLocaleFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsGetLocaleFunction::Run() {
   return RespondNow(WithArguments(brave_l10n::GetDefaultLocaleString()));
+}
+
+BraveRewardsRecordNTPPanelTriggerFunction::
+    ~BraveRewardsRecordNTPPanelTriggerFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsRecordNTPPanelTriggerFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+      RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  if (!profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled)) {
+    rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
+        ::brave_rewards::p3a::PanelTrigger::kNTP);
+  }
+
+  return RespondNow(NoArguments());
 }
 
 BraveRewardsOpenRewardsPanelFunction::~BraveRewardsOpenRewardsPanelFunction() =
@@ -433,10 +455,18 @@ ExtensionFunction::ResponseAction BraveRewardsTipUserFunction::Run() {
     return RespondNow(Error("Rewards service is not initialized"));
   }
 
+  bool rewards_enabled =
+      profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled);
+
+  if (!profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled)) {
+    rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
+        ::brave_rewards::p3a::PanelTrigger::kInlineTip);
+  }
+
   // If the user clicks the tipping button before having opted into the Rewards,
   // then the Rewards service would not have started the ledger process yet. We
   // need to open the Rewards panel for the user to offer opting in.
-  if (!profile->GetPrefs()->GetBoolean(::brave_rewards::prefs::kEnabled)) {
+  if (!rewards_enabled) {
     // Get web contents for this tab
     content::WebContents* contents =
         WebContentsFromBrowserContext(params->tab_id, browser_context());

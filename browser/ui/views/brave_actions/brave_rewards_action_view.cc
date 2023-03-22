@@ -14,6 +14,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/ui/brave_icon_with_badge_image_source.h"
 #include "brave/browser/ui/webui/brave_rewards/rewards_panel_ui.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -281,6 +282,14 @@ void BraveRewardsActionView::OnNotificationDeleted(
 }
 
 void BraveRewardsActionView::OnButtonPressed() {
+  brave_rewards::RewardsService* rewards_service = GetRewardsService();
+  if (rewards_service != nullptr) {
+    auto* prefs = browser_->profile()->GetPrefs();
+    if (!prefs->GetBoolean(brave_rewards::prefs::kEnabled)) {
+      rewards_service->GetP3AConversionMonitor()->RecordPanelTrigger(
+          ::brave_rewards::p3a::PanelTrigger::kToolbarButton);
+    }
+  }
   // If we are opening the Rewards panel, use `RewardsPanelCoordinator` to open
   // it so that the panel arguments will be correctly set.
   if (!IsPanelOpen() && panel_coordinator_) {

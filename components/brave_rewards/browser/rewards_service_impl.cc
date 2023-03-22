@@ -553,6 +553,8 @@ void RewardsServiceImpl::CreateRewardsWallet(
         observer.OnRewardsWalletUpdated();
       }
 
+      self->conversion_monitor_.RecordRewardsEnable();
+
       std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
 
@@ -2277,6 +2279,10 @@ void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
                          GetDefaultServerEnvironment());
   }
   ledger_->GetEnvironment(std::move(callback));
+}
+
+p3a::ConversionMonitor* RewardsServiceImpl::GetP3AConversionMonitor() {
+  return &conversion_monitor_;
 }
 
 void RewardsServiceImpl::GetDebug(GetDebugCallback callback) {

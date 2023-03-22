@@ -32,6 +32,10 @@ class NavigationHandle;
 
 namespace brave_rewards {
 
+namespace p3a {
+class ConversionMonitor;
+}  // namespace p3a
+
 class RewardsNotificationService;
 class RewardsServiceObserver;
 
@@ -370,6 +374,8 @@ class RewardsService : public KeyedService {
   virtual void SetExternalWalletType(const std::string& wallet_type) = 0;
 
   virtual void GetEnvironment(GetEnvironmentCallback callback) = 0;
+
+  virtual p3a::ConversionMonitor* GetP3AConversionMonitor() = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

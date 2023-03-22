@@ -164,6 +164,8 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
 
+  const recordNTPPanelTrigger: () => void
+
   const openRewardsPanel: () => void
 
   const showRewardsTour: () => void

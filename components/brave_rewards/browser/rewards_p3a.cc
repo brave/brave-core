@@ -14,6 +14,23 @@
 namespace brave_rewards {
 namespace p3a {
 
+#if !BUILDFLAG(IS_ANDROID)
+namespace {
+
+// The maximum time difference allowed between the rewards panel opening action
+// (which may have enabled rewards) and the actual enabling of rewards. This is
+// to ensure that there is a clear connection between the action and the reward
+// enabling.
+constexpr base::TimeDelta kMaxEnabledCauseTriggerTime = base::Minutes(1);
+
+}  // namespace
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+const char kEnabledSourceHistogramName[] = "Brave.Rewards.EnabledSource";
+const char kInlineTipTriggerHistogramName[] = "Brave.Rewards.InlineTipTrigger";
+const char kToolbarButtonTriggerHistogramName[] =
+    "Brave.Rewards.ToolbarButtonTrigger";
+
 void RecordAutoContributionsState(AutoContributionsState state, int count) {
   DCHECK_GE(count, 0);
   int answer = 0;
@@ -158,6 +175,41 @@ void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
 
   UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsEnabledDuration",
                             enabled_duration);
+}
+
+ConversionMonitor::ConversionMonitor() = default;
+ConversionMonitor::~ConversionMonitor() = default;
+
+void ConversionMonitor::RecordPanelTrigger(PanelTrigger trigger) {
+#if !BUILDFLAG(IS_ANDROID)
+  if (trigger == PanelTrigger::kInlineTip) {
+    UMA_HISTOGRAM_EXACT_LINEAR(kInlineTipTriggerHistogramName, 1, 2);
+  } else if (trigger == PanelTrigger::kToolbarButton) {
+    UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, 1, 2);
+  }
+  last_trigger_ = trigger;
+  last_trigger_time_ = base::Time::Now();
+#endif  // !BUILDFLAG(IS_ANDROID)
+}
+
+void ConversionMonitor::RecordRewardsEnable() {
+#if !BUILDFLAG(IS_ANDROID)
+  // Suspend the other two metrics to prevent overlapping
+  // data from being sent once the "rewards enabled source" metric is recorded.
+  UMA_HISTOGRAM_EXACT_LINEAR(kToolbarButtonTriggerHistogramName, INT_MAX - 1,
+                             2);
+  UMA_HISTOGRAM_EXACT_LINEAR(kInlineTipTriggerHistogramName, INT_MAX - 1, 2);
+
+  if (!last_trigger_.has_value() ||
+      base::Time::Now() - last_trigger_time_ > kMaxEnabledCauseTriggerTime) {
+    return;
+  }
+
+  UMA_HISTOGRAM_ENUMERATION(kEnabledSourceHistogramName, *last_trigger_);
+
+  last_trigger_.reset();
+  last_trigger_time_ = base::Time();
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 }  // namespace p3a
