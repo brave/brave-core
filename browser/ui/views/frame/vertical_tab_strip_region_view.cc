@@ -392,14 +392,16 @@ int VerticalTabStripRegionView::GetAvailableWidthForTabContainer() {
 }
 
 gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
-  return GetPreferredSizeForState(state_);
+  return GetPreferredSizeForState(state_, /*include_border=*/true);
 }
 
 gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
-  if (state_ == State::kFloating)
-    return GetPreferredSizeForState(State::kCollapsed);
+  if (state_ == State::kFloating) {
+    return GetPreferredSizeForState(State::kCollapsed,
+                                    /* include_border=*/false);
+  }
 
-  return GetPreferredSizeForState(state_);
+  return GetPreferredSizeForState(state_, /* include_border= */ false);
 }
 
 void VerticalTabStripRegionView::Layout() {
@@ -590,7 +592,8 @@ void VerticalTabStripRegionView::OnFloatingModePrefChanged() {
 }
 
 gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
-    State state) const {
+    State state,
+    bool include_border) const {
   if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
     return {};
   }
@@ -598,7 +601,7 @@ gfx::Size VerticalTabStripRegionView::GetPreferredSizeForState(
   if (IsTabFullscreen())
     return {};
 
-  return {GetPreferredWidthForState(state, /*include_border=*/true),
+  return {GetPreferredWidthForState(state, include_border),
           View::CalculatePreferredSize().height()};
 }
 

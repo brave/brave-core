@@ -51,9 +51,7 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
 #endif  // BUILDFLAG(IS_LINUX)
 
 #if BUILDFLAG(IS_MAC)
-  // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
-  // that line
-  insets.set_left(1);
+  insets = AdjustInsetsConsideringFrameBorder(insets);
 #endif
 
   if (insets.IsEmpty())
@@ -145,12 +143,27 @@ bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
 gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
   DCHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser()) ||
+      browser_view_->IsFullscreen()) {
+    return {};
+  }
 
   gfx::Insets insets;
   insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());
 #if BUILDFLAG(IS_MAC)
-  insets.set_left(1 + insets.left());
+  insets = AdjustInsetsConsideringFrameBorder(insets);
 #endif
 
   return insets;
 }
+
+#if BUILDFLAG(IS_MAC)
+gfx::Insets BraveBrowserViewLayout::AdjustInsetsConsideringFrameBorder(
+    const gfx::Insets& insets) {
+  // for frame border drawn by OS. Vertical tabstrip's widget shouldn't cover
+  // that line
+  auto new_insets(insets);
+  new_insets.set_left(1 + insets.left());
+  return new_insets;
+}
+#endif

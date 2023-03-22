@@ -150,8 +150,8 @@ void VerticalTabStripWidgetDelegateView::ChildPreferredSizeChanged(
 
   // Setting minimum size for |host_| so that we can overlay vertical tabs over
   // the web view.
-  auto new_host_size = region_view_->GetMinimumSize();
-  if (new_host_size != host_->GetPreferredSize()) {
+  if (auto new_host_size = region_view_->GetMinimumSize();
+      new_host_size != host_->GetPreferredSize()) {
     host_->SetPreferredSize(new_host_size);
     return;
   }
