@@ -72,6 +72,25 @@ TEST(EthRequestHelperUnitTest, ParseEthTransactionParams) {
   EXPECT_EQ(tx_data->value, "0x25F38E9E0000000");
   EXPECT_EQ(tx_data->data, (std::vector<uint8_t>{1, 2, 3}));
   EXPECT_TRUE(tx_data->nonce.empty());  // Should be ignored.
+
+  // deploying contract
+  json =
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "gas": "0x146",
+          "data": "0x010203",
+        }]
+      })";
+  tx_data = ParseEthTransactionParams(json, &from);
+  ASSERT_TRUE(tx_data);
+  EXPECT_EQ(from, "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8");
+  EXPECT_TRUE(tx_data->to.empty());
+  EXPECT_EQ(tx_data->gas_limit, "0x146");
+  EXPECT_TRUE(tx_data->gas_price.empty());
+  EXPECT_TRUE(tx_data->value.empty());
+  EXPECT_EQ(tx_data->data, (std::vector<uint8_t>{1, 2, 3}));
+  EXPECT_TRUE(tx_data->nonce.empty());  // Should be ignored.
 }
 
 TEST(EthResponseHelperUnitTest, ParseEthTransaction1559Params) {
@@ -95,7 +114,7 @@ TEST(EthResponseHelperUnitTest, ParseEthTransaction1559Params) {
   EXPECT_EQ(tx_data->base_data->to,
             "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C7");
   EXPECT_EQ(tx_data->base_data->gas_limit, "0x146");
-  EXPECT_EQ(tx_data->base_data->gas_price.empty(), true);
+  EXPECT_TRUE(tx_data->base_data->gas_price.empty());
   EXPECT_EQ(tx_data->base_data->value, "0x25F38E9E0000000");
   EXPECT_EQ(tx_data->base_data->data, (std::vector<uint8_t>{1, 2, 3}));
   EXPECT_EQ(tx_data->max_priority_fee_per_gas, "0x1");
@@ -123,6 +142,26 @@ TEST(EthResponseHelperUnitTest, ParseEthTransaction1559Params) {
   EXPECT_EQ(tx_data->base_data->data, (std::vector<uint8_t>{1, 2, 3}));
   // Allowed to parse without these fields, the client should determine
   // reasonable values in this case.
+  EXPECT_TRUE(tx_data->max_priority_fee_per_gas.empty());
+  EXPECT_TRUE(tx_data->max_fee_per_gas.empty());
+
+  // deploying contract
+  json =
+      R"({
+        "params": [{
+          "from": "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8",
+          "gas": "0x146",
+          "data": "0x010203"
+        }]
+      })";
+  tx_data = ParseEthTransaction1559Params(json, &from);
+  ASSERT_TRUE(tx_data);
+  EXPECT_EQ(from, "0x7f84E0DfF3ffd0af78770cF86c1b1DdFF99d51C8");
+  EXPECT_TRUE(tx_data->base_data->to.empty());
+  EXPECT_EQ(tx_data->base_data->gas_limit, "0x146");
+  EXPECT_TRUE(tx_data->base_data->gas_price.empty());
+  EXPECT_TRUE(tx_data->base_data->value.empty());
+  EXPECT_EQ(tx_data->base_data->data, (std::vector<uint8_t>{1, 2, 3}));
   EXPECT_TRUE(tx_data->max_priority_fee_per_gas.empty());
   EXPECT_TRUE(tx_data->max_fee_per_gas.empty());
 }
