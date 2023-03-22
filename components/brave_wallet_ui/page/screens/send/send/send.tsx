@@ -250,14 +250,28 @@ export const Send = (props: Props) => {
   }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainWarning])
 
   const isReviewButtonDisabled = React.useMemo(() => {
-    return searchingForDomain ||
-      toAddressOrUrl === '' ||
-      parseFloat(sendAmount) === 0 ||
-      sendAmount === '' ||
-      insufficientFundsError ||
-      (addressError !== undefined && addressError !== '') ||
-      sendAmountValidationError !== undefined
-  }, [toAddressOrUrl, sendAmount, insufficientFundsError, addressError, sendAmountValidationError, searchingForDomain])
+    // We only need to check if showEnsOffchainWarning is true here to return
+    // false early before any other checks are made. This is to allow the button
+    // to be pressed to enable offchain lookup.
+    return !showEnsOffchainWarning &&
+      (searchingForDomain ||
+        toAddressOrUrl === '' ||
+        parseFloat(sendAmount) === 0 ||
+        sendAmount === '' ||
+        insufficientFundsError ||
+        (addressError !== undefined && addressError !== '') ||
+        sendAmountValidationError !== undefined)
+  },
+    [
+      toAddressOrUrl,
+      sendAmount,
+      insufficientFundsError,
+      addressError,
+      sendAmountValidationError,
+      searchingForDomain,
+      showEnsOffchainWarning
+    ]
+  )
 
   const reviewButtonHasError = React.useMemo(() => {
     return searchingForDomain
