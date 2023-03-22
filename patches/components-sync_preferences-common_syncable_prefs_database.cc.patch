@@ -1,8 +1,8 @@
 diff --git a/components/sync_preferences/common_syncable_prefs_database.cc b/components/sync_preferences/common_syncable_prefs_database.cc
-index 2cc046e4a64acfe4e1693a0b7a67100fc7b153e2..1f6eec04a74990beec73688e09158a968bf18981 100644
+index 24794810711d40835c1e6d1c1fa36c3c19e88480..1096caee7336dbdad77c286a2ffa9739e941268b 100644
 --- a/components/sync_preferences/common_syncable_prefs_database.cc
 +++ b/components/sync_preferences/common_syncable_prefs_database.cc
-@@ -95,6 +95,7 @@ enum {
+@@ -99,6 +99,7 @@ enum {
    kPrefAlwaysTranslateList = 59,
    kPrefNeverPromptSitesWithTime = 60,
    kPrefTranslateRecentTarget = 61
@@ -10,11 +10,11 @@ index 2cc046e4a64acfe4e1693a0b7a67100fc7b153e2..1f6eec04a74990beec73688e09158a96
  };
  }  // namespace syncable_prefs_ids
  
-@@ -229,6 +230,7 @@ const auto& SyncablePreferences() {
-             syncable_prefs_ids::kSyncablePrefForTesting
-           }
-         }
+@@ -258,6 +259,7 @@ const auto& SyncablePreferences() {
+          {syncable_prefs_ids::kPrefTranslateRecentTarget, syncer::PREFERENCES}},
+         {kSyncablePrefForTesting,
+          {syncable_prefs_ids::kSyncablePrefForTesting, syncer::PREFERENCES}},
 +        BRAVE_COMMON_SYNCABLE_PREFS_ALLOW_LIST
-       });
+   });
    return kCommonSyncablePrefsAllowlist;
  }

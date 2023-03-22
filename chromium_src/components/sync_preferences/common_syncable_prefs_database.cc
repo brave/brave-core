@@ -11,14 +11,15 @@
   , kSyncedDefaultPrivateSearchProviderGUID = 1000, \
     kSyncedDefaultPrivateSearchProviderData = 1001
 
-#define BRAVE_COMMON_SYNCABLE_PREFS_ALLOW_LIST                         \
-  ,                                                                    \
-      {prefs::kSyncedDefaultPrivateSearchProviderGUID,                 \
-       {syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderGUID}}, \
-  {                                                                    \
-    prefs::kSyncedDefaultPrivateSearchProviderData, {                  \
-      syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderData      \
-    }                                                                  \
+#define BRAVE_COMMON_SYNCABLE_PREFS_ALLOW_LIST                     \
+  {prefs::kSyncedDefaultPrivateSearchProviderGUID,                 \
+   {syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderGUID,   \
+    syncer::PREFERENCES}},                                         \
+  {                                                                \
+    prefs::kSyncedDefaultPrivateSearchProviderData, {              \
+      syncable_prefs_ids::kSyncedDefaultPrivateSearchProviderData, \
+          syncer::PREFERENCES                                      \
+    }                                                              \
   }
 
 #include "src/components/sync_preferences/common_syncable_prefs_database.cc"
