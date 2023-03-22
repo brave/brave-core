@@ -19,6 +19,8 @@
 
 namespace sandbox {
 
+// Enables patching of executable's name from brave.exe to chrome.exe in
+// sandboxed processes.
 BASE_DECLARE_FEATURE(kModuleFileNamePatch);
 
 using GetModuleFileNameAFunction = decltype(&::GetModuleFileNameA);

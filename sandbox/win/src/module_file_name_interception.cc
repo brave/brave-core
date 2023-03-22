@@ -10,9 +10,7 @@
 #include <string>
 #include <type_traits>
 
-#include "base/logging.h"
 #include "base/strings/string_piece.h"
-#include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
 #include "base/win/windows_types.h"
 #include "sandbox/win/src/sandbox_types.h"

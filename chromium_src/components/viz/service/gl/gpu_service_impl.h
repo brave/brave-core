@@ -6,6 +6,9 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_VIZ_SERVICE_GL_GPU_SERVICE_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_VIZ_SERVICE_GL_GPU_SERVICE_IMPL_H_
 
+// https://github.com/brave/brave-core/pull/17671
+// To check that 'ModuleFilenamePatch' feature works, we provide a result of
+// call to the interested WINAPI functions.
 #define InitializeWithHost                                             \
   InitializeWithHost_ChromiumImpl(                                     \
       mojo::PendingRemote<mojom::GpuHost> pending_gpu_host,            \
