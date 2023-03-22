@@ -23,7 +23,8 @@ namespace nft {
 
 UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
-  auto* untrusted_source = content::WebUIDataSource::Create(kUntrustedNftURL);
+  auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedNftURL);
 
   for (const auto& str : brave_wallet::kLocalizedStrings) {
     std::u16string l10n_str =
@@ -62,8 +63,6 @@ UntrustedNftUI::UntrustedNftUI(content::WebUI* web_ui)
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ImgSrc,
       std::string("img-src 'self' https: data:;"));
-  auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
 
 UntrustedNftUI::~UntrustedNftUI() = default;

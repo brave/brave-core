@@ -40,10 +40,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
-    content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
+    content::WebUIDataSource* source =
+        content::WebUIDataSource::CreateAndAdd(profile, name);
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
     AddBackgroundColorToSource(source, web_ui->GetWebContents());
-    content::WebUIDataSource::Add(profile, source);
     return;
   }
 

@@ -18,8 +18,8 @@ namespace ledger {
 
 UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
-  auto* untrusted_source =
-      content::WebUIDataSource::Create(kUntrustedLedgerURL);
+  auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLedgerURL);
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_LEDGER_BRIDGE_HTML);
   untrusted_source->AddResourcePaths(
       base::make_span(kLedgerBridgeGenerated, kLedgerBridgeGeneratedSize));
@@ -33,8 +33,6 @@ UntrustedLedgerUI::UntrustedLedgerUI(content::WebUI* web_ui)
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletLedgerBridgeUrl",
                               kUntrustedLedgerURL);
-  auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
 
 UntrustedLedgerUI::~UntrustedLedgerUI() = default;

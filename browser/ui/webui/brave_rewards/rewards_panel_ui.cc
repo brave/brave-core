@@ -220,7 +220,8 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
       IDS_BRAVE_REWARDS_ONBOARDING_SETUP_ADS_PER_HOUR);
   web_ui->AddMessageHandler(std::move(plural_string_handler));
 
-  auto* source = content::WebUIDataSource::Create(kBraveRewardsPanelHost);
+  auto* source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kBraveRewardsPanelHost);
   source->AddLocalizedStrings(kStrings);
 
   webui::SetupWebUIDataSource(source,
@@ -236,9 +237,6 @@ RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
       "frame-src 'self' " +
           brave_adaptive_captcha::ServerUtil::GetInstance()->GetServerUrl("/") +
           ";");
-
-  content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
-                                source);
 
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(
