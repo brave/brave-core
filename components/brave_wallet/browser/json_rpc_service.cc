@@ -2505,6 +2505,69 @@ void JsonRpcService::OnGetSupportsInterface(
                           "");
 }
 
+void JsonRpcService::GetEthNftStandard(
+    const std::string& contract_address,
+    const std::string& chain_id,
+    const std::vector<std::string>& interfaces,
+    GetEthNftStandardCallback callback,
+    size_t index) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!EthAddress::IsValidAddress(contract_address) ||
+      !network_url.is_valid()) {
+    std::move(callback).Run(
+        absl::nullopt, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  if (index >= interfaces.size()) {
+    std::move(callback).Run(
+        absl::nullopt, mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
+  // Check the next interface
+  const std::string& interface_id = interfaces[index];
+  auto internal_callback = base::BindOnce(
+      &JsonRpcService::OnGetEthNftStandard, weak_ptr_factory_.GetWeakPtr(),
+      contract_address, chain_id, interfaces, index, std::move(callback));
+
+  GetSupportsInterface(contract_address, interface_id, chain_id,
+                       std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetEthNftStandard(
+    const std::string& contract_address,
+    const std::string& chain_id,
+    const std::vector<std::string>& interfaces,
+    size_t index,
+    GetEthNftStandardCallback callback,
+    bool is_supported,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::move(callback).Run(absl::nullopt, error, error_message);
+    return;
+  }
+
+  const std::string& interface_id_checked = interfaces[index];
+  if (is_supported) {
+    std::move(callback).Run(interface_id_checked,
+                            mojom::ProviderError::kSuccess, "");
+    return;
+  }
+
+  index++;
+  if (index >= interfaces.size()) {
+    std::move(callback).Run(absl::nullopt, mojom::ProviderError::kSuccess, "");
+    return;
+  }
+  // If the contract does not implement the interface, try the next one
+  GetEthNftStandard(contract_address, chain_id, interfaces, std::move(callback),
+                    index);
+}
+
 void JsonRpcService::GetPendingSwitchChainRequests(
     GetPendingSwitchChainRequestsCallback callback) {
   std::vector<mojom::SwitchChainRequestPtr> requests;

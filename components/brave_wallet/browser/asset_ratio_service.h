@@ -73,6 +73,8 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                        const std::string& vs_asset,
                        brave_wallet::mojom::AssetPriceTimeframe timeframe,
                        GetPriceHistoryCallback callback) override;
+  // Note: The is_nft value of the token is not reliable because
+  // it is determined only by whether the token is an ERC721 token.
   void GetTokenInfo(const std::string& contract_address,
                     GetTokenInfoCallback callback) override;
   void GetCoinMarkets(const std::string& vs_asset,

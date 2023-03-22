@@ -41,6 +41,8 @@ const char kBraveWalletUserAssetsAddIsNFTMigrated[] =
     "brave.wallet.user.assets.add_is_nft_migrated";
 const char kBraveWalletDefaultHiddenNetworksVersion[] =
     "brave.wallet.user.assets.default_hidden_networks_version";
+const char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
+    "brave.wallet.user.assets.add_is_erc1155_migrated";
 const char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
     "brave.wallet.deprecated_ethereum_test_networks_migrated";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";

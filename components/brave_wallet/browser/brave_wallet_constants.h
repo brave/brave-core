@@ -1226,6 +1226,7 @@ const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 const base::flat_map<std::string, std::string>&
 GetEthBalanceScannerContractAddresses();
 bool HasJupiterFeesForTokenMint(const std::string& mint);
+const std::vector<std::string>& GetEthSupportedNftInterfaces();
 
 }  // namespace brave_wallet
 

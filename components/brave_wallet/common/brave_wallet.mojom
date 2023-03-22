@@ -613,6 +613,7 @@ struct BlockchainToken {
   string logo;
   bool is_erc20;
   bool is_erc721;
+  bool is_erc1155;
   bool is_nft;
   string symbol;
   int32 decimals;
@@ -670,6 +671,8 @@ enum OffRampProvider {
 };
 
 // List of tokens and coins that are supported.
+// is_nft property in the returned registry tokens is not reliable, the value is based
+// on the value of is_erc721 only and doesn't consider Solana NFTs and ERC1155 NFTs.
 interface BlockchainRegistry {
   // Obtains token information by an address lookup.
   GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
@@ -840,6 +843,9 @@ interface AssetRatioService {
 
   // Obtain token info via contract address through etherscan API.
   // This is only for Ethereum mainnet.
+  // Note: The is_nft property of the token is not reliable because
+  // the value is based on the value of is_erc721 only and doesn't
+  // consider Solana NFTs and ERC1155 NFTs.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
 
   // Obtain list of top currencies and their market data

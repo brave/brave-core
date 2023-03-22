@@ -940,6 +940,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list1[0].FindStringKey("symbol"), "symbol");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc20"), false);
   EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list1[0].FindBoolKey("is_erc1155"), false);
   EXPECT_EQ(*asset_list1[0].FindIntKey("decimals"), 11);
   EXPECT_EQ(*asset_list1[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list1[0].FindBoolKey("visible"), true);
@@ -954,6 +955,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list2[0].FindStringKey("symbol"), "symbol2");
   EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc20"), false);
   EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list2[0].FindBoolKey("is_erc1155"), false);
   EXPECT_EQ(*asset_list2[0].FindIntKey("decimals"), 22);
   EXPECT_EQ(*asset_list2[0].FindStringKey("logo"), "");
   EXPECT_EQ(*asset_list2[0].FindBoolKey("visible"), true);

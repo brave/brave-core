@@ -46,6 +46,7 @@
 //            "symbol": "ETH",
 //            "is_erc20": false,
 //            "is_erc721": false,
+//            "is_erc1155": false,
 //            "decimals": 18,
 //            "visible": true
 //            ...
@@ -56,6 +57,7 @@
 //            "symbol": "BAT",
 //            "is_erc20": true,
 //            "is_erc721": false,
+//            "is_erc1155": false,
 //            "decimals": 18,
 //            "visible": true
 //            ...
@@ -66,6 +68,7 @@
 //            "symbol": "MOR",
 //            "is_erc20": true,
 //            "is_erc721": false,
+//            "is_erc1155": false,
 //            "decimals": 18,
 //            "visible": true
 //            ...
@@ -87,6 +90,7 @@
 //            "symbol": "SOL",
 //            "is_erc20": false,
 //            "is_erc721": false,
+//            "is_erc1155": false,
 //            "decimals": 9,
 //            "visible": true
 //            ...
@@ -106,7 +110,7 @@ decltype(std::declval<T>().begin()) FindAsset(
     T* user_assets_list,
     const std::string& address,
     const std::string& token_id,
-    bool is_erc721,
+    bool check_token_id,
     const std::string& address_key = "address") {
   static_assert(std::is_same<std::decay_t<T>, base::Value::List>::value,
                 "Only call with base::Value::List");
@@ -120,7 +124,7 @@ decltype(std::declval<T>().begin()) FindAsset(
         const std::string* address_value = dict->FindString(address_key);
         bool found = address_value && *address_value == address;
 
-        if (found && is_erc721) {
+        if (found && check_token_id) {
           const std::string* token_id_ptr = dict->FindString("token_id");
           found = token_id_ptr && *token_id_ptr == token_id;
         }
@@ -139,10 +143,15 @@ base::Value::Dict GetEthNativeAssetFromChain(
   native_asset.Set("symbol", chain->symbol);
   native_asset.Set("is_erc20", false);
   native_asset.Set("is_erc721", false);
+  native_asset.Set("is_erc1155", false);
   native_asset.Set("is_nft", false);
   native_asset.Set("decimals", chain->decimals);
   native_asset.Set("visible", true);
   return native_asset;
+}
+
+bool ShouldCheckTokenId(const brave_wallet::mojom::BlockchainTokenPtr& token) {
+  return token->is_erc721 || token->is_erc1155;
 }
 
 }  // namespace
@@ -352,8 +361,8 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   if (network_id.empty())
     return false;
 
-  // Verify input token ID for ERC721.
-  if (token->is_erc721) {
+  bool check_token_id = ShouldCheckTokenId(token);
+  if (check_token_id) {
     uint256_t token_id_uint = 0;
     if (!HexValueToUint256(token->token_id, &token_id_uint)) {
       return false;
@@ -374,7 +383,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   DCHECK(user_assets_list);
 
   auto it =
-      FindAsset(user_assets_list, *address, token->token_id, token->is_erc721);
+      FindAsset(user_assets_list, *address, token->token_id, check_token_id);
   if (it != user_assets_list->end())
     return false;
 
@@ -385,6 +394,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   value.Set("logo", token->logo);
   value.Set("is_erc20", token->is_erc20);
   value.Set("is_erc721", token->is_erc721);
+  value.Set("is_erc1155", token->is_erc1155);
   value.Set("is_nft", token->is_nft);
   value.Set("decimals", token->decimals);
   value.Set("visible", true);
@@ -424,6 +434,44 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token) {
 
 void BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
                                       AddUserAssetCallback callback) {
+  const auto& interfaces_to_check = GetEthSupportedNftInterfaces();
+  if (token->is_nft && token->coin == mojom::CoinType::ETH) {
+    const std::string contract_address = token->contract_address;
+    const std::string chain_id = token->chain_id;
+    json_rpc_service_->GetEthNftStandard(
+        contract_address, chain_id, interfaces_to_check,
+        base::BindOnce(&BraveWalletService::OnGetEthNftStandard,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(token),
+                       std::move(callback)));
+    return;
+  }
+
+  std::move(callback).Run(AddUserAsset(std::move(token)));
+}
+
+void BraveWalletService::OnGetEthNftStandard(
+    mojom::BlockchainTokenPtr token,
+    AddUserAssetCallback callback,
+    const absl::optional<std::string>& standard,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess || !standard) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  if (standard.value() == kERC721InterfaceId) {
+    token->is_erc721 = true;
+    token->is_erc1155 = false;
+  } else if (standard.value() == kERC1155InterfaceId) {
+    token->is_erc721 = false;
+    token->is_erc1155 = true;
+  } else {
+    // Unsupported NFT standard.
+    std::move(callback).Run(false);
+    return;
+  }
+
   std::move(callback).Run(AddUserAsset(std::move(token)));
 }
 
@@ -450,8 +498,8 @@ bool BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token) {
   if (!user_assets_list)
     return false;
 
-  auto it =
-      FindAsset(user_assets_list, *address, token->token_id, token->is_erc721);
+  auto it = FindAsset(user_assets_list, *address, token->token_id,
+                      ShouldCheckTokenId(token));
   if (it != user_assets_list->end())
     user_assets_list->erase(it);
 
@@ -489,8 +537,8 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
   if (!user_assets_list)
     return false;
 
-  auto it =
-      FindAsset(user_assets_list, *address, token->token_id, token->is_erc721);
+  auto it = FindAsset(user_assets_list, *address, token->token_id,
+                      ShouldCheckTokenId(token));
   if (it == user_assets_list->end())
     return false;
 
@@ -501,7 +549,7 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
 mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
     const std::string& raw_address,
     const std::string& token_id,
-    bool is_erc721,
+    bool check_token_id,
     const std::string& chain_id,
     mojom::CoinType coin) {
   absl::optional<std::string> address =
@@ -520,7 +568,7 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
   if (!user_assets_list)
     return nullptr;
 
-  auto it = FindAsset(user_assets_list, *address, token_id, is_erc721);
+  auto it = FindAsset(user_assets_list, *address, token_id, check_token_id);
   if (it == user_assets_list->end())
     return nullptr;
 
@@ -896,6 +944,42 @@ void BraveWalletService::MigrateHiddenNetworks(PrefService* prefs) {
   prefs->SetInteger(kBraveWalletDefaultHiddenNetworksVersion, 1);
 }
 
+void BraveWalletService::MigrateUserAssetsAddIsERC1155(PrefService* prefs) {
+  if (prefs->GetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated)) {
+    return;
+  }
+
+  if (!prefs->HasPrefPath(kBraveWalletUserAssets)) {
+    prefs->SetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated, true);
+    return;
+  }
+
+  ScopedDictPrefUpdate update(prefs, kBraveWalletUserAssets);
+  base::Value::Dict& user_assets_pref = update.Get();
+
+  for (auto user_asset_dict_per_cointype : user_assets_pref) {
+    if (!user_asset_dict_per_cointype.second.is_dict()) {
+      continue;
+    }
+    for (auto user_asset_list_per_chain :
+         user_asset_dict_per_cointype.second.GetDict()) {
+      if (!user_asset_list_per_chain.second.is_list()) {
+        continue;
+      }
+      for (auto& user_asset : user_asset_list_per_chain.second.GetList()) {
+        auto* asset = user_asset.GetIfDict();
+        if (!asset) {
+          continue;
+        }
+        if (!asset->FindBool("is_erc1155")) {
+          asset->Set("is_erc1155", false);
+        }
+      }
+    }
+  }
+  prefs->SetBoolean(kBraveWalletUserAssetsAddIsERC1155Migrated, true);
+}
+
 // static
 base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   base::Value::Dict user_assets;
@@ -906,6 +990,7 @@ base::Value::Dict BraveWalletService::GetDefaultEthereumAssets() {
   bat.Set("symbol", "BAT");
   bat.Set("is_erc20", true);
   bat.Set("is_erc721", false);
+  bat.Set("is_erc1155", false);
   bat.Set("is_nft", false);
   bat.Set("decimals", 18);
   bat.Set("visible", true);
@@ -938,6 +1023,7 @@ base::Value::Dict BraveWalletService::GetDefaultSolanaAssets() {
   sol.Set("decimals", 9);
   sol.Set("is_erc20", false);
   sol.Set("is_erc721", false);
+  sol.Set("is_erc1155", false);
   sol.Set("is_nft", false);
   sol.Set("visible", true);
   sol.Set("logo", "sol.png");
@@ -963,6 +1049,7 @@ base::Value::Dict BraveWalletService::GetDefaultFilecoinAssets() {
   fil.Set("decimals", 18);
   fil.Set("is_erc20", false);
   fil.Set("is_erc721", false);
+  fil.Set("is_erc1155", false);
   fil.Set("is_nft", false);
   fil.Set("visible", true);
   fil.Set("logo", "fil.png");
@@ -1233,7 +1320,7 @@ void BraveWalletService::AddSuggestTokenRequest(
   //     3. wallet_watchAsset request
   mojom::BlockchainTokenPtr token =
       GetUserAsset(request->token->contract_address, request->token->token_id,
-                   request->token->is_erc721, request->token->chain_id,
+                   ShouldCheckTokenId(request->token), request->token->chain_id,
                    request->token->coin);
 
   if (!token)
