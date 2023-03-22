@@ -38,9 +38,13 @@ BraveTabContextMenuContents::BraveTabContextMenuContents(
       tab_index_(index),
       browser_(const_cast<Browser*>(controller->browser())),
       controller_(controller) {
+  const bool is_vertical_tab =
+      base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) &&
+      tabs::utils::ShouldShowVerticalTabs(browser_);
+
   model_ = std::make_unique<BraveTabMenuModel>(
       this, controller->browser()->tab_menu_model_delegate(),
-      controller->model(), index);
+      controller->model(), index, is_vertical_tab);
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_->profile());
   menu_runner_ = std::make_unique<views::MenuRunner>(
@@ -66,15 +70,14 @@ bool BraveTabContextMenuContents::IsCommandIdChecked(int command_id) const {
     return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
 
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
-    return tabs::utils::ShouldShowVerticalTabs(controller_->browser());
+    return tabs::utils::ShouldShowVerticalTabs(browser_);
 
   if (command_id == BraveTabMenuModel::CommandShowTitleBar) {
-    return tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-        controller_->browser());
+    return tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser_);
   }
 
   if (command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
-    return tabs::utils::IsFloatingVerticalTabsEnabled(controller_->browser());
+    return tabs::utils::IsFloatingVerticalTabsEnabled(browser_);
   }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdChecked(command_id);
@@ -93,11 +96,11 @@ bool BraveTabContextMenuContents::IsCommandIdVisible(int command_id) const {
     return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
 
   if (command_id == BraveTabMenuModel::CommandShowVerticalTabs)
-    return tabs::utils::SupportsVerticalTabs(controller_->browser());
+    return tabs::utils::SupportsVerticalTabs(browser_);
 
   if (command_id == BraveTabMenuModel::CommandShowTitleBar ||
       command_id == BraveTabMenuModel::CommandUseFloatingVerticalTabStrip) {
-    return tabs::utils::ShouldShowVerticalTabs(controller_->browser());
+    return tabs::utils::ShouldShowVerticalTabs(browser_);
   }
 
   return ui::SimpleMenuModel::Delegate::IsCommandIdVisible(command_id);
@@ -111,8 +114,7 @@ bool BraveTabContextMenuContents::GetAcceleratorForCommandId(
 
   int browser_cmd;
   views::Widget* widget =
-      BrowserView::GetBrowserViewForBrowser(controller_->browser())
-          ->GetWidget();
+      BrowserView::GetBrowserViewForBrowser(browser_)->GetWidget();
   return TabStripModel::ContextMenuCommandToBrowserCommand(command_id,
                                                            &browser_cmd) &&
          widget->GetAccelerator(browser_cmd, accelerator);

@@ -6,11 +6,14 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
+#include "brave/browser/ui/views/tabs/brave_tab_context_menu_contents.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
@@ -472,6 +475,73 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, LayoutSanity) {
     auto* tab = GetTabAt(browser(), i);
     EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
                     .Contains(GetBoundsInScreen(tab, tab->GetLocalBounds())));
+  }
+}
+
+class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripStringBrowserTest() override = default;
+
+  // VerticalTabStripBrowserTest:
+  void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII("lang", "en");
+    VerticalTabStripBrowserTest::SetUp();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripStringBrowserTest, ContextMenuString) {
+  // Pre-conditions ------------------------------------------------------------
+  auto create_tab_context_menu_contents = [&]() {
+    return std::make_unique<BraveTabContextMenuContents>(
+        GetTabAt(browser(), 0),
+        static_cast<BraveBrowserTabStripController*>(
+            browser_view()->tabstrip()->controller()),
+        /* index= */ 0);
+  };
+
+  auto get_all_labels = [&]() {
+    auto menu_contents = create_tab_context_menu_contents();
+    std::vector<std::u16string> labels;
+    for (auto i = 0u; i < menu_contents->model_->GetItemCount(); i++) {
+      labels.push_back(menu_contents->model_->GetLabelAt(i));
+    }
+    return labels;
+  };
+
+  {
+    auto context_menu_contents = create_tab_context_menu_contents();
+    ASSERT_FALSE(get_all_labels().empty());
+  }
+
+  // Tests ---------------------------------------------------------------------
+  {
+    // Check if there's no "Below" in context menu labels when it's horizontal
+    // tab strip
+    auto context_menu_contents = create_tab_context_menu_contents();
+    EXPECT_TRUE(base::ranges::none_of(get_all_labels(), [](const auto& label) {
+#if BUILDFLAG(IS_MAC)
+      return base::Contains(label, u"Below");
+#else
+      return base::Contains(label, u"below");
+#endif
+    }));
+  }
+
+  ToggleVerticalTabStrip();
+  {
+    // Check if there's no "Right" or "Left" in context menu labels when it's
+    // vertical tab strip. When this fails, we should revisit
+    // BraveTabMenuModel::GetLabelAt().
+    auto context_menu_contents = create_tab_context_menu_contents();
+    EXPECT_TRUE(base::ranges::none_of(get_all_labels(), [](const auto& label) {
+#if BUILDFLAG(IS_MAC)
+      return base::Contains(label, u"Right") || base::Contains(label, u"Left");
+#else
+      return base::Contains(label, u"right") ||
+          base::Contains(label, u"left");
+#endif
+    }));
   }
 }
 
