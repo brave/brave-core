@@ -335,13 +335,11 @@ Config.prototype.buildArgs = function () {
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
-    if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build) {
-      // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
-      // by default, which slows down link phase, but also disables relocatable compilation
-      // on MacOS (aka 'zero goma cachehits' style).
-      //
-      // Don't create dSYMs in non-public Release builds.
-      // See //build/config/apple/symbols.gni for additional details.
+    if (process.platform === 'darwin' && args.is_official_build) {
+      // Don't create dSYMs in non-true Release builds. dSYMs should be disabled
+      // in order to have relocatable compilation so Goma can share the cache
+      // across multiple build directories. Enabled dSYMs enforce absolute
+      // paths, which makes Goma cache unusable.
       args.enable_dsyms = false
     }
   }
@@ -523,7 +521,6 @@ Config.prototype.buildArgs = function () {
     if (this.targetArch == 'x64' && this.isDebug()) {
       args.use_lld = false
     }
-    args.enable_dsyms = true
     args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
