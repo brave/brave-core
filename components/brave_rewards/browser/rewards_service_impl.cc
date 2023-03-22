@@ -1066,12 +1066,12 @@ void RewardsServiceImpl::OnURLLoaderComplete(
                          const scoped_refptr<base::SequencedTaskRunner>&
                              post_response_runner,
                          data_decoder::JsonSanitizer::Result result) {
-                        if (result.value) {
-                          response->body = std::move(*result.value);
+                        if (result.has_value()) {
+                          response->body = std::move(result).value();
                         } else {
                           response->body = {};
                           VLOG(0) << "Response sanitization error: "
-                                  << (result.error ? *result.error : "unknown");
+                                  << result.error();
                         }
 
                         post_response_runner->PostTask(
