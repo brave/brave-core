@@ -274,7 +274,7 @@ const launchElementPicker = () => {
     'border: 0',
     'border-radius: 0',
     'box-shadow: none',
-    'color-scheme: light only',
+    'color-scheme: light dark',
     'display: block',
     'height: 100%',
     'left: 0',
