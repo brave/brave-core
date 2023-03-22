@@ -247,3 +247,9 @@ export const checkIfTokensMatch = (
     tokenOne.chainId === tokenTwo.chainId &&
     tokenOne.tokenId === tokenTwo.tokenId
 }
+
+export function filterTokensByNetworks (assets: BraveWallet.BlockchainToken[], networks: BraveWallet.NetworkInfo[]) {
+  return assets.filter(asset =>
+    networks.some(network =>
+      asset.chainId === network.chainId && asset.coin === network.coin))
+}

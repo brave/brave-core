@@ -49,7 +49,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       return null
     }
 
-    const networkLogo = getNetworkLogo(network)
+    const networkLogo = getNetworkLogo(network.chainId, network.symbol)
 
     const isNativeAsset = React.useMemo(() =>
       asset.symbol.toLowerCase() === network.symbol.toLowerCase(),

@@ -3,12 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
-import {
-  ETHIconUrl,
-  SOLIconUrl,
-  FILECOINIconUrl
-} from '../assets/asset-icons'
 import { getLocale } from '../../common/locale'
+import { getNetworkLogo } from './asset-options'
 
 export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled: boolean): CreateAccountOptionsType[] => {
   let accounts = [
@@ -16,7 +12,7 @@ export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled
       description: getLocale('braveWalletCreateAccountEthereumDescription'),
       name: 'Ethereum',
       coin: BraveWallet.CoinType.ETH,
-      icon: ETHIconUrl
+      icon: getNetworkLogo(BraveWallet.MAINNET_CHAIN_ID, 'ETH')
     }
   ]
   if (isSolanaEnabled) {
@@ -24,7 +20,7 @@ export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled
       description: getLocale('braveWalletCreateAccountSolanaDescription'),
       name: 'Solana',
       coin: BraveWallet.CoinType.SOL,
-      icon: SOLIconUrl
+      icon: getNetworkLogo(BraveWallet.SOLANA_MAINNET, 'SOL')
     })
   }
   if (isFilecoinEnabled) {
@@ -32,7 +28,7 @@ export const CreateAccountOptions = (isFilecoinEnabled: boolean, isSolanaEnabled
       description: getLocale('braveWalletCreateAccountFilecoinDescription'),
       name: 'Filecoin',
       coin: BraveWallet.CoinType.FIL,
-      icon: FILECOINIconUrl
+      icon: getNetworkLogo(BraveWallet.FILECOIN_MAINNET, 'FIL')
     })
   }
   return accounts

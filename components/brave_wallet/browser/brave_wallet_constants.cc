@@ -563,7 +563,9 @@ const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints() {
        {brave_wallet::mojom::kOptimismMainnetChainId,
         "https://mainnet-optimism.brave.com/"},
        {brave_wallet::mojom::kAuroraMainnetChainId,
-        "https://mainnet-aurora.brave.com/"}});
+        "https://mainnet-aurora.brave.com/"},
+       {brave_wallet::mojom::kAvalancheMainnetChainId,
+        "https://mainnet-avalanche.wallet.brave.com/"}});
 
   return *endpoints;
 }

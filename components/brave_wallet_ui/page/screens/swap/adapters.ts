@@ -71,7 +71,7 @@ export function makeNetworkInfo (network: BraveWallet.NetworkInfo): NetworkInfo 
     chainId: network.chainId,
     chainName: network.chainName,
     blockExplorerUrl: network.blockExplorerUrls[0],
-    logo: getNetworkLogo(network),
+    logo: getNetworkLogo(network.chainId, network.symbol),
     symbol: network.symbol,
     symbolName: network.symbolName,
     decimals: network.decimals,

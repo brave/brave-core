@@ -1696,8 +1696,8 @@ TEST_F(JsonRpcServiceUnitTest, GetKnownNetworks) {
 
   EXPECT_CALL(callback,
               Run(ElementsAreArray({"0x1", "0x4e454152", "0x89", "0x38",
-                                    "0xa4ec", "0xa86a", "0xfa", "0xa", "0x5",
-                                    "0xaa36a7", "0x539", "0x13a", "0x4cb2f"})));
+                                    "0xa86a", "0xfa", "0xa", "0x5", "0xaa36a7",
+                                    "0x539", "0x13a", "0x4cb2f"})));
   json_rpc_service_->GetKnownNetworks(mojom::CoinType::ETH, callback.Get());
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
