@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_credential_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
@@ -41,7 +42,7 @@ constexpr char kVerificationSignatureKey[] = "signature";
 absl::optional<OptedInInfo> CreateOptedIn(
     privacy::TokenGeneratorInterface* token_generator,
     const ConfirmationInfo& confirmation,
-    base::Value::Dict user_data) {
+    const OptedInUserDataInfo& opted_in_user_data) {
   DCHECK(token_generator);
   DCHECK(ShouldRewardUser());
 
@@ -74,16 +75,28 @@ absl::optional<OptedInInfo> CreateOptedIn(
   opted_in.unblinded_token = *unblinded_token;
 
   // User data
-  opted_in.user_data = std::move(user_data);
+  opted_in.user_data = opted_in_user_data;
 
   // Credential
-  ConfirmationInfo new_confirmation = confirmation;
-  new_confirmation.opted_in = opted_in;
+  ConfirmationInfo confirmation_copy = confirmation;
+  confirmation_copy.opted_in = opted_in;
+  opted_in.credential_base64url = CreateOptedInCredential(confirmation_copy);
+
+  return opted_in;
+}
+
+}  // namespace
+
+absl::optional<std::string> CreateOptedInCredential(
+    const ConfirmationInfo& confirmation) {
+  if (!confirmation.opted_in) {
+    return absl::nullopt;
+  }
 
   const absl::optional<std::string> credential =
       json::writer::WriteOptedInCredential(
-          *unblinded_token,
-          json::writer::WriteConfirmationPayload(new_confirmation));
+          confirmation.opted_in->unblinded_token,
+          json::writer::WriteConfirmationPayload(confirmation));
   if (!credential) {
     BLOG(0, "Failed to create opted-in credential");
     return absl::nullopt;
@@ -93,12 +106,8 @@ absl::optional<OptedInInfo> CreateOptedIn(
   base::Base64UrlEncode(*credential,
                         base::Base64UrlEncodePolicy::INCLUDE_PADDING,
                         &credential_base64url);
-  opted_in.credential_base64url = credential_base64url;
-
-  return opted_in;
+  return credential_base64url;
 }
-
-}  // namespace
 
 absl::optional<ConfirmationInfo> CreateConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
@@ -107,7 +116,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    base::Value::Dict user_data) {
+    const OptedInUserDataInfo& opted_in_user_data) {
   DCHECK(token_generator);
   DCHECK(!created_at.is_null());
   DCHECK(!transaction_id.empty());
@@ -127,7 +136,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   }
 
   const absl::optional<OptedInInfo> opted_in =
-      CreateOptedIn(token_generator, confirmation, std::move(user_data));
+      CreateOptedIn(token_generator, confirmation, opted_in_user_data);
   if (!opted_in) {
     BLOG(0, "Failed to create opted-in");
     return absl::nullopt;

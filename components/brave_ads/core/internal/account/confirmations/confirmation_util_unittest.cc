@@ -58,7 +58,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
       token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
       kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
-      base::Value::Dict());
+      /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
   // Assert
@@ -88,7 +88,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
       token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
       kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
-      base::Value::Dict());
+      /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
   // Assert
@@ -105,7 +105,7 @@ TEST_F(BatAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
   const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
       token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
       kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
-      base::Value::Dict());
+      /*user_data*/ {});
 
   // Assert
   EXPECT_FALSE(confirmation);

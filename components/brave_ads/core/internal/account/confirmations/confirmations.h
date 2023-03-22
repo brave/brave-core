@@ -50,13 +50,22 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void OnRetry();
   void StopRetrying();
 
-  void CreateConfirmationAndRedeemToken(const TransactionInfo& transaction,
-                                        const base::Time& created_at,
-                                        base::Value::Dict user_data);
+  void ConfirmTransaction(const TransactionInfo& transaction);
+  void BuildDynamicUserDataForTransaction(const TransactionInfo& transaction);
+  void BuildFixedUserDataForTransaction(
+      const TransactionInfo& transaction,
+      base::Value::Dict dynamic_opted_in_user_data);
+  void CreateAndRedeem(const TransactionInfo& transaction,
+                       base::Value::Dict dynamic_opted_in_user_data,
+                       base::Value::Dict fixed_opted_in_user_data);
 
-  void CreateNewConfirmationAndAppendToRetryQueue(
+  void RecreateOptedInDynamicUserDataAndRedeem(
+      const ConfirmationInfo& confirmation);
+  void OnRecreateOptedInDynamicUserDataAndRedeem(
       const ConfirmationInfo& confirmation,
-      base::Value::Dict user_data);
+      base::Value::Dict dynamic_opted_in_user_data);
+
+  void Redeem(const ConfirmationInfo& confirmation);
 
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;

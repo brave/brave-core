@@ -13,6 +13,7 @@ source_set("brave_ads_unit_tests") {
   sources = [
     "//brave/components/brave_ads/core/internal/account/account_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/account_util_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/confirmations/confirmation_dynamic_user_data_builder_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.cc",
     "//brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h",

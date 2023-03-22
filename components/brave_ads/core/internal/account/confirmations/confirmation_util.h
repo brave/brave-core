@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -24,6 +23,10 @@ class TokenGeneratorInterface;
 class AdType;
 class ConfirmationType;
 struct ConfirmationInfo;
+struct OptedInUserDataInfo;
+
+absl::optional<std::string> CreateOptedInCredential(
+    const ConfirmationInfo& confirmation);
 
 absl::optional<ConfirmationInfo> CreateConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
@@ -32,7 +35,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    base::Value::Dict user_data);
+    const OptedInUserDataInfo& opted_in_user_data);
 
 bool IsValid(const ConfirmationInfo& confirmation);
 

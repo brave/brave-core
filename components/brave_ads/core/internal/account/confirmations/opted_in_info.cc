@@ -15,10 +15,10 @@ OptedInInfo::OptedInInfo(const OptedInInfo& other) {
 
 OptedInInfo& OptedInInfo::operator=(const OptedInInfo& other) {
   if (this != &other) {
-    unblinded_token = other.unblinded_token;
     token = other.token;
     blinded_token = other.blinded_token;
-    user_data = other.user_data.Clone();
+    unblinded_token = other.unblinded_token;
+    user_data = other.user_data;
     credential_base64url = other.credential_base64url;
   }
 
@@ -32,8 +32,9 @@ OptedInInfo& OptedInInfo::operator=(OptedInInfo&& other) noexcept = default;
 OptedInInfo::~OptedInInfo() = default;
 
 bool operator==(const OptedInInfo& lhs, const OptedInInfo& rhs) {
-  return lhs.unblinded_token == rhs.unblinded_token && lhs.token == rhs.token &&
-         lhs.blinded_token == rhs.blinded_token &&
+  return lhs.token == rhs.token && lhs.blinded_token == rhs.blinded_token &&
+         lhs.unblinded_token == rhs.unblinded_token &&
+         lhs.user_data == rhs.user_data &&
          lhs.credential_base64url == rhs.credential_base64url;
 }
 

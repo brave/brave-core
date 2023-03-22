@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_credential_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
@@ -29,8 +30,9 @@ namespace brave_ads {
 
 namespace {
 
-absl::optional<OptedInInfo> CreateOptedIn(const ConfirmationInfo& confirmation,
-                                          const base::Value::Dict& user_data) {
+absl::optional<OptedInInfo> CreateOptedIn(
+    const ConfirmationInfo& confirmation,
+    const OptedInUserDataInfo& opted_in_user_data) {
   DCHECK(ShouldRewardUser());
 
   OptedInInfo opted_in;
@@ -61,7 +63,7 @@ absl::optional<OptedInInfo> CreateOptedIn(const ConfirmationInfo& confirmation,
   opted_in.unblinded_token = *unblinded_token;
 
   // User data
-  opted_in.user_data = user_data.Clone();
+  opted_in.user_data = opted_in_user_data;
 
   // Credential
   ConfirmationInfo new_confirmation = confirmation;
@@ -91,7 +93,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    const base::Value::Dict& user_data) {
+    const OptedInUserDataInfo& opted_in_user_data) {
   DCHECK(!created_at.is_null());
   DCHECK(!transaction_id.empty());
   DCHECK(!creative_instance_id.empty());
@@ -110,7 +112,7 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   }
 
   const absl::optional<OptedInInfo> opted_in =
-      CreateOptedIn(confirmation, user_data);
+      CreateOptedIn(confirmation, opted_in_user_data);
   if (!opted_in) {
     BLOG(0, "Failed to create opted-in");
     return absl::nullopt;

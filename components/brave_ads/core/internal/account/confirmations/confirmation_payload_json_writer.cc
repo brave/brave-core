@@ -47,7 +47,9 @@ std::string WriteConfirmationPayload(const ConfirmationInfo& confirmation) {
       payload.Set(kPublicKeyKey, *value);
     }
 
-    payload.Merge(confirmation.opted_in->user_data.Clone());
+    payload.Merge(confirmation.opted_in->user_data.dynamic.Clone());
+
+    payload.Merge(confirmation.opted_in->user_data.fixed.Clone());
   }
 
   std::string json;
