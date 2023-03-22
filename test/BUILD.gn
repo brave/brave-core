@@ -1132,7 +1132,6 @@ test("brave_browser_tests") {
       "$root_gen_dir/chrome/android/chrome_apk_paks/resources.pak",
       "$root_gen_dir/components/components_resources.pak",
       "$root_gen_dir/components/dev_ui_components_resources.pak",
-      "$root_out_dir/browser_tests.pak",
       "//brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json",
     ]
 
