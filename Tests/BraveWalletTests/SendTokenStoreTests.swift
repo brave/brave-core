@@ -24,7 +24,8 @@ class SendTokenStoreTests: XCTestCase {
     solanaBalance: UInt64 = 0,
     splTokenBalance: String = "0",
     snsGetSolAddr: String = "",
-    ensGetEthAddr: String = ""
+    ensGetEthAddr: String = "",
+    unstoppableDomainsGetWalletAddr: String = ""
   ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestEthTxManagerProxy, BraveWallet.TestSolanaTxManagerProxy) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
@@ -45,6 +46,9 @@ class SendTokenStoreTests: XCTestCase {
     }
     rpcService._ensGetEthAddr = { _, completion in
       completion(ensGetEthAddr, false, .success, "")
+    }
+    rpcService._unstoppableDomainsGetWalletAddr = { _, _, completion in
+      completion(unstoppableDomainsGetWalletAddr, .success, "")
     }
     rpcService._erc721Metadata = { _, _, _, completion in
       let metadata = """
@@ -960,6 +964,264 @@ class SendTokenStoreTests: XCTestCase {
       XCTAssertEqual(createdWithToAddress, expectedAddress)
     }
     waitForExpectations(timeout: 3) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `resolvedAddress` will be assigned the address returned from `unstoppableDomainsGetWalletAddr` when a Ethereum network is selected.
+  func testUDAddressResolutionEthNetwork() {
+    let domain = "brave.crypto"
+    let expectedAddress = "0xxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth,
+      unstoppableDomainsGetWalletAddr: expectedAddress
+    )
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: .previewToken,
+      ipfsApi: nil
+    )
+    
+    let waitForPrefilledTokenExpectation = expectation(description: "waitForPrefilledToken")
+    store.$selectedSendToken
+      .dropFirst()
+      .sink { selectedSendToken in
+        defer { waitForPrefilledTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedSendToken, .previewToken)
+      }
+      .store(in: &cancellables)
+    store.update()
+    // wait for store to be setup with given `prefilledToken`
+    wait(for: [waitForPrefilledTokenExpectation], timeout: 1)
+    // release above sink on `selectedSendToken`
+    // to avoid repeated calls to expectation
+    cancellables.removeAll()
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateEthereumSendAddress`
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `addressError` will be assigned an `ensError` if error is returned from `unstoppableDomainsGetWalletAddr`.
+  func testUDAddressResolutionFailure() {
+    let domain = "brave.eth"
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth
+    )
+    rpcService._unstoppableDomainsGetWalletAddr = { _, _, completion in
+      completion("", .internalError, "Something went wrong")
+    }
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: .previewToken,
+      ipfsApi: nil
+    )
+    
+    let waitForPrefilledTokenExpectation = expectation(description: "waitForPrefilledToken")
+    store.$selectedSendToken
+      .dropFirst()
+      .sink { selectedSendToken in
+        defer { waitForPrefilledTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedSendToken, .previewToken)
+      }
+      .store(in: &cancellables)
+    store.update()
+    // wait for store to be setup with given `prefilledToken`
+    wait(for: [waitForPrefilledTokenExpectation], timeout: 1)
+    // release above sink on `selectedSendToken`
+    // to avoid repeated calls to expectation
+    cancellables.removeAll()
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst(2) // Initial value, reset to nil in `validateEthereumSendAddress`
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertNil(resolvedAddress)
+      }.store(in: &cancellables)
+    
+    let addressErrorExpectation = expectation(description: "sendTokenStore-addressError")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$addressError
+      .dropFirst() // Initial value
+      .sink { addressError in
+        defer { addressErrorExpectation.fulfill() }
+        XCTAssertEqual(addressError, .ensError(domain: domain))
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `resolvedAddress` will be assigned the address returned from `unstoppableDomainsGetWalletAddr` when a Solana network is selected.
+  func testUDAddressResolutionSolNetwork() {
+    let domain = "brave.crypto"
+    let expectedAddress = "xxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .sol,
+      selectedNetwork: .mockSolana,
+      unstoppableDomainsGetWalletAddr: expectedAddress
+    )
+    
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: .mockSolToken,
+      ipfsApi: nil
+    )
+    
+    let waitForPrefilledTokenExpectation = expectation(description: "waitForPrefilledToken")
+    store.$selectedSendToken
+      .dropFirst()
+      .sink { selectedSendToken in
+        defer { waitForPrefilledTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedSendToken, .mockSolToken)
+      }
+      .store(in: &cancellables)
+    store.update()
+    // wait for store to be setup with given `prefilledToken`
+    wait(for: [waitForPrefilledTokenExpectation], timeout: 1)
+    // release above sink on `selectedSendToken`
+    // to avoid repeated calls to expectation
+    cancellables.removeAll()
+    
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .dropFirst(3) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `validateSolanaSendAddress`
+      .sink { resolvedAddress in
+        defer { resolvedAddressExpectation.fulfill() }
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+      }.store(in: &cancellables)
+    
+    store.sendAddress = domain
+    
+    waitForExpectations(timeout: 1) { error in
+      XCTAssertNil(error)
+    }
+  }
+  
+  /// Test `resolvedAddress` will be assigned the address returned from `unstoppableDomainsGetWalletAddr`, then if the `selectedSendToken` changes will call `unstoppableDomainsGetWalletAddr` and assign the new `resolvedAddress`.
+  func testUDAddressResolutionTokenChange() {
+    let domain = "brave.crypto"
+    let expectedAddress = "0xxxxxxxxxxxyyyyyyyyyyzzzzzzzzzz0000000000"
+    let expectedAddressUSDC = "0x1111111111222222222233333333330000000000"
+
+    let (keyringService, rpcService, walletService, ethTxManagerProxy, solTxManagerProxy) = setupServices(
+      selectedCoin: .eth
+    )
+    rpcService._unstoppableDomainsGetWalletAddr = { domain, token, completion in
+      if token == .mockUSDCToken { // simulate special address for USDC
+        completion(expectedAddressUSDC, .success, "")
+      } else {
+        completion(expectedAddress, .success, "")
+      }
+    }
+
+    let store = SendTokenStore(
+      keyringService: keyringService,
+      rpcService: rpcService,
+      walletService: walletService,
+      txService: MockTxService(),
+      blockchainRegistry: MockBlockchainRegistry(),
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      prefilledToken: .previewToken,
+      ipfsApi: nil
+    )
+    
+    let waitForPrefilledTokenExpectation = expectation(description: "waitForPrefilledToken")
+    store.$selectedSendToken
+      .dropFirst()
+      .sink { selectedSendToken in
+        defer { waitForPrefilledTokenExpectation.fulfill() }
+        XCTAssertEqual(selectedSendToken, .previewToken)
+      }
+      .store(in: &cancellables)
+    store.update()
+    // wait for store to be setup with given `prefilledToken`
+    wait(for: [waitForPrefilledTokenExpectation], timeout: 1)
+    // release above sink on `selectedSendToken`
+    // to avoid repeated calls to expectation
+    cancellables.removeAll()
+
+    // Wait for `resolvedAddress` to be populated with address for the `prefilledToken`
+    let resolvedAddressExpectation = expectation(description: "sendTokenStore-resolvedAddress")
+    XCTAssertNil(store.resolvedAddress)  // Initial state
+    store.$resolvedAddress
+      .collect(6) // Initial value, reset to nil in `sendAddress` didSet, reset to nil in `resolveUnstoppableDomain`, assigned address in `resolveUnstoppableDomain`, reset to nil in `resolveUnstoppableDomain`, assigned address in `resolveUnstoppableDomain`
+      .sink { resolvedAddresses in
+        guard let resolvedAddress = resolvedAddresses.last else {
+          XCTFail("Expected >0 resolved address assignments")
+          return
+        }
+        XCTAssertEqual(store.selectedSendToken, .previewToken)
+        XCTAssertEqual(resolvedAddress, expectedAddress)
+        resolvedAddressExpectation.fulfill()
+      }.store(in: &cancellables)
+
+    store.sendAddress = domain
+    wait(for: [resolvedAddressExpectation], timeout: 1)
+    // release above sink on `selectedSendToken`
+    // to avoid repeated calls to expectation
+    cancellables.removeAll()
+
+    // Verify change from the resolved address for `previewToken`
+    // will change to the resolved address for `.mockUSDCToken`
+    let resolvedUSDCAddressExpectation = expectation(description: "sendTokenStore-resolvedUSDCAddress")
+    store.$resolvedAddress
+      .collect(3)
+      .sink { resolvedAddresses in
+        // initial value of sink
+        XCTAssertEqual(resolvedAddresses[safe: 0], expectedAddress)
+        // reset in `resolveUnstoppableDomain`
+        XCTAssertEqual(resolvedAddresses[safe: 1], Optional<String>.none)
+        // new value assigned after resolving for new token
+        XCTAssertEqual(resolvedAddresses[safe: 2], expectedAddressUSDC)
+        XCTAssertEqual(store.selectedSendToken, .mockUSDCToken)
+        resolvedUSDCAddressExpectation.fulfill()
+      }.store(in: &cancellables)
+    
+    // change token from `.previewToken` to `.mockUSDCToken`
+    store.selectedSendToken = .mockUSDCToken
+
+    waitForExpectations(timeout: 1) { error in
       XCTAssertNil(error)
     }
   }

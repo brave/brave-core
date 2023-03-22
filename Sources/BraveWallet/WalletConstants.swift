@@ -61,6 +61,8 @@ struct WalletConstants {
   static let supportedENSExtensions = [".eth"]
   /// The supported Solana Name Service (SNS) extensions
   static let supportedSNSExtensions = [".sol"]
+  /// The supported Unstoppable Domain (UD) extensions
+  static let supportedUDExtensions = [".crypto", ".x", ".nft", ".dao", ".wallet", ".888", ".blockchain", ".bitcoin"]
   
   /// The link for users to learn more about Solana SPL token account creation in transaction confirmation screen
   static let splTokenAccountCreationLink = URL(string: "https://support.brave.com/hc/en-us/articles/5546517853325")!
