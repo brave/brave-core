@@ -48,7 +48,6 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
   }
 
   std::default_random_engine generator(base::RandDouble());
-
   for (int i = 4; i < num_features; i++) {
     std::normal_distribution<float> normal_i(mean_x[i], cov_x[i]);
     for (size_t j = 0; j < size; j++) {

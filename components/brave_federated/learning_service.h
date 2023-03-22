@@ -28,6 +28,7 @@ namespace brave_federated {
 
 class CommunicationAdapter;
 class EligibilityService;
+class FederatedTaskRunner;
 
 class LearningService : public Observer {
  public:
@@ -45,6 +46,8 @@ class LearningService : public Observer {
   void PostTaskResults(TaskResultList results);
 
   void HandleTasksOrReconnect(TaskList tasks, int reconnect);
+  TaskResult LoadDatasetAndRunTask(
+      std::unique_ptr<FederatedTaskRunner> task_runner);
   void OnTaskResultComputed(TaskResult result);
 
   void OnPostTaskResults(TaskResultResponse response);
@@ -55,7 +58,7 @@ class LearningService : public Observer {
   scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // NOT OWNED
   EligibilityService* eligibility_service_;
-  CommunicationAdapter* communication_adapter_;
+  std::unique_ptr<CommunicationAdapter> communication_adapter_;
   std::unique_ptr<base::OneShotTimer> init_task_timer_;
 
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
@@ -63,6 +66,8 @@ class LearningService : public Observer {
 
   std::unique_ptr<const net::BackoffEntry::Policy> post_results_policy_;
   std::unique_ptr<net::BackoffEntry> post_results_backoff_entry_;
+
+  base::WeakPtrFactory<LearningService> weak_factory_{this};
 };
 
 }  // namespace brave_federated

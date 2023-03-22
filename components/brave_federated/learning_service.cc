@@ -62,7 +62,8 @@ void LearningService::Init() {
   DCHECK(url_loader_factory_);
   DCHECK(eligibility_service_);
   DCHECK(init_task_timer_);
-  communication_adapter_ = new CommunicationAdapter(url_loader_factory_);
+  communication_adapter_ =
+      std::make_unique<CommunicationAdapter>(url_loader_factory_);
   eligibility_service_->AddObserver(this);
 
   StartParticipating();
@@ -85,10 +86,6 @@ void LearningService::GetTasks() {
 }
 
 void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
-  // net::BackoffEntry handle_or_reconnect_backoff_entry =
-  //   net::BackoffEntry(&handle_or_reconnect_policy_);
-  // handle_or_reconnect_backoff_entry.InformOfRequest(tasks.size());
-
   if (tasks.size() == 0) {
     reconnect_timer_ = std::make_unique<base::RetainingOneShotTimer>();
     reconnect_timer_->Start(FROM_HERE, base::Seconds(reconnect), this,
@@ -116,7 +113,8 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
       0.5   // threshold
   };
 
-  if (spec.num_params != static_cast<int>(task.GetParameters().at(0).size())) {
+  if (static_cast<int>(task.GetParameters().at(0).size()) != spec.num_params &&
+      static_cast<int>(task.GetParameters().at(1).size()) != 1) {
     VLOG(2) << "Task specifies a different model size than the client";
     return;
   }
@@ -131,22 +129,23 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::TaskPriority::BEST_EFFORT,
-       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::BindOnce(
-          [](std::unique_ptr<FederatedTaskRunner> task_runner) -> TaskResult {
-            auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
-            SyntheticDataset test_dataset =
-                synthetic_dataset->SeparateTestData(50);
-
-            task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
-            task_runner->SetTestData(test_dataset.GetDataPoints());
-            VLOG(2) << "Model and data set. Task runner initialized.";
-
-            return task_runner->Run();
-          },
-          std::move(task_runner)),
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&LearningService::LoadDatasetAndRunTask,
+                     base::Unretained(this), std::move(task_runner)),
       base::BindOnce(&LearningService::OnTaskResultComputed,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
+}
+
+TaskResult LearningService::LoadDatasetAndRunTask(
+    std::unique_ptr<FederatedTaskRunner> task_runner) {
+  auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
+  SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
+
+  task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
+  task_runner->SetTestData(test_dataset.GetDataPoints());
+  VLOG(2) << "Model and data set. Task runner initialized.";
+
+  return task_runner->Run();
 }
 
 void LearningService::OnTaskResultComputed(TaskResult result) {
