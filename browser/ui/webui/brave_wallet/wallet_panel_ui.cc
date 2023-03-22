@@ -48,8 +48,9 @@
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
     : ui::MojoBubbleWebUIController(web_ui,
                                     true /* Needed for webui browser tests */) {
+  auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kWalletPanelHost);
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletPanelHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   for (const auto& str : brave_wallet::kLocalizedStrings) {
     std::u16string l10n_str =
@@ -74,10 +75,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   if (ShouldDisableCSPForTesting()) {
     source->DisableContentSecurityPolicy();
   }
-  auto* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
-  content::WebUIDataSource::Add(profile, source);
   brave_wallet::AddBlockchainTokenImageSource(profile);
   active_web_contents_ = brave_wallet::GetActiveWebContents();
 }

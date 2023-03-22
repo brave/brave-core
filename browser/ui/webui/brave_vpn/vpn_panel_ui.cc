@@ -37,8 +37,8 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
   // From MojoWebUIController
   web_ui->SetBindings(content::BINDINGS_POLICY_MOJO_WEB_UI);
 
-  content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kVPNPanelURL);
+  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kVPNPanelURL);
 
   brave_vpn::AddLocalizedStrings(source);
   webui::SetupWebUIDataSource(
@@ -58,8 +58,6 @@ VPNPanelUI::VPNPanelUI(content::WebUI* web_ui)
       std::string("font-src "
                   "chrome-untrusted://resources;"));
 
-  content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
-                                source);
   Profile* profile = Profile::FromWebUI(web_ui);
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(

@@ -51,15 +51,15 @@
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
+  auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kWalletPageHost);
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   for (const auto& str : brave_wallet::kLocalizedStrings) {
     std::u16string l10n_str =
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
-  auto* profile = Profile::FromWebUI(web_ui);
   NavigationBarDataProvider::Initialize(source, profile);
   webui::SetupWebUIDataSource(
       source,
@@ -77,7 +77,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
-  content::WebUIDataSource::Add(profile, source);
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);

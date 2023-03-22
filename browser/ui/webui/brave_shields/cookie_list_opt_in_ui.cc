@@ -40,16 +40,14 @@ CookieListOptInUI::CookieListOptInUI(content::WebUI* web_ui)
 
   auto* profile = Profile::FromWebUI(web_ui);
 
-  auto* source = content::WebUIDataSource::Create(kCookieListOptInHost);
+  auto* source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kCookieListOptInHost);
   source->AddLocalizedStrings(kStrings);
 
   webui::SetupWebUIDataSource(
       source,
       base::make_span(kCookieListOptInGenerated, kCookieListOptInGeneratedSize),
       IDR_COOKIE_LIST_OPT_IN_HTML);
-
-  content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
-                                source);
 
   content::URLDataSource::Add(
       profile, std::make_unique<FaviconSource>(

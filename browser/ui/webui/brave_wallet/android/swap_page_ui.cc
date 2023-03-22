@@ -41,8 +41,9 @@
 SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
+  auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kWalletPageHost);
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
 
   for (const auto& str : brave_wallet::kLocalizedStrings) {
@@ -51,7 +52,6 @@ SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
     source->AddString(str.name, l10n_str);
   }
 
-  auto* profile = Profile::FromWebUI(web_ui);
   webui::SetupWebUIDataSource(
       source,
       base::make_span(kBraveWalletSwapPageGenerated,
@@ -77,7 +77,6 @@ SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
-  content::WebUIDataSource::Add(profile, source);
 
   brave_wallet::AddBlockchainTokenImageSource(profile);
 }
