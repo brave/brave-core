@@ -49,6 +49,7 @@ class LoginInfoViewController: LoginAuthViewController {
 
   private var credentials: PasswordForm {
     didSet {
+      navigationItem.rightBarButtonItem?.isEnabled = !credentials.isBlockedByUser
       tableView.reloadData()
     }
   }
@@ -119,6 +120,7 @@ class LoginInfoViewController: LoginAuthViewController {
     navigationItem.do {
       $0.title = URL(string: credentials.signOnRealm)?.baseDomain ?? ""
       $0.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(edit))
+      $0.rightBarButtonItem?.isEnabled = !credentials.isBlockedByUser
     }
 
     tableView.do {
@@ -246,12 +248,11 @@ extension LoginInfoViewController {
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    switch section {
-    case Section.information.rawValue:
-      return InfoItem.allCases.count
-    default:
+    guard section == Section.information.rawValue else {
       return 1
     }
+    
+  return credentials.isBlockedByUser ? 1 : InfoItem.allCases.count
   }
 
   override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
