@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LOCALE_LOCALE_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LOCALE_LOCALE_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_LOCALE_LOCALE_MANAGER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_LOCALE_LOCALE_MANAGER_H_
 
 #include <string>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 
 namespace brave_ads {
 
@@ -44,4 +44,4 @@ class LocaleManager final {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_LOCALE_LOCALE_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DEPRECATED_LOCALE_LOCALE_MANAGER_H_

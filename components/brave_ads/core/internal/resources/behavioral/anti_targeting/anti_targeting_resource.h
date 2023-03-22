@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"

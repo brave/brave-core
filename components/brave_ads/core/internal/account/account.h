@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace brave_ads {

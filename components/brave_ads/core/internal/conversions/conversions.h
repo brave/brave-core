@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"

@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 
 namespace base {

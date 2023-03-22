@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"

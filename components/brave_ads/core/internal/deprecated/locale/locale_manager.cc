@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"

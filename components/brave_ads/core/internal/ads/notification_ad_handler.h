@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager_observer.h"
 
