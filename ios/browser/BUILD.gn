@@ -30,6 +30,7 @@ source_set("browser") {
     "api/opentabs",
     "api/p3a",
     "api/password",
+    "api/session_restore",
     "api/sync",
     "api/url",
     "api/version_info",
