@@ -987,9 +987,9 @@ public class Utils {
     }
 
     @NonNull
-    public static String getNetworkIconName(NetworkInfo network) {
+    public static String getNetworkIconName(String chainId) {
         String logo;
-        switch (network.chainId) {
+        switch (chainId) {
             case BraveWalletConstants.MAINNET_CHAIN_ID:
                 logo = "eth.png";
                 break;
@@ -1026,6 +1026,11 @@ public class Utils {
                 logo = "eth.png";
         }
         return logo;
+    }
+
+    @NonNull
+    public static String getNetworkIconName(NetworkInfo network) {
+        return Utils.getNetworkIconName(network.chainId);
     }
 
     // Replace USDC and DAI contract addresses for Goerli network
