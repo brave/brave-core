@@ -6,7 +6,7 @@
 namespace json_rpc_requests {
   dictionary Transaction {
     DOMString from;
-    DOMString to;
+    DOMString? to;
     DOMString? gas;
     DOMString? gasPrice;
     DOMString? value;

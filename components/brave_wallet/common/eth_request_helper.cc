@@ -70,7 +70,9 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(
   auto tx_data = brave_wallet::mojom::TxData::New();
 
   *from_out = tx->from;
-  tx_data->to = tx->to;
+  if (tx->to) {
+    tx_data->to = *tx->to;
+  }
   if (tx->gas)
     tx_data->gas_limit = *tx->gas;
   if (tx->gas_price)
