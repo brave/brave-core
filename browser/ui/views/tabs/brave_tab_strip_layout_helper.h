@@ -29,7 +29,7 @@ namespace tabs {
 constexpr int kVerticalTabHeight = 36;
 constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
 constexpr int kVerticalTabsSpacing = 4;
-constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing * 2;
+constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
