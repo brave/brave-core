@@ -103,6 +103,14 @@ void Account::SetWallet(const std::string& payment_id,
     return WalletDidChange(wallet);
   }
 
+  if (wallet.WasCreated(last_wallet_copy)) {
+    WalletWasCreated(wallet);
+
+    if (!HasIssuers()) {
+      return MaybeGetIssuers();
+    }
+  }
+
   TopUpUnblindedTokens();
 }
 
@@ -231,6 +239,12 @@ void Account::ProcessUnclearedTransactions() const {
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 }
 
+void Account::WalletWasCreated(const WalletInfo& wallet) const {
+  BLOG(1, "Successfully created wallet");
+
+  NotifyWalletWasCreated(wallet);
+}
+
 void Account::WalletDidUpdate(const WalletInfo& wallet) const {
   BLOG(1, "Successfully set wallet");
 
@@ -296,6 +310,12 @@ void Account::TopUpUnblindedTokens() const {
 
   const WalletInfo& wallet = GetWallet();
   refill_unblinded_tokens_->MaybeRefill(wallet);
+}
+
+void Account::NotifyWalletWasCreated(const WalletInfo& wallet) const {
+  for (AccountObserver& observer : observers_) {
+    observer.OnWalletWasCreated(wallet);
+  }
 }
 
 void Account::NotifyWalletDidUpdate(const WalletInfo& wallet) const {

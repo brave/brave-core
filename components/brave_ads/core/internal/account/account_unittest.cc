@@ -39,6 +39,86 @@ using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
 
+namespace {
+
+URLResponseMap GetValidIssuersURLResponseMap() {
+  URLResponseMap url_responses = {{// Get issuers request
+                                   "/v3/issuers/",
+                                   {{net::HTTP_OK, R"(
+        {
+          "ping": 7200000,
+          "issuers": [
+            {
+              "name": "confirmations",
+              "publicKeys": [
+                {
+                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
+                  "associatedValue": ""
+                },
+                {
+                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
+                  "associatedValue": ""
+                }
+              ]
+            },
+            {
+              "name": "payments",
+              "publicKeys": [
+                {
+                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
+                  "associatedValue": "0.0"
+                },
+                {
+                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
+                  "associatedValue": "0.1"
+                }
+              ]
+            }
+          ]
+        }
+        )"}}}};
+  return url_responses;
+}
+
+IssuersInfo BuildValidIssuers() {
+  IssuersInfo issuers = BuildIssuers(
+      /*ping*/ 7'200'000,
+      /*confirmation_public_keys*/
+      {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
+       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
+      /*payments_public_keys*/
+      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
+       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
+       {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
+       {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
+       {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
+       {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
+       {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
+  return issuers;
+}
+
+}  // namespace
+
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
   void SetUp() override {
@@ -111,6 +191,8 @@ TEST_F(BatAdsAccountTest, SetWallet) {
 
 TEST_F(BatAdsAccountTest, SetInvalidWallet) {
   // Arrange
+  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
+  MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act
   account_->SetWallet(GetWalletPaymentIdForTesting(),
@@ -156,65 +238,32 @@ TEST_F(BatAdsAccountTest, GetWallet) {
   EXPECT_EQ(expected_wallet, wallet);
 }
 
+TEST_F(BatAdsAccountTest, GetIssuersOnSetWallet) {
+  // Arrange
+  privacy::SetUnblindedTokens(50);
+  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  // Act
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
+
+  // Assert
+  EXPECT_TRUE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_change_);
+  EXPECT_FALSE(invalid_wallet_);
+
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
+  const IssuersInfo expected_issuers = BuildValidIssuers();
+  EXPECT_EQ(expected_issuers, *issuers);
+}
+
 TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLResponseMap url_responses = {{// Get issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, R"(
-        {
-          "ping": 7200000,
-          "issuers": [
-            {
-              "name": "confirmations",
-              "publicKeys": [
-                {
-                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-                  "associatedValue": ""
-                }
-              ]
-            },
-            {
-              "name": "payments",
-              "publicKeys": [
-                {
-                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
-                  "associatedValue": "0.0"
-                },
-                {
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
-                  "associatedValue": "0.1"
-                }
-              ]
-            }
-          ]
-        }
-        )"}}}};
+  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
   MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();
@@ -224,20 +273,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo expected_issuers = BuildIssuers(
-      /*ping*/ 7'200'000,
-      /*confirmation_public_keys*/
-      {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-      /*payments_public_keys*/
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-       {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
-       {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
-       {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
-       {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
-       {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
-
+  const IssuersInfo expected_issuers = BuildValidIssuers();
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
@@ -245,61 +281,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const URLResponseMap url_responses = {{// Get issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, R"(
-        {
-          "ping": 7200000,
-          "issuers": [
-            {
-              "name": "confirmations",
-              "publicKeys": [
-                {
-                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-                  "associatedValue": ""
-                }
-              ]
-            },
-            {
-              "name": "payments",
-              "publicKeys": [
-                {
-                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
-                  "associatedValue": "0.0"
-                },
-                {
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
-                  "associatedValue": "0.1"
-                }
-              ]
-            }
-          ]
-        }
-        )"}}}};
+  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
   MockUrlResponses(ads_client_mock_, url_responses);
 
   account_->Process();

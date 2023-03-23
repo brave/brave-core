@@ -13,6 +13,7 @@ namespace brave_ads {
 struct WalletInfo final {
   bool IsValid() const;
 
+  bool WasCreated(const WalletInfo& other) const;
   bool WasUpdated(const WalletInfo& other) const;
   bool HasChanged(const WalletInfo& other) const;
 

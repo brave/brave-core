@@ -19,6 +19,9 @@ struct WalletInfo;
 
 class AccountObserver : public base::CheckedObserver {
  public:
+  // Invoked when the |wallet| was created.
+  virtual void OnWalletWasCreated(const WalletInfo& wallet) {}
+
   // Invoked when the |wallet| has updated.
   virtual void OnWalletDidUpdate(const WalletInfo& wallet) {}
 

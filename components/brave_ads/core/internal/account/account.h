@@ -92,6 +92,7 @@ class Account final : public PrefManagerObserver,
   void ProcessClearingCycle() const;
   void ProcessUnclearedTransactions() const;
 
+  void WalletWasCreated(const WalletInfo& wallet) const;
   void WalletDidUpdate(const WalletInfo& wallet) const;
   void WalletDidChange(const WalletInfo& wallet) const;
   void OnRewardsReset(bool success) const;
@@ -100,6 +101,7 @@ class Account final : public PrefManagerObserver,
 
   void TopUpUnblindedTokens() const;
 
+  void NotifyWalletWasCreated(const WalletInfo& wallet) const;
   void NotifyWalletDidUpdate(const WalletInfo& wallet) const;
   void NotifyWalletDidChange(const WalletInfo& wallet) const;
   void NotifyInvalidWallet() const;
@@ -127,7 +129,7 @@ class Account final : public PrefManagerObserver,
       const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens)
       override;
 
-  // RedeemUnblindedTokensDelegate:
+  // RefillUnblindedTokensDelegate:
   void OnDidRefillUnblindedTokens() override;
   void OnCaptchaRequiredToRefillUnblindedTokens(
       const std::string& captcha_id) override;
