@@ -51,6 +51,7 @@ import org.chromium.url.internal.mojom.Origin;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CryptoModel {
     private TxService mTxService;
@@ -385,6 +386,14 @@ public class CryptoModel {
         @Override
         public List<CryptoAccountTypeInfo> getSupportedCryptoAccountTypes() {
             return CryptoModel.this.getSupportedCryptoAccountTypes();
+        }
+
+        @Override
+        public List<Integer> getSupportedCryptoCoins() {
+            return getSupportedCryptoAccountTypes()
+                    .stream()
+                    .map(CryptoAccountTypeInfo::getCoinType)
+                    .collect(Collectors.toList());
         }
 
         @Override
