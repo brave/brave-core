@@ -28,10 +28,6 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
   @NSManaged public var isFavorite: Bool
   /// Legacy: this property is not used anymore except for migration.
   @NSManaged public var isFolder: Bool
-  /// Legacy: this property is not used anymore except for migration.
-  @NSManaged public var parentFolder: LegacyBookmark?
-  /// Legacy: this property is not used anymore except for migration.
-  @NSManaged public var children: Set<LegacyBookmark>?
   /// Unused
   @NSManaged public var tags: [String]?
   /// Unused

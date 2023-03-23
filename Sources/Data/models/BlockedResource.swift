@@ -8,6 +8,13 @@ import CoreData
 import Shared
 import os.log
 
+func getDate(_ dayOffset: Int) -> Date {
+  let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+  let nowComponents = calendar.dateComponents([Calendar.Component.year, Calendar.Component.month, Calendar.Component.day], from: Date())
+  let today = calendar.date(from: nowComponents)!
+  return (calendar as NSCalendar).date(byAdding: NSCalendar.Unit.day, value: dayOffset, to: today, options: [])!
+}
+
 public enum BlockedResourceType: Int32 {
   case ad = 0
   case tracker = 1

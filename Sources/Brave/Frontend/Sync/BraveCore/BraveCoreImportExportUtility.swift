@@ -167,42 +167,6 @@ class BraveCoreImportExportUtility {
     }
   }
 
-  // Export bookmarks from CoreData to a file
-  func exportBookmarks(to path: URL, bookmarks: [LegacyBookmark], _ completion: @escaping (_ success: Bool) -> Void) {
-    precondition(state == .none, "Bookmarks Import - Error Exporting while an Import/Export operation is in progress")
-
-    guard let path = nativeURLPathFromURL(path) else {
-      Logger.module.error("Bookmarks Export - Invalid FileSystem Path")
-      DispatchQueue.main.async {
-        completion(false)
-      }
-      return
-    }
-
-    self.state = .exporting
-    let bookmarks = bookmarks.map({ $0.toChromiumExportedBookmark() })
-    self.queue.async {
-      self.exporter.export(toFile: path, bookmarks: bookmarks) { [weak self] state in
-        guard let self = self, state != .started else { return }
-
-        do {
-          try self.rethrow(state)
-          self.state = .none
-          Logger.module.info("Bookmarks Export - Completed Export Successfully")
-          DispatchQueue.main.async {
-            completion(true)
-          }
-        } catch {
-          self.state = .none
-          Logger.module.error("\(error.localizedDescription)")
-          DispatchQueue.main.async {
-            completion(false)
-          }
-        }
-      }
-    }
-  }
-
   // MARK: - Private
   private var state: State = .none
   private let importer = BraveBookmarksImporter()
@@ -238,21 +202,6 @@ private enum ParsingError: String, Error {
 }
 
 // MARK: - Private
-
-extension LegacyBookmark {
-  fileprivate func toChromiumExportedBookmark() -> BookmarkNode {
-    // Tail recursion to map children..
-    return BookmarkNode(
-      title: self.isFolder ? self.customTitle ?? "(No Title)" : self.title ?? "(No Title)",
-      id: Int64(self.order),
-      guid: UUID().uuidString.lowercased(),
-      url: URL(string: self.url ?? ""),
-      dateAdded: self.created ?? Date(),
-      dateModified: self.lastVisited ?? Date(),
-      children: self.children?.sorted(by: { $0.order < $1.order }).map({ $0.toChromiumExportedBookmark() })
-    )
-  }
-}
 
 extension BraveCoreImportExportUtility {
   private func rethrow(_ state: BraveBookmarksImporterState) throws {

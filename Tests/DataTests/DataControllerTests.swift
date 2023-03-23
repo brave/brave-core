@@ -33,9 +33,6 @@ class DataControllerTests: CoreDataTestCase {
 
     let domainFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Domain.self))
     XCTAssertEqual(try! viewContext.count(for: domainFR), 0)
-
-    let historyFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: History.self))
-    XCTAssertEqual(try! viewContext.count(for: historyFR), 0)
   }
 
   func testSavingMainContext() {
