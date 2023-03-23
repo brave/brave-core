@@ -47,8 +47,10 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   title_->SetEnabledColor(GetGroupBackgroundColorForVerticalTabs(
       group().value(), base::to_address(tab_slot_controller_)));
-  title_->SetFontList(
-      title_->font_list().DeriveWithWeight(gfx::Font::Weight::MEDIUM));
+
+  auto font_list = title_->font_list();
+  title_->SetFontList(font_list.DeriveWithWeight(gfx::Font::Weight::MEDIUM)
+                          .DeriveWithSizeDelta(13 - font_list.GetFontSize()));
 
   // We don't draw background for vertical tabs.
   title_chip_->SetBackground(nullptr);
