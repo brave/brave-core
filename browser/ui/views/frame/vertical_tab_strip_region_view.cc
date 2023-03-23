@@ -140,6 +140,42 @@ class CustomScrollView : public views::ScrollView {
 BEGIN_METADATA(CustomScrollView, views::ScrollView)
 END_METADATA
 
+class VerticalTabSearchButton : public BraveTabSearchButton {
+ public:
+  METADATA_HEADER(VerticalTabSearchButton);
+
+  explicit VerticalTabSearchButton(TabStrip* tab_strip)
+      : BraveTabSearchButton(tab_strip) {
+    SetPreferredSize(
+        gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
+    SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
+    SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SEARCH));
+    SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
+  }
+
+  ~VerticalTabSearchButton() override = default;
+
+  // BraveTabSearchButton:
+  SkPath GetBorderPath(const gfx::Point& origin,
+                       float scale,
+                       bool extend_to_top) const override {
+    // Return empty path in order not to fill the background.
+    return {};
+  }
+
+  void FrameColorsChanged() override {
+    TabSearchButton::FrameColorsChanged();
+
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(
+                      kVerticalTabTabSearchButtonIcon,
+                      kColorBraveVerticalTabHeaderButtonColor));
+  }
+};
+
+BEGIN_METADATA(VerticalTabSearchButton, BraveTabSearchButton)
+END_METADATA
+
 }  // namespace
 
 class VerticalTabStripScrollContentsView : public views::View {
@@ -180,6 +216,7 @@ class VerticalTabStripScrollContentsView : public views::View {
 BEGIN_METADATA(VerticalTabStripScrollContentsView, views::View)
 END_METADATA
 
+
 class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
  public:
   METADATA_HEADER(ScrollHeaderView);
@@ -204,16 +241,7 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
     // We layout the search button at the end, because there's no
     // way to change its bubble arrow from TOP_RIGHT at the moment.
     tab_search_button_ = AddChildView(
-        std::make_unique<BraveTabSearchButton>(region_view->tab_strip()));
-    tab_search_button_->SetPreferredSize(
-        gfx::Size{ToggleButton::GetIconWidth(), ToggleButton::GetIconWidth()});
-    tab_search_button_->SetTooltipText(
-        l10n_util::GetStringUTF16(IDS_TOOLTIP_TAB_SEARCH));
-    tab_search_button_->SetAccessibleName(
-        l10n_util::GetStringUTF16(IDS_ACCNAME_TAB_SEARCH));
-    tab_search_button_->set_fill_color_disabled();
-    tab_search_button_->SetBubbleArrow(views::BubbleBorder::LEFT_TOP);
-
+        std::make_unique<VerticalTabSearchButton>(region_view->tab_strip()));
     UpdateTabSearchButtonVisibility();
   }
   ~ScrollHeaderView() override = default;
@@ -237,11 +265,6 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
     // the icon.
     toggle_button_->FrameColorsChanged();
     tab_search_button_->FrameColorsChanged();
-    tab_search_button_->SetImageModel(
-        views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(
-            kVerticalTabTabSearchButtonIcon,
-            kColorBraveVerticalTabHeaderButtonColor));
     SetBackground(views::CreateSolidBackground(
         GetColorProvider()->GetColor(kColorToolbar)));
   }
