@@ -19,7 +19,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   ~MockLedgerImpl() override;
 
-  MockLedgerClient* ledger_client() const;
+  MockLedgerClient* rewards_service() const;
 
   MOCK_CONST_METHOD0(database, database::Database*());
 

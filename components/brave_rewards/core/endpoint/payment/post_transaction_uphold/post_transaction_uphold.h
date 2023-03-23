@@ -64,7 +64,7 @@ class PostTransactionUphold {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response,
+  void OnRequest(mojom::UrlResponsePtr response,
                  PostTransactionUpholdCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -63,7 +63,7 @@ void EmptyBalance::OnAllContributions(
   GetPromotions(get_callback);
 }
 
-void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
+void EmptyBalance::GetPromotions(database::GetPromotionListCallback callback) {
   auto get_callback =
       std::bind(&EmptyBalance::OnPromotions, this, _1, callback);
 
@@ -72,7 +72,7 @@ void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
 
 void EmptyBalance::OnPromotions(
     base::flat_map<std::string, mojom::PromotionPtr> promotions,
-    client::GetPromotionListCallback callback) {
+    database::GetPromotionListCallback callback) {
   std::vector<mojom::PromotionPtr> list;
 
   for (auto& promotion : promotions) {

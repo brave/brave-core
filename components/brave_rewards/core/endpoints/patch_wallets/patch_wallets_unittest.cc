@@ -50,7 +50,7 @@ class PatchWallets : public TestWithParam<PatchWalletsParamType> {
           }
         )";
 
-    ON_CALL(*mock_ledger_impl_.ledger_client(),
+    ON_CALL(*mock_ledger_impl_.rewards_service(),
             GetStringState(state::kWalletBrave))
         .WillByDefault(Return(wallet));
   }
@@ -62,10 +62,10 @@ class PatchWallets : public TestWithParam<PatchWalletsParamType> {
 TEST_P(PatchWallets, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([status_code = status_code, body = body](
+                     mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
             mojom::UrlResponse response;
             response.status_code = status_code;
             response.body = std::move(body);

@@ -29,7 +29,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/ledger.h"
-#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
@@ -90,7 +89,7 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
 using StopLedgerCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
-                           public rewards::mojom::BatLedgerClient,
+                           public rewards::mojom::RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
@@ -372,9 +371,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::mojom::Result result);
 
-  void OnLedgerStateLoaded(ledger::client::OnLoadCallback callback,
-                              std::pair<std::string, base::Value> data);
-  void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
+  void OnLedgerStateLoaded(LoadLedgerStateCallback callback,
+                           std::pair<std::string, base::Value> data);
+  void OnPublisherStateLoaded(LoadPublisherStateCallback callback,
                               const std::string& data);
 
   void OnRestorePublishers(const ledger::mojom::Result result);
@@ -423,7 +422,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& token,
       const bool attestation_passed);
 
-  // ledger::LedgerClient
+  // mojom::RewardsService
   void OnReconcileComplete(
       ledger::mojom::Result result,
       ledger::mojom::ContributionInfoPtr contribution) override;
@@ -567,7 +566,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void DeleteLog(DeleteLogCallback callback) override;
 
-  // end ledger::LedgerClient
+  // end mojom::RewardsService
 
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
@@ -604,7 +603,7 @@ class RewardsServiceImpl : public RewardsService,
                           const ledger::mojom::Result result,
                           ledger::mojom::MonthlyReportInfoPtr report);
 
-  void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
+  void OnRunDBTransaction(RunDBTransactionCallback callback,
                           ledger::mojom::DBCommandResponsePtr response);
 
   void OnGetAllPromotions(
@@ -636,8 +635,8 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  mojo::AssociatedReceiver<rewards::mojom::BatLedgerClient>
-      bat_ledger_client_receiver_;
+  mojo::AssociatedReceiver<rewards::mojom::RewardsService>
+      rewards_service_receiver_;
   mojo::Remote<rewards::mojom::RewardsUtilityService> utility_service_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;

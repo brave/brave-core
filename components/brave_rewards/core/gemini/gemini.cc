@@ -120,9 +120,9 @@ void Gemini::OnFetchBalance(FetchBalanceCallback callback,
 void Gemini::TransferFunds(double amount,
                            const std::string& address,
                            const std::string& contribution_id,
-                           client::LegacyResultCallback callback) {
+                           LegacyResultCallback callback) {
   transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](client::LegacyResultCallback callback,
+                 base::BindOnce([](LegacyResultCallback callback,
                                    mojom::Result result) { callback(result); },
                                 std::move(callback)));
 }

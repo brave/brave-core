@@ -58,8 +58,7 @@ class PostVotes {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response,
-                 PostVotesCallback callback);
+  void OnRequest(mojom::UrlResponsePtr response, PostVotesCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

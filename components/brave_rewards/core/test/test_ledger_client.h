@@ -77,8 +77,7 @@ class TestLedgerClient : public LedgerClient {
 
   std::string URIEncode(const std::string& value) override;
 
-  void LoadURL(mojom::UrlRequestPtr request,
-               client::LoadURLCallback callback) override;
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
 
   void Log(const char* file,
            const int line,
@@ -188,7 +187,7 @@ class TestLedgerClient : public LedgerClient {
 
  private:
   void LoadURLAfterDelay(mojom::UrlRequestPtr request,
-                         client::LoadURLCallback callback);
+                         LoadURLCallback callback);
 
   void RunDBTransactionAfterDelay(mojom::DBTransactionPtr transaction,
                                   client::RunDBTransactionCallback callback);

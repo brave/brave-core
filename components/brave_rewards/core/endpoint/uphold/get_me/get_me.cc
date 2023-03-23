@@ -81,18 +81,18 @@ void GetMe::Request(const std::string& token, GetMeCallback callback) {
   ledger_->LoadURL(std::move(request), std::move(url_callback));
 }
 
-void GetMe::OnRequest(GetMeCallback callback,
-                      const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response, true);
+void GetMe::OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response, true);
 
   ::ledger::uphold::User user;
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, user);
     return;
   }
 
-  result = ParseBody(response.body, &user);
+  result = ParseBody(response->body, &user);
   std::move(callback).Run(result, user);
 }
 

@@ -25,9 +25,10 @@ class ResponseHandler {
 
  private:
   static void OnResponse(base::OnceCallback<void(Result&&)> callback,
-                         const ledger::mojom::UrlResponse& response) {
-    ledger::LogUrlResponse(__func__, response);
-    std::move(callback).Run(Endpoint::ProcessResponse(response));
+                         ledger::mojom::UrlResponsePtr response) {
+    DCHECK(response);
+    ledger::LogUrlResponse(__func__, *response);
+    std::move(callback).Run(Endpoint::ProcessResponse(*response));
   }
 
   // Note that friend class RequestFor<Endpoint>; is not sufficient due to

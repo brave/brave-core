@@ -12,17 +12,18 @@
 #include <memory>
 #include <queue>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/types/always_false.h"
 #include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/ledger.h"
-#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
@@ -33,18 +34,23 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace ledger {
 
 class LedgerImpl : public Ledger {
  public:
-  explicit LedgerImpl(std::unique_ptr<LedgerClient> client);
+  explicit LedgerImpl(
+      mojo::PendingAssociatedRemote<rewards::mojom::RewardsService>
+          rewards_service);
   ~LedgerImpl() override;
 
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
-  LedgerClient* ledger_client() const;
+  rewards::mojom::RewardsService* rewards_service() const;
 
   state::State* state() const;
 
@@ -73,17 +79,15 @@ class LedgerImpl : public Ledger {
   virtual database::Database* database() const;
 
   virtual void LoadURL(mojom::UrlRequestPtr request,
-                       client::LegacyLoadURLCallback callback);
+                       LegacyLoadURLCallback callback);
 
-  virtual void LoadURL(mojom::UrlRequestPtr request,
-                       client::LoadURLCallback callback);
-
-  virtual void RunDBTransaction(
-      mojom::DBTransactionPtr transaction,
-      client::LegacyRunDBTransactionCallback callback);
+  virtual void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback);
 
   virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                client::RunDBTransactionCallback callback);
+                                LegacyRunDBTransactionCallback callback);
+
+  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                RunDBTransactionCallback callback);
 
   bool IsShuttingDown() const;
 
@@ -291,6 +295,113 @@ class LedgerImpl : public Ledger {
 
   void SetInitializedForTesting();
 
+  template <typename T>
+  T GetState(const std::string& name) {
+    T value;
+
+    if constexpr (std::is_same_v<T, bool>) {
+      rewards_service_->GetBooleanState(name, &value);
+    } else if constexpr (std::is_same_v<T, int>) {
+      rewards_service_->GetIntegerState(name, &value);
+    } else if constexpr (std::is_same_v<T, double>) {
+      rewards_service_->GetDoubleState(name, &value);
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      rewards_service_->GetStringState(name, &value);
+    } else if constexpr (std::is_same_v<T, int64_t>) {
+      rewards_service_->GetInt64State(name, &value);
+    } else if constexpr (std::is_same_v<T, uint64_t>) {
+      rewards_service_->GetUint64State(name, &value);
+    } else if constexpr (std::is_same_v<T, base::Value>) {
+      rewards_service_->GetValueState(name, &value);
+    } else if constexpr (std::is_same_v<T, base::Time>) {
+      rewards_service_->GetTimeState(name, &value);
+    } else {
+      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
+    }
+
+    return value;
+  }
+
+  template <typename T>
+  void SetState(const std::string& name, T value) {
+    if constexpr (std::is_same_v<T, bool>) {
+      rewards_service_->SetBooleanState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, int>) {
+      rewards_service_->SetIntegerState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, double>) {
+      rewards_service_->SetDoubleState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      rewards_service_->SetStringState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, int64_t>) {
+      rewards_service_->SetInt64State(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, uint64_t>) {
+      rewards_service_->SetUint64State(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, base::Value>) {
+      rewards_service_->SetValueState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, base::Time>) {
+      rewards_service_->SetTimeState(name, std::move(value));
+    } else {
+      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
+    }
+  }
+
+  void ClearState(const std::string& name) {
+    rewards_service_->ClearState(name);
+  }
+
+  template <typename T>
+  T GetOption(const std::string& name) {
+    T value;
+
+    if constexpr (std::is_same_v<T, bool>) {
+      rewards_service_->GetBooleanOption(name, &value);
+    } else if constexpr (std::is_same_v<T, int>) {
+      rewards_service_->GetIntegerOption(name, &value);
+    } else if constexpr (std::is_same_v<T, double>) {
+      rewards_service_->GetDoubleOption(name, &value);
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      rewards_service_->GetStringOption(name, &value);
+    } else if constexpr (std::is_same_v<T, int64_t>) {
+      rewards_service_->GetInt64Option(name, &value);
+    } else if constexpr (std::is_same_v<T, uint64_t>) {
+      rewards_service_->GetUint64Option(name, &value);
+    } else {
+      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
+    }
+
+    return value;
+  }
+
+  std::string URIEncode(const std::string& value) {
+    std::string encoded_value;
+    rewards_service_->URIEncode(value, &encoded_value);
+    return encoded_value;
+  }
+
+  ledger::mojom::ClientInfoPtr GetClientInfo() {
+    auto info = ledger::mojom::ClientInfo::New();
+    rewards_service_->GetClientInfo(&info);
+    return info;
+  }
+
+  absl::optional<std::string> EncryptString(const std::string& value) {
+    absl::optional<std::string> result;
+    rewards_service_->EncryptString(value, &result);
+    return result;
+  }
+
+  absl::optional<std::string> DecryptString(const std::string& value) {
+    absl::optional<std::string> result;
+    rewards_service_->DecryptString(value, &result);
+    return result;
+  }
+
+  std::string GetLegacyWallet() {
+    std::string wallet;
+    rewards_service_->GetLegacyWallet(&wallet);
+    return wallet;
+  }
+
  private:
   enum class ReadyState {
     kUninitialized,
@@ -325,7 +436,7 @@ class LedgerImpl : public Ledger {
   void RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
                             RunDBTransactionCallback callback);
 
-  std::unique_ptr<LedgerClient> ledger_client_;
+  mojo::AssociatedRemote<rewards::mojom::RewardsService> rewards_service_;
 
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;

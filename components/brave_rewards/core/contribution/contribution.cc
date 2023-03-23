@@ -379,8 +379,8 @@ void Contribution::ContributionCompleted(
   // browser restart. Those ACs should complete in the background without
   // updating the current month's balance report or generating a notification.
   if (!IsRevivedAC(*contribution)) {
-    ledger_->ledger_client()->OnReconcileComplete(result,
-                                                  contribution->Clone());
+    ledger_->rewards_service()->OnReconcileComplete(result,
+                                                    contribution->Clone());
 
     if (result == mojom::Result::LEDGER_OK) {
       ledger_->database()->SaveBalanceReportInfoItem(
@@ -639,7 +639,7 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
                                  const std::string& destination,
                                  const std::string& wallet_type,
                                  const std::string& contribution_id,
-                                 client::LegacyResultCallback callback) {
+                                 LegacyResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     ledger_->uphold()->TransferFunds(transaction.amount, destination,
                                      contribution_id, callback);

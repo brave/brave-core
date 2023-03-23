@@ -134,7 +134,7 @@ class GetMe {
   mojom::Result ParseBody(const std::string& body,
                           ::ledger::uphold::User* user);
 
-  void OnRequest(GetMeCallback callback, const mojom::UrlResponse& response);
+  void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

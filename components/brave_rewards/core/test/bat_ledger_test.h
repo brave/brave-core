@@ -29,7 +29,7 @@ class BATLedgerTest : public testing::Test {
 
   // Returns the |TestLedgerClient| instance for this test.
   TestLedgerClient* GetTestLedgerClient() {
-    return static_cast<TestLedgerClient*>(ledger_.ledger_client());
+    return static_cast<TestLedgerClient*>(ledger_.rewards_service());
   }
 
   // Returns the |LedgerImpl| instance for this test.

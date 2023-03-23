@@ -100,10 +100,11 @@ void GetBalance::Request(const std::string& token,
 }
 
 void GetBalance::OnRequest(GetBalanceCallback callback,
-                           const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                           mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     std::move(callback).Run(result, 0.0);
@@ -111,7 +112,7 @@ void GetBalance::OnRequest(GetBalanceCallback callback,
   }
 
   double available;
-  result = ParseBody(response.body, &available);
+  result = ParseBody(response->body, &available);
   std::move(callback).Run(result, available);
 }
 

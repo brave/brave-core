@@ -120,7 +120,7 @@ TEST_F(BitflyerUtilTest, GetActivityUrl) {
 
 TEST_F(BitflyerUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_impl_.ledger_client(),
+  ON_CALL(*mock_ledger_impl_.rewards_service(),
           GetStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(""));
   auto result = mock_ledger_impl_.bitflyer()->GetWallet();
@@ -138,7 +138,7 @@ TEST_F(BitflyerUtilTest, GetWallet) {
     "user_name": "test"
   })");
 
-  ON_CALL(*mock_ledger_impl_.ledger_client(),
+  ON_CALL(*mock_ledger_impl_.rewards_service(),
           GetStringState(state::kWalletBitflyer))
       .WillByDefault(testing::Return(wallet));
 

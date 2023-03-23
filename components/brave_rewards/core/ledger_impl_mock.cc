@@ -14,8 +14,8 @@ MockLedgerImpl::MockLedgerImpl()
 
 MockLedgerImpl::~MockLedgerImpl() = default;
 
-MockLedgerClient* MockLedgerImpl::ledger_client() const {
-  return static_cast<MockLedgerClient*>(LedgerImpl::ledger_client());
+MockLedgerClient* MockLedgerImpl::rewards_service() const {
+  return static_cast<MockLedgerClient*>(LedgerImpl::rewards_service());
 }
 
 }  // namespace ledger

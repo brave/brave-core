@@ -34,7 +34,7 @@ bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
 }
 
 void LegacyPublisherState::Load(ledger::LegacyResultCallback callback) {
-  ledger_->ledger_client()->LoadPublisherState(
+  ledger_->rewards_service()->LoadPublisherState(
       base::BindOnce(&LegacyPublisherState::OnLoad, base::Unretained(this),
                      std::move(callback)));
 }

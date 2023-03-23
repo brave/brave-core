@@ -110,7 +110,7 @@ std::string TestLedgerClient::URIEncode(const std::string& value) {
 }
 
 void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
-                               client::LoadURLCallback callback) {
+                               LoadURLCallback callback) {
   DCHECK(request);
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
@@ -343,7 +343,7 @@ void TestLedgerClient::SetLogCallbackForTesting(LogCallback callback) {
 }
 
 void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
-                                         client::LoadURLCallback callback) {
+                                         LoadURLCallback callback) {
   auto iter = base::ranges::find_if(network_results_, [&request](auto& result) {
     return request->url == result.url && request->method == result.method;
   });

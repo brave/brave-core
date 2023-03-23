@@ -17,6 +17,9 @@ namespace database {
 
 using GetPromotionCallback = std::function<void(mojom::PromotionPtr)>;
 
+using GetPromotionListCallback =
+    std::function<void(std::vector<mojom::PromotionPtr>)>;
+
 class DatabasePromotion : public DatabaseTable {
  public:
   explicit DatabasePromotion(LedgerImpl* ledger);
@@ -28,7 +31,7 @@ class DatabasePromotion : public DatabaseTable {
   void GetRecord(const std::string& id, GetPromotionCallback callback);
 
   void GetRecords(const std::vector<std::string>& ids,
-                  client::GetPromotionListCallback callback);
+                  GetPromotionListCallback callback);
 
   void GetAllRecords(ledger::GetAllPromotionsCallback callback);
 
@@ -58,7 +61,7 @@ class DatabasePromotion : public DatabaseTable {
                        ledger::GetAllPromotionsCallback callback);
 
   void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    client::GetPromotionListCallback callback);
+                    GetPromotionListCallback callback);
 };
 
 }  // namespace database

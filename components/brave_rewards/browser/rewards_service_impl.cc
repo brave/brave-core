@@ -293,7 +293,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
-      bat_ledger_client_receiver_(this),
+      rewards_service_receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -474,7 +474,7 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
   HandleFlags(RewardsFlags::ForCurrentProcess());
 
   utility_service_->CreateLedger(
-      bat_ledger_client_receiver_.BindNewEndpointAndPassRemote(),
+      rewards_service_receiver_.BindNewEndpointAndPassRemote(),
       base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
 }
 
@@ -848,11 +848,11 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
-  bat_ledger_client_receiver_.reset();
+  rewards_service_receiver_.reset();
   url_loaders_.clear();
 
   utility_service_.reset();
-  RewardsService::Shutdown();
+  brave_rewards::RewardsService::Shutdown();
 }
 
 void RewardsServiceImpl::OnLedgerInitialized(ledger::mojom::Result result) {
@@ -1457,7 +1457,7 @@ void RewardsServiceImpl::Reset() {
 
   current_media_fetchers_.clear();
   utility_service_.reset();
-  bat_ledger_client_receiver_.reset();
+  rewards_service_receiver_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
   ledger_database_.Reset();
   BLOG(1, "Successfully reset rewards service");

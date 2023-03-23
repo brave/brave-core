@@ -119,7 +119,7 @@ TEST_F(GeminiUtilTest, GetActivityUrl) {
 
 TEST_F(GeminiUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_impl_.ledger_client(),
+  ON_CALL(*mock_ledger_impl_.rewards_service(),
           GetStringState(state::kWalletGemini))
       .WillByDefault(testing::Return(""));
   auto result = mock_ledger_impl_.gemini()->GetWallet();
@@ -136,7 +136,7 @@ TEST_F(GeminiUtilTest, GetWallet) {
     "user_name": "test"
   })");
 
-  ON_CALL(*mock_ledger_impl_.ledger_client(),
+  ON_CALL(*mock_ledger_impl_.rewards_service(),
           GetStringState(state::kWalletGemini))
       .WillByDefault(testing::Return(wallet));
 

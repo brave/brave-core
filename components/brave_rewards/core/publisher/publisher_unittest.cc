@@ -48,13 +48,15 @@ class PublisherTest : public testing::Test {
     ON_CALL(mock_ledger_impl_, database())
         .WillByDefault(testing::Return(&mock_database_));
 
-    ON_CALL(*mock_ledger_impl_.ledger_client(), GetDoubleState(state::kScoreA))
+    ON_CALL(*mock_ledger_impl_.rewards_service(),
+            GetDoubleState(state::kScoreA))
         .WillByDefault(Invoke([this](const std::string& key) { return a_; }));
 
-    ON_CALL(*mock_ledger_impl_.ledger_client(), GetDoubleState(state::kScoreB))
+    ON_CALL(*mock_ledger_impl_.rewards_service(),
+            GetDoubleState(state::kScoreB))
         .WillByDefault(Invoke([this](const std::string& key) { return b_; }));
 
-    ON_CALL(*mock_ledger_impl_.ledger_client(), SetDoubleState(_, _))
+    ON_CALL(*mock_ledger_impl_.rewards_service(), SetDoubleState(_, _))
         .WillByDefault(Invoke([this](const std::string& key, double value) {
           if (key == state::kScoreA) {
             a_ = value;
