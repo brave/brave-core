@@ -11,15 +11,14 @@
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
@@ -31,7 +30,7 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   DCHECK(subdivision_targeting);
   DCHECK(anti_targeting_resource);
 
-  const int version = brave_ads::features::GetServingVersion();
+  const int version = features::GetServingVersion();
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 }
@@ -49,7 +48,7 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 }
 
 void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
-  if (!features::IsEnabled()) {
+  if (!features::IsServingEnabled()) {
     BLOG(1, "New tab page ad not served: Feature is disabled");
     return FailedToServeAd(std::move(callback));
   }
@@ -73,6 +72,8 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
                      std::move(callback), user_model));
 }
 
+///////////////////////////////////////////////////////////////////////////////
+
 void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
                                 const targeting::UserModelInfo& user_model,
                                 const bool had_opportunity,
@@ -95,8 +96,6 @@ void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
   ServeAd(ad, std::move(callback));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 bool Serving::IsSupported() const {
   return static_cast<bool>(eligible_ads_);

@@ -24,8 +24,8 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
@@ -99,7 +99,7 @@ std::string ExtractConversionIdFromText(
     const std::string& conversion_url_pattern,
     const ConversionIdPatternMap& conversion_id_patterns) {
   std::string conversion_id;
-  std::string conversion_id_pattern = features::GetDefaultConversionIdPattern();
+  std::string conversion_id_pattern = features::GetConversionIdPattern();
   std::string text = html;
 
   const auto iter = conversion_id_patterns.find(conversion_url_pattern);

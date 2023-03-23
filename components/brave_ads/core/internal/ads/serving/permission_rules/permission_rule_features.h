@@ -15,11 +15,8 @@ BASE_DECLARE_FEATURE(kFeature);
 bool IsEnabled();
 
 bool ShouldOnlyServeAdsInWindowedMode();
-
 bool ShouldOnlyServeAdsWithValidInternetConnection();
-
 bool ShouldOnlyServeAdsIfMediaIsNotPlaying();
-
 bool ShouldOnlyServeAdsIfBrowserIsActive();
 
 }  // namespace brave_ads::permission_rules::features

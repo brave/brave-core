@@ -18,10 +18,9 @@ TEST(BatAdsPermissionRuleFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
-  const bool is_enabled = IsEnabled();
 
   // Assert
-  EXPECT_TRUE(is_enabled);
+  EXPECT_TRUE(IsEnabled());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest, IsDisabled) {
@@ -36,10 +35,9 @@ TEST(BatAdsPermissionRuleFeaturesTest, IsDisabled) {
                                                     disabled_features);
 
   // Act
-  const bool is_enabled = IsEnabled();
 
   // Assert
-  EXPECT_FALSE(is_enabled);
+  EXPECT_FALSE(IsEnabled());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
@@ -56,36 +54,23 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsInWindowedMode) {
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_in_windowed_mode =
-      ShouldOnlyServeAdsInWindowedMode();
 
   // Assert
-  const bool expected_should_only_serve_ads_in_windowed_mode = false;
-  EXPECT_EQ(expected_should_only_serve_ads_in_windowed_mode,
-            should_only_serve_ads_in_windowed_mode);
+  EXPECT_FALSE(ShouldOnlyServeAdsInWindowedMode());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsInWindowedMode) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const bool should_only_serve_ads_in_windowed_mode =
-      ShouldOnlyServeAdsInWindowedMode();
 
   // Assert
-  const bool expected_should_only_serve_ads_in_windowed_mode = true;
-  EXPECT_EQ(expected_should_only_serve_ads_in_windowed_mode,
-            should_only_serve_ads_in_windowed_mode);
+  EXPECT_TRUE(ShouldOnlyServeAdsInWindowedMode());
 }
 
-TEST(BatAdsPermissionRuleFeaturesTest, ShouldExcludeAdIfConvertedWhenDisable) {
+TEST(BatAdsPermissionRuleFeaturesTest,
+     DefaultShouldOnlyServeAdsInWindowedModeWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
@@ -97,13 +82,9 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldExcludeAdIfConvertedWhenDisable) {
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_in_windowed_mode =
-      ShouldOnlyServeAdsInWindowedMode();
 
   // Assert
-  const bool expected_should_only_serve_ads_in_windowed_mode = true;
-  EXPECT_EQ(expected_should_only_serve_ads_in_windowed_mode,
-            should_only_serve_ads_in_windowed_mode);
+  EXPECT_TRUE(ShouldOnlyServeAdsInWindowedMode());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
@@ -121,35 +102,19 @@ TEST(BatAdsPermissionRuleFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_with_valid_internet_connection =
-      ShouldOnlyServeAdsWithValidInternetConnection();
 
   // Assert
-  const bool expected_should_only_serve_ads_with_valid_internet_connection =
-      false;
-  EXPECT_EQ(expected_should_only_serve_ads_with_valid_internet_connection,
-            should_only_serve_ads_with_valid_internet_connection);
+  EXPECT_FALSE(ShouldOnlyServeAdsWithValidInternetConnection());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsWithValidInternetConnection) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const bool should_only_serve_ads_with_valid_internet_connection =
-      ShouldOnlyServeAdsWithValidInternetConnection();
 
   // Assert
-  const bool expected_should_only_serve_ads_with_valid_internet_connection =
-      true;
-  EXPECT_EQ(expected_should_only_serve_ads_with_valid_internet_connection,
-            should_only_serve_ads_with_valid_internet_connection);
+  EXPECT_TRUE(ShouldOnlyServeAdsWithValidInternetConnection());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
@@ -165,14 +130,9 @@ TEST(BatAdsPermissionRuleFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_with_valid_internet_connection =
-      ShouldOnlyServeAdsWithValidInternetConnection();
 
   // Assert
-  const bool expected_should_only_serve_ads_with_valid_internet_connection =
-      true;
-  EXPECT_EQ(expected_should_only_serve_ads_with_valid_internet_connection,
-            should_only_serve_ads_with_valid_internet_connection);
+  EXPECT_TRUE(ShouldOnlyServeAdsWithValidInternetConnection());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
@@ -189,33 +149,19 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfMediaIsNotPlaying) {
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_if_media_is_not_playing =
-      ShouldOnlyServeAdsIfMediaIsNotPlaying();
 
   // Assert
-  const bool expected_should_only_serve_ads_if_media_is_not_playing = false;
-  EXPECT_EQ(expected_should_only_serve_ads_if_media_is_not_playing,
-            should_only_serve_ads_if_media_is_not_playing);
+  EXPECT_FALSE(ShouldOnlyServeAdsIfMediaIsNotPlaying());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfMediaIsNotPlaying) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const bool should_only_serve_ads_if_media_is_not_playing =
-      ShouldOnlyServeAdsIfMediaIsNotPlaying();
 
   // Assert
-  const bool expected_should_only_serve_ads_if_media_is_not_playing = true;
-  EXPECT_EQ(expected_should_only_serve_ads_if_media_is_not_playing,
-            should_only_serve_ads_if_media_is_not_playing);
+  EXPECT_TRUE(ShouldOnlyServeAdsIfMediaIsNotPlaying());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
@@ -231,13 +177,9 @@ TEST(BatAdsPermissionRuleFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_if_media_is_not_playing =
-      ShouldOnlyServeAdsIfMediaIsNotPlaying();
 
   // Assert
-  const bool expected_should_only_serve_ads_if_media_is_not_playing = true;
-  EXPECT_EQ(expected_should_only_serve_ads_if_media_is_not_playing,
-            should_only_serve_ads_if_media_is_not_playing);
+  EXPECT_TRUE(ShouldOnlyServeAdsIfMediaIsNotPlaying());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
@@ -254,33 +196,19 @@ TEST(BatAdsPermissionRuleFeaturesTest, ShouldOnlyServeAdsIfBrowserIsActive) {
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_if_browser_is_active =
-      ShouldOnlyServeAdsIfBrowserIsActive();
 
   // Assert
-  const bool expected_should_only_serve_ads_if_browser_is_active = false;
-  EXPECT_EQ(expected_should_only_serve_ads_if_browser_is_active,
-            should_only_serve_ads_if_browser_is_active);
+  EXPECT_FALSE(ShouldOnlyServeAdsIfBrowserIsActive());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
      DefaultShouldOnlyServeAdsIfBrowserIsActive) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const bool should_only_serve_ads_if_browser_is_active =
-      ShouldOnlyServeAdsIfBrowserIsActive();
 
   // Assert
-  const bool expected_should_only_serve_ads_if_browser_is_active = true;
-  EXPECT_EQ(expected_should_only_serve_ads_if_browser_is_active,
-            should_only_serve_ads_if_browser_is_active);
+  EXPECT_TRUE(ShouldOnlyServeAdsIfBrowserIsActive());
 }
 
 TEST(BatAdsPermissionRuleFeaturesTest,
@@ -296,13 +224,9 @@ TEST(BatAdsPermissionRuleFeaturesTest,
                                                     disabled_features);
 
   // Act
-  const bool should_only_serve_ads_if_browser_is_active =
-      ShouldOnlyServeAdsIfBrowserIsActive();
 
   // Assert
-  const bool expected_should_only_serve_ads_if_browser_is_active = true;
-  EXPECT_EQ(expected_should_only_serve_ads_if_browser_is_active,
-            should_only_serve_ads_if_browser_is_active);
+  EXPECT_TRUE(ShouldOnlyServeAdsIfBrowserIsActive());
 }
 
 }  // namespace brave_ads::permission_rules::features

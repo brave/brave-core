@@ -1,4 +1,4 @@
-# Eligible Ads Pipeline
+# Eligible Ads
 
 Decide which ads are eligible for delivery to the user.
 

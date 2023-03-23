@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/statement/next_payment_date_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/reconciled_transactions_util.h"
 
 namespace brave_ads {
@@ -21,7 +21,7 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
 
   int month = now_exploded.month;
 
-  if (now_exploded.day_of_month <= features::GetAdRewardsNextPaymentDay()) {
+  if (now_exploded.day_of_month <= features::GetNextPaymentDay()) {
     // Today is on or before our next payment day
     if (DidReconcileTransactionsLastMonth(transactions)) {
       // If last month has reconciled transactions, then the next payment date
@@ -66,8 +66,7 @@ base::Time CalculateNextPaymentDate(const base::Time next_token_redemption_at,
   base::Time::Exploded next_payment_date_exploded = now_exploded;
   next_payment_date_exploded.year = year;
   next_payment_date_exploded.month = month;
-  next_payment_date_exploded.day_of_month =
-      features::GetAdRewardsNextPaymentDay();
+  next_payment_date_exploded.day_of_month = features::GetNextPaymentDay();
   next_payment_date_exploded.hour = 23;
   next_payment_date_exploded.minute = 59;
   next_payment_date_exploded.second = 59;

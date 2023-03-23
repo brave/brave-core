@@ -97,8 +97,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   DCHECK(!created_at.is_null());
   DCHECK(!transaction_id.empty());
   DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
-  DCHECK_NE(AdType::kUndefined, ad_type.value());
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  DCHECK_NE(AdType::kUndefined, ad_type);
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction_id;

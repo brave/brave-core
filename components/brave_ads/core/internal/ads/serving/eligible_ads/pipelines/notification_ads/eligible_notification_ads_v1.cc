@@ -12,11 +12,11 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/allocation/seen_advertisers.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pacing/pacing.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/priority/priority.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -63,10 +63,9 @@ void EligibleAdsV1::GetBrowsingHistory(
     targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
-  const int max_count = features::GetBrowsingHistoryMaxCount();
-  const int days_ago = features::GetBrowsingHistoryDaysAgo();
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      max_count, days_ago,
+      features::GetBrowsingHistoryMaxCount(),
+      features::GetBrowsingHistoryDaysAgo(),
       base::BindOnce(&EligibleAdsV1::GetEligibleAds, base::Unretained(this),
                      std::move(user_model), ad_events, std::move(callback)));
 }
@@ -245,9 +244,7 @@ CreativeNotificationAdList EligibleAdsV1::FilterCreativeAds(
 
   eligible_creative_ads = PaceCreativeAds(eligible_creative_ads);
 
-  eligible_creative_ads = PrioritizeCreativeAds(eligible_creative_ads);
-
-  return eligible_creative_ads;
+  return PrioritizeCreativeAds(eligible_creative_ads);
 }
 
 }  // namespace brave_ads::notification_ads

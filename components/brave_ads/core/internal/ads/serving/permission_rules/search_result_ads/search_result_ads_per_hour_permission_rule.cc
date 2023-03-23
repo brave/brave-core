@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
 namespace brave_ads::search_result_ads {
@@ -22,7 +22,7 @@ constexpr base::TimeDelta kTimeConstraint = base::Hours(1);
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
-      history, kTimeConstraint, features::GetMaximumSearchResultAdsPerHour());
+      history, kTimeConstraint, features::GetMaximumAdsPerHour());
 }
 
 }  // namespace

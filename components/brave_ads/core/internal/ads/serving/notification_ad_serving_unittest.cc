@@ -7,9 +7,9 @@
 
 #include <memory>
 
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"

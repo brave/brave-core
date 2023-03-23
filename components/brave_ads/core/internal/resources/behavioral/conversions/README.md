@@ -1,5 +1,5 @@
 # Conversion Resources
 
-Manage resources for conversions.
+Manage conversion resources.
 
 Please add to it!

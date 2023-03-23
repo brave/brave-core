@@ -20,17 +20,17 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/covariates/covariate_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/opportunities/p2a_opportunity.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/bandit_feedback_info.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/bandit_feedback_info.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/idle_detection/idle_detection_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/idle_detection/idle_detection_util.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
 namespace brave_ads {
@@ -118,12 +118,12 @@ void NotificationAdHandler::OnUserDidBecomeActive(
     return;
   }
 
-  if (MaybeScreenWasLocked(screen_was_locked)) {
+  if (idle_detection::MaybeScreenWasLocked(screen_was_locked)) {
     BLOG(1, "Notification ad not served: Screen was locked");
     return;
   }
 
-  if (HasExceededMaximumIdleTime(idle_time)) {
+  if (idle_detection::HasExceededMaximumIdleTime(idle_time)) {
     BLOG(1, "Notification ad not served: Exceeded maximum idle time");
     return;
   }

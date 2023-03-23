@@ -10,7 +10,7 @@
 
 namespace brave_ads {
 
-base::FieldTrial::ActiveGroups GetActiveStudies();
+base::FieldTrial::ActiveGroups GetActiveFieldTrialGroupsForActiveStudies();
 
 void LogActiveStudies();
 

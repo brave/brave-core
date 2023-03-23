@@ -9,9 +9,9 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"

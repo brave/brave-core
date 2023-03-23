@@ -31,7 +31,7 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -132,8 +132,8 @@ void Account::Deposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
                       const ConfirmationType& confirmation_type) const {
   DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(AdType::kUndefined, ad_type.value());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
+  DCHECK_NE(AdType::kUndefined, ad_type);
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
 
   std::unique_ptr<DepositInterface> deposit =
       DepositsFactory::Build(ad_type, confirmation_type);

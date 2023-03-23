@@ -19,10 +19,8 @@ BASE_DECLARE_FEATURE(kFeature);
 bool IsEnabled();
 
 bool ShouldExcludeAdIfConverted();
-
-base::TimeDelta ExcludeAdIfDismissedWithinTimeWindow();
-
-base::TimeDelta ExcludeAdIfTransferredWithinTimeWindow();
+base::TimeDelta GetExcludeAdIfDismissedWithinTimeWindow();
+base::TimeDelta GetExcludeAdIfTransferredWithinTimeWindow();
 
 }  // namespace brave_ads::exclusion_rules::features
 

@@ -15,15 +15,17 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kTrial[] = "AdvertiserSplitTestStudy";
-constexpr char kGroup[] = "GroupA";
+constexpr char kTrialName[] = "AdvertiserSplitTestStudy";
+constexpr char kGroupName[] = "GroupA";
+
 constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {
   base::MockEntropyProvider entropy_provider(0.9);
-  return base::FieldTrialList::FactoryGetFieldTrial(trial_name, 100, "default",
-                                                    entropy_provider);
+  return base::FieldTrialList::FactoryGetFieldTrial(
+      trial_name, /*total_probability*/ 100, "default_group_name",
+      entropy_provider);
 }
 
 }  // namespace
@@ -62,8 +64,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialAndNoAdGroup) {
   CreativeAdInfo creative_ad;
   creative_ad.creative_set_id = kCreativeSetId;
 
-  const scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
-  trial->AppendGroup(kGroup, 100);
+  const scoped_refptr<base::FieldTrial> field_trial =
+      CreateFieldTrial(kTrialName);
+  field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
   // Act
   SplitTestExclusionRule exclusion_rule;
@@ -79,8 +82,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest, AllowIfFieldTrialMatchesAdGroup) {
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.split_test_group = "GroupA";
 
-  const scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
-  trial->AppendGroup(kGroup, 100);
+  const scoped_refptr<base::FieldTrial> field_trial =
+      CreateFieldTrial(kTrialName);
+  field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
   // Act
   SplitTestExclusionRule exclusion_rule;
@@ -97,8 +101,9 @@ TEST_F(BatAdsSplitTestExclusionRuleTest,
   creative_ad.creative_set_id = kCreativeSetId;
   creative_ad.split_test_group = "GroupB";
 
-  const scoped_refptr<base::FieldTrial> trial = CreateFieldTrial(kTrial);
-  trial->AppendGroup(kGroup, 100);
+  const scoped_refptr<base::FieldTrial> field_trial =
+      CreateFieldTrial(kTrialName);
+  field_trial->AppendGroup(kGroupName, /*group_probability*/ 100);
 
   // Act
   SplitTestExclusionRule exclusion_rule;

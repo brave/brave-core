@@ -33,8 +33,9 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
-#include "brave/components/brave_ads/core/internal/features/features_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -43,15 +44,13 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/conversions/legacy_conversions_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/notifications/legacy_notification_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
-#include "brave/components/brave_ads/core/internal/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator.h"
-#include "brave/components/brave_ads/core/internal/processors/behavioral/bandits/epsilon_greedy_bandit_processor.h"
+#include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/behavioral/bandits/epsilon_greedy_bandit_resource.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
@@ -59,9 +58,9 @@
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/idle_detection/idle_detection_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_reactions/user_reactions.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "url/gurl.h"
 
@@ -569,8 +568,6 @@ void AdsImpl::OnMigrateNotificationState(InitializeCallback callback,
 }
 
 void AdsImpl::Start() {
-  LogFeatures();
-
   LogActiveStudies();
 
   account_->Process();

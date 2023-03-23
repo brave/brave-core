@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/category_content_action_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/targeting/models/contextual/text_classification/text_classification_alias.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_alias.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_advertiser_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/preferences/filtered_category_info.h"

@@ -1,5 +1,5 @@
 # Anti-targeting Resources
 
-Manage resources for anti-targeting.
+Manage anti-targeting resources.
 
 Please add to it!

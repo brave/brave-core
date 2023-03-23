@@ -37,8 +37,6 @@ void Migrate(InitializeCallback callback) {
     return std::move(callback).Run(/*success*/ true);
   }
 
-  BLOG(3, "Loading client state");
-
   AdsClientHelper::GetInstance()->Load(
       kClientStateFilename,
       base::BindOnce(
@@ -54,8 +52,6 @@ void Migrate(InitializeCallback callback) {
               BLOG(0, "Failed to load client state");
               return FailedToMigrate(std::move(callback));
             }
-
-            BLOG(3, "Successfully loaded client state");
 
             BLOG(1, "Migrating client state");
 

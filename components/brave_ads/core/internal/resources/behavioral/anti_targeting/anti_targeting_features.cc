@@ -11,14 +11,12 @@ namespace brave_ads::resource::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "AntiTargeting";
-constexpr char kFieldTrialParameterResourceVersion[] =
-    "anti_targeting_resource_version";
-constexpr int kDefaultResourceVersion = 1;
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
+constexpr int kResourceVersionDefaultValue = 1;
 
 }  // namespace
 
-BASE_FEATURE(kAntiTargeting, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAntiTargeting, "AntiTargeting", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsAntiTargetingEnabled() {
   return base::FeatureList::IsEnabled(kAntiTargeting);
@@ -26,8 +24,8 @@ bool IsAntiTargetingEnabled() {
 
 int GetAntiTargetingResourceVersion() {
   return GetFieldTrialParamByFeatureAsInt(kAntiTargeting,
-                                          kFieldTrialParameterResourceVersion,
-                                          kDefaultResourceVersion);
+                                          kResourceVersionFieldTrialParamName,
+                                          kResourceVersionDefaultValue);
 }
 
 }  // namespace brave_ads::resource::features

@@ -14,20 +14,20 @@ namespace brave_ads::user_data {
 namespace {
 
 constexpr char kStudiesKey[] = "studies";
-constexpr char kNameKey[] = "name";
-constexpr char kGroupKey[] = "group";
+constexpr char kTrialNameKey[] = "name";
+constexpr char kGroupNameKey[] = "group";
 
 }  // namespace
 
 base::Value::Dict GetStudies() {
   base::Value::List list;
 
-  const base::FieldTrial::ActiveGroups studies = GetActiveStudies();
-  for (const auto& study : studies) {
+  const base::FieldTrial::ActiveGroups active_field_trial_groups =
+      GetActiveFieldTrialGroupsForActiveStudies();
+  for (const auto& active_field_trial_group : active_field_trial_groups) {
     base::Value::Dict dict;
-
-    dict.Set(kNameKey, study.trial_name);
-    dict.Set(kGroupKey, study.group_name);
+    dict.Set(kTrialNameKey, active_field_trial_group.trial_name);
+    dict.Set(kGroupNameKey, active_field_trial_group.group_name);
 
     list.Append(std::move(dict));
   }

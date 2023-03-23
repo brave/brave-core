@@ -121,8 +121,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
   DCHECK(!created_at.is_null());
   DCHECK(!transaction_id.empty());
   DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
-  DCHECK_NE(AdType::kUndefined, ad_type.value());
+  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
+  DCHECK_NE(AdType::kUndefined, ad_type);
 
   ConfirmationInfo confirmation;
   confirmation.transaction_id = transaction_id;
@@ -149,8 +149,8 @@ absl::optional<ConfirmationInfo> CreateConfirmation(
 bool IsValid(const ConfirmationInfo& confirmation) {
   if (confirmation.transaction_id.empty() ||
       confirmation.creative_instance_id.empty() ||
-      confirmation.type.value() == ConfirmationType::kUndefined ||
-      confirmation.ad_type.value() == AdType::kUndefined ||
+      confirmation.type == ConfirmationType::kUndefined ||
+      confirmation.ad_type == AdType::kUndefined ||
       confirmation.created_at.is_null()) {
     return false;
   }

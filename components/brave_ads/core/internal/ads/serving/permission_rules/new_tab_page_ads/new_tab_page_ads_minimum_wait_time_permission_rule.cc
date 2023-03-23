@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
 namespace brave_ads::new_tab_page_ads {
@@ -22,8 +22,7 @@ constexpr int kMinimumWaitTimeCap = 1;
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
-      history, features::GetNewTabPageAdsMinimumWaitTime(),
-      kMinimumWaitTimeCap);
+      history, features::GetMinimumWaitTime(), kMinimumWaitTimeCap);
 }
 
 }  // namespace

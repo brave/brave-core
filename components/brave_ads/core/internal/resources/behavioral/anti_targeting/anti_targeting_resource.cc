@@ -9,7 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager.h"

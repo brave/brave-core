@@ -7,19 +7,21 @@
 
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_features.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ads_features.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/new_tab_page_ads_features.h"
-#include "brave/components/brave_ads/core/internal/features/epsilon_greedy_bandit_features.h"
-#include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
-#include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_features.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features.h"
 
 namespace brave_ads {
 
@@ -27,14 +29,16 @@ namespace {
 
 const base::Feature* const kFeatures[] = {
     &exclusion_rules::features::kFeature,
-    &features::kAdRewards,
+    &features::kAccount,
     &features::kConversions,
     &features::kEligibleAds,
-    &features::kServing,
     &inline_content_ads::features::kFeature,
     &new_tab_page_ads::features::kFeature,
+    &notification_ads::features::kFeature,
     &permission_rules::features::kFeature,
+    &promoted_content_ads::features::kFeature,
     &resource::features::kAntiTargeting,
+    &search_result_ads::features::kFeature,
     &targeting::features::kEpsilonGreedyBandit,
     &targeting::features::kPurchaseIntent,
     &targeting::features::kTextClassification,

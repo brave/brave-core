@@ -10,7 +10,7 @@
 #include "base/cxx17_backports.h"
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 namespace brave_ads::settings {
@@ -20,8 +20,8 @@ int GetMaximumNotificationAdsPerHour() {
       prefs::kMaximumNotificationAdsPerHour);
 
   if (ads_per_hour == -1) {
-    ads_per_hour =
-        static_cast<int64_t>(features::GetDefaultNotificationAdsPerHour());
+    ads_per_hour = static_cast<int64_t>(
+        notification_ads::features::GetDefaultAdsPerHour());
   }
 
   const int64_t clamped_ads_per_hour = base::clamp(

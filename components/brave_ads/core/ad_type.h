@@ -36,12 +36,12 @@ class AdType final {
   Value value() const;
   std::string ToString() const;
 
-  bool operator==(const AdType& other) const;
-  bool operator!=(const AdType& other) const;
-
  private:
   Value value_ = kUndefined;
 };
+
+bool operator==(const AdType& lhs, const AdType& rhs);
+bool operator!=(const AdType& lhs, const AdType& rhs);
 
 std::ostream& operator<<(std::ostream& os, const AdType& type);
 

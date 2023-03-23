@@ -45,8 +45,6 @@ void OnMigrate(InitializeCallback callback,
     return SuccessfullyMigrated(std::move(callback));
   }
 
-  BLOG(3, "Successfully loaded confirmations state");
-
   BLOG(3, "Migrating rewards state");
 
   const absl::optional<TransactionList> transactions =
@@ -77,8 +75,6 @@ void Migrate(InitializeCallback callback) {
   if (HasMigrated()) {
     return std::move(callback).Run(/*success*/ true);
   }
-
-  BLOG(3, "Loading confirmations state");
 
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,

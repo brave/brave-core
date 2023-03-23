@@ -22,7 +22,7 @@ constexpr int kTransferredCap = 1;
 bool DoesRespectCap(const AdEventList& ad_events,
                     const CreativeAdInfo& creative_ad) {
   const base::TimeDelta time_constraint =
-      exclusion_rules::features::ExcludeAdIfTransferredWithinTimeWindow();
+      exclusion_rules::features::GetExcludeAdIfTransferredWithinTimeWindow();
 
   return DoesRespectCampaignCap(creative_ad, ad_events,
                                 ConfirmationType::kTransferred, time_constraint,

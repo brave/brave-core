@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/features/purchase_intent_features.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -32,7 +32,7 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
   }
 
   if (absl::optional<int> version = resource->FindInt("version")) {
-    if (targeting::features::GetPurchaseIntentResourceVersion() != *version) {
+    if (features::GetPurchaseIntentResourceVersion() != *version) {
       *error_message = "Failed to load from JSON, version missing";
       return {};
     }

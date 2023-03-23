@@ -31,23 +31,23 @@ TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
 
 TEST(BatAdsStudiesUserDataTest, GetStudies) {
   // Arrange
-  const std::string trial_name_1 = "BraveAdsFooStudy";
+  const std::string name_1 = "BraveAds.FooStudy";
   const std::string group_name_1 = "GroupA";
-  const scoped_refptr<base::FieldTrial> trial_1 =
-      base::FieldTrialList::CreateFieldTrial(trial_name_1, group_name_1);
-  trial_1->group_name();
+  const scoped_refptr<base::FieldTrial> field_trial_1 =
+      base::FieldTrialList::CreateFieldTrial(name_1, group_name_1);
+  field_trial_1->group_name();
 
-  const std::string trial_name_2 = "BarStudyForBraveAds";
+  const std::string name_2 = "BraveAds.BarStudy";
   const std::string group_name_2 = "GroupB";
-  const scoped_refptr<base::FieldTrial> trial_2 =
-      base::FieldTrialList::CreateFieldTrial(trial_name_2, group_name_2);
-  trial_2->group_name();
+  const scoped_refptr<base::FieldTrial> field_trial_2 =
+      base::FieldTrialList::CreateFieldTrial(name_2, group_name_2);
+  field_trial_2->group_name();
 
-  const std::string trial_name_3 = "FooBarStudy";
+  const std::string name_3 = "FooBarStudy";
   const std::string group_name_3 = "GroupC";
-  const scoped_refptr<base::FieldTrial> trial_3 =
-      base::FieldTrialList::CreateFieldTrial(trial_name_3, group_name_3);
-  trial_3->group_name();
+  const scoped_refptr<base::FieldTrial> field_trial_3 =
+      base::FieldTrialList::CreateFieldTrial(name_3, group_name_3);
+  field_trial_3->group_name();
 
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
@@ -56,7 +56,7 @@ TEST(BatAdsStudiesUserDataTest, GetStudies) {
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(
-      R"({"studies":[{"group":"GroupB","name":"BarStudyForBraveAds"},{"group":"GroupA","name":"BraveAdsFooStudy"}]})");
+      R"({"studies":[{"group":"GroupB","name":"BraveAds.BarStudy"},{"group":"GroupA","name":"BraveAds.FooStudy"}]})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);

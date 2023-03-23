@@ -14,8 +14,8 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
@@ -341,7 +341,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const int ads_per_hour = features::GetMaximumSearchResultAdsPerHour();
+  const int ads_per_hour = features::GetMaximumAdsPerHour();
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -377,7 +377,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
                                             ConfirmationType::kServed, Now());
 
-  const int ads_per_hour = features::GetMaximumSearchResultAdsPerHour();
+  const int ads_per_hour = features::GetMaximumAdsPerHour();
   FireAdEvents(ad_event, ads_per_hour);
 
   // Act
@@ -396,7 +396,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   mojom::SearchResultAdInfoPtr ad_mojom =
       BuildAd(kPlacementId, kCreativeInstanceId);
 
-  const int ads_per_day = features::GetMaximumSearchResultAdsPerDay();
+  const int ads_per_day = features::GetMaximumAdsPerDay();
 
   const SearchResultAdInfo ad = BuildSearchResultAd(ad_mojom);
   const AdEventInfo served_ad_event = BuildAdEvent(
@@ -434,7 +434,7 @@ TEST_F(BatAdsSearchResultAdEventHandlerTest,
   const AdEventInfo ad_event = BuildAdEvent(ad, AdType::kSearchResultAd,
                                             ConfirmationType::kServed, Now());
 
-  const int ads_per_day = features::GetMaximumSearchResultAdsPerDay();
+  const int ads_per_day = features::GetMaximumAdsPerDay();
 
   FireAdEvents(ad_event, ads_per_day);
 

@@ -12,20 +12,17 @@ namespace brave_ads::features {
 
 namespace {
 
-constexpr char kFeatureName[] = "Conversions";
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
+constexpr int kResourceVersionDefaultValue = 1;
 
-constexpr char kFieldTrialParameterResourceVersion[] =
-    "conversions_resource_version";
-constexpr int kDefaultResourceVersion = 1;
-
-constexpr char kFieldTrialParameterDefaultConversionIdPattern[] =
-    "conversions_default_conversion_id_pattern";
-constexpr char kDefaultConversionIdPattern[] =
-    "<meta.*name=\"ad-conversion-id\".*content=\"([-a-zA-Z0-9]*)\".*>";
+constexpr char kConversionIdPatternFieldTrialParamName[] =
+    "conversion_id_pattern";
+constexpr char kConversionIdPatternDefaultValue[] =
+    R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
 
 }  // namespace
 
-BASE_FEATURE(kConversions, kFeatureName, base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kConversions, "Conversions", base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsConversionsEnabled() {
   return base::FeatureList::IsEnabled(kConversions);
@@ -33,14 +30,14 @@ bool IsConversionsEnabled() {
 
 int GetConversionsResourceVersion() {
   return GetFieldTrialParamByFeatureAsInt(kConversions,
-                                          kFieldTrialParameterResourceVersion,
-                                          kDefaultResourceVersion);
+                                          kResourceVersionFieldTrialParamName,
+                                          kResourceVersionDefaultValue);
 }
 
-std::string GetDefaultConversionIdPattern() {
+std::string GetConversionIdPattern() {
   return GetFieldTrialParamByFeatureAsString(
-      kConversions, kFieldTrialParameterDefaultConversionIdPattern,
-      kDefaultConversionIdPattern);
+      kConversions, kConversionIdPatternFieldTrialParamName,
+      kConversionIdPatternDefaultValue);
 }
 
 }  // namespace brave_ads::features

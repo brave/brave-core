@@ -7,7 +7,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -23,7 +23,7 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
   base::FieldTrialParams params;
   params["next_payment_day"] = "7";
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAdRewards,
+  scoped_feature_list.InitAndEnableFeatureWithParameters(features::kAccount,
                                                          params);
 
   AdvanceClockTo(TimeFromString("31 January 2020", /*is_local*/ false));

@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/covariates/log_entries/number_of_user_activity_events.h"
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_util.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
 namespace brave_ads {
 

@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"

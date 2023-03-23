@@ -7,8 +7,8 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_manager.h"
-#include "brave/components/brave_ads/core/internal/user_interaction/user_activity/user_activity_util.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_util.h"
 
 namespace brave_ads {
 

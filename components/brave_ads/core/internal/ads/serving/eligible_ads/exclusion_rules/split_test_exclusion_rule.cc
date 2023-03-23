@@ -14,10 +14,11 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kStudyName[] = "AdvertiserSplitTestStudy";
+constexpr char kTrialName[] = "AdvertiserSplitTestStudy";
 
-absl::optional<std::string> GetSplitTestGroup(const std::string& study_name) {
-  base::FieldTrial* field_trial = base::FieldTrialList::Find(study_name);
+absl::optional<std::string> GetSplitTestGroupName(
+    const std::string& trial_name) {
+  base::FieldTrial* field_trial = base::FieldTrialList::Find(trial_name);
   if (!field_trial) {
     return absl::nullopt;
   }
@@ -27,7 +28,7 @@ absl::optional<std::string> GetSplitTestGroup(const std::string& study_name) {
 
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
   const absl::optional<std::string> split_test_group =
-      GetSplitTestGroup(kStudyName);
+      GetSplitTestGroupName(kTrialName);
   if (!split_test_group) {
     // Only respect cap if browser has signed up to a field trial
     return creative_ad.split_test_group.empty();

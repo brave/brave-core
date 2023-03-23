@@ -108,7 +108,7 @@ constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
-BASE_FEATURE(kServing, "AdServing", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kFeature, "NotificationAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 int GetDataResourceId(const std::string& name) {
   if (name == data::resource::kCatalogJsonSchemaFilename) {
@@ -1043,7 +1043,7 @@ void AdsServiceImpl::MigratePrefs() {
   }
 
   const int source_version = GetPrefService()->GetInteger(prefs::kVersion);
-  const int dest_version = kCurrentVersionNumber;
+  const int dest_version = kCurrentPrefVersion;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
@@ -1411,8 +1411,7 @@ int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
       GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
-        kServing, "default_ad_notifications_per_hour",
-        kDefaultNotificationAdsPerHour);
+        kFeature, "default_ads_per_hour", kDefaultNotificationAdsPerHour);
   }
 
   return base::clamp(ads_per_hour,

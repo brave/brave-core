@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -46,7 +46,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
-  const int count = features::GetMaximumNewTabPageAdsPerHour() - 1;
+  const int count = features::GetMaximumAdsPerHour() - 1;
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   // Act
@@ -60,7 +60,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCapAfter1Hour) {
   // Arrange
-  const int count = features::GetMaximumNewTabPageAdsPerHour();
+  const int count = features::GetMaximumAdsPerHour();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   AdvanceClockBy(base::Hours(1));
@@ -76,7 +76,7 @@ TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
 TEST_F(BatAdsNewTabPageAdsPerHourPermissionRuleTest,
        DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
-  const int count = features::GetMaximumNewTabPageAdsPerHour();
+  const int count = features::GetMaximumAdsPerHour();
   RecordAdEvents(AdType::kNewTabPageAd, ConfirmationType::kServed, count);
 
   AdvanceClockBy(base::Hours(1) - base::Seconds(1));

@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/internal/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"

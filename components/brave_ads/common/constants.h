@@ -10,8 +10,7 @@
 
 namespace brave_ads {
 
-// Brave Ads current version number
-constexpr int kCurrentVersionNumber = 12;
+constexpr int kCurrentPrefVersion = 12;
 
 // Brave Ads per hour are user configurable within the brave://rewards ads UI
 constexpr int64_t kMinimumNotificationAdsPerHour = 0;

@@ -17,11 +17,11 @@
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
-#include "brave/components/brave_ads/core/internal/features/text_classification_features.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
