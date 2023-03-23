@@ -30,7 +30,7 @@ const char kValidateTimestamp[] = "validate_timestamp";
 const char kError[] = "error";
 const char kErrorCode[] = "error_code";
 const char kErrorMessage[] = "error_message";
-const char kAssetUrlListKey[] = "cids";
+const char kAssetUrlListKey[] = "urls";
 
 namespace {
 // Solana NFTs don't have token_id
@@ -104,28 +104,6 @@ absl::optional<std::string> ExtractIpfsUrl(const std::string& url) {
   }
 
   return source.value().spec();
-}
-
-absl::optional<std::string> ExtractCID(const std::string& url) {
-  GURL gurl = GURL(ExtractIpfsUrl(url).value_or(""));
-
-  if (!gurl.is_valid()) {
-    return absl::nullopt;
-  }
-
-  std::vector<std::string> result = base::SplitString(
-      gurl.path(), "/", base::WhitespaceHandling::KEEP_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
-
-  if (result.size() == 0) {
-    return absl::nullopt;
-  }
-
-  if (!ipfs::IsValidCID(result.at(0))) {
-    return absl::nullopt;
-  }
-
-  return result.at(0);
 }
 
 }  // namespace
@@ -444,10 +422,10 @@ void BraveWalletPinService::Validate(mojom::BlockchainTokenPtr token,
     return;
   }
 
-  absl::optional<std::vector<std::string>> cids =
+  absl::optional<std::vector<std::string>> ipfs_urls =
       ResolvePinItems(service, token);
 
-  if (!cids) {
+  if (!ipfs_urls) {
     SetTokenStatus(service, std::move(token),
                    mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS,
                    nullptr);
@@ -466,7 +444,7 @@ void BraveWalletPinService::Validate(mojom::BlockchainTokenPtr token,
 
   if (!service) {
     local_pin_service_->ValidatePins(
-        path.value(), cids.value(),
+        path.value(), ipfs_urls.value(),
         base::BindOnce(&BraveWalletPinService::OnTokenValidated,
                        weak_ptr_factory_.GetWeakPtr(), service,
                        std::move(callback), std::move(token)));
@@ -652,8 +630,8 @@ void BraveWalletPinService::ProcessTokenMetadata(
     const std::string& token_url,
     const std::string& result,
     AddPinCallback callback) {
-  auto metadata_cid = ExtractCID(token_url);
-  if (!metadata_cid) {
+  auto metadata_ipfs_url = ExtractIpfsUrl(token_url);
+  if (!metadata_ipfs_url) {
     auto pin_error = mojom::PinError::New(
         mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL,
         "Metadata has non-ipfs url");
@@ -677,10 +655,10 @@ void BraveWalletPinService::ProcessTokenMetadata(
   }
 
   auto* image_url = parsed_result->FindStringKey("image");
-  auto image_cid =
-      image_url != nullptr ? ExtractCID(*image_url) : absl::nullopt;
+  auto image_ipfs_url =
+      image_url != nullptr ? ExtractIpfsUrl(*image_url) : absl::nullopt;
 
-  if (!image_cid) {
+  if (!image_ipfs_url) {
     auto pin_error = mojom::PinError::New(
         mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL,
         "Can't find proper image field");
@@ -690,32 +668,21 @@ void BraveWalletPinService::ProcessTokenMetadata(
     return;
   }
 
-  std::vector<std::string> cids;
-  cids.push_back(metadata_cid.value());
-  cids.push_back(image_cid.value());
-
-  auto ipfs_image_url = ExtractIpfsUrl(*image_url);
-  if (!ipfs_image_url) {
-    auto pin_error = mojom::PinError::New(
-        mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL,
-        "Can't find proper image field");
-    SetTokenStatus(service, token,
-                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED, pin_error);
-    std::move(callback).Run(false, std::move(pin_error));
-    return;
-  }
+  std::vector<std::string> ipfs_urls;
+  ipfs_urls.push_back(metadata_ipfs_url.value());
+  ipfs_urls.push_back(image_ipfs_url.value());
 
   content_type_checker_->CheckContentTypeSupported(
-      ipfs_image_url.value(),
+      image_ipfs_url.value(),
       base::BindOnce(&BraveWalletPinService::OnContentTypeChecked,
                      weak_ptr_factory_.GetWeakPtr(), service, token.Clone(),
-                     std::move(cids), std::move(callback)));
+                     std::move(ipfs_urls), std::move(callback)));
 }
 
 void BraveWalletPinService::OnContentTypeChecked(
     absl::optional<std::string> service,
     mojom::BlockchainTokenPtr token,
-    std::vector<std::string> cids,
+    std::vector<std::string> ipfs_urls,
     AddPinCallback callback,
     absl::optional<bool> result) {
   if (!result.has_value()) {
@@ -749,14 +716,14 @@ void BraveWalletPinService::OnContentTypeChecked(
     return;
   }
 
-  AddToken(service, token, cids);
+  AddToken(service, token, ipfs_urls);
   SetTokenStatus(service, token,
                  mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS,
                  nullptr);
 
   if (!service) {
     local_pin_service_->AddPins(
-        path.value(), cids,
+        path.value(), ipfs_urls,
         base::BindOnce(&BraveWalletPinService::OnTokenPinned,
                        weak_ptr_factory_.GetWeakPtr(), absl::nullopt,
                        std::move(callback), std::move(token)));
@@ -806,9 +773,10 @@ void BraveWalletPinService::OnTokenValidated(
   std::move(callback).Run(true, nullptr);
 }
 
-bool BraveWalletPinService::AddToken(const absl::optional<std::string>& service,
-                                     const mojom::BlockchainTokenPtr& token,
-                                     const std::vector<std::string>& cids) {
+bool BraveWalletPinService::AddToken(
+    const absl::optional<std::string>& service,
+    const mojom::BlockchainTokenPtr& token,
+    const std::vector<std::string>& ipfs_urls) {
   auto path = GetTokenPrefPath(service, token);
   if (!path) {
     return false;
@@ -819,13 +787,13 @@ bool BraveWalletPinService::AddToken(const absl::optional<std::string>& service,
     base::Value::Dict& update_dict = update.Get();
 
     base::Value::Dict token_data;
-    base::Value::List cids_list;
+    base::Value::List ipfs_urls_list;
 
-    for (const auto& cid : cids) {
-      cids_list.Append(cid);
+    for (const auto& ipfs_url : ipfs_urls) {
+      ipfs_urls_list.Append(ipfs_url);
     }
 
-    token_data.Set(kAssetUrlListKey, std::move(cids_list));
+    token_data.Set(kAssetUrlListKey, std::move(ipfs_urls_list));
     token_data.Set(
         kAssetStatus,
         StatusToString(mojom::TokenPinStatusCode::STATUS_NOT_PINNED));
@@ -912,13 +880,13 @@ absl::optional<std::vector<std::string>> BraveWalletPinService::ResolvePinItems(
     return absl::nullopt;
   }
 
-  auto* cids = token_data_as_dict->FindList(kAssetUrlListKey);
-  if (!cids) {
+  auto* ipfs_urls = token_data_as_dict->FindList(kAssetUrlListKey);
+  if (!ipfs_urls) {
     return absl::nullopt;
   }
 
   std::vector<std::string> result;
-  for (const base::Value& item : *cids) {
+  for (const base::Value& item : *ipfs_urls) {
     result.push_back(item.GetString());
   }
 

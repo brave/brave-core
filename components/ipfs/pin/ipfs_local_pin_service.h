@@ -8,8 +8,11 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
+#include "base/functional/callback.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pin/ipfs_base_pin_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -17,6 +20,19 @@
 using ipfs::IpfsService;
 
 namespace ipfs {
+
+enum PinningMode { DIRECT = 0, RECURSIVE = 1 };
+
+struct PinData {
+  std::string cid;
+  PinningMode pinning_mode;
+
+  bool operator==(const PinData&) const;
+  bool operator==(const PinData&);
+};
+
+absl::optional<std::vector<PinData>> ExtractPinData(
+    const std::string& ipfs_url);
 
 using AddPinCallback = base::OnceCallback<void(bool)>;
 using RemovePinCallback = base::OnceCallback<void(bool)>;
@@ -45,20 +61,29 @@ class AddLocalPinJob : public IpfsBaseJob {
   AddLocalPinJob(PrefService* prefs_service,
                  IpfsService* ipfs_service,
                  const std::string& key,
-                 const std::vector<std::string>& cids,
+                 const std::vector<PinData>& pins_data,
                  AddPinCallback callback);
   ~AddLocalPinJob() override;
 
   void Start() override;
 
  private:
-  void OnAddPinResult(absl::optional<AddPinResult> result);
+  using AccumulatedResult =
+      std::pair<PinningMode, absl::optional<AddPinResult>>;
+  void Accumulate(PinningMode pinning_mode,
+                  std::vector<std::string> cids,
+                  base::OnceCallback<void(AccumulatedResult)> callback,
+                  absl::optional<AddPinResult> result);
+  void OnAddPinResult(std::vector<AccumulatedResult> result);
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
   std::string key_;
-  std::vector<std::string> cids_;
+  std::vector<PinData> pins_data_;
   AddPinCallback callback_;
+
+  bool pinning_failed_ = false;
+
   base::WeakPtrFactory<AddLocalPinJob> weak_ptr_factory_{this};
 };
 
@@ -85,7 +110,7 @@ class VerifyLocalPinJob : public IpfsBaseJob {
   VerifyLocalPinJob(PrefService* prefs_service,
                     IpfsService* ipfs_service,
                     const std::string& key,
-                    const std::vector<std::string>& cids,
+                    const std::vector<PinData>& PinData,
                     ValidatePinsCallback callback);
   ~VerifyLocalPinJob() override;
 
@@ -97,7 +122,7 @@ class VerifyLocalPinJob : public IpfsBaseJob {
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
   std::string key_;
-  std::vector<std::string> cids_;
+  std::vector<PinData> pins_data_;
   ValidatePinsCallback callback_;
   base::WeakPtrFactory<VerifyLocalPinJob> weak_ptr_factory_{this};
 };
@@ -113,12 +138,19 @@ class GcJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  void OnGetPinsResult(absl::optional<GetPinsResult> result);
+  using AccumulatedResult =
+      std::pair<PinningMode, absl::optional<GetPinsResult>>;
+  void Accumulate(PinningMode pinning_mode,
+                  base::OnceCallback<void(AccumulatedResult)> callback,
+                  absl::optional<GetPinsResult> result);
+  void OnGetPinsResult(std::vector<AccumulatedResult> result);
   void OnPinsRemovedResult(absl::optional<RemovePinResult> result);
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
   GcCallback callback_;
+  bool gc_job_failed_ = false;
+
   base::WeakPtrFactory<GcJob> weak_ptr_factory_{this};
 };
 
@@ -133,17 +165,22 @@ class IpfsLocalPinService : public KeyedService {
 
   // Pins provided cids and stores related record in the prefs.
   virtual void AddPins(const std::string& key,
-                       const std::vector<std::string>& cids,
+                       const std::vector<std::string>& ipfs_urls,
                        AddPinCallback callback);
   // Unpins all cids related to the key.
   virtual void RemovePins(const std::string& key, RemovePinCallback callback);
   // Checks that all cids related to the key are pinned.
   virtual void ValidatePins(const std::string& key,
-                            const std::vector<std::string>& cids,
+                            const std::vector<std::string>& ipfs_urls,
                             ValidatePinsCallback callback);
   void ScheduleGcTask();
 
   void SetIpfsBasePinServiceForTesting(std::unique_ptr<IpfsBasePinService>);
+
+  static absl::optional<std::vector<PinData>> ExtractPinData(
+      const std::string& ipfs_url);
+  static absl::optional<std::vector<ipfs::PinData>> ExtractMergedPinData(
+      std::vector<std::string> ipfs_urls);
 
  private:
   void OnLsPinCliResult(base::OnceCallback<void(bool)> callback,
