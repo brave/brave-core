@@ -104,26 +104,12 @@ class TabSessionTests: XCTestCase {
     tabManager.removeAll()
     tabManager.reset()
 
-    let group = DispatchGroup()
-
-    group.enter()
-    History.deleteAll({
-      group.leave()
-    })
-
     HTTPCookieStorage.shared.removeCookies(since: .distantPast)
 
-    group.enter()
     WKWebsiteDataStore.default().removeData(
       ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
       modifiedSince: .distantPast,
       completionHandler: {
-        group.leave()
-      })
-
-    group.notify(
-      queue: .main,
-      execute: {
         completion()
       })
   }
