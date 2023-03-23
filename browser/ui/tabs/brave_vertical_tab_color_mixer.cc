@@ -64,7 +64,8 @@ void AddBraveVerticalTabLightThemeColorMixer(
           {kColorBraveVerticalTabActiveBackground, SK_ColorWHITE},
           {kColorBraveVerticalTabInactiveBackground,
            SkColorSetRGB(0xf3, 0xf3, 0xf3)},
-          {kColorBraveVerticalTabSeparator, SkColorSetRGB(0xE2, 0xE3, 0xE7)},
+          {kColorBraveVerticalTabSeparator,
+           SkColorSetA(SK_ColorBLACK, 0.05 * 255)},
           {kColorBraveVerticalTabHeaderButtonColor,
            SkColorSetRGB(0x6B, 0x70, 0x84)},
       });
@@ -82,10 +83,11 @@ void AddBraveVerticalTabDarkThemeColorMixer(
   static constexpr const auto kDefaultColorMap =
       base::MakeFixedFlatMap<BraveColorIds, SkColor>({
           {kColorBraveVerticalTabActiveBackground,
-           SkColorSetRGB(0x18, 0x1A, 0x21)},
+           SkColorSetA(SK_ColorBLACK, 0.3 * 255)},
           {kColorBraveVerticalTabInactiveBackground,
            SkColorSetRGB(0x30, 0x34, 0x43)},
-          {kColorBraveVerticalTabSeparator, SkColorSetRGB(0x5E, 0x61, 0x75)},
+          {kColorBraveVerticalTabSeparator,
+           SkColorSetA(SK_ColorWHITE, 0.1 * 255)},
           {kColorBraveVerticalTabHeaderButtonColor, SK_ColorWHITE},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
