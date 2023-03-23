@@ -52,11 +52,13 @@ bool VpnRenderFrameObserver::EnsureConnected() {
 void VpnRenderFrameObserver::DidCreateScriptContext(
     v8::Local<v8::Context> context,
     int32_t world_id) {
-  if (!render_frame()->IsMainFrame() || world_id_ != world_id)
+  if (!render_frame()->IsMainFrame() || world_id_ != world_id) {
     return;
+  }
 
-  if (!IsAllowed())
+  if (!IsAllowed()) {
     return;
+  }
 
   auto connected = EnsureConnected();
   if (!connected) {
@@ -78,9 +80,9 @@ void VpnRenderFrameObserver::OnGetPurchaseToken(
   auto* frame = render_frame();
   if (frame) {
     if (IsValueAllowed(purchase_token)) {
-      std::u16string set_local_storage = base::StrCat(
-          {u"window.sessionStorage.setItem(\"braveVpn.receipt\", \"",
-           base::UTF8ToUTF16(purchase_token), u"\");"});
+      std::u16string set_local_storage =
+          base::StrCat({u"window.localStorage.setItem(\"braveVpn.receipt\", \"",
+                        base::UTF8ToUTF16(purchase_token), u"\");"});
       frame->ExecuteJavaScript(set_local_storage);
     }
   }
@@ -94,8 +96,9 @@ std::string VpnRenderFrameObserver::ExtractParam(
   while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &key,
                                    &value)) {
     base::StringPiece key_str = url.query_piece().substr(key.begin, key.len);
-    if (key_str != name)
+    if (key_str != name) {
       continue;
+    }
 
     return std::string(url.query_piece().substr(value.begin, value.len));
   }
@@ -118,8 +121,9 @@ bool VpnRenderFrameObserver::IsValueAllowed(
 bool VpnRenderFrameObserver::IsAllowed() {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
 
-  if (!skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin()))
+  if (!skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin())) {
     return false;
+  }
 
   GURL current_url(
       render_frame()->GetWebFrame()->GetDocument().Url().GetString().Utf8());
