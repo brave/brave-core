@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { checkIfTokensMatch } from './asset-utils'
+import { checkIfTokensMatch, checkIfTokenNeedsNetworkIcon } from './asset-utils'
+import { mockEthMainnet, } from '../stories/mock-data/mock-networks'
 import { mockEthToken, mockBasicAttentionToken, mockMoonCatNFT } from '../stories/mock-data/mock-asset-options'
 
 const ethToken = mockEthToken
@@ -26,5 +27,15 @@ describe('Check if tokens match', () => {
 
   test('Comparing NFTs with different tokenIds, should not match.', () => {
     expect(checkIfTokensMatch(nftTokenOne, nftTokenTwo)).toBeFalsy()
+  })
+})
+
+describe('Check if token needs Network icon', () => {
+  test('Comparing ETH to Ethereum Network, should return false', () => {
+    expect(checkIfTokenNeedsNetworkIcon(mockEthMainnet, ethToken.contractAddress)).toBeFalsy()
+  })
+
+  test('Comparing BAT to Ethereum Network, should return true', () => {
+    expect(checkIfTokenNeedsNetworkIcon(mockEthMainnet, batToken.contractAddress)).toBeTruthy()
   })
 })

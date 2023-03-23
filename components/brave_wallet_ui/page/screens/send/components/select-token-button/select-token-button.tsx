@@ -18,6 +18,7 @@ import { BraveWallet, SendOptionTypes } from '../../../../../constants/types'
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import { getTokensNetwork } from '../../../../../utils/network-utils'
+import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
 import Amount from '../../../../../utils/amount'
 
 // Components
@@ -80,11 +81,13 @@ export const SelectTokenButton = (props: Props) => {
         {token && (
           <IconsWrapper marginRight={selectedSendOption === 'nft' ? 12 : undefined}>
             <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-            {tokensNetwork && token?.contractAddress !== '' && (
+            {
+              tokensNetwork &&
+              checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
               <NetworkIconWrapper>
                 <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
               </NetworkIconWrapper>
-            )}
+            }
           </IconsWrapper>
         )}
         <ButtonText
