@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.adapters;
 
-import org.chromium.brave_wallet.mojom.BlockchainToken;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
@@ -19,11 +18,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -68,24 +68,23 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
             onWalletListItemClick.onAssetClick(walletListItemModel.getBlockchainToken());
         });
 
-            if (walletListItemModel.getBlockchainToken() == null
-                    || !walletListItemModel.getBlockchainToken().logo.isEmpty()) {
-                Utils.setBitmapResource(mExecutor, mHandler, context,
-                        walletListItemModel.getIconPath(), walletListItemModel.getIcon(),
-                        holder.iconImg, null, true);
+        if (walletListItemModel.getBlockchainToken() == null
+                || !walletListItemModel.getBlockchainToken().logo.isEmpty()) {
+            Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
+                    walletListItemModel.getIcon(), holder.iconImg, null, true);
+        } else {
+            if (walletListItemModel.hasNftImageLink()
+                    && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
+                String url = nftDataModel.nftMetadata.mImageUrl;
+                ImageLoader.downloadImage(url, context, false, holder.iconImg, null);
             } else {
-                if (walletListItemModel.hasNftImageLink()
-                        && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
-                    String url = nftDataModel.nftMetadata.mImageUrl;
-                    ImageLoader.downloadImage(url, context, false, holder.iconImg, null);
-                } else {
-                    Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
-                            walletListItemModel.getBlockchainToken().contractAddress,
-                            walletListItemModel.getBlockchainToken().symbol,
-                            context.getResources().getDisplayMetrics().density, null, context,
-                            false, (float) 0.9);
-                }
+                Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
+                        walletListItemModel.getBlockchainToken().contractAddress,
+                        walletListItemModel.getBlockchainToken().symbol,
+                        context.getResources().getDisplayMetrics().density, null, context, false,
+                        (float) 0.9);
             }
+        }
     }
 
     @Override
