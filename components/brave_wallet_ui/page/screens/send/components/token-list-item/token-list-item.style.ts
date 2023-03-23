@@ -71,6 +71,5 @@ export const IconsWrapper = styled.div`
 
 export const IconAndName = styled(Row)`
   width: 80%;
-  overflow: hidden;
   white-space: pre-line;
 `
