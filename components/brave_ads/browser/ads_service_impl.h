@@ -476,6 +476,7 @@ class AdsServiceImpl : public AdsService,
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
 };
 
 }  // namespace brave_ads

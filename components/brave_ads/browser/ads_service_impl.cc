@@ -458,6 +458,7 @@ void AdsServiceImpl::StartBatAdsService() {
   bat_ads_service_->Create(
       bat_ads_client_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
+      bat_ads_client_notifier_.BindNewPipeAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectory,
                      AsWeakPtr()));
 }
@@ -1244,6 +1245,7 @@ void AdsServiceImpl::Shutdown() {
 
   is_bat_ads_initialized_ = false;
 
+  bat_ads_client_notifier_.reset();
   bat_ads_.reset();
   bat_ads_client_.reset();
   bat_ads_service_.reset();

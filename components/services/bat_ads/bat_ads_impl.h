@@ -29,8 +29,9 @@ class BatAdsClientMojoBridge;
 
 class BatAdsImpl : public mojom::BatAds {
  public:
-  explicit BatAdsImpl(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client);
+  BatAdsImpl(
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
 
   BatAdsImpl(const BatAdsImpl&) = delete;
   BatAdsImpl& operator=(const BatAdsImpl&) = delete;

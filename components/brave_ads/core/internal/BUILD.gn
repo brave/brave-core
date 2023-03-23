@@ -467,6 +467,8 @@ source_set("internal") {
     "ads/serving/targeting/user_model_info.h",
     "ads_client_helper.cc",
     "ads_client_helper.h",
+    "ads_client_notifier_manager.cc",
+    "ads_client_observer.cc",
     "ads_impl.cc",
     "ads_impl.h",
     "ads_util.cc",

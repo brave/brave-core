@@ -38,8 +38,11 @@ brave_ads::CategoryContentOptActionType ToCategoryContentOptActionType(
 }  // namespace
 
 BatAdsImpl::BatAdsImpl(
-    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client)
-    : bat_ads_client_mojo_proxy_(new BatAdsClientMojoBridge(std::move(client))),
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
+    : bat_ads_client_mojo_proxy_(
+          new BatAdsClientMojoBridge(std::move(client),
+                                     std::move(client_notifier))),
       ads_(brave_ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
 
 BatAdsImpl::~BatAdsImpl() = default;
