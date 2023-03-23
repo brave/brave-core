@@ -18,6 +18,7 @@
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
 #include "brave/components/playlist/common/features.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/test/base/testing_profile.h"
@@ -272,14 +273,14 @@ TEST_F(PlaylistServiceUnitTest, CreatePlaylistItem) {
     int expected_call_count = 3;
     testing::NiceMock<MockObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg = PlaylistChangeParams(
-        PlaylistChangeParams::Type::kItemThumbnailReady, id);
+    auto expected_arg =
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemThumbnailReady, id);
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemAdded;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemAdded;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
     using testing::_;
@@ -313,14 +314,14 @@ TEST_F(PlaylistServiceUnitTest, ThumbnailFailed) {
   int expected_call_count = 3;
   testing::NiceMock<MockObserver> observer;
   auto on_event = [&]() { expected_call_count--; };
-  auto expected_arg = PlaylistChangeParams(
-      PlaylistChangeParams::Type::kItemThumbnailFailed, id);
+  auto expected_arg =
+      PlaylistChangeParams(mojom::PlaylistEvent::kItemThumbnailFailed, id);
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .WillOnce(on_event);
-  expected_arg.change_type = PlaylistChangeParams::Type::kItemAdded;
+  expected_arg.change_type = mojom::PlaylistEvent::kItemAdded;
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .WillOnce(on_event);
-  expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
+  expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .WillOnce(on_event);
 
@@ -354,14 +355,14 @@ TEST_F(PlaylistServiceUnitTest, MediaDownloadFailed) {
   testing::NiceMock<MockObserver> observer;
   auto on_event = [&]() { expected_call_count--; };
   auto expected_arg =
-      PlaylistChangeParams(PlaylistChangeParams::Type::kItemAdded, id);
+      PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .WillOnce(on_event);
-  expected_arg.change_type = PlaylistChangeParams::Type::kItemAborted;
+  expected_arg.change_type = mojom::PlaylistEvent::kItemAborted;
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .WillOnce(on_event);
 
-  expected_arg.change_type = PlaylistChangeParams::Type::kItemThumbnailReady;
+  expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
   EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
       .Times(testing::AtMost(1));
 
@@ -398,13 +399,13 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     testing::NiceMock<MockObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
     auto expected_arg =
-        PlaylistChangeParams(PlaylistChangeParams::Type::kItemAdded, id);
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemAborted;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemAborted;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemThumbnailReady;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
@@ -432,10 +433,10 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     bool called = false;
     testing::NiceMock<MockObserver> observer;
     auto expected_arg =
-        PlaylistChangeParams(PlaylistChangeParams::Type::kItemAborted, id);
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemAborted, id);
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce([&]() { called = true; });
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemThumbnailReady;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
@@ -455,11 +456,11 @@ TEST_F(PlaylistServiceUnitTest, MediaRecoverTest) {
     bool called = false;
     testing::NiceMock<MockObserver> observer;
     auto expected_arg =
-        PlaylistChangeParams(PlaylistChangeParams::Type::kItemCached, id);
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemCached, id);
     EXPECT_CALL(observer,
                 OnPlaylistStatusChanged(PlaylistChangeParams(expected_arg)))
         .WillOnce([&]() { called = true; });
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemThumbnailReady;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
@@ -496,13 +497,13 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
     testing::NiceMock<MockObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
     auto expected_arg =
-        PlaylistChangeParams(PlaylistChangeParams::Type::kItemAdded, id);
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemThumbnailReady;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
@@ -529,9 +530,8 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
         auto id = items.front()->id;
         bool called = false;
         testing::NiceMock<MockObserver> observer;
-        EXPECT_CALL(observer,
-                    OnPlaylistStatusChanged(PlaylistChangeParams(
-                        PlaylistChangeParams::Type::kItemDeleted, id)))
+        EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
+                                  mojom::PlaylistEvent::kItemDeleted, id)))
             .WillOnce([&]() { called = true; });
         service->AddObserverForTest(&observer);
 
@@ -551,7 +551,7 @@ TEST_F(PlaylistServiceUnitTest, DeleteItem) {
     bool called = false;
     testing::NiceMock<MockObserver> observer;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
-                              PlaylistChangeParams::Type::kAllDeleted, "")))
+                              mojom::PlaylistEvent::kAllDeleted, "")))
         .WillOnce([&]() { called = true; });
     service->AddObserverForTest(&observer);
 
@@ -586,7 +586,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
     testing::NiceMock<MockObserver> observer;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(testing::Field(
                               &PlaylistChangeParams::change_type,
-                              PlaylistChangeParams::Type::kListCreated)))
+                              mojom::PlaylistEvent::kListCreated)))
         .WillOnce([&]() { called = true; });
     service->AddObserverForTest(&observer);
 
@@ -617,7 +617,7 @@ TEST_F(PlaylistServiceUnitTest, CreateAndRemovePlaylist) {
         testing::NiceMock<MockObserver> observer;
         EXPECT_CALL(observer, OnPlaylistStatusChanged(testing::Field(
                                   &PlaylistChangeParams::change_type,
-                                  PlaylistChangeParams::Type::kListRemoved)))
+                                  mojom::PlaylistEvent::kListRemoved)))
             .WillOnce([&]() { called = true; });
         service->AddObserverForTest(&observer);
 
@@ -647,13 +647,13 @@ TEST_F(PlaylistServiceUnitTest, RemoveAndRestoreLocalData) {
     testing::NiceMock<MockObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
     auto expected_arg =
-        PlaylistChangeParams(PlaylistChangeParams::Type::kItemAdded, id);
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemAdded, id);
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemThumbnailReady;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemThumbnailReady;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .Times(testing::AtMost(1));
 
@@ -942,15 +942,15 @@ TEST_F(PlaylistServiceUnitTest, CachingBehavior) {
     int expected_call_count = 3 - (should_cache ? 0 : 1);
     testing::NiceMock<MockObserver> observer;
     auto on_event = [&]() { expected_call_count--; };
-    auto expected_arg = PlaylistChangeParams(
-        PlaylistChangeParams::Type::kItemThumbnailReady, id);
+    auto expected_arg =
+        PlaylistChangeParams(mojom::PlaylistEvent::kItemThumbnailReady, id);
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemAdded;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemAdded;
     EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
         .WillOnce(on_event);
 
-    expected_arg.change_type = PlaylistChangeParams::Type::kItemCached;
+    expected_arg.change_type = mojom::PlaylistEvent::kItemCached;
     if (should_cache) {
       EXPECT_CALL(observer, OnPlaylistStatusChanged(expected_arg))
           .WillOnce(on_event);
@@ -1024,9 +1024,8 @@ TEST_F(PlaylistServiceUnitTest, UpdateItem) {
   }));
 
   testing::NiceMock<MockObserver> observer;
-  EXPECT_CALL(observer,
-              OnPlaylistStatusChanged(PlaylistChangeParams(
-                  PlaylistChangeParams::Type::kItemUpdated, item.id)));
+  EXPECT_CALL(observer, OnPlaylistStatusChanged(PlaylistChangeParams(
+                            mojom::PlaylistEvent::kItemUpdated, item.id)));
   playlist_service()->AddObserverForTest(&observer);
 
   item.name = "new name";

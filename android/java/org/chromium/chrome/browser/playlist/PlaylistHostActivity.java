@@ -433,10 +433,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
                 playlistEvent = PlaylistEventEnum.kNone;
                 break;
         }
-        if (mPlaylistViewModel != null) {
-            mPlaylistViewModel.updatePlaylistEvent(
-                    new PlaylistEventModel(playlistEvent, playlistId));
-        }
+        mPlaylistViewModel.updatePlaylistEvent(new PlaylistEventModel(playlistEvent, playlistId));
     }
 
     @Override
