@@ -231,12 +231,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       $0.setLines(historyItem.title, detailText: historyItem.url.absoluteString)
 
       $0.imageView?.contentMode = .scaleAspectFit
-      $0.imageView?.image = Favicon.defaultImage
       $0.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
       $0.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
       $0.imageView?.layer.cornerRadius = 6
       $0.imageView?.layer.cornerCurve = .continuous
       $0.imageView?.layer.masksToBounds = true
+      $0.imageView?.image = FaviconFetcher.getIconFromCache(for: historyItem.url)?.image ?? Favicon.defaultImage
 
       let domain = Domain.getOrCreate(
         forUrl: historyItem.url,

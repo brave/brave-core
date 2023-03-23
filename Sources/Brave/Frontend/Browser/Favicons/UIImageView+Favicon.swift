@@ -24,6 +24,14 @@ extension UIImageView {
     get { objc_getAssociatedObject(self, &AssociatedObjectKeys.faviconTask) as? Task<Void, Error> }
     set { objc_setAssociatedObject(self, &AssociatedObjectKeys.faviconTask, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
   }
+  
+  private func fetchIcon(for siteURL: URL, monogramFallbackCharacter: Character? = nil) async -> Favicon? {
+    do {
+      return try await FaviconFetcher.loadIcon(url: siteURL, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+    } catch {
+      return try? await FaviconFetcher.monogramIcon(url: siteURL, monogramString: monogramFallbackCharacter)
+    }
+  }
 
   /// Load the favicon from a site URL directly into a `UIImageView`. If no
   /// favicon is found, a monogram will be used where the letter is determined
@@ -31,15 +39,9 @@ extension UIImageView {
   func loadFavicon(for siteURL: URL, monogramFallbackCharacter: Character? = nil, completion: ((Favicon?) -> Void)? = nil) {
     cancelFaviconLoad()
     faviconTask = Task { @MainActor in
-      do {
-        let favicon = try await FaviconFetcher.loadIcon(url: siteURL, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
-        self.image = favicon.image
-        completion?(favicon)
-      } catch {
-        let favicon = try? await FaviconFetcher.monogramIcon(url: siteURL, monogramString: monogramFallbackCharacter)
-        self.image = favicon?.image ?? Favicon.defaultImage
-        completion?(favicon)
-      }
+      let favicon = await fetchIcon(for: siteURL, monogramFallbackCharacter: monogramFallbackCharacter)
+      self.image = favicon?.image ?? Favicon.defaultImage
+      completion?(favicon)
     }
   }
 
