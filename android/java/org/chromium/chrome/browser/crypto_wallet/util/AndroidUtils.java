@@ -98,4 +98,12 @@ public class AndroidUtils {
     public static int getScreenHeight() {
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
+
+    /**
+     * Converts dip values to pixels on current device.
+     */
+    public static int dpToPx(Context ctx, int dp) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dp, ctx.getResources().getDisplayMetrics());
+    }
 }

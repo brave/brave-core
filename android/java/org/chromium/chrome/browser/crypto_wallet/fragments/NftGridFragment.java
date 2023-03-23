@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.chrome.browser.custom_layout.AutoFitVerticalGridLayoutManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
@@ -58,6 +59,7 @@ import java.util.List;
 
 public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private static final String TAG = "NftGridFragment";
+    private static final int NFT_ITEM_WIDTH_DP = 180;
 
     private WalletModel mWalletModel;
     private PortfolioModel mPortfolioModel;
@@ -214,7 +216,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mWalletNftAdapter.setWalletListItemModelList(walletListItemModelList);
         mWalletNftAdapter.setOnWalletListItemClick(this);
         mRvNft.setAdapter(mWalletNftAdapter);
-        mRvNft.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mRvNft.setLayoutManager(new AutoFitVerticalGridLayoutManager(getActivity(), 2, NFT_ITEM_WIDTH_DP));
     }
 
     // TODO: verify if this method is still needed once multi-chain support will be merged.
