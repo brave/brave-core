@@ -1106,7 +1106,7 @@ export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
   if (token.coin === BraveWallet.CoinType.ETH) {
     return await jsonRpcService.getERC721Metadata(token.contractAddress, token.tokenId, token.chainId)
   } else if (token.coin === BraveWallet.CoinType.SOL) {
-    return await jsonRpcService.getSolTokenMetadata(token.contractAddress)
+    return await jsonRpcService.getSolTokenMetadata(token.chainId, token.contractAddress)
   }
 
   return undefined
