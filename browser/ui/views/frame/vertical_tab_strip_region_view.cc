@@ -26,12 +26,15 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
+#include "chrome/browser/ui/views/frame/browser_non_client_frame_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_scroll_container.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/scoped_canvas.h"
 #include "ui/views/accessibility/accessibility_paint_checks.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -174,6 +177,159 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
 };
 
 BEGIN_METADATA(VerticalTabSearchButton, BraveTabSearchButton)
+END_METADATA
+
+class VerticalTabNewTabButton : public BraveNewTabButton {
+ public:
+  METADATA_HEADER(VerticalTabNewTabButton);
+
+  static constexpr int kPadding = 10;
+  static constexpr int kHeight = 50;
+
+  VerticalTabNewTabButton(TabStrip* tab_strip,
+                          PressedCallback callback,
+                          const std::u16string& shortcut_text)
+      : BraveNewTabButton(tab_strip, std::move(callback)) {
+    text_ = AddChildView(std::make_unique<views::Label>(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB)));
+    text_->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
+    text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
+    text_->SetVisible(false);
+
+    constexpr int kFontSize = 12;
+    const auto text_font = text_->font_list();
+    text_->SetFontList(
+        text_font.DeriveWithSizeDelta(kFontSize - text_font.GetFontSize()));
+
+    shortcut_text_ = AddChildView(std::make_unique<views::Label>());
+    shortcut_text_->SetHorizontalAlignment(
+        gfx::HorizontalAlignment::ALIGN_RIGHT);
+    shortcut_text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
+    shortcut_text_->SetVisible(false);
+    const auto shortcut_font = shortcut_text_->font_list();
+    text_->SetFontList(shortcut_font.DeriveWithSizeDelta(
+        kFontSize - shortcut_font.GetFontSize()));
+
+    SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
+    SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
+    SetShortcutText(shortcut_text);
+
+    SetImageVerticalAlignment(
+        views::ImageButton::VerticalAlignment::ALIGN_MIDDLE);
+  }
+
+  ~VerticalTabNewTabButton() override = default;
+
+  // BraveNewTabButton:
+  void PaintIcon(gfx::Canvas* canvas) override {
+    // Revert back the offset set by NewTabButton::PaintButtonContents(), which
+    // is the caller of this method.
+    gfx::ScopedCanvas scoped_canvas(canvas);
+    canvas->Translate(-GetContentsBounds().OffsetFromOrigin());
+
+    // Set additional horizontal inset for '+' icon.
+    canvas->Translate({6, 0});
+
+    // Use vector icon
+    ImageButton::PaintButtonContents(canvas);
+  }
+
+  gfx::Insets GetInsets() const override {
+    return gfx::Insets(tabs::kMarginForVerticalTabContainers);
+  }
+
+  void OnPaintFill(gfx::Canvas* canvas) const override {
+    if (tab_strip()
+            ->GetCustomBackgroundId(BrowserFrameActiveState::kUseCurrent)
+            .has_value()) {
+      BraveNewTabButton::OnPaintFill(canvas);
+      return;
+    }
+
+    auto* cp = GetColorProvider();
+    DCHECK(cp);
+
+    // Override fill color
+    {
+      gfx::ScopedCanvas scoped_canvas_for_scaling(canvas);
+      canvas->UndoDeviceScaleFactor();
+      cc::PaintFlags flags;
+      flags.setAntiAlias(true);
+      flags.setColor(cp->GetColor(kColorToolbar));
+      canvas->DrawPath(
+          GetBorderPath(gfx::Point(), canvas->image_scale(), false), flags);
+    }
+
+    // Draw split line on the top.
+    // Revert back the offset set by NewTabButton::PaintButtonContents(), which
+    // is the caller of this method.
+    gfx::ScopedCanvas scoped_canvas_for_translating(canvas);
+    canvas->Translate(-GetContentsBounds().OffsetFromOrigin());
+
+    gfx::Rect separator_bounds = GetLocalBounds();
+    separator_bounds.set_height(1);
+    cc::PaintFlags flags;
+    flags.setStyle(cc::PaintFlags::kFill_Style);
+    flags.setColor(cp->GetColor(kColorBraveVerticalTabSeparator));
+    canvas->DrawRect(gfx::RectF(separator_bounds), flags);
+  }
+
+  void FrameColorsChanged() override {
+    BraveNewTabButton::FrameColorsChanged();
+
+    DCHECK(text_ && shortcut_text_);
+
+    auto* cp = GetColorProvider();
+    DCHECK(cp);
+
+    SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(kVerticalTabStripNtbIcon,
+                                       kColorBraveVerticalTabNTBIconColor));
+    text_->SetEnabledColor(cp->GetColor(kColorBraveVerticalTabNTBTextColor));
+    shortcut_text_->SetEnabledColor(
+        cp->GetColor(kColorBraveVerticalTabNTBShortcutTextColor));
+  }
+
+  void Layout() override {
+    BraveNewTabButton::Layout();
+
+    DCHECK(text_ && shortcut_text_);
+    const bool show_vertical_tabs =
+        tabs::utils::ShouldShowVerticalTabs(tab_strip()->GetBrowser());
+    text_->SetVisible(show_vertical_tabs);
+    shortcut_text_->SetVisible(show_vertical_tabs);
+    if (!text_->GetVisible()) {
+      return;
+    }
+
+    constexpr int kTextLeftMargin = 32 + kPadding;
+    gfx::Rect text_bounds = GetContentsBounds();
+    text_bounds.Inset(
+        gfx::Insets().set_left(kTextLeftMargin).set_right(kPadding));
+    text_->SetBoundsRect(text_bounds);
+    shortcut_text_->SetBoundsRect(text_bounds);
+  }
+
+  gfx::Size CalculatePreferredSize() const override {
+    auto size = BraveNewTabButton::CalculatePreferredSize();
+    if (tabs::utils::ShouldShowVerticalTabs(tab_strip()->GetBrowser())) {
+      size.set_height(kHeight);
+    }
+    return size;
+  }
+
+ private:
+  void SetShortcutText(const std::u16string& text) {
+    DCHECK(shortcut_text_);
+    shortcut_text_->SetText(text);
+  }
+
+  raw_ptr<views::Label> text_ = nullptr;
+  raw_ptr<views::Label> shortcut_text_ = nullptr;
+};
+
+BEGIN_METADATA(VerticalTabNewTabButton, BraveNewTabButton)
 END_METADATA
 
 }  // namespace
@@ -326,16 +482,11 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
           ? views::ScrollView::ScrollBarMode::kDisabled
           : views::ScrollView::ScrollBarMode::kHiddenButEnabled);
 
-  new_tab_button_ = AddChildView(std::make_unique<BraveNewTabButton>(
+  new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       region_view_->tab_strip_,
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
-                          base::Unretained(region_view_->tab_strip_))));
-  new_tab_button_->SetTooltipText(
-      l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
-  new_tab_button_->SetAccessibleName(
-      l10n_util::GetStringUTF16(IDS_ACCNAME_NEWTAB));
-  new_tab_button_->SetShortcutText(
-      GetShortcutTextForNewTabButton(browser_view));
+                          base::Unretained(region_view_->tab_strip_)),
+      GetShortcutTextForNewTabButton(browser_view)));
 
   auto* prefs = browser_->profile()->GetOriginalProfile()->GetPrefs();
   show_vertical_tabs_.Init(

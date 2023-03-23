@@ -68,6 +68,11 @@ void AddBraveVerticalTabLightThemeColorMixer(
            SkColorSetA(SK_ColorBLACK, 0.05 * 255)},
           {kColorBraveVerticalTabHeaderButtonColor,
            SkColorSetRGB(0x6B, 0x70, 0x84)},
+          {kColorBraveVerticalTabNTBIconColor,
+           SkColorSetARGB(0.6 * 255, 0x1D, 0x1F, 0x25)},
+          {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x6B, 0x70, 0x84)},
+          {kColorBraveVerticalTabNTBShortcutTextColor,
+           SkColorSetRGB(0x85, 0x89, 0x89)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =
@@ -89,6 +94,11 @@ void AddBraveVerticalTabDarkThemeColorMixer(
           {kColorBraveVerticalTabSeparator,
            SkColorSetA(SK_ColorWHITE, 0.1 * 255)},
           {kColorBraveVerticalTabHeaderButtonColor, SK_ColorWHITE},
+          {kColorBraveVerticalTabNTBIconColor,
+           SkColorSetA(SK_ColorWHITE, 0.6 * 255)},
+          {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x8C, 0x90, 0xA1)},
+          {kColorBraveVerticalTabNTBShortcutTextColor,
+           SkColorSetRGB(0x68, 0x6D, 0x7D)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =
