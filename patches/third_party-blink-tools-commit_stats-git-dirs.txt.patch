@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/tools/commit_stats/git-dirs.txt b/third_party/blink/tools/commit_stats/git-dirs.txt
+index 50bb03231ecf59fa6d0a85cc94b36bcb68c5621a..13ab1e91fd524dde41868d5d0e3d0181f1bc7f61 100644
+--- a/third_party/blink/tools/commit_stats/git-dirs.txt
++++ b/third_party/blink/tools/commit_stats/git-dirs.txt
+@@ -76,6 +76,7 @@
+ ./third_party/angle/third_party/glmark2/src,ANGLE
+ ./third_party/openh264/src,OpenH264
+ ./third_party/googletest/src,GoogleTest
++./third_party/libjxl/src,libjxl
+ ./third_party/highway/src,highway
+ ./third_party/wuffs/src,wuffs
+ ./third_party/catapult,catapult

@@ -1,0 +1,13 @@
+diff --git a/cc/tiles/image_decode_cache.h b/cc/tiles/image_decode_cache.h
+index 82fdd5436cfa6b660975df84d7dadf80ead9dd8b..d04c6b9a9362f9748a7d2c46d8dc68fab17ae974 100644
+--- a/cc/tiles/image_decode_cache.h
++++ b/cc/tiles/image_decode_cache.h
+@@ -84,6 +84,8 @@ class CC_EXPORT ImageDecodeCache {
+     using ScopedImageType =
+         devtools_instrumentation::ScopedImageDecodeTask::ImageType;
+     switch (image_type) {
++      case ImageType::kJXL:
++        return ScopedImageType::kJxl;
+       case ImageType::kAVIF:
+         return ScopedImageType::kAvif;
+       case ImageType::kBMP:

@@ -1,0 +1,31 @@
+diff --git a/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc b/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc
+index e3d51af483f0e26879d7ca16b28191e28f4479d3..cde4c6f2fe6d529c8a35ce90280c7754975fc5b1 100644
+--- a/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc
++++ b/third_party/blink/renderer/platform/graphics/bitmap_image_metrics.cc
+@@ -43,6 +43,11 @@ BitmapImageMetrics::StringToDecodedImageType(const String& type) {
+ #if BUILDFLAG(ENABLE_AV1_DECODER)
+   if (type == "avif")
+     return BitmapImageMetrics::DecodedImageType::kAVIF;
++#endif
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++  if (type == "jxl") {
++    return BitmapImageMetrics::DecodedImageType::kJXL;
++  }
+ #endif
+   return BitmapImageMetrics::DecodedImageType::kUnknown;
+ }
+@@ -115,8 +120,12 @@ void BitmapImageMetrics::CountDecodedImageFrameTime(
+                             elapsed);
+       }
+       break;
+-    case BitmapImageMetrics::DecodedImageType::kREMOVED_JXL:
+-      NOTREACHED();
++    case BitmapImageMetrics::DecodedImageType::kJXL:
++      UMA_HISTOGRAM_TIMES("Blink.ImageDecoders.Jxl.EveryDecode.Time", elapsed);
++      if (first) {
++        UMA_HISTOGRAM_TIMES("Blink.ImageDecoders.Jxl.FirstDecode.Time",
++                            elapsed);
++      }
+       break;
+   }
+ }

@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/flag_descriptions.cc b/chrome/browser/flag_descriptions.cc
+index 5669823de8be0dd62093a7611c7aed71569ad507..c771aa35515d8d542204e9c4e1d32fc14807d6a2 100644
+--- a/chrome/browser/flag_descriptions.cc
++++ b/chrome/browser/flag_descriptions.cc
+@@ -6402,6 +6402,12 @@ const char kDcheckIsFatalDescription[] =
+     "rather than crashing. If enabled, DCHECKs will crash the calling process.";
+ #endif  // BUILDFLAG(DCHECK_IS_CONFIGURABLE)
+ 
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++const char kEnableJXLName[] = "Enable/Disable JXL image format";
++const char kEnableJXLDescription[] =
++    "Enable/Disable image decoding support for the JPEG XL image format. (Default: Enabled) Thorium Flag.";
++#endif  // BUILDFLAG(ENABLE_JXL_DECODER)
++
+ #if BUILDFLAG(ENABLE_CARDBOARD)
+ extern const char kEnableCardboardName[] = "Enable Cardboard VR WebXR Runtime";
+ extern const char kEnableCardboardDescription[] =

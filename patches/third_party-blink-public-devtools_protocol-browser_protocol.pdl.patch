@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
+index 4536dd55b8a9e09977b66368a58a545b4f2c1d6a..8cbb0ec88e2d9e97800a5f4301ef5d5082cdb37d 100644
+--- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
++++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
+@@ -3910,6 +3910,7 @@ domain Emulation
+   experimental type DisabledImageType extends string
+     enum
+       avif
++      jxl
+       webp
+ 
+   experimental command setDisabledImageTypes

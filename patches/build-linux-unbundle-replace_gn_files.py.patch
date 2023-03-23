@@ -1,0 +1,12 @@
+diff --git a/build/linux/unbundle/replace_gn_files.py b/build/linux/unbundle/replace_gn_files.py
+index 0483cd6921f0265a05cf0990558c1e24cc4b70e5..589db41b7669fb5b125da760b26889ab312cd02a 100755
+--- a/build/linux/unbundle/replace_gn_files.py
++++ b/build/linux/unbundle/replace_gn_files.py
+@@ -53,6 +53,7 @@ REPLACEMENTS = {
+   'libdrm': 'third_party/libdrm/BUILD.gn',
+   'libevent': 'third_party/libevent/BUILD.gn',
+   'libjpeg': 'third_party/libjpeg.gni',
++  'libjxl' : 'third_party/libjxl/BUILD.gn',
+   'libpng': 'third_party/libpng/BUILD.gn',
+   'libvpx': 'third_party/libvpx/BUILD.gn',
+   'libwebp': 'third_party/libwebp/BUILD.gn',

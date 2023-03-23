@@ -1,0 +1,24 @@
+diff --git a/cc/base/devtools_instrumentation.cc b/cc/base/devtools_instrumentation.cc
+index 5837f76aa6dd3b9cc8ad0e0187ef360e5f401cb7..a658d7602ecb48d9aafcbd72b041221d959073ef 100644
+--- a/cc/base/devtools_instrumentation.cc
++++ b/cc/base/devtools_instrumentation.cc
+@@ -73,6 +73,9 @@ ScopedImageUploadTask::~ScopedImageUploadTask() {
+   auto duration = base::TimeTicks::Now() - start_time_;
+   const char* histogram_name = nullptr;
+   switch (image_type_) {
++    case ImageType::kJxl:
++      histogram_name = "Renderer4.ImageUploadTaskDurationUs.Jxl";
++      break;
+     case ImageType::kAvif:
+       histogram_name = "Renderer4.ImageUploadTaskDurationUs.Avif";
+       break;
+@@ -122,6 +125,9 @@ ScopedImageDecodeTask::~ScopedImageDecodeTask() {
+   auto duration = base::TimeTicks::Now() - start_time_;
+   const char* histogram_name = nullptr;
+   switch (image_type_) {
++    case ImageType::kJxl:
++      histogram_name = "Renderer4.ImageUploadTaskDurationUs.Jxl";
++      break;
+     case ImageType::kAvif:
+       histogram_name = "Renderer4.ImageDecodeTaskDurationUs.Avif";
+       break;

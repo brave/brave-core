@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/modules/webcodecs/fuzzer_seed_corpus/generate_image_corpus.py b/third_party/blink/renderer/modules/webcodecs/fuzzer_seed_corpus/generate_image_corpus.py
+index 681a2fc50800dc6f88411b4fc15c5aa216c7465b..816258568e50cf47d092f23fdd8592be385fe642 100644
+--- a/third_party/blink/renderer/modules/webcodecs/fuzzer_seed_corpus/generate_image_corpus.py
++++ b/third_party/blink/renderer/modules/webcodecs/fuzzer_seed_corpus/generate_image_corpus.py
+@@ -32,6 +32,7 @@ EXTENSIONS_MAP = {
+     "ico": "image/x-icon",
+     "bmp": "image/bmp",
+     "jpg": "image/jpeg",
++    "jxl": "image/jxl",
+     "gif": "image/gif",
+     "cur": "image/x-icon",
+     "webp": "image/webp",

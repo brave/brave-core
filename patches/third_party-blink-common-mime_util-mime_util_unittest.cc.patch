@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/common/mime_util/mime_util_unittest.cc b/third_party/blink/common/mime_util/mime_util_unittest.cc
+index e37166cc5f8970e1e57f349f836626cb6229a05b..50541a5dd416b343b36f68cbaf1ea1ddd9c2e6e4 100644
+--- a/third_party/blink/common/mime_util/mime_util_unittest.cc
++++ b/third_party/blink/common/mime_util/mime_util_unittest.cc
+@@ -9,6 +9,7 @@
+ #include "net/base/mime_util.h"
+ #include "testing/gtest/include/gtest/gtest.h"
+ #include "third_party/blink/public/common/buildflags.h"
++#include "third_party/blink/public/common/features.h"
+ 
+ namespace blink {
+ 
+@@ -18,7 +19,12 @@ TEST(MimeUtilTest, LookupTypes) {
+ 
+   EXPECT_TRUE(IsSupportedImageMimeType("image/jpeg"));
+   EXPECT_TRUE(IsSupportedImageMimeType("Image/JPEG"));
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++  EXPECT_EQ(IsSupportedImageMimeType("image/jxl"),
++            base::FeatureList::IsEnabled(features::kJXL));
++#else
+   EXPECT_FALSE(IsSupportedImageMimeType("image/jxl"));
++#endif
+   EXPECT_EQ(IsSupportedImageMimeType("image/avif"),
+             BUILDFLAG(ENABLE_AV1_DECODER));
+   EXPECT_FALSE(IsSupportedImageMimeType("image/lolcat"));

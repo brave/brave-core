@@ -1,0 +1,29 @@
+diff --git a/tools/metrics/histograms/enums.xml b/tools/metrics/histograms/enums.xml
+index b9dc5462fc816e73d786ce4a52806e0d8391c32b..b3406e1d3bbb7a6cf679f134b2d5e678eae7f083 100644
+--- a/tools/metrics/histograms/enums.xml
++++ b/tools/metrics/histograms/enums.xml
+@@ -25191,7 +25191,7 @@ Called by update_debug_scenarios.py.-->
+   <int value="5" label="kImageICO"/>
+   <int value="6" label="kImageBMP"/>
+   <int value="7" label="kImageAVIF"/>
+-  <int value="8" label="(obsolete) kImageJXL"/>
++  <int value="8" label="kImageJXL"/>
+ </enum>
+ 
+ <enum name="DecodeSwapChainNotUsedReason">
+@@ -59745,6 +59745,7 @@ from previous Chrome versions.
+   <int value="-892428689" label="ManualPasswordGenerationAndroid:enabled"/>
+   <int value="-892297699" label="EditContext:enabled"/>
+   <int value="-891856063" label="MidiManagerAndroid:enabled"/>
++  <int value="-890517779" label="JXL:enabled"/>
+   <int value="-890224928" label="DownloadBubbleV2:enabled"/>
+   <int value="-889670978" label="AssistantRoutines:disabled"/>
+   <int value="-887101831" label="StoreHoursAndroid:disabled"/>
+@@ -61615,6 +61616,7 @@ from previous Chrome versions.
+   <int value="188610022" label="NewMessageListView:enabled"/>
+   <int value="189728101" label="FasterLocationReload:disabled"/>
+   <int value="189777537" label="DisableInitialMostVisitedFadeIn:enabled"/>
++  <int value="190282969" label="JXL:disabled"/>
+   <int value="190395448" label="SearchWebInSidePanel:enabled"/>
+   <int value="191737931" label="enable-mark-http-as"/>
+   <int value="191891628" label="AutocompleteExtendedSuggestions:enabled"/>

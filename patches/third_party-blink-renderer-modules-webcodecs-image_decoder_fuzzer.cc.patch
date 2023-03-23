@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/modules/webcodecs/image_decoder_fuzzer.cc b/third_party/blink/renderer/modules/webcodecs/image_decoder_fuzzer.cc
+index 87c6131c2fdbd405922f6d11d25fda3ce97b9cd6..6428d45ec5201b78df2a6e760a555ba1ea2a9964 100644
+--- a/third_party/blink/renderer/modules/webcodecs/image_decoder_fuzzer.cc
++++ b/third_party/blink/renderer/modules/webcodecs/image_decoder_fuzzer.cc
+@@ -3,8 +3,10 @@
+ // found in the LICENSE file.
+ 
+ #include "base/run_loop.h"
++#include "base/test/scoped_feature_list.h"
+ #include "testing/gtest/include/gtest/gtest.h"
+ #include "testing/libfuzzer/proto/lpm_interface.h"
++#include "third_party/blink/public/common/features.h"
+ #include "third_party/blink/renderer/bindings/core/v8/to_v8_traits.h"
+ #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
+ #include "third_party/blink/renderer/bindings/core/v8/v8_union_arraybufferallowshared_arraybufferviewallowshared_readablestream.h"
+@@ -88,6 +90,9 @@ DEFINE_BINARY_PROTO_FUZZER(
+   // Request a full GC upon returning.
+   auto scoped_gc = MakeScopedGarbageCollectionRequest();
+ 
++  base::test::ScopedFeatureList scoped_feature_list;
++  scoped_feature_list.InitAndEnableFeature(features::kJXL);
++
+   //
+   // NOTE: GC objects that need to survive iterations of the loop below
+   // must be Persistent<>!

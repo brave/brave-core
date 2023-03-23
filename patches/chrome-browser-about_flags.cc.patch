@@ -10,3 +10,16 @@ index 057c0d9ebc37d60e34fb6ee928c00698290d05ef..d104e15b169da5d2802181ba91627ba4
  // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
  // //tools/flags/generate_unexpire_flags.py.
  #include "build/chromeos_buildflags.h"
+@@ -7480,6 +7481,12 @@ const FeatureEntry kFeatureEntries[] = {
+      FEATURE_VALUE_TYPE(download::features::kSmartSuggestionForLargeDownloads)},
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++    {"enable-jxl", flag_descriptions::kEnableJXLName,
++     flag_descriptions::kEnableJXLDescription, kOsAll,
++     FEATURE_VALUE_TYPE(blink::features::kJXL)},
++#endif  // BUILDFLAG(ENABLE_JXL_DECODER)
++
+ #if BUILDFLAG(IS_ANDROID)
+     {"messages-for-android-ads-blocked",
+      flag_descriptions::kMessagesForAndroidAdsBlockedName,

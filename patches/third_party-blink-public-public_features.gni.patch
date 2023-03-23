@@ -1,0 +1,16 @@
+diff --git a/third_party/blink/public/public_features.gni b/third_party/blink/public/public_features.gni
+index 1d0dd0f3958203326816ded32ffe30d52efb4f3e..ef7537d70e9bfcf4f7c08eb64217b9efb74db4af 100644
+--- a/third_party/blink/public/public_features.gni
++++ b/third_party/blink/public/public_features.gni
+@@ -4,6 +4,11 @@
+ 
+ import("//build/config/ui.gni")
+ 
++declare_args() {
++  # If true, adds support for JPEG XL image decoding.
++  enable_jxl_decoder = !is_ios
++}
++
+ # Unhandled Tap enable means Contextual Search aka Touch to Search.
+ # TODO(donnd): remove all unhandled-tap handling after the Long-press experiment
+ #              is fully launched.

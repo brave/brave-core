@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/web_tests/VirtualTestSuites b/third_party/blink/web_tests/VirtualTestSuites
+index 376c6293a1d9d37ca4d36b583af8c0c075e643d2..35f095babc44740252194b0ee52dab3d8d722de5 100644
+--- a/third_party/blink/web_tests/VirtualTestSuites
++++ b/third_party/blink/web_tests/VirtualTestSuites
+@@ -329,6 +329,15 @@
+     "args": ["--force-device-scale-factor=2"],
+     "expires": "Jul 1, 2023"
+   },
++  {
++    "prefix": "jxl-enabled",
++    "platforms": ["Linux", "Mac", "Win"],
++    "bases": ["http/tests/inspector-protocol/emulation/emulation-set-disabled-image-types-jxl.js",
++              "images/jxl"],
++    "exclusive_tests": ["http/tests/inspector-protocol/emulation/emulation-set-disabled-image-types-jxl.js"],
++    "args": ["--enable-features=JXL"],
++    "expires": "Jul 1, 2025"
++  },
+   {
+     "prefix": "scalefactor150",
+     "platforms": ["Linux", "Win"],

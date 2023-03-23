@@ -1,0 +1,13 @@
+diff --git a/cc/paint/paint_image.h b/cc/paint/paint_image.h
+index d338a40c2180e0bc65e2300cc1cb300632c8a52e..4c0aebd8ccb3a10c996b36e275daca89f4b9b5d1 100644
+--- a/cc/paint/paint_image.h
++++ b/cc/paint/paint_image.h
+@@ -39,7 +39,7 @@ class PaintImageGenerator;
+ class PaintWorkletInput;
+ class TextureBacking;
+ 
+-enum class ImageType { kPNG, kJPEG, kWEBP, kGIF, kICO, kBMP, kAVIF, kInvalid };
++enum class ImageType { kPNG, kJPEG, kWEBP, kGIF, kICO, kBMP, kAVIF, kJXL, kInvalid };
+ 
+ enum class YUVSubsampling { k410, k411, k420, k422, k440, k444, kUnknown };
+ 

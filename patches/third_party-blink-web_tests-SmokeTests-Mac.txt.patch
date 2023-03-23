@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/web_tests/SmokeTests/Mac.txt b/third_party/blink/web_tests/SmokeTests/Mac.txt
+index 09bbd402489bbdc6cd46c15fe3bc254e91c0af4c..a17285b513f333a215e625e346119b26593b730a 100644
+--- a/third_party/blink/web_tests/SmokeTests/Mac.txt
++++ b/third_party/blink/web_tests/SmokeTests/Mac.txt
+@@ -1450,6 +1450,7 @@ virtual/gpu-rasterization/images/yuv-decode-eligible/color-profile-filter.html
+ virtual/gpu-rasterization/images/yuv-decode-eligible/jpeg-missing-eoi.html
+ virtual/gpu-rasterization/images/yuv-decode-eligible/webp-no-color-profile-lossy.html
+ virtual/gpu/fast/canvas/canvas-textMetrics-width.html
++virtual/jxl-enabled/images/jxl/jxl-images.html
+ virtual/no-auto-wpt-origin-isolation/external/wpt/html/browsers/origin/origin-keyed-agent-clusters/1-iframe/parent-no-child-yes-port.sub.https.html
+ virtual/no-auto-wpt-origin-isolation/external/wpt/html/browsers/origin/origin-keyed-agent-clusters/1-iframe/parent-yes-child-no-port.sub.https.html
+ virtual/no-auto-wpt-origin-isolation/external/wpt/html/browsers/origin/origin-keyed-agent-clusters/1-iframe/parent-yes-child-yes-port.sub.https.html

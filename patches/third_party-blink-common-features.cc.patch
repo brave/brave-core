@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
+index 1cc64db3b24c63e213d81740a112db9fa4929cef..bffd44613a3bfad5e19d0a314ff1130706d266ac 100644
+--- a/third_party/blink/common/features.cc
++++ b/third_party/blink/common/features.cc
+@@ -734,6 +734,9 @@ const base::FeatureParam<int> kCacheCodeOnIdleDelayParam{&kCacheCodeOnIdle,
+ const base::FeatureParam<bool> kCacheCodeOnIdleDelayServiceWorkerOnlyParam{
+     &kCacheCodeOnIdle, "service-worker-only", false};
+ 
++// Enables the JPEG XL Image File Format (JXL).
++BASE_FEATURE(kJXL, "JXL", base::FEATURE_ENABLED_BY_DEFAULT);
++
+ // Make all pending 'display: auto' web fonts enter the swap or failure period
+ // immediately before reaching the LCP time limit (~2500ms), so that web fonts
+ // do not become a source of bad LCP.

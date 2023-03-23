@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/public/common/features.h b/third_party/blink/public/common/features.h
+index 4505ffb0ada835054fef3610f23dc49d001f6686..e009e84d20a343f29875296fedb7d089f33f8168 100644
+--- a/third_party/blink/public/common/features.h
++++ b/third_party/blink/public/common/features.h
+@@ -402,6 +402,9 @@ BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kBackgroundTracingPerformanceMark);
+ BLINK_COMMON_EXPORT extern const base::FeatureParam<std::string>
+     kBackgroundTracingPerformanceMark_AllowList;
+ 
++// Enable libjxl support
++BLINK_COMMON_EXPORT BASE_DECLARE_FEATURE(kJXL);
++
+ // Main controls for ad serving API features.
+ //
+ // Backend storage + kill switch for Interest Group API origin trials.

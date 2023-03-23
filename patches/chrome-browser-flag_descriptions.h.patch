@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/flag_descriptions.h b/chrome/browser/flag_descriptions.h
+index 26c9c28e53128ad647b9818e2d53825312a3915d..3cb3a0d5f670017e98930385ada61e5b2e4f1d6c 100644
+--- a/chrome/browser/flag_descriptions.h
++++ b/chrome/browser/flag_descriptions.h
+@@ -3624,7 +3624,7 @@ extern const char kPreferGLImageProcessorDescription[];
+ #if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+ extern const char kZeroCopyVideoCaptureName[];
+ extern const char kZeroCopyVideoCaptureDescription[];
+-#endif  // BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
++#endif  // BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
+ 
+ // All views-based platforms --------------------------------------------------
+ 
+@@ -3708,6 +3708,11 @@ extern const char kEnableCardboardName[];
+ extern const char kEnableCardboardDescription[];
+ #endif  // ENABLE_CARDBOARD
+ 
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++extern const char kEnableJXLName[];
++extern const char kEnableJXLDescription[];
++#endif  // BUILDFLAG(ENABLE_JXL_DECODER)
++
+ #if BUILDFLAG(ENABLE_NACL)
+ extern const char kNaclName[];
+ extern const char kNaclDescription[];

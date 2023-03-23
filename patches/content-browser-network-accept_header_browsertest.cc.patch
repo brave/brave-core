@@ -1,0 +1,24 @@
+diff --git a/content/browser/network/accept_header_browsertest.cc b/content/browser/network/accept_header_browsertest.cc
+index cdb9fbc01ba350a9c8ce04179bbb2ebd8afd33d9..f72a768a9caa279dc6e363d46839abca30b149e7 100644
+--- a/content/browser/network/accept_header_browsertest.cc
++++ b/content/browser/network/accept_header_browsertest.cc
+@@ -22,6 +22,7 @@
+ #include "net/test/embedded_test_server/http_request.h"
+ #include "ppapi/buildflags/buildflags.h"
+ #include "third_party/blink/public/common/buildflags.h"
++#include "third_party/blink/public/common/features.h"
+ #include "third_party/blink/public/mojom/manifest/manifest.mojom.h"
+ 
+ #if BUILDFLAG(ENABLE_PPAPI)
+@@ -75,6 +76,11 @@ class AcceptHeaderTest : public ContentBrowserTest {
+     std::string result;
+ #if BUILDFLAG(ENABLE_AV1_DECODER)
+     result.append("image/avif,");
++#endif
++#if BUILDFLAG(ENABLE_JXL_DECODER)
++    if (base::FeatureList::IsEnabled(blink::features::kJXL)) {
++      result.append("image/jxl,");
++    }
+ #endif
+     return result;
+   }

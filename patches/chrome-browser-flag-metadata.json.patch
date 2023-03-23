@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/flag-metadata.json b/chrome/browser/flag-metadata.json
+index 6f62fa30588ae218e696e39f9bb7935294ff0b87..088b3b2741c1857eb2dd102f5d349a23859b1734 100644
+--- a/chrome/browser/flag-metadata.json
++++ b/chrome/browser/flag-metadata.json
+@@ -2614,6 +2614,11 @@
+     // This flag is used by web developers to test upcoming javascript features.
+     "expiry_milestone": -1
+   },
++  {
++    "name": "enable-jxl",
++    "owners": [ "firsching@google.com", "uioptt24@gmail.com", "alex313031@gmail.com" ],
++    "expiry_milestone": -1
++  },
+   {
+     "name": "enable-keyboard-backlight-toggle",
+     "owners": [ "rtinkoff" ],
