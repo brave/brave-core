@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_PAGE_METRICS_SERVICE_H_
 
 #include <memory>
+#include <utility>
 #include <vector>
 
 #include "base/task/cancelable_task_tracker.h"

@@ -5,6 +5,8 @@
 
 #include "brave/components/misc_metrics/page_metrics_service.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/time/time.h"
