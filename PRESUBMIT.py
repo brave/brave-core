@@ -144,15 +144,13 @@ def CheckChangeLintsClean(input_api, output_api):
 
 
 def CheckPylint(input_api, output_api):
-    extra_paths_list = os.environ['PYTHONPATH'].split(';' if sys.platform ==
-                                                      'win32' else ':')
+    extra_paths_list = os.environ['PYTHONPATH'].split(os.pathsep)
     return input_api.canned_checks.RunPylint(
         input_api,
         output_api,
         pylintrc=input_api.os_path.join(input_api.PresubmitLocalPath(),
                                         '.pylintrc'),
-        extra_paths_list=extra_paths_list,
-        version='2.7')
+        extra_paths_list=extra_paths_list)
 
 
 def CheckLicense(input_api, output_api):
@@ -279,16 +277,6 @@ def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
         return original_check(input_api, output_api, **kwargs)
 
 
-@chromium_presubmit_overrides.override_check(globals())
-def CheckMPArchApiUsage(original_check, input_api, output_api, **kwargs):
-    # Remove ^(chrome|components|content|extensions) filter to cover all files
-    # in the repository, because brave/ structure is slightly different.
-    def AffectedFiles(self, original_method, *args, **kwargs):
-        kwargs['file_filter'] = self.FilterSourceFile
-        return original_method(*args, **kwargs)
-
-    with override_utils.override_scope_function(input_api, AffectedFiles):
-        return original_check(input_api, output_api, **kwargs)
 
 
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().
