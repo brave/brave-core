@@ -25,8 +25,7 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
            {kColorBraveVerticalTabInactiveBackground,
             kColorTabBackgroundActiveFrameActive},
            {kColorBraveVerticalTabSeparator, kColorToolbarSeparator},
-           {kColorBraveVerticalTabHeaderButtonColor,
-            kColorTabForegroundActiveFrameActive}});
+           {kColorBraveVerticalTabHeaderButtonColor, kColorToolbarButtonIcon}});
   return kChromiumColorMap.at(brave_color_id);
 }
 
@@ -87,8 +86,7 @@ void AddBraveVerticalTabDarkThemeColorMixer(
           {kColorBraveVerticalTabInactiveBackground,
            SkColorSetRGB(0x30, 0x34, 0x43)},
           {kColorBraveVerticalTabSeparator, SkColorSetRGB(0x5E, 0x61, 0x75)},
-          {kColorBraveVerticalTabHeaderButtonColor,
-           SkColorSetRGB(0x6B, 0x70, 0x84)},
+          {kColorBraveVerticalTabHeaderButtonColor, SK_ColorWHITE},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =

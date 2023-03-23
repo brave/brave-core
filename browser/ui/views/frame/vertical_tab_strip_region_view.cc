@@ -48,7 +48,7 @@
 
 namespace {
 
-constexpr int kHeaderInset = 4;
+constexpr int kHeaderInset = tabs::kMarginForVerticalTabContainers;
 
 // Inherits NewTabButton in order to synchronize ink drop effect with
 // the search button. Unfortunately, we can't inherit BraveTabSearchButton
@@ -80,20 +80,14 @@ class ToggleButton : public BraveNewTabButton {
     DCHECK(cp);
 
     auto color = cp->GetColor(kColorBraveVerticalTabHeaderButtonColor);
-    expand_icon_ = gfx::CreateVectorIcon(kVerticalTabExpandButtonIcon, color);
-    collapse_icon_ =
-        gfx::CreateVectorIcon(kVerticalTabCollapseButtonIcon, color);
+    icon_ = gfx::CreateVectorIcon(kVerticalTabStripToggleButtonIcon, color);
   }
 
   void PaintIcon(gfx::Canvas* canvas) override {
-    const bool expanded =
-        region_view_->state() == VerticalTabStripRegionView::State::kExpanded;
-
-    auto& icon_to_use = expanded ? collapse_icon_ : expand_icon_;
-    gfx::Point origin =
+    const gfx::Point origin =
         GetContentsBounds().CenterPoint() -
-        gfx::Vector2d(icon_to_use.width() / 2, icon_to_use.height() / 2);
-    canvas->DrawImageInt(icon_to_use, origin.x(), origin.y());
+        gfx::Vector2d(icon_.width() / 2, icon_.height() / 2);
+    canvas->DrawImageInt(icon_, origin.x(), origin.y());
   }
 
   int GetCornerRadius() const override {
@@ -105,12 +99,18 @@ class ToggleButton : public BraveNewTabButton {
     // dont' fill
   }
 
+#if DCHECK_IS_ON()
+  void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
+    DCHECK_EQ(width(), GetIconWidth());
+    DCHECK_EQ(height(), GetIconWidth());
+  }
+#endif
+
  private:
   raw_ptr<VerticalTabStripRegionView> region_view_ = nullptr;
   raw_ptr<const TabStrip> tab_strip_ = nullptr;
 
-  gfx::ImageSkia expand_icon_;
-  gfx::ImageSkia collapse_icon_;
+  gfx::ImageSkia icon_;
 };
 
 BEGIN_METADATA(ToggleButton, views::Button)
@@ -401,10 +401,10 @@ gfx::Size VerticalTabStripRegionView::CalculatePreferredSize() const {
 gfx::Size VerticalTabStripRegionView::GetMinimumSize() const {
   if (state_ == State::kFloating) {
     return GetPreferredSizeForState(State::kCollapsed,
-                                    /* include_border=*/false);
+                                    /* include_border=*/true);
   }
 
-  return GetPreferredSizeForState(state_, /* include_border= */ false);
+  return GetPreferredSizeForState(state_, /* include_border= */ true);
 }
 
 void VerticalTabStripRegionView::Layout() {
@@ -552,8 +552,19 @@ void VerticalTabStripRegionView::OnMouseEntered(const ui::MouseEvent& event) {
 
 void VerticalTabStripRegionView::OnBoundsChanged(
     const gfx::Rect& previous_bounds) {
+  if (!tabs::utils::ShouldShowVerticalTabs(browser_)) {
+    return;
+  }
+
   if (previous_bounds.size() != size())
     ScrollActiveTabToBeVisible();
+
+#if DCHECK_IS_ON()
+  if (auto width = GetContentsBounds().width(); width) {
+    DCHECK_GE(width, tabs::kVerticalTabMinWidth +
+                         tabs::kMarginForVerticalTabContainers * 2);
+  }
+#endif
 }
 
 void VerticalTabStripRegionView::PreferredSizeChanged() {
