@@ -5,7 +5,6 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. -->
 
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/wallet_dn_bg_primary"
@@ -16,90 +15,49 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/frag_port_pb_asset_discovery"
+            android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:background="@color/wallet_dn_bg_primary"
+            android:orientation="vertical">
 
-
-            <android.widget.Button
-                android:id="@+id/fragment_nft_grid_btn_change_networks"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight=".4"
-                android:background="@drawable/rounded_holo_button"
-                android:drawableEnd="@drawable/ic_arrow_down_circular_day_night"
-                android:minHeight="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:textAllCaps="false"
-                android:textColor="@color/brave_wallet_day_night_text_color"
-                app:autoSizeTextType="uniform" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                style="@style/BraveWalletTextView"
-                android:layout_width="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="6dp"
-                android:text="@string/brave_wallet_nfts"
-                android:textColor="@color/brave_theme_hint_text" />
-
-            <ProgressBar
-                android:id="@+id/frag_port_pb_asset_discovery"
-                android:indeterminateDrawable="@drawable/progress_indeterminate_orange"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:visibility="gone"/>
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/nft_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/brave_wallet_dn_highlight_bg_color"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
-
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_nft"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/brave_wallet_dn_highlight_bg_color"
-                android:orientation="vertical">
+                />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_nft"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
-                    app:layoutManager="LinearLayoutManager" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="?android:attr/listDivider"
+                />
 
-                <TextView
-                    android:id="@+id/edit_visible_nfts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="@string/edit_visible_assets"
-                    android:textColor="@color/wallet_text_color"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/edit_visible_nfts"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingVertical="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="88dp"
+                android:text="@string/edit_visible_nfts"
+                android:textColor="@color/wallet_text_color"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

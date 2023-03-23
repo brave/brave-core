@@ -2070,6 +2070,9 @@ Are you sure you want to do this?
     <message name="IDS_EDIT_VISIBLE_ASSETS" desc="Brave wallet edit assets button name">
       Edit visible assets
     </message>
+    <message name="IDS_EDIT_VISIBLE_NFTS" desc="Brave wallet edit NFTs button name">
+      Edit visible NFTs
+    </message>
     <message name="IDS_SAVE_ACCOUNT_WATCHLIST" desc="Brave wallet save a watchlist assets button name">
       Save account watchlist
     </message>
