@@ -4755,4 +4755,16 @@
   <message name="IDS_SETTINGS_EXTENSION_DISPLAY_NAME" desc="The title of a page containing site settings for an extension. The display name contains a human-readable extension name followed by the extension ID.">
     <ph name="EXTENSION_NAME">$1<ex>Google Docs Offline</ex></ph> (ID: <ph name="EXTENSION_ID">$2<ex>ghbmnnjooekpmoecnnnilnnbdlolhkhi</ex></ph>)
   </message>
+  <message name="IDS_SETTINGS_SITE_COOKIES_LINK_TITLE" desc="The title of a link to navigate to site cookies subpage.">
+    Cookies and Site Data
+  </message>
+  <message name="IDS_SETTINGS_SITE_COOKIES_LINK_DESC" desc="The description of a link to navigate to site cookies subpage.">
+    Show all cookies and locally stored data for this site
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_SUBPAGE" desc="A label for cookie subpage, stating which site we're showing data for.">
+    <ph name="SITE">$1<ex>www.example.com</ex></ph> locally stored data
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_REMOVE_ALL" desc="A label for remove all cookies button.">
+    Remove All
+  </message>
 </grit-part>

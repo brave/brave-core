@@ -55,6 +55,13 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     console.error('[Brave Settings Overrides] Could not find ADVANCED page', r)
   }
   r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
+  if (r.SITE_SETTINGS_SITE_DETAILS) {
+    r.BRAVE_SITE_SETTINGS_COOKIES_DETAILS =
+      r.SITE_SETTINGS_SITE_DETAILS.createChild('/cookies/detail');
+  } else {
+    console.error('[Brave Settings Overrides] could not find expected route /content/siteDetails')
+  }
+
   if (r.SITE_SETTINGS) {
     r.SITE_SETTINGS_AUTOPLAY = r.SITE_SETTINGS.createChild('autoplay')
     const isGoogleSignInFeatureEnabled = loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')

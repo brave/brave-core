@@ -5,9 +5,9 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {RegisterPolymerTemplateModifications, RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
-
+import {BraveSettingsPrivacyPageElement} from '../brave_privacy_page/brave_privacy_page.js'
 import {loadTimeData} from '../i18n_setup.js'
 
 function InsertGoogleSignInSubpage (
@@ -303,6 +303,52 @@ function InsertShieldsSubpage (
   }
 }
 
+function InsertCookiesSubpage (
+  templateContent: DocumentFragment,
+  pages: Element)
+{
+  pages.insertAdjacentHTML(
+    'beforeend',
+    getTrustedHTML`
+      <template is="dom-if" route-path="/cookies/detail" no-search>
+        <settings-subpage page-title="[[pageTitle]]">
+          <cr-button slot="subpage-title-extra" id="remove-all-button"
+            on-click="onRemoveAllCookiesFromSite_">
+          </cr-button>
+          <site-data-details-subpage page-title="{{pageTitle}}">
+          </site-data-details-subpage>
+        </settings-subpage>
+      </template>`)
+  const cookiesTemplate = templateContent.
+      querySelector('[route-path="/cookies/detail"]')
+  if (!cookiesTemplate) {
+    console.error(
+      '[Brave Settings Overrides] Couldn\'t find Cookies template')
+  } else {
+    const cookiesSubpage =
+      cookiesTemplate.content.querySelector('settings-subpage')
+    if (!cookiesSubpage) {
+      console.error(
+        '[Brave Settings Overrides] Couldn\'t find Cookies subpage')
+    } else {
+      const removeAllButton =
+        cookiesTemplate.content.getElementById('remove-all-button')
+      if (!removeAllButton) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find Cookies remove all button')
+      } else {
+        removeAllButton.textContent =
+          loadTimeData.getString('siteSettingsCookieRemoveAll');
+      }
+    }
+  }
+}
+
+RegisterPolymerComponentReplacement(
+  'settings-privacy-page',
+  BraveSettingsPrivacyPageElement
+)
+
 RegisterPolymerTemplateModifications({
   'settings-privacy-page': (templateContent) => {
     const pages = templateContent.getElementById('pages')
@@ -329,6 +375,7 @@ RegisterPolymerTemplateModifications({
         InsertSolanaSubpage(templateContent, pages)
       }
       InsertShieldsSubpage(templateContent, pages)
+      InsertCookiesSubpage(templateContent, pages)
     }
 
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
