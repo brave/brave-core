@@ -9,7 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -23,7 +23,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasChangedDefaultSetting) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["default_ads_per_hour"] = "2";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -46,7 +46,7 @@ TEST_F(BatAdsSettingsTest, AdsPerHourWhenUserHasNotChangedDefaultSetting) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["default_ads_per_hour"] = "2";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -66,7 +66,7 @@ TEST_F(BatAdsSettingsTest, ClampMinAdsPerHour) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["default_ads_per_hour"] = "-1";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -86,7 +86,7 @@ TEST_F(BatAdsSettingsTest, ClampMaxAdsPerHour) {
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
   params["default_ads_per_hour"] = "11";
-  enabled_features.emplace_back(notification_ads::features::kServing, params);
+  enabled_features.emplace_back(notification_ads::features::kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 

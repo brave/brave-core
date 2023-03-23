@@ -11,14 +11,8 @@ namespace brave_ads::inline_content_ads::features {
 
 namespace {
 
-constexpr char kServingVersionFieldTrialParamName[] = "serving_version";
-constexpr int kServingVersionDefaultValue = 2;
-
-constexpr char kMaximumAdsPerHourFieldTrialParamName[] = "maximum_ads_per_hour";
-constexpr int kMaximumAdsPerHourDefaultValue = 6;
-
-constexpr char kMaximumAdsPerDayFieldTrialParamName[] = "maximum_ads_per_day";
-constexpr int kMaximumAdsPerDayDefaultValue = 20;
+constexpr char kVersionFieldTrialParamName[] = "version";
+constexpr int kVersionDefaultValue = 2;
 
 }  // namespace
 
@@ -31,21 +25,8 @@ bool IsServingEnabled() {
 }
 
 int GetServingVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kServing,
-                                          kServingVersionFieldTrialParamName,
-                                          kServingVersionDefaultValue);
-}
-
-int GetMaximumAdsPerHour() {
-  return GetFieldTrialParamByFeatureAsInt(kServing,
-                                          kMaximumAdsPerHourFieldTrialParamName,
-                                          kMaximumAdsPerHourDefaultValue);
-}
-
-int GetMaximumAdsPerDay() {
-  return GetFieldTrialParamByFeatureAsInt(kServing,
-                                          kMaximumAdsPerDayFieldTrialParamName,
-                                          kMaximumAdsPerDayDefaultValue);
+  return GetFieldTrialParamByFeatureAsInt(kServing, kVersionFieldTrialParamName,
+                                          kVersionDefaultValue);
 }
 
 }  // namespace brave_ads::inline_content_ads::features

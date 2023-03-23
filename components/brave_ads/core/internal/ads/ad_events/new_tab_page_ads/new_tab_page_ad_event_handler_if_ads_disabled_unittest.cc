@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"

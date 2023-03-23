@@ -8,19 +8,12 @@
 
 #include "base/feature_list.h"
 
-namespace base {
-class TimeDelta;
-}  // namespace base
-
 namespace brave_ads::new_tab_page_ads::features {
 
 BASE_DECLARE_FEATURE(kServing);
 
 bool IsServingEnabled();
 int GetServingVersion();
-int GetMaximumAdsPerHour();
-int GetMaximumAdsPerDay();
-base::TimeDelta GetMinimumWaitTime();
 
 }  // namespace brave_ads::new_tab_page_ads::features
 

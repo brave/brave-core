@@ -19,7 +19,7 @@ namespace brave_ads::new_tab_page_ads::features {
 
 void ForceServingVersion(const int version) {
   std::map<std::string, std::string> params;
-  params["serving_version"] = base::NumberToString(version);
+  params["version"] = base::NumberToString(version);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters({{kServing, params}}, {});

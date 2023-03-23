@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_AD_REWARDS_FEATURES_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_AD_REWARDS_FEATURES_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_FEATURES_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_FEATURES_H_
 
 #include "base/feature_list.h"
 
 namespace brave_ads::features {
 
-BASE_DECLARE_FEATURE(kAdRewards);
+BASE_DECLARE_FEATURE(kAccount);
 
-bool IsAdRewardsEnabled();
+bool IsAccountEnabled();
 
-int GetAdRewardsNextPaymentDay();
+int GetNextPaymentDay();
 
 }  // namespace brave_ads::features
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_STATEMENT_AD_REWARDS_FEATURES_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_ACCOUNT_FEATURES_H_

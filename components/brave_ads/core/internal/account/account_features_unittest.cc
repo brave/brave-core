@@ -1,9 +1,9 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_features.h"
 
 #include <vector>
 
@@ -12,23 +12,23 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::inline_content_ads::features {
+namespace brave_ads::features {
 
-TEST(BatAdsServingFeaturesTest, IsServingEnabled) {
+TEST(BatAdsAccountFeaturesTest, IsAccountEnabled) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(IsServingEnabled());
+  EXPECT_TRUE(IsAccountEnabled());
 }
 
-TEST(BatAdsServingFeaturesTest, IsServingDisabled) {
+TEST(BatAdsAccountFeaturesTest, IsAccountDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kServing);
+  disabled_features.emplace_back(kAccount);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -37,15 +37,15 @@ TEST(BatAdsServingFeaturesTest, IsServingDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsServingEnabled());
+  EXPECT_FALSE(IsAccountEnabled());
 }
 
-TEST(BatAdsServingFeaturesTest, GetServingVersion) {
+TEST(BatAdsAccountFeaturesTest, GetNextPaymentDay) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["version"] = "0";
-  enabled_features.emplace_back(kServing, params);
+  params["next_payment_day"] = "5";
+  enabled_features.emplace_back(kAccount, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,24 +56,24 @@ TEST(BatAdsServingFeaturesTest, GetServingVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetServingVersion());
+  EXPECT_EQ(5, GetNextPaymentDay());
 }
 
-TEST(BatAdsServingFeaturesTest, DefaultServingVersion) {
+TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDay) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetServingVersion());
+  EXPECT_EQ(7, GetNextPaymentDay());
 }
 
-TEST(BatAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
+TEST(BatAdsAccountFeaturesTest, DefaultNextPaymentDayWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kServing);
+  disabled_features.emplace_back(kAccount);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -82,7 +82,7 @@ TEST(BatAdsServingFeaturesTest, DefaultServingVersionWhenDisabled) {
   // Act
 
   // Assert
-  EXPECT_EQ(2, GetServingVersion());
+  EXPECT_EQ(7, GetNextPaymentDay());
 }
 
-}  // namespace brave_ads::inline_content_ads::features
+}  // namespace brave_ads::features

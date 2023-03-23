@@ -12,14 +12,13 @@ namespace brave_ads::features {
 
 namespace {
 
-constexpr char kResourceVersionFieldTrialParamName[] =
-    "conversions_resource_version";
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
 constexpr int kResourceVersionDefaultValue = 1;
 
 constexpr char kConversionIdPatternFieldTrialParamName[] =
-    "conversions_default_conversion_id_pattern";
+    "conversion_id_pattern";
 constexpr char kConversionIdPatternDefaultValue[] =
-    "<meta.*name=\"ad-conversion-id\".*content=\"([-a-zA-Z0-9]*)\".*>";
+    R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
 
 }  // namespace
 
@@ -35,7 +34,7 @@ int GetConversionsResourceVersion() {
                                           kResourceVersionDefaultValue);
 }
 
-std::string GetDefaultConversionIdPattern() {
+std::string GetConversionIdPattern() {
   return GetFieldTrialParamByFeatureAsString(
       kConversions, kConversionIdPatternFieldTrialParamName,
       kConversionIdPatternDefaultValue);

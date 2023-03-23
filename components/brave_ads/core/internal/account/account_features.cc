@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_features.h"
 
 #include "base/metrics/field_trial_params.h"
 
@@ -16,14 +16,14 @@ constexpr int kNextPaymentDayDefaultValue = 7;
 
 }  // namespace
 
-BASE_FEATURE(kAdRewards, "AdRewards", base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kAccount, "Account", base::FEATURE_ENABLED_BY_DEFAULT);
 
-bool IsAdRewardsEnabled() {
-  return base::FeatureList::IsEnabled(kAdRewards);
+bool IsAccountEnabled() {
+  return base::FeatureList::IsEnabled(kAccount);
 }
 
-int GetAdRewardsNextPaymentDay() {
-  return GetFieldTrialParamByFeatureAsInt(kAdRewards,
+int GetNextPaymentDay() {
+  return GetFieldTrialParamByFeatureAsInt(kAccount,
                                           kNextPaymentDayFieldTrialParamName,
                                           kNextPaymentDayDefaultValue);
 }

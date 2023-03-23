@@ -7,18 +7,15 @@
 
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/promoted_content_ad_serving_features.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/search_result_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/multi_armed_bandits/epsilon_greedy_bandit_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features.h"
@@ -32,19 +29,16 @@ namespace {
 
 const base::Feature* const kFeatures[] = {
     &exclusion_rules::features::kFeature,
-    &features::kAdRewards,
+    &features::kAccount,
     &features::kConversions,
     &features::kEligibleAds,
     &inline_content_ads::features::kFeature,
-    &inline_content_ads::features::kServing,
     &new_tab_page_ads::features::kFeature,
-    &new_tab_page_ads::features::kServing,
     &notification_ads::features::kFeature,
-    &notification_ads::features::kServing,
     &permission_rules::features::kFeature,
-    &promoted_content_ads::features::kServing,
+    &promoted_content_ads::features::kFeature,
     &resource::features::kAntiTargeting,
-    &search_result_ads::features::kServing,
+    &search_result_ads::features::kFeature,
     &targeting::features::kEpsilonGreedyBandit,
     &targeting::features::kPurchaseIntent,
     &targeting::features::kTextClassification,

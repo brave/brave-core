@@ -13,14 +13,13 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kResourceVersionFieldTrialParamName[] =
-    "purchase_intent_resource_version";
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
 constexpr int kResourceVersionDefaultValue = 1;
 
 constexpr char kThresholdFieldTrialParamName[] = "threshold";
 constexpr uint16_t kThresholdDefaultValue = 3;
 
-constexpr char kTimeWindowFieldTrialParamName[] = "time_window_in_seconds";
+constexpr char kTimeWindowFieldTrialParamName[] = "time_window";
 constexpr base::TimeDelta kTimeWindowDefaultValue = base::Days(7);
 
 }  // namespace

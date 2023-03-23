@@ -11,13 +11,11 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kResourceVersionFieldTrialParamName[] =
-    "text_embedding_resource_version";
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
 constexpr int kResourceVersionDefaultValue = 1;
 
-constexpr char kTextEmbeddingsHistorySizeFieldTrialParamName[] =
-    "text_embeddings_history_size";
-constexpr int kTextEmbeddingsHistorySizeDefaultValue = 10;
+constexpr char kHistorySizeFieldTrialParamName[] = "history_size";
+constexpr int kHistorySizeDefaultValue = 10;
 
 }  // namespace
 
@@ -36,9 +34,9 @@ int GetTextEmbeddingResourceVersion() {
 }
 
 int GetTextEmbeddingsHistorySize() {
-  return GetFieldTrialParamByFeatureAsInt(
-      kTextEmbedding, kTextEmbeddingsHistorySizeFieldTrialParamName,
-      kTextEmbeddingsHistorySizeDefaultValue);
+  return GetFieldTrialParamByFeatureAsInt(kTextEmbedding,
+                                          kHistorySizeFieldTrialParamName,
+                                          kHistorySizeDefaultValue);
 }
 
 }  // namespace brave_ads::targeting::features

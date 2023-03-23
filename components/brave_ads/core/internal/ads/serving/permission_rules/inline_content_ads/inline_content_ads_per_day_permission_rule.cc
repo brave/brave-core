@@ -11,7 +11,7 @@
 #include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
 namespace brave_ads::inline_content_ads {

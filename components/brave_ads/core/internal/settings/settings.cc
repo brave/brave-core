@@ -10,7 +10,7 @@
 #include "base/cxx17_backports.h"
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
+#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 namespace brave_ads::settings {

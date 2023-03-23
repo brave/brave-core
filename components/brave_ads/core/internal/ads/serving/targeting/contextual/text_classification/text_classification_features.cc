@@ -11,8 +11,7 @@ namespace brave_ads::targeting::features {
 
 namespace {
 
-constexpr char kResourceVersionFieldTrialParamName[] =
-    "text_classification_resource_version";
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
 constexpr int kResourceVersionDefaultValue = 1;
 
 constexpr char kPageProbabilitiesHistorySizeFieldTrialParamName[] =

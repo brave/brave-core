@@ -11,8 +11,7 @@ namespace brave_ads::resource::features {
 
 namespace {
 
-constexpr char kResourceVersionFieldTrialParamName[] =
-    "anti_targeting_resource_version";
+constexpr char kResourceVersionFieldTrialParamName[] = "resource_version";
 constexpr int kResourceVersionDefaultValue = 1;
 
 }  // namespace

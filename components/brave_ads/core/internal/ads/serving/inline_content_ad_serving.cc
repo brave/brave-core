@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_features.h"
@@ -50,7 +49,7 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 
 void Serving::MaybeServeAd(const std::string& dimensions,
                            MaybeServeInlineContentAdCallback callback) {
-  if (!features::IsEnabled()) {
+  if (!features::IsServingEnabled()) {
     BLOG(1, "Inline content ad not served: Feature is disabled");
     return FailedToServeAd(dimensions, std::move(callback));
   }

@@ -1,9 +1,9 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/statement/ad_rewards_features.h"
+#include "brave/components/brave_ads/core/internal/ads/search_result_ad_features.h"
 
 #include <vector>
 
@@ -12,42 +12,40 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::features {
+namespace brave_ads::search_result_ads::features {
 
-TEST(BatAdsAdRewardsFeaturesTest, AdRewardsEnabled) {
+TEST(BatAdsFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
-  const bool is_enabled = IsAdRewardsEnabled();
 
   // Assert
-  EXPECT_TRUE(is_enabled);
+  EXPECT_TRUE(IsEnabled());
 }
 
-TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDisabled) {
+TEST(BatAdsFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAdRewards);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
   // Act
-  const bool is_enabled = IsAdRewardsEnabled();
 
   // Assert
-  EXPECT_FALSE(is_enabled);
+  EXPECT_FALSE(IsEnabled());
 }
 
-TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
+TEST(BatAdsFeaturesTest, GetMaximumAdsPerHour) {
   // Arrange
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   base::FieldTrialParams params;
-  params["next_payment_day"] = "5";
-  enabled_features.emplace_back(kAdRewards, params);
+  params["maximum_ads_per_hour"] = "42";
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,47 +54,80 @@ TEST(BatAdsAdRewardsFeaturesTest, AdRewardsNextPaymentDay) {
                                                     disabled_features);
 
   // Act
-  const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
-  const int expected_next_payment_day = 5;
-  EXPECT_EQ(expected_next_payment_day, next_payment_day);
+  EXPECT_EQ(42, GetMaximumAdsPerHour());
 }
 
-TEST(BatAdsAdRewardsFeaturesTest, AdRewardsDefaultNextPaymentDay) {
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHour) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
-  const int expected_next_payment_day = 7;
-  EXPECT_EQ(expected_next_payment_day, next_payment_day);
+  EXPECT_EQ(10, GetMaximumAdsPerHour());
 }
 
-TEST(BatAdsAdRewardsFeaturesTest, DisabledAdRewardsDefaultNextPaymentDay) {
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHourWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kAdRewards);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                     disabled_features);
 
   // Act
-  const int next_payment_day = GetAdRewardsNextPaymentDay();
 
   // Assert
-  const int expected_next_payment_day = 7;
-  EXPECT_EQ(expected_next_payment_day, next_payment_day);
+  EXPECT_EQ(10, GetMaximumAdsPerHour());
 }
 
-}  // namespace brave_ads::features
+TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
+  // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["maximum_ads_per_day"] = "42";
+  enabled_features.emplace_back(kFeature, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(42, GetMaximumAdsPerDay());
+}
+
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDay) {
+  // Arrange
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(40, GetMaximumAdsPerDay());
+}
+
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
+  // Arrange
+  const std::vector<base::test::FeatureRefAndParams> enabled_features;
+
+  std::vector<base::test::FeatureRef> disabled_features;
+  disabled_features.emplace_back(kFeature);
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
+  // Act
+
+  // Assert
+  EXPECT_EQ(40, GetMaximumAdsPerDay());
+}
+
+}  // namespace brave_ads::search_result_ads::features

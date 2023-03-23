@@ -18,10 +18,9 @@ TEST(BatAdsUserActivityFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
-  const bool is_enabled = IsEnabled();
 
   // Assert
-  EXPECT_TRUE(is_enabled);
+  EXPECT_TRUE(IsEnabled());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
@@ -36,13 +35,12 @@ TEST(BatAdsUserActivityFeaturesTest, IsDisabled) {
                                                     disabled_features);
 
   // Act
-  const bool is_enabled = IsEnabled();
 
   // Assert
-  EXPECT_FALSE(is_enabled);
+  EXPECT_FALSE(IsEnabled());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, Triggers) {
+TEST(BatAdsUserActivityFeaturesTest, GetTriggers) {
   // Arrange
   base::FieldTrialParams params;
   params["triggers"] = "01=0.5;010203=1.0;0203=0.75";
@@ -56,29 +54,20 @@ TEST(BatAdsUserActivityFeaturesTest, Triggers) {
                                                     disabled_features);
 
   // Act
-  const std::string triggers = GetTriggers();
 
   // Assert
-  const std::string expected_triggers = "01=0.5;010203=1.0;0203=0.75";
-  EXPECT_EQ(expected_triggers, triggers);
+  EXPECT_EQ("01=0.5;010203=1.0;0203=0.75", GetTriggers());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTriggers) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
   // Act
-  const std::string triggers = GetTriggers();
 
   // Assert
-  const std::string expected_triggers =
-      "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
-  EXPECT_EQ(expected_triggers, triggers);
+  EXPECT_EQ(
+      "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
+      GetTriggers());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
@@ -93,15 +82,14 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTriggersWhenDisabled) {
                                                     disabled_features);
 
   // Act
-  const std::string triggers = GetTriggers();
 
   // Assert
-  const std::string expected_triggers =
-      "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0";
-  EXPECT_EQ(expected_triggers, triggers);
+  EXPECT_EQ(
+      "0D0B14110D0B14110D0B14110D0B1411=-1.0;0D0B1411070707=-1.0;07070707=-1.0",
+      GetTriggers());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, TimeWindow) {
+TEST(BatAdsUserActivityFeaturesTest, GetTimeWindow) {
   // Arrange
   base::FieldTrialParams params;
   params["time_window"] = "2h";
@@ -115,29 +103,18 @@ TEST(BatAdsUserActivityFeaturesTest, TimeWindow) {
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Hours(2);
-  EXPECT_EQ(expected_time_window, time_window);
+  EXPECT_EQ(base::Hours(2), GetTimeWindow());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindow) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
-  const base::TimeDelta time_window = GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Minutes(15);
-  EXPECT_EQ(expected_time_window, time_window);
+  EXPECT_EQ(base::Minutes(15), GetTimeWindow());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
@@ -152,14 +129,12 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultTimeWindowWhenDisabled) {
                                                     disabled_features);
 
   // Act
-  const base::TimeDelta time_window = GetTimeWindow();
 
   // Assert
-  const base::TimeDelta expected_time_window = base::Minutes(15);
-  EXPECT_EQ(expected_time_window, time_window);
+  EXPECT_EQ(base::Minutes(15), GetTimeWindow());
 }
 
-TEST(BatAdsUserActivityFeaturesTest, Threshold) {
+TEST(BatAdsUserActivityFeaturesTest, GetThreshold) {
   // Arrange
   base::FieldTrialParams params;
   params["threshold"] = "7.0";
@@ -173,29 +148,18 @@ TEST(BatAdsUserActivityFeaturesTest, Threshold) {
                                                     disabled_features);
 
   // Act
-  const double threshold = GetThreshold();
 
   // Assert
-  const double expected_threshold = 7.0;
-  EXPECT_EQ(expected_threshold, threshold);
+  EXPECT_EQ(7.0, GetThreshold());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultThreshold) {
   // Arrange
-  const std::vector<base::test::FeatureRefAndParams> enabled_features;
-
-  const std::vector<base::test::FeatureRef> disabled_features;
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
-                                                    disabled_features);
 
   // Act
-  const double threshold = GetThreshold();
 
   // Assert
-  const double expected_threshold = 0.0;
-  EXPECT_EQ(expected_threshold, threshold);
+  EXPECT_EQ(0.0, GetThreshold());
 }
 
 TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
@@ -210,11 +174,9 @@ TEST(BatAdsUserActivityFeaturesTest, DefaultThresholdWhenDisabled) {
                                                     disabled_features);
 
   // Act
-  const double threshold = GetThreshold();
 
   // Assert
-  const double expected_threshold = 0.0;
-  EXPECT_EQ(expected_threshold, threshold);
+  EXPECT_EQ(0.0, GetThreshold());
 }
 
 }  // namespace brave_ads::user_activity::features

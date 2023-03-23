@@ -14,8 +14,6 @@ BASE_DECLARE_FEATURE(kServing);
 
 bool IsServingEnabled();
 int GetServingVersion();
-int GetMaximumAdsPerHour();
-int GetMaximumAdsPerDay();
 
 }  // namespace brave_ads::inline_content_ads::features
 

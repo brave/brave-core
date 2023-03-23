@@ -13,6 +13,8 @@ namespace brave_ads::notification_ads::features {
 BASE_DECLARE_FEATURE(kFeature);
 
 bool IsEnabled();
+int GetDefaultAdsPerHour();
+int GetMaximumAdsPerDay();
 
 }  // namespace brave_ads::notification_ads::features
 

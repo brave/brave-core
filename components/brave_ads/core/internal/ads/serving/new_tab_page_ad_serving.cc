@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/rand_util.h"
-#include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/new_tab_page_ads/eligible_new_tab_page_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/new_tab_page_ad_serving_features.h"
@@ -49,7 +48,7 @@ void Serving::RemoveObserver(ServingObserver* observer) {
 }
 
 void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
-  if (!features::IsEnabled()) {
+  if (!features::IsServingEnabled()) {
     BLOG(1, "New tab page ad not served: Feature is disabled");
     return FailedToServeAd(std::move(callback));
   }

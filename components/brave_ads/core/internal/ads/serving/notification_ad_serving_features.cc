@@ -6,20 +6,13 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 
 #include "base/metrics/field_trial_params.h"
-#include "brave/components/brave_ads/common/constants.h"
 
 namespace brave_ads::notification_ads::features {
 
 namespace {
 
-constexpr char kServingVersionFieldTrialParamName[] = "serving_version";
-constexpr int kServingVersionDefaultValue = 2;
-
-constexpr char kDefaultAdsPerHourFieldTrialParamName[] = "default_ads_per_hour";
-constexpr int kDefaultAdsPerHourDefaultValue = kDefaultNotificationAdsPerHour;
-
-constexpr char kMaximumAdsPerDayFieldTrialParamName[] = "maximum_ads_per_day";
-constexpr int kMaximumAdsPerDayDefaultValue = 100;
+constexpr char kVersionFieldTrialParamName[] = "version";
+constexpr int kVersionDefaultValue = 2;
 
 }  // namespace
 
@@ -32,21 +25,8 @@ bool IsServingEnabled() {
 }
 
 int GetServingVersion() {
-  return GetFieldTrialParamByFeatureAsInt(kServing,
-                                          kServingVersionFieldTrialParamName,
-                                          kServingVersionDefaultValue);
-}
-
-int GetDefaultAdsPerHour() {
-  return GetFieldTrialParamByFeatureAsInt(kServing,
-                                          kDefaultAdsPerHourFieldTrialParamName,
-                                          kDefaultAdsPerHourDefaultValue);
-}
-
-int GetMaximumAdsPerDay() {
-  return GetFieldTrialParamByFeatureAsInt(kServing,
-                                          kMaximumAdsPerDayFieldTrialParamName,
-                                          kMaximumAdsPerDayDefaultValue);
+  return GetFieldTrialParamByFeatureAsInt(kServing, kVersionFieldTrialParamName,
+                                          kVersionDefaultValue);
 }
 
 }  // namespace brave_ads::notification_ads::features

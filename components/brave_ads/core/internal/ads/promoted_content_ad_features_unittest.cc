@@ -1,9 +1,9 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
+#include "brave/components/brave_ads/core/internal/ads/promoted_content_ad_features.h"
 
 #include <vector>
 
@@ -12,23 +12,23 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads::features {
+namespace brave_ads::promoted_content_ads::features {
 
-TEST(BatAdsConversionsFeaturesTest, IsConversionsEnabled) {
+TEST(BatAdsFeaturesTest, IsEnabled) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_TRUE(IsConversionsEnabled());
+  EXPECT_TRUE(IsEnabled());
 }
 
-TEST(BatAdsConversionsFeaturesTest, IsConversionsDisabled) {
+TEST(BatAdsFeaturesTest, IsDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversions);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -37,15 +37,15 @@ TEST(BatAdsConversionsFeaturesTest, IsConversionsDisabled) {
   // Act
 
   // Assert
-  EXPECT_FALSE(IsConversionsEnabled());
+  EXPECT_FALSE(IsEnabled());
 }
 
-TEST(BatAdsConversionsFeaturesTest, GetConversionsResourceVersion) {
+TEST(BatAdsFeaturesTest, GetMaximumAdsPerHour) {
   // Arrange
-  base::FieldTrialParams params;
-  params["resource_version"] = "0";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversions, params);
+  base::FieldTrialParams params;
+  params["maximum_ads_per_hour"] = "42";
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -56,25 +56,24 @@ TEST(BatAdsConversionsFeaturesTest, GetConversionsResourceVersion) {
   // Act
 
   // Assert
-  EXPECT_EQ(0, GetConversionsResourceVersion());
+  EXPECT_EQ(42, GetMaximumAdsPerHour());
 }
 
-TEST(BatAdsConversionsFeaturesTest, DefaultConversionsResourceVersion) {
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHour) {
   // Arrange
 
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetConversionsResourceVersion());
+  EXPECT_EQ(4, GetMaximumAdsPerHour());
 }
 
-TEST(BatAdsConversionsFeaturesTest,
-     DefaultConversionsResourceVersionWhenDisabled) {
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerHourWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversions);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -83,15 +82,15 @@ TEST(BatAdsConversionsFeaturesTest,
   // Act
 
   // Assert
-  EXPECT_EQ(1, GetConversionsResourceVersion());
+  EXPECT_EQ(4, GetMaximumAdsPerHour());
 }
 
-TEST(BatAdsConversionsFeaturesTest, GetConversionIdPattern) {
+TEST(BatAdsFeaturesTest, GetMaximumAdsPerDay) {
   // Arrange
-  base::FieldTrialParams params;
-  params["conversion_id_pattern"] = "*";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
-  enabled_features.emplace_back(kConversions, params);
+  base::FieldTrialParams params;
+  params["maximum_ads_per_day"] = "24";
+  enabled_features.emplace_back(kFeature, params);
 
   const std::vector<base::test::FeatureRef> disabled_features;
 
@@ -102,26 +101,24 @@ TEST(BatAdsConversionsFeaturesTest, GetConversionIdPattern) {
   // Act
 
   // Assert
-  EXPECT_EQ("*", GetConversionIdPattern());
+  EXPECT_EQ(24, GetMaximumAdsPerDay());
 }
 
-TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPattern) {
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDay) {
   // Arrange
 
   // Act
 
   // Assert
-  const std::string expected_pattern =
-      R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
-  EXPECT_EQ(expected_pattern, GetConversionIdPattern());
+  EXPECT_EQ(20, GetMaximumAdsPerDay());
 }
 
-TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPatternWhenDisabled) {
+TEST(BatAdsFeaturesTest, DefaultMaximumAdsPerDayWhenDisabled) {
   // Arrange
   const std::vector<base::test::FeatureRefAndParams> enabled_features;
 
   std::vector<base::test::FeatureRef> disabled_features;
-  disabled_features.emplace_back(kConversions);
+  disabled_features.emplace_back(kFeature);
 
   base::test::ScopedFeatureList scoped_feature_list;
   scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
@@ -130,9 +127,7 @@ TEST(BatAdsConversionsFeaturesTest, DefaultConversionIdPatternWhenDisabled) {
   // Act
 
   // Assert
-  const std::string expected_pattern =
-      R"~(<meta.*name="ad-conversion-id".*content="([-a-zA-Z0-9]*)".*>)~";
-  EXPECT_EQ(expected_pattern, GetConversionIdPattern());
+  EXPECT_EQ(20, GetMaximumAdsPerDay());
 }
 
-}  // namespace brave_ads::features
+}  // namespace brave_ads::promoted_content_ads::features

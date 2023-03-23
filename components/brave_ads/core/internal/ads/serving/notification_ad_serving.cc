@@ -10,7 +10,6 @@
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads/notification_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_base.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_factory.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
@@ -92,7 +91,7 @@ void Serving::MaybeServeAd() {
 
   is_serving_ = true;
 
-  if (!features::IsEnabled()) {
+  if (!features::IsServingEnabled()) {
     BLOG(1, "Notification ad not served: Feature is disabled");
     FailedToServeAd();
     return;
