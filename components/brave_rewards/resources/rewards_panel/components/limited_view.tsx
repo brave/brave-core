@@ -100,7 +100,7 @@ export function LimitedView () {
         <style.publisherCount>
           {publishersVisitedCount}
         </style.publisherCount>
-        <div>
+        <div data-test-id='publishers-count'>
           {publisherCountText}
         </div>
       </style.publisherSupport>

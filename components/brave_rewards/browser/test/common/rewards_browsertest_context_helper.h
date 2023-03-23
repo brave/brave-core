@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_HELPER_H_
 
-#include <vector>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
@@ -31,10 +29,9 @@ class RewardsBrowserTestContextHelper {
   base::WeakPtr<content::WebContents> OpenSiteBanner(
       rewards_browsertest_util::TipAction tip_action);
 
-  void VisitPublisher(
-      const GURL& url,
-      const bool verified,
-      const bool last_add = false);
+  // Visit publisher and verify that the auto-contribution panel on
+  // brave://rewards looks correct
+  void VisitPublisher(const GURL& url, bool verified);
 
   void LoadURL(GURL url);
 

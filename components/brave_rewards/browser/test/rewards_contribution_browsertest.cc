@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
+#include "base/threading/platform_thread.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -19,12 +20,13 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -146,6 +148,70 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
 
   rewards_browsertest_util::WaitForElementToContain(
       contents(), "[data-test-id=rewards-summary-ac]", "-20.00 BAT");
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       AutoContributionUnconnected) {
+  // Set kEnabled to false before calling CreateRewardsWallet to ensure that
+  // prefs are configured to reflect an unconnected user
+  auto* pref_service = browser()->profile()->GetPrefs();
+  pref_service->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+
+  // Visit publisher (this opens a new tab at index 1)
+  rewards_browsertest_util::NavigateToPublisherPage(
+      browser(), https_server_.get(), "duckduckgo.com");
+
+  // The minimum publisher duration when testing is 1 second (and the
+  // granularity is seconds), so wait for just over 2 seconds to elapse
+  base::PlatformThread::Sleep(base::Milliseconds(2100));
+
+  // Switch to original tab to trigger saving publisher activity
+  browser()->tab_strip_model()->ActivateTabAt(0);
+
+  rewards_service_->StartContributionsForTesting();
+
+  // Switch back to publisher tab and verify that we see correct visited count
+  // in Rewards panel
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  rewards_browsertest_util::WaitForElementToContain(
+      context_helper_->OpenRewardsPopup().get(),
+      "[data-test-id=publishers-count]",
+      "This month, you've visited 1 creator supported by Brave Rewards");
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       AutoContributionUnconnectedJapan) {
+  // Set kEnabled to false before calling CreateRewardsWallet to ensure that
+  // prefs are configured to reflect an unconnected user
+  auto* pref_service = browser()->profile()->GetPrefs();
+  pref_service->SetBoolean(brave_rewards::prefs::kEnabled, false);
+  rewards_browsertest_util::CreateRewardsWallet(rewards_service_, "JP");
+
+  // Ensure that auto-contribution is disabled
+  ASSERT_FALSE(
+      pref_service->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
+
+  // Visit publisher (this opens a new tab at index 1)
+  rewards_browsertest_util::NavigateToPublisherPage(
+      browser(), https_server_.get(), "duckduckgo.com");
+
+  // The minimum publisher duration when testing is 1 second (and the
+  // granularity is seconds), so wait for just over 2 seconds to elapse
+  base::PlatformThread::Sleep(base::Milliseconds(2100));
+
+  // Switch to original tab to trigger saving publisher activity
+  browser()->tab_strip_model()->ActivateTabAt(0);
+
+  rewards_service_->StartContributionsForTesting();
+
+  // Switch back to publisher tab and verify that we see correct visited count
+  // in Rewards panel
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  rewards_browsertest_util::WaitForElementToContain(
+      context_helper_->OpenRewardsPopup().get(),
+      "[data-test-id=publishers-count]",
+      "This month, you've visited 1 creator supported by Brave Rewards");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,

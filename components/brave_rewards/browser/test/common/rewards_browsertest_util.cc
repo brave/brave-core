@@ -103,7 +103,8 @@ void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
   run_loop.Run();
 }
 
-void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service) {
+void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const std::string& country) {
   DCHECK(rewards_service);
 
   // Ensure that the utility process is started before attempting to create a

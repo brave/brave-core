@@ -286,8 +286,7 @@ void Publisher::SaveVisitInternal(const mojom::PublisherStatus status,
 
     ledger_->database()->SavePublisherInfo(std::move(publisher_info),
                                            publisher_info_saved_callback);
-  } else if (!excluded && ledger_->state()->GetAutoContributeEnabled() &&
-             min_duration_ok && verified_old) {
+  } else if (!excluded && min_duration_ok && verified_old) {
     if (first_visit) {
       publisher_info->visits += 1;
     }

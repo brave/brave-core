@@ -114,10 +114,8 @@ RewardsBrowserTestContextHelper::OpenSiteBanner(
   return banner;
 }
 
-void RewardsBrowserTestContextHelper::VisitPublisher(
-    const GURL& url,
-    const bool verified,
-    const bool last_add) {
+void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
+                                                     bool verified) {
   const std::string publisher = url.host();
   ui_test_utils::NavigateToURLWithDisposition(
       browser_,
