@@ -81,6 +81,10 @@ void BraveTabGroupHeader::LayoutTitleChip() {
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup * 2));
   title_chip_->SetBoundsRect(title_bounds);
+
+  // |title_| is a child view of |title_chip_| and there could be |sync_icon_|
+  // before |title_|. So expand |title_|'s width considering that.
+  title_->SetSize({title_bounds.width() - title_->x(), title_->height()});
 }
 
 BEGIN_METADATA(BraveTabGroupHeader, TabGroupHeader)
