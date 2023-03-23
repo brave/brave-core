@@ -119,6 +119,9 @@ void WelcomeDOMHandler::OnGetDefaultBrowser(
     shell_integration::DefaultWebClientState state,
     const std::u16string& name) {
   std::u16string browser_name = name;
+#if BUILDFLAG(IS_MAC)
+  base::ReplaceSubstringsAfterOffset(&browser_name, 0, u".app", u"");
+#endif
   if (IsChromeBeta(browser_name)) {
     browser_name = base::UTF8ToUTF16(std::string(kGoogleChromeBrowserBeta));
   } else if (IsChromeDev(browser_name)) {
