@@ -31,6 +31,9 @@ constexpr int kVerticalTabMinWidth = kVerticalTabHeight;
 constexpr int kVerticalTabsSpacing = 4;
 constexpr int kMarginForVerticalTabContainers = kVerticalTabsSpacing;
 
+constexpr int kUnpinnedTabBorderRadius = 4;
+constexpr int kPinnedTabBorderRadius = 8;
+
 std::vector<gfx::Rect> CalculateVerticalTabBounds(
     const TabLayoutConstants& layout_constants,
     const std::vector<TabWidthConstraints>& tabs,
