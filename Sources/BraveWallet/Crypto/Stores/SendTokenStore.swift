@@ -101,6 +101,15 @@ public class SendTokenStore: ObservableObject {
         return String.localizedStringWithFormat(Strings.Wallet.sendErrorDomainNotRegistered, BraveWallet.CoinType.eth.localizedTitle)
       }
     }
+    
+    var shouldBlockSend: Bool {
+      switch self {
+      case .missingChecksum:
+        return false
+      default:
+        return true
+      }
+    }
   }
   
   enum SendError: LocalizedError {

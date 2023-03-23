@@ -30,7 +30,7 @@ struct SendTokenView: View {
           !sendTokenStore.isMakingTx,
           !sendTokenStore.sendAddress.isEmpty,
           !sendTokenStore.isResolvingAddress,
-          sendTokenStore.addressError == nil,
+          sendTokenStore.addressError?.shouldBlockSend != true,
           sendTokenStore.sendError == nil else {
       return true
     }
