@@ -41,6 +41,21 @@ using greaselion::GreaselionServiceFactory;
 const char kTestDataDirectory[] = "greaselion-data";
 const char kEmbeddedTestServerDirectory[] = "greaselion";
 
+const char kWaitForTitleChangeScript[] = R"(
+  new Promise((resolve) => {
+    if (document.title !== 'OK') {
+      resolve(document.title)
+    } else {
+      new MutationObserver(function(mutations) {
+        resolve(mutations[0].target.nodeValue)
+      }).observe(
+        document.querySelector('title'),
+        { subtree: true, characterData: true, childList: true }
+      );
+    }
+  })
+)";
+
 class GreaselionDownloadServiceWaiter
     : public GreaselionDownloadService::Observer {
  public:
@@ -247,12 +262,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
@@ -339,15 +349,9 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // should be altered because rewards precondition matched, so the relevant
   // Greaselion rule is active
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsGreaselionExtension) {
@@ -385,14 +389,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be altered because version is lower than current.
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -406,15 +404,9 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be altered because version is lower than current, even though it
   // omits last component.
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -428,14 +420,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be altered because version is wild match.
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -449,14 +435,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be altered because version is exact match.
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -470,14 +450,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be unaltered because version is too high.
-  EXPECT_EQ(title, "OK");
+  EXPECT_EQ(content::EvalJs(contents, "document.title"), "OK");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -491,14 +465,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be unaltered because version is too high.
-  EXPECT_EQ(title, "OK");
+  EXPECT_EQ(content::EvalJs(contents, "document.title"), "OK");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -512,14 +480,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be altered because version is not good format.
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
@@ -533,14 +495,8 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
   // Should be altered because version is not good format.
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
@@ -551,13 +507,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, CleanShutdown) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(url, contents->GetURL());
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-  EXPECT_EQ(title, "Altered");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
 
   CloseAllBrowsers();
   ui_test_utils::WaitForBrowserToClose(browser());
@@ -632,15 +582,9 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
 
   EXPECT_EQ(url, contents->GetURL());
 
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-
   // Ensure that English localization is correct
-  EXPECT_EQ(title, "Hello, world!");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript),
+            "Hello, world!");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestGerman,
@@ -656,15 +600,9 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestGerman,
 
   EXPECT_EQ(url, contents->GetURL());
 
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-
   // Ensure that German localization is correct
-  EXPECT_EQ(title, "Hallo, Welt!");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript),
+            "Hallo, Welt!");
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestFrench,
@@ -680,15 +618,9 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestFrench,
 
   EXPECT_EQ(url, contents->GetURL());
 
-  std::string title;
-  ASSERT_TRUE(
-      ExecuteScriptAndExtractString(contents,
-                                    "window.domAutomationController.send("
-                                    "document.title)",
-                                    &title));
-
   // We don't have a French localization, so ensure that the default
   // (English) localization is shown instead
-  EXPECT_EQ(title, "Hello, world!");
+  EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript),
+            "Hello, world!");
 }
 #endif
