@@ -121,22 +121,23 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     }
 
     private void updateAutoSaveMedia() {
-        if (mAutoSaveMediaForOfflinePreference != null) {
-            switch (SharedPreferencesManager.getInstance().readInt(
-                    PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
-                case 0:
-                    mAutoSaveMediaForOfflinePreference.setSummary(
-                            getActivity().getResources().getString(R.string.on_text));
-                    break;
-                case 1:
-                    mAutoSaveMediaForOfflinePreference.setSummary(
-                            getActivity().getResources().getString(R.string.off_text));
-                    break;
-                case 2:
-                    mAutoSaveMediaForOfflinePreference.setSummary(
-                            getActivity().getResources().getString(R.string.wifi_only_text));
-                    break;
-            }
+        if (mAutoSaveMediaForOfflinePreference == null) {
+            return;
+        }
+        switch (SharedPreferencesManager.getInstance().readInt(
+                PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)) {
+            case 0:
+                mAutoSaveMediaForOfflinePreference.setSummary(
+                        getActivity().getResources().getString(R.string.on_text));
+                break;
+            case 1:
+                mAutoSaveMediaForOfflinePreference.setSummary(
+                        getActivity().getResources().getString(R.string.off_text));
+                break;
+            case 2:
+                mAutoSaveMediaForOfflinePreference.setSummary(
+                        getActivity().getResources().getString(R.string.wifi_only_text));
+                break;
         }
     }
 

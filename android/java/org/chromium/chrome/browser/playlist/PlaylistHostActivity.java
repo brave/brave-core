@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
+import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
 import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -46,16 +47,17 @@ import org.chromium.playlist.mojom.Playlist;
 import org.chromium.playlist.mojom.PlaylistEvent;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
-import org.chromium.playlist.mojom.PlaylistServiceObserver;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlaylistHostActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, PlaylistOptionsListener, PlaylistServiceObserver {
+        implements ConnectionErrorHandler, PlaylistOptionsListener,
+                   PlaylistServiceObserverImplDelegate {
     private static final String TAG = "BravePlaylist";
     private PlaylistService mPlaylistService;
     private PlaylistViewModel mPlaylistViewModel;
+    private PlaylistServiceObserverImpl mPlaylistServiceObserver;
 
     @Override
     public void onConnectionError(MojoException e) {
@@ -86,7 +88,8 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         super.finishNativeInitialization();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
             initPlaylistService();
-            mPlaylistService.addObserver(this);
+            mPlaylistServiceObserver = new PlaylistServiceObserverImpl(this);
+            mPlaylistService.addObserver(mPlaylistServiceObserver);
         }
         mPlaylistViewModel =
                 new ViewModelProvider(PlaylistHostActivity.this).get(PlaylistViewModel.class);
@@ -391,7 +394,7 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         if (mPlaylistViewModel == null) {
             return;
         }
-        PlaylistEventEnum playlistEvent = PlaylistEventEnum.kNone;
+        PlaylistEventEnum playlistEvent;
         switch (eventType) {
             case PlaylistEvent.ITEM_ADDED:
                 playlistEvent = PlaylistEventEnum.kItemAdded;
@@ -450,6 +453,11 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         if (mPlaylistService != null) {
             mPlaylistService.close();
         }
+        if (mPlaylistServiceObserver != null) {
+            mPlaylistServiceObserver.close();
+            mPlaylistServiceObserver.destroy();
+            mPlaylistServiceObserver = null;
+        }
         super.onDestroy();
     }
 
@@ -457,7 +465,4 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
     public boolean shouldStartGpuProcess() {
         return true;
     }
-
-    @Override
-    public void close() {}
 }

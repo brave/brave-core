@@ -705,35 +705,35 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void addMediaToPlaylist(org.chromium.url.mojom.Url contentUrl, ViewGroup viewGroup) {
-        if (mPlaylistService != null) {
-            boolean shouldCacheOnlyOnWifi =
-                    (SharedPreferencesManager.getInstance().readInt(
-                             BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
-                                    == 2
-                            && ConnectionUtils.isWifiAvailable(getContext()));
-
-            boolean shouldCache =
-                    SharedPreferencesManager.getInstance().readInt(
-                            BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
-                            == 0
-                    || shouldCacheOnlyOnWifi;
-            mPlaylistService.addMediaFilesFromPageToPlaylist(
-                    ConstantUtils.DEFAULT_PLAYLIST, contentUrl, shouldCache);
-            SnackBarActionModel snackBarActionModel = new SnackBarActionModel(
-                    getContext().getResources().getString(R.string.view_action),
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            BraveActivity.getBraveActivity().openPlaylistActivity(
-                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
-                        }
-                    });
-
-            PlaylistViewUtils.showSnackBarWithActions(viewGroup,
-                    String.format(getContext().getResources().getString(R.string.added_to_playlist),
-                            getContext().getResources().getString(R.string.playlist_play_later)),
-                    snackBarActionModel);
+        if (mPlaylistService == null) {
+            return;
         }
+        boolean shouldCacheOnlyOnWifi =
+                (SharedPreferencesManager.getInstance().readInt(
+                         BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
+                                == 2
+                        && ConnectionUtils.isWifiAvailable(getContext()));
+
+        boolean shouldCache = SharedPreferencesManager.getInstance().readInt(
+                                      BravePlaylistPreferences.PREF_AUTO_SAVE_MEDIA_FOR_OFFLINE, 0)
+                        == 0
+                || shouldCacheOnlyOnWifi;
+        mPlaylistService.addMediaFilesFromPageToPlaylist(
+                ConstantUtils.DEFAULT_PLAYLIST, contentUrl, shouldCache);
+        SnackBarActionModel snackBarActionModel =
+                new SnackBarActionModel(getContext().getResources().getString(R.string.view_action),
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                BraveActivity.getBraveActivity().openPlaylistActivity(
+                                        getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                            }
+                        });
+
+        PlaylistViewUtils.showSnackBarWithActions(viewGroup,
+                String.format(getContext().getResources().getString(R.string.added_to_playlist),
+                        getContext().getResources().getString(R.string.playlist_play_later)),
+                snackBarActionModel);
     }
 
     private void checkForTooltip(Tab tab) {
