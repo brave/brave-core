@@ -45,6 +45,7 @@ import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
@@ -99,6 +100,7 @@ public class PortfolioFragment
     private ProgressBar mPbAssetDiscovery;
     private List<NetworkInfo> mAllNetworkInfos;
     private List<PortfolioModel.NftDataModel> mNftDataModels;
+    private NetworkSelectorModel mNetworkSelectionModel;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
@@ -201,11 +203,16 @@ public class PortfolioFragment
         mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
                 getViewLifecycleOwner(),
                 allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
-        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.observe(
+        mNetworkSelectionModel =
+                mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
+                        PortfolioFragment.TAG, NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK,
+                        getLifecycle());
+        // Show pending transactions fab to process pending txs
+        mNetworkSelectionModel.getSelectedNetwork().observe(
                 getViewLifecycleOwner(), networkInfo -> {
                     if (networkInfo == null) return;
                     if (mNetworkInfo != null && !mNetworkInfo.chainId.equals(networkInfo.chainId)) {
-                        // clean up list to avoid user clicking on an asset of the previously
+                        // Clean up list to avoid user clicking on an asset of the previously
                         // selected network after the network has been changed
                         clearAssets();
                     }
