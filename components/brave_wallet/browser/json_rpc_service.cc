@@ -16,15 +16,12 @@
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/ens_resolver_task.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
-#include "brave/components/brave_wallet/browser/eth_topics_builder.h"
 #include "brave/components/brave_wallet/browser/fil_requests.h"
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_requests_helper.h"
@@ -39,7 +36,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
-#include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/decentralized_dns/core/constants.h"
@@ -281,8 +277,9 @@ void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
 
 // static
 void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
-  if (prefs->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated))
+  if (prefs->GetBoolean(kBraveWalletDeprecateEthereumTestNetworksMigrated)) {
     return;
+  }
 
   if (prefs->HasPrefPath(kBraveWalletSelectedNetworks)) {
     ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
@@ -303,15 +300,17 @@ void JsonRpcService::MigrateDeprecatedEthereumTestnets(PrefService* prefs) {
 
 // static
 void JsonRpcService::MigrateShowTestNetworksToggle(PrefService* prefs) {
-  if (!prefs->HasPrefPath(kShowWalletTestNetworksDeprecated))
+  if (!prefs->HasPrefPath(kShowWalletTestNetworksDeprecated)) {
     return;
+  }
 
   bool show_test_networks =
       prefs->GetBoolean(kShowWalletTestNetworksDeprecated);
   prefs->ClearPref(kShowWalletTestNetworksDeprecated);
 
-  if (!show_test_networks)
+  if (!show_test_networks) {
     return;
+  }
 
   // Show test networks toggle was explictily enabled. Go through coins and
   // remove all test networks from hidden lists.
@@ -397,8 +396,9 @@ void JsonRpcService::FirePendingRequestCompleted(const std::string& chain_id,
 
 bool JsonRpcService::HasRequestFromOrigin(const url::Origin& origin) const {
   for (const auto& request : add_chain_pending_requests_) {
-    if (request.second->origin_info->origin == origin)
+    if (request.second->origin_info->origin == origin) {
       return true;
+    }
   }
   return false;
 }
@@ -501,8 +501,9 @@ void JsonRpcService::AddEthereumChainForOrigin(
 void JsonRpcService::AddEthereumChainRequestCompleted(
     const std::string& chain_id,
     bool approved) {
-  if (!add_chain_pending_requests_.contains(chain_id))
+  if (!add_chain_pending_requests_.contains(chain_id)) {
     return;
+  }
 
   if (!approved) {
     FirePendingRequestCompleted(
@@ -531,8 +532,9 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
     const std::string& chain_id,
     const GURL& rpc_url,
     APIRequestResult api_request_result) {
-  if (!add_chain_pending_requests_.contains(chain_id))
+  if (!add_chain_pending_requests_.contains(chain_id)) {
     return;
+  }
 
   const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
   if (ParseSingleStringResult(api_request_result.value_body()) != chain_id) {
@@ -572,18 +574,20 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
   if (!silent) {
     FireNetworkChanged(coin);
   }
-  if (coin == mojom::CoinType::ETH)
+  if (coin == mojom::CoinType::ETH) {
     MaybeUpdateIsEip1559(chain_id);
+  }
   return true;
 }
 
 void JsonRpcService::SetNetwork(const std::string& chain_id,
                                 mojom::CoinType coin,
                                 SetNetworkCallback callback) {
-  if (!SetNetwork(chain_id, coin))
+  if (!SetNetwork(chain_id, coin)) {
     std::move(callback).Run(false);
-  else
+  } else {
     std::move(callback).Run(true);
+  }
 }
 
 void JsonRpcService::GetNetwork(mojom::CoinType coin,
@@ -610,8 +614,9 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
                                      bool is_eip1559,
                                      mojom::ProviderError error,
                                      const std::string& error_message) {
-  if (error != mojom::ProviderError::kSuccess)
+  if (error != mojom::ProviderError::kSuccess) {
     return;
+  }
 
   bool changed = false;
   if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
@@ -623,12 +628,14 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     ScopedDictPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
     for (base::Value& item : *update->FindList(kEthereumPrefKey)) {
       base::Value::Dict* custom_network = item.GetIfDict();
-      if (!custom_network)
+      if (!custom_network) {
         continue;
+      }
 
       const std::string* id = custom_network->FindString("chainId");
-      if (!id || *id != chain_id)
+      if (!id || *id != chain_id) {
         continue;
+      }
 
       changed =
           custom_network->FindBool("is_eip1559").value_or(false) != is_eip1559;
@@ -639,8 +646,9 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     }
   }
 
-  if (!changed)
+  if (!changed) {
     return;
+  }
 
   for (const auto& observer : observers_) {
     observer->OnIsEip1559Changed(chain_id, is_eip1559);
@@ -1824,7 +1832,7 @@ void JsonRpcService::UnstoppableDomainsResolveDns(
 
   if (!IsValidUnstoppableDomain(domain)) {
     std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
+        absl::nullopt, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1833,7 +1841,7 @@ void JsonRpcService::UnstoppableDomainsResolveDns(
                                            domain);
   if (!data) {
     std::move(callback).Run(
-        GURL(), mojom::ProviderError::kInvalidParams,
+        absl::nullopt, mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
@@ -1953,8 +1961,9 @@ void JsonRpcService::OnUnstoppableDomainsGetWalletAddr(
 GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(
     const std::string& chain_id) {
   if (auto network = GetChain(prefs_, chain_id, mojom::CoinType::ETH)) {
-    if (network->block_explorer_urls.size())
+    if (network->block_explorer_urls.size()) {
       return GURL(network->block_explorer_urls.front());
+    }
   }
   return GURL();
 }

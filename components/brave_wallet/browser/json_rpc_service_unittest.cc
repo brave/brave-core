@@ -3142,7 +3142,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback,
-              Run(GURL(), mojom::ProviderError::kInternalError,
+              Run(absl::optional<GURL>(), mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   SetEthTimeoutResponse();
   SetPolygonTimeoutResponse();
@@ -3152,7 +3152,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
-              Run(GURL(), mojom::ProviderError::kInternalError,
+              Run(absl::optional<GURL>(), mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   SetEthRawResponse(DnsBraveResponse());
   SetPolygonTimeoutResponse();
@@ -3162,7 +3162,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
-              Run(GURL(), mojom::ProviderError::kParsingError,
+              Run(absl::optional<GURL>(), mojom::ProviderError::kParsingError,
                   l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR)));
   SetEthRawResponse(DnsBraveResponse());
   SetPolygonRawResponse("Not a json");
@@ -3171,8 +3171,8 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_CALL(callback,
-              Run(GURL(), mojom::ProviderError::kLimitExceeded, "Error!"));
+  EXPECT_CALL(callback, Run(absl::optional<GURL>(),
+                            mojom::ProviderError::kLimitExceeded, "Error!"));
   SetEthRawResponse(DnsBraveResponse());
   SetPolygonRawResponse(MakeJsonRpcErrorResponse(-32005, "Error!"));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
@@ -3183,7 +3183,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   base::MockCallback<ResolveDnsCallback> callback;
-  EXPECT_CALL(callback, Run(GURL("https://brave.com"),
+  EXPECT_CALL(callback, Run(absl::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
   SetEthTimeoutResponse();
   SetPolygonRawResponse(DnsBraveResponse());
@@ -3192,7 +3192,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_CALL(callback, Run(GURL("https://brave.com"),
+  EXPECT_CALL(callback, Run(absl::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsIpfsResponse());
   SetPolygonRawResponse(DnsBraveResponse());
@@ -3201,7 +3201,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_CALL(callback, Run(GURL("https://brave.com"),
+  EXPECT_CALL(callback, Run(absl::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsEmptyResponse());
   SetPolygonRawResponse(DnsBraveResponse());
@@ -3212,7 +3212,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   base::MockCallback<ResolveDnsCallback> callback;
-  EXPECT_CALL(callback, Run(GURL("ipfs://ipfs_hash"),
+  EXPECT_CALL(callback, Run(absl::optional<GURL>("ipfs://ipfs_hash"),
                             mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsIpfsResponse());
   SetPolygonRawResponse(DnsEmptyResponse());
@@ -3221,7 +3221,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_CALL(callback, Run(GURL("https://brave.com"),
+  EXPECT_CALL(callback, Run(absl::optional<GURL>("https://brave.com"),
                             mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(DnsBraveResponse());
   SetPolygonRawResponse(
@@ -3235,7 +3235,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback,
-              Run(GURL(), mojom::ProviderError::kInternalError,
+              Run(absl::optional<GURL>(), mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   SetEthTimeoutResponse();
   SetPolygonRawResponse(DnsEmptyResponse());
@@ -3244,7 +3244,8 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   base::RunLoop().RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
-  EXPECT_CALL(callback, Run(GURL(), mojom::ProviderError::kSuccess, ""));
+  EXPECT_CALL(callback,
+              Run(absl::optional<GURL>(), mojom::ProviderError::kSuccess, ""));
   SetEthRawResponse(
       MakeJsonRpcStringArrayResponse({"", "", "", "", "", "invalid url"}));
   SetPolygonRawResponse(DnsEmptyResponse());
@@ -3257,7 +3258,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
   base::MockCallback<ResolveDnsCallback> callback;
   EXPECT_CALL(callback,
-              Run(GURL(), mojom::ProviderError::kInvalidParams,
+              Run(absl::optional<GURL>(), mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.test", callback.Get());
   EXPECT_EQ(0, url_loader_factory_.NumPending());
@@ -3266,13 +3267,13 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
   base::MockCallback<ResolveDnsCallback> callback1;
-  EXPECT_CALL(callback1, Run(GURL("https://brave.com"),
+  EXPECT_CALL(callback1, Run(absl::optional<GURL>("https://brave.com"),
                              mojom::ProviderError::kSuccess, ""));
   base::MockCallback<ResolveDnsCallback> callback2;
-  EXPECT_CALL(callback2, Run(GURL("https://brave.com"),
+  EXPECT_CALL(callback2, Run(absl::optional<GURL>("https://brave.com"),
                              mojom::ProviderError::kSuccess, ""));
   base::MockCallback<ResolveDnsCallback> callback3;
-  EXPECT_CALL(callback3, Run(GURL("ipfs://ipfs_hash"),
+  EXPECT_CALL(callback3, Run(absl::optional<GURL>("ipfs://ipfs_hash"),
                              mojom::ProviderError::kSuccess, ""));
 
   auto& keys = unstoppable_domains::GetRecordKeys();
