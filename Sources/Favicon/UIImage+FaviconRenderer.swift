@@ -98,6 +98,8 @@ extension UIImage {
 
 // MARK: - Rendering
 extension UIImage {
+  private static let maxScaledFaviconSize = 256.0
+  
   /// Renders an image to a canvas with a background colour and passing
   @MainActor
   static func renderFavicon(_ image: UIImage, backgroundColor: UIColor?, shouldScale: Bool) async -> Favicon {
@@ -106,6 +108,12 @@ extension UIImage {
       
       var idealSize = image.size
       var padding = hasTransparentEdges ? 4.0 : 0.0
+      
+      if shouldScale && max(idealSize.width, idealSize.height) > maxScaledFaviconSize {
+        let ratio = maxScaledFaviconSize / max(idealSize.width, idealSize.height)
+        idealSize.width *= ratio
+        idealSize.height *= ratio
+      }
       
       if shouldScale && hasTransparentEdges {
         padding = max(idealSize.width, idealSize.height) * 0.20

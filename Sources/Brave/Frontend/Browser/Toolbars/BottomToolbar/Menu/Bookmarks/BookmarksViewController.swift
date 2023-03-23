@@ -415,6 +415,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
           cell.imageView?.clearMonogramFavicon()
 
           if let urlString = item.url, let url = URL(string: urlString) {
+            cell.imageView?.image = FaviconFetcher.getIconFromCache(for: url)?.image ?? Favicon.defaultImage
             cell.imageView?.loadFavicon(for: url, monogramFallbackCharacter: item.title?.first) { [weak cell] favicon in
               if favicon?.isMonogramImage == true, let icon = item.bookmarkNode.icon {
                 cell?.imageView?.image = icon

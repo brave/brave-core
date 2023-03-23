@@ -7,6 +7,7 @@ import Shared
 import Storage
 import BraveShared
 import Data
+import Favicon
 
 // MARK: - SearchViewControllerDelegate
 
@@ -617,7 +618,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         cell.imageView?.contentMode = .scaleAspectFit
         cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
-        cell.imageView?.image = UIImage()
+        cell.imageView?.image = FaviconFetcher.getIconFromCache(for: site.tileURL)?.image ?? Favicon.defaultImage
         cell.imageView?.loadFavicon(for: site.tileURL)
         cell.backgroundColor = .secondaryBraveBackground
       }

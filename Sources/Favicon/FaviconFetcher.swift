@@ -90,8 +90,12 @@ public class FaviconFetcher {
     return favicon
   }
   
+  /// Retrieves a Favicon from the cache
+  public static func getIconFromCache(for url: URL) -> Favicon? {
+    getFromCache(for: url)
+  }
+  
   /// Stores a Favicon in the cache if not persistent, and not a monogram image.
-  /// If the
   public static func updateCache(_ favicon: Favicon?, for url: URL, persistent: Bool) {
     guard let favicon, !favicon.isMonogramImage else {
       let cachedURL = cacheURL(for: url)
