@@ -83,7 +83,6 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.EditVisibleAssetsBott
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -136,7 +135,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         SWAP(2);
 
         private int value;
-        private static Map map = new HashMap<>();
+        private static final Map<Integer, ActivityType> map = new HashMap<>();
 
         private ActivityType(int value) {
             this.value = value;
@@ -149,7 +148,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
 
         public static ActivityType valueOf(int activityType) {
-            return (ActivityType) map.get(activityType);
+            return map.get(activityType);
         }
 
         public int getValue() {

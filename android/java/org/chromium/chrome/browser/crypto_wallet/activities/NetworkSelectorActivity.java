@@ -111,14 +111,8 @@ public class NetworkSelectorActivity
     }
 
     private void setSelectedNetworkObserver() {
-        if (mMode == NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK) {
-            LiveDataUtil.observeOnce(
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    networkInfo -> { updateNetworkSelection(networkInfo); });
-        } else if (mMode == NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER) {
-            mNetworkSelectorModel.getSelectedNetwork().observe(
-                    this, networkInfo -> { updateNetworkSelection(networkInfo); });
-        }
+        mNetworkSelectorModel.getSelectedNetwork().observe(
+                this, networkInfo -> { updateNetworkSelection(networkInfo); });
     }
 
     private void updateNetworkSelection(NetworkInfo networkInfo) {
@@ -129,13 +123,8 @@ public class NetworkSelectorActivity
 
     @Override
     public void onNetworkItemSelected(NetworkInfo networkInfo) {
-        if (mMode == NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK) {
-            mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
-                    networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
-        } else if (mMode == NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER) {
-            mNetworkSelectorModel.setNetworkWithAccountCheck(
-                    networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
-        }
+        mNetworkSelectorModel.setNetworkWithAccountCheck(
+                networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
     }
 
     private void updateNetworkUi(NetworkInfo networkInfo, Boolean isSelected) {
