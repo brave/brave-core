@@ -80,6 +80,7 @@ class BraveWalletService : public KeyedService,
   static void MigrateUserAssetsAddPreloadingNetworks(
       PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
+  static void MigrateHiddenNetworks(PrefService* profile_prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token,
                            PrefService* profile_prefs);

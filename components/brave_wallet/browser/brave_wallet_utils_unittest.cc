@@ -522,7 +522,7 @@ TEST(BraveWalletUtilsUnitTest, KnownChainExists) {
   UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
   auto known_chains = GetAllKnownChains(&prefs, mojom::CoinType::ETH);
-  EXPECT_EQ(known_chains.size(), 11u);
+  EXPECT_EQ(known_chains.size(), 13u);
   for (auto& known_chain : known_chains) {
     EXPECT_TRUE(KnownChainExists(known_chain->chain_id, mojom::CoinType::ETH));
     // Test that uppercase chain ID works too
@@ -842,7 +842,8 @@ TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
        mojom::kBinanceSmartChainMainnetChainId, mojom::kCeloMainnetChainId,
        mojom::kAvalancheMainnetChainId, mojom::kFantomMainnetChainId,
        mojom::kOptimismMainnetChainId, "goerli", "sepolia",
-       "http://localhost:7545/"});
+       "http://localhost:7545/", mojom::kFilecoinEthereumMainnetChainId,
+       mojom::kFilecoinEthereumTestnetChainId});
   ASSERT_EQ(GetAllKnownNetworksForTesting().size(),
             expected_network_ids.size());
   EXPECT_EQ(GetAllKnownEthNetworkIds(), expected_network_ids);
@@ -1058,10 +1059,11 @@ TEST(BraveWalletUtilsUnitTest, HiddenNetworks) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
 
-  EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
-              ElementsAreArray<std::string>({mojom::kGoerliChainId,
-                                             mojom::kSepoliaChainId,
-                                             mojom::kLocalhostChainId}));
+  EXPECT_THAT(
+      GetHiddenNetworks(&prefs, mojom::CoinType::ETH),
+      ElementsAreArray<std::string>(
+          {mojom::kGoerliChainId, mojom::kSepoliaChainId,
+           mojom::kLocalhostChainId, mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(GetHiddenNetworks(&prefs, mojom::CoinType::FIL),
               ElementsAreArray<std::string>(
                   {mojom::kFilecoinTestnet, mojom::kLocalhostChainId}));

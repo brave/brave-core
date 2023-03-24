@@ -228,7 +228,8 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
   // Test networks are hidden by default.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
               ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                                mojom::kLocalhostChainId}));
+                                mojom::kLocalhostChainId,
+                                mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
               ElementsAreArray({mojom::kFilecoinTestnet,
                                 mojom::kLocalhostChainId, "0x123"}));
@@ -240,7 +241,8 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
   // Still same when nothing to migrate.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
               ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                                mojom::kLocalhostChainId}));
+                                mojom::kLocalhostChainId,
+                                mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
               ElementsAreArray({mojom::kFilecoinTestnet,
                                 mojom::kLocalhostChainId, "0x123"}));
@@ -254,7 +256,8 @@ TEST_F(BraveWalletPrefsUnitTest, MigrateShowTestNetworksToggle) {
   // Still same when test networks toggle was explicitly off.
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::ETH),
               ElementsAreArray({mojom::kGoerliChainId, mojom::kSepoliaChainId,
-                                mojom::kLocalhostChainId}));
+                                mojom::kLocalhostChainId,
+                                mojom::kFilecoinEthereumTestnetChainId}));
   EXPECT_THAT(GetHiddenNetworks(GetPrefs(), mojom::CoinType::FIL),
               ElementsAreArray({mojom::kFilecoinTestnet,
                                 mojom::kLocalhostChainId, "0x123"}));

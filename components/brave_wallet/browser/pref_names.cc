@@ -36,9 +36,11 @@ const char kBraveWalletUserAssets[] = "brave.wallet.wallet_user_assets";
 const char kBraveWalletUserAssetEthContractAddressMigrated[] =
     "brave.wallet.user.asset.eth_contract_address_migrated";
 const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[] =
-    "brave.wallet.user.assets.add_preloading_networks_migrated_2";
+    "brave.wallet.user.assets.add_preloading_networks_migrated_3";
 const char kBraveWalletUserAssetsAddIsNFTMigrated[] =
     "brave.wallet.user.assets.add_is_nft_migrated";
+const char kBraveWalletDefaultHiddenNetworksVersion[] =
+    "brave.wallet.user.assets.default_hidden_networks_version";
 const char kBraveWalletDeprecateEthereumTestNetworksMigrated[] =
     "brave.wallet.deprecated_ethereum_test_networks_migrated";
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";
@@ -72,5 +74,7 @@ const char kBraveWalletCurrentChainId[] =
 const char kBraveWalletUserAssetsDeprecated[] = "brave.wallet.user_assets";
 const char kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[] =
     "brave.wallet.user.assets.add_preloading_networks_migrated";
+const char kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2[] =
+    "brave.wallet.user.assets.add_preloading_networks_migrated_2";
 const char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
 const char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
