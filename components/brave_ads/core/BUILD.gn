@@ -32,6 +32,7 @@ source_set("headers") {
     "ad_content_value_util.h",
     "ad_event_history.h",
     "ad_info.h",
+    "ad_switches.h",
     "ad_type.h",
     "ads.h",
     "ads_callback.h",
