@@ -208,7 +208,8 @@ std::string getProgramAccounts(const SolanaAddress& mint_token) {
 // for mint. If parsing fails first element of pair is `false`.
 std::pair<bool, absl::optional<SolanaAddress>>
 GetTokenOwnerFromGetProgramAccountsResult(const base::Value& json_value) {
-  auto response = json_rpc_responses::RPCResponse::FromValue(json_value);
+  auto response =
+      json_rpc_responses::RPCResponse::FromValueDeprecated(json_value);
   if (!response || !response->result)
     return {false, absl::nullopt};
 
