@@ -69,6 +69,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BackPressHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
@@ -77,7 +78,6 @@ import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
-import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.share.qrcode.QRCodeGenerationRequest;
 import org.chromium.chrome.browser.sync.BraveSyncDevices;
 import org.chromium.chrome.browser.sync.SyncService;
@@ -99,7 +99,7 @@ import java.util.List;
  * Settings fragment that allows to control Sync functionality.
  */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
-        implements View.OnClickListener, SettingsActivity.OnBackPressedListener,
+        implements View.OnClickListener, BackPressHelper.ObsoleteBackPressedHandler,
                    BarcodeTracker.BarcodeGraphicTrackerCallback,
                    BraveSyncDevices.DeviceInfoChangedListener,
                    SyncService.SyncStateChangedListener {
