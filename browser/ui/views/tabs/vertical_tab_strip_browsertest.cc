@@ -657,9 +657,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
                             // running.
   auto* pressed_tab = GetTabAt(browser(), 0);
   PressTabAt(browser(), 0);
-  MoveMouseTo(GetCenterPointInScreen(GetTabAt(browser(), 1)));
-  PressTabAt(browser(), 0);  // workaround to trigger tab reorder. We don't need
-                             // this event in the real world.
+  auto point_to_move_to = GetCenterPointInScreen(GetTabAt(browser(), 1));
+  point_to_move_to.set_y(point_to_move_to.y() + pressed_tab->height());
+  for (gfx::Point pos = GetCenterPointInScreen(pressed_tab);
+       pos != point_to_move_to; pos.set_y(pos.y() + 1)) {
+    MoveMouseTo(pos);
+  }
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return pressed_tab == GetTabAt(browser(), 1); }));
 
   EXPECT_TRUE(IsDraggingTabStrip(browser()));
   ReleaseMouse();
@@ -672,7 +677,6 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripDragAndDropBrowserTest,
     EXPECT_TRUE(GetBoundsInScreen(region_view, region_view->GetLocalBounds())
                     .Contains(GetBoundsInScreen(moved_tab,
                                                 moved_tab->GetLocalBounds())));
-    EXPECT_EQ(pressed_tab, moved_tab);
   }
 }
 
