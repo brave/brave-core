@@ -12,6 +12,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
+#include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
 namespace ledger {
@@ -32,7 +33,7 @@ class Publisher {
 
   void FetchServerPublisherInfo(
       const std::string& publisher_key,
-      client::GetServerPublisherInfoCallback callback);
+      database::GetServerPublisherInfoCallback callback);
 
   void RefreshPublisher(const std::string& publisher_key,
                         ledger::OnRefreshPublisherCallback callback);
@@ -81,12 +82,14 @@ class Publisher {
 
   void CalcScoreConsts(const int min_duration_seconds);
 
-  void GetServerPublisherInfo(const std::string& publisher_key,
-                              client::GetServerPublisherInfoCallback callback);
+  void GetServerPublisherInfo(
+      const std::string& publisher_key,
+      database::GetServerPublisherInfoCallback callback);
 
-  void GetServerPublisherInfo(const std::string& publisher_key,
-                              bool use_prefix_list,
-                              client::GetServerPublisherInfoCallback callback);
+  void GetServerPublisherInfo(
+      const std::string& publisher_key,
+      bool use_prefix_list,
+      database::GetServerPublisherInfoCallback callback);
 
   void UpdateMediaDuration(const uint64_t window_id,
                            const std::string& publisher_key,
@@ -194,7 +197,7 @@ class Publisher {
       mojom::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
       bool use_prefix_list,
-      client::GetServerPublisherInfoCallback callback);
+      database::GetServerPublisherInfoCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;

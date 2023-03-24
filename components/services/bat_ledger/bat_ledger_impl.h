@@ -37,9 +37,9 @@ class RewardsUtilityServiceImpl
   RewardsUtilityServiceImpl& operator=(const RewardsUtilityServiceImpl&) =
       delete;
 
-  // bat_ledger::mojom::BatLedger
+  // rewards::mojom::RewardsUtilityService
   void CreateLedger(
-      mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,
+      mojo::PendingAssociatedRemote<mojom::RewardsService> rewards_service,
       CreateLedgerCallback callback) override;
   void SetEnvironment(ledger::mojom::Environment environment) override;
   void SetDebug(bool isDebug) override;

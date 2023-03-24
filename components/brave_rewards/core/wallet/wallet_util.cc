@@ -398,8 +398,8 @@ bool LogOutWallet(LedgerImpl* ledger,
                                    wallet_type + abbreviated_address);
 
   if (!ledger->IsShuttingDown()) {
-    ledger->ledger_client()->ExternalWalletLoggedOut();
-    ledger->ledger_client()->ShowNotification(
+    ledger->rewards_service()->ExternalWalletLoggedOut();
+    ledger->rewards_service()->ShowNotification(
         notification.empty() ? ledger::notifications::kWalletDisconnected
                              : notification,
         {}, base::BindOnce([](mojom::Result) {}));

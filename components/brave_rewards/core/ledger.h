@@ -16,7 +16,6 @@
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
-#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace ledger {
@@ -124,6 +123,16 @@ using PostSuggestionsClaimCallback =
 
 using GetDrainCallback =
     std::function<void(mojom::Result result, mojom::DrainStatus status)>;
+
+using RunDBTransactionCallback =
+    base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
+
+using LegacyRunDBTransactionCallback =
+    std::function<void(mojom::DBCommandResponsePtr)>;
+
+using LoadURLCallback = base::OnceCallback<void(mojom::UrlResponsePtr)>;
+
+using LegacyLoadURLCallback = std::function<void(mojom::UrlResponsePtr)>;
 
 class Ledger {
  public:

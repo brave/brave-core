@@ -32,9 +32,9 @@ class GetMeTest : public testing::Test {
 };
 
 TEST_F(GetMeTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -143,9 +143,9 @@ TEST_F(GetMeTest, ServerOK) {
 }
 
 TEST_F(GetMeTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
@@ -162,9 +162,9 @@ TEST_F(GetMeTest, ServerError401) {
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;

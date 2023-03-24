@@ -114,7 +114,7 @@ TEST_F(UpholdUtilTest, GetActivityUrl) {
 
 TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_impl_.ledger_client(),
+  ON_CALL(*mock_ledger_impl_.rewards_service(),
           GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(""));
   auto result = mock_ledger_impl_.uphold()->GetWallet();
@@ -131,7 +131,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
     "user_name":"test"
   })");
 
-  ON_CALL(*mock_ledger_impl_.ledger_client(),
+  ON_CALL(*mock_ledger_impl_.rewards_service(),
           GetStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(wallet));
 

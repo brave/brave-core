@@ -48,7 +48,7 @@ class PostSuggestionsClaimTest : public testing::Test {
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
     })";
-    ON_CALL(*mock_ledger_impl_.ledger_client(),
+    ON_CALL(*mock_ledger_impl_.rewards_service(),
             GetStringState(state::kWalletBrave))
         .WillByDefault(testing::Return(wallet));
   }
@@ -60,9 +60,9 @@ class PostSuggestionsClaimTest : public testing::Test {
 };
 
 TEST_F(PostSuggestionsClaimTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -80,9 +80,9 @@ TEST_F(PostSuggestionsClaimTest, ServerOK) {
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -98,9 +98,9 @@ TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -116,9 +116,9 @@ TEST_F(PostSuggestionsClaimTest, ServerError400) {
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;

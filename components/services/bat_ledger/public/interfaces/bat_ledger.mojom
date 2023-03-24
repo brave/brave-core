@@ -12,7 +12,7 @@ import "mojo/public/mojom/base/values.mojom";
 
 interface RewardsUtilityService {
   CreateLedger(
-      pending_associated_remote<BatLedgerClient> bat_ledger_client) => ();
+      pending_associated_remote<RewardsService> rewards_service) => ();
   SetEnvironment(ledger.mojom.Environment environment);
   SetDebug(bool isDebug);
   SetReconcileInterval(int32 interval);
@@ -155,7 +155,7 @@ interface RewardsUtilityService {
   GetRewardsWallet() => (ledger.mojom.RewardsWallet? wallet);
 };
 
-interface BatLedgerClient {
+interface RewardsService {
   [Sync]
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);

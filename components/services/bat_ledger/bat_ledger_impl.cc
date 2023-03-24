@@ -6,7 +6,6 @@
 #include "brave/components/services/bat_ledger/bat_ledger_impl.h"
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/services/bat_ledger/bat_ledger_client_mojo_bridge.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -28,10 +27,9 @@ RewardsUtilityServiceImpl::RewardsUtilityServiceImpl(
 RewardsUtilityServiceImpl::~RewardsUtilityServiceImpl() = default;
 
 void RewardsUtilityServiceImpl::CreateLedger(
-    mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,
+    mojo::PendingAssociatedRemote<mojom::RewardsService> rewards_service,
     CreateLedgerCallback callback) {
-  ledger_ = std::make_unique<ledger::LedgerImpl>(
-      std::make_unique<BatLedgerClientMojoBridge>(std::move(client_info)));
+  ledger_ = std::make_unique<ledger::LedgerImpl>(std::move(rewards_service));
 
   std::move(callback).Run();
 }

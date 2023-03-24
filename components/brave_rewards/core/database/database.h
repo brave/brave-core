@@ -266,7 +266,7 @@ class Database {
                                     ledger::LegacyResultCallback callback);
 
   void GetPromotionList(const std::vector<std::string>& ids,
-                        client::GetPromotionListCallback callback);
+                        GetPromotionListCallback callback);
 
   void UpdatePromotionsBlankPublicKey(const std::vector<std::string>& ids,
                                       ledger::LegacyResultCallback callback);
@@ -328,7 +328,7 @@ class Database {
                                         ledger::LegacyResultCallback callback);
 
   void GetServerPublisherInfo(const std::string& publisher_key,
-                              client::GetServerPublisherInfoCallback callback);
+                              GetServerPublisherInfoCallback callback);
 
   /**
    * SKU ORDER

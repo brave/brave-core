@@ -34,12 +34,11 @@ class GetCapabilitiesTest : public testing::Test {
 };
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -59,8 +58,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
   }
 ]
             )";
-            std::move(callback).Run(response);
-          }));
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -72,12 +71,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -99,8 +97,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
   }
 ]
             )";
-            std::move(callback).Run(response);
-          }));
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -112,12 +110,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -137,8 +134,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
   }
 ]
             )";
-            std::move(callback).Run(std::move(response));
-          }));
+        std::move(callback).Run(std::move(response));
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -150,12 +147,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -177,8 +173,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
   }
 ]
             )";
-            std::move(callback).Run(response);
-          }));
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -190,12 +186,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -215,8 +210,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
   }
 ]
             )";
-            std::move(callback).Run(response);
-          }));
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -228,12 +223,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -257,8 +251,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
   }
 ]
             )";
-            std::move(callback).Run(response);
-          }));
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -270,12 +264,11 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_OK;
-            response.body = R"(
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_OK;
+        response.body = R"(
 [
   {
     "category": "permissions",
@@ -295,8 +288,8 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
   }
 ]
             )";
-            std::move(callback).Run(response);
-          }));
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -308,13 +301,12 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_UNAUTHORIZED;
-            std::move(callback).Run(std::move(response));
-          }));
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_UNAUTHORIZED;
+        std::move(callback).Run(std::move(response));
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
@@ -326,13 +318,12 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
-            std::move(callback).Run(response);
-          }));
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(Invoke([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        mojom::UrlResponse response;
+        response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
+        std::move(callback).Run(response);
+      }));
 
   get_capabilities_.Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",

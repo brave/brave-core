@@ -59,7 +59,6 @@ source_set("headers") {
   sources = [
     "global_constants.h",
     "ledger.h",
-    "ledger_client.h",
     "ledger_database.cc",
     "ledger_database.h",
     "mojom_structs.h",

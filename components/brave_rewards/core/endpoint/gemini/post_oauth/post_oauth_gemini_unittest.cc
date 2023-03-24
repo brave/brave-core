@@ -31,9 +31,9 @@ class GeminiPostOauthTest : public testing::Test {
 };
 
 TEST_F(GeminiPostOauthTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
@@ -57,9 +57,9 @@ TEST_F(GeminiPostOauthTest, ServerOK) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
@@ -77,9 +77,9 @@ TEST_F(GeminiPostOauthTest, ServerError401) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerError403) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
@@ -97,9 +97,9 @@ TEST_F(GeminiPostOauthTest, ServerError403) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
@@ -117,9 +117,9 @@ TEST_F(GeminiPostOauthTest, ServerError404) {
 }
 
 TEST_F(GeminiPostOauthTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;

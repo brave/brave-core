@@ -60,16 +60,16 @@ class PromotionTest : public testing::Test {
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
     })";
-    ON_CALL(*mock_ledger_impl_.ledger_client(),
+    ON_CALL(*mock_ledger_impl_.rewards_service(),
             GetStringState(state::kWalletBrave))
         .WillByDefault(testing::Return(wallet));
 
     ON_CALL(mock_ledger_impl_, database())
         .WillByDefault(testing::Return(&mock_database_));
 
-    ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-        .WillByDefault(Invoke(
-            [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+    ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+        .WillByDefault(
+            Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
               mojom::UrlResponse response;
               response.status_code = 200;
               response.url = request->url;

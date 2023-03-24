@@ -24,7 +24,7 @@ LegacyBatState::LegacyBatState(ledger::LedgerImpl* ledger)
 LegacyBatState::~LegacyBatState() = default;
 
 void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
-  ledger_->ledger_client()->LoadLedgerState(base::BindOnce(
+  ledger_->rewards_service()->LoadLedgerState(base::BindOnce(
       &LegacyBatState::OnLoad, base::Unretained(this), std::move(callback)));
 }
 

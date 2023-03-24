@@ -93,7 +93,7 @@ class GetCards {
 
   mojom::Result ParseBody(const std::string& body, std::string* id);
 
-  void OnRequest(GetCardsCallback, const mojom::UrlResponse&);
+  void OnRequest(GetCardsCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

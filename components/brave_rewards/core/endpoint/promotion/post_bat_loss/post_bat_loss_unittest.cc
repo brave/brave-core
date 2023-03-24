@@ -32,7 +32,7 @@ class PostBatLossTest : public testing::Test {
       "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
       "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
     })";
-    ON_CALL(*mock_ledger_impl_.ledger_client(),
+    ON_CALL(*mock_ledger_impl_.rewards_service(),
             GetStringState(state::kWalletBrave))
         .WillByDefault(testing::Return(wallet));
   }
@@ -43,9 +43,9 @@ class PostBatLossTest : public testing::Test {
 };
 
 TEST_F(PostBatLossTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -59,9 +59,9 @@ TEST_F(PostBatLossTest, ServerOK) {
 }
 
 TEST_F(PostBatLossTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
@@ -75,9 +75,9 @@ TEST_F(PostBatLossTest, ServerError500) {
 }
 
 TEST_F(PostBatLossTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;

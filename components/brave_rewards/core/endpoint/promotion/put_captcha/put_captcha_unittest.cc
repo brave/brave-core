@@ -32,9 +32,9 @@ class PutCaptchaTest : public testing::Test {
 };
 
 TEST_F(PutCaptchaTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -49,9 +49,9 @@ TEST_F(PutCaptchaTest, ServerOK) {
 }
 
 TEST_F(PutCaptchaTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -66,9 +66,9 @@ TEST_F(PutCaptchaTest, ServerError400) {
 }
 
 TEST_F(PutCaptchaTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
@@ -83,9 +83,9 @@ TEST_F(PutCaptchaTest, ServerError401) {
 }
 
 TEST_F(PutCaptchaTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
@@ -100,9 +100,9 @@ TEST_F(PutCaptchaTest, ServerError500) {
 }
 
 TEST_F(PutCaptchaTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;

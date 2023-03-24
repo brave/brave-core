@@ -19,7 +19,7 @@ StateMigrationV4::StateMigrationV4(LedgerImpl* ledger) : ledger_(ledger) {
 StateMigrationV4::~StateMigrationV4() = default;
 
 void StateMigrationV4::Migrate(ledger::ResultCallback callback) {
-  ledger_->ledger_client()->DeleteLog(std::move(callback));
+  ledger_->rewards_service()->DeleteLog(std::move(callback));
 }
 
 }  // namespace state

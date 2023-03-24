@@ -66,22 +66,21 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
   std::vector<std::string> commands;
 
-  auto on_run_db_transaction =
-      [&](mojom::DBTransactionPtr transaction,
-          ledger::client::RunDBTransactionCallback callback) {
-        ASSERT_TRUE(transaction);
-        if (transaction) {
-          for (auto& command : transaction->commands) {
-            commands.push_back(std::move(command->command));
-          }
-        }
-        commands.push_back("---");
-        auto response = mojom::DBCommandResponse::New();
-        response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
-        std::move(callback).Run(std::move(response));
-      };
+  auto on_run_db_transaction = [&](mojom::DBTransactionPtr transaction,
+                                   ledger::RunDBTransactionCallback callback) {
+    ASSERT_TRUE(transaction);
+    if (transaction) {
+      for (auto& command : transaction->commands) {
+        commands.push_back(std::move(command->command));
+      }
+    }
+    commands.push_back("---");
+    auto response = mojom::DBCommandResponse::New();
+    response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
+    std::move(callback).Run(std::move(response));
+  };
 
-  ON_CALL(*mock_ledger_impl_.ledger_client(), RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_impl_.rewards_service(), RunDBTransaction(_, _))
       .WillByDefault(Invoke(on_run_db_transaction));
 
   database_prefix_list_.Reset(CreateReader(100'001),

@@ -64,7 +64,7 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
 
 void DatabaseInitialize::GetCreateScript(
     ledger::LegacyResultCallback callback) {
-  ledger_->ledger_client()->GetCreateScript(
+  ledger_->rewards_service()->GetCreateScript(
       base::BindOnce(&DatabaseInitialize::ExecuteCreateScript,
                      base::Unretained(this), std::move(callback)));
 }
@@ -79,7 +79,7 @@ void DatabaseInitialize::ExecuteCreateScript(
     return;
   }
 
-  ledger_->ledger_client()->ClearState(state::kServerPublisherListStamp);
+  ledger_->rewards_service()->ClearState(state::kServerPublisherListStamp);
 
   auto script_callback = std::bind(&DatabaseInitialize::OnExecuteCreateScript,
                                    this, _1, table_version, callback);

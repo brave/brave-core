@@ -32,9 +32,9 @@ class PostTransactionGeminiTest : public testing::Test {
 };
 
 TEST_F(PostTransactionGeminiTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_CREATED;
             response.url = request->url;
@@ -52,9 +52,9 @@ TEST_F(PostTransactionGeminiTest, ServerOK) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_BAD_REQUEST;
             response.url = request->url;
@@ -72,9 +72,9 @@ TEST_F(PostTransactionGeminiTest, ServerError400) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
@@ -92,9 +92,9 @@ TEST_F(PostTransactionGeminiTest, ServerError404) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError409) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_CONFLICT;
             response.url = request->url;
@@ -112,9 +112,9 @@ TEST_F(PostTransactionGeminiTest, ServerError409) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
             response.url = request->url;
@@ -132,9 +132,9 @@ TEST_F(PostTransactionGeminiTest, ServerError500) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.ledger_client(), LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;

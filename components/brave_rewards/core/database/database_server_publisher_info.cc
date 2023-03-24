@@ -62,7 +62,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
 
 void DatabaseServerPublisherInfo::GetRecord(
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    GetServerPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(nullptr);
@@ -80,7 +80,7 @@ void DatabaseServerPublisherInfo::GetRecord(
 void DatabaseServerPublisherInfo::OnGetRecordBanner(
     mojom::PublisherBannerPtr banner,
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    GetServerPublisherInfoCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT status, address, updated_at "
@@ -114,7 +114,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
     mojom::DBCommandResponsePtr response,
     const std::string& publisher_key,
     const mojom::PublisherBanner& banner,
-    client::GetServerPublisherInfoCallback callback) {
+    GetServerPublisherInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

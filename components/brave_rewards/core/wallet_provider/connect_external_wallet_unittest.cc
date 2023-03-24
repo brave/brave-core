@@ -75,7 +75,7 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(*mock_ledger_impl_.ledger_client(), GetStringState("wallets.test"))
+  ON_CALL(*mock_ledger_impl_.rewards_service(), GetStringState("wallets.test"))
       .WillByDefault(Return(std::move(test_wallet)));
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
