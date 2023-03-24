@@ -20,12 +20,21 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
           // Note that we mapped inactive tab to active tab background and
           // vice versa. Vertical tabs are not in frame color, we should flip
           // them for our design goal.
-          {{kColorBraveVerticalTabActiveBackground,
-            kColorTabBackgroundInactiveFrameActive},
-           {kColorBraveVerticalTabInactiveBackground,
-            kColorTabBackgroundActiveFrameActive},
-           {kColorBraveVerticalTabSeparator, kColorToolbarSeparator},
-           {kColorBraveVerticalTabHeaderButtonColor, kColorToolbarButtonIcon}});
+          {
+              {kColorBraveVerticalTabActiveBackground,
+               kColorTabBackgroundInactiveFrameActive},
+              {kColorBraveVerticalTabInactiveBackground,
+               kColorTabBackgroundActiveFrameActive},
+              {kColorBraveVerticalTabSeparator, kColorToolbarSeparator},
+              {kColorBraveVerticalTabHeaderButtonColor,
+               kColorToolbarButtonIcon},
+              {kColorBraveVerticalTabNTBIconColor,
+               kColorTabForegroundInactiveFrameActive},
+              {kColorBraveVerticalTabNTBTextColor,
+               kColorTabForegroundInactiveFrameActive},
+              {kColorBraveVerticalTabNTBShortcutTextColor,
+               kColorTabForegroundInactiveFrameActive},
+          });
   return kChromiumColorMap.at(brave_color_id);
 }
 
