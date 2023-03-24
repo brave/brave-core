@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 import org.chromium.brave_wallet.mojom.KeyringServiceObserver;
 import org.chromium.mojo.system.MojoException;
 
+import java.lang.ref.WeakReference;
+
 public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     public interface KeyringServiceObserverImplDelegate {
         default void locked() {}
@@ -22,80 +24,60 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
         default void selectedAccountChanged(int coin) {}
     }
 
-    private KeyringServiceObserverImplDelegate mDelegate;
+    private WeakReference<KeyringServiceObserverImplDelegate> mDelegate;
 
     public KeyringServiceObserverImpl(KeyringServiceObserverImplDelegate delegate) {
-        mDelegate = delegate;
+        mDelegate = new WeakReference<>(delegate);
     }
 
     @Override
     public void keyringCreated(String keyringId) {
-        if (mDelegate == null) return;
-
-        mDelegate.keyringCreated(keyringId);
+        if (isActive()) getRef().keyringCreated(keyringId);
     }
 
     @Override
     public void keyringRestored(String keyringId) {
-        if (mDelegate == null) return;
-
-        mDelegate.keyringRestored(keyringId);
+        if (isActive()) getRef().keyringRestored(keyringId);
     }
 
     @Override
     public void keyringReset() {
-        if (mDelegate == null) return;
-
-        mDelegate.keyringReset();
+        if (isActive()) getRef().keyringReset();
     }
 
     @Override
     public void locked() {
-        if (mDelegate == null) return;
-
-        mDelegate.locked();
+        if (isActive()) getRef().locked();
     }
 
     @Override
     public void unlocked() {
-        if (mDelegate == null) return;
-
-        mDelegate.unlocked();
+        if (isActive()) getRef().unlocked();
     }
 
     @Override
     public void backedUp() {
-        if (mDelegate == null) return;
-
-        mDelegate.backedUp();
+        if (isActive()) getRef().backedUp();
     }
 
     @Override
     public void accountsChanged() {
-        if (mDelegate == null) return;
-
-        mDelegate.accountsChanged();
+        if (isActive()) getRef().accountsChanged();
     }
 
     @Override
     public void accountsAdded(int coin, String[] addresses) {
-        if (mDelegate == null) return;
-
-        mDelegate.accountsAdded(coin, addresses);
+        if (isActive()) getRef().accountsAdded(coin, addresses);
     }
 
     @Override
     public void autoLockMinutesChanged() {
-        if (mDelegate == null) return;
-
-        mDelegate.autoLockMinutesChanged();
+        if (isActive()) getRef().autoLockMinutesChanged();
     }
 
     @Override
     public void selectedAccountChanged(int coin) {
-        if (mDelegate == null) return;
-
-        mDelegate.selectedAccountChanged(coin);
+        if (isActive()) getRef().selectedAccountChanged(coin);
     }
 
     @Override
@@ -106,7 +88,11 @@ public class KeyringServiceObserverImpl implements KeyringServiceObserver {
     @Override
     public void onConnectionError(MojoException e) {}
 
-    public void destroy() {
-        mDelegate = null;
+    private KeyringServiceObserverImplDelegate getRef() {
+        return mDelegate.get();
+    }
+
+    private boolean isActive() {
+        return mDelegate != null && mDelegate.get() != null;
     }
 }
