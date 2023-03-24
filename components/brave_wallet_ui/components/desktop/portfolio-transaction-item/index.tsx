@@ -465,7 +465,11 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   // render
   return (
-    <PortfolioTransactionItemWrapper ref={forwardedRef} isFocused={isFocused} onClick={onHideTransactionPopup}>
+    <PortfolioTransactionItemWrapper
+      ref={forwardedRef}
+      isFocused={isFocused}
+      onClick={onHideTransactionPopup}
+    >
       <OrbAndTxDescriptionContainer>
         <OrbWrapper>
           <FromCircle orb={fromOrb} />
@@ -474,16 +478,16 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
         <DetailColumn>
           <DetailRow>
-
             {/* Display account name only if rendered under Portfolio view */}
-            {displayAccountName && account?.name &&
+            {displayAccountName && account?.name && (
               <DetailTextLight>
-                {isLoadingAccountInfos
-                  ? <Skeleton {...skeletonProps} />
-                  : account.name
-                }
+                {isLoadingAccountInfos ? (
+                  <Skeleton {...skeletonProps} />
+                ) : (
+                  account.name
+                )}
               </DetailTextLight>
-            }
+            )}
 
             <DetailTextDark>{transactionActionLocale}</DetailTextDark>
             <DetailTextLight>-</DetailTextLight>
@@ -491,21 +495,22 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
             <TransactionTimestampTooltip
               text={
                 <TransactionFeeTooltipBody>
-                  {serializedTimeDeltaToJSDate(transaction.createdTime).toUTCString()}
+                  {serializedTimeDeltaToJSDate(
+                    transaction.createdTime
+                  ).toUTCString()}
                 </TransactionFeeTooltipBody>
               }
             >
               <DetailTextDarkBold>
-                {formatDateAsRelative(serializedTimeDeltaToJSDate(transaction.createdTime))}
+                {formatDateAsRelative(
+                  serializedTimeDeltaToJSDate(transaction.createdTime)
+                )}
               </DetailTextDarkBold>
             </TransactionTimestampTooltip>
-
           </DetailRow>
 
           {transactionIntentDescription}
-
         </DetailColumn>
-
       </OrbAndTxDescriptionContainer>
 
       <StatusBalanceAndMoreContainer>
@@ -519,35 +524,49 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
         {/* Balance & more */}
         <DetailRow>
           <BalanceColumn>
-            <DetailTextDark>
-              {/* We need to return a Transaction Time Stamp to calculate Fiat value here */}
-              {(isLoadingTokenSpotPrice || isLoadingDefaultFiatCurrency)
-                ? <Skeleton {...skeletonProps} />
-                : formattedTransactionFiatValue || 'NOT FOUND!'
-              }
-            </DetailTextDark>
-            <DetailTextLight>{formattedSendCurrencyTotal}</DetailTextLight>
+            {transaction.txType !==
+              BraveWallet.TransactionType.ERC20Approve && (
+              <>
+                <DetailTextDark>
+                  {/*
+                    We need to return a Transaction Time Stamp
+                    to calculate Fiat value here
+                  */}
+                  {isLoadingTokenSpotPrice || isLoadingDefaultFiatCurrency ? (
+                    <Skeleton {...skeletonProps} />
+                  ) : (
+                    formattedTransactionFiatValue || 'NOT FOUND!'
+                  )}
+                </DetailTextDark>
+                <DetailTextLight>{formattedSendCurrencyTotal}</DetailTextLight>
+              </>
+            )}
           </BalanceColumn>
 
           {/* Will remove this conditional for solana once https://github.com/brave/brave-browser/issues/22040 is implemented. */}
-          {!isSolanaTransaction && !!txNetwork &&
+          {!isSolanaTransaction && !!txNetwork && (
             <TransactionFeesTooltip
               text={
                 <>
-                  <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
+                  <TransactionFeeTooltipTitle>
+                    {getLocale('braveWalletAllowSpendTransactionFee')}
+                  </TransactionFeeTooltipTitle>
                   <TransactionFeeTooltipBody>
-                    {isLoadingAllNetworks
-                      ? <Skeleton {...skeletonProps} />
-                      : txNetwork && new Amount(transaction.gasFee)
-                          .divideByDecimals(txNetwork.decimals)
-                          .formatAsAsset(6, txNetwork.symbol)
-                    }
+                    {isLoadingAllNetworks ? (
+                      <Skeleton {...skeletonProps} />
+                    ) : (
+                      txNetwork &&
+                      new Amount(transaction.gasFee)
+                        .divideByDecimals(txNetwork.decimals)
+                        .formatAsAsset(6, txNetwork.symbol)
+                    )}
                   </TransactionFeeTooltipBody>
                   <TransactionFeeTooltipBody>
-                    {(isLoadingDefaultFiatCurrency || isLoadingGasAssetPrice)
-                      ? <Skeleton {...skeletonProps} />
-                      : formattedGasFeeFiatValue
-                    }
+                    {isLoadingDefaultFiatCurrency || isLoadingGasAssetPrice ? (
+                      <Skeleton {...skeletonProps} />
+                    ) : (
+                      formattedGasFeeFiatValue
+                    )}
                   </TransactionFeeTooltipBody>
                 </>
               }
@@ -556,23 +575,24 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                 <CoinsIcon />
               </CoinsButton>
             </TransactionFeesTooltip>
-          }
+          )}
 
-          {wasTxRejected
-            ? <MoreButton onClick={onShowTransactionPopup}>
+          {wasTxRejected ? (
+            <MoreButton onClick={onShowTransactionPopup}>
               <MoreIcon />
             </MoreButton>
-            : <RejectedTransactionSpacer />
-          }
+          ) : (
+            <RejectedTransactionSpacer />
+          )}
 
-          {showTransactionPopup &&
+          {showTransactionPopup && (
             <TransactionPopup>
               {[
                 BraveWallet.TransactionStatus.Approved,
                 BraveWallet.TransactionStatus.Submitted,
                 BraveWallet.TransactionStatus.Confirmed,
                 BraveWallet.TransactionStatus.Dropped
-              ].includes(transaction.status) &&
+              ].includes(transaction.status) && (
                 <>
                   <TransactionPopupItem
                     onClick={onClickViewOnBlockExplorer('tx', transaction.hash)}
@@ -583,39 +603,38 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                     text={getLocale('braveWalletTransactionCopyHash')}
                   />
                 </>
-              }
+              )}
 
               {[
                 BraveWallet.TransactionStatus.Submitted,
                 BraveWallet.TransactionStatus.Approved
               ].includes(transaction.status) &&
                 !isSolanaTransaction &&
-                !isFilecoinTransaction &&
-                <>
-                  <TransactionPopupItem
-                    onClick={onClickSpeedupTransaction}
-                    text={getLocale('braveWalletTransactionSpeedup')}
-                  />
-                  <TransactionPopupItem
-                    onClick={onClickCancelTransaction}
-                    text={getLocale('braveWalletTransactionCancel')}
-                  />
-                </>
-              }
+                !isFilecoinTransaction && (
+                  <>
+                    <TransactionPopupItem
+                      onClick={onClickSpeedupTransaction}
+                      text={getLocale('braveWalletTransactionSpeedup')}
+                    />
+                    <TransactionPopupItem
+                      onClick={onClickCancelTransaction}
+                      text={getLocale('braveWalletTransactionCancel')}
+                    />
+                  </>
+                )}
 
               {BraveWallet.TransactionStatus.Error === transaction.status &&
                 !isSolanaTransaction &&
-                !isFilecoinTransaction &&
-                <TransactionPopupItem
-                  onClick={onClickRetryTransaction}
-                  text={getLocale('braveWalletTransactionRetry')}
-                />
-              }
+                !isFilecoinTransaction && (
+                  <TransactionPopupItem
+                    onClick={onClickRetryTransaction}
+                    text={getLocale('braveWalletTransactionRetry')}
+                  />
+                )}
             </TransactionPopup>
-          }
+          )}
         </DetailRow>
       </StatusBalanceAndMoreContainer>
-
     </PortfolioTransactionItemWrapper>
   )
 }
