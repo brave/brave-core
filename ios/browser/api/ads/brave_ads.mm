@@ -1946,8 +1946,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   // Not needed on iOS
 }
 
-- (void)logTrainingInstance:
-    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_instance {
+- (void)addTrainingSample:
+    (std::vector<brave_federated::mojom::CovariateInfoPtr>)training_sample {
   // Not needed on iOS
 }
 

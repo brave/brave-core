@@ -129,10 +129,10 @@ class ADS_EXPORT AdsClient {
   virtual void RecordP2AEvent(const std::string& name,
                               base::Value::List value) = 0;
 
-  // Log |training_instance|.
-  virtual void LogTrainingInstance(
+  // Add |training_sample|.
+  virtual void AddTrainingSample(
       std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_instance) = 0;
+          training_sample) = 0;
 
   // Get the value from the specified preference |path|. Returns the default
   // value if the path does not exist.

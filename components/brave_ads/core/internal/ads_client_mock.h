@@ -85,9 +85,9 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD2(RecordP2AEvent,
                void(const std::string& name, base::Value::List value));
 
-  MOCK_METHOD1(LogTrainingInstance,
+  MOCK_METHOD1(AddTrainingSample,
                void(const std::vector<brave_federated::mojom::CovariateInfoPtr>
-                        training_instance));
+                        training_sample));
 
   MOCK_CONST_METHOD1(GetBooleanPref, bool(const std::string& path));
   MOCK_METHOD2(SetBooleanPref, void(const std::string& path, const bool value));

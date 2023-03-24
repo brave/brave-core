@@ -3,28 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/average_clickthrough_rate.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_clickthrough_rate_predictor_variable.h"
 
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/internal/covariates/covariate_constants.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/predictor_variable_constants.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
 namespace brave_ads {
 
-AverageClickthroughRate::AverageClickthroughRate(base::TimeDelta time_window)
+AverageClickthroughRatePredictorVariable::
+    AverageClickthroughRatePredictorVariable(base::TimeDelta time_window)
     : time_window_(time_window) {}
 
-brave_federated::mojom::DataType AverageClickthroughRate::GetDataType() const {
+brave_federated::mojom::DataType
+AverageClickthroughRatePredictorVariable::GetDataType() const {
   return brave_federated::mojom::DataType::kDouble;
 }
 
-brave_federated::mojom::CovariateType AverageClickthroughRate::GetType() const {
+brave_federated::mojom::CovariateType
+AverageClickthroughRatePredictorVariable::GetType() const {
   return brave_federated::mojom::CovariateType::kAverageClickthroughRate;
 }
 
-std::string AverageClickthroughRate::GetValue() const {
+std::string AverageClickthroughRatePredictorVariable::GetValue() const {
   const base::Time now = base::Time::Now();
   const base::Time from_time = now - time_window_;
   const base::Time to_time = now;
@@ -32,31 +35,31 @@ std::string AverageClickthroughRate::GetValue() const {
   const HistoryItemList history_items = HistoryManager::Get(
       HistoryFilterType::kNone, HistorySortType::kNone, from_time, to_time);
   if (history_items.empty()) {
-    return base::NumberToString(kCovariateMissingValue);
+    return base::NumberToString(kPredictorVariableMissingValue);
   }
 
-  const int number_of_views = base::ranges::count_if(
+  const size_t view_count = base::ranges::count_if(
       history_items, [](const HistoryItemInfo& history_item) {
         return history_item.ad_content.confirmation_type ==
                ConfirmationType::kViewed;
       });
 
-  if (number_of_views == 0) {
-    return base::NumberToString(kCovariateMissingValue);
+  if (view_count == 0) {
+    return base::NumberToString(kPredictorVariableMissingValue);
   }
 
-  const int number_of_clicks = base::ranges::count_if(
+  const size_t click_count = base::ranges::count_if(
       history_items, [](const HistoryItemInfo& history_item) {
         return history_item.ad_content.confirmation_type ==
                ConfirmationType::kClicked;
       });
 
-  if (number_of_clicks > number_of_views) {
-    return base::NumberToString(kCovariateMissingValue);
+  if (click_count > view_count) {
+    return base::NumberToString(kPredictorVariableMissingValue);
   }
 
   const double clickthrough_rate =
-      static_cast<double>(number_of_clicks) / number_of_views;
+      static_cast<double>(click_count) / static_cast<double>(view_count);
   DCHECK_GE(clickthrough_rate, 0.0);
   DCHECK_LE(clickthrough_rate, 1.0);
 

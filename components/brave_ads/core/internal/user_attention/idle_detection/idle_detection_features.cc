@@ -20,7 +20,7 @@ constexpr char kMaximumIdleTimeFieldTrialParamName[] = "maximum_idle_time";
 constexpr base::TimeDelta kMaximumIdleTimeDefaultValue = base::Seconds(0);
 
 constexpr char kShouldDetectScreenWasLockedFieldTrialParamName[] =
-    "should_detect_was_locked";
+    "should_detect_screen_was_locked";
 constexpr bool kShouldDetectScreenWasLockedDefaultValue = false;
 
 }  // namespace

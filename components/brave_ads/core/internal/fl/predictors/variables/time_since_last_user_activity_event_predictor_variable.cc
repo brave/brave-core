@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/time_since_last_user_activity_event.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/time_since_last_user_activity_event_predictor_variable.h"
 
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -16,22 +16,23 @@ namespace {
 constexpr base::TimeDelta kTimeWindow = base::Minutes(30);
 }  // namespace
 
-TimeSinceLastUserActivityEvent::TimeSinceLastUserActivityEvent(
-    UserActivityEventType event_type,
-    brave_federated::mojom::CovariateType covariate_type)
-    : event_type_(event_type), covariate_type_(covariate_type) {}
+TimeSinceLastUserActivityEventPredictorVariable::
+    TimeSinceLastUserActivityEventPredictorVariable(
+        UserActivityEventType event_type,
+        brave_federated::mojom::CovariateType predictor_type)
+    : event_type_(event_type), predictor_type_(predictor_type) {}
 
-brave_federated::mojom::DataType TimeSinceLastUserActivityEvent::GetDataType()
-    const {
+brave_federated::mojom::DataType
+TimeSinceLastUserActivityEventPredictorVariable::GetDataType() const {
   return brave_federated::mojom::DataType::kInt;
 }
 
-brave_federated::mojom::CovariateType TimeSinceLastUserActivityEvent::GetType()
-    const {
-  return covariate_type_;
+brave_federated::mojom::CovariateType
+TimeSinceLastUserActivityEventPredictorVariable::GetType() const {
+  return predictor_type_;
 }
 
-std::string TimeSinceLastUserActivityEvent::GetValue() const {
+std::string TimeSinceLastUserActivityEventPredictorVariable::GetValue() const {
   const UserActivityEventList events =
       UserActivityManager::GetInstance()->GetHistoryForTimeWindow(kTimeWindow);
 

@@ -318,13 +318,13 @@ void OnResetState(const bool success) {
   VLOG(6) << "Successfully reset ads state";
 }
 
-void OnLogTrainingInstance(const bool success) {
+void OnAddTrainingSample(const bool success) {
   if (!success) {
-    VLOG(6) << "Failed to log training covariates";
+    VLOG(6) << "Failed to add training sample";
     return;
   }
 
-  VLOG(6) << "Successfully logged training covariates";
+  VLOG(6) << "Successfully added training sample";
 }
 
 }  // namespace
@@ -2082,14 +2082,14 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& /*name*/,
   }
 }
 
-void AdsServiceImpl::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
+void AdsServiceImpl::AddTrainingSample(
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
   if (!notification_ad_timing_data_store_) {
     return;
   }
 
   notification_ad_timing_data_store_->AddTrainingInstance(
-      std::move(training_instance), base::BindOnce(&OnLogTrainingInstance));
+      std::move(training_sample), base::BindOnce(&OnAddTrainingSample));
 }
 
 void AdsServiceImpl::GetBooleanPref(const std::string& path,

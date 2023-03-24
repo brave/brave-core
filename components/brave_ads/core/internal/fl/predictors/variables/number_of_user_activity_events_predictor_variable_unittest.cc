@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/number_of_user_activity_events.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/number_of_user_activity_events_predictor_variable.h"
 
 #include <memory>
 
@@ -14,40 +14,41 @@
 
 namespace brave_ads {
 
-class BatAdsNumberOfUserActivityEventsTest : public UnitTestBase {};
+class BatAdsNumberOfUserActivityEventsPredictorVariableTest
+    : public UnitTestBase {};
 
-TEST_F(BatAdsNumberOfUserActivityEventsTest, GetDataType) {
+TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest, GetDataType) {
   // Arrange
-  std::unique_ptr<CovariateLogEntryInterface> entry =
-      std::make_unique<NumberOfUserActivityEvents>(
+  std::unique_ptr<PredictorVariableInterface> predictor_variable =
+      std::make_unique<NumberOfUserActivityEventsPredictorVariable>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
   // Act
-  const brave_federated::mojom::DataType data_type = entry->GetDataType();
 
   // Assert
-  EXPECT_EQ(brave_federated::mojom::DataType::kInt, data_type);
+  EXPECT_EQ(brave_federated::mojom::DataType::kInt,
+            predictor_variable->GetDataType());
 }
 
-TEST_F(BatAdsNumberOfUserActivityEventsTest, GetValueWithoutUserActivity) {
+TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest,
+       GetValueWithoutUserActivity) {
   // Arrange
-  std::unique_ptr<CovariateLogEntryInterface> entry =
-      std::make_unique<NumberOfUserActivityEvents>(
+  std::unique_ptr<PredictorVariableInterface> predictor_variable =
+      std::make_unique<NumberOfUserActivityEventsPredictorVariable>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
   // Act
-  const std::string value = entry->GetValue();
 
   // Assert
-  EXPECT_EQ("0", value);
+  EXPECT_EQ("0", predictor_variable->GetValue());
 }
 
-TEST_F(BatAdsNumberOfUserActivityEventsTest, GetValue) {
+TEST_F(BatAdsNumberOfUserActivityEventsPredictorVariableTest, GetValue) {
   // Arrange
-  std::unique_ptr<CovariateLogEntryInterface> entry =
-      std::make_unique<NumberOfUserActivityEvents>(
+  std::unique_ptr<PredictorVariableInterface> predictor_variable =
+      std::make_unique<NumberOfUserActivityEventsPredictorVariable>(
           UserActivityEventType::kOpenedNewTab,
           brave_federated::mojom::CovariateType::kNumberOfOpenedNewTabEvents);
 
@@ -68,10 +69,9 @@ TEST_F(BatAdsNumberOfUserActivityEventsTest, GetValue) {
       UserActivityEventType::kOpenedNewTab);
 
   // Act
-  const std::string value = entry->GetValue();
 
   // Assert
-  EXPECT_EQ("2", value);
+  EXPECT_EQ("2", predictor_variable->GetValue());
 }
 
 }  // namespace brave_ads

@@ -133,7 +133,7 @@ TEST(BatAdsIdleDetectionFeaturesTest, DefaultMaximumIdleTimeWhenDisabled) {
 TEST(BatAdsIdleDetectionFeaturesTest, ShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams params;
-  params["should_detect_was_locked"] = "true";
+  params["should_detect_screen_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(kIdleDetection, params);
 

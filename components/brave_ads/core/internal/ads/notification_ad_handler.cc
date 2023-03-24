@@ -18,9 +18,11 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/covariates/covariate_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/impressions/p2a_impression.h"
@@ -158,7 +160,7 @@ void NotificationAdHandler::OnNotificationAdViewed(
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
 
-  CovariateManager::GetInstance()->SetNotificationAdServedAt(base::Time::Now());
+  SetNotificationAdServedAtPredictorVariable(base::Time::Now());
 
   privacy::p2a::RecordAdImpression(ad);
 }
@@ -177,9 +179,9 @@ void NotificationAdHandler::OnNotificationAdClicked(
   processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kClicked});
 
-  CovariateManager::GetInstance()->SetNotificationAdEvent(
+  SetNotificationAdEventPredictorVariable(
       mojom::NotificationAdEventType::kClicked);
-  CovariateManager::GetInstance()->LogTrainingInstance();
+  PredictorsManager::GetInstance()->AddTrainingSample();
 }
 
 void NotificationAdHandler::OnNotificationAdDismissed(
@@ -194,9 +196,9 @@ void NotificationAdHandler::OnNotificationAdDismissed(
   processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kDismissed});
 
-  CovariateManager::GetInstance()->SetNotificationAdEvent(
+  SetNotificationAdEventPredictorVariable(
       mojom::NotificationAdEventType::kDismissed);
-  CovariateManager::GetInstance()->LogTrainingInstance();
+  PredictorsManager::GetInstance()->AddTrainingSample();
 }
 
 void NotificationAdHandler::OnNotificationAdTimedOut(
@@ -206,9 +208,9 @@ void NotificationAdHandler::OnNotificationAdTimedOut(
   processor::EpsilonGreedyBandit::Process(
       {ad.segment, mojom::NotificationAdEventType::kTimedOut});
 
-  CovariateManager::GetInstance()->SetNotificationAdEvent(
+  SetNotificationAdEventPredictorVariable(
       mojom::NotificationAdEventType::kTimedOut);
-  CovariateManager::GetInstance()->LogTrainingInstance();
+  PredictorsManager::GetInstance()->AddTrainingSample();
 }
 
 }  // namespace brave_ads

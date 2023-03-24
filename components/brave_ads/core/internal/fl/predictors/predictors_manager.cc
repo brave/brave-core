@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/covariates/covariate_manager.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 
 #include <utility>
 
@@ -11,21 +11,19 @@
 #include "base/containers/fixed_flat_map.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/average_clickthrough_rate.h"
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/last_notification_ad_was_clicked.h"
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/notification_ad_event.h"
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/notification_ad_served_at.h"
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/number_of_user_activity_events.h"
-#include "brave/components/brave_ads/core/internal/covariates/log_entries/time_since_last_user_activity_event.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/average_clickthrough_rate_predictor_variable.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/last_notification_ad_was_clicked_predictor_variable.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/number_of_user_activity_events_predictor_variable.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/variables/time_since_last_user_activity_event_predictor_variable.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace brave_ads {
 
 namespace {
 
-CovariateManager* g_covariate_logs_instance = nullptr;
+PredictorsManager* g_predictors_manager_instance = nullptr;
 
-constexpr auto kUserActivityEventToCovariateTypesMapping =
+constexpr auto kUserActivityEventToPredictorVariableTypeMapping =
     base::MakeFixedFlatMap<UserActivityEventType,
                            std::pair<brave_federated::mojom::CovariateType,
                                      brave_federated::mojom::CovariateType>>(
@@ -103,93 +101,82 @@ constexpr base::TimeDelta kAverageClickthroughRateTimeWindows[] = {
 
 }  // namespace
 
-CovariateManager::CovariateManager() {
-  DCHECK(!g_covariate_logs_instance);
-  g_covariate_logs_instance = this;
+PredictorsManager::PredictorsManager() {
+  DCHECK(!g_predictors_manager_instance);
+  g_predictors_manager_instance = this;
 
-  SetLogEntry(std::make_unique<LastNotificationAdWasClicked>());
+  SetPredictorVariable(
+      std::make_unique<LastNotificationAdWasClickedPredictorVariable>());
 
-  for (const auto& [user_activity_event_type, covariate_type] :
-       kUserActivityEventToCovariateTypesMapping) {
+  for (const auto& [user_activity_event_type, predictor_variable_type] :
+       kUserActivityEventToPredictorVariableTypeMapping) {
     const auto& [number_of_user_activity_events,
-                 time_since_last_user_activity_event] = covariate_type;
+                 time_since_last_user_activity_event] = predictor_variable_type;
 
-    SetLogEntry(std::make_unique<NumberOfUserActivityEvents>(
-        user_activity_event_type, number_of_user_activity_events));
+    SetPredictorVariable(
+        std::make_unique<NumberOfUserActivityEventsPredictorVariable>(
+            user_activity_event_type, number_of_user_activity_events));
 
-    SetLogEntry(std::make_unique<TimeSinceLastUserActivityEvent>(
-        user_activity_event_type, time_since_last_user_activity_event));
+    SetPredictorVariable(
+        std::make_unique<TimeSinceLastUserActivityEventPredictorVariable>(
+            user_activity_event_type, time_since_last_user_activity_event));
   }
 
-  for (const auto& average_clickthrough_rate_time_window :
-       kAverageClickthroughRateTimeWindows) {
-    SetLogEntry(std::make_unique<AverageClickthroughRate>(
-        average_clickthrough_rate_time_window));
+  for (const auto& time_window : kAverageClickthroughRateTimeWindows) {
+    SetPredictorVariable(
+        std::make_unique<AverageClickthroughRatePredictorVariable>(
+            time_window));
   }
 }
 
-CovariateManager::~CovariateManager() {
-  DCHECK_EQ(this, g_covariate_logs_instance);
-  g_covariate_logs_instance = nullptr;
+PredictorsManager::~PredictorsManager() {
+  DCHECK_EQ(this, g_predictors_manager_instance);
+  g_predictors_manager_instance = nullptr;
 }
 
 // static
-CovariateManager* CovariateManager::GetInstance() {
-  DCHECK(g_covariate_logs_instance);
-  return g_covariate_logs_instance;
+PredictorsManager* PredictorsManager::GetInstance() {
+  DCHECK(g_predictors_manager_instance);
+  return g_predictors_manager_instance;
 }
 
 // static
-bool CovariateManager::HasInstance() {
-  return g_covariate_logs_instance != nullptr;
+bool PredictorsManager::HasInstance() {
+  return g_predictors_manager_instance != nullptr;
 }
 
-void CovariateManager::SetLogEntry(
-    std::unique_ptr<CovariateLogEntryInterface> entry) {
-  DCHECK(entry);
-  const brave_federated::mojom::CovariateType key = entry->GetType();
-  covariate_log_entries_[key] = std::move(entry);
+void PredictorsManager::SetPredictorVariable(
+    std::unique_ptr<PredictorVariableInterface> predictor_variable) {
+  DCHECK(predictor_variable);
+
+  const brave_federated::mojom::CovariateType type =
+      predictor_variable->GetType();
+  predictor_variables_[type] = std::move(predictor_variable);
 }
 
 std::vector<brave_federated::mojom::CovariateInfoPtr>
-CovariateManager::GetTrainingInstance() const {
-  std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance;
-  for (const auto& [covariate_type, covariate_log_entry] :
-       covariate_log_entries_) {
-    DCHECK(covariate_log_entry);
+PredictorsManager::GetTrainingSample() const {
+  std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample;
 
-    brave_federated::mojom::CovariateInfoPtr covariate =
+  for (const auto& [_, predictor_variable] : predictor_variables_) {
+    DCHECK(predictor_variable);
+
+    brave_federated::mojom::CovariateInfoPtr predictor =
         brave_federated::mojom::CovariateInfo::New();
-    covariate->data_type = covariate_log_entry->GetDataType();
-    covariate->type = covariate_log_entry->GetType();
-    covariate->value = covariate_log_entry->GetValue();
+    predictor->data_type = predictor_variable->GetDataType();
+    predictor->type = predictor_variable->GetType();
+    predictor->value = predictor_variable->GetValue();
 
-    training_instance.push_back(std::move(covariate));
+    training_sample.push_back(std::move(predictor));
   }
 
-  return training_instance;
+  return training_sample;
 }
 
-void CovariateManager::SetNotificationAdServedAt(const base::Time time) {
-  auto notification_ad_served_at = std::make_unique<NotificationAdServedAt>();
-  notification_ad_served_at->SetTime(time);
-  SetLogEntry(std::move(notification_ad_served_at));
-}
-
-void CovariateManager::SetNotificationAdEvent(
-    const mojom::NotificationAdEventType event_type) {
-  DCHECK(mojom::IsKnownEnumValue(event_type));
-
-  auto notification_ad_event = std::make_unique<NotificationAdEvent>();
-  notification_ad_event->SetEventType(event_type);
-  SetLogEntry(std::move(notification_ad_event));
-}
-
-void CovariateManager::LogTrainingInstance() const {
-  std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance =
-      GetTrainingInstance();
-  AdsClientHelper::GetInstance()->LogTrainingInstance(
-      std::move(training_instance));
+void PredictorsManager::AddTrainingSample() const {
+  std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample =
+      GetTrainingSample();
+  AdsClientHelper::GetInstance()->AddTrainingSample(std::move(training_sample));
 }
 
 }  // namespace brave_ads
