@@ -43,9 +43,10 @@ SkMatrix ComputeScaleMatrix(std::size_t image_width,
                             std::size_t image_height,
                             std::size_t bounds_width,
                             std::size_t bounds_height) {
-  return SkMatrix::RectToRect(SkRect::MakeIWH(image_width, image_height),
-                              SkRect::MakeIWH(bounds_width, bounds_height),
-                              SkMatrix::kCenter_ScaleToFit);
+  return SkMatrix::RectToRect(
+      SkRect::MakeIWH(image_width, image_height),
+      SkRect::MakeIWH(bounds_width, bounds_height),
+      SkMatrix::kCenter_ScaleToFit);  // fPreserveAspectRatio
 }
 
 SkBitmap MakeFromData(const NSData* data,
@@ -72,16 +73,32 @@ SkBitmap MakeFromData(const NSData* data,
 
   SkSize size =
       root_svg_element->intrinsicSize(SkSVGLengthContext(SkSize::Make(0, 0)));
-  document->setContainerSize(
-      SkSize::Make(SkIntToScalar(width), SkIntToScalar(height)));
 
-  std::unique_ptr<SkCanvas> canvas = CreateCanvas(width, height);
+  if (!size.isEmpty()) {
+    document->setContainerSize(size);
+  } else {
+    const SkRect* viewBox = root_svg_element->getViewBox().getMaybeNull();
+    if (viewBox) {
+      size = SkSize::Make(viewBox->width(), viewBox->height());
+      document->setContainerSize(size);
+    } else {
+      size = SkSize::Make(SkIntToScalar(width), SkIntToScalar(height));
+      document->setContainerSize(size);
+    }
+  }
+
+  // Same as:
+  // sk_sp<SkSurface> surface = SkSurface::MakeRasterN32Premul(width, height);
+  // surface->getCanvas();
+  std::unique_ptr<SkCanvas> canvas = CreateCanvas(size.width(), size.height());
   if (!canvas) {
     return SkBitmap();
   }
 
-  canvas->concat(
-      ComputeScaleMatrix(size.width(), size.height(), width, height));
+  // Used if scaling the SVG:
+  // canvas->concat(ComputeScaleMatrix(size.width(), size.height(), width,
+  // height));
+
   document->render(canvas.get());
   return BitmapFromCanvas(canvas.get());
 }

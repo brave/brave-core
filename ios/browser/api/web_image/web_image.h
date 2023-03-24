@@ -15,12 +15,13 @@ OBJC_EXPORT
 @interface WebImageDownloader : NSObject
 - (instancetype)init NS_UNAVAILABLE;
 
+/// url - The URL to download the image from
 - (void)downloadImage:(NSURL*)url
-         maxImageSize:(NSUInteger)maxImageSize
-       animationDelay:(CGFloat)animationDelay
            completion:(void (^)(UIImage* _Nullable image,
                                 NSInteger httpResponseCode,
                                 NSURL* url))completion;
+
++ (nullable UIImage*)imageFromData:(NSData*)data;
 @end
 
 NS_ASSUME_NONNULL_END

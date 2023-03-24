@@ -23,7 +23,8 @@ ImageDownloader::ImageDownloader(
 ImageDownloader::~ImageDownloader() {}
 
 int ImageDownloader::DownloadImage(const GURL& url,
-                                   int max_image_size,
+                                   std::size_t max_svg_width,
+                                   std::size_t max_svg_height,
                                    ImageDownloadCallback callback) {
   static int downloaded_image_count = 0;
   int local_download_id = ++downloaded_image_count;
@@ -44,7 +45,7 @@ int ImageDownloader::DownloadImage(const GURL& url,
         std::vector<SkBitmap> frames;
         std::vector<gfx::Size> sizes;
         if (data) {
-          frames = skia::ImageDataToSkBitmapsWithMaxSize(data, max_image_size);
+          frames = skia::ImageDataToSkBitmapsWithMaxSize(data, CGFLOAT_MAX);
 
           for (const auto& frame : frames) {
             sizes.push_back(gfx::Size(frame.width(), frame.height()));
@@ -56,7 +57,7 @@ int ImageDownloader::DownloadImage(const GURL& url,
           // but not SVG
           if (!frames.size()) {
             SkBitmap svg_image =
-                SVGImage::MakeFromData(data, max_image_size, max_image_size);
+                SVGImage::MakeFromData(data, max_svg_width, max_svg_height);
             if (!svg_image.empty()) {
               frames.push_back(svg_image);
               sizes.push_back(gfx::Size(svg_image.width(), svg_image.height()));
