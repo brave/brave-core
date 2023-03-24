@@ -88,7 +88,7 @@ bool ParseEthGetFeeHistory(const base::Value& json_value,
     return false;
 
   auto fee_item_value =
-      json_rpc_responses::EthGetFeeHistoryResult::FromValue(*value);
+      json_rpc_responses::EthGetFeeHistoryResult::FromValueDeprecated(*value);
   if (!fee_item_value)
     return false;
 
@@ -137,7 +137,7 @@ bool ParseEthGetTransactionReceipt(const base::Value& json_value,
                                    TransactionReceipt* receipt) {
   DCHECK(receipt);
 
-  auto result = ParseResultValue(json_value);
+  auto result = ParseResultDict(json_value);
   if (!result)
     return false;
 
@@ -251,7 +251,7 @@ bool ParseEthGetLogs(const base::Value& json_value, std::vector<Log>* logs) {
 
   for (const auto& logs_list_it : *result) {
     auto log_item_value =
-        json_rpc_responses::EthGetLogsResult::FromValue(logs_list_it.Clone());
+        json_rpc_responses::EthGetLogsResult::FromValueDeprecated(logs_list_it);
     if (!log_item_value)
       return false;
 
