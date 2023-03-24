@@ -100,31 +100,6 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
         this.onWalletListItemClick = onWalletListItemClick;
     }
 
-    /**
-     * Update the list's selection icon to the passed account
-     * @param title is the account name
-     * @param subTitle is the account address
-     */
-    public void updateSelectedNetwork(String title, String subTitle) {
-        for (int i = 0; i < walletListItemModelList.size(); i++) {
-            WalletListItemModel walletListItemModel = walletListItemModelList.get(i);
-            if (walletListItemModel.getTitle().equals(title)
-                    && walletListItemModel.getSubTitle().equals(subTitle)) {
-                updateSelectedNetwork(i);
-                break;
-            }
-        }
-    }
-
-    private void updateSelectedNetwork(int selectedAccountPosition) {
-        walletListItemModelList.get(previousSelectedPos).setIsUserSelected(false);
-        notifyItemChanged(previousSelectedPos);
-
-        walletListItemModelList.get(selectedAccountPosition).setIsUserSelected(true);
-        previousSelectedPos = selectedAccountPosition;
-        notifyItemChanged(selectedAccountPosition);
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     public void removeItem(WalletListItemModel item) {
         walletListItemModelList.remove(item);
