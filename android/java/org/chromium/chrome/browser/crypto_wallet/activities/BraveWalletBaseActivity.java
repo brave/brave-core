@@ -58,7 +58,6 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
     public void onConnectionError(MojoException e) {
         if (mKeyringServiceObserver != null) {
             mKeyringServiceObserver.close();
-            mKeyringServiceObserver.destroy();
             mKeyringServiceObserver = null;
         }
         if (mTxServiceObserver != null) {
@@ -236,7 +235,6 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
     public void onDestroy() {
         if (mKeyringServiceObserver != null) {
             mKeyringServiceObserver.close();
-            mKeyringServiceObserver.destroy();
         }
         if (mTxServiceObserver != null) {
             mTxServiceObserver.close();
