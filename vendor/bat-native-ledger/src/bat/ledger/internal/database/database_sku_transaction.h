@@ -8,12 +8,16 @@
 
 #include <string>
 
+#include "base/types/expected.h"
 #include "bat/ledger/internal/database/database_table.h"
 
 namespace ledger {
 namespace database {
 
-using GetSKUTransactionCallback = std::function<void(mojom::SKUTransactionPtr)>;
+enum class GetSKUTransactionError { kDatabaseError, kTransactionNotFound };
+
+using GetSKUTransactionCallback = std::function<void(
+    base::expected<mojom::SKUTransactionPtr, GetSKUTransactionError>)>;
 
 class DatabaseSKUTransaction: public DatabaseTable {
  public:

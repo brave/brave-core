@@ -84,7 +84,7 @@ void PostTransactionGemini::Request(const mojom::SKUTransaction& transaction,
   request->content_type = "application/json; charset=utf-8";
   request->method = mojom::UrlMethod::POST;
   BLOG(0, "External Transaction ID: " << transaction.external_transaction_id
-                                      << "for " << transaction.amount);
+                                      << " for " << transaction.amount);
 
   ledger_->LoadURL(std::move(request), url_callback);
 }
