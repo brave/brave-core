@@ -4,19 +4,11 @@
 
 import("//brave/build/cargo.gni")
 
-config("external_config") {
-  defines = [ "NO_CXXEXCEPTIONS=1" ]
-
-  include_dirs = [ "//brave/vendor/challenge_bypass_ristretto_ffi/src" ]
-}
-
-rust_ffi("challenge_bypass_ristretto") {
-  public_configs = [ ":external_config" ]
-
+rust_ffi("challenge_bypass_ristretto_ffi") {
   sources = [
-    "//brave/vendor/challenge_bypass_ristretto_ffi/src/lib.h",
-    "//brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.cpp",
-    "//brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp",
+    "src/lib.h",
+    "src/wrapper.cc",
+    "src/wrapper.h",
   ]
 
   deps = [ "//base" ]
@@ -31,6 +23,6 @@ rust_ffi("challenge_bypass_ristretto") {
 rust_crate("rust_lib") {
   inputs = [
     "Cargo.toml",
-    "//brave/vendor/challenge_bypass_ristretto_ffi/src/lib.rs",
+    "src/lib.rs",
   ]
 }

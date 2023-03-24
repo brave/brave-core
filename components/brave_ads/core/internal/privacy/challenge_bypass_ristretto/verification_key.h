@@ -8,8 +8,8 @@
 
 #include <string>
 
+#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "wrapper.hpp"
 
 namespace brave_ads::privacy::cbr {
 

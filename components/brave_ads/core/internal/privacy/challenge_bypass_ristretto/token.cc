@@ -12,34 +12,20 @@ namespace brave_ads::privacy::cbr {
 
 namespace {
 
-absl::optional<challenge_bypass_ristretto::Token> Create() {
-  const challenge_bypass_ristretto::Token raw_token =
-      challenge_bypass_ristretto::Token::random();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_token;
-}
-
 absl::optional<challenge_bypass_ristretto::Token> Create(
     const std::string& token_base64) {
   if (token_base64.empty()) {
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::Token raw_token =
-      challenge_bypass_ristretto::Token::decode_base64(token_base64);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_token;
+  return ValueOrLogError(
+      challenge_bypass_ristretto::Token::decode_base64(token_base64));
 }
 
 }  // namespace
 
-Token::Token() : token_(Create()) {}
+Token::Token()
+    : token_(ValueOrLogError(challenge_bypass_ristretto::Token::random())) {}
 
 Token::Token(const std::string& token_base64) : token_(Create(token_base64)) {}
 
@@ -70,12 +56,7 @@ absl::optional<std::string> Token::EncodeBase64() const {
     return absl::nullopt;
   }
 
-  const std::string encoded_base64 = token_->encode_base64();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return encoded_base64;
+  return ValueOrLogError(token_->encode_base64());
 }
 
 absl::optional<BlindedToken> Token::Blind() {
@@ -83,13 +64,8 @@ absl::optional<BlindedToken> Token::Blind() {
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::BlindedToken raw_blinded_token =
-      token_->blind();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return BlindedToken(raw_blinded_token);
+  return ValueOrLogError<challenge_bypass_ristretto::BlindedToken,
+                         BlindedToken>(token_->blind());
 }
 
 std::ostream& operator<<(std::ostream& os, const Token& token) {

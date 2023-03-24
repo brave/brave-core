@@ -20,6 +20,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
     prune_paths.update([
         # Formerly external Brave code which has moved to brave-core
         # (i.e these are already covered by the Brave Browser license notice).
+        os.path.join('brave', 'third_party', 'challenge_bypass_ristretto_ffi'),
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
 
@@ -58,12 +59,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'vendor', 'brave-extension'): {
             "Name": "Brave Only Extension",
             "URL": "https://github.com/brave/brave-extension",
-            "License": "MPL-2.0",
-        },
-        os.path.join('brave', 'vendor', 'challenge_bypass_ristretto_ffi'): {
-            "Name": "challenge-bypass-ristretto-ffi",
-            "URL":
-                "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
             "License": "MPL-2.0",
         },
         os.path.join('brave', 'vendor', 'web-discovery-project'): {

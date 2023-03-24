@@ -16,13 +16,9 @@ VerificationKey::VerificationKey(
 
 absl::optional<VerificationSignature> VerificationKey::Sign(
     const std::string& message) {
-  const challenge_bypass_ristretto::VerificationSignature
-      raw_verification_signature = verification_key_.sign(message);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return VerificationSignature(raw_verification_signature);
+  return ValueOrLogError<challenge_bypass_ristretto::VerificationSignature,
+                         VerificationSignature>(
+      verification_key_.sign(message));
 }
 
 bool VerificationKey::Verify(
@@ -32,7 +28,8 @@ bool VerificationKey::Verify(
     return false;
   }
 
-  return verification_key_.verify(verification_signature.get(), message);
+  return verification_key_.verify(verification_signature.get(), message)
+      .value_or(false);
 }
 
 }  // namespace brave_ads::privacy::cbr

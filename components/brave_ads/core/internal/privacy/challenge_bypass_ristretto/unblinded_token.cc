@@ -19,14 +19,9 @@ absl::optional<challenge_bypass_ristretto::UnblindedToken> Create(
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::UnblindedToken raw_unblinded_token =
+  return ValueOrLogError(
       challenge_bypass_ristretto::UnblindedToken::decode_base64(
-          unblinded_token_base64);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_unblinded_token;
+          unblinded_token_base64));
 }
 
 }  // namespace
@@ -70,12 +65,7 @@ absl::optional<std::string> UnblindedToken::EncodeBase64() const {
     return absl::nullopt;
   }
 
-  const std::string encoded_base64 = unblinded_token_->encode_base64();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return encoded_base64;
+  return ValueOrLogError(unblinded_token_->encode_base64());
 }
 
 absl::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
@@ -83,13 +73,7 @@ absl::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::VerificationKey raw_verification_key =
-      unblinded_token_->derive_verification_key();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return VerificationKey(raw_verification_key);
+  return VerificationKey(unblinded_token_->derive_verification_key());
 }
 
 absl::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
@@ -97,13 +81,7 @@ absl::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::TokenPreimage raw_token_preimage =
-      unblinded_token_->preimage();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return TokenPreimage(raw_token_preimage);
+  return TokenPreimage(unblinded_token_->preimage());
 }
 
 std::ostream& operator<<(std::ostream& os,

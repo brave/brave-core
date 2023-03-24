@@ -17,14 +17,8 @@ absl::optional<challenge_bypass_ristretto::SignedToken> Create(
     return absl::nullopt;
   }
 
-  const challenge_bypass_ristretto::SignedToken raw_signed_token =
-      challenge_bypass_ristretto::SignedToken::decode_base64(
-          signed_token_base64);
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return raw_signed_token;
+  return ValueOrLogError(challenge_bypass_ristretto::SignedToken::decode_base64(
+      signed_token_base64));
 }
 
 }  // namespace
@@ -64,13 +58,7 @@ absl::optional<std::string> SignedToken::EncodeBase64() const {
   if (!signed_token_ || !has_value()) {
     return absl::nullopt;
   }
-
-  const std::string encoded_base64 = signed_token_->encode_base64();
-  if (ExceptionOccurred()) {
-    return absl::nullopt;
-  }
-
-  return encoded_base64;
+  return ValueOrLogError(signed_token_->encode_base64());
 }
 
 std::ostream& operator<<(std::ostream& os, const SignedToken& signed_token) {

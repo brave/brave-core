@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "wrapper.hpp"
+#include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
 namespace brave_ads::privacy::cbr {
 
