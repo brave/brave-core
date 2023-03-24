@@ -10,14 +10,14 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 
 namespace brave_ads::resource {
 
-class AntiTargeting final : public LocaleManagerObserver,
+class AntiTargeting final : public AdsClientObserver,
                             public ResourceManagerObserver {
  public:
   AntiTargeting();
@@ -39,7 +39,7 @@ class AntiTargeting final : public LocaleManagerObserver,
  private:
   void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
 
   // ResourceManagerObserver:

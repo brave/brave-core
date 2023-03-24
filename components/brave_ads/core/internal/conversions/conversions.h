@@ -12,12 +12,12 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -33,7 +33,7 @@ class Conversions;
 struct AdEventInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public LocaleManagerObserver,
+class Conversions final : public AdsClientObserver,
                           public ResourceManagerObserver,
                           public TabManagerObserver {
  public:
@@ -112,7 +112,7 @@ class Conversions final : public LocaleManagerObserver,
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
 
   // ResourceManagerObserver:

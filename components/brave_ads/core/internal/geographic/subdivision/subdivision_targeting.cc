@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_response_string_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/get_subdivision_url_request_builder.h"
@@ -43,12 +42,12 @@ constexpr char kDisabled[] = "DISABLED";
 }  // namespace
 
 SubdivisionTargeting::SubdivisionTargeting() {
-  LocaleManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   PrefManager::GetInstance()->AddObserver(this);
 }
 
 SubdivisionTargeting::~SubdivisionTargeting() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   PrefManager::GetInstance()->RemoveObserver(this);
 }
 

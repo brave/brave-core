@@ -55,10 +55,6 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
   ads_->Shutdown(std::move(callback));
 }
 
-void BatAdsImpl::OnLocaleDidChange(const std::string& locale) {
-  ads_->OnLocaleDidChange(locale);
-}
-
 void BatAdsImpl::OnPrefDidChange(const std::string& path) {
   ads_->OnPrefDidChange(path);
 }

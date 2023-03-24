@@ -33,7 +33,10 @@ class AdsClientNotifierManager {
 
   void RemoveObserver(AdsClientObserver* observer);
 
-  // Invoked when the operating system locale changes.
+  // Called when the user changes the locale of their operating system. This
+  // call is not required if the operating system restarts the browser when
+  // changing the locale. |locale| should be specified in either
+  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
   void NotifyLocaleDidChange(const std::string& locale);
 
   // Invoked when a preference has changed for the specified |path|.

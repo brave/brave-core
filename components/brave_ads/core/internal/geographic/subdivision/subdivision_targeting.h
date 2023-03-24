@@ -9,15 +9,15 @@
 #include <string>
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::geographic {
 
-class SubdivisionTargeting final : public LocaleManagerObserver,
+class SubdivisionTargeting final : public AdsClientObserver,
                                    public PrefManagerObserver {
  public:
   SubdivisionTargeting();
@@ -61,7 +61,7 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   void Retry();
   void FetchAfterDelay();
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
 
   // PrefManagerObserver:

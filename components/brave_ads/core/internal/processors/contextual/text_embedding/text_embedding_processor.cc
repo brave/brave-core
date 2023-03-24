@@ -7,10 +7,10 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
@@ -35,13 +35,13 @@ TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
     : resource_(resource) {
   DCHECK(resource_);
 
-  LocaleManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   ResourceManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 TextEmbedding::~TextEmbedding() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }

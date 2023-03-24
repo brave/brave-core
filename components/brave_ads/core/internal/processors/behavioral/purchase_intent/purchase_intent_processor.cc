@@ -9,12 +9,12 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_strip_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_signal_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
@@ -67,13 +67,13 @@ PurchaseIntent::PurchaseIntent(resource::PurchaseIntent* resource)
     : resource_(resource) {
   DCHECK(resource_);
 
-  LocaleManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   ResourceManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 PurchaseIntent::~PurchaseIntent() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }

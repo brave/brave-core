@@ -108,12 +108,6 @@ class AdsService : public KeyedService {
   // |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
-  // Called when the user changes the locale of their operating system. This
-  // call is not required if the operating system restarts the browser when
-  // changing the locale. |locale| should be specified in either
-  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
-  virtual void OnLocaleDidChange(const std::string& locale) = 0;
-
   // Called when a resource component has been updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 

@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
@@ -25,7 +25,7 @@ class TextClassification;
 
 namespace processor {
 
-class TextClassification final : public LocaleManagerObserver,
+class TextClassification final : public AdsClientObserver,
                                  public ResourceManagerObserver,
                                  public TabManagerObserver {
  public:
@@ -42,7 +42,7 @@ class TextClassification final : public LocaleManagerObserver,
   void Process(const std::string& text);
 
  private:
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
 
   // ResourceManagerObserver:

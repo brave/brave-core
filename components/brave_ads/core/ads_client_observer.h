@@ -1,7 +1,7 @@
 /* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_OBSERVER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_OBSERVER_H_
@@ -28,7 +28,10 @@ class AdsClientObserver : public base::CheckedObserver {
 
   ~AdsClientObserver() override;
 
-  // Invoked when the operating system locale changes.
+  // Called when the user changes the locale of their operating system. This
+  // call is not required if the operating system restarts the browser when
+  // changing the locale. |locale| should be specified in either
+  // <ISO-639-1>-<ISO-3166-1> or <ISO-639-1>_<ISO-3166-1> format.
   virtual void OnLocaleDidChange(const std::string& locale) {}
 
   // Invoked when a preference has changed for the specified |path|.

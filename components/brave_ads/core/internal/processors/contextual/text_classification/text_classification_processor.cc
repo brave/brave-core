@@ -7,11 +7,11 @@
 
 #include "base/check.h"
 #include "base/ranges/algorithm.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
@@ -42,13 +42,13 @@ TextClassification::TextClassification(resource::TextClassification* resource)
     : resource_(resource) {
   DCHECK(resource_);
 
-  LocaleManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   ResourceManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 TextClassification::~TextClassification() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }

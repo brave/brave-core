@@ -1382,16 +1382,6 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   bat_ads_->GetDiagnostics(std::move(callback));
 }
 
-void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
-  if (!bat_ads_.is_bound()) {
-    return;
-  }
-
-  RegisterResourceComponentsForLocale(locale);
-
-  bat_ads_->OnLocaleDidChange(locale);
-}
-
 void AdsServiceImpl::OnTabHtmlContentDidChange(
     const SessionID& tab_id,
     const std::vector<GURL>& redirect_chain,

@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
@@ -31,7 +31,7 @@ struct PurchaseIntentSiteInfo;
 
 namespace processor {
 
-class PurchaseIntent final : public LocaleManagerObserver,
+class PurchaseIntent final : public AdsClientObserver,
                              public ResourceManagerObserver,
                              public TabManagerObserver {
  public:
@@ -56,7 +56,7 @@ class PurchaseIntent final : public LocaleManagerObserver,
 
   uint16_t GetFunnelWeightForSearchQuery(const std::string& search_query) const;
 
-  // LocaleManagerObserver:
+  // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
 
   // ResourceManagerObserver:

@@ -32,7 +32,6 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
@@ -87,7 +86,6 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   flag_manager_ = std::make_unique<FlagManager>();
   history_manager_ = std::make_unique<HistoryManager>();
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
-  locale_manager_ = std::make_unique<LocaleManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   pref_manager_ = std::make_unique<PrefManager>();
   resource_manager_ = std::make_unique<ResourceManager>();
@@ -176,10 +174,6 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   NotificationAdManager::GetInstance()->RemoveAll();
 
   std::move(callback).Run(/*success*/ true);
-}
-
-void AdsImpl::OnLocaleDidChange(const std::string& locale) {
-  LocaleManager::GetInstance()->OnLocaleDidChange(locale);
 }
 
 void AdsImpl::OnPrefDidChange(const std::string& path) {
@@ -558,6 +552,8 @@ void AdsImpl::OnMigrateNotificationState(InitializeCallback callback,
   BLOG(1, "Successfully initialized ads");
 
   is_initialized_ = true;
+
+  AdsClientHelper::GetInstance()->BindPendingObservers();
 
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);

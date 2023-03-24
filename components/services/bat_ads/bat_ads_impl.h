@@ -47,8 +47,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnLocaleDidChange(const std::string& locale) override;
-
   void OnPrefDidChange(const std::string& path) override;
 
   void OnDidUpdateResourceComponent(const std::string& id) override;

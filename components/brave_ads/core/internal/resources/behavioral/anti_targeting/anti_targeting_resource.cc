@@ -8,8 +8,8 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
@@ -23,12 +23,12 @@ constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 
 AntiTargeting::AntiTargeting()
     : anti_targeting_(std::make_unique<AntiTargetingInfo>()) {
-  LocaleManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   ResourceManager::GetInstance()->AddObserver(this);
 }
 
 AntiTargeting::~AntiTargeting() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   ResourceManager::GetInstance()->RemoveObserver(this);
 }
 

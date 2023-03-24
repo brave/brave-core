@@ -67,7 +67,6 @@ class FlagManager;
 class HistoryManager;
 class IdleDetectionManager;
 class InlineContentAdHandler;
-class LocaleManager;
 class NewTabPageAdHandler;
 class NotificationAdHandler;
 class NotificationAdManager;
@@ -104,8 +103,6 @@ class AdsImpl final : public Ads,
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnLocaleDidChange(const std::string& locale) override;
 
   void OnPrefDidChange(const std::string& path) override;
 
@@ -231,7 +228,6 @@ class AdsImpl final : public Ads,
   std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
   std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
-  std::unique_ptr<LocaleManager> locale_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
   std::unique_ptr<PrefManager> pref_manager_;

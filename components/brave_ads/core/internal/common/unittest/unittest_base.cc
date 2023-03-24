@@ -201,8 +201,6 @@ void UnitTestBase::Initialize() {
 
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
 
-  locale_manager_ = std::make_unique<LocaleManager>();
-
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
 
   pref_manager_ = std::make_unique<PrefManager>();
