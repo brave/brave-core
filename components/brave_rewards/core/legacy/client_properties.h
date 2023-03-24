@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 struct ClientProperties {
   ClientProperties();
@@ -41,6 +41,6 @@ struct ClientProperties {
   std::map<std::string, bool> inline_tips;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_CLIENT_PROPERTIES_H_

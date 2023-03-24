@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace sku {
@@ -29,11 +29,11 @@ class SKUTransaction {
   void Run(mojom::SKUOrderPtr order,
            const std::string& destination,
            const std::string& wallet_type,
-           ledger::LegacyResultCallback callback);
+           LegacyResultCallback callback);
 
   void SendExternalTransaction(mojom::Result result,
                                const mojom::SKUTransaction& transaction,
-                               ledger::LegacyResultCallback callback);
+                               LegacyResultCallback callback);
 
  private:
   using MaybeCreateTransactionCallback =
@@ -56,32 +56,32 @@ class SKUTransaction {
                           const std::string& destination,
                           const std::string& wallet_type,
                           const std::string& contribution_id,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void OnTransfer(mojom::Result result,
                   const mojom::SKUTransaction& transaction,
                   const std::string& contribution_id,
                   const std::string& destination,
-                  ledger::LegacyResultCallback callback);
+                  LegacyResultCallback callback);
 
   void OnGetExternalTransaction(
-      ledger::LegacyResultCallback,
+      LegacyResultCallback,
       mojom::SKUTransaction&&,
       base::expected<mojom::ExternalTransactionPtr,
                      database::GetExternalTransactionError>);
 
   void OnSaveSKUExternalTransaction(mojom::Result result,
                                     const mojom::SKUTransaction& transaction,
-                                    ledger::LegacyResultCallback callback);
+                                    LegacyResultCallback callback);
 
   void OnSendExternalTransaction(mojom::Result result,
-                                 ledger::LegacyResultCallback callback);
+                                 LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_TRANSACTION_H_

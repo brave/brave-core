@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger::endpoint::gemini {
+namespace brave_rewards::core::endpoint::gemini {
 
 PostRecipientId::PostRecipientId(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -81,7 +81,7 @@ void PostRecipientId::Request(const std::string& token,
 
 void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
                                 const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   auto header = response.headers.find("www-authenticate");
   if (header != response.headers.end()) {
@@ -101,4 +101,4 @@ void PostRecipientId::OnRequest(PostRecipientIdCallback callback,
   std::move(callback).Run(result, std::move(recipient_id));
 }
 
-}  // namespace ledger::endpoint::gemini
+}  // namespace brave_rewards::core::endpoint::gemini

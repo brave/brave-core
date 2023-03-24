@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/common/request_util.h"
 #include "content/public/test/browser_test_utils.h"
 
-namespace rewards_browsertest_util {
+namespace brave_rewards::test {
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
@@ -143,7 +143,7 @@ std::string GetUpholdCard(
       address.c_str());
 }
 
-std::string GetOrderCreateResponse(ledger::mojom::SKUOrderPtr sku_order) {
+std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order) {
   DCHECK(sku_order);
   std::string items;
   for (const auto& item : sku_order->items) {
@@ -182,4 +182,4 @@ std::string GetOrderCreateResponse(ledger::mojom::SKUOrderPtr sku_order) {
       items.c_str());
 }
 
-}  // namespace rewards_browsertest_util
+}  // namespace brave_rewards::test

@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/post_commit_transaction/post_commit_transaction.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -29,7 +29,7 @@
 //   "tx_ref": "c40ccc6a-8579-6435-90be-66ea7ea96c1b"
 // }
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 
 class PostCommitTransactionGemini;
 
@@ -54,6 +54,6 @@ class PostCommitTransactionGemini final
   std::string ContentType() const override;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GEMINI_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_GEMINI_H_

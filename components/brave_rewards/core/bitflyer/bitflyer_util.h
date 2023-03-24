@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger::bitflyer {
+namespace brave_rewards::core::bitflyer {
 
 const char kUrlStaging[] = BUILDFLAG(BITFLYER_STAGING_URL);
 const char kUrlProduction[] = "https://bitflyer.com";
@@ -37,6 +37,6 @@ std::string GetActivityUrl();
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
-}  // namespace ledger::bitflyer
+}  // namespace brave_rewards::core::bitflyer
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_BITFLYER_BITFLYER_UTIL_H_

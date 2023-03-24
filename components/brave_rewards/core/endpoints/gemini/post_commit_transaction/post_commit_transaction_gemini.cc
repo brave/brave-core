@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 using Error = PostCommitTransactionGemini::Error;
 using Result = PostCommitTransactionGemini::Result;
 
@@ -90,4 +90,4 @@ std::string PostCommitTransactionGemini::ContentType() const {
   return kApplicationJson;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

@@ -33,8 +33,8 @@ source_set("ledger") {
   ]
 
   deps = [
-    ":ledger_mojom_wrappers",
-    ":ledger_types_mojom_wrappers",
+    ":rewards_core_mojom_wrappers",
+    ":rewards_core_types_mojom_wrappers",
     "//base",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
@@ -52,17 +52,15 @@ source_set("ledger") {
   ]
 }
 
-ios_objc_mojom_wrappers("ledger_mojom_wrappers") {
-  mojom_target =
-      "//brave/components/brave_rewards/common/mojom:ledger_interfaces"
-  sources = [ "//brave/components/brave_rewards/common/mojom/ledger.mojom" ]
+ios_objc_mojom_wrappers("rewards_core_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_rewards/common/mojom:core_interfaces"
+  sources = [ "//brave/components/brave_rewards/common/mojom/core.mojom" ]
 }
 
-ios_objc_mojom_wrappers("ledger_types_mojom_wrappers") {
-  mojom_target = "//brave/components/brave_rewards/common/mojom:ledger_types"
+ios_objc_mojom_wrappers("rewards_core_types_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_rewards/common/mojom:core_types"
 
-  # ledger_types.mojom shares the same namespace/module as ledger.mojom
+  # core_types.mojom shares the same namespace/module as core.mojom
   generate_namespace = false
-  sources =
-      [ "//brave/components/brave_rewards/common/mojom/ledger_types.mojom" ]
+  sources = [ "//brave/components/brave_rewards/common/mojom/core_types.mojom" ]
 }

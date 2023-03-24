@@ -8,10 +8,10 @@
 
 namespace android_util {
 
-ledger::mojom::ClientInfoPtr GetAndroidClientInfo() {
-  auto info = ledger::mojom::ClientInfo::New();
-  info->platform = ledger::mojom::Platform::ANDROID_R;
-  info->os = ledger::mojom::OperatingSystem::UNDEFINED;
+brave_rewards::mojom::ClientInfoPtr GetAndroidClientInfo() {
+  auto info = brave_rewards::mojom::ClientInfo::New();
+  info->platform = brave_rewards::mojom::Platform::ANDROID_R;
+  info->os = brave_rewards::mojom::OperatingSystem::UNDEFINED;
   return info;
 }
 

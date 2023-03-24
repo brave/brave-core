@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_common.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace credential {
 
 class CredentialsSKU : public Credentials {
@@ -23,62 +23,61 @@ class CredentialsSKU : public Credentials {
   ~CredentialsSKU() override;
 
   void Start(const CredentialsTrigger& trigger,
-             ledger::ResultCallback callback) override;
+             ResultCallback callback) override;
 
   void RedeemTokens(const CredentialsRedeem& redeem,
-                    ledger::LegacyResultCallback callback) override;
+                    LegacyResultCallback callback) override;
 
  private:
-  void OnStart(ledger::ResultCallback callback,
+  void OnStart(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::CredsBatchPtr creds);
 
-  void Blind(ledger::ResultCallback callback,
+  void Blind(ResultCallback callback,
              const CredentialsTrigger& trigger) override;
 
-  void OnBlind(ledger::ResultCallback callback,
+  void OnBlind(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::Result result);
 
-  void RetryPreviousStepSaved(ledger::ResultCallback callback,
-                              mojom::Result result);
+  void RetryPreviousStepSaved(ResultCallback callback, mojom::Result result);
 
-  void Claim(ledger::ResultCallback callback,
+  void Claim(ResultCallback callback,
              const CredentialsTrigger& trigger,
              mojom::CredsBatchPtr creds) override;
 
-  void OnClaim(ledger::ResultCallback callback,
+  void OnClaim(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::Result result);
 
-  void ClaimStatusSaved(ledger::ResultCallback callback,
+  void ClaimStatusSaved(ResultCallback callback,
                         const CredentialsTrigger& trigger,
                         mojom::Result result);
 
-  void FetchSignedCreds(ledger::ResultCallback callback,
+  void FetchSignedCreds(ResultCallback callback,
                         const CredentialsTrigger& trigger);
 
-  void OnFetchSignedCreds(ledger::ResultCallback callback,
+  void OnFetchSignedCreds(ResultCallback callback,
                           const CredentialsTrigger& trigger,
                           mojom::Result result,
                           mojom::CredsBatchPtr batch);
 
-  void SignedCredsSaved(ledger::ResultCallback callback,
+  void SignedCredsSaved(ResultCallback callback,
                         const CredentialsTrigger& trigger,
                         mojom::Result result);
 
-  void Unblind(ledger::ResultCallback callback,
+  void Unblind(ResultCallback callback,
                const CredentialsTrigger& trigger,
                mojom::CredsBatchPtr creds) override;
 
-  void Completed(ledger::ResultCallback callback,
+  void Completed(ResultCallback callback,
                  const CredentialsTrigger& trigger,
                  mojom::Result result) override;
 
   void OnRedeemTokens(mojom::Result result,
                       const std::vector<std::string>& token_id_list,
                       const CredentialsRedeem& redeem,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
@@ -86,6 +85,6 @@ class CredentialsSKU : public Credentials {
 };
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_SKU_H_

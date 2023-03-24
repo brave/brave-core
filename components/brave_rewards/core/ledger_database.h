@@ -11,12 +11,12 @@
 #include "base/files/file_path.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_database.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_database.mojom.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class LedgerDatabase {
  public:
@@ -62,6 +62,6 @@ class LedgerDatabase {
   SEQUENCE_CHECKER(sequence_checker_);
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_DATABASE_H_

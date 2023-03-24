@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace credential {
 
 using challenge_bypass_ristretto::BatchDLEQProof;
@@ -196,7 +196,7 @@ base::Value::List GenerateCredentials(
   base::Value::List credentials;
   for (auto& item : token_list) {
     absl::optional<base::Value::Dict> token;
-    if (ledger::is_testing) {
+    if (is_testing) {
       token = GenerateSuggestionMock(item.token_value, item.public_key, body);
     } else {
       token = GenerateSuggestion(item.token_value, item.public_key, body);
@@ -255,4 +255,4 @@ base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
 }
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core

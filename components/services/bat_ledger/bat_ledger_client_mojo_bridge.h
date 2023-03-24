@@ -18,11 +18,11 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
-namespace bat_ledger {
+namespace brave_rewards {
 
-class BatLedgerClientMojoBridge :
-    public ledger::LedgerClient,
-    public base::SupportsWeakPtr<BatLedgerClientMojoBridge>{
+class BatLedgerClientMojoBridge
+    : public core::LedgerClient,
+      public base::SupportsWeakPtr<BatLedgerClientMojoBridge> {
  public:
   BatLedgerClientMojoBridge(
       mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info);
@@ -32,21 +32,20 @@ class BatLedgerClientMojoBridge :
   BatLedgerClientMojoBridge& operator=(
       const BatLedgerClientMojoBridge&) = delete;
 
-  void OnReconcileComplete(
-      const ledger::mojom::Result result,
-      ledger::mojom::ContributionInfoPtr contribution) override;
-  void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
-  void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
+  void OnReconcileComplete(const mojom::Result result,
+                           mojom::ContributionInfoPtr contribution) override;
+  void LoadLedgerState(core::OnLoadCallback callback) override;
+  void LoadPublisherState(core::OnLoadCallback callback) override;
 
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
-               ledger::client::LoadURLCallback callback) override;
+  void LoadURL(mojom::UrlRequestPtr request,
+               core::LoadURLCallback callback) override;
 
-  void OnPanelPublisherInfo(ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr info,
+  void OnPanelPublisherInfo(mojom::Result result,
+                            mojom::PublisherInfoPtr info,
                             uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
-                    ledger::client::FetchIconCallback callback) override;
+                    core::FetchIconCallback callback) override;
 
   void Log(
       const char* file,
@@ -57,7 +56,7 @@ class BatLedgerClientMojoBridge :
   std::string URIEncode(const std::string& value) override;
 
   void PublisherListNormalized(
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<mojom::PublisherInfoPtr> list) override;
 
   void OnPublisherRegistryUpdated() override;
   void OnPublisherUpdated(const std::string& publisher_id) override;
@@ -89,7 +88,7 @@ class BatLedgerClientMojoBridge :
   uint64_t GetUint64Option(const std::string& name) const override;
 
   void OnContributeUnverifiedPublishers(
-      ledger::mojom::Result result,
+      mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
@@ -97,28 +96,26 @@ class BatLedgerClientMojoBridge :
 
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
-                        ledger::client::LegacyResultCallback callback) override;
+                        core::LegacyResultCallback callback) override;
 
-  ledger::mojom::ClientInfoPtr GetClientInfo() override;
+  mojom::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;
 
   void ReconcileStampReset() override;
 
-  void RunDBTransaction(
-      ledger::mojom::DBTransactionPtr transaction,
-      ledger::client::RunDBTransactionCallback callback) override;
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        core::RunDBTransactionCallback callback) override;
 
-  void GetCreateScript(
-      ledger::client::GetCreateScriptCallback callback) override;
+  void GetCreateScript(core::GetCreateScriptCallback callback) override;
 
-  void PendingContributionSaved(const ledger::mojom::Result result) override;
+  void PendingContributionSaved(const mojom::Result result) override;
 
-  void OnLoadLedgerState(ledger::client::OnLoadCallback callback,
-                         const ledger::mojom::Result result,
+  void OnLoadLedgerState(core::OnLoadCallback callback,
+                         const mojom::Result result,
                          const std::string& data);
-  void OnLoadPublisherState(ledger::client::OnLoadCallback callback,
-                            const ledger::mojom::Result result,
+  void OnLoadPublisherState(core::OnLoadCallback callback,
+                            const mojom::Result result,
                             const std::string& data);
 
   void ClearAllNotifications() override;
@@ -129,7 +126,7 @@ class BatLedgerClientMojoBridge :
 
   void ExternalWalletReconnected() const override;
 
-  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
+  void DeleteLog(core::LegacyResultCallback callback) override;
 
   absl::optional<std::string> EncryptString(const std::string& name) override;
 
@@ -141,6 +138,6 @@ class BatLedgerClientMojoBridge :
   mojo::AssociatedRemote<mojom::BatLedgerClient> bat_ledger_client_;
 };
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_CLIENT_MOJO_BRIDGE_H_

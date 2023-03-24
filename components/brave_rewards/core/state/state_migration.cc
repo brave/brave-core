@@ -16,7 +16,7 @@ const int kCurrentVersionNumber = 13;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 StateMigration::StateMigration(LedgerImpl* ledger)
@@ -40,17 +40,17 @@ StateMigration::StateMigration(LedgerImpl* ledger)
 
 StateMigration::~StateMigration() = default;
 
-void StateMigration::Start(ledger::LegacyResultCallback callback) {
+void StateMigration::Start(LegacyResultCallback callback) {
   Migrate(callback);
 }
 
-void StateMigration::FreshInstall(ledger::LegacyResultCallback callback) {
+void StateMigration::FreshInstall(LegacyResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
   ledger_->state()->SetVersion(kCurrentVersionNumber);
   callback(mojom::Result::LEDGER_OK);
 }
 
-void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigration::Migrate(LegacyResultCallback callback) {
   int current_version = ledger_->state()->GetVersion();
 
   if (current_version < 0) {
@@ -58,8 +58,8 @@ void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
     current_version = 0;
   }
 
-  if (ledger::is_testing &&
-      current_version == ledger::state_migration_target_version_for_testing) {
+  if (is_testing &&
+      current_version == state_migration_target_version_for_testing) {
     return callback(mojom::Result::LEDGER_OK);
   }
 
@@ -134,7 +134,7 @@ void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
 
 void StateMigration::OnMigration(mojom::Result result,
                                  int version,
-                                 ledger::LegacyResultCallback callback) {
+                                 LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "State: Error with migration from " << (version - 1) << " to "
                                                 << version);
@@ -157,4 +157,4 @@ void StateMigration::OnMigration(mojom::Result result,
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core

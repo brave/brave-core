@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoint::uphold {
+namespace brave_rewards::core::endpoint::uphold {
 
 PatchCard::PatchCard(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -69,8 +69,8 @@ void PatchCard::Request(const std::string& token,
 
 void PatchCard::OnRequest(PatchCardCallback callback,
                           const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
   std::move(callback).Run(CheckStatusCode(response.status_code));
 }
 
-}  // namespace ledger::endpoint::uphold
+}  // namespace brave_rewards::core::endpoint::uphold

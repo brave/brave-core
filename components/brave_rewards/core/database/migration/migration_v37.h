@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V37_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V37_H_
 
-namespace ledger::database::migration {
+namespace brave_rewards::core::database::migration {
 
 constexpr char v37[] =
     R"(
@@ -23,6 +23,6 @@ constexpr char v37[] =
      );
    )";
 
-}  // namespace ledger::database::migration
+}  // namespace brave_rewards::core::database::migration
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V37_H_

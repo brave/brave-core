@@ -54,14 +54,15 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
 
  private:
   void HandleGetRewardsInternalsInfo(const base::Value::List& args);
-  void OnGetRewardsInternalsInfo(ledger::mojom::RewardsInternalsInfoPtr info);
+  void OnGetRewardsInternalsInfo(
+      brave_rewards::mojom::RewardsInternalsInfoPtr info);
   void GetBalance(const base::Value::List& args);
   void OnGetBalance(FetchBalanceResult result);
   void GetContributions(const base::Value::List& args);
   void OnGetContributions(
-      std::vector<ledger::mojom::ContributionInfoPtr> contributions);
+      std::vector<brave_rewards::mojom::ContributionInfoPtr> contributions);
   void GetPromotions(const base::Value::List& args);
-  void OnGetPromotions(std::vector<ledger::mojom::PromotionPtr> list);
+  void OnGetPromotions(std::vector<brave_rewards::mojom::PromotionPtr> list);
   void GetPartialLog(const base::Value::List& args);
   void OnGetPartialLog(const std::string& log);
   void GetFulllLog(const base::Value::List& args);
@@ -71,12 +72,12 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void GetExternalWallet(const base::Value::List& args);
   void OnGetExternalWallet(GetExternalWalletResult result);
   void GetEventLogs(const base::Value::List& args);
-  void OnGetEventLogs(std::vector<ledger::mojom::EventLogPtr> logs);
+  void OnGetEventLogs(std::vector<brave_rewards::mojom::EventLogPtr> logs);
   void GetAdDiagnostics(const base::Value::List& args);
   void OnGetAdDiagnostics(absl::optional<base::Value::List> diagnostics);
   void SetAdDiagnosticId(const base::Value::List& args);
   void GetEnvironment(const base::Value::List& args);
-  void OnGetEnvironment(ledger::mojom::Environment environment);
+  void OnGetEnvironment(brave_rewards::mojom::Environment environment);
 
   raw_ptr<brave_rewards::RewardsService> rewards_service_ =
       nullptr;                                            // NOT OWNED
@@ -169,7 +170,7 @@ void RewardsInternalsDOMHandler::HandleGetRewardsInternalsInfo(
 }
 
 void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
-    ledger::mojom::RewardsInternalsInfoPtr info) {
+    brave_rewards::mojom::RewardsInternalsInfoPtr info) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -238,7 +239,7 @@ void RewardsInternalsDOMHandler::GetContributions(
 }
 
 void RewardsInternalsDOMHandler::OnGetContributions(
-    std::vector<ledger::mojom::ContributionInfoPtr> contributions) {
+    std::vector<brave_rewards::mojom::ContributionInfoPtr> contributions) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -282,7 +283,7 @@ void RewardsInternalsDOMHandler::GetPromotions(const base::Value::List& args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetPromotions(
-    std::vector<ledger::mojom::PromotionPtr> list) {
+    std::vector<brave_rewards::mojom::PromotionPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -413,7 +414,7 @@ void RewardsInternalsDOMHandler::GetEventLogs(const base::Value::List& args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetEventLogs(
-    std::vector<ledger::mojom::EventLogPtr> logs) {
+    std::vector<brave_rewards::mojom::EventLogPtr> logs) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -499,7 +500,7 @@ void RewardsInternalsDOMHandler::GetEnvironment(const base::Value::List& args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetEnvironment(
-    ledger::mojom::Environment environment) {
+    brave_rewards::mojom::Environment environment) {
   if (!IsJavascriptAllowed()) {
     return;
   }

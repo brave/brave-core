@@ -23,7 +23,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/uphold/uphold_transfer.h"
 #include "brave_base/random.h"
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 Uphold::Uphold(LedgerImpl* ledger)
     : card_(std::make_unique<UpholdCard>(ledger)),
@@ -49,7 +49,7 @@ void Uphold::Initialize() {
 void Uphold::StartContribution(const std::string& contribution_id,
                                mojom::ServerPublisherInfoPtr info,
                                double amount,
-                               ledger::LegacyResultCallback callback) {
+                               LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     return callback(mojom::Result::LEDGER_ERROR);
@@ -63,7 +63,7 @@ void Uphold::StartContribution(const std::string& contribution_id,
                                 contribution_id, fee, info->publisher_key));
 }
 
-void Uphold::ContributionCompleted(ledger::LegacyResultCallback callback,
+void Uphold::ContributionCompleted(LegacyResultCallback callback,
                                    const std::string& contribution_id,
                                    double fee,
                                    const std::string& publisher_key,
@@ -122,19 +122,19 @@ void Uphold::OnFetchBalance(FetchBalanceCallback callback,
 void Uphold::TransferFunds(double amount,
                            const std::string& address,
                            const std::string& contribution_id,
-                           client::LegacyResultCallback callback) {
+                           LegacyResultCallback callback) {
   transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](client::LegacyResultCallback callback,
+                 base::BindOnce([](LegacyResultCallback callback,
                                    mojom::Result result) { callback(result); },
                                 std::move(callback)));
 }
 
 void Uphold::ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                           ledger::ConnectExternalWalletCallback callback) {
+                           ConnectExternalWalletCallback callback) {
   connect_wallet_->Run(args, std::move(callback));
 }
 
-void Uphold::GetWallet(ledger::GetExternalWalletCallback callback) {
+void Uphold::GetWallet(GetExternalWalletCallback callback) {
   get_wallet_->Run(std::move(callback));
 }
 
@@ -225,28 +225,26 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id, int attempts) {
 }
 
 mojom::ExternalWalletPtr Uphold::GetWallet() {
-  return ledger::wallet::GetWallet(ledger_, constant::kWalletUphold);
+  return wallet::GetWallet(ledger_, constant::kWalletUphold);
 }
 
 mojom::ExternalWalletPtr Uphold::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletUphold,
-                                     statuses);
+  return wallet::GetWalletIf(ledger_, constant::kWalletUphold, statuses);
 }
 
 bool Uphold::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+  return wallet::SetWallet(ledger_, std::move(wallet));
 }
 
 mojom::ExternalWalletPtr Uphold::TransitionWallet(
     mojom::ExternalWalletPtr wallet,
     mojom::WalletStatus to) {
-  return ledger::wallet::TransitionWallet(ledger_, std::move(wallet), to);
+  return wallet::TransitionWallet(ledger_, std::move(wallet), to);
 }
 
 bool Uphold::LogOutWallet(const std::string& notification) {
-  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletUphold,
-                                      notification);
+  return wallet::LogOutWallet(ledger_, constant::kWalletUphold, notification);
 }
 
 void Uphold::RemoveTransferFee(const std::string& contribution_id) {
@@ -262,4 +260,4 @@ void Uphold::RemoveTransferFee(const std::string& contribution_id) {
   }
 }
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold

@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 StateMigrationV5::StateMigrationV5(LedgerImpl* ledger) : ledger_(ledger) {
@@ -20,7 +20,7 @@ StateMigrationV5::StateMigrationV5(LedgerImpl* ledger) : ledger_(ledger) {
 
 StateMigrationV5::~StateMigrationV5() = default;
 
-void StateMigrationV5::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV5::Migrate(LegacyResultCallback callback) {
   const auto seed = ledger_->ledger_client()->GetStringState(kRecoverySeed);
   if (seed.empty()) {
     callback(mojom::Result::LEDGER_OK);
@@ -64,4 +64,4 @@ void StateMigrationV5::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core

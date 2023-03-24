@@ -8,16 +8,16 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger::state {
+namespace brave_rewards::core::state {
 
 class StateMigrationV9 {
  public:
   StateMigrationV9();
   ~StateMigrationV9();
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(LegacyResultCallback callback);
 };
 
-}  // namespace ledger::state
+}  // namespace brave_rewards::core::state
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V9_H_

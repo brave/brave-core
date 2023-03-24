@@ -16,7 +16,7 @@ const int kCompatibleVersionNumber = 1;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 void BindNull(mojom::DBCommand* command, const int index) {
@@ -100,7 +100,7 @@ int32_t GetCompatibleVersion() {
 }
 
 void OnResultCallback(mojom::DBCommandResponsePtr response,
-                      ledger::LegacyResultCallback callback) {
+                      LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback(mojom::Result::LEDGER_ERROR);
@@ -186,4 +186,4 @@ std::string GenerateStringInCase(const std::vector<std::string>& items) {
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

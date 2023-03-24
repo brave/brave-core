@@ -20,7 +20,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 
-namespace rewards_browsertest_util {
+namespace brave_rewards::test {
 
 void GetTestDataDir(base::FilePath* test_data_dir) {
   base::ScopedAllowBlockingForTesting allow_blocking;
@@ -44,7 +44,7 @@ GURL GetNewTabUrl() {
   return url;
 }
 
-void StartProcess(brave_rewards::RewardsServiceImpl* rewards_service) {
+void StartProcess(RewardsServiceImpl* rewards_service) {
   DCHECK(rewards_service);
   base::RunLoop run_loop;
   rewards_service->StartProcessForTesting(
@@ -96,14 +96,14 @@ void NavigateToPublisherPage(
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 }
 
-void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
+void WaitForLedgerStop(RewardsServiceImpl* rewards_service) {
   base::RunLoop run_loop;
   rewards_service->StopLedger(base::BindLambdaForTesting(
-      [&](const ledger::mojom::Result) { run_loop.Quit(); }));
+      [&](const mojom::Result) { run_loop.Quit(); }));
   run_loop.Run();
 }
 
-void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
                          const std::string& country) {
   DCHECK(rewards_service);
 
@@ -114,12 +114,11 @@ void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service,
   base::RunLoop run_loop;
   bool success = false;
   rewards_service->CreateRewardsWallet(
-      "US", base::BindLambdaForTesting(
-                [&](ledger::mojom::CreateRewardsWalletResult result) {
-                  success = result ==
-                            ledger::mojom::CreateRewardsWalletResult::kSuccess;
-                  run_loop.Quit();
-                }));
+      "US",
+      base::BindLambdaForTesting([&](mojom::CreateRewardsWalletResult result) {
+        success = result == mojom::CreateRewardsWalletResult::kSuccess;
+        run_loop.Quit();
+      }));
 
   run_loop.Run();
 
@@ -130,11 +129,11 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   DCHECK(browser);
   // Rewards onboarding will be skipped if the rewards enabled flag is set
   PrefService* prefs = browser->profile()->GetPrefs();
-  prefs->SetBoolean(brave_rewards::prefs::kEnabled, bypassed);
+  prefs->SetBoolean(prefs::kEnabled, bypassed);
 }
 
 absl::optional<std::string> EncryptPrefString(
-    brave_rewards::RewardsServiceImpl* rewards_service,
+    RewardsServiceImpl* rewards_service,
     const std::string& value) {
   DCHECK(rewards_service);
   auto encrypted = rewards_service->EncryptString(value);
@@ -146,7 +145,7 @@ absl::optional<std::string> EncryptPrefString(
 }
 
 absl::optional<std::string> DecryptPrefString(
-    brave_rewards::RewardsServiceImpl* rewards_service,
+    RewardsServiceImpl* rewards_service,
     const std::string& value) {
   DCHECK(rewards_service);
   std::string decoded;
@@ -156,4 +155,4 @@ absl::optional<std::string> DecryptPrefString(
   return rewards_service->DecryptString(decoded);
 }
 
-}  // namespace rewards_browsertest_util
+}  // namespace brave_rewards::test

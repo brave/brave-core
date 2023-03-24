@@ -8,7 +8,7 @@
 
 // npm run test -- brave_unit_tests --filter=LoggingUtilTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class LoggingUtilTest : public testing::Test {};
 
@@ -30,4 +30,4 @@ TEST(LoggingUtilTest, ShouldLogHeader) {
   EXPECT_FALSE(ShouldLogHeader("cookie: yummy_cookie=choco;"));
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

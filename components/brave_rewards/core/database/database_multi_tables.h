@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace database {
@@ -23,19 +23,19 @@ class DatabaseMultiTables {
 
   void GetTransactionReport(const mojom::ActivityMonth month,
                             const int year,
-                            ledger::GetTransactionReportCallback callback);
+                            GetTransactionReportCallback callback);
 
  private:
   void OnGetTransactionReportPromotion(
       base::flat_map<std::string, mojom::PromotionPtr> promotions,
       const mojom::ActivityMonth month,
       const int year,
-      ledger::GetTransactionReportCallback callback);
+      GetTransactionReportCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MULTI_TABLES_H_

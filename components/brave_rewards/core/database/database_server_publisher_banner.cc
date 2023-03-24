@@ -18,7 +18,7 @@ const char kTableName[] = "server_publisher_banner";
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(LedgerImpl* ledger)
@@ -81,7 +81,7 @@ void DatabaseServerPublisherBanner::DeleteRecords(
 
 void DatabaseServerPublisherBanner::GetRecord(
     const std::string& publisher_key,
-    ledger::PublisherBannerCallback callback) {
+    PublisherBannerCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(nullptr);
@@ -117,7 +117,7 @@ void DatabaseServerPublisherBanner::GetRecord(
 void DatabaseServerPublisherBanner::OnGetRecord(
     mojom::DBCommandResponsePtr response,
     const std::string& publisher_key,
-    ledger::PublisherBannerCallback callback) {
+    PublisherBannerCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -155,7 +155,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
 void DatabaseServerPublisherBanner::OnGetRecordLinks(
     const std::map<std::string, std::string>& links,
     const mojom::PublisherBanner& banner,
-    ledger::PublisherBannerCallback callback) {
+    PublisherBannerCallback callback) {
   auto banner_pointer = mojom::PublisherBanner::New(banner);
 
   for (const auto& link : links) {
@@ -166,4 +166,4 @@ void DatabaseServerPublisherBanner::OnGetRecordLinks(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

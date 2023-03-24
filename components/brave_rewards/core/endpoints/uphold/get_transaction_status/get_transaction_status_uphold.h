@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -100,7 +100,7 @@
 //   "type": "transfer"
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoints {
@@ -135,6 +135,6 @@ class GetTransactionStatusUphold final
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_GET_TRANSACTION_STATUS_GET_TRANSACTION_STATUS_UPHOLD_H_

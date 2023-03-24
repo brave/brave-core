@@ -17,17 +17,14 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "chrome/browser/ui/browser.h"
 
-namespace rewards_browsertest {
+namespace brave_rewards::test {
 
-class RewardsBrowserTestPromotion
-    : public brave_rewards::RewardsServiceObserver {
+class RewardsBrowserTestPromotion : public RewardsServiceObserver {
  public:
   RewardsBrowserTestPromotion();
   ~RewardsBrowserTestPromotion() override;
 
-  void Initialize(
-      Browser* browser,
-      brave_rewards::RewardsServiceImpl* rewards_service);
+  void Initialize(Browser* browser, RewardsServiceImpl* rewards_service);
 
   void WaitForPromotionInitialization();
 
@@ -35,24 +32,22 @@ class RewardsBrowserTestPromotion
 
   void WaitForUnblindedTokensReady();
 
-  ledger::mojom::PromotionPtr GetPromotion();
+  mojom::PromotionPtr GetPromotion();
 
   std::string GetPromotionId();
 
   double ClaimPromotionViaCode();
 
  private:
-  void OnFetchPromotions(
-      brave_rewards::RewardsService* rewards_service,
-      const ledger::mojom::Result result,
-      const std::vector<ledger::mojom::PromotionPtr>& list) override;
+  void OnFetchPromotions(RewardsService* rewards_service,
+                         const mojom::Result result,
+                         const std::vector<mojom::PromotionPtr>& list) override;
 
-  void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
-                           const ledger::mojom::Result result,
-                           ledger::mojom::PromotionPtr promotion) override;
+  void OnPromotionFinished(RewardsService* rewards_service,
+                           const mojom::Result result,
+                           mojom::PromotionPtr promotion) override;
 
-  void OnUnblindedTokensReady(
-      brave_rewards::RewardsService* rewards_service) override;
+  void OnUnblindedTokensReady(RewardsService* rewards_service) override;
 
   std::unique_ptr<base::RunLoop> wait_for_initialization_loop_;
   bool initialized_ = false;
@@ -62,11 +57,10 @@ class RewardsBrowserTestPromotion
   bool unblinded_tokens_ = false;
   bool should_succeed_ = true;
 
-  ledger::mojom::PromotionPtr promotion_;
+  mojom::PromotionPtr promotion_;
   raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ =
-      nullptr;  // NOT OWNED
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;  // NOT OWNED
 };
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_PROMOTION_H_

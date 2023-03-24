@@ -9,10 +9,10 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core.mojom.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -51,5 +51,5 @@ class UpholdCard {
 };
 
 }  // namespace uphold
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_CARD_H_

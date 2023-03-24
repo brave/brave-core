@@ -9,7 +9,7 @@
 
 // npm run test -- brave_unit_tests --filter=WalletInfoStateTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 
 TEST(WalletInfoStateTest, ToJsonSerialization) {
   // Arrange
@@ -56,4 +56,4 @@ TEST(WalletInfoStateTest, FromJsonDeserialization) {
   EXPECT_EQ(expected_wallet_info_properties, wallet_info_properties);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

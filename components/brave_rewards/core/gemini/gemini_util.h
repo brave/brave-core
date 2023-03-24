@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger::gemini {
+namespace brave_rewards::core::gemini {
 
 const char kFeeAddressStaging[] = "622b9018-f26a-44bf-9a45-3bf3bf3c95e9";
 const char kFeeAddressProduction[] = "6116ad51-b50d-4e54-bb59-9de559beffdd";
@@ -31,6 +31,6 @@ std::string GetActivityUrl();
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
-}  // namespace ledger::gemini
+}  // namespace brave_rewards::core::gemini
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_UTIL_H_

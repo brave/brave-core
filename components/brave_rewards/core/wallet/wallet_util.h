@@ -9,11 +9,11 @@
 #include <set>
 #include <string>
 
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_types.mojom.h"
 #include "third_party/abseil-cpp/absl/types/variant.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace wallet {
@@ -45,6 +45,6 @@ void FetchBalance(LedgerImpl* ledger,
                   base::OnceCallback<void(mojom::Result, double)> callback);
 
 }  // namespace wallet
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_UTIL_H_

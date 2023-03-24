@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/endpoint/rewards/rewards_server.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace publisher {
@@ -61,6 +61,6 @@ class PublisherPrefixListUpdater {
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

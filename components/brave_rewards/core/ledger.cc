@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 mojom::Environment _environment = mojom::Environment::PRODUCTION;
 
@@ -24,4 +24,4 @@ Ledger* Ledger::CreateInstance(LedgerClient* client) {
   return new LedgerImpl(client);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

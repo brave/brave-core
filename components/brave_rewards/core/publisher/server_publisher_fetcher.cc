@@ -22,22 +22,23 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace brave_rewards::core {
+
 namespace {
 
 constexpr size_t kQueryPrefixBytes = 2;
 
-int64_t GetCacheExpiryInSeconds(ledger::LedgerImpl* ledger) {
+int64_t GetCacheExpiryInSeconds(LedgerImpl* ledger) {
   DCHECK(ledger);
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
   return ledger->ledger_client()->GetUint64Option(
-      ledger::option::kPublisherListRefreshInterval);
+      option::kPublisherListRefreshInterval);
 }
 
 }  // namespace
 
-namespace ledger {
 namespace publisher {
 
 ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger)
@@ -49,9 +50,8 @@ ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger)
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
-void ServerPublisherFetcher::Fetch(
-    const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+void ServerPublisherFetcher::Fetch(const std::string& publisher_key,
+                                   GetServerPublisherInfoCallback callback) {
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
   callbacks.push_back(callback);
   if (callbacks.size() > 1) {
@@ -144,4 +144,4 @@ void ServerPublisherFetcher::RunCallbacks(
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core

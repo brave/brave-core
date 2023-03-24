@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace contribution {
@@ -24,22 +24,22 @@ class ContributionMonthly {
   ~ContributionMonthly();
 
   void Process(absl::optional<base::Time> cutoff_time,
-               ledger::LegacyResultCallback callback);
+               LegacyResultCallback callback);
 
  private:
   void AdvanceContributionDates(
       absl::optional<base::Time> cutoff_time,
-      ledger::LegacyResultCallback callback,
+      LegacyResultCallback callback,
       std::vector<mojom::PublisherInfoPtr> publishers);
 
   void OnNextContributionDateAdvanced(
       std::vector<mojom::PublisherInfoPtr> publishers,
-      ledger::LegacyResultCallback callback,
+      LegacyResultCallback callback,
       bool success);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_

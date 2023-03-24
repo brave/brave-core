@@ -21,7 +21,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -43,19 +43,19 @@ class Gemini {
   void StartContribution(const std::string& contribution_id,
                          mojom::ServerPublisherInfoPtr info,
                          double amount,
-                         ledger::LegacyResultCallback callback);
+                         LegacyResultCallback callback);
 
   void FetchBalance(FetchBalanceCallback callback);
 
   void TransferFunds(double amount,
                      const std::string& address,
                      const std::string& contribution_id,
-                     client::LegacyResultCallback);
+                     LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
-                     ledger::ConnectExternalWalletCallback);
+                     ConnectExternalWalletCallback);
 
-  void GetWallet(ledger::GetExternalWalletCallback);
+  void GetWallet(GetExternalWalletCallback);
 
   mojom::ExternalWalletPtr GetWallet();
 
@@ -66,7 +66,7 @@ class Gemini {
   [[nodiscard]] bool LogOutWallet();
 
  private:
-  void ContributionCompleted(ledger::LegacyResultCallback,
+  void ContributionCompleted(LegacyResultCallback,
                              const std::string& contribution_id,
                              double fee,
                              const std::string& publisher_key,
@@ -99,6 +99,6 @@ class Gemini {
 };
 
 }  // namespace gemini
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GEMINI_GEMINI_H_

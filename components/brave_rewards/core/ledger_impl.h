@@ -34,7 +34,7 @@
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class LedgerImpl : public Ledger {
  public:
@@ -52,7 +52,7 @@ class LedgerImpl : public Ledger {
 
   publisher::Publisher* publisher() const;
 
-  braveledger_media::Media* media() const;
+  Media* media() const;
 
   contribution::Contribution* contribution() const;
 
@@ -73,17 +73,15 @@ class LedgerImpl : public Ledger {
   virtual database::Database* database() const;
 
   virtual void LoadURL(mojom::UrlRequestPtr request,
-                       client::LegacyLoadURLCallback callback);
+                       LegacyLoadURLCallback callback);
 
-  virtual void LoadURL(mojom::UrlRequestPtr request,
-                       client::LoadURLCallback callback);
-
-  virtual void RunDBTransaction(
-      mojom::DBTransactionPtr transaction,
-      client::LegacyRunDBTransactionCallback callback);
+  virtual void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback);
 
   virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                client::RunDBTransactionCallback callback);
+                                LegacyRunDBTransactionCallback callback);
+
+  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                RunDBTransactionCallback callback);
 
   bool IsShuttingDown() const;
 
@@ -329,7 +327,7 @@ class LedgerImpl : public Ledger {
 
   std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
-  std::unique_ptr<braveledger_media::Media> media_;
+  std::unique_ptr<Media> media_;
   std::unique_ptr<contribution::Contribution> contribution_;
   std::unique_ptr<wallet::Wallet> wallet_;
   std::unique_ptr<database::Database> database_;
@@ -349,6 +347,6 @@ class LedgerImpl : public Ledger {
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_

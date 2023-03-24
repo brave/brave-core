@@ -8,13 +8,13 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace log {
 std::string GetEventLogKeyForLinkingResult(mojom::ConnectExternalWalletError);
 }  // namespace log
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LOGGING_EVENT_LOG_UTIL_H_

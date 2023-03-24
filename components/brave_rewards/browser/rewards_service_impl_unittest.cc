@@ -37,28 +37,26 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
   MOCK_METHOD3(OnFetchPromotions,
                void(RewardsService*,
-                    const ledger::mojom::Result result,
-                    const std::vector<ledger::mojom::PromotionPtr>& list));
+                    const mojom::Result result,
+                    const std::vector<mojom::PromotionPtr>& list));
   MOCK_METHOD3(OnPromotionFinished,
-               void(RewardsService*,
-                    const ledger::mojom::Result,
-                    ledger::mojom::PromotionPtr));
+               void(RewardsService*, const mojom::Result, mojom::PromotionPtr));
   MOCK_METHOD6(OnReconcileComplete,
                void(RewardsService*,
-                    const ledger::mojom::Result,
+                    const mojom::Result,
                     const std::string&,
                     const double,
-                    const ledger::mojom::RewardsType,
-                    const ledger::mojom::ContributionProcessor));
+                    const mojom::RewardsType,
+                    const mojom::ContributionProcessor));
   MOCK_METHOD2(OnGetRecurringTips,
                void(RewardsService*,
-                    std::vector<ledger::mojom::PublisherInfoPtr> list));
+                    std::vector<mojom::PublisherInfoPtr> list));
   MOCK_METHOD2(OnPublisherBanner,
-               void(RewardsService*, ledger::mojom::PublisherBannerPtr banner));
+               void(RewardsService*, mojom::PublisherBannerPtr banner));
   MOCK_METHOD4(OnPanelPublisherInfo,
                void(RewardsService*,
-                    ledger::mojom::Result,
-                    const ledger::mojom::PublisherInfo*,
+                    mojom::Result,
+                    const mojom::PublisherInfo*,
                     uint64_t));
   MOCK_METHOD2(OnAdsEnabled, void(RewardsService*, bool));
 };
@@ -129,7 +127,7 @@ class RewardsServiceTest : public testing::Test {
 TEST_F(RewardsServiceTest, GetExternalWallet) {
   DisableGemini();
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletUphold);
+            core::constant::kWalletUphold);
 }
 
 TEST_F(RewardsServiceTest, GetExternalWalletMultipleCustodians) {
@@ -139,17 +137,17 @@ TEST_F(RewardsServiceTest, GetExternalWalletMultipleCustodians) {
   profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
                                    "bad-provider-name");
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletUphold);
+            core::constant::kWalletUphold);
 
   profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                   ledger::constant::kWalletUphold);
+                                   core::constant::kWalletUphold);
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletUphold);
+            core::constant::kWalletUphold);
 
   profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                   ledger::constant::kWalletGemini);
+                                   core::constant::kWalletGemini);
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletGemini);
+            core::constant::kWalletGemini);
 }
 #endif
 

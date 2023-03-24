@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace promotion {
 
 std::string ParseOSToString(mojom::OperatingSystem os) {
@@ -84,4 +84,4 @@ mojom::ReportType ConvertPromotionTypeToReportType(
 }
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::core

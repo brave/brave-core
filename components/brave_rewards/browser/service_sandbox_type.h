@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_SERVICE_SANDBOX_TYPE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_SERVICE_SANDBOX_TYPE_H_
@@ -9,15 +9,15 @@
 #include "build/build_config.h"
 #include "content/public/browser/service_process_host.h"
 
-namespace bat_ledger {
+namespace brave_rewards {
 namespace mojom {
 class BatLedgerService;
 }  // namespace mojom
-}  // namespace bat_ledger
+}  // namespace brave_rewards
 
 template <>
 inline sandbox::mojom::Sandbox
-content::GetServiceSandboxType<bat_ledger::mojom::BatLedgerService>() {
+content::GetServiceSandboxType<brave_rewards::mojom::BatLedgerService>() {
 #if !BUILDFLAG(IS_ANDROID)
   return sandbox::mojom::Sandbox::kNoSandbox;
 #else

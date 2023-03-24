@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace state {
@@ -22,19 +22,19 @@ class StateMigrationV10 {
   explicit StateMigrationV10(LedgerImpl* ledger);
   ~StateMigrationV10();
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(LegacyResultCallback callback);
 
  private:
   void OnGetWallet(mojom::Result result,
                    const std::string& custodian,
                    bool linked,
-                   ledger::LegacyResultCallback callback);
+                   LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::promotion::GetWallet> get_wallet_;
+  std::unique_ptr<endpoint::promotion::GetWallet> get_wallet_;
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V10_H_

@@ -12,9 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-using ledger::uphold::Capabilities;
-
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace uphold {
 
@@ -36,11 +34,11 @@ void GetCapabilities::Request(const std::string& token,
 
 void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
                                 const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   auto [result, capability_map] = ProcessResponse(response);
 
-  Capabilities capabilities;
+  core::uphold::Capabilities capabilities;
   if (capability_map.count("receives") && capability_map.count("sends")) {
     const auto receives = capability_map["receives"];
     const auto sends = capability_map["sends"];
@@ -105,4 +103,4 @@ GetCapabilities::CapabilityMap GetCapabilities::ParseBody(
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

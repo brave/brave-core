@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace credential {
 
 struct CredentialsRedeem {
@@ -28,6 +28,6 @@ struct CredentialsRedeem {
 };
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_REDEEM_H_

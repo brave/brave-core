@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/post_commit_transaction/post_commit_transaction.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -100,7 +100,7 @@
 //   "type": "transfer"
 // }
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 
 class PostCommitTransactionUphold;
 
@@ -124,6 +124,6 @@ class PostCommitTransactionUphold final
       const std::string& content) const override;
 };
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_UPHOLD_POST_COMMIT_TRANSACTION_POST_COMMIT_TRANSACTION_UPHOLD_H_

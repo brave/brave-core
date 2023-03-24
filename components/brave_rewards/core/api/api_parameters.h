@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace api {
@@ -25,7 +25,7 @@ class APIParameters {
 
   void Initialize();
 
-  void Fetch(ledger::GetRewardsParametersCallback callback);
+  void Fetch(GetRewardsParametersCallback callback);
 
  private:
   void OnFetch(endpoints::GetParameters::Result&&);
@@ -37,10 +37,10 @@ class APIParameters {
 
   LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer refresh_timer_;
-  std::vector<ledger::GetRewardsParametersCallback> callbacks_;
+  std::vector<GetRewardsParametersCallback> callbacks_;
 };
 
 }  // namespace api
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_PARAMETERS_H_

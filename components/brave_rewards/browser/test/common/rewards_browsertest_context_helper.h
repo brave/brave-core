@@ -17,7 +17,7 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace rewards_browsertest {
+namespace brave_rewards::test {
 
 class RewardsBrowserTestContextHelper {
  public:
@@ -26,8 +26,7 @@ class RewardsBrowserTestContextHelper {
 
   base::WeakPtr<content::WebContents> OpenRewardsPopup();
 
-  base::WeakPtr<content::WebContents> OpenSiteBanner(
-      rewards_browsertest_util::TipAction tip_action);
+  base::WeakPtr<content::WebContents> OpenSiteBanner(TipAction tip_action);
 
   // Visit publisher and verify that the auto-contribution panel on
   // brave://rewards looks correct
@@ -46,6 +45,6 @@ class RewardsBrowserTestContextHelper {
   base::WeakPtr<content::WebContents> popup_contents_;
 };
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_HELPER_H_

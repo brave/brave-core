@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/sku/sku_util.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace sku {
 
 const char kUpholdDestinationDev[] = "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
@@ -36,15 +36,15 @@ std::string GetBraveDestination(const std::string& wallet_type) {
 }
 
 std::string GetUpholdDestination() {
-  if (ledger::_environment == mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     return kUpholdDestinationProduction;
   }
 
-  if (ledger::_environment == mojom::Environment::STAGING) {
+  if (_environment == mojom::Environment::STAGING) {
     return kUpholdDestinationStaging;
   }
 
-  if (ledger::_environment == mojom::Environment::DEVELOPMENT) {
+  if (_environment == mojom::Environment::DEVELOPMENT) {
     return kUpholdDestinationDev;
   }
 
@@ -53,15 +53,15 @@ std::string GetUpholdDestination() {
 }
 
 std::string GetGeminiDestination() {
-  if (ledger::_environment == mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     return kGeminiDestinationProduction;
   }
 
-  if (ledger::_environment == mojom::Environment::STAGING) {
+  if (_environment == mojom::Environment::STAGING) {
     return kGeminiDestinationStaging;
   }
 
-  if (ledger::_environment == mojom::Environment::DEVELOPMENT) {
+  if (_environment == mojom::Environment::DEVELOPMENT) {
     return kGeminiDestinationDev;
   }
 
@@ -70,4 +70,4 @@ std::string GetGeminiDestination() {
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core

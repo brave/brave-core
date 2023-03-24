@@ -16,36 +16,36 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_bat_state {
+namespace brave_rewards::core {
 
-LegacyBatState::LegacyBatState(ledger::LedgerImpl* ledger)
-    : ledger_(ledger), state_(new ledger::ClientProperties()) {}
+LegacyBatState::LegacyBatState(LedgerImpl* ledger)
+    : ledger_(ledger), state_(new ClientProperties()) {}
 
 LegacyBatState::~LegacyBatState() = default;
 
-void LegacyBatState::Load(ledger::LegacyResultCallback callback) {
+void LegacyBatState::Load(LegacyResultCallback callback) {
   auto load_callback =
       std::bind(&LegacyBatState::OnLoad, this, _1, _2, callback);
   ledger_->ledger_client()->LoadLedgerState(load_callback);
 }
 
-void LegacyBatState::OnLoad(ledger::mojom::Result result,
+void LegacyBatState::OnLoad(mojom::Result result,
                             const std::string& data,
-                            ledger::LegacyResultCallback callback) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
+                            LegacyResultCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  ledger::ClientProperties state;
+  ClientProperties state;
   if (!state.FromJson(data)) {
     BLOG(0, "Failed to load client state");
     BLOG(6, "Client state contents: " << data);
-    callback(ledger::mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  state_ = std::make_unique<ledger::ClientProperties>(state);
+  state_ = std::make_unique<ClientProperties>(state);
 
   // fix timestamp ms to s conversion
   if (std::to_string(state_->reconcile_timestamp).length() > 10) {
@@ -57,7 +57,7 @@ void LegacyBatState::OnLoad(ledger::mojom::Result result,
     state_->boot_timestamp = state_->boot_timestamp / 1000;
   }
 
-  callback(ledger::mojom::Result::LEDGER_OK);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 bool LegacyBatState::GetRewardsMainEnabled() const {
@@ -105,4 +105,4 @@ bool LegacyBatState::GetInlineTipSetting(const std::string& key) const {
   }
 }
 
-}  // namespace braveledger_bat_state
+}  // namespace brave_rewards::core

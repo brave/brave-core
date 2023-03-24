@@ -71,7 +71,7 @@
 //   }
 // ]
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint::uphold {
@@ -99,6 +99,6 @@ class GetCards {
 };
 
 }  // namespace endpoint::uphold
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_CARDS_GET_CARDS_H_

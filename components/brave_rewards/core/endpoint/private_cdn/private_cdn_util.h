@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace private_cdn {
 
@@ -16,6 +16,6 @@ std::string GetServerUrl(const std::string& path);
 
 }  // namespace private_cdn
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PRIVATE_CDN_PRIVATE_CDN_UTIL_H_

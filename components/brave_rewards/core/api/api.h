@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace api {
@@ -24,7 +24,7 @@ class API {
 
   void Initialize();
 
-  void FetchParameters(ledger::GetRewardsParametersCallback callback);
+  void FetchParameters(GetRewardsParametersCallback callback);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED
@@ -32,6 +32,6 @@ class API {
 };
 
 }  // namespace api
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_API_API_H_

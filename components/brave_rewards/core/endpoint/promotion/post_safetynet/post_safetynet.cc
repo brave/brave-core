@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -100,7 +100,7 @@ void PostSafetynet::Request(PostSafetynetCallback callback) {
 
 void PostSafetynet::OnRequest(PostSafetynetCallback callback,
                               const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   std::string nonce;
   mojom::Result result = CheckStatusCode(response.status_code);
@@ -116,4 +116,4 @@ void PostSafetynet::OnRequest(PostSafetynetCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

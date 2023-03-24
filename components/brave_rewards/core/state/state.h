@@ -13,7 +13,7 @@
 #include "base/containers/flat_map.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace state {
@@ -25,7 +25,7 @@ class State {
   explicit State(LedgerImpl* ledger);
   ~State();
 
-  void Initialize(ledger::LegacyResultCallback callback);
+  void Initialize(LegacyResultCallback callback);
 
   void SetVersion(const int version);
 
@@ -122,6 +122,6 @@ class State {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_H_

@@ -43,7 +43,7 @@
 //   "data": {}
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -76,6 +76,6 @@ class GetCredentials {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_GET_CREDENTIALS_GET_CREDENTIALS_H_

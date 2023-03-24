@@ -10,30 +10,30 @@
 
 // npm run test -- brave_unit_tests --filter=PrivateCDNTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace private_cdn {
 
 class PrivateCDNTest : public testing::Test {};
 
 TEST(PrivateCDNTest, GetServerUrlDevelopment) {
-  ledger::_environment = mojom::Environment::DEVELOPMENT;
+  _environment = mojom::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.brave.software/test");
 }
 
 TEST(PrivateCDNTest, GetServerUrlStaging) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.bravesoftware.com/test");
 }
 
 TEST(PrivateCDNTest, GetServerUrlProduction) {
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://pcdn.brave.com/test");
 }
 
 }  // namespace private_cdn
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

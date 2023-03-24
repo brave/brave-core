@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace payment {
 
@@ -19,7 +19,7 @@ std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  switch (ledger::_environment) {
+  switch (_environment) {
     case mojom::Environment::DEVELOPMENT:
       url = kDevelopment;
       break;
@@ -36,4 +36,4 @@ std::string GetServerUrl(const std::string& path) {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

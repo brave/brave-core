@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database_table.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 using SearchPublisherPrefixListCallback = std::function<void(bool)>;
@@ -23,19 +23,19 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   ~DatabasePublisherPrefixList() override;
 
   void Reset(std::unique_ptr<publisher::PrefixListReader> reader,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
   void Search(const std::string& publisher_key,
               SearchPublisherPrefixListCallback callback);
 
  private:
   void InsertNext(publisher::PrefixIterator begin,
-                  ledger::LegacyResultCallback callback);
+                  LegacyResultCallback callback);
 
   std::unique_ptr<publisher::PrefixListReader> reader_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_

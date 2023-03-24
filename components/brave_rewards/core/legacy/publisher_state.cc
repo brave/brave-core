@@ -13,11 +13,11 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace publisher {
 
-LegacyPublisherState::LegacyPublisherState(ledger::LedgerImpl* ledger)
-    : ledger_(ledger), state_(new ledger::PublisherSettingsProperties) {}
+LegacyPublisherState::LegacyPublisherState(LedgerImpl* ledger)
+    : ledger_(ledger), state_(new PublisherSettingsProperties) {}
 
 LegacyPublisherState::~LegacyPublisherState() = default;
 
@@ -33,28 +33,28 @@ bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
   return state_->allow_non_verified_sites_in_list;
 }
 
-void LegacyPublisherState::Load(ledger::LegacyResultCallback callback) {
+void LegacyPublisherState::Load(LegacyResultCallback callback) {
   auto load_callback =
       std::bind(&LegacyPublisherState::OnLoad, this, _1, _2, callback);
   ledger_->ledger_client()->LoadPublisherState(load_callback);
 }
 
-void LegacyPublisherState::OnLoad(ledger::mojom::Result result,
+void LegacyPublisherState::OnLoad(mojom::Result result,
                                   const std::string& data,
-                                  ledger::LegacyResultCallback callback) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
+                                  LegacyResultCallback callback) {
+  if (result != mojom::Result::LEDGER_OK) {
     callback(result);
     return;
   }
 
-  ledger::PublisherSettingsProperties state;
+  PublisherSettingsProperties state;
   if (!state.FromJson(data)) {
-    callback(ledger::mojom::Result::LEDGER_ERROR);
+    callback(mojom::Result::LEDGER_ERROR);
     return;
   }
 
-  state_ = std::make_unique<ledger::PublisherSettingsProperties>(state);
-  callback(ledger::mojom::Result::LEDGER_OK);
+  state_ = std::make_unique<PublisherSettingsProperties>(state);
+  callback(mojom::Result::LEDGER_OK);
 }
 
 std::vector<std::string> LegacyPublisherState::GetAlreadyProcessedPublishers()
@@ -63,11 +63,11 @@ std::vector<std::string> LegacyPublisherState::GetAlreadyProcessedPublishers()
 }
 
 void LegacyPublisherState::GetAllBalanceReports(
-    std::vector<ledger::mojom::BalanceReportInfoPtr>* reports) {
+    std::vector<mojom::BalanceReportInfoPtr>* reports) {
   DCHECK(reports);
 
   for (auto const& report : state_->monthly_balances) {
-    auto report_ptr = ledger::mojom::BalanceReportInfo::New();
+    auto report_ptr = mojom::BalanceReportInfo::New();
     report_ptr->id = report.first;
     report_ptr->grants = report.second.grants;
     report_ptr->earning_from_ads = report.second.ad_earnings;
@@ -80,4 +80,4 @@ void LegacyPublisherState::GetAllBalanceReports(
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core

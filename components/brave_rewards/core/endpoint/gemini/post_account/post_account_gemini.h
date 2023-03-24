@@ -37,7 +37,7 @@
 //   "memo_reference_code": "GEMAPLLV"
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint::gemini {
@@ -65,6 +65,6 @@ class PostAccount {
 };
 
 }  // namespace endpoint::gemini
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_ACCOUNT_POST_ACCOUNT_GEMINI_H_

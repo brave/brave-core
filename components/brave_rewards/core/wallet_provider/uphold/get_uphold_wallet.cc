@@ -7,9 +7,9 @@
 
 #include "brave/components/brave_rewards/core/global_constants.h"
 
-using ledger::wallet_provider::GetExternalWallet;
+using brave_rewards::core::wallet_provider::GetExternalWallet;
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 GetUpholdWallet::GetUpholdWallet(LedgerImpl* ledger)
     : GetExternalWallet(ledger) {}
@@ -20,4 +20,4 @@ const char* GetUpholdWallet::WalletType() const {
   return constant::kWalletUphold;
 }
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold

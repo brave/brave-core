@@ -15,7 +15,7 @@
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger::endpoint::gemini {
+namespace brave_rewards::core::endpoint::gemini {
 
 PostAccount::PostAccount(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -89,7 +89,7 @@ void PostAccount::Request(const std::string& token,
 
 void PostAccount::OnRequest(PostAccountCallback callback,
                             const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   mojom::Result result = CheckStatusCode(response.status_code);
   if (result != mojom::Result::LEDGER_OK) {
@@ -103,4 +103,4 @@ void PostAccount::OnRequest(PostAccountCallback callback,
                           std::move(user_name));
 }
 
-}  // namespace ledger::endpoint::gemini
+}  // namespace brave_rewards::core::endpoint::gemini

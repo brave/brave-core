@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabasePublisherInfo : public DatabaseTable {
@@ -19,33 +19,33 @@ class DatabasePublisherInfo : public DatabaseTable {
   ~DatabasePublisherInfo() override;
 
   void InsertOrUpdate(mojom::PublisherInfoPtr info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
-                 ledger::PublisherInfoCallback callback);
+                 PublisherInfoCallback callback);
 
   void GetPanelRecord(mojom::ActivityInfoFilterPtr filter,
-                      ledger::PublisherInfoCallback callback);
+                      PublisherInfoCallback callback);
 
-  void RestorePublishers(ledger::ResultCallback callback);
+  void RestorePublishers(ResultCallback callback);
 
-  void GetExcludedList(ledger::PublisherInfoListCallback callback);
+  void GetExcludedList(PublisherInfoListCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ledger::PublisherInfoCallback callback);
+                   PublisherInfoCallback callback);
 
   void OnGetPanelRecord(mojom::DBCommandResponsePtr response,
-                        ledger::PublisherInfoCallback callback);
+                        PublisherInfoCallback callback);
 
-  void OnRestorePublishers(ledger::ResultCallback callback,
+  void OnRestorePublishers(ResultCallback callback,
                            mojom::DBCommandResponsePtr response);
 
   void OnGetExcludedList(mojom::DBCommandResponsePtr response,
-                         ledger::PublisherInfoListCallback callback);
+                         PublisherInfoListCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PUBLISHER_INFO_H_

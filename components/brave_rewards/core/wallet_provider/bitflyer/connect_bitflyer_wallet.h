@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -31,10 +31,9 @@ class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback) const override;
+  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) const override;
 
-  void OnAuthorize(ledger::ConnectExternalWalletCallback,
+  void OnAuthorize(ConnectExternalWalletCallback,
                    mojom::Result,
                    std::string&& token,
                    std::string&& address,
@@ -44,6 +43,6 @@ class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
 };
 
 }  // namespace bitflyer
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_BITFLYER_CONNECT_BITFLYER_WALLET_H_

@@ -15,7 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -100,7 +100,7 @@ void PostDevicecheck::Request(const std::string& key,
 
 void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
                                 const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   std::string nonce;
   mojom::Result result = CheckStatusCode(response.status_code);
@@ -116,4 +116,4 @@ void PostDevicecheck::OnRequest(PostDevicecheckCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

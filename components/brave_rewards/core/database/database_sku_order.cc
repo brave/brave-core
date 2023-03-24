@@ -12,7 +12,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -28,7 +28,7 @@ DatabaseSKUOrder::DatabaseSKUOrder(LedgerImpl* ledger)
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
 void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
-                                      ledger::LegacyResultCallback callback) {
+                                      LegacyResultCallback callback) {
   if (!order) {
     BLOG(1, "Order is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -66,7 +66,7 @@ void DatabaseSKUOrder::InsertOrUpdate(mojom::SKUOrderPtr order,
 
 void DatabaseSKUOrder::UpdateStatus(const std::string& order_id,
                                     mojom::SKUOrderStatus status,
-                                    ledger::LegacyResultCallback callback) {
+                                    LegacyResultCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -215,7 +215,7 @@ void DatabaseSKUOrder::GetRecordByContributionId(
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
     const std::string& order_id,
     const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (order_id.empty() || contribution_id.empty()) {
     BLOG(1, "Order/contribution id is empty " << order_id << "/"
                                               << contribution_id);
@@ -243,4 +243,4 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

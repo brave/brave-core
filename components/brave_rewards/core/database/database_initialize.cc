@@ -13,17 +13,17 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 DatabaseInitialize::DatabaseInitialize(LedgerImpl* ledger) : ledger_(ledger) {
-  migration_ = std::make_unique<ledger::database::DatabaseMigration>(ledger_);
+  migration_ = std::make_unique<database::DatabaseMigration>(ledger_);
 }
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
 void DatabaseInitialize::Start(bool execute_create_script,
-                               ledger::LegacyResultCallback callback) {
+                               LegacyResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
@@ -38,7 +38,7 @@ void DatabaseInitialize::Start(bool execute_create_script,
 
 void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
                                       bool execute_create_script,
-                                      ledger::LegacyResultCallback callback) {
+                                      LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -62,17 +62,15 @@ void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
   migration_->Start(current_table_version, callback);
 }
 
-void DatabaseInitialize::GetCreateScript(
-    ledger::LegacyResultCallback callback) {
+void DatabaseInitialize::GetCreateScript(LegacyResultCallback callback) {
   auto script_callback = std::bind(&DatabaseInitialize::ExecuteCreateScript,
                                    this, _1, _2, callback);
   ledger_->ledger_client()->GetCreateScript(script_callback);
 }
 
-void DatabaseInitialize::ExecuteCreateScript(
-    const std::string& script,
-    int table_version,
-    ledger::LegacyResultCallback callback) {
+void DatabaseInitialize::ExecuteCreateScript(const std::string& script,
+                                             int table_version,
+                                             LegacyResultCallback callback) {
   if (script.empty()) {
     BLOG(1, "Script is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -96,7 +94,7 @@ void DatabaseInitialize::ExecuteCreateScript(
 void DatabaseInitialize::OnExecuteCreateScript(
     mojom::DBCommandResponsePtr response,
     int table_version,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -108,4 +106,4 @@ void DatabaseInitialize::OnExecuteCreateScript(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

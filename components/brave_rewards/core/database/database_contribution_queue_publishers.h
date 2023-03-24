@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabaseContributionQueuePublishers : public DatabaseTable {
@@ -21,7 +21,7 @@ class DatabaseContributionQueuePublishers : public DatabaseTable {
 
   void InsertOrUpdate(const std::string& id,
                       std::vector<mojom::ContributionQueuePublisherPtr> list,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecordsByQueueId(const std::string& queue_id,
                            ContributionQueuePublishersListCallback callback);
@@ -32,6 +32,6 @@ class DatabaseContributionQueuePublishers : public DatabaseTable {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CONTRIBUTION_QUEUE_PUBLISHERS_H_

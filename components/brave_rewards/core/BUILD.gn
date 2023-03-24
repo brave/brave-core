@@ -70,8 +70,8 @@ source_set("headers") {
 
   public_deps = [
     ":buildflags",
-    "//brave/components/brave_rewards/common/mojom:ledger_interfaces",
-    "//brave/components/brave_rewards/common/mojom:ledger_types",
+    "//brave/components/brave_rewards/common/mojom:core_interfaces",
+    "//brave/components/brave_rewards/common/mojom:core_types",
   ]
 }
 

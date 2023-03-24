@@ -14,7 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -43,7 +43,7 @@ std::string GetWallet::GetUrl() const {
 
 void GetWallet::OnRequest(const mojom::UrlResponse& response,
                           GetWalletCallback callback) const {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   mojom::Result result = CheckStatusCode(response.status_code);
   if (result != mojom::Result::LEDGER_OK) {
@@ -110,4 +110,4 @@ mojom::Result GetWallet::ParseBody(const std::string& body,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

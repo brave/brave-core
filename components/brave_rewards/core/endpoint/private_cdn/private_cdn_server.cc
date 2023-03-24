@@ -6,7 +6,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 
 PrivateCDNServer::PrivateCDNServer(LedgerImpl* ledger)
@@ -19,4 +19,4 @@ private_cdn::GetPublisher* PrivateCDNServer::get_publisher() const {
 }
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

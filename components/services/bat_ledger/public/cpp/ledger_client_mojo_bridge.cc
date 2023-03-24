@@ -11,11 +11,11 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace bat_ledger {
+namespace brave_rewards {
 
 LedgerClientMojoBridge::LedgerClientMojoBridge(
-    ledger::LedgerClient* ledger_client)
-  : ledger_client_(ledger_client) {
+    core::LedgerClient* ledger_client)
+    : ledger_client_(ledger_client) {
   DCHECK(ledger_client_);
 }
 
@@ -24,7 +24,7 @@ LedgerClientMojoBridge::~LedgerClientMojoBridge() = default;
 // static
 void LedgerClientMojoBridge::OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::mojom::Result result,
+    mojom::Result result,
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -43,7 +43,7 @@ void LedgerClientMojoBridge::LoadLedgerState(LoadLedgerStateCallback callback) {
 // static
 void LedgerClientMojoBridge::OnLoadPublisherState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
-    ledger::mojom::Result result,
+    mojom::Result result,
     const std::string& data) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -63,16 +63,16 @@ void LedgerClientMojoBridge::LoadPublisherState(
 }
 
 void LedgerClientMojoBridge::OnReconcileComplete(
-    const ledger::mojom::Result result,
-    ledger::mojom::ContributionInfoPtr contribution) {
+    const mojom::Result result,
+    mojom::ContributionInfoPtr contribution) {
   ledger_client_->OnReconcileComplete(
       result,
       std::move(contribution));
 }
 
 void LedgerClientMojoBridge::OnPanelPublisherInfo(
-    const ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr publisher_info,
+    const mojom::Result result,
+    mojom::PublisherInfoPtr publisher_info,
     uint64_t window_id) {
   ledger_client_->OnPanelPublisherInfo(
       result,
@@ -104,20 +104,19 @@ void LedgerClientMojoBridge::URIEncode(const std::string& value,
   std::move(callback).Run(ledger_client_->URIEncode(value));
 }
 
-void LedgerClientMojoBridge::LoadURL(ledger::mojom::UrlRequestPtr request,
+void LedgerClientMojoBridge::LoadURL(mojom::UrlRequestPtr request,
                                      LoadURLCallback callback) {
   ledger_client_->LoadURL(
       std::move(request),
       base::BindOnce(
-          [](LoadURLCallback callback,
-             const ledger::mojom::UrlResponse& response) {
-            std::move(callback).Run(ledger::mojom::UrlResponse::New(response));
+          [](LoadURLCallback callback, const mojom::UrlResponse& response) {
+            std::move(callback).Run(mojom::UrlResponse::New(response));
           },
           std::move(callback)));
 }
 
 void LedgerClientMojoBridge::PublisherListNormalized(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<mojom::PublisherInfoPtr> list) {
   ledger_client_->PublisherListNormalized(std::move(list));
 }
 
@@ -269,7 +268,7 @@ void LedgerClientMojoBridge::GetUint64Option(
 }
 
 void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(
-    const ledger::mojom::Result result,
+    const mojom::Result result,
     const std::string& publisher_key,
     const std::string& publisher_name) {
   ledger_client_->OnContributeUnverifiedPublishers(
@@ -286,7 +285,7 @@ void LedgerClientMojoBridge::GetLegacyWallet(
 // static
 void LedgerClientMojoBridge::OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -323,7 +322,7 @@ void LedgerClientMojoBridge::ReconcileStampReset() {
 }
 
 void LedgerClientMojoBridge::RunDBTransaction(
-    ledger::mojom::DBTransactionPtr transaction,
+    mojom::DBTransactionPtr transaction,
     RunDBTransactionCallback callback) {
   ledger_client_->RunDBTransaction(std::move(transaction), std::move(callback));
 }
@@ -353,7 +352,7 @@ void LedgerClientMojoBridge::GetCreateScript(
 }
 
 void LedgerClientMojoBridge::PendingContributionSaved(
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   ledger_client_->PendingContributionSaved(result);
 }
 
@@ -384,7 +383,7 @@ void LedgerClientMojoBridge::ExternalWalletReconnected() {
 // static
 void LedgerClientMojoBridge::OnDeleteLog(
     CallbackHolder<DeleteLogCallback>* holder,
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -412,4 +411,4 @@ void LedgerClientMojoBridge::DecryptString(const std::string& value,
   std::move(callback).Run(ledger_client_->DecryptString(value));
 }
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards

@@ -18,7 +18,7 @@
 
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class MockLedgerClient : public LedgerClient {
  public:
@@ -33,9 +33,9 @@ class MockLedgerClient : public LedgerClient {
                void(mojom::Result result,
                     mojom::ContributionInfoPtr contribution));
 
-  MOCK_METHOD1(LoadLedgerState, void(client::OnLoadCallback callback));
+  MOCK_METHOD1(LoadLedgerState, void(OnLoadCallback callback));
 
-  MOCK_METHOD1(LoadPublisherState, void(client::OnLoadCallback callback));
+  MOCK_METHOD1(LoadPublisherState, void(OnLoadCallback callback));
 
   MOCK_METHOD3(OnPanelPublisherInfo,
                void(mojom::Result result,
@@ -49,13 +49,12 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(FetchFavIcon,
                void(const std::string& url,
                     const std::string& favicon_key,
-                    client::FetchIconCallback callback));
+                    FetchIconCallback callback));
 
   MOCK_METHOD1(URIEncode, std::string(const std::string& value));
 
   MOCK_METHOD2(LoadURL,
-               void(mojom::UrlRequestPtr request,
-                    client::LoadURLCallback callback));
+               void(mojom::UrlRequestPtr request, LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude,
                void(const std::string& publisher_key, bool exclude));
@@ -124,7 +123,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(ShowNotification,
                void(const std::string& type,
                     const std::vector<std::string>& args,
-                    client::LegacyResultCallback callback));
+                    LegacyResultCallback callback));
 
   MOCK_METHOD0(GetClientInfo, mojom::ClientInfoPtr());
 
@@ -133,9 +132,9 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD0(ReconcileStampReset, void());
 
   MOCK_METHOD2(RunDBTransaction,
-               void(mojom::DBTransactionPtr, client::RunDBTransactionCallback));
+               void(mojom::DBTransactionPtr, RunDBTransactionCallback));
 
-  MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
+  MOCK_METHOD1(GetCreateScript, void(GetCreateScriptCallback));
 
   MOCK_METHOD1(PendingContributionSaved, void(const mojom::Result result));
 
@@ -147,11 +146,11 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_CONST_METHOD0(ExternalWalletReconnected, void());
 
-  MOCK_METHOD1(DeleteLog, void(client::LegacyResultCallback callback));
+  MOCK_METHOD1(DeleteLog, void(LegacyResultCallback callback));
 
   MOCK_METHOD0(GetLegacyWallet, std::string());
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CLIENT_MOCK_H_

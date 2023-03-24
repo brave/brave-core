@@ -34,7 +34,7 @@ const std::map<std::string, std::string> kStringOptions = {};
 const std::map<std::string, int64_t> kInt64Options = {};
 
 const std::map<std::string, uint64_t> kUInt64Options = {
-    {ledger::option::kPublisherListRefreshInterval,
+    {core::option::kPublisherListRefreshInterval,
      7 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 #else
 const std::map<std::string, bool> kBoolOptions = {};
@@ -48,7 +48,7 @@ const std::map<std::string, std::string> kStringOptions = {};
 const std::map<std::string, int64_t> kInt64Options = {};
 
 const std::map<std::string, uint64_t> kUInt64Options = {
-    {ledger::option::kPublisherListRefreshInterval,
+    {core::option::kPublisherListRefreshInterval,
      3 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 #endif
 

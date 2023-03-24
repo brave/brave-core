@@ -13,8 +13,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
-import org.chromium.ledger.mojom.WalletStatus;
 
 public class BraveRewardsExternalWallet {
     //fields

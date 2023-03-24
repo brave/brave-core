@@ -57,7 +57,7 @@
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -537,7 +537,7 @@ void AdsServiceImpl::InitializeRewardsWallet() {
 }
 
 void AdsServiceImpl::OnInitializeRewardsWallet(
-    ledger::mojom::RewardsWalletPtr wallet) {
+    brave_rewards::mojom::RewardsWalletPtr wallet) {
   if (!bat_ads_.is_bound()) {
     return;
   }
@@ -709,7 +709,7 @@ void AdsServiceImpl::GetRewardsWallet() {
 }
 
 void AdsServiceImpl::OnGetRewardsWallet(
-    ledger::mojom::RewardsWalletPtr wallet) {
+    brave_rewards::mojom::RewardsWalletPtr wallet) {
   if (wallet && bat_ads_.is_bound()) {
     bat_ads_->OnRewardsWalletDidChange(
         wallet->payment_id, base::Base64Encode(wallet->recovery_seed));

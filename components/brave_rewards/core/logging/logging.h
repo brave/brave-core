@@ -13,7 +13,7 @@
 
 #include "base/logging.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class LedgerClient;
 
@@ -50,9 +50,9 @@ void Log(const char* file,
 //   8 Database queries
 //   9 Detailed debugging (response headers, etc)
 
-#define BLOG(verbose_level, stream)              \
-  ledger::Log(__FILE__, __LINE__, verbose_level, \
-              (std::ostringstream() << stream).str());
+#define BLOG(verbose_level, stream)      \
+  Log(__FILE__, __LINE__, verbose_level, \
+      (std::ostringstream() << stream).str());
 
 // You can also do conditional verbose logging when some extra computation and
 // preparation for logs is not needed:
@@ -62,6 +62,6 @@ void Log(const char* file,
 #define BLOG_IF(verbose_level, condition, stream) \
   !(condition) ? (void)0 : BLOG(verbose_level, stream)
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LOGGING_LOGGING_H_

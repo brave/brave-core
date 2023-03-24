@@ -15,7 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -60,7 +60,7 @@ void DatabaseEventLog::Insert(const std::string& key,
 
 void DatabaseEventLog::InsertRecords(
     const std::map<std::string, std::string>& records,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (records.empty()) {
     BLOG(0, "No records");
     callback(mojom::Result::NOT_FOUND);
@@ -93,7 +93,7 @@ void DatabaseEventLog::InsertRecords(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
+void DatabaseEventLog::GetLastRecords(GetEventLogsCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -121,7 +121,7 @@ void DatabaseEventLog::GetLastRecords(ledger::GetEventLogsCallback callback) {
 }
 
 void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                                       ledger::GetEventLogsCallback callback) {
+                                       GetEventLogsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -146,4 +146,4 @@ void DatabaseEventLog::OnGetAllRecords(mojom::DBCommandResponsePtr response,
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

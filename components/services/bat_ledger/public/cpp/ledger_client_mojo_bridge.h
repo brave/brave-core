@@ -18,41 +18,39 @@
 #include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 
-namespace bat_ledger {
+namespace brave_rewards {
 
 class LedgerClientMojoBridge :
     public mojom::BatLedgerClient,
     public base::SupportsWeakPtr<LedgerClientMojoBridge> {
  public:
-  explicit LedgerClientMojoBridge(ledger::LedgerClient* ledger_client);
+  explicit LedgerClientMojoBridge(core::LedgerClient* ledger_client);
   ~LedgerClientMojoBridge() override;
 
   LedgerClientMojoBridge(const LedgerClientMojoBridge&) = delete;
   LedgerClientMojoBridge& operator=(const LedgerClientMojoBridge&) = delete;
 
-  // bat_ledger::mojom::BatLedgerClient
+  // mojom::BatLedgerClient
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
-  void OnReconcileComplete(
-      const ledger::mojom::Result result,
-      ledger::mojom::ContributionInfoPtr contribution) override;
+  void OnReconcileComplete(const mojom::Result result,
+                           mojom::ContributionInfoPtr contribution) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
 
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
 
-  void OnPanelPublisherInfo(const ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr info,
+  void OnPanelPublisherInfo(const mojom::Result result,
+                            mojom::PublisherInfoPtr info,
                             uint64_t window_id) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
 
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
-               LoadURLCallback callback) override;
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
 
   void PublisherListNormalized(
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<mojom::PublisherInfoPtr> list) override;
 
   void OnPublisherRegistryUpdated() override;
 
@@ -121,7 +119,7 @@ class LedgerClientMojoBridge :
       GetUint64OptionCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
-      const ledger::mojom::Result result,
+      const mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
@@ -139,13 +137,13 @@ class LedgerClientMojoBridge :
 
   void ReconcileStampReset() override;
 
-  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
   void GetCreateScript(
       GetCreateScriptCallback callback) override;
 
-  void PendingContributionSaved(const ledger::mojom::Result result) override;
+  void PendingContributionSaved(const mojom::Result result) override;
 
   void Log(
       const std::string& file,
@@ -188,12 +186,12 @@ class LedgerClientMojoBridge :
   };
 
   static void OnLoadLedgerState(CallbackHolder<LoadLedgerStateCallback>* holder,
-                                ledger::mojom::Result result,
+                                mojom::Result result,
                                 const std::string& data);
 
   static void OnLoadPublisherState(
       CallbackHolder<LoadLedgerStateCallback>* holder,
-      ledger::mojom::Result result,
+      mojom::Result result,
       const std::string& data);
 
   static void OnFetchFavIcon(
@@ -203,7 +201,7 @@ class LedgerClientMojoBridge :
 
   static void OnShowNotification(
       CallbackHolder<ShowNotificationCallback>* holder,
-      const ledger::mojom::Result result);
+      const mojom::Result result);
 
   static void OnGetCreateScript(
       CallbackHolder<GetCreateScriptCallback>* holder,
@@ -211,11 +209,11 @@ class LedgerClientMojoBridge :
       const int table_version);
 
   static void OnDeleteLog(CallbackHolder<DeleteLogCallback>* holder,
-                          const ledger::mojom::Result result);
+                          const mojom::Result result);
 
-  raw_ptr<ledger::LedgerClient> ledger_client_ = nullptr;
+  raw_ptr<core::LedgerClient> ledger_client_ = nullptr;
 };
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_PUBLIC_CPP_LEDGER_CLIENT_MOJO_BRIDGE_H_

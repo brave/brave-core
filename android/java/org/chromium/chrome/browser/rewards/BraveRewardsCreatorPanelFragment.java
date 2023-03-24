@@ -36,6 +36,8 @@ import org.json.JSONException;
 
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
+import org.chromium.brave_rewards.mojom.PublisherStatus;
+import org.chromium.brave_rewards.mojom.WalletStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsExternalWallet;
@@ -46,8 +48,6 @@ import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 import org.chromium.chrome.browser.BraveWalletProvider;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.ledger.mojom.PublisherStatus;
-import org.chromium.ledger.mojom.WalletStatus;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;

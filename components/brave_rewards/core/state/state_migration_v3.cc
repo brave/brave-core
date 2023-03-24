@@ -5,14 +5,14 @@
 
 #include "brave/components/brave_rewards/core/state/state_migration_v3.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 StateMigrationV3::StateMigrationV3() = default;
 
 StateMigrationV3::~StateMigrationV3() = default;
 
-void StateMigrationV3::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV3::Migrate(LegacyResultCallback callback) {
   // In this migration we migrated anon address to uphold wallet in preferences
   // because anon address was removed we can also remove this step
   // Ref: https://github.com/brave/brave-browser/issues/11150
@@ -20,4 +20,4 @@ void StateMigrationV3::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core

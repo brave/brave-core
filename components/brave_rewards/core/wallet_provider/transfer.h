@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace wallet_provider {
@@ -26,7 +26,7 @@ class Transfer {
   void Run(const std::string& contribution_id,
            const std::string& destination,
            double amount,
-           ledger::ResultCallback) const;
+           ResultCallback) const;
 
  protected:
   using MaybeCreateTransactionCallback =
@@ -57,13 +57,13 @@ class Transfer {
   virtual void CreateTransaction(MaybeCreateTransactionCallback,
                                  mojom::ExternalTransactionPtr) const;
 
-  virtual void CommitTransaction(ledger::ResultCallback,
+  virtual void CommitTransaction(ResultCallback,
                                  mojom::ExternalTransactionPtr) const = 0;
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace wallet_provider
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_TRANSFER_H_

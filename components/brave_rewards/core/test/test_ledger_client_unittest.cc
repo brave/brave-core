@@ -9,7 +9,7 @@
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class TestLedgerClientTest : public testing::Test {
  protected:
@@ -39,4 +39,4 @@ TEST_F(TestLedgerClientTest, LoadURLIsAsync) {
   ASSERT_TRUE(finished);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

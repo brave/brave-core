@@ -17,7 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -32,7 +32,7 @@ DatabasePromotion::DatabasePromotion(LedgerImpl* ledger)
 DatabasePromotion::~DatabasePromotion() = default;
 
 void DatabasePromotion::InsertOrUpdate(mojom::PromotionPtr info,
-                                       ledger::LegacyResultCallback callback) {
+                                       LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -152,8 +152,7 @@ void DatabasePromotion::OnGetRecord(mojom::DBCommandResponsePtr response,
   callback(std::move(info));
 }
 
-void DatabasePromotion::GetAllRecords(
-    ledger::GetAllPromotionsCallback callback) {
+void DatabasePromotion::GetAllRecords(GetAllPromotionsCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -190,9 +189,8 @@ void DatabasePromotion::GetAllRecords(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePromotion::OnGetAllRecords(
-    mojom::DBCommandResponsePtr response,
-    ledger::GetAllPromotionsCallback callback) {
+void DatabasePromotion::OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                                        GetAllPromotionsCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -229,7 +227,7 @@ void DatabasePromotion::OnGetAllRecords(
 
 void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
                                     const std::string& claim_id,
-                                    ledger::LegacyResultCallback callback) {
+                                    LegacyResultCallback callback) {
   if (promotion_id.empty() || claim_id.empty()) {
     BLOG(1, "Data is empty " << promotion_id << "/" << claim_id);
     callback(mojom::Result::LEDGER_ERROR);
@@ -256,7 +254,7 @@ void DatabasePromotion::SaveClaimId(const std::string& promotion_id,
 
 void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
                                      mojom::PromotionStatus status,
-                                     ledger::LegacyResultCallback callback) {
+                                     LegacyResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(0, "Promotion id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -281,10 +279,9 @@ void DatabasePromotion::UpdateStatus(const std::string& promotion_id,
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePromotion::UpdateRecordsStatus(
-    const std::vector<std::string>& ids,
-    mojom::PromotionStatus status,
-    ledger::LegacyResultCallback callback) {
+void DatabasePromotion::UpdateRecordsStatus(const std::vector<std::string>& ids,
+                                            mojom::PromotionStatus status,
+                                            LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -309,9 +306,8 @@ void DatabasePromotion::UpdateRecordsStatus(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePromotion::CredentialCompleted(
-    const std::string& promotion_id,
-    ledger::LegacyResultCallback callback) {
+void DatabasePromotion::CredentialCompleted(const std::string& promotion_id,
+                                            LegacyResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(1, "Promotion id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -341,7 +337,7 @@ void DatabasePromotion::CredentialCompleted(
 }
 
 void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
-                                   client::GetPromotionListCallback callback) {
+                                   GetPromotionListCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback({});
@@ -384,9 +380,8 @@ void DatabasePromotion::GetRecords(const std::vector<std::string>& ids,
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePromotion::OnGetRecords(
-    mojom::DBCommandResponsePtr response,
-    client::GetPromotionListCallback callback) {
+void DatabasePromotion::OnGetRecords(mojom::DBCommandResponsePtr response,
+                                     GetPromotionListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -424,7 +419,7 @@ void DatabasePromotion::OnGetRecords(
 
 void DatabasePromotion::UpdateRecordsBlankPublicKey(
     const std::vector<std::string>& ids,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -449,4 +444,4 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

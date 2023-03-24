@@ -26,10 +26,10 @@
 #include "brave/components/brave_rewards/core/option_keys.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave/ios/browser/api/ledger/brave_ledger_observer.h"
-#import "brave/ios/browser/api/ledger/ledger.mojom.objc+private.h"
+#import "brave/ios/browser/api/ledger/core.mojom.objc+private.h"
+#import "brave/ios/browser/api/ledger/core_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/ledger/ledger_client_bridge.h"
 #import "brave/ios/browser/api/ledger/ledger_client_ios.h"
-#import "brave/ios/browser/api/ledger/ledger_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/ledger/legacy_database/data_controller.h"
 #import "brave/ios/browser/api/ledger/legacy_database/legacy_ledger_database.h"
 #import "brave/ios/browser/api/ledger/promotion_solution.h"
@@ -87,13 +87,13 @@ static const auto kOneDay =
 /// Ledger Prefs, keys will be defined in
 /// `brave/components/brave_rewards/core/option_keys.h`
 const std::map<std::string, bool> kBoolOptions = {
-    {ledger::option::kIsBitflyerRegion, false}};
+    {brave_rewards::core::option::kIsBitflyerRegion, false}};
 const std::map<std::string, int> kIntegerOptions = {};
 const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};
 const std::map<std::string, int64_t> kInt64Options = {};
 const std::map<std::string, uint64_t> kUInt64Options = {
-    {ledger::option::kPublisherListRefreshInterval,
+    {brave_rewards::core::option::kPublisherListRefreshInterval,
      7 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 /// ---
 
@@ -109,28 +109,29 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 @interface BraveLedger () <LedgerClientBridge> {
   LedgerClientIOS* ledgerClient;
-  ledger::Ledger* ledger;
-  base::SequenceBound<ledger::LedgerDatabase> rewardsDatabase;
+  brave_rewards::core::Ledger* ledger;
+  base::SequenceBound<brave_rewards::core::LedgerDatabase> rewardsDatabase;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
 }
 
 @property(nonatomic, copy) NSString* storagePath;
-@property(nonatomic) LedgerRewardsParameters* rewardsParameters;
-@property(nonatomic) LedgerBalance* balance;
+@property(nonatomic) BraveRewardsRewardsParameters* rewardsParameters;
+@property(nonatomic) BraveRewardsBalance* balance;
 @property(nonatomic) dispatch_queue_t fileWriteThread;
 @property(nonatomic) NSMutableDictionary<NSString*, NSString*>* state;
 @property(nonatomic) BraveCommonOperations* commonOps;
 @property(nonatomic) NSMutableDictionary<NSString*, __kindof NSObject*>* prefs;
 
-@property(nonatomic) NSMutableArray<LedgerPromotion*>* mPendingPromotions;
-@property(nonatomic) NSMutableArray<LedgerPromotion*>* mFinishedPromotions;
+@property(nonatomic) NSMutableArray<BraveRewardsPromotion*>* mPendingPromotions;
+@property(nonatomic)
+    NSMutableArray<BraveRewardsPromotion*>* mFinishedPromotions;
 
 @property(nonatomic) NSHashTable<BraveLedgerObserver*>* observers;
 
 @property(nonatomic, getter=isInitialized) BOOL initialized;
 @property(nonatomic) BOOL initializing;
 @property(nonatomic) BOOL dataMigrationFailed;
-@property(nonatomic) LedgerResult initializationResult;
+@property(nonatomic) BraveRewardsResult initializationResult;
 @property(nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property(nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
 @property(nonatomic) BATLedgerDatabaseMigrationType migrationType;
@@ -183,11 +184,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
     const auto* dbPath = [self rewardsDatabasePath].UTF8String;
 
-    rewardsDatabase = base::SequenceBound<ledger::LedgerDatabase>(
+    rewardsDatabase = base::SequenceBound<brave_rewards::core::LedgerDatabase>(
         databaseQueue, base::FilePath(dbPath));
 
     ledgerClient = new LedgerClientIOS(self);
-    ledger = ledger::Ledger::CreateInstance(ledgerClient);
+    ledger = brave_rewards::core::Ledger::CreateInstance(ledgerClient);
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter
@@ -215,27 +216,30 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   if (flags.environment) {
     switch (*flags.environment) {
       case brave_rewards::RewardsFlags::Environment::kDevelopment:
-        ledger::_environment = ledger::mojom::Environment::DEVELOPMENT;
+        brave_rewards::core::_environment =
+            brave_rewards::mojom::Environment::DEVELOPMENT;
         break;
       case brave_rewards::RewardsFlags::Environment::kStaging:
-        ledger::_environment = ledger::mojom::Environment::STAGING;
+        brave_rewards::core::_environment =
+            brave_rewards::mojom::Environment::STAGING;
         break;
       case brave_rewards::RewardsFlags::Environment::kProduction:
-        ledger::_environment = ledger::mojom::Environment::PRODUCTION;
+        brave_rewards::core::_environment =
+            brave_rewards::mojom::Environment::PRODUCTION;
         break;
     }
   }
 
   if (flags.debug) {
-    ledger::is_debug = true;
+    brave_rewards::core::is_debug = true;
   }
 
   if (flags.reconcile_interval) {
-    ledger::reconcile_interval = *flags.reconcile_interval;
+    brave_rewards::core::reconcile_interval = *flags.reconcile_interval;
   }
 
   if (flags.retry_interval) {
-    ledger::retry_interval = *flags.retry_interval;
+    brave_rewards::core::retry_interval = *flags.retry_interval;
   }
 }
 
@@ -258,10 +262,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
   BLOG(3, @"DB: Migrate from CoreData? %@",
        (executeMigrateScript ? @"YES" : @"NO"));
-  ledger->Initialize(executeMigrateScript, ^(ledger::mojom::Result result) {
-    self.initialized = (result == ledger::mojom::Result::LEDGER_OK ||
-                        result == ledger::mojom::Result::NO_LEDGER_STATE ||
-                        result == ledger::mojom::Result::NO_PUBLISHER_STATE);
+  ledger->Initialize(executeMigrateScript, ^(
+                         brave_rewards::mojom::Result result) {
+    self.initialized =
+        (result == brave_rewards::mojom::Result::LEDGER_OK ||
+         result == brave_rewards::mojom::Result::NO_LEDGER_STATE ||
+         result == brave_rewards::mojom::Result::NO_PUBLISHER_STATE);
     self.initializing = NO;
     if (self.initialized) {
       self.prefs[kMigrationSucceeded] = @(YES);
@@ -273,7 +279,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       [self readNotificationsFromDisk];
     } else {
       BLOG(0, @"Ledger Initialization Failed with error: %d", result);
-      if (result == ledger::mojom::Result::DATABASE_INIT_FAILED) {
+      if (result == brave_rewards::mojom::Result::DATABASE_INIT_FAILED) {
         // Failed to migrate data...
         switch (self.migrationType) {
           case BATLedgerDatabaseMigrationTypeDefault:
@@ -299,7 +305,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
         }
       }
     }
-    self.initializationResult = static_cast<LedgerResult>(result);
+    self.initializationResult = static_cast<BraveRewardsResult>(result);
     if (completion) {
       completion();
     }
@@ -330,22 +336,24 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   // Check integrity of the new DB. Safe to assume if `publisher_info` table
   // exists, then all the others do as well.
-  auto transaction = ledger::mojom::DBTransaction::New();
-  const auto command = ledger::mojom::DBCommand::New();
-  command->type = ledger::mojom::DBCommand::Type::READ;
+  auto transaction = brave_rewards::mojom::DBTransaction::New();
+  const auto command = brave_rewards::mojom::DBCommand::New();
+  command->type = brave_rewards::mojom::DBCommand::Type::READ;
   command->command = "SELECT name FROM sqlite_master WHERE type = 'table' AND "
                      "name = 'publisher_info';";
   command->record_bindings = {
-      ledger::mojom::DBCommand::RecordBindingType::STRING_TYPE};
+      brave_rewards::mojom::DBCommand::RecordBindingType::STRING_TYPE};
   transaction->commands.push_back(command->Clone());
 
   [self runDBTransaction:std::move(transaction)
                 callback:base::BindOnce(^(
-                             ledger::mojom::DBCommandResponsePtr response) {
+                             brave_rewards::mojom::DBCommandResponsePtr
+                                 response) {
                   // Failed to even run the check, tables probably don't exist,
                   // restart from scratch
                   if (response->status !=
-                      ledger::mojom::DBCommandResponse::Status::RESPONSE_OK) {
+                      brave_rewards::mojom::DBCommandResponse::Status::
+                          RESPONSE_OK) {
                     [self resetRewardsDatabase];
                     BLOG(3, @"DB: Failed to run transaction with status: %d",
                          response->status);
@@ -384,11 +392,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   [NSFileManager.defaultManager
       removeItemAtPath:[dbPath stringByAppendingString:@"-journal"]
                  error:nil];
-  rewardsDatabase = base::SequenceBound<ledger::LedgerDatabase>(
+  rewardsDatabase = base::SequenceBound<brave_rewards::core::LedgerDatabase>(
       databaseQueue, base::FilePath(base::SysNSStringToUTF8(dbPath)));
 }
 
-- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback {
+- (void)getCreateScript:(brave_rewards::core::GetCreateScriptCallback)callback {
   NSString* migrationScript = @"";
   switch (self.migrationType) {
     case BATLedgerDatabaseMigrationTypeNone:
@@ -447,31 +455,33 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
   ledger->CreateRewardsWallet(
-      "",
-      base::BindOnce(^(ledger::mojom::CreateRewardsWalletResult create_result) {
+      "", base::BindOnce(^(
+              brave_rewards::mojom::CreateRewardsWalletResult create_result) {
         const auto strongSelf = weakSelf;
         if (!strongSelf) {
           return;
         }
 
-        ledger::mojom::Result result =
-            create_result == ledger::mojom::CreateRewardsWalletResult::kSuccess
-                ? ledger::mojom::Result::LEDGER_OK
-                : ledger::mojom::Result::LEDGER_ERROR;
+        brave_rewards::mojom::Result result =
+            create_result ==
+                    brave_rewards::mojom::CreateRewardsWalletResult::kSuccess
+                ? brave_rewards::mojom::Result::LEDGER_OK
+                : brave_rewards::mojom::Result::LEDGER_ERROR;
 
         NSError* error = nil;
-        if (result != ledger::mojom::Result::LEDGER_OK) {
-          std::map<ledger::mojom::Result, std::string> errorDescriptions{
-              {ledger::mojom::Result::LEDGER_ERROR,
+        if (result != brave_rewards::mojom::Result::LEDGER_OK) {
+          std::map<brave_rewards::mojom::Result, std::string> errorDescriptions{
+              {brave_rewards::mojom::Result::LEDGER_ERROR,
                "The wallet was already initialized"},
-              {ledger::mojom::Result::BAD_REGISTRATION_RESPONSE,
+              {brave_rewards::mojom::Result::BAD_REGISTRATION_RESPONSE,
                "Request credentials call failure or malformed data"},
-              {ledger::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
+              {brave_rewards::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
                "Missing master user token from registered persona"},
           };
           NSDictionary* userInfo = @{};
           const auto description =
-              errorDescriptions[static_cast<ledger::mojom::Result>(result)];
+              errorDescriptions[static_cast<brave_rewards::mojom::Result>(
+                  result)];
           if (description.length() > 0) {
             userInfo = @{
               NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)
@@ -492,7 +502,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
           for (BraveLedgerObserver* observer in [strongSelf.observers copy]) {
             if (observer.walletInitalized) {
-              observer.walletInitalized(static_cast<LedgerResult>(result));
+              observer.walletInitalized(
+                  static_cast<BraveRewardsResult>(result));
             }
           }
         });
@@ -500,24 +511,24 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)currentWalletInfo:
-    (void (^)(LedgerRewardsWallet* _Nullable wallet))completion {
-  ledger->GetRewardsWallet(^(ledger::mojom::RewardsWalletPtr wallet) {
+    (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion {
+  ledger->GetRewardsWallet(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
     if (wallet.get() == nullptr) {
       completion(nil);
       return;
     }
     const auto bridgedWallet =
-        [[LedgerRewardsWallet alloc] initWithRewardsWallet:*wallet];
+        [[BraveRewardsRewardsWallet alloc] initWithRewardsWallet:*wallet];
     completion(bridgedWallet);
   });
 }
 
 - (void)getRewardsParameters:
-    (void (^)(LedgerRewardsParameters* _Nullable))completion {
+    (void (^)(BraveRewardsRewardsParameters* _Nullable))completion {
   ledger->GetRewardsParameters(base::BindOnce(^(
-      ledger::mojom::RewardsParametersPtr info) {
+      brave_rewards::mojom::RewardsParametersPtr info) {
     if (info) {
-      self.rewardsParameters = [[LedgerRewardsParameters alloc]
+      self.rewardsParameters = [[BraveRewardsRewardsParameters alloc]
           initWithRewardsParametersPtr:std::move(info)];
     } else {
       self.rewardsParameters = nil;
@@ -531,14 +542,14 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }));
 }
 
-- (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
+- (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
   ledger->FetchBalance(base::BindOnce(
-      ^(base::expected<ledger::mojom::BalancePtr,
-                       ledger::mojom::FetchBalanceError> result) {
+      ^(base::expected<brave_rewards::mojom::BalancePtr,
+                       brave_rewards::mojom::FetchBalanceError> result) {
         const auto strongSelf = weakSelf;
         if (result.has_value()) {
-          strongSelf.balance = [[LedgerBalance alloc]
+          strongSelf.balance = [[BraveRewardsBalance alloc]
               initWithBalancePtr:std::move(result.value())];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -561,14 +572,15 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)drainStatusForDrainId:(NSString*)drainId
-                   completion:(void (^)(LedgerResult result,
-                                        LedgerDrainStatus status))completion {
-  ledger->GetDrainStatus(
-      base::SysNSStringToUTF8(drainId),
-      ^(ledger::mojom::Result result, ledger::mojom::DrainStatus status) {
-        completion(static_cast<LedgerResult>(result),
-                   static_cast<LedgerDrainStatus>(status));
-      });
+                   completion:
+                       (void (^)(BraveRewardsResult result,
+                                 BraveRewardsDrainStatus status))completion {
+  ledger->GetDrainStatus(base::SysNSStringToUTF8(drainId), ^(
+                             brave_rewards::mojom::Result result,
+                             brave_rewards::mojom::DrainStatus status) {
+    completion(static_cast<BraveRewardsResult>(result),
+               static_cast<BraveRewardsDrainStatus>(status));
+  });
 }
 
 - (std::string)getLegacyWallet {
@@ -592,30 +604,32 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
-                           filter:(LedgerActivityInfoFilter*)filter
-                       completion:(void (^)(NSArray<LedgerPublisherInfo*>*))
-                                      completion {
-  auto cppFilter =
-      filter ? filter.cppObjPtr : ledger::mojom::ActivityInfoFilter::New();
-  if (filter.excluded == LedgerExcludeFilterFilterExcluded) {
-    ledger->GetExcludedList(^(
-        std::vector<ledger::mojom::PublisherInfoPtr> list) {
-      const auto publishers = NSArrayFromVector(
-          &list,
-          ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-            return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-          });
-      completion(publishers);
-    });
+                           filter:(BraveRewardsActivityInfoFilter*)filter
+                       completion:
+                           (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
+                               completion {
+  auto cppFilter = filter ? filter.cppObjPtr
+                          : brave_rewards::mojom::ActivityInfoFilter::New();
+  if (filter.excluded == BraveRewardsExcludeFilterFilterExcluded) {
+    ledger->GetExcludedList(
+        ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
+          const auto publishers = NSArrayFromVector(
+              &list, ^BraveRewardsPublisherInfo*(
+                  const brave_rewards::mojom::PublisherInfoPtr& info) {
+                return [[BraveRewardsPublisherInfo alloc]
+                    initWithPublisherInfo:*info];
+              });
+          completion(publishers);
+        });
   } else {
     ledger->GetActivityInfoList(
         start, limit, std::move(cppFilter),
-        ^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
+        ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
           const auto publishers = NSArrayFromVector(
-              &list, ^LedgerPublisherInfo*(
-                  const ledger::mojom::PublisherInfoPtr& info) {
-                return
-                    [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+              &list, ^BraveRewardsPublisherInfo*(
+                  const brave_rewards::mojom::PublisherInfoPtr& info) {
+                return [[BraveRewardsPublisherInfo alloc]
+                    initWithPublisherInfo:*info];
               });
           completion(publishers);
         });
@@ -645,7 +659,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  ledger::mojom::VisitDataPtr visitData = ledger::mojom::VisitData::New();
+  brave_rewards::mojom::VisitDataPtr visitData =
+      brave_rewards::mojom::VisitData::New();
   visitData->domain = visitData->name = baseDomain;
   visitData->path = parsedUrl.PathForRequest();
   visitData->url = origin.Serialize();
@@ -663,12 +678,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)updatePublisherExclusionState:(NSString*)publisherId
-                                state:(LedgerPublisherExclude)state {
+                                state:(BraveRewardsPublisherExclude)state {
   ledger->SetPublisherExclude(
       base::SysNSStringToUTF8(publisherId),
-      (ledger::mojom::PublisherExclude)state,
-      base::BindOnce(^(ledger::mojom::Result result) {
-        if (result != ledger::mojom::Result::LEDGER_OK) {
+      (brave_rewards::mojom::PublisherExclude)state,
+      base::BindOnce(^(brave_rewards::mojom::Result result) {
+        if (result != brave_rewards::mojom::Result::LEDGER_OK) {
           return;
         }
         for (BraveLedgerObserver* observer in [self.observers copy]) {
@@ -680,81 +695,88 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)restoreAllExcludedPublishers {
-  ledger->RestorePublishers(base::BindOnce(^(ledger::mojom::Result result) {
-    if (result != ledger::mojom::Result::LEDGER_OK) {
-      return;
-    }
+  ledger->RestorePublishers(
+      base::BindOnce(^(brave_rewards::mojom::Result result) {
+        if (result != brave_rewards::mojom::Result::LEDGER_OK) {
+          return;
+        }
 
-    for (BraveLedgerObserver* observer in [self.observers copy]) {
-      if (observer.excludedSitesChanged) {
-        observer.excludedSitesChanged(
-            @"-1", static_cast<LedgerPublisherExclude>(
-                       ledger::mojom::PublisherExclude::ALL));
-      }
-    }
-  }));
+        for (BraveLedgerObserver* observer in [self.observers copy]) {
+          if (observer.excludedSitesChanged) {
+            observer.excludedSitesChanged(
+                @"-1", static_cast<BraveRewardsPublisherExclude>(
+                           brave_rewards::mojom::PublisherExclude::ALL));
+          }
+        }
+      }));
 }
 
 - (void)publisherBannerForId:(NSString*)publisherId
-                  completion:(void (^)(LedgerPublisherBanner* _Nullable banner))
-                                 completion {
-  ledger->GetPublisherBanner(base::SysNSStringToUTF8(publisherId), ^(
-                                 ledger::mojom::PublisherBannerPtr banner) {
-    auto bridgedBanner =
-        banner.get() != nullptr
-            ? [[LedgerPublisherBanner alloc] initWithPublisherBanner:*banner]
-            : nil;
-    // native libs prefixes the logo and background image with this URL scheme
-    const auto imagePrefix = @"chrome://rewards-image/";
-    bridgedBanner.background = [bridgedBanner.background
-        stringByReplacingOccurrencesOfString:imagePrefix
-                                  withString:@""];
-    bridgedBanner.logo =
-        [bridgedBanner.logo stringByReplacingOccurrencesOfString:imagePrefix
-                                                      withString:@""];
-    completion(bridgedBanner);
-  });
+                  completion:
+                      (void (^)(BraveRewardsPublisherBanner* _Nullable banner))
+                          completion {
+  ledger->GetPublisherBanner(
+      base::SysNSStringToUTF8(publisherId),
+      ^(brave_rewards::mojom::PublisherBannerPtr banner) {
+        auto bridgedBanner = banner.get() != nullptr
+                                 ? [[BraveRewardsPublisherBanner alloc]
+                                       initWithPublisherBanner:*banner]
+                                 : nil;
+        // native libs prefixes the logo and background image with this URL
+        // scheme
+        const auto imagePrefix = @"chrome://rewards-image/";
+        bridgedBanner.background = [bridgedBanner.background
+            stringByReplacingOccurrencesOfString:imagePrefix
+                                      withString:@""];
+        bridgedBanner.logo =
+            [bridgedBanner.logo stringByReplacingOccurrencesOfString:imagePrefix
+                                                          withString:@""];
+        completion(bridgedBanner);
+      });
 }
 
 - (void)refreshPublisherWithId:(NSString*)publisherId
-                    completion:
-                        (void (^)(LedgerPublisherStatus status))completion {
+                    completion:(void (^)(BraveRewardsPublisherStatus status))
+                                   completion {
   if (self.loadingPublisherList) {
-    completion(LedgerPublisherStatusNotVerified);
+    completion(BraveRewardsPublisherStatusNotVerified);
     return;
   }
   ledger->RefreshPublisher(base::SysNSStringToUTF8(publisherId), ^(
-                               ledger::mojom::PublisherStatus status) {
-    completion(static_cast<LedgerPublisherStatus>(status));
+                               brave_rewards::mojom::PublisherStatus status) {
+    completion(static_cast<BraveRewardsPublisherStatus>(status));
   });
 }
 
 #pragma mark - SKUs
 
-- (void)processSKUItems:(NSArray<LedgerSKUOrderItem*>*)items
-             completion:
-                 (void (^)(LedgerResult result, NSString* orderID))completion {
-  ledger->ProcessSKU(
-      VectorFromNSArray(items,
-                        ^ledger::mojom::SKUOrderItem(LedgerSKUOrderItem* item) {
-                          return *item.cppObjPtr;
-                        }),
-      ledger::constant::kWalletUnBlinded,
-      ^(const ledger::mojom::Result result, const std::string& order_id) {
-        completion(static_cast<LedgerResult>(result),
-                   base::SysUTF8ToNSString(order_id));
-      });
+- (void)processSKUItems:(NSArray<BraveRewardsSKUOrderItem*>*)items
+             completion:(void (^)(BraveRewardsResult result,
+                                  NSString* orderID))completion {
+  ledger->ProcessSKU(VectorFromNSArray(items,
+                                       ^brave_rewards::mojom::SKUOrderItem(
+                                           BraveRewardsSKUOrderItem* item) {
+                                         return *item.cppObjPtr;
+                                       }),
+                     brave_rewards::core::constant::kWalletUnBlinded,
+                     ^(const brave_rewards::mojom::Result result,
+                       const std::string& order_id) {
+                       completion(static_cast<BraveRewardsResult>(result),
+                                  base::SysUTF8ToNSString(order_id));
+                     });
 }
 
 #pragma mark - Tips
 
-- (void)listRecurringTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion {
+- (void)listRecurringTips:
+    (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
   ledger->GetRecurringTips(
-      ^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
+      ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
         const auto publishers = NSArrayFromVector(
-            &list,
-            ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-              return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+            &list, ^BraveRewardsPublisherInfo*(
+                const brave_rewards::mojom::PublisherInfoPtr& info) {
+              return [[BraveRewardsPublisherInfo alloc]
+                  initWithPublisherInfo:*info];
             });
         completion(publishers);
       });
@@ -763,69 +785,76 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)addRecurringTipToPublisherWithId:(NSString*)publisherId
                                   amount:(double)amount
                               completion:(void (^)(BOOL success))completion {
-  ledger::mojom::RecurringTipPtr info = ledger::mojom::RecurringTip::New();
+  brave_rewards::mojom::RecurringTipPtr info =
+      brave_rewards::mojom::RecurringTip::New();
   info->publisher_key = base::SysNSStringToUTF8(publisherId);
   info->amount = amount;
   info->created_at = [[NSDate date] timeIntervalSince1970];
-  ledger->SaveRecurringTip(std::move(info), ^(ledger::mojom::Result result) {
-    const auto success = (result == ledger::mojom::Result::LEDGER_OK);
-    if (success) {
-      for (BraveLedgerObserver* observer in [self.observers copy]) {
-        if (observer.recurringTipAdded) {
-          observer.recurringTipAdded(publisherId);
-        }
-      }
-    }
-    completion(success);
-  });
-}
-
-- (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  ledger->RemoveRecurringTip(
-      base::SysNSStringToUTF8(publisherId), ^(ledger::mojom::Result result) {
-        if (result == ledger::mojom::Result::LEDGER_OK) {
+  ledger->SaveRecurringTip(
+      std::move(info), ^(brave_rewards::mojom::Result result) {
+        const auto success =
+            (result == brave_rewards::mojom::Result::LEDGER_OK);
+        if (success) {
           for (BraveLedgerObserver* observer in [self.observers copy]) {
-            if (observer.recurringTipRemoved) {
-              observer.recurringTipRemoved(publisherId);
+            if (observer.recurringTipAdded) {
+              observer.recurringTipAdded(publisherId);
             }
           }
         }
+        completion(success);
       });
 }
 
-- (void)listOneTimeTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion {
-  ledger->GetOneTimeTips(^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
-    const auto publishers = NSArrayFromVector(
-        &list,
-        ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-          return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-        });
-    completion(publishers);
+- (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
+  ledger->RemoveRecurringTip(base::SysNSStringToUTF8(publisherId), ^(
+                                 brave_rewards::mojom::Result result) {
+    if (result == brave_rewards::mojom::Result::LEDGER_OK) {
+      for (BraveLedgerObserver* observer in [self.observers copy]) {
+        if (observer.recurringTipRemoved) {
+          observer.recurringTipRemoved(publisherId);
+        }
+      }
+    }
   });
 }
 
-- (void)tipPublisherDirectly:(LedgerPublisherInfo*)publisher
+- (void)listOneTimeTips:
+    (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
+  ledger->GetOneTimeTips(
+      ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
+        const auto publishers = NSArrayFromVector(
+            &list, ^BraveRewardsPublisherInfo*(
+                const brave_rewards::mojom::PublisherInfoPtr& info) {
+              return [[BraveRewardsPublisherInfo alloc]
+                  initWithPublisherInfo:*info];
+            });
+        completion(publishers);
+      });
+}
+
+- (void)tipPublisherDirectly:(BraveRewardsPublisherInfo*)publisher
                       amount:(double)amount
                     currency:(NSString*)currency
-                  completion:(void (^)(LedgerResult result))completion {
+                  completion:(void (^)(BraveRewardsResult result))completion {
   ledger->OneTimeTip(base::SysNSStringToUTF8(publisher.id), amount,
-                     ^(ledger::mojom::Result result) {
-                       completion(static_cast<LedgerResult>(result));
+                     ^(brave_rewards::mojom::Result result) {
+                       completion(static_cast<BraveRewardsResult>(result));
                      });
 }
 
 #pragma mark - Grants
 
-- (NSArray<LedgerPromotion*>*)pendingPromotions {
+- (NSArray<BraveRewardsPromotion*>*)pendingPromotions {
   return [self.mPendingPromotions copy];
 }
 
-- (NSArray<LedgerPromotion*>*)finishedPromotions {
+- (NSArray<BraveRewardsPromotion*>*)finishedPromotions {
   return [self.mFinishedPromotions copy];
 }
 
-- (NSString*)notificationIDForPromo:(const ledger::mojom::PromotionPtr)promo {
-  bool isUGP = promo->type == ledger::mojom::PromotionType::UGP;
+- (NSString*)notificationIDForPromo:
+    (const brave_rewards::mojom::PromotionPtr)promo {
+  bool isUGP = promo->type == brave_rewards::mojom::PromotionType::UGP;
   const auto prefix = isUGP ? @"rewards_grant_" : @"rewards_grant_ads_";
   const auto promotionId = base::SysUTF8ToNSString(promo->id);
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
@@ -833,28 +862,28 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)updatePendingAndFinishedPromotions:(void (^)())completion {
   ledger->GetAllPromotions(^(
-      base::flat_map<std::string, ledger::mojom::PromotionPtr> map) {
+      base::flat_map<std::string, brave_rewards::mojom::PromotionPtr> map) {
     NSMutableArray* promos = [[NSMutableArray alloc] init];
     for (auto it = map.begin(); it != map.end(); ++it) {
       if (it->second.get() != nullptr) {
-        [promos
-            addObject:[[LedgerPromotion alloc] initWithPromotion:*it->second]];
+        [promos addObject:[[BraveRewardsPromotion alloc]
+                              initWithPromotion:*it->second]];
       }
     }
-    for (LedgerPromotion* promo in [self.mPendingPromotions copy]) {
+    for (BraveRewardsPromotion* promo in [self.mPendingPromotions copy]) {
       [self
           clearNotificationWithID:[self
                                       notificationIDForPromo:promo.cppObjPtr]];
     }
     [self.mFinishedPromotions removeAllObjects];
     [self.mPendingPromotions removeAllObjects];
-    for (LedgerPromotion* promotion in promos) {
-      if (promotion.status == LedgerPromotionStatusFinished) {
+    for (BraveRewardsPromotion* promotion in promos) {
+      if (promotion.status == BraveRewardsPromotionStatusFinished) {
         [self.mFinishedPromotions addObject:promotion];
-      } else if (promotion.status == LedgerPromotionStatusActive ||
-                 promotion.status == LedgerPromotionStatusAttested) {
+      } else if (promotion.status == BraveRewardsPromotionStatusActive ||
+                 promotion.status == BraveRewardsPromotionStatusAttested) {
         [self.mPendingPromotions addObject:promotion];
-        bool isUGP = promotion.type == LedgerPromotionTypeUgp;
+        bool isUGP = promotion.type == BraveRewardsPromotionTypeUgp;
         auto notificationKind = isUGP ? RewardsNotificationKindGrant
                                       : RewardsNotificationKindGrantAds;
 
@@ -880,11 +909,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)fetchPromotions:
-    (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
-  ledger->FetchPromotions(
-      base::BindOnce(^(ledger::mojom::Result result,
-                       std::vector<ledger::mojom::PromotionPtr> promotions) {
-        if (result != ledger::mojom::Result::LEDGER_OK) {
+    (nullable void (^)(NSArray<BraveRewardsPromotion*>* grants))completion {
+  ledger->FetchPromotions(base::BindOnce(
+      ^(brave_rewards::mojom::Result result,
+        std::vector<brave_rewards::mojom::PromotionPtr> promotions) {
+        if (result != brave_rewards::mojom::Result::LEDGER_OK) {
           return;
         }
         [self updatePendingAndFinishedPromotions:^{
@@ -897,7 +926,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)claimPromotion:(NSString*)promotionId
              publicKey:(NSString*)deviceCheckPublicKey
-            completion:(void (^)(LedgerResult result,
+            completion:(void (^)(BraveRewardsResult result,
                                  NSString* _Nonnull nonce))completion {
   const auto payload = [NSDictionary dictionaryWithObject:deviceCheckPublicKey
                                                    forKey:@"publicKey"];
@@ -912,36 +941,37 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                                                 encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(
       base::SysNSStringToUTF8(promotionId), base::SysNSStringToUTF8(jsonString),
-      base::BindOnce(^(ledger::mojom::Result result, const std::string& nonce) {
-        const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
-        dispatch_async(dispatch_get_main_queue(), ^{
-          completion(static_cast<LedgerResult>(result), bridgedNonce);
-        });
-      }));
+      base::BindOnce(
+          ^(brave_rewards::mojom::Result result, const std::string& nonce) {
+            const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
+            dispatch_async(dispatch_get_main_queue(), ^{
+              completion(static_cast<BraveRewardsResult>(result), bridgedNonce);
+            });
+          }));
 }
 
 - (void)attestPromotion:(NSString*)promotionId
                solution:(PromotionSolution*)solution
-             completion:
-                 (void (^)(LedgerResult result,
-                           LedgerPromotion* _Nullable promotion))completion {
+             completion:(void (^)(BraveRewardsResult result,
+                                  BraveRewardsPromotion* _Nullable promotion))
+                            completion {
   ledger->AttestPromotion(
       base::SysNSStringToUTF8(promotionId),
       base::SysNSStringToUTF8(solution.JSONPayload),
-      base::BindOnce(^(ledger::mojom::Result result,
-                       ledger::mojom::PromotionPtr promotion) {
+      base::BindOnce(^(brave_rewards::mojom::Result result,
+                       brave_rewards::mojom::PromotionPtr promotion) {
         if (promotion.get() == nullptr) {
           if (completion) {
             dispatch_async(dispatch_get_main_queue(), ^{
-              completion(static_cast<LedgerResult>(result), nil);
+              completion(static_cast<BraveRewardsResult>(result), nil);
             });
           }
           return;
         }
 
         const auto bridgedPromotion =
-            [[LedgerPromotion alloc] initWithPromotion:*promotion];
-        if (result == ledger::mojom::Result::LEDGER_OK) {
+            [[BraveRewardsPromotion alloc] initWithPromotion:*promotion];
+        if (result == brave_rewards::mojom::Result::LEDGER_OK) {
           [self fetchBalance:nil];
           [self clearNotificationWithID:
                     [self notificationIDForPromo:std::move(promotion)]];
@@ -949,9 +979,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
         dispatch_async(dispatch_get_main_queue(), ^{
           if (completion) {
-            completion(static_cast<LedgerResult>(result), bridgedPromotion);
+            completion(static_cast<BraveRewardsResult>(result),
+                       bridgedPromotion);
           }
-          if (result == ledger::mojom::Result::LEDGER_OK) {
+          if (result == brave_rewards::mojom::Result::LEDGER_OK) {
             for (BraveLedgerObserver* observer in [self.observers copy]) {
               if (observer.promotionClaimed) {
                 observer.promotionClaimed(bridgedPromotion);
@@ -964,88 +995,95 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 #pragma mark - History
 
-- (void)balanceReportForMonth:(LedgerActivityMonth)month
+- (void)balanceReportForMonth:(BraveRewardsActivityMonth)month
                          year:(int)year
                    completion:
-                       (void (^)(LedgerBalanceReportInfo* _Nullable info))
+                       (void (^)(BraveRewardsBalanceReportInfo* _Nullable info))
                            completion {
   ledger->GetBalanceReport(
-      (ledger::mojom::ActivityMonth)month, year,
-      ^(const ledger::mojom::Result result,
-        ledger::mojom::BalanceReportInfoPtr info) {
+      (brave_rewards::mojom::ActivityMonth)month, year,
+      ^(const brave_rewards::mojom::Result result,
+        brave_rewards::mojom::BalanceReportInfoPtr info) {
         auto bridgedInfo = info.get() != nullptr
-                               ? [[LedgerBalanceReportInfo alloc]
+                               ? [[BraveRewardsBalanceReportInfo alloc]
                                      initWithBalanceReportInfo:*info.get()]
                                : nil;
-        completion(result == ledger::mojom::Result::LEDGER_OK ? bridgedInfo
-                                                              : nil);
+        completion(result == brave_rewards::mojom::Result::LEDGER_OK
+                       ? bridgedInfo
+                       : nil);
       });
 }
 
-- (nullable LedgerAutoContributeProperties*)autoContributeProperties {
-  ledger::mojom::AutoContributePropertiesPtr props =
+- (nullable BraveRewardsAutoContributeProperties*)autoContributeProperties {
+  brave_rewards::mojom::AutoContributePropertiesPtr props =
       ledger->GetAutoContributeProperties();
   if (!props) {
     return nil;
   }
-  return [[LedgerAutoContributeProperties alloc]
+  return [[BraveRewardsAutoContributeProperties alloc]
       initWithAutoContributePropertiesPtr:std::move(props)];
 }
 
 #pragma mark - Pending Contributions
 
 - (void)pendingContributions:
-    (void (^)(NSArray<LedgerPendingContributionInfo*>* publishers))completion {
+    (void (^)(NSArray<BraveRewardsPendingContributionInfo*>* publishers))
+        completion {
   ledger->GetPendingContributions(
-      ^(std::vector<ledger::mojom::PendingContributionInfoPtr> list) {
+      ^(std::vector<brave_rewards::mojom::PendingContributionInfoPtr> list) {
         const auto convetedList = NSArrayFromVector(
-            &list, ^LedgerPendingContributionInfo*(
-                const ledger::mojom::PendingContributionInfoPtr& info) {
-              return [[LedgerPendingContributionInfo alloc]
+            &list, ^BraveRewardsPendingContributionInfo*(
+                const brave_rewards::mojom::PendingContributionInfoPtr& info) {
+              return [[BraveRewardsPendingContributionInfo alloc]
                   initWithPendingContributionInfo:*info];
             });
         completion(convetedList);
       });
 }
 
-- (void)removePendingContribution:(LedgerPendingContributionInfo*)info
-                       completion:(void (^)(LedgerResult result))completion {
+- (void)removePendingContribution:(BraveRewardsPendingContributionInfo*)info
+                       completion:
+                           (void (^)(BraveRewardsResult result))completion {
   ledger->RemovePendingContribution(
-      info.id, ^(const ledger::mojom::Result result) {
-        completion(static_cast<LedgerResult>(result));
+      info.id, ^(const brave_rewards::mojom::Result result) {
+        completion(static_cast<BraveRewardsResult>(result));
       });
 }
 
 - (void)removeAllPendingContributions:
-    (void (^)(LedgerResult result))completion {
-  ledger->RemoveAllPendingContributions(^(const ledger::mojom::Result result) {
-    completion(static_cast<LedgerResult>(result));
-  });
+    (void (^)(BraveRewardsResult result))completion {
+  ledger->RemoveAllPendingContributions(
+      ^(const brave_rewards::mojom::Result result) {
+        completion(static_cast<BraveRewardsResult>(result));
+      });
 }
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::mojom::Result)result
-               contribution:(ledger::mojom::ContributionInfoPtr)contribution {
+- (void)onReconcileComplete:(brave_rewards::mojom::Result)result
+               contribution:
+                   (brave_rewards::mojom::ContributionInfoPtr)contribution {
   // TODO we changed from probi to amount, so from string to double
-  if (result == ledger::mojom::Result::LEDGER_OK) {
-    if (contribution->type == ledger::mojom::RewardsType::RECURRING_TIP) {
+  if (result == brave_rewards::mojom::Result::LEDGER_OK) {
+    if (contribution->type ==
+        brave_rewards::mojom::RewardsType::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
     [self fetchBalance:nil];
   }
 
-  if ((result == ledger::mojom::Result::LEDGER_OK &&
-       contribution->type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE) ||
-      result == ledger::mojom::Result::LEDGER_ERROR ||
-      result == ledger::mojom::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::mojom::Result::TIP_ERROR) {
+  if ((result == brave_rewards::mojom::Result::LEDGER_OK &&
+       contribution->type ==
+           brave_rewards::mojom::RewardsType::AUTO_CONTRIBUTE) ||
+      result == brave_rewards::mojom::Result::LEDGER_ERROR ||
+      result == brave_rewards::mojom::Result::NOT_ENOUGH_FUNDS ||
+      result == brave_rewards::mojom::Result::TIP_ERROR) {
     const auto contributionId =
         base::SysUTF8ToNSString(contribution->contribution_id);
     const auto info = @{
       @"viewingId" : contributionId,
-      @"result" : @((LedgerResult)result),
-      @"type" : @((LedgerRewardsType)contribution->type),
+      @"result" : @((BraveRewardsResult)result),
+      @"type" : @((BraveRewardsRewardsType)contribution->type),
       @"amount" : [@(contribution->amount) stringValue]
     };
 
@@ -1061,9 +1099,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     }
     if (observer.reconcileCompleted) {
       observer.reconcileCompleted(
-          static_cast<LedgerResult>(result),
+          static_cast<BraveRewardsResult>(result),
           base::SysUTF8ToNSString(contribution->contribution_id),
-          static_cast<LedgerRewardsType>(contribution->type),
+          static_cast<BraveRewardsRewardsType>(contribution->type),
           [@(contribution->amount) stringValue]);
     }
   }
@@ -1072,11 +1110,11 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 #pragma mark - Misc
 
 - (void)rewardsInternalInfo:
-    (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion {
+    (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion {
   ledger->GetRewardsInternalsInfo(
-      ^(ledger::mojom::RewardsInternalsInfoPtr info) {
+      ^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
         auto bridgedInfo = info.get() != nullptr
-                               ? [[LedgerRewardsInternalsInfo alloc]
+                               ? [[BraveRewardsRewardsInternalsInfo alloc]
                                      initWithRewardsInternalsInfo:*info.get()]
                                : nil;
         completion(bridgedInfo);
@@ -1084,17 +1122,18 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)allContributions:
-    (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion {
-  ledger->GetAllContributions(^(
-      std::vector<ledger::mojom::ContributionInfoPtr> list) {
-    const auto convetedList =
-        NSArrayFromVector(&list, ^LedgerContributionInfo*(
-                              const ledger::mojom::ContributionInfoPtr& info) {
-          return
-              [[LedgerContributionInfo alloc] initWithContributionInfo:*info];
-        });
-    completion(convetedList);
-  });
+    (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))
+        completion {
+  ledger->GetAllContributions(
+      ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
+        const auto convetedList = NSArrayFromVector(
+            &list, ^BraveRewardsContributionInfo*(
+                const brave_rewards::mojom::ContributionInfoPtr& info) {
+              return [[BraveRewardsContributionInfo alloc]
+                  initWithContributionInfo:*info];
+            });
+        completion(convetedList);
+      });
 }
 
 #pragma mark - Reporting
@@ -1153,7 +1192,8 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
   const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
 
-  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
+  brave_rewards::mojom::VisitDataPtr data =
+      brave_rewards::mojom::VisitData::New();
   data->name = baseDomain;
   data->domain = origin.host();
   data->path = parsedUrl.path();
@@ -1180,7 +1220,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     partsMap[base::SysNSStringToUTF8(item.name)] = value;
   }
 
-  auto visit = ledger::mojom::VisitData::New();
+  auto visit = brave_rewards::mojom::VisitData::New();
   visit->path = base::SysNSStringToUTF8(url.absoluteString);
   visit->tab_id = tabId;
 
@@ -1580,24 +1620,24 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - State
 
-- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback {
+- (void)loadLedgerState:(brave_rewards::core::OnLoadCallback)callback {
   const auto contents =
       [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::mojom::Result::LEDGER_OK, contents);
+    callback(brave_rewards::mojom::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::mojom::Result::NO_LEDGER_STATE, contents);
+    callback(brave_rewards::mojom::Result::NO_LEDGER_STATE, contents);
   }
   [self startNotificationTimers];
 }
 
-- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback {
+- (void)loadPublisherState:(brave_rewards::core::OnLoadCallback)callback {
   const auto contents =
       [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::mojom::Result::LEDGER_OK, contents);
+    callback(brave_rewards::mojom::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::mojom::Result::NO_PUBLISHER_STATE, contents);
+    callback(brave_rewards::mojom::Result::NO_PUBLISHER_STATE, contents);
   }
 }
 
@@ -1612,16 +1652,16 @@ BATLedgerBridge(BOOL,
       stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
-- (void)loadURL:(ledger::mojom::UrlRequestPtr)request
-       callback:(ledger::client::LoadURLCallback)callback {
-  std::map<ledger::mojom::UrlMethod, std::string> methodMap{
-      {ledger::mojom::UrlMethod::GET, "GET"},
-      {ledger::mojom::UrlMethod::POST, "POST"},
-      {ledger::mojom::UrlMethod::PUT, "PUT"},
-      {ledger::mojom::UrlMethod::DEL, "DELETE"}};
+- (void)loadURL:(brave_rewards::mojom::UrlRequestPtr)request
+       callback:(brave_rewards::core::LoadURLCallback)callback {
+  std::map<brave_rewards::mojom::UrlMethod, std::string> methodMap{
+      {brave_rewards::mojom::UrlMethod::GET, "GET"},
+      {brave_rewards::mojom::UrlMethod::POST, "POST"},
+      {brave_rewards::mojom::UrlMethod::PUT, "PUT"},
+      {brave_rewards::mojom::UrlMethod::DEL, "DELETE"}};
 
   if (!request) {
-    request = ledger::mojom::UrlRequest::New();
+    request = brave_rewards::mojom::UrlRequest::New();
   }
 
   const auto copiedURL = base::SysUTF8ToNSString(request->url);
@@ -1637,7 +1677,7 @@ BATLedgerBridge(BOOL,
                 const std::string& errorDescription, int statusCode,
                 const std::string& response,
                 const base::flat_map<std::string, std::string>& headers) {
-              ledger::mojom::UrlResponse url_response;
+              brave_rewards::mojom::UrlResponse url_response;
               url_response.url = base::SysNSStringToUTF8(copiedURL);
               url_response.error = errorDescription;
               url_response.status_code = statusCode;
@@ -1662,7 +1702,7 @@ BATLedgerBridge(BOOL,
 
 - (void)fetchFavIcon:(const std::string&)url
           faviconKey:(const std::string&)favicon_key
-            callback:(ledger::client::FetchIconCallback)callback {
+            callback:(brave_rewards::core::FetchIconCallback)callback {
   const auto pageURL = [NSURL URLWithString:base::SysUTF8ToNSString(url)];
   if (!self.faviconFetcher || !pageURL) {
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -1692,21 +1732,23 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Publisher Database
 
-- (void)handlePublisherListing:(NSArray<LedgerPublisherInfo*>*)publishers
+- (void)handlePublisherListing:(NSArray<BraveRewardsPublisherInfo*>*)publishers
                          start:(uint32_t)start
                          limit:(uint32_t)limit
-                      callback:(ledger::PublisherInfoListCallback)callback {
+                      callback:(brave_rewards::core::PublisherInfoListCallback)
+                                   callback {
   callback(VectorFromNSArray(
-      publishers, ^ledger::mojom::PublisherInfoPtr(LedgerPublisherInfo* info) {
+      publishers,
+      ^brave_rewards::mojom::PublisherInfoPtr(BraveRewardsPublisherInfo* info) {
         return info.cppObjPtr;
       }));
 }
 - (void)publisherListNormalized:
-    (std::vector<ledger::mojom::PublisherInfoPtr>)list {
+    (std::vector<brave_rewards::mojom::PublisherInfoPtr>)list {
   const auto list_converted = NSArrayFromVector(
-      &list,
-      ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-        return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+      &list, ^BraveRewardsPublisherInfo*(
+          const brave_rewards::mojom::PublisherInfoPtr& info) {
+        return [[BraveRewardsPublisherInfo alloc] initWithPublisherInfo:*info];
       });
 
   for (BraveLedgerObserver* observer in [self.observers copy]) {
@@ -1716,15 +1758,16 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)onPanelPublisherInfo:(ledger::mojom::Result)result
-               publisherInfo:(ledger::mojom::PublisherInfoPtr)publisher_info
+- (void)onPanelPublisherInfo:(brave_rewards::mojom::Result)result
+               publisherInfo:
+                   (brave_rewards::mojom::PublisherInfoPtr)publisher_info
                     windowId:(uint64_t)windowId {
   if (publisher_info.get() == nullptr ||
-      result != ledger::mojom::Result::LEDGER_OK) {
+      result != brave_rewards::mojom::Result::LEDGER_OK) {
     return;
   }
   auto info =
-      [[LedgerPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
+      [[BraveRewardsPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
   for (BraveLedgerObserver* observer in [self.observers copy]) {
     if (observer.fetchedPanelPublisher) {
       observer.fetchedPanelPublisher(info, windowId);
@@ -1732,11 +1775,11 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
+- (void)onContributeUnverifiedPublishers:(brave_rewards::mojom::Result)result
                             publisherKey:(const std::string&)publisher_key
                            publisherName:(const std::string&)publisher_name {
   switch (result) {
-    case ledger::mojom::Result::PENDING_PUBLISHER_REMOVED: {
+    case brave_rewards::mojom::Result::PENDING_PUBLISHER_REMOVED: {
       const auto publisherID = base::SysUTF8ToNSString(publisher_key);
       for (BraveLedgerObserver* observer in [self.observers copy]) {
         if (observer.pendingContributionsRemoved) {
@@ -1745,7 +1788,7 @@ BATLedgerBridge(BOOL,
       }
       break;
     }
-    case ledger::mojom::Result::VERIFIED_PUBLISHER: {
+    case brave_rewards::mojom::Result::VERIFIED_PUBLISHER: {
       const auto notificationID =
           [NSString stringWithFormat:@"verified_publisher_%@",
                                      base::SysUTF8ToNSString(publisher_key)];
@@ -1762,7 +1805,7 @@ BATLedgerBridge(BOOL,
 
 - (void)showNotification:(const std::string&)type
                     args:(const std::vector<std::string>&)args
-                callback:(ledger::LegacyResultCallback)callback {
+                callback:(brave_rewards::core::LegacyResultCallback)callback {
   const auto notificationID = base::SysUTF8ToNSString(type);
   const auto info = [[NSMutableDictionary<NSNumber*, NSString*> alloc] init];
   for (NSUInteger i = 0; i < args.size(); i++) {
@@ -1773,10 +1816,10 @@ BATLedgerBridge(BOOL,
                notificationID:notificationID
                      onlyOnce:NO];
 }
-- (ledger::mojom::ClientInfoPtr)getClientInfo {
-  auto info = ledger::mojom::ClientInfo::New();
-  info->os = ledger::mojom::OperatingSystem::UNDEFINED;
-  info->platform = ledger::mojom::Platform::IOS;
+- (brave_rewards::mojom::ClientInfoPtr)getClientInfo {
+  auto info = brave_rewards::mojom::ClientInfo::New();
+  info->os = brave_rewards::mojom::OperatingSystem::UNDEFINED;
+  info->platform = brave_rewards::mojom::Platform::IOS;
   return info;
 }
 
@@ -1797,22 +1840,24 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)runDBTransaction:(ledger::mojom::DBTransactionPtr)transaction
-                callback:(ledger::client::RunDBTransactionCallback)callback {
+- (void)runDBTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
+                callback:
+                    (brave_rewards::core::RunDBTransactionCallback)callback {
   __weak BraveLedger* weakSelf = self;
   DCHECK(rewardsDatabase);
-  rewardsDatabase.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
+  rewardsDatabase
+      .AsyncCall(&brave_rewards::core::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
       .Then(base::BindOnce(
-          ^(ledger::client::RunDBTransactionCallback completion,
-            ledger::mojom::DBCommandResponsePtr response) {
+          ^(brave_rewards::core::RunDBTransactionCallback completion,
+            brave_rewards::mojom::DBCommandResponsePtr response) {
             if (weakSelf)
               std::move(completion).Run(std::move(response));
           },
           std::move(callback)));
 }
 
-- (void)pendingContributionSaved:(const ledger::mojom::Result)result {
+- (void)pendingContributionSaved:(const brave_rewards::mojom::Result)result {
   for (BraveLedgerObserver* observer in [self.observers copy]) {
     if (observer.pendingContributionAdded) {
       observer.pendingContributionAdded();
@@ -1830,8 +1875,8 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)deleteLog:(ledger::LegacyResultCallback)callback {
-  callback(ledger::mojom::Result::LEDGER_OK);
+- (void)deleteLog:(brave_rewards::core::LegacyResultCallback)callback {
+  callback(brave_rewards::mojom::Result::LEDGER_OK);
 }
 
 - (absl::optional<std::string>)encryptString:(const std::string&)value {

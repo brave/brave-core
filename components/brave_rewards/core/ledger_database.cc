@@ -14,7 +14,7 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 namespace {
 
@@ -330,4 +330,4 @@ void LedgerDatabase::OnMemoryPressure(
   db_.TrimMemory();
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

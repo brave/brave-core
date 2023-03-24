@@ -9,7 +9,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace api {
 
 API::API(LedgerImpl* ledger)
@@ -23,9 +23,9 @@ void API::Initialize() {
   parameters_->Initialize();
 }
 
-void API::FetchParameters(ledger::GetRewardsParametersCallback callback) {
+void API::FetchParameters(GetRewardsParametersCallback callback) {
   parameters_->Fetch(std::move(callback));
 }
 
 }  // namespace api
-}  // namespace ledger
+}  // namespace brave_rewards::core

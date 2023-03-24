@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace credential {
@@ -26,7 +26,7 @@ class CredentialsCommon {
   ~CredentialsCommon();
 
   void GetBlindedCreds(const CredentialsTrigger& trigger,
-                       ledger::ResultCallback callback);
+                       ResultCallback callback);
 
   void SaveUnblindedCreds(
       uint64_t expires_at,
@@ -34,12 +34,12 @@ class CredentialsCommon {
       const mojom::CredsBatch& creds,
       const std::vector<std::string>& unblinded_encoded_creds,
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ResultCallback callback);
 
  private:
-  void BlindedCredsSaved(ledger::ResultCallback callback, mojom::Result result);
+  void BlindedCredsSaved(ResultCallback callback, mojom::Result result);
 
-  void OnSaveUnblindedCreds(ledger::ResultCallback callback,
+  void OnSaveUnblindedCreds(ResultCallback callback,
                             const CredentialsTrigger& trigger,
                             mojom::Result result);
 
@@ -47,6 +47,6 @@ class CredentialsCommon {
 };
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_COMMON_H_

@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_server_publisher_banner.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabaseServerPublisherInfo : public DatabaseTable {
@@ -22,31 +22,31 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(const mojom::ServerPublisherInfo& server_info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
-                 client::GetServerPublisherInfoCallback callback);
+                 GetServerPublisherInfoCallback callback);
 
   void DeleteExpiredRecords(int64_t max_age_seconds,
-                            ledger::LegacyResultCallback callback);
+                            LegacyResultCallback callback);
 
  private:
   void OnGetRecordBanner(mojom::PublisherBannerPtr banner,
                          const std::string& publisher_key,
-                         client::GetServerPublisherInfoCallback callback);
+                         GetServerPublisherInfoCallback callback);
 
   void OnGetRecord(mojom::DBCommandResponsePtr response,
                    const std::string& publisher_key,
                    const mojom::PublisherBanner& banner,
-                   client::GetServerPublisherInfoCallback callback);
+                   GetServerPublisherInfoCallback callback);
 
   void OnExpiredRecordsSelected(mojom::DBCommandResponsePtr response,
-                                ledger::LegacyResultCallback callback);
+                                LegacyResultCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherBanner> banner_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_SERVER_PUBLISHER_INFO_H_

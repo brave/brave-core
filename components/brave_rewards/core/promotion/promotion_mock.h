@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace promotion {
 
 class MockPromotion : public Promotion {
@@ -19,11 +19,10 @@ class MockPromotion : public Promotion {
 
   ~MockPromotion() override;
 
-  MOCK_METHOD1(TransferTokens,
-               void(ledger::PostSuggestionsClaimCallback callback));
+  MOCK_METHOD1(TransferTokens, void(PostSuggestionsClaimCallback callback));
 };
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_MOCK_H_

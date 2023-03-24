@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -32,23 +32,22 @@ class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback) const override;
+  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) const override;
 
-  void OnAuthorize(ledger::ConnectExternalWalletCallback,
+  void OnAuthorize(ConnectExternalWalletCallback,
                    mojom::Result,
                    std::string&& token) const;
 
-  void OnGetRecipientID(ledger::ConnectExternalWalletCallback,
+  void OnGetRecipientID(ConnectExternalWalletCallback,
                         std::string&& token,
                         endpoints::GetRecipientIDGemini::Result&&) const;
 
-  void OnPostRecipientID(ledger::ConnectExternalWalletCallback,
+  void OnPostRecipientID(ConnectExternalWalletCallback,
                          std::string&& token,
                          mojom::Result,
                          std::string&& recipient_id) const;
 
-  void OnPostAccount(ledger::ConnectExternalWalletCallback,
+  void OnPostAccount(ConnectExternalWalletCallback,
                      std::string&& token,
                      std::string&& recipient_id,
                      mojom::Result,
@@ -59,6 +58,6 @@ class ConnectGeminiWallet : public wallet_provider::ConnectExternalWallet {
 };
 
 }  // namespace gemini
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_GEMINI_CONNECT_GEMINI_WALLET_H_

@@ -14,7 +14,7 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
-namespace rewards_browsertest_util {
+namespace brave_rewards::test {
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request);
@@ -27,8 +27,8 @@ std::string GetUpholdCard(
     const std::string& balance,
     const std::string& address);
 
-std::string GetOrderCreateResponse(ledger::mojom::SKUOrderPtr sku_order);
+std::string GetOrderCreateResponse(mojom::SKUOrderPtr sku_order);
 
-}  // namespace rewards_browsertest_util
+}  // namespace brave_rewards::test
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_NETWORK_UTIL_H_

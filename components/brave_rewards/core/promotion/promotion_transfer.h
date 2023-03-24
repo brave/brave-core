@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace credential {
@@ -26,14 +26,14 @@ class PromotionTransfer {
   explicit PromotionTransfer(LedgerImpl* ledger);
   ~PromotionTransfer();
 
-  void Start(ledger::PostSuggestionsClaimCallback callback) const;
+  void Start(PostSuggestionsClaimCallback callback) const;
 
  private:
   void OnGetSpendableUnblindedTokens(
-      ledger::PostSuggestionsClaimCallback callback,
+      PostSuggestionsClaimCallback callback,
       std::vector<mojom::UnblindedTokenPtr> tokens) const;
 
-  void OnDrainTokens(ledger::PostSuggestionsClaimCallback callback,
+  void OnDrainTokens(PostSuggestionsClaimCallback callback,
                      double transfer_amount,
                      mojom::Result result,
                      std::string drain_id) const;
@@ -43,6 +43,6 @@ class PromotionTransfer {
 };
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PROMOTION_PROMOTION_TRANSFER_H_

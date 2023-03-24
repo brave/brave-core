@@ -6,7 +6,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 StateMigrationV4::StateMigrationV4(LedgerImpl* ledger) : ledger_(ledger) {
@@ -15,9 +15,9 @@ StateMigrationV4::StateMigrationV4(LedgerImpl* ledger) : ledger_(ledger) {
 
 StateMigrationV4::~StateMigrationV4() = default;
 
-void StateMigrationV4::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV4::Migrate(LegacyResultCallback callback) {
   ledger_->ledger_client()->DeleteLog(callback);
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core

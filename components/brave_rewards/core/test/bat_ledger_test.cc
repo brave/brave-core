@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace ledger {
+namespace brave_rewards::core {
 
 BATLedgerTest::BATLedgerTest() = default;
 
@@ -25,4 +25,4 @@ void BATLedgerTest::SetLogCallbackForTesting(
   client_.SetLogCallbackForTesting(callback);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

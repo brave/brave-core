@@ -38,7 +38,7 @@
 //   "claimId": "53714048-9675-419e-baa3-369d85a2facb"
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -73,6 +73,6 @@ class PostCreds {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_CREDS_POST_CREDS_H_

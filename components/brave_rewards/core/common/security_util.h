@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace util {
 
 class Security {
@@ -42,6 +42,6 @@ class Security {
 };
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_SECURITY_UTIL_H_

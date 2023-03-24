@@ -96,21 +96,21 @@ class RewardsServiceJPTest : public testing::Test {
 TEST_F(RewardsServiceJPTest, GetExternalWallet) {
   DisableGemini();
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletBitflyer);
+            core::constant::kWalletBitflyer);
 }
 
 TEST_F(RewardsServiceJPTest, GetExternalWalletMultipleCustodians) {
   EnableGemini();
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletBitflyer);
+            core::constant::kWalletBitflyer);
   profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                   ledger::constant::kWalletUphold);
+                                   core::constant::kWalletUphold);
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletBitflyer);
+            core::constant::kWalletBitflyer);
   profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                   ledger::constant::kWalletGemini);
+                                   core::constant::kWalletGemini);
   EXPECT_EQ(rewards_service()->GetExternalWalletType(),
-            ledger::constant::kWalletBitflyer);
+            core::constant::kWalletBitflyer);
 }
 #endif
 

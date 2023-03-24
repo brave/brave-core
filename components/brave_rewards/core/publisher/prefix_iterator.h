@@ -10,7 +10,7 @@
 
 #include "base/strings/string_piece.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace publisher {
 
 // A random-access iterator over prefixes stored in an
@@ -113,6 +113,6 @@ class PrefixIterator {
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_ITERATOR_H_

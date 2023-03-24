@@ -10,14 +10,14 @@
 
 #include "base/containers/flat_map.h"
 #include "base/values.h"
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 
 absl::optional<base::flat_map<std::string, mojom::RegionsPtr>>
 GetWalletProviderRegions(const base::Value::Dict&);
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_GET_PARAMETERS_GET_PARAMETERS_UTILS_H_

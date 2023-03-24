@@ -6,7 +6,7 @@
 #include "brave/components/brave_rewards/core/database/database_table.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 DatabaseTable::DatabaseTable(LedgerImpl* ledger) : ledger_(ledger) {
@@ -16,4 +16,4 @@ DatabaseTable::DatabaseTable(LedgerImpl* ledger) : ledger_(ledger) {
 DatabaseTable::~DatabaseTable() = default;
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

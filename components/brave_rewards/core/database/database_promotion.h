@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 using GetPromotionCallback = std::function<void(mojom::PromotionPtr)>;
@@ -22,46 +22,45 @@ class DatabasePromotion : public DatabaseTable {
   explicit DatabasePromotion(LedgerImpl* ledger);
   ~DatabasePromotion() override;
 
-  void InsertOrUpdate(mojom::PromotionPtr info,
-                      ledger::LegacyResultCallback callback);
+  void InsertOrUpdate(mojom::PromotionPtr info, LegacyResultCallback callback);
 
   void GetRecord(const std::string& id, GetPromotionCallback callback);
 
   void GetRecords(const std::vector<std::string>& ids,
-                  client::GetPromotionListCallback callback);
+                  GetPromotionListCallback callback);
 
-  void GetAllRecords(ledger::GetAllPromotionsCallback callback);
+  void GetAllRecords(GetAllPromotionsCallback callback);
 
   void SaveClaimId(const std::string& promotion_id,
                    const std::string& claim_id,
-                   ledger::LegacyResultCallback callback);
+                   LegacyResultCallback callback);
 
   void UpdateStatus(const std::string& promotion_id,
                     mojom::PromotionStatus status,
-                    ledger::LegacyResultCallback callback);
+                    LegacyResultCallback callback);
 
   void UpdateRecordsStatus(const std::vector<std::string>& ids,
                            mojom::PromotionStatus status,
-                           ledger::LegacyResultCallback callback);
+                           LegacyResultCallback callback);
 
   void CredentialCompleted(const std::string& promotion_id,
-                           ledger::LegacyResultCallback callback);
+                           LegacyResultCallback callback);
 
   void UpdateRecordsBlankPublicKey(const std::vector<std::string>& ids,
-                                   ledger::LegacyResultCallback callback);
+                                   LegacyResultCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
                    GetPromotionCallback callback);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       ledger::GetAllPromotionsCallback callback);
+                       GetAllPromotionsCallback callback);
 
   void OnGetRecords(mojom::DBCommandResponsePtr response,
-                    client::GetPromotionListCallback callback);
+                    GetPromotionListCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PROMOTION_H_

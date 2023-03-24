@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_client.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 LedgerClient* g_ledger_client = nullptr;  // NOT OWNED
 
@@ -27,4 +27,4 @@ void Log(const char* file,
   g_ledger_client->Log(file, line, verbose_level, message);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

@@ -15,7 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace credential {
 
 CredentialsPromotion::CredentialsPromotion(LedgerImpl* ledger)
@@ -28,7 +28,7 @@ CredentialsPromotion::CredentialsPromotion(LedgerImpl* ledger)
 CredentialsPromotion::~CredentialsPromotion() = default;
 
 void CredentialsPromotion::Start(const CredentialsTrigger& trigger,
-                                 ledger::ResultCallback callback) {
+                                 ResultCallback callback) {
   auto get_callback =
       base::BindOnce(&CredentialsPromotion::OnStart, base::Unretained(this),
                      std::move(callback), trigger);
@@ -41,7 +41,7 @@ void CredentialsPromotion::Start(const CredentialsTrigger& trigger,
       });
 }
 
-void CredentialsPromotion::OnStart(ledger::ResultCallback callback,
+void CredentialsPromotion::OnStart(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::CredsBatchPtr creds) {
   mojom::CredsBatchStatus status = mojom::CredsBatchStatus::NONE;
@@ -104,7 +104,7 @@ void CredentialsPromotion::OnStart(ledger::ResultCallback callback,
   }
 }
 
-void CredentialsPromotion::Blind(ledger::ResultCallback callback,
+void CredentialsPromotion::Blind(ResultCallback callback,
                                  const CredentialsTrigger& trigger) {
   auto blinded_callback =
       base::BindOnce(&CredentialsPromotion::OnBlind, base::Unretained(this),
@@ -112,7 +112,7 @@ void CredentialsPromotion::Blind(ledger::ResultCallback callback,
   common_->GetBlindedCreds(trigger, std::move(blinded_callback));
 }
 
-void CredentialsPromotion::OnBlind(ledger::ResultCallback callback,
+void CredentialsPromotion::OnBlind(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -133,7 +133,7 @@ void CredentialsPromotion::OnBlind(ledger::ResultCallback callback,
       });
 }
 
-void CredentialsPromotion::Claim(ledger::ResultCallback callback,
+void CredentialsPromotion::Claim(ResultCallback callback,
                                  const CredentialsTrigger& trigger,
                                  mojom::CredsBatchPtr creds) {
   if (!creds) {
@@ -168,7 +168,7 @@ void CredentialsPromotion::Claim(ledger::ResultCallback callback,
       trigger.id, std::move(blinded_creds.value()), std::move(url_callback));
 }
 
-void CredentialsPromotion::OnClaim(ledger::ResultCallback callback,
+void CredentialsPromotion::OnClaim(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::Result result,
                                    const std::string& claim_id) {
@@ -188,7 +188,7 @@ void CredentialsPromotion::OnClaim(ledger::ResultCallback callback,
           mojom::Result result) { std::move(*callback).Run(result); });
 }
 
-void CredentialsPromotion::ClaimedSaved(ledger::ResultCallback callback,
+void CredentialsPromotion::ClaimedSaved(ResultCallback callback,
                                         const CredentialsTrigger& trigger,
                                         mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -208,7 +208,7 @@ void CredentialsPromotion::ClaimedSaved(ledger::ResultCallback callback,
           mojom::Result result) { std::move(*callback).Run(result); });
 }
 
-void CredentialsPromotion::ClaimStatusSaved(ledger::ResultCallback callback,
+void CredentialsPromotion::ClaimStatusSaved(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -229,9 +229,8 @@ void CredentialsPromotion::ClaimStatusSaved(ledger::ResultCallback callback,
       });
 }
 
-void CredentialsPromotion::RetryPreviousStepSaved(
-    ledger::ResultCallback callback,
-    mojom::Result result) {
+void CredentialsPromotion::RetryPreviousStepSaved(ResultCallback callback,
+                                                  mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Previous step not saved");
     std::move(callback).Run(mojom::Result::LEDGER_ERROR);
@@ -241,7 +240,7 @@ void CredentialsPromotion::RetryPreviousStepSaved(
   std::move(callback).Run(mojom::Result::RETRY);
 }
 
-void CredentialsPromotion::FetchSignedCreds(ledger::ResultCallback callback,
+void CredentialsPromotion::FetchSignedCreds(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::PromotionPtr promotion) {
   if (!promotion) {
@@ -274,7 +273,7 @@ void CredentialsPromotion::FetchSignedCreds(ledger::ResultCallback callback,
       trigger.id, promotion->claim_id, std::move(url_callback));
 }
 
-void CredentialsPromotion::OnFetchSignedCreds(ledger::ResultCallback callback,
+void CredentialsPromotion::OnFetchSignedCreds(ResultCallback callback,
                                               const CredentialsTrigger& trigger,
                                               mojom::Result result,
                                               mojom::CredsBatchPtr batch) {
@@ -306,7 +305,7 @@ void CredentialsPromotion::OnFetchSignedCreds(ledger::ResultCallback callback,
       });
 }
 
-void CredentialsPromotion::SignedCredsSaved(ledger::ResultCallback callback,
+void CredentialsPromotion::SignedCredsSaved(ResultCallback callback,
                                             const CredentialsTrigger& trigger,
                                             mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -327,7 +326,7 @@ void CredentialsPromotion::SignedCredsSaved(ledger::ResultCallback callback,
       });
 }
 
-void CredentialsPromotion::Unblind(ledger::ResultCallback callback,
+void CredentialsPromotion::Unblind(ResultCallback callback,
                                    const CredentialsTrigger& trigger,
                                    mojom::CredsBatchPtr creds) {
   if (!creds) {
@@ -348,7 +347,7 @@ void CredentialsPromotion::Unblind(ledger::ResultCallback callback,
       });
 }
 
-void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
+void CredentialsPromotion::VerifyPublicKey(ResultCallback callback,
                                            const CredentialsTrigger& trigger,
                                            const mojom::CredsBatch& creds,
                                            mojom::PromotionPtr promotion) {
@@ -380,7 +379,7 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
   }
 
   std::vector<std::string> unblinded_encoded_creds;
-  if (ledger::is_testing) {
+  if (is_testing) {
     unblinded_encoded_creds = UnBlindCredsMock(creds);
   } else {
     auto result = UnBlindCreds(creds);
@@ -409,7 +408,7 @@ void CredentialsPromotion::VerifyPublicKey(ledger::ResultCallback callback,
                               std::move(save_callback));
 }
 
-void CredentialsPromotion::Completed(ledger::ResultCallback callback,
+void CredentialsPromotion::Completed(ResultCallback callback,
                                      const CredentialsTrigger& trigger,
                                      mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -426,7 +425,7 @@ void CredentialsPromotion::Completed(ledger::ResultCallback callback,
 }
 
 void CredentialsPromotion::RedeemTokens(const CredentialsRedeem& redeem,
-                                        ledger::LegacyResultCallback callback) {
+                                        LegacyResultCallback callback) {
   DCHECK(redeem.type != mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
@@ -456,7 +455,7 @@ void CredentialsPromotion::OnRedeemTokens(
     mojom::Result result,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse redeem tokens response");
     callback(mojom::Result::LEDGER_ERROR);
@@ -472,9 +471,8 @@ void CredentialsPromotion::OnRedeemTokens(
                                                   id, callback);
 }
 
-void CredentialsPromotion::DrainTokens(
-    const CredentialsRedeem& redeem,
-    ledger::PostSuggestionsClaimCallback callback) {
+void CredentialsPromotion::DrainTokens(const CredentialsRedeem& redeem,
+                                       PostSuggestionsClaimCallback callback) {
   DCHECK(redeem.type == mojom::RewardsType::TRANSFER);
 
   if (redeem.token_list.empty()) {
@@ -497,7 +495,7 @@ void CredentialsPromotion::DrainTokens(
 }
 
 void CredentialsPromotion::OnDrainTokens(
-    ledger::PostSuggestionsClaimCallback callback,
+    PostSuggestionsClaimCallback callback,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     mojom::Result result,
@@ -516,7 +514,7 @@ void CredentialsPromotion::OnDrainTokens(
   DCHECK(redeem.type == mojom::RewardsType::TRANSFER);
 
   auto mark_tokens_callback = base::BindOnce(
-      [](ledger::PostSuggestionsClaimCallback callback, std::string drain_id,
+      [](PostSuggestionsClaimCallback callback, std::string drain_id,
          mojom::Result result) {
         if (result != mojom::Result::LEDGER_OK) {
           BLOG(0, "Failed to mark tokens as spent");
@@ -537,4 +535,4 @@ void CredentialsPromotion::OnDrainTokens(
 }
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core

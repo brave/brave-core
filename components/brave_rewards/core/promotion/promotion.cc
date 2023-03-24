@@ -32,7 +32,7 @@ using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::UnblindedToken;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace promotion {
 
 namespace {
@@ -72,8 +72,7 @@ void HandleExpiredPromotions(
 }  // namespace
 
 Promotion::Promotion(LedgerImpl* ledger)
-    : attestation_(
-          std::make_unique<ledger::attestation::AttestationImpl>(ledger)),
+    : attestation_(std::make_unique<attestation::AttestationImpl>(ledger)),
       transfer_(std::make_unique<PromotionTransfer>(ledger)),
       promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)),
       ledger_(ledger) {
@@ -98,10 +97,10 @@ void Promotion::Initialize() {
   ledger_->database()->GetAllPromotions(retry_callback);
 }
 
-void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
+void Promotion::Fetch(FetchPromotionCallback callback) {
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
-  if (!ledger::is_testing && _environment != mojom::Environment::STAGING) {
+  if (!is_testing && _environment != mojom::Environment::STAGING) {
     const uint64_t last_promo_stamp =
         ledger_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = util::GetCurrentTimeStamp();
@@ -128,7 +127,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   promotion_server_->get_available()->Request(client, std::move(url_callback));
 }
 
-void Promotion::OnFetch(ledger::FetchPromotionCallback callback,
+void Promotion::OnFetch(FetchPromotionCallback callback,
                         mojom::Result result,
                         std::vector<mojom::PromotionPtr> list,
                         const std::vector<std::string>& corrupted_promotions) {
@@ -163,7 +162,7 @@ void Promotion::OnFetch(ledger::FetchPromotionCallback callback,
 }
 
 void Promotion::OnGetAllPromotions(
-    ledger::FetchPromotionCallback callback,
+    FetchPromotionCallback callback,
     std::vector<mojom::PromotionPtr> list,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
@@ -225,7 +224,7 @@ void Promotion::OnGetAllPromotions(
 }
 
 void Promotion::OnGetAllPromotionsFromDatabase(
-    ledger::FetchPromotionCallback callback,
+    FetchPromotionCallback callback,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
 
@@ -251,7 +250,7 @@ void Promotion::LegacyClaimedSaved(
 
 void Promotion::Claim(const std::string& promotion_id,
                       const std::string& payload,
-                      ledger::ClaimPromotionCallback callback) {
+                      ClaimPromotionCallback callback) {
   auto promotion_callback =
       base::BindOnce(&Promotion::OnClaimPromotion, base::Unretained(this),
                      std::move(callback), payload);
@@ -264,7 +263,7 @@ void Promotion::Claim(const std::string& promotion_id,
       });
 }
 
-void Promotion::OnClaimPromotion(ledger::ClaimPromotionCallback callback,
+void Promotion::OnClaimPromotion(ClaimPromotionCallback callback,
                                  const std::string& payload,
                                  mojom::PromotionPtr promotion) {
   if (!promotion) {
@@ -291,7 +290,7 @@ void Promotion::OnClaimPromotion(ledger::ClaimPromotionCallback callback,
 
 void Promotion::Attest(const std::string& promotion_id,
                        const std::string& solution,
-                       ledger::AttestPromotionCallback callback) {
+                       AttestPromotionCallback callback) {
   auto promotion_callback =
       base::BindOnce(&Promotion::OnAttestPromotion, base::Unretained(this),
                      std::move(callback), solution);
@@ -304,7 +303,7 @@ void Promotion::Attest(const std::string& promotion_id,
       });
 }
 
-void Promotion::OnAttestPromotion(ledger::AttestPromotionCallback callback,
+void Promotion::OnAttestPromotion(AttestPromotionCallback callback,
                                   const std::string& solution,
                                   mojom::PromotionPtr promotion) {
   if (!promotion) {
@@ -325,7 +324,7 @@ void Promotion::OnAttestPromotion(ledger::AttestPromotionCallback callback,
   attestation_->Confirm(solution, std::move(confirm_callback));
 }
 
-void Promotion::OnAttestedPromotion(ledger::AttestPromotionCallback callback,
+void Promotion::OnAttestedPromotion(AttestPromotionCallback callback,
                                     const std::string& promotion_id,
                                     mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -346,7 +345,7 @@ void Promotion::OnAttestedPromotion(ledger::AttestPromotionCallback callback,
       });
 }
 
-void Promotion::OnCompletedAttestation(ledger::AttestPromotionCallback callback,
+void Promotion::OnCompletedAttestation(AttestPromotionCallback callback,
                                        mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion does not exist");
@@ -373,7 +372,7 @@ void Promotion::OnCompletedAttestation(ledger::AttestPromotionCallback callback,
           mojom::Result result) { std::move(*callback).Run(result); });
 }
 
-void Promotion::AttestedSaved(ledger::AttestPromotionCallback callback,
+void Promotion::AttestedSaved(AttestPromotionCallback callback,
                               mojom::PromotionPtr promotion,
                               mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
@@ -389,7 +388,7 @@ void Promotion::AttestedSaved(ledger::AttestPromotionCallback callback,
   GetCredentials(std::move(claim_callback), std::move(promotion));
 }
 
-void Promotion::Complete(ledger::AttestPromotionCallback callback,
+void Promotion::Complete(AttestPromotionCallback callback,
                          const std::string& promotion_id,
                          mojom::Result result) {
   auto promotion_callback =
@@ -404,7 +403,7 @@ void Promotion::Complete(ledger::AttestPromotionCallback callback,
       });
 }
 
-void Promotion::OnComplete(ledger::AttestPromotionCallback callback,
+void Promotion::OnComplete(AttestPromotionCallback callback,
                            mojom::Result result,
                            mojom::PromotionPtr promotion) {
   BLOG(1, "Promotion completed with result " << result);
@@ -421,7 +420,7 @@ void Promotion::OnComplete(ledger::AttestPromotionCallback callback,
 void Promotion::ProcessFetchedPromotions(
     const mojom::Result result,
     std::vector<mojom::PromotionPtr> promotions,
-    ledger::FetchPromotionCallback callback) {
+    FetchPromotionCallback callback) {
   const uint64_t now = util::GetCurrentTimeStamp();
   ledger_->state()->SetPromotionLastFetchStamp(now);
   last_check_timer_.Stop();
@@ -431,7 +430,7 @@ void Promotion::ProcessFetchedPromotions(
   std::move(callback).Run(result, std::move(promotions));
 }
 
-void Promotion::GetCredentials(ledger::ResultCallback callback,
+void Promotion::GetCredentials(ResultCallback callback,
                                mojom::PromotionPtr promotion) {
   if (!promotion) {
     BLOG(0, "Promotion is null");
@@ -451,7 +450,7 @@ void Promotion::GetCredentials(ledger::ResultCallback callback,
   credentials_->Start(trigger, std::move(creds_callback));
 }
 
-void Promotion::CredentialsProcessed(ledger::ResultCallback callback,
+void Promotion::CredentialsProcessed(ResultCallback callback,
                                      const std::string& promotion_id,
                                      mojom::Result result) {
   if (result == mojom::Result::RETRY) {
@@ -689,7 +688,7 @@ void Promotion::ErrorCredsStatusSaved(const mojom::Result result) {
   ledger_->database()->GetAllPromotions(retry_callback);
 }
 
-void Promotion::TransferTokens(ledger::PostSuggestionsClaimCallback callback) {
+void Promotion::TransferTokens(PostSuggestionsClaimCallback callback) {
   transfer_->Start(std::move(callback));
 }
 
@@ -702,9 +701,9 @@ void Promotion::OnLastCheckTimerElapsed() {
 }
 
 void Promotion::GetDrainStatus(const std::string& drain_id,
-                               ledger::GetDrainCallback callback) {
+                               GetDrainCallback callback) {
   promotion_server_->get_drain()->Request(drain_id, callback);
 }
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::core

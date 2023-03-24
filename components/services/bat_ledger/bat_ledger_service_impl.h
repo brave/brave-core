@@ -14,7 +14,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/unique_associated_receiver_set.h"
 
-namespace bat_ledger {
+namespace brave_rewards {
 
 class BatLedgerServiceImpl : public mojom::BatLedgerService {
  public:
@@ -26,13 +26,13 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   BatLedgerServiceImpl(const BatLedgerServiceImpl&) = delete;
   BatLedgerServiceImpl& operator=(const BatLedgerServiceImpl&) = delete;
 
-  // bat_ledger::mojom::BatLedgerService
+  // mojom::BatLedgerService
   void Create(
       mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info,
       mojo::PendingAssociatedReceiver<mojom::BatLedger> bat_ledger,
       CreateCallback callback) override;
 
-  void SetEnvironment(ledger::mojom::Environment environment) override;
+  void SetEnvironment(mojom::Environment environment) override;
   void SetDebug(bool isDebug) override;
   void SetReconcileInterval(const int32_t interval) override;
   void SetRetryInterval(int32_t interval) override;
@@ -50,6 +50,6 @@ class BatLedgerServiceImpl : public mojom::BatLedgerService {
   mojo::UniqueAssociatedReceiverSet<mojom::BatLedger> associated_receivers_;
 };
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_SERVICE_IMPL_H_

@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoint::bitflyer {
+namespace brave_rewards::core::endpoint::bitflyer {
 
 PostOauth::PostOauth(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -31,7 +31,7 @@ std::string PostOauth::GetUrl() {
 std::string PostOauth::GeneratePayload(const std::string& external_account_id,
                                        const std::string& code,
                                        const std::string& code_verifier) {
-  const std::string client_id = ledger::bitflyer::GetClientId();
+  const std::string client_id = bitflyer::GetClientId();
   const std::string client_secret = GetClientSecret();
   const std::string request_id = base::GenerateGUID();
 
@@ -120,7 +120,7 @@ void PostOauth::Request(const std::string& external_account_id,
 
 void PostOauth::OnRequest(PostOauthCallback callback,
                           const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response, true);
+  LogUrlResponse(__func__, response, true);
 
   mojom::Result result = CheckStatusCode(response.status_code);
   if (result != mojom::Result::LEDGER_OK) {
@@ -135,4 +135,4 @@ void PostOauth::OnRequest(PostOauthCallback callback,
                           std::move(linking_info));
 }
 
-}  // namespace ledger::endpoint::bitflyer
+}  // namespace brave_rewards::core::endpoint::bitflyer

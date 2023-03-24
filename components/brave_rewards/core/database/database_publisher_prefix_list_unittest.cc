@@ -21,7 +21,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
@@ -29,15 +29,15 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabasePublisherPrefixList> database_prefix_list_;
 
   DatabasePublisherPrefixListTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     database_prefix_list_ =
         std::make_unique<DatabasePublisherPrefixList>(mock_ledger_impl_.get());
   }
@@ -80,20 +80,19 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 TEST_F(DatabasePublisherPrefixListTest, Reset) {
   std::vector<std::string> commands;
 
-  auto on_run_db_transaction =
-      [&](mojom::DBTransactionPtr transaction,
-          ledger::client::RunDBTransactionCallback callback) {
-        ASSERT_TRUE(transaction);
-        if (transaction) {
-          for (auto& command : transaction->commands) {
-            commands.push_back(std::move(command->command));
-          }
-        }
-        commands.push_back("---");
-        auto response = mojom::DBCommandResponse::New();
-        response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
-        std::move(callback).Run(std::move(response));
-      };
+  auto on_run_db_transaction = [&](mojom::DBTransactionPtr transaction,
+                                   RunDBTransactionCallback callback) {
+    ASSERT_TRUE(transaction);
+    if (transaction) {
+      for (auto& command : transaction->commands) {
+        commands.push_back(std::move(command->command));
+      }
+    }
+    commands.push_back("---");
+    auto response = mojom::DBCommandResponse::New();
+    response->status = mojom::DBCommandResponse::Status::RESPONSE_OK;
+    std::move(callback).Run(std::move(response));
+  };
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(Invoke(on_run_db_transaction));
@@ -114,4 +113,4 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

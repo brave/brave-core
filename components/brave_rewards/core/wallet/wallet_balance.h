@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace wallet {
@@ -21,15 +21,15 @@ class WalletBalance {
   explicit WalletBalance(LedgerImpl* ledger);
   ~WalletBalance();
 
-  void Fetch(ledger::FetchBalanceCallback callback);
+  void Fetch(FetchBalanceCallback callback);
 
  private:
-  void OnGetUnblindedTokens(ledger::FetchBalanceCallback callback,
+  void OnGetUnblindedTokens(FetchBalanceCallback callback,
                             std::vector<mojom::UnblindedTokenPtr> tokens);
 
   void OnFetchExternalWalletBalance(const std::string& wallet_type,
                                     mojom::BalancePtr balance_ptr,
-                                    ledger::FetchBalanceCallback callback,
+                                    FetchBalanceCallback callback,
                                     mojom::Result result,
                                     double balance);
 
@@ -37,5 +37,5 @@ class WalletBalance {
 };
 
 }  // namespace wallet
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_BALANCE_H_

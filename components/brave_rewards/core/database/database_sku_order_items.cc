@@ -13,7 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -136,4 +136,4 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

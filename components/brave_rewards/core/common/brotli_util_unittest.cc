@@ -27,7 +27,7 @@ constexpr char kUncompressed[] =
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace util {
 
 class BraveLedgerBrotliHelpersTest : public testing::Test {
@@ -71,4 +71,4 @@ TEST_F(BraveLedgerBrotliHelpersTest, TestDecodeWithBuffer) {
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::core

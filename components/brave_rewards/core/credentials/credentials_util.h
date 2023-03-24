@@ -21,7 +21,7 @@
 using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::Token;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace credential {
 
 std::vector<Token> GenerateCreds(const int count);
@@ -56,6 +56,6 @@ base::Value::Dict GenerateSuggestionMock(const std::string& token_value,
                                          const std::string& suggestion_encoded);
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_UTIL_H_

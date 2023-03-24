@@ -14,10 +14,10 @@
 #include "brave/components/brave_rewards/core/logging/event_log_util.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
-using ledger::endpoints::PostConnect;
-using ledger::wallet::GetWalletIf;
+using brave_rewards::core::endpoints::PostConnect;
+using brave_rewards::core::wallet::GetWalletIf;
 
-namespace ledger::wallet_provider {
+namespace brave_rewards::core::wallet_provider {
 
 ConnectExternalWallet::ConnectExternalWallet(LedgerImpl* ledger)
     : ledger_(ledger) {
@@ -28,7 +28,7 @@ ConnectExternalWallet::~ConnectExternalWallet() = default;
 
 void ConnectExternalWallet::Run(
     const base::flat_map<std::string, std::string>& query_parameters,
-    ledger::ConnectExternalWalletCallback callback) const {
+    ConnectExternalWalletCallback callback) const {
   auto wallet = GetWalletIf(
       ledger_, WalletType(),
       {mojom::WalletStatus::kNotConnected, mojom::WalletStatus::kLoggedOut});
@@ -55,7 +55,7 @@ void ConnectExternalWallet::Run(
 
 absl::optional<ConnectExternalWallet::OAuthInfo>
 ConnectExternalWallet::ExchangeOAuthInfo(
-    ledger::mojom::ExternalWalletPtr wallet) const {
+    mojom::ExternalWalletPtr wallet) const {
   DCHECK(wallet);
   if (!wallet) {
     return absl::nullopt;
@@ -69,13 +69,13 @@ ConnectExternalWallet::ExchangeOAuthInfo(
   oauth_info.code_verifier =
       std::exchange(wallet->code_verifier, util::GeneratePKCECodeVerifier());
 
-  wallet = ledger::wallet::GenerateLinks(std::move(wallet));
+  wallet = wallet::GenerateLinks(std::move(wallet));
   if (!wallet) {
     BLOG(0, "Failed to generate links for " << WalletType() << " wallet!");
     return absl::nullopt;
   }
 
-  if (!ledger::wallet::SetWallet(ledger_, std::move(wallet))) {
+  if (!wallet::SetWallet(ledger_, std::move(wallet))) {
     BLOG(0, "Failed to save " << WalletType() << " wallet!");
     return absl::nullopt;
   }
@@ -83,7 +83,7 @@ ConnectExternalWallet::ExchangeOAuthInfo(
   return oauth_info;
 }
 
-base::expected<std::string, ledger::mojom::ConnectExternalWalletError>
+base::expected<std::string, mojom::ConnectExternalWalletError>
 ConnectExternalWallet::GetCode(
     const base::flat_map<std::string, std::string>& query_parameters,
     const std::string& current_one_time_string) const {
@@ -117,7 +117,7 @@ ConnectExternalWallet::GetCode(
 }
 
 void ConnectExternalWallet::OnConnect(
-    ledger::ConnectExternalWalletCallback callback,
+    ConnectExternalWalletCallback callback,
     std::string&& token,
     std::string&& address,
     endpoints::PostConnect::Result&& result) const {
@@ -152,8 +152,8 @@ void ConnectExternalWallet::OnConnect(
   wallet->token = std::move(token);
   wallet->address = std::move(address);
   // {kNotConnected, kLoggedOut} ==> kConnected
-  if (!ledger::wallet::TransitionWallet(ledger_, std::move(wallet),
-                                        mojom::WalletStatus::kConnected)) {
+  if (!wallet::TransitionWallet(ledger_, std::move(wallet),
+                                mojom::WalletStatus::kConnected)) {
     BLOG(0, "Failed to transition " << WalletType() << " wallet state!");
     return std::move(callback).Run(
         base::unexpected(mojom::ConnectExternalWalletError::kUnexpected));
@@ -168,4 +168,4 @@ void ConnectExternalWallet::OnConnect(
   std::move(callback).Run({});
 }
 
-}  // namespace ledger::wallet_provider
+}  // namespace brave_rewards::core::wallet_provider

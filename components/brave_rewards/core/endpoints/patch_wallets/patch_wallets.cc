@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 using Error = PatchWallets::Error;
 using Result = PatchWallets::Result;
 
@@ -143,4 +143,4 @@ std::string PatchWallets::ContentType() const {
   return kApplicationJson;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

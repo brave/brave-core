@@ -21,7 +21,7 @@
 //
 // Response body: -
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoints {
@@ -40,6 +40,6 @@ class PostConnectBitflyer final : public PostConnect {
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_BITFLYER_POST_CONNECT_BITFLYER_H_

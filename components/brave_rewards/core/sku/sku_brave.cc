@@ -13,7 +13,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace sku {
 
 SKUBrave::SKUBrave(LedgerImpl* ledger)
@@ -25,7 +25,7 @@ SKUBrave::~SKUBrave() = default;
 
 void SKUBrave::Process(const std::vector<mojom::SKUOrderItem>& items,
                        const std::string& wallet_type,
-                       ledger::SKUOrderCallback callback,
+                       SKUOrderCallback callback,
                        const std::string& contribution_id) {
   auto create_callback = std::bind(&SKUBrave::OrderCreated, this, _1, _2,
                                    wallet_type, contribution_id, callback);
@@ -37,7 +37,7 @@ void SKUBrave::OrderCreated(const mojom::Result result,
                             const std::string& order_id,
                             const std::string& wallet_type,
                             const std::string& contribution_id,
-                            ledger::SKUOrderCallback callback) {
+                            SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
@@ -54,7 +54,7 @@ void SKUBrave::OrderCreated(const mojom::Result result,
 void SKUBrave::ContributionIdSaved(const mojom::Result result,
                                    const std::string& order_id,
                                    const std::string& wallet_type,
-                                   ledger::SKUOrderCallback callback) {
+                                   SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Contribution id not saved");
     callback(result, "");
@@ -69,7 +69,7 @@ void SKUBrave::ContributionIdSaved(const mojom::Result result,
 
 void SKUBrave::CreateTransaction(mojom::SKUOrderPtr order,
                                  const std::string& wallet_type,
-                                 ledger::SKUOrderCallback callback) {
+                                 SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -84,7 +84,7 @@ void SKUBrave::CreateTransaction(mojom::SKUOrderPtr order,
 
 void SKUBrave::Retry(const std::string& order_id,
                      const std::string& wallet_type,
-                     ledger::SKUOrderCallback callback) {
+                     SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -99,7 +99,7 @@ void SKUBrave::Retry(const std::string& order_id,
 
 void SKUBrave::OnOrder(mojom::SKUOrderPtr order,
                        const std::string& wallet_type,
-                       ledger::SKUOrderCallback callback) {
+                       SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -129,4 +129,4 @@ void SKUBrave::OnOrder(mojom::SKUOrderPtr order,
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core

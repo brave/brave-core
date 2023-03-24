@@ -24,7 +24,7 @@ using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -179,10 +179,9 @@ TEST_P(GetWalletTest, Paths) {
   const auto expected_linked = std::get<4>(params);
 
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(
-          [&](mojom::UrlRequestPtr, client::LoadURLCallback callback) {
-            std::move(callback).Run(rewards_services_get_wallet_response);
-          });
+      .WillByDefault([&](mojom::UrlRequestPtr, LoadURLCallback callback) {
+        std::move(callback).Run(rewards_services_get_wallet_response);
+      });
 
   get_wallet_->Request(
       [&](mojom::Result result, const std::string& custodian, bool linked) {
@@ -194,4 +193,4 @@ TEST_P(GetWalletTest, Paths) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

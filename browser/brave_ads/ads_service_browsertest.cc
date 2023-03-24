@@ -22,7 +22,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom-shared.h"
+#include "brave/components/brave_rewards/common/mojom/core_types.mojom-shared.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/common/chrome_constants.h"
@@ -122,7 +122,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
 
     rewards_service_->SetLedgerEnvForTesting();
 
-    rewards_browsertest_util::StartProcess(rewards_service_);
+    brave_rewards::test::StartProcess(rewards_service_);
 
     ads_service_ = static_cast<AdsService*>(
         AdsServiceFactory::GetForProfile(browser_profile));
@@ -322,7 +322,7 @@ class BraveAdsBrowserTest : public InProcessBrowserTest,
     ASSERT_TRUE(base::CopyFile(test_data_path, preferences_path));
   }
 
-  MOCK_METHOD1(OnGetEnvironment, void(ledger::mojom::Environment));
+  MOCK_METHOD1(OnGetEnvironment, void(brave_rewards::mojom::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetRetryInterval, void(int32_t));

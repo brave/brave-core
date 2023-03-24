@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace state {
@@ -20,7 +20,7 @@ class StateMigrationV13 {
   explicit StateMigrationV13(LedgerImpl*);
   ~StateMigrationV13();
 
-  void Migrate(ledger::LegacyResultCallback);
+  void Migrate(LegacyResultCallback);
 
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);
@@ -29,6 +29,6 @@ class StateMigrationV13 {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V13_H_

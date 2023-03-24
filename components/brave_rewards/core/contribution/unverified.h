@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace contribution {
@@ -64,5 +64,5 @@ class Unverified {
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_UNVERIFIED_H_

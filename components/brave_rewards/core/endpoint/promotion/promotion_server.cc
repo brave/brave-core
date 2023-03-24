@@ -6,7 +6,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 
 PromotionServer::PromotionServer(LedgerImpl* ledger)
@@ -97,4 +97,4 @@ promotion::GetDrain* PromotionServer::get_drain() const {
 }
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

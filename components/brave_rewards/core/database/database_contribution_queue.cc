@@ -14,7 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -30,9 +30,8 @@ DatabaseContributionQueue::DatabaseContributionQueue(LedgerImpl* ledger)
 
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
-void DatabaseContributionQueue::InsertOrUpdate(
-    mojom::ContributionQueuePtr info,
-    ledger::LegacyResultCallback callback) {
+void DatabaseContributionQueue::InsertOrUpdate(mojom::ContributionQueuePtr info,
+                                               LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Queue is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -77,7 +76,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
 void DatabaseContributionQueue::OnInsertOrUpdate(
     mojom::DBCommandResponsePtr response,
     std::shared_ptr<mojom::ContributionQueuePtr> shared_queue,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -171,7 +170,7 @@ void DatabaseContributionQueue::OnGetPublishers(
 
 void DatabaseContributionQueue::MarkRecordAsComplete(
     const std::string& id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (id.empty()) {
     BLOG(1, "Id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -199,4 +198,4 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

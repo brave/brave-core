@@ -13,7 +13,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace sku {
 
 SKUMerchant::SKUMerchant(LedgerImpl* ledger)
@@ -25,7 +25,7 @@ SKUMerchant::~SKUMerchant() = default;
 
 void SKUMerchant::Process(const std::vector<mojom::SKUOrderItem>& items,
                           const std::string& wallet_type,
-                          ledger::SKUOrderCallback callback,
+                          SKUOrderCallback callback,
                           const std::string& contribution_id) {
   auto create_callback = std::bind(&SKUMerchant::OrderCreated, this, _1, _2,
                                    wallet_type, callback);
@@ -36,7 +36,7 @@ void SKUMerchant::Process(const std::vector<mojom::SKUOrderItem>& items,
 void SKUMerchant::OrderCreated(const mojom::Result result,
                                const std::string& order_id,
                                const std::string& wallet_type,
-                               ledger::SKUOrderCallback callback) {
+                               SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
@@ -51,7 +51,7 @@ void SKUMerchant::OrderCreated(const mojom::Result result,
 
 void SKUMerchant::OnOrder(mojom::SKUOrderPtr order,
                           const std::string& wallet_type,
-                          ledger::SKUOrderCallback callback) {
+                          SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -76,7 +76,7 @@ void SKUMerchant::OnServerPublisherInfo(
     mojom::ServerPublisherInfoPtr info,
     std::shared_ptr<mojom::SKUOrderPtr> shared_order,
     const std::string& wallet_type,
-    ledger::SKUOrderCallback callback) {
+    SKUOrderCallback callback) {
   if (!shared_order || !info) {
     BLOG(0, "Order/Publisher not found");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -95,11 +95,11 @@ void SKUMerchant::OnServerPublisherInfo(
 
 void SKUMerchant::Retry(const std::string& order_id,
                         const std::string& wallet_type,
-                        ledger::SKUOrderCallback callback) {
+                        SKUOrderCallback callback) {
   // We will implement retry logic when we will have more complex flows,
   // right now there is nothing to retry
   NOTREACHED();
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core

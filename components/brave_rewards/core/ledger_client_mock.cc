@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 MockLedgerClient::MockLedgerClient() = default;
 
@@ -21,4 +21,4 @@ absl::optional<std::string> MockLedgerClient::DecryptString(
   return FakeEncryption::DecryptString(value);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

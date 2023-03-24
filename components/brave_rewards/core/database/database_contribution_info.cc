@@ -14,7 +14,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -50,9 +50,8 @@ DatabaseContributionInfo::DatabaseContributionInfo(LedgerImpl* ledger)
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
-void DatabaseContributionInfo::InsertOrUpdate(
-    mojom::ContributionInfoPtr info,
-    ledger::LegacyResultCallback callback) {
+void DatabaseContributionInfo::InsertOrUpdate(mojom::ContributionInfoPtr info,
+                                              LegacyResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -180,7 +179,7 @@ void DatabaseContributionInfo::OnGetPublishers(
 }
 
 void DatabaseContributionInfo::GetAllRecords(
-    ledger::ContributionInfoListCallback callback) {
+    ContributionInfoListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -212,7 +211,7 @@ void DatabaseContributionInfo::GetAllRecords(
 void DatabaseContributionInfo::GetOneTimeTips(
     const mojom::ActivityMonth month,
     const int year,
-    ledger::PublisherInfoListCallback callback) {
+    PublisherInfoListCallback callback) {
   if (year == 0) {
     BLOG(1, "Year is 0");
     callback({});
@@ -267,7 +266,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
 
 void DatabaseContributionInfo::OnGetOneTimeTips(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+    PublisherInfoListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -300,7 +299,7 @@ void DatabaseContributionInfo::OnGetOneTimeTips(
 void DatabaseContributionInfo::GetContributionReport(
     const mojom::ActivityMonth month,
     const int year,
-    ledger::GetContributionReportCallback callback) {
+    GetContributionReportCallback callback) {
   if (year == 0) {
     BLOG(1, "Year is 0");
     callback({});
@@ -343,7 +342,7 @@ void DatabaseContributionInfo::GetContributionReport(
 
 void DatabaseContributionInfo::OnGetContributionReport(
     mojom::DBCommandResponsePtr response,
-    ledger::GetContributionReportCallback callback) {
+    GetContributionReportCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -383,7 +382,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
     std::vector<ContributionPublisherInfoPair> publisher_pair_list,
     std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
         shared_contributions,
-    ledger::GetContributionReportCallback callback) {
+    GetContributionReportCallback callback) {
   std::vector<mojom::ContributionReportInfoPtr> report_list;
   for (const auto& contribution : *shared_contributions) {
     auto report = mojom::ContributionReportInfo::New();
@@ -410,7 +409,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
 }
 
 void DatabaseContributionInfo::GetNotCompletedRecords(
-    ledger::ContributionInfoListCallback callback) {
+    ContributionInfoListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   // It is possible for externally-funded (SKU-based) ACs to be stalled after
@@ -464,7 +463,7 @@ void DatabaseContributionInfo::GetNotCompletedRecords(
 
 void DatabaseContributionInfo::OnGetList(
     mojom::DBCommandResponsePtr response,
-    ledger::ContributionInfoListCallback callback) {
+    ContributionInfoListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -512,7 +511,7 @@ void DatabaseContributionInfo::OnGetListPublishers(
     std::vector<mojom::ContributionPublisherPtr> list,
     std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
         shared_contributions,
-    ledger::ContributionInfoListCallback callback) {
+    ContributionInfoListCallback callback) {
   for (const auto& contribution : *shared_contributions) {
     for (const auto& item : list) {
       if (item->contribution_id != contribution->contribution_id) {
@@ -526,10 +525,9 @@ void DatabaseContributionInfo::OnGetListPublishers(
   callback(std::move(*shared_contributions));
 }
 
-void DatabaseContributionInfo::UpdateStep(
-    const std::string& contribution_id,
-    mojom::ContributionStep step,
-    ledger::LegacyResultCallback callback) {
+void DatabaseContributionInfo::UpdateStep(const std::string& contribution_id,
+                                          mojom::ContributionStep step,
+                                          LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -560,7 +558,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
     const std::string& contribution_id,
     mojom::ContributionStep step,
     int32_t retry_count,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -591,13 +589,13 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 void DatabaseContributionInfo::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   publishers_->UpdateContributedAmount(contribution_id, publisher_key,
                                        callback);
 }
 
 void DatabaseContributionInfo::FinishAllInProgressRecords(
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET step = ?, retry_count = 0 WHERE step >= 0", kTableName);
@@ -617,4 +615,4 @@ void DatabaseContributionInfo::FinishAllInProgressRecords(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

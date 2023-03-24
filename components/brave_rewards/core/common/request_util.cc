@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace util {
 
 std::string SignatureHeaderValue(const std::string& data,
@@ -65,4 +65,4 @@ std::vector<std::string> BuildSignHeaders(
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::core

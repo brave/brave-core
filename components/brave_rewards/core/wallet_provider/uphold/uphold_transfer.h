@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_create_transaction/post_create_transaction_uphold.h"
 #include "brave/components/brave_rewards/core/wallet_provider/transfer.h"
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 class UpholdTransfer final : public wallet_provider::Transfer {
  public:
@@ -28,19 +28,19 @@ class UpholdTransfer final : public wallet_provider::Transfer {
       mojom::ExternalTransactionPtr,
       endpoints::PostCreateTransactionUphold::Result&&) const;
 
-  void CommitTransaction(ledger::ResultCallback,
+  void CommitTransaction(ResultCallback,
                          mojom::ExternalTransactionPtr) const override;
 
   void OnCommitTransaction(
-      ledger::ResultCallback,
+      ResultCallback,
       std::string&& transaction_id,
       endpoints::PostCommitTransactionUphold::Result&&) const;
 
   void OnGetTransactionStatus(
-      ledger::ResultCallback,
+      ResultCallback,
       endpoints::GetTransactionStatusUphold::Result&&) const;
 };
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_UPHOLD_UPHOLD_TRANSFER_H_

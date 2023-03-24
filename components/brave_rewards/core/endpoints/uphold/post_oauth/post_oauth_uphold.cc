@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 using Error = PostOAuthUphold::Error;
 using Result = PostOAuthUphold::Result;
 
@@ -78,4 +78,4 @@ bool PostOAuthUphold::SkipLog() const {
   return true;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

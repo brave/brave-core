@@ -19,7 +19,7 @@
 #include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/brave_rewards/core/ledger_database.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 struct FakeEncryption {
   static std::string EncryptString(const std::string& value);
@@ -59,9 +59,9 @@ class TestLedgerClient : public LedgerClient {
   void OnReconcileComplete(const mojom::Result result,
                            mojom::ContributionInfoPtr contribution) override;
 
-  void LoadLedgerState(client::OnLoadCallback callback) override;
+  void LoadLedgerState(OnLoadCallback callback) override;
 
-  void LoadPublisherState(client::OnLoadCallback callback) override;
+  void LoadPublisherState(OnLoadCallback callback) override;
 
   void OnPanelPublisherInfo(mojom::Result result,
                             mojom::PublisherInfoPtr publisher_info,
@@ -73,12 +73,11 @@ class TestLedgerClient : public LedgerClient {
 
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
-                    client::FetchIconCallback callback) override;
+                    FetchIconCallback callback) override;
 
   std::string URIEncode(const std::string& value) override;
 
-  void LoadURL(mojom::UrlRequestPtr request,
-               client::LoadURLCallback callback) override;
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
 
   void Log(const char* file,
            const int line,
@@ -144,7 +143,7 @@ class TestLedgerClient : public LedgerClient {
 
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
-                        client::LegacyResultCallback callback) override;
+                        LegacyResultCallback callback) override;
 
   mojom::ClientInfoPtr GetClientInfo() override;
 
@@ -153,9 +152,9 @@ class TestLedgerClient : public LedgerClient {
   void ReconcileStampReset() override;
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                        client::RunDBTransactionCallback callback) override;
+                        RunDBTransactionCallback callback) override;
 
-  void GetCreateScript(client::GetCreateScriptCallback callback) override;
+  void GetCreateScript(GetCreateScriptCallback callback) override;
 
   void PendingContributionSaved(const mojom::Result result) override;
 
@@ -167,7 +166,7 @@ class TestLedgerClient : public LedgerClient {
 
   void ExternalWalletReconnected() const override;
 
-  void DeleteLog(client::LegacyResultCallback callback) override;
+  void DeleteLog(LegacyResultCallback callback) override;
 
   absl::optional<std::string> EncryptString(const std::string& value) override;
 
@@ -188,10 +187,10 @@ class TestLedgerClient : public LedgerClient {
 
  private:
   void LoadURLAfterDelay(mojom::UrlRequestPtr request,
-                         client::LoadURLCallback callback);
+                         LoadURLCallback callback);
 
   void RunDBTransactionAfterDelay(mojom::DBTransactionPtr transaction,
-                                  client::RunDBTransactionCallback callback);
+                                  RunDBTransactionCallback callback);
 
   LedgerDatabase ledger_database_;
   base::Value::Dict state_store_;
@@ -201,6 +200,6 @@ class TestLedgerClient : public LedgerClient {
   base::WeakPtrFactory<TestLedgerClient> weak_factory_{this};
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_TEST_TEST_LEDGER_CLIENT_H_

@@ -14,16 +14,16 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_settings_properties.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 }
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace publisher {
 
 class LegacyPublisherState {
  public:
-  explicit LegacyPublisherState(ledger::LedgerImpl* ledger);
+  explicit LegacyPublisherState(LedgerImpl* ledger);
 
   ~LegacyPublisherState();
 
@@ -33,23 +33,22 @@ class LegacyPublisherState {
 
   bool GetPublisherAllowNonVerified() const;
 
-  void Load(ledger::LegacyResultCallback callback);
+  void Load(LegacyResultCallback callback);
 
   std::vector<std::string> GetAlreadyProcessedPublishers() const;
 
-  void GetAllBalanceReports(
-      std::vector<ledger::mojom::BalanceReportInfoPtr>* reports);
+  void GetAllBalanceReports(std::vector<mojom::BalanceReportInfoPtr>* reports);
 
  private:
-  void OnLoad(ledger::mojom::Result result,
+  void OnLoad(mojom::Result result,
               const std::string& data,
-              ledger::LegacyResultCallback callback);
+              LegacyResultCallback callback);
 
-  ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::PublisherSettingsProperties> state_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<PublisherSettingsProperties> state_;
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_PUBLISHER_STATE_H_

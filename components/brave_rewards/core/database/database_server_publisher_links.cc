@@ -18,7 +18,7 @@ const char kTableName[] = "server_publisher_links";
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(LedgerImpl* ledger)
@@ -124,4 +124,4 @@ void DatabaseServerPublisherLinks::OnGetRecord(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

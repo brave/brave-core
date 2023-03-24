@@ -165,14 +165,14 @@
 //   }
 // ]
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
 namespace uphold {
 
 using GetCapabilitiesCallback =
-    base::OnceCallback<void(mojom::Result, ledger::uphold::Capabilities)>;
+    base::OnceCallback<void(mojom::Result, core::uphold::Capabilities)>;
 
 class GetCapabilities {
  public:
@@ -202,6 +202,6 @@ class GetCapabilities {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_GET_CAPABILITIES_GET_CAPABILITIES_H_

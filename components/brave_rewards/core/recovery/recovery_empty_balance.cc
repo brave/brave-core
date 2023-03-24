@@ -21,7 +21,7 @@ const int32_t kVersion = 1;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace recovery {
 
 EmptyBalance::EmptyBalance(LedgerImpl* ledger)
@@ -63,7 +63,7 @@ void EmptyBalance::OnAllContributions(
   GetPromotions(get_callback);
 }
 
-void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
+void EmptyBalance::GetPromotions(GetPromotionListCallback callback) {
   auto get_callback =
       std::bind(&EmptyBalance::OnPromotions, this, _1, callback);
 
@@ -72,7 +72,7 @@ void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
 
 void EmptyBalance::OnPromotions(
     base::flat_map<std::string, mojom::PromotionPtr> promotions,
-    client::GetPromotionListCallback callback) {
+    GetPromotionListCallback callback) {
   std::vector<mojom::PromotionPtr> list;
 
   for (auto& promotion : promotions) {
@@ -199,4 +199,4 @@ void EmptyBalance::Sent(const mojom::Result result) {
 }
 
 }  // namespace recovery
-}  // namespace ledger
+}  // namespace brave_rewards::core

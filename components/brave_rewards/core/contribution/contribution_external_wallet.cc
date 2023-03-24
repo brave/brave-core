@@ -15,7 +15,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace contribution {
 
 ContributionExternalWallet::ContributionExternalWallet(LedgerImpl* ledger)
@@ -25,9 +25,8 @@ ContributionExternalWallet::ContributionExternalWallet(LedgerImpl* ledger)
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 
-void ContributionExternalWallet::Process(
-    const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+void ContributionExternalWallet::Process(const std::string& contribution_id,
+                                         LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -41,7 +40,7 @@ void ContributionExternalWallet::Process(
 
 void ContributionExternalWallet::ContributionInfo(
     mojom::ContributionInfoPtr contribution,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -114,7 +113,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     mojom::RewardsType type,
     mojom::ContributionProcessor processor,
     bool single_publisher,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -187,10 +186,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
   }
 }
 
-void ContributionExternalWallet::Completed(
-    mojom::Result result,
-    bool single_publisher,
-    ledger::LegacyResultCallback callback) {
+void ContributionExternalWallet::Completed(mojom::Result result,
+                                           bool single_publisher,
+                                           LegacyResultCallback callback) {
   if (single_publisher) {
     callback(result);
     return;
@@ -200,9 +198,9 @@ void ContributionExternalWallet::Completed(
 }
 
 void ContributionExternalWallet::Retry(mojom::ContributionInfoPtr contribution,
-                                       ledger::LegacyResultCallback callback) {
+                                       LegacyResultCallback callback) {
   Process(contribution->contribution_id, callback);
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core

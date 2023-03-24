@@ -13,16 +13,16 @@
 #include "brave/components/brave_rewards/core/logging/logging.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace gemini {
 
 std::string GetClientId() {
-  return ::ledger::gemini::GetClientId();
+  return core::gemini::GetClientId();
 }
 
 std::string GetClientSecret() {
-  return ::ledger::gemini::GetClientSecret();
+  return core::gemini::GetClientSecret();
 }
 
 std::vector<std::string> RequestAuthorization(const std::string& token) {
@@ -48,7 +48,7 @@ std::string GetApiServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     url = BUILDFLAG(GEMINI_API_URL);
   } else {
     url = BUILDFLAG(GEMINI_API_STAGING_URL);
@@ -61,7 +61,7 @@ std::string GetOauthServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     url = BUILDFLAG(GEMINI_OAUTH_URL);
   } else {
     url = BUILDFLAG(GEMINI_OAUTH_STAGING_URL);
@@ -90,4 +90,4 @@ mojom::Result CheckStatusCode(const int status_code) {
 
 }  // namespace gemini
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

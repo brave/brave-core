@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 using Error = GetRecipientIDGemini::Error;
 using Result = GetRecipientIDGemini::Result;
 
@@ -81,4 +81,4 @@ absl::optional<std::vector<std::string>> GetRecipientIDGemini::Headers(
   return endpoint::gemini::RequestAuthorization(token_);
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

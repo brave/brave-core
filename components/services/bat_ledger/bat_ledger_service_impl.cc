@@ -13,12 +13,12 @@
 namespace {
 
 bool testing() {
-  return ledger::is_testing;
+  return brave_rewards::core::is_testing;
 }
 
 }
 
-namespace bat_ledger {
+namespace brave_rewards {
 
 BatLedgerServiceImpl::BatLedgerServiceImpl(
     mojo::PendingReceiver<mojom::BatLedgerService> receiver)
@@ -38,51 +38,50 @@ void BatLedgerServiceImpl::Create(
   std::move(callback).Run();
 }
 
-void BatLedgerServiceImpl::SetEnvironment(
-    ledger::mojom::Environment environment) {
+void BatLedgerServiceImpl::SetEnvironment(mojom::Environment environment) {
   DCHECK(!initialized_ || testing());
-  ledger::_environment = environment;
+  core::_environment = environment;
 }
 
 void BatLedgerServiceImpl::SetDebug(bool is_debug) {
   DCHECK(!initialized_ || testing());
-  ledger::is_debug = is_debug;
+  core::is_debug = is_debug;
 }
 
 void BatLedgerServiceImpl::SetReconcileInterval(const int32_t interval) {
   DCHECK(!initialized_ || testing());
-  ledger::reconcile_interval = interval;
+  core::reconcile_interval = interval;
 }
 
 void BatLedgerServiceImpl::SetRetryInterval(int32_t interval) {
   DCHECK(!initialized_ || testing());
-  ledger::retry_interval = interval;
+  core::retry_interval = interval;
 }
 
 void BatLedgerServiceImpl::SetTesting() {
-  ledger::is_testing = true;
+  core::is_testing = true;
 }
 
 void BatLedgerServiceImpl::SetStateMigrationTargetVersionForTesting(
     int32_t version) {
-  ledger::state_migration_target_version_for_testing = version;
+  core::state_migration_target_version_for_testing = version;
 }
 
 void BatLedgerServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  std::move(callback).Run(ledger::_environment);
+  std::move(callback).Run(core::_environment);
 }
 
 void BatLedgerServiceImpl::GetDebug(GetDebugCallback callback) {
-  std::move(callback).Run(ledger::is_debug);
+  std::move(callback).Run(core::is_debug);
 }
 
 void BatLedgerServiceImpl::GetReconcileInterval(
     GetReconcileIntervalCallback callback) {
-  std::move(callback).Run(ledger::reconcile_interval);
+  std::move(callback).Run(core::reconcile_interval);
 }
 
 void BatLedgerServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  std::move(callback).Run(ledger::retry_interval);
+  std::move(callback).Run(core::retry_interval);
 }
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards

@@ -13,7 +13,7 @@
 
 #include "brave/components/brave_rewards/core/legacy/report_balance_properties.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 struct PublisherSettingsProperties {
   PublisherSettingsProperties();
@@ -37,6 +37,6 @@ struct PublisherSettingsProperties {
   std::vector<std::string> processed_pending_publishers;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_PUBLISHER_SETTINGS_PROPERTIES_H_

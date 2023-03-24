@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace wallet_provider {
@@ -25,7 +25,7 @@ class ConnectExternalWallet {
   virtual ~ConnectExternalWallet();
 
   void Run(const base::flat_map<std::string, std::string>& query_parameters,
-           ledger::ConnectExternalWalletCallback) const;
+           ConnectExternalWalletCallback) const;
 
  protected:
   virtual const char* WalletType() const = 0;
@@ -34,10 +34,9 @@ class ConnectExternalWallet {
     std::string one_time_string, code_verifier, code;
   };
 
-  virtual void Authorize(OAuthInfo&&,
-                         ledger::ConnectExternalWalletCallback) const = 0;
+  virtual void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) const = 0;
 
-  void OnConnect(ledger::ConnectExternalWalletCallback,
+  void OnConnect(ConnectExternalWalletCallback,
                  std::string&& token,
                  std::string&& address,
                  endpoints::PostConnect::Result&&) const;
@@ -45,15 +44,14 @@ class ConnectExternalWallet {
   LedgerImpl* ledger_;  // NOT OWNED
 
  private:
-  absl::optional<OAuthInfo> ExchangeOAuthInfo(
-      ledger::mojom::ExternalWalletPtr) const;
+  absl::optional<OAuthInfo> ExchangeOAuthInfo(mojom::ExternalWalletPtr) const;
 
-  base::expected<std::string, ledger::mojom::ConnectExternalWalletError>
-  GetCode(const base::flat_map<std::string, std::string>& query_parameters,
-          const std::string& current_one_time_string) const;
+  base::expected<std::string, mojom::ConnectExternalWalletError> GetCode(
+      const base::flat_map<std::string, std::string>& query_parameters,
+      const std::string& current_one_time_string) const;
 };
 
 }  // namespace wallet_provider
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_CONNECT_EXTERNAL_WALLET_H_
