@@ -28,7 +28,6 @@ struct PinData {
   PinningMode pinning_mode;
 
   bool operator==(const PinData&) const;
-  bool operator==(const PinData&);
 };
 
 absl::optional<std::vector<PinData>> ExtractPinData(
@@ -42,18 +41,25 @@ using GcCallback = base::OnceCallback<void(bool)>;
 /**
  * Pins provided cids and writes record to kIPFSPinnedCids:
  * {
- *   // List of all pinned CIDs
- *   "Qme1": [
- *     // List of tokens that contain this CID
- *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"
- *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"
- *   ],
- *   "Qme2": [
- *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"
- *   ],
- *   "Qme3": [
- *     "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"
- *   ]
+ *   // CIDs which were pinned recursively
+ *   "recursive": {
+ *     // List of all pinned CIDs
+ *     "Qme1": [
+ *       // List of tokens that contain this CID
+ *       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"
+ *       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"
+ *     ],
+ *     "Qme2": [
+ *       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"
+ *     ],
+ *     "Qme3": [
+ *       "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"
+ *     ]
+ *   },
+ *   // CIDs which were pinned using direct mode
+ *   "direct": {
+ *     ...
+ *   }
  * }
  */
 class AddLocalPinJob : public IpfsBaseJob {
@@ -68,13 +74,10 @@ class AddLocalPinJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  using AccumulatedResult =
-      std::pair<PinningMode, absl::optional<AddPinResult>>;
-  void Accumulate(PinningMode pinning_mode,
-                  std::vector<std::string> cids,
-                  base::OnceCallback<void(AccumulatedResult)> callback,
-                  absl::optional<AddPinResult> result);
-  void OnAddPinResult(std::vector<AccumulatedResult> result);
+  void Accumulate(
+      base::OnceCallback<void(absl::optional<AddPinResult>)> callback,
+      absl::optional<AddPinResult> result);
+  void OnAddPinResult(std::vector<absl::optional<AddPinResult>> result);
 
   raw_ptr<PrefService> prefs_service_;
   raw_ptr<IpfsService> ipfs_service_;
@@ -138,12 +141,10 @@ class GcJob : public IpfsBaseJob {
   void Start() override;
 
  private:
-  using AccumulatedResult =
-      std::pair<PinningMode, absl::optional<GetPinsResult>>;
-  void Accumulate(PinningMode pinning_mode,
-                  base::OnceCallback<void(AccumulatedResult)> callback,
-                  absl::optional<GetPinsResult> result);
-  void OnGetPinsResult(std::vector<AccumulatedResult> result);
+  void Accumulate(
+      base::OnceCallback<void(absl::optional<GetPinsResult>)> callback,
+      absl::optional<GetPinsResult> result);
+  void OnGetPinsResult(std::vector<absl::optional<GetPinsResult>> result);
   void OnPinsRemovedResult(absl::optional<RemovePinResult> result);
 
   raw_ptr<PrefService> prefs_service_;
@@ -180,7 +181,7 @@ class IpfsLocalPinService : public KeyedService {
   static absl::optional<std::vector<PinData>> ExtractPinData(
       const std::string& ipfs_url);
   static absl::optional<std::vector<ipfs::PinData>> ExtractMergedPinData(
-      std::vector<std::string> ipfs_urls);
+      const std::vector<std::string>& ipfs_urls);
 
  private:
   void OnLsPinCliResult(base::OnceCallback<void(bool)> callback,

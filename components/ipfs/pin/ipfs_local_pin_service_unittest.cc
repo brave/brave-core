@@ -98,6 +98,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
               } else {
                 result.pins = {"Qma", "Qmb", "QmaD1", "QmbD1"};
               }
+              result.recursive = recursive;
               std::move(callback).Run(result);
             }));
 
@@ -132,6 +133,7 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
               if (recursive) {
                 result.pins = {"Qma", "Qmb", "Qmc", "Qmd", "Qimage"};
               }
+              result.recursive = recursive;
               std::move(callback).Run(result);
             }));
 
@@ -170,8 +172,10 @@ TEST_F(IpfsLocalPinServiceTest, AddLocalPinJobTest) {
                IpfsService::AddPinCallback callback) {
               AddPinResult result;
               if (recursive) {
-                result.pins = {"Qma", "Qmb", "Qmc"};
+                std::move(callback).Run(absl::nullopt);
+                return;
               }
+              result.recursive = recursive;
               std::move(callback).Run(result);
             }));
 
