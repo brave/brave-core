@@ -356,10 +356,21 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_BYTES" desc="Transaction detail box bytes label">BYTES</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_TITLE" desc="Connect with site panel select accounts label">Select accounts(s)</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_DESCRIPTION" desc="Connect with site panel description">View the addresses of your permitted accounts (required)</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_NEXT" desc="Connect with site panel next button">Next</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_HEADER_TITLE" desc="Connect with site panel header title">Connect with Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_WALLET" desc="Connect with site panel title">Connect wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE" desc="Connect with site panel select account lable">or connect with:</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMITTED_LABEL" desc="Connect with site DApp will be able to label">This app will be able to:</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_NOT_PERMITTED_LABEL" desc="Connect with site DApp will not be able to label">It will not be able to:</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_BALANCE_AND_ACTIVITY" desc="Connect with site DApp will be able to check wallet balance">Check wallet balance and activity</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_REQUEST_APPROVAL" desc="Connect with site DApp will be able to make requests">Request approval for transactions and signatures</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_ADDRESS" desc="Connect with site DApp will be able to view your address">View your permitted wallet address</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_MOVE_FUNDS" desc="Connect with site DApp will not be able to move your funds">Move funds without your permission</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_TRUST_WARNING" desc="Connect with site panel do you trust this site warning">Make sure you trust this site.</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_DURATION" desc="Connect with site panel Permission Duration label">Permission duration</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_UNTIL_CLOSE" desc="Connect with site panel DApp is connected until closing site">Until I close this site</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_DAY" desc="Connect with site panel DApp is connected for 1 day">For 24 hours</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_WEEK" desc="Connect with site panel DApp is connected for 1 week">For 1 week</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_FOREVER" desc="Connect with site panel DApp is connected forever">Forever</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED" desc="Wallet Welcome screen detected crypto wallets title">Existing crypto wallets detected</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO" desc="Wallet welcome screen detected crypto wallets second description">If you&apos;d rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE">$1</ph>Settings<ph name="LINK_AFTER">$2</ph> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>

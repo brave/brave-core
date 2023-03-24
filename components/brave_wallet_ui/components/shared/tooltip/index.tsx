@@ -25,6 +25,7 @@ export interface ToolTipProps {
   text: React.ReactNode
   verticalPosition?: 'above' | 'below'
   pointerPosition?: 'left' | 'right' | 'center'
+  minWidth?: React.CSSProperties['minWidth']
   maxWidth?: React.CSSProperties['maxWidth']
 }
 
@@ -39,7 +40,8 @@ export const Tooltip: React.FC<ToolTipProps> = ({
   position,
   text,
   verticalPosition = 'below',
-  maxWidth
+  maxWidth,
+  minWidth
 }) => {
   // state
   const [active, setActive] = React.useState(!!disableHoverEvents)
@@ -74,7 +76,7 @@ export const Tooltip: React.FC<ToolTipProps> = ({
             {actionText}
           </ActionNotification>
 
-        : <Tip maxWidth={maxWidth} isAddress={isAddress}>
+        : <Tip maxWidth={maxWidth} minWidth={minWidth} isAddress={isAddress}>
             {text}
           </Tip>
       }

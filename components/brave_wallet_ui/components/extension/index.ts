@@ -2,12 +2,9 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import ConnectWithSite from './connect-with-site-panel'
+import ConnectWithSite from './connect-with-site-panel/connect-with-site-panel'
 import ConnectedPanel from './connected-panel'
 import DividerLine from './divider'
-import SelectAddress from './select-address'
-import ConnectHeader from './connect-header'
-import ConnectBottomNav from './connect-bottom-nav'
 import ConnectedBottomNav from './connected-bottom-nav'
 import ConnectedHeader from './connected-header'
 import WelcomePanel from './welcome-panel'
@@ -33,12 +30,9 @@ import { NavButton } from './buttons'
 
 export {
   NavButton,
-  ConnectHeader,
   ConnectWithSite,
   ConnectedPanel,
   DividerLine,
-  SelectAddress,
-  ConnectBottomNav,
   ConnectedBottomNav,
   ConnectedHeader,
   Panel,

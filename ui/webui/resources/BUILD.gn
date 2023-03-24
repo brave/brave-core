@@ -144,6 +144,15 @@ leo_icons = [
   "news-topnews.svg",
   "news-weather.svg",
   "news-worldnews.svg",
+  "info-filled.svg",
+  "radio-checked.svg",
+  "radio-unchecked.svg",
+  "arrow-left.svg",
+  "arrow-right.svg",
+  "link-normal.svg",
+  "check-normal.svg",
+  "plus-add.svg",
+  "carat-down.svg",
 ]
 
 generate_grd("icons_grdp") {

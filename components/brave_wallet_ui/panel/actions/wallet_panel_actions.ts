@@ -5,7 +5,7 @@
 
 import { createAction } from '@reduxjs/toolkit'
 import {
-  AccountPayloadType,
+  ConnectWithSitePayloadType,
   AddSuggestTokenProcessedPayload,
   CancelConnectHardwareWalletPayload,
   GetEncryptionPublicKeyProcessedPayload,
@@ -20,8 +20,8 @@ import {
 import { BraveWallet, PanelTypes, SerializableDecryptRequest, SerializableGetEncryptionPublicKeyRequest, SerializableSignMessageRequest, SerializableSwitchChainRequest, SerializableTransactionInfo } from '../../constants/types'
 import { HardwareWalletResponseCodeType } from '../../common/hardware/types'
 
-export const connectToSite = createAction<AccountPayloadType>('connectToSite')
-export const cancelConnectToSite = createAction<AccountPayloadType>('cancelConnectToSite')
+export const connectToSite = createAction<ConnectWithSitePayloadType>('connectToSite')
+export const cancelConnectToSite = createAction('cancelConnectToSite')
 export const visibilityChanged = createAction<boolean>('visibilityChanged')
 export const showConnectToSite = createAction<ShowConnectToSitePayload>('showConnectToSite')
 export const addEthereumChain = createAction<BraveWallet.AddChainRequest>('addEthereumChain')

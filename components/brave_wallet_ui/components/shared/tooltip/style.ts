@@ -43,7 +43,11 @@ export const TipWrapper = styled.div<PositionProps>`
     z-index: 100;
 `
 
-export const Tip = styled.div<{ isAddress?: boolean, maxWidth?: CSSProperties['maxWidth'] }>`
+export const Tip = styled.div<{
+  isAddress?: boolean,
+  maxWidth?: CSSProperties['maxWidth']
+  minWidth?: CSSProperties['minWidth']
+}>`
   border-radius: 4px;
   padding: 6px;
 
@@ -53,7 +57,7 @@ export const Tip = styled.div<{ isAddress?: boolean, maxWidth?: CSSProperties['m
   
   width: ${(p) => p.isAddress ? '180px' : 'unset'};
   max-width: ${(p) => p?.maxWidth || '100%'};
-  min-width: fit-content;
+  min-width: ${(p) => p?.minWidth || 'fit-content'};
   
   word-wrap: break-word;
   white-space: ${(p) => p.isAddress || p?.maxWidth ? 'pre-line' : 'nowrap'};

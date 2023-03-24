@@ -607,7 +607,7 @@ function Container () {
       (account) => connectingAccounts.includes(account.address.toLowerCase())
     )
     return (
-      <PanelWrapper isLonger={true}>
+      <PanelWrapper width={390} height={600}>
         <ConnectWithSiteWrapper>
           <ConnectWithSite
             originInfo={connectToSiteOrigin}
