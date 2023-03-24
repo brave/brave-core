@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
-namespace ledger::state {
+namespace brave_rewards::core::state {
 
 StateMigrationV13::StateMigrationV13(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -37,7 +37,7 @@ bool StateMigrationV13::MigrateExternalWallet(const std::string& wallet_type) {
   return true;
 }
 
-void StateMigrationV13::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV13::Migrate(LegacyResultCallback callback) {
   callback(base::ranges::all_of(
                std::vector{constant::kWalletBitflyer, constant::kWalletGemini,
                            constant::kWalletUphold},
@@ -48,4 +48,4 @@ void StateMigrationV13::Migrate(ledger::LegacyResultCallback callback) {
                : mojom::Result::LEDGER_ERROR);
 }
 
-}  // namespace ledger::state
+}  // namespace brave_rewards::core::state

@@ -14,7 +14,7 @@
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace publisher {
@@ -30,12 +30,11 @@ class Publisher {
 
   bool ShouldFetchServerPublisherInfo(mojom::ServerPublisherInfo* server_info);
 
-  void FetchServerPublisherInfo(
-      const std::string& publisher_key,
-      client::GetServerPublisherInfoCallback callback);
+  void FetchServerPublisherInfo(const std::string& publisher_key,
+                                GetServerPublisherInfoCallback callback);
 
   void RefreshPublisher(const std::string& publisher_key,
-                        ledger::OnRefreshPublisherCallback callback);
+                        OnRefreshPublisherCallback callback);
 
   void SetPublisherServerListTimer();
 
@@ -44,11 +43,11 @@ class Publisher {
                  const uint64_t duration,
                  const bool first_visit,
                  uint64_t window_id,
-                 const ledger::PublisherInfoCallback callback);
+                 const PublisherInfoCallback callback);
 
   void SetPublisherExclude(const std::string& publisher_id,
                            const mojom::PublisherExclude& exclude,
-                           ledger::ResultCallback callback);
+                           ResultCallback callback);
 
   void OnPublisherInfoSaved(const mojom::Result result);
 
@@ -57,7 +56,7 @@ class Publisher {
                                    const std::string& publisher_blob);
 
   void GetPublisherBanner(const std::string& publisher_key,
-                          ledger::PublisherBannerCallback callback);
+                          PublisherBannerCallback callback);
 
   mojom::ActivityInfoFilterPtr CreateActivityFilter(
       const std::string& publisher_id,
@@ -72,8 +71,7 @@ class Publisher {
       const std::vector<mojom::PublisherInfoPtr>* list,
       uint32_t /* next_record */);
 
-  void OnRestorePublishers(mojom::Result result,
-                           ledger::ResultCallback callback);
+  void OnRestorePublishers(mojom::Result result, ResultCallback callback);
 
   bool IsVerified(mojom::PublisherStatus);
 
@@ -82,11 +80,11 @@ class Publisher {
   void CalcScoreConsts(const int min_duration_seconds);
 
   void GetServerPublisherInfo(const std::string& publisher_key,
-                              client::GetServerPublisherInfoCallback callback);
+                              GetServerPublisherInfoCallback callback);
 
   void GetServerPublisherInfo(const std::string& publisher_key,
                               bool use_prefix_list,
-                              client::GetServerPublisherInfoCallback callback);
+                              GetServerPublisherInfoCallback callback);
 
   void UpdateMediaDuration(const uint64_t window_id,
                            const std::string& publisher_key,
@@ -94,11 +92,11 @@ class Publisher {
                            const bool first_visit);
 
   void GetPublisherPanelInfo(const std::string& publisher_key,
-                             ledger::GetPublisherInfoCallback callback);
+                             GetPublisherInfoCallback callback);
 
   void SavePublisherInfo(uint64_t window_id,
                          mojom::PublisherInfoPtr publisher_info,
-                         ledger::LegacyResultCallback callback);
+                         LegacyResultCallback callback);
 
   static std::string GetShareURL(
       const base::flat_map<std::string, std::string>& args);
@@ -112,7 +110,7 @@ class Publisher {
 
   void OnGetPanelPublisherInfo(const mojom::Result result,
                                mojom::PublisherInfoPtr info,
-                               ledger::GetPublisherInfoCallback callback);
+                               GetPublisherInfoCallback callback);
 
   void onPublisherActivitySave(uint64_t windowId,
                                const mojom::VisitData& visit_data,
@@ -120,7 +118,7 @@ class Publisher {
                                mojom::PublisherInfoPtr info);
 
   void OnGetActivityInfo(std::vector<mojom::PublisherInfoPtr> list,
-                         ledger::PublisherInfoCallback callback,
+                         PublisherInfoCallback callback,
                          const std::string& publisher_key);
 
   void SaveVisitInternal(const mojom::PublisherStatus,
@@ -129,7 +127,7 @@ class Publisher {
                          const uint64_t duration,
                          const bool first_visit,
                          uint64_t window_id,
-                         const ledger::PublisherInfoCallback callback,
+                         const PublisherInfoCallback callback,
                          mojom::Result result,
                          mojom::PublisherInfoPtr publisher_info);
 
@@ -139,7 +137,7 @@ class Publisher {
                                   const uint64_t duration,
                                   const bool first_visit,
                                   uint64_t window_id,
-                                  const ledger::PublisherInfoCallback callback);
+                                  const PublisherInfoCallback callback);
 
   void onFetchFavIcon(const std::string& publisher_key,
                       uint64_t window_id,
@@ -151,7 +149,7 @@ class Publisher {
                                 const std::string& favicon_url,
                                 uint64_t window_id);
 
-  void OnSetPublisherExclude(ledger::ResultCallback callback,
+  void OnSetPublisherExclude(ResultCallback callback,
                              mojom::PublisherExclude exclude,
                              mojom::Result result,
                              mojom::PublisherInfoPtr publisher_info);
@@ -174,9 +172,9 @@ class Publisher {
 
   void OnGetPublisherBanner(mojom::ServerPublisherInfoPtr info,
                             const std::string& publisher_key,
-                            ledger::PublisherBannerCallback callback);
+                            PublisherBannerCallback callback);
 
-  void OnGetPublisherBannerPublisher(ledger::PublisherBannerCallback callback,
+  void OnGetPublisherBannerPublisher(PublisherBannerCallback callback,
                                      const mojom::PublisherBanner& banner,
                                      mojom::Result result,
                                      mojom::PublisherInfoPtr publisher_info);
@@ -186,15 +184,14 @@ class Publisher {
       uint64_t window_id,
       const std::string& publisher_key,
       const mojom::VisitData& visit_data,
-      ledger::LegacyResultCallback callback);
+      LegacyResultCallback callback);
 
   mojom::PublisherStatus ParsePublisherStatus(const std::string& status);
 
-  void OnServerPublisherInfoLoaded(
-      mojom::ServerPublisherInfoPtr server_info,
-      const std::string& publisher_key,
-      bool use_prefix_list,
-      client::GetServerPublisherInfoCallback callback);
+  void OnServerPublisherInfoLoaded(mojom::ServerPublisherInfoPtr server_info,
+                                   const std::string& publisher_key,
+                                   bool use_prefix_list,
+                                   GetServerPublisherInfoCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;
@@ -207,6 +204,6 @@ class Publisher {
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PUBLISHER_H_

@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace bitflyer {
 
@@ -19,11 +19,11 @@ const char kUrlStaging[] = BUILDFLAG(BITFLYER_STAGING_URL);
 const char kUrlProduction[] = "https://bitflyer.com";
 
 std::string GetClientId() {
-  return ::ledger::bitflyer::GetClientId();
+  return core::bitflyer::GetClientId();
 }
 
 std::string GetClientSecret() {
-  return ::ledger::bitflyer::GetClientSecret();
+  return core::bitflyer::GetClientSecret();
 }
 
 std::vector<std::string> RequestAuthorization(const std::string& token) {
@@ -50,7 +50,7 @@ std::string GetServerUrl(const std::string& path) {
   DCHECK(!path.empty());
 
   std::string url;
-  if (ledger::_environment == mojom::Environment::PRODUCTION) {
+  if (_environment == mojom::Environment::PRODUCTION) {
     url = kUrlProduction;
   } else {
     url = kUrlStaging;
@@ -61,4 +61,4 @@ std::string GetServerUrl(const std::string& path) {
 
 }  // namespace bitflyer
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

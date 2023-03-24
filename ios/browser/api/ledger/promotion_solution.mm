@@ -6,7 +6,7 @@
 #import "promotion_solution.h"
 
 #include "base/logging.h"
-#import "ledger.mojom.objc.h"
+#import "rewards_core.mojom.objc.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

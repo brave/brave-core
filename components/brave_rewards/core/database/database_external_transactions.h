@@ -11,7 +11,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger::database {
+namespace brave_rewards::core::database {
 
 enum class GetExternalTransactionError { kDatabaseError, kTransactionNotFound };
 
@@ -24,17 +24,17 @@ class DatabaseExternalTransactions : public DatabaseTable {
   explicit DatabaseExternalTransactions(LedgerImpl*);
   ~DatabaseExternalTransactions() override;
 
-  void Insert(mojom::ExternalTransactionPtr, ledger::ResultCallback);
+  void Insert(mojom::ExternalTransactionPtr, ResultCallback);
   void GetTransaction(const std::string& contribution_id,
                       const std::string& destination,
                       GetExternalTransactionCallback);
 
  private:
-  void OnInsert(ledger::ResultCallback, mojom::DBCommandResponsePtr);
+  void OnInsert(ResultCallback, mojom::DBCommandResponsePtr);
   void OnGetTransaction(GetExternalTransactionCallback,
                         mojom::DBCommandResponsePtr);
 };
 
-}  // namespace ledger::database
+}  // namespace brave_rewards::core::database
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_EXTERNAL_TRANSACTIONS_H_

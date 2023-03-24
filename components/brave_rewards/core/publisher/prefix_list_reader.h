@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/publisher/prefix_iterator.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace publisher {
 
 // Parses publisher prefix list files and exposes iterators
@@ -63,6 +63,6 @@ class PrefixListReader {
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_LIST_READER_H_

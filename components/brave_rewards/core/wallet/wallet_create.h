@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace wallet {
@@ -33,6 +33,6 @@ class WalletCreate {
 };
 
 }  // namespace wallet
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_CREATE_H_

@@ -19,30 +19,29 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "crypto/random.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace bitflyer {
 
 std::string GetClientId() {
-  return ledger::_environment == mojom::Environment::PRODUCTION
+  return _environment == mojom::Environment::PRODUCTION
              ? BUILDFLAG(BITFLYER_CLIENT_ID)
              : BUILDFLAG(BITFLYER_STAGING_CLIENT_ID);
 }
 
 std::string GetClientSecret() {
-  return ledger::_environment == mojom::Environment::PRODUCTION
+  return _environment == mojom::Environment::PRODUCTION
              ? BUILDFLAG(BITFLYER_CLIENT_SECRET)
              : BUILDFLAG(BITFLYER_STAGING_CLIENT_SECRET);
 }
 
 std::string GetUrl() {
-  return ledger::_environment == mojom::Environment::PRODUCTION ? kUrlProduction
-                                                                : kUrlStaging;
+  return _environment == mojom::Environment::PRODUCTION ? kUrlProduction
+                                                        : kUrlStaging;
 }
 
 std::string GetFeeAddress() {
-  return ledger::_environment == mojom::Environment::PRODUCTION
-             ? kFeeAddressProduction
-             : kFeeAddressStaging;
+  return _environment == mojom::Environment::PRODUCTION ? kFeeAddressProduction
+                                                        : kFeeAddressStaging;
 }
 
 std::string GetLoginUrl(const std::string& state,
@@ -95,4 +94,4 @@ mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
 }
 
 }  // namespace bitflyer
-}  // namespace ledger
+}  // namespace brave_rewards::core

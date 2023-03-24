@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace wallet {
@@ -31,7 +31,7 @@ class Wallet {
   void CreateWalletIfNecessary(absl::optional<std::string>&& geo_country,
                                CreateRewardsWalletCallback callback);
 
-  void FetchBalance(ledger::FetchBalanceCallback callback);
+  void FetchBalance(FetchBalanceCallback callback);
 
   mojom::RewardsWalletPtr GetWallet();
   mojom::RewardsWalletPtr GetWallet(bool* corrupted);
@@ -46,6 +46,6 @@ class Wallet {
 };
 
 }  // namespace wallet
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_WALLET_H_

@@ -21,7 +21,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -30,22 +30,22 @@ class PostDevicecheckTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostDevicecheck> devicecheck_;
 
   PostDevicecheckTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     devicecheck_ = std::make_unique<PostDevicecheck>(mock_ledger_impl_.get());
   }
 };
 
 TEST_F(PostDevicecheckTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -65,8 +65,8 @@ TEST_F(PostDevicecheckTest, ServerOK) {
 
 TEST_F(PostDevicecheckTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -84,8 +84,8 @@ TEST_F(PostDevicecheckTest, ServerError400) {
 
 TEST_F(PostDevicecheckTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
@@ -103,8 +103,8 @@ TEST_F(PostDevicecheckTest, ServerError401) {
 
 TEST_F(PostDevicecheckTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
@@ -122,4 +122,4 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

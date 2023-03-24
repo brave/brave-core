@@ -16,7 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -39,9 +39,8 @@ DatabaseRecurringTip::DatabaseRecurringTip(LedgerImpl* ledger)
 
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 
-void DatabaseRecurringTip::InsertOrUpdate(
-    mojom::RecurringTipPtr info,
-    ledger::LegacyResultCallback callback) {
+void DatabaseRecurringTip::InsertOrUpdate(mojom::RecurringTipPtr info,
+                                          LegacyResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -179,8 +178,7 @@ void DatabaseRecurringTip::GetNextMonthlyContributionTime(
                             base::BindOnce(on_completed, std::move(callback)));
 }
 
-void DatabaseRecurringTip::GetAllRecords(
-    ledger::PublisherInfoListCallback callback) {
+void DatabaseRecurringTip::GetAllRecords(PublisherInfoListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -215,9 +213,8 @@ void DatabaseRecurringTip::GetAllRecords(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseRecurringTip::OnGetAllRecords(
-    mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+void DatabaseRecurringTip::OnGetAllRecords(mojom::DBCommandResponsePtr response,
+                                           PublisherInfoListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -254,7 +251,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
 }
 
 void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
-                                        ledger::LegacyResultCallback callback) {
+                                        LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -280,4 +277,4 @@ void DatabaseRecurringTip::DeleteRecord(const std::string& publisher_key,
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

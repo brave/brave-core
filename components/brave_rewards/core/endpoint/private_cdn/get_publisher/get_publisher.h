@@ -22,7 +22,7 @@
 // See
 // https://github.com/brave/brave-core/blob/master/components/brave_rewards/core/publisher/protos/channel_response.proto
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -59,6 +59,6 @@ class GetPublisher {
 
 }  // namespace private_cdn
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PRIVATE_CDN_GET_PUBLISHER_GET_PUBLISHER_H_

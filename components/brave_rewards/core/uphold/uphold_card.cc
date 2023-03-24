@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 UpholdCard::UpholdCard(LedgerImpl* ledger)
     : uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {}
@@ -85,4 +85,4 @@ void UpholdCard::OnUpdateBATCardSettings(CreateCardCallback callback,
   std::move(callback).Run(mojom::Result::LEDGER_OK, std::move(id));
 }
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold

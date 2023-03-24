@@ -10,11 +10,11 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class MockLedgerImpl : public LedgerImpl {
  public:
-  explicit MockLedgerImpl(ledger::LedgerClient* client);
+  explicit MockLedgerImpl(LedgerClient* client);
 
   ~MockLedgerImpl() override;
 
@@ -22,9 +22,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(promotion, promotion::Promotion*());
 
-  MOCK_METHOD2(Initialize, void(bool, ledger::LegacyResultCallback));
+  MOCK_METHOD2(Initialize, void(bool, LegacyResultCallback));
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_MOCK_H_

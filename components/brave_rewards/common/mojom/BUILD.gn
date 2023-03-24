@@ -11,44 +11,43 @@ mojom("mojom") {
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-mojom("ledger_interfaces") {
+mojom("core_interfaces") {
   generate_java = true
   sources = [
-    "ledger.mojom",
-    "ledger_database.mojom",
-    "ledger_endpoints.mojom",
+    "core_database.mojom",
+    "core_endpoints.mojom",
+    "rewards_core.mojom",
   ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
 }
 
-mojom("ledger_types") {
+mojom("core_types") {
   generate_java = true
-  sources = [ "ledger_types.mojom" ]
+  sources = [ "rewards_core_types.mojom" ]
 
   cpp_typemaps = [
     {
       types = [
         {
-          mojom = "ledger.mojom.ConnectExternalWalletResult"
-          cpp =
-              "base::expected<void, ledger::mojom::ConnectExternalWalletError>"
+          mojom = "brave_rewards.mojom.ConnectExternalWalletResult"
+          cpp = "base::expected<void, brave_rewards::mojom::ConnectExternalWalletError>"
           move_only = true
         },
         {
-          mojom = "ledger.mojom.FetchBalanceResult"
-          cpp = "base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>"
+          mojom = "brave_rewards.mojom.FetchBalanceResult"
+          cpp = "base::expected<brave_rewards::mojom::BalancePtr, brave_rewards::mojom::FetchBalanceError>"
           move_only = true
         },
         {
-          mojom = "ledger.mojom.GetExternalWalletResult"
-          cpp = "base::expected<ledger::mojom::ExternalWalletPtr, ledger::mojom::GetExternalWalletError>"
+          mojom = "brave_rewards.mojom.GetExternalWalletResult"
+          cpp = "base::expected<brave_rewards::mojom::ExternalWalletPtr, brave_rewards::mojom::GetExternalWalletError>"
           move_only = true
         },
       ]
 
-      traits_headers = [ "ledger_types_mojom_traits.h" ]
-      traits_sources = [ "ledger_types_mojom_traits.cc" ]
+      traits_headers = [ "core_types_mojom_traits.h" ]
+      traits_sources = [ "core_types_mojom_traits.cc" ]
     },
   ]
 }

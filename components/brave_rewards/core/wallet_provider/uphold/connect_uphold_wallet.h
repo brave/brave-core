@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  public:
@@ -27,23 +27,22 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
  private:
   const char* WalletType() const override;
 
-  void Authorize(OAuthInfo&&,
-                 ledger::ConnectExternalWalletCallback) const override;
+  void Authorize(OAuthInfo&&, ConnectExternalWalletCallback) const override;
 
-  void OnAuthorize(ledger::ConnectExternalWalletCallback,
+  void OnAuthorize(ConnectExternalWalletCallback,
                    endpoints::PostOAuthUphold::Result&&) const;
 
-  void OnGetUser(ledger::ConnectExternalWalletCallback,
+  void OnGetUser(ConnectExternalWalletCallback,
                  const std::string& access_token,
                  mojom::Result,
                  const User&) const;
 
-  void OnGetCapabilities(ledger::ConnectExternalWalletCallback,
+  void OnGetCapabilities(ConnectExternalWalletCallback,
                          const std::string& access_token,
                          mojom::Result,
-                         ledger::uphold::Capabilities) const;
+                         uphold::Capabilities) const;
 
-  void OnCreateCard(ledger::ConnectExternalWalletCallback,
+  void OnCreateCard(ConnectExternalWalletCallback,
                     const std::string& access_token,
                     mojom::Result,
                     std::string&& id) const;
@@ -57,6 +56,6 @@ class ConnectUpholdWallet : public wallet_provider::ConnectExternalWallet {
   base::RepeatingTimer eligibility_checker_;
 };
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_WALLET_PROVIDER_UPHOLD_CONNECT_UPHOLD_WALLET_H_

@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 
 BitflyerServer::BitflyerServer(LedgerImpl* ledger)
@@ -25,4 +25,4 @@ bitflyer::PostOauth* BitflyerServer::post_oauth() const {
 }
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

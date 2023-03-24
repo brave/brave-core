@@ -16,24 +16,26 @@
 
 - (void)fetchFavIcon:(const std::string&)url
           faviconKey:(const std::string&)favicon_key
-            callback:(ledger::client::FetchIconCallback)callback;
-- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback;
-- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback;
-- (void)loadURL:(ledger::mojom::UrlRequestPtr)request
-       callback:(ledger::client::LoadURLCallback)callback;
+            callback:(brave_rewards::core::FetchIconCallback)callback;
+- (void)loadLedgerState:(brave_rewards::core::OnLoadCallback)callback;
+- (void)loadPublisherState:(brave_rewards::core::OnLoadCallback)callback;
+- (void)loadURL:(brave_rewards::mojom::UrlRequestPtr)request
+       callback:(brave_rewards::core::LoadURLCallback)callback;
 - (void)log:(const char*)file
             line:(const int)line
     verboseLevel:(const int)verbose_level
          message:(const std::string&)message;
-- (void)onPanelPublisherInfo:(ledger::mojom::Result)result
-               publisherInfo:(ledger::mojom::PublisherInfoPtr)publisher_info
+- (void)onPanelPublisherInfo:(brave_rewards::mojom::Result)result
+               publisherInfo:
+                   (brave_rewards::mojom::PublisherInfoPtr)publisher_info
                     windowId:(uint64_t)windowId;
-- (void)onReconcileComplete:(ledger::mojom::Result)result
-               contribution:(ledger::mojom::ContributionInfoPtr)contribution;
+- (void)onReconcileComplete:(brave_rewards::mojom::Result)result
+               contribution:
+                   (brave_rewards::mojom::ContributionInfoPtr)contribution;
 - (void)publisherListNormalized:
-    (std::vector<ledger::mojom::PublisherInfoPtr>)list;
+    (std::vector<brave_rewards::mojom::PublisherInfoPtr>)list;
 - (std::string)URIEncode:(const std::string&)value;
-- (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
+- (void)onContributeUnverifiedPublishers:(brave_rewards::mojom::Result)result
                             publisherKey:(const std::string&)publisher_key
                            publisherName:(const std::string&)publisher_name;
 - (void)setBooleanState:(const std::string&)name value:(bool)value;
@@ -56,24 +58,25 @@
 - (std::string)getLegacyWallet;
 - (void)showNotification:(const std::string&)type
                     args:(const std::vector<std::string>&)args
-                callback:(ledger::client::LegacyResultCallback)callback;
+                callback:(brave_rewards::core::LegacyResultCallback)callback;
 - (bool)getBooleanOption:(const std::string&)name;
 - (int)getIntegerOption:(const std::string&)name;
 - (double)getDoubleOption:(const std::string&)name;
 - (std::string)getStringOption:(const std::string&)name;
 - (int64_t)getInt64Option:(const std::string&)name;
 - (uint64_t)getUint64Option:(const std::string&)name;
-- (ledger::mojom::ClientInfoPtr)getClientInfo;
+- (brave_rewards::mojom::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
 - (void)reconcileStampReset;
-- (void)runDBTransaction:(ledger::mojom::DBTransactionPtr)transaction
-                callback:(ledger::client::RunDBTransactionCallback)callback;
-- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
-- (void)pendingContributionSaved:(const ledger::mojom::Result)result;
+- (void)runDBTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
+                callback:
+                    (brave_rewards::core::RunDBTransactionCallback)callback;
+- (void)getCreateScript:(brave_rewards::core::GetCreateScriptCallback)callback;
+- (void)pendingContributionSaved:(const brave_rewards::mojom::Result)result;
 - (void)clearAllNotifications;
 // TODO(zenparsing): This method is no longer called and should be removed.
 - (void)walletDisconnected:(const std::string&)wallet_type;
-- (void)deleteLog:(ledger::client::LegacyResultCallback)callback;
+- (void)deleteLog:(brave_rewards::core::LegacyResultCallback)callback;
 - (absl::optional<std::string>)encryptString:(const std::string&)value;
 - (absl::optional<std::string>)decryptString:(const std::string&)value;
 

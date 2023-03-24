@@ -15,11 +15,11 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/callback_forward.h"
 #include "base/types/expected.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core_types.mojom.h"
 #include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 extern mojom::Environment _environment;
 extern bool is_debug;
@@ -367,6 +367,6 @@ class Ledger {
                               GetDrainCallback callback) = 0;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_H_

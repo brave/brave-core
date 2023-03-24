@@ -13,7 +13,7 @@
 
 @protocol LedgerClientBridge;
 
-class LedgerClientIOS : public ledger::LedgerClient {
+class LedgerClientIOS : public brave_rewards::core::LedgerClient {
  public:
   explicit LedgerClientIOS(id<LedgerClientBridge> bridge);
   ~LedgerClientIOS() override;
@@ -23,28 +23,30 @@ class LedgerClientIOS : public ledger::LedgerClient {
 
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
-                    ledger::client::FetchIconCallback callback) override;
-  void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
-  void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
-               ledger::client::LoadURLCallback callback) override;
+                    brave_rewards::core::FetchIconCallback callback) override;
+  void LoadLedgerState(brave_rewards::core::OnLoadCallback callback) override;
+  void LoadPublisherState(
+      brave_rewards::core::OnLoadCallback callback) override;
+  void LoadURL(brave_rewards::mojom::UrlRequestPtr request,
+               brave_rewards::core::LoadURLCallback callback) override;
   void Log(const char* file,
            const int line,
            const int verbose_level,
            const std::string& message) override;
-  void OnPanelPublisherInfo(ledger::mojom::Result result,
-                            ledger::mojom::PublisherInfoPtr publisher_info,
-                            uint64_t windowId) override;
+  void OnPanelPublisherInfo(
+      brave_rewards::mojom::Result result,
+      brave_rewards::mojom::PublisherInfoPtr publisher_info,
+      uint64_t windowId) override;
   void OnPublisherRegistryUpdated() override;
   void OnPublisherUpdated(const std::string& publisher_id) override;
   void OnReconcileComplete(
-      ledger::mojom::Result result,
-      ledger::mojom::ContributionInfoPtr contribution) override;
+      brave_rewards::mojom::Result result,
+      brave_rewards::mojom::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(
-      std::vector<ledger::mojom::PublisherInfoPtr> list) override;
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;
   std::string URIEncode(const std::string& value) override;
   void OnContributeUnverifiedPublishers(
-      ledger::mojom::Result result,
+      brave_rewards::mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name, bool value) override;
@@ -66,29 +68,31 @@ class LedgerClientIOS : public ledger::LedgerClient {
   base::Time GetTimeState(const std::string& name) const override;
   void ClearState(const std::string& name) override;
   std::string GetLegacyWallet() override;
-  void ShowNotification(const std::string& type,
-                        const std::vector<std::string>& args,
-                        ledger::client::LegacyResultCallback callback) override;
+  void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      brave_rewards::core::LegacyResultCallback callback) override;
   bool GetBooleanOption(const std::string& name) const override;
   int GetIntegerOption(const std::string& name) const override;
   double GetDoubleOption(const std::string& name) const override;
   std::string GetStringOption(const std::string& name) const override;
   int64_t GetInt64Option(const std::string& name) const override;
   uint64_t GetUint64Option(const std::string& name) const override;
-  ledger::mojom::ClientInfoPtr GetClientInfo() override;
+  brave_rewards::mojom::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
   void RunDBTransaction(
-      ledger::mojom::DBTransactionPtr transaction,
-      ledger::client::RunDBTransactionCallback callback) override;
+      brave_rewards::mojom::DBTransactionPtr transaction,
+      brave_rewards::core::RunDBTransactionCallback callback) override;
   void GetCreateScript(
-      ledger::client::GetCreateScriptCallback callback) override;
-  void PendingContributionSaved(const ledger::mojom::Result result) override;
+      brave_rewards::core::GetCreateScriptCallback callback) override;
+  void PendingContributionSaved(
+      const brave_rewards::mojom::Result result) override;
   void ClearAllNotifications() override;
   void ExternalWalletConnected() const override;
   void ExternalWalletLoggedOut() const override;
   void ExternalWalletReconnected() const override;
-  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
+  void DeleteLog(brave_rewards::core::LegacyResultCallback callback) override;
   absl::optional<std::string> EncryptString(const std::string& value) override;
   absl::optional<std::string> DecryptString(const std::string& value) override;
 };

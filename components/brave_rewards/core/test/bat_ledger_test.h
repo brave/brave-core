@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 // Base class for unit tests. |BATLedgerTest| provides a task environment and a
 // test implementation of |LedgerClient|.
@@ -47,6 +47,6 @@ class BATLedgerTest : public testing::Test {
   LedgerImpl ledger_{&client_};
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_TEST_BAT_LEDGER_TEST_H_

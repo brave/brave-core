@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 PostCreateTransaction::PostCreateTransaction(
     LedgerImpl* ledger,
     std::string&& token,
@@ -30,4 +30,4 @@ std::string PostCreateTransaction::ContentType() const {
   return kApplicationJson;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

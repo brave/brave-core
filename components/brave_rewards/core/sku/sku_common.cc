@@ -11,7 +11,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace sku {
 
 SKUCommon::SKUCommon(LedgerImpl* ledger)
@@ -24,14 +24,14 @@ SKUCommon::SKUCommon(LedgerImpl* ledger)
 SKUCommon::~SKUCommon() = default;
 
 void SKUCommon::CreateOrder(const std::vector<mojom::SKUOrderItem>& items,
-                            ledger::SKUOrderCallback callback) {
+                            SKUOrderCallback callback) {
   order_->Create(items, callback);
 }
 
 void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
                                   const std::string& destination,
                                   const std::string& wallet_type,
-                                  ledger::SKUOrderCallback callback) {
+                                  SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -46,7 +46,7 @@ void SKUCommon::CreateTransaction(mojom::SKUOrderPtr order,
 
 void SKUCommon::OnTransactionCompleted(const mojom::Result result,
                                        const std::string& order_id,
-                                       ledger::SKUOrderCallback callback) {
+                                       SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order status was not updated");
     callback(result, "");
@@ -57,7 +57,7 @@ void SKUCommon::OnTransactionCompleted(const mojom::Result result,
 }
 
 void SKUCommon::SendExternalTransaction(const std::string& order_id,
-                                        ledger::SKUOrderCallback callback) {
+                                        SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -73,7 +73,7 @@ void SKUCommon::SendExternalTransaction(const std::string& order_id,
 void SKUCommon::GetSKUTransactionByOrderId(
     base::expected<mojom::SKUTransactionPtr, database::GetSKUTransactionError>
         result,
-    ledger::SKUOrderCallback callback) {
+    SKUOrderCallback callback) {
   const auto transaction = std::move(result).value_or(nullptr);
   if (!transaction) {
     BLOG(0,
@@ -89,4 +89,4 @@ void SKUCommon::GetSKUTransactionByOrderId(
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core

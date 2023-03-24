@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace contribution {
 
 mojom::ReportType GetReportTypeFromRewardsType(const mojom::RewardsType type) {
@@ -101,4 +101,4 @@ int32_t GetVotesFromAmount(const double amount) {
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core

@@ -63,15 +63,15 @@ class TipMessageHandler : public WebUIMessageHandler,
                              bool success) override;
 
   void OnPendingContributionSaved(RewardsService* rewards_service,
-                                  ledger::mojom::Result result) override;
+                                  brave_rewards::mojom::Result result) override;
 
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::mojom::Result result,
+      const brave_rewards::mojom::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::mojom::RewardsType type,
-      const ledger::mojom::ContributionProcessor processor) override;
+      const brave_rewards::mojom::RewardsType type,
+      const brave_rewards::mojom::ContributionProcessor processor) override;
 
   void OnUnblindedTokensReady(RewardsService* rewards_service) override;
 
@@ -89,25 +89,26 @@ class TipMessageHandler : public WebUIMessageHandler,
   void FetchBalance(const base::Value::List& args);
 
   // Rewards service callbacks
-  void GetUserTypeCallback(ledger::mojom::UserType user_type);
+  void GetUserTypeCallback(brave_rewards::mojom::UserType user_type);
 
-  void OnTipCallback(double amount, ledger::mojom::Result result);
+  void OnTipCallback(double amount, brave_rewards::mojom::Result result);
 
   void GetReconcileStampCallback(uint64_t reconcile_stamp);
 
   void GetRecurringTipsCallback(
-      std::vector<ledger::mojom::PublisherInfoPtr> list);
+      std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
 
   void OnGetExternalWallet(GetExternalWalletResult result);
 
-  void GetPublisherBannerCallback(ledger::mojom::PublisherBannerPtr banner);
+  void GetPublisherBannerCallback(
+      brave_rewards::mojom::PublisherBannerPtr banner);
 
   void GetShareURLCallback(const std::string& url);
 
   void FetchBalanceCallback(FetchBalanceResult result);
 
   void GetRewardsParametersCallback(
-      ledger::mojom::RewardsParametersPtr parameters);
+      brave_rewards::mojom::RewardsParametersPtr parameters);
 
   RewardsService* rewards_service_ = nullptr;     // NOT OWNED
   brave_ads::AdsService* ads_service_ = nullptr;  // NOT OWNED
@@ -189,18 +190,18 @@ void TipMessageHandler::OnRecurringTipSaved(RewardsService* rewards_service,
 
 void TipMessageHandler::OnPendingContributionSaved(
     RewardsService* rewards_service,
-    ledger::mojom::Result result) {
+    brave_rewards::mojom::Result result) {
   FireWebUIListener("pendingContributionSaved",
                     base::Value(static_cast<int>(result)));
 }
 
 void TipMessageHandler::OnReconcileComplete(
     RewardsService* rewards_service,
-    const ledger::mojom::Result result,
+    const brave_rewards::mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::mojom::RewardsType type,
-    const ledger::mojom::ContributionProcessor processor) {
+    const brave_rewards::mojom::RewardsType type,
+    const brave_rewards::mojom::ContributionProcessor processor) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -263,7 +264,8 @@ void TipMessageHandler::GetUserType(const base::Value::List& args) {
       &TipMessageHandler::GetUserTypeCallback, weak_factory_.GetWeakPtr()));
 }
 
-void TipMessageHandler::GetUserTypeCallback(ledger::mojom::UserType user_type) {
+void TipMessageHandler::GetUserTypeCallback(
+    brave_rewards::mojom::UserType user_type) {
   FireWebUIListener("userTypeUpdated",
                     base::Value(static_cast<int>(user_type)));
 }
@@ -290,7 +292,7 @@ void TipMessageHandler::OnTip(const base::Value::List& args) {
 
   if (recurring && amount <= 0) {
     rewards_service_->RemoveRecurringTip(publisher_key);
-    OnTipCallback(0, ledger::mojom::Result::LEDGER_OK);
+    OnTipCallback(0, brave_rewards::mojom::Result::LEDGER_OK);
   } else if (amount > 0) {
     rewards_service_->OnTip(publisher_key, amount, recurring,
                             base::BindOnce(&TipMessageHandler::OnTipCallback,
@@ -312,15 +314,15 @@ void TipMessageHandler::TweetTip(const base::Value::List& args) {
   CHECK_EQ(args.size(), 3U);
   const std::string name = args[0].GetString();
   const std::string tweet_id = args[1].GetString();
-  const ledger::mojom::PublisherStatus status =
-      static_cast<ledger::mojom::PublisherStatus>(args[2].GetInt());
+  const brave_rewards::mojom::PublisherStatus status =
+      static_cast<brave_rewards::mojom::PublisherStatus>(args[2].GetInt());
 
   if (name.empty() || !rewards_service_) {
     return;
   }
 
   std::string comment;
-  if (status == ledger::mojom::PublisherStatus::NOT_VERIFIED) {
+  if (status == brave_rewards::mojom::PublisherStatus::NOT_VERIFIED) {
     const std::u16string date =
         base::TimeFormatShortDate(base::Time::Now() + base::Days(90));
     const std::u16string hashtag = u"%23";
@@ -372,7 +374,7 @@ void TipMessageHandler::GetRecurringTips(const base::Value::List& args) {
 }
 
 void TipMessageHandler::GetRewardsParametersCallback(
-    ledger::mojom::RewardsParametersPtr parameters) {
+    brave_rewards::mojom::RewardsParametersPtr parameters) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -409,7 +411,7 @@ void TipMessageHandler::GetRewardsParametersCallback(
 }
 
 void TipMessageHandler::GetRecurringTipsCallback(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -426,7 +428,7 @@ void TipMessageHandler::GetRecurringTipsCallback(
 }
 
 void TipMessageHandler::GetPublisherBannerCallback(
-    ledger::mojom::PublisherBannerPtr banner) {
+    brave_rewards::mojom::PublisherBannerPtr banner) {
   if (!IsJavascriptAllowed()) {
     return;
   }
@@ -454,9 +456,9 @@ void TipMessageHandler::GetPublisherBannerCallback(
 }
 
 void TipMessageHandler::OnTipCallback(double amount,
-                                      ledger::mojom::Result result) {
+                                      brave_rewards::mojom::Result result) {
   if (IsJavascriptAllowed()) {
-    result == ledger::mojom::Result::LEDGER_OK
+    result == brave_rewards::mojom::Result::LEDGER_OK
         ? FireWebUIListener("tipProcessed", base::Value(amount))
         : FireWebUIListener("tipFailed");
   }

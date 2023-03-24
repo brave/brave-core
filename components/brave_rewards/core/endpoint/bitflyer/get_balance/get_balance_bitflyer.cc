@@ -16,7 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace bitflyer {
 
@@ -101,7 +101,7 @@ void GetBalance::Request(const std::string& token,
 
 void GetBalance::OnRequest(GetBalanceCallback callback,
                            const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   mojom::Result result = CheckStatusCode(response.status_code);
 
@@ -117,4 +117,4 @@ void GetBalance::OnRequest(GetBalanceCallback callback,
 
 }  // namespace bitflyer
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

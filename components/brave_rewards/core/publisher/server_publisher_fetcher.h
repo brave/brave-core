@@ -14,12 +14,12 @@
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_server.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace publisher {
 
-using FetchCallbackVector = std::vector<client::GetServerPublisherInfoCallback>;
+using FetchCallbackVector = std::vector<GetServerPublisherInfoCallback>;
 
 // Fetches server publisher info and provides methods for determining
 // whether a server publisher info record is expired
@@ -38,7 +38,7 @@ class ServerPublisherFetcher {
 
   // Fetches server publisher info for the specified publisher key
   void Fetch(const std::string& publisher_key,
-             client::GetServerPublisherInfoCallback callback);
+             GetServerPublisherInfoCallback callback);
 
   // Purges expired records from the backing database
   void PurgeExpiredRecords();
@@ -59,6 +59,6 @@ class ServerPublisherFetcher {
 };
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_

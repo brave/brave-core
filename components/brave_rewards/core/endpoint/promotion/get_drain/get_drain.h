@@ -30,7 +30,7 @@
 //     “delayed”, “complete”)
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -55,6 +55,6 @@ class GetDrain {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_GET_DRAIN_GET_DRAIN_H_

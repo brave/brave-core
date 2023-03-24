@@ -20,7 +20,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 std::string FakeEncryption::EncryptString(const std::string& value) {
   return "ENCRYPTED:" + value;
@@ -82,11 +82,11 @@ void TestLedgerClient::OnReconcileComplete(
     const mojom::Result result,
     mojom::ContributionInfoPtr contribution) {}
 
-void TestLedgerClient::LoadLedgerState(client::OnLoadCallback callback) {
+void TestLedgerClient::LoadLedgerState(OnLoadCallback callback) {
   callback(mojom::Result::NO_LEDGER_STATE, "");
 }
 
-void TestLedgerClient::LoadPublisherState(client::OnLoadCallback callback) {
+void TestLedgerClient::LoadPublisherState(OnLoadCallback callback) {
   callback(mojom::Result::NO_PUBLISHER_STATE, "");
 }
 
@@ -101,7 +101,7 @@ void TestLedgerClient::OnPublisherUpdated(const std::string& publisher_id) {}
 
 void TestLedgerClient::FetchFavIcon(const std::string& url,
                                     const std::string& favicon_key,
-                                    client::FetchIconCallback callback) {
+                                    FetchIconCallback callback) {
   callback(true, favicon_key);
 }
 
@@ -110,7 +110,7 @@ std::string TestLedgerClient::URIEncode(const std::string& value) {
 }
 
 void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
-                               client::LoadURLCallback callback) {
+                               LoadURLCallback callback) {
   DCHECK(request);
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
@@ -275,8 +275,7 @@ std::string TestLedgerClient::GetLegacyWallet() {
 
 void TestLedgerClient::ShowNotification(const std::string& type,
                                         const std::vector<std::string>& args,
-                                        client::LegacyResultCallback callback) {
-}
+                                        LegacyResultCallback callback) {}
 
 mojom::ClientInfoPtr TestLedgerClient::GetClientInfo() {
   auto info = mojom::ClientInfo::New();
@@ -289,17 +288,15 @@ void TestLedgerClient::UnblindedTokensReady() {}
 
 void TestLedgerClient::ReconcileStampReset() {}
 
-void TestLedgerClient::RunDBTransaction(
-    mojom::DBTransactionPtr transaction,
-    client::RunDBTransactionCallback callback) {
+void TestLedgerClient::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                        RunDBTransactionCallback callback) {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&TestLedgerClient::RunDBTransactionAfterDelay,
                                 weak_factory_.GetWeakPtr(),
                                 std::move(transaction), std::move(callback)));
 }
 
-void TestLedgerClient::GetCreateScript(
-    client::GetCreateScriptCallback callback) {
+void TestLedgerClient::GetCreateScript(GetCreateScriptCallback callback) {
   callback("", 0);
 }
 
@@ -313,7 +310,7 @@ void TestLedgerClient::ExternalWalletLoggedOut() const {}
 
 void TestLedgerClient::ExternalWalletReconnected() const {}
 
-void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
+void TestLedgerClient::DeleteLog(LegacyResultCallback callback) {
   callback(mojom::Result::LEDGER_OK);
 }
 
@@ -344,7 +341,7 @@ void TestLedgerClient::SetLogCallbackForTesting(LogCallback callback) {
 }
 
 void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
-                                         client::LoadURLCallback callback) {
+                                         LoadURLCallback callback) {
   auto iter = base::ranges::find_if(network_results_, [&request](auto& result) {
     return request->url == result.url && request->method == result.method;
   });
@@ -366,9 +363,9 @@ void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
 
 void TestLedgerClient::RunDBTransactionAfterDelay(
     mojom::DBTransactionPtr transaction,
-    client::RunDBTransactionCallback callback) {
+    RunDBTransactionCallback callback) {
   auto response = ledger_database_.RunTransaction(std::move(transaction));
   std::move(callback).Run(std::move(response));
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

@@ -14,7 +14,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace contribution {
 
 Unverified::Unverified(LedgerImpl* ledger) : ledger_(ledger) {}
@@ -164,7 +164,7 @@ void Unverified::QueueSaved(const mojom::Result result,
     BLOG(1, "Queue was not saved");
   }
 
-  base::TimeDelta delay = ledger::is_testing
+  base::TimeDelta delay = is_testing
                               ? base::Seconds(2)
                               : util::GetRandomizedDelay(base::Seconds(45));
 
@@ -218,4 +218,4 @@ void Unverified::ProcessingCompleted() {
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core

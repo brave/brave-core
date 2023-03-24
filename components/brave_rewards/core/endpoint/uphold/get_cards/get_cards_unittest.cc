@@ -21,7 +21,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace uphold {
 
@@ -30,22 +30,22 @@ class GetCardsTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<GetCards> card_;
 
   GetCardsTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     card_ = std::make_unique<GetCards>(mock_ledger_impl_.get());
   }
 };
 
 TEST_F(GetCardsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -112,8 +112,8 @@ TEST_F(GetCardsTest, ServerOK) {
 
 TEST_F(GetCardsTest, CardNotFound) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -180,8 +180,8 @@ TEST_F(GetCardsTest, CardNotFound) {
 
 TEST_F(GetCardsTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
@@ -198,8 +198,8 @@ TEST_F(GetCardsTest, ServerError401) {
 
 TEST_F(GetCardsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
@@ -216,4 +216,4 @@ TEST_F(GetCardsTest, ServerErrorRandom) {
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

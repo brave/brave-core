@@ -10,7 +10,7 @@
 
 namespace android_util {
 
-ledger::mojom::ClientInfoPtr GetAndroidClientInfo();
+brave_rewards::mojom::ClientInfoPtr GetAndroidClientInfo();
 
 }  // namespace android_util
 

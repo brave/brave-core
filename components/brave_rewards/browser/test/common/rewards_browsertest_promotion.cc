@@ -11,15 +11,15 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace rewards_browsertest {
+namespace brave_rewards::test {
 
 RewardsBrowserTestPromotion::RewardsBrowserTestPromotion() = default;
 
 RewardsBrowserTestPromotion::~RewardsBrowserTestPromotion() = default;
 
 void RewardsBrowserTestPromotion::Initialize(
-      Browser* browser,
-      brave_rewards::RewardsServiceImpl* rewards_service) {
+    Browser* browser,
+    RewardsServiceImpl* rewards_service) {
   DCHECK(browser && rewards_service);
   browser_ = browser;
   rewards_service_ = rewards_service;
@@ -37,10 +37,10 @@ void RewardsBrowserTestPromotion::WaitForPromotionInitialization() {
 }
 
 void RewardsBrowserTestPromotion::OnFetchPromotions(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    const std::vector<ledger::mojom::PromotionPtr>& list) {
-  ASSERT_EQ(result, ledger::mojom::Result::LEDGER_OK);
+    RewardsService* rewards_service,
+    const mojom::Result result,
+    const std::vector<mojom::PromotionPtr>& list) {
+  ASSERT_EQ(result, mojom::Result::LEDGER_OK);
   initialized_ = true;
 
   if (wait_for_initialization_loop_) {
@@ -60,12 +60,11 @@ void RewardsBrowserTestPromotion::WaitForPromotionFinished(
 }
 
 void RewardsBrowserTestPromotion::OnPromotionFinished(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
-    ledger::mojom::PromotionPtr promotion) {
+    RewardsService* rewards_service,
+    const mojom::Result result,
+    mojom::PromotionPtr promotion) {
   if (should_succeed_) {
-    ASSERT_EQ(static_cast<ledger::mojom::Result>(result),
-              ledger::mojom::Result::LEDGER_OK);
+    ASSERT_EQ(static_cast<mojom::Result>(result), mojom::Result::LEDGER_OK);
   }
 
   finished_ = true;
@@ -86,14 +85,14 @@ void RewardsBrowserTestPromotion::WaitForUnblindedTokensReady() {
 }
 
 void RewardsBrowserTestPromotion::OnUnblindedTokensReady(
-    brave_rewards::RewardsService* rewards_service) {
+    RewardsService* rewards_service) {
   unblinded_tokens_ = true;
   if (wait_for_unblinded_tokens_loop_) {
     wait_for_unblinded_tokens_loop_->Quit();
   }
 }
 
-ledger::mojom::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
+mojom::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
   return promotion_->Clone();
 }
 
@@ -120,4 +119,4 @@ double RewardsBrowserTestPromotion::ClaimPromotionViaCode() {
   return 30;
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test

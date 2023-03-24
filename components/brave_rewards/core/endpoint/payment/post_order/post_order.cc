@@ -17,7 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace payment {
 
@@ -181,7 +181,7 @@ void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
 void PostOrder::OnRequest(const mojom::UrlResponse& response,
                           const std::vector<mojom::SKUOrderItem>& items,
                           PostOrderCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   mojom::Result result = CheckStatusCode(response.status_code);
 
@@ -197,4 +197,4 @@ void PostOrder::OnRequest(const mojom::UrlResponse& response,
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

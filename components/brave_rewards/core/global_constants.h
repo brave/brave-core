@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GLOBAL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GLOBAL_CONSTANTS_H_
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace constant {
 
 const char kWalletUphold[] = "uphold";
@@ -15,6 +15,6 @@ const char kWalletBitflyer[] = "bitflyer";
 const char kWalletGemini[] = "gemini";
 
 }  // namespace constant
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_GLOBAL_CONSTANTS_H_

@@ -10,7 +10,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace contribution {
@@ -32,5 +32,5 @@ class ContributionAC {
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_AC_H_

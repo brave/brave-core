@@ -19,16 +19,16 @@
 
 // npm run test -- brave_unit_tests --filter=LedgerDatabaseMigrationTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 using database::DatabaseMigration;
 
 class LedgerDatabaseMigrationTest : public testing::Test {
  public:
-  LedgerDatabaseMigrationTest() { ledger::is_testing = true; }
+  LedgerDatabaseMigrationTest() { is_testing = true; }
 
   ~LedgerDatabaseMigrationTest() override {
     DatabaseMigration::SetTargetVersionForTesting(0);
-    ledger::is_testing = false;
+    is_testing = false;
   }
 
  protected:
@@ -109,8 +109,7 @@ class LedgerDatabaseMigrationTest : public testing::Test {
 };
 
 TEST_F(LedgerDatabaseMigrationTest, SchemaCheck) {
-  DatabaseMigration::SetTargetVersionForTesting(
-      ledger::database::GetCurrentVersion());
+  DatabaseMigration::SetTargetVersionForTesting(database::GetCurrentVersion());
   InitializeLedger();
   std::string expected_schema = GetExpectedSchema();
   EXPECT_FALSE(expected_schema.empty());
@@ -834,4 +833,4 @@ TEST_F(LedgerDatabaseMigrationTest, Migration_38) {
       GetDB()->DoesColumnExist("recurring_donation", "next_contribution_at"));
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

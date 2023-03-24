@@ -9,14 +9,14 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 StateMigrationV8::StateMigrationV8(LedgerImpl* ledger) : ledger_(ledger) {}
 
 StateMigrationV8::~StateMigrationV8() = default;
 
-void StateMigrationV8::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV8::Migrate(LegacyResultCallback callback) {
   const bool enabled = ledger_->ledger_client()->GetBooleanState("enabled");
 
   if (!enabled) {
@@ -27,4 +27,4 @@ void StateMigrationV8::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core

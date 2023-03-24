@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/common/mojom/ledger_endpoints.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/core_endpoints.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 #include "brave/components/brave_rewards/core/endpoints/response_handler.h"
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoints {
@@ -50,6 +50,6 @@ class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
 };
 
 }  // namespace endpoints
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINTS_POST_CONNECT_POST_CONNECT_H_

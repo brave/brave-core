@@ -7,9 +7,9 @@
 
 #include "brave/components/brave_rewards/core/global_constants.h"
 
-using ledger::wallet_provider::GetExternalWallet;
+using brave_rewards::core::wallet_provider::GetExternalWallet;
 
-namespace ledger::bitflyer {
+namespace brave_rewards::core::bitflyer {
 
 GetBitFlyerWallet::GetBitFlyerWallet(LedgerImpl* ledger)
     : GetExternalWallet(ledger) {}
@@ -20,4 +20,4 @@ const char* GetBitFlyerWallet::WalletType() const {
   return constant::kWalletBitflyer;
 }
 
-}  // namespace ledger::bitflyer
+}  // namespace brave_rewards::core::bitflyer

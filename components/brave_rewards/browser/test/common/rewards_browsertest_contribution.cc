@@ -20,15 +20,15 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace rewards_browsertest {
+namespace brave_rewards::test {
 
 RewardsBrowserTestContribution::RewardsBrowserTestContribution() = default;
 
 RewardsBrowserTestContribution::~RewardsBrowserTestContribution() = default;
 
 void RewardsBrowserTestContribution::Initialize(
-      Browser* browser,
-      brave_rewards::RewardsServiceImpl* rewards_service) {
+    Browser* browser,
+    RewardsServiceImpl* rewards_service) {
   DCHECK(browser && rewards_service);
   browser_ = browser;
   rewards_service_ = rewards_service;
@@ -44,7 +44,7 @@ content::WebContents* RewardsBrowserTestContribution::contents() {
 void RewardsBrowserTestContribution::TipViaCode(
     const std::string& publisher_key,
     const double amount,
-    const ledger::mojom::PublisherStatus status,
+    const mojom::PublisherStatus status,
     const int32_t number_of_contributions,
     const bool recurring) {
   pending_tip_saved_ = false;
@@ -52,7 +52,7 @@ void RewardsBrowserTestContribution::TipViaCode(
   multiple_tip_reconcile_count_ = 0;
 
   bool should_contribute = number_of_contributions > 0;
-  auto publisher = ledger::mojom::PublisherInfo::New();
+  auto publisher = mojom::PublisherInfo::New();
   publisher->id = publisher_key;
   publisher->name = publisher_key;
   publisher->url = publisher_key;
@@ -80,7 +80,7 @@ void RewardsBrowserTestContribution::TipViaCode(
 
 void RewardsBrowserTestContribution::TipPublisher(
     const GURL& url,
-    rewards_browsertest_util::TipAction tip_action,
+    TipAction tip_action,
     int32_t number_of_contributions,
     int32_t selection,
     double custom_amount) {
@@ -105,11 +105,11 @@ void RewardsBrowserTestContribution::TipPublisher(
 
   if (custom_amount > 0) {
     amount = custom_amount;
-    rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents.get(), "[data-test-id=custom-tip-button]");
+    WaitForElementThenClick(site_banner_contents.get(),
+                            "[data-test-id=custom-tip-button]");
 
-    rewards_browsertest_util::WaitForElementToAppear(
-        site_banner_contents.get(), "[data-test-id=custom-amount-input]");
+    WaitForElementToAppear(site_banner_contents.get(),
+                           "[data-test-id=custom-amount-input]");
 
     constexpr char set_input_script[] = R"(
         const input = document.querySelector(
@@ -123,29 +123,26 @@ void RewardsBrowserTestContribution::TipPublisher(
                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                        content::ISOLATED_WORLD_ID_CONTENT_END));
 
-    rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents.get(), "[data-test-id=form-submit-button]");
+    WaitForElementThenClick(site_banner_contents.get(),
+                            "[data-test-id=form-submit-button]");
   } else {
-    amount = rewards_browsertest_util::GetSiteBannerTipOptions(
-        site_banner_contents.get())[selection];
+    amount = GetSiteBannerTipOptions(site_banner_contents.get())[selection];
 
     // Select the tip amount (default is 1.000 BAT)
     std::string amount_selector = base::StringPrintf(
         "[data-test-id=tip-amount-options] [data-option-index='%u'] button",
         selection);
 
-    rewards_browsertest_util::WaitForElementThenClick(
-        site_banner_contents.get(), amount_selector);
+    WaitForElementThenClick(site_banner_contents.get(), amount_selector);
   }
 
   // Send the tip
-  rewards_browsertest_util::WaitForElementThenClick(
-      site_banner_contents.get(), "[data-test-id=form-submit-button]");
+  WaitForElementThenClick(site_banner_contents.get(),
+                          "[data-test-id=form-submit-button]");
 
   // Signal that direct tip was made and update wallet with new
   // balance
-  if (tip_action == rewards_browsertest_util::TipAction::OneTime &&
-      !should_contribute) {
+  if (tip_action == TipAction::OneTime && !should_contribute) {
     WaitForPendingTipToBeSaved();
     UpdateContributionBalance(amount, should_contribute);
   }
@@ -153,7 +150,7 @@ void RewardsBrowserTestContribution::TipPublisher(
   // Wait for thank you banner to load
   ASSERT_TRUE(WaitForLoadStop(site_banner_contents.get()));
 
-  if (tip_action == rewards_browsertest_util::TipAction::SetMonthly) {
+  if (tip_action == TipAction::SetMonthly) {
     WaitForRecurringTipToBeSaved();
     // Trigger contribution process
     rewards_service_->StartContributionsForTesting();
@@ -162,8 +159,8 @@ void RewardsBrowserTestContribution::TipPublisher(
     if (should_contribute) {
       WaitForTipReconcileCompleted();
       const auto result = should_contribute
-                              ? ledger::mojom::Result::LEDGER_OK
-                              : ledger::mojom::Result::RECURRING_TABLE_EMPTY;
+                              ? mojom::Result::LEDGER_OK
+                              : mojom::Result::RECURRING_TABLE_EMPTY;
       ASSERT_EQ(tip_reconcile_status_, result);
     }
 
@@ -172,29 +169,26 @@ void RewardsBrowserTestContribution::TipPublisher(
     if (!should_contribute) {
       UpdateContributionBalance(amount, should_contribute);
     }
-  } else if (tip_action == rewards_browsertest_util::TipAction::OneTime &&
-      should_contribute) {
+  } else if (tip_action == TipAction::OneTime && should_contribute) {
     // Wait for reconciliation to complete
     WaitForMultipleTipReconcileCompleted(number_of_contributions);
     ASSERT_EQ(
         static_cast<int32_t>(multiple_tip_reconcile_status_.size()),
         number_of_contributions);
     for (const auto status : multiple_tip_reconcile_status_) {
-      ASSERT_EQ(status, ledger::mojom::Result::LEDGER_OK);
+      ASSERT_EQ(status, mojom::Result::LEDGER_OK);
     }
   }
 
   // Make sure that thank you banner shows correct publisher data
   {
-    rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents.get(), "body", "Thanks for the support!");
-    rewards_browsertest_util::WaitForElementToContain(
-        site_banner_contents.get(), "body",
-        base::StringPrintf("%.3f BAT", amount));
+    WaitForElementToContain(site_banner_contents.get(), "body",
+                            "Thanks for the support!");
+    WaitForElementToContain(site_banner_contents.get(), "body",
+                            base::StringPrintf("%.3f BAT", amount));
   }
 
-  const bool is_monthly =
-      tip_action == rewards_browsertest_util::TipAction::SetMonthly;
+  const bool is_monthly = tip_action == TipAction::SetMonthly;
 
   VerifyTip(amount, should_contribute, is_monthly);
 }
@@ -220,8 +214,8 @@ void RewardsBrowserTestContribution::VerifyTip(
         monthly ? "[data-test-id=rewards-summary-monthly]"
                 : "[data-test-id=rewards-summary-one-time]";
 
-    rewards_browsertest_util::WaitForElementToContain(
-        contents(), selector, base::StringPrintf("-%.2f BAT", amount));
+    WaitForElementToContain(contents(), selector,
+                            base::StringPrintf("-%.2f BAT", amount));
     return;
   }
 
@@ -232,19 +226,18 @@ void RewardsBrowserTestContribution::VerifyTip(
   // amount
   IsPendingBalanceCorrect();
 
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(), "[data-test-id=tip-total]", "0.000 BAT0.00 USD");
+  WaitForElementToEqual(contents(), "[data-test-id=tip-total]",
+                        "0.000 BAT0.00 USD");
 }
 
 void RewardsBrowserTestContribution::IsBalanceCorrect() {
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents(), "[data-test-id=rewards-balance-text]", GetStringBalance());
+  WaitForElementToEqual(contents(), "[data-test-id=rewards-balance-text]",
+                        GetStringBalance());
 }
 
 void RewardsBrowserTestContribution::IsPendingBalanceCorrect() {
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(), "[data-test-id=rewards-summary-pending]",
-      GetStringPendingBalance());
+  WaitForElementToContain(contents(), "[data-test-id=rewards-summary-pending]",
+                          GetStringPendingBalance());
 }
 
 void RewardsBrowserTestContribution::AddBalance(const double balance) {
@@ -256,7 +249,7 @@ double RewardsBrowserTestContribution::GetBalance() {
 }
 
 std::string RewardsBrowserTestContribution::GetExternalBalance() {
-  return rewards_browsertest_util::BalanceDoubleToString(external_balance_);
+  return BalanceDoubleToString(external_balance_);
 }
 
 void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
@@ -269,9 +262,9 @@ void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
 }
 
 void RewardsBrowserTestContribution::OnPendingContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result) {
-  if (result != ledger::mojom::Result::LEDGER_OK) {
+    RewardsService* rewards_service,
+    const mojom::Result result) {
+  if (result != mojom::Result::LEDGER_OK) {
     return;
   }
 
@@ -291,20 +284,20 @@ void RewardsBrowserTestContribution::WaitForTipReconcileCompleted() {
 }
 
 void RewardsBrowserTestContribution::OnReconcileComplete(
-    brave_rewards::RewardsService* rewards_service,
-    const ledger::mojom::Result result,
+    RewardsService* rewards_service,
+    const mojom::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::mojom::RewardsType type,
-    const ledger::mojom::ContributionProcessor processor) {
-  if (result == ledger::mojom::Result::LEDGER_OK) {
+    const mojom::RewardsType type,
+    const mojom::ContributionProcessor processor) {
+  if (result == mojom::Result::LEDGER_OK) {
     UpdateContributionBalance(
         amount,
         true,
         processor);
   }
 
-  if (type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE) {
+  if (type == mojom::RewardsType::AUTO_CONTRIBUTE) {
     ac_reconcile_completed_ = true;
     ac_reconcile_status_ = result;
     if (wait_for_ac_completed_loop_) {
@@ -323,9 +316,9 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
     }
   }
 
-  if (type == ledger::mojom::RewardsType::ONE_TIME_TIP ||
-      type == ledger::mojom::RewardsType::RECURRING_TIP) {
-    if (result == ledger::mojom::Result::LEDGER_OK) {
+  if (type == mojom::RewardsType::ONE_TIME_TIP ||
+      type == mojom::RewardsType::RECURRING_TIP) {
+    if (result == mojom::Result::LEDGER_OK) {
       reconciled_tip_total_ += amount;
     }
 
@@ -352,14 +345,14 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
 void RewardsBrowserTestContribution::UpdateContributionBalance(
     const double amount,
     const bool verified,
-    const ledger::mojom::ContributionProcessor processor) {
+    const mojom::ContributionProcessor processor) {
   if (verified) {
-    if (processor == ledger::mojom::ContributionProcessor::BRAVE_TOKENS) {
+    if (processor == mojom::ContributionProcessor::BRAVE_TOKENS) {
       balance_ -= amount;
       return;
     }
 
-    if (processor == ledger::mojom::ContributionProcessor::UPHOLD) {
+    if (processor == mojom::ContributionProcessor::UPHOLD) {
       external_balance_ -= amount;
       return;
     }
@@ -380,7 +373,7 @@ void RewardsBrowserTestContribution::WaitForRecurringTipToBeSaved() {
 }
 
 void RewardsBrowserTestContribution::OnRecurringTipSaved(
-    brave_rewards::RewardsService* rewards_service,
+    RewardsService* rewards_service,
     const bool success) {
   if (!success) {
     return;
@@ -426,8 +419,8 @@ void RewardsBrowserTestContribution::WaitForACReconcileCompleted() {
 }
 
 std::string RewardsBrowserTestContribution::GetStringBalance() {
-  const std::string balance = rewards_browsertest_util::BalanceDoubleToString(
-      balance_ + external_balance_);
+  const std::string balance =
+      BalanceDoubleToString(balance_ + external_balance_);
   return balance + " BAT";
 }
 
@@ -435,90 +428,86 @@ std::string RewardsBrowserTestContribution::GetStringPendingBalance() {
   return base::StringPrintf("%.2f BAT", pending_balance_);
 }
 
-ledger::mojom::Result RewardsBrowserTestContribution::GetACStatus() {
+mojom::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
 void RewardsBrowserTestContribution::SetUpGeminiWallet(
-    brave_rewards::RewardsServiceImpl* rewards_service,
+    RewardsServiceImpl* rewards_service,
     const double balance,
-    const ledger::mojom::WalletStatus status) {
-  if (!base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
+    const mojom::WalletStatus status) {
+  if (!base::FeatureList::IsEnabled(features::kGeminiFeature)) {
     return;
   }
   DCHECK(rewards_service);
-  browser_->profile()->GetPrefs()->SetString(
-      brave_rewards::prefs::kExternalWalletType, "gemini");
+  browser_->profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
+                                             "gemini");
   // we need brave wallet as well
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  CreateRewardsWallet(rewards_service_);
 
   external_balance_ = balance;
 
   base::Value::Dict wallet;
   wallet.Set("token", "token");
-  wallet.Set("address", rewards_browsertest_util::GetGeminiExternalAddress());
+  wallet.Set("address", GetGeminiExternalAddress());
   wallet.Set("status", static_cast<int>(status));
   wallet.Set("user_name", "Brave Test");
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  auto encrypted =
-      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  auto encrypted = EncryptPrefString(rewards_service_, json);
   ASSERT_TRUE(encrypted);
-  browser_->profile()->GetPrefs()->SetString(
-      brave_rewards::prefs::kWalletGemini, *encrypted);
+  browser_->profile()->GetPrefs()->SetString(prefs::kWalletGemini, *encrypted);
 }
 #endif
 
 void RewardsBrowserTestContribution::SetUpUpholdWallet(
-    brave_rewards::RewardsServiceImpl* rewards_service,
+    RewardsServiceImpl* rewards_service,
     const double balance,
-    const ledger::mojom::WalletStatus status) {
+    const mojom::WalletStatus status) {
   DCHECK(rewards_service);
 #if BUILDFLAG(ENABLE_GEMINI_WALLET)
-  if (base::FeatureList::IsEnabled(brave_rewards::features::kGeminiFeature)) {
-    browser_->profile()->GetPrefs()->SetString(
-        brave_rewards::prefs::kExternalWalletType, "uphold");
+  if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
+    browser_->profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
+                                               "uphold");
   }
 #endif
   // we need brave wallet as well
-  rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+  CreateRewardsWallet(rewards_service_);
 
   external_balance_ = balance;
 
   base::Value::Dict wallet;
   wallet.Set("token", "token");
-  wallet.Set("address", rewards_browsertest_util::GetUpholdExternalAddress());
+  wallet.Set("address", GetUpholdExternalAddress());
   wallet.Set("status", static_cast<int>(status));
   wallet.Set("user_name", "Brave Test");
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  auto encrypted =
-      rewards_browsertest_util::EncryptPrefString(rewards_service_, json);
+  auto encrypted = EncryptPrefString(rewards_service_, json);
   ASSERT_TRUE(encrypted);
 
-  browser_->profile()->GetPrefs()->SetString(
-      brave_rewards::prefs::kWalletUphold, *encrypted);
+  browser_->profile()->GetPrefs()->SetString(prefs::kWalletUphold, *encrypted);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {
   return reconciled_tip_total_;
 }
 
-std::vector<ledger::mojom::Result>
+std::vector<mojom::Result>
 RewardsBrowserTestContribution::GetMultipleTipStatus() {
   return multiple_tip_reconcile_status_;
 }
 
-ledger::mojom::Result RewardsBrowserTestContribution::GetTipStatus() {
+mojom::Result RewardsBrowserTestContribution::GetTipStatus() {
   return tip_reconcile_status_;
 }
 
-std::vector<ledger::mojom::Result>
+std::vector<mojom::Result>
 RewardsBrowserTestContribution::GetMultipleACStatus() {
   return multiple_ac_reconcile_status_;
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test

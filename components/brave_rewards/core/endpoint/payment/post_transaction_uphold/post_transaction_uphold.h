@@ -40,7 +40,7 @@
 //   "amount": "1"
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -72,6 +72,6 @@ class PostTransactionUphold {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PAYMENT_POST_TRANSACTION_UPHOLD_POST_TRANSACTION_UPHOLD_H_

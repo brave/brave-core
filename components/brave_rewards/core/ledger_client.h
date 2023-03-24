@@ -18,8 +18,7 @@
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace ledger {
-namespace client {
+namespace brave_rewards::core {
 
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 
@@ -52,8 +51,6 @@ using TransactionCallback =
 using GetServerPublisherInfoCallback =
     std::function<void(mojom::ServerPublisherInfoPtr)>;
 
-}  // namespace client
-
 class LedgerClient {
  public:
   virtual ~LedgerClient() = default;
@@ -61,9 +58,9 @@ class LedgerClient {
   virtual void OnReconcileComplete(const mojom::Result result,
                                    mojom::ContributionInfoPtr contribution) = 0;
 
-  virtual void LoadLedgerState(client::OnLoadCallback callback) = 0;
+  virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
-  virtual void LoadPublisherState(client::OnLoadCallback callback) = 0;
+  virtual void LoadPublisherState(OnLoadCallback callback) = 0;
 
   virtual void OnPanelPublisherInfo(mojom::Result result,
                                     mojom::PublisherInfoPtr publisher_info,
@@ -75,12 +72,12 @@ class LedgerClient {
 
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
-                            client::FetchIconCallback callback) = 0;
+                            FetchIconCallback callback) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void LoadURL(mojom::UrlRequestPtr request,
-                       client::LoadURLCallback callback) = 0;
+                       LoadURLCallback callback) = 0;
 
   virtual void Log(const char* file,
                    const int line,
@@ -147,7 +144,7 @@ class LedgerClient {
 
   virtual void ShowNotification(const std::string& type,
                                 const std::vector<std::string>& args,
-                                client::LegacyResultCallback callback) = 0;
+                                LegacyResultCallback callback) = 0;
 
   virtual mojom::ClientInfoPtr GetClientInfo() = 0;
 
@@ -156,9 +153,9 @@ class LedgerClient {
   virtual void ReconcileStampReset() = 0;
 
   virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                client::RunDBTransactionCallback callback) = 0;
+                                RunDBTransactionCallback callback) = 0;
 
-  virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
+  virtual void GetCreateScript(GetCreateScriptCallback callback) = 0;
 
   virtual void PendingContributionSaved(const mojom::Result result) = 0;
 
@@ -170,7 +167,7 @@ class LedgerClient {
 
   virtual void ExternalWalletReconnected() const = 0;
 
-  virtual void DeleteLog(client::LegacyResultCallback callback) = 0;
+  virtual void DeleteLog(LegacyResultCallback callback) = 0;
 
   virtual absl::optional<std::string> EncryptString(
       const std::string& value) = 0;
@@ -179,6 +176,6 @@ class LedgerClient {
       const std::string& value) = 0;
 };
 
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CLIENT_H_

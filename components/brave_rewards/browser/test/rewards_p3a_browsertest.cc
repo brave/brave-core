@@ -33,10 +33,10 @@
 
 // npm run test -- brave_browser_tests --filter=RewardsP3ABrowserTest.*
 
-namespace rewards_browsertest {
+namespace brave_rewards::test {
 
 class RewardsP3ABrowserTest : public InProcessBrowserTest,
-                              public brave_rewards::RewardsServiceObserver {
+                              public RewardsServiceObserver {
  public:
   RewardsP3ABrowserTest() {
     contribution_ = std::make_unique<RewardsBrowserTestContribution>();
@@ -53,15 +53,14 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-    https_server_->RegisterRequestHandler(
-        base::BindRepeating(&rewards_browsertest_util::HandleRequest));
+    https_server_->RegisterRequestHandler(base::BindRepeating(&HandleRequest));
     ASSERT_TRUE(https_server_->Start());
 
     // Rewards service
     brave::RegisterPathProvider();
     auto* profile = browser()->profile();
-    rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile));
+    rewards_service_ = static_cast<RewardsServiceImpl*>(
+        RewardsServiceFactory::GetForProfile(profile));
     rewards_service_->AddObserver(this);
 
     // Response mock
@@ -75,7 +74,7 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     promotion_->Initialize(browser(), rewards_service_);
     contribution_->Initialize(browser(), rewards_service_);
 
-    rewards_browsertest_util::SetOnboardingBypassed(browser());
+    SetOnboardingBypassed(browser());
   }
 
   void TearDown() override { InProcessBrowserTest::TearDown(); }
@@ -107,24 +106,22 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   void TurnOnRewards() {
     // Set the enabled pref to false so that wallet creation will automatically
     // turn on Ads and AC.
-    browser()->profile()->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled,
-                                                 false);
-    rewards_browsertest_util::CreateRewardsWallet(rewards_service_);
+    browser()->profile()->GetPrefs()->SetBoolean(prefs::kEnabled, false);
+    CreateRewardsWallet(rewards_service_);
   }
 
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  void OnRewardsInitialized(
-      brave_rewards::RewardsService* rewards_service) override {
+  void OnRewardsInitialized(RewardsService* rewards_service) override {
     rewards_initialized_ = true;
     if (wait_for_rewards_initialization_loop_) {
       wait_for_rewards_initialization_loop_->Quit();
     }
   }
 
-  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
+  raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestContribution> contribution_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
@@ -135,10 +132,10 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   std::unique_ptr<base::RunLoop> wait_for_rewards_initialization_loop_;
 };
 
-using brave_rewards::p3a::AdsEnabledDuration;
+using p3a::AdsEnabledDuration;
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  StartProcess(rewards_service_);
   WaitForRewardsInitialization();
 
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AutoContributionsState.2",
@@ -149,7 +146,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
-  rewards_browsertest_util::StartProcess(rewards_service_);
+  StartProcess(rewards_service_);
   WaitForRewardsInitialization();
 
   PrefService* prefs = browser()->profile()->GetPrefs();
@@ -172,7 +169,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   // Adjust the stored timestamp to measure a longer duration.
   auto earlier = base::Time::Now() - base::Minutes(90);
   VLOG(1) << "Backdating timestamp to " << earlier;
-  prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, earlier);
+  prefs->SetTime(prefs::kAdsEnabledTimestamp, earlier);
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
@@ -183,7 +180,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto yesterday = base::Time::Now() - base::Days(1);
   VLOG(1) << "Backdating timestamp to " << yesterday;
-  prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, yesterday);
+  prefs->SetTime(prefs::kAdsEnabledTimestamp, yesterday);
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
@@ -194,7 +191,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto last_week = base::Time::Now() - base::Days(12);
   VLOG(1) << "Backdating timestamp to " << last_week;
-  prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, last_week);
+  prefs->SetTime(prefs::kAdsEnabledTimestamp, last_week);
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
@@ -205,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto last_month = base::Time::Now() - base::Days(40);
   VLOG(1) << "Backdating timestamp to " << last_month;
-  prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, last_month);
+  prefs->SetTime(prefs::kAdsEnabledTimestamp, last_month);
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
@@ -216,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
   prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
   auto long_ago = base::Time::Now() - base::Days(128);
   VLOG(1) << "Backdating timestamp to " << long_ago;
-  prefs->SetTime(brave_rewards::prefs::kAdsEnabledTimestamp, long_ago);
+  prefs->SetTime(prefs::kAdsEnabledTimestamp, long_ago);
 
   // Mock turning rewards off.
   prefs->SetBoolean(brave_ads::prefs::kEnabled, false);
@@ -224,4 +221,4 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, Duration) {
                                        AdsEnabledDuration::kQuarters, 1);
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test

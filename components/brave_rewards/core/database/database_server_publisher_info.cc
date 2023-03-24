@@ -19,7 +19,7 @@ const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 
 namespace database {
 
@@ -31,7 +31,7 @@ DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
     const mojom::ServerPublisherInfo& server_info,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (server_info.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -62,7 +62,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
 
 void DatabaseServerPublisherInfo::GetRecord(
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    GetServerPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(nullptr);
@@ -80,7 +80,7 @@ void DatabaseServerPublisherInfo::GetRecord(
 void DatabaseServerPublisherInfo::OnGetRecordBanner(
     mojom::PublisherBannerPtr banner,
     const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+    GetServerPublisherInfoCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT status, address, updated_at "
@@ -114,7 +114,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
     mojom::DBCommandResponsePtr response,
     const std::string& publisher_key,
     const mojom::PublisherBanner& banner,
-    client::GetServerPublisherInfoCallback callback) {
+    GetServerPublisherInfoCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -141,7 +141,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
 void DatabaseServerPublisherInfo::DeleteExpiredRecords(
     int64_t max_age_seconds,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   int64_t cutoff = util::GetCurrentTimeStamp() - max_age_seconds;
 
   auto transaction = mojom::DBTransaction::New();
@@ -166,7 +166,7 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
     mojom::DBCommandResponsePtr response,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");
@@ -206,4 +206,4 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

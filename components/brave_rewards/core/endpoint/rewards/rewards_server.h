@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/endpoint/rewards/get_prefix_list/get_prefix_list.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -28,6 +28,6 @@ class RewardsServer {
 };
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_REWARDS_REWARDS_SERVER_H_

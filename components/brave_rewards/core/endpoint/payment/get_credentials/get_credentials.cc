@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace payment {
 
@@ -108,7 +108,7 @@ void GetCredentials::Request(const std::string& order_id,
 
 void GetCredentials::OnRequest(GetCredentialsCallback callback,
                                const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   mojom::Result result = CheckStatusCode(response.status_code);
   if (result != mojom::Result::LEDGER_OK) {
@@ -123,4 +123,4 @@ void GetCredentials::OnRequest(GetCredentialsCallback callback,
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

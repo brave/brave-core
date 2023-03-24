@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace uphold {
 
@@ -21,6 +21,6 @@ std::string GetServerUrl(const std::string& path);
 
 }  // namespace uphold
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_UPHOLD_UPHOLD_UTILS_H_

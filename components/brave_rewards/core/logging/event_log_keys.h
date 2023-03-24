@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LOGGING_EVENT_LOG_KEYS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LOGGING_EVENT_LOG_KEYS_H_
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace log {
 
 const char kACAddedToQueue[] = "ac_added_to_queue";
@@ -32,6 +32,6 @@ const char kWalletStatusChange[] = "wallet_status_change";
 const char kWalletVerified[] = "wallet_verified";
 
 }  // namespace log
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LOGGING_EVENT_LOG_KEYS_H_

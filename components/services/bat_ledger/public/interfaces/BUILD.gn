@@ -13,7 +13,7 @@ mojom("interfaces") {
   public_deps = [ "//mojo/public/mojom/base" ]
 
   deps = [
-    "//brave/components/brave_rewards/common/mojom:ledger_interfaces",
-    "//brave/components/brave_rewards/common/mojom:ledger_types",
+    "//brave/components/brave_rewards/common/mojom:core_interfaces",
+    "//brave/components/brave_rewards/common/mojom:core_types",
   ]
 }

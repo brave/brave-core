@@ -17,7 +17,7 @@
 
 // npm run test -- brave_unit_tests --filter=*WalletTest*
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class WalletTest : public BATLedgerTest {
  protected:
@@ -92,4 +92,4 @@ TEST_F(WalletTest, CreateWallet) {
   EXPECT_TRUE(!wallet->recovery_seed.empty());
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

@@ -21,7 +21,7 @@ using ::testing::Invoke;
 
 // npm run test -- brave_unit_tests --filter=PublisherTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace publisher {
 
 class PublisherTest : public testing::Test {
@@ -47,15 +47,15 @@ class PublisherTest : public testing::Test {
     }
   }
 
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Publisher> publisher_;
   std::unique_ptr<database::MockDatabase> mock_database_;
 
   PublisherTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     publisher_ = std::make_unique<Publisher>(mock_ledger_impl_.get());
     mock_database_ =
         std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
@@ -189,4 +189,4 @@ TEST_F(PublisherTest, GetShareURL) {
 }
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core

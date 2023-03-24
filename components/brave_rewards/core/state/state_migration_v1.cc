@@ -11,14 +11,14 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 StateMigrationV1::StateMigrationV1(LedgerImpl* ledger) : ledger_(ledger) {}
 
 StateMigrationV1::~StateMigrationV1() = default;
 
-void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigrationV1::Migrate(LegacyResultCallback callback) {
   legacy_publisher_ =
       std::make_unique<publisher::LegacyPublisherState>(ledger_);
 
@@ -29,7 +29,7 @@ void StateMigrationV1::Migrate(ledger::LegacyResultCallback callback) {
 }
 
 void StateMigrationV1::OnLoadState(mojom::Result result,
-                                   ledger::LegacyResultCallback callback) {
+                                   LegacyResultCallback callback) {
   if (result == mojom::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
@@ -76,9 +76,8 @@ void StateMigrationV1::OnLoadState(mojom::Result result,
   SaveProcessedPublishers(callback);
 }
 
-void StateMigrationV1::BalanceReportsSaved(
-    mojom::Result result,
-    ledger::LegacyResultCallback callback) {
+void StateMigrationV1::BalanceReportsSaved(mojom::Result result,
+                                           LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
@@ -88,8 +87,7 @@ void StateMigrationV1::BalanceReportsSaved(
   SaveProcessedPublishers(callback);
 }
 
-void StateMigrationV1::SaveProcessedPublishers(
-    ledger::LegacyResultCallback callback) {
+void StateMigrationV1::SaveProcessedPublishers(LegacyResultCallback callback) {
   auto save_callback =
       std::bind(&StateMigrationV1::ProcessedPublisherSaved, this, _1, callback);
 
@@ -97,9 +95,8 @@ void StateMigrationV1::SaveProcessedPublishers(
       legacy_publisher_->GetAlreadyProcessedPublishers(), save_callback);
 }
 
-void StateMigrationV1::ProcessedPublisherSaved(
-    mojom::Result result,
-    ledger::LegacyResultCallback callback) {
+void StateMigrationV1::ProcessedPublisherSaved(mojom::Result result,
+                                               LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Processed publisher save failed");
     callback(result);
@@ -110,4 +107,4 @@ void StateMigrationV1::ProcessedPublisherSaved(
 }
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core

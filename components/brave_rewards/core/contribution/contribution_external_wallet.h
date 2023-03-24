@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace contribution {
@@ -23,14 +23,14 @@ class ContributionExternalWallet {
   ~ContributionExternalWallet();
 
   void Process(const std::string& contribution_id,
-               ledger::LegacyResultCallback callback);
+               LegacyResultCallback callback);
 
   void Retry(mojom::ContributionInfoPtr contribution,
-             ledger::LegacyResultCallback callback);
+             LegacyResultCallback callback);
 
  private:
   void ContributionInfo(mojom::ContributionInfoPtr contribution,
-                        ledger::LegacyResultCallback callback);
+                        LegacyResultCallback callback);
 
   void OnAC(const mojom::Result result, const std::string& contribution_id);
 
@@ -42,15 +42,15 @@ class ContributionExternalWallet {
                              mojom::RewardsType type,
                              mojom::ContributionProcessor processor,
                              bool single_publisher,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
   void Completed(mojom::Result result,
                  bool single_publisher,
-                 ledger::LegacyResultCallback callback);
+                 LegacyResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CONTRIBUTION_CONTRIBUTION_EXTERNAL_WALLET_H_

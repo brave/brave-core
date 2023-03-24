@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_KEYS_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_KEYS_H_
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace state {
 
 const char kServerPublisherListStamp[] = "publisher_prefix_list_stamp";
@@ -46,6 +46,6 @@ const char kWalletBitflyer[] = "wallets.bitflyer";
 const char kWalletGemini[] = "wallets.gemini";
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_KEYS_H_

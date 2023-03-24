@@ -18,29 +18,30 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace brave_rewards::core {
+
 namespace {
 
-ledger::mojom::SKUTransactionType GetTransactionTypeFromWalletType(
+mojom::SKUTransactionType GetTransactionTypeFromWalletType(
     const std::string& wallet_type) {
-  if (wallet_type == ledger::constant::kWalletUphold) {
-    return ledger::mojom::SKUTransactionType::UPHOLD;
+  if (wallet_type == constant::kWalletUphold) {
+    return mojom::SKUTransactionType::UPHOLD;
   }
 
-  if (wallet_type == ledger::constant::kWalletGemini) {
-    return ledger::mojom::SKUTransactionType::GEMINI;
+  if (wallet_type == constant::kWalletGemini) {
+    return mojom::SKUTransactionType::GEMINI;
   }
 
-  if (wallet_type == ledger::constant::kWalletUnBlinded) {
-    return ledger::mojom::SKUTransactionType::TOKENS;
+  if (wallet_type == constant::kWalletUnBlinded) {
+    return mojom::SKUTransactionType::TOKENS;
   }
 
   NOTREACHED();
-  return ledger::mojom::SKUTransactionType::TOKENS;
+  return mojom::SKUTransactionType::TOKENS;
 }
 
 }  // namespace
 
-namespace ledger {
 namespace sku {
 
 SKUTransaction::SKUTransaction(LedgerImpl* ledger)
@@ -54,7 +55,7 @@ SKUTransaction::~SKUTransaction() = default;
 void SKUTransaction::Run(mojom::SKUOrderPtr order,
                          const std::string& destination,
                          const std::string& wallet_type,
-                         ledger::LegacyResultCallback callback) {
+                         LegacyResultCallback callback) {
   if (!order) {
     BLOG(0, "Order is null!");
     return callback(mojom::Result::LEDGER_ERROR);
@@ -120,7 +121,7 @@ void SKUTransaction::OnTransactionSaved(
     const std::string& destination,
     const std::string& wallet_type,
     const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transaction was not saved");
     callback(result);
@@ -139,7 +140,7 @@ void SKUTransaction::OnTransfer(mojom::Result result,
                                 const mojom::SKUTransaction& transaction,
                                 const std::string& contribution_id,
                                 const std::string& destination,
-                                ledger::LegacyResultCallback callback) {
+                                LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Transaction for order failed " << transaction.order_id);
     callback(result);
@@ -153,7 +154,7 @@ void SKUTransaction::OnTransfer(mojom::Result result,
 }
 
 void SKUTransaction::OnGetExternalTransaction(
-    ledger::LegacyResultCallback callback,
+    LegacyResultCallback callback,
     mojom::SKUTransaction&& transaction,
     base::expected<mojom::ExternalTransactionPtr,
                    database::GetExternalTransactionError>
@@ -179,7 +180,7 @@ void SKUTransaction::OnGetExternalTransaction(
 void SKUTransaction::OnSaveSKUExternalTransaction(
     mojom::Result result,
     const mojom::SKUTransaction& transaction,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "External transaction was not saved");
     callback(result);
@@ -196,7 +197,7 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
 void SKUTransaction::SendExternalTransaction(
     mojom::Result result,
     const mojom::SKUTransaction& transaction,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order status not updated");
     callback(mojom::Result::RETRY);
@@ -234,9 +235,8 @@ void SKUTransaction::SendExternalTransaction(
   }
 }
 
-void SKUTransaction::OnSendExternalTransaction(
-    mojom::Result result,
-    ledger::LegacyResultCallback callback) {
+void SKUTransaction::OnSendExternalTransaction(mojom::Result result,
+                                               LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "External transaction not sent");
     callback(mojom::Result::RETRY);
@@ -247,4 +247,4 @@ void SKUTransaction::OnSendExternalTransaction(
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core

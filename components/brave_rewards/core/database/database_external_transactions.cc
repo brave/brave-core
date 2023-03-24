@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger::database {
+namespace brave_rewards::core::database {
 
 constexpr char kTableName[] = "external_transactions";
 
@@ -22,7 +22,7 @@ DatabaseExternalTransactions::~DatabaseExternalTransactions() = default;
 
 void DatabaseExternalTransactions::Insert(
     mojom::ExternalTransactionPtr external_transaction,
-    ledger::ResultCallback callback) {
+    ResultCallback callback) {
   if (!external_transaction) {
     BLOG(0, "external_transaction is null!");
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
@@ -51,7 +51,7 @@ void DatabaseExternalTransactions::Insert(
 }
 
 void DatabaseExternalTransactions::OnInsert(
-    ledger::ResultCallback callback,
+    ResultCallback callback,
     mojom::DBCommandResponsePtr response) {
   std::move(callback).Run(
       response &&
@@ -135,4 +135,4 @@ void DatabaseExternalTransactions::OnGetTransaction(
       std::move(destination), std::move(amount)));
 }
 
-}  // namespace ledger::database
+}  // namespace brave_rewards::core::database

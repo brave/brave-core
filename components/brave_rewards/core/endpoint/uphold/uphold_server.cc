@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 
 UpholdServer::UpholdServer(LedgerImpl* ledger)
@@ -45,4 +45,4 @@ uphold::PatchCard* UpholdServer::patch_card() const {
 }
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

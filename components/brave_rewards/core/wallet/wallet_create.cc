@@ -15,11 +15,11 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 
-using ledger::endpoints::PatchWallets;
-using ledger::endpoints::PostWallets;
-using ledger::endpoints::RequestFor;
+using brave_rewards::core::endpoints::PatchWallets;
+using brave_rewards::core::endpoints::PostWallets;
+using brave_rewards::core::endpoints::RequestFor;
 
-namespace ledger::wallet {
+namespace brave_rewards::core::wallet {
 
 namespace {
 
@@ -128,7 +128,7 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     ledger_->state()->ResetReconcileStamp();
-    if (!ledger::is_testing) {
+    if (!is_testing) {
       ledger_->state()->SetEmptyBalanceChecked(true);
       ledger_->state()->SetPromotionCorruptedMigrated(true);
     }
@@ -138,4 +138,4 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
   std::move(callback).Run(mojom::CreateRewardsWalletResult::kSuccess);
 }
 
-}  // namespace ledger::wallet
+}  // namespace brave_rewards::core::wallet

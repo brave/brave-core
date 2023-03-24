@@ -7,7 +7,7 @@
 
 #include <utility>
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 
 RequestBuilder::~RequestBuilder() = default;
 
@@ -60,4 +60,4 @@ uint32_t RequestBuilder::LoadFlags() const {
   return 0;
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

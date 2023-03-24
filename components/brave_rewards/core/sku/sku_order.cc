@@ -15,7 +15,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace sku {
 
 SKUOrder::SKUOrder(LedgerImpl* ledger)
@@ -27,7 +27,7 @@ SKUOrder::SKUOrder(LedgerImpl* ledger)
 SKUOrder::~SKUOrder() = default;
 
 void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
-                      ledger::SKUOrderCallback callback) {
+                      SKUOrderCallback callback) {
   if (items.empty()) {
     BLOG(0, "List is empty");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -41,7 +41,7 @@ void SKUOrder::Create(const std::vector<mojom::SKUOrderItem>& items,
 
 void SKUOrder::OnCreate(const mojom::Result result,
                         mojom::SKUOrderPtr order,
-                        ledger::SKUOrderCallback callback) {
+                        SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order response could not be parsed");
     callback(mojom::Result::LEDGER_ERROR, "");
@@ -56,7 +56,7 @@ void SKUOrder::OnCreate(const mojom::Result result,
 
 void SKUOrder::OnCreateSave(const mojom::Result result,
                             const std::string& order_id,
-                            ledger::SKUOrderCallback callback) {
+                            SKUOrderCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Order couldn't be saved");
     callback(result, "");
@@ -67,4 +67,4 @@ void SKUOrder::OnCreateSave(const mojom::Result result,
 }
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core

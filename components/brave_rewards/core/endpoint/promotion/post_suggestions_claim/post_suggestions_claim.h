@@ -35,7 +35,7 @@
 // Response body:
 // {Empty}
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -64,6 +64,6 @@ class PostSuggestionsClaim {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_POST_SUGGESTIONS_CLAIM_POST_SUGGESTIONS_CLAIM_H_

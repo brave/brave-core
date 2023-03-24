@@ -26,7 +26,7 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_safetynet/put_safetynet.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint {
@@ -88,6 +88,6 @@ class PromotionServer {
 };
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_PROMOTION_PROMOTION_SERVER_H_

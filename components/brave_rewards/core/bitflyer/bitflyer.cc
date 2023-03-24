@@ -21,7 +21,7 @@
 #include "brave/components/brave_rewards/core/wallet_provider/bitflyer/get_bitflyer_wallet.h"
 #include "brave_base/random.h"
 
-namespace ledger::bitflyer {
+namespace brave_rewards::core::bitflyer {
 
 Bitflyer::Bitflyer(LedgerImpl* ledger)
     : connect_wallet_(std::make_unique<ConnectBitFlyerWallet>(ledger)),
@@ -46,7 +46,7 @@ void Bitflyer::Initialize() {
 void Bitflyer::StartContribution(const std::string& contribution_id,
                                  mojom::ServerPublisherInfoPtr info,
                                  double amount,
-                                 ledger::LegacyResultCallback callback) {
+                                 LegacyResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher info is null");
     return callback(mojom::Result::LEDGER_ERROR);
@@ -60,7 +60,7 @@ void Bitflyer::StartContribution(const std::string& contribution_id,
                                 contribution_id, fee, info->publisher_key));
 }
 
-void Bitflyer::ContributionCompleted(ledger::LegacyResultCallback callback,
+void Bitflyer::ContributionCompleted(LegacyResultCallback callback,
                                      const std::string& contribution_id,
                                      double fee,
                                      const std::string& publisher_key,
@@ -121,20 +121,20 @@ void Bitflyer::OnFetchBalance(FetchBalanceCallback callback,
 void Bitflyer::TransferFunds(double amount,
                              const std::string& address,
                              const std::string& contribution_id,
-                             client::LegacyResultCallback callback) {
+                             LegacyResultCallback callback) {
   transfer_->Run(contribution_id, address, amount,
-                 base::BindOnce([](client::LegacyResultCallback callback,
+                 base::BindOnce([](LegacyResultCallback callback,
                                    mojom::Result result) { callback(result); },
                                 std::move(callback)));
 }
 
 void Bitflyer::ConnectWallet(
     const base::flat_map<std::string, std::string>& args,
-    ledger::ConnectExternalWalletCallback callback) {
+    ConnectExternalWalletCallback callback) {
   connect_wallet_->Run(args, std::move(callback));
 }
 
-void Bitflyer::GetWallet(ledger::GetExternalWalletCallback callback) {
+void Bitflyer::GetWallet(GetExternalWalletCallback callback) {
   get_wallet_->Run(std::move(callback));
 }
 
@@ -212,21 +212,20 @@ void Bitflyer::OnTransferFeeTimerElapsed(const std::string& id,
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWallet() {
-  return ledger::wallet::GetWallet(ledger_, constant::kWalletBitflyer);
+  return wallet::GetWallet(ledger_, constant::kWalletBitflyer);
 }
 
 mojom::ExternalWalletPtr Bitflyer::GetWalletIf(
     const std::set<mojom::WalletStatus>& statuses) {
-  return ledger::wallet::GetWalletIf(ledger_, constant::kWalletBitflyer,
-                                     statuses);
+  return wallet::GetWalletIf(ledger_, constant::kWalletBitflyer, statuses);
 }
 
 bool Bitflyer::SetWallet(mojom::ExternalWalletPtr wallet) {
-  return ledger::wallet::SetWallet(ledger_, std::move(wallet));
+  return wallet::SetWallet(ledger_, std::move(wallet));
 }
 
 bool Bitflyer::LogOutWallet() {
-  return ledger::wallet::LogOutWallet(ledger_, constant::kWalletBitflyer);
+  return wallet::LogOutWallet(ledger_, constant::kWalletBitflyer);
 }
 
 void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {
@@ -242,4 +241,4 @@ void Bitflyer::RemoveTransferFee(const std::string& contribution_id) {
   }
 }
 
-}  // namespace ledger::bitflyer
+}  // namespace brave_rewards::core::bitflyer

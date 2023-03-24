@@ -6,7 +6,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace attestation {
 
 Attestation::Attestation(LedgerImpl* ledger) : ledger_(ledger) {}
@@ -14,4 +14,4 @@ Attestation::Attestation(LedgerImpl* ledger) : ledger_(ledger) {}
 Attestation::~Attestation() = default;
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::core

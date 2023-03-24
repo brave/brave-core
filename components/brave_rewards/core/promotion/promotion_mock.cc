@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/promotion/promotion_mock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace promotion {
 
 MockPromotion::MockPromotion(LedgerImpl* ledger) : Promotion(ledger) {}
@@ -13,4 +13,4 @@ MockPromotion::MockPromotion(LedgerImpl* ledger) : Promotion(ledger) {}
 MockPromotion::~MockPromotion() = default;
 
 }  // namespace promotion
-}  // namespace ledger
+}  // namespace brave_rewards::core

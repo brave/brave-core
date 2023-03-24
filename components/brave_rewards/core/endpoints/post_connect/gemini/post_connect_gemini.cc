@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 
-namespace ledger::endpoints {
+namespace brave_rewards::core::endpoints {
 
 PostConnectGemini::PostConnectGemini(LedgerImpl* ledger,
                                      std::string&& linking_info,
@@ -49,4 +49,4 @@ const char* PostConnectGemini::Path() const {
   return "/v3/wallet/gemini/%s/claim";
 }
 
-}  // namespace ledger::endpoints
+}  // namespace brave_rewards::core::endpoints

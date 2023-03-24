@@ -19,20 +19,19 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace bat_ledger {
+namespace brave_rewards {
 
 BatLedgerImpl::BatLedgerImpl(
     mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info)
-  : bat_ledger_client_mojo_bridge_(
-      new BatLedgerClientMojoBridge(std::move(client_info))),
-    ledger_(
-      ledger::Ledger::CreateInstance(bat_ledger_client_mojo_bridge_.get())) {
-}
+    : bat_ledger_client_mojo_bridge_(
+          new BatLedgerClientMojoBridge(std::move(client_info))),
+      ledger_(
+          core::Ledger::CreateInstance(bat_ledger_client_mojo_bridge_.get())) {}
 
 BatLedgerImpl::~BatLedgerImpl() = default;
 
 void BatLedgerImpl::OnInitialize(CallbackHolder<InitializeCallback>* holder,
-                                 ledger::mojom::Result result) {
+                                 mojom::Result result) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
   }
@@ -60,10 +59,10 @@ void BatLedgerImpl::GetRewardsParameters(
 
 void BatLedgerImpl::GetAutoContributeProperties(
     GetAutoContributePropertiesCallback callback) {
-  ledger::mojom::AutoContributePropertiesPtr props =
+  mojom::AutoContributePropertiesPtr props =
       ledger_->GetAutoContributeProperties();
   if (!props) {
-    props = ledger::mojom::AutoContributeProperties::New();
+    props = mojom::AutoContributeProperties::New();
   }
   std::move(callback).Run(std::move(props));
 }
@@ -92,7 +91,7 @@ void BatLedgerImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   std::move(callback).Run(ledger_->GetReconcileStamp());
 }
 
-void BatLedgerImpl::OnLoad(ledger::mojom::VisitDataPtr visit_data,
+void BatLedgerImpl::OnLoad(mojom::VisitDataPtr visit_data,
                            uint64_t current_time) {
   ledger_->OnLoad(std::move(visit_data), current_time);
 }
@@ -123,13 +122,13 @@ void BatLedgerImpl::OnXHRLoad(
     const base::flat_map<std::string, std::string>& parts,
     const std::string& first_party_url,
     const std::string& referrer,
-    ledger::mojom::VisitDataPtr visit_data) {
+    mojom::VisitDataPtr visit_data) {
   ledger_->OnXHRLoad(tab_id, url, parts, first_party_url, referrer,
                      std::move(visit_data));
 }
 
 void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
-                                        ledger::mojom::PublisherExclude exclude,
+                                        mojom::PublisherExclude exclude,
                                         SetPublisherExcludeCallback callback) {
   ledger_->SetPublisherExclude(publisher_key, exclude, std::move(callback));
 }
@@ -180,14 +179,14 @@ void BatLedgerImpl::SetAutoContributeEnabled(bool enabled) {
 // static
 void BatLedgerImpl::OnGetBalanceReport(
     CallbackHolder<GetBalanceReportCallback>* holder,
-    const ledger::mojom::Result result,
-    ledger::mojom::BalanceReportInfoPtr report_info) {
+    const mojom::Result result,
+    mojom::BalanceReportInfoPtr report_info) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result, std::move(report_info));
   delete holder;
 }
-void BatLedgerImpl::GetBalanceReport(const ledger::mojom::ActivityMonth month,
+void BatLedgerImpl::GetBalanceReport(const mojom::ActivityMonth month,
                                      const int32_t year,
                                      GetBalanceReportCallback callback) {
   auto* holder = new CallbackHolder<GetBalanceReportCallback>(
@@ -200,7 +199,7 @@ void BatLedgerImpl::GetBalanceReport(const ledger::mojom::ActivityMonth month,
 
 void BatLedgerImpl::GetPublisherActivityFromUrl(
     uint64_t window_id,
-    ledger::mojom::VisitDataPtr visit_data,
+    mojom::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
   ledger_->GetPublisherActivityFromUrl(
       window_id, std::move(visit_data), publisher_blob);
@@ -209,7 +208,7 @@ void BatLedgerImpl::GetPublisherActivityFromUrl(
 // static
 void BatLedgerImpl::OnGetPublisherBanner(
     CallbackHolder<GetPublisherBannerCallback>* holder,
-    ledger::mojom::PublisherBannerPtr banner) {
+    mojom::PublisherBannerPtr banner) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(banner));
@@ -231,7 +230,7 @@ void BatLedgerImpl::GetAutoContributionAmount(
 }
 
 void BatLedgerImpl::OnOneTimeTip(CallbackHolder<OneTimeTipCallback>* holder,
-                                 const ledger::mojom::Result result) {
+                                 const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
@@ -254,7 +253,7 @@ void BatLedgerImpl::OneTimeTip(
 // static
 void BatLedgerImpl::OnRemoveRecurringTip(
     CallbackHolder<RemoveRecurringTipCallback>* holder,
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -278,7 +277,7 @@ void BatLedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
 
 void BatLedgerImpl::OnGetRewardsInternalsInfo(
     CallbackHolder<GetRewardsInternalsInfoCallback>* holder,
-    ledger::mojom::RewardsInternalsInfoPtr info) {
+    mojom::RewardsInternalsInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(info));
@@ -305,14 +304,14 @@ void BatLedgerImpl::SendContribution(const std::string& publisher_id,
 // static
 void BatLedgerImpl::OnSaveRecurringTip(
     CallbackHolder<SaveRecurringTipCallback>* holder,
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   if (holder->is_valid())
     std::move(holder->get()).Run(result);
 
   delete holder;
 }
 
-void BatLedgerImpl::SaveRecurringTip(ledger::mojom::RecurringTipPtr info,
+void BatLedgerImpl::SaveRecurringTip(mojom::RecurringTipPtr info,
                                      SaveRecurringTipCallback callback) {
   // deleted in OnSaveRecurringTip
   auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
@@ -325,7 +324,7 @@ void BatLedgerImpl::SaveRecurringTip(ledger::mojom::RecurringTipPtr info,
 // static
 void BatLedgerImpl::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<mojom::PublisherInfoPtr> list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -344,7 +343,7 @@ void BatLedgerImpl::GetRecurringTips(GetRecurringTipsCallback callback) {
 // static
 void BatLedgerImpl::OnGetOneTimeTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<mojom::PublisherInfoPtr> list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -363,7 +362,7 @@ void BatLedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
 // static
 void BatLedgerImpl::OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<mojom::PublisherInfoPtr> list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -371,11 +370,10 @@ void BatLedgerImpl::OnGetActivityInfoList(
   delete holder;
 }
 
-void BatLedgerImpl::GetActivityInfoList(
-    uint32_t start,
-    uint32_t limit,
-    ledger::mojom::ActivityInfoFilterPtr filter,
-    GetActivityInfoListCallback callback) {
+void BatLedgerImpl::GetActivityInfoList(uint32_t start,
+                                        uint32_t limit,
+                                        mojom::ActivityInfoFilterPtr filter,
+                                        GetActivityInfoListCallback callback) {
   auto* holder = new CallbackHolder<GetActivityInfoListCallback>(
       AsWeakPtr(), std::move(callback));
 
@@ -394,7 +392,7 @@ void BatLedgerImpl::GetPublishersVisitedCount(
 // static
 void BatLedgerImpl::OnGetExcludedList(
     CallbackHolder<GetExcludedListCallback>* holder,
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<mojom::PublisherInfoPtr> list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -442,8 +440,8 @@ void BatLedgerImpl::IsPublisherRegistered(
 // static
 void BatLedgerImpl::OnPublisherInfo(
     CallbackHolder<GetPublisherInfoCallback>* holder,
-    const ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr info) {
+    const mojom::Result result,
+    mojom::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result, std::move(info));
@@ -464,8 +462,8 @@ void BatLedgerImpl::GetPublisherInfo(
 // static
 void BatLedgerImpl::OnPublisherPanelInfo(
     CallbackHolder<GetPublisherPanelInfoCallback>* holder,
-    const ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr info) {
+    const mojom::Result result,
+    mojom::PublisherInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result, std::move(info));
@@ -486,7 +484,7 @@ void BatLedgerImpl::GetPublisherPanelInfo(
 // static
 void BatLedgerImpl::OnSavePublisherInfo(
     CallbackHolder<SavePublisherInfoCallback>* holder,
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -495,10 +493,9 @@ void BatLedgerImpl::OnSavePublisherInfo(
   delete holder;
 }
 
-void BatLedgerImpl::SavePublisherInfo(
-    const uint64_t window_id,
-    ledger::mojom::PublisherInfoPtr publisher_info,
-    SavePublisherInfoCallback callback) {
+void BatLedgerImpl::SavePublisherInfo(const uint64_t window_id,
+                                      mojom::PublisherInfoPtr publisher_info,
+                                      SavePublisherInfoCallback callback) {
   auto* holder = new CallbackHolder<SavePublisherInfoCallback>(
       AsWeakPtr(), std::move(callback));
 
@@ -512,7 +509,7 @@ void BatLedgerImpl::SavePublisherInfo(
 
 void BatLedgerImpl::OnRefreshPublisher(
     CallbackHolder<RefreshPublisherCallback>* holder,
-    ledger::mojom::PublisherStatus status) {
+    mojom::PublisherStatus status) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(status);
@@ -535,13 +532,13 @@ void BatLedgerImpl::StartContributionsForTesting() {
 }
 
 void BatLedgerImpl::SetInlineTippingPlatformEnabled(
-    const ledger::mojom::InlineTipsPlatforms platform,
+    const mojom::InlineTipsPlatforms platform,
     bool enabled) {
   ledger_->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
 void BatLedgerImpl::GetInlineTippingPlatformEnabled(
-    const ledger::mojom::InlineTipsPlatforms platform,
+    const mojom::InlineTipsPlatforms platform,
     GetInlineTippingPlatformEnabledCallback callback) {
   std::move(callback).Run(ledger_->GetInlineTippingPlatformEnabled(platform));
 }
@@ -555,7 +552,7 @@ void BatLedgerImpl::GetShareURL(
 // static
 void BatLedgerImpl::OnGetPendingContributions(
     CallbackHolder<GetPendingContributionsCallback>* holder,
-    std::vector<ledger::mojom::PendingContributionInfoPtr> list) {
+    std::vector<mojom::PendingContributionInfoPtr> list) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(list));
@@ -575,7 +572,7 @@ void BatLedgerImpl::GetPendingContributions(
 // static
 void BatLedgerImpl::OnRemovePendingContribution(
     CallbackHolder<RemovePendingContributionCallback>* holder,
-    ledger::mojom::Result result) {
+    mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -599,7 +596,7 @@ void BatLedgerImpl::RemovePendingContribution(
 // static
 void BatLedgerImpl::OnRemoveAllPendingContributions(
     CallbackHolder<RemovePendingContributionCallback>* holder,
-    ledger::mojom::Result result) {
+    mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -659,7 +656,7 @@ void BatLedgerImpl::ConnectExternalWallet(
 // static
 void BatLedgerImpl::OnGetTransactionReport(
     CallbackHolder<GetTransactionReportCallback>* holder,
-    std::vector<ledger::mojom::TransactionReportInfoPtr> list) {
+    std::vector<mojom::TransactionReportInfoPtr> list) {
   if (!holder) {
     return;
   }
@@ -671,7 +668,7 @@ void BatLedgerImpl::OnGetTransactionReport(
 }
 
 void BatLedgerImpl::GetTransactionReport(
-    const ledger::mojom::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     GetTransactionReportCallback callback) {
   auto* holder = new CallbackHolder<GetTransactionReportCallback>(
@@ -688,7 +685,7 @@ void BatLedgerImpl::GetTransactionReport(
 // static
 void BatLedgerImpl::OnGetContributionReport(
     CallbackHolder<GetContributionReportCallback>* holder,
-    std::vector<ledger::mojom::ContributionReportInfoPtr> list) {
+    std::vector<mojom::ContributionReportInfoPtr> list) {
   if (!holder) {
     return;
   }
@@ -700,7 +697,7 @@ void BatLedgerImpl::OnGetContributionReport(
 }
 
 void BatLedgerImpl::GetContributionReport(
-    const ledger::mojom::ActivityMonth month,
+    const mojom::ActivityMonth month,
     const int year,
     GetContributionReportCallback callback) {
   auto* holder = new CallbackHolder<GetContributionReportCallback>(
@@ -717,7 +714,7 @@ void BatLedgerImpl::GetContributionReport(
 // static
 void BatLedgerImpl::OnGetAllContributions(
     CallbackHolder<GetAllContributionsCallback>* holder,
-    std::vector<ledger::mojom::ContributionInfoPtr> list) {
+    std::vector<mojom::ContributionInfoPtr> list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -738,7 +735,7 @@ void BatLedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
 // static
 void BatLedgerImpl::OnSavePublisherInfoForTip(
     CallbackHolder<SavePublisherInfoForTipCallback>* holder,
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -748,7 +745,7 @@ void BatLedgerImpl::OnSavePublisherInfoForTip(
 }
 
 void BatLedgerImpl::SavePublisherInfoForTip(
-    ledger::mojom::PublisherInfoPtr info,
+    mojom::PublisherInfoPtr info,
     SavePublisherInfoForTipCallback callback) {
   auto* holder = new CallbackHolder<SavePublisherInfoForTipCallback>(
       AsWeakPtr(), std::move(callback));
@@ -763,8 +760,8 @@ void BatLedgerImpl::SavePublisherInfoForTip(
 // static
 void BatLedgerImpl::OnGetMonthlyReport(
     CallbackHolder<GetMonthlyReportCallback>* holder,
-    const ledger::mojom::Result result,
-    ledger::mojom::MonthlyReportInfoPtr info) {
+    const mojom::Result result,
+    mojom::MonthlyReportInfoPtr info) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result, std::move(info));
@@ -772,7 +769,7 @@ void BatLedgerImpl::OnGetMonthlyReport(
   delete holder;
 }
 
-void BatLedgerImpl::GetMonthlyReport(const ledger::mojom::ActivityMonth month,
+void BatLedgerImpl::GetMonthlyReport(const mojom::ActivityMonth month,
                                      const int year,
                                      GetMonthlyReportCallback callback) {
   auto* holder = new CallbackHolder<GetMonthlyReportCallback>(
@@ -813,7 +810,7 @@ void BatLedgerImpl::GetAllMonthlyReportIds(
 // static
 void BatLedgerImpl::OnGetAllPromotions(
     CallbackHolder<GetAllPromotionsCallback>* holder,
-    base::flat_map<std::string, ledger::mojom::PromotionPtr> items) {
+    base::flat_map<std::string, mojom::PromotionPtr> items) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(items));
@@ -834,7 +831,7 @@ void BatLedgerImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 
 // static
 void BatLedgerImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
-                               const ledger::mojom::Result result) {
+                               const mojom::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -854,9 +851,8 @@ void BatLedgerImpl::Shutdown(ShutdownCallback callback) {
 }
 
 // static
-void BatLedgerImpl::OnGetEventLogs(
-    CallbackHolder<GetEventLogsCallback>* holder,
-    std::vector<ledger::mojom::EventLogPtr> logs) {
+void BatLedgerImpl::OnGetEventLogs(CallbackHolder<GetEventLogsCallback>* holder,
+                                   std::vector<mojom::EventLogPtr> logs) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(logs));
@@ -878,7 +874,7 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 // static
 void BatLedgerImpl::OnGetRewardsWallet(
     CallbackHolder<GetRewardsWalletCallback>* holder,
-    ledger::mojom::RewardsWalletPtr wallet) {
+    mojom::RewardsWalletPtr wallet) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(std::move(wallet));
@@ -895,4 +891,4 @@ void BatLedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
       std::bind(BatLedgerImpl::OnGetRewardsWallet, holder, _1));
 }
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards

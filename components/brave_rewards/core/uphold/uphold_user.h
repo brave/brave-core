@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 struct User {
   std::string name = "";
@@ -16,6 +16,6 @@ struct User {
   bool bat_not_allowed = true;
 };
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_USER_H_

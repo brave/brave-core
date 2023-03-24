@@ -21,7 +21,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace payment {
 
@@ -30,22 +30,22 @@ class PostTransactionUpholdTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostTransactionUphold> order_;
 
   PostTransactionUpholdTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     order_ = std::make_unique<PostTransactionUphold>(mock_ledger_impl_.get());
   }
 };
 
 TEST_F(PostTransactionUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
@@ -64,8 +64,8 @@ TEST_F(PostTransactionUpholdTest, ServerOK) {
 
 TEST_F(PostTransactionUpholdTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -84,8 +84,8 @@ TEST_F(PostTransactionUpholdTest, ServerError400) {
 
 TEST_F(PostTransactionUpholdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
@@ -104,8 +104,8 @@ TEST_F(PostTransactionUpholdTest, ServerError404) {
 
 TEST_F(PostTransactionUpholdTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
@@ -124,8 +124,8 @@ TEST_F(PostTransactionUpholdTest, ServerError409) {
 
 TEST_F(PostTransactionUpholdTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
@@ -144,8 +144,8 @@ TEST_F(PostTransactionUpholdTest, ServerError500) {
 
 TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
@@ -164,4 +164,4 @@ TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

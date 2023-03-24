@@ -13,7 +13,7 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace contribution {
 
 ContributionAC::ContributionAC(LedgerImpl* ledger) : ledger_(ledger) {
@@ -95,4 +95,4 @@ void ContributionAC::QueueSaved(const mojom::Result result) {
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core

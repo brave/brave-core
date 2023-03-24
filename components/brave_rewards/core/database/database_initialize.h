@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace database {
@@ -22,28 +22,28 @@ class DatabaseInitialize {
   explicit DatabaseInitialize(LedgerImpl* ledger);
   ~DatabaseInitialize();
 
-  void Start(bool execute_create_script, ledger::LegacyResultCallback callback);
+  void Start(bool execute_create_script, LegacyResultCallback callback);
 
  private:
   void OnInitialize(mojom::DBCommandResponsePtr response,
                     bool execute_create_script,
-                    ledger::LegacyResultCallback callback);
+                    LegacyResultCallback callback);
 
-  void GetCreateScript(ledger::LegacyResultCallback callback);
+  void GetCreateScript(LegacyResultCallback callback);
 
   void ExecuteCreateScript(const std::string& script,
                            int table_version,
-                           ledger::LegacyResultCallback callback);
+                           LegacyResultCallback callback);
 
   void OnExecuteCreateScript(mojom::DBCommandResponsePtr response,
                              int table_version,
-                             ledger::LegacyResultCallback callback);
+                             LegacyResultCallback callback);
 
-  std::unique_ptr<ledger::database::DatabaseMigration> migration_;
+  std::unique_ptr<database::DatabaseMigration> migration_;
   LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_INITIALIZE_H_

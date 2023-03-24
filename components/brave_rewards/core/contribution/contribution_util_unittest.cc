@@ -10,7 +10,7 @@
 
 // npm run test -- brave_unit_tests --filter=ContributionUtilTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace contribution {
 
 class ContributionUtilTest : public testing::Test {};
@@ -64,4 +64,4 @@ TEST(ContributionUtilTest, HaveEnoughFundsToContribute) {
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core

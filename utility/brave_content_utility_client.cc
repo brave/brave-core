@@ -52,8 +52,8 @@ auto RunTorLauncher(mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
 #endif
 
 auto RunBatLedgerService(
-    mojo::PendingReceiver<bat_ledger::mojom::BatLedgerService> receiver) {
-  return std::make_unique<bat_ledger::BatLedgerServiceImpl>(
+    mojo::PendingReceiver<brave_rewards::mojom::BatLedgerService> receiver) {
+  return std::make_unique<brave_rewards::BatLedgerServiceImpl>(
       std::move(receiver));
 }
 

@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 class LedgerImpl;
 
@@ -25,6 +25,6 @@ class StateMigrationV11 {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V11_H_

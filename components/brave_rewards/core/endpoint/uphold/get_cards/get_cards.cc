@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger::endpoint::uphold {
+namespace brave_rewards::core::endpoint::uphold {
 
 GetCards::GetCards(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -58,7 +58,7 @@ mojom::Result GetCards::ParseBody(const std::string& body, std::string* id) {
       continue;
     }
 
-    if (*label == ::ledger::uphold::kCardName) {
+    if (*label == core::uphold::kCardName) {
       const auto* id_str = dict.FindString("id");
       if (!id_str) {
         continue;
@@ -84,7 +84,7 @@ void GetCards::Request(const std::string& token, GetCardsCallback callback) {
 
 void GetCards::OnRequest(GetCardsCallback callback,
                          const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   mojom::Result result = CheckStatusCode(response.status_code);
   if (result != mojom::Result::LEDGER_OK) {
@@ -96,4 +96,4 @@ void GetCards::OnRequest(GetCardsCallback callback,
   std::move(callback).Run(result, std::move(id));
 }
 
-}  // namespace ledger::endpoint::uphold
+}  // namespace brave_rewards::core::endpoint::uphold

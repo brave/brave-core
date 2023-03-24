@@ -15,7 +15,7 @@
 
 // npm run test -- brave_unit_tests --filter=GetPublisherTest.*
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace private_cdn {
 
@@ -128,4 +128,4 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
 
 }  // namespace private_cdn
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

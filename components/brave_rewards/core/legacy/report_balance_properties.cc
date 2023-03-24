@@ -12,7 +12,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_rewards/core/legacy/bat_util.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
 namespace {
 
@@ -160,4 +160,4 @@ bool ReportBalanceProperties::FromJson(const std::string& json) {
   return FromValue(*root);
 }
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

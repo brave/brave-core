@@ -17,7 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -33,7 +33,7 @@ DatabasePendingContribution::~DatabasePendingContribution() = default;
 
 void DatabasePendingContribution::InsertOrUpdateList(
     std::vector<mojom::PendingContributionPtr> list,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -70,7 +70,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
 }
 
 void DatabasePendingContribution::GetReservedAmount(
-    ledger::PendingContributionsTotalCallback callback) {
+    PendingContributionsTotalCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query =
       base::StringPrintf("SELECT SUM(amount) FROM %s", kTableName);
@@ -91,7 +91,7 @@ void DatabasePendingContribution::GetReservedAmount(
 
 void DatabasePendingContribution::OnGetReservedAmount(
     mojom::DBCommandResponsePtr response,
-    ledger::PendingContributionsTotalCallback callback) {
+    PendingContributionsTotalCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -110,7 +110,7 @@ void DatabasePendingContribution::OnGetReservedAmount(
 }
 
 void DatabasePendingContribution::GetAllRecords(
-    ledger::PendingContributionInfoListCallback callback) {
+    PendingContributionInfoListCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
@@ -149,7 +149,7 @@ void DatabasePendingContribution::GetAllRecords(
 
 void DatabasePendingContribution::OnGetAllRecords(
     mojom::DBCommandResponsePtr response,
-    ledger::PendingContributionInfoListCallback callback) {
+    PendingContributionInfoListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -186,7 +186,7 @@ void DatabasePendingContribution::OnGetAllRecords(
 }
 
 void DatabasePendingContribution::GetUnverifiedPublishers(
-    ledger::UnverifiedPublishersCallback callback) {
+    UnverifiedPublishersCallback callback) {
   std::string query = base::StringPrintf(
       "SELECT pi.publisher_id "
       "FROM %s AS pc "
@@ -213,7 +213,7 @@ void DatabasePendingContribution::GetUnverifiedPublishers(
 
 void DatabasePendingContribution::OnGetUnverifiedPublishers(
     mojom::DBCommandResponsePtr response,
-    ledger::UnverifiedPublishersCallback callback) {
+    UnverifiedPublishersCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -230,9 +230,8 @@ void DatabasePendingContribution::OnGetUnverifiedPublishers(
   callback(std::move(publisher_keys));
 }
 
-void DatabasePendingContribution::DeleteRecord(
-    uint64_t id,
-    ledger::LegacyResultCallback callback) {
+void DatabasePendingContribution::DeleteRecord(uint64_t id,
+                                               LegacyResultCallback callback) {
   if (id == 0) {
     BLOG(1, "Id is 0");
     callback(mojom::Result::LEDGER_ERROR);
@@ -257,7 +256,7 @@ void DatabasePendingContribution::DeleteRecord(
 }
 
 void DatabasePendingContribution::DeleteAllRecords(
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
@@ -273,4 +272,4 @@ void DatabasePendingContribution::DeleteAllRecords(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

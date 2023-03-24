@@ -37,7 +37,7 @@
 //    "label": <uuid>
 // }
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace endpoint::gemini {
@@ -64,6 +64,6 @@ class PostRecipientId {
 };
 
 }  // namespace endpoint::gemini
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_GEMINI_POST_RECIPIENT_ID_POST_RECIPIENT_ID_GEMINI_H_

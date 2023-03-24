@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_rewards/core/credentials/credentials_trigger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace credential {
 
 CredentialsTrigger::CredentialsTrigger() = default;
@@ -16,4 +16,4 @@ CredentialsTrigger::CredentialsTrigger(const CredentialsTrigger& info) =
 CredentialsTrigger::~CredentialsTrigger() = default;
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core

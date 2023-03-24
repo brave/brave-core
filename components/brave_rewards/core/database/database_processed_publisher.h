@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabaseProcessedPublisher : public DatabaseTable {
@@ -20,17 +20,17 @@ class DatabaseProcessedPublisher : public DatabaseTable {
   ~DatabaseProcessedPublisher() override;
 
   void InsertOrUpdateList(const std::vector<std::string>& list,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void WasProcessed(const std::string& publisher_key,
-                    ledger::LegacyResultCallback callback);
+                    LegacyResultCallback callback);
 
  private:
   void OnWasProcessed(mojom::DBCommandResponsePtr response,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PROCESSED_PUBLISHER_H_

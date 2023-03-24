@@ -22,7 +22,7 @@
 
 using ::testing::_;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace gemini {
 
 class GeminiUtilTest : public testing::Test {
@@ -30,13 +30,13 @@ class GeminiUtilTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
 
   GeminiUtilTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
   }
 
   ~GeminiUtilTest() override = default;
@@ -44,43 +44,43 @@ class GeminiUtilTest : public testing::Test {
 
 TEST_F(GeminiUtilTest, GetClientId) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_ID));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = gemini::GetClientId();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_ID));
 }
 
 TEST_F(GeminiUtilTest, GetClientSecret) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_CLIENT_SECRET));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = gemini::GetClientSecret();
   ASSERT_EQ(result, BUILDFLAG(GEMINI_WALLET_STAGING_CLIENT_SECRET));
 }
 
 TEST_F(GeminiUtilTest, GetFeeAddress) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = gemini::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
 TEST_F(GeminiUtilTest, GetLoginUrl) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetLoginUrl("my-state");
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL),
                                   "/auth"
@@ -98,7 +98,7 @@ TEST_F(GeminiUtilTest, GetLoginUrl) {
                                   "&response_type=code"}));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = gemini::GetLoginUrl("my-state");
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL),
                                   "/auth"
@@ -118,12 +118,12 @@ TEST_F(GeminiUtilTest, GetLoginUrl) {
 
 TEST_F(GeminiUtilTest, GetActivityUrl) {
   // production
-  ledger::_environment = mojom::Environment::PRODUCTION;
+  _environment = mojom::Environment::PRODUCTION;
   std::string result = gemini::GetActivityUrl();
   ASSERT_EQ(result, base::StrCat({BUILDFLAG(GEMINI_OAUTH_URL), "/balances"}));
 
   // staging
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
   result = gemini::GetActivityUrl();
   ASSERT_EQ(result,
             base::StrCat({BUILDFLAG(GEMINI_OAUTH_STAGING_URL), "/balances"}));
@@ -161,19 +161,19 @@ TEST_F(GeminiUtilTest, GetWallet) {
 
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {
   // string for testing
-  ledger::is_testing = true;
-  auto result = ledger::util::GenerateRandomHexString();
+  is_testing = true;
+  auto result = util::GenerateRandomHexString();
   ASSERT_EQ(result, "123456789");
 
   // random string
-  ledger::is_testing = false;
-  ledger::_environment = mojom::Environment::STAGING;
-  result = ledger::util::GenerateRandomHexString();
+  is_testing = false;
+  _environment = mojom::Environment::STAGING;
+  result = util::GenerateRandomHexString();
   ASSERT_EQ(result.length(), 64u);
 }
 
 TEST_F(GeminiUtilTest, GenerateLinks) {
-  ledger::_environment = mojom::Environment::STAGING;
+  _environment = mojom::Environment::STAGING;
 
   auto wallet = mojom::ExternalWallet::New();
   wallet->address = "123123123124234234234";
@@ -238,4 +238,4 @@ TEST_F(GeminiUtilTest, GenerateLinks) {
 }
 
 }  // namespace gemini
-}  // namespace ledger
+}  // namespace brave_rewards::core

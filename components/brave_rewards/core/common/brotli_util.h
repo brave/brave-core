@@ -10,7 +10,7 @@
 
 #include "base/strings/string_piece.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace util {
 
 bool DecodeBrotliString(base::StringPiece input,
@@ -22,6 +22,6 @@ bool DecodeBrotliStringWithBuffer(base::StringPiece input,
                                   std::string* output);
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_COMMON_BROTLI_UTIL_H_

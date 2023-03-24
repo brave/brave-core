@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 
 PaymentServer::PaymentServer(LedgerImpl* ledger)
@@ -47,4 +47,4 @@ payment::PostTransactionUphold* PaymentServer::post_transaction_uphold() const {
 }
 
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

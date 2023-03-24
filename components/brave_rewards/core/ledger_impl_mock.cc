@@ -5,11 +5,10 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 
-MockLedgerImpl::MockLedgerImpl(ledger::LedgerClient* client)
-    : LedgerImpl(client) {}
+MockLedgerImpl::MockLedgerImpl(LedgerClient* client) : LedgerImpl(client) {}
 
 MockLedgerImpl::~MockLedgerImpl() = default;
 
-}  // namespace ledger
+}  // namespace brave_rewards::core

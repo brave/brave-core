@@ -24,7 +24,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -33,8 +33,8 @@ class GetDrainTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<GetDrain> drain_;
   const char* test_drain_id_ = "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b";
   const char* drain_json_ = R"(
@@ -45,9 +45,9 @@ class GetDrainTest : public testing::Test {
   )";
 
   GetDrainTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     drain_ = std::make_unique<GetDrain>(mock_ledger_impl_.get());
   }
 
@@ -63,14 +63,14 @@ class GetDrainTest : public testing::Test {
 
 TEST_F(GetDrainTest, DrainComplete) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
-                                   client::LoadURLCallback callback) {
-        mojom::UrlResponse response;
-        response.status_code = 200;
-        response.url = request->url;
-        response.body = MakeDrainBody(request->url, "complete");
-        std::move(callback).Run(response);
-      }));
+      .WillByDefault(Invoke(
+          [this](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            mojom::UrlResponse response;
+            response.status_code = 200;
+            response.url = request->url;
+            response.body = MakeDrainBody(request->url, "complete");
+            std::move(callback).Run(response);
+          }));
 
   drain_->Request(test_drain_id_, [](const mojom::Result result,
                                      const mojom::DrainStatus status) {
@@ -81,14 +81,14 @@ TEST_F(GetDrainTest, DrainComplete) {
 
 TEST_F(GetDrainTest, DrainPending) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
-                                   client::LoadURLCallback callback) {
-        mojom::UrlResponse response;
-        response.status_code = 200;
-        response.url = request->url;
-        response.body = MakeDrainBody(request->url, "pending");
-        std::move(callback).Run(response);
-      }));
+      .WillByDefault(Invoke(
+          [this](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            mojom::UrlResponse response;
+            response.status_code = 200;
+            response.url = request->url;
+            response.body = MakeDrainBody(request->url, "pending");
+            std::move(callback).Run(response);
+          }));
 
   drain_->Request(test_drain_id_, [](const mojom::Result result,
                                      const mojom::DrainStatus status) {
@@ -99,14 +99,14 @@ TEST_F(GetDrainTest, DrainPending) {
 
 TEST_F(GetDrainTest, DrainInvalidResponse) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke([this](mojom::UrlRequestPtr request,
-                                   client::LoadURLCallback callback) {
-        mojom::UrlResponse response;
-        response.status_code = 200;
-        response.url = request->url;
-        response.body = MakeDrainBody(request->url, "thisdoesnotexist");
-        std::move(callback).Run(response);
-      }));
+      .WillByDefault(Invoke(
+          [this](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            mojom::UrlResponse response;
+            response.status_code = 200;
+            response.url = request->url;
+            response.body = MakeDrainBody(request->url, "thisdoesnotexist");
+            std::move(callback).Run(response);
+          }));
 
   drain_->Request(test_drain_id_, [](const mojom::Result result,
                                      const mojom::DrainStatus status) {
@@ -117,4 +117,4 @@ TEST_F(GetDrainTest, DrainInvalidResponse) {
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

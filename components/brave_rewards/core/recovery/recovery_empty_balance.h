@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace recovery {
@@ -27,10 +27,10 @@ class EmptyBalance {
  private:
   void OnAllContributions(std::vector<mojom::ContributionInfoPtr> list);
 
-  void GetPromotions(client::GetPromotionListCallback callback);
+  void GetPromotions(GetPromotionListCallback callback);
 
   void OnPromotions(base::flat_map<std::string, mojom::PromotionPtr> promotions,
-                    client::GetPromotionListCallback callback);
+                    GetPromotionListCallback callback);
 
   void GetCredsByPromotions(std::vector<mojom::PromotionPtr> list);
 
@@ -52,6 +52,6 @@ class EmptyBalance {
 };
 
 }  // namespace recovery
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_RECOVERY_RECOVERY_EMPTY_BALANCE_H_

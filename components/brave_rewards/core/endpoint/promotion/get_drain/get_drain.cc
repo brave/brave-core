@@ -16,7 +16,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -60,7 +60,7 @@ void GetDrain::Request(const std::string& drain_id, GetDrainCallback callback) {
 
 void GetDrain::OnRequest(const mojom::UrlResponse& response,
                          GetDrainCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
   if (result != mojom::Result::LEDGER_OK) {
     callback(mojom::Result::LEDGER_ERROR, mojom::DrainStatus::INVALID);
@@ -109,4 +109,4 @@ void GetDrain::OnRequest(const mojom::UrlResponse& response,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

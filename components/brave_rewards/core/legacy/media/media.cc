@@ -11,12 +11,12 @@
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "build/build_config.h"
 
-namespace braveledger_media {
+namespace brave_rewards::core {
 
-Media::Media(ledger::LedgerImpl* ledger)
+Media::Media(LedgerImpl* ledger)
     : ledger_(ledger),
-      media_youtube_(new braveledger_media::YouTube(ledger)),
-      media_github_(new braveledger_media::GitHub(ledger)) {}
+      media_youtube_(new YouTube(ledger)),
+      media_github_(new GitHub(ledger)) {}
 
 Media::~Media() = default;
 
@@ -24,10 +24,10 @@ Media::~Media() = default;
 std::string Media::GetLinkType(const std::string& url,
                                const std::string& first_party_url,
                                const std::string& referrer) {
-  std::string type = braveledger_media::YouTube::GetLinkType(url);
+  std::string type = YouTube::GetLinkType(url);
 
   if (type.empty()) {
-    type = braveledger_media::GitHub::GetLinkType(url);
+    type = GitHub::GetLinkType(url);
   }
 
   return type;
@@ -35,7 +35,7 @@ std::string Media::GetLinkType(const std::string& url,
 
 void Media::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
                          const std::string& type,
-                         ledger::mojom::VisitDataPtr visit_data) {
+                         mojom::VisitDataPtr visit_data) {
   if (parts.empty() || !visit_data) {
     return;
   }
@@ -52,7 +52,7 @@ void Media::ProcessMedia(const base::flat_map<std::string, std::string>& parts,
 }
 
 void Media::GetMediaActivityFromUrl(uint64_t window_id,
-                                    ledger::mojom::VisitDataPtr visit_data,
+                                    mojom::VisitDataPtr visit_data,
                                     const std::string& type,
                                     const std::string& publisher_blob) {
   if (type == YOUTUBE_MEDIA_TYPE) {
@@ -64,7 +64,7 @@ void Media::GetMediaActivityFromUrl(uint64_t window_id,
   }
 }
 
-void Media::OnMediaActivityError(ledger::mojom::VisitDataPtr visit_data,
+void Media::OnMediaActivityError(mojom::VisitDataPtr visit_data,
                                  const std::string& type,
                                  uint64_t window_id) {
   std::string url;
@@ -91,11 +91,11 @@ void Media::OnMediaActivityError(ledger::mojom::VisitDataPtr visit_data,
 
 void Media::SaveMediaInfo(const std::string& type,
                           const base::flat_map<std::string, std::string>& data,
-                          ledger::PublisherInfoCallback callback) {
+                          PublisherInfoCallback callback) {
   if (type == GITHUB_MEDIA_TYPE) {
     media_github_->SaveMediaInfo(data, callback);
     return;
   }
 }
 
-}  // namespace braveledger_media
+}  // namespace brave_rewards::core

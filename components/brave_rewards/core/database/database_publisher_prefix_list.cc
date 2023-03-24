@@ -14,6 +14,8 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 
+namespace brave_rewards::core {
+
 namespace {
 
 const char kTableName[] = "publisher_prefix_list";
@@ -21,13 +23,13 @@ const char kTableName[] = "publisher_prefix_list";
 constexpr size_t kHashPrefixSize = 4;
 constexpr size_t kMaxInsertRecords = 100'000;
 
-std::tuple<ledger::publisher::PrefixIterator, std::string, size_t>
-GetPrefixInsertList(ledger::publisher::PrefixIterator begin,
-                    ledger::publisher::PrefixIterator end) {
+std::tuple<publisher::PrefixIterator, std::string, size_t> GetPrefixInsertList(
+    publisher::PrefixIterator begin,
+    publisher::PrefixIterator end) {
   DCHECK(begin != end);
   size_t count = 0;
   std::string values;
-  ledger::publisher::PrefixIterator iter = begin;
+  publisher::PrefixIterator iter = begin;
   for (iter = begin; iter != end && count < kMaxInsertRecords;
        ++count, ++iter) {
     auto prefix = *iter;
@@ -43,8 +45,6 @@ GetPrefixInsertList(ledger::publisher::PrefixIterator begin,
 }
 
 }  // namespace
-
-namespace ledger {
 
 namespace database {
 
@@ -87,7 +87,7 @@ void DatabasePublisherPrefixList::Search(
 
 void DatabasePublisherPrefixList::Reset(
     std::unique_ptr<publisher::PrefixListReader> reader,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
     callback(mojom::Result::LEDGER_ERROR);
@@ -102,9 +102,8 @@ void DatabasePublisherPrefixList::Reset(
   InsertNext(reader_->begin(), callback);
 }
 
-void DatabasePublisherPrefixList::InsertNext(
-    publisher::PrefixIterator begin,
-    ledger::LegacyResultCallback callback) {
+void DatabasePublisherPrefixList::InsertNext(publisher::PrefixIterator begin,
+                                             LegacyResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
   auto transaction = mojom::DBTransaction::New();
@@ -153,4 +152,4 @@ void DatabasePublisherPrefixList::InsertNext(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

@@ -11,7 +11,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace database {
@@ -21,7 +21,7 @@ class DatabaseMigration {
   explicit DatabaseMigration(LedgerImpl* ledger);
   ~DatabaseMigration();
 
-  void Start(uint32_t table_version, ledger::LegacyResultCallback callback);
+  void Start(uint32_t table_version, LegacyResultCallback callback);
 
   static void SetTargetVersionForTesting(uint32_t version);
 
@@ -34,5 +34,5 @@ class DatabaseMigration {
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MIGRATION_H_

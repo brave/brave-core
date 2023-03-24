@@ -17,20 +17,22 @@ LedgerClientIOS::~LedgerClientIOS() {
   bridge_ = nil;
 }
 
-void LedgerClientIOS::FetchFavIcon(const std::string& url,
-                                   const std::string& favicon_key,
-                                   ledger::client::FetchIconCallback callback) {
+void LedgerClientIOS::FetchFavIcon(
+    const std::string& url,
+    const std::string& favicon_key,
+    brave_rewards::core::FetchIconCallback callback) {
   [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
 }
-void LedgerClientIOS::LoadLedgerState(ledger::client::OnLoadCallback callback) {
+void LedgerClientIOS::LoadLedgerState(
+    brave_rewards::core::OnLoadCallback callback) {
   [bridge_ loadLedgerState:callback];
 }
 void LedgerClientIOS::LoadPublisherState(
-    ledger::client::OnLoadCallback callback) {
+    brave_rewards::core::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }
-void LedgerClientIOS::LoadURL(ledger::mojom::UrlRequestPtr request,
-                              ledger::client::LoadURLCallback callback) {
+void LedgerClientIOS::LoadURL(brave_rewards::mojom::UrlRequestPtr request,
+                              brave_rewards::core::LoadURLCallback callback) {
   [bridge_ loadURL:std::move(request) callback:std::move(callback)];
 }
 void LedgerClientIOS::Log(const char* file,
@@ -40,8 +42,8 @@ void LedgerClientIOS::Log(const char* file,
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
 void LedgerClientIOS::OnPanelPublisherInfo(
-    ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr publisher_info,
+    brave_rewards::mojom::Result result,
+    brave_rewards::mojom::PublisherInfoPtr publisher_info,
     uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result
                   publisherInfo:std::move(publisher_info)
@@ -50,19 +52,19 @@ void LedgerClientIOS::OnPanelPublisherInfo(
 void LedgerClientIOS::OnPublisherRegistryUpdated() {}
 void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {}
 void LedgerClientIOS::OnReconcileComplete(
-    ledger::mojom::Result result,
-    ledger::mojom::ContributionInfoPtr contribution) {
+    brave_rewards::mojom::Result result,
+    brave_rewards::mojom::ContributionInfoPtr contribution) {
   [bridge_ onReconcileComplete:result contribution:std::move(contribution)];
 }
 void LedgerClientIOS::PublisherListNormalized(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
 std::string LedgerClientIOS::URIEncode(const std::string& value) {
   return [bridge_ URIEncode:value];
 }
 void LedgerClientIOS::OnContributeUnverifiedPublishers(
-    ledger::mojom::Result result,
+    brave_rewards::mojom::Result result,
     const std::string& publisher_key,
     const std::string& publisher_name) {
   return [bridge_ onContributeUnverifiedPublishers:result
@@ -128,7 +130,7 @@ std::string LedgerClientIOS::GetLegacyWallet() {
 void LedgerClientIOS::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::client::LegacyResultCallback callback) {
+    brave_rewards::core::LegacyResultCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
 bool LedgerClientIOS::GetBooleanOption(const std::string& name) const {
@@ -149,7 +151,7 @@ int64_t LedgerClientIOS::GetInt64Option(const std::string& name) const {
 uint64_t LedgerClientIOS::GetUint64Option(const std::string& name) const {
   return [bridge_ getUint64Option:name];
 }
-ledger::mojom::ClientInfoPtr LedgerClientIOS::GetClientInfo() {
+brave_rewards::mojom::ClientInfoPtr LedgerClientIOS::GetClientInfo() {
   return [bridge_ getClientInfo];
 }
 void LedgerClientIOS::UnblindedTokensReady() {
@@ -159,17 +161,17 @@ void LedgerClientIOS::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }
 void LedgerClientIOS::RunDBTransaction(
-    ledger::mojom::DBTransactionPtr transaction,
-    ledger::client::RunDBTransactionCallback callback) {
+    brave_rewards::mojom::DBTransactionPtr transaction,
+    brave_rewards::core::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction)
                    callback:std::move(callback)];
 }
 void LedgerClientIOS::GetCreateScript(
-    ledger::client::GetCreateScriptCallback callback) {
+    brave_rewards::core::GetCreateScriptCallback callback) {
   [bridge_ getCreateScript:callback];
 }
 void LedgerClientIOS::PendingContributionSaved(
-    const ledger::mojom::Result result) {
+    const brave_rewards::mojom::Result result) {
   [bridge_ pendingContributionSaved:result];
 }
 void LedgerClientIOS::ClearAllNotifications() {
@@ -178,7 +180,8 @@ void LedgerClientIOS::ClearAllNotifications() {
 void LedgerClientIOS::ExternalWalletConnected() const {}
 void LedgerClientIOS::ExternalWalletLoggedOut() const {}
 void LedgerClientIOS::ExternalWalletReconnected() const {}
-void LedgerClientIOS::DeleteLog(ledger::client::LegacyResultCallback callback) {
+void LedgerClientIOS::DeleteLog(
+    brave_rewards::core::LegacyResultCallback callback) {
   [bridge_ deleteLog:callback];
 }
 absl::optional<std::string> LedgerClientIOS::EncryptString(

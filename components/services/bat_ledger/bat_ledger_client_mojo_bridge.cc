@@ -12,7 +12,7 @@
 
 #include "base/logging.h"
 
-namespace bat_ledger {
+namespace brave_rewards {
 
 BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
       mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info) {
@@ -21,15 +21,13 @@ BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
 
 BatLedgerClientMojoBridge::~BatLedgerClientMojoBridge() = default;
 
-void OnLoadURL(ledger::client::LoadURLCallback callback,
-               ledger::mojom::UrlResponsePtr response_ptr) {
-  std::move(callback).Run(response_ptr ? *response_ptr
-                                       : ledger::mojom::UrlResponse());
+void OnLoadURL(core::LoadURLCallback callback,
+               mojom::UrlResponsePtr response_ptr) {
+  std::move(callback).Run(response_ptr ? *response_ptr : mojom::UrlResponse());
 }
 
-void BatLedgerClientMojoBridge::LoadURL(
-    ledger::mojom::UrlRequestPtr request,
-    ledger::client::LoadURLCallback callback) {
+void BatLedgerClientMojoBridge::LoadURL(mojom::UrlRequestPtr request,
+                                        core::LoadURLCallback callback) {
   if (!Connected())
     return;
 
@@ -39,8 +37,8 @@ void BatLedgerClientMojoBridge::LoadURL(
 }
 
 void BatLedgerClientMojoBridge::OnReconcileComplete(
-    const ledger::mojom::Result result,
-    ledger::mojom::ContributionInfoPtr contribution) {
+    const mojom::Result result,
+    mojom::ContributionInfoPtr contribution) {
   if (!Connected())
     return;
 
@@ -59,17 +57,15 @@ void BatLedgerClientMojoBridge::Log(
   bat_ledger_client_->Log(file, line, verbose_level, message);
 }
 
-void BatLedgerClientMojoBridge::OnLoadLedgerState(
-    ledger::client::OnLoadCallback callback,
-    const ledger::mojom::Result result,
-    const std::string& data) {
+void BatLedgerClientMojoBridge::OnLoadLedgerState(core::OnLoadCallback callback,
+                                                  const mojom::Result result,
+                                                  const std::string& data) {
   callback(result, data);
 }
 
-void BatLedgerClientMojoBridge::LoadLedgerState(
-    ledger::client::OnLoadCallback callback) {
+void BatLedgerClientMojoBridge::LoadLedgerState(core::OnLoadCallback callback) {
   if (!Connected()) {
-    callback(ledger::mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -80,16 +76,16 @@ void BatLedgerClientMojoBridge::LoadLedgerState(
 }
 
 void BatLedgerClientMojoBridge::OnLoadPublisherState(
-    ledger::client::OnLoadCallback callback,
-    const ledger::mojom::Result result,
+    core::OnLoadCallback callback,
+    const mojom::Result result,
     const std::string& data) {
   callback(result, data);
 }
 
 void BatLedgerClientMojoBridge::LoadPublisherState(
-    ledger::client::OnLoadCallback callback) {
+    core::OnLoadCallback callback) {
   if (!Connected()) {
-    callback(ledger::mojom::Result::LEDGER_ERROR, "");
+    callback(mojom::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -100,8 +96,8 @@ void BatLedgerClientMojoBridge::LoadPublisherState(
 }
 
 void BatLedgerClientMojoBridge::OnPanelPublisherInfo(
-    ledger::mojom::Result result,
-    ledger::mojom::PublisherInfoPtr info,
+    mojom::Result result,
+    mojom::PublisherInfoPtr info,
     uint64_t windowId) {
   if (!Connected()) {
     return;
@@ -113,14 +109,15 @@ void BatLedgerClientMojoBridge::OnPanelPublisherInfo(
       windowId);
 }
 
-void OnFetchFavIcon(const ledger::client::FetchIconCallback& callback,
-    bool success, const std::string& favicon_url) {
+void OnFetchFavIcon(const core::FetchIconCallback& callback,
+                    bool success,
+                    const std::string& favicon_url) {
   callback(success, favicon_url);
 }
 
 void BatLedgerClientMojoBridge::FetchFavIcon(const std::string& url,
-    const std::string& favicon_key,
-    ledger::client::FetchIconCallback callback) {
+                                             const std::string& favicon_key,
+                                             core::FetchIconCallback callback) {
   if (!Connected()) {
     callback(false, "");
     return;
@@ -140,7 +137,7 @@ std::string BatLedgerClientMojoBridge::URIEncode(const std::string& value) {
 }
 
 void BatLedgerClientMojoBridge::PublisherListNormalized(
-    std::vector<ledger::mojom::PublisherInfoPtr> list) {
+    std::vector<mojom::PublisherInfoPtr> list) {
   if (!Connected()) {
     return;
   }
@@ -301,7 +298,7 @@ bool BatLedgerClientMojoBridge::Connected() const {
 }
 
 void BatLedgerClientMojoBridge::OnContributeUnverifiedPublishers(
-    ledger::mojom::Result result,
+    mojom::Result result,
     const std::string& publisher_key,
     const std::string& publisher_name) {
   bat_ledger_client_->OnContributeUnverifiedPublishers(
@@ -320,23 +317,23 @@ std::string BatLedgerClientMojoBridge::GetLegacyWallet() {
   return wallet;
 }
 
-void OnShowNotification(const ledger::client::LegacyResultCallback& callback,
-                        ledger::mojom::Result result) {
+void OnShowNotification(const core::LegacyResultCallback& callback,
+                        mojom::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoBridge::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::client::LegacyResultCallback callback) {
+    core::LegacyResultCallback callback) {
   bat_ledger_client_->ShowNotification(
       type,
       args,
       base::BindOnce(&OnShowNotification, std::move(callback)));
 }
 
-ledger::mojom::ClientInfoPtr BatLedgerClientMojoBridge::GetClientInfo() {
-  auto info = ledger::mojom::ClientInfo::New();
+mojom::ClientInfoPtr BatLedgerClientMojoBridge::GetClientInfo() {
+  auto info = mojom::ClientInfo::New();
   bat_ledger_client_->GetClientInfo(&info);
   return info;
 }
@@ -349,34 +346,33 @@ void BatLedgerClientMojoBridge::ReconcileStampReset() {
   bat_ledger_client_->ReconcileStampReset();
 }
 
-void OnRunDBTransaction(ledger::client::RunDBTransactionCallback callback,
-                        ledger::mojom::DBCommandResponsePtr response) {
+void OnRunDBTransaction(core::RunDBTransactionCallback callback,
+                        mojom::DBCommandResponsePtr response) {
   std::move(callback).Run(std::move(response));
 }
 
 void BatLedgerClientMojoBridge::RunDBTransaction(
-    ledger::mojom::DBTransactionPtr transaction,
-    ledger::client::RunDBTransactionCallback callback) {
+    mojom::DBTransactionPtr transaction,
+    core::RunDBTransactionCallback callback) {
   bat_ledger_client_->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));
 }
 
-void OnGetCreateScript(
-    const ledger::client::GetCreateScriptCallback& callback,
-    const std::string& script,
-    const int table_version) {
+void OnGetCreateScript(const core::GetCreateScriptCallback& callback,
+                       const std::string& script,
+                       const int table_version) {
   callback(script, table_version);
 }
 
 void BatLedgerClientMojoBridge::GetCreateScript(
-    ledger::client::GetCreateScriptCallback callback) {
+    core::GetCreateScriptCallback callback) {
   bat_ledger_client_->GetCreateScript(
       base::BindOnce(&OnGetCreateScript, std::move(callback)));
 }
 
 void BatLedgerClientMojoBridge::PendingContributionSaved(
-    const ledger::mojom::Result result) {
+    const mojom::Result result) {
   bat_ledger_client_->PendingContributionSaved(result);
 }
 
@@ -396,13 +392,11 @@ void BatLedgerClientMojoBridge::ExternalWalletReconnected() const {
   bat_ledger_client_->ExternalWalletReconnected();
 }
 
-void OnDeleteLog(ledger::client::LegacyResultCallback callback,
-                 ledger::mojom::Result result) {
+void OnDeleteLog(core::LegacyResultCallback callback, mojom::Result result) {
   callback(result);
 }
 
-void BatLedgerClientMojoBridge::DeleteLog(
-    ledger::client::LegacyResultCallback callback) {
+void BatLedgerClientMojoBridge::DeleteLog(core::LegacyResultCallback callback) {
   bat_ledger_client_->DeleteLog(
       base::BindOnce(&OnDeleteLog, std::move(callback)));
 }
@@ -421,4 +415,4 @@ absl::optional<std::string> BatLedgerClientMojoBridge::DecryptString(
   return result;
 }
 
-}  // namespace bat_ledger
+}  // namespace brave_rewards

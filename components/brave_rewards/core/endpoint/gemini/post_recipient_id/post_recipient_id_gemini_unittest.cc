@@ -20,7 +20,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace gemini {
 
@@ -29,14 +29,14 @@ class GeminiPostRecipientIdTest : public testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostRecipientId> post_recipient_id_;
 
   GeminiPostRecipientIdTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     post_recipient_id_ =
         std::make_unique<PostRecipientId>(mock_ledger_impl_.get());
   }
@@ -44,8 +44,8 @@ class GeminiPostRecipientIdTest : public testing::Test {
 
 TEST_F(GeminiPostRecipientIdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
@@ -67,8 +67,8 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK) {
 
 TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_OK;
             response.url = request->url;
@@ -92,8 +92,8 @@ TEST_F(GeminiPostRecipientIdTest, ServerOK_Unverified) {
 
 TEST_F(GeminiPostRecipientIdTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_UNAUTHORIZED;
             response.url = request->url;
@@ -111,8 +111,8 @@ TEST_F(GeminiPostRecipientIdTest, ServerError401) {
 
 TEST_F(GeminiPostRecipientIdTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_FORBIDDEN;
             response.url = request->url;
@@ -130,8 +130,8 @@ TEST_F(GeminiPostRecipientIdTest, ServerError403) {
 
 TEST_F(GeminiPostRecipientIdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = net::HTTP_NOT_FOUND;
             response.url = request->url;
@@ -149,8 +149,8 @@ TEST_F(GeminiPostRecipientIdTest, ServerError404) {
 
 TEST_F(GeminiPostRecipientIdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
+      .WillByDefault(
+          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
             mojom::UrlResponse response;
             response.status_code = 418;
             response.url = request->url;
@@ -168,4 +168,4 @@ TEST_F(GeminiPostRecipientIdTest, ServerErrorRandom) {
 
 }  // namespace gemini
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

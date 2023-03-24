@@ -17,7 +17,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace promotion {
 
@@ -113,7 +113,8 @@ mojom::Result GetAvailable::ParseBody(
       corrupted_promotions->push_back(promotion->id);
       continue;
     }
-    promotion->type = ::ledger::promotion::ConvertStringToPromotionType(*type);
+    promotion->type =
+        brave_rewards::core::promotion::ConvertStringToPromotionType(*type);
 
     const auto suggestions = item->FindInt("suggestionsPerGrant");
     if (!suggestions) {
@@ -211,7 +212,7 @@ void GetAvailable::Request(const std::string& platform,
 
 void GetAvailable::OnRequest(GetAvailableCallback callback,
                              const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   std::vector<mojom::PromotionPtr> list;
   std::vector<std::string> corrupted_promotions;
@@ -228,4 +229,4 @@ void GetAvailable::OnRequest(GetAvailableCallback callback,
 
 }  // namespace promotion
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

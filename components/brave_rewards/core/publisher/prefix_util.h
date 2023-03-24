@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace publisher {
 
 extern const size_t kMinPrefixSize;
@@ -23,6 +23,6 @@ std::string GetHashPrefixInHex(const std::string& publisher_key,
                                size_t prefix_size);
 
 }  // namespace publisher
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_PUBLISHER_PREFIX_UTIL_H_

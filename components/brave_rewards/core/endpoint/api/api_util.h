@@ -8,7 +8,7 @@
 
 #include <string>
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace api {
 
@@ -16,6 +16,6 @@ std::string GetServerUrl(const std::string& path);
 
 }  // namespace api
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_ENDPOINT_API_API_UTIL_H_

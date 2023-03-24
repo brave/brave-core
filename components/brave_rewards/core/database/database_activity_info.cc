@@ -14,14 +14,15 @@
 
 using std::placeholders::_1;
 
+namespace brave_rewards::core {
+
 namespace {
 
 const char kTableName[] = "activity_info";
 
-std::string GenerateActivityFilterQuery(
-    const int start,
-    const int limit,
-    ledger::mojom::ActivityInfoFilterPtr filter) {
+std::string GenerateActivityFilterQuery(const int start,
+                                        const int limit,
+                                        mojom::ActivityInfoFilterPtr filter) {
   std::string query = "";
   if (!filter) {
     return query;
@@ -39,14 +40,12 @@ std::string GenerateActivityFilterQuery(
     query += " AND ai.duration >= ?";
   }
 
-  if (filter->excluded != ledger::mojom::ExcludeFilter::FILTER_ALL &&
-      filter->excluded !=
-          ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter->excluded != mojom::ExcludeFilter::FILTER_ALL &&
+      filter->excluded != mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded = ?";
   }
 
-  if (filter->excluded ==
-      ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter->excluded == mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded != ?";
   }
 
@@ -60,7 +59,7 @@ std::string GenerateActivityFilterQuery(
 
   if (!filter->non_verified) {
     const std::string status = base::StringPrintf(
-        " AND spi.status != %1d", ledger::mojom::PublisherStatus::NOT_VERIFIED);
+        " AND spi.status != %1d", mojom::PublisherStatus::NOT_VERIFIED);
     query += status;
   }
 
@@ -80,51 +79,47 @@ std::string GenerateActivityFilterQuery(
   return query;
 }
 
-void GenerateActivityFilterBind(ledger::mojom::DBCommand* command,
-                                ledger::mojom::ActivityInfoFilterPtr filter) {
+void GenerateActivityFilterBind(mojom::DBCommand* command,
+                                mojom::ActivityInfoFilterPtr filter) {
   if (!command || !filter) {
     return;
   }
 
   int column = 0;
   if (!filter->id.empty()) {
-    ledger::database::BindString(command, column++, filter->id);
+    database::BindString(command, column++, filter->id);
   }
 
   if (filter->reconcile_stamp > 0) {
-    ledger::database::BindInt64(command, column++, filter->reconcile_stamp);
+    database::BindInt64(command, column++, filter->reconcile_stamp);
   }
 
   if (filter->min_duration > 0) {
-    ledger::database::BindInt(command, column++, filter->min_duration);
+    database::BindInt(command, column++, filter->min_duration);
   }
 
-  if (filter->excluded != ledger::mojom::ExcludeFilter::FILTER_ALL &&
-      filter->excluded !=
-          ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
-    ledger::database::BindInt(command, column++,
-                              static_cast<int32_t>(filter->excluded));
+  if (filter->excluded != mojom::ExcludeFilter::FILTER_ALL &&
+      filter->excluded != mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+    database::BindInt(command, column++,
+                      static_cast<int32_t>(filter->excluded));
   }
 
-  if (filter->excluded ==
-      ledger::mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
-    ledger::database::BindInt(
-        command, column++,
-        static_cast<int>(ledger::mojom::PublisherExclude::EXCLUDED));
+  if (filter->excluded == mojom::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+    database::BindInt(command, column++,
+                      static_cast<int>(mojom::PublisherExclude::EXCLUDED));
   }
 
   if (filter->percent > 0) {
-    ledger::database::BindInt(command, column++, filter->percent);
+    database::BindInt(command, column++, filter->percent);
   }
 
   if (filter->min_visits > 0) {
-    ledger::database::BindInt(command, column++, filter->min_visits);
+    database::BindInt(command, column++, filter->min_visits);
   }
 }
 
 }  // namespace
 
-namespace ledger {
 namespace database {
 
 DatabaseActivityInfo::DatabaseActivityInfo(LedgerImpl* ledger)
@@ -134,7 +129,7 @@ DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 void DatabaseActivityInfo::NormalizeList(
     std::vector<mojom::PublisherInfoPtr> list,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (list.empty()) {
     callback(mojom::Result::LEDGER_OK);
     return;
@@ -177,9 +172,8 @@ void DatabaseActivityInfo::NormalizeList(
       });
 }
 
-void DatabaseActivityInfo::InsertOrUpdate(
-    mojom::PublisherInfoPtr info,
-    ledger::LegacyResultCallback callback) {
+void DatabaseActivityInfo::InsertOrUpdate(mojom::PublisherInfoPtr info,
+                                          LegacyResultCallback callback) {
   if (!info) {
     callback(mojom::Result::LEDGER_ERROR);
     return;
@@ -212,11 +206,10 @@ void DatabaseActivityInfo::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseActivityInfo::GetRecordsList(
-    const int start,
-    const int limit,
-    mojom::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoListCallback callback) {
+void DatabaseActivityInfo::GetRecordsList(const int start,
+                                          const int limit,
+                                          mojom::ActivityInfoFilterPtr filter,
+                                          PublisherInfoListCallback callback) {
   if (!filter) {
     callback({});
     return;
@@ -270,7 +263,7 @@ void DatabaseActivityInfo::GetRecordsList(
 
 void DatabaseActivityInfo::OnGetRecordsList(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+    PublisherInfoListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
@@ -306,7 +299,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
 }
 
 void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
-                                        ledger::LegacyResultCallback callback) {
+                                        LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     callback(mojom::Result::LEDGER_ERROR);
     return;
@@ -368,4 +361,4 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

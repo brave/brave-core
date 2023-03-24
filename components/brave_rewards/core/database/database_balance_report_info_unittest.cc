@@ -18,7 +18,7 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabaseBalanceReportTest : public ::testing::Test {
@@ -26,15 +26,15 @@ class DatabaseBalanceReportTest : public ::testing::Test {
   base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<MockLedgerClient> mock_ledger_client_;
+  std::unique_ptr<MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabaseBalanceReport> balance_report_;
 
   DatabaseBalanceReportTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+    mock_ledger_client_ = std::make_unique<MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<MockLedgerImpl>(mock_ledger_client_.get());
     balance_report_ =
         std::make_unique<DatabaseBalanceReport>(mock_ledger_impl_.get());
   }
@@ -58,16 +58,14 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
       "VALUES (?, ?, ?, ?, ?, ?)";
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::RUN);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
-          }));
+      .WillByDefault(Invoke([&](mojom::DBTransactionPtr transaction,
+                                RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
+      }));
 
   balance_report_->InsertOrUpdate(std::move(info), [](const mojom::Result) {});
 }
@@ -81,17 +79,15 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
       "FROM balance_report_info";
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::READ);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
-          }));
+      .WillByDefault(Invoke([&](mojom::DBTransactionPtr transaction,
+                                RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
+      }));
 
   balance_report_->GetAllRecords(
       [](std::vector<mojom::BalanceReportInfoPtr>) {});
@@ -107,17 +103,15 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
       "WHERE balance_report_id = ?";
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 2u);
-            ASSERT_EQ(transaction->commands[1]->type,
-                      mojom::DBCommand::Type::READ);
-            ASSERT_EQ(transaction->commands[1]->command, query);
-            ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
-            ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
-          }));
+      .WillByDefault(Invoke([&](mojom::DBTransactionPtr transaction,
+                                RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 2u);
+        ASSERT_EQ(transaction->commands[1]->type, mojom::DBCommand::Type::READ);
+        ASSERT_EQ(transaction->commands[1]->command, query);
+        ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
+        ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
+      }));
 
   balance_report_->GetRecord(mojom::ActivityMonth::MAY, 2020,
                              [](mojom::Result, mojom::BalanceReportInfoPtr) {});
@@ -129,20 +123,19 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   const std::string query = "DELETE FROM balance_report_info";
 
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
-      .WillByDefault(
-          Invoke([&](mojom::DBTransactionPtr transaction,
-                     ledger::client::RunDBTransactionCallback callback) {
-            ASSERT_TRUE(transaction);
-            ASSERT_EQ(transaction->commands.size(), 1u);
-            ASSERT_EQ(transaction->commands[0]->type,
-                      mojom::DBCommand::Type::EXECUTE);
-            ASSERT_EQ(transaction->commands[0]->command, query);
-            ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
-            ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
-          }));
+      .WillByDefault(Invoke([&](mojom::DBTransactionPtr transaction,
+                                RunDBTransactionCallback callback) {
+        ASSERT_TRUE(transaction);
+        ASSERT_EQ(transaction->commands.size(), 1u);
+        ASSERT_EQ(transaction->commands[0]->type,
+                  mojom::DBCommand::Type::EXECUTE);
+        ASSERT_EQ(transaction->commands[0]->command, query);
+        ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
+        ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
+      }));
 
   balance_report_->DeleteAllRecords([](mojom::Result) {});
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

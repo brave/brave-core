@@ -14,7 +14,7 @@
 #include "build/build_config.h"
 #include "net/http/http_status_code.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace attestation {
 
 AttestationImpl::AttestationImpl(LedgerImpl* ledger) : Attestation(ledger) {
@@ -40,4 +40,4 @@ void AttestationImpl::Confirm(const std::string& solution,
 }
 
 }  // namespace attestation
-}  // namespace ledger
+}  // namespace brave_rewards::core

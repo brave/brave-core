@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class MockDatabase : public Database {
@@ -30,14 +30,12 @@ class MockDatabase : public Database {
                     GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(SavePromotion,
-               void(mojom::PromotionPtr info,
-                    ledger::LegacyResultCallback callback));
+               void(mojom::PromotionPtr info, LegacyResultCallback callback));
 
-  MOCK_METHOD1(GetAllPromotions,
-               void(ledger::GetAllPromotionsCallback callback));
+  MOCK_METHOD1(GetAllPromotions, void(GetAllPromotionsCallback callback));
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MOCK_H_

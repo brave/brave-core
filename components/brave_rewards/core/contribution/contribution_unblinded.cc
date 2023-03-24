@@ -18,6 +18,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace brave_rewards::core {
+
 namespace {
 
 // Allocates one "vote" to a publisher. |dart| is a uniform random
@@ -28,8 +30,7 @@ namespace {
 std::string GetStatisticalVotingWinner(
     double dart,
     double amount,
-    const std::vector<ledger::mojom::ContributionPublisherPtr>&
-        publisher_list) {
+    const std::vector<mojom::ContributionPublisherPtr>& publisher_list) {
   std::string publisher_key;
 
   double upper = 0.0;
@@ -53,8 +54,8 @@ std::string GetStatisticalVotingWinner(
 void GetStatisticalVotingWinners(
     uint32_t total_votes,
     double amount,
-    const std::vector<ledger::mojom::ContributionPublisherPtr>& publisher_list,
-    ledger::contribution::StatisticalVotingWinners* winners) {
+    const std::vector<mojom::ContributionPublisherPtr>& publisher_list,
+    contribution::StatisticalVotingWinners* winners) {
   DCHECK(winners);
 
   if (total_votes == 0 || publisher_list.empty()) {
@@ -89,7 +90,6 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-namespace ledger {
 namespace contribution {
 
 Unblinded::Unblinded(LedgerImpl* ledger) : ledger_(ledger) {
@@ -105,7 +105,7 @@ Unblinded::~Unblinded() = default;
 
 void Unblinded::Start(const std::vector<mojom::CredsBatchType>& types,
                       const std::string& contribution_id,
-                      ledger::LegacyResultCallback callback) {
+                      LegacyResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -196,7 +196,7 @@ void Unblinded::PrepareTokens(
     mojom::ContributionInfoPtr contribution,
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     const std::vector<mojom::CredsBatchType>& types,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -248,7 +248,7 @@ void Unblinded::OnMarkUnblindedTokensAsReserved(
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
     const std::vector<mojom::CredsBatchType>& types,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to reserve unblinded tokens");
     callback(mojom::Result::LEDGER_ERROR);
@@ -269,7 +269,7 @@ void Unblinded::PreparePublishers(
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
     mojom::ContributionInfoPtr contribution,
     const std::vector<mojom::CredsBatchType>& types,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -347,7 +347,7 @@ void Unblinded::OnPrepareAutoContribution(
     mojom::Result result,
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Contribution not saved");
     callback(mojom::Result::RETRY);
@@ -365,7 +365,7 @@ void Unblinded::PrepareStepSaved(
     mojom::Result result,
     const std::vector<mojom::CredsBatchType>& types,
     const std::string& contribution_id,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Prepare step was not saved");
     callback(mojom::Result::RETRY);
@@ -377,7 +377,7 @@ void Unblinded::PrepareStepSaved(
 
 void Unblinded::ProcessTokens(const std::vector<mojom::CredsBatchType>& types,
                               const std::string& contribution_id,
-                              ledger::LegacyResultCallback callback) {
+                              LegacyResultCallback callback) {
   auto get_callback =
       std::bind(&Unblinded::OnProcessTokens, this, _1, _2, callback);
   GetContributionInfoAndReservedUnblindedTokens(contribution_id, get_callback);
@@ -386,7 +386,7 @@ void Unblinded::ProcessTokens(const std::vector<mojom::CredsBatchType>& types,
 void Unblinded::OnProcessTokens(
     mojom::ContributionInfoPtr contribution,
     const std::vector<mojom::UnblindedToken>& unblinded_tokens,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!contribution || contribution->publishers.empty()) {
     BLOG(0, "Contribution not found");
     callback(mojom::Result::LEDGER_ERROR);
@@ -444,7 +444,7 @@ void Unblinded::TokenProcessed(mojom::Result result,
                                const std::string& contribution_id,
                                const std::string& publisher_key,
                                bool final_publisher,
-                               ledger::LegacyResultCallback callback) {
+                               LegacyResultCallback callback) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Tokens were not processed correctly");
     callback(mojom::Result::RETRY);
@@ -461,7 +461,7 @@ void Unblinded::TokenProcessed(mojom::Result result,
 void Unblinded::ContributionAmountSaved(mojom::Result result,
                                         const std::string& contribution_id,
                                         bool final_publisher,
-                                        ledger::LegacyResultCallback callback) {
+                                        LegacyResultCallback callback) {
   if (final_publisher) {
     callback(result);
     return;
@@ -472,7 +472,7 @@ void Unblinded::ContributionAmountSaved(mojom::Result result,
 
 void Unblinded::Retry(const std::vector<mojom::CredsBatchType>& types,
                       mojom::ContributionInfoPtr contribution,
-                      ledger::LegacyResultCallback callback) {
+                      LegacyResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(mojom::Result::LEDGER_ERROR);
@@ -531,7 +531,7 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     const std::vector<mojom::UnblindedTokenPtr>& unblinded_tokens,
     const std::vector<mojom::CredsBatchType>& types,
     std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (unblinded_tokens.empty()) {
     BLOG(0, "Token list is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -564,10 +564,9 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
 std::string Unblinded::GetStatisticalVotingWinnerForTesting(
     double dart,
     double amount,
-    const std::vector<ledger::mojom::ContributionPublisherPtr>&
-        publisher_list) {
+    const std::vector<mojom::ContributionPublisherPtr>& publisher_list) {
   return GetStatisticalVotingWinner(dart, amount, publisher_list);
 }
 
 }  // namespace contribution
-}  // namespace ledger
+}  // namespace brave_rewards::core

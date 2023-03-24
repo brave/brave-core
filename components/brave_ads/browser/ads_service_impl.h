@@ -24,7 +24,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/ledger.mojom-forward.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -116,7 +116,7 @@ class AdsServiceImpl : public AdsService,
 
   bool ShouldRewardUser() const;
   void InitializeRewardsWallet();
-  void OnInitializeRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnInitializeRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
   void InitializeBatAds();
   void OnInitializeBatAds(bool success);
 
@@ -142,7 +142,7 @@ class AdsServiceImpl : public AdsService,
   void NotifyPrefChanged(const std::string& path) const;
 
   void GetRewardsWallet();
-  void OnGetRewardsWallet(ledger::mojom::RewardsWalletPtr wallet);
+  void OnGetRewardsWallet(brave_rewards::mojom::RewardsWalletPtr wallet);
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple idle
   // state business logic.

@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace sku {
 
 class SKU {
@@ -21,15 +21,15 @@ class SKU {
 
   virtual void Retry(const std::string& order_id,
                      const std::string& wallet_type,
-                     ledger::SKUOrderCallback callback) = 0;
+                     SKUOrderCallback callback) = 0;
 
   virtual void Process(const std::vector<mojom::SKUOrderItem>& items,
                        const std::string& wallet_type,
-                       ledger::SKUOrderCallback callback,
+                       SKUOrderCallback callback,
                        const std::string& contribution_id = "") = 0;
 };
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_H_

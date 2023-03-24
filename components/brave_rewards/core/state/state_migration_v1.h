@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace state {
@@ -23,20 +23,19 @@ class StateMigrationV1 {
   explicit StateMigrationV1(LedgerImpl* ledger);
   ~StateMigrationV1();
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(LegacyResultCallback callback);
 
   bool legacy_data_migrated() const { return legacy_data_migrated_; }
 
  private:
-  void OnLoadState(mojom::Result result, ledger::LegacyResultCallback callback);
+  void OnLoadState(mojom::Result result, LegacyResultCallback callback);
 
-  void BalanceReportsSaved(mojom::Result result,
-                           ledger::LegacyResultCallback callback);
+  void BalanceReportsSaved(mojom::Result result, LegacyResultCallback callback);
 
-  void SaveProcessedPublishers(ledger::LegacyResultCallback callback);
+  void SaveProcessedPublishers(LegacyResultCallback callback);
 
   void ProcessedPublisherSaved(mojom::Result result,
-                               ledger::LegacyResultCallback callback);
+                               LegacyResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
   LedgerImpl* ledger_;  // NOT OWNED
@@ -44,6 +43,6 @@ class StateMigrationV1 {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V1_H_

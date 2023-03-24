@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/sku/sku_brave.h"
 #include "brave/components/brave_rewards/core/sku/sku_merchant.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace sku {
@@ -25,6 +25,6 @@ class SKUFactory {
 };
 
 }  // namespace sku
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_SKU_SKU_FACTORY_H_

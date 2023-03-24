@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-using ledger::endpoints::PostCommitTransactionBitFlyer;
-using ledger::endpoints::RequestFor;
+using brave_rewards::core::endpoints::PostCommitTransactionBitFlyer;
+using brave_rewards::core::endpoints::RequestFor;
 
-namespace ledger::bitflyer {
+namespace brave_rewards::core::bitflyer {
 
 void BitFlyerTransfer::CommitTransaction(
-    ledger::ResultCallback callback,
+    ResultCallback callback,
     mojom::ExternalTransactionPtr transaction) const {
   if (!transaction) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
@@ -43,7 +43,7 @@ void BitFlyerTransfer::CommitTransaction(
 }
 
 void BitFlyerTransfer::OnCommitTransaction(
-    ledger::ResultCallback callback,
+    ResultCallback callback,
     PostCommitTransactionBitFlyer::Result&& result) const {
   if (!ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kConnected})) {
     return std::move(callback).Run(mojom::Result::LEDGER_ERROR);
@@ -64,4 +64,4 @@ void BitFlyerTransfer::OnCommitTransaction(
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-}  // namespace ledger::bitflyer
+}  // namespace brave_rewards::core::bitflyer

@@ -24,7 +24,7 @@
 #include "brave/components/brave_rewards/core/state/state_migration_v8.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v9.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace state {
@@ -34,16 +34,16 @@ class StateMigration {
   explicit StateMigration(LedgerImpl* ledger);
   ~StateMigration();
 
-  void Start(ledger::LegacyResultCallback callback);
+  void Start(LegacyResultCallback callback);
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(LegacyResultCallback callback);
 
  private:
-  void FreshInstall(ledger::LegacyResultCallback callback);
+  void FreshInstall(LegacyResultCallback callback);
 
   void OnMigration(mojom::Result result,
                    int version,
-                   ledger::LegacyResultCallback callback);
+                   LegacyResultCallback callback);
 
   std::unique_ptr<StateMigrationV1> v1_;
   std::unique_ptr<StateMigrationV2> v2_;
@@ -62,6 +62,6 @@ class StateMigration {
 };
 
 }  // namespace state
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_H_

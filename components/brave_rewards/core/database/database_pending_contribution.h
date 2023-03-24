@@ -13,7 +13,7 @@
 
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 class DatabasePendingContribution : public DatabaseTable {
@@ -22,30 +22,30 @@ class DatabasePendingContribution : public DatabaseTable {
   ~DatabasePendingContribution() override;
 
   void InsertOrUpdateList(std::vector<mojom::PendingContributionPtr> list,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
-  void GetReservedAmount(ledger::PendingContributionsTotalCallback callback);
+  void GetReservedAmount(PendingContributionsTotalCallback callback);
 
-  void GetAllRecords(ledger::PendingContributionInfoListCallback callback);
+  void GetAllRecords(PendingContributionInfoListCallback callback);
 
-  void GetUnverifiedPublishers(ledger::UnverifiedPublishersCallback callback);
+  void GetUnverifiedPublishers(UnverifiedPublishersCallback callback);
 
-  void DeleteRecord(uint64_t id, ledger::LegacyResultCallback callback);
+  void DeleteRecord(uint64_t id, LegacyResultCallback callback);
 
-  void DeleteAllRecords(ledger::LegacyResultCallback callback);
+  void DeleteAllRecords(LegacyResultCallback callback);
 
  private:
   void OnGetReservedAmount(mojom::DBCommandResponsePtr response,
-                           ledger::PendingContributionsTotalCallback callback);
+                           PendingContributionsTotalCallback callback);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       ledger::PendingContributionInfoListCallback callback);
+                       PendingContributionInfoListCallback callback);
 
   void OnGetUnverifiedPublishers(mojom::DBCommandResponsePtr response,
-                                 ledger::UnverifiedPublishersCallback callback);
+                                 UnverifiedPublishersCallback callback);
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_

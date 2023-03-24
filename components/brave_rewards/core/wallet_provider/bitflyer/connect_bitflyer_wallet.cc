@@ -20,11 +20,11 @@
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "crypto/sha2.h"
 
-using ledger::endpoints::PostConnectBitflyer;
-using ledger::endpoints::RequestFor;
-using ledger::wallet_provider::ConnectExternalWallet;
+using brave_rewards::core::endpoints::PostConnectBitflyer;
+using brave_rewards::core::endpoints::RequestFor;
+using brave_rewards::core::wallet_provider::ConnectExternalWallet;
 
-namespace ledger::bitflyer {
+namespace brave_rewards::core::bitflyer {
 
 ConnectBitFlyerWallet::ConnectBitFlyerWallet(LedgerImpl* ledger)
     : ConnectExternalWallet(ledger),
@@ -38,7 +38,7 @@ const char* ConnectBitFlyerWallet::WalletType() const {
 
 void ConnectBitFlyerWallet::Authorize(
     OAuthInfo&& oauth_info,
-    ledger::ConnectExternalWalletCallback callback) const {
+    ConnectExternalWalletCallback callback) const {
   DCHECK(!oauth_info.code.empty());
   DCHECK(!oauth_info.code_verifier.empty());
 
@@ -61,12 +61,11 @@ void ConnectBitFlyerWallet::Authorize(
                      base::Unretained(this), std::move(callback)));
 }
 
-void ConnectBitFlyerWallet::OnAuthorize(
-    ledger::ConnectExternalWalletCallback callback,
-    mojom::Result result,
-    std::string&& token,
-    std::string&& address,
-    std::string&& linking_info) const {
+void ConnectBitFlyerWallet::OnAuthorize(ConnectExternalWalletCallback callback,
+                                        mojom::Result result,
+                                        std::string&& token,
+                                        std::string&& address,
+                                        std::string&& linking_info) const {
   if (!ledger_->bitflyer()->GetWalletIf({mojom::WalletStatus::kNotConnected,
                                          mojom::WalletStatus::kLoggedOut})) {
     return std::move(callback).Run(
@@ -105,4 +104,4 @@ void ConnectBitFlyerWallet::OnAuthorize(
       .Send(std::move(on_connect));
 }
 
-}  // namespace ledger::bitflyer
+}  // namespace brave_rewards::core::bitflyer

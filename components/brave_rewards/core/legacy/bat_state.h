@@ -15,18 +15,18 @@
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 }
 
-namespace braveledger_bat_state {
+namespace brave_rewards::core {
 
 class LegacyBatState {
  public:
-  explicit LegacyBatState(ledger::LedgerImpl* ledger);
+  explicit LegacyBatState(LedgerImpl* ledger);
   ~LegacyBatState();
 
-  void Load(ledger::LegacyResultCallback callback);
+  void Load(LegacyResultCallback callback);
 
   bool GetRewardsMainEnabled() const;
 
@@ -49,14 +49,14 @@ class LegacyBatState {
   bool GetInlineTipSetting(const std::string& key) const;
 
  private:
-  void OnLoad(ledger::mojom::Result result,
+  void OnLoad(mojom::Result result,
               const std::string& data,
-              ledger::LegacyResultCallback callback);
+              LegacyResultCallback callback);
 
-  ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::ClientProperties> state_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<ClientProperties> state_;
 };
 
-}  // namespace braveledger_bat_state
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEGACY_BAT_STATE_H_

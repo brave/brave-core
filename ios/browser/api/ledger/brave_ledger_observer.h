@@ -7,7 +7,7 @@
 #define BRAVE_IOS_BROWSER_API_LEDGER_BRAVE_LEDGER_OBSERVER_H_
 
 #import <Foundation/Foundation.h>
-#import "ledger.mojom.objc.h"
+#import "rewards_core.mojom.objc.h"
 
 @class BraveLedger, RewardsNotification;
 
@@ -28,32 +28,32 @@ NS_SWIFT_NAME(LedgerObserver)
 
 /// Executed when the wallet is first initialized
 @property(nonatomic, copy, nullable) void (^walletInitalized)
-    (LedgerResult result);
+    (BraveRewardsResult result);
 
 /// A publisher was fetched by its URL for a specific tab identified by tabId
 @property(nonatomic, copy, nullable) void (^fetchedPanelPublisher)
-    (LedgerPublisherInfo* info, uint64_t tabId);
+    (BraveRewardsPublisherInfo* info, uint64_t tabId);
 
 @property(nonatomic, copy, nullable) void (^publisherListUpdated)();
 
 ///
 @property(nonatomic, copy, nullable) void (^finishedPromotionsAdded)
-    (NSArray<LedgerPromotion*>* promotions);
+    (NSArray<BraveRewardsPromotion*>* promotions);
 
 /// Eligable grants were added to the wallet
 @property(nonatomic, copy, nullable) void (^promotionsAdded)
-    (NSArray<LedgerPromotion*>* promotions);
+    (NSArray<BraveRewardsPromotion*>* promotions);
 
 /// A grant was claimed
 @property(nonatomic, copy, nullable) void (^promotionClaimed)
-    (LedgerPromotion* promotion);
+    (BraveRewardsPromotion* promotion);
 
 /// A reconcile transaction completed and the user may have an updated balance
 /// and likely an updated balance report
 @property(nonatomic, copy, nullable) void (^reconcileCompleted)
-    (LedgerResult result,
+    (BraveRewardsResult result,
      NSString* viewingId,
-     LedgerRewardsType type,
+     BraveRewardsRewardsType type,
      NSString* probi);
 
 /// The users balance report has been updated
@@ -61,7 +61,7 @@ NS_SWIFT_NAME(LedgerObserver)
 
 /// The exclusion state of a given publisher has been changed
 @property(nonatomic, copy, nullable) void (^excludedSitesChanged)
-    (NSString* publisherKey, LedgerPublisherExclude excluded);
+    (NSString* publisherKey, BraveRewardsPublisherExclude excluded);
 
 /// Called when the ledger removes activity info for a given publisher
 @property(nonatomic, copy, nullable) void (^activityRemoved)
@@ -69,7 +69,7 @@ NS_SWIFT_NAME(LedgerObserver)
 
 /// The publisher list was normalized and saved
 @property(nonatomic, copy, nullable) void (^publisherListNormalized)
-    (NSArray<LedgerPublisherInfo*>* normalizedList);
+    (NSArray<BraveRewardsPublisherInfo*>* normalizedList);
 
 @property(nonatomic, copy, nullable) void (^pendingContributionAdded)();
 
@@ -84,7 +84,7 @@ NS_SWIFT_NAME(LedgerObserver)
 
 // A users contribution was added
 @property(nonatomic, copy, nullable) void (^contributionAdded)
-    (BOOL successful, LedgerRewardsType type);
+    (BOOL successful, BraveRewardsRewardsType type);
 
 /// A notification was added to the wallet
 @property(nonatomic, copy, nullable) void (^notificationAdded)

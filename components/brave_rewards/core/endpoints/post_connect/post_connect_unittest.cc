@@ -26,7 +26,7 @@ using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
-namespace ledger::endpoints::test {
+namespace brave_rewards::core::endpoints::test {
 using Error = PostConnect::Error;
 using Result = PostConnect::Result;
 
@@ -84,9 +84,9 @@ TEST_P(PostConnect, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
   ON_CALL(mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
+      .WillByDefault(
+          Invoke([status_code = status_code, body = body](
+                     mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
             mojom::UrlResponse response;
             response.status_code = status_code;
             response.body = std::move(body);
@@ -251,4 +251,4 @@ INSTANTIATE_TEST_SUITE_P(
 );
 // clang-format on
 
-}  // namespace ledger::endpoints::test
+}  // namespace brave_rewards::core::endpoints::test

@@ -15,9 +15,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace rewards_browsertest {
-
-using brave_rewards::RewardsPanelCoordinator;
+namespace brave_rewards::test {
 
 RewardsBrowserTestContextHelper::RewardsBrowserTestContextHelper(
     Browser* browser) {
@@ -57,15 +55,13 @@ RewardsBrowserTestContextHelper::OpenRewardsPopup() {
     }
   } while (!popup_contents_);
 
-  rewards_browsertest_util::WaitForElementToAppear(
-      popup_contents_.get(), "[data-test-id=rewards-panel]");
+  WaitForElementToAppear(popup_contents_.get(), "[data-test-id=rewards-panel]");
 
   return popup_contents_;
 }
 
 base::WeakPtr<content::WebContents>
-RewardsBrowserTestContextHelper::OpenSiteBanner(
-    rewards_browsertest_util::TipAction tip_action) {
+RewardsBrowserTestContextHelper::OpenSiteBanner(TipAction tip_action) {
   base::WeakPtr<content::WebContents> popup_contents = OpenRewardsPopup();
 
   // Construct an observer to wait for the site banner to load.
@@ -75,17 +71,17 @@ RewardsBrowserTestContextHelper::OpenSiteBanner(
   bool open_tip_actions = false;
 
   switch (tip_action) {
-    case rewards_browsertest_util::TipAction::OneTime:
+    case TipAction::OneTime:
       button_selector = "[data-test-id=tip-button]";
       break;
-    case rewards_browsertest_util::TipAction::SetMonthly:
+    case TipAction::SetMonthly:
       button_selector = "[data-test-id=set-monthly-tip-button]";
       break;
-    case rewards_browsertest_util::TipAction::ChangeMonthly:
+    case TipAction::ChangeMonthly:
       button_selector = "[data-test-id=change-monthly-tip-button]";
       open_tip_actions = true;
       break;
-    case rewards_browsertest_util::TipAction::ClearMonthly:
+    case TipAction::ClearMonthly:
       button_selector = "[data-test-id=cancel-monthly-tip-button]";
       open_tip_actions = true;
       break;
@@ -93,13 +89,12 @@ RewardsBrowserTestContextHelper::OpenSiteBanner(
 
   // If necessary, show the monthly tip actions menu.
   if (open_tip_actions) {
-    rewards_browsertest_util::WaitForElementThenClick(
-        popup_contents.get(), "[data-test-id=monthly-tip-actions-button]");
+    WaitForElementThenClick(popup_contents.get(),
+                            "[data-test-id=monthly-tip-actions-button]");
   }
 
   // Click button to initiate sending a tip.
-  rewards_browsertest_util::WaitForElementThenClick(popup_contents.get(),
-                                                    button_selector);
+  WaitForElementThenClick(popup_contents.get(), button_selector);
 
   // Wait for the site banner to load and retrieve the notification source
   base::WeakPtr<content::WebContents> banner =
@@ -135,18 +130,14 @@ void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
   EXPECT_EQ(contents->GetLastCommittedURL().host_piece(), "rewards");
 
   // Ensure that the AC box is displayed.
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents, "[data-test-id=auto-contribute-panel]");
+  WaitForElementToAppear(contents, "[data-test-id=auto-contribute-panel]");
 
   // Ensure that the AC sites table is displayed.
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents, "[data-test-id=auto-contribute-table]");
+  WaitForElementToAppear(contents, "[data-test-id=auto-contribute-table]");
 
   // Make sure site appears in auto-contribute table
-  rewards_browsertest_util::WaitForElementToEqual(
-      contents,
-      "[data-test-id='ac_link_" + publisher + "']",
-      publisher);
+  WaitForElementToEqual(contents, "[data-test-id='ac_link_" + publisher + "']",
+                        publisher);
 
   if (verified) {
     // A verified site has two images associated with it, the site's
@@ -178,7 +169,7 @@ void RewardsBrowserTestContextHelper::LoadURL(GURL url) {
 }
 
 void RewardsBrowserTestContextHelper::LoadRewardsPage() {
-  GURL url = rewards_browsertest_util::GetRewardsUrl();
+  GURL url = GetRewardsUrl();
   auto* tab_strip = browser_->tab_strip_model();
 
   // Activate the rewards page if it's already loaded into a tab.
@@ -198,8 +189,8 @@ void RewardsBrowserTestContextHelper::LoadRewardsPage() {
   }
 
   // Wait for the content to be fully rendered before continuing.
-  rewards_browsertest_util::WaitForElementToAppear(
-      tab_strip->GetActiveWebContents(), "[data-test-id=rewards-balance-text]");
+  WaitForElementToAppear(tab_strip->GetActiveWebContents(),
+                         "[data-test-id=rewards-balance-text]");
 }
 
 void RewardsBrowserTestContextHelper::ReloadCurrentSite() {
@@ -208,4 +199,4 @@ void RewardsBrowserTestContextHelper::ReloadCurrentSite() {
   EXPECT_TRUE(WaitForLoadStop(contents));
 }
 
-}  // namespace rewards_browsertest
+}  // namespace brave_rewards::test

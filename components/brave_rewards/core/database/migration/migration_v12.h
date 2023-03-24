@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V12_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V12_H_
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 namespace migration {
 
@@ -42,6 +42,6 @@ const char v12[] = R"(
 
 }  // namespace migration
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_MIGRATION_MIGRATION_V12_H_

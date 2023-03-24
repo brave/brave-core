@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_contribution_info_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_table.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 using GetContributionInfoCallback =
@@ -25,37 +25,37 @@ class DatabaseContributionInfo : public DatabaseTable {
   ~DatabaseContributionInfo() override;
 
   void InsertOrUpdate(mojom::ContributionInfoPtr info,
-                      ledger::LegacyResultCallback callback);
+                      LegacyResultCallback callback);
 
   void GetRecord(const std::string& contribution_id,
                  GetContributionInfoCallback callback);
 
-  void GetAllRecords(ledger::ContributionInfoListCallback callback);
+  void GetAllRecords(ContributionInfoListCallback callback);
 
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
-                      ledger::PublisherInfoListCallback callback);
+                      PublisherInfoListCallback callback);
 
   void GetContributionReport(const mojom::ActivityMonth month,
                              const int year,
-                             ledger::GetContributionReportCallback callback);
+                             GetContributionReportCallback callback);
 
-  void GetNotCompletedRecords(ledger::ContributionInfoListCallback callback);
+  void GetNotCompletedRecords(ContributionInfoListCallback callback);
 
   void UpdateStep(const std::string& contribution_id,
                   mojom::ContributionStep step,
-                  ledger::LegacyResultCallback callback);
+                  LegacyResultCallback callback);
 
   void UpdateStepAndCount(const std::string& contribution_id,
                           mojom::ContributionStep step,
                           int32_t retry_count,
-                          ledger::LegacyResultCallback callback);
+                          LegacyResultCallback callback);
 
   void UpdateContributedAmount(const std::string& contribution_id,
                                const std::string& publisher_key,
-                               ledger::LegacyResultCallback callback);
+                               LegacyResultCallback callback);
 
-  void FinishAllInProgressRecords(ledger::LegacyResultCallback callback);
+  void FinishAllInProgressRecords(LegacyResultCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
@@ -67,30 +67,30 @@ class DatabaseContributionInfo : public DatabaseTable {
       GetContributionInfoCallback callback);
 
   void OnGetOneTimeTips(mojom::DBCommandResponsePtr response,
-                        ledger::PublisherInfoListCallback callback);
+                        PublisherInfoListCallback callback);
 
   void OnGetContributionReport(mojom::DBCommandResponsePtr response,
-                               ledger::GetContributionReportCallback callback);
+                               GetContributionReportCallback callback);
 
   void OnGetContributionReportPublishers(
       std::vector<ContributionPublisherInfoPair> publisher_pair_list,
       std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
           shared_contributions,
-      ledger::GetContributionReportCallback callback);
+      GetContributionReportCallback callback);
 
   void OnGetList(mojom::DBCommandResponsePtr response,
-                 ledger::ContributionInfoListCallback callback);
+                 ContributionInfoListCallback callback);
 
   void OnGetListPublishers(
       std::vector<mojom::ContributionPublisherPtr> list,
       std::shared_ptr<std::vector<mojom::ContributionInfoPtr>>
           shared_contributions,
-      ledger::ContributionInfoListCallback callback);
+      ContributionInfoListCallback callback);
 
   std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
 };
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_CONTRIBUTION_INFO_H_

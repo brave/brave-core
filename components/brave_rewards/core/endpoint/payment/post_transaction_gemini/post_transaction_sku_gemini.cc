@@ -15,7 +15,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace endpoint {
 namespace payment {
 
@@ -91,7 +91,7 @@ void PostTransactionGemini::Request(const mojom::SKUTransaction& transaction,
 
 void PostTransactionGemini::OnRequest(const mojom::UrlResponse& response,
                                       PostTransactionGeminiCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
+  LogUrlResponse(__func__, response);
 
   BLOG_IF(0, CheckStatusCode(response.status_code) != mojom::Result::LEDGER_OK,
           "Error creating gemini transaction on the payment server");
@@ -103,4 +103,4 @@ void PostTransactionGemini::OnRequest(const mojom::UrlResponse& response,
 
 }  // namespace payment
 }  // namespace endpoint
-}  // namespace ledger
+}  // namespace brave_rewards::core

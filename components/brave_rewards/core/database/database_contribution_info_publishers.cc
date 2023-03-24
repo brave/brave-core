@@ -13,7 +13,7 @@
 
 using std::placeholders::_1;
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 namespace {
@@ -197,7 +197,7 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
 void DatabaseContributionInfoPublishers::UpdateContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (contribution_id.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << contribution_id << "/" << publisher_key);
     callback(mojom::Result::LEDGER_ERROR);
@@ -229,4 +229,4 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

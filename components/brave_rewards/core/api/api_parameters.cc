@@ -13,10 +13,11 @@
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-using ledger::endpoints::GetParameters;
-using ledger::endpoints::RequestFor;
+namespace brave_rewards::core {
 
-namespace ledger {
+using endpoints::GetParameters;
+using endpoints::RequestFor;
+
 namespace api {
 
 APIParameters::APIParameters(LedgerImpl* ledger) : ledger_(ledger) {
@@ -29,7 +30,7 @@ void APIParameters::Initialize() {
   Fetch(base::DoNothing());
 }
 
-void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
+void APIParameters::Fetch(GetRewardsParametersCallback callback) {
   bool first_request = callbacks_.empty();
   callbacks_.push_back(std::move(callback));
   if (!first_request) {
@@ -94,4 +95,4 @@ void APIParameters::SetRefreshTimer(base::TimeDelta delay,
 }
 
 }  // namespace api
-}  // namespace ledger
+}  // namespace brave_rewards::core

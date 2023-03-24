@@ -16,7 +16,7 @@
 #include "base/types/expected.h"
 #include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/rewards_core_types.mojom.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -36,10 +36,10 @@ class RewardsNotificationService;
 class RewardsServiceObserver;
 
 using GetPublisherInfoListCallback =
-    base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr> list)>;
 using GetAutoContributionAmountCallback = base::OnceCallback<void(double)>;
 using GetAutoContributePropertiesCallback =
-    base::OnceCallback<void(ledger::mojom::AutoContributePropertiesPtr)>;
+    base::OnceCallback<void(mojom::AutoContributePropertiesPtr)>;
 using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::OnceCallback<void(bool)>;
@@ -47,64 +47,59 @@ using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
 using GetRewardsInternalsInfoCallback =
-    base::OnceCallback<void(ledger::mojom::RewardsInternalsInfoPtr info)>;
+    base::OnceCallback<void(mojom::RewardsInternalsInfoPtr info)>;
 using GetRecurringTipsCallback =
-    base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr> list)>;
 using GetOneTimeTipsCallback =
-    base::OnceCallback<void(std::vector<ledger::mojom::PublisherInfoPtr> list)>;
+    base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr> list)>;
 using GetPublisherBannerCallback =
-    base::OnceCallback<void(ledger::mojom::PublisherBannerPtr banner)>;
+    base::OnceCallback<void(mojom::PublisherBannerPtr banner)>;
 using RefreshPublisherCallback =
-    base::OnceCallback<void(const ledger::mojom::PublisherStatus,
-                            const std::string&)>;
+    base::OnceCallback<void(const mojom::PublisherStatus, const std::string&)>;
 using GetPublisherInfoCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            ledger::mojom::PublisherInfoPtr)>;
-using SavePublisherInfoCallback =
-    base::OnceCallback<void(const ledger::mojom::Result)>;
+    base::OnceCallback<void(const mojom::Result, mojom::PublisherInfoPtr)>;
+using SavePublisherInfoCallback = base::OnceCallback<void(const mojom::Result)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
-    std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
+    std::vector<mojom::PendingContributionInfoPtr> list)>;
 using ConnectExternalWalletResult =
-    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
+    base::expected<void, mojom::ConnectExternalWalletError>;
 using ConnectExternalWalletCallback =
     base::OnceCallback<void(ConnectExternalWalletResult)>;
 using FetchBalanceResult =
-    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>;
+    base::expected<mojom::BalancePtr, mojom::FetchBalanceError>;
 using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
 using GetExternalWalletResult =
-    base::expected<ledger::mojom::ExternalWalletPtr,
-                   ledger::mojom::GetExternalWalletError>;
+    base::expected<mojom::ExternalWalletPtr, mojom::GetExternalWalletError>;
 using GetExternalWalletCallback =
     base::OnceCallback<void(GetExternalWalletResult)>;
-using ClaimPromotionCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            const std::string&,
-                            const std::string&,
-                            const std::string&)>;
+using ClaimPromotionCallback = base::OnceCallback<void(const mojom::Result,
+                                                       const std::string&,
+                                                       const std::string&,
+                                                       const std::string&)>;
 using AttestPromotionCallback =
-    base::OnceCallback<void(const ledger::mojom::Result result,
-                            ledger::mojom::PromotionPtr promotion)>;
+    base::OnceCallback<void(const mojom::Result result,
+                            mojom::PromotionPtr promotion)>;
 
 using GetBalanceReportCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            ledger::mojom::BalanceReportInfoPtr report)>;
+    base::OnceCallback<void(const mojom::Result,
+                            mojom::BalanceReportInfoPtr report)>;
 
 using GetMonthlyReportCallback =
-    base::OnceCallback<void(ledger::mojom::MonthlyReportInfoPtr report)>;
+    base::OnceCallback<void(mojom::MonthlyReportInfoPtr report)>;
 
 using GetAllMonthlyReportIdsCallback =
     base::OnceCallback<void(const std::vector<std::string>&)>;
 
 using GetAllContributionsCallback = base::OnceCallback<void(
-    std::vector<ledger::mojom::ContributionInfoPtr> contributions)>;
+    std::vector<mojom::ContributionInfoPtr> contributions)>;
 
 using GetAllPromotionsCallback =
-    base::OnceCallback<void(std::vector<ledger::mojom::PromotionPtr> list)>;
+    base::OnceCallback<void(std::vector<mojom::PromotionPtr> list)>;
 
 using GetRewardsParametersCallback =
-    base::OnceCallback<void(ledger::mojom::RewardsParametersPtr)>;
+    base::OnceCallback<void(mojom::RewardsParametersPtr)>;
 
 using LoadDiagnosticLogCallback = base::OnceCallback<void(const std::string&)>;
 
@@ -113,15 +108,14 @@ using ClearDiagnosticLogCallback = base::OnceCallback<void(const bool success)>;
 using SuccessCallback = base::OnceCallback<void(const bool success)>;
 
 using GetEventLogsCallback =
-    base::OnceCallback<void(std::vector<ledger::mojom::EventLogPtr> logs)>;
+    base::OnceCallback<void(std::vector<mojom::EventLogPtr> logs)>;
 
 using GetRewardsWalletCallback =
-    base::OnceCallback<void(ledger::mojom::RewardsWalletPtr wallet)>;
+    base::OnceCallback<void(mojom::RewardsWalletPtr wallet)>;
 
-using OnTipCallback = base::OnceCallback<void(ledger::mojom::Result)>;
+using OnTipCallback = base::OnceCallback<void(mojom::Result)>;
 
-using GetEnvironmentCallback =
-    base::OnceCallback<void(ledger::mojom::Environment)>;
+using GetEnvironmentCallback = base::OnceCallback<void(mojom::Environment)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -133,7 +127,7 @@ class RewardsService : public KeyedService {
   virtual bool IsInitialized() = 0;
 
   using CreateRewardsWalletCallback =
-      base::OnceCallback<void(ledger::mojom::CreateRewardsWalletResult)>;
+      base::OnceCallback<void(mojom::CreateRewardsWalletResult)>;
 
   // Creates a Rewards wallet for the current profile. If a Rewards wallet has
   // already been created, then the existing wallet information will be
@@ -147,7 +141,7 @@ class RewardsService : public KeyedService {
 
   // Returns the Rewards user type for the current profile.
   virtual void GetUserType(
-      base::OnceCallback<void(ledger::mojom::UserType)> callback) = 0;
+      base::OnceCallback<void(mojom::UserType)> callback) = 0;
 
   using GetAvailableCountriesCallback =
       base::OnceCallback<void(std::vector<std::string>)>;
@@ -160,7 +154,7 @@ class RewardsService : public KeyedService {
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetActivityInfoList(const uint32_t start,
                                    const uint32_t limit,
-                                   ledger::mojom::ActivityInfoFilterPtr filter,
+                                   mojom::ActivityInfoFilterPtr filter,
                                    GetPublisherInfoListCallback callback) = 0;
 
   // Returns a count of publishers that a user has visited. This value is
@@ -172,7 +166,7 @@ class RewardsService : public KeyedService {
   virtual void GetExcludedList(GetPublisherInfoListCallback callback) = 0;
 
   using FetchPromotionsCallback =
-      base::OnceCallback<void(std::vector<ledger::mojom::PromotionPtr>)>;
+      base::OnceCallback<void(std::vector<mojom::PromotionPtr>)>;
 
   virtual void FetchPromotions(FetchPromotionsCallback callback) = 0;
 
@@ -236,7 +230,7 @@ class RewardsService : public KeyedService {
   virtual void OnTip(const std::string& publisher_key,
                      double amount,
                      const bool recurring,
-                     ledger::mojom::PublisherInfoPtr publisher) = 0;
+                     mojom::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
 
@@ -300,7 +294,7 @@ class RewardsService : public KeyedService {
       GetPublisherInfoCallback callback) = 0;
 
   virtual void SavePublisherInfo(const uint64_t window_id,
-                                 ledger::mojom::PublisherInfoPtr publisher_info,
+                                 mojom::PublisherInfoPtr publisher_info,
                                  SavePublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(

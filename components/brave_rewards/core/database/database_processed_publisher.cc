@@ -19,7 +19,7 @@ const char kTableName[] = "processed_publisher";
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace database {
 
 DatabaseProcessedPublisher::DatabaseProcessedPublisher(LedgerImpl* ledger)
@@ -29,7 +29,7 @@ DatabaseProcessedPublisher::~DatabaseProcessedPublisher() = default;
 
 void DatabaseProcessedPublisher::InsertOrUpdateList(
     const std::vector<std::string>& list,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
     callback(mojom::Result::LEDGER_OK);
@@ -56,9 +56,8 @@ void DatabaseProcessedPublisher::InsertOrUpdateList(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseProcessedPublisher::WasProcessed(
-    const std::string& publisher_key,
-    ledger::LegacyResultCallback callback) {
+void DatabaseProcessedPublisher::WasProcessed(const std::string& publisher_key,
+                                              LegacyResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(mojom::Result::LEDGER_ERROR);
@@ -88,7 +87,7 @@ void DatabaseProcessedPublisher::WasProcessed(
 
 void DatabaseProcessedPublisher::OnWasProcessed(
     mojom::DBCommandResponsePtr response,
-    ledger::LegacyResultCallback callback) {
+    LegacyResultCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -105,4 +104,4 @@ void DatabaseProcessedPublisher::OnWasProcessed(
 }
 
 }  // namespace database
-}  // namespace ledger
+}  // namespace brave_rewards::core

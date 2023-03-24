@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger {
+namespace brave_rewards::core {
 class LedgerImpl;
 
 namespace credential {
@@ -24,6 +24,6 @@ class CredentialsFactory {
 };
 
 }  // namespace credential
-}  // namespace ledger
+}  // namespace brave_rewards::core
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_CREDENTIALS_CREDENTIALS_FACTORY_H_

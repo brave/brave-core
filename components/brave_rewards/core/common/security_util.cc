@@ -37,7 +37,7 @@ const int kSaltLength = 64;
 
 }  // namespace
 
-namespace ledger {
+namespace brave_rewards::core {
 namespace util {
 
 std::string Security::GetBase64(const std::vector<uint8_t>& data) {
@@ -174,4 +174,4 @@ std::string Security::GetPublicKeyHexFromSeed(
 }
 
 }  // namespace util
-}  // namespace ledger
+}  // namespace brave_rewards::core

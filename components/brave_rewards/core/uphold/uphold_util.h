@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/ledger.h"
 
-namespace ledger::uphold {
+namespace brave_rewards::core::uphold {
 
 const char kUrlStaging[] = "https://wallet-sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
@@ -35,6 +35,6 @@ std::string GetActivityUrl(const std::string& address);
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr);
 
-}  // namespace ledger::uphold
+}  // namespace brave_rewards::core::uphold
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_UPHOLD_UPHOLD_UTIL_H_

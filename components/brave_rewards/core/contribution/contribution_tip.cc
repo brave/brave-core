@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
-namespace ledger::contribution {
+namespace brave_rewards::core::contribution {
 
 ContributionTip::ContributionTip(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
@@ -112,4 +112,4 @@ void ContributionTip::OnPendingTipSaved(mojom::Result result) {
   }
 }
 
-}  // namespace ledger::contribution
+}  // namespace brave_rewards::core::contribution

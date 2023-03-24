@@ -24,7 +24,7 @@
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
-namespace ledger::wallet {
+namespace brave_rewards::core::wallet {
 
 namespace {
 
@@ -70,7 +70,7 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
   }
 
   const base::Value::Dict& dict = value->GetDict();
-  auto wallet = ledger::mojom::ExternalWallet::New();
+  auto wallet = mojom::ExternalWallet::New();
   wallet->type = wallet_type;
 
   const auto* token = dict.FindString("token");
@@ -95,7 +95,7 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
 
   auto status = dict.FindInt("status");
   if (status) {
-    wallet->status = static_cast<ledger::mojom::WalletStatus>(*status);
+    wallet->status = static_cast<mojom::WalletStatus>(*status);
   }
 
   const auto* user_name = dict.FindString("user_name");
@@ -400,7 +400,7 @@ bool LogOutWallet(LedgerImpl* ledger,
   if (!ledger->IsShuttingDown()) {
     ledger->ledger_client()->ExternalWalletLoggedOut();
     ledger->ledger_client()->ShowNotification(
-        notification.empty() ? ledger::notifications::kWalletDisconnected
+        notification.empty() ? notifications::kWalletDisconnected
                              : notification,
         {}, [](auto) {});
   }
@@ -410,11 +410,11 @@ bool LogOutWallet(LedgerImpl* ledger,
 
 mojom::ExternalWalletPtr GenerateLinks(mojom::ExternalWalletPtr wallet) {
   if (wallet->type == constant::kWalletBitflyer) {
-    return ledger::bitflyer::GenerateLinks(std::move(wallet));
+    return bitflyer::GenerateLinks(std::move(wallet));
   } else if (wallet->type == constant::kWalletGemini) {
-    return ledger::gemini::GenerateLinks(std::move(wallet));
+    return gemini::GenerateLinks(std::move(wallet));
   } else if (wallet->type == constant::kWalletUphold) {
-    return ledger::uphold::GenerateLinks(std::move(wallet));
+    return uphold::GenerateLinks(std::move(wallet));
   } else if (wallet->type == "test") {
     return wallet;
   } else {
@@ -438,4 +438,4 @@ void FetchBalance(LedgerImpl* ledger,
   }
 }
 
-}  // namespace ledger::wallet
+}  // namespace brave_rewards::core::wallet
