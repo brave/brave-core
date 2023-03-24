@@ -617,6 +617,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_CONTENT_CONTEXT_OPENLINKBOOKMARKAPP_SAMEAPP" desc="The name of the command to open a link in a newly created window of the same app the user is currently in">
             Open link in new <ph name="APP">$1<ex>Gmail App</ex> window</ph>
           </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKWEBAPP_NEWTAB" desc="The name of the command to open a link in a new tab of the same app the user is currently in">
+            Open link in new <ph name="APP">$1<ex>Gmail App</ex> tab</ph>
+          </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVELINKAS" desc="The name of the Save Link As command in the content area context menu">
             Save lin&amp;k as...
@@ -882,6 +885,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_OPENLINKBOOKMARKAPP_SAMEAPP" desc="In Title Case: The name of the command to open a link in a newly created window of the same app the user is currently in">
             Open Link in new <ph name="APP">$1<ex>Gmail App</ex></ph> Window
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKWEBAPP_NEWTAB" desc="In Title Case: The name of the command to open a link in a new tab of the same app the user is currently in">
+            Open Link in new <ph name="APP">$1<ex>Gmail App</ex> Tab</ph>
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVELINKAS" desc="In Title Case: The name of the Save Link As command in the content area context menu">
@@ -5524,6 +5530,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
        <message name="IDS_EXTENSIONS_MENU_SITE_PERMISSIONS_PAGE_SETTINGS_BUTTON" desc="Text of the extension settings button in the site permissions page">
         Manage this extension
       </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_PERMISSIONS_PAGE_SHOW_REQUESTS_LABEL" desc="Text of the label next to the show requests toggle button in the site permissions page that controls whether the extension can show site access requests in the toolbar.">
+        Allowed to show requests in the toolbar
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_PERMISSIONS_PAGE_SHOW_REQUESTS_TOGGLE_ON" desc="Accessible text for the the show requests toggle button in the site permissions page that controls when the extension can show site access requests in the toolbar.">
+        Allowed to show requests
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_PERMISSIONS_PAGE_SHOW_REQUESTS_TOGGLE_OFF" desc="Accessible text for the the show requests toggle button in the site permissions page that controls when the extension cannot show site access requests in the toolbar.">
+        Not allowed to show requests
+      </message>
 
       <!-- Settings API bubble -->
       <message name="IDS_EXTENSIONS_SETTINGS_API_TITLE_HOME_PAGE_BUBBLE" desc="Title of a bubble warning users that an extension has overridden their home page setting">
@@ -5676,6 +5691,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
       <message name="IDS_ACCNAME_APP_HOME_NOT_INSTALLED" desc="Accessability label that goes after an apps title that is not locally installed">
         not locally installed
+      </message>
+
+      <message name="IDS_APP_HOME_APP_NO_APPS" desc="Text that displays when you have no web apps installed on App Home">
+        Web apps that you install appear here
+      </message>
+
+      <message name="IDS_APP_HOME_APP_LEARN_INSTALL" desc="Text with a link to learn how to install web apps when no apps are installed on App Home">
+        Learn how to install web apps
       </message>
       <!-- End App Home WebUI strings. -->
 
@@ -5903,8 +5926,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         In Brave Password Manager for <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
       </message>
       <if expr="is_android">
-        <message name="IDS_PASSWORD_MANAGER_SAVE_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V1" desc="The description of the Brave Password Manager's save/update password prompt when the user is signed in.">
-          Brave Password Manager <ph name="SEPARATOR">•</ph> <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
+        <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V3" desc="The description of the Brave Password Manager's save password prompt when the user is signed in and syncing passwords.">
+          To Brave Password Manager <ph name="SEPARATOR">•</ph> <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_UPDATE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V3" desc="The description of the Brave Password Manager's update password prompt when the user is signed in and syncing passwords.">
+          In Brave Password Manager <ph name="SEPARATOR">•</ph> <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
         </message>
         <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_IN_MESSAGE_DESCRIPTION_V2" desc="The description of the Brave Password Manager's save password prompt when the user is signed in.">
           To your Brave sync chain, <ph name="ACCOUNT">$1<ex>user@gmail.com</ex></ph>
@@ -7011,6 +7037,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_HISTORY_CLUSTERS_DISABLE_TEXT" desc="A label to append to the disable text in the dropdown.">
         Journeys card
       </message>
+      <message name="IDS_ACCNAME_SHOW_ALL" desc="The accessible name for the show all button in the header of NTP Journeys Module.">
+        Show all searches for <ph name="QUERY_CLUSTER_NAME">$1<ex>Office Chairs</ex></ph>
+      </message>
+      <message name="IDS_ACCNAME_SEARCH_SUGG" desc="The accessible name for the search suggestion tile in the NTP Journeys Module.">
+        Search for <ph name="QUERY_CLUSTER_NAME">$1<ex>Office Chairs</ex></ph>
+      </message>
 
       <!-- Extensions NTP Middle Slot Promo -->
       <message name="IDS_EXTENSIONS_PROMO_PERFORMANCE">
@@ -7138,7 +7170,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         All Bookmarks
       </message>
       <message name="IDS_BOOKMARKS_LABEL_TRACKED_PRODUCTS" desc="Label on a button within the bookmarks side panel for filtering bookmarks by price tracking data.">
-        Products
+        Tracked products
       </message>
       <message name="IDS_BOOKMARKS_SORT_NEWEST" desc="Label for the newest-first bookmarks sort type">
         Newest
@@ -8119,6 +8151,18 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_PASSWORD_MANAGER_IPH_BODY_SAVE_TO_ACCOUNT" desc="Body of the in Product Help shown when the 'Save to account` is selected">
           You can save this password in your Brave sync chain or only on this device
         </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_MANAGEMENT_BUBBLE_AFTER_SAVE" desc="Body of the in Product Help shown after saving a password informing the user about the password management bubble">
+          To view your password or add a note about it, click the key icon
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_MANAGEMENT_BUBBLE_AFTER_SAVE_SCREENREADER" desc="Text announced with the in Product Help after saving a password informing the user about the password management bubble">
+          To view your password or add a note about it, select manage your passwords in the search and address bar
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_MANAGEMENT_BUBBLE_DURING_SIGNIN" desc="Body of the in Product Help shown during sign-in flows informing the user about the password management bubble">
+          You saved a note for a password on this site. To view it, click the key icon.
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_MANAGEMENT_BUBBLE_DURING_SIGNIN_SCREENREADER" desc="Text announced with the in Product Help shown during sign-in flows informing the user about the password management bubble">
+          You saved a note for a password on this site. To view it, select manage your passwords in the search and address bar.
+        </message>
         <message name="IDS_PASSWORD_MANAGER_TOOLTIP_SAVE" desc="Text for the 'Manage Passwords' icon's 'password to be saved' state">
           Save your password
         </message>
@@ -8148,6 +8192,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_DESCRIPTION_GPM" desc="The description text of the 'save unsynced credentials' bubble.">
           Brave Password Manager couldn't save these passwords in your Brave sync chain. You can save them to this device.
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_IPH_BODY_WEB_APP_PROFILE_SWITCH" desc="Body of the in Product Help for profile switching shown in the password manager web app.">
+          You can choose the profile that you want to see the passwords from
         </message>
 
         <if expr="not use_titlecase">
@@ -8970,6 +9017,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_MOVE_GROUP_TO_NEW_WINDOW" desc="The label of the tab group header context menu item for moving the entire group to a new window.">
           Move group to new window
         </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_OPEN_GROUP_IN_NEW_WINDOW" desc="The label of the saved tab group button context menu item for opening the entire group in a new window.">
+          Open group in new window
+        </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="The label of the tab group header context menu item for sending feedback for tab groups.">
           Send feedback
         </message>
@@ -8995,6 +9045,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_MOVE_GROUP_TO_NEW_WINDOW" desc="In Title Case: The label of the tab group header context menu item for moving the entire group to a new window.">
           Move Group to New Window
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_CXMENU_OPEN_GROUP_IN_NEW_WINDOW" desc="In Title Case: The label of the saved tab group button context menu item for opening the entire group in a new window.">
+          Open Group in New Window
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="In Title Case: The label of the tab group header context menu item for sending feedback for tab groups.">
           Send Feedback
@@ -11681,8 +11734,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MANAGE_PASSWORDS_EDIT_NOTE_TOOLTIP" desc="The tooltip of a button that is used in the credential details view of the password management bubble for editing the note attached to the password.">
         Edit note
       </message>
+      <message name="IDS_MANAGE_PASSWORDS_NOTE_ACCESSIBLE_NAME" desc="Name used by screen readers for the password note label in the credential details view of the password management bubble.">
+        Note: <ph name="NOTE">$1<ex>note</ex></ph>
+      </message>
+      <message name="IDS_MANAGE_PASSWORDS_NOTE_TEXTFIELD" is_accessibility_with_no_ui="true" desc="Name used by screen readers for the note text field in the credential details view of the password management bubble.">
+        Note
+      </message>
       <message name="IDS_MANAGE_PASSWORDS_UPDATE" desc="The text of the button to update the credential details in the password management bubble.">
         Update
+      </message>
+      <message name="IDS_MANAGE_PASSWORDS_USERNAME_ACCESSIBLE_NAME" desc="Name used by screen readers for the username label in the credential details view of the password management bubble.">
+        Username: <ph name="USERNAME">$1<ex>user@gmail.com</ex></ph>
+      </message>
+      <message name="IDS_MANAGE_PASSWORDS_USERNAME_TEXTFIELD" is_accessibility_with_no_ui="true" desc="Name used by screen readers for the username text field in the credential details view of the password management bubble.">
+        Username
       </message>
 
       <message name="IDS_MANAGE_PASSWORDS_AUTO_SIGNIN_TITLE_MD" desc="The title of the auto-signin toast in Material Design mode.">
@@ -12089,7 +12154,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
       </if>
       <message name="IDS_DESKTOP_MEDIA_PICKER_EMPTY_PREVIEW" desc="Text shown instead of a preview image of a tab when the user hasn't yet selected a tab to screenshare.">
-        Select a tab to preview
+        Select a tab to share
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_PREVIEW_ACCESSIBLE_NAME" desc="Name used by screen readers for a preview screenshot of a tab selected for screensharing.">
         Preview of shared tab
@@ -13153,6 +13218,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_PASSKEY_DIFFERENT_PHONE_OR_TABLET_LABEL" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. This string is used when a specific phone is also an option in the list, so the word 'different' is intended to communicate that this is the correct option when none of the previously list phones are correct.">
         Use a different phone or tablet
       </message>
+      <message name="IDS_WEBAUTHN_PHONE_CONFIRMATION_TITLE" desc="The title of a dialog shown when a user can use a passkey from a phone or tablet they have already paired with Brave to sign in to a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
+        Use a passkey from <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 6 Pro</ex></ph> to sign in to <ph name="WEBSITE">$2<ex>accounts.google.com</ex></ph>
+      </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
         Unlock your phone and confirm it's you
@@ -13325,10 +13393,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Which passkey do you want to use for <ph name="APP_NAME">$1<ex>example.com</ex></ph>?
       </message>
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_QR_TITLE" desc="The title of a dialog prompting the user to create a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-         Create a passkey on another device
+         Create a passkey on a phone or tablet
       </message>
       <message name="IDS_WEBAUTHN_CREATE_PASSKEY_QR_BODY" desc="The body of a dialog prompting the user to create a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
-         Scan this QR code with the device where you want to create a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
+        Scan this QR code with a camera on the device where you want to create a passkey for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
       </message>
       <message name="IDS_WEBAUTHN_USE_PASSKEY_QR_TITLE" desc="The title of a dialog prompting the user to use a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          Use a passkey from another device?
@@ -13336,8 +13404,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_USE_PASSKEY_QR_BODY" desc="The body of a dialog prompting the user to use a passkey to sign into a website. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
          Scan this QR code with the device that has the passkey you want to use for <ph name="APP_NAME">$1<ex>example.com</ex></ph>
       </message>
-      <message name="IDS_WEBAUTHN_TRY_ANOTHER_WAY" desc="Label on a secondary button on a dialog for creating or using a passkey to sign into a website.">
-         Try another way
+      <message name="IDS_WEBAUTHN_USE_A_DIFFERENT_DEVICE" desc="Label on a secondary button on a dialog for creating or using a passkey to sign into a website. Clicking this button will show a menu that lets the user pick a different device (such as a phone or hardware security key) to sign in.">
+         Use a different device
       </message>
 
       <!-- Side Search -->

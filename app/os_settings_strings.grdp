@@ -160,6 +160,9 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_STABLE" desc="The stable label in the message about current channel.">
     stable
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_LTC" desc="The LTC (long-term support candidate) label in the message about current channel.">
+    long-term support candidate
+  </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_LTS" desc="The LTS (long-term support) label in the message about current channel.">
     long-term support
   </message>
@@ -866,6 +869,36 @@
   <message name="IDS_SETTINGS_DISCONNECT_GOOGLE_DRIVE" desc="Label for the checkbox which enables disconnecting from Google Drive account.">
     Disconnect Google Drive account
   </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE" translateable="false" desc="Label for the settings link that takes the user to the page where they can manage their Google Drive settings.">
+    Google Drive
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_ENABLED" translateable="false" desc="Label indicating that Google Drive is enabled in Settings: Files: Google Drive.">
+    Enabled
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_DISABLED" translateable="false" desc="Label indicating that Google Drive is disabled in Settings: Files: Google Drive.">
+    Disabled
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_DISCONNECT" translateable="false" desc="Action to disconnect from Google Drive in Settings: Files: Google Drive.">
+    Disconnect
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_SIGNED_IN_AS" translateable="false" desc="Label indicating account signed in with Google Drive in Settings: Files: Google Drive.">
+    Signed in as
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_TITLE" translateable="false" desc="Title for the everything offline feature in Settings: Files: Google Drive.">
+    Keep your files available when you're offline
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_SUBTITLE" translateable="false" desc="Subtitle for the everything offline feature in Settings: Files: Google Drive.">
+    This will store your Google Drive files on this Chromebook so you can view and edit them without an internet connection. This will use about 12.2 GB leaving 96.8 GB available.
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_TITLE" translateable="false" desc="Title for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
+    Offline Storage
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_SUBTITLE" translateable="false" desc="Subtitle for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
+    Using 0 GB
+  </message>
+  <message name="IDS_SETTINGS_GOOGLE_DRIVE_OFFLINE_CLEAR_ACTION" translateable="false" desc="Button for the Offline Storage row where users can clear their offline storage in Settings: Files: Google Drive.">
+    Clear offline storage
+  </message>
   <message name="IDS_SETTINGS_DOWNLOADS_SMB_SHARES" desc="In Downloads Settings, the title of the SMB shares setting section.">
     Network file shares
   </message>
@@ -1113,8 +1146,26 @@
   <message name="IDS_SETTINGS_CHROMEVOX_TTS_SETTINGS_DESCRIPTION" desc="In the ChromeVox settings subpage, the description sub-label for the link to the Text-to-Speech settings page, used to illustrate the keyboard shortcut for the Text-to-Speech settings page, and a description telling users that they can use the Text-to-speech settings page to Install, Manage, and Customize their text-to-speech voices.">
     Search + O, then S. Use to install, manage, and customize voices.
   </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_EVENT_LOG_LINK" desc="In the ChromeVox settings subpage, the label for the link to show the ChromeVox Event Log page.">
+    Show Log
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_EVENT_LOG_DESCRIPTION" desc="In the ChromeVox settings subpage, the description sub-label for the link to show the ChromeVox Event Log page, used to illustrate the keyboard shortcut to open the ChromeVox Event Log page: Search + O, then W.">
+    Search + O, then W
+  </message>
   <message name="IDS_SETTINGS_CHROMEVOX_LANGUAGE_SWITCHING" desc="In the ChromeVox settings subpage, the label for the toggle to enable ChromeVox language switching.">
     Automatically switch ChromeVox voice based on language
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_MENU_ENABLE_SPEECH_LOGGING" desc="In the ChromeVox settings subpage, under developer options the label for the toggle that enables speech logging.">
+    Enable speech logging
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_MENU_ENABLE_EARCON_LOGGING" desc="In the ChromeVox settings subpage, under developer options the label for the toggle that enables earcon logging.">
+    Enable earcon logging
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_MENU_ENABLE_BRAILLE_LOGGING" desc="In the ChromeVox settings subpage, under developer options the label for the toggle that enables braille logging.">
+    Enable braille logging
+  </message>
+  <message name="IDS_SETTINGS_CHROMEVOX_MENU_ENABLE_EVENT_STREAM_LOGGING" desc="In the ChromeVox settings subpage, under developer options the label for the toggle that enables event stream logging.">
+    Enable event stream logging
   </message>
   <message name="IDS_SETTINGS_SCREEN_MAGNIFIER_LABEL" desc="Label for checkbox which enables the fullscreen magnifier">
     Full-screen magnifier
@@ -2572,35 +2623,35 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_AUDIO_TITLE" desc="In Device Settings, the title of the audio settings subpage.">
     Audio
   </message>
-  <message name="IDS_SETTINGS_AUDIO_VOLUME_TITLE" desc="In Device Settings, the title of the volume row under the output section in audio settings subpage." translateable="false">
+  <message name="IDS_SETTINGS_AUDIO_VOLUME_TITLE" desc="In Device Settings, the title of the volume row under the output section in audio settings subpage.">
     Volume
   </message>
   <message name="IDS_SETTINGS_AUDIO_OUTPUT_TITLE" desc="In Device Settings, the title of the output section of the audio settings subpage.">
     Output
   </message>
-  <message name="IDS_SETTINGS_AUDIO_OUTPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the output section in audio settings subpage." translateable="false">
+  <message name="IDS_SETTINGS_AUDIO_OUTPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the output section in audio settings subpage.">
     Speaker
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_TITLE" desc="In Device Settings, the title of the input section of the audio settings subpage." translateable="false">
+  <message name="IDS_SETTINGS_AUDIO_INPUT_TITLE" desc="In Device Settings, the title of the input section of the audio settings subpage.">
     Input
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the input section in audio settings subpage." translateable="false">
+  <message name="IDS_SETTINGS_AUDIO_INPUT_DEVICE_TITLE" desc="In Device Settings, the title of the device row under the input section in audio settings subpage.">
     Microphone
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_GAIN_TITLE" desc="In Device Settings, the title of the slider under the input section in audio settings subpage. This slider controls the microphone's gain setting." translateable="false">
-    Gain
+  <message name="IDS_SETTINGS_AUDIO_INPUT_GAIN_TITLE" desc="In Device Settings, the title of the slider under the input section in audio settings subpage. This slider controls the microphone's gain setting.">
+    Volume
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_NOT_MUTED" desc="In Device Settings, the aria label for the input mute button when not muted." translateable="false">
-    Toggle mic. Mic is on, toggling will mute input.
+  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_NOT_MUTED" desc="In Device Settings, the aria label for the input mute button when not muted.">
+    Volume is on. Turn off volume.
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the input mute button when muted." translateable="false">
-    Toggle mic. Mic is muted.
+  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the input mute button when muted.">
+    Volume is off. Turn on volume.
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_MUTED_BY_HARDWARE_SWITCH" desc="In Device Settings, the aria label for the input mute button when microphone mute switch is turned on." translateable="false">
-    Device's microphone button is turned off.
+  <message name="IDS_SETTINGS_AUDIO_INPUT_MUTE_BUTTON_ARIA_LABEL_MUTED_BY_HARDWARE_SWITCH" desc="In Device Settings, the aria label for the input mute button when microphone mute switch is turned on.">
+    Microphone is off on your device
   </message>
-  <message name="IDS_SETTINGS_AUDIO_INPUT_NOISE_CANCELLATION_TITLE" desc="In Device Settings, the title of the noise cancellation toggle under the input section in audio settings subpage." translateable="false">
-    Noise Cancellation
+  <message name="IDS_SETTINGS_AUDIO_INPUT_NOISE_CANCELLATION_TITLE" desc="In Device Settings, the title of the noise cancellation toggle under the input section in audio settings subpage.">
+    Noise cancellation
   </message>
   <message name="IDS_SETTINGS_AUDIO_DEVICE_FRONT_MIC_LABEL" desc="In Device Settings, the label used for the front microphone.">
     Front microphone
@@ -2629,31 +2680,37 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_AUDIO_DEVICE_MIC_JACK_LABEL" desc="In Device Settings, the label used for the mic jack device.">
     Mic jack
   </message>
-  <message name="IDS_SETTINGS_AUDIO_TOGGLE_TO_MUTE_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is unmuted." translateable="false">
-    Toggle to mute
+  <message name="IDS_SETTINGS_AUDIO_TOGGLE_TO_MUTE_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is unmuted.">
+    Turn off volume
   </message>
-  <message name="IDS_SETTINGS_AUDIO_TOGGLE_TO_UNMUTE_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted." translateable="false">
-    Toggle to unmute
+  <message name="IDS_SETTINGS_AUDIO_TOGGLE_TO_UNMUTE_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted.">
+    Turn on volume
   </message>
-  <message name="IDS_SETTINGS_AUDIO_MUTED_BY_POLICY_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted by enterprise policy." translateable="false">
-    Muted by policy
+  <message name="IDS_SETTINGS_AUDIO_MUTED_BY_POLICY_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted by enterprise policy.">
+    Muted by your administrator
   </message>
-  <message name="IDS_SETTINGS_AUDIO_MUTED_EXTERNALLY_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted by hardware/switch." translateable="false">
-    Muted by hardware/switch
+  <message name="IDS_SETTINGS_AUDIO_MUTED_EXTERNALLY_TOOLTIP" desc="In Device Settings, the tooltip used for the input and output mute buttons shown when the device is muted by hardware/switch.">
+    Microphone is off on your device
   </message>
-  <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_NOT_MUTED" desc="In Device Settings, the aria label for the output mute button when not muted." translateable="false">
-    Toggle volume. Volume is on, toggling will mute audio.
+  <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_NOT_MUTED" desc="In Device Settings, the aria label for the output mute button when not muted.">
+    Volume is on. Turn off volume.
   </message>
-  <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the output mute button when not muted." translateable="false">
-    Toggle volume. Volume is muted.
+  <message name="IDS_SETTINGS_AUDIO_OUTPUT_MUTE_BUTTON_ARIA_LABEL_MUTED" desc="In Device Settings, the aria label for the output mute button muted.">
+    Volume is off. Turn on volume.
   </message>
 
   <!-- Device pointer page (OS settings) -->
   <message name="IDS_SETTINGS_MOUSE_TITLE" desc="In Device Settings, the title of the mouse settings subpage.">
     Mouse
   </message>
+  <message name="IDS_SETTINGS_BUILT_IN_POINTING_STICK_NAME" translateable="false" desc="In Device Settings, the name of the built-in/internal pointing stick device within the settings app.">
+    Built-in TrackPoint
+  </message>
   <message name="IDS_SETTINGS_POINTING_STICK_TITLE" desc="In Device Settings, the title of the pointing stick settings subpage. In most cases this will just be 'TrackPoint', the brand name of the pointing sticks used on Chromebooks.">
     TrackPoint
+  </message>
+  <message name="IDS_SETTINGS_BUILT_IN_TOUCHPAD_NAME" translateable="false" desc="In Device Settings, the name of the built-in/internal touchpad device within the settings app.">
+    Built-in Touchpad
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_TITLE" desc="In Device Settings, the title of the touchpad settings subpage.">
     Touchpad
@@ -3549,6 +3606,30 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_ESIM_PROFILE_LIMIT_REACHED_ERROR_TOAST" desc="Message in toast displayed when user tries to set up an eSIM profile when they have reached the maximum number of allowed eSIM profiles installed.">
     You can install up to <ph name="PROFILE_LIMIT">$1<ex>5</ex></ph> eSIM profiles on this device. To add another profile, first remove an existing profile.
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_INFO_POPUP_MENU_ITEM_TITLE" desc="Title for the dropdown menu entry in network settings subpage that shows the network device info dialog.">
+    Device network info
+  </message>
+  <message name="IDS_SETTINGS_MOBILE_DEVICE_INFO_POPUP_TITLE" desc="Title for the Mobile network device info popup dialog that shows mobile network device information.">
+    Device mobile network info
+  </message>
+  <message name="IDS_SETTINGS_MOBILE_DEVICE_INFO_POPUP_DESCRIPTION" desc="Description text in the Mobile network device info popup dialog that tells user about the details that are shown.">
+    These numbers can be used to help activate service
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_INFO_EID_LABEL" desc="Label for the EID number of the device shown in the network device info popup dialog.">
+    EID
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_INFO_IMEI_LABEL" desc="Label for the IMEI number of the device shown in the network device info popup dialog.">
+    IMEI
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_INFO_A11Y_LABEL_EID" desc="A11y label for the network device info popup dialog that's read out when only EID is displayed.">
+    Your device EID is <ph name="EID_NUMBER">$1<ex>123456789</ex></ph>. This number can be used to help activate service.
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_INFO_A11Y_LABEL_IMEI" desc="A11y label for the network device info popup dialog that's read out when only IMEI is displayed.">
+    Your device IMEI is <ph name="IMEI_NUMBER">$1<ex>123456789</ex></ph>. This number can be used to help activate service.
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_INFO_A11Y_LABEL_EID_AND_IMEI" desc="A11y label for the network device info popup dialog that's read out when both EID and IMEI is displayed.">
+    Your device EID is <ph name="EID_NUMBER">$1<ex>123456789</ex></ph> and device IMEI is <ph name="IMEI_NUMBER">$1<ex>123456789</ex></ph>. These numbers can be used to help activate service.
   </message>
 
   <!-- Users Page (OS Settings) -->
@@ -4555,8 +4636,8 @@ Press an assigned switch or key to remove assignment.
   </message>
 
   <!-- Per Device Keyboard page (OS settings) -->
-  <message name="IDS_SETTINGS_PER_DEVICE_KEYBOARD_TITLE" translateable="false" desc="In Device Settings, the title of the new Per-device keyboard settings subpage.">
-    Per-device Keyboard
+  <message name="IDS_SETTINGS_BUILT_IN_KEYBOARD_NAME" translateable="false" desc="In Device Settings, the name of the built-in/internal keyboard device within the settings app.">
+    Built-in Keyboard
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_REMAP_KEYS_ROW_LABEL" translateable="false" desc="In per-device keyboard Settings, the label of the Remap Keyboard Keys row.">
     Remap keyboard keys
@@ -4584,6 +4665,10 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_REMAP_RESTORE_BUTTON_LABEL" translateable="false" desc="In Keyboard remap keys subpage, the restore defaults button label.">
     Restore defaults
   </message>
+  <message name="IDS_SETTINGS_KEYBOARD_NO_KEYBOARDS_HELP_MESSAGE" translateable="false" desc="In Keyboard remap keys subpage, the message that notifies users that no keyboards are connected.">
+    No keyboard detected
+  </message>
+
   <!-- Device Keyboard page (OS settings) -->
   <message name="IDS_SETTINGS_KEYBOARD_TITLE" desc="In Device Settings, the title of the keyboard settings subpage.">
     Keyboard
