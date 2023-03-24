@@ -372,7 +372,6 @@ class VerticalTabStripScrollContentsView : public views::View {
 BEGIN_METADATA(VerticalTabStripScrollContentsView, views::View)
 END_METADATA
 
-
 class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
  public:
   METADATA_HEADER(ScrollHeaderView);
