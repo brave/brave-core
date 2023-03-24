@@ -51,8 +51,10 @@ class VerticalTabStripRegionView : public views::View,
 
   State state() const { return state_; }
 
-  const TabStrip* tab_strip() const { return region_view_->tab_strip_; }
-  TabStrip* tab_strip() { return region_view_->tab_strip_; }
+  const TabStrip* tab_strip() const {
+    return original_region_view_->tab_strip_;
+  }
+  TabStrip* tab_strip() { return original_region_view_->tab_strip_; }
 
   const Browser* browser() const { return browser_; }
 
@@ -123,7 +125,7 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
-  raw_ptr<TabStripRegionView> region_view_ = nullptr;
+  raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   // Contains TabStripRegion.
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;

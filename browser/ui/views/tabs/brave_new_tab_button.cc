@@ -42,10 +42,6 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
   return path;
 }
 
-int BraveNewTabButton::GetChromiumOffsetForIcon() {
-  return GetCornerRadius();
-}
-
 gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
   // Overriden so that we use Brave's custom button size
   gfx::Size size = kButtonSize;
@@ -69,11 +65,13 @@ BraveNewTabButton::~BraveNewTabButton() = default;
 
 void BraveNewTabButton::PaintIcon(gfx::Canvas* canvas) {
   gfx::ScopedCanvas scoped_canvas(canvas);
-  // Incorrect offset that base class will use
-  const int chromium_offset = GetChromiumOffsetForIcon();
   // Shim base implementation's painting
   // Overriden to fix chromium assumption that border radius
   // will be 50% of width.
+
+  // Incorrect offset that base class will use
+  const int chromium_offset = GetCornerRadius();
+
   // Offset that we want to use
   const int correct_h_offset = (GetContentsBounds().width() / 2);
 
