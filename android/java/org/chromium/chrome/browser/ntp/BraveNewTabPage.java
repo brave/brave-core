@@ -107,7 +107,7 @@ public class BraveNewTabPage extends NewTabPage {
                 SurfaceType.NEW_TAB_PAGE, mConstructedTimeNs,
                 FeedSwipeRefreshLayout.create(activity, R.id.toolbar_container),
                 /* overScrollDisabled= */ false, /* viewportView= */ null,
-                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance(),
+                /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getForProfile(profile),
                 mTabModelSelector);
 
         mFeedSurfaceProvider = feedSurfaceCoordinator;
