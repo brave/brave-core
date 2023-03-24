@@ -38,6 +38,7 @@ import java.util.ArrayList;
 public class NetworkSelectorActivity
         extends BraveWalletBaseActivity implements NetworkSelectorAdapter.NetworkClickListener {
     public static String NETWORK_SELECTOR_MODE = "network_selector_mode";
+    public static String NETWORK_SELECTOR_KEY = "network_selector_key";
     private static final String TAG = "NetworkSelector";
     private NetworkSelectorModel.Mode mMode;
     private RecyclerView mRVNetworkSelector;
@@ -45,6 +46,7 @@ public class NetworkSelectorActivity
     private MaterialToolbar mToolbar;
     private String mSelectedNetwork;
     private SettingsLauncher mSettingsLauncher;
+    private String mKey;
     private WalletModel mWalletModel;
     private NetworkSelectorModel mNetworkSelectorModel;
 
@@ -62,6 +64,9 @@ public class NetworkSelectorActivity
         mMode = JavaUtils.safeVal(
                 (NetworkSelectorModel.Mode) intent.getSerializableExtra(NETWORK_SELECTOR_MODE),
                 NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK);
+        // Key acts as a binding contract between the caller and network selection activity to share
+        // local network selection actions in LOCAL_NETWORK_FILTER mode
+        mKey = intent.getStringExtra(NETWORK_SELECTOR_KEY);
         mRVNetworkSelector = findViewById(R.id.rv_network_activity);
         onInitialLayoutInflationComplete();
     }
@@ -82,7 +87,8 @@ public class NetworkSelectorActivity
 
         mSettingsLauncher = new BraveSettingsLauncherImpl();
         mNetworkSelectorModel =
-                mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(mMode);
+                mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
+                        mKey, mMode, null);
         networkSelectorAdapter = new NetworkSelectorAdapter(this, new ArrayList<>());
         mRVNetworkSelector.setAdapter(networkSelectorAdapter);
         networkSelectorAdapter.setOnNetworkItemSelected(this);
@@ -105,32 +111,20 @@ public class NetworkSelectorActivity
     }
 
     private void setSelectedNetworkObserver() {
-        if (mMode == NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK) {
-            LiveDataUtil.observeOnce(
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    networkInfo -> { updateNetworkSelection(networkInfo); });
-        } else if (mMode == NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER) {
-            mNetworkSelectorModel.mSelectedNetwork.observe(
-                    this, networkInfo -> { updateNetworkSelection(networkInfo); });
-        }
+        mNetworkSelectorModel.getSelectedNetwork().observe(
+                this, networkInfo -> { updateNetworkSelection(networkInfo); });
     }
 
     private void updateNetworkSelection(NetworkInfo networkInfo) {
         if (networkInfo != null) {
-            mSelectedNetwork = Utils.getShortNameOfNetwork(networkInfo.chainName);
             networkSelectorAdapter.setSelectedNetwork(networkInfo.chainName);
         }
     }
 
     @Override
     public void onNetworkItemSelected(NetworkInfo networkInfo) {
-        if (mMode == NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK) {
-            mWalletModel.getCryptoModel().getNetworkModel().setNetworkWithAccountCheck(
-                    networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
-        } else if (mMode == NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER) {
-            mNetworkSelectorModel.setNetworkWithAccountCheck(
-                    networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
-        }
+        mNetworkSelectorModel.setNetworkWithAccountCheck(
+                networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
     }
 
     private void updateNetworkUi(NetworkInfo networkInfo, Boolean isSelected) {
