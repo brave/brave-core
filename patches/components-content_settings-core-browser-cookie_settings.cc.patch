@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/cookie_settings.cc b/components/content_settings/core/browser/cookie_settings.cc
-index af095bf5fb6d1b208d5423efa272e9b55ccda582..3f82be49d404144e6ddb975ea1cf6047329f920a 100644
+index 185a247e7224dc7bcb2ba4f76fefe07a64f9b695..b52a87e0b4dd8eb34f3cd872f9d6edb8de3281e8 100644
 --- a/components/content_settings/core/browser/cookie_settings.cc
 +++ b/components/content_settings/core/browser/cookie_settings.cc
 @@ -197,6 +197,7 @@ ContentSetting CookieSettings::GetCookieSettingInternal(
