@@ -27,6 +27,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -59,6 +60,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl.KeyringServiceObserverImplDelegate;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -206,7 +208,6 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         }
         if (mKeyringServiceObserver != null) {
             mKeyringServiceObserver.close();
-            mKeyringServiceObserver.destroy();
             mKeyringServiceObserver = null;
         }
     }
@@ -273,6 +274,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                         mCryptoNetworks = networkInfos;
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             assert mSelectedNetwork != null;
+                            TextView networkName = view.findViewById(R.id.edit_visible_tv_network);
+                            AndroidUtils.show(networkName);
+                            networkName.setText(
+                                    Utils.getShortNameOfNetwork(mSelectedNetwork.chainName));
+                            networkName.setOnClickListener(v -> {
+                                Toast.makeText(requireContext(), mSelectedNetwork.chainName,
+                                             Toast.LENGTH_SHORT)
+                                        .show();
+                            });
                             TokenUtils.getUserAssetsFiltered(braveWalletService, mSelectedNetwork,
                                     mSelectedNetwork.coin, TokenUtils.TokenType.ALL, userAssets -> {
                                         TokenUtils.getAllTokensFiltered(braveWalletService,
