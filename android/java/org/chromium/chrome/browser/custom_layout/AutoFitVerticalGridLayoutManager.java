@@ -11,7 +11,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
+import org.chromium.ui.base.ViewUtils;
 
 /**
  * Extension of {@link GridLayoutManager} which adapts span count to recycler view size.
@@ -28,10 +28,10 @@ public class AutoFitVerticalGridLayoutManager extends GridLayoutManager {
      *         pixels.
      */
     public AutoFitVerticalGridLayoutManager(
-            final Context context, final int minColumns, final int columnWidthDp) {
+            final Context context, final int minColumns, final float columnWidthDp) {
         super(context, 1);
         this.minColumns = minColumns;
-        setcolumnWidthPx(AndroidUtils.dpToPx(context, columnWidthDp));
+        setcolumnWidthPx(ViewUtils.dpToPx(context, columnWidthDp));
         setOrientation(RecyclerView.VERTICAL);
     }
 
