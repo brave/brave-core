@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -59,7 +60,7 @@ import java.util.List;
 
 public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private static final String TAG = "NftGridFragment";
-    private static final int NFT_ITEM_WIDTH_DP = 180;
+    private static final float NFT_ITEM_WIDTH_DP = 180;
 
     private WalletModel mWalletModel;
     private PortfolioModel mPortfolioModel;
@@ -161,37 +162,11 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                                             networkInfo.symbolName))
                                     .setPositiveButton(R.string.wallet_action_yes,
                                             (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .setNetwork(networkInfo, success -> {
-                                                            if (success) {
-                                                                mWalletModel.getKeyringModel().addAccount(
-                                                                        WalletUtils.getUniqueNextAccountName(
-                                                                                requireContext(),
-                                                                                mWalletModel
-                                                                                        .getKeyringModel()
-                                                                                        .mAccountInfos
-                                                                                        .getValue()
-                                                                                        .toArray(
-                                                                                                new AccountInfo
-                                                                                                        [0]),
-                                                                                networkInfo
-                                                                                        .symbolName,
-                                                                                networkInfo.coin),
-                                                                        networkInfo.coin,
-                                                                        isAccountAdded -> {});
-                                                            }
-                                                            mWalletModel.getCryptoModel()
-                                                                    .getNetworkModel()
-                                                                    .clearCreateAccountState();
-                                                        });
+                                                setPositiveButtonAccountCreation(networkInfo);
                                             })
                                     .setNegativeButton(
                                             R.string.wallet_action_no, (dialog, which) -> {
-                                                mWalletModel.getCryptoModel()
-                                                        .getNetworkModel()
-                                                        .clearCreateAccountState();
-                                                dialog.dismiss();
+                                                setNegativeButtonAccountCreation(dialog);
                                             });
                     builder.show();
                 });
@@ -205,6 +180,28 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
         editVisibleNft.setOnClickListener(v -> { onEditVisibleAssetsClick(); });
+    }
+
+    private void setPositiveButtonAccountCreation(NetworkInfo networkInfo) {
+        mWalletModel.getCryptoModel().getNetworkModel().setNetwork(
+                networkInfo, success -> { setRetrievedNetwork(networkInfo, success); });
+    }
+
+    private void setNegativeButtonAccountCreation(DialogInterface dialog) {
+        mWalletModel.getCryptoModel().getNetworkModel().clearCreateAccountState();
+        dialog.dismiss();
+    }
+
+    private void setRetrievedNetwork(NetworkInfo networkInfo, boolean success) {
+        if (success) {
+            mWalletModel.getKeyringModel().addAccount(
+                    WalletUtils.getUniqueNextAccountName(requireContext(),
+                            mWalletModel.getKeyringModel().mAccountInfos.getValue().toArray(
+                                    new AccountInfo[0]),
+                            networkInfo.symbolName, networkInfo.coin),
+                    networkInfo.coin, isAccountAdded -> {});
+        }
+        mWalletModel.getCryptoModel().getNetworkModel().clearCreateAccountState();
     }
 
     private void setUpNftList(List<PortfolioModel.NftDataModel> nftDataModels,
