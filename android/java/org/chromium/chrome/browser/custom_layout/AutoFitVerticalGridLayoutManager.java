@@ -24,7 +24,8 @@ public class AutoFitVerticalGridLayoutManager extends GridLayoutManager {
 
     /**
      * @param minColumns Minimum columns count.
-     * @param columnWidthDp Expected width of the single item in grid layout in density indipendent pixels.
+     * @param columnWidthDp Expected width of the single item in grid layout in density indipendent
+     *         pixels.
      */
     public AutoFitVerticalGridLayoutManager(
             final Context context, final int minColumns, final int columnWidthDp) {
