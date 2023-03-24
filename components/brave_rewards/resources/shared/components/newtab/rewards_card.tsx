@@ -354,13 +354,12 @@ export function RewardsCard (props: Props) {
           }
         </style.connect>
         {
-          props.publishersVisited > 0 &&
-            <style.publisherSupport>
-              <style.publisherCount>
-                {props.publishersVisited}
-              </style.publisherCount>
-              <div>{publisherCountText}</div>
-            </style.publisherSupport>
+          <style.publisherSupport>
+            <style.publisherCount>
+              {props.publishersVisited}
+            </style.publisherCount>
+            <div>{publisherCountText}</div>
+          </style.publisherSupport>
         }
         {renderSettingsLink()}
       </style.root>

@@ -91,10 +91,6 @@ export function LimitedView () {
   }
 
   function renderPublisherBox () {
-    if (publishersVisitedCount < 1) {
-      return null
-    }
-
     return (
       <style.publisherSupport>
         <style.publisherCount>
