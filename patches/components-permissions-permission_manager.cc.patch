@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index c3d1181cdd5a102e00151d88a3b8baef15aec87a..ac2122cad9c7b7f70f61c4f1723dc6d1d52fb436 100644
+index 128fb3a8b1a99d5be25f67c77de29899076720a8..2680b741bc458c3c5f2bf97191e53d454046ce84 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
 @@ -324,6 +324,7 @@ void PermissionManager::RequestPermissionsFromCurrentDocument(

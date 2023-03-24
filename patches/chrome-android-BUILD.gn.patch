@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702886481b6 100644
+index c080ac8d1ae97bde6e4fe6b59f3e56508ae3bc03..b07e2931dfd9e2d7aa1855ee5ca25dadcfeb07d7 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -102,6 +102,7 @@ if (current_toolchain == default_toolchain) {
@@ -18,7 +18,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
    }
  
    if (enable_vr) {
-@@ -573,6 +575,7 @@ if (current_toolchain == default_toolchain) {
+@@ -576,6 +578,7 @@ if (current_toolchain == default_toolchain) {
      ]
  
      deps += feed_deps
@@ -26,7 +26,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
  
      srcjar_deps = [
        ":chrome_android_java_enums_srcjar",
-@@ -595,6 +598,7 @@ if (current_toolchain == default_toolchain) {
+@@ -598,6 +601,7 @@ if (current_toolchain == default_toolchain) {
        "//components/supervised_user/core/browser:supervised_user_url_filter_enum_javagen",
        "//net:effective_connection_type_java",
      ]
@@ -34,7 +34,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
  
      # From java_sources.gni.
      sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -732,6 +736,7 @@ if (current_toolchain == default_toolchain) {
+@@ -736,6 +740,7 @@ if (current_toolchain == default_toolchain) {
          "//chrome/android/features/tab_ui:module_desc_java",
        ]
      }
@@ -42,7 +42,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
    }
  
    action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -1965,6 +1970,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1971,6 +1976,7 @@ if (current_toolchain == default_toolchain) {
        "java/res_chromium_base/mipmap-xxxhdpi/layered_app_icon_background.png",
        "java/res_chromium_base/values/channel_constants.xml",
      ]
@@ -50,7 +50,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
  
      # Dep needed to ensure override works properly.
      deps = [ ":chrome_base_module_resources" ]
-@@ -2222,6 +2228,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2228,6 +2234,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -58,7 +58,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2414,6 +2421,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2420,6 +2427,7 @@ if (current_toolchain == default_toolchain) {
        shared_libraries = [ ":libchrome" ]
  
        version_name = chrome_version_name
@@ -66,7 +66,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
      }
    }
  
-@@ -2549,6 +2557,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2555,6 +2563,7 @@ if (current_toolchain == default_toolchain) {
        "//components/payments/content/android:service_java",
        "//third_party/androidx:androidx_browser_browser_java",
      ]
@@ -74,7 +74,7 @@ index b9546d74b2ce0167d231dbf584ae5a4020275af2..803f38cbb05bf551e22b96d0f32dc702
  
      # More deps for DFMs.
      if (dfmify_dev_ui) {
-@@ -2643,6 +2652,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2649,6 +2658,7 @@ if (current_toolchain == default_toolchain) {
            deps += [ "//weblayer/browser/java:upstream_java" ]
          }
        }

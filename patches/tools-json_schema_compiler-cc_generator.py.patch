@@ -1,5 +1,5 @@
 diff --git a/tools/json_schema_compiler/cc_generator.py b/tools/json_schema_compiler/cc_generator.py
-index 6798b6af7af809e20d98678448311a9bf53cf08b..bac0f6d2c0342aabf1f1bfc55fc8467b35531e26 100644
+index 677b324b3c5e7fa3fe9ba9850316f34a24f58d01..6634f62abee2041958d51d2e5dc7868609404c39 100644
 --- a/tools/json_schema_compiler/cc_generator.py
 +++ b/tools/json_schema_compiler/cc_generator.py
 @@ -28,6 +28,7 @@ class _Generator(object):
