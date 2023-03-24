@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -119,7 +120,9 @@ void SwapPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
         brave_wallet_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver) {
+        brave_wallet_auto_pin_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+        ipfs_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -145,6 +148,8 @@ void SwapPageUI::CreatePageHandler(
       profile, std::move(solana_tx_manager_proxy_receiver));
   brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
+  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
+      profive, std::move(ipfs_service_receiver));
   brave_wallet::BraveWalletService* wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
   wallet_service->Bind(std::move(brave_wallet_service_receiver));
