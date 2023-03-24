@@ -34,6 +34,41 @@
                 android:layout_height="wrap_content"
                 />
 
+            <LinearLayout
+                android:id="@+id/add_nfts_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="78dp"
+                android:padding="16dp"
+                android:background="@color/wallet_dn_bg_primary"
+                android:orientation="vertical"
+                android:visibility="gone" >
+
+                <TextView
+                    style="@style/BraveWalletTextViewTitle"
+                    android:text="@string/no_nfts"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp"
+                    />
+
+                <TextView
+                    style="@style/BraveWalletTextView"
+                    android:text="@string/add_nfts"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    style="@style/BraveWalletTextViewSubTitle"
+                    android:text="@string/nft_supported_standards"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

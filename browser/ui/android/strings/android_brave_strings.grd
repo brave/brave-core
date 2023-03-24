@@ -3836,6 +3836,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_ITEM_EXPIRED_MESSAGE" desc="Playlist item expired message text">
       Content expired. Try again in a few seconds.
     </message>
+    <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
+      No NFTs here yet.
+    </message>
+    <message name="IDS_ADD_NFTS" desc="How to import NFTs in the NFT grid.">
+      Ready to add some? Just click the button below to import.
+    </message>
+    <message name="IDS_NFT_SUPPORTED_STANDARDS" desc="NFT token standard currently supported.">
+      Note that Brave Wallet currently only supports the ERC721 token standard.
+    </message>
   </messages>
   </release>
 </grit>

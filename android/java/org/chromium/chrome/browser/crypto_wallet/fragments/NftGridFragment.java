@@ -72,6 +72,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private RecyclerView mRvNft;
     private WalletNftAdapter mWalletNftAdapter;
     private ProgressBar mPbAssetDiscovery;
+    private ViewGroup mAddNftsContainer;
 
     public static NftGridFragment newInstance() {
         return new NftGridFragment();
@@ -110,6 +111,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nft_grid, container, false);
         mPbAssetDiscovery = view.findViewById(R.id.frag_port_pb_asset_discovery);
+        mAddNftsContainer = view.findViewById(R.id.add_nfts_container);
         setUpObservers();
         return view;
     }
@@ -216,7 +218,12 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         mWalletNftAdapter.setWalletListItemModelList(walletListItemModelList);
         mWalletNftAdapter.setOnWalletListItemClick(this);
         mRvNft.setAdapter(mWalletNftAdapter);
-        mRvNft.setLayoutManager(new AutoFitVerticalGridLayoutManager(getActivity(), 2, NFT_ITEM_WIDTH_DP));
+        mRvNft.setLayoutManager(
+                new AutoFitVerticalGridLayoutManager(getActivity(), 2, NFT_ITEM_WIDTH_DP));
+
+        // Show empty screen layout if no NFTs have been added.
+        boolean emptyList = walletListItemModelList.isEmpty();
+        mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
     }
 
     // TODO: verify if this method is still needed once multi-chain support will be merged.
