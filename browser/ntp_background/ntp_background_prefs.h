@@ -82,7 +82,7 @@ class NTPBackgroundPrefs final {
   void SetSelectedValue(const std::string& value);
 
   // Return a value to use as NTP background.
-  absl::variant<GURL, std::string> GetSelectedValue() const;
+  std::string GetSelectedValue() const;
 
   void AddCustomImageToList(const std::string& file_name);
   void RemoveCustomImageFromList(const std::string& file_name);
