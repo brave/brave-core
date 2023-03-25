@@ -292,7 +292,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h",
     "//brave/components/brave_ads/core/internal/creatives/segments_database_table_unittest.cc",
     "//brave/components/brave_ads/core/internal/deprecated/client/preferences/ad_preferences_info_unittest.cc",
-    "//brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/catalog_id_diagnostic_entry_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry_unittest.cc",

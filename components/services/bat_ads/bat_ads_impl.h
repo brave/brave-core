@@ -47,8 +47,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnPrefDidChange(const std::string& path) override;
-
   void OnDidUpdateResourceComponent(const std::string& id) override;
 
   void OnTabHtmlContentDidChange(int32_t tab_id,

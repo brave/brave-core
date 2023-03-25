@@ -16,10 +16,10 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
@@ -60,7 +60,7 @@ NotificationAdHandler::NotificationAdHandler(
   serving_->AddObserver(this);
 
   BrowserManager::GetInstance()->AddObserver(this);
-  PrefManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   IdleDetectionManager::GetInstance()->AddObserver(this);
 }
 
@@ -69,7 +69,7 @@ NotificationAdHandler::~NotificationAdHandler() {
   event_handler_->RemoveObserver(this);
   serving_->RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
-  PrefManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   IdleDetectionManager::GetInstance()->RemoveObserver(this);
 }
 

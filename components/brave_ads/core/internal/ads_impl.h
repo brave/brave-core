@@ -104,8 +104,6 @@ class AdsImpl final : public Ads,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnPrefDidChange(const std::string& path) override;
-
   void OnDidUpdateResourceComponent(const std::string& id) override;
 
   void OnTabHtmlContentDidChange(int32_t tab_id,
@@ -230,7 +228,6 @@ class AdsImpl final : public Ads,
   std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<PrefManager> pref_manager_;
   std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;

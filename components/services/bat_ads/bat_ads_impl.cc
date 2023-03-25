@@ -55,10 +55,6 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
   ads_->Shutdown(std::move(callback));
 }
 
-void BatAdsImpl::OnPrefDidChange(const std::string& path) {
-  ads_->OnPrefDidChange(path);
-}
-
 void BatAdsImpl::OnTabHtmlContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,

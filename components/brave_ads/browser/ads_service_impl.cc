@@ -688,8 +688,8 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnPrefDidChange(path);
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyPrefDidChange(path);
   }
 }
 

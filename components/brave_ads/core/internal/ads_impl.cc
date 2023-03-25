@@ -32,7 +32,6 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
@@ -87,7 +86,6 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   history_manager_ = std::make_unique<HistoryManager>();
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-  pref_manager_ = std::make_unique<PrefManager>();
   resource_manager_ = std::make_unique<ResourceManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
@@ -174,12 +172,6 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   NotificationAdManager::GetInstance()->RemoveAll();
 
   std::move(callback).Run(/*success*/ true);
-}
-
-void AdsImpl::OnPrefDidChange(const std::string& path) {
-  if (IsInitialized()) {
-    PrefManager::GetInstance()->OnPrefDidChange(path);
-  }
 }
 
 void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,

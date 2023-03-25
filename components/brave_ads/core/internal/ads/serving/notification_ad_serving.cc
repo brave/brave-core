@@ -18,11 +18,11 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
@@ -43,11 +43,11 @@ Serving::Serving(geographic::SubdivisionTargeting* subdivision_targeting,
   eligible_ads_ = EligibleAdsFactory::Build(version, subdivision_targeting,
                                             anti_targeting_resource);
 
-  PrefManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 }
 
 Serving::~Serving() {
-  PrefManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 void Serving::AddObserver(ServingObserver* observer) {

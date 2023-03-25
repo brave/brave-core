@@ -58,9 +58,6 @@ class ADS_EXPORT Ads {
   // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
-  // Called when a preference has changed for the specified |path|.
-  virtual void OnPrefDidChange(const std::string& path) = 0;
-
   // Called when a resource component has been updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 

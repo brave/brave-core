@@ -11,11 +11,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager_observer.h"
 
@@ -53,7 +53,7 @@ class NotificationAdHandler final
       public IdleDetectionManagerObserver,
       public notification_ads::EventHandlerObserver,
       public notification_ads::ServingObserver,
-      public PrefManagerObserver {
+      public AdsClientObserver {
  public:
   NotificationAdHandler(
       Account* account,
@@ -84,7 +84,7 @@ class NotificationAdHandler final
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  // PrefManagerObserver:
+  // AdsClientObserver:
   void OnPrefDidChange(const std::string& path) override;
 
   // IdleDetectionManagerObserver:
