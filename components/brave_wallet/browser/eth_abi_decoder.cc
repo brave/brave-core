@@ -65,54 +65,47 @@ absl::optional<std::string> GetAddressFromData(
   return "0x" + HexEncodeLower(input.data() + offset + 12, 20);
 }
 
-// GetUint256FromData extracts a 32-byte wide uint256 value from the
-// calldata at the specified offset.
-absl::optional<uint256_t> GetUint256FromData(const std::vector<uint8_t>& input,
-                                             size_t offset) {
-  auto value = GetArgFromData(input, offset);
-  if (!value)
-    return absl::nullopt;
+// GetUintFromData extracts a 32-byte wide integral value of type M from the
+// calldata bytes at the specified offset.
+//
+// Using this function to extract an integer outside the range of M is
+// considered an error.
+template <typename M>
+absl::optional<M> GetUintFromData(const std::vector<uint8_t>& input,
+                                  size_t offset) {
+  static_assert(std::is_integral<M>::value, "M must be an integer type");
 
-  uint256_t arg;
-  if (!HexValueToUint256("0x" + *value, &arg))
+  auto arg = GetArgFromData(input, offset);
+  if (!arg) {
     return absl::nullopt;
-  return arg;
+  }
+
+  uint256_t value;
+  if (!HexValueToUint256("0x" + *arg, &value)) {
+    return absl::nullopt;
+  }
+
+  // To prevent runtime errors, we make sure the value is within safe
+  // limits of M.
+  if (value > std::numeric_limits<M>::max()) {
+    return absl::nullopt;
+  }
+
+  return static_cast<M>(value);
 }
 
-// GetUint256FromData extracts a 32-byte wide uint256 hex value from the
-// calldata at the specified offset.
-//
-// The parsed uint256 value is serialized as a compact hex string (without)
-// leading 0s, and prefixed by "0x".
-absl::optional<std::string> GetUint256HexFromData(
+// GetUintHexFromData encodes the return value of GetUintFromData as a compact
+// hex string (without leading 0s), and prefixed by "0x".
+template <typename M>
+absl::optional<std::string> GetUintHexFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
-  auto arg_uint256 = GetUint256FromData(input, offset);
-  if (!arg_uint256)
+  auto value = GetUintFromData<M>(input, offset);
+  if (!value) {
     return absl::nullopt;
+  }
 
-  return Uint256ValueToHex(*arg_uint256);
-}
-
-// GetSizeFromData extracts a 32-byte wide size_t value from the calldata
-// at the specified offset.
-//
-// Using this function to extract an integer outside the range of size_t is
-// considered an error. Ideal candidates are calldata tail references, length
-// of dynamic types, etc.
-absl::optional<size_t> GetSizeFromData(const std::vector<uint8_t>& input,
-                                       size_t offset) {
-  auto value = GetUint256FromData(input, offset);
-  if (!value)
-    return absl::nullopt;
-
-  // Since we use value as an array index, we need to cast the type to
-  // something that can be used as an index, viz. size_t. To prevent runtime
-  // errors, we make sure the value is within safe limits of size_t.
-  if (*value > std::numeric_limits<size_t>::max())
-    return absl::nullopt;
-
-  return static_cast<size_t>(*value);
+  return Uint256ValueToHex(*value);
 }
 
 // GetBoolFromData extracts a 32-byte wide boolean value from the
@@ -121,14 +114,15 @@ absl::optional<size_t> GetSizeFromData(const std::vector<uint8_t>& input,
 // The parsed bool value is serialized as "true" or "false" strings.
 absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
                                             size_t offset) {
-  auto value = GetUint256FromData(input, offset);
+  auto value = GetUintFromData<uint8_t>(input, offset);
   if (!value)
     return absl::nullopt;
 
-  if (value == static_cast<uint256_t>(0))
+  if (value == static_cast<uint8_t>(0)) {
     return "false";
-  else if (value == static_cast<uint256_t>(1))
+  } else if (value == static_cast<uint8_t>(1)) {
     return "true";
+  }
 
   return absl::nullopt;
 }
@@ -142,11 +136,11 @@ absl::optional<std::string> GetBoolFromData(const std::vector<uint8_t>& input,
 absl::optional<std::string> GetBytesHexFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
-  auto pointer = GetSizeFromData(input, offset);
+  auto pointer = GetUintFromData<size_t>(input, offset);
   if (!pointer)
     return absl::nullopt;
 
-  auto bytes_len = GetSizeFromData(input, *pointer);
+  auto bytes_len = GetUintFromData<size_t>(input, *pointer);
   if (!bytes_len)
     return absl::nullopt;
 
@@ -164,11 +158,11 @@ absl::optional<std::string> GetBytesHexFromData(
 absl::optional<std::string> GetAddressArrayFromData(
     const std::vector<uint8_t>& input,
     size_t offset) {
-  auto pointer = GetSizeFromData(input, offset);
+  auto pointer = GetUintFromData<size_t>(input, offset);
   if (!pointer)
     return absl::nullopt;
 
-  auto array_len = GetSizeFromData(input, *pointer);
+  auto array_len = GetUintFromData<size_t>(input, *pointer);
   if (!array_len)
     return absl::nullopt;
 
@@ -255,8 +249,19 @@ ABIDecode(const std::vector<std::string>& types,
     absl::optional<std::string> value;
     if (type == "address") {
       value = GetAddressFromData(data, offset);
+    } else if (type == "uint8") {  // Handle all unsigned integers of M bits,
+                                   // where 0 < M <= 256 and M % 8 == 0.
+      value = GetUintHexFromData<uint8_t>(data, offset);
+    } else if (type == "uint16") {
+      value = GetUintHexFromData<uint16_t>(data, offset);
+    } else if (type == "uint32") {
+      value = GetUintHexFromData<uint32_t>(data, offset);
+    } else if (type == "uint64") {
+      value = GetUintHexFromData<uint64_t>(data, offset);
+    } else if (type == "uint128") {
+      value = GetUintHexFromData<uint128_t>(data, offset);
     } else if (type == "uint256") {
-      value = GetUint256HexFromData(data, offset);
+      value = GetUintHexFromData<uint256_t>(data, offset);
     } else if (type == "bool") {
       value = GetBoolFromData(data, offset);
     } else if (type == "bytes") {
@@ -276,7 +281,7 @@ ABIDecode(const std::vector<std::string>& types,
     // of the tail section of the calldata.
     if ((type == "bytes" || type == "string" || base::EndsWith(type, "[]")) &&
         calldata_tail == 0) {
-      auto pointer = GetSizeFromData(data, offset);
+      auto pointer = GetUintFromData<size_t>(data, offset);
       if (!pointer)
         return absl::nullopt;
 

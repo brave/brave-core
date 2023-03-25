@@ -429,10 +429,15 @@ export const getETHSwapTransactionBuyAndSellTokens = ({
     ? nativeAsset
     : fillTokens[0]
 
-  const sellAmountWei = new Amount(sellToken
-    ? sellAmountArg || tx.txDataUnion.ethTxData1559?.baseData.value || ''
-    : ''
-  )
+
+  const sellAmountRaw = sellToken?.contractAddress === ''
+    ? (tx.txDataUnion.ethTxData1559?.baseData.value ||
+       tx.txDataUnion.ethTxData?.value ||
+       sellAmountArg ||
+       '')
+    : sellAmountArg || ''
+
+  const sellAmountWei = new Amount(sellAmountRaw)
 
   const sellAmount = sellToken
     ? sellAmountWei.divideByDecimals(sellToken.decimals)

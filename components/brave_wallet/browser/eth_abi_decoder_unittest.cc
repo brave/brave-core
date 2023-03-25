@@ -36,6 +36,201 @@ TEST(EthABIDecoderTest, ABIDecodeAddress) {
   ASSERT_FALSE(ABIDecode({"address"}, data));
 }
 
+TEST(EthABIDecoderTest, ABIDecodeUint8) {
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // OK: 32-bytes well-formed uint8
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x00000000000000000000000000000000000000000000000000000000000000ff",
+      &data));
+  auto decoded = ABIDecode({"uint8"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint8");
+  EXPECT_EQ(tx_args[0], "0xff");
+
+  // OK: extra uint8 length
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x00000000000000000000000000000000000000000000000000000000000000ff"
+      "ff",
+      &data));
+  decoded = ABIDecode({"uint8"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint8");
+  EXPECT_EQ(tx_args[0], "0xff");
+
+  // KO: insufficient uint8 length
+  ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
+  ASSERT_FALSE(ABIDecode({"uint8"}, data));
+
+  // KO: outside range of uint8
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000000000000000000000000000000000100",
+      &data));
+  ASSERT_FALSE(ABIDecode({"uint8"}, data));
+}
+
+TEST(EthABIDecoderTest, ABIDecodeUint16) {
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // OK: 32-bytes well-formed uint16
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000000000000000000000000000000000fff",
+      &data));
+  auto decoded = ABIDecode({"uint16"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint16");
+  EXPECT_EQ(tx_args[0], "0xfff");
+
+  // OK: extra uint16 length
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000000000000000000000000000000000fff"
+      "ff",
+      &data));
+  decoded = ABIDecode({"uint16"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint16");
+  EXPECT_EQ(tx_args[0], "0xfff");
+
+  // KO: insufficient uint16 length
+  ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
+  ASSERT_FALSE(ABIDecode({"uint16"}, data));
+
+  // KO: outside range of uint16
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000000000000000000000000000000010000",
+      &data));
+  ASSERT_FALSE(ABIDecode({"uint16"}, data));
+}
+
+TEST(EthABIDecoderTest, ABIDecodeUint32) {
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // OK: 32-bytes well-formed uint32
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x00000000000000000000000000000000000000000000000000000000ffffffff",
+      &data));
+  auto decoded = ABIDecode({"uint32"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint32");
+  EXPECT_EQ(tx_args[0], "0xffffffff");
+
+  // OK: extra uint32 length
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x00000000000000000000000000000000000000000000000000000000ffffffff"
+      "ff",
+      &data));
+  decoded = ABIDecode({"uint32"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint32");
+  EXPECT_EQ(tx_args[0], "0xffffffff");
+
+  // KO: insufficient uint16 length
+  ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
+  ASSERT_FALSE(ABIDecode({"uint32"}, data));
+
+  // KO: outside range of uint32
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000000000000000000000000000100000000",
+      &data));
+  ASSERT_FALSE(ABIDecode({"uint32"}, data));
+}
+
+TEST(EthABIDecoderTest, ABIDecodeUint64) {
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // OK: 32-bytes well-formed uint64
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x000000000000000000000000000000000000000000000000ffffffffffffffff",
+      &data));
+  auto decoded = ABIDecode({"uint64"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint64");
+  EXPECT_EQ(tx_args[0], "0xffffffffffffffff");
+
+  // OK: extra uint64 length
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x000000000000000000000000000000000000000000000000ffffffffffffffff"
+      "ff",
+      &data));
+  decoded = ABIDecode({"uint64"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint64");
+  EXPECT_EQ(tx_args[0], "0xffffffffffffffff");
+
+  // KO: insufficient uint16 length
+  ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
+  ASSERT_FALSE(ABIDecode({"uint64"}, data));
+
+  // KO: outside range of uint64
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000000000000000000010000000000000000",
+      &data));
+  ASSERT_FALSE(ABIDecode({"uint64"}, data));
+}
+
+TEST(EthABIDecoderTest, ABIDecodeUint128) {
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // OK: 32-bytes well-formed uint128
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff",
+      &data));
+  auto decoded = ABIDecode({"uint128"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint128");
+  EXPECT_EQ(tx_args[0], "0xffffffffffffffffffffffffffffffff");
+
+  // OK: extra uint128 length
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x00000000000000000000000000000000ffffffffffffffffffffffffffffffff"
+      "ff",
+      &data));
+  decoded = ABIDecode({"uint128"}, data);
+  ASSERT_NE(decoded, absl::nullopt);
+  std::tie(tx_params, tx_args) = *decoded;
+  ASSERT_EQ(tx_params.size(), 1UL);
+  EXPECT_EQ(tx_params[0], "uint128");
+  EXPECT_EQ(tx_args[0], "0xffffffffffffffffffffffffffffffff");
+
+  // KO: insufficient uint128 length
+  ASSERT_TRUE(PrefixedHexStringToBytes("0xff", &data));
+  ASSERT_FALSE(ABIDecode({"uint128"}, data));
+
+  // KO: outside range of uint128
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x0000000000000000000000000000000100000000000000000000000000000000",
+      &data));
+  ASSERT_FALSE(ABIDecode({"uint128"}, data));
+}
+
 TEST(EthABIDecoderTest, ABIDecodeUint256) {
   std::vector<std::string> tx_params;
   std::vector<std::string> tx_args;

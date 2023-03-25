@@ -88,6 +88,7 @@ std::string GetInfuraEndpointForKnownChainId(const std::string& chain_id);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 GURL AddInfuraProjectId(const GURL& url);
 GURL MaybeAddInfuraProjectId(const GURL& url);
+std::string GetZeroExAPIKey();
 mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
                                     const std::string& chain_id,
                                     mojom::CoinType coin);

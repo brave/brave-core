@@ -689,4 +689,245 @@ TEST(EthDataParser, GetTransactionInfoFromDataTransformERC20) {
   EXPECT_EQ(tx_args[2], "0x55c75b6fa8d5f0d4");
 }
 
+TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderForETH) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: USDC → ETH
+  // fillOtcOrderForEth((address buyToken,
+  //                     address sellToken,
+  //                     uint128 buyAmount,
+  //                     uint128 sellAmount,
+  //                     address maker,
+  //                     address taker,
+  //                     address txOrigin,
+  //                     uint256 expiryAndNonce),
+  //                    (uint8 signatureType,
+  //                     uint8 v,
+  //                     bytes32 r,
+  //                     bytes32 s),
+  //                    uint128 takerTokenFillAmount)
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa578efaf"  // function selector
+
+      /***************************** HEAD ****************************/
+      /************************ TUPLE INDEX 0 ************************/
+      // buyToken
+      "000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      // sellToken
+      "000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      // buyAmount
+      "000000000000000000000000000000000000000000000000003c11d06581812a"
+      // sellAmount
+      "0000000000000000000000000000000000000000000000000000000001c9c380"
+      // maker
+      "000000000000000000000000af0b0000f0210d0f421f0009c72406703b50506b"
+      // taker
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // txOrigin
+      "0000000000000000000000000a975d7b53f8da11e64196d53fb35532fea37e85"
+      // expiryAndNonce
+      "00000000641dc0e60000000000000000000000000000000000000000641dc08d"
+
+      /************************ TUPLE INDEX 1 ************************/
+      // signatureType
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // v
+      "000000000000000000000000000000000000000000000000000000000000001b"
+      // r
+      "7ad29a4358f2b090fe87676b69a941b9304b751b7dd20ceb4aede5801342875d"
+      // s
+      "37c1445a8ea241a1ddeb91628a685fdbaf1b31701a1b4782ee9f239b27de8da7"
+
+      /************************ TUPLE INDEX 2 ************************/
+      // takerTokenFillAmount
+      "0000000000000000000000000000000000000000000000000000000001c9c380"
+
+      // Extraneous HEAD data to be ignored
+      "869584cd00000000000000000000000010000000000000000000000000000000"
+      "000000110000000000000000000000000000000000000000000000b68c522ab9"
+      "641dc08d",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, absl::nullopt);
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint128");
+  EXPECT_EQ(tx_params[2], "uint128");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  // USDC
+            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");  // ETH
+  EXPECT_EQ(tx_args[1], "0x1c9c380");
+  EXPECT_EQ(tx_args[2], "0x3c11d06581812a");
+}
+
+TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrderWithETH) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: ETH → USDC
+  // fillOtcOrderWithEth((address buyToken,
+  //                      address sellToken,
+  //                      uint128 buyAmount,
+  //                      uint128 sellAmount,
+  //                      address maker,
+  //                      address taker,
+  //                      address txOrigin,
+  //                      uint256 expiryAndNonce),
+  //                     (uint8 signatureType,
+  //                      uint8 v,
+  //                      bytes32 r,
+  //                      bytes32 s))
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0x706394d5"  // function selector
+
+      /***************************** HEAD ****************************/
+      /************************ TUPLE INDEX 0 ************************/
+      // buyToken
+      "000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      // sellToken
+      "000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2"
+      // buyAmount
+      "0000000000000000000000000000000000000000000000000000000001c9c380"
+      // sellAmount
+      "000000000000000000000000000000000000000000000000003d407736bd1262"
+      // maker
+      "000000000000000000000000af0b0000f0210d0f421f0009c72406703b50506b"
+      // taker
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // txOrigin
+      "0000000000000000000000000a975d7b53f8da11e64196d53fb35532fea37e85"
+      // expiryAndNonce
+      "00000000641df0fc0000000000000000000000000000000000000000641df0a3"
+
+      /************************ TUPLE INDEX 1 ************************/
+      // signatureType
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // v
+      "000000000000000000000000000000000000000000000000000000000000001b"
+      // r
+      "698ec17fa0d923fc71072f04cc605ce1e0701eb684e3ec86da60fc4056a8d1cf"
+      // s
+      "79c95c461f9e1899f85677b2d5873d128d49007c98d2db482ad0c074f3da91cf"
+
+      // Extraneous HEAD data to be ignored
+      "869584cd00000000000000000000000010000000000000000000000000000000"
+      "00000011000000000000000000000000000000000000000000000056b6e7d5c8"
+      "641df0a3",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, absl::nullopt);
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint128");
+  EXPECT_EQ(tx_params[2], "uint128");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  // ETH
+            "a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48");  // USDC
+  EXPECT_EQ(tx_args[1], "0x3d407736bd1262");
+  EXPECT_EQ(tx_args[2], "0x1c9c380");
+}
+
+TEST(EthDataParser, GetTransactionInfoFromDataFillOtcOrder) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  std::vector<uint8_t> data;
+
+  // TXN: USDC → USDT
+  // fillOtcOrder((address buyToken,
+  //               address sellToken,
+  //               uint128 buyAmount,
+  //               uint128 sellAmount,
+  //               address maker,
+  //               address taker,
+  //               address txOrigin,
+  //               uint256 expiryAndNonce),
+  //              (uint8 signatureType,
+  //               uint8 v,
+  //               bytes32 r,
+  //               bytes32 s),
+  //              uint128 takerTokenFillAmount)
+
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xdac748d4"  // function selector
+
+      /***************************** HEAD ****************************/
+      /************************ TUPLE INDEX 0 ************************/
+      // buyToken
+      "000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7"
+      // sellToken
+      "000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      // buyAmount
+      "0000000000000000000000000000000000000000000000000000000001c6bad5"
+      // sellAmount
+      "0000000000000000000000000000000000000000000000000000000001c9c380"
+      // maker
+      "000000000000000000000000af0b0000f0210d0f421f0009c72406703b50506b"
+      // taker
+      "0000000000000000000000000000000000000000000000000000000000000000"
+      // txOrigin
+      "0000000000000000000000000a975d7b53f8da11e64196d53fb35532fea37e85"
+      // expiryAndNonce
+      "00000000641e09580000000000000000000000000000000000000000641e08ff"
+
+      /************************ TUPLE INDEX 1 ************************/
+      // signatureType
+      "0000000000000000000000000000000000000000000000000000000000000003"
+      // v
+      "000000000000000000000000000000000000000000000000000000000000001c"
+      // r
+      "de2afeb6c575ec3fbce0a2f52eeee77ed2d08df1bd3d0888f9fa65cc5184e98a"
+      // s
+      "6a6dbfa0c3444521b4bdd4d2293e6cc5013d21d6758e38e4e9f2e0f106aadeab"
+
+      /************************ TUPLE INDEX 2 ************************/
+      // takerTokenFillAmount
+      "0000000000000000000000000000000000000000000000000000000001c9c380"
+
+      // Extraneous HEAD data to be ignored
+      "869584cd00000000000000000000000010000000000000000000000000000000"
+      "000000110000000000000000000000000000000000000000000000423216738d"
+      "641e08ff",
+      &data));
+
+  auto tx_info = GetTransactionInfoFromData(data);
+  ASSERT_NE(tx_info, absl::nullopt);
+  std::tie(tx_type, tx_params, tx_args) = *tx_info;
+
+  EXPECT_EQ(tx_type, mojom::TransactionType::ETHSwap);
+
+  ASSERT_EQ(tx_params.size(), 3UL);
+  EXPECT_EQ(tx_params[0], "bytes");
+  EXPECT_EQ(tx_params[1], "uint128");
+  EXPECT_EQ(tx_params[2], "uint128");
+
+  ASSERT_EQ(tx_args.size(), 3UL);
+  EXPECT_EQ(tx_args[0],
+            "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"  // USDC
+            "dac17f958d2ee523a2206206994597c13d831ec7");  // USDT
+  EXPECT_EQ(tx_args[1], "0x1c9c380");
+  EXPECT_EQ(tx_args[2], "0x1c6bad5");
+}
+
 }  // namespace brave_wallet

@@ -63,6 +63,11 @@ bool IsSolanaNetworkSupported(const std::string& chain_id) {
   return chain_id == brave_wallet::mojom::kSolanaMainnet;
 }
 
+bool HasRFQTLiquidity(const std::string& chain_id) {
+  return (chain_id == brave_wallet::mojom::kMainnetChainId ||
+          chain_id == brave_wallet::mojom::kPolygonMainnetChainId);
+}
+
 GURL Append0xSwapParams(const GURL& swap_url,
                         const brave_wallet::mojom::SwapParams& params,
                         const std::string& chain_id) {
@@ -234,15 +239,21 @@ std::string SwapService::GetAffiliateAddress(const std::string& chain_id) {
 // static
 GURL SwapService::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
                                    const std::string& chain_id) {
+  const bool use_rfqt = HasRFQTLiquidity(chain_id);
+
   std::string spec = base::StringPrintf(
-      "%sswap/v1/price", base_url_for_test_.is_empty()
-                             ? GetBaseSwapURL(chain_id).c_str()
-                             : base_url_for_test_.spec().c_str());
+      use_rfqt ? "%sswap/v1/quote" : "%sswap/v1/price",
+      base_url_for_test_.is_empty() ? GetBaseSwapURL(chain_id).c_str()
+                                    : base_url_for_test_.spec().c_str());
   GURL url(spec);
   url = Append0xSwapParams(url, *swap_params, chain_id);
   // That flag prevents an allowance validation on a swap exchange proxy side.
   // We do in clients allowance validation.
   url = net::AppendQueryParameter(url, "skipValidation", "true");
+
+  if (use_rfqt) {
+    url = net::AppendQueryParameter(url, "intentOnFilling", "false");
+  }
 
   return url;
 }
@@ -256,6 +267,11 @@ GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
                              : base_url_for_test_.spec().c_str());
   GURL url(spec);
   url = Append0xSwapParams(url, *swap_params, chain_id);
+
+  if (HasRFQTLiquidity(chain_id)) {
+    url = net::AppendQueryParameter(url, "intentOnFilling", "true");
+  }
+
   return url;
 }
 

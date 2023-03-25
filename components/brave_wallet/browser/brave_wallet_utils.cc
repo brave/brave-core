@@ -523,6 +523,15 @@ GURL MaybeAddInfuraProjectId(const GURL& url) {
   return url;
 }
 
+std::string GetZeroExAPIKey() {
+  std::string api_key(BUILDFLAG(ZERO_EX_API_KEY));
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  if (env->HasVar("ZERO_EX_API_KEY")) {
+    env->GetVar("ZERO_EX_API_KEY", &api_key);
+  }
+  return api_key;
+}
+
 mojom::NetworkInfoPtr GetKnownChain(PrefService* prefs,
                                     const std::string& chain_id,
                                     mojom::CoinType coin) {
