@@ -48,7 +48,6 @@ import getAPIProxy from './bridge'
 import {
   refreshKeyringInfo,
   refreshNetworkInfo,
-  refreshFullNetworkList,
   refreshTokenPriceHistory,
   refreshSitePermissions,
   refreshTransactionHistory,
@@ -66,11 +65,14 @@ import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import {
   getCoinFromTxDataUnion,
-  getNetworkInfo,
   hasEIP1559Support
 } from '../../utils/network-utils'
 import { isSolanaTransaction, shouldReportTransactionP3A } from '../../utils/tx-utils'
-import { walletApi } from '../slices/api.slice'
+import {
+  queryNetworksList,
+  querySelectedNetwork,
+  walletApi
+} from '../slices/api.slice'
 import { deserializeOrigin, makeSerializableOriginInfo } from '../../utils/model-serialization-utils'
 
 const handler = new AsyncActionHandler()
@@ -127,27 +129,33 @@ async function updateAccountInfo (store: Store) {
 }
 
 async function updateCoinAccountNetworkInfo (store: Store, coin: BraveWallet.CoinType) {
-  const { accounts, networkList } = getWalletState(store)
+  const { accounts } = getWalletState(store)
   if (accounts.length === 0) {
     return
   }
   const { keyringService, jsonRpcService } = getAPIProxy()
-  const coinsChainId = await jsonRpcService.getChainId(coin)
 
-  // Update Selected Coin
-  store.dispatch(walletApi.endpoints.setSelectedCoin.initiate(coin))
+  // Update Selected Coin & cached selected network
+  await store
+    .dispatch(walletApi.endpoints.setSelectedCoin.initiate(coin))
+    .unwrap()
 
   // Updated Selected Account
-  const selectedAccountAddress = coin === BraveWallet.CoinType.FIL
-      ? await keyringService.getFilecoinSelectedAccount(coinsChainId.chainId)
+  const { address: selectedAccountAddress } =
+    coin === BraveWallet.CoinType.FIL
+      ? await keyringService.getFilecoinSelectedAccount(
+          (
+            await jsonRpcService.getChainId(coin)
+          ).chainId
+        )
       : await keyringService.getSelectedAccount(coin)
-  const defaultAccount = accounts.find((account) => account.address === selectedAccountAddress.address) || accounts[0]
+
+  const defaultAccount =
+    accounts.find(
+      (account) => account.address === selectedAccountAddress
+    ) || accounts[0]
   await store.dispatch(WalletActions.setSelectedAccount(defaultAccount))
   await store.dispatch(refreshTransactionHistory(defaultAccount.address))
-
-  // Updated Selected Network
-  const defaultNetwork = getNetworkInfo(coinsChainId.chainId, coin, networkList)
-  await store.dispatch(WalletActions.setNetwork(defaultNetwork))
 }
 
 handler.on(WalletActions.refreshBalancesAndPrices.type, async (store: Store) => {
@@ -157,7 +165,7 @@ handler.on(WalletActions.refreshBalancesAndPrices.type, async (store: Store) => 
 })
 
 handler.on(WalletActions.refreshNetworksAndTokens.type, async (store: Store) => {
-  await store.dispatch(refreshFullNetworkList())
+  await store.dispatch(refreshNetworkInfo())
   await store.dispatch(refreshVisibleTokenInfo())
   await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
@@ -203,19 +211,21 @@ handler.on(WalletActions.accountsChanged.type, async (store) => {
   await updateAccountInfo(store)
 })
 
-handler.on(WalletActions.selectNetwork.type, async (store: Store, payload: BraveWallet.NetworkInfo) => {
-  const { jsonRpcService } = getAPIProxy()
-  await jsonRpcService.setNetwork(payload.chainId, payload.coin)
-})
-
 handler.on(WalletActions.chainChangedEvent.type, async (store: Store, payload: ChainChangedEventPayloadType) => {
   await updateCoinAccountNetworkInfo(store, payload.coin)
 })
 
-handler.on(WalletActions.selectAccount.type, async (store: Store, payload: WalletAccountType) => {
-  const { keyringService } = getAPIProxy()
-  await keyringService.setSelectedAccount(payload.address, payload.coin)
-})
+handler.on(
+  WalletActions.selectAccount.type,
+  async (
+    store: Store,
+    { address, coin }: Pick<WalletAccountType, 'address' | 'coin'>
+  ) => {
+    await store.dispatch(
+      walletApi.endpoints.setSelectedAccount.initiate({ address, coin })
+    )
+  }
+)
 
 handler.on(WalletActions.selectedAccountChanged.type, async (store, payload: SelectedAccountChangedPayloadType) => {
   await updateCoinAccountNetworkInfo(store, payload.coin)
@@ -279,7 +289,6 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
   store.dispatch(WalletActions.defaultCurrenciesUpdated(defaultCurrencies))
   // Fetch Balances and Prices
   if (!state.isWalletLocked && state.isWalletCreated) {
-    // FIXME - use return value of refreshNetworkInfo() in refreshVisibleTokenInfo()
     await store.dispatch(refreshNetworkInfo())
     await store.dispatch(refreshVisibleTokenInfo())
     await store.dispatch(refreshBalances())
@@ -295,13 +304,8 @@ handler.on(WalletActions.initialized.type, async (store: Store, payload: WalletI
   }
 })
 
-handler.on(WalletActions.getAllNetworks.type, async (store: Store) => {
-  await store.dispatch(refreshFullNetworkList())
-})
-
 handler.on(WalletActions.getAllTokensList.type, async (store) => {
-  const state = getWalletState(store)
-  const { networkList } = state
+  const networkList = await queryNetworksList(store.dispatch, 'visibleIds')
   const { blockchainRegistry } = getAPIProxy()
   const getAllTokensList = await Promise.all(networkList.map(async (network) => {
     const list = await blockchainRegistry.getAllTokens(network.chainId, network.coin)
@@ -390,17 +394,18 @@ handler.on(WalletActions.sendTransaction.type, async (
     | SendSolTransactionParams
 ) => {
   const { wallet: walletState } = store.getState()
+  const selectedNetwork = await querySelectedNetwork(store.dispatch)
 
   let addResult
   if (payload.coin === BraveWallet.CoinType.ETH) {
     addResult = await sendEthTransaction({
       ...payload,
       hasEIP1559Support:
-        !!walletState.selectedNetwork &&
+        !!selectedNetwork &&
         !!walletState.selectedAccount &&
         hasEIP1559Support(
           walletState.selectedAccount.accountType,
-          walletState.selectedNetwork
+          selectedNetwork
         )
     })
   } else if (payload.coin === BraveWallet.CoinType.FIL) {
@@ -508,7 +513,7 @@ handler.on(WalletActions.approveTransaction.type, async (store: Store, txInfo: B
       } as TransactionProviderError
     }))
   } else {
-    const { selectedNetwork } = getWalletState(store)
+    const selectedNetwork = await querySelectedNetwork(store.dispatch)
     if (selectedNetwork && shouldReportTransactionP3A(txInfo, selectedNetwork, coin)) {
       braveWalletP3A.reportTransactionSent(coin, true)
     }
@@ -535,7 +540,9 @@ handler.on(WalletActions.rejectAllTransactions.type, async (store) => {
 })
 
 handler.on(WalletActions.refreshGasEstimates.type, async (store: Store, txInfo: BraveWallet.TransactionInfo) => {
-  const { selectedAccount, selectedNetwork } = getWalletState(store)
+  const { selectedAccount} = getWalletState(store)
+  const selectedNetwork = await querySelectedNetwork(store.dispatch)
+
   const { ethTxManagerProxy, solanaTxManagerProxy } = getAPIProxy()
 
   if (isSolanaTransaction(txInfo)) {
@@ -658,6 +665,14 @@ handler.on(WalletActions.addSitePermission.type, async (store: Store, payload: A
 })
 
 handler.on(WalletActions.transactionStatusChanged.type, async (store: Store, payload: TransactionStatusChanged) => {
+  await store.dispatch(
+    walletApi.endpoints.transactionStatusChanged.initiate({
+      coinType: getCoinFromTxDataUnion(payload.txInfo.txDataUnion),
+      fromAddress: payload.txInfo.fromAddress,
+      txStatus: payload.txInfo.txStatus,
+      id: payload.txInfo.id
+    })
+  )
   const status = payload.txInfo.txStatus
   if (status === BraveWallet.TransactionStatus.Confirmed || status === BraveWallet.TransactionStatus.Error) {
     await refreshBalancesPricesAndHistory(store)

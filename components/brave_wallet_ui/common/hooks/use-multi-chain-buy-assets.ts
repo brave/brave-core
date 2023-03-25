@@ -6,15 +6,23 @@
 import * as React from 'react'
 
 // utils
-import { getNetworkInfo } from '../../utils/network-utils'
 import {
   filterTokensByNetworks,
   getRampAssetSymbol,
   isSelectedAssetInAssetOptions
 } from '../../utils/asset-utils'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../slices/entities/network.entity'
+import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 
 // types
-import { BraveWallet, BuyOption, SupportedOnRampNetworks, SupportedTestNetworks } from '../../constants/types'
+import {
+  BraveWallet,
+  BuyOption,
+  SupportedTestNetworks
+} from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 import { PageSelectors } from '../../page/selectors'
 
@@ -24,15 +32,25 @@ import { BuyOptions } from '../../options/buy-with-options'
 // hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import { useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
+import {
+  useUnsafePageSelector,
+  useUnsafeWalletSelector
+} from './use-safe-selector'
+import {
+  useGetAllNetworksQuery,
+  useGetSelectedChainQuery
+} from '../slices/api.slice'
+
 
 export const useMultiChainBuyAssets = () => {
   // redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
-  const hiddenNetworkList = useUnsafeWalletSelector(WalletSelectors.hiddenNetworkList)
   const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
   const reduxSelectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetAllNetworksQuery()
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -56,15 +74,17 @@ export const useMultiChainBuyAssets = () => {
   })
 
   // memos
-  const buyAssetNetworks = React.useMemo((): BraveWallet.NetworkInfo[] => {
-    return [...networkList, ...hiddenNetworkList].filter(n =>
-      SupportedOnRampNetworks.includes(n.chainId)
+  const buyAssetNetworks: BraveWallet.NetworkInfo[] = React.useMemo(() => {
+    return getEntitiesListFromEntityState(
+      networksRegistry,
+      networksRegistry.onRampIds
     )
-  }, [networkList, hiddenNetworkList])
+  }, [networksRegistry])
 
-  const selectedAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
-    return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
-  }, [selectedAsset, buyAssetNetworks])
+  const selectedAssetNetwork: BraveWallet.NetworkInfo | undefined =
+    selectedAsset
+      ? networksRegistry.entities[networkEntityAdapter.selectId(selectedAsset)]
+      : undefined
 
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
     const { rampAssetOptions, sardineAssetOptions, transakAssetOptions } = options

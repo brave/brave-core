@@ -14,11 +14,11 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
-import { getTokensNetwork } from '../../../../../utils/network-utils'
 import Amount from '../../../../../utils/amount'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import { formatTokenBalanceWithSymbol } from '../../../../../utils/balance-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
+
 // Components
 import {
   withPlaceholderIcon,
@@ -37,6 +37,7 @@ import {
   IconAndName
 } from './token-list-item.style'
 import { Column, Text } from '../../shared.styles'
+import { useNetwork } from '../../../../../common/hooks/use-networks'
 
 interface Props {
   onClick: () => void
@@ -48,9 +49,11 @@ export const TokenListItem = (props: Props) => {
   const { onClick, token, balance } = props
 
   // Wallet Selectors
-  const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+
+  // Queries
+  const tokensNetwork = useNetwork(token, { skip: !token })
 
   // Memos
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -60,13 +63,6 @@ export const TokenListItem = (props: Props) => {
       marginRight: 0
     })
   }, [token?.isErc721])
-
-  const tokensNetwork = React.useMemo(() => {
-    if (token) {
-      return getTokensNetwork(networks, token)
-    }
-    return undefined
-  }, [token, networks])
 
   const fiatBalance = React.useMemo(() => {
     return computeFiatAmount(spotPrices, {

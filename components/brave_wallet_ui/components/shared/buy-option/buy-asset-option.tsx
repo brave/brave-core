@@ -34,7 +34,7 @@ import { LoadIcon } from './buy-option-item-styles'
 interface Props {
   onClick?: (token: BraveWallet.BlockchainToken) => void
   token: BraveWallet.BlockchainToken
-  tokenNetwork: BraveWallet.NetworkInfo
+  tokenNetwork?: BraveWallet.NetworkInfo
   isSelected?: boolean
   isPanel?: boolean
   /** Set this to a currency-code to fetch & display the token's price */

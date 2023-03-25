@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // Options
 import { BraveWallet, WalletState } from '../../../constants/types'
@@ -11,11 +12,13 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { getTokensNetwork } from '../../../utils/network-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 import { isDataURL } from '../../../utils/string-utils'
 import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+
+// Hooks
+import { useNetwork } from '../../../common/hooks/use-networks'
 
 // Components
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
@@ -37,7 +40,6 @@ import {
   ButtonArea
 } from './style'
 import { IconsWrapper, NetworkIconWrapper, SellButton, SellButtonRow } from '../../shared/style'
-import { useSelector } from 'react-redux'
 
 interface Props {
   action?: () => void
@@ -62,8 +64,10 @@ export const PortfolioAssetItem = ({
 }: Props) => {
   // redux
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+
+  // queries
+  const tokensNetwork = useNetwork(token)
 
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
@@ -101,10 +105,6 @@ export const PortfolioAssetItem = ({
   const isLoading = React.useMemo(() => {
     return formattedAssetBalance === '' && !isNonFungibleToken
   }, [formattedAssetBalance, token])
-
-  const tokensNetwork = React.useMemo(() => {
-    return getTokensNetwork(networks, token)
-  }, [token, networks])
 
   const NetworkDescription = React.useMemo(() => {
     if (tokensNetwork && !isPanel) {

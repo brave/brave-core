@@ -4,10 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // Utils
-import { getTokensNetwork } from '../../../utils/network-utils'
+import { WalletSelectors } from '../../../common/selectors'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
 
@@ -48,13 +47,22 @@ import { EditPendingTransactionGas } from './common/gas'
 // Components
 import { TransactionQueueStep } from './common/queue'
 import { Footer } from './common/footer'
+import AdvancedTransactionSettings from '../advanced-transaction-settings'
 
 // Types
-import { WalletState, BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
-import AdvancedTransactionSettings from '../advanced-transaction-settings'
+import { useGetAllNetworksQuery } from '../../../common/slices/api.slice'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../../../common/slices/entities/network.entity'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
 
 interface Props {
   onConfirm: () => void
@@ -65,12 +73,17 @@ export function ConfirmSwapTransaction (props: Props) {
   const { onConfirm, onReject } = props
 
   // redux
-  const {
-    defaultCurrencies,
-    activeOrigin,
-    selectedPendingTransaction: transactionInfo,
-    networkList: networks
-  } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
+  const defaultFiatCurrency = useSafeWalletSelector(
+    WalletSelectors.defaultFiatCurrency
+  )
+  const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
+  const transactionInfo = useUnsafeWalletSelector(
+    WalletSelectors.selectedPendingTransaction
+  )
+
+  // queries
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetAllNetworksQuery()
 
   // state
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
@@ -86,21 +99,28 @@ export function ConfirmSwapTransaction (props: Props) {
     updateUnapprovedTransactionNonce
   } = usePendingTransactions()
 
-  // Memos
-  const makerAssetNetwork = React.useMemo(() => {
-    return transactionDetails?.sellToken && getTokensNetwork(networks, transactionDetails.sellToken)
-  }, [networks, transactionDetails])
-  const takerAssetNetwork = React.useMemo(() => {
-    return transactionDetails?.buyToken && getTokensNetwork(networks, transactionDetails.buyToken)
-  }, [networks, transactionDetails])
-
+  // computed
   const originInfo = transactionInfo?.originInfo ?? activeOrigin
 
+  const makerAssetNetwork = transactionDetails?.sellToken
+    ? networksRegistry.entities[
+        networkEntityAdapter.selectId(transactionDetails.sellToken)
+      ]
+    : undefined
+
+  const takerAssetNetwork = transactionDetails?.buyToken
+    ? networksRegistry.entities[
+        networkEntityAdapter.selectId(transactionDetails.buyToken)
+      ]
+    : undefined
+
+  // Methods
   const onToggleAdvancedTransactionSettings = () => {
     setShowAdvancedTransactionSettings(!showAdvancedTransactionSettings)
   }
   const onToggleEditGas = () => setIsEditingGas(!isEditingGas)
 
+  // render
   if (showAdvancedTransactionSettings && transactionDetails && transactionInfo) {
     return (
       <AdvancedTransactionSettings
@@ -133,13 +153,15 @@ export function ConfirmSwapTransaction (props: Props) {
         transactionDetails?.sellAmount && (
           <ExchangeRate>
             1 {transactionDetails.sellToken.symbol} ={' '}
-            {transactionDetails.minBuyAmount.div(transactionDetails.sellAmount).format(6)}{' '}
+            {transactionDetails.minBuyAmount
+              .div(transactionDetails.sellAmount)
+              .format(6)}{' '}
             {transactionDetails.buyToken.symbol}
           </ExchangeRate>
         )}
       <SwapDetails>
         <SwapAsset
-          type='maker'
+          type="maker"
           network={makerAssetNetwork}
           address={transactionDetails?.senderLabel}
           orb={fromOrb}
@@ -154,7 +176,7 @@ export function ConfirmSwapTransaction (props: Props) {
         </SwapDetailsArrowContainer>
 
         <SwapAsset
-          type='taker'
+          type="taker"
           network={takerAssetNetwork}
           address={transactionDetails?.recipientLabel}
           orb={toOrb}
@@ -170,7 +192,9 @@ export function ConfirmSwapTransaction (props: Props) {
           <NetworkFeeValue>
             <CreateNetworkIcon network={transactionsNetwork} marginRight={0} />
             {transactionDetails?.gasFeeFiat ? (
-              new Amount(transactionDetails.gasFeeFiat).formatAsFiat(defaultCurrencies.fiat)
+              new Amount(transactionDetails.gasFeeFiat).formatAsFiat(
+                defaultFiatCurrency
+              )
             ) : (
               <LoadingSkeleton width={38} />
             )}
@@ -185,7 +209,11 @@ export function ConfirmSwapTransaction (props: Props) {
         </Settings>
       </NetworkFeeAndSettingsContainer>
 
-      <Footer onConfirm={onConfirm} onReject={onReject} rejectButtonType='cancel' />
+      <Footer
+        onConfirm={onConfirm}
+        onReject={onReject}
+        rejectButtonType="cancel"
+      />
     </StyledWrapper>
   )
 }

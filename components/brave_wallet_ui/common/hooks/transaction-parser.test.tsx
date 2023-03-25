@@ -7,7 +7,11 @@ import * as React from 'react'
 import { renderHook } from '@testing-library/react-hooks'
 import { Provider } from 'react-redux'
 
-import { BraveWallet } from '../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo,
+  WalletState
+} from '../../constants/types'
 import {
   getMockedTransactionInfo,
   mockAccount,
@@ -17,22 +21,23 @@ import {
 } from '../constants/mocks'
 import { useTransactionParser } from './transaction-parser'
 import { mockWalletState } from '../../stories/mock-data/mock-wallet-state'
-import { combineReducers, createStore } from 'redux'
-import { createWalletReducer } from '../slices/wallet.slice'
 import { SwapExchangeProxy } from '../constants/registry'
+import { createMockStore } from '../../utils/test-utils'
 
-const customMockedWalletState = {
+const customMockedWalletState: WalletState = {
   ...mockWalletState,
   transactionSpotPrices: mockAssetPrices,
-  fullTokenList: [...mockWalletState.fullTokenList, { ...mockERC20Token, contractAddress: '0xdeadbeef' }, mockERC20Token],
-  selectedNetwork: mockNetwork,
-  networkList: [mockNetwork]
+  fullTokenList: [
+    ...mockWalletState.fullTokenList,
+    { ...mockERC20Token, contractAddress: '0xdeadbeef' },
+    mockERC20Token
+  ]
 }
 
 const makeStore = (customStore?: any) => {
-  const store = customStore || createStore(combineReducers({
-    wallet: createWalletReducer(customMockedWalletState)
-  }))
+  const store = customStore || createMockStore({
+    walletStateOverride: customMockedWalletState
+  })
 
   store.dispatch = jest.fn(store.dispatch)
   return store
@@ -48,6 +53,19 @@ function renderHookOptionsWithCustomStore (store: any) {
       </Provider>
   }
 }
+
+const walletApiDataOverrides = {
+  selectedCoin: mockNetwork.coin,
+  chainIdsForCoins: {
+    [mockNetwork.coin]: mockNetwork.chainId
+  },
+  networks: [mockNetwork]
+}
+const mockedSelectedNetwork = {
+  chainId: BraveWallet.MAINNET_CHAIN_ID,
+  coin: BraveWallet.CoinType.ETH,
+  symbol: 'ETH'
+} as BraveWallet.NetworkInfo
 
 describe('useTransactionParser hook', () => {
   describe('check for sameAddressError', () => {
@@ -261,17 +279,23 @@ describe('useTransactionParser hook', () => {
          *   - gasPrice: 150 Gwei
          *   - gasLimit: 21000
          */
-        const customStore = createStore(combineReducers({
-            wallet: createWalletReducer({
+        const customStore = createMockStore(
+          {
+            walletStateOverride: {
               ...mockWalletState,
               transactionSpotPrices: mockAssetPrices,
-              fullTokenList: [...mockWalletState.fullTokenList, { ...mockERC20Token, contractAddress: '0xdeadbeef' }, mockERC20Token],
+              fullTokenList: [
+                ...mockWalletState.fullTokenList,
+                { ...mockERC20Token, contractAddress: '0xdeadbeef' },
+                mockERC20Token
+              ],
               accounts: [
                 ...mockWalletState.accounts,
                 {
                   ...mockAccount,
                   tokenBalanceRegistry: {
-                    [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000' // 0.01 ETH
+                    [mockERC20Token.contractAddress.toLowerCase()]:
+                      '1000000000000000' // 0.001 DOG
                   },
                   address: '0xdeadbeef',
                   nativeBalanceRegistry: {
@@ -279,11 +303,17 @@ describe('useTransactionParser hook', () => {
                   }
                 }
               ]
-            })
-          }))
+            }
+          },
+          walletApiDataOverrides
+        )
 
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
-            renderHookOptionsWithCustomStore(customStore))
+        const {
+          result: { current: transactionParser }
+        } = renderHook(
+          () => useTransactionParser(mockedSelectedNetwork),
+          renderHookOptionsWithCustomStore(customStore)
+        )
 
         const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
@@ -365,7 +395,7 @@ describe('useTransactionParser hook', () => {
       ['Other', BraveWallet.TransactionType.Other]
     ])('%s', (_, txType) => {
       const mockTransactionInfo = getMockedTransactionInfo()
-      const transactionInfo: BraveWallet.TransactionInfo = {
+      const transactionInfo: SerializableTransactionInfo = {
         ...mockTransactionInfo,
         fromAddress: '0xdeadbeef',
         txType,
@@ -396,22 +426,30 @@ describe('useTransactionParser hook', () => {
          *
          * Remarks: sufficient funds for gas, but not for send amount.
          */
-        const customStore = createStore(combineReducers({
-          wallet: createWalletReducer({
-            ...customMockedWalletState,
-            accounts: [{
-              ...mockAccount,
-              address: '0xdeadbeef',
-              nativeBalanceRegistry: {
-                '0x1': '4000000000000000' // 0.004 ETH
-              }
-            }],
-            selectedNetwork: mockNetwork
-          })
-        }))
+        const customStore = createMockStore(
+          {
+            walletStateOverride: {
+              ...customMockedWalletState,
+              accounts: [
+                {
+                  ...mockAccount,
+                  address: '0xdeadbeef',
+                  nativeBalanceRegistry: {
+                    '0x1': '4000000000000000' // 0.004 ETH
+                  }
+                }
+              ]
+            }
+          },
+          walletApiDataOverrides
+        )
 
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
-          renderHookOptionsWithCustomStore(customStore))
+        const {
+          result: { current: transactionParser }
+        } = renderHook(
+          () => useTransactionParser(mockedSelectedNetwork),
+          renderHookOptionsWithCustomStore(customStore)
+        )
 
         const parsedTransaction = transactionParser(transactionInfo)
         expect(parsedTransaction.insufficientFundsError).toBeTruthy()
@@ -430,21 +468,30 @@ describe('useTransactionParser hook', () => {
          * Remarks: sufficient funds for gas, and for send amount.
          */
 
-        const customStore = createStore(combineReducers({
-            wallet: createWalletReducer({
+        const customStore = createMockStore(
+          {
+            walletStateOverride: {
               ...customMockedWalletState,
-              accounts: [{
-                ...mockAccount,
-                address: '0xdeadbeef',
-                nativeBalanceRegistry: {
-                  '0x1': '1003150000000000000' // 1.00315 ETH
+              accounts: [
+                {
+                  ...mockAccount,
+                  address: '0xdeadbeef',
+                  nativeBalanceRegistry: {
+                    '0x1': '1003150000000000000' // 1.00315 ETH
+                  }
                 }
-              }]
-            })
-          }))
+              ]
+            }
+          },
+          walletApiDataOverrides
+        )
 
-        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(),
-            renderHookOptionsWithCustomStore(customStore))
+        const {
+          result: { current: transactionParser }
+        } = renderHook(
+          () => useTransactionParser(mockedSelectedNetwork),
+          renderHookOptionsWithCustomStore(customStore)
+        )
 
         const parsedTransaction = transactionParser(transactionInfo)
         expect(parsedTransaction.insufficientFundsError).toBeFalsy()
@@ -465,7 +512,7 @@ describe('useTransactionParser hook', () => {
        * Remarks: sufficient funds for gas, but not for send amount.
        */
       const mockTransactionInfo = getMockedTransactionInfo()
-      const transactionInfo: BraveWallet.TransactionInfo = {
+      const transactionInfo: SerializableTransactionInfo = {
         ...mockTransactionInfo,
         fromAddress: '0xdeadbeef',
         txArgs: [
@@ -600,7 +647,7 @@ describe('useTransactionParser hook', () => {
           ]
         }
 
-        const mockTransactionInfo1: BraveWallet.TransactionInfo = {
+        const mockTransactionInfo1: SerializableTransactionInfo = {
           ...baseMockTransactionInfo,
           txDataUnion: {
             ethTxData: {} as any,
@@ -619,7 +666,7 @@ describe('useTransactionParser hook', () => {
         expect(parsedTransaction1.gasLimit).toEqual('')
         expect(parsedTransaction1.missingGasLimitError).toBeTruthy()
 
-        const mockTransactionInfo2: BraveWallet.TransactionInfo = {
+        const mockTransactionInfo2: SerializableTransactionInfo = {
           ...baseMockTransactionInfo,
           txDataUnion: {
             ethTxData: {} as any,
@@ -638,7 +685,7 @@ describe('useTransactionParser hook', () => {
         expect(parsedTransaction2.gasLimit).toEqual('0')
         expect(parsedTransaction2.missingGasLimitError).toBeTruthy()
 
-        const mockTransactionInfo3: BraveWallet.TransactionInfo = {
+        const mockTransactionInfo3: SerializableTransactionInfo = {
           ...baseMockTransactionInfo,
           txDataUnion: {
             ethTxData: {} as any,

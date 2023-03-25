@@ -236,7 +236,6 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount?: WalletAccountType
-  selectedNetwork: BraveWallet.NetworkInfo | undefined
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
@@ -247,8 +246,6 @@ export interface WalletState {
   selectedPendingTransaction: SerializableTransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  networkList: BraveWallet.NetworkInfo[]
-  hiddenNetworkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: AssetPriceWithContractAndChainId[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
@@ -261,7 +258,6 @@ export interface WalletState {
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
-  defaultNetworks: BraveWallet.NetworkInfo[]
   isLoadingCoinMarketData: boolean
   coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: NetworkFilterType

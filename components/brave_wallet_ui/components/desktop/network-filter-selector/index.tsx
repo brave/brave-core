@@ -18,6 +18,11 @@ import { CreateNetworkIcon } from '../../shared'
 import { WalletActions } from '../../../common/actions'
 import { getLocale } from '../../../../common/locale'
 import { accountInfoEntityAdaptor } from '../../../common/slices/entities/account-info.entity'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../../../common/slices/entities/network.entity'
+import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 // Options
 import {
@@ -36,6 +41,8 @@ import {
   SecondaryNetworkText,
   ClickAwayArea
 } from './style'
+import { useGetAllNetworksQuery } from '../../../common/slices/api.slice'
+
 
 interface Props {
   networkListSubset?: BraveWallet.NetworkInfo[]
@@ -58,31 +65,62 @@ export const NetworkFilterSelector = ({
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
-  const networkListInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
-  const reduxNetworkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
-  // api
-  const selectedNetwork = networkProp || [...networkListInfo, AllNetworksOption].find(network => network.chainId === selectedNetworkFilter.chainId && network.coin === selectedNetworkFilter.coin) || AllNetworksOption
-  const selectedAccount = accountProp || [...accounts, AllAccountsOption].find(account => account.id === selectedAccountFilter) || AllAccountsOption
+  // queries
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetAllNetworksQuery()
+  const selectedNetworkFilterId = networkEntityAdapter.selectId(
+    selectedNetworkFilter
+  )
+
+  const selectedNetwork =
+    networkProp ||
+    networksRegistry.entities[selectedNetworkFilterId] ||
+    AllNetworksOption
+
+  const selectedAccount =
+    accountProp ||
+    [...accounts, AllAccountsOption].find(
+      (account) => account.id === selectedAccountFilter
+    ) ||
+    AllAccountsOption
+
+  // memos & computed
+  const accountId = accountInfoEntityAdaptor.selectId(selectedAccount)
 
   // memos
-  const networkList: BraveWallet.NetworkInfo[] = React.useMemo(() => {
+  const reduxNetworkList = React.useMemo(() => {
+    return getEntitiesListFromEntityState(
+      networksRegistry,
+      networksRegistry.visibleIds
+    )
+  }, [networksRegistry])
+
+  const filteredNetworks: BraveWallet.NetworkInfo[] = React.useMemo(() => {
     // Filters networks by coinType if a selectedAccountFilter is selected
-    const accountId = accountInfoEntityAdaptor.selectId(selectedAccount)
-    const networks = accountId === AllAccountsOption.id
-      ? networkListSubset
-      : networkListSubset?.filter((network) => network.coin === selectedAccount.coin)
+    const networks =
+      accountId === AllAccountsOption.id
+        ? networkListSubset
+        : networkListSubset?.filter(
+            (network) => network.coin === selectedAccount.coin
+          )
     return networks || reduxNetworkList
-  }, [networkListSubset, reduxNetworkList, selectedAccount])
+  }, [networkListSubset, reduxNetworkList, accountId, selectedAccount.coin])
 
   const sortedNetworks = React.useMemo(() => {
-    const onlyMainnets = networkList.filter((network) => SupportedTopLevelChainIds.includes(network.chainId))
-    const removedMainnets = networkList.filter((network) => !SupportedTopLevelChainIds.includes(network.chainId))
+    const onlyMainnets = filteredNetworks.filter((network) =>
+      SupportedTopLevelChainIds.includes(network.chainId)
+    )
+    const removedMainnets = filteredNetworks.filter(
+      (network) => !SupportedTopLevelChainIds.includes(network.chainId)
+    )
     return [AllNetworksOption, ...onlyMainnets, ...removedMainnets]
-  }, [networkList])
+  }, [filteredNetworks])
 
   const primaryNetworks = React.useMemo(() => {
-    const onlyMainnets = networkList.filter((network) => SupportedTopLevelChainIds.includes(network.chainId))
+    const onlyMainnets = filteredNetworks.filter((network) =>
+      SupportedTopLevelChainIds.includes(network.chainId)
+    )
     return [AllNetworksOption, ...onlyMainnets]
   }, [sortedNetworks])
 
@@ -92,8 +130,10 @@ export const NetworkFilterSelector = ({
   }, [sortedNetworks])
 
   const testNetworks = React.useMemo(() => {
-    return networkList.filter((network) => SupportedTestNetworks.includes(network.chainId))
-  }, [networkList])
+    return filteredNetworks.filter((network) =>
+      SupportedTestNetworks.includes(network.chainId)
+    )
+  }, [filteredNetworks])
 
   const toggleShowNetworkFilter = React.useCallback(() => {
     setShowNetworkFilter(prev => !prev)

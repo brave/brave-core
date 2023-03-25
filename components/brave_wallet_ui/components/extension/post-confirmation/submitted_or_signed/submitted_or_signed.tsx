@@ -3,13 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // Constants
-import { BraveWallet, WalletState, SerializableTransactionInfo } from '../../../../constants/types'
+import {
+  BraveWallet,
+  SerializableTransactionInfo
+} from '../../../../constants/types'
 
 // Hooks
 import { useExplorer } from '../../../../common/hooks'
+import { useGetSelectedChainQuery } from '../../../../common/slices/api.slice'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -33,10 +36,10 @@ interface Props {
 export const TransactionSubmittedOrSigned = (props: Props) => {
   const { headerTitle, transaction, onClose } = props
 
-  // redux
-  const selectedNetwork = useSelector(
-    (state: { wallet: WalletState }) => state.wallet.selectedNetwork
-  )
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+
+  // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
   const title =

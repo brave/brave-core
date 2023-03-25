@@ -4,15 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-// Redux
-import { useUnsafeWalletSelector } from './use-safe-selector'
-import { WalletSelectors } from '../selectors'
-
 // Types
 import { TokenRegistry, BraveWallet } from '../../constants/types'
 
 // Hooks
 import { useLib } from './'
+import { useNetworksListQuery } from './use-networks'
 
 // Utils
 import { addLogoToToken } from '../../utils/asset-utils'
@@ -22,7 +19,7 @@ export function useTokenRegistry () {
   const { getTokenList } = useLib()
 
   // Redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const { networks: networkList } = useNetworksListQuery()
 
   // Hook State
   const [tokenRegistry, setTokenRegistry] = React.useState<TokenRegistry>({})

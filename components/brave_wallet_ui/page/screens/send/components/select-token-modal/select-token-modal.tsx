@@ -9,6 +9,10 @@ import { useDispatch } from 'react-redux'
 // Selectors
 import { WalletSelectors } from '../../../../../common/selectors'
 import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../../../../../common/slices/entities/network.entity'
 
 // Actions
 import { WalletActions } from '../../../../../common/actions/'
@@ -18,10 +22,16 @@ import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '.
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
-import { getFilecoinKeyringIdFromNetwork, getTokensNetwork } from '../../../../../utils/network-utils'
+import {
+  getFilecoinKeyringIdFromNetwork //
+} from '../../../../../utils/network-utils'
 import { getBalance } from '../../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import Amount from '../../../../../utils/amount'
+import {
+  useGetAllNetworksQuery,
+  useSetNetworkMutation
+} from '../../../../../common/slices/api.slice'
 
 // Options
 import { AllNetworksOption } from '../../../../../options/network-filter-options'
@@ -51,7 +61,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const dispatch = useDispatch()
 
     // Wallet Selectors
-    const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
     const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
     const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
     const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
@@ -61,6 +70,12 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const [searchValue, setSearchValue] = React.useState<string>('')
     const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
     const [selectedNetworkFilter, setSelectedNetworkFilter] = React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
+
+    // Queries & Mutations
+    const { data: networksRegistry = emptyNetworksRegistry } =
+      useGetAllNetworksQuery()
+    const [setNetwork] = useSetNetworkMutation()
+
 
     // Methods
     const getTokenListByAccount = React.useCallback((account: WalletAccountType) => {
@@ -73,16 +88,33 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       const coinName = CoinTypesMap[account?.coin ?? 0]
       const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
       const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
-      const chainList = networks.filter((network) => network.coin === account?.coin &&
-        (network.coin !== BraveWallet.CoinType.FIL || getFilecoinKeyringIdFromNetwork(network) === account?.keyringId)).map((network) => network.chainId) ?? []
-      const list =
-        userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
-          token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
+
+      const chainListForAccountCoinType = networksRegistry.idsByCoinType[
+        account.coin
+      ] as string[]
+
+      const chainList = chainListForAccountCoinType.filter((chainId) =>
+        account.coin === BraveWallet.CoinType.FIL
+          ? getFilecoinKeyringIdFromNetwork({
+              chainId: chainId,
+              coin: account.coin
+            }) === account?.keyringId
+          : true
+      )
+
+      const list = userVisibleTokensInfo.filter(
+        (token) =>
+          token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID &&
+          chainList.includes(token?.chainId ?? '')
+      )
+
       if (accountsLocalHost && (account.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
-        return [...list, accountsLocalHost]
+        list.push(accountsLocalHost)
+        return list
       }
+
       return list.filter((token) => token.visible)
-    }, [userVisibleTokensInfo, networks])
+    }, [userVisibleTokensInfo, networksRegistry])
 
     const getTokenListWithBalances = React.useCallback((account: WalletAccountType) => {
       return getTokenListByAccount(account).filter((token) => getBalance(account, token) > '0')
@@ -137,12 +169,27 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return new Amount(reducedAmounts).formatAsFiat(defaultCurrencies.fiat)
     }, [getTokensBySearchValue, spotPrices, defaultCurrencies.fiat])
 
-    const onSelectSendAsset = React.useCallback((token: BraveWallet.BlockchainToken, account: WalletAccountType) => {
-      selectSendAsset(token)
-      dispatch(WalletActions.selectAccount(account))
-      dispatch(WalletActions.selectNetwork(getTokensNetwork(networks, token)))
-      onClose()
-    }, [selectSendAsset, onClose, networks])
+    const onSelectSendAsset = React.useCallback(
+      (token: BraveWallet.BlockchainToken, account: WalletAccountType) => {
+        selectSendAsset(token)
+        dispatch(WalletActions.selectAccount(account))
+        const tokenNetwork =
+          networksRegistry.entities[
+            networkEntityAdapter.selectId({
+              chainId: token.chainId,
+              coin: token.coin
+            })
+          ]
+        if (tokenNetwork) {
+          setNetwork({
+            chainId: tokenNetwork.chainId,
+            coin: tokenNetwork.coin
+          })
+        }
+        onClose()
+      },
+      [selectSendAsset, onClose, networksRegistry.entities]
+    )
 
     const onSearch = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value)
@@ -213,7 +260,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           </Column>
         </Column>
       )
-    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList, selectedSendOption])
+    }, [
+      accounts,
+      onSelectSendAsset,
+      getTokensBySearchValue,
+      getAccountFiatValue,
+      emptyTokensList,
+      selectedSendOption
+    ])
 
     // render
     return (

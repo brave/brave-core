@@ -5,11 +5,13 @@
 import * as React from 'react'
 
 // utils
-import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../common/selectors'
-import { getTokensNetwork } from '../../../../../utils/network-utils'
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../../../common/locale'
+import { useGetAllNetworksQuery } from '../../../../../common/slices/api.slice'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../../../../../common/slices/entities/network.entity'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -19,7 +21,9 @@ import { NftCountHeading } from '../../inspects-nfts.styles'
 import { NftListWrapper, List, NftItem, NftItemOverlay, PiningMessage } from './nft-list.styles'
 
 export const NftList = () => {
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  // queries
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetAllNetworksQuery()
 
   // hooks
   const { pinnableNftsCount, nonFungibleTokens } = useNftPin()
@@ -40,7 +44,9 @@ export const NftList = () => {
               </NftItemOverlay>
             )}
             <NftIconWithNetworkIcon
-              tokensNetwork={getTokensNetwork(networkList, token)}
+              tokensNetwork={
+                networksRegistry.entities[networkEntityAdapter.selectId(token)]
+              }
               icon={token.logo}
               responsive={true}
               disabled={!canBePinned}

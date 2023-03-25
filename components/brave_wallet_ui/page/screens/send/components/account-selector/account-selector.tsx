@@ -15,6 +15,9 @@ import CaratDownIcon from '../../assets/carat-down-icon.svg'
 
 // Hooks
 import { useOnClickOutside } from '../../../../../common/hooks/useOnClickOutside'
+import {
+  useGetSelectedChainQuery //
+} from '../../../../../common/slices/api.slice'
 
 // Components
 import { AccountListItem } from '../account-list-item/account-list-item'
@@ -34,8 +37,10 @@ export const AccountSelector = (props: Props) => {
 
   // Selectors
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+
+  // Queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // State
   const [showAccountSelector, setShowAccountSelector] = React.useState<boolean>(false)

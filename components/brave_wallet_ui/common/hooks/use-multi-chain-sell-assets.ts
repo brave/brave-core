@@ -14,22 +14,22 @@ import {
 import Amount from '../../utils/amount'
 
 // Types
-import {
-  BraveWallet,
-  SupportedOffRampNetworks
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
 // Hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 import { useUnsafeWalletSelector } from './use-safe-selector'
+import { useOffRampNetworksQuery } from './use-networks'
 
 export const useMultiChainSellAssets = () => {
   // Redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
-  const hiddenNetworkList = useUnsafeWalletSelector(WalletSelectors.hiddenNetworkList)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+
+  // Queries
+  const { offRampNetworks = [] as BraveWallet.NetworkInfo[] } =
+    useOffRampNetworksQuery()
 
   // Hooks
   const isMounted = useIsMounted()
@@ -49,18 +49,12 @@ export const useMultiChainSellAssets = () => {
   })
 
   // Memos
-  const supportedSellAssetNetworks = React.useMemo((): BraveWallet.NetworkInfo[] => {
-    return [...networkList, ...hiddenNetworkList].filter(n =>
-      SupportedOffRampNetworks.includes(n.chainId)
-    )
-  }, [networkList, hiddenNetworkList])
-
   const selectedSellAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
     if (selectedSellAsset?.chainId && selectedSellAsset?.coin) {
-      return getNetworkInfo(selectedSellAsset.chainId, selectedSellAsset.coin, supportedSellAssetNetworks)
+      return getNetworkInfo(selectedSellAsset.chainId, selectedSellAsset.coin, offRampNetworks)
     }
     return undefined
-  }, [selectedSellAsset?.chainId, selectedSellAsset?.coin, supportedSellAssetNetworks])
+  }, [selectedSellAsset?.chainId, selectedSellAsset?.coin, offRampNetworks])
 
   // Methods
   const getAllSellAssetOptions = React.useCallback(() => {
@@ -68,12 +62,18 @@ export const useMultiChainSellAssets = () => {
       .then(result => {
         if (isMounted && result) {
           setOptions({
-            rampAssetOptions: filterTokensByNetworks(result.rampAssetOptions, supportedSellAssetNetworks),
-            allAssetOptions: filterTokensByNetworks(result.allAssetOptions, supportedSellAssetNetworks)
+            rampAssetOptions: filterTokensByNetworks(
+              result.rampAssetOptions,
+              offRampNetworks
+            ),
+            allAssetOptions: filterTokensByNetworks(
+              result.allAssetOptions,
+              offRampNetworks
+            )
           })
         }
       }).catch(e => console.error(e))
-  }, [getAllSellAssets, supportedSellAssetNetworks, isMounted])
+  }, [getAllSellAssets, offRampNetworks, isMounted])
 
   const openSellAssetLink = React.useCallback(({ sellAddress, sellAsset }: {
     sellAddress: string

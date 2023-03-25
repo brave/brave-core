@@ -4,8 +4,18 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
+
+// Constants
 import { BraveWallet } from '../../../constants/types'
+import { AllNetworksOption } from '../../../options/network-filter-options'
+import { PanelActions } from '../../../panel/actions'
+
+// Hooks
+import { useSetNetworkMutation } from '../../../common/slices/api.slice'
+
+// Components
 import { CreateNetworkIcon } from '../'
+
 // Styled Components
 import {
   StyledWrapper,
@@ -13,9 +23,7 @@ import {
   LeftSide,
   BigCheckMark
 } from './style'
-import { WalletActions } from '../../../common/actions'
-import { PanelActions } from '../../../panel/actions'
-import { AllNetworksOption } from '../../../options/network-filter-options'
+
 
 export interface Props {
   selectedNetwork?: BraveWallet.NetworkInfo
@@ -29,13 +37,22 @@ function SelectNetworkItem (props: Props) {
   // redux
   const dispatch = useDispatch()
 
+  // queries & mutations
+  const [setNetwork] = useSetNetworkMutation()
+
+
   // methods
   const onSelectNetwork = () => {
     if (onSelectCustomNetwork) {
       onSelectCustomNetwork(network)
       return
     }
-    dispatch(WalletActions.selectNetwork(network))
+
+    setNetwork({
+      chainId: network.chainId,
+      coin: network.coin
+    })
+
     dispatch(PanelActions.navigateTo('main'))
   }
 

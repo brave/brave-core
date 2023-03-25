@@ -2,6 +2,8 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { ThunkDispatch } from '@reduxjs/toolkit'
 import {
   ApproveERC20Params,
   BlockchainToken,
@@ -26,6 +28,7 @@ import {
 } from '../../../constants/types'
 import getAPIProxy from '../../../common/async/bridge'
 import { getNetworkLogo } from '../../../options/asset-options'
+import { walletApi } from '../../../common/slices/api.slice'
 
 function getTokenParam (token: BlockchainToken): string {
   if (token.coingeckoId) {
@@ -302,10 +305,14 @@ export function makeSwitchAccount () {
   return switchAccount
 }
 
-export function makeSwitchNetwork () {
-  async function switchNetwork (network: NetworkInfo) {
-    const { jsonRpcService } = getAPIProxy()
-    await jsonRpcService.setNetwork(network.chainId, network.coin)
+export function makeSwitchNetwork(dispatch: ThunkDispatch<any, any, any>) {
+  async function switchNetwork({ chainId, coin }: NetworkInfo) {
+    await dispatch(
+      walletApi.endpoints.setNetwork.initiate({
+        chainId,
+        coin
+      })
+    )
     return undefined
   }
 

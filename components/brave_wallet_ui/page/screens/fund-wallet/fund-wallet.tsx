@@ -31,6 +31,11 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 import { usePrevNetwork } from '../../../common/hooks/previous-network'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
+import { useGetAllNetworksQuery } from '../../../common/slices/api.slice'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../../../common/slices/entities/network.entity'
 
 // style
 import { Column, Flex, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -65,7 +70,10 @@ export const FundWalletScreen = () => {
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const networkListInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+
+  // queries
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetAllNetworksQuery()
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -91,9 +99,15 @@ export const FundWalletScreen = () => {
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
 
-  // memos
-  const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
-  const selectedNetwork = selectedAssetNetwork || [...networkListInfo, AllNetworksOption].find(network => network.chainId === selectedNetworkFilter.chainId && network.coin === selectedNetworkFilter.coin) || AllNetworksOption
+  // memos & computed
+  const isNextStepEnabled = !!selectedAsset
+
+  const selectedNetwork =
+    selectedAssetNetwork ||
+    networksRegistry.entities[
+      networkEntityAdapter.selectId(selectedNetworkFilter)
+    ] ||
+    AllNetworksOption
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -111,9 +125,8 @@ export const FundWalletScreen = () => {
       : []
   }, [selectedAssetNetwork, accounts])
 
-  const needsAccount: boolean = React.useMemo(() => {
-    return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
-  }, [selectedAsset, accountsForSelectedAssetNetwork.length])
+  const needsAccount: boolean =
+    !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
 
   const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
     if (accountSearchText === '') {

@@ -28,6 +28,7 @@ import Amount from '../../utils/amount'
 // hooks
 import { useLib } from './useLib'
 import { useAssets } from './assets'
+import { useGetSelectedChainQuery } from '../slices/api.slice'
 
 // constants
 import {
@@ -43,8 +44,10 @@ export default function useSend (isSendTab?: boolean) {
   const {
     selectedAccount,
     fullTokenList,
-    selectedNetwork
   } = useSelector((state: { wallet: WalletState }) => state.wallet)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // custom hooks
   const {

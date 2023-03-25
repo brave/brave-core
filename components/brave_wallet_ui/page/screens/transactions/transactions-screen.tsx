@@ -27,7 +27,7 @@ import {
 } from '../../../common/slices/entities/account-info.entity'
 import {
   networkEntityAdapter,
-  networkEntityInitialState
+  emptyNetworksRegistry
 } from '../../../common/slices/entities/network.entity'
 import { ParsedTransactionWithoutFiatValues } from '../../../utils/tx-utils'
 import {
@@ -61,6 +61,7 @@ import { SearchAndFiltersRow } from './transaction-screen.styles'
 interface Params {
   address?: string | null
   chainId?: string | null
+  chainCoinType?: BraveWallet.CoinType | null
   transactionId?: string | null
 }
 
@@ -84,7 +85,7 @@ export const TransactionsScreen: React.FC = () => {
 
   // queries
   const {
-    data: networksRegistry = networkEntityInitialState,
+    data: networksRegistry = emptyNetworksRegistry,
     isLoading: isLoadingNetworksRegistry
   } = useGetAllNetworksQuery(undefined)
 
@@ -109,13 +110,16 @@ export const TransactionsScreen: React.FC = () => {
   const {
     address,
     chainId,
-    transactionId
+    transactionId,
+    chainCoinType
   } = React.useMemo(() => {
     const searchParams = new URLSearchParams(history.location.search)
     return {
       address: searchParams.get('address'),
       chainId: searchParams.get('chainId'),
-      transactionId: searchParams.get('transactionId')
+      transactionId: searchParams.get('transactionId'),
+      chainCoinType:
+        Number(searchParams.get('chainCoinType')) || BraveWallet.CoinType.ETH
     }
   }, [history.location.search])
 
@@ -126,7 +130,9 @@ export const TransactionsScreen: React.FC = () => {
   const foundNetworkFromParam = chainId
     ? chainId === AllNetworksOption.chainId
       ? AllNetworksOption
-      : networksRegistry.entities[networkEntityAdapter.selectId({ chainId })]
+      : networksRegistry.entities[
+          networkEntityAdapter.selectId({ chainId, coin: chainCoinType })
+        ]
     : undefined
 
   const fetchTxsForAccounts = React.useCallback((accounts: Array<Pick<AccountInfoEntity, 'address' | 'coin'>>) => {
@@ -207,25 +213,34 @@ export const TransactionsScreen: React.FC = () => {
   }, [searchValue, txsForSelectedChain])
 
   // methods
-  const onSelectAccount = React.useCallback(({ address }: WalletAccountType): void => {
-    history.push(
-      updatePageParams({
-        address: address || undefined,
-        chainId: AllNetworksOption.chainId, // reset chains filter on account select
-        transactionId
-      })
-    )
-  }, [history, transactionId])
+  const onSelectAccount = React.useCallback(
+    ({ address, coin }: WalletAccountType): void => {
+      history.push(
+        updatePageParams({
+          address: address || undefined,
+          // reset chains filter on account select
+          chainId: AllNetworksOption.chainId,
+          chainCoinType: coin,
+          transactionId
+        })
+      )
+    },
+    [history, transactionId]
+  )
 
-  const onSelectNetwork = React.useCallback(({ chainId }: BraveWallet.NetworkInfo) => {
-    history.push(
-      updatePageParams({
-        address: foundAccountFromParam?.address || AllAccountsOption.id,
-        chainId,
-        transactionId
-      })
-    )
-  }, [history, foundAccountFromParam?.address, transactionId])
+  const onSelectNetwork = React.useCallback(
+    ({ chainId, coin }: BraveWallet.NetworkInfo) => {
+      history.push(
+        updatePageParams({
+          address: foundAccountFromParam?.address || AllAccountsOption.id,
+          chainId,
+          chainCoinType: coin,
+          transactionId
+        })
+      )
+    },
+    [history, foundAccountFromParam?.address, transactionId]
+  )
 
   // render
   if (isLoadingDeps) {
@@ -307,7 +322,8 @@ export default TransactionsScreen
 const updatePageParams = ({
   address,
   chainId,
-  transactionId
+  transactionId,
+  chainCoinType
 }: Params) => {
   const params = new URLSearchParams()
   if (address) {
@@ -318,6 +334,9 @@ const updatePageParams = ({
   }
   if (transactionId) {
     params.append('transactionId', transactionId)
+  }
+  if (chainCoinType) {
+    params.append('chainCoinType', chainCoinType.toString())
   }
   const paramsString = params.toString()
 

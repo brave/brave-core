@@ -18,7 +18,7 @@ import { IconWrapper } from './nft-icon-styles'
 
 interface Props extends NftIconProps {
   size?: string | number
-  tokensNetwork: BraveWallet.NetworkInfo
+  tokensNetwork?: BraveWallet.NetworkInfo
   disabled?: boolean
 }
 

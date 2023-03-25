@@ -15,7 +15,7 @@ import {
 // mocks
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
 
-export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
+export const getMockedTransactionInfo = (): SerializableTransactionInfo => {
   return {
     chainId: '1337',
     id: '1',
@@ -47,9 +47,9 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
     txType: BraveWallet.TransactionType.Other,
     txParams: [],
     txArgs: [],
-    createdTime: { microseconds: 0 as unknown as bigint },
-    submittedTime: { microseconds: 0 as unknown as bigint },
-    confirmedTime: { microseconds: 0 as unknown as bigint },
+    createdTime: { microseconds: 0 },
+    submittedTime: { microseconds: 0 },
+    confirmedTime: { microseconds: 0 },
     originInfo: {
       origin: {
         scheme: 'https',
