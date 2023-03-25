@@ -4,10 +4,15 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
+// types
+import { BraveWallet } from '../../../constants/types'
+
+// hooks
+import { useGetNetworksQuery } from '../../../common/slices/api.slice'
+
+// components
 import SelectNetworkItem from '../select-network-item'
-import { BraveWallet, WalletState } from '../../../constants/types'
 
 interface Props {
   onSelectCustomNetwork?: (network: BraveWallet.NetworkInfo) => void
@@ -15,14 +20,15 @@ interface Props {
   customNetwork?: BraveWallet.NetworkInfo
 }
 
-function SelectNetwork ({
+export function SelectNetwork ({
   onSelectCustomNetwork,
   selectedNetwork,
   customNetwork
 }: Props) {
-  // redux
-  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+  // queries
+  const { data: networks = [] } = useGetNetworksQuery()
 
+  // memos
   const networksList = React.useMemo(() => {
     if (customNetwork) {
       return [customNetwork, ...networks]
@@ -30,6 +36,7 @@ function SelectNetwork ({
     return networks
   }, [networks, customNetwork])
 
+  // render
   return (
     <>
       {networksList.map((network) =>

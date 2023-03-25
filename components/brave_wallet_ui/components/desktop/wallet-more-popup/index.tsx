@@ -4,16 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // Types
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // actions
 import { WalletActions } from '../../../common/actions'
 
 // utils
 import { getLocale } from '../../../../common/locale'
+import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
 
 // Styled Components
 import {
@@ -43,7 +44,9 @@ const WalletMorePopup = (props: Props) => {
 
   // redux
   const dispatch = useDispatch()
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // methods
   const lockWallet = React.useCallback(() => {

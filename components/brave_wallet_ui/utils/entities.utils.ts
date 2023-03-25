@@ -8,7 +8,7 @@ import { EntityId, EntityState } from '@reduxjs/toolkit'
 export function getEntitiesListFromEntityState <T> (
   state: EntityState<T>,
   /**
-   * Used if wanitng to select a subset of entities by id
+   * Use to select a subset of entities by id
    */
   altIds?: EntityId[]
 ): T[] {

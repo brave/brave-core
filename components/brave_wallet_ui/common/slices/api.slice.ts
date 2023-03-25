@@ -19,6 +19,9 @@ import {
   SerializableTransactionInfo,
   SPLTransferFromParams,
   SupportedCoinTypes,
+  SupportedOffRampNetworks,
+  SupportedOnRampNetworks,
+  SupportedTestNetworks,
   WalletInfoBase
 } from '../../constants/types'
 import {
@@ -35,8 +38,8 @@ import {
 // entities
 import {
   networkEntityAdapter,
-  networkEntityInitialState,
-  NetworkEntityAdaptorState
+  emptyNetworksRegistry,
+  NetworksRegistry
 } from './entities/network.entity'
 import {
   AccountInfoEntityState,
@@ -149,6 +152,19 @@ export interface GetAllTransactionsForAddressCoinTypeArg {
   coinType: BraveWallet.CoinType
 }
 
+const NETWORK_TAG_IDS = {
+  DEFAULTS: 'DEFAULTS',
+  HIDDEN: 'HIDDEN',
+  LIST: 'LIST',
+  MAINNETS: 'MAINNETS',
+  OFF_RAMPS: 'OFF_RAMP',
+  ON_RAMPS: 'ON_RAMP',
+  REGISTRY: 'REGISTRY',
+  SELECTED: 'SELECTED',
+  SWAP_SUPPORTED: 'SWAP_SUPPORTED',
+  VISIBLE: 'VISIBLE',
+} as const
+
 /** Non-redux-controlled state */
 let selectedPendingTransactionId: string = ''
 
@@ -166,7 +182,6 @@ export function createWalletApi (
       ...cacher.defaultTags,
       'AccountInfos',
       'AccountTokenCurrentBalance',
-      'ChainIdForCoinType',
       'CombinedTokenBalanceForAllAccounts',
       'TokenBalancesForChainId',
       'DefaultAccountAddresses',
@@ -178,8 +193,6 @@ export function createWalletApi (
       'Network',
       'PendingTransactions',
       'SelectedAccountAddress',
-      'SelectedChainId',
-      'SelectedCoin',
       'TokenSpotPrice',
       'TransactionsForAccount',
       'UserBlockchainTokens',
@@ -192,7 +205,9 @@ export function createWalletApi (
       getWalletInfoBase: query<WalletInfoBase, void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           const { walletHandler } = baseQuery(undefined).data
-          const walletInfo: WalletInfoBase = (await walletHandler.getWalletInfo()).walletInfo
+          const walletInfo: WalletInfoBase = (
+            await walletHandler.getWalletInfo()
+          ).walletInfo
           return {
             data: walletInfo
           }
@@ -224,14 +239,13 @@ export function createWalletApi (
       }),
       getDefaultAccountAddresses: query<string[], void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-          const { keyringService } = baseQuery(undefined).data // apiProxy
+          // apiProxy
+          const { keyringService, jsonRpcService } = baseQuery(undefined).data
 
           // Get default account addresses for each CoinType
           const defaultAccountAddresses = await Promise.all(
             SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-              const chainId: string = await dispatch(
-                walletApi.endpoints.getChainIdForCoin.initiate(coin)
-              ).unwrap()
+              const { chainId } = await jsonRpcService.getChainId(coin)
               const defaultAccount =
                 coin === BraveWallet.CoinType.FIL
                   ? await keyringService.getFilecoinSelectedAccount(chainId)
@@ -267,21 +281,23 @@ export function createWalletApi (
             data: address
           }
         },
-        invalidatesTags: ['SelectedAccountAddress']
+        invalidatesTags: [
+          'DefaultAccountAddresses',
+          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
+          'SelectedAccountAddress'
+        ]
       }),
       getSelectedAccountAddress: query<string, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-          const { keyringService } = baseQuery(undefined).data // apiProxy
+          const { keyringService, braveWalletService, jsonRpcService } =
+            baseQuery(undefined).data // apiProxy
 
-          const selectedCoin: number = await dispatch(
-            walletApi.endpoints.getSelectedCoin.initiate(undefined)
-          ).unwrap()
+          const { coin: selectedCoin } =
+            await braveWalletService.getSelectedCoin()
 
           let selectedAddress: string | null = null
           if (selectedCoin === BraveWallet.CoinType.FIL) {
-            const chainId: string = await dispatch(
-              walletApi.endpoints.getChainIdForCoin.initiate(selectedCoin)
-            ).unwrap()
+            const { chainId } = await jsonRpcService.getChainId(selectedCoin)
             selectedAddress = (
               await keyringService.getFilecoinSelectedAccount(chainId)
             ).address
@@ -365,133 +381,251 @@ export function createWalletApi (
       //
       // Networks
       //
-      getHiddenNetworkChainIdsForCoin: query<string[], BraveWallet.CoinType>({
-        queryFn: async (coinTypeArg, api, extraOptions, baseQuery) => {
-          try {
-            const { jsonRpcService } = baseQuery(undefined).data
-            const { chainIds } = await jsonRpcService.getHiddenNetworks(
-              coinTypeArg
-            )
-            return {
-              data: chainIds
-            }
-          } catch (error) {
-            return {
-              error: `Unable to fetch HiddenNetworkChainIdsForCoin for coin: ${coinTypeArg}`
-            }
-          }
-        }
-      }),
-      getAllNetworks: query<NetworkEntityAdaptorState, void>({
+      getNetworksRegistry: query<NetworksRegistry, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { jsonRpcService } = baseQuery(undefined).data
+            const registry = await getNetworksRegistry(
+              baseQuery(undefined).data
+            )
+            return {
+              data: registry
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch Networks Registry: ${error}`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.REGISTRY }]
+      }),
+      getNetwork: query<
+        BraveWallet.NetworkInfo,
+        { chainId: string; coin: BraveWallet.CoinType } | undefined
+      >({
+        queryFn: async (args, api, extraOptions, baseQuery) => {
+          if (args === undefined) {
+            const error = 'no network to fetch'
+            console.error(error)
+            return { error }
+          }
 
-            // network type flags
-            const { isFilecoinEnabled, isSolanaEnabled } = await dispatch(
-              walletApi.endpoints.getWalletInfoBase.initiate(undefined)
-            ).unwrap()
+          try {
+            const networks: BraveWallet.NetworkInfo[] =
+              await getAllNetworksList(baseQuery(undefined).data)
 
-            // Get all networks
-            const filteredSupportedCoinTypes = SupportedCoinTypes.filter(
-              (coin) => {
-                // FIL and SOL networks, unless enabled by brave://flags
-                return (
-                  (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-                  (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
-                  coin === BraveWallet.CoinType.ETH
-                )
+            const network = networks.find(
+              ({ chainId, coin }) =>
+                chainId === args.chainId && coin === args.coin
+            )
+
+            if (!network) {
+              const error = `could not find network for chainId: ${
+                args.chainId //
+              }, coin: ${
+                args.coin //
+              }`
+              console.error(error)
+              return {
+                error
               }
-            )
+            }
 
-            const idsByCoinType: Record<EntityId, EntityId[]> = {}
-
-            // Get all networks for supported coin types
-            const networkLists: BraveWallet.NetworkInfo[][] = await Promise.all(
-              filteredSupportedCoinTypes.map(
-                async (coin: BraveWallet.CoinType) => {
-                  const { networks } = await jsonRpcService.getAllNetworks(coin)
-
-                  const { getHiddenNetworkChainIdsForCoin } =
-                    walletApi.endpoints
-
-                  const hiddenChains: string[] = await dispatch(
-                    getHiddenNetworkChainIdsForCoin.initiate(coin)
-                  ).unwrap()
-
-                  const availableNetworks = networks.filter(
-                    (n) => !hiddenChains.includes(n.chainId)
-                  )
-
-                  idsByCoinType[coin] = availableNetworks.map((n) => n.chainId)
-
-                  return availableNetworks
-                }
-              )
-            )
-            const networksList = networkLists.flat(1)
-
-            // normalize list into a registry
-            const normalizedNetworksState = networkEntityAdapter.setAll(
-              {
-                ...networkEntityInitialState,
-                idsByCoinType
-              },
-              networksList
-            )
             return {
-              data: normalizedNetworksState
+              data: network
             }
           } catch (error) {
+            console.error(error)
             return {
-              error: `Unable to fetch AllNetworks ${error}`
+              error: `Unable to fetch Network for
+              (chainId: ${args.chainId}, coin: ${args.coin})
+              error: ${error}`
             }
           }
         },
-        providesTags: cacher.providesRegistry('Network')
+        providesTags: (res, err, arg) =>
+          arg
+            ? [{ type: 'Network', id: networkEntityAdapter.selectId(arg) }]
+            : []
       }),
-      getChainIdForCoin: query<string, BraveWallet.CoinType>({
-        queryFn: async (arg, api, extraOptions, baseQuery) => {
-          const { jsonRpcService } = baseQuery(undefined).data // apiProxy
-          const { chainId } = await jsonRpcService.getChainId(arg)
-          return {
-            data: chainId
-          }
-        },
-        providesTags: cacher.cacheByIdArg('ChainIdForCoinType')
-      }),
-      getSelectedChainId: query<string, void>({
-        queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
-          const selectedCoin: number = await dispatch(
-            walletApi.endpoints.getSelectedCoin.initiate(undefined)
-          ).unwrap()
-          const chainId: string = await dispatch(
-            walletApi.endpoints.getChainIdForCoin.initiate(selectedCoin)
-          ).unwrap()
-          return {
-            data: chainId
-          }
-        },
-        providesTags: ['SelectedChainId']
-      }),
-      getSelectedCoin: query<BraveWallet.CoinType, void>({
+      getNetworks: query<BraveWallet.NetworkInfo[], void>({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
-            const apiProxy = baseQuery(undefined).data
-            const { braveWalletService } = apiProxy
-            const { coin } = await braveWalletService.getSelectedCoin()
-            if (coin === undefined) {
-              throw new Error('selected coin was undefined')
-            }
-            return { data: coin }
-          } catch (error) {
+            const networks = await getAllNetworksList(baseQuery(undefined).data)
             return {
-              error: `Unable to fetch selectedCoin: ${error}`
+              data: networks
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch Networks List: ${error}`
             }
           }
         },
-        providesTags: (result, err) =>
-          err ? ['UNKNOWN_ERROR'] : ['SelectedCoin']
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.LIST }]
+      }),
+      getMainnets: query<BraveWallet.NetworkInfo[], void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const networks = await getAllNetworksList(baseQuery(undefined).data)
+
+            const mainnets = networks.filter(
+              ({ chainId }) => !SupportedTestNetworks.includes(chainId)
+            )
+
+            return {
+              data: mainnets
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch Mainnets: ${error}`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.MAINNETS }]
+      }),
+      getVisibleNetworks: query<BraveWallet.NetworkInfo[], void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const networks = await getVisibleNetworksList(
+              baseQuery(undefined).data
+            )
+            return {
+              data: networks
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch Visible Networks: ${error}`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.VISIBLE }]
+      }),
+      getOnRampNetworks: query<BraveWallet.NetworkInfo[], void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const networks = await getAllNetworksList(baseQuery(undefined).data)
+
+            const onRamps = networks.filter((net) => {
+              return SupportedOnRampNetworks.includes(net.chainId)
+            })
+
+            return {
+              data: onRamps
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch On-Ramp Networks: ${error}`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.ON_RAMPS }]
+      }),
+      getOffRampNetworks: query<BraveWallet.NetworkInfo[], void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const networks = await getAllNetworksList(baseQuery(undefined).data)
+
+            const offRamps = networks.filter((net) => {
+              return SupportedOffRampNetworks.includes(net.chainId)
+            })
+
+            return {
+              data: offRamps
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch Off-Ramp Networks: ${error}`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.OFF_RAMPS }]
+      }),
+      getSwapSupportedNetworks: query<BraveWallet.NetworkInfo[], void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const { swapService } = baseQuery(undefined).data
+
+            const networks = await getAllNetworksList(baseQuery(undefined).data)
+            const networkIds = networks.map((net) => net.chainId)
+
+            const chainIdsWithSupportFlags = await Promise.all(
+              networkIds.map(async (chainId) => {
+                const { result } = await swapService.isSwapSupported(chainId)
+                return {
+                  chainId,
+                  supported: result
+                }
+              })
+            )
+
+            const swapChainIds = chainIdsWithSupportFlags
+              .filter(({ supported }) => !!supported)
+              .map((net) => net.chainId)
+
+            return {
+              data: networks.filter((net) => swapChainIds.includes(net.chainId))
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Error occurred within "getSwapSupportedNetworks": ${
+                error.toString() //
+              }`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.SWAP_SUPPORTED }]
+      }),
+      getDefaultNetworks: query<BraveWallet.NetworkInfo[], void>({
+        // We can probably remove this when all
+        // Transactions and Sign-Message Requests include a chainId
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data // apiProxy
+
+            const defaultChains = await Promise.all(
+              SupportedCoinTypes.map(async (coinType) => {
+                const { network } = await jsonRpcService.getNetwork(coinType)
+                return network
+              })
+            )
+
+            return {
+              data: defaultChains
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Error occurred within "getDefaultNetworks": ${
+                error.toString() //
+              }`
+            }
+          }
+        },
+        providesTags: [{ type: 'Network', id: NETWORK_TAG_IDS.DEFAULTS }]
+      }),
+      getSelectedChain: query<BraveWallet.NetworkInfo, void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          try {
+            return {
+              data: await getSelectedNetwork(baseQuery(undefined).data)
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to fetch the currently selected chain`
+            }
+          }
+        },
+        providesTags: (res, err) =>
+          err
+            ? ['UNKNOWN_ERROR']
+            : [{ type: 'Network', id: NETWORK_TAG_IDS.SELECTED }]
       }),
       setSelectedCoin: mutation<BraveWallet.CoinType, BraveWallet.CoinType>({
         queryFn: (coinTypeArg, api, extraOptions, baseQuery) => {
@@ -505,48 +639,74 @@ export function createWalletApi (
             }
           }
         },
-        invalidatesTags: ['SelectedCoin']
+        invalidatesTags: [
+          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
+          'SelectedAccountAddress'
+        ]
+      }),
+      setNetwork: mutation<
+        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>,
+        Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>
+      >({
+        queryFn: async (
+          { chainId, coin },
+          { dispatch },
+          extraOptions,
+          baseQuery
+        ) => {
+          try {
+            const { jsonRpcService } = baseQuery(undefined).data
+
+            await dispatch(
+              walletApi.endpoints.setSelectedCoin.initiate(coin)
+            ).unwrap()
+
+            const { success } = await jsonRpcService.setNetwork(chainId, coin)
+            if (!success) {
+              throw new Error('jsonRpcService.setNetwork failed')
+            }
+            return {
+              data: { chainId, coin }
+            }
+          } catch (error) {
+            console.error(error)
+            return {
+              error: `Unable to change selected network to: (chainId: ${
+                chainId //
+              }, coin: ${
+                coin //
+              })`
+            }
+          }
+        },
+        invalidatesTags: (result, error, { coin }) => [
+          { type: 'Network', id: NETWORK_TAG_IDS.SELECTED },
+          { type: 'Network', id: NETWORK_TAG_IDS.DEFAULTS },
+          'DefaultAccountAddresses',
+          'SelectedAccountAddress'
+        ]
       }),
       isEip1559Changed: mutation<IsEip1559ChangedMutationArg, IsEip1559Changed>(
         {
           queryFn: async (arg) => {
             const { chainId, isEip1559 } = arg
-            // cache which chains are using EIP1559
             return {
-              // invalidate the cache of the network with this chainId
               data: { id: chainId, isEip1559 }
             }
           },
-          onQueryStarted: async (
-            { chainId, isEip1559 },
-            { dispatch, queryFulfilled }
-          ) => {
-            // optimistic updates
-            // try manually updating the cached network
-            // with the updated isEip1559 value
-            const patchResult = dispatch(
-              walletApi.util.updateQueryData(
-                'getAllNetworks',
-                undefined,
-                (draft: NetworkEntityAdaptorState) => {
-                  const draftNet = draft.entities[chainId]
-                  if (draftNet) {
-                    draftNet.isEip1559 = isEip1559
-                  }
-                }
-              )
-            )
-
-            try {
-              await queryFulfilled
-            } catch {
-              // undo the optimistic update if the mutation failed
-              patchResult.undo()
-            }
-          },
-          invalidatesTags: cacher.invalidatesList('Network')
+          invalidatesTags: ['Network']
         }
       ),
+      refreshNetworkInfo: mutation<boolean, void>({
+        queryFn: async (arg, api, extraOptions, baseQuery) => {
+          // no-op, invalidates tags
+          return {
+            data: true
+          }
+        },
+        // refresh networks & selected network
+        invalidatesTags: ['Network']
+      }),
       //
       // Prices
       //
@@ -599,13 +759,10 @@ export function createWalletApi (
       getTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { blockchainRegistry } = baseQuery(undefined).data
-            const networksState: NetworkEntityAdaptorState = await dispatch(
-              walletApi.endpoints.getAllNetworks.initiate(undefined)
-            ).unwrap()
-
+            const api = baseQuery(undefined).data
+            const { blockchainRegistry } = api
             const networksList: BraveWallet.NetworkInfo[] =
-              getEntitiesListFromEntityState(networksState)
+              await getVisibleNetworksList(api)
 
             const tokenIdsByChainId: Record<string, string[]> = {}
             const tokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
@@ -614,6 +771,8 @@ export function createWalletApi (
             const getTokensList = async () => {
               const tokenListsForNetworks = await Promise.all(
                 networksList.map(async (network) => {
+                  const networkId = networkEntityAdapter.selectId(network)
+
                   const { tokens } = await blockchainRegistry.getAllTokens(
                     network.chainId,
                     network.coin
@@ -627,12 +786,12 @@ export function createWalletApi (
                       )
                     })
 
-                  tokenIdsByChainId[network.chainId] =
+                  tokenIdsByChainId[networkId] =
                     fullTokensListForChain.map(getAssetIdKey)
 
                   tokenIdsByCoinType[network.coin] = (
                     tokenIdsByCoinType[network.coin] || []
-                  ).concat(tokenIdsByChainId[network.chainId] || [])
+                  ).concat(tokenIdsByChainId[networkId] || [])
 
                   return fullTokensListForChain
                 })
@@ -695,12 +854,10 @@ export function createWalletApi (
       getUserTokensRegistry: query<BlockchainTokenEntityAdaptorState, void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { braveWalletService } = baseQuery(undefined).data
-            const networksState: NetworkEntityAdaptorState = await dispatch(
-              walletApi.endpoints.getAllNetworks.initiate(undefined)
-            ).unwrap()
+            const api = baseQuery(undefined).data
+            const { braveWalletService } = api
             const networksList: BraveWallet.NetworkInfo[] =
-              getEntitiesListFromEntityState(networksState)
+              await getVisibleNetworksList(api)
 
             const tokenIdsByChainId: Record<string, string[]> = {}
             const tokenIdsByCoinType: Record<BraveWallet.CoinType, string[]> =
@@ -714,29 +871,29 @@ export function createWalletApi (
 
             const userTokenListsForNetworks = await Promise.all(
               networksList.map(async (network) => {
+                const networkId = networkEntityAdapter.selectId(network)
+
                 const fullTokensListForNetwork: BraveWallet.BlockchainToken[] =
                   await fetchUserAssetsForNetwork(braveWalletService, network)
 
                 tokenIdsByCoinType[network.coin] = (
                   tokenIdsByCoinType[network.coin] || []
-                ).concat(tokenIdsByChainId[network.chainId] || [])
+                ).concat(tokenIdsByChainId[networkId] || [])
 
-                tokenIdsByChainId[network.chainId] =
+                tokenIdsByChainId[networkId] =
                   fullTokensListForNetwork.map(getAssetIdKey)
 
                 const visibleTokensForNetwork: BraveWallet.BlockchainToken[] =
                   fullTokensListForNetwork.filter((t) => t.visible)
 
-                visibleTokenIdsByChainId[network.chainId] =
+                visibleTokenIdsByChainId[networkId] =
                   visibleTokensForNetwork.map(getAssetIdKey)
 
                 visibleTokenIdsByCoinType[network.coin] = (
                   visibleTokenIdsByCoinType[network.coin] || []
-                ).concat(visibleTokenIdsByChainId[network.chainId] || [])
+                ).concat(visibleTokenIdsByChainId[networkId] || [])
 
-                visibleTokenIds.push(
-                  ...visibleTokenIdsByChainId[network.chainId]
-                )
+                visibleTokenIds.push(...visibleTokenIdsByChainId[networkId])
 
                 return fullTokensListForNetwork
               })
@@ -952,7 +1109,10 @@ export function createWalletApi (
           const accountEntityId: EntityId = accountInfoEntityAdaptor.selectId({
             address: account.address
           })
-          const chainId: EntityId = token?.chainId ?? ''
+
+          const networkChainId = token.chainId
+          const networkCoinType = account.coin
+
           const tokenEntityId: EntityId =
             blockchainTokenEntityAdaptor.selectId(token)
 
@@ -960,38 +1120,25 @@ export function createWalletApi (
           const emptyBalanceResult: AccountTokenBalanceForChainId = {
             accountEntityId,
             balance: emptyBalance,
-            chainId,
+            chainId: networkChainId,
             tokenEntityId
           }
 
           // Native asset balances
           if (isNativeAsset(token)) {
-            // get networks
-            const networksRegistry: NetworkEntityAdaptorState = await dispatch(
-              walletApi.endpoints.getAllNetworks.initiate(undefined)
-            ).unwrap()
-
-            const network: BraveWallet.NetworkInfo | undefined =
-              networksRegistry.entities[token.chainId]
-
-            if (!network) {
-              return {
-                error: `Network not found for chain id: ${token.chainId}`
-              }
-            }
 
             const nativeAssetDefaultBalanceResult = emptyBalanceResult
 
             // LOCALHOST
             if (
               token.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
-              network.coin !== BraveWallet.CoinType.SOL
+              networkCoinType !== BraveWallet.CoinType.SOL
             ) {
               const { balance, error, errorMessage } =
                 await jsonRpcService.getBalance(
                   account.address,
-                  network.coin,
-                  network.chainId
+                  networkCoinType,
+                  networkChainId
                 )
 
               // LOCALHOST will error until a local instance is detected
@@ -1010,16 +1157,16 @@ export function createWalletApi (
               }
             }
 
-            switch (network.coin) {
+            switch (networkCoinType) {
               case BraveWallet.CoinType.SOL: {
                 const { balance, error } =
                   await jsonRpcService.getSolanaBalance(
                     account.address,
-                    network.chainId
+                    networkChainId
                   )
 
                 if (
-                  network?.chainId === BraveWallet.LOCALHOST_CHAIN_ID &&
+                  networkChainId === BraveWallet.LOCALHOST_CHAIN_ID &&
                   error !== 0
                 ) {
                   return { data: emptyBalanceResult }
@@ -1052,7 +1199,7 @@ export function createWalletApi (
                 const { balance, error, errorMessage } =
                   await jsonRpcService.getBalance(
                     account.address,
-                    network.coin,
+                    networkCoinType,
                     token.chainId
                   )
 
@@ -1083,7 +1230,7 @@ export function createWalletApi (
                     token.contractAddress,
                     token.tokenId ?? '',
                     account.address,
-                    chainId
+                    networkChainId
                   )
                 : await jsonRpcService.getERC20TokenBalance(
                     token.contractAddress,
@@ -1223,7 +1370,9 @@ export function createWalletApi (
                     if (balanceResult.balance) {
                       return {
                         ...acc,
-                        [balanceResult.contractAddress]: Amount.normalize(balanceResult.balance)
+                        [balanceResult.contractAddress]: Amount.normalize(
+                          balanceResult.balance
+                        )
                       }
                     }
 
@@ -1264,7 +1413,8 @@ export function createWalletApi (
       getAllPendingTransactions: query<TransactionEntity[], void>({
         queryFn: async (arg, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { txService } = baseQuery(undefined).data
+            const api = baseQuery(undefined).data
+            const { txService } = api
 
             // accounts
             const accountsRegistry: AccountInfoEntityState = await dispatch(
@@ -1273,9 +1423,7 @@ export function createWalletApi (
             const accounts = getEntitiesListFromEntityState(accountsRegistry)
 
             // networks
-            const networksRegistry: NetworkEntityAdaptorState = await dispatch(
-              walletApi.endpoints.getAllNetworks.initiate(undefined)
-            ).unwrap()
+            const networksRegistry = await getNetworksRegistry(api)
 
             // user tokens
             const userTokensRegistry: BlockchainTokenEntityAdaptorState =
@@ -1360,7 +1508,8 @@ export function createWalletApi (
         ) => {
           const isFil = coinType === BraveWallet.CoinType.FIL
           try {
-            const { txService } = baseQuery(undefined).data
+            const api = baseQuery(undefined).data
+            const { txService } = api
 
             // accounts
             const accountsRegistry: AccountInfoEntityState = await dispatch(
@@ -1368,9 +1517,7 @@ export function createWalletApi (
             ).unwrap()
 
             // networks
-            const networksRegistry: NetworkEntityAdaptorState = await dispatch(
-              walletApi.endpoints.getAllNetworks.initiate(undefined)
-            ).unwrap()
+            const networksRegistry = await getNetworksRegistry(api)
 
             // user tokens (skipped for FIL accounts)
             let userTokensRegistry: BlockchainTokenEntityAdaptorState =
@@ -1378,7 +1525,9 @@ export function createWalletApi (
             try {
               userTokensRegistry = isFil
                 ? await dispatch(
-                  walletApi.endpoints.getUserTokensRegistry.initiate(undefined)
+                    walletApi.endpoints.getUserTokensRegistry.initiate(
+                      undefined
+                    )
                   ).unwrap()
                 : blockchainTokenEntityAdaptorInitialState
             } catch (error) {
@@ -1391,7 +1540,7 @@ export function createWalletApi (
             try {
               tokensRegistry = isFil
                 ? await dispatch(
-                  walletApi.endpoints.getTokensRegistry.initiate(undefined)
+                    walletApi.endpoints.getTokensRegistry.initiate(undefined)
                   ).unwrap()
                 : blockchainTokenEntityAdaptorInitialState
             } catch (error) {
@@ -1429,11 +1578,16 @@ export function createWalletApi (
                     dispatch
                   })
 
+                  const networkId = networkEntityAdapter.selectId({
+                    chainId: parsedTx.chainId,
+                    coin: parsedTx.coinType
+                  })
+
                   // track txs by chain
-                  if (idsByChainId[parsedTx.chainId]) {
-                    idsByChainId[parsedTx.chainId].push(tx.id)
+                  if (idsByChainId[networkId]) {
+                    idsByChainId[networkId].push(tx.id)
                   } else {
-                    idsByChainId[parsedTx.chainId] = [tx.id]
+                    idsByChainId[networkId] = [tx.id]
                   }
 
                   // track pending txs
@@ -1442,10 +1596,10 @@ export function createWalletApi (
                   ) {
                     pendingIds.push(tx.id)
                     // track pending txs by chain
-                    if (pendingIdsByChainId[parsedTx.chainId]) {
-                      pendingIdsByChainId[parsedTx.chainId].push(tx.id)
+                    if (pendingIdsByChainId[networkId]) {
+                      pendingIdsByChainId[networkId].push(tx.id)
                     } else {
-                      pendingIdsByChainId[parsedTx.chainId] = [tx.id]
+                      pendingIdsByChainId[networkId] = [tx.id]
                     }
                   }
 
@@ -1548,15 +1702,13 @@ export function createWalletApi (
               ethTxData1559: txData1559
             } as BraveWallet.TxDataUnion
 
-            const {
-              errorMessage,
-              success
-            } = await txService.addUnapprovedTransaction(
-              isEIP1559 ? txDataUnion1559 : txDataUnion,
-              payload.from,
-              null,
-              null
-            )
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                isEIP1559 ? txDataUnion1559 : txDataUnion,
+                payload.from,
+                null,
+                null
+              )
 
             if (!success && errorMessage) {
               return {
@@ -1596,17 +1748,15 @@ export function createWalletApi (
               value: payload.value
             }
 
-            const {
-              errorMessage,
-              success
-            } = await txService.addUnapprovedTransaction(
-              // google closure is ok with undefined for other fields
-              // but mojom runtime is not
-              { filTxData: filTxData } as BraveWallet.TxDataUnion,
-              payload.from,
-              null,
-              null
-            )
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                // google closure is ok with undefined for other fields
+                // but mojom runtime is not
+                { filTxData: filTxData } as BraveWallet.TxDataUnion,
+                payload.from,
+                null,
+                null
+              )
 
             if (!success && errorMessage) {
               return {
@@ -1654,15 +1804,13 @@ export function createWalletApi (
               }
             }
 
-            const {
-              errorMessage,
-              success
-            } = await txService.addUnapprovedTransaction(
-              { solanaTxData: txData } as BraveWallet.TxDataUnion,
-              payload.from,
-              null,
-              null
-            )
+            const { errorMessage, success } =
+              await txService.addUnapprovedTransaction(
+                { solanaTxData: txData } as BraveWallet.TxDataUnion,
+                payload.from,
+                null,
+                null
+              )
 
             if (!success && errorMessage) {
               return {
@@ -1726,18 +1874,10 @@ export function createWalletApi (
                     })
                   ]
 
-                const networksRegistry: NetworkEntityAdaptorState =
-                  await dispatch(
-                    walletApi.endpoints.getAllNetworks.initiate()
-                  ).unwrap()
-                const selectedChainId: string = await dispatch(
-                  walletApi.endpoints.getSelectedChainId.initiate()
-                ).unwrap()
+                const selectedNetwork = await getSelectedNetwork(
+                  baseQuery(undefined).data
+                )
 
-                const selectedNetwork =
-                  networksRegistry.entities[
-                    networkEntityAdapter.selectId({ chainId: selectedChainId })
-                  ]
                 const result: { success: boolean } = await dispatch(
                   walletApi.endpoints.sendEthTransaction.initiate({
                     ...payload,
@@ -1963,7 +2103,7 @@ export function createWalletApi (
       ),
       transactionStatusChanged: mutation<
         undefined,
-        Pick<SerializableTransactionInfo, 'txStatus'> & {
+        Pick<SerializableTransactionInfo, 'txStatus' | 'id'> & {
           fromAddress: string
           coinType: BraveWallet.CoinType
         }
@@ -1990,8 +2130,28 @@ export function createWalletApi (
                 ...txTags
                 // token historical prices?
               ]
-            case BraveWallet.TransactionStatus.Error: return txTags
-            default : return []
+            case BraveWallet.TransactionStatus.Error:
+              return txTags
+            default:
+              return []
+          }
+        },
+        onQueryStarted: async (arg, { dispatch, queryFulfilled }) => {
+          const patchResult = dispatch(
+            walletApi.util.updateQueryData(
+              'getAllTransactionsForAddressCoinType',
+              { address: arg.fromAddress, coinType: arg.coinType },
+              (draft) => {
+                if (draft.entities[arg.id]) {
+                  draft.entities[arg.id]!.status = arg.txStatus
+                }
+              }
+            )
+          )
+          try {
+            await queryFulfilled
+          } catch (error) {
+            patchResult.undo()
           }
         }
       }),
@@ -2004,7 +2164,8 @@ export function createWalletApi (
       >({
         queryFn: async (txInfo, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { txService, braveWalletP3A } = baseQuery(undefined).data
+            const api = baseQuery(undefined).data
+            const { txService, braveWalletP3A } = api
             const coin = getCoinFromTxDataUnion(txInfo.txDataUnion)
             const result: {
               status: boolean
@@ -2033,18 +2194,7 @@ export function createWalletApi (
               }
             }
 
-            const networksRegistry: NetworkEntityAdaptorState = await dispatch(
-              walletApi.endpoints.getAllNetworks.initiate()
-            ).unwrap()
-
-            const selectedChainId: string = await dispatch(
-              walletApi.endpoints.getSelectedChainId.initiate()
-            ).unwrap()
-
-            const selectedNetwork =
-              networksRegistry.entities[
-                networkEntityAdapter.selectId({ chainId: selectedChainId })
-              ]
+            const selectedNetwork = await getSelectedNetwork(api)
 
             if (
               selectedNetwork &&
@@ -2140,13 +2290,12 @@ export function createWalletApi (
               ethTxManagerProxy
 
             if (isEIP1559) {
-              const result =
-                await setGasFeeAndLimitForUnapprovedTransaction(
-                  payload.txMetaId,
-                  payload.maxPriorityFeePerGas || '',
-                  payload.maxFeePerGas || '',
-                  payload.gasLimit
-                )
+              const result = await setGasFeeAndLimitForUnapprovedTransaction(
+                payload.txMetaId,
+                payload.maxPriorityFeePerGas || '',
+                payload.maxFeePerGas || '',
+                payload.gasLimit
+              )
 
               if (!result.success) {
                 return {
@@ -2173,12 +2322,11 @@ export function createWalletApi (
             const { setGasPriceAndLimitForUnapprovedTransaction } =
               ethTxManagerProxy
 
-            const result =
-              await setGasPriceAndLimitForUnapprovedTransaction(
-                payload.txMetaId,
-                payload.gasPrice,
-                payload.gasLimit
-              )
+            const result = await setGasPriceAndLimitForUnapprovedTransaction(
+              payload.txMetaId,
+              payload.gasPrice,
+              payload.gasLimit
+            )
 
             if (!result.success) {
               return {
@@ -2469,11 +2617,15 @@ export function createWalletApi (
           }
         }
       }),
-      getAddressByteCode: query<string, { address: string, coin: number, chainId: string }>({
+      getAddressByteCode: query<
+        string,
+        { address: string; coin: number; chainId: string }
+      >({
         queryFn: async (arg, api, extraOptions, baseQuery) => {
           try {
             const { jsonRpcService } = baseQuery(undefined).data
-            const { bytecode, error, errorMessage } = await jsonRpcService.getCode(arg.address, arg.coin, arg.chainId)
+            const { bytecode, error, errorMessage } =
+              await jsonRpcService.getCode(arg.address, arg.coin, arg.chainId)
             if (error !== 0 && errorMessage) {
               return {
                 error: errorMessage
@@ -2488,7 +2640,7 @@ export function createWalletApi (
               error: `Was unable to fetch bytecode for address: ${arg.address}.`
             }
           }
-        },
+        }
       }),
       //
       // Transactions Fees
@@ -2496,9 +2648,10 @@ export function createWalletApi (
       getGasEstimation1559: query<BraveWallet.GasEstimation1559, void>({
         queryFn: async (_, { dispatch }, extraOptions, baseQuery) => {
           try {
-            const { ethTxManagerProxy } = baseQuery(undefined).data
+            const api = baseQuery(undefined).data
+            const { ethTxManagerProxy } = api
             const selectedAccount = await querySelectedAccount(dispatch)
-            const selectedNetwork = await querySelectedNetwork(dispatch)
+            const selectedNetwork = await getSelectedNetwork(api)
 
             if (
               selectedNetwork &&
@@ -2612,54 +2765,66 @@ export const {
   useGetAccountInfosRegistryQuery,
   useGetAccountTokenCurrentBalanceQuery,
   useGetAddressByteCodeQuery,
-  useGetAllNetworksQuery,
   useGetAllPendingTransactionsQuery,
   useGetAllTransactionsForAddressCoinTypeQuery,
-  useGetChainIdForCoinQuery,
   useGetCombinedTokenBalanceForAllAccountsQuery,
-  useLazyGetTokenBalancesForChainIdQuery,
   useGetDefaultAccountAddressesQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetDefaultNetworksQuery,
   useGetERC721MetadataQuery,
   useGetGasEstimation1559Query,
-  useGetHiddenNetworkChainIdsForCoinQuery,
+  useGetMainnetsQuery,
+  useGetNetworkQuery,
+  useGetNetworksQuery,
+  useGetNetworksRegistryQuery,
+  useGetOffRampNetworksQuery,
+  useGetOnRampNetworksQuery,
   useGetSelectedAccountAddressQuery,
-  useGetSelectedChainIdQuery,
-  useGetSelectedCoinQuery,
+  useGetSelectedChainQuery,
   useGetSelectedPendingTransactionIdQuery,
   useGetSolanaEstimatedFeeQuery,
+  useGetSwapSupportedNetworksQuery,
+  useGetTokenBalancesForChainIdQuery,
   useGetTokenSpotPriceQuery,
   useGetTokensRegistryQuery,
   useGetUserTokensRegistryQuery,
+  useGetVisibleNetworksQuery,
   useGetWalletInfoBaseQuery,
   useInvalidateTransactionsCacheMutation,
   useIsEip1559ChangedMutation,
   useLazyGetAccountInfosRegistryQuery,
   useLazyGetAccountTokenCurrentBalanceQuery,
   useLazyGetAddressByteCodeQuery,
-  useLazyGetAllNetworksQuery,
   useLazyGetAllPendingTransactionsQuery,
   useLazyGetAllTransactionsForAddressCoinTypeQuery,
-  useLazyGetChainIdForCoinQuery,
   useLazyGetCombinedTokenBalanceForAllAccountsQuery,
   useLazyGetDefaultAccountAddressesQuery,
   useLazyGetDefaultFiatCurrencyQuery,
+  useLazyGetDefaultNetworksQuery,
   useLazyGetERC721MetadataQuery,
   useLazyGetGasEstimation1559Query,
-  useLazyGetHiddenNetworkChainIdsForCoinQuery,
+  useLazyGetMainnetsQuery,
+  useLazyGetNetworkQuery,
+  useLazyGetNetworksQuery,
+  useLazyGetNetworksRegistryQuery,
+  useLazyGetOffRampNetworksQuery,
+  useLazyGetOnRampNetworksQuery,
   useLazyGetSelectedAccountAddressQuery,
-  useLazyGetSelectedChainIdQuery,
-  useLazyGetSelectedCoinQuery,
+  useLazyGetSelectedChainQuery,
   useLazyGetSelectedPendingTransactionIdQuery,
   useLazyGetSolanaEstimatedFeeQuery,
+  useLazyGetSwapSupportedNetworksQuery,
+  useLazyGetTokenBalancesForChainIdQuery,
   useLazyGetTokenSpotPriceQuery,
   useLazyGetTokensRegistryQuery,
   useLazyGetUserTokensRegistryQuery,
+  useLazyGetVisibleNetworksQuery,
   useLazyGetWalletInfoBaseQuery,
   useNewUnapprovedTxAddedMutation,
   usePrefetch,
   useQueueNextTransactionMutation,
   useRefreshGasEstimatesMutation,
+  useRefreshNetworkInfoMutation,
   useRejectAllTransactionsMutation,
   useRejectTransactionMutation,
   useRemoveUserTokenMutation,
@@ -2672,6 +2837,7 @@ export const {
   useSendSPLTransferMutation,
   useSendTransactionMutation,
   useSetDefaultFiatCurrencyMutation,
+  useSetNetworkMutation,
   useSetSelectedAccountMutation,
   useSetSelectedCoinMutation,
   useSpeedupTransactionMutation,
@@ -2687,9 +2853,98 @@ export const {
 export type WalletApiSliceState = ReturnType<typeof walletApi['reducer']>
 export type WalletApiSliceStateFromRoot = { walletApi: WalletApiSliceState }
 
+
+export async function getSelectedNetwork(api: WalletApiProxy) {
+  const { jsonRpcService, braveWalletService } = api
+
+  const { coin: selectedCoin } = await braveWalletService.getSelectedCoin()
+
+  if (selectedCoin === undefined) {
+    throw new Error('selected coin was undefined')
+  }
+
+  const { network } = await jsonRpcService.getNetwork(selectedCoin)
+
+  return network
+}
+
 //
 // Internals
 //
+async function getEnabledCoinTypes(
+  api: WalletApiProxy
+) {
+  const { walletHandler } = api
+
+  // network type flags
+  const {
+    walletInfo: { isFilecoinEnabled, isSolanaEnabled }
+  } = await walletHandler.getWalletInfo()
+
+  // Get All Networks
+  const enabledCoinTypes = SupportedCoinTypes.filter((coin) => {
+    // MULTICHAIN: While we are still in development for FIL and SOL,
+    // we will not use their networks unless enabled by brave://flags
+    return (
+      (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
+      (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
+      coin === BraveWallet.CoinType.ETH
+    )
+  })
+
+  return enabledCoinTypes
+}
+
+export async function getAllNetworksList(
+  api: WalletApiProxy
+) {
+  const { jsonRpcService } = api
+
+  const enabledCoinTypes = await getEnabledCoinTypes(api)
+
+  // Get All Networks
+  const networks = (
+    await Promise.all(
+      enabledCoinTypes.map(async (coin) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        return networks
+      })
+    )
+  ).flat(1)
+
+  return networks
+}
+
+export async function getNetworksRegistry(
+  api: WalletApiProxy
+): Promise<NetworksRegistry> {
+  const networksList = await getAllNetworksList(api)
+
+  return networkEntityAdapter.setAll(
+    emptyNetworksRegistry,
+    networksList
+  )
+}
+
+export async function getVisibleNetworksList(
+  api: WalletApiProxy
+) {
+  const { jsonRpcService } = api
+
+  const enabledCoinTypes = await getEnabledCoinTypes(api)
+
+  const networks = (
+    await Promise.all(
+      enabledCoinTypes.map(async (coin) => {
+        const { networks } = await jsonRpcService.getAllNetworks(coin)
+        const { chainIds: hiddenChainIds } =
+          await jsonRpcService.getHiddenNetworks(coin)
+        return networks.filter((n) => !hiddenChainIds.includes(n.chainId))
+      })
+    )
+  ).flat(1)
+  return networks
+}
 
 async function fetchUserAssetsForNetwork (
   braveWalletService: BraveWallet.BraveWalletServiceRemote,
@@ -2734,21 +2989,6 @@ const querySelectedAccount = async (dispatch: ThunkDispatch<any, any, any>) => {
   return selectedAccount
 }
 
-const querySelectedNetwork = async (dispatch: ThunkDispatch<any, any, any>) => {
-  const networksRegistry: NetworkEntityAdaptorState = await dispatch(
-    walletApi.endpoints.getAllNetworks.initiate()
-  ).unwrap()
-  const selectedChainId: string = await dispatch(
-    walletApi.endpoints.getSelectedChainId.initiate()
-  ).unwrap()
-
-  const selectedNetwork =
-    networksRegistry.entities[
-      networkEntityAdapter.selectId({ chainId: selectedChainId })
-    ]
-  return selectedNetwork
-}
-
 export const parseTransactionWithoutPricesAsync = async ({
   tx,
   accountsRegistry,
@@ -2758,7 +2998,7 @@ export const parseTransactionWithoutPricesAsync = async ({
 }: {
   tx: BraveWallet.TransactionInfo
   accountsRegistry: AccountInfoEntityState
-  networksRegistry: NetworkEntityAdaptorState
+  networksRegistry: NetworksRegistry
   tokensRegistry: BlockchainTokenEntityAdaptorState
   dispatch: ThunkDispatch<any, any, any>
 }): Promise<ParsedTransactionWithoutFiatValues> => {

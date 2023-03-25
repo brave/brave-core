@@ -36,9 +36,10 @@ import {
 import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { Store } from '../../common/async/types'
 import { getTokenParam } from '../../utils/api-utils'
-import { getTokensNetwork } from '../../utils/network-utils'
 import { addIpfsGateway } from '../../utils/string-utils'
 import { getLocale } from '../../../common/locale'
+import { getNetworksRegistry } from '../../common/slices/api.slice'
+import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
 
 const handler = new AsyncActionHandler()
 
@@ -291,41 +292,61 @@ handler.on(WalletPageActions.openWalletSettings.type, async (store) => {
   })
 })
 
-handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWallet.BlockchainToken) => {
-  store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(true))
-  const result = await getNFTMetadata(payload)
-  if (!result?.error) {
-    const response = result?.response && JSON.parse(result.response)
-    const tokenNetwork = getTokensNetwork(getWalletState(store).networkList, payload)
-    const nftMetadata: NFTMetadataReturnType = {
-      chainName: tokenNetwork.chainName,
-      tokenType: payload.coin === BraveWallet.CoinType.ETH
-        ? 'ERC721'
-        : payload.coin === BraveWallet.CoinType.SOL
-          ? 'SPL'
-          : '',
-      tokenID: payload.tokenId,
-      imageURL: response.image.startsWith('data:image/') ? response.image : addIpfsGateway(response.image),
-      imageMimeType: 'image/*',
-      floorFiatPrice: '',
-      floorCryptoPrice: '',
-      contractInformation: {
-        address: payload.contractAddress,
-        name: response.name,
-        description: response.description,
-        website: '',
-        facebook: '',
-        logo: '',
-        twitter: ''
+handler.on(
+  WalletPageActions.getNFTMetadata.type,
+  async (store: Store, payload: BraveWallet.BlockchainToken) => {
+    store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(true))
+    const result = await getNFTMetadata(payload)
+    if (!result?.error) {
+      const response = result?.response && JSON.parse(result.response)
+
+      const networksRegistry = await getNetworksRegistry(
+        getWalletPageApiProxy()
+      )
+
+      const tokenNetwork =
+        networksRegistry.entities[
+          networkEntityAdapter.selectId({
+            chainId: payload.chainId,
+            coin: payload.coin
+          })
+        ]
+
+      const nftMetadata: NFTMetadataReturnType = {
+        chainName: tokenNetwork?.chainName || '',
+        tokenType:
+          payload.coin === BraveWallet.CoinType.ETH
+            ? 'ERC721'
+            : payload.coin === BraveWallet.CoinType.SOL
+            ? 'SPL'
+            : '',
+        tokenID: payload.tokenId,
+        imageURL: response.image.startsWith('data:image/')
+          ? response.image
+          : addIpfsGateway(response.image),
+        imageMimeType: 'image/*',
+        floorFiatPrice: '',
+        floorCryptoPrice: '',
+        contractInformation: {
+          address: payload.contractAddress,
+          name: response.name,
+          description: response.description,
+          website: '',
+          facebook: '',
+          logo: '',
+          twitter: ''
+        }
       }
+      store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
+      store.dispatch(WalletPageActions.updateNftMetadataError(undefined))
+    } else {
+      store.dispatch(
+        WalletPageActions.updateNftMetadataError(result.errorMessage)
+      )
     }
-    store.dispatch(WalletPageActions.updateNFTMetadata(nftMetadata))
-    store.dispatch(WalletPageActions.updateNftMetadataError(undefined))
-  } else {
-    store.dispatch(WalletPageActions.updateNftMetadataError(result.errorMessage))
+    store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
   }
-  store.dispatch(WalletPageActions.setIsFetchingNFTMetadata(false))
-})
+)
 
 handler.on(WalletPageActions.getIsAutoPinEnabled.type, async (store) => {
   if (!store.getState().wallet.isNftPinningFeatureEnabled) return

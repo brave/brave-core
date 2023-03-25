@@ -28,7 +28,7 @@ import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
-import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
+import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // types
@@ -82,12 +82,12 @@ export const ConnectedPanel = (props: Props) => {
     transactionSpotPrices: spotPrices,
     activeOrigin: originInfo,
     selectedAccount,
-    selectedNetwork,
     connectedAccounts
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  // api
-  const { data: selectedCoin } = useGetSelectedCoinQuery()
+  // queries
+  const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
+  const selectedCoin = selectedNetwork?.coin
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)

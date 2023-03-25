@@ -4,8 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useDispatch } from 'react-redux'
 
-import { NetworkInfo, Swap as SwapInterface } from '@brave/swap-interface'
+import { Swap as SwapInterface } from '@brave/swap-interface'
 import '@brave/swap-interface/dist/style.css'
 
 // Utils
@@ -17,10 +18,15 @@ import {
   useSafeWalletSelector,
   useUnsafeWalletSelector
 } from '../../../common/hooks/use-safe-selector'
+import { hasEIP1559Support } from '../../../utils/network-utils'
 
 // Hooks
 import { useLib } from '../../../common/hooks'
-import { useLazyGetTokenBalancesForChainIdQuery } from '../../../common/slices/api.slice'
+import {
+  useLazyGetTokenBalancesForChainIdQuery,
+  useGetSelectedChainQuery,
+  useGetSwapSupportedNetworksQuery
+} from '../../../common/slices/api.slice'
 
 // Types
 import { BraveWallet, WalletAccountType } from '../../../constants/types'
@@ -43,7 +49,6 @@ import {
   makeSwitchAccount,
   makeGetTokenPrice
 } from './adapters'
-import { hasEIP1559Support } from '../../../utils/network-utils'
 
 export interface Props {
   hideNav?: boolean
@@ -52,10 +57,10 @@ export interface Props {
 export const Swap = (props: Props) => {
   const { hideNav } = props
 
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
+  // redux
+  const dispatch = useDispatch()
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const accounts: WalletAccountType[] = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const networks: BraveWallet.NetworkInfo[] = useUnsafeWalletSelector(WalletSelectors.networkList)
   const defaultFiatCurrency = useSafeWalletSelector(WalletSelectors.defaultFiatCurrency)
   const fullTokenList: BraveWallet.BlockchainToken[] = useUnsafeWalletSelector(
     WalletSelectors.fullTokenList
@@ -64,7 +69,15 @@ export const Swap = (props: Props) => {
     WalletSelectors.userVisibleTokensInfo
   )
 
-  const [supportedNetworks, setSupportedNetworks] = React.useState<NetworkInfo[]>([])
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: supportedNetworks } =
+    useGetSwapSupportedNetworksQuery(undefined)
+
+  // memos
+  const supportedNetInfos = React.useMemo(() => {
+    return (supportedNetworks || []).map(makeNetworkInfo)
+  }, [supportedNetworks])
 
   const tokensList = React.useMemo(() => {
     return [
@@ -84,7 +97,6 @@ export const Swap = (props: Props) => {
     getBalanceForChainId,
     getTokenBalanceForChainId,
     sendSolanaSerializedTransaction,
-    getSwapService,
     getERC20Allowance,
     sendEthTransaction
   } = useLib()
@@ -101,19 +113,6 @@ export const Swap = (props: Props) => {
     },
     [getTokenBalancesForChainId]
   )
-
-  const swapServiceMojo = getSwapService()
-
-  React.useEffect(() => {
-    ;(async () => {
-      const results = await Promise.all(
-        networks.map(async e => (await swapServiceMojo.isSwapSupported(e.chainId)).result)
-      )
-
-      const result = networks.filter((_, index) => results[index]).map(e => makeNetworkInfo(e))
-      setSupportedNetworks(result)
-    })()
-  }, [networks])
 
   // Memos
   const walletAccounts = React.useMemo(() => {
@@ -141,6 +140,10 @@ export const Swap = (props: Props) => {
     }
   }, [])
 
+  const switchNetworkFunc = React.useMemo(() => {
+    return makeSwitchNetwork(dispatch)
+  }, [])
+
   return (
     <div>
       {!hideNav && <BuySendSwapDepositNav isTab={true} isSwap={true} />}
@@ -151,7 +154,7 @@ export const Swap = (props: Props) => {
           account={makeWalletAccount(selectedAccount)}
           walletAccounts={walletAccounts}
           switchAccount={makeSwitchAccount()}
-          switchNetwork={makeSwitchNetwork()}
+          switchNetwork={switchNetworkFunc}
           getBalance={getBalanceForChainId}
           getTokenBalance={getTokenBalanceForChainId}
           getTokenBalances={getTokenBalancesForChainIdWrapped}
@@ -167,7 +170,7 @@ export const Swap = (props: Props) => {
           solWalletAdapter={solWalletAdapter}
           ethWalletAdapter={ethWalletAdapter}
           getTokenPrice={makeGetTokenPrice(defaultFiatCurrency)}
-          supportedNetworks={supportedNetworks}
+          supportedNetworks={supportedNetInfos}
           defaultBaseCurrency={defaultFiatCurrency}
           isWalletConnected={true}
           isReady={!!selectedNetwork}

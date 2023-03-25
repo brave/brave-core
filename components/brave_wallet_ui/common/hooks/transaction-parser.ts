@@ -26,6 +26,7 @@ import { WalletSelectors } from '../selectors'
 
 // Hooks
 import { useUnsafeWalletSelector } from './use-safe-selector'
+import { useGetSelectedChainQuery } from '../slices/api.slice'
 
 export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkInfo, networkSpotPrice?: string, solFeeEstimates?: SolFeeEstimates) {
   return React.useCallback((transactionInfo: TransactionInfo): ParsedTransactionFees => {
@@ -51,10 +52,9 @@ export function useTransactionFeesParser (selectedNetwork?: BraveWallet.NetworkI
 export function useTransactionParser (
   transactionNetwork?: BraveWallet.NetworkInfo
 ) {
-  // redux
-  const reduxSelectedNetwork = useUnsafeWalletSelector(
-    WalletSelectors.selectedNetwork
-  )
+  // queries
+  const { data: reduxSelectedNetwork } = useGetSelectedChainQuery()
+
   const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
   const visibleTokens = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo

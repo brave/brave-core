@@ -30,7 +30,6 @@ import {
 import { getBalance } from '../../../../utils/balance-utils'
 import { getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion } from '../../../../utils/network-utils'
 import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
-import { selectAllNetworksFromQueryResult } from '../../../../common/slices/entities/network.entity'
 
 // Styled Components
 import {
@@ -62,7 +61,11 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
-import { useGetAllNetworksQuery, useGetTokensRegistryQuery, useGetUserTokensRegistryQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetNetworksQuery,
+  useGetTokensRegistryQuery,
+  useGetUserTokensRegistryQuery
+} from '../../../../common/slices/api.slice'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 
 // Actions
@@ -90,11 +93,7 @@ export const Account = ({
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
 
   // queries
-  const { networkList } = useGetAllNetworksQuery(undefined, {
-    selectFromResult: (result) => ({
-      networkList: selectAllNetworksFromQueryResult(result)
-    })
-  })
+  const { data: networkList = [] } = useGetNetworksQuery()
   const { fullTokenList } = useGetTokensRegistryQuery(undefined, {
     selectFromResult: (result) => ({
       fullTokenList: selectAllBlockchainTokensFromQueryResult(result)

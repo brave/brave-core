@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import {
-  createDraftSafeSelector,
   createEntityAdapter,
   EntityAdapter,
   EntityId
@@ -12,32 +11,34 @@ import {
 import { BraveWallet } from '../../../constants/types'
 
 export type NetworkEntityAdaptor = EntityAdapter<BraveWallet.NetworkInfo> & {
-  selectId: (network: { chainId: string }) => EntityId
+  selectId: (network: {
+    chainId: string
+    coin: BraveWallet.CoinType
+  }) => EntityId
 }
 
 export const networkEntityAdapter: NetworkEntityAdaptor =
   createEntityAdapter<BraveWallet.NetworkInfo>({
-    selectId: ({ chainId }) => chainId
+    selectId: ({ chainId, coin }): string =>
+      chainId === BraveWallet.LOCALHOST_CHAIN_ID
+        ? `${chainId}-${coin}`
+        : chainId
   })
 
-export type NetworkEntityAdaptorState = ReturnType<
+export type NetworksRegistry = ReturnType<
   typeof networkEntityAdapter['getInitialState']
-> & {
-  idsByCoinType: Record<BraveWallet.CoinType, EntityId[]>
-}
+>
 
-export const networkEntityInitialState: NetworkEntityAdaptorState = {
-  ...networkEntityAdapter.getInitialState(),
-  idsByCoinType: {}
-}
+export const emptyNetworksRegistry: NetworksRegistry =
+  networkEntityAdapter.getInitialState()
 
 //
 // Selectors (From Query Results)
 //
 export const selectNetworksRegistryFromQueryResult = (result: {
-  data?: NetworkEntityAdaptorState
+  data?: NetworksRegistry
 }) => {
-  return result.data ?? networkEntityInitialState
+  return result.data ?? emptyNetworksRegistry
 }
 
 export const {
@@ -47,13 +48,3 @@ export const {
   selectIds: selectNetworkIdsFromQueryResult,
   selectTotal: selectTotalNetworksFromQueryResult
 } = networkEntityAdapter.getSelectors(selectNetworksRegistryFromQueryResult)
-
-export const makeSelectAllChainIdsForCoinTypeFromQueryResult = () => {
-  return createDraftSafeSelector(
-    [
-      selectNetworksRegistryFromQueryResult,
-      (_, coinType: BraveWallet.CoinType) => coinType
-    ],
-    (registry, coinType) => registry.idsByCoinType[coinType]
-  )
-}

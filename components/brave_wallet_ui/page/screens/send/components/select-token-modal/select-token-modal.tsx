@@ -18,10 +18,16 @@ import { BraveWallet, WalletAccountType, CoinTypesMap, SendOptionTypes } from '.
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
-import { getFilecoinKeyringIdFromNetwork, getTokensNetwork } from '../../../../../utils/network-utils'
+import {
+  getFilecoinKeyringIdFromNetwork //
+} from '../../../../../utils/network-utils'
 import { getBalance } from '../../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import Amount from '../../../../../utils/amount'
+import {
+  useGetVisibleNetworksQuery,
+  useSetNetworkMutation
+} from '../../../../../common/slices/api.slice'
 
 // Options
 import { AllNetworksOption } from '../../../../../options/network-filter-options'
@@ -51,7 +57,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const dispatch = useDispatch()
 
     // Wallet Selectors
-    const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
     const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
     const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
     const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
@@ -62,9 +67,13 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
     const [selectedNetworkFilter, setSelectedNetworkFilter] = React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
 
+    // Queries & Mutations
+    const [setNetwork] = useSetNetworkMutation()
+    const { data: networks } = useGetVisibleNetworksQuery()
+
     // Methods
     const getTokenListByAccount = React.useCallback((account: WalletAccountType) => {
-      if (!account) {
+      if (!account || !networks) {
         return []
       }
       // Since LOCALHOST's chainId is shared between coinType's
@@ -73,14 +82,27 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       const coinName = CoinTypesMap[account?.coin ?? 0]
       const localHostCoins = userVisibleTokensInfo.filter((token) => token.chainId === BraveWallet.LOCALHOST_CHAIN_ID)
       const accountsLocalHost = localHostCoins.find((token) => token.symbol.toUpperCase() === coinName)
-      const chainList = networks.filter((network) => network.coin === account?.coin &&
-        (network.coin !== BraveWallet.CoinType.FIL || getFilecoinKeyringIdFromNetwork(network) === account?.keyringId)).map((network) => network.chainId) ?? []
-      const list =
-        userVisibleTokensInfo.filter((token) => chainList.includes(token?.chainId ?? '') &&
-          token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID) ?? []
+
+      const chainList = networks
+        .filter(
+          (network) =>
+            network.coin === account?.coin &&
+            (network.coin !== BraveWallet.CoinType.FIL ||
+              getFilecoinKeyringIdFromNetwork(network) === account?.keyringId)
+        )
+        .map((network) => network.chainId)
+
+      const list = userVisibleTokensInfo.filter(
+        (token) =>
+          token.chainId !== BraveWallet.LOCALHOST_CHAIN_ID &&
+          chainList.includes(token?.chainId ?? '')
+      )
+
       if (accountsLocalHost && (account.keyringId !== BraveWallet.FILECOIN_KEYRING_ID)) {
-        return [...list, accountsLocalHost]
+        list.push(accountsLocalHost)
+        return list
       }
+
       return list.filter((token) => token.visible)
     }, [userVisibleTokensInfo, networks])
 
@@ -137,12 +159,18 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       return new Amount(reducedAmounts).formatAsFiat(defaultCurrencies.fiat)
     }, [getTokensBySearchValue, spotPrices, defaultCurrencies.fiat])
 
-    const onSelectSendAsset = React.useCallback((token: BraveWallet.BlockchainToken, account: WalletAccountType) => {
-      selectSendAsset(token)
-      dispatch(WalletActions.selectAccount(account))
-      dispatch(WalletActions.selectNetwork(getTokensNetwork(networks, token)))
-      onClose()
-    }, [selectSendAsset, onClose, networks])
+    const onSelectSendAsset = React.useCallback(
+      (token: BraveWallet.BlockchainToken, account: WalletAccountType) => {
+        selectSendAsset(token)
+        dispatch(WalletActions.selectAccount(account))
+        setNetwork({
+          chainId: token.chainId,
+          coin: token.coin
+        })
+        onClose()
+      },
+      [selectSendAsset, onClose]
+    )
 
     const onSearch = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
       setSearchValue(event.target.value)
@@ -213,7 +241,14 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
           </Column>
         </Column>
       )
-    }, [getTokensBySearchValue, getAccountFiatValue, emptyTokensList, selectedSendOption])
+    }, [
+      accounts,
+      onSelectSendAsset,
+      getTokensBySearchValue,
+      getAccountFiatValue,
+      emptyTokensList,
+      selectedSendOption
+    ])
 
     // render
     return (

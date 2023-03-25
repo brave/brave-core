@@ -17,7 +17,6 @@ import { WalletAccountType, WalletState } from '../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
-import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
 
 // Components
 import {
@@ -38,6 +37,7 @@ import {
   FavIcon,
   NewAccountButton
 } from './style'
+import { useSelectedCoinQuery } from '../../../common/hooks/use-selected-coin'
 
 export const SitePermissions = () => {
   const dispatch = useDispatch()
@@ -48,7 +48,7 @@ export const SitePermissions = () => {
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
   // api
-  const { data: selectedCoin } = useGetSelectedCoinQuery()
+  const { selectedCoin } = useSelectedCoinQuery()
 
   // methods
   const onAddAccount = React.useCallback(() => {

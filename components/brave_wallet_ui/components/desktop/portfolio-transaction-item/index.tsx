@@ -38,8 +38,8 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import { useExplorer } from '../../../common/hooks'
 import {
   useGetAccountInfosRegistryQuery,
-  useGetAllNetworksQuery,
   useGetDefaultFiatCurrencyQuery,
+  useGetNetworkQuery,
   useGetTokenSpotPriceQuery,
   useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
@@ -112,20 +112,15 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   } = useGetDefaultFiatCurrencyQuery(undefined)
 
   const {
-    txNetwork,
-    networkAsset,
-    isLoading: isLoadingAllNetworks
-  } = useGetAllNetworksQuery(undefined, {
-    selectFromResult: (result) => {
-      const txNetwork = result.data?.entities[transaction.chainId]
-      return ({
-        ...result,
-        txNetwork,
-        networkAsset: makeNetworkAsset(txNetwork)
-      })
-    },
-    skip: !transaction.chainId
+    data: txNetwork,
+    isLoading: isLoadingTxNetwork //
+  } = useGetNetworkQuery({
+    chainId: transaction.chainId,
+    coin: transaction.coinType
   })
+  const networkAsset = React.useMemo(() => {
+    return makeNetworkAsset(txNetwork)
+  }, [txNetwork])
 
   const {
     userVisibleTokensInfo,
@@ -552,7 +547,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
                     {getLocale('braveWalletAllowSpendTransactionFee')}
                   </TransactionFeeTooltipTitle>
                   <TransactionFeeTooltipBody>
-                    {isLoadingAllNetworks ? (
+                    {isLoadingTxNetwork ? (
                       <Skeleton {...skeletonProps} />
                     ) : (
                       txNetwork &&
