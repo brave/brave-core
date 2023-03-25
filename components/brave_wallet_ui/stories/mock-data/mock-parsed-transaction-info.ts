@@ -10,6 +10,7 @@ import { parseTransactionWithPrices } from '../../utils/tx-utils'
 // mocks
 import { mockWalletState } from './mock-wallet-state'
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
+import { mockNetworks } from './mock-networks'
 
 export const mockParsedTransactionInfo = parseTransactionWithPrices({
   accounts: mockWalletState.accounts,
@@ -20,7 +21,7 @@ export const mockParsedTransactionInfo = parseTransactionWithPrices({
   solFeeEstimates: mockWalletState.solFeeEstimates,
   transactionNetwork: getNetworkFromTXDataUnion(
     mockTransactionInfo.txDataUnion,
-    mockWalletState.networkList
+    mockNetworks
   )
 })
 
@@ -33,6 +34,6 @@ export const mockedParsedErc20ApprovalTransaction = parseTransactionWithPrices({
   solFeeEstimates: mockWalletState.solFeeEstimates,
   transactionNetwork: getNetworkFromTXDataUnion(
     mockedErc20ApprovalTransaction.txDataUnion,
-    mockWalletState.networkList
+    mockNetworks
   )
 })

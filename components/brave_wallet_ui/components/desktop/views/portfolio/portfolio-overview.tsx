@@ -18,11 +18,17 @@ import {
 } from '../../../../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
 
+// actions
+import { WalletActions } from '../../../../common/actions'
+import { WalletPageActions } from '../../../../page/actions'
+
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { formatAsDouble } from '../../../../utils/string-utils'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
@@ -34,6 +40,11 @@ import { LoadingSkeleton } from '../../../shared'
 import { PortfolioAssetItem } from '../../'
 import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 import { TokenLists } from './components/token-lists/token-list'
+import {
+  PortfolioOverviewChart //
+} from './components/portfolio-overview-chart/portfolio-overview-chart'
+import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 
 // Styled Components
 import {
@@ -41,13 +52,6 @@ import {
   BalanceText,
   BalanceRow
 } from './style'
-
-// actions
-import { WalletActions } from '../../../../common/actions'
-import { WalletPageActions } from '../../../../page/actions'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
-import PortfolioOverviewChart from './components/portfolio-overview-chart/portfolio-overview-chart'
-import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
 import {
   Column,
   HorizontalSpace,
@@ -55,9 +59,8 @@ import {
   ToggleVisibilityButton,
   VerticalSpace
 } from '../../../shared/style'
-import { formatAsDouble } from '../../../../utils/string-utils'
-import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
-import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
+import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
+import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
 export const PortfolioOverview = () => {
   // routing
@@ -69,14 +72,14 @@ export const PortfolioOverview = () => {
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
   const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
 
-  // memos / computed
+  // queries
+  const { data: networks } = useGetVisibleNetworksQuery()
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
@@ -96,6 +99,8 @@ export const PortfolioOverview = () => {
         : ''
     })
   }, [accounts, getBalance])
+
+  // memos / computed
 
   // filter the user's assets based on the selected network
   const visibleTokensForSupportedChains = React.useMemo(() => {
@@ -117,8 +122,7 @@ export const PortfolioOverview = () => {
   }, [
     selectedNetworkFilter.chainId,
     selectedNetworkFilter.coin,
-    userVisibleTokensInfo,
-    networkList
+    userVisibleTokensInfo
   ])
 
   // Filters visibleTokensForSupportedChains if a selectedAccountFilter is selected.
@@ -136,7 +140,12 @@ export const PortfolioOverview = () => {
         ? fullAssetBalance(asset)
         : getBalance(accounts.find(account => account.id === selectedAccountFilter), asset)
     }))
-  }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance, accounts])
+  }, [
+    visibleTokensForFilteredAccount,
+    selectedAccountFilter,
+    fullAssetBalance,
+    accounts
+  ])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
     return userAssetList.filter(({ asset }) => asset.visible && !(asset.isErc721 || asset.isNft))
@@ -276,7 +285,7 @@ export const PortfolioOverview = () => {
       </Column>
       <TokenLists
         userAssetList={userAssetList}
-        networks={networkList}
+        networks={networks || []}
         estimatedItemSize={58}
         enableScroll={true}
         renderToken={({ item, viewMode }) =>

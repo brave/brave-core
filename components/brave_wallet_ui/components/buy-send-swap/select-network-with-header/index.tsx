@@ -2,20 +2,28 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
+import * as React from 'react'
+
+// Types
+import { BraveWallet } from '../../../constants/types'
+
+// Utils
+import {
+  useGetSelectedChainQuery,
+  useSetNetworkMutation
+} from '../../../common/slices/api.slice'
+import { getLocale } from '../../../../common/locale'
+
+// Components
 import { SelectNetwork } from '../../shared'
 import Header from '../select-header'
-import { getLocale } from '../../../../common/locale'
+
 // Styled Components
 import {
   SelectWrapper,
   SelectScrollContainer
 } from '../shared-styles'
-
-import { WalletActions } from '../../../common/actions'
-import { BraveWallet, WalletState } from '../../../constants/types'
 
 export interface Props {
   hasAddButton?: boolean
@@ -28,15 +36,21 @@ export const SelectNetworkWithHeader = ({
   hasAddButton,
   onAddNetwork
 }: Props) => {
-  // redux
-  const dispatch = useDispatch()
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  // queries & mutations
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const [setNetwork] = useSetNetworkMutation()
 
   // methods
-  const onSelectCustomNetwork = React.useCallback((network: BraveWallet.NetworkInfo): void => {
-    dispatch(WalletActions.selectNetwork(network))
-    onBack()
-  }, [onBack])
+  const onSelectCustomNetwork = React.useCallback(
+    async (network: BraveWallet.NetworkInfo) => {
+      await setNetwork({
+        chainId: network.chainId,
+        coin: network.coin
+      })
+      onBack()
+    },
+    [onBack, setNetwork]
+  )
 
   // render
   return (

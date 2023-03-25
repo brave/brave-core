@@ -15,54 +15,60 @@ import {
 // mocks
 import { mockBasicAttentionToken } from '../../stories/mock-data/mock-asset-options'
 
-export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
-  return {
-    chainId: '1337',
-    id: '1',
-    fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
-    txHash: '',
-    txDataUnion: {
-      ethTxData1559: {
-        baseData: {
-          to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
-          value: '0x01706a99bf354000', // 103700000000000000 wei (0.1037 ETH)
-          // data: new Uint8Array(0),
-          data: [] as number[],
-          nonce: '0x03',
-          gasLimit: '0x5208', // 2100
-          gasPrice: '0x22ecb25c00', // 150 Gwei
-          signOnly: false,
-          signedTransaction: undefined
-        },
-        chainId: '1337',
-        maxPriorityFeePerGas: '',
-        maxFeePerGas: '',
-        gasEstimation: undefined
-      },
-      ethTxData: {} as any,
-      filTxData: undefined,
-      solanaTxData: undefined
-    },
-    txStatus: BraveWallet.TransactionStatus.Approved,
-    txType: BraveWallet.TransactionType.Other,
-    txParams: [],
-    txArgs: [],
-    createdTime: { microseconds: 0 as unknown as bigint },
-    submittedTime: { microseconds: 0 as unknown as bigint },
-    confirmedTime: { microseconds: 0 as unknown as bigint },
-    originInfo: {
-      origin: {
-        scheme: 'https',
-        host: 'brave.com',
-        port: 443,
-        nonceIfOpaque: undefined
-      },
-      originSpec: 'https://brave.com',
-      eTldPlusOne: 'brave.com'
-    },
-    groupId: undefined
-  }
+
+type EIP1559SerializableTransactionInfo = SerializableTransactionInfo & {
+  txDataUnion: { ethTxData1559: BraveWallet.TxData1559 }
 }
+
+export const getMockedTransactionInfo =
+  (): EIP1559SerializableTransactionInfo => {
+    return {
+      chainId: '1337',
+      id: '1',
+      fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+      txHash: '',
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+            value: '0x01706a99bf354000', // 103700000000000000 wei (0.1037 ETH)
+            // data: new Uint8Array(0),
+            data: [] as number[],
+            nonce: '0x03',
+            gasLimit: '0x5208', // 2100
+            gasPrice: '0x22ecb25c00', // 150 Gwei
+            signOnly: false,
+            signedTransaction: undefined
+          },
+          chainId: '1337',
+          maxPriorityFeePerGas: '',
+          maxFeePerGas: '',
+          gasEstimation: undefined
+        },
+        ethTxData: {} as any,
+        filTxData: undefined,
+        solanaTxData: undefined
+      },
+      txStatus: BraveWallet.TransactionStatus.Approved,
+      txType: BraveWallet.TransactionType.Other,
+      txParams: [],
+      txArgs: [],
+      createdTime: { microseconds: 0 },
+      submittedTime: { microseconds: 0 },
+      confirmedTime: { microseconds: 0 },
+      originInfo: {
+        origin: {
+          scheme: 'https',
+          host: 'brave.com',
+          port: 443,
+          nonceIfOpaque: undefined
+        },
+        originSpec: 'https://brave.com',
+        eTldPlusOne: 'brave.com'
+      },
+      groupId: undefined
+    }
+  }
 
 export const mockNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x1',

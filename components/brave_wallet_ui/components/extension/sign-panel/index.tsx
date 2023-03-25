@@ -46,10 +46,10 @@ import {
   URLText,
   WarningIcon
 } from '../shared-panel-styles'
+import { useGetDefaultNetworksQuery } from '../../../common/slices/api.slice'
 
 export interface Props {
   accounts: WalletAccountType[]
-  defaultNetworks: BraveWallet.NetworkInfo[]
   selectedNetwork?: BraveWallet.NetworkInfo
   signMessageData: SerializableSignMessageRequest[]
   onSign: () => void
@@ -75,13 +75,15 @@ const onClickLearnMore = () => {
 export const SignPanel = (props: Props) => {
   const {
     accounts,
-    defaultNetworks,
     selectedNetwork,
     signMessageData,
     onSign,
     onCancel,
     showWarning
   } = props
+
+  // queries
+  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignData)
@@ -106,9 +108,12 @@ export const SignPanel = (props: Props) => {
     , [signMessageData, selectedQueueData]
   )
 
-  const network = React.useMemo(() => {
-    return defaultNetworks.find((n) => n.coin === signMessageData[0].coin) ?? selectedNetwork
-  }, [defaultNetworks, selectedNetwork, signMessageData])
+  const network = React.useMemo(
+    () =>
+      defaultNetworks.find((n) => n.coin === signMessageData[0].coin) ??
+      selectedNetwork,
+    [defaultNetworks, selectedNetwork, signMessageData[0].coin]
+  )
 
   // methods
   const findAccountName = (address: string) => {

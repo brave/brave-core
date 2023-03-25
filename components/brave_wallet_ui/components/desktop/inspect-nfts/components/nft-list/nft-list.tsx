@@ -5,9 +5,6 @@
 import * as React from 'react'
 
 // utils
-import { useUnsafeWalletSelector } from '../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../common/selectors'
-import { getTokensNetwork } from '../../../../../utils/network-utils'
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../../../common/locale'
 
@@ -19,8 +16,6 @@ import { NftCountHeading } from '../../inspects-nfts.styles'
 import { NftListWrapper, List, NftItem, NftItemOverlay, PiningMessage } from './nft-list.styles'
 
 export const NftList = () => {
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
-
   // hooks
   const { pinnableNftsCount, nonFungibleTokens } = useNftPin()
 
@@ -40,7 +35,8 @@ export const NftList = () => {
               </NftItemOverlay>
             )}
             <NftIconWithNetworkIcon
-              tokensNetwork={getTokensNetwork(networkList, token)}
+              chainId={token.chainId}
+              coinType={token.coin}
               icon={token.logo}
               responsive={true}
               disabled={!canBePinned}

@@ -4,22 +4,17 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // Hooks
 import { useHasAccount } from './'
 
 // Constants
-import {
-  BraveWallet,
-  WalletState
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
+import { useGetSelectedChainQuery } from '../slices/api.slice'
 
 export function usePrevNetwork () {
-  // redux
-  const {
-    selectedNetwork
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
 
   // hooks
   const { hasFilAccount, hasSolAccount } = useHasAccount()
