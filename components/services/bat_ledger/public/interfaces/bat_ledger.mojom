@@ -156,7 +156,6 @@ interface RewardsUtilityService {
 };
 
 interface RewardsService {
-  [Sync]
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
 
@@ -207,9 +206,9 @@ interface RewardsService {
   [Sync]
   SetValueState(string name, mojo_base.mojom.Value value) => ();
   [Sync]
-  GetTimeState(string name) => (mojo_base.mojom.Time time);
+  GetTimeState(string name) => (mojo_base.mojom.Time value);
   [Sync]
-  SetTimeState(string name, mojo_base.mojom.Time time) => ();
+  SetTimeState(string name, mojo_base.mojom.Time value) => ();
   [Sync]
   ClearState(string name) => ();
 

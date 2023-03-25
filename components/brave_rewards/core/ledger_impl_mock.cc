@@ -5,17 +5,20 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 
-#include <memory>
-
 namespace ledger {
 
+AddMockRewardsService::AddMockRewardsService() = default;
+
+AddMockRewardsService::~AddMockRewardsService() = default;
+
 MockLedgerImpl::MockLedgerImpl()
-    : LedgerImpl(std::make_unique<MockLedgerClient>()) {}
+    : LedgerImpl(mock_rewards_service_receiver_
+                     .BindNewEndpointAndPassDedicatedRemote()) {}
 
 MockLedgerImpl::~MockLedgerImpl() = default;
 
-MockLedgerClient* MockLedgerImpl::rewards_service() const {
-  return static_cast<MockLedgerClient*>(LedgerImpl::rewards_service());
+MockRewardsService* MockLedgerImpl::mock_rewards_service() {
+  return &mock_rewards_service_;
 }
 
 }  // namespace ledger
