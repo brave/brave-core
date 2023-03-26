@@ -8,9 +8,9 @@ import xml.etree.ElementTree as ET
 def _ProcessXML(root):
     # Register namespaces
     ns = {
-        'android': 'http://schemas.android.com/apk/res/android',
-        'app': 'http://schemas.android.com/apk/res-auto'
-    }  #NOSONAR
+        'android': 'http://schemas.android.com/apk/res/android',  #NOSONAR
+        'app': 'http://schemas.android.com/apk/res-auto'  #NOSONAR
+    }
     for prefix, uri in ns.items():
         ET.register_namespace(prefix, uri)
 

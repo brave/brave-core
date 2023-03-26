@@ -311,6 +311,9 @@ void PlaylistService::AddMediaFilesFromItems(
 
 void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                                             const std::string& playlist_id) {
+  VLOG(2) << __func__ << ": params="
+          << PlaylistChangeParams::GetPlaylistChangeTypeAsString(
+                 playlist_event);
   for (auto& service_observer : service_observers_) {
     service_observer->OnEvent(playlist_event, playlist_id);
   }
