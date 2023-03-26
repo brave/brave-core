@@ -43,8 +43,9 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
-  return (chain_id == brave_wallet::mojom::kMainnetChainId ||
+bool IsEVMNetworkSupported(const std::string& chain_id) {
+  return (chain_id == brave_wallet::mojom::kGoerliChainId ||
+          chain_id == brave_wallet::mojom::kMainnetChainId ||
           chain_id == brave_wallet::mojom::kPolygonMainnetChainId ||
           chain_id == brave_wallet::mojom::kBinanceSmartChainMainnetChainId ||
           chain_id == brave_wallet::mojom::kAvalancheMainnetChainId ||
@@ -52,11 +53,6 @@ bool IsMainnetEVMNetworkSupported(const std::string& chain_id) {
           chain_id == brave_wallet::mojom::kCeloMainnetChainId ||
           chain_id == brave_wallet::mojom::kOptimismMainnetChainId ||
           chain_id == brave_wallet::mojom::kArbitrumMainnetChainId);
-}
-
-bool IsEVMNetworkSupported(const std::string& chain_id) {
-  return (chain_id == brave_wallet::mojom::kGoerliChainId ||
-          IsMainnetEVMNetworkSupported(chain_id));
 }
 
 bool IsSolanaNetworkSupported(const std::string& chain_id) {
@@ -212,12 +208,8 @@ std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
 std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
   std::string feeRecipient;
 
-  // For easy testability on test networks, we use an address different from
-  // the production multisig address.
-  if (chain_id == brave_wallet::mojom::kGoerliChainId) {
-    feeRecipient = brave_wallet::kGoerliFeeRecipient;
-  } else if (IsMainnetEVMNetworkSupported(chain_id)) {
-    feeRecipient = brave_wallet::kFeeRecipient;
+  if (IsEVMNetworkSupported(chain_id)) {
+    feeRecipient = brave_wallet::kEVMFeeRecipient;
   } else if (IsSolanaNetworkSupported(chain_id)) {
     feeRecipient = brave_wallet::kSolanaFeeRecipient;
   }
@@ -229,7 +221,7 @@ std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
 std::string SwapService::GetAffiliateAddress(const std::string& chain_id) {
   std::string affiliateAddress;
 
-  if (IsMainnetEVMNetworkSupported(chain_id)) {
+  if (IsEVMNetworkSupported(chain_id)) {
     affiliateAddress = brave_wallet::kAffiliateAddress;
   }
 

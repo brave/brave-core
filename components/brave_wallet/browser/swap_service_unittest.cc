@@ -446,7 +446,7 @@ TEST_F(SwapServiceUnitTest, GetTransactionPayloadUnexpectedReturn) {
 TEST_F(SwapServiceUnitTest, GetSwapConfigurationGoerli) {
   std::string swap_api_url = "https://goerli.api.0x.org/";
   std::string buy_token_percantage_fee = "0.00875";
-  std::string fee_recipient = "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
+  std::string fee_recipient = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
   std::string affiliate_address;
   EXPECT_EQ(swap_api_url, SwapService::GetBaseSwapURL(mojom::kGoerliChainId));
   EXPECT_EQ(buy_token_percantage_fee,
