@@ -31,7 +31,9 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
@@ -144,6 +146,22 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 braveWallet.setVisible(false);
             }
         }
+
+        MenuItem bravePlaylist = menu.findItem(R.id.brave_playlist_id);
+        if (bravePlaylist != null) {
+            if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
+                    && SharedPreferencesManager.getInstance().readBoolean(
+                            BravePlaylistPreferences.PREF_ENABLE_PLAYLIST, true)) {
+                bravePlaylist.setVisible(true);
+                if (shouldShowIconBeforeItem()) {
+                    bravePlaylist.setIcon(
+                            AppCompatResources.getDrawable(mContext, R.drawable.ic_open_playlist));
+                }
+            } else {
+                bravePlaylist.setVisible(false);
+            }
+        }
+
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             MenuItem braveNews =
                     menu.add(Menu.NONE, R.id.brave_news_id, 0, R.string.brave_news_title);
@@ -182,6 +200,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         mMenu.removeItem(R.id.set_default_browser);
         mMenu.removeItem(R.id.brave_rewards_id);
         mMenu.removeItem(R.id.brave_wallet_id);
+        mMenu.removeItem(R.id.brave_playlist_id);
         mMenu.removeItem(R.id.exit_id);
         if (BraveVpnUtils.isBraveVpnFeatureEnable())
             mMenu.removeItem(R.id.request_brave_vpn_row_menu_id);

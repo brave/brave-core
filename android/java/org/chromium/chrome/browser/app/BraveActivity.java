@@ -36,6 +36,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.billingclient.api.Purchase;
+import com.brave.playlist.util.ConstantUtils;
+import com.brave.playlist.util.PlaylistPreferenceUtils;
+import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
@@ -135,6 +138,10 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
+import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -355,6 +362,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
+        } else if (id == R.id.brave_playlist_id) {
+            if (SharedPreferencesManager.getInstance().readBoolean(
+                        PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+                PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
+                SharedPreferencesManager.getInstance().writeBoolean(
+                        PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+            } else {
+                openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
+            }
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -859,7 +875,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
@@ -1169,6 +1184,24 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
     }
 
+    public void openPlaylistActivity(Context context, String playlistId) {
+        Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
+        playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
+        playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(playlistActivityIntent);
+    }
+
+    public void showPlaylistWarningDialog(
+            PlaylistWarningDialogListener playlistWarningDialogListener) {
+        PlaylistWarningDialogFragment playlistWarningDialogFragment =
+                new PlaylistWarningDialogFragment();
+        playlistWarningDialogFragment.setCancelable(false);
+        playlistWarningDialogFragment.setPlaylistWarningDialogListener(
+                playlistWarningDialogListener);
+        playlistWarningDialogFragment.show(
+                getSupportFragmentManager(), "PlaylistWarningDialogFragment");
+    }
+
     private void showVpnCalloutDialog() {
         try {
             BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
@@ -1226,6 +1259,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                         BraveShieldsContentSettings.ALLOW_RESOURCE, false);
             }
         }
+    }
+
+    public void openBravePlaylistSettings() {
+        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        settingsLauncher.launchSettingsActivity(this, BravePlaylistPreferences.class);
     }
 
     private void openBraveNewsSettings() {

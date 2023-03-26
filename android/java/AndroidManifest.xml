@@ -145,6 +145,13 @@
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
+<activity
+    android:name="org.chromium.chrome.browser.playlist.PlaylistHostActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:configChanges="orientation|keyboardHidden|screenSize"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
 <activity android:name="org.chromium.chrome.browser.settings.BraveSettingsActivity"
     android:theme="@style/Theme.Chromium.Settings"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize"
@@ -199,6 +206,14 @@
         <action android:name="android.net.VpnService" />
     </intent-filter>
 </service>
+
+<activity
+    android:name="com.brave.playlist.activity.PlaylistMenuOnboardingActivity"
+    android:exported="false"
+    android:launchMode="singleTask"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen" />
+<service android:name="com.brave.playlist.PlaylistVideoService"
+    android:exported="false"/>
 
 <!-- This activity is used for search provider widget -->
 <activity android:name="org.chromium.chrome.browser.searchwidget.SearchWidgetProviderActivity"

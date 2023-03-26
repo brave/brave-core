@@ -102,9 +102,6 @@ class PlaylistService : public KeyedService,
   mojo::PendingRemote<mojom::PlaylistService> MakeRemote();
 #endif  // BUILDFLAG(IS_ANDROID)
 
-  void AddObserver(
-      mojo::PendingRemote<mojom::PlaylistServiceObserver> observer);
-
   bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
@@ -157,8 +154,14 @@ class PlaylistService : public KeyedService,
   void CreatePlaylist(mojom::PlaylistPtr playlist,
                       CreatePlaylistCallback callback) override;
   void RemovePlaylist(const std::string& playlist_id) override;
+  void RenamePlaylist(const std::string& playlist_id,
+                      const std::string& playlist_name,
+                      RenamePlaylistCallback callback) override;
 
   void ResetAll() override;
+
+  void AddObserver(
+      mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -235,6 +238,8 @@ class PlaylistService : public KeyedService,
   void OnGetOrphanedPaths(const std::vector<base::FilePath> paths);
 
   void NotifyPlaylistChanged(const PlaylistChangeParams& params);
+  void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
+                             const std::string& playlist_id);
 
   void UpdatePlaylistItemValue(const std::string& id, base::Value value);
   void RemovePlaylistItemValue(const std::string& id);
