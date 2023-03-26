@@ -1210,7 +1210,8 @@ constexpr char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
 constexpr char kArbitrumSwapBaseAPIURL[] = "https://arbitrum.api.0x.org/";
 constexpr char kSwapBaseAPIURL[] = "https://api.0x.org/";
 constexpr char kBuyTokenPercentageFee[] = "0.00875";
-constexpr char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+constexpr char kEVMFeeRecipient[] =
+    "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 

@@ -301,7 +301,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
       // Clients are free to use the sellAmount extracted from calldata or
       // the value field of the swap transaction. The latter is more reliable
       // since OTC trades may include protocol fees payable in ETH that get
-      // added to the transaction value.
+      // added to the sellAmount.
       tx_args = {
           std::string(kNativeAssetContractAddress) + raw_args.at(0).substr(2),
           raw_args.at(3), raw_args.at(2)};
