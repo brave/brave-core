@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PutDevicecheckTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,15 +31,15 @@ class PutDevicecheckTest : public testing::Test {
 };
 
 TEST_F(PutDevicecheckTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   devicecheck_.Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
                        base::BindOnce([](mojom::Result result) {
@@ -49,15 +48,15 @@ TEST_F(PutDevicecheckTest, ServerOK) {
 }
 
 TEST_F(PutDevicecheckTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   devicecheck_.Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
                        base::BindOnce([](mojom::Result result) {
@@ -66,15 +65,15 @@ TEST_F(PutDevicecheckTest, ServerError400) {
 }
 
 TEST_F(PutDevicecheckTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 401;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 401;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   devicecheck_.Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
                        base::BindOnce([](mojom::Result result) {
@@ -83,15 +82,15 @@ TEST_F(PutDevicecheckTest, ServerError401) {
 }
 
 TEST_F(PutDevicecheckTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 500;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   devicecheck_.Request("dsfqwf4f901a1", "asdfasdf", "fsadfasdfff4901a1",
                        base::BindOnce([](mojom::Result result) {

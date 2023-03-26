@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostCaptchaTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,18 +31,18 @@ class PostCaptchaTest : public testing::Test {
 };
 
 TEST_F(PostCaptchaTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"({
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = R"({
               "hint": "circle",
               "captchaId": "d155d2d2-2627-425b-9be8-44ae9f541762"
             })";
-            std::move(callback).Run(response);
-          }));
+            std::move(callback).Run(std::move(response));
+          });
 
   captcha_.Request(
       base::BindOnce([](mojom::Result result, const std::string& hint,
@@ -55,15 +54,15 @@ TEST_F(PostCaptchaTest, ServerOK) {
 }
 
 TEST_F(PostCaptchaTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   captcha_.Request(
       base::BindOnce([](mojom::Result result, const std::string& hint,
@@ -73,15 +72,15 @@ TEST_F(PostCaptchaTest, ServerError400) {
 }
 
 TEST_F(PostCaptchaTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   captcha_.Request(
       base::BindOnce([](mojom::Result result, const std::string& hint,

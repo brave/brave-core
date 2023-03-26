@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PutSafetynetTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,15 +31,15 @@ class PutSafetynetTest : public testing::Test {
 };
 
 TEST_F(PutSafetynetTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
@@ -49,15 +48,15 @@ TEST_F(PutSafetynetTest, ServerOK) {
 }
 
 TEST_F(PutSafetynetTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
@@ -66,15 +65,15 @@ TEST_F(PutSafetynetTest, ServerError400) {
 }
 
 TEST_F(PutSafetynetTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 401;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 401;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
@@ -83,15 +82,15 @@ TEST_F(PutSafetynetTest, ServerError401) {
 }
 
 TEST_F(PutSafetynetTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 500;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {

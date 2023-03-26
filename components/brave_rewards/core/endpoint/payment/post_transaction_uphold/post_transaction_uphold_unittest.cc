@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostTransactionUpholdTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,15 +31,15 @@ class PostTransactionUpholdTest : public testing::Test {
 };
 
 TEST_F(PostTransactionUpholdTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 201;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 201;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -52,15 +51,15 @@ TEST_F(PostTransactionUpholdTest, ServerOK) {
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -72,15 +71,15 @@ TEST_F(PostTransactionUpholdTest, ServerError400) {
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 404;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 404;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -92,15 +91,15 @@ TEST_F(PostTransactionUpholdTest, ServerError404) {
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError409) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 409;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 409;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -112,15 +111,15 @@ TEST_F(PostTransactionUpholdTest, ServerError409) {
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 500;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -132,15 +131,15 @@ TEST_F(PostTransactionUpholdTest, ServerError500) {
 }
 
 TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";

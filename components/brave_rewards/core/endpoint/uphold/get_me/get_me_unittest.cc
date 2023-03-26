@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=GetMeTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,13 +31,13 @@ class GetMeTest : public testing::Test {
 };
 
 TEST_F(GetMeTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"({
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = R"({
              "address": {
                "city": "Anytown",
                "line1": "123 Main Street",
@@ -126,8 +125,8 @@ TEST_F(GetMeTest, ServerOK) {
              ],
              "tier": "other"
             })";
-            std::move(callback).Run(response);
-          }));
+            std::move(callback).Run(std::move(response));
+          });
 
   ::ledger::uphold::User expected_user;
 
@@ -143,15 +142,15 @@ TEST_F(GetMeTest, ServerOK) {
 }
 
 TEST_F(GetMeTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 401;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 401;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   ::ledger::uphold::User expected_user;
   me_.Request(
@@ -162,15 +161,15 @@ TEST_F(GetMeTest, ServerError401) {
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   ::ledger::uphold::User expected_user;
   me_.Request(

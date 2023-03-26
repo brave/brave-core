@@ -19,7 +19,6 @@
 // npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace database {
@@ -80,8 +79,8 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
     std::move(callback).Run(std::move(response));
   };
 
-  ON_CALL(*mock_ledger_impl_.rewards_service(), RunDBTransaction(_, _))
-      .WillByDefault(Invoke(on_run_db_transaction));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), RunDBTransaction(_, _))
+      .WillByDefault(on_run_db_transaction);
 
   database_prefix_list_.Reset(CreateReader(100'001),
                               [](const mojom::Result) {});

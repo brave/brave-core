@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=GetSignedCredsTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,13 +31,13 @@ class GetSignedCredsTest : public testing::Test {
 };
 
 TEST_F(GetSignedCredsTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"({
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = R"({
               "id": "9c9aed7f-b349-452e-80a8-95faf2b1600d",
               "orderId": "f2e6494e-fb21-44d1-90e9-b5408799acd8",
               "issuerId": "138bf9ca-69fe-4540-9ac4-bc65baddc4a0",
@@ -50,8 +49,8 @@ TEST_F(GetSignedCredsTest, ServerOK) {
               "batchProof": "zx0cdJhaB/OdYcUtnyXdi+lsoniN2KNgFU",
               "publicKey": "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I="
             })";
-            std::move(callback).Run(response);
-          }));
+            std::move(callback).Run(std::move(response));
+          });
 
   creds_.Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
@@ -69,15 +68,15 @@ TEST_F(GetSignedCredsTest, ServerOK) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError202) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 202;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 202;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   creds_.Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
@@ -88,15 +87,15 @@ TEST_F(GetSignedCredsTest, ServerError202) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   creds_.Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
@@ -107,15 +106,15 @@ TEST_F(GetSignedCredsTest, ServerError400) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 404;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 404;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   creds_.Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
@@ -126,15 +125,15 @@ TEST_F(GetSignedCredsTest, ServerError404) {
 }
 
 TEST_F(GetSignedCredsTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 500;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   creds_.Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",
@@ -145,15 +144,15 @@ TEST_F(GetSignedCredsTest, ServerError500) {
 }
 
 TEST_F(GetSignedCredsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   creds_.Request(
       "ff50981d-47de-4210-848d-995e186901a1", "848d-995e186901a1",

@@ -21,7 +21,6 @@
 // npm run test -- brave_unit_tests --filter=PromotionTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace promotion {
@@ -56,26 +55,30 @@ std::string GetResponse(const std::string& url) {
 class PromotionTest : public testing::Test {
  protected:
   void SetUp() override {
-    const std::string wallet = R"({
-      "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-      "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-    })";
-    ON_CALL(*mock_ledger_impl_.rewards_service(),
-            GetStringState(state::kWalletBrave))
-        .WillByDefault(testing::Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::string wallet = R"(
+            {
+              "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+              "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+            }
+          )";
+          std::move(callback).Run(std::move(wallet));
+        });
 
     ON_CALL(mock_ledger_impl_, database())
         .WillByDefault(testing::Return(&mock_database_));
 
-    ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
         .WillByDefault(
-            Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-              mojom::UrlResponse response;
-              response.status_code = 200;
-              response.url = request->url;
-              response.body = GetResponse(request->url);
-              std::move(callback).Run(response);
-            }));
+            [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+              auto response = mojom::UrlResponse::New();
+              response->status_code = 200;
+              response->url = request->url;
+              response->body = GetResponse(request->url);
+              std::move(callback).Run(std::move(response));
+            });
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -88,7 +91,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   bool inserted = false;
   ON_CALL(mock_database_, GetAllPromotions(_))
       .WillByDefault(
-          Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
+          [&inserted](ledger::GetAllPromotionsCallback callback) {
             auto promotion = mojom::Promotion::New();
             base::flat_map<std::string, mojom::PromotionPtr> map;
             if (inserted) {
@@ -102,7 +105,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
             }
 
             callback(std::move(map));
-          }));
+          });
 
   EXPECT_CALL(mock_database_, SavePromotion(_, _)).Times(1);
 

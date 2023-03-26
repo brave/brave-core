@@ -19,7 +19,6 @@
 // npm run test -- brave_unit_tests --filter=PostCredsTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -28,13 +27,15 @@ namespace promotion {
 class PostCredsTest : public testing::Test {
  protected:
   void SetUp() override {
-    const std::string wallet = R"({
-      "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
-      "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-    })";
-    ON_CALL(*mock_ledger_impl_.rewards_service(),
-            GetStringState(state::kWalletBrave))
-        .WillByDefault(testing::Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::string wallet = R"({
+            "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
+            "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+          })";
+          std::move(callback).Run(std::move(wallet));
+        });
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -43,17 +44,17 @@ class PostCredsTest : public testing::Test {
 };
 
 TEST_F(PostCredsTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = R"({
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = R"({
               "claimId": "53714048-9675-419e-baa3-369d85a2facb"
             })";
-            std::move(callback).Run(response);
-          }));
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
@@ -67,15 +68,15 @@ TEST_F(PostCredsTest, ServerOK) {
 }
 
 TEST_F(PostCredsTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 400;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
@@ -88,15 +89,15 @@ TEST_F(PostCredsTest, ServerError400) {
 }
 
 TEST_F(PostCredsTest, ServerError403) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 403;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 403;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
@@ -109,15 +110,15 @@ TEST_F(PostCredsTest, ServerError403) {
 }
 
 TEST_F(PostCredsTest, ServerError409) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 409;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 409;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
@@ -130,15 +131,15 @@ TEST_F(PostCredsTest, ServerError409) {
 }
 
 TEST_F(PostCredsTest, ServerError410) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 410;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 410;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
@@ -151,15 +152,15 @@ TEST_F(PostCredsTest, ServerError410) {
 }
 
 TEST_F(PostCredsTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 500;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
@@ -172,15 +173,15 @@ TEST_F(PostCredsTest, ServerError500) {
 }
 
 TEST_F(PostCredsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   base::Value::List creds;
   creds.Append(base::Value("asfeq4gerg34gl3g34lg34g"));

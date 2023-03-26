@@ -20,8 +20,6 @@
 // npm run test -- brave_unit_tests --filter=*PostWallets*
 
 using ::testing::_;
-using ::testing::Invoke;
-using ::testing::Return;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -42,17 +40,17 @@ using PostWalletsParamType = std::tuple<
 class PostWallets : public TestWithParam<PostWalletsParamType> {
  protected:
   void SetUp() override {
-    const std::string wallet =
-        R"(
-          {
-            "payment_id": "",
-            "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
-          }
-        )";
-
-    ON_CALL(*mock_ledger_impl_.rewards_service(),
-            GetStringState(state::kWalletBrave))
-        .WillByDefault(Return(wallet));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetStringState(state::kWalletBrave, _))
+        .WillByDefault([](const std::string&, auto callback) {
+          std::string wallet = R"(
+            {
+              "payment_id": "",
+              "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
+            }
+          )";
+          std::move(callback).Run(std::move(wallet));
+        });
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -62,15 +60,15 @@ class PostWallets : public TestWithParam<PostWalletsParamType> {
 TEST_P(PostWallets, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([status_code = status_code, body = body](
+          [status_code = status_code, body = body](
                      mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
-            mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
-            std::move(callback).Run(response);
-          }));
+            auto response = mojom::UrlResponse::New();
+            response->status_code = status_code;
+            response->body = std::move(body);
+            std::move(callback).Run(std::move(response));
+          });
 
   RequestFor<endpoints::PostWallets>(&mock_ledger_impl_, "geo_country")
       .Send(base::BindLambdaForTesting(

@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=GetPrefixListTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,15 +31,15 @@ class GetPrefixListTest : public testing::Test {
 };
 
 TEST_F(GetPrefixListTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = "blob";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = "blob";
+            std::move(callback).Run(std::move(response));
+          });
 
   list_.Request([](const mojom::Result result, const std::string& blob) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
@@ -49,15 +48,15 @@ TEST_F(GetPrefixListTest, ServerOK) {
 }
 
 TEST_F(GetPrefixListTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 453;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   list_.Request([](const mojom::Result result, const std::string& blob) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
@@ -66,15 +65,15 @@ TEST_F(GetPrefixListTest, ServerErrorRandom) {
 }
 
 TEST_F(GetPrefixListTest, ServerBodyEmpty) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   list_.Request([](const mojom::Result result, const std::string& blob) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);

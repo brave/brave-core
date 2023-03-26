@@ -10,14 +10,16 @@
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
+#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*ConnectExternalWalletTest*
 
-using testing::Return;
-using testing::TestParamInfo;
-using testing::TestWithParam;
-using testing::Values;
+using ::testing::_;
+using ::testing::Return;
+using ::testing::TestParamInfo;
+using ::testing::TestWithParam;
+using ::testing::Values;
 
 namespace ledger::flows::test {
 using Result = endpoints::PostConnect::Result;
@@ -75,8 +77,12 @@ TEST_P(ConnectExternalWalletTest, Paths) {
           "status": )" +
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(*mock_ledger_impl_.rewards_service(), GetStringState("wallets.test"))
-      .WillByDefault(Return(std::move(test_wallet)));
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+          GetStringState("wallets.test", _))
+      .WillByDefault([test_wallet = std::move(test_wallet)](
+                                const std::string&, auto callback) {
+        std::move(callback).Run(std::move(test_wallet));
+      });
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
       .Run(query_parameters,

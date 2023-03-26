@@ -17,7 +17,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using ::testing::_;
-using ::testing::Invoke;
 
 // npm run test -- brave_unit_tests --filter=PublisherTest.*
 
@@ -48,26 +47,31 @@ class PublisherTest : public testing::Test {
     ON_CALL(mock_ledger_impl_, database())
         .WillByDefault(testing::Return(&mock_database_));
 
-    ON_CALL(*mock_ledger_impl_.rewards_service(),
-            GetDoubleState(state::kScoreA))
-        .WillByDefault(Invoke([this](const std::string& key) { return a_; }));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetDoubleState(state::kScoreA, _))
+        .WillByDefault([this](const std::string&, auto callback) {
+          std::move(callback).Run(a_);
+        });
 
-    ON_CALL(*mock_ledger_impl_.rewards_service(),
-            GetDoubleState(state::kScoreB))
-        .WillByDefault(Invoke([this](const std::string& key) { return b_; }));
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
+            GetDoubleState(state::kScoreB, _))
+        .WillByDefault([this](const std::string&, auto callback) {
+          std::move(callback).Run(b_);
+        });
 
-    ON_CALL(*mock_ledger_impl_.rewards_service(), SetDoubleState(_, _))
-        .WillByDefault(Invoke([this](const std::string& key, double value) {
-          if (key == state::kScoreA) {
-            a_ = value;
-            return;
-          }
+    ON_CALL(*mock_ledger_impl_.mock_rewards_service(), SetDoubleState(_, _, _))
+        .WillByDefault(
+            [this](const std::string& key, double value, auto callback) {
+              if (key == state::kScoreA) {
+                a_ = value;
+                std::move(callback).Run();
+              }
 
-          if (key == state::kScoreB) {
-            b_ = value;
-            return;
-          }
-        }));
+              if (key == state::kScoreB) {
+                b_ = value;
+                std::move(callback).Run();
+              }
+            });
   }
 
   base::test::TaskEnvironment task_environment_;

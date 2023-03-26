@@ -21,7 +21,6 @@
 // npm run test -- brave_unit_tests --filter=GetDrainTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -51,15 +50,15 @@ class GetDrainTest : public testing::Test {
 };
 
 TEST_F(GetDrainTest, DrainComplete) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
-      .WillByDefault(Invoke(
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
           [this](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = MakeDrainBody(request->url, "complete");
-            std::move(callback).Run(response);
-          }));
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = MakeDrainBody(request->url, "complete");
+            std::move(callback).Run(std::move(response));
+          });
 
   drain_.Request(test_drain_id_, [](const mojom::Result result,
                                     const mojom::DrainStatus status) {
@@ -69,15 +68,15 @@ TEST_F(GetDrainTest, DrainComplete) {
 }
 
 TEST_F(GetDrainTest, DrainPending) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
-      .WillByDefault(Invoke(
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
           [this](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = MakeDrainBody(request->url, "pending");
-            std::move(callback).Run(response);
-          }));
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = MakeDrainBody(request->url, "pending");
+            std::move(callback).Run(std::move(response));
+          });
 
   drain_.Request(test_drain_id_, [](const mojom::Result result,
                                     const mojom::DrainStatus status) {
@@ -87,15 +86,15 @@ TEST_F(GetDrainTest, DrainPending) {
 }
 
 TEST_F(GetDrainTest, DrainInvalidResponse) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
-      .WillByDefault(Invoke(
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
+      .WillByDefault(
           [this](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = MakeDrainBody(request->url, "thisdoesnotexist");
-            std::move(callback).Run(response);
-          }));
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 200;
+            response->url = request->url;
+            response->body = MakeDrainBody(request->url, "thisdoesnotexist");
+            std::move(callback).Run(std::move(response));
+          });
 
   drain_.Request(test_drain_id_, [](const mojom::Result result,
                                     const mojom::DrainStatus status) {

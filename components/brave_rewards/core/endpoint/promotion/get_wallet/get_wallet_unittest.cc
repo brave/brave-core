@@ -168,9 +168,10 @@ TEST_P(GetWalletTest, Paths) {
   const auto& expected_custodian = std::get<3>(params);
   const auto expected_linked = std::get<4>(params);
 
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault([&](mojom::UrlRequestPtr, LoadURLCallback callback) {
-        std::move(callback).Run(rewards_services_get_wallet_response);
+        std::move(callback).Run(
+            mojom::UrlResponse::New(rewards_services_get_wallet_response));
       });
 
   get_wallet_.Request(

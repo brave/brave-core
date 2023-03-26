@@ -71,8 +71,8 @@ TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
   if (wallet_already_exists) {
-    GetTestLedgerClient()->SetStringState(
-        state::kWalletUphold, FakeEncryption::Base64EncryptString("{}"));
+    GetLedgerImpl()->SetState(state::kWalletUphold,
+                              FakeEncryption::Base64EncryptString("{}"));
   }
 
   const auto wallet =

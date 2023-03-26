@@ -19,7 +19,6 @@
 // npm run test -- brave_unit_tests --filter=*PostOAuthUphold*
 
 using ::testing::_;
-using ::testing::Invoke;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -46,15 +45,15 @@ class PostOAuthUphold : public TestWithParam<PostOAuthUpholdParamType> {
 TEST_P(PostOAuthUphold, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([status_code = status_code, body = body](
+          [status_code = status_code, body = body](
                      mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
-            mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
-            std::move(callback).Run(response);
-          }));
+            auto response = mojom::UrlResponse::New();
+            response->status_code = status_code;
+            response->body = std::move(body);
+            std::move(callback).Run(std::move(response));
+          });
 
   RequestFor<endpoints::PostOAuthUphold>(
       &mock_ledger_impl_, "bb50f9d4782fb86a4302ef18179033abb17c257f")

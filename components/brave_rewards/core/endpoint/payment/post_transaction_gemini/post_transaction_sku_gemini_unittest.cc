@@ -18,7 +18,6 @@
 // npm run test -- brave_unit_tests --filter=PostTransactionGeminiTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace ledger {
 namespace endpoint {
@@ -32,15 +31,15 @@ class PostTransactionGeminiTest : public testing::Test {
 };
 
 TEST_F(PostTransactionGeminiTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_CREATED;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = net::HTTP_CREATED;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -52,15 +51,15 @@ TEST_F(PostTransactionGeminiTest, ServerOK) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_BAD_REQUEST;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = net::HTTP_BAD_REQUEST;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -72,15 +71,15 @@ TEST_F(PostTransactionGeminiTest, ServerError400) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_NOT_FOUND;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = net::HTTP_NOT_FOUND;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -92,15 +91,15 @@ TEST_F(PostTransactionGeminiTest, ServerError404) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError409) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_CONFLICT;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = net::HTTP_CONFLICT;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -112,15 +111,15 @@ TEST_F(PostTransactionGeminiTest, ServerError409) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = net::HTTP_INTERNAL_SERVER_ERROR;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = net::HTTP_INTERNAL_SERVER_ERROR;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -132,15 +131,15 @@ TEST_F(PostTransactionGeminiTest, ServerError500) {
 }
 
 TEST_F(PostTransactionGeminiTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.rewards_service(), LoadURL(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          Invoke([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 418;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+            auto response = mojom::UrlResponse::New();
+            response->status_code = 418;
+            response->url = request->url;
+            response->body = "";
+            std::move(callback).Run(std::move(response));
+          });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
