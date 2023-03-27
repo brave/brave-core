@@ -12,31 +12,30 @@ self.addEventListener('activate', function (event) {
 })
 
 self.addEventListener('message', (event) => {
-  const cmd = event.data['cmd']
+  const handler = async () => {
+    try {
+      event.ports[0].postMessage({ data: await handleMessage(...event.data) })
+    } catch (error) {
+      event.ports[0].postMessage({ error })
+    }
+  }
+  event.waitUntil(handler())
+})
 
+async function handleMessage(...args) {
+  const cmd = args[0]
   if (cmd == 'fetch') {
-    fetch('/simple.html')
-      .then((r) => r.text())
-      .then((_) => {
-        event.source.postMessage({ cmd, result: 'LOADED' })
-      })
-      .catch((_) => {
-        event.source.postMessage({ cmd, result: 'FAILED' })
-      })
+    const r = await fetch('/simple.html')
+    await r.text()
+    return 'LOADED'
   }
 
   if (cmd == 'hasGpc') {
-    event.source.postMessage({
-      cmd,
-      result: navigator.globalPrivacyControl !== undefined
-    })
+    return navigator.globalPrivacyControl !== undefined
   }
 
   if (cmd == 'checkGpc') {
     navigator.globalPrivacyControl = false
-    event.source.postMessage({
-      cmd,
-      result: navigator.globalPrivacyControl
-    })
+    return navigator.globalPrivacyControl
   }
-})
+}

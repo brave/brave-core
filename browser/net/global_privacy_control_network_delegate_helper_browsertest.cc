@@ -80,18 +80,7 @@ class GlobalPrivacyControlNetworkDelegateBrowserTest
       const content::ToRenderFrameHost& execution_target,
       std::string message) {
     constexpr char kScript[] = R"(
-      new Promise((resolve) => {
-        navigator.serviceWorker.addEventListener(
-          'message',
-          (msg) => {
-            if (msg.data['cmd'] === $1) {
-              resolve(msg.data['result'])
-            }
-          },
-          { once: true }
-        )
-        navigator.serviceWorker.controller.postMessage({cmd: $1})
-      })
+      messageServiceWorker($1)
     )";
     return content::EvalJs(execution_target,
                            content::JsReplace(kScript, message));
@@ -149,22 +138,8 @@ IN_PROC_BROWSER_TEST_F(GlobalPrivacyControlNetworkDelegateBrowserTest,
                   ->GetActiveWebContents()
                   ->GetPrimaryMainFrame();
 
-  EXPECT_TRUE(content::ExecJs(rfh, R"(
-    new Promise((resolve) => {
-      navigator.serviceWorker
-        .register('./service-workers-gpc.js')
-        .then((registration) => {
-          if (registration.active) {
-            resolve(true)
-          } else if (registration.installing) {
-            registration.installing.addEventListener('statechange', () => {
-              if (registration.active) {
-                resolve(true)
-              }
-            })
-          }
-        })
-    })
+  ASSERT_TRUE(content::ExecJs(rfh, R"(
+    registerServiceWorker('./service-workers-gpc.js')
   )"));
 
   StartTracking();
