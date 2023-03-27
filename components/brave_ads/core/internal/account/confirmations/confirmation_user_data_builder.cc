@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/created_at_timestamp_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/locale_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/mutated_user_data.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/odyssey_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/segment_user_data.h"
@@ -50,7 +49,6 @@ void ConfirmationUserDataBuilder::OnGetConversion(
   user_data.Merge(user_data::GetCreatedAtTimestamp(transaction_));
   user_data.Merge(user_data::GetLocale());
   user_data.Merge(user_data::GetMutated());
-  user_data.Merge(user_data::GetOdyssey());
   user_data.Merge(user_data::GetPlatform());
   user_data.Merge(user_data::GetRotatingHash(transaction_));
   user_data.Merge(user_data::GetSegment(transaction_));

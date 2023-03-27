@@ -60,7 +60,6 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/rpill/common/rpill.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -403,17 +402,6 @@ void AdsServiceImpl::GetDeviceId() {
 
 void AdsServiceImpl::OnGetDeviceId(std::string device_id) {
   sys_info_.device_id = std::move(device_id);
-
-  DetectUncertainFuture();
-}
-
-void AdsServiceImpl::DetectUncertainFuture() {
-  brave_rpill::DetectUncertainFuture(
-      base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture, AsWeakPtr()));
-}
-
-void AdsServiceImpl::OnDetectUncertainFuture(const bool is_uncertain_future) {
-  sys_info_.is_uncertain_future = is_uncertain_future;
 
   InitializePrefChangeRegistrar();
 

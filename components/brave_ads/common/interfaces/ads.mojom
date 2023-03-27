@@ -9,7 +9,6 @@ import "url/mojom/url.mojom";
 
 struct SysInfo {
   string device_id;
-  bool is_uncertain_future;
 };
 
 struct BuildChannelInfo {

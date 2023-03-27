@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
-#include "brave/components/brave_ads/core/sys_info.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -33,20 +32,6 @@ std::vector<privacy::cbr::Token> GetTokens(const int count) {
       R"(YbH2x8oMkQrPR0uX6h8LrcgXSrPlSg60FFfp8V+GM8eiCQTwPJ643kilmlKU/qNZM3e28Hw3W4GPAELnm/YxFzG6qJ4B1wVTBdl/myIa0M3QIdoOn2//+JH2u4jRtIgN)",
       R"(0/KAtyvRoYLhsQnwu4McuG7pglpDpi2BXQi//FwGu8m/O+iTh1Lijzpt2RCnotGh0Wid9efnojrYQH5NJv9GYOhUDX7yYHVjUorc6y6SkUaO1aATc42RciRQ0cmuQFQC)"};
 
-  // Blinded tokens used to create the above tokens:
-  // "blindedTokens" : [
-  //   "iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=",
-  //   "eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=",
-  //   "1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8=",
-  //   "9gtgRG1Fr6eQAfvIO7qGes2d0Zwnd7EXdOQI9ik0PRE=",
-  //   "iGH6L3EtdYLQiD63D/elY3nfI2R8BJzq/ufPtFkTAXg=",
-  //   "5mtjGDYwCC54EyFrr/5XoG98Cag7ughIYYr6mp8jmEQ=",
-  //   "8vU5KFc8AXn45rcqTGdM9MeUvG+z8RL9o27Lir4izBY=",
-  //   "huXHzk2SgmJkMauedoRUr/p86+jh1vKIa93O9FP2PQk=",
-  //   "cg9nMhSA7hVoBFbq5rEGVF7kgAoXqMmPApmxO99aGVU=",
-  //   "sBJB0ez2qw929moV4PZgw+AVbj7mBj9Mtqy3r2D0kw4="
-  // ]
-
   const int modulo = tokens_base64.size();
 
   std::vector<privacy::cbr::Token> tokens;
@@ -65,10 +50,8 @@ std::vector<privacy::cbr::Token> GetTokens(const int count) {
 
 class BatAdsRequestSignedTokensUrlRequestBuilderTest : public UnitTestBase {};
 
-TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
+TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   // Arrange
-  SysInfo().is_uncertain_future = true;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -90,45 +73,7 @@ TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForRPill) {
   expected_url_request->headers = {
       "digest: SHA-256=Sxq6H/YDThn/m2RSXsTzewSzKfAuGLh09w7m59VBYwU=",
       R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="tLMjZ1f52kBqbwJy0B0On2h82978eV8tf4oK/3UJyq4mQqCu5y2q6puaxoe969ENtwSPU292PvbTIFAZZzwaCA==")",
-      "content-type: application/json",
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content =
-      R"({"blindedTokens":["iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=","eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=","1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8="]})";
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrlForBPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = false;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  const std::vector<privacy::cbr::Token> tokens = GetTokens(3);
-  const std::vector<privacy::cbr::BlindedToken> blinded_tokens =
-      privacy::cbr::BlindTokens(tokens);
-
-  RequestSignedTokensUrlRequestBuilder url_request_builder(
-      GetWalletForTesting(), blinded_tokens);
-
-  // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(
-      "https://mywallet.ads.bravesoftware.com/v3/confirmation/token/"
-      "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7");
-  expected_url_request->headers = {
-      "digest: SHA-256=Sxq6H/YDThn/m2RSXsTzewSzKfAuGLh09w7m59VBYwU=",
-      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="tLMjZ1f52kBqbwJy0B0On2h82978eV8tf4oK/3UJyq4mQqCu5y2q6puaxoe969ENtwSPU292PvbTIFAZZzwaCA==")",
-      "content-type: application/json",
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+      "content-type: application/json", "accept: application/json"};
   expected_url_request->content =
       R"({"blindedTokens":["iEK4BXJINfAa0kzgpnnukGUAHvH5303+Y/msR5+u/nY=","eAAv7FNH2twpELsYf3glHLlOhnnlIMovIeEgEmcjgyo=","1G0+8546Y6jCIUXG0cKJq0qpkd6NsnG+4w9oSVW3gH8="]})";
   expected_url_request->content_type = "application/json";

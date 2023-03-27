@@ -68,7 +68,6 @@ source_set("browser") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
-    "//brave/components/rpill/common",
     "//chrome/browser/notifications",
     "//chrome/browser/profiles:profile",
     "//components/history/core/browser",

@@ -24,8 +24,6 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
-  SysInfo().is_uncertain_future = false;
-
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(2);
 
@@ -35,7 +33,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Act
   user_data_builder.Build(base::BindOnce([](base::Value::Dict user_data) {
     const base::Value expected_user_data = base::test::ParseJson(
-        R"({"odyssey":"host","platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})");
+        R"({"platform":"windows","totals":[{"ad_format":"ad_notification","view":2}]})");
     ASSERT_TRUE(expected_user_data.is_dict());
 
     EXPECT_EQ(expected_user_data, user_data);

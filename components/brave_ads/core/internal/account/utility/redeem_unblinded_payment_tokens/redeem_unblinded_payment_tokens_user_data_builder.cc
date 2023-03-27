@@ -9,7 +9,6 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/user_data/odyssey_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/totals_user_data.h"
 
@@ -26,7 +25,6 @@ RedeemUnblindedPaymentTokensUserDataBuilder::
 void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   base::Value::Dict user_data;
-  user_data.Merge(user_data::GetOdyssey());
   user_data.Merge(user_data::GetPlatform());
   user_data.Merge(user_data::GetTotals(unblinded_payment_tokens_));
 
