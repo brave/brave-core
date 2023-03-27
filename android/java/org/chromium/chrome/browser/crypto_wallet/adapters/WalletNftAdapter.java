@@ -130,12 +130,12 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
             this.subTitleText = itemView.findViewById(R.id.sub_title);
         }
 
-        public void resetObservers() {
+        public void resetListeners() {
             itemView.setOnClickListener(null);
         }
 
         public void disableClick() {
-            resetObservers();
+            resetListeners();
             itemView.setClickable(false);
         }
     }
