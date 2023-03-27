@@ -190,7 +190,7 @@ export const GridItemTopSites = styled('section')`
 
 export const GridItemSponsoredImageClickArea = styled.section<{ otherWidgetsHidden: boolean }>`
   grid-column: 2;
-  grid-row: 2 / span 3;
+  grid-row: 2 / span calc(var(--ntp-page-rows) - 1);
   height: calc(100% - 200px);
   width: 100%;
   position: relative;
