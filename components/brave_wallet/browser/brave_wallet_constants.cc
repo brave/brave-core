@@ -170,7 +170,7 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
 
 const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
   static base::NoDestructor<std::vector<mojom::BlockchainToken>> tokens(
-    {{"", "Ethereum", "", false, false, false, false, "ETH", 18, true, "", "",
+      {{"", "Ethereum", "", false, false, false, false, "ETH", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"", "Ethereum", "", false, false, false, false, "ETH", 18, true, "", "",
         mojom::kOptimismMainnetChainId, mojom::CoinType::ETH},
@@ -272,8 +272,7 @@ const std::vector<mojom::BlockchainToken>& GetTransakBuyTokens() {
         mojom::kBinanceSmartChainMainnetChainId, mojom::CoinType::ETH},
        {"0xD8763CBa276a3738E6DE85b4b3bF5FDed6D6cA73", "Celo Euro", "ceur.png",
         true, false, false, false, "CEUR", 18, true, "", "",
-        mojom::kCeloMainnetChainId, mojom::CoinType::ETH}}
-  );
+        mojom::kCeloMainnetChainId, mojom::CoinType::ETH}});
 
   return *tokens;
 }
