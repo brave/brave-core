@@ -132,6 +132,7 @@ export class WalletApiProxy {
       onNetworkListChanged: function () {
         store.dispatch(WalletActions.refreshNetworksAndTokens())
       },
+      onDiscoverAssetsStarted: function () { },
       onDiscoverAssetsCompleted: function (discoveredAssets) {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(discoveredAssets))
       },

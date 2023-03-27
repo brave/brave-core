@@ -492,6 +492,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& error_message)>;
   void GetSolanaTokenAccountsByOwner(
       const SolanaAddress& pubkey,
+      const std::string& chain_id,
       GetSolanaTokenAccountsByOwnerCallback callback);
 
  private:

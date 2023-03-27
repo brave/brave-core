@@ -1428,7 +1428,10 @@ interface BraveWalletServiceObserver {
   // Fired when the list of networks changes
   OnNetworkListChanged();
 
-  // Fired when a discovered asset query completes
+  // Fired when asset discovery starts
+  OnDiscoverAssetsStarted();
+
+  // Fired when asset discovery completes
   OnDiscoverAssetsCompleted(array<BlockchainToken> discovered_assets);
 
   // Fired when wallet service is being reset
