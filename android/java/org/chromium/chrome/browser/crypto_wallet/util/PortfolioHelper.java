@@ -132,52 +132,50 @@ public class PortfolioHelper {
                         if (resCount.incrementAndGet() == totalNetworks) {
                             mUserAssets.sort(Comparator.comparing(
                                     token -> mAssertSortPriorityPerCoinIndex.get(token.chainId)));
-                            for (AssetAccountsNetworkBalance assetAccountsNetworkBalance :
-                                    assetAccountsNetworkBalances) {
-                                // Sum across accounts
-                                for (AccountInfo accountInfo :
-                                        assetAccountsNetworkBalance.accountInfos) {
-                                    final String accountAddressLower =
-                                            accountInfo.address.toLowerCase(Locale.getDefault());
-                                    HashMap<String, Double> thisAccountTokensBalances =
-                                            Utils.getOrDefault(assetAccountsNetworkBalance
-                                                                       .blockchainTokensBalances,
-                                                    accountAddressLower,
-                                                    new HashMap<String, Double>());
-                                    for (BlockchainToken userAsset :
-                                            assetAccountsNetworkBalance.userAssetsList) {
-                                        String currentAssetKey = Utils.tokenToString(userAsset);
-                                        double prevTokenCryptoBalanceSum = Utils.getOrDefault(
-                                                mPerTokenCryptoSum, currentAssetKey, 0.0d);
-                                        final double thisCryptoBalance =
-                                                Utils.isNativeToken(
-                                                        assetAccountsNetworkBalance.networkInfo,
-                                                        userAsset)
-                                                ? Utils.getOrDefault(assetAccountsNetworkBalance
-                                                                             .nativeAssetsBalances,
-                                                        accountAddressLower, 0.0d)
-                                                : Utils.getOrDefault(thisAccountTokensBalances,
-                                                        currentAssetKey, 0.0d);
-                                        mPerTokenCryptoSum.put(currentAssetKey,
-                                                prevTokenCryptoBalanceSum + thisCryptoBalance);
-
-                                        double prevTokenFiatBalanceSum = Utils.getOrDefault(
-                                                mPerTokenFiatSum, currentAssetKey, 0.0d);
-                                        double thisTokenPrice = Utils.getOrDefault(
-                                                assetAccountsNetworkBalance.assetPrices,
-                                                userAsset.symbol.toLowerCase(Locale.getDefault()),
-                                                0.0d);
-                                        double thisFiatBalance = thisTokenPrice * thisCryptoBalance;
-                                        mPerTokenFiatSum.put(currentAssetKey,
-                                                prevTokenFiatBalanceSum + thisFiatBalance);
-
-                                        mTotalFiatSum += thisFiatBalance;
-                                    }
-                                }
-                            }
+                            createBalanceRecords(assetAccountsNetworkBalances);
                             callback.call(this);
                         }
                     });
+        }
+    }
+
+    private void createBalanceRecords(
+            List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances) {
+        for (AssetAccountsNetworkBalance assetAccountsNetworkBalance :
+                assetAccountsNetworkBalances) {
+            // Sum across accounts
+            for (AccountInfo accountInfo : assetAccountsNetworkBalance.accountInfos) {
+                final String accountAddressLower =
+                        accountInfo.address.toLowerCase(Locale.getDefault());
+                HashMap<String, Double> thisAccountTokensBalances =
+                        Utils.getOrDefault(assetAccountsNetworkBalance.blockchainTokensBalances,
+                                accountAddressLower, new HashMap<String, Double>());
+                for (BlockchainToken userAsset : assetAccountsNetworkBalance.userAssetsList) {
+                    String currentAssetKey = Utils.tokenToString(userAsset);
+                    double prevTokenCryptoBalanceSum =
+                            Utils.getOrDefault(mPerTokenCryptoSum, currentAssetKey, 0.0d);
+                    final double thisCryptoBalance =
+                            Utils.isNativeToken(assetAccountsNetworkBalance.networkInfo, userAsset)
+                            ? Utils.getOrDefault(assetAccountsNetworkBalance.nativeAssetsBalances,
+                                    accountAddressLower, 0.0d)
+                            : Utils.getOrDefault(thisAccountTokensBalances, currentAssetKey, 0.0d);
+
+                    mPerTokenCryptoSum.put(
+                            currentAssetKey, prevTokenCryptoBalanceSum + thisCryptoBalance);
+
+                    double prevTokenFiatBalanceSum =
+                            Utils.getOrDefault(mPerTokenFiatSum, currentAssetKey, 0.0d);
+                    double thisTokenPrice =
+                            Utils.getOrDefault(assetAccountsNetworkBalance.assetPrices,
+                                    userAsset.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                    double thisFiatBalance = thisTokenPrice * thisCryptoBalance;
+
+                    mPerTokenFiatSum.put(
+                            currentAssetKey, prevTokenFiatBalanceSum + thisFiatBalance);
+
+                    mTotalFiatSum += thisFiatBalance;
+                }
+            }
         }
     }
 
