@@ -33,7 +33,7 @@ CommanderServiceFactory::~CommanderServiceFactory() = default;
 
 KeyedService* CommanderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new CommanderService(static_cast<Profile*>(context));
+  return new CommanderService(Profile::FromBrowserContext(context));
 }
 
 }  // namespace commander
