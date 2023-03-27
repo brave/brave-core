@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc b/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc
+index 7d3b2a36ed999db404460e315201f2ef37443f91..1976fe65c7b46e16d1244805c52f82e1a05d188d 100644
+--- a/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc
++++ b/chrome/browser/ui/views/download/bubble/download_toolbar_button_view.cc
+@@ -59,7 +59,7 @@
+ 
+ namespace {
+ 
+-constexpr int kProgressRingRadius = 9;
++constexpr int kProgressRingRadius = 12;
+ constexpr int kProgressRingRadiusTouchMode = 12;
+ constexpr float kProgressRingStrokeWidth = 1.7f;
+ // 7.5 rows * 60 px per row = 450;
