@@ -214,7 +214,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     shortcut_text_->SetVerticalAlignment(gfx::VerticalAlignment::ALIGN_MIDDLE);
     shortcut_text_->SetVisible(false);
     const auto shortcut_font = shortcut_text_->font_list();
-    text_->SetFontList(shortcut_font.DeriveWithSizeDelta(
+    shortcut_text_->SetFontList(shortcut_font.DeriveWithSizeDelta(
         kFontSize - shortcut_font.GetFontSize()));
 
     SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_NEW_TAB));
