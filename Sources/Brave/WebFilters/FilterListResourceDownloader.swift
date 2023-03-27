@@ -41,27 +41,11 @@ public class FilterListResourceDownloader: ObservableObject {
     
     /// - Warning: Do not call this before we load core data
     @MainActor public func isEnabled(for componentID: String) -> Bool {
-      return allFilterListSettings.first(where: { $0.componentId == componentID })?.isEnabled ?? false
-    }
-    
-    /// Set the enabled status of a filter list setting
-    /// Otherwise it will create a new setting with the specified properties
-    ///
-    /// - Warning: Do not call this before we load core data
-    @MainActor public func upsertSetting(uuid: String, isEnabled: Bool) {
-      if let index = allFilterListSettings.firstIndex(where: { $0.uuid == uuid }) {
-        updateSetting(
-          uuid: uuid,
-          isEnabled: isEnabled,
-          componentId: allFilterListSettings[index].componentId
-        )
-      } else {
-        create(
-          uuid: uuid,
-          componentId: nil,
-          isEnabled: isEnabled
-        )
+      guard let setting = allFilterListSettings.first(where: { $0.componentId == componentID }) else {
+        return pendingDefaults[componentID] ?? FilterList.defaultOnComponentIds.contains(componentID)
       }
+      
+      return setting.isEnabled
     }
     
     /// Set the enabled status and componentId of a filter list setting if the setting exists.
@@ -240,11 +224,23 @@ public class FilterListResourceDownloader: ObservableObject {
   @MainActor public func enableFilterList(for componentID: String, isEnabled: Bool) {
     // Enable the setting
     defer { self.recordP3ACookieListEnabled() }
+    
     if let index = filterLists.firstIndex(where: { $0.componentId == componentID }) {
       // Only update the value if it has changed
       guard filterLists[index].isEnabled != isEnabled else { return }
       filterLists[index].isEnabled = isEnabled
+    } else if let uuid = FilterList.componentToUUID[componentID] {
+      let defaultToggle = FilterList.defaultOnComponentIds.contains(componentID)
+      
+      settingsManager.upsertSetting(
+        uuid: uuid, isEnabled: isEnabled, componentId: componentID,
+        allowCreation: defaultToggle != isEnabled
+      )
     } else {
+      assertionFailure(
+        "How can this be changed if we don't have a filter list or special shields toggle for this?"
+      )
+      
       // We haven't loaded the filter lists yet. Add it to the pending list.
       settingsManager.pendingDefaults[componentID] = isEnabled
     }
@@ -534,9 +530,8 @@ private extension FilterListLanguageProvider {
   /// This method returns the default value for this filter list if the user does not manually toggle it.
   /// - Warning: Make sure you use `componentID` to identify the filter list, as `uuid` will be deprecated in the future.
   var defaultToggle: Bool {
-    let componentIDsToOverride = [FilterList.mobileAnnoyancesComponentID]
-    
-    if componentIDsToOverride.contains(componentId) {
+    // First check if this is a statically set component
+    if FilterList.defaultOnComponentIds.contains(componentId) {
       return true
     }
     
