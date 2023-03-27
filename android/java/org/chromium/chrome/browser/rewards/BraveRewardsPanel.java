@@ -1899,7 +1899,7 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetPublishersVisitedCount(int count) {
-        if (mPopupView != null && count > 0) {
+        if (mPopupView != null) {
             mPopupView.findViewById(R.id.rewards_panel_unverified_creator_section)
                     .setVisibility(View.VISIBLE);
             TextView rewardsPanelUnverifiedCreatorCountText =
