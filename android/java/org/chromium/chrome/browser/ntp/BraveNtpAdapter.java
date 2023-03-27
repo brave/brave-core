@@ -32,6 +32,7 @@ import com.bumptech.glide.RequestManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.QRCodeShareDialogFragment;
@@ -94,6 +95,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static final int ONE_ITEM_SPACE = 1;
     private static final int TWO_ITEMS_SPACE = 2;
+    private static final String TAG = "BraveNtpAdapter";
 
     public BraveNtpAdapter(Activity activity, OnBraveNtpListener onBraveNtpListener,
             RequestManager glide, CopyOnWriteArrayList<FeedItemsCard> newsItems,
@@ -523,7 +525,11 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setImageCreditAlpha(float alpha) {
         if (mImageCreditAlpha != alpha) {
             mImageCreditAlpha = alpha;
-            notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
+            try {
+                notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
+            } catch (IllegalStateException e) {
+                Log.e(TAG, "setImageCreditAlpha: " + e.getMessage());
+            }
         }
     }
 
