@@ -1109,6 +1109,7 @@ interface JsonRpcService {
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
+  UnstoppableDomainsResolveDns(string domain) => (url.mojom.Url? url, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node for
   // coin ETH and other nodes with corresponding coin types
