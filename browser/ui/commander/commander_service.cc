@@ -152,35 +152,16 @@ void CommanderService::Show() {
   // Note: This posts a task because we can't change the Omnibox text while
   // autocompleting.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          [](base::WeakPtr<CommanderService> service) {
-            if (auto* omnibox = service->GetOmnibox()) {
-              omnibox->SetFocus(true);
-
-              auto text = base::StrCat({commander::kCommandPrefix, u" "});
-              omnibox->SetUserText(text);
-              omnibox->SetCaretPos(text.size());
-              service->UpdateText(true);
-            }
-          },
-          weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE, base::BindOnce(&CommanderService::ShowCommander,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CommanderService::Hide() {
   // Note: This posts a task because we can't change the Omnibox text while
   // autocompleting.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](base::WeakPtr<CommanderService> service) {
-                       service->Reset();
-
-                       if (auto* omnibox = service->GetOmnibox();
-                           omnibox && service->IsShowing()) {
-                         omnibox->RevertAll();
-                       }
-                     },
-                     weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE, base::BindOnce(&CommanderService::HideCommander,
+                                weak_ptr_factory_.GetWeakPtr()));
 }
 
 void CommanderService::Reset() {
@@ -243,6 +224,25 @@ void CommanderService::UpdateCommands() {
 void CommanderService::NotifyObservers() {
   for (auto& observer : observers_) {
     observer.OnCommanderUpdated();
+  }
+}
+
+void CommanderService::ShowCommander() {
+  if (auto* omnibox = GetOmnibox()) {
+    omnibox->SetFocus(true);
+
+    auto text = base::StrCat({commander::kCommandPrefix, u" "});
+    omnibox->SetUserText(text);
+    omnibox->SetCaretPos(text.size());
+    UpdateText(true);
+  }
+}
+
+void CommanderService::HideCommander() {
+  Reset();
+
+  if (auto* omnibox = GetOmnibox(); omnibox && IsShowing()) {
+    omnibox->RevertAll();
   }
 }
 

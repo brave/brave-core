@@ -54,6 +54,9 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   void UpdateCommands();
   void NotifyObservers();
 
+  void ShowCommander();
+  void HideCommander();
+
   CommandSources command_sources_;
 
   std::u16string last_searched_;

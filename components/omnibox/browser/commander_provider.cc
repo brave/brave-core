@@ -61,8 +61,8 @@ void CommanderProvider::OnCommanderUpdated() {
     const auto& option = items[i];
     AutocompleteMatch match(this, rank--, false,
                             AutocompleteMatchType::BOOKMARK_TITLE);
-    match.action =
-        base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId());
+    match.actions.push_back(
+        base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId()));
 
     // This is neat but it would be nice if we could always show it instead of
     // only when we have a result selected.
