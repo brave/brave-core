@@ -2393,6 +2393,12 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_TOOLTIP" desc="Tooltip label for the button to open all downloads">
         Show all downloads in a new tab
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PROMO" desc="Text for the in-product-help bubble shown for the download bubble.">
+        Manage files as they download, and open them when they’re done
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_PROMO_TITLE" desc="Title for the in-product-help bubble shown for the download bubble.">
+        Find your downloads here
+      </message>
       <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_STATUS_MESSAGE_WITH_SEPARATOR" desc="The download status and message are separated by a symbol, in this case bullet •, with a white space before it and a white space after it. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
         <ph name="STATUS">$1<ex>100/120 MB</ex></ph> • <ph name="MESSAGE">$2<ex>Opening in 10 seconds...</ex></ph>
       </message>
@@ -7161,6 +7167,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SIDE_PANEL_CUSTOMIZE_CHROME_TITLE" desc="The name of the Customize Brave feature in the side panel combo box.">
         Customize Brave
       </message>
+        <message name="IDS_SIDE_PANEL_TOOLBAR_BUTTON_CXMENU_UNPIN" desc="The label of the context menu item for unpinning a side panel toolbar button.">
+          Unpin
+        </message>
 
       <!-- Bookmarks strings -->
       <message name="IDS_BOOKMARKS_SORT_BY_TYPE" desc="Menu item label for selecting the bookmarks sort type.">
@@ -13099,8 +13108,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_AOA" desc="Menu item text. The user selects this to use their phone, once physically connected with a USB cable, to sign in to a web site on their computer. This appears next to the similar string 'Your phone' with TC ID 4865460888230929643.">
         Your phone with a USB cable
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_DIFFERENT_AUTHENTICATOR_WIN" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication) connected to the computer, or a hardware-based authentication mechanism that is built in to the computer, such as a fingerprint reader.">
-        External security key or built-in sensor
+      <message name="IDS_WEBAUTHN_TRANSPORT_POPUP_DIFFERENT_AUTHENTICATOR_WIN" desc="Menu item text. The user selects this to use Windows Hello or a security key (an external physical device for user authentication). Windows Hello is a Microsoft brand and should be translated the same as it is in Windows. If you edit the language code in https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0 you can see how Microsoft translates it in several languages. (It is often left untranslated.)">
+        Windows Hello or external security key
       </message>
       <message name="IDS_WEBAUTHN_USB_ACTIVATE_DESCRIPTION" desc="Description in the dialog instructing the user to plug in and activate (e.g. press a button on) their USB security key (an external physical device for user authentication).">
         Insert your security key and touch it
@@ -13672,6 +13681,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <!-- In product help bubble dialog for users referred from ESB promotions -->
     <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_IPH_BUBBLE_TEXT" desc="The text on an In-Product-Help bubble that is shown when a user navigates to the security settings page from an ESB promotion">
       Get more protection against dangerous websites and downloads
+    </message>
+    <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_IPH_BUBBLE_CLOSE_BUTTON_ARIA_LABEL_TEXT" desc="The accessibility label associated with the In-Product-Help bubble's close button">
+      Close tip
     </message>
 
     <!-- Tailored security dialog for consented primary accounts -->
