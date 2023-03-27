@@ -18,8 +18,7 @@ static_library("browser") {
   ]
 
   public_deps = [
-    "rs/cxx",
-    "rs/cxx:shim",
+    "rs/cxx:rust_lib",
   ]
 
   deps = [

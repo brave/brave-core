@@ -1,0 +1,108 @@
+import("//build/rust/rust_static_library.gni")
+
+rust_static_library("sharks_rust_lib") {
+  crate_name = "sharks"
+  crate_root = "crate/sharks/src/lib.rs"
+  allow_unsafe = true
+  edition = "2018"
+  sources = [
+    "crate/sharks/src/lib.rs",
+  ]
+
+  deps = [
+    "//brave/third_party/rust/ff/v0_13:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+  ]
+
+  features = [
+    "zeroize_memory",
+  ]
+}
+
+rust_static_library("strobe_rng_rust_lib") {
+  crate_name = "strobe_rng"
+  crate_root = "crate/strobe-rng/src/lib.rs"
+  allow_unsafe = true
+  edition = "2018"
+  sources = [
+    "crate/strobe-rng/src/lib.rs",
+  ]
+
+  deps = [
+    "//brave/third_party/rust/strobe_rs/v0_8:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+  ]
+}
+
+rust_static_library("adss_rs_rust_lib") {
+  crate_name = "adss_rs"
+  crate_root = "crate/adss-rs/src/lib.rs"
+  allow_unsafe = true
+  edition = "2018"
+  sources = [
+    "crate/adss-rs/src/lib.rs",
+  ]
+
+  deps = [
+    ":sharks_rust_lib",
+    ":strobe_rng_rust_lib",
+    "//brave/third_party/rust/strobe_rs/v0_8:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+  ]
+}
+
+rust_static_library("ppoprf_rust_lib") {
+  crate_name = "ppoprf"
+  crate_root = "crate/ppoprf/src/lib.rs"
+  allow_unsafe = true
+  edition = "2018"
+  sources = [
+    "crate/ppoprf/src/lib.rs",
+  ]
+
+
+# rand_core_ristretto = { version="0.5.1", package="rand_core" }
+
+  deps = [
+    ":strobe_rng_rust_lib",
+    "//brave/third_party/rust/base64/v0_13:lib",
+    "//brave/third_party/rust/bincode/v1:lib",
+    "//brave/third_party/rust/bitvec/v1:lib",
+    "//brave/third_party/rust/curve25519_dalek/v3:lib",
+    "//brave/third_party/rust/derive_more/v0_99:lib",
+    "//brave/third_party/rust/rand/v0_8:lib",
+    "//brave/third_party/rust/rand_core/v0_5:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/strobe_rs/v0_8:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+    "//third_party/rust/serde/v1:lib",
+  ]
+
+  aliased_deps = {
+    rand_core_ristretto = "//brave/third_party/rust/rand_core/v0_5:lib__rlib"
+  }
+}
+
+rust_static_library("rust_lib") {
+  crate_name = "sta_rs"
+  crate_root = "crate/sta-rs/src/lib.rs"
+  allow_unsafe = true
+  edition = "2018"
+  sources = [
+    "crate/sta-rs/src/lib.rs",
+  ]
+
+  deps = [
+    ":adss_rs_rust_lib",
+    ":ppoprf_rust_lib",
+    ":strobe_rng_rust_lib",
+    "//brave/third_party/rust/strobe_rs/v0_8:lib",
+    "//brave/third_party/rust/rand_core/v0_6:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+  ]
+}

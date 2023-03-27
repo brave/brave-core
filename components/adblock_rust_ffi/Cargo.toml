@@ -13,7 +13,7 @@ libc = "0.2"
 crate-type = [
     "rlib",
 ]
-name = "adblock"
+name = "adblock_ffi"
 
 [features]
 cbindgen = []

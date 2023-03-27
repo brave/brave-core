@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cxx = "1.0"
+cxx = { version = "1.0", features = [ "alloc", "std" ] }
 ed25519-dalek-bip32 = "0.2.0"
 curve25519-dalek = "3.2.0"
 

@@ -1,0 +1,57 @@
+[package]
+name = "rayon-core"
+version = "1.11.0"
+authors = ["Niko Matsakis <niko@alum.mit.edu>",
+           "Josh Stone <cuviper@gmail.com>"]
+description = "Core APIs for Rayon"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rayon-rs/rayon"
+documentation = "https://docs.rs/rayon/"
+rust-version = "1.59"
+edition = "2021"
+links = "rayon-core"
+build = "build.rs"
+readme = "README.md"
+keywords = ["parallel", "thread", "concurrency", "join", "performance"]
+categories = ["concurrency"]
+
+# Some dependencies may not be their latest version, in order to support older rustc.
+[dependencies]
+num_cpus = "1.2"
+crossbeam-channel = "0.5.0"
+crossbeam-deque = "0.8.1"
+crossbeam-utils = "0.8.0"
+
+[dev-dependencies]
+rand = "0.8"
+rand_xorshift = "0.3"
+scoped-tls = "1.0"
+
+[target.'cfg(unix)'.dev-dependencies]
+libc = "0.2"
+
+[[test]]
+name = "stack_overflow_crash"
+path = "tests/stack_overflow_crash.rs"
+
+# NB: having one [[test]] manually defined means we need to declare them all
+
+[[test]]
+name = "double_init_fail"
+path = "tests/double_init_fail.rs"
+
+[[test]]
+name = "init_zero_threads"
+path = "tests/init_zero_threads.rs"
+
+[[test]]
+name = "scope_join"
+path = "tests/scope_join.rs"
+
+[[test]]
+name = "simple_panic"
+path = "tests/simple_panic.rs"
+
+[[test]]
+name = "scoped_threadpool"
+path = "tests/scoped_threadpool.rs"

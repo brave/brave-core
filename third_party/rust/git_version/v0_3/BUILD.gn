@@ -1,0 +1,29 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "git_version"
+  epoch = "0.3"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "0.3.5"
+  cargo_pkg_authors = "Mara Bos <m-ou.se@m-ou.se>, Maarten de Vries <maarten@de-vri.es>, David Roundy <daveroundy@gmail.com>"
+  cargo_pkg_name = "git-version"
+  cargo_pkg_description = "Compile the git version (tag name, or hash otherwise) and dirty state into your program."
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/git_version_macro/v0_3:lib",
+    "//brave/third_party/rust/proc_macro_hack/v0_5:lib",
+  ]
+}

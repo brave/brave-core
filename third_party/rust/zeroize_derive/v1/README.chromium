@@ -1,0 +1,7 @@
+Name: zeroize_derive
+URL: https://crates.io/crates/zeroize_derive
+Description: Custom derive support for zeroize
+Version: 1.3.3
+Security Critical: yes
+License: Apache 2.0
+Revision: fdc19f7f0c5590dcd003982144b9af772829c654

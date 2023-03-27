@@ -1,0 +1,31 @@
+[package]
+name = "rayon"
+version = "1.7.0"
+authors = ["Niko Matsakis <niko@alum.mit.edu>",
+           "Josh Stone <cuviper@gmail.com>"]
+description = "Simple work-stealing parallelism for Rust"
+rust-version = "1.59"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/rayon-rs/rayon"
+documentation = "https://docs.rs/rayon/"
+readme = "README.md"
+keywords = ["parallel", "thread", "concurrency", "join", "performance"]
+categories = ["concurrency"]
+exclude = ["/ci/*", "/scripts/*", "/.github/*", "/bors.toml"]
+
+[workspace]
+members = ["rayon-demo", "rayon-core"]
+exclude = ["ci"]
+
+[dependencies]
+rayon-core = { version = "1.11.0", path = "rayon-core" }
+
+# This is a public dependency!
+[dependencies.either]
+version = "1.0"
+default-features = false
+
+[dev-dependencies]
+rand = "0.8"
+rand_xorshift = "0.3"

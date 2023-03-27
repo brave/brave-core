@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/cargo.gni")
+import("//build/rust/rust_static_library.gni")
 
 # Generate FFI header from Rust source
 cargo_cbindgen("speedreader_ffi_header") {
@@ -20,13 +21,33 @@ cargo_cbindgen("speedreader_ffi_header") {
   ]
 }
 
-rust_ffi("ffi") {
+rust_static_library("lib") {
+  visibility = [ ":*" ]
+  crate_name = "speedreader_ffi"
+  crate_root = "lib.rs"
+  edition = "2018"
+  allow_unsafe = true
+  sources = [
+    "charbuf.rs",
+    "lib.rs",
+    "speedreader.rs",
+  ]
+
+  deps = [
+    "//brave/components/speedreader/rust/lib",
+    "//third_party/rust/libc/v0_2:lib",
+  ]
+}
+
+source_set("ffi") {
   sources = [
     "speedreader.cc",
     "speedreader.h",
   ]
 
   deps = [
+    ":lib",
+    "//build/rust:cxx_cppdeps",
     ":speedreader_ffi_header",
     "//base",
   ]

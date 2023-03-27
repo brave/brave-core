@@ -1,0 +1,7 @@
+Name: rayon-core
+URL: https://crates.io/crates/rayon-core
+Description: Core APIs for Rayon
+Version: 1.11.0
+Security Critical: no
+License: Apache 2.0
+Revision: 6236214d717694917e77aa1c16d91176b9bc2fff

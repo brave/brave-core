@@ -1,0 +1,25 @@
+[package]
+name = "digest"
+description = "Traits for cryptographic hash functions"
+version = "0.9.0"
+authors = ["RustCrypto Developers"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+edition = "2018"
+documentation = "https://docs.rs/digest"
+repository = "https://github.com/RustCrypto/traits"
+keywords = ["digest", "crypto", "hash"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+generic-array = "0.14"
+blobby = { version = "0.1", optional = true }
+
+[features]
+alloc = []
+std = ["alloc"]
+dev = ["blobby"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

@@ -1,0 +1,7 @@
+Name: digest
+URL: https://crates.io/crates/digest
+Description: Traits for cryptographic hash functions and message authentication codes
+Version: 0.10.6
+Security Critical: yes
+License: Apache 2.0
+Revision: a9ef4f6d78455283a62987d6c163c55ed62330fc

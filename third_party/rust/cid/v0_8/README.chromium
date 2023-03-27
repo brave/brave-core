@@ -1,0 +1,7 @@
+Name: cid
+URL: https://crates.io/crates/cid
+Description: CID in rust
+Version: 0.8.6
+Security Critical: no
+License: MIT
+Revision: 1791fd3ba358bf0ab1eb8a7f5cb0be8cf6275ef4

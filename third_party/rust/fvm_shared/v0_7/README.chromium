@@ -1,0 +1,7 @@
+Name: fvm_shared
+URL: https://crates.io/crates/fvm_shared
+Description: Filecoin Virtual Machine shared types and functions
+Version: 0.7.1
+Security Critical: no
+License: Apache 2.0
+Revision: 654b87308f2513936d04c1d5709569e5ae9a7a99

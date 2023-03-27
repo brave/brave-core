@@ -1,0 +1,7 @@
+Name: unsigned-varint
+URL: https://crates.io/crates/unsigned-varint
+Description: unsigned varint encoding
+Version: 0.7.1
+Security Critical: no
+License: MIT
+Revision: cfde4c7bb214e5348b4e34f345c54d236069a0b2

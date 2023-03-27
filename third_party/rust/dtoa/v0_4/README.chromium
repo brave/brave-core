@@ -1,0 +1,7 @@
+Name: dtoa
+URL: https://crates.io/crates/dtoa
+Description: Fast functions for printing floating-point primitives to an io::Write
+Version: 0.4.8
+Security Critical: yes
+License: Apache 2.0
+Revision: 74dfce1c414cd264ab269528ecb5c908bb780ca4

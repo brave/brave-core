@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <id>tag:theregister.co.uk,2005:feed/theregister.co.uk/science/</id>
+    <title>The Register - Science</title>
+    <link rel="self" type="application/atom+xml" href="https://www.theregister.co.uk/science/headlines.atom"/>
+    <link rel="alternate" type="text/html" href="https://www.theregister.co.uk/science/"/>
+    <rights>Copyright © 2019, Situation Publishing</rights>
+    <author>
+        <name>Team Register</name>
+        <email>webmaster@theregister.co.uk</email>
+        <uri>https://www.theregister.co.uk/odds/about/contact/</uri>
+    </author>
+    <icon>https://www.theregister.co.uk/Design/graphics/icons/favicon.png</icon>
+    <subtitle>Biting the hand that feeds IT — sci/tech news and views for the world</subtitle>
+    <logo>https://www.theregister.co.uk/Design/graphics/Reg_default/The_Register_r.png</logo>
+    <updated>2019-07-31T11:54:28Z</updated>
+    <entry>
+        <id>tag:theregister.co.uk,2005:story204156</id>
+        <updated>2019-07-31T11:54:28Z</updated>
+        <author>
+            <name>Richard Speed</name>
+            <uri>https://search.theregister.co.uk/?author=Richard%20Speed</uri>
+        </author>
+        <link rel="alternate" type="text/html" href="http://go.theregister.com/feed/www.theregister.co.uk/2019/07/31/orbitbeyond_drops_nasa_moon_contract/"/>
+        <title type="html">Will someone plz dump our shizz on the Moon, NASA begs as one of the space biz vendors drops out</title>
+        <summary type="html" xml:base="http://www.theregister.co.uk/">&lt;h4&gt;OrbitBeyond begone: Getting to the Moon is &lt;i&gt;hard&lt;/i&gt;&lt;/h4&gt; &lt;p&gt;NASA made a slew of announcements yesterday aimed at bigging up the agency's efforts to get commercial companies involved with its deep space ambitions – despite one vendor dumping plans for a 2020 lunar landing.…&lt;/p&gt;</summary>
+    </entry>
+    <entry>
+        <id>tag:theregister.co.uk,2005:story204131</id>
+        <updated>2019-07-30T05:41:09Z</updated>
+        <author>
+            <name>Kieren McCarthy</name>
+            <uri>https://search.theregister.co.uk/?author=Kieren%20McCarthy</uri>
+        </author>
+        <link rel="alternate" type="text/html" href="http://go.theregister.com/feed/www.theregister.co.uk/2019/07/30/french_arming_satellites/"/>
+        <title type="html">Satellites with lasers and machine guns coming! China's new plans? Trump's Space Force? Nope, the French</title>
+        <summary type="html" xml:base="http://www.theregister.co.uk/">&lt;h4&gt;After all, what could possibly go wrong, apart from everything?&lt;/h4&gt; &lt;p&gt;France is threatening to stick submachine guns on its next generation of satellites as part of an "active space defense" strategy that would enable it to shoot down other space hardware.…&lt;/p&gt;</summary>
+    </entry>
+</feed>

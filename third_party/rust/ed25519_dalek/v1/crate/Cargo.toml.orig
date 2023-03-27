@@ -1,0 +1,65 @@
+[package]
+name = "ed25519-dalek"
+version = "1.0.1"
+edition = "2018"
+authors = ["isis lovecruft <isis@patternsinthevoid.net>"]
+readme = "README.md"
+license = "BSD-3-Clause"
+repository = "https://github.com/dalek-cryptography/ed25519-dalek"
+homepage = "https://dalek.rs"
+documentation = "https://docs.rs/ed25519-dalek"
+keywords = ["cryptography", "ed25519", "curve25519", "signature", "ECC"]
+categories = ["cryptography", "no-std"]
+description = "Fast and efficient ed25519 EdDSA key generations, signing, and verification in pure Rust."
+exclude = [ ".gitignore", "TESTVECTORS", "res/*" ]
+
+[badges]
+travis-ci = { repository = "dalek-cryptography/ed25519-dalek", branch = "master"}
+
+[package.metadata.docs.rs]
+# Disabled for now since this is borked; tracking https://github.com/rust-lang/docs.rs/issues/302
+# rustdoc-args = ["--html-in-header", ".cargo/registry/src/github.com-1ecc6299db9ec823/curve25519-dalek-0.13.2/rustdoc-include-katex-header.html"]
+features = ["nightly", "batch"]
+
+[dependencies]
+curve25519-dalek = { version = "3", default-features = false }
+ed25519 = { version = "1", default-features = false }
+merlin = { version = "2", default-features = false, optional = true }
+rand = { version = "0.7", default-features = false, optional = true }
+rand_core = { version = "0.5", default-features = false, optional = true }
+serde_crate = { package = "serde", version = "1.0", default-features = false, optional = true }
+serde_bytes = { version = "0.11", optional = true }
+sha2 = { version = "0.9", default-features = false }
+zeroize = { version = "1", default-features = false, features = ["zeroize_derive"] }
+
+[dev-dependencies]
+hex = "^0.4"
+bincode = "1.0"
+serde_json = "1.0"
+criterion = "0.3"
+rand = "0.7"
+serde_crate = { package = "serde", version = "1.0", features = ["derive"] }
+toml = { version = "0.5" }
+
+[[bench]]
+name = "ed25519_benchmarks"
+harness = false
+# This doesn't seem to work with criterion, cf. https://github.com/bheisler/criterion.rs/issues/344
+# For now, we have to bench by doing `cargo bench --features="batch"`.
+# required-features = ["batch"]
+
+[features]
+default = ["std", "rand", "u64_backend"]
+std = ["curve25519-dalek/std", "ed25519/std", "serde_crate/std", "sha2/std", "rand/std"]
+alloc = ["curve25519-dalek/alloc", "rand/alloc", "zeroize/alloc"]
+nightly = ["curve25519-dalek/nightly"]
+serde = ["serde_crate", "serde_bytes", "ed25519/serde"]
+batch = ["merlin", "rand"]
+# This feature enables deterministic batch verification.
+batch_deterministic = ["merlin", "rand", "rand_core"]
+asm = ["sha2/asm"]
+# This features turns off stricter checking for scalar malleability in signatures
+legacy_compatibility = []
+u64_backend = ["curve25519-dalek/u64_backend"]
+u32_backend = ["curve25519-dalek/u32_backend"]
+simd_backend = ["curve25519-dalek/simd_backend"]

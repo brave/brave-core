@@ -1,0 +1,19 @@
+diff --git a/third_party/rust/itoa/v0_4/BUILD.gn b/third_party/rust/itoa/v0_4/BUILD.gn
+index c1cb11bc32529df38b8579ceb92d47283cd5f87e..6339060e9df98def1cc5b585d0c5f0f4a1045af2 100644
+--- a/third_party/rust/itoa/v0_4/BUILD.gn
++++ b/third_party/rust/itoa/v0_4/BUILD.gn
+@@ -12,6 +12,7 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
++  visibility += [ "//brave/third_party/rust/*" ]
+   crate_root = "crate/src/lib.rs"
+ 
+   # Unit tests skipped. Generate with --with-tests to include them.
+@@ -27,4 +28,6 @@ cargo_crate("lib") {
+   library_configs += [ "//build/config/compiler:no_chromium_code" ]
+   executable_configs -= [ "//build/config/compiler:chromium_code" ]
+   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
++
++  features = [ "std" ]
+ }

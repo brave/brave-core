@@ -70,7 +70,7 @@ if (!is_ios) {
 
     deps = [
       "//base",
-      "//brave/components/adblock_rust_ffi",
+      "//brave/components/adblock_rust_ffi:rust_lib",
       "//brave/components/brave_component_updater/browser",
       "//brave/components/brave_shields/common",
       "//brave/components/brave_shields/common:mojom",
@@ -118,7 +118,7 @@ source_set("component_installer") {
   ]
   deps = [
     "//base",
-    "//brave/components/adblock_rust_ffi",
+    "//brave/components/adblock_rust_ffi:rust_lib",
     "//brave/components/brave_component_updater/browser",
     "//components/component_updater:component_updater",
     "//crypto",

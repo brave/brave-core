@@ -1,0 +1,16 @@
+[package]
+authors = ["Jacob Brown <kardeiz@gmail.com>"]
+edition = "2018"
+name = "serde_tuple"
+version = "0.5.0"
+description = "De/serialize structs with named fields as array of values"
+license = "MIT"
+repository = "https://github.com/kardeiz/serde_tuple"
+readme = "README.md"
+
+[dependencies]
+serde_tuple_macros = { version = "0.5", path = "serde_tuple_macros" }
+serde = { version = "1", features = ["derive"] }
+
+[dev-dependencies]
+serde_json = "1.0.37"

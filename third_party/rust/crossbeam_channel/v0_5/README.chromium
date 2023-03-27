@@ -1,0 +1,7 @@
+Name: crossbeam-channel
+URL: https://crates.io/crates/crossbeam-channel
+Description: Multi-producer multi-consumer channels for message passing
+Version: 0.5.7
+Security Critical: no
+License: Apache 2.0
+Revision: 721382b00b5dadd81954ed66764d547e2f1bb7a3

@@ -1,0 +1,7 @@
+Name: bimap
+URL: https://crates.io/crates/bimap
+Description: Bijective maps
+Version: 0.6.3
+Security Critical: no
+License: Apache 2.0
+Revision: 8e5a4e224b95857da8a28a7dd4a1a9eec241ef7d

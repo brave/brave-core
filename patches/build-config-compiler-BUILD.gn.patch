@@ -1,0 +1,13 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index d3adf9735ca958a6f13d6a934b45620c7df88e64..67b7e238e3b9cabaddd9fad17480c107284446c5 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -874,7 +874,7 @@ config("compiler") {
+     # Require `unsafe` blocks even in `unsafe` fns. This is intended to become
+     # an error by default eventually; see
+     # https://github.com/rust-lang/rust/issues/71668
+-    "-Dunsafe_op_in_unsafe_fn",
++    #"-Dunsafe_op_in_unsafe_fn",
+ 
+     # To make Rust .d files compatible with ninja
+     "-Zdep-info-omit-d-target",

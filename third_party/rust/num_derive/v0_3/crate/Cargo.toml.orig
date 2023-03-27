@@ -1,0 +1,42 @@
+[package]
+authors = ["The Rust Project Developers"]
+description = "Numeric syntax extensions"
+documentation = "https://docs.rs/num-derive"
+homepage = "https://github.com/rust-num/num-derive"
+keywords = ["mathematics", "numerics"]
+categories = [ "science" ]
+license = "MIT OR Apache-2.0"
+name = "num-derive"
+repository = "https://github.com/rust-num/num-derive"
+version = "0.3.3"
+readme = "README.md"
+exclude = ["/bors.toml", "/ci/*", "/.github/*"]
+edition = "2018"
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = "1"
+
+[dev-dependencies]
+num = "0.3"
+num-traits = "0.2"
+
+[features]
+full-syntax = ["syn/full"]
+
+[lib]
+name = "num_derive"
+proc-macro = true
+test = false
+
+# Most of the tests are left implicily detected, compiled for Rust 2018,
+# but let's try a few of them with the old 2015 edition too.
+
+[[test]]
+name = "newtype-2015"
+edition = "2015"
+
+[[test]]
+name = "trivial-2015"
+edition = "2015"

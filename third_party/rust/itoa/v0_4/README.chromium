@@ -1,0 +1,7 @@
+Name: itoa
+URL: https://crates.io/crates/itoa
+Description: Fast functions for printing integer primitives to an io::Write
+Version: 0.4.8
+Security Critical: no
+License: Apache 2.0
+Revision: de247d6ac25d2e62d4cbd195f064ed4af35fd4eb

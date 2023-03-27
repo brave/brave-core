@@ -26,6 +26,8 @@ const build = (buildConfig = config.defaultBuildConfig, options = {}) => {
   util.touchOverriddenFiles()
   util.updateBranding()
 
+  util.buildNativeRedirectCC()
+
   if (config.xcode_gen_target) {
     util.generateXcodeWorkspace()
   } else {

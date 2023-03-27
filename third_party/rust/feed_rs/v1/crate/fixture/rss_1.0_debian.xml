@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href="../../english/security/dsa-rdf.css" type="text/css"?>
+<rdf:RDF
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns="http://purl.org/rss/1.0/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xml:lang="en"
+>
+<channel rdf:about="https://www.debian.org/News/news.rdf">
+  <title>Debian News</title>
+  <link>https://www.debian.org/News/</link>
+  <description>
+Debian Latest News
+  </description>
+  <dc:date>2022-12-20T23:28:24+00:00</dc:date>
+  <items>
+    <rdf:Seq>
+<rdf:li resource="https://www.debian.org/News/2022/20221217" />
+<rdf:li resource="https://www.debian.org/News/2022/2022091002" />
+<rdf:li resource="https://www.debian.org/News/2022/20220910" />
+<rdf:li resource="https://www.debian.org/News/2022/20220807" />
+<rdf:li resource="https://www.debian.org/News/2022/20220724" />
+<rdf:li resource="https://www.debian.org/News/2022/20220709" />
+    </rdf:Seq>
+  </items>
+</channel>
+<item rdf:about="https://www.debian.org/News/2022/20221217">
+  <title>Updated Debian 11: 11.6 released</title>
+  <link>https://www.debian.org/News/2022/20221217</link>
+  <description>
+    The Debian project is pleased to announce the sixth update of its
+stable distribution Debian 11 (codename &lt;q&gt;bullseye&lt;/q&gt;).
+This point release mainly adds corrections for security issues,
+along with a few adjustments for serious problems. Security advisories
+have already been published separately and are referenced where available.
+  </description>
+  <dc:date>2022-12-17</dc:date>
+</item>
+</rdf:RDF>

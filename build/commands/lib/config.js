@@ -278,6 +278,8 @@ Config.prototype.buildArgs = function () {
     sardine_client_id: this.sardineClientId,
     sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
+    enable_rust: true,
+    enable_rust_gnrt: true,
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     disable_fieldtrial_testing_config: true,
@@ -1076,6 +1078,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
     env.PYTHONUNBUFFERED = '1'
+    env.RUSTC_BOOTSTRAP = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
 
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd

@@ -1,0 +1,34 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "hkdf"
+  epoch = "0.11"
+  crate_type = "rlib"
+
+  # Only for usage from third-party crates. Add the crate to
+  # third_party.toml to use it from first-party code.
+  visibility = [ "//brave/third_party/rust/*" ]
+  crate_root = "crate/src/hkdf.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/hkdf.rs" ]
+  edition = "2018"
+  cargo_pkg_version = "0.11.0"
+  cargo_pkg_authors = "vladikoff, warner, RustCrypto Developers"
+  cargo_pkg_name = "hkdf"
+  cargo_pkg_description =
+      "HMAC-based Extract-and-Expand Key Derivation Function (HKDF)"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/digest/v0_9:lib",
+    "//brave/third_party/rust/hmac/v0_11:lib",
+  ]
+}

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:atom="http://www.w3.org/2005/Atom"
+     version="2.0">
+    <channel>
+        <title>Lwowska Fala | Radio Katowice</title>
+        <link>https://www.spreaker.com/show/lwowska-fala-radio-katowice</link>
+        <description>
+            <![CDATA[Lwowska Fala, audycja, która ocala od zapomnienia kresową tradycję i kulturę, lwowski humor i piosenkę, ale także prawdę o losach Polaków, tragicznie splecionych z wojną i okupacją na Ziemiach Wschodnich Rzeczypospolitej. Zaprasza Danuta Skalska.]]></description>
+        <atom:link href="https://www.spreaker.com/show/4273892/episodes/feed" rel="self" type="application/rss+xml"/>
+        <language>pl</language>
+        <category>Society &amp; Culture</category>
+        <copyright>Copyright Radio Katowice S.A.</copyright>
+        <image>
+            <url>
+                https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/0dcd53afca70854beb456079fa25d3f1.jpg
+            </url>
+            <title>Lwowska Fala | Radio Katowice</title>
+            <link>https://www.spreaker.com/show/lwowska-fala-radio-katowice</link>
+        </image>
+        <lastBuildDate>Mon, 06 Sep 2021 08:11:32 +0000</lastBuildDate>
+        <itunes:author>Radio Katowice S.A.</itunes:author>
+        <itunes:owner>
+            <itunes:name>Radio Katowice S.A.</itunes:name>
+            <itunes:email>feeds@spreaker.com</itunes:email>
+        </itunes:owner>
+        <itunes:image
+                href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/0dcd53afca70854beb456079fa25d3f1.jpg"/>
+        <itunes:subtitle>Lwowska Fala, audycja, która ocala od zapomnienia kresową tradycję i kulturę, lwowski humor i
+            piosenkę, ale także prawdę o losach Polaków, tragicznie splecionych z wojną i okupacją na Ziemiach
+            Wschodnich Rzeczypospolitej. Zaprasza Danuta Skalska.
+        </itunes:subtitle>
+        <itunes:summary>
+            <![CDATA[Lwowska Fala, audycja, która ocala od zapomnienia kresową tradycję i kulturę, lwowski humor i piosenkę, ale także prawdę o losach Polaków, tragicznie splecionych z wojną i okupacją na Ziemiach Wschodnich Rzeczypospolitej. Zaprasza Danuta Skalska.]]></itunes:summary>
+        <itunes:category text="Society &amp; Culture"/>
+        <itunes:explicit>clean</itunes:explicit>
+        <itunes:type>episodic</itunes:type>
+        <googleplay:author>Radio Katowice S.A.</googleplay:author>
+        <googleplay:image
+                href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/0dcd53afca70854beb456079fa25d3f1.jpg"/>
+        <googleplay:email>feeds@spreaker.com</googleplay:email>
+        <googleplay:description>Lwowska Fala, audycja, która ocala od zapomnienia kresową tradycję i kulturę, lwowski
+            humor i piosenkę, ale także prawdę o losach Polaków, tragicznie splecionych z wojną i okupacją na Ziemiach
+            Wschodnich Rzeczypospolitej. Zaprasza Danuta Skalska.
+        </googleplay:description>
+        <googleplay:category text="Society &amp; Culture"/>
+        <googleplay:explicit>No</googleplay:explicit>
+        <item>
+            <title>Lwowska Fala odc. 78 Wrzesień 1939 | Radio Katowice</title>
+            <link>https://www.spreaker.com/user/radio_katowice/09-05-dopo-8-10-lwowska-fala</link>
+            <description>
+                <![CDATA[W audycji: Pamięć września 1939. Spotkanie z Marszałkiem J. Chełstowskim. Lwów w oczach Ślązaków. Byliśmy pod Zadwórzem. Wio na piechotę – do Lwowa!]]></description>
+            <guid isPermaLink="false">https://api.spreaker.com/episode/46395247</guid>
+            <pubDate>Mon, 06 Sep 2021 08:11:31 +0000</pubDate>
+            <enclosure url="https://api.spreaker.com/download/episode/46395247/09_05_dopo_8_10_lwowska_fala.mp3"
+                       length="49252772" type="audio/mpeg"/>
+            <itunes:author>Radio Katowice S.A.</itunes:author>
+            <itunes:subtitle>W audycji: Pamięć września 1939. Spotkanie z Marszałkiem J. Chełstowskim. Lwów w oczach
+                Ślązaków. Byliśmy pod Zadwórzem. Wio na piechotę – do Lwowa!
+            </itunes:subtitle>
+            <itunes:summary>
+                <![CDATA[W audycji: Pamięć września 1939. Spotkanie z Marszałkiem J. Chełstowskim. Lwów w oczach Ślązaków. Byliśmy pod Zadwórzem. Wio na piechotę – do Lwowa!]]></itunes:summary>
+            <itunes:duration>3079</itunes:duration>
+            <itunes:keywords>fala,kresy,lwow,lwowska</itunes:keywords>
+            <itunes:explicit>clean</itunes:explicit>
+            <itunes:image
+                    href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/0dcd53afca70854beb456079fa25d3f1.jpg"/>
+            <itunes:episodeType>full</itunes:episodeType>
+            <googleplay:author>Radio Katowice S.A.</googleplay:author>
+            <googleplay:description>W audycji: Pamięć września 1939. Spotkanie z Marszałkiem J. Chełstowskim. Lwów w
+                oczach Ślązaków. Byliśmy pod Zadwórzem. Wio na piechotę – do Lwowa!
+            </googleplay:description>
+            <googleplay:image
+                    href="https://d3wo5wojvuv7l.cloudfront.net/t_rss_itunes_square_1400/images.spreaker.com/original/0dcd53afca70854beb456079fa25d3f1.jpg"/>
+            <googleplay:explicit>No</googleplay:explicit>
+        </item>
+    </channel>
+</rss>

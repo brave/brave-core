@@ -1,0 +1,7 @@
+Name: crossbeam-deque
+URL: https://crates.io/crates/crossbeam-deque
+Description: Concurrent work-stealing deque
+Version: 0.8.3
+Security Critical: no
+License: Apache 2.0
+Revision: 721382b00b5dadd81954ed66764d547e2f1bb7a3

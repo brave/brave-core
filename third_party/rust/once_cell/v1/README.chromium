@@ -1,0 +1,7 @@
+Name: once_cell
+URL: https://crates.io/crates/once_cell
+Description: Single assignment cells and lazy values.
+Version: 1.17.1
+Security Critical: no
+License: Apache 2.0
+Revision: 35148638c54c6233545c65d1a5e09d5ba0661806

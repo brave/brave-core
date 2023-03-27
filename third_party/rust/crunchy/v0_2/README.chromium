@@ -1,0 +1,7 @@
+Name: crunchy
+URL: https://crates.io/crates/crunchy
+Description: Crunchy unroller: deterministically unroll constant loops
+Version: 0.2.2
+Security Critical: no
+License: MIT
+Revision: 1bf90cf2d0a8cfcb2c5592275a23ab028dff6468

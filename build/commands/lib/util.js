@@ -548,8 +548,6 @@ const util = {
   },
 
   generateNinjaFiles: (options = config.defaultOptions) => {
-    util.buildNativeRedirectCC()
-
     console.log('generating ninja files...')
 
     if (process.platform === 'win32') {

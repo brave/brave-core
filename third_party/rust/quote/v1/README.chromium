@@ -1,0 +1,7 @@
+Name: quote
+URL: https://crates.io/crates/quote
+Description: Quasi-quoting macro quote!(...)
+Version: 1.0.26
+Security Critical: no
+License: Apache 2.0
+Revision: ca98b6594a0bee362a431481ba9ba64e502cc757

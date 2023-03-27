@@ -1,0 +1,7 @@
+Name: regex-automata
+URL: https://crates.io/crates/regex-automata
+Description: Automata construction and matching using regular expressions.
+Version: 0.1.10
+Security Critical: yes
+License: MIT
+Revision: dd59a74be412e349bf6df528a216a13c2cf57262

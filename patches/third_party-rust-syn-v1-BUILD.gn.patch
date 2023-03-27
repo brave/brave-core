@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/syn/v1/BUILD.gn b/third_party/rust/syn/v1/BUILD.gn
+index 3bfb0e5f677a6f3510fa1fc71f7f43c1cc1d041f..0f2b35863db8869358e55b5ad7e5aa2ea9a6a30b 100644
+--- a/third_party/rust/syn/v1/BUILD.gn
++++ b/third_party/rust/syn/v1/BUILD.gn
+@@ -31,6 +31,7 @@ cargo_crate("lib") {
+     "clone-impls",
+     "derive",
+     "extra-traits",
++    "fold",
+     "full",
+     "parsing",
+     "printing",

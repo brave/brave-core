@@ -1,0 +1,7 @@
+Name: synstructure
+URL: https://crates.io/crates/synstructure
+Description: Helper methods and macros for custom derives
+Version: 0.12.6
+Security Critical: yes
+License: MIT
+Revision: 26b84b4dd4e29eef7436b94ba656cd0765a6c4a0

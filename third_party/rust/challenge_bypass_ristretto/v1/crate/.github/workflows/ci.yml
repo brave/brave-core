@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toolchain:
+        - stable
+        - nightly
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install rust toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{matrix.toolchain}}
+    - name: Rustfmt
+      uses: actions-rs/cargo@v1
+      with:
+        command: fmt
+        args: -- --check
+    - name: Build
+      uses: actions-rs/cargo@v1
+      with:
+        command: build
+    - name: Test
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+    - name: Test serde_base64 feature
+      uses: actions-rs/cargo@v1
+      with:
+        command: test
+        args: --features serde_base64

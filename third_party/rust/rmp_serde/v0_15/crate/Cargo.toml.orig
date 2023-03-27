@@ -1,0 +1,28 @@
+[package]
+name = "rmp-serde"
+version = "0.15.5"
+authors = ["Evgeny Safronov <division494@gmail.com>"]
+license = "MIT"
+description = "Serde bindings for RMP"
+repository = "https://github.com/3Hren/msgpack-rust"
+documentation = "https://docs.rs/rmp-serde"
+readme = "../README.md"
+keywords = ["msgpack", "MessagePack", "serde", "serialization"]
+categories = ["encoding"]
+edition = "2018"
+
+[features]
+serde128 = []
+
+[dependencies]
+byteorder = "1.4.2"
+serde = "1.0.119"
+rmp = { version = "0.8.8", path = "../rmp" }
+
+[dev-dependencies]
+rmpv = { path = "../rmpv" }
+serde_bytes = "0.11.5"
+serde_derive = "1.0.119"
+
+[badges]
+maintenance = { status = "passively-maintained" }

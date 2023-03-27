@@ -1,0 +1,27 @@
+diff --git a/tools/crates/gnrt/download.rs b/tools/crates/gnrt/download.rs
+index e42853b3124202983bec93dbaef587b8ce7ffca6..50b1c9f9ee65b1a4cb0605f8bb4e1e99b1797bad 100644
+--- a/tools/crates/gnrt/download.rs
++++ b/tools/crates/gnrt/download.rs
+@@ -146,7 +146,7 @@ static CRATES_IO_VIEW_URL: &str = "https://crates.io/crates";
+ 
+ // Allowed licenses, in the format they are specified in Cargo.toml files from
+ // crates.io, and the format to write to README.chromium.
+-static ALLOWED_LICENSES: [(&str, &str); 15] = [
++static ALLOWED_LICENSES: [(&str, &str); 20] = [
+     // ("Cargo.toml string", "License for README.chromium")
+     ("Apache-2.0", "Apache 2.0"),
+     ("MIT OR Apache-2.0", "Apache 2.0"),
+@@ -160,7 +160,12 @@ static ALLOWED_LICENSES: [(&str, &str); 15] = [
+     ("Apache-2.0 OR BSL-1.0", "Apache 2.0"),
+     ("BSD-3-Clause", "BSD 3-Clause"),
+     ("ISC", "ISC"),
+-    ("MIT OR Zlib OR Apache-2.0", "Apache 2.0"),
+     ("0BSD OR MIT OR Apache-2.0", "Apache 2.0"),
++    ("MIT OR Zlib OR Apache-2.0", "Apache 2.0"),
+     ("Unicode-DFS-2016", "Unicode License Agreement - Data Files and Software (2016)"),
++    ("(MIT OR Apache-2.0) AND Unicode-DFS-2016", "Apache 2.0"),
++    ("Zlib OR Apache-2.0 OR MIT", "Apache 2.0"),
++    ("MPL-2.0", "MPL 2.0"),
++    ("Zlib OR Apache-2.0 OR MIT", "Apache 2.0"),
++    ("MIT OR Apache-2.0 OR Zlib", "Apache 2.0"),
+ ];

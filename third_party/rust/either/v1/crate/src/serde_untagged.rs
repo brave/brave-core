@@ -1,4 +1,4 @@
-//! Untagged serialization/deserialization support for Either<L, R>.
+//! Untagged serialization/deserialization support for Option<Either<L, R>>.
 //!
 //! `Either` uses default, externally-tagged representation.
 //! However, sometimes it is useful to support several alternative types.
@@ -6,24 +6,20 @@
 //! but in typical cases Vec<String> would suffice, too.
 //!
 //! ```rust
-//! #[macro_use]
-//! extern crate serde;
-//! // or `use serde::{Serialize, Deserialize};` in newer rust versions.
-//!
 //! # fn main() -> Result<(), Box<dyn std::error::Error>> {
 //! use either::Either;
 //! use std::collections::HashMap;
 //!
-//! #[derive(Serialize, Deserialize, Debug)]
+//! #[derive(serde::Serialize, serde::Deserialize, Debug)]
 //! #[serde(transparent)]
 //! struct IntOrString {
-//!     #[serde(with = "either::serde_untagged")]
-//!     inner: Either<Vec<String>, HashMap<String, i32>>
+//!     #[serde(with = "either::serde_untagged_optional")]
+//!     inner: Option<Either<Vec<String>, HashMap<String, i32>>>
 //! };
 //!
 //! // serialization
 //! let data = IntOrString {
-//!     inner: Either::Left(vec!["Hello".to_string()])
+//!     inner: Some(Either::Left(vec!["Hello".to_string()]))
 //! };
 //! // notice: no tags are emitted.
 //! assert_eq!(serde_json::to_string(&data)?, r#"["Hello"]"#);
@@ -46,28 +42,33 @@ enum Either<L, R> {
     Right(R),
 }
 
-pub fn serialize<L, R, S>(this: &super::Either<L, R>, serializer: S) -> Result<S::Ok, S::Error>
+pub fn serialize<L, R, S>(
+    this: &Option<super::Either<L, R>>,
+    serializer: S,
+) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
     L: Serialize,
     R: Serialize,
 {
     let untagged = match this {
-        &super::Either::Left(ref left) => Either::Left(left),
-        &super::Either::Right(ref right) => Either::Right(right),
+        Some(super::Either::Left(left)) => Some(Either::Left(left)),
+        Some(super::Either::Right(right)) => Some(Either::Right(right)),
+        None => None,
     };
     untagged.serialize(serializer)
 }
 
-pub fn deserialize<'de, L, R, D>(deserializer: D) -> Result<super::Either<L, R>, D::Error>
+pub fn deserialize<'de, L, R, D>(deserializer: D) -> Result<Option<super::Either<L, R>>, D::Error>
 where
     D: Deserializer<'de>,
     L: Deserialize<'de>,
     R: Deserialize<'de>,
 {
-    match Either::deserialize(deserializer) {
-        Ok(Either::Left(left)) => Ok(super::Either::Left(left)),
-        Ok(Either::Right(right)) => Ok(super::Either::Right(right)),
+    match Option::deserialize(deserializer) {
+        Ok(Some(Either::Left(left))) => Ok(Some(super::Either::Left(left))),
+        Ok(Some(Either::Right(right))) => Ok(Some(super::Either::Right(right))),
+        Ok(None) => Ok(None),
         Err(error) => Err(error),
     }
 }

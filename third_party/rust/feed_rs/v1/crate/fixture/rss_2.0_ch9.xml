@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" media="screen" href="/styles/xslt/rss.xslt"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:c9="http://channel9.msdn.com">
+    <channel>
+        <title>Azure Friday (HD) - Channel 9</title>
+        <atom:link rel="self" type="application/rss+xml" href="https://s.ch9.ms/Shows/Azure-Friday/feed/mp4high"></atom:link>
+        <itunes:summary>Join Scott Hanselman every Friday as he engages one-on-one with the engineers who build the services that power Microsoft Azure as they demo capabilities, answer Scott&#39;s questions, and share their insights. Follow us at: friday.azure.com. </itunes:summary>
+        <googleplay:author>Microsoft</googleplay:author>
+        <itunes:author>Microsoft</itunes:author>
+        <googleplay:email>ch9@microsoft.com</googleplay:email>
+        <itunes:email>ch9@microsoft.com</itunes:email>
+        <itunes:subtitle></itunes:subtitle>
+        <itunes:explicit>no</itunes:explicit>
+        <image>
+            <url>https://f.ch9.ms/thumbnail/4761e196-da48-4b41-abfe-e56e0509f04d.png</url>
+            <title>Azure Friday (HD) - Channel 9</title>
+            <link>https://s.ch9.ms/Shows/Azure-Friday</link>
+        </image>
+        <itunes:image href="https://f.ch9.ms/thumbnail/2b039019-ee4b-4838-a5c3-4436541806df.png"></itunes:image>
+        <itunes:category text="Technology"></itunes:category>
+        <description>Join Scott Hanselman, Donovan Brown, or Lara Rubbelke as they host the engineers who build Azure, demo it, answer questions, and share insights. </description>
+        <link>https://s.ch9.ms/Shows/Azure-Friday</link>
+        <language>en</language>
+        <pubDate>Sat, 27 Feb 2021 06:55:01 GMT</pubDate>
+        <lastBuildDate>Sat, 27 Feb 2021 06:55:01 GMT</lastBuildDate>
+        <generator>Rev9</generator>
+        <c9:totalResults>374</c9:totalResults>
+        <c9:pageCount>15</c9:pageCount>
+        <c9:pageSize>25</c9:pageSize>
+        <item>
+            <title>Troubleshoot AKS cluster issues with AKS Diagnostics and AKS Periscope</title>
+            <description><![CDATA[<p>Yun Jung Choi shows Scott Hanselman...]]></description>
+            <comments>https://channel9.msdn.com/Shows/Azure-Friday/Troubleshoot-AKS-cluster-issues-with-AKS-Diagnostics-and-AKS-Periscope</comments>
+            <itunes:summary>Yun Jung Choi shows Scott Hanselman how to use AKS Diagnostics...</itunes:summary>
+            <itunes:duration>867</itunes:duration>
+            <link>https://channel9.msdn.com/Shows/Azure-Friday/Troubleshoot-AKS-cluster-issues-with-AKS-Diagnostics-and-AKS-Periscope</link>
+            <pubDate>Fri, 26 Feb 2021 20:00:00 GMT</pubDate>
+            <guid isPermaLink="false">https://channel9.msdn.com/Shows/Azure-Friday/Troubleshoot-AKS-cluster-issues-with-AKS-Diagnostics-and-AKS-Periscope</guid>
+            <media:thumbnail url="https://sec.ch9.ms/ch9/3724/8609074c-2b7b-41ae-9345-f49973543724/azfr663_100.jpg" height="56" width="100"></media:thumbnail>
+            <media:thumbnail url="https://sec.ch9.ms/ch9/3724/8609074c-2b7b-41ae-9345-f49973543724/azfr663_220.jpg" height="123" width="220"></media:thumbnail>
+            <media:thumbnail url="https://sec.ch9.ms/ch9/3724/8609074c-2b7b-41ae-9345-f49973543724/azfr663_512.jpg" height="288" width="512"></media:thumbnail>
+            <media:thumbnail url="https://sec.ch9.ms/ch9/3724/8609074c-2b7b-41ae-9345-f49973543724/azfr663_960.jpg" height="540" width="960"></media:thumbnail>
+            <media:group>
+                <media:content url="https://rev9.blob.core.windows.net/mfupload/04b236b5-e824-4091-85d8-acd90155d4b0_20210124205102.mp4" expression="full" duration="867" fileSize="1" type="video/mp4" medium="video"></media:content>
+                <media:content url="https://sec.ch9.ms/ch9/075d/6e61e6c6-3890-4172-a617-fa0c4b38075d/azfr663.mp3" expression="full" duration="867" fileSize="13878646" type="audio/mp3" medium="audio"></media:content>
+                <media:content url="https://sec.ch9.ms/ch9/075d/6e61e6c6-3890-4172-a617-fa0c4b38075d/azfr663.mp4" expression="full" duration="867" fileSize="20450133" type="video/mp4" medium="video"></media:content>
+                <media:content url="https://sec.ch9.ms/ch9/075d/6e61e6c6-3890-4172-a617-fa0c4b38075d/azfr663_high.mp4" expression="full" duration="867" fileSize="126659374" type="video/mp4" medium="video"></media:content>
+                <media:content url="https://sec.ch9.ms/ch9/075d/6e61e6c6-3890-4172-a617-fa0c4b38075d/azfr663_mid.mp4" expression="full" duration="867" fileSize="49241848" type="video/mp4" medium="video"></media:content>
+                <media:content url="https://www.youtube-nocookie.com/embed/E-XqYb88hUY?enablejsapi=1" expression="full" duration="867" fileSize="1" type="" medium="video"></media:content>
+            </media:group>
+            <enclosure url="https://sec.ch9.ms/ch9/075d/6e61e6c6-3890-4172-a617-fa0c4b38075d/azfr663_high.mp4" length="126659374" type="video/mp4"></enclosure>
+            <dc:creator>Scott Hanselman, Rob Caron</dc:creator>
+            <itunes:author>Scott Hanselman, Rob Caron</itunes:author>
+            <slash:comments>0</slash:comments>
+            <wfw:commentRss>https://channel9.msdn.com/Shows/Azure-Friday/Troubleshoot-AKS-cluster-issues-with-AKS-Diagnostics-and-AKS-Periscope/RSS</wfw:commentRss>
+            <category>Azure</category>
+            <category>Kubernetes</category>
+            <category>aft</category>
+        </item>
+    </channel>
+</rss>

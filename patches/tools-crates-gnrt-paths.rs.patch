@@ -1,0 +1,19 @@
+diff --git a/tools/crates/gnrt/paths.rs b/tools/crates/gnrt/paths.rs
+index d587de5f3b7e313c9a475e1e799d06cfcf83bbbd..7b72f069fe4c89d432bdb37890760be960d0f1e0 100644
+--- a/tools/crates/gnrt/paths.rs
++++ b/tools/crates/gnrt/paths.rs
+@@ -66,10 +66,10 @@ fn check_path<'a>(root: &Path, p_str: &'a str) -> io::Result<&'a Path> {
+     Ok(p)
+ }
+ 
+-static RUST_THIRD_PARTY_DIR: &str = "third_party/rust";
+-static RUST_SRC_DIR: &str = "third_party/rust-toolchain/lib/rustlib/src/rust";
+-static RUST_SRC_VENDOR_DIR: &str = "third_party/rust-toolchain/lib/rustlib/src/rust/vendor";
+-static RUST_STD_DIR: &str = "third_party/rust-toolchain/lib/rustlib/src/rust/library/std";
++static RUST_THIRD_PARTY_DIR: &str = "brave/third_party/rust";
++static RUST_SRC_DIR: &str = "brave/build/rustup/1.67.0/toolchains/1.67.0-x86_64-apple-darwin/lib/rustlib/src/rust";
++static RUST_SRC_VENDOR_DIR: &str = "brave/build/rustup/1.67.0/toolchains/1.67.0-x86_64-apple-darwin/lib/rustlib/src/rust/vendor";
++static RUST_STD_DIR: &str = "brave/build/rustup/1.67.0/toolchains/1.67.0-x86_64-apple-darwin/lib/rustlib/src/rust/library/std";
+ static STD_CONFIG_FILE: &str = "build/rust/std/gnrt_config.toml";
+ static STD_BUILD_DIR: &str = "build/rust/std/rules";
+ static STD_FAKE_ROOT: &str = "build/rust/std/fake_root";

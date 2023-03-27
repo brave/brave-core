@@ -1,0 +1,7 @@
+Name: crossbeam-epoch
+URL: https://crates.io/crates/crossbeam-epoch
+Description: Epoch-based garbage collection
+Version: 0.9.14
+Security Critical: no
+License: Apache 2.0
+Revision: 721382b00b5dadd81954ed66764d547e2f1bb7a3

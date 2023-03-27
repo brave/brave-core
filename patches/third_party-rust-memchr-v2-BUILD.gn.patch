@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/memchr/v2/BUILD.gn b/third_party/rust/memchr/v2/BUILD.gn
+index fcb147bbbc42594a816f32b772f067faec4f73a4..1ab325248eb084c4817d5b34ab54b45381d05a83 100644
+--- a/third_party/rust/memchr/v2/BUILD.gn
++++ b/third_party/rust/memchr/v2/BUILD.gn
+@@ -12,6 +12,7 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
++  visibility += [ "//brave/third_party/rust/*" ]
+   crate_root = "crate/src/lib.rs"
+ 
+   # Unit tests skipped. Generate with --with-tests to include them.

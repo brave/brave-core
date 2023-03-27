@@ -1,0 +1,271 @@
+name:                  Check, Test and Build Suite
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+      - stable
+    tags:
+      - v*
+    paths-ignore:
+      - 'README.md'
+
+jobs:
+  check:
+    name:              Check
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        toolchain:
+          - stable
+          - nightly
+        compiler:
+          - clang
+          - gcc
+    runs-on:           ${{ matrix.platform }}
+    env:
+      RUST_BACKTRACE:  full
+    steps:
+
+      - name:          Cancel Previous Runs
+        uses:          styfle/cancel-workflow-action@0.9.1
+
+      - name:          Set default compiler
+        if:            matrix.compiler == 'clang'
+        run: |
+          echo "CC=clang" >> "$GITHUB_ENV"
+          echo "CXX=clang++" >> "$GITHUB_ENV"
+
+      - name:          Checkout sources & submodules
+        uses:          actions/checkout@v3.0.2
+        with:
+          fetch-depth: 5
+          submodules:  recursive
+
+      - name:          Install toolchain
+        id:            toolchain
+        uses:          actions-rs/toolchain@v1.0.7
+        with:
+          profile:     minimal
+          toolchain:   ${{ matrix.toolchain }}
+          components:  clippy, rustfmt
+          override:    true
+
+      - uses:          Swatinem/rust-cache@v1.4.0
+
+      - name:          Cache sccache
+        uses:          actions/cache@v3.0.2
+        with:
+          path:        "$HOME/sccache"
+          key:         sccache-${{ env['cache_hash'] }}
+
+      - name:          Install & start sccache for ${{ matrix.platform }}
+        shell:         bash
+        run:           .github/workflows/sccache.sh ${{ runner.os}}
+
+      - name:          Sccache statistics
+        run:           sccache --show-stats
+
+      # here comes different part
+      - name:          Checking ${{ matrix.platform }}-${{ matrix.toolchain }}
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     check
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --all  --verbose
+
+      - name:          Stop sccache
+        if:            always()
+        run:           sccache --stop-server
+
+  test:
+    name:              Test
+    needs:             [check]
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        toolchain:
+          - stable
+          - nightly
+        compiler:
+          - clang
+          - gcc
+    runs-on:           ${{ matrix.platform }}
+    env:
+      RUST_BACKTRACE:  full
+    steps:
+
+      - name:          Cancel Previous Runs
+        uses:          styfle/cancel-workflow-action@0.9.1
+
+      - name:          Set default compiler
+        if:            matrix.compiler == 'clang'
+        run: |
+          echo "CC=clang" >> "$GITHUB_ENV"
+          echo "CXX=clang++" >> "$GITHUB_ENV"
+
+      - name:          Checkout sources & submodules
+        uses:          actions/checkout@v3.0.2
+        with:
+          fetch-depth: 5
+          submodules:  recursive
+
+      - name:          Install toolchain
+        id:            toolchain
+        uses:          actions-rs/toolchain@v1.0.7
+        with:
+          profile:     minimal
+          toolchain:   ${{ matrix.toolchain }}
+          components:  clippy, rustfmt
+          override:    true
+
+      - uses:          Swatinem/rust-cache@v1.4.0
+
+      - name:          Cache sccache
+        uses:          actions/cache@v3.0.2
+        with:
+          path:        "$HOME/sccache"
+          key:         sccache-${{ env['cache_hash'] }}
+
+      - name:          Install & start sccache for ${{ matrix.platform }}
+        shell:         bash
+        run:           .github/workflows/sccache.sh ${{ runner.os}}
+
+      - name:          Sccache statistics
+        run:           sccache --show-stats
+
+      # here comes different part
+      - name:          Testing ${{ matrix.platform }}-${{ matrix.toolchain }} (debug build)
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     test
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --all --verbose
+
+      - name:          Testing ${{ matrix.platform }}-${{ matrix.toolchain }} (release build)
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     test
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --all --release --verbose
+
+      - name:          Stop sccache
+        if:            always()
+        run:           sccache --stop-server
+
+  build:
+    name:              Build
+    needs:             [check,test]
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+          - macos-latest
+        toolchain:
+          - stable
+          - nightly
+        compiler:
+          - clang
+          - gcc
+    runs-on:           ${{ matrix.platform }}
+    env:
+      RUST_BACKTRACE:  full
+      # NOTE:          Enables the aes-ni instructions for RustCrypto dependency.
+      # Strip binaries
+      # If you change this please remember to also update .cargo/config
+      RUSTFLAGS:       "-C target-feature=+aes,+sse2,+ssse3 -C link-arg=-s"
+    steps:
+
+      - name:          Cancel Previous Runs
+        uses:          styfle/cancel-workflow-action@0.9.1
+
+      - name:          Set default compiler
+        if:            matrix.compiler == 'clang'
+        run: |
+          echo "CC=clang" >> "$GITHUB_ENV"
+          echo "CXX=clang++" >> "$GITHUB_ENV"
+
+      - name:          Checkout sources & submodules
+        uses:          actions/checkout@v3.0.2
+        with:
+          fetch-depth: 5
+          submodules:  recursive
+
+      - name:          Install toolchain
+        id:            toolchain
+        uses:          actions-rs/toolchain@v1.0.7
+        with:
+          profile:     minimal
+          toolchain:   ${{ matrix.toolchain }}
+          components:  clippy, rustfmt
+          override:    true
+
+      - uses:          Swatinem/rust-cache@v1.4.0
+
+      - name:          Cache sccache
+        uses:          actions/cache@v3.0.2
+        with:
+          path:        "$HOME/sccache"
+          key:         sccache-${{ env['cache_hash'] }}
+
+      - name:          Install & start sccache for ${{ matrix.platform }}
+        shell:         bash
+        run:           .github/workflows/sccache.sh ${{ runner.os}}
+
+      - name:          Sccache statistics
+        run:           sccache --show-stats
+
+      # here comes different part
+      - name:          Building ${{ matrix.platform }}-${{ matrix.toolchain }}
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     build
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --all --verbose --release
+
+      - name:          Building `no default` ${{ matrix.platform }}-${{ matrix.toolchain }}
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     build
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --verbose --no-default-features
+
+      - name:          Building `hmac` ${{ matrix.platform }}-${{ matrix.toolchain }}
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     build
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --verbose --no-default-features --features hmac
+
+      - name:          Building `static-context` ${{ matrix.platform }}-${{ matrix.toolchain }}
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     build
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --verbose --no-default-features --features static-context
+
+      - name:          Building `lazy-static-context` ${{ matrix.platform }}-${{ matrix.toolchain }}
+        uses:          actions-rs/cargo@v1.0.3
+        with:
+          command:     build
+          toolchain:   ${{ matrix.toolchain }}
+          args:        --verbose --no-default-features --features lazy-static-context
+
+      - name:          Stop sccache
+        if:            always()
+        run:           sccache --stop-server
+
+      - name:          Prepare artifacts
+        run:           .github/workflows/prepare_artifacts.sh ""
+        shell:         bash
+
+      - name:          Upload artifacts
+        uses:          actions/upload-artifact@v3.0.0
+        with:
+          name:        ${{ matrix.platform }}.${{ matrix.toolchain }}.${{ matrix.compiler }}.zip
+          path:        artifacts/

@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/serde/v1/BUILD.gn b/third_party/rust/serde/v1/BUILD.gn
+index 0cc7bd91f39cd6cff8349a73791d04e6cca24509..38711e1d22415010f99878e54679ca2051adfa3a 100644
+--- a/third_party/rust/serde/v1/BUILD.gn
++++ b/third_party/rust/serde/v1/BUILD.gn
+@@ -27,6 +27,7 @@ cargo_crate("lib") {
+     "derive",
+     "serde_derive",
+     "std",
++    "rc",
+   ]
+   build_root = "crate/build.rs"
+   build_sources = [ "crate/build.rs" ]

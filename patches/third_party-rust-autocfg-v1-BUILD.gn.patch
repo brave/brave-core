@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/autocfg/v1/BUILD.gn b/third_party/rust/autocfg/v1/BUILD.gn
+index 1731bf98a96ea6c857391952f605c871aebcd446..e9950384769d9e9d91d18af5a479198e6ecf3cf0 100644
+--- a/third_party/rust/autocfg/v1/BUILD.gn
++++ b/third_party/rust/autocfg/v1/BUILD.gn
+@@ -12,6 +12,7 @@ cargo_crate("buildrs_support") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
++  visibility += [ "//brave/third_party/rust/*" ]
+   crate_root = "crate/src/lib.rs"
+ 
+   # Unit tests skipped. Generate with --with-tests to include them.

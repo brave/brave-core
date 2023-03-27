@@ -1,0 +1,8 @@
+Name: tracing-serde
+URL: https://crates.io/crates/tracing-serde
+Description: A compatibility layer for serializing trace data with `serde`
+
+Version: 0.1.3
+Security Critical: yes
+License: MIT
+Revision: c661c23089a6ba123b4cef830023903515905370

@@ -1,0 +1,8 @@
+Name: time
+URL: https://crates.io/crates/time
+Description: Utilities for working with time-related functions in Rust.
+
+Version: 0.1.45
+Security Critical: yes
+License: Apache 2.0
+Revision: d147fa71f65fcdc743a1b4f7cf132d84bd14e56f

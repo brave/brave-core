@@ -1,0 +1,6 @@
+Name: precomputed-hash
+URL: https://crates.io/crates/precomputed-hash
+Description: A library intending to be a base dependency to expose a precomputed hash
+Version: 0.1.1
+Security Critical: yes
+License: MIT

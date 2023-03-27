@@ -1,0 +1,72 @@
+[package]
+authors = [
+    "Sean Bowe <ewillbefull@gmail.com>",
+    "Jack Grigg <thestr4d@gmail.com>",
+]
+description = "Implementation of the BLS12-381 pairing-friendly elliptic curve construction"
+documentation = "https://docs.rs/bls12_381/"
+homepage = "https://github.com/zkcrypto/bls12_381"
+license = "MIT/Apache-2.0"
+name = "bls12_381"
+repository = "https://github.com/zkcrypto/bls12_381"
+version = "0.7.0"
+edition = "2021"
+
+[package.metadata.docs.rs]
+rustdoc-args = [ "--html-in-header", "katex-header.html" ]
+
+[dev-dependencies]
+criterion = "0.3"
+hex = "0.4"
+rand_xorshift = "0.3"
+sha2 = "0.9"
+sha3 = "0.9"
+
+[[bench]]
+name = "groups"
+harness = false
+required-features = ["groups"]
+
+[[bench]]
+name = "hash_to_curve"
+harness = false
+required-features = ["experimental"]
+
+[dependencies.digest]
+version = "0.9"
+optional = true
+
+[dependencies.ff]
+version = "0.12"
+default-features = false
+
+[dependencies.group]
+version = "0.12"
+default-features = false
+optional = true
+
+[dependencies.pairing]
+version = "0.22"
+optional = true
+
+[dependencies.rand_core]
+version = "0.6"
+default-features = false
+
+[dependencies.subtle]
+version = "2.2.1"
+default-features = false
+
+[dependencies.zeroize]
+version = "1.4"
+default-features = false
+optional = true
+
+[features]
+default = ["groups", "pairings", "alloc", "bits"]
+bits = ["ff/bits"]
+groups = ["group"]
+pairings = ["groups", "pairing"]
+alloc = ["group/alloc"]
+experimental = ["digest"]
+nightly = ["subtle/nightly"]

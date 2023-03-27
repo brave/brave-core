@@ -1,0 +1,39 @@
+# Copyright 2023 The Chromium Authors
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/rust/cargo_crate.gni")
+
+cargo_crate("lib") {
+  crate_name = "curve25519_dalek"
+  epoch = "3"
+  crate_type = "rlib"
+  crate_root = "crate/src/lib.rs"
+
+  # Unit tests skipped. Generate with --with-tests to include them.
+  build_native_rust_unit_tests = false
+  sources = [ "crate/src/lib.rs" ]
+  edition = "2015"
+  cargo_pkg_version = "3.2.1"
+  cargo_pkg_authors = "Isis Lovecruft <isis@patternsinthevoid.net>, Henry de Valence <hdevalence@hdevalence.ca>"
+  cargo_pkg_name = "curve25519-dalek"
+  cargo_pkg_description = "A pure-Rust implementation of group operations on ristretto255 and Curve25519"
+  library_configs -= [ "//build/config/compiler:chromium_code" ]
+  library_configs += [ "//build/config/compiler:no_chromium_code" ]
+  executable_configs -= [ "//build/config/compiler:chromium_code" ]
+  executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [
+    "//brave/third_party/rust/byteorder/v1:lib",
+    "//brave/third_party/rust/digest/v0_9:lib",
+    "//brave/third_party/rust/rand_core/v0_5:lib",
+    "//brave/third_party/rust/subtle/v2:lib",
+    "//brave/third_party/rust/zeroize/v1:lib",
+    "//third_party/rust/serde/v1:lib",
+  ]
+  features = [
+    "alloc",
+    "serde",
+    "std",
+    "u64_backend",
+  ]
+}

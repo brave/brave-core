@@ -1,0 +1,6 @@
+Name: fxhash
+URL: https://crates.io/crates/fxhash
+Description: A fast, non-secure, hashing algorithm derived from an internal hasher used in FireFox and Rustc.
+Version: 0.2.1
+Security Critical: yes
+License: Apache 2.0

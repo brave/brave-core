@@ -1,0 +1,8 @@
+Name: proc-macro-crate
+URL: https://crates.io/crates/proc-macro-crate
+Description: Replacement for crate (macro_rules keyword) in proc-macros
+
+Version: 1.1.3
+Security Critical: no
+License: Apache 2.0
+Revision: cf2d0d12fc6ee88f51f7f81a9d1e6ded68c11b41

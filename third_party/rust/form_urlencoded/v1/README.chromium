@@ -1,0 +1,7 @@
+Name: form_urlencoded
+URL: https://crates.io/crates/form_urlencoded
+Description: Parser and serializer for the application/x-www-form-urlencoded syntax, as used by HTML forms.
+Version: 1.1.0
+Security Critical: yes
+License: Apache 2.0
+Revision: 359bc90a4f07224f79cc79c45dc873d44bcd6f14

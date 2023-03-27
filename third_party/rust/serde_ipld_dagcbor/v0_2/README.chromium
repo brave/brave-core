@@ -1,0 +1,7 @@
+Name: serde_ipld_dagcbor
+URL: https://crates.io/crates/serde_ipld_dagcbor
+Description: IPLD DAG-CBOR support for Serde.
+Version: 0.2.2
+Security Critical: no
+License: Apache 2.0
+Revision: ea9b594421a47ac431627781a65d641ff54a3f2b

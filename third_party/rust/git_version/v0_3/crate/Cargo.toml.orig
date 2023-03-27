@@ -1,0 +1,23 @@
+[package]
+name = "git-version"
+description = "Compile the git version (tag name, or hash otherwise) and dirty state into your program."
+version = "0.3.5"
+authors = [
+	"Mara Bos <m-ou.se@m-ou.se>",
+	"Maarten de Vries <maarten@de-vri.es>",
+	"David Roundy <daveroundy@gmail.com>",
+]
+license = "BSD-2-Clause"
+repository = "https://github.com/fusion-engineering/rust-git-version"
+documentation = "https://docs.rs/git-version/"
+keywords = ["git", "version", "build"]
+categories = ["development-tools", "development-tools::build-utils"]
+edition = "2018"
+readme = "README.md"
+
+[dependencies]
+proc-macro-hack = "0.5"
+git-version-macro = { version = "=0.3.5", path = "git-version-macro" }
+
+[workspace]
+members = ["git-version-macro"]

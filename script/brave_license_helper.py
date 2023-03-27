@@ -21,6 +21,7 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Formerly external Brave code which has moved to brave-core
         # (i.e these are already covered by the Brave Browser license notice).
         os.path.join('brave', 'third_party', 'challenge_bypass_ristretto_ffi'),
+        os.path.join('brave', 'third_party', 'sta_rs'),
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
 
@@ -36,6 +37,8 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         # Build dependencies which don't end up in the binaries.
         os.path.join('brave', 'vendor', 'depot_tools'),
         os.path.join('brave', 'vendor', 'gn-project-generators'),
+
+        os.path.join('brave', 'third_party', 'rust'),
     ])
 
     # Add the licensing info that would normally be in a README.chromium file.

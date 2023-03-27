@@ -1,0 +1,75 @@
+[package]
+name = "regex-automata"
+version = "0.1.10"  #:version
+authors = ["Andrew Gallant <jamslam@gmail.com>"]
+description = "Automata construction and matching using regular expressions."
+documentation = "https://docs.rs/regex-automata"
+homepage = "https://github.com/BurntSushi/regex-automata"
+repository = "https://github.com/BurntSushi/regex-automata"
+readme = "README.md"
+keywords = ["regex", "dfa", "automata", "automaton", "nfa"]
+license = "Unlicense/MIT"
+categories = ["text-processing"]
+exclude = [
+  "/.travis.yml", "/appveyor.yml", "/ci/*", "/scripts/*",
+  "/regex-automata-debug",
+]
+autotests = false
+autoexamples = false
+
+[badges]
+travis-ci = { repository = "BurntSushi/regex-automata" }
+appveyor = { repository = "BurntSushi/regex-automata" }
+
+[workspace]
+members = ["bench"]
+# We'd ideally not do this, but since the debug tool uses Rust 2018, older
+# versions of Rust (such as 1.28) fail to parse the manifest because it treats
+# `edition = "2018"` as an unstable feature.
+#
+# When we move our MSRV to Rust 2018, then we should be able to add this back
+# to the workspace.
+exclude = ["examples", "regex-automata-debug"]
+
+[lib]
+bench = false
+
+[features]
+default = ["std"]
+std = ["regex-syntax"]
+transducer = ["std", "fst"]
+
+[dependencies]
+fst = { version = "0.4.0", optional = true }
+regex-syntax = { version = "0.6.16", optional = true }
+
+[dev-dependencies]
+bstr = { version = "0.2", default-features = false, features = ["std"] }
+lazy_static = "1.2.0"
+regex = "1.1"
+serde = "1.0.82"
+serde_bytes = "0.11"
+serde_derive = "1.0.82"
+toml = "0.4.10"
+
+[[test]]
+path = "tests/tests.rs"
+name = "default"
+
+[profile.dev]
+# Running tests takes too long in debug mode, so we forcefully always build
+# with optimizations. Unfortunate, but, ¯\_(ツ)_/¯.
+opt-level = 3
+debug = true
+
+[profile.test]
+# Running tests takes too long in debug mode, so we forcefully always build
+# with optimizations. Unfortunate, but, ¯\_(ツ)_/¯.
+opt-level = 3
+debug = true
+
+[profile.release]
+debug = true
+
+[profile.bench]
+debug = true

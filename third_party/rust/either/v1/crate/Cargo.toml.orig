@@ -1,9 +1,11 @@
 [package]
 name = "either"
-version = "1.6.1"
+version = "1.8.1"
 authors = ["bluss"]
+edition = "2018"
+rust-version = "1.36"
 
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/bluss/either"
 documentation = "https://docs.rs/either/1/"
 readme = "README-crates.io.md"

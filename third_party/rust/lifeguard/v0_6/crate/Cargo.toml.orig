@@ -1,0 +1,14 @@
+[package]
+name = "lifeguard"
+version = "0.6.1"
+authors = ["Zack Slayton <zack.slayton@gmail.com>"]
+repository = "https://github.com/zslayton/lifeguard"
+readme = "README.md"
+description = "An object pool manager in Rust."
+keywords = [ "memory", "allocate", "collect", "pool", "recycle" ]
+license = "MIT"
+
+[lib]
+name = "lifeguard"
+
+[dependencies]

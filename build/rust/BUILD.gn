@@ -4,13 +4,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/cargo.gni")
+import("//build/config/sanitizers/sanitizers.gni")
+import("//build/config/coverage/coverage.gni")
 
 if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
-}
-
-if (is_apple) {
-  unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
 }
 
 config("strip_rust_symbols") {
@@ -19,75 +17,15 @@ config("strip_rust_symbols") {
       !using_sanitizer) {
     ldflags = [
       # prevent export of all rust symbols
-      "-Wl,-unexported_symbols_list," +
-          rebase_path(unexport_list_path, root_build_dir),
+      "-Wl,-exported_symbols_list," + rebase_path("//brave/app/framework.exports", root_out_dir),
     ]
+    # if (use_clang_coverage) {
+    # framework_with_coverage.exports
+    #   ldflags += [
+    #     "-Wl,-export_symbol,lprofDirMode",
+    #     "-Wl,-export_symbol,__llvm_profile_raw_version",
+    #     "-Wl,-export_symbol,__llvm_profile_filename",
+    #   ]
+    # }
   }
-}
-
-cargo_build("rust_lib") {
-  visibility = [ ":*" ]
-  inputs = [
-    "Cargo.lock",
-    "Cargo.toml",
-    "lib.rs",
-  ]
-
-  manifest_path = "Cargo.toml"
-
-  # ensure that we rebuild when the dependent crates change
-  # TODO(bridiver) - selectively include these libraries based on buildflags,
-  # but in order to do that we have to dynamically create the brave rust lib
-  deps = [
-    "//brave/components/adblock_rust_ffi:rust_lib",
-    "//brave/components/brave_news/rust:rust_lib",
-    "//brave/components/brave_wallet/rust:rust_lib",
-    "//brave/components/filecoin:rust_lib",
-    "//brave/components/json:rust_lib",
-    "//brave/components/p3a/constellation/rs:rust_lib",
-    "//brave/components/skus/browser/rs:rust_lib",
-    "//brave/components/speedreader/rust/lib",
-    "//brave/third_party/challenge_bypass_ristretto_ffi:rust_lib",
-  ]
-}
-
-if (is_apple) {
-  action("generate_unexport_list") {
-    script = "//brave/build/rust/generate_unexport_list.py"
-
-    inputs = [
-      "//brave/build/rust/generate_unexport_list.py",
-      rust_lib_output_path,
-    ]
-
-    outputs = [ unexport_list_path ]
-
-    args = [
-      "--bin_path=" + rebase_path(clang_base_path) + "/bin",
-      "--input=" + rebase_path(rust_lib_output_path, root_build_dir),
-      "--output=" + rebase_path(unexport_list_path, root_build_dir),
-    ]
-
-    deps = [ ":rust_lib" ]
-  }
-}
-
-# The required config for cxx-generated bindings because Chromium C++ is built
-# with -fno-exceptions.
-config("cxx_cppconfig") {
-  defines = [ "RUST_CXX_NO_EXCEPTIONS" ]
-}
-
-# The required dependencies for cxx-generated bindings, that must be included
-# on the C++ side.
-static_library("cxx_cppdeps") {
-  sources = [
-    "//build/rust/std/immediate_crash.h",
-    "//build/rust/std/remap_alloc.cc",
-    "//third_party/rust/cxx/v1/crate/include/cxx.h",
-    "//third_party/rust/cxx/v1/crate/src/cxx.cc",
-  ]
-  configs -= [ "//build/config/compiler:chromium_code" ]
-  configs += [ "//build/config/compiler:no_chromium_code" ]
-  public_configs = [ ":cxx_cppconfig" ]
 }

@@ -1,0 +1,7 @@
+Name: hmac-drbg
+URL: https://crates.io/crates/hmac-drbg
+Description: Pure Rust implementation of Hmac DRBG.
+Version: 0.3.0
+Security Critical: no
+License: Apache 2.0
+Revision: 16e288cce61054d4df29d02e1cb08056ea696629

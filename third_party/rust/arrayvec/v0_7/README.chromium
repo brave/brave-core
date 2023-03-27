@@ -1,0 +1,7 @@
+Name: arrayvec
+URL: https://crates.io/crates/arrayvec
+Description: A vector with fixed capacity, backed by an array (it can be stored on the stack too). Implements fixed capacity ArrayVec and ArrayString.
+Version: 0.7.2
+Security Critical: no
+License: Apache 2.0
+Revision: 67ec907a98c0f40c4b76066fed3c1af59d35cf6a

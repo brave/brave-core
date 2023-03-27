@@ -67,7 +67,7 @@ static_library("p3a") {
   ]
 
   deps = [
-    "constellation/rs/cxx",
+    "constellation/rs/cxx:rust_lib",
     "//base",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
@@ -110,7 +110,7 @@ source_set("unit_tests") {
     "star_randomness_test_util.h",
   ]
   deps = [
-    "constellation/rs/cxx",
+    "constellation/rs/cxx:rust_lib",
     "//base/test:test_support",
     "//brave/components/p3a",
     "//brave/components/p3a:buildflags",

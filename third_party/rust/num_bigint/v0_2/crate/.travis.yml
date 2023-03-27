@@ -1,0 +1,30 @@
+language: rust
+sudo: false
+rust:
+  - 1.15.0
+  - 1.22.0 # rand
+  - 1.26.0 # has_i128
+  - 1.31.0 # 2018!
+  - stable
+  - beta
+  - nightly
+script:
+  - cargo build --verbose
+  - ./ci/test_full.sh
+matrix:
+  include:
+    - name: "rustfmt"
+      rust: 1.31.0
+      before_script:
+        - rustup component add rustfmt
+      script:
+        - cargo fmt --all -- --check
+notifications:
+  email:
+    on_success: never
+branches:
+  only:
+    - master
+    - next
+    - staging
+    - trying

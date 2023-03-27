@@ -1,0 +1,7 @@
+Name: sharded-slab
+URL: https://crates.io/crates/sharded-slab
+Description: A lock-free concurrent slab.
+
+Version: 0.1.4
+Security Critical: yes
+License: MIT

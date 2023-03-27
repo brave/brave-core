@@ -1,0 +1,19 @@
+[package]
+name = "futures-retry"
+version = "0.5.0"
+authors = ["mexus <gilaldpellaeon@gmail.com>"]
+description = "Retry your Futures and Streams!"
+license = "MIT/Apache-2.0"
+keywords = ["tokio", "futures", "retry"]
+repository = "https://gitlab.com/mexus/futures-retry"
+documentation = "https://docs.rs/futures-retry/"
+readme = "README.md"
+edition = "2018"
+
+[dependencies]
+futures = { version = "0.3.1" }
+pin-project = "0.4.6"
+tokio = { version = "0.2.3", features = [ "time" ], default-features = false }
+
+[dev-dependencies]
+tokio = { version = "0.2.3", features = ["full"] }

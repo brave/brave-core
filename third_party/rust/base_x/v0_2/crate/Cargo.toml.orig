@@ -1,0 +1,24 @@
+[package]
+name = "base-x"
+description = "Encode/decode any base"
+version = "0.2.11"
+authors = ["Alex R. <alexei.rudenko@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+keywords = ["base-x", "base", "convert"]
+repository = "https://github.com/OrKoN/base-x-rs"
+homepage = "https://github.com/OrKoN/base-x-rs"
+categories = ["value-formatting"]
+
+[dev-dependencies]
+json = "0.12"
+bencher = "0.1"
+rand = "0.8"
+
+[[bench]]
+name = "base"
+harness = false
+
+[features]
+default = ["std"]
+std = []

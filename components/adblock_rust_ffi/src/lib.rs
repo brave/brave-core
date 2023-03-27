@@ -13,7 +13,6 @@ use std::collections::HashSet;
 use std::ffi::CStr;
 use std::ffi::CString;
 use std::os::raw::c_char;
-use std::string::String;
 
 /// An external callback that receives a hostname and two out-parameters for
 /// start and end position. The callback should fill the start and end positions

@@ -1,0 +1,7 @@
+Name: lock_api
+URL: https://crates.io/crates/lock_api
+Description: Wrappers to create fully-featured Mutex and RwLock types. Compatible with no_std.
+Version: 0.4.9
+Security Critical: yes
+License: Apache 2.0
+Revision: 9e956adc2c6ecde7c15ff7611396d24be711c8a9

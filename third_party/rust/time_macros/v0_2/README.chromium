@@ -1,0 +1,9 @@
+Name: time-macros
+URL: https://crates.io/crates/time-macros
+Description:     Procedural macros for the time crate.
+    This crate is an implementation detail and should not be relied upon directly.
+
+Version: 0.2.8
+Security Critical: yes
+License: Apache 2.0
+Revision: d7c725c422e6cb551302601464042d434a91b6da

@@ -22,5 +22,5 @@ source_set("hd_key") {
     "//third_party/boringssl",
   ]
 
-  public_deps = [ "//brave/components/brave_wallet/rust:cxx" ]
+  public_deps = [ "//brave/components/brave_wallet/rust:rust_lib" ]
 }

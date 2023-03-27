@@ -1,0 +1,6 @@
+Name: rmp-serde
+URL: https://crates.io/crates/rmp-serde
+Description: Serde bindings for RMP
+Version: 0.13.7
+Security Critical: yes
+License: MIT

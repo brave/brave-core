@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xml:lang="en-US">
+    <id>tag:github.com,2008:https://github.com/feed-rs/feed-rs/releases</id>
+    <link type="text/html" rel="alternate" href="https://github.com/feed-rs/feed-rs/releases"/>
+    <link type="application/atom+xml" rel="self" href="https://github.com/feed-rs/feed-rs/releases.atom"/>
+    <title>Release notes from feed-rs</title>
+    <updated>2020-01-19T16:01:56+11:00</updated>
+    <entry>
+        <id>tag:github.com,2008:Repository/90976281/v0.2.0</id>
+        <updated>2020-01-19T16:08:59+11:00</updated>
+        <link rel="alternate" type="text/html" href="https://github.com/feed-rs/feed-rs/releases/tag/v0.2.0"/>
+        <title>0.2.0</title>
+        <content type="html">&lt;p&gt;A range of maintenance work, including:&lt;/p&gt;
+            &lt;ul&gt;
+            &lt;li&gt;migrate to Rust 2018 edition&lt;/li&gt;
+            &lt;li&gt;Align domain model around Atom spec as it is more modern+complete&lt;/li&gt;
+            &lt;li&gt;Switch to event-based parser (xml-rs) to reduce peak memory usage and use of clone()&lt;/li&gt;
+            &lt;li&gt;Expanded test coverage&lt;/li&gt;
+            &lt;li&gt;Documentation improvements&lt;/li&gt;
+            &lt;/ul&gt;
+        </content>
+        <author>
+            <name>markpritchard</name>
+        </author>
+        <media:thumbnail height="30" width="30" url="https://avatars3.githubusercontent.com/u/8234070?s=60&amp;v=4"/>
+    </entry>
+    <entry>
+        <id>tag:github.com,2008:Repository/90976281/0.1.3</id>
+        <updated>2017-07-07T21:47:46+10:00</updated>
+        <link rel="alternate" type="text/html" href="https://github.com/feed-rs/feed-rs/releases/tag/0.1.3"/>
+        <title>0.1.3</title>
+        <content type="html">&lt;p&gt;Update version to 0.1.3&lt;/p&gt;</content>
+        <author>
+            <name>kumabook</name>
+        </author>
+        <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/753703?s=60&amp;v=4"/>
+    </entry>
+    <entry>
+        <id>tag:github.com,2008:Repository/90976281/0.1.1</id>
+        <updated>2017-06-16T18:49:36+10:00</updated>
+        <link rel="alternate" type="text/html" href="https://github.com/feed-rs/feed-rs/releases/tag/0.1.1"/>
+        <title>0.1.1</title>
+        <content type="html">&lt;p&gt;Handle rel attribute of link element of entry of atom&lt;/p&gt;</content>
+        <author>
+            <name>kumabook</name>
+        </author>
+        <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/753703?s=60&amp;v=4"/>
+    </entry>
+    <entry>
+        <id>tag:github.com,2008:Repository/90976281/0.1.0</id>
+        <updated>2017-06-15T16:44:26+10:00</updated>
+        <link rel="alternate" type="text/html" href="https://github.com/feed-rs/feed-rs/releases/tag/0.1.0"/>
+        <title>0.1.0</title>
+        <content type="html">&lt;p&gt;Update crate info to Cargo.toml&lt;/p&gt;</content>
+        <author>
+            <name>kumabook</name>
+        </author>
+        <media:thumbnail height="30" width="30" url="https://avatars1.githubusercontent.com/u/753703?s=60&amp;v=4"/>
+    </entry>
+</feed>

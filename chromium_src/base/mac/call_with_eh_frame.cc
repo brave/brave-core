@@ -12,21 +12,11 @@
 #include "build/build_config.h"
 #include "src/base/mac/call_with_eh_frame.cc"
 
-// Rename the chromium personality routine to match the one included with rust
-// so we can override it at link time.
+// Patched std/src/personality/gcc.rs to match CxxPersonalityRoutine
 // See https://github.com/rust-lang/rust/issues/102754#issuecomment-1399669725
 #if defined(__x86_64__) || defined(__aarch64__)
 
-extern "C" BASE_EXPORT _Unwind_Reason_Code
-rust_eh_personality_impl(int version,
-                         _Unwind_Action actions,
-                         uint64_t exception_class,
-                         struct _Unwind_Exception* exception_object,
-                         struct _Unwind_Context* context) {
-  return base::mac::CxxPersonalityRoutine(version, actions, exception_class,
-                                          exception_object, context);
-}
-
+// Provide default personality routine for any target that doesn't include rust
 extern "C" __attribute__((weak)) _Unwind_Reason_Code rust_eh_personality(
     int version,
     _Unwind_Action actions,

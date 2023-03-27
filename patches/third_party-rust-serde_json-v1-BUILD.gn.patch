@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/serde_json/v1/BUILD.gn b/third_party/rust/serde_json/v1/BUILD.gn
+index 9caf5baf0788001e7eeb24e560455a9502092b3e..524bbfd75a448f312e2c9e013ee3e9bdbc7cf929 100644
+--- a/third_party/rust/serde_json/v1/BUILD.gn
++++ b/third_party/rust/serde_json/v1/BUILD.gn
+@@ -12,6 +12,7 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
++  visibility += [ "//brave/*" ]
+   crate_root = "crate/src/lib.rs"
+ 
+   # Unit tests skipped. Generate with --with-tests to include them.

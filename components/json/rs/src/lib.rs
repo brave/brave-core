@@ -171,7 +171,7 @@ pub fn convert_string_value_to_int64(path: &str, json: &str, optional: bool) -> 
     String::new()
 }
 
-// Parses and re-serializes json with uint64 values for the given key of the 
+// Parses and re-serializes json with uint64 values for the given key of the
 // object located at path_to_object for all objects in the array located at path_to_array.
 // Original json string will be returned if object array at path is not found.
 // When the target uint64 value at key is not found in an object or is null,

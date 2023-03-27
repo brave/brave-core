@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<rss version="0.91">
+
+<channel>
+<title>Dicas-L: Dicas técnicas de Linux e Software Livre </title>
+<link>http://www.dicas-l.com.br/index.xml</link>
+
+<description>Dicas-L: Informações Úteis para Administradores de Sistemas</description>
+<language>pt-br</language>
+<lastBuildDate>Thu, 13 Aug 2020 10:06:56 -0300</lastBuildDate>
+<copyright>Creative Commons, http://creativecommons.org/licenses/by-nc-sa/2.0/br/deed.pt</copyright>
+<docs>http://www.dicas-L.com.br/faq.shtml</docs>
+<image>
+<title>Dicas-L: Dicas técnicas de Linux e Software Livre </title>
+<url>http://www.dicas-l.com.br/imagens/dicas-l.jpg</url>
+<link>http://www.dicas-l.com.br/index.xml</link>
+</image>
+<item>
+<title>bash - Expansão de Parâmetros</title>
+	<description>bash - Expansão de Parâmetros</description>
+	<link>http://www.Dicas-L.com.br/dicas-l/20200406.php</link>
+</item>
+</channel></rss>

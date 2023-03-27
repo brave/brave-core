@@ -1,0 +1,6 @@
+Name: thin-slice
+URL: https://crates.io/crates/thin-slice
+Description: An owned slice that packs the slice storage into a single word when possible
+Version: 0.1.1
+Security Critical: yes
+License: MPL 2.0

@@ -1,0 +1,10 @@
+Name: cc
+URL: https://crates.io/crates/cc
+Description: A build-time dependency for Cargo build scripts to assist in invoking the native
+C compiler to compile native C code into a static archive to be linked into Rust
+code.
+
+Version: 1.0.79
+Security Critical: yes
+License: Apache 2.0
+Revision: e5bbdfa1fa468c028cb38fee6c35a3cf2e5a2736

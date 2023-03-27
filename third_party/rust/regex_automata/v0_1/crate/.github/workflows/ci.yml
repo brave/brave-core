@@ -1,0 +1,158 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches:
+    - master
+  schedule:
+  - cron: '00 01 * * *'
+jobs:
+  test:
+    name: test
+    env:
+      # For some builds, we use cross to test on 32-bit and big-endian
+      # systems.
+      CARGO: cargo
+      # When CARGO is set to CROSS, TARGET is set to `--target matrix.target`.
+      TARGET:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build:
+        - pinned
+        - stable
+        - stable-32
+        - stable-mips
+        - stable-thumb
+        - beta
+        - nightly
+        - macos
+        - win-msvc
+        - win-gnu
+        include:
+        - build: pinned
+          os: ubuntu-18.04
+          rust: 1.41.1
+        - build: stable
+          os: ubuntu-18.04
+          rust: stable
+        - build: stable-32
+          os: ubuntu-18.04
+          rust: stable
+          target: i686-unknown-linux-gnu
+        - build: stable-mips
+          os: ubuntu-18.04
+          rust: stable
+          target: mips64-unknown-linux-gnuabi64
+        - build: stable-thumb
+          os: ubuntu-18.04
+          rust: stable
+          target: thumbv7em-none-eabihf
+        - build: beta
+          os: ubuntu-18.04
+          rust: beta
+        - build: nightly
+          os: ubuntu-18.04
+          rust: nightly
+        - build: macos
+          os: macos-latest
+          rust: stable
+        - build: win-msvc
+          os: windows-2019
+          rust: stable
+        - build: win-gnu
+          os: windows-2019
+          rust: stable-x86_64-gnu
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        profile: minimal
+        override: true
+
+    - name: Use Cross
+      if: matrix.target != ''
+      run: |
+        # FIXME: to work around bugs in latest cross release, install master.
+        # See: https://github.com/rust-embedded/cross/issues/357
+        cargo install --git https://github.com/rust-embedded/cross
+        echo "CARGO=cross" >> $GITHUB_ENV
+        echo "TARGET=--target ${{ matrix.target }}" >> $GITHUB_ENV
+
+    - name: Show command used for Cargo
+      run: |
+        echo "cargo command is: ${{ env.CARGO }}"
+        echo "target flag is: ${{ env.TARGET }}"
+
+    - name: Build
+      if: matrix.build != 'stable-thumb'
+      run: ${{ env.CARGO }} build --verbose ${{ env.TARGET }}
+
+    - name: Build docs
+      if: matrix.build != 'stable-thumb'
+      run: ${{ env.CARGO }} doc --verbose ${{ env.TARGET }}
+
+    # Our dev dependencies are increasing their MSRV more quickly then we want
+    # to, so the following are only run on non-pinned targets.
+
+    - name: Build examples
+      if: matrix.build != 'pinned' && matrix.build != 'stable-thumb'
+      run: ${{ env.CARGO }} build --manifest-path examples/Cargo.toml --examples
+
+    - name: Run tests
+      if: matrix.build != 'pinned' && matrix.build != 'stable-thumb' && matrix.build != 'stable-mips'
+      run: ${{ env.CARGO }} test --verbose --features transducer ${{ env.TARGET }}
+
+    # The mips test runner is quite sluggish, so don't run the full test
+    # suite there. Unfortunate, but CI times balloon otherwise.
+    - name: Run tests
+      if: matrix.build == 'stable-mips'
+      run: ${{ env.CARGO }} test --verbose --features transducer --lib ${{ env.TARGET }}
+
+    - name: Build without default features
+      if: matrix.build != 'pinned'
+      run: ${{ env.CARGO }} build --verbose --no-default-features ${{ env.TARGET }}
+
+    - name: Build docs without default features
+      if: matrix.build != 'pinned'
+      run: ${{ env.CARGO }} doc --verbose --lib --no-default-features ${{ env.TARGET }}
+
+    - name: Run tests without default features
+      if: matrix.build != 'pinned' && matrix.build != 'stable-thumb'
+      run: ${{ env.CARGO }} test --verbose --lib --no-default-features ${{ env.TARGET }}
+
+    - name: Compile debug tool
+      if: matrix.build != 'pinned' && matrix.build != 'stable-thumb'
+      run: ${{ env.CARGO }} build --verbose --manifest-path regex-automata-debug/Cargo.toml ${{ env.TARGET }}
+
+    - name: Test benchmarks
+      if: matrix.build != 'pinned' && matrix.build != 'stable-thumb'
+      run: ${{ env.CARGO }} bench --manifest-path bench/Cargo.toml --verbose ${{ env.TARGET }} -- --test
+
+  rustfmt:
+    name: rustfmt
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        profile: minimal
+        components: rustfmt
+    - name: Check formatting
+      run: |
+        cargo fmt --all -- --check
+    - name: Check formatting for debug tool
+      run: |
+        cargo fmt --manifest-path regex-automata-debug/Cargo.toml -- --check

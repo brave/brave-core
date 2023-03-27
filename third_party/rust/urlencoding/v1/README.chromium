@@ -1,0 +1,7 @@
+Name: urlencoding
+URL: https://crates.io/crates/urlencoding
+Description: A Rust library for doing URL percentage encoding.
+Version: 1.3.3
+Security Critical: yes
+License: MIT
+Revision: 0ffc5663e31941a5e37d6f1bbff00495ba6dafa3

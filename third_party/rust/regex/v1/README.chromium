@@ -1,0 +1,9 @@
+Name: regex
+URL: https://crates.io/crates/regex
+Description: An implementation of regular expressions for Rust. This implementation uses
+finite automata and guarantees linear time matching on all inputs.
+
+Version: 1.7.2
+Security Critical: no
+License: Apache 2.0
+Revision: 32fed9429eafba0ae92a64b01796a0c5a75b88c8

@@ -1,0 +1,7 @@
+Name: bls-signatures
+URL: https://crates.io/crates/bls-signatures
+Description: Aggregate BLS Signatures
+Version: 0.12.0
+Security Critical: no
+License: Apache 2.0
+Revision: c9083cdef30e75203a43cfe65248c9a7c3bc2e42

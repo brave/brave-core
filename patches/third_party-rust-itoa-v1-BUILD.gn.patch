@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/itoa/v1/BUILD.gn b/third_party/rust/itoa/v1/BUILD.gn
+index 4a7c0cb805af690703142a6143aaa5b22a4c4802..48ec477cc7f2db90cf7958efeda361fb65ebfd80 100644
+--- a/third_party/rust/itoa/v1/BUILD.gn
++++ b/third_party/rust/itoa/v1/BUILD.gn
+@@ -12,6 +12,7 @@ cargo_crate("lib") {
+   # Only for usage from third-party crates. Add the crate to
+   # third_party.toml to use it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
++  visibility += [ "//brave/third_party/rust/*" ]
+   crate_root = "crate/src/lib.rs"
+ 
+   # Unit tests skipped. Generate with --with-tests to include them.

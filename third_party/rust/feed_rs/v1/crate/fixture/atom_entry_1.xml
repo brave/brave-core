@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entry xmlns="http://www.w3.org/2005/Atom" xmlns:svnit="http://www.svnit.ac.in/coed/mtech/research/2009/khuba/">
+    <title type="text">Specifications</title>
+    <id>urn:uuid:988EF5C55CDEA24EDE1251744888912</id>
+    <updated>2009-08-31T18:55:12.569Z</updated>
+    <author>
+        <name>S. A. Khuba</name>
+    </author>
+    <category term="45121504" scheme="http://www.unspsc.org/UNv1111201" label="Digital Camera"/>
+    <svnit:Semantics available="OfflineAtURL">http://www.daman.nic.in/khuba/ontology/camera.owl</svnit:Semantics>
+    <contributor>
+        <name>Shri. S. A. Khuba</name>
+    </contributor>
+    <content type="text">1) Pixels 12.3 million Effective . 12) Weight is Approx. 840 g</content>
+    <summary type="text">This Atom Entry XML Doc publishes tech specifications of Nikon D300S Digital Camera</summary>
+</entry>

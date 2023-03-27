@@ -1,0 +1,7 @@
+Name: itoa
+URL: https://crates.io/crates/itoa
+Description: Fast integer primitive to string conversion
+Version: 1.0.6
+Security Critical: no
+License: Apache 2.0
+Revision: 3cab737d59c60014655268a79930861db300023d

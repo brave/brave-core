@@ -34,6 +34,7 @@ static_library("speedreader") {
   ]
 
   deps = [
+    "rust/ffi",
     "//brave/components/body_sniffer",
     "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:yt="http://www.youtube.com/xml/schemas/2015" xmlns:media="http://search.yahoo.com/mrss/" xmlns="http://www.w3.org/2005/Atom">
+    <id>yt:channel:UC7_gcs09iThXybpVgjHZ_7g</id>
+    <title>PBS Space Time</title>
+    <entry>
+        <id>yt:video:0A1ouV7iD8o</id>
+        <yt:videoId>0A1ouV7iD8o</yt:videoId>
+        <yt:channelId>UC7_gcs09iThXybpVgjHZ_7g</yt:channelId>
+        <title>Navigating with Quantum Entanglement</title>
+        <link rel="alternate" href="https://www.youtube.com/watch?v=0A1ouV7iD8o"/>
+        <author>
+            <name>PBS Space Time</name>
+            <uri>https://www.youtube.com/channel/UC7_gcs09iThXybpVgjHZ_7g</uri>
+        </author>
+        <published>2020-12-22T19:15:01+00:00</published>
+        <updated>2020-12-25T23:12:12+00:00</updated>
+        <media:group>
+            <media:title>Navigating with Quantum Entanglement</media:title>
+            <media:content url="https://www.youtube.com/v/0A1ouV7iD8o?version=3" type="application/x-shockwave-flash" width="640" height="390"/>
+            <media:thumbnail url="https://i1.ytimg.com/vi/0A1ouV7iD8o/hqdefault.jpg" width="480" height="360"/>
+            <media:description>Check Out Weathered on PBS Terra https://www.youtube.com/watch?v=znSN7ZFIaOg&amp;ab_channel=PBSTerra</media:description>
+            <media:community>
+                <media:starRating count="15020" average="4.95" min="1" max="5"/>
+                <media:statistics views="304321" favorites="42"/>
+            </media:community>
+        </media:group>
+    </entry>
+</feed>

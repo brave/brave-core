@@ -1,0 +1,7 @@
+Name: autocfg
+URL: https://crates.io/crates/autocfg
+Description: Automatic cfg for Rust compiler features
+Version: 1.1.0
+Security Critical: no
+License: Apache 2.0
+Revision: 2dc4819c4a3d8856a1876dae546d1b082ea550f3
