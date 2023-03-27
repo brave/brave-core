@@ -24,24 +24,28 @@ extension UIImageView {
     get { objc_getAssociatedObject(self, &AssociatedObjectKeys.faviconTask) as? Task<Void, Error> }
     set { objc_setAssociatedObject(self, &AssociatedObjectKeys.faviconTask, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
   }
-  
-  private func fetchIcon(for siteURL: URL, monogramFallbackCharacter: Character? = nil) async -> Favicon? {
-    do {
-      return try await FaviconFetcher.loadIcon(url: siteURL, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
-    } catch {
-      return try? await FaviconFetcher.monogramIcon(url: siteURL, monogramString: monogramFallbackCharacter)
-    }
-  }
 
   /// Load the favicon from a site URL directly into a `UIImageView`. If no
   /// favicon is found, a monogram will be used where the letter is determined
   /// based on the site URL.
   func loadFavicon(for siteURL: URL, monogramFallbackCharacter: Character? = nil, completion: ((Favicon?) -> Void)? = nil) {
     cancelFaviconLoad()
+    
+    if let icon = FaviconFetcher.getIconFromCache(for: siteURL) {
+      self.image = icon.image ?? Favicon.defaultImage
+      return
+    }
+    
+    self.image = Favicon.defaultImage
     faviconTask = Task { @MainActor in
-      let favicon = await fetchIcon(for: siteURL, monogramFallbackCharacter: monogramFallbackCharacter)
-      self.image = favicon?.image ?? Favicon.defaultImage
-      completion?(favicon)
+      do {
+        let favicon = try await FaviconFetcher.loadIcon(url: siteURL, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self.image = favicon.image ?? Favicon.defaultImage
+        completion?(favicon)
+      } catch {
+        self.image = Favicon.defaultImage
+        completion?(nil)
+      }
     }
   }
 

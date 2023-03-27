@@ -24,37 +24,30 @@ class FaviconHandler {
   }
 
   @MainActor func loadFaviconURL(
-    _ faviconURL: String,
+    _ url: URL,
     forTab tab: Tab
   ) async throws -> Favicon {
-    guard let currentURL = tab.url else {
-      throw FaviconError.noImagesFound
-    }
-    
-    let favicon = try await FaviconFetcher.loadIcon(url: currentURL, kind: .smallIcon, persistent: !tab.isPrivate)
-    tab.favicons.append(favicon)
+    let favicon = try await FaviconFetcher.loadIcon(url: url, kind: .smallIcon, persistent: !tab.isPrivate)
+    tab.favicon = favicon
     return favicon
   }
 }
 
 extension FaviconHandler: TabEventHandler {
   func tab(_ tab: Tab, didLoadPageMetadata metadata: PageMetadata) {
-    tab.favicons.removeAll(keepingCapacity: false)
-    Task { @MainActor in
-      if let iconURL = metadata.largeIconURL {
-        let favicon = try await loadFaviconURL(iconURL, forTab: tab)
-        TabEvent.post(.didLoadFavicon(favicon), for: tab)
-      } else if let iconURL = metadata.faviconURL {
-        let favicon = try await loadFaviconURL(iconURL, forTab: tab)
+    if let currentURL = tab.url {
+      if let favicon = FaviconFetcher.getIconFromCache(for: currentURL) {
+        tab.favicon = favicon
+      } else {
+        tab.favicon = Favicon.default
+      }
+      
+      Task { @MainActor in
+        let favicon = try await loadFaviconURL(currentURL, forTab: tab)
         TabEvent.post(.didLoadFavicon(favicon), for: tab)
       }
-      // No favicon fetched from metadata, trying base domain's standard favicon location.
-      else if let baseURL = tab.url?.domainURL {
-        let favicon = try await loadFaviconURL(
-          baseURL.appendingPathComponent("favicon.ico").absoluteString,
-          forTab: tab)
-        TabEvent.post(.didLoadFavicon(favicon), for: tab)
-      }
+    } else {
+      tab.favicon = Favicon.default
     }
   }
 }

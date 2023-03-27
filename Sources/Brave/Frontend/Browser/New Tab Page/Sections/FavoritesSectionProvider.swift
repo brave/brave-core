@@ -110,7 +110,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     cell.imageView.cancelLoading()
 
     if let url = fav.url?.asURL {
-      cell.imageView.loadFavicon(siteURL: url, monogramFallbackCharacter: fav.title?.first)
+      cell.imageView.loadFavicon(siteURL: url)
     }
     cell.accessibilityLabel = cell.textLabel.text
   }

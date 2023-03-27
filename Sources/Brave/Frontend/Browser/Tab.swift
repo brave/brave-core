@@ -131,7 +131,7 @@ class Tab: NSObject {
   var tabDelegate: TabDelegate?
   weak var urlDidChangeDelegate: URLChangeDelegate?  // TODO: generalize this.
   var bars = [SnackBar]()
-  var favicons = [Favicon]()
+  var favicon: Favicon
   var lastExecutedTime: Timestamp?
   var sessionData: SessionData?
   fileprivate var lastRequest: URLRequest?
@@ -276,6 +276,7 @@ class Tab: NSObject {
 
   init(configuration: WKWebViewConfiguration, type: TabType = .regular, tabGeneratorAPI: BraveTabGeneratorAPI? = nil) {
     self.configuration = configuration
+    self.favicon = Favicon.default
     rewardsId = UInt32.random(in: 1...UInt32.max)
     nightMode = Preferences.General.nightModeEnabled.value
     syncTab = tabGeneratorAPI?.createBraveSyncTab(isOffTheRecord: type == .private)
@@ -516,9 +517,7 @@ class Tab: NSObject {
 
   var displayFavicon: Favicon? {
     if let url = url, InternalURL(url)?.isAboutHomeURL == true { return nil }
-    return favicons.max {
-      $0.image?.size.width ?? 0 < $1.image?.size.width ?? 0
-    }
+    return favicon
   }
 
   var canGoBack: Bool {
