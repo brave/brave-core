@@ -32,7 +32,7 @@ import java.util.concurrent.Executors;
 
 public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.ViewHolder> {
     private Context context;
-    private List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
+    private List<WalletListItemModel> walletListItemModelList;
     private OnWalletListItemClick onWalletListItemClick;
     private ExecutorService mExecutor;
     private Handler mHandler;
