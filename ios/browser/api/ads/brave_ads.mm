@@ -29,6 +29,7 @@
 #include "brave/components/brave_ads/core/ad_event_history.h"
 #include "brave/components/brave_ads/core/ads.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/build_channel.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/history_filter_types.h"
@@ -216,18 +217,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Global
 
-+ (BOOL)isSupportedLocale:(NSString*)locale {
-  return brave_ads::IsSupportedLocale(base::SysNSStringToUTF8(locale));
-}
-
-+ (BOOL)isCurrentLocaleSupported {
-  return [self isSupportedLocale:[self currentLocaleCode]];
-}
-
-+ (NSString*)currentLocaleCode {
-  const auto locale = NSLocale.currentLocale;
-  return [NSString
-      stringWithFormat:@"%@_%@", locale.languageCode, locale.countryCode];
++ (BOOL)isSupportedRegion {
+  return brave_ads::IsSupportedRegion();
 }
 
 + (BraveAdsSysInfo*)sysInfo {

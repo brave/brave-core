@@ -22,6 +22,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
@@ -1196,7 +1197,7 @@ void RewardsDOMHandler::GetAdsData(const base::Value::List& args) {
   AllowJavascript();
 
   base::Value::Dict ads_data;
-  ads_data.Set("adsIsSupported", ads_service_->IsSupportedLocale());
+  ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
   ads_data.Set("adsEnabled", ads_service_->IsEnabled());
   ads_data.Set(
       "adsPerHour",
@@ -1431,8 +1432,7 @@ void RewardsDOMHandler::SaveAdsSetting(const base::Value::List& args) {
   const std::string value = args[1].GetString();
 
   if (key == "adsEnabled") {
-    ads_service_->SetEnabled(value == "true" &&
-                             ads_service_->IsSupportedLocale());
+    ads_service_->SetEnabled(value == "true" && brave_ads::IsSupportedRegion());
   } else if (key == "adsPerHour") {
     int64_t int64_value;
     if (!base::StringToInt64(value, &int64_value)) {

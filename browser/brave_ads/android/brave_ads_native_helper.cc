@@ -10,6 +10,7 @@
 #include "base/android/jni_string.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_ads/android/jni_headers/BraveAdsNativeHelper_jni.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "chrome/browser/profiles/profile_android.h"
 
 namespace brave_ads {
@@ -42,7 +43,7 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
 }
 
 // static
-jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
+jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile_android);
@@ -51,7 +52,7 @@ jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
     return false;
   }
 
-  return ads_service->IsSupportedLocale();
+  return brave_ads::IsSupportedRegion();
 }
 
 // static

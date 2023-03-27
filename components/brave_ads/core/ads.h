@@ -32,9 +32,6 @@ namespace brave_ads {
 class AdsClient;
 struct NotificationAdInfo;
 
-// Returns |true| if the locale is supported otherwise returns |false|.
-bool IsSupportedLocale(const std::string& locale);
-
 class ADS_EXPORT Ads {
  public:
   Ads() = default;

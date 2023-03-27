@@ -27,14 +27,12 @@ brave_browser_brave_ads_deps = [
   "//base",
   "//brave/browser/brave_ads/device_id",
   "//brave/browser/brave_rewards:util",
-  "//brave/browser/profiles:util",
   "//brave/browser/ui/brave_ads",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/common",
   "//brave/components/brave_ads/content/browser",
   "//brave/components/brave_federated",
   "//brave/components/brave_federated/public/interfaces",
-  "//brave/components/brave_rewards/browser",
   "//chrome/browser/notifications",
   "//chrome/browser/profiles",
   "//chrome/browser/profiles:profile",
@@ -43,7 +41,6 @@ brave_browser_brave_ads_deps = [
   "//components/keyed_service/content",
   "//components/sessions",
   "//content/public/browser",
-  "//services/network/public/cpp",
   "//ui/base",
 ]
 

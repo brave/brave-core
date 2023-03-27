@@ -38,6 +38,7 @@ source_set("headers") {
     "ads_callback.h",
     "ads_client.h",
     "ads_client_callback.h",
+    "ads_util.h",
     "build_channel.h",
     "category_content_action_types.h",
     "category_content_info.h",

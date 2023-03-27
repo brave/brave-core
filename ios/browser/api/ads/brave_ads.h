@@ -51,12 +51,8 @@ OBJC_EXPORT
 
 #pragma mark - Global
 
-/// Whether or not a given locale is supported. The locale should be a standard
-/// locale identifier, i.e. "en_US"
-+ (BOOL)isSupportedLocale:(NSString*)locale;
-
-/// Whether or not the users current locale (by `NSLocale`) is supported
-+ (BOOL)isCurrentLocaleSupported;
+/// Whether or not the users current region is supported
++ (BOOL)isSupportedRegion;
 
 /// System info
 @property(nonatomic, class) BraveAdsSysInfo* sysInfo;

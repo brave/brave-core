@@ -12,6 +12,7 @@
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
@@ -68,7 +69,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     bool is_supported_locale = false;
     auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
     if (ads_service) {
-      is_supported_locale = ads_service->IsSupportedLocale();
+      is_supported_locale = brave_ads::IsSupportedRegion();
     }
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));

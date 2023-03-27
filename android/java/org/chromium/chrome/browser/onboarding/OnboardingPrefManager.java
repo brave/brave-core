@@ -214,7 +214,7 @@ public class OnboardingPrefManager {
     }
 
     public boolean isAdsAvailable() {
-        return BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedRegularProfile());
+        return BraveAdsNativeHelper.nativeIsSupportedRegion(Profile.getLastUsedRegularProfile());
     }
 
     public void showOnboarding(Context context) {

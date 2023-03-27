@@ -204,6 +204,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h",
     "//brave/components/brave_ads/core/internal/ads_client_mock.cc",
     "//brave/components/brave_ads/core/internal/ads_client_mock.h",
+    "//brave/components/brave_ads/core/internal/ads_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/browser/browser_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/catalog/catalog_json_reader_unittest.cc",
     "//brave/components/brave_ads/core/internal/catalog/catalog_util_unittest.cc",
