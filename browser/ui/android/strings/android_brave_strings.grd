@@ -2070,6 +2070,9 @@ Are you sure you want to do this?
     <message name="IDS_EDIT_VISIBLE_ASSETS" desc="Brave wallet edit assets button name">
       Edit visible assets
     </message>
+    <message name="IDS_EDIT_VISIBLE_NFTS" desc="Brave wallet edit NFTs button name">
+      Edit visible NFTs
+    </message>
     <message name="IDS_SAVE_ACCOUNT_WATCHLIST" desc="Brave wallet save a watchlist assets button name">
       Save account watchlist
     </message>
@@ -3832,6 +3835,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_PLAYLIST_ITEM_EXPIRED_MESSAGE" desc="Playlist item expired message text">
       Content expired. Try again in a few seconds.
+    </message>
+    <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
+      No NFTs here yet.
+    </message>
+    <message name="IDS_ADD_NFTS" desc="How to import NFTs in the NFT grid.">
+      Ready to add some? Just click the button below to import.
     </message>
   </messages>
   </release>

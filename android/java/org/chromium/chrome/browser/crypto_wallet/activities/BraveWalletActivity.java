@@ -337,7 +337,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoLayout.setVisibility(View.VISIBLE);
 
         ViewPager viewPager = findViewById(R.id.navigation_view_pager);
-        mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(getSupportFragmentManager());
+        mCryptoFragmentPageAdapter =
+                new CryptoFragmentPageAdapter(getSupportFragmentManager(), this);
         viewPager.setAdapter(mCryptoFragmentPageAdapter);
         viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getCount() - 1);
         TabLayout tabLayout = findViewById(R.id.tabs);

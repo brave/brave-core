@@ -90,6 +90,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActiv
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.adapters.WalletNftAdapter;
 import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -1469,12 +1470,10 @@ public class Utils {
         return walletCoinAdapter;
     }
 
-    public static WalletCoinAdapter setupVisibleNftAssetList(
+    public static List<WalletListItemModel> createWalletListItemModel(
             List<PortfolioModel.NftDataModel> userAssets, HashMap<String, Double> perTokenCryptoSum,
             HashMap<String, Double> perTokenFiatSum, String tokensPath, Resources resources,
             List<NetworkInfo> allNetworkInfos) {
-        WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
 
         for (PortfolioModel.NftDataModel userAsset : userAssets) {
@@ -1484,10 +1483,7 @@ public class Utils {
             walletListItemModelList.add(walletListItemModel);
         }
 
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-
-        return walletCoinAdapter;
+        return walletListItemModelList;
     }
 
     @NonNull

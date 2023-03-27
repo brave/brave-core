@@ -54,6 +54,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
+import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
@@ -344,10 +345,16 @@ public class PortfolioFragment
         }
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-        mWalletNftAdapter = Utils.setupVisibleNftAssetList(nftDataModels, perTokenCryptoSum,
-                perTokenFiatSum, tokensPath, getResources(), mAllNetworkInfos);
-        mWalletNftAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-        mRvNft.setAdapter(mWalletNftAdapter);
+        List<WalletListItemModel> walletListItemModelList =
+                Utils.createWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
+                        tokensPath, getResources(), mAllNetworkInfos);
+        mWalletCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+        mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        mWalletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
+
+        mWalletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
+        mRvNft.setAdapter(mWalletCoinAdapter);
         mRvNft.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
