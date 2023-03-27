@@ -89,7 +89,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
-            mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
@@ -164,7 +163,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        assert getActivity() != null;
 
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
