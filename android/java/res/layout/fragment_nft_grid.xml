@@ -60,7 +60,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     />
-                
+
             </LinearLayout>
 
             <View
