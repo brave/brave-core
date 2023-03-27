@@ -332,10 +332,6 @@ void LedgerImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
     return;
   }
 
-  if (!state()->GetAutoContributeEnabled()) {
-    return;
-  }
-
   if (tab_id != last_shown_tab_id_ || last_tab_active_time_ == 0) {
     return;
   }

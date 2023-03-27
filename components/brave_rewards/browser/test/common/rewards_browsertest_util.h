@@ -50,7 +50,8 @@ void NavigateToPublisherPage(
 
 void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
 
-void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service);
+void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const std::string& country = "US");
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 
