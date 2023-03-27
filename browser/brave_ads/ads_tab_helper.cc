@@ -216,7 +216,7 @@ void AdsTabHelper::WebContentsDestroyed() {
 #if !BUILDFLAG(IS_ANDROID)
 // components/brave_ads/browser/background_helper_android.cc handles Android
 void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  if (!browser) {
+  if (!browser || !ads_service_) {
     return;
   }
 
@@ -231,11 +231,15 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
     return;
   }
 
-  TabUpdated();
+  ads_service_->NotifyBrowserDidBecomeActive();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   DCHECK(browser);
+
+  if (!ads_service_) {
+    return;
+  }
 
   const bool old_is_browser_active = is_browser_active_;
 
@@ -248,7 +252,7 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
     return;
   }
 
-  TabUpdated();
+  ads_service_->NotifyBrowserDidResignActive();
 }
 #endif
 

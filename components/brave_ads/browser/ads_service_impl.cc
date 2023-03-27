@@ -1605,6 +1605,18 @@ void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
   }
 }
 
+void AdsServiceImpl::NotifyBrowserDidBecomeActive() {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidBecomeActive();
+  }
+}
+
+void AdsServiceImpl::NotifyBrowserDidResignActive() {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidResignActive();
+  }
+}
+
 void AdsServiceImpl::IsNetworkConnectionAvailable(
     IsNetworkConnectionAvailableCallback callback) {
   std::move(callback).Run(!net::NetworkChangeNotifier::IsOffline());
@@ -2058,14 +2070,14 @@ void AdsServiceImpl::Log(const std::string& file,
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnBrowserDidEnterForeground();
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyBrowserDidEnterForeground();
   }
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnBrowserDidEnterBackground();
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyBrowserDidEnterBackground();
   }
 }
 

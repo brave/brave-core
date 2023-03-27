@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -19,7 +20,10 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
+using ::testing::_;
+using ::testing::Invoke;
 using ::testing::NiceMock;
 
 namespace brave_ads {
@@ -216,7 +220,15 @@ void UnitTestBase::Initialize() {
   task_environment_.FastForwardUntilNoTasksRemain();
 }
 
+void UnitTestBase::MockAdsClientAddObserver() {
+  ON_CALL(*ads_client_mock_, AddObserver(_))
+      .WillByDefault(
+          Invoke([=](AdsClientObserver* observer) { AddObserver(observer); }));
+}
+
 void UnitTestBase::SetDefaultMocks() {
+  MockAdsClientAddObserver();
+
   MockBuildChannel(BuildChannelType::kRelease);
 
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);

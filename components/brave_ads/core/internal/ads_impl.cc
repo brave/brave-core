@@ -213,14 +213,6 @@ void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
   }
 }
 
-void AdsImpl::OnBrowserDidEnterForeground() {
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
-}
-
-void AdsImpl::OnBrowserDidEnterBackground() {
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
-}
-
 void AdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
   if (IsInitialized()) {
     TabManager::GetInstance()->OnDidStartPlayingMedia(tab_id);
@@ -240,12 +232,6 @@ void AdsImpl::OnTabDidChange(const int32_t tab_id,
                              const bool is_incognito) {
   if (!IsInitialized()) {
     return;
-  }
-
-  if (is_browser_active) {
-    BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  } else {
-    BrowserManager::GetInstance()->OnBrowserDidResignActive();
   }
 
   const bool is_visible = is_active && is_browser_active;

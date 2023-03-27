@@ -160,10 +160,6 @@ interface BatAds {
 
   TriggerUserGestureEvent(int32 page_transition_type);
 
-  // Browser
-  OnBrowserDidEnterForeground();
-  OnBrowserDidEnterBackground();
-
   // Tabs
   OnTabDidChange(int32 tab_id,
                  array<url.mojom.Url> redirect_chain,

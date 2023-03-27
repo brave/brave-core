@@ -119,9 +119,6 @@ class AdsImpl final : public Ads,
 
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
-
   void OnTabDidStartPlayingMedia(int32_t tab_id) override;
   void OnTabDidStopPlayingMedia(int32_t tab_id) override;
 

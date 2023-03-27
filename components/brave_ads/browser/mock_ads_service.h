@@ -115,6 +115,8 @@ class MockAdsService : public AdsService {
   MOCK_METHOD2(ToggleSavedAd, void(base::Value::Dict, ToggleSavedAdCallback));
   MOCK_METHOD2(ToggleFlaggedAd,
                void(base::Value::Dict, ToggleFlaggedAdCallback));
+  MOCK_METHOD0(NotifyBrowserDidBecomeActive, void());
+  MOCK_METHOD0(NotifyBrowserDidResignActive, void());
 
   MOCK_METHOD1(WipeState, void(bool));
 };

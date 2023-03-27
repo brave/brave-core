@@ -282,6 +282,12 @@ class AdsService : public KeyedService {
   virtual void ToggleFlaggedAd(base::Value::Dict value,
                                ToggleFlaggedAdCallback callback) = 0;
 
+  // Invoked when the browser did become active.
+  virtual void NotifyBrowserDidBecomeActive() = 0;
+
+  // Invoked when the browser did resign active.
+  virtual void NotifyBrowserDidResignActive() = 0;
+
  protected:
   base::ObserverList<AdsServiceObserver> observers_;
 };

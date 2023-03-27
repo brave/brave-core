@@ -27,9 +27,13 @@ BrowserManager::BrowserManager() {
 
   is_in_foreground_ = is_browser_active;
   LogBrowserForegroundState();
+
+  AdsClientHelper::AddObserver(this);
 }
 
 BrowserManager::~BrowserManager() {
+  AdsClientHelper::RemoveObserver(this);
+
   DCHECK_EQ(this, g_browser_manager_instance);
   g_browser_manager_instance = nullptr;
 }

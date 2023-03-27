@@ -302,6 +302,9 @@ class AdsServiceImpl : public AdsService,
   void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
 
+  void NotifyBrowserDidBecomeActive() override;
+  void NotifyBrowserDidResignActive() override;
+
   // bat_ads::mojom::BatAdsClient:
   void IsNetworkConnectionAvailable(
       IsNetworkConnectionAvailableCallback callback) override;

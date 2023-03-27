@@ -24,8 +24,8 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AllowAd) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterForeground();
 
   // Assert
   BrowserIsActivePermissionRule permission_rule;
@@ -38,8 +38,8 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, AlwaysAllowAdForAndroid) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kAndroid);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidResignActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterBackground();
 
   // Assert
   BrowserIsActivePermissionRule permission_rule;
@@ -52,8 +52,8 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest, DoNotAllowAd) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidResignActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterBackground();
 
   // Assert
   BrowserIsActivePermissionRule permission_rule;
@@ -78,8 +78,8 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidResignActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterBackground();
 
   // Assert
   BrowserIsActivePermissionRule permission_rule;
@@ -93,8 +93,8 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidEnterBackground();
 
   // Assert
   BrowserIsActivePermissionRule permission_rule;
@@ -108,8 +108,8 @@ TEST_F(BatAdsBrowserIsActivePermissionRuleTest,
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
 
   // Act
-  BrowserManager::GetInstance()->OnBrowserDidResignActive();
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
+  NotifyBrowserDidResignActive();
+  NotifyBrowserDidEnterForeground();
 
   // Assert
   BrowserIsActivePermissionRule permission_rule;

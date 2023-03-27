@@ -7,11 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_
 
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
 
 namespace brave_ads {
 
-class BrowserManager final {
+class BrowserManager : public AdsClientObserver {
  public:
   BrowserManager();
 
@@ -21,7 +22,7 @@ class BrowserManager final {
   BrowserManager(BrowserManager&& other) noexcept = delete;
   BrowserManager& operator=(BrowserManager&& other) noexcept = delete;
 
-  ~BrowserManager();
+  ~BrowserManager() override;
 
   static BrowserManager* GetInstance();
 
@@ -30,19 +31,21 @@ class BrowserManager final {
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 
-  void OnBrowserDidBecomeActive();
-  void OnBrowserDidResignActive();
   void SetBrowserIsActive(const bool is_active) { is_active_ = is_active; }
   bool IsBrowserActive() const { return is_active_ && is_in_foreground_; }
 
-  void OnBrowserDidEnterForeground();
-  void OnBrowserDidEnterBackground();
   void SetBrowserIsInForeground(const bool is_in_foreground) {
     is_in_foreground_ = is_in_foreground;
   }
   bool IsBrowserInForeground() const { return is_in_foreground_; }
 
  private:
+  // AdsClientObserver:
+  void OnBrowserDidBecomeActive() override;
+  void OnBrowserDidResignActive() override;
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
+
   void NotifyBrowserDidBecomeActive() const;
   void NotifyBrowserDidResignActive() const;
   void LogBrowserActiveState() const;

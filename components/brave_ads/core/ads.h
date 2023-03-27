@@ -98,12 +98,6 @@ class ADS_EXPORT Ads {
   // |PageTransitionType|.
   virtual void TriggerUserGestureEvent(int32_t page_transition_type) = 0;
 
-  // Called when the browser did enter the foreground.
-  virtual void OnBrowserDidEnterForeground() = 0;
-
-  // Called when the browser did enter the background.
-  virtual void OnBrowserDidEnterBackground() = 0;
-
   // Called when media starts playing on a browser tab for the specified
   // |tab_id|.
   virtual void OnTabDidStartPlayingMedia(int32_t tab_id) = 0;

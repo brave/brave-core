@@ -82,14 +82,6 @@ void BatAdsImpl::OnUserDidBecomeIdle() {
   ads_->OnUserDidBecomeIdle();
 }
 
-void BatAdsImpl::OnBrowserDidEnterForeground() {
-  ads_->OnBrowserDidEnterForeground();
-}
-
-void BatAdsImpl::OnBrowserDidEnterBackground() {
-  ads_->OnBrowserDidEnterBackground();
-}
-
 void BatAdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
   ads_->OnTabDidStartPlayingMedia(tab_id);
 }
