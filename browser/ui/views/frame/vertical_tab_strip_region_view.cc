@@ -107,7 +107,7 @@ class ToggleButton : public BraveNewTabButton {
     // dont' fill
   }
 
-#ifCHECK_IS_ON()
+#if DCHECK_IS_ON()
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
     CHECK_EQ(width(), GetIconWidth());
     CHECK_EQ(height(), GetIconWidth());
@@ -768,7 +768,7 @@ void VerticalTabStripRegionView::OnBoundsChanged(
   if (previous_bounds.size() != size())
     ScrollActiveTabToBeVisible();
 
-#ifCHECK_IS_ON()
+#if DCHECK_IS_ON()
   if (auto width = GetContentsBounds().width(); width) {
     CHECK_GE(width, tabs::kVerticalTabMinWidth +
                         tabs::kMarginForVerticalTabContainers * 2);
