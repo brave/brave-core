@@ -47,7 +47,7 @@ absl::optional<uint32_t> DecodeUint32(const std::vector<uint8_t>& input,
 }
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
-  return net::DefineNetworkTrafficAnnotation("json_rpc_service", R"(
+  return net::DefineNetworkTrafficAnnotation("nft_metadata_fetcher", R"(
       semantics {
         sender: "NFT Metata Fetcher"
         description:

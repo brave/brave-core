@@ -261,6 +261,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_allowlist)[kBraveWalletAutoLockMinutes] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
+  (*s_brave_allowlist)[kBraveWalletNftDiscoveryEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // IPFS pref
 #if BUILDFLAG(ENABLE_IPFS)

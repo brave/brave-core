@@ -288,6 +288,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
         shared_url_loader_factory_);
     tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
     service_ = std::make_unique<BraveWalletService>(
+        shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         json_rpc_service_, tx_service, GetPrefs(), local_state_->Get());
     observer_ = std::make_unique<TestBraveWalletServiceObserver>();
@@ -721,6 +722,16 @@ class BraveWalletServiceUnitTest : public testing::Test {
         }));
     run_loop.Run();
     return requests_out;
+  }
+
+  void GetNftDiscoveryEnabled(bool expected_enabled) {
+    base::RunLoop run_loop;
+    service_->GetNftDiscoveryEnabled(
+        base::BindLambdaForTesting([&](bool enabled) {
+          EXPECT_EQ(enabled, expected_enabled);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -2538,6 +2549,32 @@ TEST_F(BraveWalletServiceUnitTest, LastUsageTimeMetric) {
 
   histogram_tester_->ExpectBucketCount(kBraveWalletLastUsageTimeHistogramName,
                                        1, 8);
+}
+
+TEST_F(BraveWalletServiceUnitTest, GetNftDiscoveryEnabled) {
+  // Default should be off
+  GetNftDiscoveryEnabled(false);
+
+  // Setting to true should be reflected
+  service_->SetNftDiscoveryEnabled(true);
+  GetNftDiscoveryEnabled(true);
+
+  // And back again
+  service_->SetNftDiscoveryEnabled(false);
+  GetNftDiscoveryEnabled(false);
+}
+
+TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
+  // Default should be off
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
+
+  // Should be able to set to true
+  service_->SetNftDiscoveryEnabled(true);
+  EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
+
+  // And then back to false
+  service_->SetNftDiscoveryEnabled(false);
+  EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 }
 
 }  // namespace brave_wallet

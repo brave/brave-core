@@ -972,6 +972,12 @@
   <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
     Show Brave Wallet icon on toolbar
   </message>
+  <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
+    Enable NFT discovery
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
+    Automatically add NFTs you own to the Wallet using third party APIs.
+  </message>
   <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
     Automatically lock Brave Wallet
   </message>
