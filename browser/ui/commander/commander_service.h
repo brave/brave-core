@@ -46,6 +46,9 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   int GetResultSetId() override;
   const std::u16string& GetPrompt() override;
 
+  // KeyedService:
+  void Shutdown() override;
+
  private:
   OmniboxView* GetOmnibox() const;
   void UpdateCommands();

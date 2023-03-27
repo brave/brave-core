@@ -136,6 +136,10 @@ const std::u16string& CommanderService::GetPrompt() {
   return prompt_;
 }
 
+void CommanderService::Shutdown() {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+}
+
 void CommanderService::Toggle() {
   if (IsShowing()) {
     Hide();
