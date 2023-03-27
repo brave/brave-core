@@ -3,9 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import collections.abc
 import copy
 import os
-import sys
 
 import brave_node
 import chromium_presubmit_overrides
@@ -144,15 +144,13 @@ def CheckChangeLintsClean(input_api, output_api):
 
 
 def CheckPylint(input_api, output_api):
-    extra_paths_list = os.environ['PYTHONPATH'].split(';' if sys.platform ==
-                                                      'win32' else ':')
-    return input_api.canned_checks.RunPylint(
-        input_api,
-        output_api,
-        pylintrc=input_api.os_path.join(input_api.PresubmitLocalPath(),
-                                        '.pylintrc'),
-        extra_paths_list=extra_paths_list,
-        version='2.7')
+    extra_paths_list = os.environ['PYTHONPATH'].split(os.pathsep)
+    return input_api.canned_checks.RunPylint(input_api,
+                                             output_api,
+                                             pylintrc=input_api.os_path.join(
+                                                 input_api.PresubmitLocalPath(),
+                                                 '.pylintrc'),
+                                             extra_paths_list=extra_paths_list)
 
 
 def CheckLicense(input_api, output_api):
@@ -177,8 +175,9 @@ def CheckLicense(input_api, output_api):
         r'.*? Copyright \(c\) %(year)s The Brave Authors\. All rights reserved\.\n'
         r'.*? This Source Code Form is subject to the terms of the Mozilla Public\n'
         r'.*? License, v\. 2\.0\. If a copy of the MPL was not distributed with this file,\n'
-        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\.(?: \*/)?\n'
-    ) % {'year': years_re}, input_api.re.MULTILINE)
+        r'.*? You can obtain one at https://mozilla.org/MPL/2\.0/\.(?: \*/)?\n')
+                                               % {'year': years_re},
+                                               input_api.re.MULTILINE)
 
     # License regexp to match in EXISTING files, it allows some variance.
     existing_file_license_re = input_api.re.compile((
@@ -193,11 +192,10 @@ def CheckLicense(input_api, output_api):
         '%(comment)s Copyright (c) %(year)s The Brave Authors. All rights reserved.\n'
         '%(comment)s This Source Code Form is subject to the terms of the Mozilla Public\n'
         '%(comment)s License, v. 2.0. If a copy of the MPL was not distributed with this file,\n'
-        '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n'
-    ) % {
-        'comment': '#',
-        'year': current_year,
-    }
+        '%(comment)s You can obtain one at https://mozilla.org/MPL/2.0/.\n') % {
+            'comment': '#',
+            'year': current_year,
+        }
 
     bad_new_files = []
     bad_files = []
@@ -260,6 +258,45 @@ chromium_presubmit_overrides.inline_presubmit_from_src('PRESUBMIT.py',
                                                        globals(), locals())
 
 
+# Extend BanRule exclude lists with Brave-specific paths.
+def ApplyBanRuleExcludes():
+    # Collect all _BANNED_* variables declared in //PRESUBMIT.py.
+    ban_rule_lists = [
+        value for name, value in globals().items()
+        if name.startswith('_BANNED_')
+        and isinstance(value, collections.abc.Sequence) and len(value) > 0
+        and isinstance(value[0], BanRule)  # pylint: disable=undefined-variable
+    ]
+
+    # Get additional excluded paths from the config.
+    ban_rule_excluded_paths = chromium_presubmit_overrides.config.get(
+        'ban_rule_excluded_paths')
+
+    # Add excluded paths to BanRule instances.
+    all_patterns = {*ban_rule_excluded_paths.keys()}
+    used_patterns = set()
+    for ban_rule_list in ban_rule_lists:
+        for ban_rule in ban_rule_list:
+            excluded_paths = ban_rule_excluded_paths.get(ban_rule.pattern)
+            if not excluded_paths:
+                continue
+
+            used_patterns.add(ban_rule.pattern)
+            if ban_rule.excluded_paths is None:
+                ban_rule.excluded_paths = (*excluded_paths, )
+            else:
+                ban_rule.excluded_paths += (*excluded_paths, )
+
+    # Fail if some pattern was not used.
+    unused_patterns = all_patterns - used_patterns
+    if unused_patterns:
+        raise RuntimeError(f'ERROR: Unused ban_rule_excluded_paths patterns: '
+                           f'{unused_patterns}')
+
+
+ApplyBanRuleExcludes()
+
+
 @chromium_presubmit_overrides.override_check(globals())
 def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
     # Add 'brave/' prefix for header guard checks to properly validate guards.
@@ -270,25 +307,34 @@ def CheckForIncludeGuards(original_check, input_api, output_api, **kwargs):
             return affected_file
 
         return [
-            PrependBrave(f) for f in filter(self.FilterSourceFile,
-                                            original_method(source_file))
+            PrependBrave(f)
+            for f in filter(self.FilterSourceFile, original_method(source_file))
         ]
 
-    with override_utils.override_scope_function(input_api,
-                                                AffectedSourceFiles):
+    with override_utils.override_scope_function(input_api, AffectedSourceFiles):
         return original_check(input_api, output_api, **kwargs)
 
 
-@chromium_presubmit_overrides.override_check(globals())
-def CheckMPArchApiUsage(original_check, input_api, output_api, **kwargs):
-    # Remove ^(chrome|components|content|extensions) filter to cover all files
-    # in the repository, because brave/ structure is slightly different.
-    def AffectedFiles(self, original_method, *args, **kwargs):
-        kwargs['file_filter'] = self.FilterSourceFile
-        return original_method(*args, **kwargs)
+# Use BanRule.excluded_paths in all BanRule-like checks.
+@override_utils.override_function(globals())
+def _GetMessageForMatchingType(orig, input_api, f, line_num, line, ban_rule):
+    def IsExcludedFile(affected_file, excluded_paths):
+        if not excluded_paths:
+            return False
 
-    with override_utils.override_scope_function(input_api, AffectedFiles):
-        return original_check(input_api, output_api, **kwargs)
+        local_path = affected_file.LocalPath()
+        # Consistently use / as path separator to simplify the writing of regex
+        # expressions.
+        local_path = local_path.replace(input_api.os_path.sep, '/')
+        for item in excluded_paths:
+            if input_api.re.match(item, local_path):
+                return True
+        return False
+
+    if IsExcludedFile(f, ban_rule.excluded_paths):
+        return []
+
+    return orig(input_api, f, line_num, line, ban_rule)
 
 
 # DON'T ADD NEW CHECKS HERE, ADD THEM BEFORE FIRST inline_presubmit_from_src().
