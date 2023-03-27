@@ -444,6 +444,12 @@ class VerticalTabStripRegionView::ScrollHeaderView : public views::View {
         tab_search_button_->GetPreferredSize().width() +
                 toggle_button_->GetPreferredSize().width() <=
             width());
+    if (!tab_search_button_->GetVisible()) {
+      // When it's not visible, move tab search button. Otherwise,
+      // TabSearchBubble will be anchored to wrong position as LayoutManager
+      // ignores invisible views.
+      tab_search_button_->SetX(width() - tab_search_button_->width());
+    }
   }
 
   // views::View:
