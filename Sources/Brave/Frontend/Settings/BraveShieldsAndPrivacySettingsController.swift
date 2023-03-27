@@ -25,7 +25,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
   let p3aUtilities: BraveP3AUtils
 
   private let cookieConsentNoticesRowUUID = UUID()
-  private var currentCookieConsentNoticeBlockingState: Bool
+  private let blockSwitchToAppNoticesRowUUID = UUID()
   private var cancellables: Set<AnyCancellable> = []
 
   init(
@@ -40,11 +40,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     self.feedDataSource = feedDataSource
     self.historyAPI = historyAPI
     self.p3aUtilities = p3aUtilities
-
-    self.currentCookieConsentNoticeBlockingState = FilterListResourceDownloader.shared.isEnabled(
-      for: FilterList.cookieConsentNoticesComponentID
-    )
-    
     super.init(style: .insetGrouped)
   }
 
@@ -68,32 +63,28 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     // Listen to changes on filter lists so we know we need to reload the section
     FilterListResourceDownloader.shared.$filterLists
       .sink { filterLists in
-        let filterList = filterLists.first(where: { $0.componentId == FilterList.cookieConsentNoticesComponentID })
-        
         Task { @MainActor in
-          let isEnabled = FilterListResourceDownloader.shared.isEnabled(for: FilterList.cookieConsentNoticesComponentID)
-          
-          guard filterList?.isEnabled == isEnabled else {
-            assertionFailure("The two should be in sync")
-            return
+          // Check if we need to update the cookie consent switch
+          if let filterList = filterLists.first(where: { filterList in
+            filterList.componentId == FilterList.cookieConsentNoticesComponentID
+          }) {
+            // Toggle only if it's needed or an endless loop might be created
+            self.toggleSwitchIfNeeded(
+              on: filterList.isEnabled, section: self.shieldsSection,
+              rowUUID: self.cookieConsentNoticesRowUUID.uuidString
+            )
           }
           
-          guard isEnabled != self.currentCookieConsentNoticeBlockingState else { return }
-          self.currentCookieConsentNoticeBlockingState = isEnabled
-          
-          guard let sectionIndex = self.dataSource.sections.firstIndex(where: { $0.uuid == self.shieldsSection.uuid }) else {
-            assertionFailure("Should exist")
-            return
+          // Check if we need to update the block mobile notifications switch
+          if let filterList = filterLists.first(where: { filterList in
+            filterList.componentId == FilterList.mobileAnnoyancesComponentID
+          }) {
+            // Toggle only if it's needed or an endless loop might be created
+            self.toggleSwitchIfNeeded(
+              on: filterList.isEnabled, section: self.otherSettingsSection,
+              rowUUID: self.blockSwitchToAppNoticesRowUUID.uuidString
+            )
           }
-          
-          guard let rowIndex = self.shieldsSection.rows.firstIndex(where: { $0.uuid == self.cookieConsentNoticesRowUUID.uuidString }) else {
-            assertionFailure("Should exist")
-            return
-          }
-          
-          // Reload the section
-          self.shieldsSection.rows[rowIndex] = self.makeCookieConsentBlockingRow()
-          self.dataSource.sections[sectionIndex] = self.shieldsSection
         }
       }
       .store(in: &cancellables)
@@ -225,17 +216,17 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
   }()
   
   private var blockMobileAnnoyancesRow: Row {
-    let mobileAnnoyancesComponentID = FilterList.mobileAnnoyancesComponentID
-    let filterListDownloader = FilterListResourceDownloader.shared
-    
-    return Row(
-      text: Strings.blockMobileAnnoyances,
-      accessory:
-          .view(SwitchAccessoryView(
-            initialValue: filterListDownloader.isEnabled(for: mobileAnnoyancesComponentID),
-            valueChange: { value in
-              FilterListResourceDownloader.shared.enableFilterList(for: mobileAnnoyancesComponentID, isEnabled: value)
-            })), cellClass: MultilineSubtitleCell.self, uuid: "blockMobileAnnoyances"
+    return .boolRow(
+      uuid: self.blockSwitchToAppNoticesRowUUID,
+      title: Strings.blockMobileAnnoyances,
+      toggleValue: FilterListResourceDownloader.shared.isEnabled(
+        for: FilterList.mobileAnnoyancesComponentID
+      ),
+      valueChange: { isEnabled in
+        FilterListResourceDownloader.shared.enableFilterList(
+          for: FilterList.mobileAnnoyancesComponentID, isEnabled: isEnabled
+        )
+      }, cellReuseId: "blockSwitchToAppNoticesReuseIdentifier"
     )
   }
 
@@ -368,7 +359,6 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         for: FilterList.cookieConsentNoticesComponentID
       ),
       valueChange: { isEnabled in
-        self.currentCookieConsentNoticeBlockingState = isEnabled
         FilterListResourceDownloader.shared.enableFilterList(
           for: FilterList.cookieConsentNoticesComponentID, isEnabled: isEnabled
         )
@@ -399,8 +389,15 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
     alertController.addAction(.init(title: Strings.cancelButtonTitle, style: .cancel))
     self.present(alertController, animated: true, completion: nil)
   }
+  
+  private func toggleSwitchIfNeeded(on: Bool, section: Section, rowUUID: String) {
+    guard let sectionRow = section.rows.first(where: { $0.uuid == rowUUID }) else { return }
+    guard let switchView = sectionRow.accessory.view as? UISwitch else { return }
+    guard switchView.isOn != on else { return }
+    switchView.setOn(on, animated: true)
+  }
 
-  func toggleSwitch(on: Bool, section: Section, rowUUID: String) {
+  private func toggleSwitch(on: Bool, section: Section, rowUUID: String) {
     if let sectionRow: Row = section.rows.first(where: { $0.uuid == rowUUID }) {
       if let switchView: UISwitch = sectionRow.accessory.view as? UISwitch {
         switchView.setOn(on, animated: true)

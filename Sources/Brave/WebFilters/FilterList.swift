@@ -20,6 +20,21 @@ struct FilterList: Identifiable {
     "llgjaaddopeckcifdceaaadmemagkepi" // Japanese filter lists
   ]
   
+  /// All the component ids that should be set to on by default.
+  public static var defaultOnComponentIds: Set<String> {
+    return [mobileAnnoyancesComponentID]
+  }
+  
+  /// This is a list of component to UUID for some filter lists that have special toggles
+  /// (which are availble before filter lists are downloaded)
+  /// To save these values before filter lists are downloaded we need to also have the UUID
+  public static var componentToUUID: [String: String] {
+    return [
+      mobileAnnoyancesComponentID: "2F3DCE16-A19A-493C-A88F-2E110FBD37D6",
+      cookieConsentNoticesComponentID: "AC023D22-AE88-4060-A978-4FEEEC4221693"
+    ]
+  }
+  
   let uuid: String
   let title: String
   let description: String
