@@ -55,9 +55,9 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         WalletListItemModel walletListItemModel = walletListItemModelList.get(position);
-        // When ViewHolder is re-used, it has the obeservers which are fired when
-        // we modifying checkbox. This may cause unwanted modifying of the model
-        holder.resetObservers();
+        // When a ViewHolder is reused, its listeners may be triggered when modifying the checkbox,
+        // potentially leading to unintended modifications of the model.
+        holder.resetListeners();
 
         holder.titleText.setText(walletListItemModel.getTitle());
 
