@@ -15,7 +15,9 @@ MockLedgerImpl::MockLedgerImpl()
     : LedgerImpl(mock_rewards_service_receiver_
                      .BindNewEndpointAndPassDedicatedRemote()) {}
 
-MockLedgerImpl::~MockLedgerImpl() = default;
+MockLedgerImpl::~MockLedgerImpl() {
+  mock_rewards_service_receiver_.FlushForTesting();
+}
 
 MockRewardsService* MockLedgerImpl::mock_rewards_service() {
   return &mock_rewards_service_;

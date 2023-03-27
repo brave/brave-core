@@ -52,13 +52,12 @@ class PostConnect : public TestWithParam<PostConnectParamType> {
     ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
             GetStringState(state::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
-          std::string wallet = R"(
+          std::move(callback).Run(R"(
             {
               "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
               "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
             }
-          )";
-          std::move(callback).Run(std::move(wallet));
+          )");
         });
   }
 
@@ -71,22 +70,16 @@ TEST_P(PostConnect, Paths) {
 
   ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
       .WillByDefault(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
+          [&](mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
             auto response = mojom::UrlResponse::New();
             response->status_code = status_code;
-            response->body = std::move(body);
+            response->body = body;
             std::move(callback).Run(std::move(response));
           });
 
-  base::RunLoop loop;
   RequestFor<PostConnectMock>(&mock_ledger_impl_)
       .Send(base::BindLambdaForTesting(
-          [&, expected_result = expected_result](Result&& result) {
-            EXPECT_EQ(result, expected_result);
-            loop.Quit();
-          }));
-  loop.Run();
+          [&](Result&& result) { EXPECT_EQ(result, expected_result); }));
 }
 
 // clang-format off
