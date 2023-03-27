@@ -31,7 +31,6 @@ import org.chromium.base.Log;
 import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
