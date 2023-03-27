@@ -85,7 +85,7 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This class should be used only when the flag is on.";
 }
 
@@ -105,7 +105,7 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
     return {};
   }
 
-  DCHECK_EQ(tab()->bounds().height(), aligned_bounds.height() / scale)
+  CHECK_EQ(tab()->bounds().height(), aligned_bounds.height() / scale)
       << "We don't want it to be off by 1 dip";
 
   const bool is_pinned = tab()->data().pinned;
@@ -174,7 +174,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
 
   if (tab()->data().pinned) {
     const auto* widget = tab()->GetWidget();
-    DCHECK(widget);
+    CHECK(widget);
     const SkColor tab_stroke_color =
         widget->GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator);
     PaintBackgroundStroke(canvas, TabActive::kActive, tab_stroke_color);

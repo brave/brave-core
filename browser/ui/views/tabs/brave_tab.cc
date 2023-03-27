@@ -63,7 +63,7 @@ class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
   }
 
   explicit ShadowLayer(Tab* tab) : tab_(tab) {
-    DCHECK(tab);
+    CHECK(tab);
     set_delegate(this);
   }
   ~ShadowLayer() override = default;
@@ -242,9 +242,9 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
 
   auto* widget_delegate_view = static_cast<BraveBrowserView*>(browser_view)
                                    ->vertical_tab_strip_widget_delegate_view();
-  DCHECK(widget_delegate_view);
+  CHECK(widget_delegate_view);
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  DCHECK(region_view);
+  CHECK(region_view);
 
   if (region_view->state() == VerticalTabStripRegionView::State::kFloating) {
     // In case we're in floating mode, set the same left padding with the one
@@ -274,7 +274,7 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
 }
 
 void BraveTab::UpdateShadowForActiveTab() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
   if (IsActive() &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     shadow_layer_ = CreateShadowLayer();
@@ -298,9 +298,9 @@ std::unique_ptr<ui::Layer> BraveTab::CreateShadowLayer() {
 }
 
 void BraveTab::LayoutShadowLayer() {
-  DCHECK(shadow_layer_);
-  DCHECK(shadow_layer_->parent());
-  DCHECK(layer());
+  CHECK(shadow_layer_);
+  CHECK(shadow_layer_->parent());
+  CHECK(layer());
   DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
   shadow_layer_->SetBounds(
       ShadowLayer::GetShadowLayerBounds(layer()->bounds()));

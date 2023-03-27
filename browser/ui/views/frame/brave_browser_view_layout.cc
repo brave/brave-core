@@ -24,7 +24,7 @@ void BraveBrowserViewLayout::Layout(views::View* host) {
   if (!vertical_tab_strip_host_.get())
     return;
 
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "vertical_tab_strip_host_ should be set only when this flag is on";
 
   if (!tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
@@ -128,7 +128,7 @@ void BraveBrowserViewLayout::LayoutContentsContainerView(int top, int bottom) {
 }
 
 bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
-  DCHECK(vertical_tab_strip_host_)
+  CHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
 
   // This can happen when bookmarks bar is visible on NTP. In this case
@@ -141,7 +141,7 @@ bool BraveBrowserViewLayout::ShouldPushBookmarkBarForVerticalTabs() {
 }
 
 gfx::Insets BraveBrowserViewLayout::GetInsetsConsideringVerticalTabHost() {
-  DCHECK(vertical_tab_strip_host_)
+  CHECK(vertical_tab_strip_host_)
       << "This method is used only when vertical tab strip host is set";
   gfx::Insets insets;
   insets.set_left(vertical_tab_strip_host_->GetPreferredSize().width());

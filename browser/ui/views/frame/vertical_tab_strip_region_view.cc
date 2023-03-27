@@ -80,7 +80,7 @@ class ToggleButton : public BraveNewTabButton {
   void OnThemeChanged() override {
     Button::OnThemeChanged();
     auto* cp = GetColorProvider();
-    DCHECK(cp);
+    CHECK(cp);
 
     auto color = cp->GetColor(kColorBraveVerticalTabHeaderButtonColor);
     icon_ = gfx::CreateVectorIcon(kVerticalTabStripToggleButtonIcon, color);
@@ -107,10 +107,10 @@ class ToggleButton : public BraveNewTabButton {
     // dont' fill
   }
 
-#if DCHECK_IS_ON()
+#ifCHECK_IS_ON()
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override {
-    DCHECK_EQ(width(), GetIconWidth());
-    DCHECK_EQ(height(), GetIconWidth());
+    CHECK_EQ(width(), GetIconWidth());
+    CHECK_EQ(height(), GetIconWidth());
   }
 #endif
 
@@ -280,7 +280,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     }
 
     auto* cp = GetColorProvider();
-    DCHECK(cp);
+    CHECK(cp);
 
     // Override fill color
     {
@@ -310,10 +310,10 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   void FrameColorsChanged() override {
     BraveNewTabButton::FrameColorsChanged();
 
-    DCHECK(text_ && shortcut_text_);
+    CHECK(text_ && shortcut_text_);
 
     auto* cp = GetColorProvider();
-    DCHECK(cp);
+    CHECK(cp);
 
     SetImageModel(views::Button::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(
@@ -327,7 +327,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   void Layout() override {
     BraveNewTabButton::Layout();
 
-    DCHECK(text_ && shortcut_text_);
+    CHECK(text_ && shortcut_text_);
     const bool show_vertical_tabs =
         tabs::utils::ShouldShowVerticalTabs(tab_strip()->GetBrowser());
     text_->SetVisible(show_vertical_tabs);
@@ -354,7 +354,7 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
  private:
   void SetShortcutText(const std::u16string& text) {
-    DCHECK(shortcut_text_);
+    CHECK(shortcut_text_);
     shortcut_text_->SetText(text);
   }
 
@@ -478,7 +478,7 @@ VerticalTabStripRegionView::VerticalTabStripRegionView(
     BrowserView* browser_view,
     TabStripRegionView* region_view)
     : browser_(browser_view->browser()), original_region_view_(region_view) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This view should be created only when this flag is on";
 
   browser_->tab_strip_model()->AddObserver(this);
@@ -722,7 +722,7 @@ void VerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
   auto* cp = GetColorProvider();
-  DCHECK(cp);
+  CHECK(cp);
 
   const auto background_color = cp->GetColor(kColorToolbar);
   SetBackground(views::CreateSolidBackground(background_color));
@@ -768,10 +768,10 @@ void VerticalTabStripRegionView::OnBoundsChanged(
   if (previous_bounds.size() != size())
     ScrollActiveTabToBeVisible();
 
-#if DCHECK_IS_ON()
+#ifCHECK_IS_ON()
   if (auto width = GetContentsBounds().width(); width) {
-    DCHECK_GE(width, tabs::kVerticalTabMinWidth +
-                         tabs::kMarginForVerticalTabContainers * 2);
+    CHECK_GE(width, tabs::kVerticalTabMinWidth +
+                        tabs::kMarginForVerticalTabContainers * 2);
   }
 #endif
 }
@@ -849,9 +849,8 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
     return TabStyle::GetStandardWidth() +
            (include_border ? GetInsets().width() : 0);
 
-  DCHECK_EQ(state, State::kCollapsed)
-      << "If a new state was added, " << __FUNCTION__
-      << " should be revisited.";
+  CHECK_EQ(state, State::kCollapsed) << "If a new state was added, "
+                                     << __FUNCTION__ << " should be revisited.";
   return tabs::kVerticalTabMinWidth +
          tabs::kMarginForVerticalTabContainers * 2 +
          (include_border ? GetInsets().width() : 0);
@@ -859,10 +858,10 @@ int VerticalTabStripRegionView::GetPreferredWidthForState(
 
 TabStripScrollContainer*
 VerticalTabStripRegionView::GetTabStripScrollContainer() {
-  DCHECK(base::FeatureList::IsEnabled(features::kScrollableTabStrip));
+  CHECK(base::FeatureList::IsEnabled(features::kScrollableTabStrip));
   auto* scroll_container = views::AsViewClass<TabStripScrollContainer>(
       original_region_view_->tab_strip_container_);
-  DCHECK(scroll_container)
+  CHECK(scroll_container)
       << "TabStripScrollContainer is used by upstream at this moment.";
   return scroll_container;
 }
@@ -894,7 +893,7 @@ void VerticalTabStripRegionView::ScrollActiveTabToBeVisible() {
   }
 
   auto* active_tab = original_region_view_->tab_strip_->tab_at(active_index);
-  DCHECK(active_tab);
+  CHECK(active_tab);
 
   gfx::RectF tab_bounds_in_contents_view(active_tab->GetLocalBounds());
   views::View::ConvertRectToTarget(active_tab, scroll_contents_view_,
