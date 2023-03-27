@@ -118,6 +118,7 @@ provideStrings({
   braveWalletSendHalf: 'HALF',
   braveWalletSendMax: 'MAX',
   braveWalletReviewOrder: 'Review order',
+  braveWalletReviewSend: 'Review send',
   braveWalletNoAvailableTokens: 'No available tokens',
   braveWalletSearchTokens: 'Search token by name',
   braveWalletSearchNFTs: 'Search NFT by name, id',

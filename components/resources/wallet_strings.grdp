@@ -99,7 +99,8 @@
   <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS" desc="Send tab Not enough funds error">Not enough funds</message>
   <message name="IDS_BRAVE_WALLET_SEND_HALF" desc="Send tab Send Half button">HALF</message>
   <message name="IDS_BRAVE_WALLET_SEND_MAX" desc="Send tab Send Max button">MAX</message>
-  <message name="IDS_BRAVE_WALLET_REVIEW_ORDER" desc="Send tab Review order button">Review order</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_ORDER" desc="Swap tab Review order button">Review order</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_SEND" desc="Send tab Review order button">Review send</message>
   <message name="IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS" desc="Send tab placeholder for empty token list.">No available tokens</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_TOKENS" desc="Send tab search for tokens.">Search token by name</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>

@@ -181,6 +181,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletSendHalf", IDS_BRAVE_WALLET_SEND_HALF},
     {"braveWalletSendMax", IDS_BRAVE_WALLET_SEND_MAX},
     {"braveWalletReviewOrder", IDS_BRAVE_WALLET_REVIEW_ORDER},
+    {"braveWalletReviewSend", IDS_BRAVE_WALLET_REVIEW_SEND},
     {"braveWalletNoAvailableTokens", IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS},
     {"braveWalletSearchTokens", IDS_BRAVE_WALLET_SEARCH_TOKENS},
     {"braveWalletSearchNFTs", IDS_BRAVE_WALLET_SEARCH_NFTS},
