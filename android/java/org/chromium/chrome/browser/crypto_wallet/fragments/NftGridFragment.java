@@ -78,15 +78,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         return new NftGridFragment();
     }
 
-    private JsonRpcService getJsonRpcService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getJsonRpcService();
-        }
-
-        return null;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -300,8 +291,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     }
 
     private void onEditVisibleAssetsClick() {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
         NetworkInfo selectedNetwork = null;
         if (mWalletModel != null) {
             selectedNetwork =
