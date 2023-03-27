@@ -124,10 +124,16 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, TokenType tokenType, int[] rampProviders,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
-            BlockchainToken[] filteredTokens =
-                    filterTokens(selectedNetwork, tokens, tokenType, false);
-            Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);
-            callback.call(filteredTokens);
+            // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
+            // allowed to buy by given rampProviders. We just need to check on native assets logo
+            // and fill them if they are empty.
+            for (BlockchainToken tokenFromAll : tokens) {
+                if (tokenFromAll.logo.isEmpty()) {
+                    tokenFromAll.logo = Utils.getNetworkIconName(tokenFromAll.chainId);
+                }
+            }
+            Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);
+            callback.call(tokens);
         });
     }
 
