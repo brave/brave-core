@@ -29,30 +29,53 @@ namespace {
 
 class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
  public:
+  static constexpr int kBlurRadius = 4;
+
   static const gfx::ShadowValues& GetShadowValues() {
     static const base::NoDestructor<gfx::ShadowValues> shadow(([]() {
+#if FILL_SHADOW_LAYER_FOR_DEBUG
+      constexpr SkColor kShadowColor = SkColorSetA(SK_ColorCYAN, 0.07 * 255);
+#else
+      constexpr SkColor kShadowColor = SkColorSetA(SK_ColorBLACK, 0.07 * 255);
+#endif
+
       // Shadow matches `box-shadow: 0 1px 4px rgba(0, 0, 0, .0.07)`
-      constexpr int kBlurRadius = 4;
       constexpr gfx::ShadowValue kShadow{
           /* offset= */ {0, 1},
           kBlurRadius * 2 /* correction value used in shadow_value.cc */,
-          SkColorSetA(SK_ColorBLACK, 0.07 * 255)};
+          kShadowColor};
       return gfx::ShadowValues{kShadow};
     })());
 
     return *shadow;
   }
 
-  ShadowLayer() { set_delegate(this); }
+  static gfx::Insets GetBlurRegionInsets() {
+    return gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues());
+  }
+
+  static gfx::Rect GetShadowLayerBounds(const gfx::Rect& anchor_bounds) {
+    // Enlarge shadow layer bigger than the |anchor_bounds| so that we can
+    // draw the full range of blur.
+    gfx::Rect shadow_layer_bounds = anchor_bounds;
+    shadow_layer_bounds.Inset(-GetBlurRegionInsets());
+    return shadow_layer_bounds;
+  }
+
+  explicit ShadowLayer(Tab* tab) : tab_(tab) {
+    CHECK(tab);
+    set_delegate(this);
+  }
   ~ShadowLayer() override = default;
 
   // LayerDelegate:
   void OnPaintLayer(const ui::PaintContext& context) override {
     ui::PaintRecorder recorder(context, size());
     // Clear out the canvas so that transparency can be applied properly.
-    recorder.canvas()->DrawColor(SK_ColorTRANSPARENT);
 #if FILL_SHADOW_LAYER_FOR_DEBUG
     recorder.canvas()->DrawColor(gfx::kPlaceholderColor);
+#else
+    recorder.canvas()->DrawColor(SK_ColorTRANSPARENT);
 #endif
 
     cc::PaintFlags flags;
@@ -61,14 +84,21 @@ class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
     flags.setColor(SK_ColorTRANSPARENT);
     flags.setLooper(gfx::CreateShadowDrawLooper(GetShadowValues()));
 
+    // The looper will draw around the area. So we should inset the layer
+    // bounds.
     gfx::Rect shadow_bounds(size());
-    shadow_bounds.Inset(gfx::ShadowValue::GetBlurRegion(GetShadowValues()));
-    constexpr int kCornerRadius = 4;
+    shadow_bounds.Inset(GetBlurRegionInsets());
+    const int kCornerRadius =
+        (tab_->data().pinned ? tabs::kPinnedTabBorderRadius
+                             : tabs::kUnpinnedTabBorderRadius);
     recorder.canvas()->DrawRoundRect(shadow_bounds, kCornerRadius, flags);
   }
 
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
                                   float new_device_scale_factor) override {}
+
+ private:
+  raw_ptr<Tab> tab_;
 };
 
 }  // namespace
@@ -104,7 +134,7 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
 void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
-  // This should be called whenever acitve state changes
+  // This should be called whenever active state changes
   // see comment on UpdateEnabledForMuteToggle();
   // https://github.com/brave/brave-browser/issues/23476/
   alert_indicator_button_->UpdateEnabledForMuteToggle();
@@ -212,9 +242,9 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
 
   auto* widget_delegate_view = static_cast<BraveBrowserView*>(browser_view)
                                    ->vertical_tab_strip_widget_delegate_view();
-  DCHECK(widget_delegate_view);
+  CHECK(widget_delegate_view);
   auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
-  DCHECK(region_view);
+  CHECK(region_view);
 
   if (region_view->state() == VerticalTabStripRegionView::State::kFloating) {
     // In case we're in floating mode, set the same left padding with the one
@@ -244,11 +274,12 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
 }
 
 void BraveTab::UpdateShadowForActiveTab() {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
   if (IsActive() &&
       tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
     shadow_layer_ = CreateShadowLayer();
     AddLayerToBelowThis();
+    LayoutShadowLayer();
   } else if (shadow_layer_) {
     if (layer()) {
       layer()->parent()->Remove(shadow_layer_.get());
@@ -261,27 +292,18 @@ void BraveTab::UpdateShadowForActiveTab() {
 }
 
 std::unique_ptr<ui::Layer> BraveTab::CreateShadowLayer() {
-  auto layer = std::make_unique<ShadowLayer>();
+  auto layer = std::make_unique<ShadowLayer>(this);
   layer->SetFillsBoundsOpaquely(false);
   return layer;
 }
 
 void BraveTab::LayoutShadowLayer() {
-  DCHECK(shadow_layer_);
-  DCHECK(shadow_layer_->parent());
-  DCHECK(layer());
+  CHECK(shadow_layer_);
+  CHECK(shadow_layer_->parent());
+  CHECK(layer());
   DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
-
-  auto shadow_bounds = layer()->bounds();
-
-  // Expand shadow layer by the size of blur region
-  shadow_bounds.Inset(
-      -gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues()));
-
-  // Exclude stroke thickness so that shadow could be more natural.
-  shadow_bounds.Inset(controller_->GetStrokeThickness());
-
-  shadow_layer_->SetBounds(shadow_bounds);
+  shadow_layer_->SetBounds(
+      ShadowLayer::GetShadowLayerBounds(layer()->bounds()));
 }
 
 void BraveTab::AddLayerToBelowThis() {

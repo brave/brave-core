@@ -20,13 +20,21 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
           // Note that we mapped inactive tab to active tab background and
           // vice versa. Vertical tabs are not in frame color, we should flip
           // them for our design goal.
-          {{kColorBraveVerticalTabActiveBackground,
-            kColorTabBackgroundInactiveFrameActive},
-           {kColorBraveVerticalTabInactiveBackground,
-            kColorTabBackgroundActiveFrameActive},
-           {kColorBraveVerticalTabSeparator, kColorToolbarSeparator},
-           {kColorBraveVerticalTabHeaderButtonColor,
-            kColorTabForegroundActiveFrameActive}});
+          {
+              {kColorBraveVerticalTabActiveBackground,
+               kColorTabBackgroundInactiveFrameActive},
+              {kColorBraveVerticalTabInactiveBackground,
+               kColorTabBackgroundActiveFrameActive},
+              {kColorBraveVerticalTabSeparator, kColorToolbarSeparator},
+              {kColorBraveVerticalTabHeaderButtonColor,
+               kColorToolbarButtonIcon},
+              {kColorBraveVerticalTabNTBIconColor,
+               kColorTabForegroundInactiveFrameActive},
+              {kColorBraveVerticalTabNTBTextColor,
+               kColorTabForegroundInactiveFrameActive},
+              {kColorBraveVerticalTabNTBShortcutTextColor,
+               kColorTabForegroundInactiveFrameActive},
+          });
   return kChromiumColorMap.at(brave_color_id);
 }
 
@@ -65,9 +73,15 @@ void AddBraveVerticalTabLightThemeColorMixer(
           {kColorBraveVerticalTabActiveBackground, SK_ColorWHITE},
           {kColorBraveVerticalTabInactiveBackground,
            SkColorSetRGB(0xf3, 0xf3, 0xf3)},
-          {kColorBraveVerticalTabSeparator, SkColorSetRGB(0xE2, 0xE3, 0xE7)},
+          {kColorBraveVerticalTabSeparator,
+           SkColorSetA(SK_ColorBLACK, 0.05 * 255)},
           {kColorBraveVerticalTabHeaderButtonColor,
            SkColorSetRGB(0x6B, 0x70, 0x84)},
+          {kColorBraveVerticalTabNTBIconColor,
+           SkColorSetARGB(0.6 * 255, 0x1D, 0x1F, 0x25)},
+          {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x6B, 0x70, 0x84)},
+          {kColorBraveVerticalTabNTBShortcutTextColor,
+           SkColorSetRGB(0x85, 0x89, 0x89)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =
@@ -83,12 +97,17 @@ void AddBraveVerticalTabDarkThemeColorMixer(
   static constexpr const auto kDefaultColorMap =
       base::MakeFixedFlatMap<BraveColorIds, SkColor>({
           {kColorBraveVerticalTabActiveBackground,
-           SkColorSetRGB(0x18, 0x1A, 0x21)},
+           SkColorSetA(SK_ColorBLACK, 0.3 * 255)},
           {kColorBraveVerticalTabInactiveBackground,
            SkColorSetRGB(0x30, 0x34, 0x43)},
-          {kColorBraveVerticalTabSeparator, SkColorSetRGB(0x5E, 0x61, 0x75)},
-          {kColorBraveVerticalTabHeaderButtonColor,
-           SkColorSetRGB(0x6B, 0x70, 0x84)},
+          {kColorBraveVerticalTabSeparator,
+           SkColorSetA(SK_ColorWHITE, 0.1 * 255)},
+          {kColorBraveVerticalTabHeaderButtonColor, SK_ColorWHITE},
+          {kColorBraveVerticalTabNTBIconColor,
+           SkColorSetA(SK_ColorWHITE, 0.6 * 255)},
+          {kColorBraveVerticalTabNTBTextColor, SkColorSetRGB(0x8C, 0x90, 0xA1)},
+          {kColorBraveVerticalTabNTBShortcutTextColor,
+           SkColorSetRGB(0x68, 0x6D, 0x7D)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
     mixer[color_id] =

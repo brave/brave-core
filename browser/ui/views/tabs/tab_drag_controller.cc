@@ -88,19 +88,12 @@ void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
     return;
   }
 
-  // Update |last_move_attached_context_loc_| only when tab strip actually
-  // changed just like Chromium impl does. But we set y coordinate as we're in
-  // vertical tab strip.
-  content::WebContents* last_contents = drag_data_.back().contents;
-  auto* attached_model = attached_context_->GetTabStripModel();
-  int index_of_last_item = attached_model->GetIndexOfWebContents(last_contents);
-  if (index_of_last_item !=
-      attached_model->GetIndexOfWebContents(last_contents)) {
-    gfx::Point point_in_attached_context = point_in_screen;
-    views::View::ConvertPointFromScreen(attached_context_,
-                                        &point_in_attached_context);
-    last_move_attached_context_loc_ = point_in_attached_context.y();
-  }
+  // Unlike upstream, We always update coordinate, as we use y coordinate. Since
+  // we don't have threshold there's no any harm for this.
+  gfx::Point point_in_attached_context = point_in_screen;
+  views::View::ConvertPointFromScreen(attached_context_,
+                                      &point_in_attached_context);
+  last_move_attached_context_loc_ = point_in_attached_context.y();
 }
 
 absl::optional<tab_groups::TabGroupId>

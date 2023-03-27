@@ -208,15 +208,19 @@ void VerticalTabStripWidgetDelegateView::UpdateWidgetBounds() {
     return;
   }
 
-  if (!widget->IsVisible())
-    widget->Show();
+  auto insets = host_->GetInsets();
+  widget_bounds.set_width(widget_bounds.width() + insets.width());
+  if (GetInsets() != insets) {
+    SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
+  }
 
   const bool need_to_call_layout =
       widget->GetWindowBoundsInScreen().size() != widget_bounds.size();
   widget->SetBounds(widget_bounds);
 
-  if (auto insets = host_->GetInsets(); GetInsets() != insets)
-    SetBorder(insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
+  if (!widget->IsVisible()) {
+    widget->Show();
+  }
 
   if (need_to_call_layout)
     Layout();

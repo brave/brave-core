@@ -85,7 +85,7 @@ class BraveVerticalTabStyle : public BraveGM2TabStyle {
 };
 
 BraveVerticalTabStyle::BraveVerticalTabStyle(Tab* tab) : BraveGM2TabStyle(tab) {
-  DCHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs))
       << "This class should be used only when the flag is on.";
 }
 
@@ -101,31 +101,48 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
   const int stroke_thickness = GetStrokeThickness();
   gfx::RectF aligned_bounds =
       ScaleAndAlignBounds(tab()->bounds(), scale, stroke_thickness);
+  if (tab()->bounds().IsEmpty() || aligned_bounds.IsEmpty()) {
+    return {};
+  }
+
+  CHECK_EQ(tab()->bounds().height(), aligned_bounds.height() / scale)
+      << "We don't want it to be off by 1 dip";
+
+  const bool is_pinned = tab()->data().pinned;
 
   // Calculate the bounds of the actual path.
   float tab_top = aligned_bounds.y();
   float tab_left = aligned_bounds.x();
   float tab_right = aligned_bounds.right();
   float tab_bottom = aligned_bounds.bottom();
+  int radius =
+      is_pinned ? tabs::kPinnedTabBorderRadius : tabs::kUnpinnedTabBorderRadius;
 
-  const float stroke_adjustment = stroke_thickness * scale;
-  if (path_type == PathType::kInteriorClip) {
-    // Inside of the border runs |stroke_thickness| inside the outer edge.
-    tab_left += stroke_adjustment;
-    tab_right -= stroke_adjustment;
-    tab_top += stroke_adjustment;
-    tab_bottom -= stroke_adjustment;
-  } else if (path_type == PathType::kFill || path_type == PathType::kBorder) {
-    tab_left += 0.5f * stroke_adjustment;
-    tab_right -= 0.5f * stroke_adjustment;
-    tab_top += 0.5f * stroke_adjustment;
-    tab_bottom -= 0.5f * stroke_adjustment;
+  if (is_pinned) {
+    // Only pinned tabs have border
+    if (path_type == PathType::kBorder || path_type == PathType::kFill) {
+      // As stroke's coordinate is amid of stroke width, we should set position
+      // at 50% of 1 dip.
+      tab_top += scale * 0.5;
+      tab_left += scale * 0.5;
+      tab_right -= scale * 0.5;
+      tab_bottom -= scale * 0.5;
+    }
+
+    if (path_type == PathType::kInteriorClip) {
+      // In order to clip the fill by the stroke thickness, we should set
+      // another 1 dip for interior clip.
+      tab_top += scale + scale * 0.5;
+      tab_left += scale + scale * 0.5;
+      tab_right -= scale + scale * 0.5;
+      tab_bottom -= scale + scale * 0.5;
+      radius -= scale;
+    }
   }
 
-  constexpr int kRadius = 8;
   SkPath path;
-  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom}, kRadius * scale,
-                    kRadius * scale);
+  path.addRoundRect({tab_left, tab_top, tab_right, tab_bottom}, radius * scale,
+                    radius * scale);
 
   // Convert path to be relative to the tab origin.
   gfx::PointF origin(tab()->origin());
@@ -157,7 +174,7 @@ void BraveVerticalTabStyle::PaintTab(gfx::Canvas* canvas) const {
 
   if (tab()->data().pinned) {
     const auto* widget = tab()->GetWidget();
-    DCHECK(widget);
+    CHECK(widget);
     const SkColor tab_stroke_color =
         widget->GetColorProvider()->GetColor(kColorBraveVerticalTabSeparator);
     PaintBackgroundStroke(canvas, TabActive::kActive, tab_stroke_color);
