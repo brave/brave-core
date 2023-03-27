@@ -47,7 +47,7 @@ const char kWaitForTitleChangeScript[] = R"(
       resolve(document.title)
     } else {
       new MutationObserver(function(mutations) {
-        resolve(mutations[0].target.nodeValue)
+        resolve(mutations[0].target.text)
       }).observe(
         document.querySelector('title'),
         { subtree: true, characterData: true, childList: true }
@@ -342,6 +342,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
+  StartRewards();
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
