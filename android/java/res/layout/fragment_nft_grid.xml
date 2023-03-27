@@ -60,13 +60,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="10dp"
                     />
-
-                <TextView
-                    style="@style/BraveWalletTextViewSubTitle"
-                    android:text="@string/nft_supported_standards"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:textSize="12sp" />
+                
             </LinearLayout>
 
             <View
