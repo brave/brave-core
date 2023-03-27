@@ -246,7 +246,7 @@ export const Send = (props: Props) => {
                 addressWarning !== getLocale('braveWalletAddressMissingChecksumInfoWarning')
               )
                 ? addressWarning
-                : getLocale('braveWalletReviewOrder')
+                : getLocale('braveWalletReviewSend')
   }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainWarning])
 
   const isReviewButtonDisabled = React.useMemo(() => {
