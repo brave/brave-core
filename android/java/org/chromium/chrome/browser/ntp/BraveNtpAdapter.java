@@ -33,6 +33,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.task.PostTask;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.QRCodeShareDialogFragment;
@@ -55,6 +56,7 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -523,14 +525,20 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     public void setImageCreditAlpha(float alpha) {
-        if (mImageCreditAlpha != alpha) {
+        if (mImageCreditAlpha == alpha) {
+            return;
+        }
+        // We have to use PostTask otherwise it's possible to get IllegalStateException
+        // during a call to notifyItemChanged when scrolling is in progress, see details
+        // here https://github.com/brave/brave-browser/issues/29343
+        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
             mImageCreditAlpha = alpha;
             try {
                 notifyItemChanged(getStatsCount() + getTopSitesCount() + getNewContentCount());
             } catch (IllegalStateException e) {
                 Log.e(TAG, "setImageCreditAlpha: " + e.getMessage());
             }
-        }
+        });
     }
 
     public void setRecyclerViewHeight(int recyclerViewHeight) {
