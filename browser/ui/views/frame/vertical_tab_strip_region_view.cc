@@ -176,8 +176,8 @@ class VerticalTabSearchButton : public BraveTabSearchButton {
 
     SetImageModel(views::Button::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(
-                      kVerticalTabTabSearchButtonIcon,
-                      kColorBraveVerticalTabHeaderButtonColor));
+                      kLeoSearchIcon, kColorBraveVerticalTabHeaderButtonColor,
+                      /* icon_size= */ 16));
   }
 };
 
@@ -315,10 +315,10 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     auto* cp = GetColorProvider();
     DCHECK(cp);
 
-    SetImageModel(
-        views::Button::STATE_NORMAL,
-        ui::ImageModel::FromVectorIcon(kVerticalTabStripNtbIcon,
-                                       kColorBraveVerticalTabNTBIconColor));
+    SetImageModel(views::Button::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(
+                      kLeoPlusAddIcon, kColorBraveVerticalTabNTBIconColor,
+                      /* icon_size= */ 16));
     text_->SetEnabledColor(cp->GetColor(kColorBraveVerticalTabNTBTextColor));
     shortcut_text_->SetEnabledColor(
         cp->GetColor(kColorBraveVerticalTabNTBShortcutTextColor));
