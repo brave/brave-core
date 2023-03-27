@@ -756,24 +756,26 @@ AssetDiscoveryManager::ParseNFTsFromSimpleHash(const base::Value& json_value,
       continue;
     }
 
-    // is_erc721
+    // is_erc721, is_erc1155
     if (coin == mojom::CoinType::ETH) {
-      bool is_erc721 = base::EqualsCaseInsensitiveASCII(*type, "ERC721");
-      if (!is_erc721) {
+      if (base::EqualsCaseInsensitiveASCII(*type, "ERC721")) {
+        token->is_erc721 = true;
+        token->is_erc1155 = false;
+      } else if (base::EqualsCaseInsensitiveASCII(*type, "ERC1155")) {
+        token->is_erc721 = false;
+        token->is_erc1155 = true;
+      } else {
+        // Unsupported ETH standard
         continue;
       }
-      token->is_erc721 = true;
     } else {  // mojom::CoinType::SOL
       // Solana NFTs must be "NonFungible"
       if (!base::EqualsCaseInsensitiveASCII(*type, "NonFungible")) {
         continue;
       }
       token->is_erc721 = false;
+      token->is_erc1155 = false;
     }
-
-    // is_erc1155 TODO(nvonpentz) Support ERC1155 tokens by parsing type above
-    // https://github.com/brave/brave-browser/issues/29304
-    token->is_erc1155 = false;
 
     // is_nft
     token->is_nft = true;
