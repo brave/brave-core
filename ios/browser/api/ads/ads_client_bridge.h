@@ -77,9 +77,9 @@
 - (void)clearPref:(const std::string&)path;
 - (bool)hasPrefPath:(const std::string&)path;
 - (void)recordP2AEvent:(const std::string&)name value:(base::Value::List)value;
-- (void)logTrainingInstance:
+- (void)addTrainingSample:
     (const std::vector<brave_federated::mojom::CovariateInfoPtr>)
-        training_instance;
+        training_sample;
 
 @end
 

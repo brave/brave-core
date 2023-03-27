@@ -21,7 +21,7 @@ class BatAdsIdleDetectionUtilTest : public UnitTestBase {};
 TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
   // Arrange
   base::FieldTrialParams params;
-  params["should_detect_was_locked"] = "true";
+  params["should_detect_screen_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(features::kIdleDetection, params);
 
@@ -42,7 +42,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLocked) {
 TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
   // Arrange
   base::FieldTrialParams params;
-  params["should_detect_was_locked"] = "true";
+  params["should_detect_screen_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(features::kIdleDetection, params);
 
@@ -63,7 +63,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasLockedIfShouldDetectScreenWasLocked) {
 TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
   // Arrange
   base::FieldTrialParams params;
-  params["should_detect_was_locked"] = "true";
+  params["should_detect_screen_was_locked"] = "true";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(features::kIdleDetection, params);
 
@@ -84,7 +84,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, WasNotLocked) {
 TEST_F(BatAdsIdleDetectionUtilTest, WasNotLockedIfShouldNotDetectWasLocked) {
   // Arrange
   base::FieldTrialParams params;
-  params["should_detect_was_locked"] = "false";
+  params["should_detect_screen_was_locked"] = "false";
   std::vector<base::test::FeatureRefAndParams> enabled_features;
   enabled_features.emplace_back(features::kIdleDetection, params);
 

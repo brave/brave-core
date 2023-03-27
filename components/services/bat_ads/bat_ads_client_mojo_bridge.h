@@ -94,8 +94,8 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   void RecordP2AEvent(const std::string& name,
                       base::Value::List value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
-                               training_instance) override;
+  void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
+                             training_sample) override;
 
   bool GetBooleanPref(const std::string& path) const override;
   void SetBooleanPref(const std::string& path, bool value) override;

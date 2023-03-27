@@ -71,8 +71,8 @@ interface BatAdsClient {
 
   RecordP2AEvent(string name, mojo_base.mojom.ListValue value);
 
-  LogTrainingInstance(array<brave_federated.mojom.CovariateInfo>
-                          training_instance);
+  AddTrainingSample(array<brave_federated.mojom.CovariateInfo>
+                          training_sample);
 
   [Sync]
   GetBooleanPref(string path) => (bool value);

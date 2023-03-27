@@ -193,10 +193,10 @@ void BatAdsClientMojoBridge::RecordP2AEvent(const std::string& name,
   }
 }
 
-void BatAdsClientMojoBridge::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
+void BatAdsClientMojoBridge::AddTrainingSample(
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
   if (bat_ads_client_.is_bound()) {
-    bat_ads_client_->LogTrainingInstance(std::move(training_instance));
+    bat_ads_client_->AddTrainingSample(std::move(training_sample));
   }
 }
 

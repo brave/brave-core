@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_LOG_ENTRY_INTERFACE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_LOG_ENTRY_INTERFACE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FL_PREDICTORS_VARIABLES_PREDICTOR_VARIABLE_INTERFACE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FL_PREDICTORS_VARIABLES_PREDICTOR_VARIABLE_INTERFACE_H_
 
 #include <string>
 
@@ -12,9 +12,9 @@
 
 namespace brave_ads {
 
-class CovariateLogEntryInterface {
+class PredictorVariableInterface {
  public:
-  virtual ~CovariateLogEntryInterface() = default;
+  virtual ~PredictorVariableInterface() = default;
 
   virtual brave_federated::mojom::DataType GetDataType() const = 0;
   virtual brave_federated::mojom::CovariateType GetType() const = 0;
@@ -23,4 +23,4 @@ class CovariateLogEntryInterface {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_COVARIATES_COVARIATE_LOG_ENTRY_INTERFACE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_FL_PREDICTORS_VARIABLES_PREDICTOR_VARIABLE_INTERFACE_H_

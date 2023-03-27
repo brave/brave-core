@@ -189,8 +189,6 @@ void UnitTestBase::Initialize() {
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  covariate_manager_ = std::make_unique<CovariateManager>();
-
   database_manager_ = std::make_unique<DatabaseManager>();
   database_manager_->CreateOrOpen(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
@@ -208,6 +206,8 @@ void UnitTestBase::Initialize() {
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
 
   pref_manager_ = std::make_unique<PrefManager>();
+
+  predictors_manager_ = std::make_unique<PredictorsManager>();
 
   resource_manager_ = std::make_unique<ResourceManager>();
 

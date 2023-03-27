@@ -88,9 +88,9 @@ class AdsClientIOS : public brave_ads::AdsClient {
   bool HasPrefPath(const std::string& path) const override;
   void RecordP2AEvent(const std::string& name,
                       base::Value::List value) override;
-  void LogTrainingInstance(
+  void AddTrainingSample(
       const std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_instance) override;
+          training_sample) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

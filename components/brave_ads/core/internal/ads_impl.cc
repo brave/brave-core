@@ -28,7 +28,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions.h"
-#include "brave/components/brave_ads/core/internal/covariates/covariate_manager.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_manager.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -36,6 +35,7 @@
 #include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
+#include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
@@ -81,7 +81,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   browser_manager_ = std::make_unique<BrowserManager>();
   client_state_manager_ = std::make_unique<ClientStateManager>();
   confirmation_state_manager_ = std::make_unique<ConfirmationStateManager>();
-  covariate_manager_ = std::make_unique<CovariateManager>();
+  predictors_manager_ = std::make_unique<PredictorsManager>();
   database_manager_ = std::make_unique<DatabaseManager>();
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   flag_manager_ = std::make_unique<FlagManager>();

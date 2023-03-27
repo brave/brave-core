@@ -158,7 +158,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerClickedEvent) {
         EXPECT_EQ(1, GetTransactionCount());
       }));
 
-  EXPECT_CALL(*ads_client_mock_, LogTrainingInstance(_));
+  EXPECT_CALL(*ads_client_mock_, AddTrainingSample(_));
 
   ServeNextAd();
 }
@@ -183,7 +183,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerDismissedEvent) {
         EXPECT_EQ(1, GetTransactionCount());
       }));
 
-  EXPECT_CALL(*ads_client_mock_, LogTrainingInstance(_));
+  EXPECT_CALL(*ads_client_mock_, AddTrainingSample(_));
 
   ServeNextAd();
 }
@@ -206,7 +206,7 @@ TEST_F(BatAdsNotificationAdForMobileIntegrationTest, TriggerTimedOutEvent) {
         EXPECT_EQ(0, GetTransactionCount());
       }));
 
-  EXPECT_CALL(*ads_client_mock_, LogTrainingInstance(_));
+  EXPECT_CALL(*ads_client_mock_, AddTrainingSample(_));
 
   ServeNextAd();
 }
