@@ -232,10 +232,6 @@ class PageWallet extends React.Component<Props, State> {
   generateSummaryRows = (): SummaryItem[] => {
     return [
       {
-        type: 'grant',
-        token: this.getBalanceToken('grant')
-      },
-      {
         type: 'ads',
         token: this.getBalanceToken('ads')
       },
@@ -299,9 +295,6 @@ class PageWallet extends React.Component<Props, State> {
 
   getSummaryType = (type: Rewards.ReportType): SummaryType => {
     switch (type) {
-      case 0: { // Rewards.ReportType.GRANT_UGP
-        return 'grant'
-      }
       case 1: { // Rewards.ReportType.AUTO_CONTRIBUTION
         return 'contribute'
       }

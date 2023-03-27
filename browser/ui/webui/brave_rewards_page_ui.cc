@@ -1860,7 +1860,6 @@ void RewardsDOMHandler::OnGetMonthlyReport(
   data.Set("year", static_cast<int>(year));
 
   base::Value::Dict balance_report;
-  balance_report.Set("grant", report->balance->grants);
   balance_report.Set("ads", report->balance->earning_from_ads);
   balance_report.Set("contribute", report->balance->auto_contribute);
   balance_report.Set("monthly", report->balance->recurring_donation);
