@@ -42,6 +42,7 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
     public WalletNftAdapter() {
         mExecutor = Executors.newSingleThreadExecutor();
         mHandler = new Handler(Looper.getMainLooper());
+        walletListItemModelList = new ArrayList<>();
     }
 
     @Override
