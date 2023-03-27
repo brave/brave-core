@@ -83,12 +83,10 @@ gfx::Point TabDragController::GetAttachedDragPoint(
 
 void TabDragController::MoveAttached(const gfx::Point& point_in_screen,
                                      bool just_attached) {
+  TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
   if (!is_showing_vertical_tabs_) {
-    TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
     return;
   }
-
-  TabDragControllerChromium::MoveAttached(point_in_screen, just_attached);
 
   // Unlike upstream, We always update coordinate, as we use y coordinate. Since
   // we don't have threshold there's no any harm for this.
