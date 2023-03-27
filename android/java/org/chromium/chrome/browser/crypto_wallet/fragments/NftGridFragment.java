@@ -211,8 +211,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         boolean emptyList = walletListItemModelList.isEmpty();
         mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
     }
-
-    // TODO: verify if this method is still needed once multi-chain support will be merged.
+    
     private void clearAssets() {
         if (mWalletNftAdapter != null) {
             mWalletNftAdapter.clear();
