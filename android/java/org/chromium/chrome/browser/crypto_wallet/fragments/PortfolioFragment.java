@@ -346,7 +346,7 @@ public class PortfolioFragment
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
         List<WalletListItemModel> walletListItemModelList =
-                Utils.getWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
+                Utils.createWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
                         tokensPath, getResources(), mAllNetworkInfos);
         mWalletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);

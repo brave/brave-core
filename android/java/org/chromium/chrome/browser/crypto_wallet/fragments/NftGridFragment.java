@@ -198,7 +198,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
         List<WalletListItemModel> walletListItemModelList =
-                Utils.getWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
+                Utils.createWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
                         tokensPath, getResources(), mAllNetworkInfos);
         mWalletNftAdapter = new WalletNftAdapter();
         mWalletNftAdapter.setWalletListItemModelList(walletListItemModelList);

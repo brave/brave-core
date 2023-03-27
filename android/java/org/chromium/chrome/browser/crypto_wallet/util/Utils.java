@@ -1470,7 +1470,7 @@ public class Utils {
         return walletCoinAdapter;
     }
 
-    public static List<WalletListItemModel> getWalletListItemModel(
+    public static List<WalletListItemModel> createWalletListItemModel(
             List<PortfolioModel.NftDataModel> userAssets, HashMap<String, Double> perTokenCryptoSum,
             HashMap<String, Double> perTokenFiatSum, String tokensPath, Resources resources,
             List<NetworkInfo> allNetworkInfos) {
