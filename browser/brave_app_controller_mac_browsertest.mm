@@ -32,7 +32,16 @@ namespace {
 
 const char kTestingPage[] = "/empty.html";
 
-using BraveAppControllerBrowserTest = InProcessBrowserTest;
+class BraveAppControllerBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveAppControllerBrowserTest() {
+    features_.InitWithFeatureState(features::kBraveCopyCleanLinkByDefault,
+                                   true);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
 
 class BraveAppControllerCleanLinkFeatureDisabledBrowserTest
     : public InProcessBrowserTest {
