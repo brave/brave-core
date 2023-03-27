@@ -101,16 +101,17 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
         this.onWalletListItemClick = onWalletListItemClick;
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void removeItem(WalletListItemModel item) {
-        walletListItemModelList.remove(item);
-        notifyDataSetChanged();
+        int index = walletListItemModelList.indexOf(item);
+        if (index != -1) {
+            walletListItemModelList.remove(index);
+            notifyItemRemoved(index);
+        }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void addItem(WalletListItemModel item) {
         walletListItemModelList.add(item);
-        notifyDataSetChanged();
+        notifyItemInserted(walletListItemModelList.size() - 1);
     }
 
     @SuppressLint("NotifyDataSetChanged")
