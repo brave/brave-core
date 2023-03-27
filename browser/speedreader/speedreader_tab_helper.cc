@@ -204,6 +204,14 @@ void SpeedreaderTabHelper::SingleShotSpeedreader() {
 
   SetNextRequestState(DistillState::kReaderModePending);
   single_shot_next_request_ = true;
+
+  // Determine if bubble should be shown automatically
+  auto* speedreader_service =
+      SpeedreaderServiceFactory::GetForProfile(GetProfile());
+  if (speedreader_service->ShouldPromptUserToEnable()) {
+    ShowReaderModeBubble();
+    speedreader_service->IncrementPromptCount();
+  }
 }
 
 SpeedreaderBubbleView* SpeedreaderTabHelper::speedreader_bubble_view() const {
@@ -412,7 +420,7 @@ void SpeedreaderTabHelper::ReloadContents() {
 
 void SpeedreaderTabHelper::ProcessNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInMainFrame() ||
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
       navigation_handle->IsSameDocument() ||
       MaybeUpdateCachedState(navigation_handle)) {
     return;
@@ -640,6 +648,7 @@ void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   if (!success) {
     // TODO(boocmp): Show error dialog [Distillation failed on this page].
     SetNextRequestState(DistillState::kPageProbablyReadable);
+    UpdateButtonIfNeeded();
     return;
   }
 
