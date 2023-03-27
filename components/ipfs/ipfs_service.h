@@ -106,7 +106,7 @@ class IpfsService : public KeyedService,
   void AddObserver(IpfsServiceObserver* observer);
   void RemoveObserver(IpfsServiceObserver* observer);
 
-  bool IsDaemonLaunched() const;
+  virtual bool IsDaemonLaunched() const;
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();

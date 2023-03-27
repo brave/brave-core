@@ -179,7 +179,6 @@ class MockIpfsService : public IpfsService {
   ~MockIpfsService() override = default;
 
   MOCK_METHOD1(AddObserver, void(ipfs::IpfsServiceObserver* observer));
-  MOCK_METHOD0(IsDaemonLaunched, bool());
 };
 
 class MockContentTypeChecker : public ContentTypeChecker {
