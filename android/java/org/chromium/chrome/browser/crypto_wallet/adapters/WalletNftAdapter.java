@@ -118,7 +118,7 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView iconImg;
         public TextView titleText;
         public TextView subTitleText;
