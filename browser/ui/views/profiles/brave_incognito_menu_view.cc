@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/profiles/brave_incognito_menu_view.h"
 
@@ -67,8 +67,8 @@ void BraveIncognitoMenuView::AddedToWidget() {
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
   // The icon color is set to match the menu text, which guarantees sufficient
   // contrast and a consistent visual appearance.
-  const SkColor icon_color = provider->GetTypographyProvider().GetColor(
-      *this, views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
+  const ui::ColorId icon_color = provider->GetTypographyProvider().GetColorId(
+      views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
 
   int window_count = BrowserList::GetOffTheRecordBrowsersActiveForProfile(
       browser()->profile());

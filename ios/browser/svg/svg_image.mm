@@ -1,3 +1,8 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #import "brave/ios/browser/svg/svg_image.h"
 
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -39,19 +44,17 @@ SkBitmap BitmapFromCanvas(SkCanvas* canvas) {
   return bitmap;
 }
 
-SkMatrix ComputeScaleMatrix(std::size_t image_width,
-                            std::size_t image_height,
-                            std::size_t bounds_width,
-                            std::size_t bounds_height) {
+SkMatrix ComputeScaleMatrix(size_t image_width,
+                            size_t image_height,
+                            size_t bounds_width,
+                            size_t bounds_height) {
   return SkMatrix::RectToRect(
       SkRect::MakeIWH(image_width, image_height),
       SkRect::MakeIWH(bounds_width, bounds_height),
       SkMatrix::kCenter_ScaleToFit);  // fPreserveAspectRatio
 }
 
-SkBitmap MakeFromData(const NSData* data,
-                      std::size_t width,
-                      std::size_t height) {
+SkBitmap MakeFromData(const NSData* data, size_t width, size_t height) {
   if ([data length] == 0) {
     return SkBitmap();
   }

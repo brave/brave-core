@@ -18,6 +18,14 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
+#define JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents        \
+  JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents_ChromiumImpl \
+      [[maybe_unused]]
+
+#include "src/components/external_intents/android/intercept_navigation_delegate_impl.cc"
+
+#undef JNI_InterceptNavigationDelegateImpl_AssociateWithWebContents
+
 namespace external_intents {
 namespace {
 

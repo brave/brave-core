@@ -1,24 +1,24 @@
 diff --git a/ios/chrome/browser/prefs/browser_prefs.mm b/ios/chrome/browser/prefs/browser_prefs.mm
-index d37e31aa30c6c233169000db6a4f5eb834028fa1..70ec4f7e6edbfad7c0688e4a8741187444820026 100644
+index 5dd5f5d1dd8373387be046675520b283ab100735..95aa07aae68183bca1aa461c2c3007f5ce7e515e 100644
 --- a/ios/chrome/browser/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/prefs/browser_prefs.mm
-@@ -261,6 +261,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -273,6 +273,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
  
-   registry->RegisterIntegerPref(kTrialGroupMICeAndDefaultBrowserVersionPrefName,
-                                 -1);
+   registry->RegisterBooleanPref(prefs::kIosCredentialProviderPromoPolicyEnabled,
+                                 true);
 +  BRAVE_REGISTER_LOCAL_STATE_PREFS
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -396,6 +397,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-       base::to_underlying(
-           prerender_prefs::NetworkPredictionSetting::kEnabledWifiOnly),
-       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+@@ -413,6 +414,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+ 
+   // Register pref used to determine if the Price Tracking UI has been shown.
+   registry->RegisterBooleanPref(prefs::kPriceNotificationsHasBeenShown, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -541,4 +543,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -558,4 +560,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
    if (prefs->FindPreference(kUserClassifierLastTimeToUseSuggestions)) {
      prefs->ClearPref(kUserClassifierLastTimeToUseSuggestions);
    }

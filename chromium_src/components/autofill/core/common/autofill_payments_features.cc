@@ -14,7 +14,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kAutofillEnableOfferNotificationForPromoCodes,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kAutofillEnableRemadeDownstreamMetrics, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kAutofillSaveCardUiExperiment, base::FEATURE_DISABLED_BY_DEFAULT},
     {kAutofillUpstreamAllowAdditionalEmailDomains,
      base::FEATURE_DISABLED_BY_DEFAULT},
 }});

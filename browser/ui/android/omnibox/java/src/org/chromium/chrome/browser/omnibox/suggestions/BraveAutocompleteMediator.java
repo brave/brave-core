@@ -35,6 +35,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
     private DropdownItemViewInfoListManager mDropdownViewInfoListManager;
 
     public BraveAutocompleteMediator(@NonNull Context context,
+            @NonNull AutocompleteControllerProvider controllerProvider,
             @NonNull AutocompleteDelegate delegate,
             @NonNull UrlBarEditingTextStateProvider textProvider,
             @NonNull PropertyModel listPropertyModel, @NonNull Handler handler,
@@ -46,7 +47,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState, @NonNull JankTracker jankTracker,
             @NonNull OmniboxPedalDelegate omniboxPedalDelegate) {
-        super(context, delegate, textProvider, listPropertyModel, handler,
+        super(context, controllerProvider, delegate, textProvider, listPropertyModel, handler,
                 modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
                 bookmarkState, jankTracker, omniboxPedalDelegate);

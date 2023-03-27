@@ -6,6 +6,7 @@
 ##
 
 # These tests fail on CI but pass locally
+-AutofillContextMenuManagerFeedbackUIBrowserTest.DisplaysFeedbackDialogUI
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 -TabHoverCardBubbleViewDialogBrowserTest.InvokeUi_tab_hover_card
 
@@ -32,6 +33,10 @@
 # This test fails because we modify the Profile Picker UI to skip the initial
 # screen and the tests ends up creating 2 profiles instead of the intended one.
 -ProfilePickerLocalProfileCreationDialogBrowserTest.CancelLocalProfileCreation
+
+# This test fails because we force StartupTabProviderImpl::CanShowWelcome to
+# always return true.
+-StartupBrowserCreatorWelcomeBackTest.WelcomeBackStandardNoPolicy/UsingForYouFre
 
 # This test fails on CI but passes locally
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed

@@ -5,6 +5,12 @@
 ## why the filter is required and create an associated tracking issue.
 ##
 
+# These fail because we override IdentityManager::GetAccountsInCookieJar
+-ChildAccountServiceTest.GetGoogleAuthState
+-SupervisedUserGoogleAuthNavigationThrottleTest.NavigationForValidSignedinSupervisedUsers
+-SupervisedUserURLFilterExtensionsTest.ChromeWebstoreURLsAreAlwaysAllowed
+-SupervisedUserURLFilterTest.UrlsNotRequiringGuardianApprovalAllowed
+
 -ChromeBrowsingDataRemoverDelegateTest.*
 -ChromePaths.*
 -Chromium/ChannelInfoTest.*
