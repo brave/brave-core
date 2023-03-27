@@ -191,8 +191,8 @@ OmniboxView* CommanderService::GetOmnibox() const {
 }
 
 bool CommanderService::IsShowing() const {
-  return GetOmnibox() &&
-         GetOmnibox()->GetText().starts_with(kCommandPrefix.data());
+  auto* omnibox = GetOmnibox();
+  return omnibox && omnibox->GetText().starts_with(kCommandPrefix.data());
 }
 
 void CommanderService::UpdateCommands() {
