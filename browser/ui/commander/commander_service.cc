@@ -78,7 +78,10 @@ void CommanderService::UpdateText(bool force) {
     return;
   }
 
-  auto text = browser->window()->GetLocationBar()->GetOmniboxView()->GetText();
+  auto* window = browser->window();
+  CHECK(window);
+
+  auto text = window->GetLocationBar()->GetOmniboxView()->GetText();
   if (!base::StartsWith(text, kCommandPrefix)) {
     return;
   }
@@ -181,7 +184,10 @@ OmniboxView* CommanderService::GetOmnibox() const {
   if (!browser) {
     return nullptr;
   }
-  return browser->window()->GetLocationBar()->GetOmniboxView();
+
+  auto* window = browser->window();
+  CHECK(window);
+  return window->GetLocationBar()->GetOmniboxView();
 }
 
 bool CommanderService::IsShowing() const {
