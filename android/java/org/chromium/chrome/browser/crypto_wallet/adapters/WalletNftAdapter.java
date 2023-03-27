@@ -120,15 +120,15 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView iconImg;
-        public TextView titleText;
-        public TextView subTitleText;
+        public final ImageView iconImg;
+        public final TextView titleText;
+        public final TextView subTitleText;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.iconImg = itemView.findViewById(R.id.icon);
-            this.titleText = itemView.findViewById(R.id.title);
-            this.subTitleText = itemView.findViewById(R.id.sub_title);
+            iconImg = itemView.findViewById(R.id.icon);
+            titleText = itemView.findViewById(R.id.title);
+            subTitleText = itemView.findViewById(R.id.sub_title);
         }
 
         public void resetListeners() {
