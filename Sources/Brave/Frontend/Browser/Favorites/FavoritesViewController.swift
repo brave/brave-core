@@ -668,8 +668,7 @@ extension FavoritesViewController: NSFetchedResultsControllerDelegate {
 
       cell.textLabel.text = favorite.displayTitle ?? favorite.url
       if let url = favorite.url?.asURL {
-        cell.imageView.loadFavicon(siteURL: url,
-                                   monogramFallbackCharacter: favorite.title?.first)
+        cell.imageView.loadFavicon(siteURL: url)
       }
       cell.accessibilityLabel = cell.textLabel.text
 

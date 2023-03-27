@@ -13,11 +13,27 @@ import Favicon
 class LargeFaviconView: UIView {
   func loadFavicon(siteURL: URL, monogramFallbackCharacter: Character? = nil) {
     faviconTask?.cancel()
+    if let favicon = FaviconFetcher.getIconFromCache(for: siteURL) {
+      faviconTask = nil
+      
+      self.imageView.image = favicon.image ?? Favicon.defaultImage
+      self.backgroundColor = favicon.backgroundColor
+      self.imageView.contentMode = .scaleAspectFit
+      
+      if let image = favicon.image {
+        self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
+      } else {
+        self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
+      }
+      return
+    }
+    
     faviconTask = Task { @MainActor in
+      let isPersistent = !PrivateBrowsingManager.shared.isPrivateBrowsing
       do {
         let favicon = try await FaviconFetcher.loadIcon(url: siteURL,
                                                         kind: .largeIcon,
-                                                        persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+                                                        persistent: isPersistent)
         
         self.imageView.image = favicon.image
         self.backgroundColor = favicon.backgroundColor
@@ -29,7 +45,7 @@ class LargeFaviconView: UIView {
           self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
         }
       } catch {
-        self.imageView.image = try? await FaviconFetcher.monogramIcon(url: siteURL).image ?? Favicon.defaultImage
+        self.imageView.image = Favicon.defaultImage
         self.backgroundColor = nil
         self.imageView.contentMode = .scaleAspectFit
         self.backgroundView.isHidden = false

@@ -236,14 +236,13 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       $0.imageView?.layer.cornerRadius = 6
       $0.imageView?.layer.cornerCurve = .continuous
       $0.imageView?.layer.masksToBounds = true
-      $0.imageView?.image = FaviconFetcher.getIconFromCache(for: historyItem.url)?.image ?? Favicon.defaultImage
 
       let domain = Domain.getOrCreate(
         forUrl: historyItem.url,
         persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
 
       if domain.url?.asURL != nil {
-        cell.imageView?.loadFavicon(for: historyItem.url, monogramFallbackCharacter: historyItem.title?.first)
+        cell.imageView?.loadFavicon(for: historyItem.url)
       } else {
         cell.imageView?.clearMonogramFavicon()
         cell.imageView?.image = Favicon.defaultImage

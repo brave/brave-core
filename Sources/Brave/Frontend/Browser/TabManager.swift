@@ -963,9 +963,9 @@ class TabManager: NSObject {
       tab.url = nil
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
       if let url = URL(string: urlString) {
+        tab.favicon = FaviconFetcher.getIconFromCache(for: url) ?? Favicon.default
         Task { @MainActor in
-          let favicon = try await FaviconFetcher.loadIcon(url: url, kind: .smallIcon, persistent: !isPrivateBrowsing)
-          tab.favicons.append(favicon)
+          tab.favicon = try await FaviconFetcher.loadIcon(url: url, kind: .smallIcon, persistent: !isPrivateBrowsing)
         }
       }
 

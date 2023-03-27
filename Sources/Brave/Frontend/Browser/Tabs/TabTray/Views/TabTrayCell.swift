@@ -44,7 +44,15 @@ class TabCell: UICollectionViewCell {
   func configure(with tab: Tab) {
     self.tab = tab
     tab.onScreenshotUpdated = { [weak self, weak tab] in
-      self?.screenshotView.image = tab?.screenshot
+      guard let self = self, let tab = tab else { return }
+      
+      if !tab.displayTitle.isEmpty {
+        self.accessibilityLabel = tab.displayTitle
+      }
+      
+      self.titleLabel.text = tab.displayTitle
+      self.favicon.image = tab.displayFavicon?.image ?? Favicon.defaultImage
+      self.screenshotView.image = tab.screenshot
     }
 
     titleLabel.text = tab.displayTitle
