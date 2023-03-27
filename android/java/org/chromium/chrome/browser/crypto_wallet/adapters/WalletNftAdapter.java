@@ -114,10 +114,10 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
         notifyItemInserted(walletListItemModelList.size() - 1);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void clear() {
+        int size = walletListItemModelList.size();
         walletListItemModelList.clear();
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(0, size);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
