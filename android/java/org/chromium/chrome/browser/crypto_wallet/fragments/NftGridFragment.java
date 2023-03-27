@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.chromium.base.Log;
-import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
@@ -273,18 +272,15 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
                                 mPortfolioHelper.setSelectedNetwork(selectedNetwork);
                                 mPortfolioHelper.calculateBalances(() -> {
-                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                                        List<BlockchainToken> nfts = new ArrayList<>();
-                                        for (BlockchainToken token :
-                                                mPortfolioHelper.getUserAssets()) {
-                                            if (token.isErc721 || token.isNft) {
-                                                nfts.add(token);
-                                            }
+                                    List<BlockchainToken> nfts = new ArrayList<>();
+                                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
+                                        if (token.isErc721 || token.isNft) {
+                                            nfts.add(token);
                                         }
+                                    }
 
-                                        mPortfolioModel.prepareNftListMetaData(
-                                                nfts, mNetworkInfo, mPortfolioHelper);
-                                    });
+                                    mPortfolioModel.prepareNftListMetaData(
+                                            nfts, mNetworkInfo, mPortfolioHelper);
                                 });
                             });
                 });
