@@ -1382,58 +1382,10 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   bat_ads_->GetDiagnostics(std::move(callback));
 }
 
-void AdsServiceImpl::OnTabHtmlContentDidChange(
-    const SessionID& tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain, html);
-  }
-}
-
-void AdsServiceImpl::OnTabTextContentDidChange(
-    const SessionID& tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& text) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabTextContentDidChange(tab_id.id(), redirect_chain, text);
-  }
-}
-
 void AdsServiceImpl::TriggerUserGestureEvent(
     const int32_t page_transition_type) {
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerUserGestureEvent(page_transition_type);
-  }
-}
-
-void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabDidStartPlayingMedia(tab_id.id());
-  }
-}
-
-void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabDidStopPlayingMedia(tab_id.id());
-  }
-}
-
-void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
-                                    const std::vector<GURL>& redirect_chain,
-                                    const bool is_active,
-                                    const bool is_browser_active) {
-  if (bat_ads_.is_bound()) {
-    const bool is_incognito = !brave::IsRegularProfile(profile_);
-
-    bat_ads_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
-                             is_browser_active, is_incognito);
-  }
-}
-
-void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnDidCloseTab(tab_id.id());
   }
 }
 
@@ -1602,6 +1554,54 @@ void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
                                      ToggleFlaggedAdCallback callback) {
   if (bat_ads_.is_bound()) {
     bat_ads_->ToggleFlaggedAd(std::move(value), std::move(callback));
+  }
+}
+
+void AdsServiceImpl::NotifyTabTextContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyTabTextContentDidChange(tab_id, redirect_chain,
+                                                        text);
+  }
+}
+
+void AdsServiceImpl::NotifyTabHtmlContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
+                                                        html);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyTabDidStartPlayingMedia(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyTabDidStopPlayingMedia(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const bool is_visible,
+                                        const bool is_incognito) {
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyTabDidChange(tab_id, redirect_chain, is_visible,
+                                             is_incognito);
+  }
+}
+
+void AdsServiceImpl::NotifyDidCloseTab(const int32_t tab_id) {
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyDidCloseTab(tab_id);
   }
 }
 

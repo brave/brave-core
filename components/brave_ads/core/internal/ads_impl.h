@@ -106,28 +106,11 @@ class AdsImpl final : public Ads,
 
   void OnDidUpdateResourceComponent(const std::string& id) override;
 
-  void OnTabHtmlContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
   void OnUserDidBecomeIdle() override;
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
                              bool screen_was_locked) override;
 
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
-  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
-
-  void OnTabDidChange(int32_t tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active,
-                      bool is_incognito) override;
-  void OnDidCloseTab(int32_t tab_id) override;
 
   void OnRewardsWalletDidChange(const std::string& payment_id,
                                 const std::string& recovery_seed) override;

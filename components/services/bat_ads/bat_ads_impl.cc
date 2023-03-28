@@ -55,20 +55,6 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
   ads_->Shutdown(std::move(callback));
 }
 
-void BatAdsImpl::OnTabHtmlContentDidChange(
-    const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  ads_->OnTabHtmlContentDidChange(tab_id, redirect_chain, html);
-}
-
-void BatAdsImpl::OnTabTextContentDidChange(
-    const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& text) {
-  ads_->OnTabTextContentDidChange(tab_id, redirect_chain, text);
-}
-
 void BatAdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
   ads_->TriggerUserGestureEvent(page_transition_type);
 }
@@ -80,27 +66,6 @@ void BatAdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
 
 void BatAdsImpl::OnUserDidBecomeIdle() {
   ads_->OnUserDidBecomeIdle();
-}
-
-void BatAdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
-  ads_->OnTabDidStartPlayingMedia(tab_id);
-}
-
-void BatAdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
-  ads_->OnTabDidStopPlayingMedia(tab_id);
-}
-
-void BatAdsImpl::OnTabDidChange(const int32_t tab_id,
-                                const std::vector<GURL>& redirect_chain,
-                                const bool is_active,
-                                const bool is_browser_active,
-                                const bool is_incognito) {
-  ads_->OnTabDidChange(tab_id, redirect_chain, is_active, is_browser_active,
-                       is_incognito);
-}
-
-void BatAdsImpl::OnDidCloseTab(const int32_t tab_id) {
-  ads_->OnDidCloseTab(tab_id);
 }
 
 void BatAdsImpl::MaybeGetNotificationAd(

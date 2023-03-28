@@ -160,25 +160,6 @@ interface BatAds {
 
   TriggerUserGestureEvent(int32 page_transition_type);
 
-  // Tabs
-  OnTabDidChange(int32 tab_id,
-                 array<url.mojom.Url> redirect_chain,
-                 bool is_active,
-                 bool is_browser_active,
-                 bool is_incognito);
-
-  OnTabHtmlContentDidChange(int32 tab_id,
-                            array<url.mojom.Url> redirect_chain,
-                            string html);
-  OnTabTextContentDidChange(int32 tab_id,
-                            array<url.mojom.Url> redirect_chain,
-                            string text);
-
-  OnTabDidStartPlayingMedia(int32 tab_id);
-  OnTabDidStopPlayingMedia(int32 tab_id);
-
-  OnDidCloseTab(int32 tab_id);
-
   // Account
   OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 

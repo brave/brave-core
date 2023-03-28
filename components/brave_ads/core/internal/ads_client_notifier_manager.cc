@@ -57,7 +57,7 @@ void AdsClientNotifierManager::NotifyTabHtmlContentDidChange(
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   for (auto& observer : observers_) {
-    observer.OnTabTextContentDidChange(tab_id, redirect_chain, html);
+    observer.OnTabHtmlContentDidChange(tab_id, redirect_chain, html);
   }
 }
 

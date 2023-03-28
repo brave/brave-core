@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -45,6 +46,9 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+
+  is_incognito_ = !brave::IsRegularProfile(profile);
+
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (!ads_service_) {
     return;
@@ -64,10 +68,14 @@ AdsTabHelper::~AdsTabHelper() {
 }
 
 void AdsTabHelper::TabUpdated() {
-  if (ads_service_) {
-    ads_service_->OnTabDidChange(tab_id_, redirect_chain_, is_active_,
-                                 is_browser_active_);
+  if (!ads_service_) {
+    return;
   }
+
+  const bool is_visible = is_active_ && is_browser_active_;
+
+  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_, is_visible,
+                                   is_incognito_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -97,7 +105,8 @@ void AdsTabHelper::OnJavaScriptHtmlResult(base::Value value) {
   }
 
   const std::string& html = value.GetString();
-  ads_service_->OnTabHtmlContentDidChange(tab_id_, redirect_chain_, html);
+  ads_service_->NotifyTabHtmlContentDidChange(tab_id_.id(), redirect_chain_,
+                                              html);
 }
 
 void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
@@ -110,7 +119,8 @@ void AdsTabHelper::OnJavaScriptTextResult(base::Value value) {
   }
 
   const std::string& text = value.GetString();
-  ads_service_->OnTabTextContentDidChange(tab_id_, redirect_chain_, text);
+  ads_service_->NotifyTabTextContentDidChange(tab_id_.id(), redirect_chain_,
+                                              text);
 }
 
 void AdsTabHelper::DidFinishNavigation(
@@ -168,7 +178,7 @@ void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
                                        const content::MediaPlayerId& id) {
   if (ads_service_) {
-    ads_service_->OnTabDidStartPlayingMedia(tab_id_);
+    ads_service_->NotifyTabDidStartPlayingMedia(tab_id_.id());
   }
 }
 
@@ -177,7 +187,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
   if (ads_service_) {
-    ads_service_->OnTabDidStopPlayingMedia(tab_id_);
+    ads_service_->NotifyTabDidStopPlayingMedia(tab_id_.id());
   }
 }
 
@@ -209,7 +219,7 @@ void AdsTabHelper::WebContentsDestroyed() {
     return;
   }
 
-  ads_service_->OnDidCloseTab(tab_id_);
+  ads_service_->NotifyDidCloseTab(tab_id_.id());
   ads_service_ = nullptr;
 }
 

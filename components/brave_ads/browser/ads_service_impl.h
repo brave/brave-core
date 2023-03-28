@@ -232,22 +232,7 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnTabHtmlContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnTabDidStartPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidStopPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidChange(const SessionID& tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active) override;
-  void OnDidCloseTab(const SessionID& tab_id) override;
 
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
@@ -302,6 +287,19 @@ class AdsServiceImpl : public AdsService,
   void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
 
+  void NotifyTabTextContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& text) override;
+  void NotifyTabHtmlContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& html) override;
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidChange(int32_t tab_id,
+                          const std::vector<GURL>& redirect_chain,
+                          bool is_visible,
+                          bool is_incognito) override;
+  void NotifyDidCloseTab(int32_t tab_id) override;
   void NotifyBrowserDidBecomeActive() override;
   void NotifyBrowserDidResignActive() override;
 

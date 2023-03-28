@@ -174,24 +174,6 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   std::move(callback).Run(/*success*/ true);
 }
 
-void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,
-                                        const std::vector<GURL>& redirect_chain,
-                                        const std::string& html) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
-                                                      html);
-  }
-}
-
-void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
-                                        const std::vector<GURL>& redirect_chain,
-                                        const std::string& text) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
-                                                      text);
-  }
-}
-
 void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
   if (IsInitialized()) {
     UserActivityManager::GetInstance()->RecordEventForPageTransition(
@@ -210,38 +192,6 @@ void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
   if (IsInitialized()) {
     IdleDetectionManager::GetInstance()->UserDidBecomeActive(idle_time,
                                                              screen_was_locked);
-  }
-}
-
-void AdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnDidStartPlayingMedia(tab_id);
-  }
-}
-
-void AdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnDidStopPlayingMedia(tab_id);
-  }
-}
-
-void AdsImpl::OnTabDidChange(const int32_t tab_id,
-                             const std::vector<GURL>& redirect_chain,
-                             const bool is_active,
-                             const bool is_browser_active,
-                             const bool is_incognito) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  const bool is_visible = is_active && is_browser_active;
-  TabManager::GetInstance()->OnDidChange(tab_id, redirect_chain, is_visible,
-                                         is_incognito);
-}
-
-void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnDidClose(tab_id);
   }
 }
 
