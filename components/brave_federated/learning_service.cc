@@ -26,21 +26,21 @@
 
 namespace brave_federated {
 
-// namespace {
+namespace {
 
-// TaskResult LoadDatasetAndRunTask(
-//     std::unique_ptr<FederatedTaskRunner> task_runner) {
-//   auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
-//   SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
+TaskResult LoadDatasetAndRunTask(
+    std::unique_ptr<FederatedTaskRunner> task_runner) {
+  auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
+  SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
 
-//   task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
-//   task_runner->SetTestData(test_dataset.GetDataPoints());
-//   VLOG(2) << "Model and data set. Task runner initialized.";
+  task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
+  task_runner->SetTestData(test_dataset.GetDataPoints());
+  VLOG(2) << "Model and data set. Task runner initialized.";
 
-//   return task_runner->Run();
-// }
+  return task_runner->Run();
+}
 
-// }
+}
 
 LearningService::LearningService(
     EligibilityService* eligibility_service,
@@ -169,22 +169,9 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
       FROM_HERE,
       {base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&LearningService::LoadDatasetAndRunTask,
-                     base::Unretained(this), std::move(task_runner)),
+      base::BindOnce(&LoadDatasetAndRunTask, std::move(task_runner)),
       base::BindOnce(&LearningService::OnTaskResultComputed,
                      weak_factory_.GetWeakPtr()));
-}
-
-TaskResult LearningService::LoadDatasetAndRunTask(
-    std::unique_ptr<FederatedTaskRunner> task_runner) {
-  auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
-  SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
-
-  task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
-  task_runner->SetTestData(test_dataset.GetDataPoints());
-  VLOG(2) << "Model and data set. Task runner initialized.";
-
-  return task_runner->Run();
 }
 
 void LearningService::OnTaskResultComputed(TaskResult result) {
