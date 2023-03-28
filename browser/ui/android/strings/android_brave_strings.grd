@@ -3612,7 +3612,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Managing your playlist data
     </message>
     <message name="IDS_PLAYLIST_WARNING_TEXT" desc="Playlist warning dialog text">
-      By default, Playlist will auto save content to your device for offline playback (on both private &amp; shared  playlists). If you’re not on WiFi, auto save will use your cellular data.\n\nTo change this default, use settings.
+      By default, Playlist will auto save content to your device for offline playback (on both private &amp; shared playlists). If you’re not on WiFi, auto save will use your cellular data.\n\nTo change this default, use settings.
     </message>
     <message name="IDS_ADD_ITEM_TO_PLAYLIST" desc="Playlist warning dialog action button text">
       Add item to Playlist
@@ -3696,7 +3696,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Browse and add
     </message>
     <message name="IDS_PLAYLIST_BROWSE_AND_ADD_MESSAGE" desc="Browse and add button description text">
-      Add your favorite content. Look for the + button in the lower right part of your screen.
+      Add your favorite content. Look for the ( + ) button in the lower right part of your screen.
     </message>
     <message name="IDS_PLAYLIST_BROWSE_FOR_MEDIA" desc="Browse for media text">
       Browse for media
