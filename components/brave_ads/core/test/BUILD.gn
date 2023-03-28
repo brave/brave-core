@@ -198,6 +198,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_model_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_features_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_model_unittest.cc",
+    "//brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/top_segments_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.cc",
