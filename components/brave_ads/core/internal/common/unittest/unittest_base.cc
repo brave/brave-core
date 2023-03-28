@@ -203,7 +203,7 @@ void UnitTestBase::Initialize() {
 
   history_manager_ = std::make_unique<HistoryManager>();
 
-  idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
+  idle_detection_ = std::make_unique<IdleDetection>();
 
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
 

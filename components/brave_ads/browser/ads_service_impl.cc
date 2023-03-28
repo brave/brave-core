@@ -734,8 +734,9 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      if (bat_ads_.is_bound()) {
-        bat_ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
+      if (ads_client_notifier_.is_bound()) {
+        ads_client_notifier_->NotifyUserDidBecomeActive(idle_time,
+                                                        screen_was_locked);
       }
 
       break;
@@ -743,8 +744,8 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      if (bat_ads_.is_bound()) {
-        bat_ads_->OnUserDidBecomeIdle();
+      if (ads_client_notifier_.is_bound()) {
+        ads_client_notifier_->NotifyUserDidBecomeIdle();
       }
 
       break;

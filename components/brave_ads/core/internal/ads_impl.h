@@ -22,11 +22,8 @@
 #include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-class GURL;
-
 namespace base {
 class Time;
-class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
@@ -65,13 +62,12 @@ class DatabaseManager;
 class DiagnosticManager;
 class FlagManager;
 class HistoryManager;
-class IdleDetectionManager;
+class IdleDetection;
 class InlineContentAdHandler;
 class NewTabPageAdHandler;
 class NotificationAdHandler;
 class NotificationAdManager;
 class PredictorsManager;
-class PrefManager;
 class PromotedContentAd;
 class SearchResultAd;
 class TabManager;
@@ -102,10 +98,6 @@ class AdsImpl final : public Ads,
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnUserDidBecomeIdle() override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
 
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
@@ -202,7 +194,7 @@ class AdsImpl final : public Ads,
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
+  std::unique_ptr<IdleDetection> idle_detection_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
   std::unique_ptr<TabManager> tab_manager_;

@@ -442,7 +442,6 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/tabs/tab_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/transfer/transfer_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_features_unittest.cc",
-    "//brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/user_activity/page_transition_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_features_unittest.cc",

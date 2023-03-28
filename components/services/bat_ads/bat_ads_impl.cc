@@ -24,7 +24,6 @@
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
 
 namespace bat_ads {
 
@@ -57,15 +56,6 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
 
 void BatAdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
   ads_->TriggerUserGestureEvent(page_transition_type);
-}
-
-void BatAdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                       const bool screen_was_locked) {
-  ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
-}
-
-void BatAdsImpl::OnUserDidBecomeIdle() {
-  ads_->OnUserDidBecomeIdle();
 }
 
 void BatAdsImpl::MaybeGetNotificationAd(

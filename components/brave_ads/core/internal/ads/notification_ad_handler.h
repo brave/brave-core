@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager_observer.h"
 
 namespace base {
 class TimeDelta;
@@ -50,7 +49,6 @@ struct WalletInfo;
 class NotificationAdHandler final
     : public AccountObserver,
       public BrowserManagerObserver,
-      public IdleDetectionManagerObserver,
       public notification_ads::EventHandlerObserver,
       public notification_ads::ServingObserver,
       public AdsClientObserver {
@@ -86,8 +84,6 @@ class NotificationAdHandler final
 
   // AdsClientObserver:
   void OnPrefDidChange(const std::string& path) override;
-
-  // IdleDetectionManagerObserver:
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
                              bool screen_was_locked) override;
 

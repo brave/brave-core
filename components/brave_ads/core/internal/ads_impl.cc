@@ -55,7 +55,7 @@
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -83,7 +83,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   flag_manager_ = std::make_unique<FlagManager>();
   history_manager_ = std::make_unique<HistoryManager>();
-  idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
+  idle_detection_ = std::make_unique<IdleDetection>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
@@ -176,20 +176,6 @@ void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
   if (IsInitialized()) {
     UserActivityManager::GetInstance()->RecordEventForPageTransition(
         page_transition_type);
-  }
-}
-
-void AdsImpl::OnUserDidBecomeIdle() {
-  if (IsInitialized()) {
-    IdleDetectionManager::GetInstance()->UserDidBecomeIdle();
-  }
-}
-
-void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                    const bool screen_was_locked) {
-  if (IsInitialized()) {
-    IdleDetectionManager::GetInstance()->UserDidBecomeActive(idle_time,
-                                                             screen_was_locked);
   }
 }
 

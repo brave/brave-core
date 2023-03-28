@@ -26,7 +26,7 @@
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -167,7 +167,7 @@ class UnitTestBase : public AdsClientNotifierManager, public testing::Test {
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
+  std::unique_ptr<IdleDetection> idle_detection_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
   std::unique_ptr<TabManager> tab_manager_;

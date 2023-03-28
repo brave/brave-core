@@ -20,11 +20,8 @@
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-class GURL;
-
 namespace base {
 class Time;
-class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
@@ -57,18 +54,6 @@ class ADS_EXPORT Ads {
   // Called to get diagnostics to help identify issues. The callback takes one
   // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
-
-  // Called when a user has been idle for the threshold set in
-  // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
-  // devices.
-  virtual void OnUserDidBecomeIdle() = 0;
-
-  // Called when a user is no longer idle. |idle_time| is the amount of time in
-  // seconds that the user was idle. |screen_was_locked| should be |true| if the
-  // screen was locked, otherwise |false|. NOTE: This should not be called on
-  // mobile devices.
-  virtual void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                                     bool screen_was_locked) = 0;
 
   // Called when a page navigation was initiated by a user gesture.
   // |page_transition_type| containing the page transition type, see enums for

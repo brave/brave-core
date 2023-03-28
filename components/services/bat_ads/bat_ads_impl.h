@@ -15,8 +15,6 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
-class GURL;
-
 namespace brave_ads {
 class Ads;
 struct InlineContentAdInfo;
@@ -46,10 +44,6 @@ class BatAdsImpl : public mojom::BatAds {
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnUserDidBecomeIdle() override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
 
   void TriggerUserGestureEvent(int32_t page_transition_type) override;
 
