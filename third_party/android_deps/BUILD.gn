@@ -65,7 +65,7 @@ android_aar_prebuilt("com_github_bumptech_glide_gifdecoder_java") {
 }
 
 android_aar_prebuilt("com_wireguard_android_java") {
-  aar_path = "libs/com_wireguard_android/tunnel-1.0.20211029.aar"
+  aar_path = "libs/com_wireguard_android/tunnel-1.0.20230321.aar"
   info_path = "libs/com_wireguard_android/com_wireguard_android.info"
   deps = [
     "//third_party/androidx:androidx_annotation_annotation_java",
