@@ -9,11 +9,9 @@
 #include <algorithm>
 #include <string>
 
-#include "base/dcheck_is_on.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/win/windows_types.h"
-#include "sandbox/win/src/sandbox_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace {
@@ -43,7 +41,6 @@ struct BraveToChrome<wchar_t> {
   static constexpr const base::WStringPiece kChrome = L"chrome.exe";
 };
 
-#if DCHECK_IS_ON()
 template <typename CharT>
 struct TestBraveToChrome;
 
@@ -59,7 +56,6 @@ struct TestBraveToChrome<wchar_t> {
   static constexpr const base::WStringPiece kChrome =
       L"chrome_browser_tests.exe";
 };
-#endif
 
 template <template <class T> class FromTo, typename CharT>
 absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
@@ -90,11 +86,9 @@ DWORD PatchFilename(CharT* filename, DWORD length, DWORD size) {
   if (auto r = PatchFilenameImpl<BraveToChrome>(filename, length, size)) {
     return *r;
   }
-#if DCHECK_IS_ON()
   if (auto r = PatchFilenameImpl<TestBraveToChrome>(filename, length, size)) {
     return *r;
   }
-#endif
   return length;
 }
 

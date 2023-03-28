@@ -5,9 +5,21 @@
 
 #include "content/browser/gpu/gpu_process_host.h"
 
+#if BUILDFLAG(IS_WIN)
+
+#include "sandbox/win/src/sandbox_policy.h"
+
+#define AddDllToUnload(x) \
+  AddDllToUnload(x);      \
+  config->SetShouldPatchModuleFileName(true)
+
+#endif  // BUILDFLAG(IS_WIN)
+
 #include "src/content/browser/gpu/gpu_process_host.cc"
 
 #if BUILDFLAG(IS_WIN)
+
+#undef AddDllToUnload
 
 namespace content {
 
@@ -17,4 +29,4 @@ void GpuProcessHost::DidGetExecutablePath(const std::string& path) {
 
 }  // namespace content
 
-#endif
+#endif  // BUILDFLAG(IS_WIN)

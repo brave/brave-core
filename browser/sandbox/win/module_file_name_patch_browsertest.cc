@@ -53,12 +53,7 @@ class ModuleFileNameBrowserTest : public InProcessBrowserTest,
 
 INSTANTIATE_TEST_SUITE_P(, ModuleFileNameBrowserTest, ::testing::Bool());
 
-#if DCHECK_IS_ON()
-#define MAYBE_CheckPath CheckPath
-#else
-#define MAYBE_CheckPath DISABLED_CheckPath
-#endif
-IN_PROC_BROWSER_TEST_P(ModuleFileNameBrowserTest, MAYBE_CheckPath) {
+IN_PROC_BROWSER_TEST_P(ModuleFileNameBrowserTest, CheckPath) {
   auto* gpu = content::GpuProcessHost::Get();
 
   std::string path;

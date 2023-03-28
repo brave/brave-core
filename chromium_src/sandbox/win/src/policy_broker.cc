@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_list.h"
+#include "sandbox/win/src/policy_broker.h"
 
 #define SetupBasicInterceptions SetupBasicInterceptions_ChromiumImpl
 
@@ -11,6 +11,7 @@
 
 #undef SetupBasicInterceptions
 
+#include "base/feature_list.h"
 #include "brave/sandbox/win/src/module_file_name_interception.h"
 
 #if !defined(PSAPI_VERSION)
@@ -20,10 +21,13 @@
 namespace sandbox {
 
 namespace {
-bool SetupModuleFilenameInterceptions(InterceptionManager* manager) {
-  if (!base::FeatureList::IsEnabled(kModuleFileNamePatch)) {
+bool SetupModuleFilenameInterceptions(InterceptionManager* manager,
+                                      const TargetConfig* config) {
+  if (!base::FeatureList::IsEnabled(kModuleFileNamePatch) ||
+      !config->ShouldPatchModuleFileName()) {
     return true;
   }
+
   if (!INTERCEPT_EAT(manager, kKerneldllName, GetModuleFileNameA,
                      GET_MODULE_FILENAME_A_ID, 3)) {
     return false;
@@ -59,12 +63,13 @@ bool SetupModuleFilenameInterceptions(InterceptionManager* manager) {
 }  // namespace
 
 bool SetupBasicInterceptions(InterceptionManager* manager,
-                             bool is_csrss_connected) {
+                             bool is_csrss_connected,
+                             const TargetConfig* config) {
   if (!SetupBasicInterceptions_ChromiumImpl(manager, is_csrss_connected)) {
     return false;
   }
 
-  if (!SetupModuleFilenameInterceptions(manager)) {
+  if (!SetupModuleFilenameInterceptions(manager, config)) {
     return false;
   }
 
