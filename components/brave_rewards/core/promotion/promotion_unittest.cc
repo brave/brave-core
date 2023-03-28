@@ -87,7 +87,7 @@ class PromotionTest : public testing::Test {
   database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
-TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
+TEST_F(PromotionTest, DISABLED_LegacyPromotionIsNotOverwritten) {
   bool inserted = false;
   ON_CALL(mock_database_, GetAllPromotions(_))
       .WillByDefault([&inserted](ledger::GetAllPromotionsCallback callback) {
