@@ -73,7 +73,6 @@ class NotificationAdManager;
 class PredictorsManager;
 class PrefManager;
 class PromotedContentAd;
-class ResourceManager;
 class SearchResultAd;
 class TabManager;
 class Transfer;
@@ -103,8 +102,6 @@ class AdsImpl final : public Ads,
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   void OnUserDidBecomeIdle() override;
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
@@ -208,7 +205,6 @@ class AdsImpl final : public Ads,
   std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 

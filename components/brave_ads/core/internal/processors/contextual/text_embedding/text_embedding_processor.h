@@ -12,7 +12,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/ads_client_observer.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -26,7 +25,6 @@ class TextEmbedding;
 namespace processor {
 
 class TextEmbedding final : public AdsClientObserver,
-                            public ResourceManagerObserver,
                             public TabManagerObserver {
  public:
   explicit TextEmbedding(resource::TextEmbedding* resource);
@@ -44,9 +42,7 @@ class TextEmbedding final : public AdsClientObserver,
  private:
   // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,

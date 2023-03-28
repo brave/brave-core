@@ -19,7 +19,6 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -33,9 +32,7 @@ class Conversions;
 struct AdEventInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public AdsClientObserver,
-                          public ResourceManagerObserver,
-                          public TabManagerObserver {
+class Conversions final : public AdsClientObserver, public TabManagerObserver {
  public:
   Conversions();
 
@@ -114,9 +111,7 @@ class Conversions final : public AdsClientObserver,
 
   // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,

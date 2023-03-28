@@ -58,9 +58,6 @@ class ADS_EXPORT Ads {
   // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
-  // Called when a resource component has been updated.
-  virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
-
   // Called when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
   // devices.

@@ -13,12 +13,10 @@
 #include "brave/components/brave_ads/core/ads_client_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 
 namespace brave_ads::resource {
 
-class AntiTargeting final : public AdsClientObserver,
-                            public ResourceManagerObserver {
+class AntiTargeting final : public AdsClientObserver {
  public:
   AntiTargeting();
 
@@ -41,9 +39,7 @@ class AntiTargeting final : public AdsClientObserver,
 
   // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_initialized_ = false;
 

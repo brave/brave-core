@@ -52,7 +52,6 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
@@ -86,7 +85,6 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   history_manager_ = std::make_unique<HistoryManager>();
   idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-  resource_manager_ = std::make_unique<ResourceManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
@@ -198,10 +196,6 @@ void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
 void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
                                        const std::string& recovery_seed) {
   account_->SetWallet(payment_id, recovery_seed);
-}
-
-void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  ResourceManager::GetInstance()->UpdateResource(id);
 }
 
 absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(

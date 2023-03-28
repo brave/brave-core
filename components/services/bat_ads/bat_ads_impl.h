@@ -47,8 +47,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnDidUpdateResourceComponent(const std::string& id) override;
-
   void OnUserDidBecomeIdle() override;
   void OnUserDidBecomeActive(base::TimeDelta idle_time,
                              bool screen_was_locked) override;

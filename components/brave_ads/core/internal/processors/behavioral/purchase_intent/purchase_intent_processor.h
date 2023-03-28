@@ -12,7 +12,6 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/core/ads_client_observer.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
@@ -32,7 +31,6 @@ struct PurchaseIntentSiteInfo;
 namespace processor {
 
 class PurchaseIntent final : public AdsClientObserver,
-                             public ResourceManagerObserver,
                              public TabManagerObserver {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
@@ -58,9 +56,7 @@ class PurchaseIntent final : public AdsClientObserver,
 
   // AdsClientObserver:
   void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  void OnDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

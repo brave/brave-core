@@ -209,8 +209,6 @@ void UnitTestBase::Initialize() {
 
   predictors_manager_ = std::make_unique<PredictorsManager>();
 
-  resource_manager_ = std::make_unique<ResourceManager>();
-
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_manager_ = std::make_unique<UserActivityManager>();

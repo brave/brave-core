@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
@@ -36,13 +35,11 @@ TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
   DCHECK(resource_);
 
   AdsClientHelper::AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 TextEmbedding::~TextEmbedding() {
   AdsClientHelper::RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -95,7 +92,7 @@ void TextEmbedding::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextEmbedding::OnResourceDidUpdate(const std::string& id) {
+void TextEmbedding::OnDidUpdateResourceComponent(const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }

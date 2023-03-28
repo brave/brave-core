@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_features.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/resources_util_impl.h"
 
 namespace brave_ads::resource {
@@ -24,12 +23,10 @@ constexpr char kResourceId[] = "mkdhnfmjhklfnamlheoliekgeohamoig";
 AntiTargeting::AntiTargeting()
     : anti_targeting_(std::make_unique<AntiTargetingInfo>()) {
   AdsClientHelper::AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
 }
 
 AntiTargeting::~AntiTargeting() {
   AdsClientHelper::RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
 }
 
 bool AntiTargeting::IsInitialized() const {
@@ -77,7 +74,7 @@ void AntiTargeting::OnLocaleDidChange(const std::string& /*locale*/) {
   Load();
 }
 
-void AntiTargeting::OnResourceDidUpdate(const std::string& id) {
+void AntiTargeting::OnDidUpdateResourceComponent(const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     Load();
   }

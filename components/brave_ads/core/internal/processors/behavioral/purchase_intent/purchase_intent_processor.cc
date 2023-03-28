@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_signal_history_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_site_info.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -68,13 +67,11 @@ PurchaseIntent::PurchaseIntent(resource::PurchaseIntent* resource)
   DCHECK(resource_);
 
   AdsClientHelper::AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 PurchaseIntent::~PurchaseIntent() {
   AdsClientHelper::RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -202,7 +199,7 @@ void PurchaseIntent::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void PurchaseIntent::OnResourceDidUpdate(const std::string& id) {
+void PurchaseIntent::OnDidUpdateResourceComponent(const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }

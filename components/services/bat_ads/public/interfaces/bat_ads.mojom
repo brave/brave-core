@@ -151,8 +151,6 @@ interface BatAds {
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  OnDidUpdateResourceComponent(string id);
-
   // User Interaction
   OnUserDidBecomeIdle();
   OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,

@@ -2082,8 +2082,8 @@ void AdsServiceImpl::OnBrowserDidEnterBackground() {
 }
 
 void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnDidUpdateResourceComponent(id);
+  if (ads_client_notifier_.is_bound()) {
+    ads_client_notifier_->NotifyDidUpdateResourceComponent(id);
   }
 }
 

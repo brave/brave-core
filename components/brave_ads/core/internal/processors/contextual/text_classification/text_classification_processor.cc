@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
@@ -43,13 +42,11 @@ TextClassification::TextClassification(resource::TextClassification* resource)
   DCHECK(resource_);
 
   AdsClientHelper::AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 TextClassification::~TextClassification() {
   AdsClientHelper::RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -85,7 +82,7 @@ void TextClassification::OnLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextClassification::OnResourceDidUpdate(const std::string& id) {
+void TextClassification::OnDidUpdateResourceComponent(const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }
