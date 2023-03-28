@@ -256,7 +256,6 @@ export function Settings () {
               <BatIcon />{getString('braveRewards')}
             </style.title>
             {
-              !isAndroid &&
                 <style.manageAction>
                   <button
                     onClick={onManageClick}

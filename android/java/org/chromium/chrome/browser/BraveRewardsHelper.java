@@ -77,6 +77,19 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
     private Tab mTab;
     private Profile mProfile;
 
+    public static void resetRewards() {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ENV_CHANGE, false);
+        sharedPreferencesEditor.putLong(PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE, 0);
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_ONBOARDING_MODAL, false);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_ONBOARDING_MINI_MODAL, true);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_MODAL, true);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ONBOARDING_ONCE, false);
+        sharedPreferencesEditor.putBoolean(PREF_SHOW_DECLARE_GEO_MODAL, false);
+        sharedPreferencesEditor.apply();
+    }
+
     public static void setRewardsEnvChange(boolean isEnabled) {
         SharedPreferences.Editor sharedPreferencesEditor =
                 ContextUtils.getAppSharedPreferences().edit();
