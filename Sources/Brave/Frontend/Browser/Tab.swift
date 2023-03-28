@@ -283,7 +283,7 @@ class Tab: NSObject {
     
     if let syncTab = syncTab {
       faviconDriver = FaviconDriver(webState: syncTab.webState).then {
-        $0.setMaximumFaviconImageSize(1024)
+        $0.setMaximumFaviconImageSize(CGSize(width: 1024, height: 1024))
       }
     } else {
       faviconDriver = nil

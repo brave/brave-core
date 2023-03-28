@@ -88,6 +88,10 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
     completion("", .unknown, "Error Message")
   }
   
+  func unstoppableDomainsResolveDns(_ domain: String, completion: @escaping (URL?, BraveWallet.ProviderError, String) -> Void) {
+    completion(nil, .internalError, "Error message")
+  }
+  
   func erc721Owner(of contract: String, tokenId: String, chainId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .unknownChain, "Error Message")
   }
