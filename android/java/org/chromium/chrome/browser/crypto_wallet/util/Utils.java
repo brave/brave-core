@@ -290,6 +290,7 @@ public class Utils {
      */
     public static String getShortNameOfNetwork(String networkName) {
         if (!TextUtils.isEmpty(networkName)) {
+            // If the length is small then show network name as it is.
             if (networkName.length() < 14) return networkName;
             String firstWord = networkName.split(" ")[0];
             if (firstWord.length() > 18) {
