@@ -400,6 +400,7 @@ class PlaylistWebLoader: UIView {
     static let messageHandlerName = PlaylistScriptHandler.messageHandlerName
     static let scriptSandbox = PlaylistScriptHandler.scriptSandbox
     static let userScript: WKUserScript? = nil
+    static let playlistProcessDocumentLoad = PlaylistScriptHandler.playlistProcessDocumentLoad
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
       if !verifyMessage(message: message) {
@@ -505,7 +506,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
   }
   
   func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-    webView.evaluateSafeJavaScript(functionName: "window.__firefox__.playlistProcessDocumentLoad()",
+    webView.evaluateSafeJavaScript(functionName: "window.__firefox__.\(PlaylistWebLoaderContentHelper.playlistProcessDocumentLoad)()",
                                    args: [],
                                    contentWorld: PlaylistWebLoaderContentHelper.scriptSandbox,
                                    asFunction: false)
