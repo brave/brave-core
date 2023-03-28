@@ -27,10 +27,7 @@ namespace {
 namespace brave_federated {
 
 bool ValidatePullTaskInsResponse(const flower::PullTaskInsResponse response) {
-  if (response.task_ins_list_size() == 0) {
-    VLOG(3) << "No tasks received from FL service";
-    return false;
-  }
+
 
   // TODO(lminto): Add multiple tasks validation
   int max_tasks = 1;
@@ -84,23 +81,34 @@ bool ValidatePullTaskInsResponse(const flower::PullTaskInsResponse response) {
 TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
   flower::PullTaskInsResponse response;
   if ((response.ParseFromString(response_body))) {
-    if (!ValidatePullTaskInsResponse(response)) {
-      VLOG(1) << "Failed to validate PullTaskInsRes response";
+    if (response.task_ins_list_size() == 0) {
+      VLOG(1) << "No tasks received from FL service";
       return {};
     }
 
     TaskList task_list;
-    // TODO(lminto): Add support for multiple tasks
-    int max_tasks = 1;
-    for (int i = 0; i < max_tasks; i++) {
+    for (int i = 0; i < response.task_ins_list_size(); i++) {
       flower::TaskIns task_instruction = response.task_ins_list(i);
 
       std::string id = task_instruction.task_id();
       std::string group_id = task_instruction.group_id();
       std::string workload_id = task_instruction.workload_id();
+      if (id.empty() || group_id.empty() || workload_id.empty()) {
+        VLOG(2) << "Invalid task id received from FL service";
+        continue;
+      }
       TaskId task_id = TaskId{id, group_id, workload_id};
+
+      if (!task_instruction.has_task()) {
+        VLOG(2) << "Task object is missing from task instruction";
+        continue;
+      }
       flower::Task flower_task = task_instruction.task();
 
+      if (!flower_task.has_legacy_server_message()) {
+        VLOG(2) << "Server message is missing from task object";
+        continue;
+      }
       flower::ServerMessage message = flower_task.legacy_server_message();
 
       TaskType type;
@@ -108,12 +116,30 @@ TaskList ParseTaskListFromResponseBody(const std::string& response_body) {
       Configs config = {};
       if (message.has_fit_ins()) {
         type = TaskType::Training;
+
+        if (!message.fit_ins().has_parameters()) {
+          VLOG(2) << "Parameters are missing from fit instruction";
+          continue;
+        }
         parameters = GetVectorsFromParameters(message.fit_ins().parameters());
+        if (parameters.size() == 0) {
+          VLOG(2) << "Parameters vectors received from FL service are empty";
+          continue;
+        }
         config = ConfigsFromProto(message.fit_ins().config());
       } else if (message.has_evaluate_ins()) {
         type = TaskType::Evaluation;
+
+        if (!message.evaluate_ins().has_parameters()) {
+          VLOG(2) << "Parameters are missing from eval instruction";
+          continue;
+        }
         parameters =
             GetVectorsFromParameters(message.evaluate_ins().parameters());
+        if (parameters.size() == 0) {
+          VLOG(3) << "Parameters vectors received from FL service are empty";
+          continue;
+        }
         config = ConfigsFromProto(message.evaluate_ins().config());
       } else if (message.has_reconnect_ins()) {
         VLOG(2) << "**: Legacy reconnect instruction received from FL service";
