@@ -135,6 +135,63 @@ TEST(BraveFederatedLearningFlowerHelperTest,
             static_cast<float>(config_metrics["accuracy"]));
 }
 
+TEST(BraveFederatedLearningFlowerHelperTest,
+     ParseTaskWithoutGroupIdFromResponseBody) {
+  // Arrange
+  flower::PullTaskInsResponse eval_task_instruction_response;
+  flower::TaskIns* task_instruction =
+      eval_task_instruction_response.add_task_ins_list();
+  task_instruction->set_task_id("42");
+  task_instruction->set_workload_id("8");
+
+  flower::Task flower_task;
+  flower::ServerMessage server_message;
+  flower::ServerMessage_EvaluateIns eval_instruction;
+  *eval_instruction.mutable_parameters() =
+      GetParametersFromVectors(test_parameters);
+  *eval_instruction.mutable_config() = MetricsToProto(config_metrics);
+  *server_message.mutable_evaluate_ins() = eval_instruction;
+  *flower_task.mutable_legacy_server_message() = server_message;
+  *task_instruction->mutable_task() = flower_task;
+
+  const std::string response_string =
+      eval_task_instruction_response.SerializeAsString();
+
+  // Act
+  TaskList task_list = ParseTaskListFromResponseBody(response_string);
+
+  // Assert
+  EXPECT_EQ(task_list.size(), 0U);
+}
+
+
+TEST(BraveFederatedLearningFlowerHelperTest,
+     ParseTaskWithoutParametersFromResponseBody) {
+  // Arrange
+  flower::PullTaskInsResponse eval_task_instruction_response;
+  flower::TaskIns* task_instruction =
+      eval_task_instruction_response.add_task_ins_list();
+  task_instruction->set_task_id("42");
+  task_instruction->set_workload_id("8");
+
+  flower::Task flower_task;
+  flower::ServerMessage server_message;
+  flower::ServerMessage_EvaluateIns eval_instruction;
+  *eval_instruction.mutable_config() = MetricsToProto(config_metrics);
+  *server_message.mutable_evaluate_ins() = eval_instruction;
+  *flower_task.mutable_legacy_server_message() = server_message;
+  *task_instruction->mutable_task() = flower_task;
+
+  const std::string response_string =
+      eval_task_instruction_response.SerializeAsString();
+
+  // Act
+  TaskList task_list = ParseTaskListFromResponseBody(response_string);
+
+  // Assert
+  EXPECT_EQ(task_list.size(), 0U);
+}
+
 TEST(BraveFederatedLearningFlowerHelperTest, BuildPostTrainTaskResultsPayload) {
   // Arrange
   TaskId task_id = {"42", "23", "8"};

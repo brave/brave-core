@@ -55,7 +55,7 @@ class Model {
   float GetBias();
   void SetBias(float new_bias);
 
-  size_t ModelSize();
+  size_t GetModelSize();
 
  private:
   int num_iterations_;

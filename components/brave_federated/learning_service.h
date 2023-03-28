@@ -37,6 +37,9 @@ class LearningService : public Observer {
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~LearningService() override;
 
+  void OnEligibilityChanged(bool is_eligible) override;
+
+ private:
   void Init();
 
   void StartParticipating();
@@ -48,13 +51,10 @@ class LearningService : public Observer {
   void HandleTasksOrReconnect(TaskList tasks, int reconnect);
   TaskResult LoadDatasetAndRunTask(
       std::unique_ptr<FederatedTaskRunner> task_runner);
-  void OnTaskResultComputed(TaskResult result);
 
+  void OnTaskResultComputed(TaskResult result);
   void OnPostTaskResults(TaskResultResponse response);
 
-  void OnEligibilityChanged(bool is_eligible) override;
-
- private:
   scoped_refptr<network::SharedURLLoaderFactory>
       url_loader_factory_;  // NOT OWNED
   EligibilityService* eligibility_service_;
@@ -62,7 +62,8 @@ class LearningService : public Observer {
   std::unique_ptr<base::OneShotTimer> init_task_timer_;
 
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
-  bool participating_;
+  bool participating_ = false;
+  bool initialized_ = false;
 
   std::unique_ptr<const net::BackoffEntry::Policy> post_results_policy_;
   std::unique_ptr<net::BackoffEntry> post_results_backoff_entry_;

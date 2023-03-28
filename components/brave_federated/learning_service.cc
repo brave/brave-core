@@ -26,15 +26,29 @@
 
 namespace brave_federated {
 
+// namespace {
+
+// TaskResult LoadDatasetAndRunTask(
+//     std::unique_ptr<FederatedTaskRunner> task_runner) {
+//   auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
+//   SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
+
+//   task_runner->SetTrainingData(synthetic_dataset->GetDataPoints());
+//   task_runner->SetTestData(test_dataset.GetDataPoints());
+//   VLOG(2) << "Model and data set. Task runner initialized.";
+
+//   return task_runner->Run();
+// }
+
+// }
+
 LearningService::LearningService(
     EligibilityService* eligibility_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
-      eligibility_service_(eligibility_service) {
+      eligibility_service_(eligibility_service),
+      communication_adapter_(std::make_unique<CommunicationAdapter>(url_loader_factory_)) {
   DCHECK(!init_task_timer_);
-  const int init_federated_service_wait_time_in_seconds =
-      brave_federated::features::GetInitFederatedServiceWaitTimeInSeconds();
-
   post_results_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
       /*.num_errors_to_ignore = */ 0,
       /*.initial_delay_ms = */
@@ -47,6 +61,8 @@ LearningService::LearningService(
   post_results_backoff_entry_ =
       std::make_unique<net::BackoffEntry>(post_results_policy_.get());
 
+  const int init_federated_service_wait_time_in_seconds =
+      brave_federated::features::GetInitFederatedServiceWaitTimeInSeconds();
   init_task_timer_ = std::make_unique<base::OneShotTimer>();
   init_task_timer_->Start(
       FROM_HERE, base::Seconds(init_federated_service_wait_time_in_seconds),
@@ -54,30 +70,53 @@ LearningService::LearningService(
 }
 
 LearningService::~LearningService() {
-  StopParticipating();
-  eligibility_service_->RemoveObserver(this);
+  if (participating_) {
+    StopParticipating();
+  }
+  if (initialized_) {
+    eligibility_service_->RemoveObserver(this);
+  }
 }
 
 void LearningService::Init() {
   DCHECK(url_loader_factory_);
   DCHECK(eligibility_service_);
   DCHECK(init_task_timer_);
-  communication_adapter_ =
-      std::make_unique<CommunicationAdapter>(url_loader_factory_);
-  eligibility_service_->AddObserver(this);
 
-  StartParticipating();
+  eligibility_service_->AddObserver(this);
+  if (eligibility_service_->IsEligible()) {
+    StartParticipating();
+  }
+
+  initialized_ = true;
+}
+
+void LearningService::OnEligibilityChanged(bool is_eligible) {
+  if (is_eligible) {
+    StartParticipating();
+    VLOG(2) << "Eligibility changed, started participating.";
+  } else {
+    StopParticipating();
+    VLOG(2) << "Eligibility changed, stopped participating.";
+  }
 }
 
 void LearningService::StartParticipating() {
-  participating_ = true;
+  if (participating_) {
+    return;
+  }
 
+  participating_ = true;
   GetTasks();
 }
 
 void LearningService::StopParticipating() {
-  DCHECK(participating_);
+  if (!participating_) {
+    return;
+  }
+
   participating_ = false;
+  reconnect_timer_.reset();
 }
 
 void LearningService::GetTasks() {
@@ -114,7 +153,7 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
   };
 
   if (static_cast<int>(task.GetParameters().at(0).size()) != spec.num_params &&
-      static_cast<int>(task.GetParameters().at(1).size()) != 1) {
+      task.GetParameters().at(1).size() != 1U) {
     VLOG(2) << "Task specifies a different model size than the client";
     return;
   }
@@ -158,7 +197,7 @@ void LearningService::PostTaskResults(TaskResultList results) {
   for (const auto& result : results) {
     communication_adapter_->PostTaskResult(
         result, base::BindOnce(&LearningService::OnPostTaskResults,
-                               base::Unretained(this)));
+                               weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -177,16 +216,6 @@ void LearningService::OnPostTaskResults(TaskResultResponse response) {
   reconnect_timer_->Start(FROM_HERE, reconnect, this,
                           &LearningService::GetTasks);
   VLOG(2) << "Reconnecting in " << reconnect.InSeconds() << "s";
-}
-
-void LearningService::OnEligibilityChanged(bool is_eligible) {
-  if (is_eligible) {
-    StartParticipating();
-    VLOG(2) << "Eligibility changed, started participating.";
-  } else {
-    StopParticipating();
-    VLOG(2) << "Eligibility changed, stopped participating.";
-  }
 }
 
 }  // namespace brave_federated

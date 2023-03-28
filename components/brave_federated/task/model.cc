@@ -46,12 +46,11 @@ Model::Model(ModelSpec model_spec)
 Model::~Model() = default;
 
 Weights Model::GetWeights() {
-  std::vector<float> copy_of_weights(weights_);
-  return copy_of_weights;
+  return weights_;
 }
 
 void Model::SetWeights(Weights new_weights) {
-  weights_.assign(new_weights.begin(), new_weights.end());
+  weights_ = std::move(new_weights);
 }
 
 float Model::GetBias() {
@@ -62,7 +61,7 @@ void Model::SetBias(float new_bias) {
   bias_ = new_bias;
 }
 
-size_t Model::ModelSize() {
+size_t Model::GetModelSize() {
   return weights_.size();
 }
 
