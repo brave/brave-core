@@ -40,6 +40,10 @@ void SetSubscriberCredential(PrefService* local_prefs,
                              const std::string& subscriber_credential,
                              const base::Time& expiration_time);
 void ClearSubscriberCredential(PrefService* local_prefs);
+void SetSkusCredential(PrefService* local_prefs,
+                       const std::string& skus_credential,
+                       const base::Time& expiration_time);
+base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

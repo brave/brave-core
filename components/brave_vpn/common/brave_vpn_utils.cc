@@ -182,4 +182,42 @@ std::string GetSubscriberCredential(PrefService* local_prefs) {
   return *cred;
 }
 
+bool HasValidSkusCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  if (sub_cred_dict.empty()) {
+    return false;
+  }
+
+  const std::string* skus_cred = sub_cred_dict.FindString(kSkusCredentialKey);
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  if (!skus_cred || !expiration_time_value) {
+    return false;
+  }
+
+  if (skus_cred->empty()) {
+    return false;
+  }
+
+  auto expiration_time = base::ValueToTime(expiration_time_value);
+  if (!expiration_time || expiration_time < base::Time::Now()) {
+    return false;
+  }
+
+  return true;
+}
+
+std::string GetSkusCredential(PrefService* local_prefs) {
+  CHECK(HasValidSkusCredential(local_prefs))
+      << "Don't call when there is no valid skus credential.";
+
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  const std::string* skus_cred = sub_cred_dict.FindString(kSkusCredentialKey);
+  DCHECK(skus_cred);
+  return *skus_cred;
+}
+
 }  // namespace brave_vpn
