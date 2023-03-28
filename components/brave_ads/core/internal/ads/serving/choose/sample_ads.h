@@ -61,7 +61,19 @@ absl::optional<T> SampleAdFromPredictors(
   return absl::nullopt;
 }
 
-std::vector<double> ComputeProbabilities(const std::vector<int>& scores);
+template <typename T>
+std::vector<double> ComputeProbabilities(const std::vector<T>& scores) {
+  std::vector<double> probabilities;
+  probabilities.reserve(scores.size());
+
+  const double normalizing_constant = CalculateNormalizingConstantBase(scores);
+
+  for (const auto& score : scores) {
+    probabilities.push_back(score / normalizing_constant);
+  }
+
+  return probabilities;
+}
 
 }  // namespace brave_ads
 
