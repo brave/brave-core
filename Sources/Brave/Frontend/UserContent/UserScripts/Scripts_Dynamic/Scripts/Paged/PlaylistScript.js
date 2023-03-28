@@ -65,7 +65,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
     }
   }
   
-  function sendMessage(name, node, target, type, detected) {
+  let sendMessage = $(function(name, node, target, type, detected) {
     $(function() {
       var location = "";
       var pageTitle = "";
@@ -90,7 +90,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         "tagId": target.$<tagUUID>
       });
     })();
-  }
+  });
   
   function notifyNode(target, type, detected, ignoreSource) {
     if (target) {
@@ -143,7 +143,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   }
   
   function setupLongPress() {
-    Object.defineProperty(window.__firefox__, 'playlistLongPressed', {
+    Object.defineProperty(window.__firefox__, '$<playlistLongPressed>', {
       enumerable: false,
       configurable: false,
       writable: false,
@@ -259,6 +259,8 @@ window.__firefox__.includeOnce("Playlist", function($) {
     }
     
     function observePage() {
+      let useObservers = false;
+      
       Object.defineProperty(HTMLMediaElement.prototype, '$<tagUUID>', {
         enumerable: false,
         configurable: false,
@@ -266,42 +268,79 @@ window.__firefox__.includeOnce("Playlist", function($) {
         value: null
       });
     
-      let observeNode = function(node) {
-        function processNode(node) {
-          // Observe video or audio elements
-          let isVideoElement = (node.constructor.name == "HTMLVideoElement");
-          if (isVideoElement || (node.constructor.name == "HTMLAudioElement")) {
-            let type = isVideoElement ? 'video' : 'audio';
-            node.observer = new MutationObserver(function (mutations) {
+      if (useObservers) {
+        let observeNode = function(node) {
+          function processNode(node) {
+            // Observe video or audio elements
+            let isVideoElement = (node.constructor.name == "HTMLVideoElement");
+            if (isVideoElement || (node.constructor.name == "HTMLAudioElement")) {
+              let type = isVideoElement ? 'video' : 'audio';
+              node.observer = new MutationObserver(function (mutations) {
+                notify(node, type, true);
+              });
+              
+              node.observer.observe(node, { attributes: true, attributeFilter: ["src"] });
+              node.addEventListener('loadedmetadata', function() {
+                notify(node, type, true);
+              });
+              
               notify(node, type, true);
-            });
-          
-            node.observer.observe(node, { attributes: true, attributeFilter: ["src"] });
-            node.addEventListener('loadedmetadata', function() {
-              notify(node, type, true);
-            });
-          
-            notify(node, type, true);
+            }
           }
-        }
+          
+          for (const child of node.childNodes) {
+            processNode(child);
+          }
+          
+          processNode(node);
+        };
         
-        for (const child of node.childNodes) {
-          processNode(child);
-        }
-        
-        processNode(node);
-      };
-    
-      // Observe elements added to a Node
-      let documentObserver = new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-          mutation.addedNodes.forEach(function (node) {
-            observeNode(node);
+        // Observe elements added to a Node
+        let documentObserver = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            mutation.addedNodes.forEach(function (node) {
+              observeNode(node);
+            });
           });
         });
-      });
-      
-      documentObserver.observe(document, { subtree: true, childList: true });
+        
+        documentObserver.observe(document, { subtree: true, childList: true });
+      } else {
+        Object.defineProperty(HTMLMediaElement.prototype, '$<tagUUID>', {
+          enumerable: false,
+          configurable: false,
+          writable: true,
+          value: null
+        });
+
+        var descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
+        Object.defineProperty(HTMLMediaElement.prototype, 'src', {
+          enumerable: descriptor.enumerable,
+          configurable: descriptor.configurable,
+          get: function() {
+            return this.getAttribute('src')
+          },
+          set: function(value) {
+            this.setAttribute('src', value);
+          }
+        });
+
+        var setVideoAttribute = HTMLVideoElement.prototype.setAttribute;
+        HTMLVideoElement.prototype.setAttribute = $(function(key, value) {
+          setVideoAttribute.call(this, key, value);
+          if (key.toLowerCase() == 'src') {
+            notify(this, 'video', true);
+          }
+        });
+
+        var setAudioAttribute = HTMLAudioElement.prototype.setAttribute;
+        HTMLAudioElement.prototype.setAttribute = $(function(key, value) {
+          setAudioAttribute.call(this, key, value);
+          if (key.toLowerCase() == 'src') {
+            notify(this, 'audio', true);
+          }
+        });
+      }
     
       /*var document_createElement = document.createElement;
       document.createElement = function (tag) {
@@ -330,12 +369,16 @@ window.__firefox__.includeOnce("Playlist", function($) {
           }
           
           videos.forEach(function(node) {
-            observeNode(node);
+            if (useObservers) {
+              observeNode(node);
+            }
             notifyNode(node, 'video', true, ignoreSource);
           });
 
           audios.forEach(function(node) {
-            observeNode(node);
+            if (useObservers) {
+              observeNode(node);
+            }
             notifyNode(node, 'audio', true, ignoreSource);
           });
           
@@ -350,12 +393,16 @@ window.__firefox__.includeOnce("Playlist", function($) {
         // Timeinterval is needed for DailyMotion as their DOM is bad
         let interval = setInterval(function() {
           getAllVideoElements().forEach(function(node) {
-            observeNode(node);
+            if (useObservers) {
+              observeNode(node);
+            }
             notifyNode(node, 'video', true, ignoreSource);
           });
 
           getAllAudioElements().forEach(function(node) {
-            observeNode(node);
+            if (useObservers) {
+              observeNode(node);
+            }
             notifyNode(node, 'audio', true, ignoreSource);
           });
         }, 1000);
@@ -366,7 +413,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
       }
       
       // Needed for Japanese videos like tver.jp which literally never loads automatically
-      Object.defineProperty(window.__firefox__, 'playlistProcessDocumentLoad', {
+      Object.defineProperty(window.__firefox__, '$<playlistProcessDocumentLoad>', {
         enumerable: false,
         configurable: false,
         writable: false,
@@ -383,7 +430,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
   }
   
   function setupTagNode() {
-      Object.defineProperty(window.__firefox__, 'mediaCurrentTimeFromTag', {
+      Object.defineProperty(window.__firefox__, '$<mediaCurrentTimeFromTag>', {
         enumerable: false,
         configurable: false,
         writable: false,
@@ -409,7 +456,7 @@ window.__firefox__.includeOnce("Playlist", function($) {
         }
       });
       
-      Object.defineProperty(window.__firefox__, 'stopMediaPlayback', {
+      Object.defineProperty(window.__firefox__, '$<stopMediaPlayback>', {
           enumerable: false,
           configurable: false,
           writable: false,

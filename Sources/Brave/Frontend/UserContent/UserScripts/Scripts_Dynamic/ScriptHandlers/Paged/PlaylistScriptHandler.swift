@@ -64,18 +64,27 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     asset?.cancelLoading()
     delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
+  
+  static let playlistLongPressed = "playlistLongPressed_\(uniqueID)"
+  static let playlistProcessDocumentLoad = "playlistProcessDocumentLoad_\(uniqueID)"
+  static let mediaCurrentTimeFromTag = "mediaCurrentTimeFromTag_\(uniqueID)"
+  static let stopMediaPlayback = "stopMediaPlayback_\(uniqueID)"
 
   static let scriptName = "PlaylistScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
-  static let scriptSandbox: WKContentWorld = .defaultClient
+  static let scriptSandbox: WKContentWorld = .page
   static let userScript: WKUserScript? = {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
     
     return WKUserScript(source: secureScript(handlerNamesMap: ["$<message_handler>": messageHandlerName,
-                                                               "$<tagUUID>": "tagId_\(uniqueID)"],
+                                                               "$<tagUUID>": "tagId_\(uniqueID)",
+                                                               "$<playlistLongPressed>": playlistLongPressed,
+                                                               "$<playlistProcessDocumentLoad>": playlistProcessDocumentLoad,
+                                                               "$<mediaCurrentTimeFromTag>": mediaCurrentTimeFromTag,
+                                                               "$<stopMediaPlayback>": stopMediaPlayback],
                                              securityToken: scriptId,
                                              script: script),
                         injectionTime: .atDocumentStart,
@@ -108,7 +117,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       return
     }
     
-    if handler.playlistItems.contains(item.src) {
+    if item.detected && handler.playlistItems.contains(item.src) {
       return
     }
     
@@ -209,7 +218,10 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
       Preferences.Playlist.enableLongPressAddToPlaylist.value {
       let touchPoint = gestureRecognizer.location(in: webView)
 
-      webView.evaluateSafeJavaScript(functionName: "window.__firefox__.playlistLongPressed", args: [touchPoint.x, touchPoint.y, Self.scriptId], contentWorld: Self.scriptSandbox, asFunction: true) { _, error in
+      webView.evaluateSafeJavaScript(functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
+                                     args: [touchPoint.x, touchPoint.y, Self.scriptId],
+                                     contentWorld: Self.scriptSandbox,
+                                     asFunction: true) { _, error in
 
         if let error = error {
           Logger.module.error("Error executing onLongPressActivated: \(error.localizedDescription)")
@@ -237,7 +249,10 @@ extension PlaylistScriptHandler {
       return
     }
     
-    webView.evaluateSafeJavaScript(functionName: "window.__firefox__.mediaCurrentTimeFromTag", args: [nodeTag, Self.scriptId], contentWorld: Self.scriptSandbox, asFunction: true) { value, error in
+    webView.evaluateSafeJavaScript(functionName: "window.__firefox__.\(mediaCurrentTimeFromTag)",
+                                   args: [nodeTag, Self.scriptId],
+                                   contentWorld: Self.scriptSandbox,
+                                   asFunction: true) { value, error in
 
       if let error = error {
         Logger.module.error("Error Retrieving Playlist Page Media Current Time: \(error.localizedDescription)")
@@ -256,7 +271,10 @@ extension PlaylistScriptHandler {
   static func stopPlayback(tab: Tab?) {
     guard let tab = tab else { return }
 
-    tab.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.stopMediaPlayback", args: [Self.scriptId], contentWorld: Self.scriptSandbox, asFunction: true) { value, error in
+    tab.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.\(stopMediaPlayback)",
+                                        args: [Self.scriptId],
+                                        contentWorld: Self.scriptSandbox,
+                                        asFunction: true) { value, error in
       if let error = error {
         Logger.module.error("Error Retrieving Stopping Media Playback: \(error.localizedDescription)")
       }
