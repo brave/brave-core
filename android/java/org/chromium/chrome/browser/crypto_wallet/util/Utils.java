@@ -1064,7 +1064,16 @@ public class Utils {
             if (txInfo.txHash == null || txInfo.txHash.isEmpty()) {
                 return;
             }
-            openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity, coinType);
+            boolean isFileCoinEvmNet =
+                    TextUtils.equals(
+                            txInfo.chainId, BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID)
+                    || TextUtils.equals(txInfo.chainId,
+                            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
+            if (isFileCoinEvmNet) {
+                openAddress("/" + txInfo.txHash, jsonRpcService, activity, coinType);
+            } else {
+                openAddress("/tx/" + txInfo.txHash, jsonRpcService, activity, coinType);
+            }
         }
     }
 
