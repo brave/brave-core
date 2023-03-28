@@ -27,13 +27,13 @@ ConversionQueueItemInfo::~ConversionQueueItemInfo() = default;
 
 bool ConversionQueueItemInfo::operator==(
     const ConversionQueueItemInfo& other) const {
-  return campaign_id == other.campaign_id &&
-         creative_set_id == other.creative_set_id &&
+  return ad_type == other.ad_type &&
          creative_instance_id == other.creative_instance_id &&
-         advertiser_id == other.advertiser_id &&
+         creative_set_id == other.creative_set_id &&
+         campaign_id == other.campaign_id &&
+         advertiser_id == other.advertiser_id && segment == other.segment &&
          conversion_id == other.conversion_id &&
          advertiser_public_key == other.advertiser_public_key &&
-         ad_type == other.ad_type &&
          DoubleEquals(process_at.ToDoubleT(), other.process_at.ToDoubleT()) &&
          was_processed == other.was_processed;
 }
@@ -47,7 +47,7 @@ bool ConversionQueueItemInfo::IsValid() const {
   // campaign_id and advertiser_id will be empty for legacy conversions migrated
   // from |ad_conversions.json| to |database.sqlite| and conversion_id will be
   // empty for non verifiable conversions
-  return !(creative_set_id.empty() || creative_instance_id.empty() ||
+  return !(creative_instance_id.empty() || creative_set_id.empty() ||
            process_at.is_null());
 }
 

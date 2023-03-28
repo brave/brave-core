@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/values.h"
@@ -20,26 +20,22 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/odyssey_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/platform_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data.h"
+#include "brave/components/brave_ads/core/internal/account/user_data/segment_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/studies_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/version_number_user_data.h"
 
 namespace brave_ads {
 
 ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
-    const base::Time created_at,
-    std::string creative_instance_id,
-    const ConfirmationType& confirmation_type)
-    : created_at_(created_at),
-      creative_instance_id_(std::move(creative_instance_id)),
-      confirmation_type_(confirmation_type) {
-  DCHECK(!creative_instance_id_.empty());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type_.value());
+    TransactionInfo transaction)
+    : transaction_(std::move(transaction)) {
+  DCHECK(transaction_.IsValid());
 }
 
 void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   user_data::GetConversion(
-      creative_instance_id_, confirmation_type_,
+      transaction_.creative_instance_id, transaction_.confirmation_type,
       base::BindOnce(&ConfirmationUserDataBuilder::OnGetConversion,
                      base::Unretained(this), std::move(callback)));
 }
@@ -51,12 +47,13 @@ void ConfirmationUserDataBuilder::OnGetConversion(
     base::Value::Dict user_data) const {
   user_data.Merge(user_data::GetBuildChannel());
   user_data.Merge(user_data::GetCatalog());
-  user_data.Merge(user_data::GetCreatedAtTimestamp(created_at_));
+  user_data.Merge(user_data::GetCreatedAtTimestamp(transaction_));
   user_data.Merge(user_data::GetLocale());
   user_data.Merge(user_data::GetMutated());
   user_data.Merge(user_data::GetOdyssey());
   user_data.Merge(user_data::GetPlatform());
-  user_data.Merge(user_data::GetRotatingHash(creative_instance_id_));
+  user_data.Merge(user_data::GetRotatingHash(transaction_));
+  user_data.Merge(user_data::GetSegment(transaction_));
   user_data.Merge(user_data::GetStudies());
   user_data.Merge(user_data::GetVersionNumber());
 

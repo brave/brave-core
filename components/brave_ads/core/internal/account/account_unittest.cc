@@ -521,7 +521,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   // Act
   account_->Deposit(info.creative_instance_id, AdType::kNotificationAd,
-                    ConfirmationType::kViewed);
+                    "segment", ConfirmationType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -533,6 +533,7 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   expected_transaction.id = transaction_.id;
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id = info.creative_instance_id;
+  expected_transaction.segment = "segment";
   expected_transaction.value = 1.0;
   expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kViewed;
@@ -558,7 +559,8 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 
   // Act
   account_->Deposit("3519f52c-46a4-4c48-9c2b-c264c0067f04",
-                    AdType::kNotificationAd, ConfirmationType::kClicked);
+                    AdType::kNotificationAd, "segment",
+                    ConfirmationType::kClicked);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -571,6 +573,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
   expected_transaction.created_at = Now();
   expected_transaction.creative_instance_id =
       "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  expected_transaction.segment = "segment";
   expected_transaction.value = 0.0;
   expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kClicked;
@@ -621,7 +624,8 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
 
   // Act
   account_->Deposit("eaa6224a-876d-4ef8-a384-9ac34f238631",
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd, "segment",
+                    ConfirmationType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_process_deposit_);
@@ -644,35 +648,35 @@ TEST_F(BatAdsAccountTest, GetStatement) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_7);
 
   SaveTransactions(transactions);

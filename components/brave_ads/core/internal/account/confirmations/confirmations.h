@@ -51,10 +51,9 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void StopRetrying();
 
   void ConfirmTransaction(const TransactionInfo& transaction);
-  void BuildDynamicUserDataForTransaction(const TransactionInfo& transaction);
-  void BuildFixedUserDataForTransaction(
-      const TransactionInfo& transaction,
-      base::Value::Dict dynamic_opted_in_user_data);
+  void BuildDynamicUserData(const TransactionInfo& transaction);
+  void BuildFixedUserData(const TransactionInfo& transaction,
+                          base::Value::Dict dynamic_opted_in_user_data);
   void CreateAndRedeem(const TransactionInfo& transaction,
                        base::Value::Dict dynamic_opted_in_user_data,
                        base::Value::Dict fixed_opted_in_user_data);

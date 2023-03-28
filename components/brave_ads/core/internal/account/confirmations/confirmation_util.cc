@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/base64url.h"
-#include "base/check_op.h"
+#include "base/check.h"
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/ad_type.h"
@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_credential_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
@@ -111,25 +112,17 @@ absl::optional<std::string> CreateOptedInCredential(
 
 absl::optional<ConfirmationInfo> CreateConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
-    const base::Time created_at,
-    const std::string& transaction_id,
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type,
-    const AdType& ad_type,
+    const TransactionInfo& transaction,
     const OptedInUserDataInfo& opted_in_user_data) {
   DCHECK(token_generator);
-  DCHECK(!created_at.is_null());
-  DCHECK(!transaction_id.empty());
-  DCHECK(!creative_instance_id.empty());
-  DCHECK_NE(ConfirmationType::kUndefined, confirmation_type);
-  DCHECK_NE(AdType::kUndefined, ad_type);
+  DCHECK(transaction.IsValid());
 
   ConfirmationInfo confirmation;
-  confirmation.transaction_id = transaction_id;
-  confirmation.creative_instance_id = creative_instance_id;
-  confirmation.type = confirmation_type;
-  confirmation.ad_type = ad_type;
-  confirmation.created_at = created_at;
+  confirmation.transaction_id = transaction.id;
+  confirmation.creative_instance_id = transaction.creative_instance_id;
+  confirmation.type = transaction.confirmation_type;
+  confirmation.ad_type = transaction.ad_type;
+  confirmation.created_at = transaction.created_at;
 
   if (!ShouldRewardUser()) {
     return confirmation;

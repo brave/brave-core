@@ -24,11 +24,11 @@ TEST_F(BatAdsStatementTest, GetForTransactionsThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);
@@ -57,39 +57,39 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_6);
 
   const TransactionInfo transaction_7 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_7);
 
   const TransactionInfo transaction_8 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_8);
 
   SaveTransactions(transactions);
@@ -118,29 +118,29 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
   AdvanceClockTo(TimeFromString("31 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("1 January 2021", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_5);
 
   const TransactionInfo transaction_6 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_6);
 
   SaveTransactions(transactions);

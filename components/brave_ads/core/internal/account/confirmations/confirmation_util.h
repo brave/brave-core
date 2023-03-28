@@ -10,31 +10,22 @@
 
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace brave_ads {
 
 namespace privacy {
 class TokenGeneratorInterface;
 }  // namespace privacy
 
-class AdType;
-class ConfirmationType;
 struct ConfirmationInfo;
 struct OptedInUserDataInfo;
+struct TransactionInfo;
 
 absl::optional<std::string> CreateOptedInCredential(
     const ConfirmationInfo& confirmation);
 
 absl::optional<ConfirmationInfo> CreateConfirmation(
     privacy::TokenGeneratorInterface* token_generator,
-    base::Time created_at,
-    const std::string& transaction_id,
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type,
-    const AdType& ad_type,
+    const TransactionInfo& transaction,
     const OptedInUserDataInfo& opted_in_user_data);
 
 bool IsValid(const ConfirmationInfo& confirmation);

@@ -22,7 +22,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
   // Act
@@ -40,7 +40,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
@@ -60,7 +60,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
@@ -80,7 +80,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
 
   // Act
@@ -96,7 +96,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, DidReconcileTransaction) {
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
 
   // Act
   const bool did_reconcile_transaction = DidReconcileTransaction(transaction);
@@ -110,7 +110,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest, WasTransactionNotReconciled) {
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
 
   // Act
   const bool did_reconcile_transaction = DidReconcileTransaction(transaction);
@@ -125,7 +125,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
 
   // Act
   const bool did_reconcile_transaction =
@@ -141,7 +141,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
   AdvanceClockTo(TimeFromString("5 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
 
   // Act
   const bool did_reconcile_transaction = DidReconcileTransactionWithinDateRange(

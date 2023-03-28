@@ -22,13 +22,13 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.03, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   const base::Time from_time = Now();
@@ -52,11 +52,11 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.03, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));

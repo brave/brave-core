@@ -6,12 +6,14 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data.h"
 
 #include <cstdint>
+#include <string>
 
 #include "base/base64.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 
@@ -21,7 +23,7 @@ namespace {
 constexpr char kRotatingHashKey[] = "rotating_hash";
 }  // namespace
 
-base::Value::Dict GetRotatingHash(const std::string& creative_instance_id) {
+base::Value::Dict GetRotatingHash(const TransactionInfo& transaction) {
   base::Value::Dict user_data;
 
   const std::string& device_id = SysInfo().device_id;
@@ -35,7 +37,7 @@ base::Value::Dict GetRotatingHash(const std::string& creative_instance_id) {
       base::NumberToString(timestamp_rounded_to_nearest_hour);
 
   const std::string rotating_hash = base::Base64Encode(crypto::Sha256(
-      base::StrCat({device_id, creative_instance_id, timestamp})));
+      base::StrCat({device_id, transaction.creative_instance_id, timestamp})));
   user_data.Set(kRotatingHashKey, rotating_hash);
 
   return user_data;

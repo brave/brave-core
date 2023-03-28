@@ -19,6 +19,7 @@
 namespace brave_ads::transactions {
 
 TransactionInfo Add(const std::string& creative_instance_id,
+                    const std::string& segment,
                     const double value,
                     const AdType& ad_type,
                     const ConfirmationType& confirmation_type,
@@ -31,9 +32,10 @@ TransactionInfo Add(const std::string& creative_instance_id,
   transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
   transaction.created_at = base::Time::Now();
   transaction.creative_instance_id = creative_instance_id;
+  transaction.segment = segment;
+  transaction.value = value;
   transaction.ad_type = ad_type;
   transaction.confirmation_type = confirmation_type;
-  transaction.value = value;
 
   database::table::Transactions database_table;
   database_table.Save(

@@ -43,14 +43,14 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, SaveTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo info_1 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
   AdvanceClockBy(base::Days(5));
 
   const TransactionInfo info_2 =
-      BuildTransaction(0.03, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
   // Act
@@ -74,7 +74,7 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   TransactionList transactions;
 
   const TransactionInfo info =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(info);
 
   SaveTransactions(transactions);
@@ -99,14 +99,14 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo info_1 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
   AdvanceClockBy(base::Days(5));
 
   const TransactionInfo info_2 =
-      BuildTransaction(0.03, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
   SaveTransactions(transactions);
@@ -132,11 +132,12 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, UpdateTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo info_1 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
-  TransactionInfo info_2 = BuildTransaction(0.03, ConfirmationType::kClicked);
+  TransactionInfo info_2 =
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
   SaveTransactions(transactions);
@@ -169,12 +170,12 @@ TEST_F(BatAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   // Arrange
   TransactionList transactions;
 
-  const TransactionInfo info_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, DistantFuture());
+  const TransactionInfo info_1 = BuildTransaction(
+      /*value*/ 0.01, ConfirmationType::kViewed, DistantFuture());
   transactions.push_back(info_1);
 
   const TransactionInfo info_2 =
-      BuildTransaction(0.03, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kClicked);
   transactions.push_back(info_2);
 
   SaveTransactions(transactions);

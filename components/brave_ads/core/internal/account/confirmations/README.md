@@ -1,5 +1,5 @@
 # Confirmations
 
-Create and spend confirmation tokens.
+Create and spend anonymous confirmation tokens.
 
 Please add to it!

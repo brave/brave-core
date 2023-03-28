@@ -19,6 +19,7 @@ constexpr char kCreativeInstanceId[] = "creativeInstanceId";
 constexpr char kCreativeSetId[] = "creativeSetId";
 constexpr char kCampaignId[] = "campaignId";
 constexpr char kAdvertiserId[] = "advertiserId";
+constexpr char kSegment[] = "segment";
 constexpr char kBrand[] = "brand";
 constexpr char kBrandInfo[] = "brandInfo";
 constexpr char kBrandDisplayUrl[] = "brandDisplayUrl";
@@ -53,6 +54,7 @@ base::Value::Dict AdContentToValue(const AdContentInfo& ad_content) {
   dict.Set(kCreativeSetId, ad_content.creative_set_id);
   dict.Set(kCampaignId, ad_content.campaign_id);
   dict.Set(kAdvertiserId, ad_content.advertiser_id);
+  dict.Set(kSegment, ad_content.segment);
   dict.Set(kBrand, ad_content.brand);
   dict.Set(kBrandInfo, ad_content.brand_info);
   dict.Set(kBrandDisplayUrl, ad_content.brand_display_url);
@@ -113,6 +115,10 @@ AdContentInfo AdContentFromValue(const base::Value::Dict& root) {
   } else if (const auto* legacy_advertiser_id_value =
                  root.FindString(kLegacyAdvertiserId)) {
     ad_content.advertiser_id = *legacy_advertiser_id_value;
+  }
+
+  if (const auto* segment_value = root.FindString(kSegment)) {
+    ad_content.segment = *segment_value;
   }
 
   if (const auto* brand_value = root.FindString(kBrand)) {

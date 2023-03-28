@@ -62,6 +62,7 @@ class Account final : public PrefManagerObserver,
 
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
+               const std::string& segment,
                const ConfirmationType& confirmation_type) const;
 
   static void GetStatement(GetStatementOfAccountsCallback callback);
@@ -73,11 +74,13 @@ class Account final : public PrefManagerObserver,
 
   void OnGetDepositValue(const std::string& creative_instance_id,
                          const AdType& ad_type,
+                         const std::string& segment,
                          const ConfirmationType& confirmation_type,
                          bool success,
                          double value) const;
   void ProcessDeposit(const std::string& creative_instance_id,
                       const AdType& ad_type,
+                      const std::string& segment,
                       const ConfirmationType& confirmation_type,
                       double value) const;
   void OnDepositProcessed(const std::string& creative_instance_id,

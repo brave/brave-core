@@ -59,6 +59,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/user_data/odyssey_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/platform_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/user_data/segment_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/studies_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/system_timestamp_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/totals_user_data_unittest.cc",

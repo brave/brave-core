@@ -28,13 +28,14 @@ struct ConversionQueueItemInfo final {
   bool operator==(const ConversionQueueItemInfo& other) const;
   bool operator!=(const ConversionQueueItemInfo& other) const;
 
-  std::string campaign_id;
-  std::string creative_set_id;
+  AdType ad_type = AdType::kUndefined;
   std::string creative_instance_id;
+  std::string creative_set_id;
+  std::string campaign_id;
   std::string advertiser_id;
+  std::string segment;
   std::string conversion_id;
   std::string advertiser_public_key;
-  AdType ad_type = AdType::kUndefined;
   base::Time process_at;
   bool was_processed = false;
 

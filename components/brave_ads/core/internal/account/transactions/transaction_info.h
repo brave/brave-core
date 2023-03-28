@@ -34,6 +34,7 @@ struct TransactionInfo final {
   std::string id;
   base::Time created_at;
   std::string creative_instance_id;
+  std::string segment;
   double value = 0.0;
   AdType ad_type = AdType::kUndefined;
   ConfirmationType confirmation_type = ConfirmationType::kUndefined;

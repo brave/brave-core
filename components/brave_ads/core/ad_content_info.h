@@ -36,6 +36,7 @@ struct ADS_EXPORT AdContentInfo final {
   std::string creative_set_id;
   std::string campaign_id;
   std::string advertiser_id;
+  std::string segment;
   std::string brand;
   std::string brand_info;
   std::string brand_display_url;

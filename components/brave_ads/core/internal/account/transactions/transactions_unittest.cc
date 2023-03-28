@@ -24,8 +24,8 @@ TEST_F(BatAdsTransactionsTest, Add) {
 
   // Act
   const TransactionInfo transaction = transactions::Add(
-      "42a33833-0a08-4cbb-ab3e-458e020221ab", 0.01, AdType::kNotificationAd,
-      ConfirmationType::kViewed,
+      "42a33833-0a08-4cbb-ab3e-458e020221ab", "segment", 0.01,
+      AdType::kNotificationAd, ConfirmationType::kViewed,
       base::BindOnce(
           [](const bool success, const TransactionInfo& /*transaction*/) {
             ASSERT_TRUE(success);
@@ -52,17 +52,17 @@ TEST_F(BatAdsTransactionsTest, GetForDateRange) {
   AdvanceClockTo(TimeFromString("31 October 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("18 November 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.0, ConfirmationType::kDismissed);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kDismissed);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   SaveTransactions(transactions);
@@ -88,11 +88,11 @@ TEST_F(BatAdsTransactionsTest, RemoveAll) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.0, ConfirmationType::kDismissed);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kDismissed);
   transactions.push_back(transaction_2);
 
   SaveTransactions(transactions);

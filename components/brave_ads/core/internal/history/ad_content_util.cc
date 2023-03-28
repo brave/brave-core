@@ -24,6 +24,7 @@ AdContentInfo BuildAdContent(const AdInfo& ad,
   ad_content.creative_set_id = ad.creative_set_id;
   ad_content.campaign_id = ad.campaign_id;
   ad_content.advertiser_id = ad.advertiser_id;
+  ad_content.segment = ad.segment;
   ad_content.brand = title;
   ad_content.brand_info = description;
   ad_content.brand_display_url = ad.target_url.host();
