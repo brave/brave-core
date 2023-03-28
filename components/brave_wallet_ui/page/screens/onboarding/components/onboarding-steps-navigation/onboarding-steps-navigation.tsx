@@ -4,10 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // types
-import { PageState, WalletRoutes } from '../../../../../constants/types'
+import { WalletRoutes } from '../../../../../constants/types'
 
 // components
 import { StepsNavigation, StepsNavigationProps } from '../../../../../components/desktop/steps-navigation/steps-navigation'
@@ -37,22 +36,24 @@ const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
 // Connect Hardware Steps
 //
 type OnboardingConnectHardwareWalletSteps =
-  | WalletRoutes.OnboardingComplete
-  | WalletRoutes.OnboardingCreatePassword
   | WalletRoutes.OnboardingWelcome
+  | WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
+  | WalletRoutes.OnboardingComplete
 
 const CONNECT_HARDWARE_WALLET_STEPS: OnboardingConnectHardwareWalletSteps[] = [
   WalletRoutes.OnboardingWelcome,
-  WalletRoutes.OnboardingCreatePassword,
+  WalletRoutes.OnboardingConnectHarwareWalletCreatePassword,
   WalletRoutes.OnboardingComplete
 ]
 
-interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {}
+interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {
+  isHardwareOnboarding?: boolean
+}
 
 export const OnboardingNewWalletStepsNavigation = (
   props: OnboardingNewWalletStepsNavigationProps
 ) => {
-  const isHardwareOnboarding = useSelector(({ page }: { page: PageState }) => page.isHardwareOnboarding)
+  const { isHardwareOnboarding } = props
 
   return <StepsNavigation
     {...props}

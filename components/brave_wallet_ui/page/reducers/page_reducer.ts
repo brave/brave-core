@@ -60,8 +60,7 @@ const defaultState: PageState = {
   walletTermsAcknowledged: false,
   selectedCoinMarket: undefined,
   nftsPinningStatus: {},
-  isLocalIpfsNodeRunning: false,
-  isHardwareOnboarding: false
+  isLocalIpfsNodeRunning: false
 }
 
 export const WalletPageAsyncActions = {
@@ -90,8 +89,7 @@ export const WalletPageAsyncActions = {
   setNftsPinningStatus: createAction<UpdateNftPinningStatusType[]>('setNftsPinningStatus'),
   updateNftPinningStatus: createAction<UpdateNftPinningStatusType>('updateNftPinningStatus'),
   getLocalIpfsNodeStatus: createAction('getLocalIpfsNodeStatus'),
-  updateLocalIpfsNodeStatus: createAction('updateLocalIpfsNodeStatus'),
-  setIsHardwareOnboarding: createAction('setIsHardwareOnboarding')
+  updateLocalIpfsNodeStatus: createAction('updateLocalIpfsNodeStatus')
 }
 
 export const createPageSlice = (initialState: PageState = defaultState) => {
@@ -235,10 +233,6 @@ export const createPageSlice = (initialState: PageState = defaultState) => {
 
       updateLocalIpfsNodeStatus (state, { payload }: PayloadAction<boolean>) {
         state.isLocalIpfsNodeRunning = payload
-      },
-
-      setIsHardwareOnboarding (state, { payload }: PayloadAction<boolean>) {
-        state.isHardwareOnboarding = payload
       }
     }
   })

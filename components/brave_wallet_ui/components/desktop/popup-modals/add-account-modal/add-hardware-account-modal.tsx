@@ -40,10 +40,10 @@ interface Params {
 }
 
 interface Props {
-  isOnboarding?: boolean | undefined
+  onSelectAccountType: (accountType: CreateAccountOptionsType) => () => void
 }
 
-export const AddHardwareAccountModal = ({ isOnboarding }: Props) => {
+export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   // routing
   const history = useHistory()
   const { accountTypeName } = useParams<Params>()
@@ -74,14 +74,6 @@ export const AddHardwareAccountModal = ({ isOnboarding }: Props) => {
     setImportError(undefined)
     history.push(WalletRoutes.Accounts)
   }, [setImportError])
-
-  const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
-    if (isOnboarding) {
-      history.push(WalletRoutes.OnboardingConnectHardwareWallet.replace(':accountTypeName?', accountType.name.toLowerCase()))
-    } else {
-      history.push(WalletRoutes.AddHardwareAccountModal.replace(':accountTypeName?', accountType.name.toLowerCase()))
-    }
-  }, [])
 
   // render
   return (

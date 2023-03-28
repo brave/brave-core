@@ -36,12 +36,14 @@ import { CheckboxText } from './disclosures.style'
 
 export type OnboardingDisclosuresNextSteps =
   | WalletRoutes.OnboardingCreatePassword
+  | WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
   | WalletRoutes.OnboardingImportOrRestore
   | WalletRoutes.OnboardingConnectHardwareWalletStart
 
 interface Props {
   nextStep: OnboardingDisclosuresNextSteps
   onBack?: () => void
+  isHardwareOnboarding?: boolean
 }
 
 const TermsOfUseText: React.FC<{}> = () => {
@@ -101,6 +103,7 @@ export const OnboardingDisclosures = ({ nextStep, onBack }: Props) => {
           <OnboardingNewWalletStepsNavigation
             goBack={onBack}
             currentStep={WalletRoutes.OnboardingWelcome}
+            isHardwareOnboarding={nextStep === WalletRoutes.OnboardingConnectHarwareWalletCreatePassword}
             preventSkipAhead
           />
 

@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 // utils
@@ -12,7 +11,7 @@ import { getLocale } from '../../../../../common/locale'
 import { useApiProxy } from '../../../../common/hooks/use-api-proxy'
 
 // routes
-import { OnboardingAction, PageState, WalletRoutes, WalletState } from '../../../../constants/types'
+import { OnboardingAction, WalletRoutes, WalletState } from '../../../../constants/types'
 
 // actions
 import { WalletPageActions } from '../../../actions'
@@ -33,14 +32,17 @@ import {
   TitleAndDescriptionContainer
 } from '../onboarding.style'
 
-export const OnboardingCreatePassword = () => {
-  // routing
-  const history = useHistory()
+interface OnboardingCreatePasswordProps {
+  isHardwareOnboarding?: boolean
+  onWalletCreated: () => void
+}
+
+export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) => {
+  const { isHardwareOnboarding, onWalletCreated } = props
 
   // redux
   const dispatch = useDispatch()
   const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
-  const isHardwareOnboarding = useSelector(({ page }: { page: PageState }) => page.isHardwareOnboarding)
 
   // state
   const [isValid, setIsValid] = React.useState(false)
@@ -65,13 +67,9 @@ export const OnboardingCreatePassword = () => {
   React.useEffect(() => {
     if (isWalletCreated) {
       braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET)
-      if (isHardwareOnboarding) {
-        history.push(WalletRoutes.OnboardingConnectHardwareWalletStart)
-      } else {
-        history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
-      }
+      onWalletCreated()
     }
-  }, [isWalletCreated])
+  }, [isWalletCreated, onWalletCreated])
 
   // render
   return (
@@ -82,6 +80,7 @@ export const OnboardingCreatePassword = () => {
           <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
+            isHardwareOnboarding={isHardwareOnboarding}
             preventSkipAhead
           />
 

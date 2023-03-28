@@ -42,18 +42,12 @@ export const OnboardingWelcome = () => {
   // redux
   const dispatch = useDispatch()
   const setupStillInProgress = useSelector(({ page }: { page: PageState }) => page.setupStillInProgress)
-  const isHardwareOnboarding = useSelector(({ page }: { page: PageState }) => page.isHardwareOnboarding)
 
   // state
   const [nextStep, setNextStep] = React.useState<OnboardingDisclosuresNextSteps | undefined>(undefined)
 
   // methods
-  const hideDisclosures = React.useCallback(() => {
-    if (isHardwareOnboarding) {
-      dispatch(WalletPageActions.setIsHardwareOnboarding(false))
-    }
-    setNextStep(undefined)
-  }, [isHardwareOnboarding])
+  const hideDisclosures = React.useCallback(() => setNextStep(undefined), [])
 
   const showNewWalletDisclosures = React.useCallback(
     () => setNextStep(WalletRoutes.OnboardingCreatePassword),
@@ -66,8 +60,7 @@ export const OnboardingWelcome = () => {
   )
 
   const showConnectHardwareDisclosures = React.useCallback(() => {
-    dispatch(WalletPageActions.setIsHardwareOnboarding(true))
-    setNextStep(WalletRoutes.OnboardingCreatePassword)
+    setNextStep(WalletRoutes.OnboardingConnectHarwareWalletCreatePassword)
   }, [])
 
   // custom hooks
@@ -159,5 +152,3 @@ export const OnboardingWelcome = () => {
 
   </WalletPageLayout>
 }
-
-

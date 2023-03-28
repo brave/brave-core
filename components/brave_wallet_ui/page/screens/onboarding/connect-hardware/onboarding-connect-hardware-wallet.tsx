@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
+import { useHistory } from 'react-router'
+
+// types
+import { CreateAccountOptionsType, WalletRoutes } from '../../../../constants/types'
 
 // components
 import { WalletPageLayout } from "../../../../components/desktop"
@@ -12,10 +16,18 @@ import AddHardwareAccountModal from '../../../../components/desktop/popup-modals
 import { OnboardingWrapper } from "../onboarding.style"
 
 export const OnboardingConnectHardwareWallet = () => {
+  // routing
+  const history = useHistory()
+
+  // methods
+  const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
+    history.push(WalletRoutes.OnboardingConnectHardwareWallet.replace(':accountTypeName?', accountType.name.toLowerCase()))
+  }, [])
+
   return (
     <WalletPageLayout>
       <OnboardingWrapper>
-        <AddHardwareAccountModal isOnboarding={true}/>
+        <AddHardwareAccountModal onSelectAccountType={onSelectAccountType} />
       </OnboardingWrapper>
     </WalletPageLayout>
   )
