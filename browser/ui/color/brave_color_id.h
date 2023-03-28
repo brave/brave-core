@@ -24,7 +24,8 @@
     E_CPONLY(kColorWebDiscoveryInfoBarMessage)      \
     E_CPONLY(kColorWebDiscoveryInfoBarLink)         \
     E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)     \
-    E_CPONLY(kColorWebDiscoveryInfoBarClose)
+    E_CPONLY(kColorWebDiscoveryInfoBarClose)        \
+    E_CPONLY(kColorBraveDownloadToolbarButtonActive)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
