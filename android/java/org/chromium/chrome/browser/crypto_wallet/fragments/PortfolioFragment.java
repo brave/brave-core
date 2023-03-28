@@ -38,7 +38,6 @@ import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -51,7 +50,6 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.NftDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -92,28 +90,14 @@ public class PortfolioFragment
     private WalletCoinAdapter mWalletCoinAdapter;
     private NetworkInfo mNetworkInfo;
 
-    private CardView mNftContainer;
-    private RecyclerView mRvNft;
-    private WalletCoinAdapter mWalletNftAdapter;
-    private TextView mTvNftTitle;
     private SmoothLineChartEquallySpaced mChartES;
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
     private List<NetworkInfo> mAllNetworkInfos;
-    private List<PortfolioModel.NftDataModel> mNftDataModels;
     private NetworkSelectorModel mNetworkSelectionModel;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
-    }
-
-    private JsonRpcService getJsonRpcService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getJsonRpcService();
-        }
-
-        return null;
     }
 
     @Override
@@ -221,12 +205,6 @@ public class PortfolioFragment
                     mBtnChangeNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
                     updatePortfolioGetPendingTx();
                 });
-        mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
-            if (mPortfolioModel.mPortfolioHelper == null) return;
-            mNftDataModels = nftDataModels;
-            setUpNftList(nftDataModels, mPortfolioModel.mPortfolioHelper.getPerTokenCryptoSum(),
-                    mPortfolioModel.mPortfolioHelper.getPerTokenFiatSum());
-        });
         // Show pending transactions fab to process pending txs
         mWalletModel.getCryptoModel().getPendingTransactions().observe(
                 getViewLifecycleOwner(), transactionInfos -> {
@@ -312,17 +290,6 @@ public class PortfolioFragment
             mPreviousCheckedRadioId = checkedId;
             updatePortfolioGraph();
         });
-        initNftUi(view);
-    }
-
-    private void initNftUi(View root) {
-        TextView editVisibleNft = root.findViewById(R.id.edit_visible_nfts);
-        mRvNft = root.findViewById(R.id.rv_nft);
-        mRvNft.addItemDecoration(
-                new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-        mNftContainer = root.findViewById(R.id.nft_container);
-        mTvNftTitle = root.findViewById(R.id.tv_nft_title);
-        editVisibleNft.setOnClickListener(v -> { onEditVisibleAssetsClick(); });
     }
 
     private void setUpCoinList(List<BlockchainToken> userAssets,
@@ -336,36 +303,10 @@ public class PortfolioFragment
         mRvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private void setUpNftList(List<PortfolioModel.NftDataModel> nftDataModels,
-            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
-        if (nftDataModels.size() == 0) {
-            AndroidUtils.gone(mNftContainer, mTvNftTitle);
-        } else {
-            AndroidUtils.show(mNftContainer, mTvNftTitle);
-        }
-        String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-
-        List<WalletListItemModel> walletListItemModelList =
-                Utils.createWalletListItemModel(nftDataModels, perTokenCryptoSum, perTokenFiatSum,
-                        tokensPath, getResources(), mAllNetworkInfos);
-        mWalletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
-        mWalletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        mWalletCoinAdapter.setWalletListItemType(Utils.ASSET_ITEM);
-
-        mWalletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
-        mRvNft.setAdapter(mWalletCoinAdapter);
-        mRvNft.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
     private void clearAssets() {
         if (mWalletCoinAdapter != null) {
             mWalletCoinAdapter.clear();
         }
-        if (mWalletNftAdapter != null) {
-            mWalletNftAdapter.clear();
-        }
-        AndroidUtils.gone(mTvNftTitle, mNftContainer);
     }
 
     @Override
@@ -379,19 +320,7 @@ public class PortfolioFragment
             return;
         }
 
-        if (asset.isErc721 || asset.isNft) {
-            PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
-                    nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
-            if (selectedNft == null) {
-                return;
-            }
-
-            Intent intent = NftDetailActivity.getIntent(
-                    getContext(), selectedNetwork.chainId, asset, selectedNft);
-            startActivity(intent);
-        } else {
-            Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
-        }
+        Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
     }
 
     private void openNetworkSelection() {
@@ -484,30 +413,21 @@ public class PortfolioFragment
                                 mPortfolioHelper.calculateBalances(() -> {
                                     final String fiatSumString = String.format(Locale.getDefault(),
                                             "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                                        mFiatSumString = fiatSumString;
-                                        mBalance.setText(mFiatSumString);
-                                        mBalance.invalidate();
+                                    mFiatSumString = fiatSumString;
+                                    mBalance.setText(mFiatSumString);
+                                    mBalance.invalidate();
 
-                                        List<BlockchainToken> tokens = new ArrayList<>();
-                                        List<BlockchainToken> nfts = new ArrayList<>();
+                                    List<BlockchainToken> tokens = new ArrayList<>();
 
-                                        for (BlockchainToken token :
-                                                mPortfolioHelper.getUserAssets()) {
-                                            if (token.isErc721 || token.isNft) {
-                                                nfts.add(token);
-                                            } else {
-                                                tokens.add(token);
-                                            }
+                                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
+                                        if (!token.isErc721 && !token.isNft) {
+                                            // Add only coins and not NFTs.
+                                            tokens.add(token);
                                         }
-                                        setUpCoinList(tokens,
-                                                mPortfolioHelper.getPerTokenCryptoSum(),
-                                                mPortfolioHelper.getPerTokenFiatSum());
-
-                                        mPortfolioModel.prepareNftListMetaData(
-                                                nfts, mNetworkInfo, mPortfolioHelper);
-                                        updatePortfolioGraph();
-                                    });
+                                    }
+                                    setUpCoinList(tokens, mPortfolioHelper.getPerTokenCryptoSum(),
+                                            mPortfolioHelper.getPerTokenFiatSum());
+                                    updatePortfolioGraph();
                                 });
                             });
                 });
@@ -540,8 +460,6 @@ public class PortfolioFragment
     }
 
     private void onEditVisibleAssetsClick() {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
         NetworkInfo selectedNetwork = null;
         if (mWalletModel != null) {
             selectedNetwork =
