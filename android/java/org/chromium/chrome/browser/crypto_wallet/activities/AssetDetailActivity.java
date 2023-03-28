@@ -296,8 +296,8 @@ public class AssetDetailActivity
 
     private void getPrice(String asset, String vsAsset, int timeframe) {
         assert mAssetRatioService != null;
-        String[] fromAssets = new String[] {asset.toLowerCase(Locale.getDefault())};
-        String[] toAssets = new String[] {vsAsset.toLowerCase(Locale.getDefault())};
+        String[] fromAssets = new String[] {asset.toLowerCase(Locale.ENGLISH)};
+        String[] toAssets = new String[] {vsAsset.toLowerCase(Locale.ENGLISH)};
         mAssetRatioService.getPrice(fromAssets, toAssets, timeframe, (success, price) -> {
             if (!success && price.length == 0) {
                 return;
@@ -339,35 +339,24 @@ public class AssetDetailActivity
                                                         mWalletTxCoinAdapter);
 
                                                 double thisPrice = Utils.getOrDefault(assetPrices,
-                                                        mAsset.symbol.toLowerCase(
-                                                                Locale.getDefault()),
+                                                        mAsset.symbol.toLowerCase(Locale.ENGLISH),
                                                         0.0d);
                                                 List<WalletListItemModel> walletListItemModelList =
                                                         new ArrayList<>();
                                                 for (AccountInfo accountInfo : accountInfos) {
                                                     final String accountAddressLower =
                                                             accountInfo.address.toLowerCase(
-                                                                    Locale.getDefault());
+                                                                    Locale.ENGLISH);
                                                     double thisAccountBalance =
-                                                            Utils.isNativeToken(
-                                                                    mAssetNetwork, mAsset)
-                                                            ? Utils.getOrDefault(
-                                                                    nativeAssetsBalances,
-                                                                    accountAddressLower, 0.0d)
-                                                            : Utils.getOrDefault(
-                                                                    Utils.getOrDefault(
-                                                                            blockchainTokensBalances,
-                                                                            accountAddressLower,
-                                                                            new HashMap<String,
-                                                                                    Double>()),
-                                                                    Utils.tokenToString(mAsset),
-                                                                    0.0d);
-                                                    final String fiatBalanceString = String.format(
-                                                            Locale.getDefault(), "$%,.2f",
-                                                            thisPrice * thisAccountBalance);
+                                                            getAccountBalance(nativeAssetsBalances,
+                                                                    blockchainTokensBalances,
+                                                                    accountAddressLower);
+                                                    final String fiatBalanceString =
+                                                            String.format(Locale.ENGLISH, "$%,.2f",
+                                                                    thisPrice * thisAccountBalance);
                                                     final String cryptoBalanceString =
-                                                            String.format(Locale.getDefault(),
-                                                                    "%.4f %s", thisAccountBalance,
+                                                            String.format(Locale.ENGLISH, "%.4f %s",
+                                                                    thisAccountBalance,
                                                                     mAsset.symbol);
 
                                                     // If NFT, only show the account that owns
@@ -387,22 +376,29 @@ public class AssetDetailActivity
                                                     walletListItemModelList.add(model);
                                                 }
 
-                                                if (walletCoinAdapter != null) {
-                                                    walletCoinAdapter.setWalletListItemModelList(
-                                                            walletListItemModelList);
-                                                    walletCoinAdapter.setOnWalletListItemClick(
-                                                            AssetDetailActivity.this);
-                                                    walletCoinAdapter.setWalletListItemType(
-                                                            Utils.ACCOUNT_ITEM);
-                                                    rvAccounts.setAdapter(walletCoinAdapter);
-                                                    rvAccounts.setLayoutManager(
-                                                            new LinearLayoutManager(
-                                                                    AssetDetailActivity.this));
-                                                }
+                                                walletCoinAdapter.setWalletListItemModelList(
+                                                        walletListItemModelList);
+                                                walletCoinAdapter.setOnWalletListItemClick(
+                                                        AssetDetailActivity.this);
+                                                walletCoinAdapter.setWalletListItemType(
+                                                        Utils.ACCOUNT_ITEM);
+                                                rvAccounts.setAdapter(walletCoinAdapter);
+                                                rvAccounts.setLayoutManager(new LinearLayoutManager(
+                                                        AssetDetailActivity.this));
                                             });
                                 });
                     });
         }
+    }
+
+    private Double getAccountBalance(HashMap<String, Double> nativeAssetsBalances,
+            HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
+            String accountAddressLower) {
+        return Utils.isNativeToken(mAssetNetwork, mAsset)
+                ? Utils.getOrDefault(nativeAssetsBalances, accountAddressLower, 0.0d)
+                : Utils.getOrDefault(Utils.getOrDefault(blockchainTokensBalances,
+                                             accountAddressLower, new HashMap<>()),
+                        Utils.tokenToString(mAsset), 0.0d);
     }
 
     // Get back token from native. If cannot find then something is wrong
