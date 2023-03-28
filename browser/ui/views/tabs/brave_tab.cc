@@ -12,15 +12,18 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
+#include "brave/browser/ui/views/tabs/brave_tab_icon.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
+#include "chrome/browser/ui/views/tabs/tab_icon.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
 #include "ui/compositor/layer.h"
 #include "ui/compositor/paint_recorder.h"
 #include "ui/gfx/favicon_size.h"
+#include "ui/gfx/geometry/outsets.h"
 #include "ui/gfx/skia_paint_util.h"
 
 namespace {
@@ -103,7 +106,15 @@ class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
 
 }  // namespace
 
-BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {}
+BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
+  // Override tab icon for vertical tabs
+  RemoveChildViewT(icon_);
+  icon_ = AddChildView(std::make_unique<BraveTabIcon>(this));
+}
 
 BraveTab::~BraveTab() = default;
 
@@ -180,12 +191,31 @@ void BraveTab::UpdateIconVisibility() {
 
 void BraveTab::Layout() {
   Tab::Layout();
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
   if (IsAtMinWidthForVerticalTabStrip()) {
     if (showing_close_button_) {
       close_button_->SetX(GetLocalBounds().CenterPoint().x() -
                           (close_button_->width() / 2));
       close_button_->SetButtonPadding({});
     }
+  }
+
+  auto* browser = controller()->GetBrowser();
+  CHECK(browser);
+  if (!tabs::utils::ShouldShowVerticalTabs(browser)) {
+    return;
+  }
+
+  if (data().pinned) {
+    // Enlarge pinned tabs' favicon size.
+    auto bounds = icon_->bounds();
+    constexpr int kPinnedTabIconSize = 18;
+    const int kDelta = kPinnedTabIconSize - gfx::kFaviconSize;
+    bounds.Outset(gfx::Outsets(kDelta));
+    icon_->SetBoundsRect(bounds);
   }
 }
 
@@ -228,7 +258,8 @@ void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
   }
 
   if (!ShouldRenderAsNormalTab()) {
-    // In case it's pinned tab, use the same calculation with the upstream.
+    // In case it's pinned tab or vertical tab strip is collapsed, use the same
+    // calculation with the upstream.
     Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
     return;
   }
