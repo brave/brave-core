@@ -43,6 +43,7 @@ void CommanderProvider::Start(const AutocompleteInput& input,
     return;
   }
 
+  matches_.clear();
   last_input_ = input.text();
   client_->GetCommanderDelegate()->UpdateText();
 }

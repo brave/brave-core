@@ -181,6 +181,19 @@ TEST_F(CommanderProviderTest, ItemsAreConvertedToMatches) {
   }
 }
 
+TEST_F(CommanderProviderTest, RemovingPrefixClearsMatches) {
+  provider()->Start(
+      CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
+      false);
+
+  delegate()->Notify({commander::CommandItemModel(u"First", {}, u"Ctrl+F"),
+                      commander::CommandItemModel(u"Second", {}, u"Ctrl+S")});
+  EXPECT_EQ(2u, provider()->matches().size());
+
+  provider()->Start(CreateInput(u"no prefix!"), false);
+  EXPECT_EQ(0u, provider()->matches().size());
+}
+
 TEST_F(CommanderProviderTest, PromptingForMoreInputSetsAnnotation) {
   provider()->Start(
       CreateInput(base::StrCat({commander::kCommandPrefix, u" Hello World"})),
