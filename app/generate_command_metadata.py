@@ -3,7 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import optparse
+import argparse
 from os import path
 
 # Prefix indicating the line is a command
@@ -32,6 +32,9 @@ EXCLUDE_COMMANDS = [
     # These content context commands only work from a context menu
     "_CONTEXT_",
 
+    # These commands target a selected tab (i.e. via Ctrl+Click)
+    "_TARGET_",
+
     # Requires a current url
     "IDC_OPEN_CURRENT_URL",
 
@@ -44,6 +47,8 @@ EXCLUDE_COMMANDS = [
     "IDC_UNFOLLOW",
     "IDC_VIRTUAL_CARD_ENROLL",
     "IDC_VIRTUAL_CARD_MANUAL_FALLBACK",
+    "IDC_BOOKMARK_BAR_TRACK_PRICE_FOR_SHOPPING_BOOKMARK",
+    "IDC_BOOKMARK_BAR_UNTRACK_PRICE_FOR_SHOPPING_BOOKMARK",
 
     # Crashes if speedreader doesn't work on page.
     "IDC_SPEEDREADER_ICON_ONCLICK",
@@ -69,8 +74,20 @@ EXCLUDE_COMMANDS = [
 
     # Not actually commands
     "IDC_BRAVE_COMMANDS_START",
-    "IDC_BRAVE_COMMANDS_LAST"
+    "IDC_BRAVE_COMMANDS_LAST",
+    "IDC_FIRST_UNBOUNDED_MENU",
+    "IDC_MANAGE_HID_DEVICES_FIRST",
+    "IDC_MANAGE_HID_DEVICES_LAST",
+    "IDC_OPEN_LINK_IN_PROFILE_FIRST",
+    "IDC_OPEN_LINK_IN_PROFILE_LAST",
 ]
+
+
+def get_cmd_name(command):
+    def capitalize(word):
+        return word[0] + word[1:].lower()
+
+    return ' '.join(map(capitalize, command[4:].split('_')))
 
 
 def extract_relevant_lines(filename):
@@ -100,36 +117,49 @@ def generate_command_info(command_definition_files, template_file):
     with open(template_file) as f:
         result = f.read()
 
+    def get_command(line):
+        return line.split(' ')[1]
+
     def get_line(line):
         if line.startswith(COMMAND_PREFIX):
-            command_name = line.split(' ')[1][4:]
-            return f'        ADD_UNTRANSLATED_COMMAND({command_name}),'
+            return f'  {{{get_id(line)}, "{get_cmd_name(get_command(line))}"}},'
 
         return line
 
+    def get_id(line):
+        if line.startswith(COMMAND_PREFIX):
+            return get_command(line)
+        return line
+
+    def get_id_line(line):
+        command_id = get_id(line)
+        return command_id if command_id.startswith('#') else f'  {command_id},'
+
     command_definitions = map(get_line, lines)
-    return result.replace('TEMPLATE_PLACEHOLDER',
-                          '\n'.join(command_definitions))
+    command_ids = map(get_id_line, lines)
+    return result.replace('COMMAND_NAMES',
+                          '\n'.join(command_definitions)) \
+                 .replace('COMMAND_IDS', '\n'.join(command_ids))
 
 
 def main():
-    parser = optparse.OptionParser(
-        usage="%prog [...command_definition_files] [options]")
-    parser.add_option(
+    parser = argparse.ArgumentParser()
+    parser.add_argument("definitions", nargs='+')
+    parser.add_argument(
         '--output_cc',
         help=
         "The path to output the CC file to. Note: The header is not generated.")
-    parser.add_option(
+    parser.add_argument(
         '--template_cc',
         help="""The path of the CC file template. TEMPLATE_PLACEHOLDER will be
             replaced by the command definitions""")
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    cc_contents = generate_command_info(args, options.template_cc)
+    cc_contents = generate_command_info(args.definitions, args.template_cc)
 
-    if options.output_cc:
-        with open(options.output_cc, 'w') as f:
+    if args.output_cc:
+        with open(args.output_cc, 'w') as f:
             f.write(cc_contents)
     else:
         print(cc_contents)

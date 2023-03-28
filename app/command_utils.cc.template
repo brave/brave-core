@@ -5,77 +5,46 @@
 
 #include "brave/app/command_utils.h"
 
-#include <iterator>
-#include <map>
 #include <string>
-#include <vector>
 
+#include "base/containers/fixed_flat_map.h"
+#include "base/containers/span.h"
 #include "base/feature_list.h"
-#include "base/no_destructor.h"
-#include "base/ranges/algorithm.h"
-#include "base/strings/string_split.h"
-#include "base/strings/string_util.h"
+#include "base/strings/string_piece.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
 
-#define ADD_UNTRANSLATED_COMMAND(name) \
-  {                                    \
-    IDC_##name, {                      \
-      GetName(#name)                   \
-    }                                  \
-  }
-
 namespace commands {
 namespace {
 
-std::string GetName(const std::string& raw_name) {
-  auto words = base::SplitString(raw_name, "_", base::TRIM_WHITESPACE,
-                                 base::SPLIT_WANT_NONEMPTY);
-  for (auto& word : words) {
-    if (word.size() == 1) {
-      continue;
-    }
-    word = word[0] + base::ToLowerASCII(word.substr(1));
-  }
-  return base::JoinString(words, " ");
-}
+constexpr auto kCommandInfos =
+    base::MakeFixedFlatMap<int, base::StringPiece>({
+COMMAND_NAMES
+});
 
-const base::flat_map<int, std::string>& GetCommandInfo() {
-  static const base::NoDestructor<base::flat_map<int, std::string>>
-      kCommands({
-TEMPLATE_PLACEHOLDER
-      });
-  return *kCommands;
-}
+constexpr int kCommandIds[] = {
+COMMAND_IDS
+};
 
 }  // namespace
 
-const std::vector<int>& GetCommands() {
+base::span<const int> GetCommands() {
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
       << "This should only be used when |kBraveCommands| is enabled.";
-  static base::NoDestructor<std::vector<int>> result([]() {
-    std::vector<int> result;
-    base::ranges::transform(
-        GetCommandInfo(), std::back_inserter(result),
-        /*id projection*/
-        &base::flat_map<int, std::string>::value_type::first);
-    return result;
-  }());
-
-  return *result;
+  return kCommandIds;
 }
 
-const std::string& GetCommandName(int command_id) {
+base::StringPiece GetCommandName(int command_id) {
   DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
       << "This should only be used when |kBraveCommands| is enabled.";
-  const auto& info = GetCommandInfo();
-  auto it = info.find(command_id);
-  CHECK(it != info.end()) << "Unknown command " << command_id
-                          << ". This function should only be used for known "
-                             "commands (i.e. commands in |GetCommandInfo|). "
-                             "This command should probably be added.";
-  return it->second;
+  auto it = kCommandInfos.find(command_id);
+  CHECK(it != kCommandInfos.end())
+      << "Unknown command " << command_id
+      << ". This function should only be used for known "
+         "commands (i.e. commands in |GetCommandInfo|). "
+         "This command should probably be added.";
+  return it->second.data();
 }
 
 }  // namespace commands
