@@ -512,16 +512,19 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 }
-
+#endif  // !BUILDFLAG(IS_ANDROID)
 void BraveVpnService::UpdatePurchasedStateForSessionExpired(
     const std::string& env) {
   // Double check that we don't set session expired state for fresh user.
+
+#if !BUILDFLAG(IS_ANDROID)
   LoadCachedRegionData();
   if (regions_.empty()) {
     VLOG(1) << __func__ << " : Treat it as not purchased state for fresh user.";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
     return;
   }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   const auto session_expired_time =
       local_prefs_->GetTime(prefs::kBraveVPNSessionExpiredDate);
@@ -552,7 +555,6 @@ void BraveVpnService::UpdatePurchasedStateForSessionExpired(
 
   SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
 }
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)
 void BraveVpnService::GetPurchaseToken(GetPurchaseTokenCallback callback) {
@@ -714,10 +716,8 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
         domain, "*",
         base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
                        base::Unretained(this), domain));
-#if !BUILDFLAG(IS_ANDROID)
     // Clear expired state data as we have active credentials.
     local_prefs_->SetTime(prefs::kBraveVPNSessionExpiredDate, {});
-#endif
   } else if (IsValidCredentialSummaryButNeedActivation(*records_v)) {
     // Need to activate from account. Treat as not purchased till activated.
     VLOG(1) << __func__ << " : Need to activate vpn from account.";
@@ -729,10 +729,9 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
 #if BUILDFLAG(IS_ANDROID)
     VLOG(1) << __func__ << " : Treat it as not purchased state in android.";
     SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
-#else
+#endif
     VLOG(1) << __func__ << " : Treat it as session expired state in desktop.";
     UpdatePurchasedStateForSessionExpired(env);
-#endif
   }
 }
 

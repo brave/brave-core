@@ -191,10 +191,9 @@ class BraveVpnService :
 
   void OnPreferenceChanged(const std::string& pref_name);
 
-  void UpdatePurchasedStateForSessionExpired(const std::string& env);
-
   BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI() const;
 #endif  // !BUILDFLAG(IS_ANDROID)
+  void UpdatePurchasedStateForSessionExpired(const std::string& env);
 
   // KeyedService overrides:
   void Shutdown() override;
