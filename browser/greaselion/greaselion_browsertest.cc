@@ -20,15 +20,16 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/common/file_util.h"
-#include "net/dns/mock_host_resolver.h"
 #include "ui/base/ui_base_switches.h"
 
 using brave_rewards::RewardsService;
@@ -186,6 +187,25 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     GreaselionServiceWaiter(greaselion_service).Wait();
   }
 
+  void WaitForAutoContributeEnabled() {
+    auto* prefs = browser()->profile()->GetPrefs();
+    if (prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled)) {
+      return;
+    }
+
+    base::RunLoop run_loop;
+    PrefChangeRegistrar pref_change_registrar;
+    pref_change_registrar.Init(prefs);
+    pref_change_registrar.Add(
+        brave_rewards::prefs::kAutoContributeEnabled,
+        base::BindLambdaForTesting([&run_loop, &prefs] {
+          if (prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled)) {
+            run_loop.Quit();
+          }
+        }));
+    run_loop.Run();
+  }
+
   void GetTestResponse(
       const std::string& url,
       int32_t method,
@@ -258,7 +278,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   std::string title;
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
@@ -270,7 +289,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   std::string title;
   ASSERT_TRUE(
@@ -287,7 +305,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   std::string title;
   ASSERT_TRUE(
@@ -304,7 +321,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   std::string title;
   ASSERT_TRUE(
@@ -323,7 +339,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   std::string title;
   ASSERT_TRUE(
@@ -336,18 +351,30 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   EXPECT_EQ(title, "OK");
 
   StartRewards();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  EXPECT_FALSE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
+
+  // Enable auto-contribute and wait for it
   rewards_service_->SetAutoContributeEnabled(true);
+  WaitForAutoContributeEnabled();
+
+  ASSERT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
 }
 
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
+
   StartRewards();
+
+  // Auto-contribute should still be enabled, due to PRE test
+  auto* prefs = browser()->profile()->GetPrefs();
+  ASSERT_TRUE(prefs->GetBoolean(brave_rewards::prefs::kAutoContributeEnabled));
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // should be altered because rewards precondition matched, so the relevant
   // Greaselion rule is active
@@ -377,7 +404,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsNotGreaselionExtension) {
   EXPECT_FALSE(greaselion_service->IsGreaselionExtension("INVALID"));
 }
 
-
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
                       ScriptInjectionWithBrowserVersionConditionLowWild) {
   ASSERT_TRUE(InstallMockExtension());
@@ -387,7 +413,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be altered because version is lower than current.
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
@@ -402,7 +427,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be altered because version is lower than current, even though it
   // omits last component.
@@ -418,7 +442,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be altered because version is wild match.
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
@@ -433,7 +456,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be altered because version is exact match.
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
@@ -448,7 +470,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be unaltered because version is too high.
   EXPECT_EQ(content::EvalJs(contents, "document.title"), "OK");
@@ -463,7 +484,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be unaltered because version is too high.
   EXPECT_EQ(content::EvalJs(contents, "document.title"), "OK");
@@ -478,7 +498,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be altered because version is not good format.
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
@@ -493,7 +512,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
   // Should be altered because version is not good format.
   EXPECT_EQ(content::EvalJs(contents, kWaitForTitleChangeScript), "Altered");
@@ -578,7 +596,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestEnglish,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
 
   EXPECT_EQ(url, contents->GetURL());
 
@@ -596,7 +613,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestGerman,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
 
   EXPECT_EQ(url, contents->GetURL());
 
@@ -614,7 +630,6 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceLocaleTestFrench,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  ASSERT_TRUE(content::WaitForLoadStop(contents));
 
   EXPECT_EQ(url, contents->GetURL());
 
