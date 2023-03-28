@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Докладніше";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Змінити глобальні налаштування щитів";
+"BraveShieldsGlobalChangeButton" = "Змінити налаштування глобальних щитів Brave за замовчуванням";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Глобальні налаштування";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "Імена для входу й паролі";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Ніколи не зберігалося";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "Збережені імена для входу";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Рекламу та трекери заблоковано";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Зв’язати підписку на VPN";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "За допомогою підписки на VPN від Brave можна захистити до 5 пристроїв на базі Android та iOS, а також ПК. Достатньо підключити підписку App Store до облікового запису Brave.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Розширений захист брандмауера Firewall + VPN";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "Виконайте пошук запитом «Браузер за замовчуванням»";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Кнопка «Додати до списку відтворення Brave»";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Додати";
+"playlistFolderSharing.addButtonTitle" = "Зберегти";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "Видалити офлайн-дані";
@@ -2063,7 +2075,7 @@
 "recently.closed.action.clear" = "Видалити";
 
 /* Confirmation message for Clear Button action inside Recently Closed Tabs */
-"recently.closed.confirmation.clear.title" = "Очистити всі нещодавно закриті вкладки?";
+"recently.closed.confirmation.clear.title" = "Видалити всі нещодавно закриті вкладки?";
 
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Немає нещодавно закритих вкладок.";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Shields";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "Вимкнути";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "Продовжити із сервером Syndica";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave використовуватиме Syndica для вирішення доменних імен .sol. Brave приховає вашу IP-адресу. Якщо ввімкнути цей параметр, Syndica бачитиме, що хтось намагається відвідати домени .sol, але жодної іншої інформації. Див. <a href=%1$@>%2$@</a> й <a href=%3$@>%4$@</a> Syndica.";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "політику конфіденційності";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "умови використання";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "Увімкнути в Brave підтримку для Solana Name Service (SNS)?";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Щодня я заощаджую трафік, переглядаючи вебсайти в Brave.";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "Закладки імпортовано";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Синхронізувати пристрій";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Синхронізувати пристрій";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Не вдалося приєднатися до ланцюжка. Обліковий запис видалено.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Синхронізувати пристрій";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Виберіть інформацію, що синхронізуватиметься між пристроями. Ці налаштування стосуватимуться лише цього пристрою.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Видалити обліковий запис для синхронізації";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Видалення облікового запису призведе до видалення зашифрованих даних із серверів Brave і вимкнення синхронізації на всіх ваших підключених пристроях. Однак дані, що зберігаються на цих пристроях, видалено не буде.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Дані буде видалено остаточно. Їх неможливо буде відновити. Якщо ви вирішите знову користуватися синхронізацією, вам потрібно буде створити новий обліковий запис і ще раз додати свої пристрої.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Налаштування синхронізації";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "Комп’ютер";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Видалити обліковий запис для синхронізації";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "Цей код синхронізації було створено в застарілій версії Brave на іншому пристрої. Оновіть Brave на всіх синхронізованих пристроях і повторіть спробу.";

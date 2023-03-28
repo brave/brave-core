@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "了解更多";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "更改全局防护默认值";
+"BraveShieldsGlobalChangeButton" = "变更 Shields 全域默认值";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "全局控件";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "登录 & 密码";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "永不儲存";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "保存的登录";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "广告和跟踪器被阻止";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "连接您的 VPN 订阅";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPN 订阅最多可保护 5 台设备，Android、iOS 和桌上型电脑都能涵盖在内。只要将 App Store 订阅与 Brave 帐户连结即可。";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "扩展您的 Brave 防火墙+ VPN 保护";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "寻找“默认浏览器应用”";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "添加到 Brave 播放列表按钮";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "添加";
+"playlistFolderSharing.addButtonTitle" = "保存";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "删除离线数据";
@@ -2063,7 +2075,7 @@
 "recently.closed.action.clear" = "清除";
 
 /* Confirmation message for Clear Button action inside Recently Closed Tabs */
-"recently.closed.confirmation.clear.title" = "是否清除所有最近关闭的标签？";
+"recently.closed.confirmation.clear.title" = "是否清楚所有最近关闭的标签？";
 
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "没有最近关闭的标签。";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "屏蔽";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "禁用";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "使用 Syndica 服务器继续";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave 将会使用 Syndica 来解析 .sol 域名。Brave 将隐藏您的 IP 地址。如果您启用这项功能，Syndica 只会看到有人正在尝试访问这些 .sol 域，不会看到其他信息。查看 Syndica 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "隐私政策";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "使用条款";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "是否在 Brave 中启用 Solana Name Service（SNS）的支持？";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "我每天都通过使用 Brave 浏览网页来保存数据。";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "已成功导入书签";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "同步设备";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "同步设备";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "无法加入此同步链。帐户已删除。";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "同步设备";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "管理要在设备间同步的信息。这些设置仅会影响此设备。";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "删除 Sync 帐户";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "一旦您删除帐户，您的加密资料就会从 Brave 伺服器移除，而您所有已连线的设备也会停用 Sync。不过，储存于这些设备上的资料不会删除。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "一旦删除即永久删除，资料将无法复原。如果您决定再次使用 Sync，您将需要建立新帐户，并逐一重新新增每台设备。";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "同步设置";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "计算机";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "删除 Sync 帐户";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "这是由其他设备上已过期版本的 Brave 生成的同步码。请在所有同步的设备上更新 Brave，然后重试。";

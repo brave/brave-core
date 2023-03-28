@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "詳細はこちら";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Shieldのグローバル設定を変更する";
+"BraveShieldsGlobalChangeButton" = "Shieldsの全体のデフォルトを変更する";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "グローバル設定";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "ログイン情報とパスワード";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "常に保存しない";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "保存されたログイン情報";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個の広告およびトラッカーをブロック";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "VPNサブスクリプションにリンク";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPNサブスクリプションは、Android、iOS、デスクトップで最大5台のデバイスを保護できます。App StoreのサブスクリプションをBrave アカウントにリンクするだけで設定可能です。";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Brave Firewall + VPNの保護を拡張";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "「デフォルトのブラウザアプリ」を検索";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "ボタンをクリックするとBrave Playlistに追加します";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "追加する";
+"playlistFolderSharing.addButtonTitle" = "保存する";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "オフライン再生用データを消去する";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Shield (保護機能)";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "無効にする";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "Syndicaサーバーを使用して続行する";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Braveは、.solドメイン名の解決にSyndicaを使用する予定です。BraveはあなたのIPアドレスを隠します。これを有効にすると、Syndicaは、誰かがこれらの.solドメインを訪問しようとしていることを確認しますが、それ以外は何もしません。Syndicaの<a href=%1$@>%2$@</a>と<a href=%3$@>%4$@</a>を参照してください。";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "プライバシーポリシー";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "利用規約";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "Braveでソラナネームサービス（SNS）のサポートを有効にしますか？";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Braveでwebを閲覧してデータ通信量を節約しています";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "ブックマークは正常にインポートされました";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "デバイスを同期";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "デバイスを同期";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "このチェーンに参加できません。アカウントが削除されています。";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "デバイスを同期";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "複数のデバイス間でどの情報を同期させるかを管理します。ここでの設定は、このデバイスにのみ適用されます。";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "同期アカウントを削除";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "アカウントを削除すると、暗号化されたデータがBraveサーバーから削除され、接続されたすべてのデバイスで同期が無効になります。ただし、これらのデバイスにローカルに保存されているデータは削除されません。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "これによりデータが完全に削除されるため、復元はできません。同期を再度使用する場合は、新しいアカウントを作成して、デバイスごとに追加し直す必要があります。";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Sync設定";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "コンピュータ";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "同期アカウントを削除";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "この同期コードは、別のデバイスで旧バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";

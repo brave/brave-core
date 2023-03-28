@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "En savoir plus";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Modifier les réglages globaux par défaut de Shields";
+"BraveShieldsGlobalChangeButton" = "Modifier les paramètres généraux par défaut des Boucliers";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Contrôles globaux";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "Identifiants et mots de passe";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Jamais enregistrés";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "Identifiants enregistrés";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Publicités et traqueurs bloqués";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Associer votre abonnement VPN";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Votre abonnement à VPN Brave peut protéger jusqu'à 5 appareils (Android, iOS ou ordinateur). Pour ce faire, il vous suffit d'associer votre abonnement App Store à votre compte Brave.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Étendre votre protection Pare-feu + VPN Brave";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "Chercher « Application de navigateur par défaut »";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Bouton Ajouter à la liste de lecture Brave";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Ajouter";
+"playlistFolderSharing.addButtonTitle" = "Enregistrer";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "Supprimer les données hors ligne";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Shields";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "Désactiver";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "Continuer en utilisant le serveur Syndica";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave utilisera Syndica pour résoudre les noms de domaine .sol. Brave masque votre adresse IP. Si vous activez cette option, Syndica verra que quelqu'un essaie d'accéder à ces domaines .sol, mais n'aura accès à aucune autre information. Consultez les <a href=%1$@>%2$@</a> et la <a href=%3$@>%4$@</a> de Syndica.";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "politique de confidentialité";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "conditions d'utilisation";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "Activer la prise en charge de Solana Name Service (SNS) dans Brave?";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "J'enregistre tous les jours des données en naviguant sur le Web avec Brave.";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "L'importation des marque-pages est réussie";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Synchroniser l'appareil";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Synchroniser l'appareil";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Impossible d'associer cette chaîne. Le compte a été supprimé.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Synchroniser l'appareil";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Gérez les informations que vous souhaitez synchroniser entre les appareils. Ces paramètres ne concernent que cet appareil.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Supprimer le compte Synchronisation";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "La suppression de votre compte effacera toutes vos données chiffrées des serveurs Brave et désactivera la fonction Synchronisation sur tous vous appareils connectés. Les données stockées localement sur ces appareils ne seront toutefois pas supprimées.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Cette suppression est définitive et il n'est pas possible de récupérer les données. Si vous décidez de recommencer à utiliser la fonction Synchronisation, vous devrez créer un nouveau compte et ajouter à nouveau chaque appareil un par un.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Paramètres de synchronisation";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "Ordinateur";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Supprimer le compte Synchronisation";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "Ce code de synchronisation a été généré par une ancienne version de Brave sur un autre appareil. Mettez à jour Brave sur tous les appareils synchronisés, puis réessayez.";

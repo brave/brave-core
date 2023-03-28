@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "深入了解";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "變更 Shields 全域預設";
+"BraveShieldsGlobalChangeButton" = "變更 Shields 全域預設值";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "全域控制項";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "登入資訊和密碼";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "永不儲存";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "已儲存的登入資訊";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "個廣告和追蹤器遭到封鎖";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "連結您的 VPN 訂閱項目";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPN 訂閱最多可保護 5 部裝置，Android、iOS 和桌上型電腦都能涵蓋在內。只要將 App Store 訂閱與 Brave 帳戶連結即可。";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "擴充您的 Brave 防火牆 + VPN 防護";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "尋找「預設瀏覽器應用程式」";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "新增至 Brave 播放清單按鈕";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "新增";
+"playlistFolderSharing.addButtonTitle" = "儲存";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "刪除離線數據";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "防護";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "停用";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "使用 Syndica 伺服器繼續";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave 將會使用 Syndica 來解析 .sol 網域名稱。Brave 會隱藏您的 IP 位址。如果您啟用這項功能，Syndica 只會看到有人正在嘗試造訪這些 .sol 網域，不會看到其他資料。查看 Syndica 的<a href=%1$@>%2$@</a>和<a href=%3$@>%4$@</a>。";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "隱私權政策";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "使用條款";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "是否要在 Brave 中啟用 Solana Name Service (SNS)？";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "我每天使用 Brave 瀏覽網頁來節省數據用量。";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "書籤匯入成功";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "同步裝置";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "同步裝置";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "無法加入此同步鏈。帳戶已刪除。";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "同步裝置";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "管理要在裝置之間保持同步的資訊。這些設定只會影響這部裝置。";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "刪除 Sync 帳戶";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "一旦您刪除帳戶，您的加密資料就會從 Brave 伺服器移除，而您所有已連線的裝置也會停用 Sync。不過，儲存於這些裝置上的資料不會刪除。";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "一旦刪除即永久刪除，資料將無法復原。如果您決定再次使用 Sync，您將需要建立新帳戶，並逐一重新新增每部裝置。";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "同步設定";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "電腦";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "刪除 Sync 帳戶";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "這是由其他裝置上版本過舊的 Brave 所產生的同步代碼。請在所有同步的裝置上更新 Brave，然後再試一次。";

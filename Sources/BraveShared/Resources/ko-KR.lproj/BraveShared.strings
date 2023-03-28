@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "자세히 알아보기";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "글로벌 Shields 기본값 변경";
+"BraveShieldsGlobalChangeButton" = "Shields 전역 기본값 변경";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "글로벌 컨트롤";
@@ -308,7 +308,7 @@
 "callout.defaultBrowserTitle" = "프라이버시. 심플하게.";
 
 /* Subtitle - Description for p3a (Privacy Preserving Analytics) Full Screen Callout */
-"callout.p3aCalloutDescription" = "어떤 Brave 기능이 가장 자주 사용되는지 당사가 파악할 수 있습니다. 'Brave Shields 및 프라이버시' 아래 Brave 설정에서 언제든지 변경할 수 있습니다.";
+"callout.p3aCalloutDescription" = "어떤 Brave 기능이 가장 자주 사용되는지 당사가 파악할 수 있습니다. Brave Shields 아래 Brave 설정 및 기타 프라이버시 설정에서 언제든지 변경할 수 있습니다.";
 
 /* Title for the link that navigates to a webpage showing information about p3a (Privacy Preserving Analytics) */
 "callout.p3aCalloutLinkTitle" = "프라이버시 보호 제품 분석(P3A)에 대해 자세히 알아보기.";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "로그인 정보 및 비밀번호";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "저장되지 않음";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "저장된 로그인 정보";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "광고 및 트래커 차단됨";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "VPN 구독 연결";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPN 구독은 최대 5대의 Android, iOS, 데스크톱 기기를 보호할 수 있습니다. App Store 구독을 Brave 계정에 연결하기만 하면 됩니다.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Brave Firewall + VPN 보호를 더 폭넓게 활용";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "\"기본 브라우저 앱\"을 살펴보세요.";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Brave 재생목록에 추가 버튼";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "추가";
+"playlistFolderSharing.addButtonTitle" = "저장";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "오프라인 데이터 삭제";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "차단";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "비활성화";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "Syndica 서버를 이용하여 계속 진행";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave는 .sol 도메인 네임을 변환하기 위해 Syndica를 사용할 예정입니다. 이를 활성화하면 Syndica에서 누군가 .sol 도메인을 방문하고자 할 때 이를 확인할 수 있게 되나, 그 외의 정보는 확인할 수 없습니다. Syndica의 <a href=%1$@>%2$@</a> 및 <a href=%3$@>%4$@</a> 내용을 확인하십시오.";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "개인정보 보호정책";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "이용 약관";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "Brave에서 SNS(Solana Name Service) 지원을 활성화할까요?";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "매일 웹 브라우징에 Brave를 사용하여 데이터를 절약합니다.";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "북마크 가져오기 성공";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "기기 동기화";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "기기 동기화";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "이 체인에 참여할 수 없습니다. 계정이 삭제되었습니다.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "기기 동기화";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "기기 간에 동기화할 정보를 관리합니다. 이 설정은 이 기기에만 적용됩니다.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "동기화 계정 삭제";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다. 단, 기기 로컬 공간에 저장된 데이터는 삭제되지 않습니다.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "동기화 설정";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "컴퓨터";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "동기화 계정 삭제";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "이 동기화 코드는 다른 기기에서 구버전 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";

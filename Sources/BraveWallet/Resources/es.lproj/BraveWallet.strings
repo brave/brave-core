@@ -550,6 +550,24 @@
 /* The button title for showing the screen to change what assets are visible */
 "wallet.editVisibleAssetsButtonTitle" = "Editar activos visibles";
 
+/* Button title when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayButton" = "Utilizar dominio ENS";
+
+/* Description shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayDesc" = "Parece que has introducido una dirección ENS. Tendremos que utilizar una resolución de terceros para resolver esta solicitud. Así, podremos asegurarnos de que tu dominio .eth no se ha filtrado y de que tu transacción es segura.";
+
+/* Title shown send address / ENS domain when requesting to do an ENS off chain lookup. */
+"wallet.ensOffchainGatewayTitle" = "Brave admite el uso de pasarelas fuera de cadena para resolver dominios .eth.";
+
+/* The description for the options to allow Ethereum Name service domain names offchain. '%@' will be replaced with a url to explain more about ENS offchain lookup. */
+"wallet.ensOffchainResolveMethodDescription" = "[Obtén más información](%@) acerca de las consideraciones de privacidad de la búsqueda de ENS fuera de cadena.";
+
+/* The title for the options to allow Ethereum Name service domain names offchain. */
+"wallet.ensOffchainResolveMethodTitle" = "Permitir la búsqueda de ENS fuera de cadena";
+
+/* The title for the options to resolve Ethereum Name service domain names. */
+"wallet.ensResolveMethodTitle" = "Resolver los nombres de dominio del servicio de nombres de Ethereum (ENS)";
+
 /* A placeholder for the text field that users will input the custom token address */
 "wallet.enterAddress" = "Introduce la dirección";
 
@@ -1000,8 +1018,8 @@
 /* The description of a send button on the buy/send/swap modal */
 "wallet.sendDescription" = "Envía criptomonedas o haz una transferencia de una cuenta a otra.";
 
-/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. Ex. `Stephen.sol` */
-"wallet.sendErrorDomainNotRegistered" = "%@ no está registrada";
+/* An error that appears below the send crypto address text field, when the input `To` domain/url that we cannot resolve to a wallet address. The '%@' will be replaced with the coin type Ex. `Domain doesn\'t have a linked ETH address` */
+"wallet.sendErrorDomainNotRegistered" = "El dominio no tiene una dirección de %@ vinculada";
 
 /* A placeholder of the address text field. */
 "wallet.sendToCryptoAddressPlaceholder" = "Introduce la dirección";
@@ -1234,6 +1252,9 @@
 /* The warning message to let users understand the risk of using Brave Wallet to sign any transaction. */
 "wallet.solanaSignTransactionWarning" = "Ten en cuenta que Brave no puede verificar qué sucederá si firmas. La firma autoriza casi cualquier operación en tu cuenta o en tu nombre, lo que incluye, entre otras cosas, dar un control total de tu cuenta y tus criptoactivos al sitio que realiza la solicitud. Firma solo si quieres realizar esta acción y confías en el sitio que envía la solicitud.";
 
+/* The title displayed above the value of a Solana swap transaction in transaction confirmation view, transaction details view and transaction summary rows. */
+"wallet.solanaSwapTransactionTitle" = "Transacción de intercambio";
+
 /* The title displayed above the Token Program Sync Native instruction type for Solana Instruction details. */
 "wallet.solanaSyncNativeInstructionName" = "Sincronizar nativo";
 
@@ -1318,11 +1339,11 @@
 /* The description of a swap button on the buy/send/swap modal */
 "wallet.swapDescription" = "Intercambia tokens y activos.";
 
-/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
-"wallet.swapDexAggrigatorDisclaimer" = "0x procesará la dirección de Ethereum y la dirección IP para llevar a cabo una transacción (y obtener presupuestos). 0x utilizará estos datos SOLO para procesar transacciones.";
+/* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. The first '%@' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of the company's data usage. */
+"wallet.swapDexAggrigatorDisclaimer" = "%1$@ procesará la dirección de %2$@ y la dirección IP para llevar a cabo una transacción (y obtener presupuestos). %3$@ utilizará estos datos SOLO para procesar transacciones.";
 
-/* A disclaimer note shown on the Swap screen. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
-"wallet.swapDexAggrigatorNote" = "Brave usa 0x como agregador de intercambio descentralizado.";
+/* A disclaimer note shown on the Swap screen. '%@' will be replaced by a company name, ex. '0x' / 'Jupiter'. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange) */
+"wallet.swapDexAggrigatorNote" = "Brave usa %@ como agregador de intercambio descentralizado.";
 
 /* The 'Limit' order type. Limit orders only execute when the price requirements are met */
 "wallet.swapLimitOrderType" = "Límite de precio";
@@ -1531,13 +1552,13 @@
 /* The title shown on the settings menu to Web3 settings. */
 "wallet.web3" = "Web3";
 
-/* One of the options for Brave to handle Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Ask' means Brave will ask user first before enable or disable resolving ENS/SNS domain name. */
 "wallet.web3DomainOptionAsk" = "Preguntar";
 
-/* One of the options for Brave to handle Solana Name Service domain name. 'Disabled' means Brave will disable resolving SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Disabled' means Brave will disable resolving ENS/SNS domain name. */
 "wallet.web3DomainOptionDisabled" = "Deshabilitado";
 
-/* One of the options for Brave to handle Solana Name Service domain name. 'Enabled' means Brave will enable resolving SNS domain name. */
+/* One of the options for Brave to handle Ethereum/Solana Name Service domain name. 'Enabled' means Brave will enable resolving ENS/SNS domain name. */
 "wallet.web3DomainOptionEnabled" = "Habilitada";
 
 /* The header for the options to resolve Solana Name service domain names. */

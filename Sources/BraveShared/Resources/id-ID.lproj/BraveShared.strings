@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Pelajari lebih lanjut";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Ubah default perisai global";
+"BraveShieldsGlobalChangeButton" = "Ubah Bawaan Global Perisai Brave";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Kontrol Global";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "Login & Kata Sandi";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Jangan Pernah Disimpan";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "Login yang Disimpan";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Iklan & pelacak yang diblokir";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "Tautkan paket langganan VPN Anda";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Paket langganan VPN Brave Anda akan melindungi hingga 5 perangkat, di seluruh Android, iOS, dan desktop. Cukup hubungkan paket langganan App Store Anda ke akun Brave Anda.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Perpanjang perlindungan Dinding Api + VPN Bravve Anda";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "Cari 'Aplikasi Peramban Bawaan'";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Tambahkan ke Tombol Daftar Putar Brave";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Tambahkan";
+"playlistFolderSharing.addButtonTitle" = "Simpan";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "Hapus Data Luring";
@@ -2063,7 +2075,7 @@
 "recently.closed.action.clear" = "Hapus";
 
 /* Confirmation message for Clear Button action inside Recently Closed Tabs */
-"recently.closed.confirmation.clear.title" = "Bersihkan Semua Tab yang Baru Ditutup?";
+"recently.closed.confirmation.clear.title" = "Hapus Semua Tab yang Baru Ditutup?";
 
 /* Title for empty screen Recently Closed Tabs */
 "recently.closed.empty.list.title" = "Tak Ada Tab yang Baru Ditutup.";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Perisai";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "Non-Aktifkan";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "Lanjutkan dengan menggunakan peladen Syndica";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave akan menggunakan Syndica untuk menyelesaikan nama domain .sol. Brave menyembunyikan alamat IP Anda. Jika Anda mengaktifkannya, Syndica akan melihat bahwa seseorang sedang mencoba mengunjungi domain-domain .sol ini, namun hanya itu. Lihat <a href=%1$@>%2$@</a> dan <a href=%3$@>%4$@</a> Syndica.";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "kebijakan privasi";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "syarat penggunaan";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "Aktifkan dukungan Solana Name Service (SNS) di Brave?";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Setiap hari saya menghemat data karena melakukan penelusuran web dengan Brave.";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "Impor Markah Buku Berhasil";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Sinkronisasikan Perangkat";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Sinkronisasikan Perangkat";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Tidak dapat bergabung dengan rantai ini. Akun telah dihapus.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Sinkronisasikan Perangkat";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Kelola informasi yang ingin Anda sinkronisasikan di antara perangkat. Pengaturan ini hanya memengaruhi perangkat ini.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Hapus Sinkronisasi Akun";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung. Namun hal ini tidak akan menghapus data yang disimpan secara lokal di perangkat-perangkat ini.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Pengaturan Sinkronisasi";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "Komputer";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Hapus Sinkronisasi Akun";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "Kode sinkronisasi ini dihasilkan oleh versi Brave lama di perangkat lain. Silakan perbarui Brave di semua perangkat yang tersinkronisasi dan coba lagi.";

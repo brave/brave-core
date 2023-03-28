@@ -224,7 +224,7 @@
 "BraveShieldsBlockedInfoButtonAccessibilityLabel" = "Daha fazla bilgi edinin";
 
 /* No comment provided by engineer. */
-"BraveShieldsGlobalChangeButton" = "Genel Kalkan varsayılanlarını değiştirme";
+"BraveShieldsGlobalChangeButton" = "Kalkanlar Küresel Varsayılanlarını Değiştir";
 
 /* No comment provided by engineer. */
 "BraveShieldsGlobalControls" = "Genel Denetimler";
@@ -970,6 +970,9 @@
 /* Title for navigation bar of the login list screen */
 "login.loginListNavigationTitle" = "Girişler ve Şifreler";
 
+/* The header title displayed over the never saved login list entry */
+"login.loginListNeverSavedHeaderTitle" = "Hiç Kaydedilmeyenler";
+
 /* The header title displayed over the login list */
 "login.loginListSavedLoginsHeaderTitle" = "Kaydedilen Girişler";
 
@@ -1245,6 +1248,15 @@
 
 /* The description text shown when there is no big tech tracker among trackers. Example usage: 31 Ads & trackers blocked. The number here is presented separately so it is not in translation. */
 "onboarding.blockedAdsOnboardingNoBigTechInformationText" = "Reklamlar ve izleyiciler engellendi";
+
+/* Button text to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptButton" = "VPN aboneliğinizi bağlayın";
+
+/* Popup description to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptDescription" = "Brave VPN aboneliğiniz; Android, iOS ve masaüstü genelinde 5 cihaza kadar koruma sağlayabilir. App Store aboneliğinizi Brave hesabınıza bağlamanız yeterlidir.";
+
+/* Popup title to let users know they can use the vpn on all their devices */
+"onboarding.linkReceiptTitle" = "Brave Güvenlik Duvarı + VPN korumanızı genişletin";
 
 /* Description for Navigate Settings Screen in Onboarding. This part indicating navigation ('Default Browser App') should match the option in iPhone Settings in that Language. */
 "onboarding.navigateSettingsOnboardingScreenDescription" = "\"Varsayılan Tarayıcı Uygulaması\"nı arayın";
@@ -1787,7 +1799,7 @@
 "playlistFolderSharing.addButtonAccessibilityTitle" = "Brave Oynatma Listesi Düğmesine Ekle";
 
 /* Title for the button that adds the playlist to the database. */
-"playlistFolderSharing.addButtonTitle" = "Ekle";
+"playlistFolderSharing.addButtonTitle" = "Kaydet";
 
 /* Menu Title for removing offline data/cache */
 "playlistFolderSharing.deleteOfflineDataMenuTitle" = "Çevrimdışı Verileri Kaldır";
@@ -2890,6 +2902,24 @@
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Kalkanlar";
 
+/* Title on the button that users can click to disable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonDisable" = "Devre Dışı Bırak";
+
+/* Title on the button that users can click to enable Brave to resolve the SNS domain they entered. */
+"SnsDomainInterstitialPageButtonProceed" = "Syndica sunucusunu kullanarak ilerleyin";
+
+/* Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'. */
+"SnsDomainInterstitialPageDescription" = "Brave, .sol alan adlarını çözmek için Syndica'yı kullanacak. Brave, IP adresinizi gizler. Bunu etkinleştirirseniz, Syndica birilerinin bu .sol alanlarını ziyaret etmeye çalıştığını görecek fakat başka bir şey göremeyecektir. Syndica'nın <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> bölümlerine bakın.";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPagePrivacyPolicy" = "gizlilik politikası";
+
+/* Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain. */
+"SnsDomainInterstitialPageTAndU" = "kullanım koşulları";
+
+/* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
+"SnsDomainInterstitialPageTitle" = "Brave'de Solana Name Service (SNS) desteği etkinleştirilsin mi?";
+
 /* Title used when in warning pop-over when domain specific data save appears */
 "socialSharing.domainSpecificDataSavedTitle" = "Her gün Brave ile web'de gezinerek veriden tasarruf ediyorum.";
 
@@ -2920,8 +2950,29 @@
 /* Message of the popup if bookmark import succeeds. */
 "sync.bookmarksImportPopupSuccessMessage" = "Başarıyla Alınan Yer İşaretleri";
 
+/* Alert description for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorDescription" = "Cihazı Senkronize Et";
+
+/* Alert title for error while deleting sync chain */
+"sync.syncChainAccountDeletionErrorTitle" = "Cihazı Senkronize Et";
+
+/* Alert description for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertDescription" = "Bu zincire katılınamadı. Hesap önceden silinmiş.";
+
+/* Alert title for the occasion when an user is trying to join a already deleted account */
+"sync.syncChainAlreadyDeletedAlertTitle" = "Cihazı Senkronize Et";
+
 /* Information Text underneath the toggles for enable/disable different sync types for the device */
 "sync.syncConfigurationInformationText" = "Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.";
+
+/* Title for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccount" = "Senkronizasyon Hesabını Sil";
+
+/* Part 1 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart1" = "Hesabınızı silmek, şifrelenmiş verilerinizi Brave sunucularından kaldırır ve bağlı tüm cihazlarınızda Senkronizasyonu devre dışı bırakır. Ancak bu cihazlarda yerel olarak depolanan verileri silmez.";
+
+/* Part 2 Description for Alert used action Delete Sync Account. */
+"sync.syncDeleteAccountAlertDescriptionPart2" = "Silme işlemi kalıcıdır ve verileri kurtarmanın hiçbir yolu yoktur. Senkronizasyonu tekrar kullanmaya karar verirseniz, yeni bir hesap oluşturmanız ve tüm cihazları tek tek yeniden eklemeniz gerekecektir.";
 
 /* Title for Sync Settings Toggle Header */
 "sync.syncSettingsTitle" = "Senkronizasyon Ayarları";
@@ -2982,6 +3033,9 @@
 
 /* Computer device button title */
 "SyncComputerDevice" = "Bilgisayar";
+
+/* Delete Sync Account cell title for button. */
+"SyncDeleteAccount" = "Senkronizasyon Hesabını Sil";
 
 /* Sync Error Description */
 "syncDeprecatedVersionError" = "Bu senkronizasyon kodu, başka bir cihazda Brave'in eski bir sürümü tarafından oluşturuldu. Lütfen Brave'i tüm senkronize edilmiş cihazlarda güncelleyin ve tekrar deneyin.";
