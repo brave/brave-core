@@ -241,6 +241,14 @@ public class PlaylistManager: NSObject {
       }
     }
   }
+  
+  public func setupPlaylistFolder() {
+    if PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID) == nil {
+      PlaylistFolder.addFolder(title: Strings.PlaylistFolders.playlistSavedFolderTitle, uuid: PlaylistFolder.savedFolderUUID) { uuid in
+        Logger.module.debug("Created Playlist Folder: \(uuid)")
+      }
+    }
+  }
 
   func download(item: PlaylistInfo) {
     guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src) else { return }
