@@ -126,7 +126,7 @@ export const OnboardingWelcome = () => {
 
       <Row>
         <SubDivider />
-        <SubDividerText>Or</SubDividerText>
+        <SubDividerText>{getLocale('braveWalletWelcomeDividerText')}</SubDividerText>
         <SubDivider />
       </Row>
 

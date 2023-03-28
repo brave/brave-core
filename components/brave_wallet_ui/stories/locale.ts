@@ -150,6 +150,7 @@ provideStrings({
   braveWalletImportExistingWallet: 'Import existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
   braveWalletConnectHardwareWallet: 'Connect hardware wallet',
+  braveWalletWelcomeDividerText: 'Or',
 
   // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Legal stuff',
