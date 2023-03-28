@@ -28,7 +28,6 @@ namespace brave_federated {
 
 class CommunicationAdapter;
 class EligibilityService;
-class FederatedTaskRunner;
 
 class LearningService : public Observer {
  public:
@@ -49,8 +48,6 @@ class LearningService : public Observer {
   void PostTaskResults(TaskResultList results);
 
   void HandleTasksOrReconnect(TaskList tasks, int reconnect);
-  TaskResult LoadDatasetAndRunTask(
-      std::unique_ptr<FederatedTaskRunner> task_runner);
 
   void OnTaskResultComputed(TaskResult result);
   void OnPostTaskResults(TaskResultResponse response);
