@@ -1683,6 +1683,8 @@ void BraveWalletService::OnNetworkChanged() {
 }
 
 void BraveWalletService::Reset() {
+  delegate_->ClearWalletUIStoragePartition();
+
   if (tx_service_)
     tx_service_->Reset();
   if (json_rpc_service_)

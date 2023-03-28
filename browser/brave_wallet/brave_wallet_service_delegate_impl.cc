@@ -9,14 +9,18 @@
 
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
+
+using content::StoragePartition;
 
 namespace brave_wallet {
 
@@ -25,6 +29,15 @@ namespace {
 content::WebContents* GetActiveWebContents() {
   Browser* browser = chrome::FindLastActive();
   return browser ? browser->tab_strip_model()->GetActiveWebContents() : nullptr;
+}
+
+void ClearWalletStoragePartition(content::BrowserContext* context,
+                                 const GURL& url) {
+  CHECK(context);
+  auto* partition = context->GetDefaultStoragePartition();
+  partition->ClearDataForOrigin(
+      StoragePartition::REMOVE_DATA_MASK_ALL,
+      StoragePartition::QUOTA_MANAGED_STORAGE_MASK_ALL, url, base::DoNothing());
 }
 
 }  // namespace
@@ -214,6 +227,11 @@ url::Origin BraveWalletServiceDelegateImpl::GetActiveOriginInternal() {
 void BraveWalletServiceDelegateImpl::GetActiveOrigin(
     GetActiveOriginCallback callback) {
   std::move(callback).Run(MakeOriginInfo(GetActiveOriginInternal()));
+}
+
+void BraveWalletServiceDelegateImpl::ClearWalletUIStoragePartition() {
+  ClearWalletStoragePartition(context_, GURL(kBraveUIWalletURL));
+  ClearWalletStoragePartition(context_, GURL(kBraveUIWalletPanelURL));
 }
 
 }  // namespace brave_wallet

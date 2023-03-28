@@ -9,6 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/memory/raw_ptr.h"
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
@@ -28,6 +29,7 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "build/build_config.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
@@ -37,6 +39,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -44,6 +47,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/origin.h"
+
+using content::StoragePartition;
 
 namespace {
 
@@ -148,6 +153,24 @@ const char interface_not_supported_response[] = R"({
       "id":1,
       "result":"0x0000000000000000000000000000000000000000000000000000000000000000"
   })";
+
+class MockDataRemovalObserver : public StoragePartition::DataRemovalObserver {
+ public:
+  explicit MockDataRemovalObserver(StoragePartition* partition) {
+    observation_.Observe(partition);
+  }
+
+  MOCK_METHOD4(OnStorageKeyDataCleared,
+               void(uint32_t,
+                    content::StoragePartition::StorageKeyMatcherFunction,
+                    base::Time,
+                    base::Time));
+
+ private:
+  base::ScopedObservation<StoragePartition,
+                          StoragePartition::DataRemovalObserver>
+      observation_{this};
+};
 
 }  // namespace
 
@@ -2438,6 +2461,30 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
       false, false, "COLOR", 18, true, "", "", "0x1", mojom::CoinType::ETH);
   AddSuggestToken(custom_token.Clone(), custom_token.Clone(), true);
 
+#if !BUILDFLAG(IS_ANDROID)
+  auto* partition = profile_->GetDefaultStoragePartition();
+  MockDataRemovalObserver observer(partition);
+  const auto page_storage_key_callback_valid =
+      [&](StoragePartition::StorageKeyMatcherFunction callback) {
+        return callback.Run(blink::StorageKey::CreateFirstParty(
+            url::Origin::Create(GURL(kBraveUIWalletURL))));
+      };
+  const auto panel_storage_key_callback_valid =
+      [&](StoragePartition::StorageKeyMatcherFunction callback) {
+        return callback.Run(blink::StorageKey::CreateFirstParty(
+            url::Origin::Create(GURL(kBraveUIWalletPanelURL))));
+      };
+
+  EXPECT_CALL(observer, OnStorageKeyDataCleared(
+                            StoragePartition::REMOVE_DATA_MASK_ALL,
+                            testing::Truly(page_storage_key_callback_valid),
+                            base::Time(), base::Time::Max()));
+  EXPECT_CALL(observer, OnStorageKeyDataCleared(
+                            StoragePartition::REMOVE_DATA_MASK_ALL,
+                            testing::Truly(panel_storage_key_callback_valid),
+                            base::Time(), base::Time::Max()));
+#endif
+
   service_->Reset();
 
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletUserAssets));
@@ -2447,6 +2494,12 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   EXPECT_TRUE(service_->sign_message_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_callbacks_.empty());
   EXPECT_TRUE(service_->add_suggest_token_requests_.empty());
+
+#if !BUILDFLAG(IS_ANDROID)
+  // Wait for async ClearDataForOrigin
+  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+#endif
 }
 
 TEST_F(BraveWalletServiceUnitTest, GetUserAssetAddress) {
