@@ -42,6 +42,5 @@ export const mockPageState: PageState = {
   enablingAutoPin: false,
   isAutoPinEnabled: false,
   nftsPinningStatus: {},
-  isLocalIpfsNodeRunning: false,
-  isHardwareOnboarding: false
+  isLocalIpfsNodeRunning: false
 }
