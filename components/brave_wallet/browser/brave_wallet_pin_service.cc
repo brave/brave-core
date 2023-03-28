@@ -412,13 +412,20 @@ absl::optional<std::string> BraveWalletPinService::ServiceFromPrefPath(
 void BraveWalletPinService::Validate(mojom::BlockchainTokenPtr token,
                                      const absl::optional<std::string>& service,
                                      ValidateCallback callback) {
-  mojom::TokenPinStatusPtr status = GetTokenStatus(service, token);
-  if (!status) {
-    std::move(callback).Run(false, nullptr);
+  auto path = GetTokenPrefPath(absl::nullopt, token);
+  if (!path) {
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationIgnored);
     return;
   }
+
+  mojom::TokenPinStatusPtr status = GetTokenStatus(service, token);
+  if (!status) {
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationIgnored);
+    return;
+  }
+
   if (status->code != mojom::TokenPinStatusCode::STATUS_PINNED) {
-    std::move(callback).Run(false, nullptr);
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationIgnored);
     return;
   }
 
@@ -429,16 +436,7 @@ void BraveWalletPinService::Validate(mojom::BlockchainTokenPtr token,
     SetTokenStatus(service, std::move(token),
                    mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS,
                    nullptr);
-    std::move(callback).Run(true, nullptr);
-    return;
-  }
-
-  auto path = GetTokenPrefPath(absl::nullopt, token);
-  if (!path) {
-    std::move(callback).Run(
-        false,
-        mojom::PinError::New(mojom::WalletPinServiceErrorCode::ERR_WRONG_TOKEN,
-                             "Wrong token data"));
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationFailed);
     return;
   }
 
@@ -450,7 +448,7 @@ void BraveWalletPinService::Validate(mojom::BlockchainTokenPtr token,
                        std::move(callback), std::move(token)));
   } else {
     // Remote pinning not implemented yet
-    std::move(callback).Run(false, nullptr);
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationIgnored);
   }
 }
 
@@ -756,7 +754,7 @@ void BraveWalletPinService::OnTokenValidated(
     mojom::BlockchainTokenPtr token,
     absl::optional<bool> result) {
   if (!result.has_value()) {
-    std::move(callback).Run(false, nullptr);
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationError);
     return;
   }
 
@@ -764,13 +762,13 @@ void BraveWalletPinService::OnTokenValidated(
     SetTokenStatus(service, token,
                    mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS,
                    nullptr);
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationFailed);
   } else {
     // Also updates verification timestamp
     SetTokenStatus(service, token, mojom::TokenPinStatusCode::STATUS_PINNED,
                    nullptr);
+    std::move(callback).Run(mojom::TokenValidationResult::kValidationPassed);
   }
-
-  std::move(callback).Run(true, nullptr);
 }
 
 bool BraveWalletPinService::AddToken(

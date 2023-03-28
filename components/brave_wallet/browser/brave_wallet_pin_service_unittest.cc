@@ -939,14 +939,15 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
               std::move(callback).Run(true);
             }));
 
-    absl::optional<bool> validate_status;
+    absl::optional<mojom::TokenValidationResult> validate_status;
     service()->Validate(
         std::move(token), absl::nullopt,
         base::BindLambdaForTesting(
-            [&validate_status](bool status, mojom::PinErrorPtr error) {
+            [&validate_status](mojom::TokenValidationResult status) {
               validate_status = status;
             }));
-    EXPECT_TRUE(validate_status.value());
+    EXPECT_EQ(mojom::TokenValidationResult::kValidationPassed,
+              validate_status.value());
 
     const base::Value::Dict* token_record =
         GetPrefs()
@@ -967,15 +968,16 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
               std::move(callback).Run(absl::nullopt);
             }));
 
-    absl::optional<bool> validate_status;
+    absl::optional<mojom::TokenValidationResult> validate_status;
     service()->Validate(
         std::move(token), absl::nullopt,
         base::BindLambdaForTesting(
-            [&validate_status](bool status, mojom::PinErrorPtr error) {
+            [&validate_status](mojom::TokenValidationResult status) {
               validate_status = status;
             }));
 
-    EXPECT_FALSE(validate_status.value());
+    EXPECT_EQ(mojom::TokenValidationResult::kValidationError,
+              validate_status.value());
 
     const base::Value::Dict* token_record =
         GetPrefs()
@@ -996,15 +998,16 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
               std::move(callback).Run(false);
             }));
 
-    absl::optional<bool> validate_status;
+    absl::optional<mojom::TokenValidationResult> validate_status;
     service()->Validate(
         std::move(token), absl::nullopt,
         base::BindLambdaForTesting(
-            [&validate_status](bool status, mojom::PinErrorPtr error) {
+            [&validate_status](mojom::TokenValidationResult status) {
               validate_status = status;
             }));
 
-    EXPECT_TRUE(validate_status.value());
+    EXPECT_EQ(mojom::TokenValidationResult::kValidationFailed,
+              validate_status.value());
 
     const base::Value::Dict* token_record =
         GetPrefs()

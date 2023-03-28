@@ -265,6 +265,17 @@ interface BraveWalletPinServiceObserver {
   OnLocalNodeStatusChanged(bool running);
 };
 
+enum TokenValidationResult {
+  // All is ok
+  kValidationPassed,
+  // Token should be repinned
+  kValidationFailed,
+  // Should retry validation later
+  kValidationError,
+  // Token is unsupported
+  kValidationIgnored
+};
+
 // Low-level interface for token pinning.
 // String service argument is used to select on which pinning
 // service operation should be performed.
@@ -283,8 +294,7 @@ interface WalletPinService {
   GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
                                             PinError? error);
   // Checks whether token is pinned correctly.
-  Validate(BlockchainToken token, string? service) => (bool result,
-                                                       PinError? error);
+  Validate(BlockchainToken token, string? service) => (TokenValidationResult result);
   // Returns whether IPFS localnode is currently running.
   IsLocalNodeRunning() => (bool result);
 

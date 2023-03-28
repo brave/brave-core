@@ -414,7 +414,7 @@ TEST_F(IpfsLocalPinServiceTest, VerifyLocalPinJobTest) {
 
     job.Start();
 
-    EXPECT_FALSE(success.has_value());
+    EXPECT_FALSE(success.value());
   }
 }
 

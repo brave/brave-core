@@ -235,10 +235,11 @@ void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
   }
 
   if (!result) {
-    std::move(callback_).Run(absl::nullopt);
+    std::move(callback_).Run(false);
     return;
   }
 
+  // TODO(cypt4): Check exact pinning modes for each cid.
   std::move(callback_).Run(result->size() == pins_data_.size());
 }
 
