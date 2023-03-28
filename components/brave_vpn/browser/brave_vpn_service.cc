@@ -813,7 +813,7 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     if (subscriber_credential == kTokenNoLongerValid) {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::INVALID);
     } else {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
+      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED);
     }
 #endif
     return;
