@@ -251,18 +251,21 @@ public class Utils {
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(Activity activity,
-            BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol) {
-        assert activity != null;
-        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
-        buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
-        buySendSwapActivityIntent.putExtra("swapFromAssetSymbol", swapFromAssetSymbol);
-        activity.startActivity(buySendSwapActivityIntent);
-    }
-
     public static void openBuySendSwapActivity(
             Activity activity, BuySendSwapActivity.ActivityType activityType) {
-        openBuySendSwapActivity(activity, activityType, null);
+        openBuySendSwapActivity(activity, activityType, null, null);
+    }
+
+    public static void openBuySendSwapActivity(Activity activity,
+            BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol,
+            String chainId) {
+        assert activity != null;
+        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+        buySendSwapActivityIntent.putExtra(
+                BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
+        buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_SYMBOL, swapFromAssetSymbol);
+        buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
+        activity.startActivity(buySendSwapActivityIntent);
     }
 
     public static void openAssetDetailsActivity(
