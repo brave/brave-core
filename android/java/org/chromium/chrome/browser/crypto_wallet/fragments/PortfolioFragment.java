@@ -38,7 +38,6 @@ import org.chromium.base.task.PostTask;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
@@ -95,20 +94,10 @@ public class PortfolioFragment
     private PortfolioModel mPortfolioModel;
     private ProgressBar mPbAssetDiscovery;
     private List<NetworkInfo> mAllNetworkInfos;
-    private List<PortfolioModel.NftDataModel> mNftDataModels;
     private NetworkSelectorModel mNetworkSelectionModel;
 
     public static PortfolioFragment newInstance() {
         return new PortfolioFragment();
-    }
-
-    private JsonRpcService getJsonRpcService() {
-        Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getJsonRpcService();
-        }
-
-        return null;
     }
 
     @Override
@@ -424,30 +413,21 @@ public class PortfolioFragment
                                 mPortfolioHelper.calculateBalances(() -> {
                                     final String fiatSumString = String.format(Locale.getDefault(),
                                             "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-                                    PostTask.runOrPostTask(UiThreadTaskTraits.DEFAULT, () -> {
-                                        mFiatSumString = fiatSumString;
-                                        mBalance.setText(mFiatSumString);
-                                        mBalance.invalidate();
+                                    mFiatSumString = fiatSumString;
+                                    mBalance.setText(mFiatSumString);
+                                    mBalance.invalidate();
 
-                                        List<BlockchainToken> tokens = new ArrayList<>();
-                                        List<BlockchainToken> nfts = new ArrayList<>();
+                                    List<BlockchainToken> tokens = new ArrayList<>();
 
-                                        for (BlockchainToken token :
-                                                mPortfolioHelper.getUserAssets()) {
-                                            if (token.isErc721 || token.isNft) {
-                                                nfts.add(token);
-                                            } else {
-                                                tokens.add(token);
-                                            }
+                                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
+                                        if (!token.isErc721 && !token.isNft) {
+                                            // Add only coins and not NFTs.
+                                            tokens.add(token);
                                         }
-                                        setUpCoinList(tokens,
-                                                mPortfolioHelper.getPerTokenCryptoSum(),
-                                                mPortfolioHelper.getPerTokenFiatSum());
-
-                                        mPortfolioModel.prepareNftListMetaData(
-                                                nfts, mNetworkInfo, mPortfolioHelper);
-                                        updatePortfolioGraph();
-                                    });
+                                    }
+                                    setUpCoinList(tokens, mPortfolioHelper.getPerTokenCryptoSum(),
+                                            mPortfolioHelper.getPerTokenFiatSum());
+                                    updatePortfolioGraph();
                                 });
                             });
                 });
@@ -480,8 +460,6 @@ public class PortfolioFragment
     }
 
     private void onEditVisibleAssetsClick() {
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
         NetworkInfo selectedNetwork = null;
         if (mWalletModel != null) {
             selectedNetwork =
