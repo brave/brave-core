@@ -30,6 +30,9 @@ constexpr char kApplicationClose[] = "AppClose";
 constexpr char kApplicationNew[] = "AppNew";
 #endif
 
+constexpr char kMenu[] = "Alt";
+constexpr char kRMenu[] = "AltGr";
+
 std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
 #if !BUILDFLAG(IS_WIN)
   if (code == ui::VKEY_CLOSE) {
@@ -40,6 +43,14 @@ std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
     return kApplicationNew;
   }
 #endif
+
+  if (code == ui::VKEY_LMENU || code == ui::VKEY_MENU) {
+    return kMenu;
+  }
+
+  if (code == ui::VKEY_RMENU) {
+    return kRMenu;
+  }
 
   auto domcode = ui::UsLayoutKeyboardCodeToDomCode(code);
   return ui::KeycodeConverter::DomCodeToCodeString(domcode);
@@ -55,6 +66,14 @@ ui::KeyboardCode DomCodeStringToKeyboardCode(const std::string& key) {
     return ui::VKEY_NEW;
   }
 #endif
+
+  if (key == kMenu) {
+    return ui::VKEY_MENU;
+  }
+
+  if (key == kRMenu) {
+    return ui::VKEY_RMENU;
+  }
 
   auto domcode = ui::KeycodeConverter::CodeStringToDomCode(key);
   return ui::DomCodeToUsLayoutKeyboardCode(domcode);
@@ -73,6 +92,10 @@ std::vector<std::string> GetModifierNames(ui::KeyEventFlags flags) {
 
   if (flags & ui::EF_ALT_DOWN) {
     result.push_back("Alt");
+  }
+
+  if (flags & ui::EF_ALTGR_DOWN) {
+    result.push_back("AltGr");
   }
 
   if (flags & ui::EF_SHIFT_DOWN) {
@@ -97,6 +120,9 @@ ui::KeyEventFlags GetModifierFromKeys(
   }
   if (base::Contains(modifiers, "Alt")) {
     result = result | ui::EF_ALT_DOWN;
+  }
+  if (base::Contains(modifiers, "AltGr")) {
+    result = result | ui::EF_ALTGR_DOWN;
   }
   if (base::Contains(modifiers, "Shift")) {
     result = result | ui::EF_SHIFT_DOWN;
