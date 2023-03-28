@@ -89,6 +89,10 @@ void BraveVpnService::CheckInitialState() {
 
     ScheduleBackgroundRegionDataFetch();
 #endif
+  } else if (HasValidSkusCredential(local_prefs_)) {
+    // If we have valid skus creds during the startup, we can try to get subs
+    // credential in advance.
+    ReloadPurchasedState();
   } else {
     // Try to reload purchased state if cached credential is not valid because
     // it could be invalidated when not running.
@@ -643,9 +647,28 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     return;
   }
 
+  if (HasValidSkusCredential(local_prefs_)) {
+    // We can reach here if we fail to get subscriber credential from guardian.
+    VLOG(2) << __func__
+            << " Try to get subscriber credential with valid cached skus "
+               "credential.";
+
+    if (GetCurrentEnvironment() != requested_env) {
+      SetCurrentEnvironment(requested_env);
+    }
+
+    api_request_.GetSubscriberCredentialV12(
+        base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
+                       base::Unretained(this),
+                       GetExpirationTimeForSkusCredential(local_prefs_)),
+        GetSkusCredential(local_prefs_),
+        GetBraveVPNPaymentsEnv(GetCurrentEnvironment()));
+    return;
+  }
+
   VLOG(2) << __func__
-          << ": Checking purchased state as we doesn't have valid subscriber "
-             "credentials";
+          << ": Checking purchased state as we doesn't have valid skus or "
+             "subscriber credentials";
   ClearSubscriberCredential(local_prefs_);
 
   EnsureMojoConnected();
@@ -765,6 +788,8 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
     return;
   }
 
+  SetSkusCredential(local_prefs_, credential, time);
+
   if (GetCurrentEnvironment() != env) {
     // Change environment because we have successfully authorized with new one.
     SetCurrentEnvironment(env);
@@ -788,12 +813,14 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     if (subscriber_credential == kTokenNoLongerValid) {
       SetPurchasedState(GetCurrentEnvironment(), PurchasedState::INVALID);
     } else {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
+      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED);
     }
 #endif
     return;
   }
 
+  // Previously cached skus credential is cleared and fetched subscriber
+  // credential is cached.
   SetSubscriberCredential(local_prefs_, subscriber_credential, expiration_time);
 
   // Launch one-shot timer for refreshing subscriber_credential before it's
