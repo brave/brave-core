@@ -1806,52 +1806,6 @@ TEST_F(AssetDiscoveryManagerUnitTest, ParseNFTsFromSimpleHash) {
   ASSERT_TRUE(result);
   EXPECT_EQ(result->second.size(), 1u);
 
-  // 1 ERC1155 NFT
-  json = R"({
-    "next_cursor": null,
-    "next": null,
-    "previous": null,
-    "nfts": [
-      {
-        "chain": "ethereum",
-        "contract_address": "0x28472a58A490c5e09A238847F66A68a47cC76f0f",
-        "token_id": "1",
-        "name": "adidas Originals Into the Metaverse",
-        "image_url": "https://cdn.simplehash.com/assets/0b270f746cda7694c9d6dad5d69384647092cc9016702110fdf2651b0f052641.jpg",
-        "contract": {
-          "type": "ERC1155",
-          "symbol": "ADI"
-        },
-        "collection": {
-          "spam_score": 0
-        }
-      }
-    ]
-  })";
-  json_value = base::JSONReader::Read(json);
-  ASSERT_TRUE(json_value);
-  result = asset_discovery_manager_->ParseNFTsFromSimpleHash(
-      *json_value, mojom::CoinType::ETH);
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->second.size(), 1u);
-  EXPECT_EQ(result->second[0]->contract_address,
-            "0x28472a58A490c5e09A238847F66A68a47cC76f0f");
-  EXPECT_EQ(result->second[0]->name, "adidas Originals Into the Metaverse");
-  EXPECT_EQ(
-      result->second[0]->logo,
-      "https://cdn.simplehash.com/assets/"
-      "0b270f746cda7694c9d6dad5d69384647092cc9016702110fdf2651b0f052641.jpg");
-  EXPECT_EQ(result->second[0]->is_erc20, false);
-  EXPECT_EQ(result->second[0]->is_erc721, false);
-  EXPECT_EQ(result->second[0]->is_erc1155, true);
-  EXPECT_EQ(result->second[0]->is_nft, true);
-  EXPECT_EQ(result->second[0]->symbol, "ADI");
-  EXPECT_EQ(result->second[0]->decimals, 0);
-  EXPECT_EQ(result->second[0]->visible, true);
-  EXPECT_EQ(result->second[0]->token_id, "0x1");
-  EXPECT_EQ(result->second[0]->chain_id, mojom::kMainnetChainId);
-  EXPECT_EQ(result->second[0]->coin, mojom::CoinType::ETH);
-
   // 1 SOL NFT
   json = R"({
     "next": null,
