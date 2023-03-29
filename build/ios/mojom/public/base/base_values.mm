@@ -317,7 +317,7 @@ NSArray<MojoBaseValue*>* NSArrayFromBaseValue(base::Value value) {
 NSDictionary<NSString*, MojoBaseValue*>* NSDictionaryFromBaseValue(
     base::Value value) {
   auto result = [[NSMutableDictionary alloc] init];
-  for (auto kv : value.DictItems()) {
+  for (auto kv : value.GetDict()) {
     result[base::SysUTF8ToNSString(kv.first)] =
         [[MojoBaseValue alloc] initWithValue:kv.second.Clone()];
   }
