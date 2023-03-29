@@ -37,7 +37,7 @@ constexpr char kCloudflareDnsProviderURL[] =
 
 // Timer to recheck the service launch after some time and fallback to DoH if
 // the service was not launched.
-constexpr int kHelperServiceStartTimeoutSec = 3;
+constexpr int kHelperServiceStartTimeoutSec = 5;
 
 void SkipDNSDialog(PrefService* prefs, bool checked) {
   if (!prefs)
@@ -108,22 +108,26 @@ bool BraveVpnDnsObserverService::IsDNSHelperLive() {
   }
   // If the service is not installed we should override DNS because it will be
   // handled by the service.
-
   if (!IsBraveVPNHelperServiceInstalled()) {
     return false;
   }
-  if (!IsBraveVPNHelperServiceRunning()) {
-    content::GetUIThreadTaskRunner({})->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(&BraveVpnDnsObserverService::OnCheckIfServiceStarted,
-                       weak_ptr_factory_.GetWeakPtr()),
-        base::Seconds(kHelperServiceStartTimeoutSec));
-    // The service can be stopped and this is valid state, not started yet,
-    // crashed once and restarting and so on.
+
+  if (IsBraveVPNHelperServiceRunning()) {
+    RunServiceWatcher();
+  }
+
+  if (IsNetworkFiltersInstalled()) {
     return true;
   }
-  RunServiceWatcher();
-  return IsNetworkFiltersInstalled();
+
+  // The service can be stopped and this is valid state, not started yet,
+  // crashed once and restarting and so on.
+  content::GetUIThreadTaskRunner({})->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveVpnDnsObserverService::OnCheckIfServiceStarted,
+                     weak_ptr_factory_.GetWeakPtr()),
+      base::Seconds(kHelperServiceStartTimeoutSec));
+  return true;
 }
 
 void BraveVpnDnsObserverService::RunServiceWatcher() {
