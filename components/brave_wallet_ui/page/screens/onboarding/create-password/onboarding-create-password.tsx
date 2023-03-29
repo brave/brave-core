@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 
 // utils
@@ -33,9 +32,13 @@ import {
   TitleAndDescriptionContainer
 } from '../onboarding.style'
 
-export const OnboardingCreatePassword = () => {
-  // routing
-  const history = useHistory()
+interface OnboardingCreatePasswordProps {
+  isHardwareOnboarding?: boolean
+  onWalletCreated: () => void
+}
+
+export const OnboardingCreatePassword = (props: OnboardingCreatePasswordProps) => {
+  const { isHardwareOnboarding, onWalletCreated } = props
 
   // redux
   const dispatch = useDispatch()
@@ -64,9 +67,9 @@ export const OnboardingCreatePassword = () => {
   React.useEffect(() => {
     if (isWalletCreated) {
       braveWalletP3A.reportOnboardingAction(OnboardingAction.CREATED_WALLET)
-      history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+      onWalletCreated()
     }
-  }, [isWalletCreated])
+  }, [isWalletCreated, onWalletCreated])
 
   // render
   return (
@@ -77,6 +80,7 @@ export const OnboardingCreatePassword = () => {
           <OnboardingNewWalletStepsNavigation
             goBackUrl={WalletRoutes.OnboardingWelcome}
             currentStep={WalletRoutes.OnboardingCreatePassword}
+            isHardwareOnboarding={isHardwareOnboarding}
             preventSkipAhead
           />
 

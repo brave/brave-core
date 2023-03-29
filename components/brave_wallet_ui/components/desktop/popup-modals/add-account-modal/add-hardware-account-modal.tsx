@@ -39,7 +39,11 @@ interface Params {
   accountTypeName: string
 }
 
-export const AddHardwareAccountModal = () => {
+interface Props {
+  onSelectAccountType: (accountType: CreateAccountOptionsType) => () => void
+}
+
+export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
   // routing
   const history = useHistory()
   const { accountTypeName } = useParams<Params>()
@@ -70,10 +74,6 @@ export const AddHardwareAccountModal = () => {
     setImportError(undefined)
     history.push(WalletRoutes.Accounts)
   }, [setImportError])
-
-  const onSelectAccountType = React.useCallback((accountType: CreateAccountOptionsType) => () => {
-    history.push(WalletRoutes.AddHardwareAccountModal.replace(':accountTypeName?', accountType.name.toLowerCase()))
-  }, [])
 
   // render
   return (

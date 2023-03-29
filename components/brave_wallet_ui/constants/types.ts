@@ -733,6 +733,12 @@ export enum WalletRoutes {
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
   OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
 
+  // onboarding (connect hardware wallet)
+  OnboardingConnectHarwareWalletCreatePassword = '/crypto/onboarding/connect-hardware-wallet/create-password',
+  OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
+  OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
+
+
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 

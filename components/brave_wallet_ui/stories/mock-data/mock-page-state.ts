@@ -38,7 +38,7 @@ export const mockPageState: PageState = {
   mnemonic: mockedMnemonic
     .replace('tomato', 'FIRST')
     .replace('velvet', 'THIRD')
-    .concat(` ${mockedMnemonic} LAST`), // 25 word phrase
+    .concat(` ${mockedMnemonic} LAST`),
   enablingAutoPin: false,
   isAutoPinEnabled: false,
   nftsPinningStatus: {},

@@ -25,7 +25,7 @@ import {
 import { OnboardingAction, PageState, WalletRoutes } from '../../../../constants/types'
 
 // styles
-import { VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
+import { Row, VerticalSpace, WalletWelcomeGraphic } from '../../../../components/shared/style'
 import { OnboardingWrapper } from '../onboarding.style'
 import {
   Title,
@@ -33,7 +33,9 @@ import {
   LearnMoreLink,
   BlockQuote,
   BlockQuoteTextContainer,
-  VerticalRule
+  VerticalRule,
+  SubDivider,
+  SubDividerText
 } from './onboarding-welcome.style'
 
 export const OnboardingWelcome = () => {
@@ -46,6 +48,7 @@ export const OnboardingWelcome = () => {
 
   // methods
   const hideDisclosures = React.useCallback(() => setNextStep(undefined), [])
+
   const showNewWalletDisclosures = React.useCallback(
     () => setNextStep(WalletRoutes.OnboardingCreatePassword),
     []
@@ -55,6 +58,10 @@ export const OnboardingWelcome = () => {
     () => setNextStep(WalletRoutes.OnboardingImportOrRestore),
     []
   )
+
+  const showConnectHardwareDisclosures = React.useCallback(() => {
+    setNextStep(WalletRoutes.OnboardingConnectHarwareWalletCreatePassword)
+  }, [])
 
   // custom hooks
   const { braveWalletP3A } = useApiProxy()
@@ -116,6 +123,20 @@ export const OnboardingWelcome = () => {
         />
 
       </ButtonContainer>
+
+      <Row>
+        <SubDivider />
+        <SubDividerText>{getLocale('braveWalletWelcomeDividerText')}</SubDividerText>
+        <SubDivider />
+      </Row>
+
+      <NavButton
+        buttonType='primary'
+        text={getLocale('braveWalletConnectHardwareWallet')}
+        onSubmit={showConnectHardwareDisclosures}
+        maxHeight={'48px'}
+        minWidth={'267px'}
+      />
 
       <VerticalSpace space='20px' />
 

@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-// routes
+// types
 import { WalletRoutes } from '../../../../../constants/types'
 
 // components
@@ -32,13 +32,31 @@ const NEW_WALLET_STEPS: OnboardingNewWalletSteps[] = [
   WalletRoutes.OnboardingComplete
 ]
 
-interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {}
+///
+// Connect Hardware Steps
+//
+type OnboardingConnectHardwareWalletSteps =
+  | WalletRoutes.OnboardingWelcome
+  | WalletRoutes.OnboardingConnectHarwareWalletCreatePassword
+  | WalletRoutes.OnboardingComplete
+
+const CONNECT_HARDWARE_WALLET_STEPS: OnboardingConnectHardwareWalletSteps[] = [
+  WalletRoutes.OnboardingWelcome,
+  WalletRoutes.OnboardingConnectHarwareWalletCreatePassword,
+  WalletRoutes.OnboardingComplete
+]
+
+interface OnboardingNewWalletStepsNavigationProps extends Omit<StepsNavigationProps<OnboardingNewWalletSteps>, 'steps'> {
+  isHardwareOnboarding?: boolean
+}
 
 export const OnboardingNewWalletStepsNavigation = (
   props: OnboardingNewWalletStepsNavigationProps
 ) => {
+  const { isHardwareOnboarding } = props
+
   return <StepsNavigation
     {...props}
-    steps={NEW_WALLET_STEPS}
+    steps={isHardwareOnboarding ? CONNECT_HARDWARE_WALLET_STEPS : NEW_WALLET_STEPS}
   />
 }

@@ -8,7 +8,8 @@ import { useSelector } from 'react-redux'
 import {
   Redirect,
   Route,
-  Switch
+  Switch,
+  useHistory
 } from 'react-router'
 
 // components
@@ -23,11 +24,24 @@ import { OnboardingRestoreFromRecoveryPhrase } from './restore-from-recovery-phr
 // types
 import { PageState, WalletRoutes, WalletState } from '../../../constants/types'
 import { OnboardingSuccess } from './onboarding-success/onboarding-success'
+import { OnboardingConnectHardwareWallet } from './connect-hardware/onboarding-connect-hardware-wallet'
 
 export const OnboardingRoutes = () => {
- // redux
- const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
- const termsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
+  // routing
+  const history = useHistory()
+
+  // redux
+  const isWalletCreated = useSelector(({ wallet }: { wallet: WalletState }) => wallet.isWalletCreated)
+  const termsAcknowledged = useSelector(({ page }: { page: PageState }) => page.walletTermsAcknowledged)
+
+  // methods
+  const goToConnectHardware = React.useCallback(() => {
+    history.push(WalletRoutes.OnboardingConnectHardwareWalletStart)
+  }, [])
+
+  const goToExplainRecoveryPhrase = React.useCallback(() => {
+    history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
+  }, [])
 
   // render
   return (
@@ -48,11 +62,21 @@ export const OnboardingRoutes = () => {
       {(!termsAcknowledged && !isWalletCreated) &&
         <Redirect to={WalletRoutes.OnboardingWelcome} />
       }
-
+      
       <Route path={WalletRoutes.OnboardingCreatePassword} exact>
-        <OnboardingCreatePassword />
+        <OnboardingCreatePassword
+          onWalletCreated={goToExplainRecoveryPhrase}
+        />
       </Route>
 
+      <Route path={WalletRoutes.OnboardingConnectHarwareWalletCreatePassword} exact>
+        <OnboardingCreatePassword
+          isHardwareOnboarding={true}
+          onWalletCreated={goToConnectHardware}
+        />
+      </Route>
+
+      
       {!isWalletCreated &&
         <Route path={WalletRoutes.OnboardingImportOrRestore} exact>
           <OnboardingImportOrRestoreWallet />
@@ -103,6 +127,14 @@ export const OnboardingRoutes = () => {
           />
         </Route>
       }
+
+      <Route path={WalletRoutes.OnboardingConnectHardwareWalletStart} exact>
+        <OnboardingConnectHardwareWallet />
+      </Route>
+
+      <Route path={WalletRoutes.OnboardingConnectHardwareWallet} exact>
+        <OnboardingConnectHardwareWallet />
+      </Route>
 
       {!isWalletCreated && <Redirect to={WalletRoutes.OnboardingWelcome} />}
 
