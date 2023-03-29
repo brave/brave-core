@@ -1313,7 +1313,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
      *          View <=> NetworkSelection state only with All Networks option.
      * @param key as identifier to bind local state of NetworkSelection with the view. If null then
      *         use global/default network selection mode.
-    ^ IMP: Should only be called if the wallet is set up and unlocked
+     * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
      */
     public void openNetworkSelection(NetworkSelectorModel.Mode mode, String key) {
         Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);

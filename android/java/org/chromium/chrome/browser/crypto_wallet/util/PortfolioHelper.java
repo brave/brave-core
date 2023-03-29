@@ -91,12 +91,15 @@ public class PortfolioHelper {
             return true;
         }
 
-        for (AssetTimePrice assetTimePrice : mFiatHistory) {
-            if (Double.parseDouble(assetTimePrice.price) > 0.001d) {
-                return false;
+        try {
+            for (AssetTimePrice assetTimePrice : mFiatHistory) {
+                if (Double.parseDouble(assetTimePrice.price) > 0.001d) {
+                    return false;
+                }
             }
+        } catch (NullPointerException | NumberFormatException ignored) {
+            return true;
         }
-
         return true;
     }
 
@@ -345,7 +348,7 @@ public class PortfolioHelper {
                         .collect(toMap(i -> networks.get(i).chainId, Function.identity()));
     }
 
-    public static class AssetAccountsNetworkBalance {
+    private static class AssetAccountsNetworkBalance {
         HashMap<String, Double> assetPrices;
         BlockchainToken[] userAssetsList;
         HashMap<String, Double> nativeAssetsBalances;

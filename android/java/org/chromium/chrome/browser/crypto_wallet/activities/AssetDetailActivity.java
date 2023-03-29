@@ -108,6 +108,7 @@ public class AssetDetailActivity
                 return;
             }
         } catch (ActivityNotFoundException ignored) {
+            finish();
             return;
         }
 
@@ -238,8 +239,8 @@ public class AssetDetailActivity
             });
         }
         mBtnSwap.setOnClickListener(v
-                -> Utils.openBuySendSwapActivity(AssetDetailActivity.this,
-                        BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol, mChainId));
+                -> Utils.openBuySendSwapActivity(
+                        this, BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol, mChainId));
 
         adjustButtonsVisibilities();
 
@@ -393,8 +394,7 @@ public class AssetDetailActivity
 
     @Override
     public void onAccountClick(WalletListItemModel walletListItemModel) {
-        Intent accountDetailActivityIntent =
-                new Intent(AssetDetailActivity.this, AccountDetailActivity.class);
+        Intent accountDetailActivityIntent = new Intent(this, AccountDetailActivity.class);
         accountDetailActivityIntent.putExtra(Utils.NAME, walletListItemModel.getTitle());
         accountDetailActivityIntent.putExtra(Utils.ADDRESS, walletListItemModel.getSubTitle());
         accountDetailActivityIntent.putExtra(
@@ -467,10 +467,10 @@ public class AssetDetailActivity
     private void showAccounts(RecyclerView rvAccounts, WalletCoinAdapter walletCoinAdapter,
             List<WalletListItemModel> walletListItemModelList) {
         walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(AssetDetailActivity.this);
+        walletCoinAdapter.setOnWalletListItemClick(this);
         walletCoinAdapter.setWalletListItemType(Utils.ACCOUNT_ITEM);
         rvAccounts.setAdapter(walletCoinAdapter);
-        rvAccounts.setLayoutManager(new LinearLayoutManager(AssetDetailActivity.this));
+        rvAccounts.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void adjustButtonsVisibilities() {
