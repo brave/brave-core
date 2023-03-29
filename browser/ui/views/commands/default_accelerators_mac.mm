@@ -1,0 +1,186 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/views/commands/default_accelerators_mac.h"
+
+#import <Cocoa/Cocoa.h>
+
+#include "base/check.h"
+#include "base/containers/contains.h"
+#include "base/containers/flat_map.h"
+#include "base/logging.h"
+#include "base/strings/sys_string_conversions.h"
+#include "brave/app/command_utils.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/global_keyboard_shortcuts_mac.h"
+#include "chrome/browser/ui/cocoa/accelerators_cocoa.h"
+#include "ui/events/cocoa/cocoa_event_utils.h"
+#include "ui/events/event_constants.h"
+#include "ui/events/keycodes/keyboard_code_conversion_mac.h"
+
+static_assert(__OBJC__);
+static_assert(BUILDFLAG(IS_MAC));
+
+namespace commands {
+
+namespace {
+
+bool CanConvertToAcceleratorMapping(int command_id) {
+  if (!command_id) {
+    return command_id;
+  }
+
+  return base::Contains(commands::GetCommands(), command_id);
+}
+
+bool CanConvertToAcceleratorMapping(NSMenuItem* item) {
+  if (auto command_id = static_cast<int>(item.tag);
+      !CanConvertToAcceleratorMapping(command_id)) {
+    return false;
+  }
+
+  NSString* keyEquivalent = item.keyEquivalent;
+  return keyEquivalent != nil && [keyEquivalent length] > 0;
+}
+
+AcceleratorMapping ToAcceleratorMapping(NSMenuItem* item) {
+  NSString* keyEquivalent = item.keyEquivalent;
+  DVLOG(2) << __FUNCTION__ << item.tag << " > "
+           << base::SysNSStringToUTF16(keyEquivalent);
+  NSEvent* keyEvent = [NSEvent keyEventWithType:NSEventTypeKeyDown
+                                       location:NSZeroPoint
+                                  modifierFlags:0
+                                      timestamp:0
+                                   windowNumber:0
+                                        context:nil
+                                     characters:keyEquivalent
+                    charactersIgnoringModifiers:keyEquivalent
+                                      isARepeat:NO
+                                        keyCode:0];
+
+  auto modifiers = ui::EventFlagsFromModifiers(item.keyEquivalentModifierMask);
+  if (item.keyEquivalentModifierMask & NSEventModifierFlagFunction) {
+    // ui::EventFlagsFromModifiers doesn't handle the 'Function key.
+    modifiers |= ui::EF_FUNCTION_DOWN;
+  }
+
+  if (![keyEquivalent isEqualToString:[keyEquivalent lowercaseString]]) {
+    // Shift key could be omitted in |item.keyEquivalentModifierMask| even
+    // if it's needed. In this case |item.keyEquivalent| can be already
+    // shifted/capitalized. So we should add it manually.
+    modifiers |= ui::EF_SHIFT_DOWN;
+  }
+
+  // "Close Tab" and "Close Window" item's shortcuts are statically the same.
+  // They are dynamically changed based on the context. e.g. has tab or not,
+  // is pwa or not. And also the value is hard coded.
+  // https://github.com/chromium/chromium/blob/299385e09d41d5ce3abd434879b5f9b0a8880cd7/chrome/browser/app_controller_mac.mm#L772
+  // Here we're to provide brave commands, manually add shift modifier for
+  // the "Close Window" item.
+  // TODO(sko) As the shortcut is hard coded in the file above, we might need to
+  // forbid to adjust default key for IDC_CLOSE_TAB and IDC_CLOSE_WINDOW.
+  if (static_cast<int>(item.tag) == IDC_CLOSE_WINDOW &&
+      (modifiers == ui::EF_COMMAND_DOWN &&
+       [keyEquivalent isEqualToString:@"w"])) {
+    modifiers |= ui::EF_SHIFT_DOWN;
+  }
+
+  return {.keycode = ui::KeyboardCodeFromNSEvent(keyEvent),
+          .modifiers = modifiers,
+          .command_id = static_cast<int>(item.tag)};
+}
+
+AcceleratorMapping ToAcceleratorMapping(const KeyboardShortcutData& data) {
+  int modifiers = 0;
+  if (data.command_key) {
+    modifiers |= ui::EF_COMMAND_DOWN;
+  }
+  if (data.shift_key) {
+    modifiers |= ui::EF_SHIFT_DOWN;
+  }
+  if (data.cntrl_key) {
+    modifiers |= ui::EF_CONTROL_DOWN;
+  }
+  if (data.opt_key) {
+    modifiers |= ui::EF_ALT_DOWN;
+  }
+
+  return {.keycode = ui::KeyboardCodeFromKeyCode(data.vkey_code),
+          .modifiers = modifiers,
+          .command_id = data.chrome_command};
+}
+
+AcceleratorMapping ToAcceleratorMapping(int command_id,
+                                        const ui::Accelerator& accelerator) {
+  return {.keycode = accelerator.key_code(),
+          .modifiers = accelerator.modifiers(),
+          .command_id = command_id};
+}
+
+void AccumulateAcceleratorsRecursively(
+    base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>*
+        accelerators,
+    NSMenu* menu) {
+  CHECK(menu);
+
+  for (NSMenuItem* item in [menu itemArray]) {
+    if (CanConvertToAcceleratorMapping(item)) {
+      (*accelerators)[static_cast<int>(item.tag)].push_back(
+          ToAcceleratorMapping(item));
+    }
+
+    if (NSMenu* submenu = [item submenu];
+        submenu && submenu != [NSApp servicesMenu]) {
+      AccumulateAcceleratorsRecursively(accelerators, submenu);
+    }
+  }
+}
+
+}  // namespace
+
+std::vector<AcceleratorMapping> GetGlobalAccelerators() {
+  base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>
+      accelerator_map;
+
+  // Get dynamic items from main menu.
+  AccumulateAcceleratorsRecursively(&accelerator_map, [NSApp mainMenu]);
+
+  // Get items that are not displayed but global.
+  for (const auto& shortcut_data : GetShortcutsNotPresentInMainMenu()) {
+    if (!CanConvertToAcceleratorMapping(shortcut_data.chrome_command)) {
+      DVLOG(2) << " NOT IN COMMANDS : " << shortcut_data.chrome_command;
+      continue;
+    }
+
+    DVLOG(2) << "IN COMMANDS : " << shortcut_data.chrome_command;
+    accelerator_map[shortcut_data.chrome_command].push_back(
+        ToAcceleratorMapping(shortcut_data));
+  }
+
+  // Add missing accelerators from static table.
+  // e.g. IDC_CLOSE_TAB is missing because it's dynamically added.
+  for (const auto& [command_id, accelerator] :
+       *AcceleratorsCocoa::GetInstance()) {
+    if (base::Contains(accelerator_map, command_id) ||
+        !CanConvertToAcceleratorMapping(command_id)) {
+      continue;
+    }
+
+    accelerator_map[command_id].push_back(
+        ToAcceleratorMapping(command_id, accelerator));
+  }
+
+  std::vector<AcceleratorMapping> result;
+  for (auto& [command_id, accelerator_mappings] : accelerator_map) {
+    DCHECK_NE(command_id, 0);
+    for (auto& accelerator_mapping : accelerator_mappings) {
+      DCHECK(accelerator_mapping.modifiers);
+      result.push_back(std::move(accelerator_mapping));
+    }
+  }
+  return result;
+}
+
+}  // namespace commands

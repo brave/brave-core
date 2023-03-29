@@ -60,10 +60,8 @@ std::u16string VerticalTabStripRegionView::GetShortcutTextForNewTabButton(
   // So we should look into main menus in order to get the accurate accelerator
   // for new tab command.
 
-  //   auto* menu = [NSApp mainMenu];
   NSMenuItem* item =
       findMenuItemWithCommandRecursively([NSApp mainMenu], IDC_NEW_TAB);
-  //   NSMenuItem* item = [[NSApp mainMenu] itemWithTag:IDC_NEW_TAB];
   DCHECK(item);
 
   return base::SysNSStringToUTF16(keyCombinationForMenuItem(item));

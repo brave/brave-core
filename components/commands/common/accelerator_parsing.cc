@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/contains.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -32,6 +34,28 @@ constexpr char kApplicationNew[] = "AppNew";
 
 constexpr char kMenu[] = "Alt";
 constexpr char kRMenu[] = "AltGr";
+
+struct ModifierName {
+  const ui::KeyEventFlags modifier;
+  const base::StringPiece name;
+};
+
+const std::vector<ModifierName>& GetAllModifierNames() {
+  static const base::NoDestructor<std::vector<ModifierName>> modifier_names({
+#if BUILDFLAG(IS_MAC)
+    {.modifier = ui::EF_COMMAND_DOWN, .name = "Command"},
+#else
+    {.modifier = ui::EF_COMMAND_DOWN, .name = "Meta"},
+#endif
+        {.modifier = ui::EF_CONTROL_DOWN, .name = "Control"},
+        {.modifier = ui::EF_ALT_DOWN, .name = "Alt"},
+        {.modifier = ui::EF_ALTGR_DOWN, .name = "AltGr"},
+        {.modifier = ui::EF_SHIFT_DOWN, .name = "Shift"},
+        {.modifier = ui::EF_FUNCTION_DOWN, .name = "Fn"},
+  });
+
+  return *modifier_names;
+}
 
 std::string KeyboardCodeToDomCodeString(ui::KeyboardCode code) {
 #if !BUILDFLAG(IS_WIN)
@@ -81,29 +105,10 @@ ui::KeyboardCode DomCodeStringToKeyboardCode(const std::string& key) {
 
 std::vector<std::string> GetModifierNames(ui::KeyEventFlags flags) {
   std::vector<std::string> result;
-
-  if (flags & ui::EF_COMMAND_DOWN) {
-    result.push_back("Meta");
-  }
-
-  if (flags & ui::EF_CONTROL_DOWN) {
-    result.push_back("Control");
-  }
-
-  if (flags & ui::EF_ALT_DOWN) {
-    result.push_back("Alt");
-  }
-
-  if (flags & ui::EF_ALTGR_DOWN) {
-    result.push_back("AltGr");
-  }
-
-  if (flags & ui::EF_SHIFT_DOWN) {
-    result.push_back("Shift");
-  }
-
-  if (flags & ui::EF_FUNCTION_DOWN) {
-    result.push_back("Fn");
+  for (const auto& [modifier, name] : GetAllModifierNames()) {
+    if (flags & modifier) {
+      result.emplace_back(name);
+    }
   }
 
   return result;
@@ -112,23 +117,10 @@ std::vector<std::string> GetModifierNames(ui::KeyEventFlags flags) {
 ui::KeyEventFlags GetModifierFromKeys(
     const std::vector<std::string>& modifiers) {
   ui::KeyEventFlags result = ui::EF_NONE;
-  if (base::Contains(modifiers, "Control")) {
-    result = result | ui::EF_CONTROL_DOWN;
-  }
-  if (base::Contains(modifiers, "Meta")) {
-    result = result | ui::EF_COMMAND_DOWN;
-  }
-  if (base::Contains(modifiers, "Alt")) {
-    result = result | ui::EF_ALT_DOWN;
-  }
-  if (base::Contains(modifiers, "AltGr")) {
-    result = result | ui::EF_ALTGR_DOWN;
-  }
-  if (base::Contains(modifiers, "Shift")) {
-    result = result | ui::EF_SHIFT_DOWN;
-  }
-  if (base::Contains(modifiers, "Fn")) {
-    result = result | ui::EF_FUNCTION_DOWN;
+  for (const auto& [modifier, name] : GetAllModifierNames()) {
+    if (base::Contains(modifiers, name)) {
+      result |= modifier;
+    }
   }
   return result;
 }
@@ -155,6 +147,7 @@ std::string ToCodesString(const ui::Accelerator& accelerator) {
 }
 
 ui::Accelerator FromCodesString(const std::string& value) {
+  DCHECK(!value.empty());
   std::vector<std::string> parts = base::SplitString(
       value, "+", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
 
