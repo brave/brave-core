@@ -78,8 +78,21 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     return net::OK;
   }
   base::StringPiece tab_origin_host(ctx->tab_origin.host_piece());
-  if (kFarbleAcceptLanguageExceptions.contains(tab_origin_host))
+  if (kFarbleAcceptLanguageExceptions.contains(tab_origin_host)) {
     return net::OK;
+  }
+
+  if (headers->HasHeader(net::HttpRequestHeaders::kAcceptLanguage)) {
+    // For virtually all requests (HTML, CSS, JS, images, XHR), this header will
+    // not exist yet. If the request headers already include an Accept-Language
+    // value here, it means something explicitly set it, e.g. a page script
+    // initiating an XHR with an explicit Accept-Language header. If so, we need
+    // to leave it alone, because there are a lot of servers out there that do
+    // not like the Accept-Language being anything other than what their
+    // client-side code set.
+    // https://github.com/brave/brave-browser/issues/28945
+    return net::OK;
+  }
 
   std::string accept_language_string;
   switch (brave_shields::GetFingerprintingControlType(content_settings,
