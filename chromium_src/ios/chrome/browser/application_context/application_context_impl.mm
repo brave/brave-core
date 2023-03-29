@@ -400,11 +400,6 @@ void ApplicationContextImpl::CreateGCMDriver() {
   DCHECK(thread_checker_.CalledOnValidThread());
 }
 
-PromosManager* ApplicationContextImpl::GetPromosManager() {
-  DCHECK(thread_checker_.CalledOnValidThread());
-  return nullptr;
-}
-
 PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {
   if (!push_notification_service_) {
     push_notification_service_ = ios::provider::CreatePushNotificationService();
