@@ -43,6 +43,16 @@ source_set("constants") {
   sources = [ "constants.h" ]
 }
 
+shared_library("widevine_proxy") {
+  deps = [ "//base" ]
+  defines = [ "CDM_IMPLEMENTATION" ]
+  sources = [
+    "//media/cdm/api/content_decryption_module.h",
+    "//media/cdm/api/content_decryption_module_export.h",
+    "widevine_proxy.cc"
+  ]
+}
+
 source_set("unittest") {
   testonly = true
 

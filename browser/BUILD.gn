@@ -53,11 +53,15 @@ group("browser") {
     "//brave/components/ipfs/test:*",
   ]
 
+  deps = []
+  if (is_win) {
+    deps += [ "widevine:widevine_proxy" ]
+  }
   if (enable_sparkle) {
     if (build_sparkle) {
-      deps = [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
+      deps += [ "//brave/vendor/sparkle:sparkle_framework_bundle_data" ]
     } else {
-      deps = [ ":prebuilt_sparkle_framework_bundle_data" ]
+      deps += [ ":prebuilt_sparkle_framework_bundle_data" ]
     }
   }
 

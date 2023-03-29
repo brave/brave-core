@@ -1,0 +1,67 @@
+diff --git a/media/cdm/cdm_module.cc b/media/cdm/cdm_module.cc
+index 83bd26b0937072b340775138e872cc034f17ffe3..fe283c77a954989b807e3aa38288f24421443934 100644
+--- a/media/cdm/cdm_module.cc
++++ b/media/cdm/cdm_module.cc
+@@ -4,11 +4,15 @@
+ 
+ #include "media/cdm/cdm_module.h"
+ 
++#include <utility>
++#include <windows.h>
++
+ #include "base/files/file_util.h"
+ #include "base/logging.h"
+ #include "base/memory/ptr_util.h"
+ #include "base/metrics/histogram_macros.h"
+ #include "base/notreached.h"
++#include "base/path_service.h"
+ #include "base/time/time.h"
+ #include "base/trace_event/trace_event.h"
+ #include "build/build_config.h"
+@@ -110,14 +114,38 @@ bool CdmModule::Initialize(const base::FilePath& cdm_path) {
+   base::TimeTicks start = base::TimeTicks::Now();
+   library_ = base::ScopedNativeLibrary(cdm_path);
+   base::TimeDelta load_time = base::TimeTicks::Now() - start;
+-  if (!library_.is_valid()) {
+-    LOG(ERROR) << "CDM at " << cdm_path.value() << " could not be loaded.";
+-    LOG(ERROR) << "Error: " << library_.GetError()->ToString();
+-    ReportLoadResult(kUmaPrefix, base::PathExists(cdm_path)
+-                                     ? CdmLoadResult::kLoadFailed
+-                                     : CdmLoadResult::kFileMissing);
+-    ReportLoadErrorCode(kUmaPrefix, library_.GetError());
+-    return false;
++  VLOG(1) << "Loading " << cdm_path.value();
++  if (!library_.is_valid() &&
++      library_.GetError()->code == ERROR_BAD_EXE_FORMAT) {
++    VLOG(1) << "Loading " << cdm_path.value() << " failed.";
++    base::FilePath dir_exe;
++    base::PathService::Get(base::DIR_EXE, &dir_exe);
++    base::FilePath proxy_dll_path = dir_exe.AppendASCII("widevine_proxy.dll");
++    auto proxy_library = base::ScopedNativeLibrary(proxy_dll_path);
++    if (proxy_library.is_valid()) {
++      VLOG(1) << "Loaded proxy " << proxy_dll_path;
++      using SetOrigDllFunc = void (*)(const base::FilePath&);
++      SetOrigDllFunc SetOrigDll = reinterpret_cast<SetOrigDllFunc>(
++          proxy_library.GetFunctionPointer("SetOrigDll"));
++      if (!SetOrigDll) {
++        VLOG(1) << "SetOrigDll not found.";
++        return false;
++      } else {
++        SetOrigDll(cdm_path);
++        VLOG(1) << "Called SetOrigDll.";
++        cdm_path_ = proxy_dll_path;
++        library_ = std::move(proxy_library);
++        VLOG(1) << "Updated library.";
++      }
++    } else {
++      LOG(ERROR) << "CDM at " << cdm_path.value() << " could not be loaded.";
++      LOG(ERROR) << "Error: " << library_.GetError()->ToString();
++      ReportLoadResult(kUmaPrefix, base::PathExists(cdm_path)
++                                       ? CdmLoadResult::kLoadFailed
++                                       : CdmLoadResult::kFileMissing);
++      ReportLoadErrorCode(kUmaPrefix, library_.GetError());
++      return false;
++    }
+   }
+ 
+   // Only report load time for success loads.
