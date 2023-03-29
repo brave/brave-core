@@ -53,6 +53,8 @@
 #include "ios/public/provider/chrome/browser/push_notification/push_notification_api.h"
 #import "ios/public/provider/chrome/browser/signin/signin_identity_api.h"
 #include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
+#import "ios/web/public/thread/web_task_traits.h"
+#import "ios/web/public/thread/web_thread.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
 #include "net/log/net_log_capture_mode.h"
@@ -410,4 +412,10 @@ PushNotificationService* ApplicationContextImpl::GetPushNotificationService() {
   }
 
   return push_notification_service_.get();
+}
+
+void ApplicationContextImpl::PostCreateThreads() {
+  web::GetIOThreadTaskRunner({})->PostTask(
+      FROM_HERE, base::BindOnce(&IOSChromeIOThread::InitOnIO,
+                                base::Unretained(ios_chrome_io_thread_.get())));
 }
