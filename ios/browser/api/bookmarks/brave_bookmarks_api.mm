@@ -79,8 +79,8 @@
 
     if ([guid length] > 0) {
       std::u16string guid_string = base::SysNSStringToUTF16(guid);
-      DCHECK(base::IsValidGUID(guid_string));
       guid_ = base::GUID::ParseCaseInsensitive(guid_string);
+      DCHECK(guid_.is_valid());
     } else {
       guid_ = base::GUID::GenerateRandomV4();
     }
