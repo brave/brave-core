@@ -236,7 +236,6 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
                          gin::StringToV8(isolate, kIsMetaMask), true);
 
   // Set non-writable _metamask obj with non-writable isUnlocked method.
-  v8::Local<v8::Value> metamask_value;
   v8::Local<v8::Object> metamask_obj = v8::Object::New(isolate);
   provider_object
       ->Set(context, gin::StringToSymbol(isolate, kMetaMask), metamask_obj)
