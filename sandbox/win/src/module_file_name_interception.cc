@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <string>
 
+#include "base/compiler_specific.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/win/windows_types.h"
@@ -61,7 +62,8 @@ template <template <class T> class FromTo, typename CharT>
 absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
                                         DWORD length,
                                         DWORD size) {
-  if (!base::EndsWith(filename, FromTo<CharT>::kBrave,
+  if (!base::EndsWith(base::BasicStringPiece(filename, length),
+                      FromTo<CharT>::kBrave,
                       base::CompareCase::INSENSITIVE_ASCII)) {
     return absl::nullopt;
   }
@@ -71,14 +73,16 @@ absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
   static_assert(kBraveLen <= kChromeLen);
   constexpr DWORD kLenDiff = kChromeLen - kBraveLen;
 
+  --size;  // space for null-terminator
+
   const size_t brave_pos = length - kBraveLen;
   ReplaceAt(filename + brave_pos, size - brave_pos, FromTo<CharT>::kChrome);
   if (size < length + kLenDiff) {
     ::SetLastError(ERROR_INSUFFICIENT_BUFFER);
   }
-  const auto result = std::min(size, length + kLenDiff);
-  filename[result] = 0;
-  return result;
+  length = std::min(size, length + kLenDiff);
+  filename[length] = 0;
+  return length;
 }
 
 template <typename CharT>
@@ -112,12 +116,22 @@ TargetGetModuleFileNameA(GetModuleFileNameAFunction orig,
   return result;
 }
 
+#if defined(ADDRESS_SANITIZER)
+static int g_asan_init_skip_count = 2;
+#endif
+
+NO_SANITIZE("address")
 SANDBOX_INTERCEPT DWORD WINAPI
 TargetGetModuleFileNameW(GetModuleFileNameWFunction orig,
                          HMODULE hModule,
                          LPWSTR lpFilename,
                          DWORD nSize) {
   const auto result = orig(hModule, lpFilename, nSize);
+#if defined(ADDRESS_SANITIZER)
+  if (g_asan_init_skip_count--) {
+    return result;
+  }
+#endif
   if (result != 0) {
     return PatchFilename(lpFilename, result, nSize);
   }

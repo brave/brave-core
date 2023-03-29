@@ -57,7 +57,6 @@ bool SetupModuleFilenameInterceptions(InterceptionManager* manager,
     return false;
   }
 #endif
-
   return true;
 }
 }  // namespace

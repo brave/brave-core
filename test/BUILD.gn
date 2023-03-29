@@ -683,6 +683,10 @@ test("brave_browser_tests") {
     "//chrome/test:disable_thinlto_cache_flags",
   ]
 
+  if (is_win) {
+    configs += [ "//build/config/win:delayloads" ]
+  }
+
   sources = [
     "//brave/browser/brave_ads/brave_stats_helper_browsertest.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
