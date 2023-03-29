@@ -106,7 +106,7 @@ class IpfsService : public KeyedService,
   void AddObserver(IpfsServiceObserver* observer);
   void RemoveObserver(IpfsServiceObserver* observer);
 
-  bool IsDaemonLaunched() const;
+  virtual bool IsDaemonLaunched() const;
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
   void RegisterIpfsClientUpdater();
@@ -222,7 +222,9 @@ class IpfsService : public KeyedService,
   void OnGetPinsResult(APIRequestList::iterator iter,
                        GetPinsCallback callback,
                        api_request_helper::APIRequestResult response);
-  void OnPinAddResult(APIRequestList::iterator iter,
+  void OnPinAddResult(size_t cids_count_in_request,
+                      bool recursive,
+                      APIRequestList::iterator iter,
                       AddPinCallback callback,
                       api_request_helper::APIRequestResult response);
   void OnPinRemoveResult(APIRequestList::iterator iter,

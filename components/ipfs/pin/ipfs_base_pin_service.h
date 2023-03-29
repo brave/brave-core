@@ -37,10 +37,11 @@ class IpfsBasePinService : public IpfsServiceObserver {
 
   virtual void AddJob(std::unique_ptr<IpfsBaseJob> job);
   void OnJobDone(bool result);
+  void OnGetConnectedPeersResult(size_t attempt,
+                                 bool succes,
+                                 const std::vector<std::string>& peers);
 
   void OnIpfsShutdown() override;
-  void OnGetConnectedPeers(bool succes,
-                           const std::vector<std::string>& peers) override;
 
  protected:
   // For testing
@@ -52,8 +53,9 @@ class IpfsBasePinService : public IpfsServiceObserver {
 
   bool IsDaemonReady();
   void MaybeStartDaemon();
-  void OnDaemonStarted();
   void DoNextJob();
+  void PostGetConnectedPeers(size_t attempt);
+  void GetConnectedPeers(size_t attempt);
 
   bool daemon_ready_ = false;
   raw_ptr<IpfsService> ipfs_service_;

@@ -406,8 +406,8 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
 
   iter->get()->Request(
       "POST", gurl, std::string(), std::string(), false,
-      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this), iter,
-                     std::move(callback)),
+      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
+                     cids.size(), recursive, iter, std::move(callback)),
       GetHeaders(gurl));
 }
 
@@ -1075,6 +1075,8 @@ void IpfsService::OnGetPinsResult(
 }
 
 void IpfsService::OnPinAddResult(
+    size_t cids_count_in_request,
+    bool recursive,
     APIRequestList::iterator iter,
     AddPinCallback callback,
     api_request_helper::APIRequestResult response) {
@@ -1094,6 +1096,14 @@ void IpfsService::OnPinAddResult(
     std::move(callback).Run(absl::nullopt);
     return;
   }
+
+  if (parse_result->pins.size() != cids_count_in_request) {
+    VLOG(1) << "Not all CIDs were added";
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  parse_result->recursive = recursive;
 
   std::move(callback).Run(std::move(parse_result));
 }
