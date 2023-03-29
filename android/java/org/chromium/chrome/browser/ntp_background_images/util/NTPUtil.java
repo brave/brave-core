@@ -67,6 +67,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class NTPUtil {
+    private static final String TAG = "NTPUtil";
+
     private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
     private static final String REMOVED_SITES = "removed_sites";
 
@@ -216,7 +218,24 @@ public class NTPUtil {
         SpannableString learnMoreTextSS = new SpannableString(learnMoreSpanned.toString());
 
         ForegroundColorSpan brOffForegroundSpan = new ForegroundColorSpan(chromeActivity.getResources().getColor(R.color.brave_theme_color));
-        learnMoreTextSS.setSpan(brOffForegroundSpan, learnMoreIndex, learnMoreIndex + chromeActivity.getResources().getString(R.string.learn_more).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // setSpan gives us IndexOutOfBoundsException in case of end or start are > length and in
+        // some other cases.
+        int length = learnMoreTextSS.length();
+        int endIndex = learnMoreIndex
+                + chromeActivity.getResources().getString(R.string.learn_more).length();
+        if (endIndex < learnMoreIndex || learnMoreIndex >= length || endIndex >= length
+                || learnMoreIndex < 0 || endIndex < 0) {
+            return learnMoreTextSS;
+        }
+        try {
+            learnMoreTextSS.setSpan(brOffForegroundSpan, learnMoreIndex, endIndex,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } catch (IndexOutOfBoundsException e) {
+            Log.e(TAG,
+                    "getBannerText: learnMoreIndex == " + learnMoreIndex
+                            + ", endIndex == " + endIndex + ". Error: " + e.getMessage());
+        }
+
         return learnMoreTextSS;
     }
 
