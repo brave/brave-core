@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index e56688f7ab2a8b0ee59d0b7389e4c87370c8fad2..dde0c9c30e71258076379851162d7a345c3e055c 100755
+index e56688f7ab2a8b0ee59d0b7389e4c87370c8fad2..a7753fb79ef03e4badf2441f3e63bf1061ad9062 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -39,6 +39,7 @@ from spdx_writer import SpdxWriter
