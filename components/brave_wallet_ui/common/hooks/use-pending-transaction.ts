@@ -124,6 +124,7 @@ export const usePendingTransactions = () => {
   const onEditAllowanceSave = React.useCallback((allowance: string) => {
     if (transactionInfo?.id && transactionDetails) {
       dispatch(WalletActions.updateUnapprovedTransactionSpendAllowance({
+        chainId: transactionInfo.chainId,
         txMetaId: transactionInfo.id,
         spenderAddress: transactionDetails.approvalTarget || '',
         allowance: new Amount(allowance)

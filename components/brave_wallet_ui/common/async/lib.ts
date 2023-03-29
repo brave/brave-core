@@ -59,11 +59,15 @@ export const getERC20Allowance = (
   spenderAddress: string
 ): Promise<string> => {
   return new Promise(async (resolve, reject) => {
-    const service = getAPIProxy().jsonRpcService
-    const result = await service.getERC20TokenAllowance(
+    const { braveWalletService, jsonRpcService } = getAPIProxy()
+    const { chainId }
+      = await braveWalletService.getChainIdForActiveOrigin(
+          BraveWallet.CoinType.ETH)
+    const result = await jsonRpcService.getERC20TokenAllowance(
       contractAddress,
       ownerAddress,
-      spenderAddress
+      spenderAddress,
+      chainId
     )
 
     if (result.error === BraveWallet.ProviderError.kSuccess) {
@@ -116,9 +120,9 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 }
 
 export const getBalance = async (address: string, coin: BraveWallet.CoinType): Promise<string> => {
-  const { jsonRpcService } = getAPIProxy()
-  const chainId = await jsonRpcService.getChainId(coin)
-  return await getBalanceForChainId(address, coin, chainId.chainId)
+  const { braveWalletService } = getAPIProxy()
+  const { chainId } = await braveWalletService.getChainIdForActiveOrigin(coin)
+  return await getBalanceForChainId(address, coin, chainId)
 }
 
 export function getBalanceForChainId (address: string, coin: BraveWallet.CoinType, chainId: string): Promise<string> {
@@ -827,7 +831,9 @@ export function refreshTransactionHistory (address?: string) {
 
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce<Promise<AccountTransactions>>(
       async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } = await txService.getAllTransactionInfo(account.coin, account.address)
+        const { transactionInfos } =
+          await txService.getAllTransactionInfo(
+            account.coin, null, account.address)
         const serializedTransactionInfos = transactionInfos.map(makeSerializableTransaction)
         obj[account.address] = sortTransactionByDate(serializedTransactionInfos, 'descending')
         return obj
@@ -855,9 +861,9 @@ export function refreshKeyringInfo () {
 
     // Get default accounts for each CoinType
     const defaultAccounts = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const chainId = await jsonRpcService.getChainId(coin)
+      const { chainId } = await jsonRpcService.getChainId(coin, null)
       const defaultAccount = coin === BraveWallet.CoinType.FIL
-        ? await keyringService.getFilecoinSelectedAccount(chainId.chainId)
+        ? await keyringService.getFilecoinSelectedAccount(chainId)
         : await keyringService.getSelectedAccount(coin)
       const defaultAccountAddress = defaultAccount.address
       return walletInfo.accountInfos.find((account) => account.address.toLowerCase() === defaultAccountAddress?.toLowerCase()) ?? {} as BraveWallet.AccountInfo
@@ -871,9 +877,9 @@ export function refreshKeyringInfo () {
     let selectedAccount = { address: null } as { address: string | null }
 
     if (selectedCoin === BraveWallet.CoinType.FIL) {
-      const coinsChainId = await jsonRpcService.getChainId(selectedCoin)
+      const { chainId } = await jsonRpcService.getChainId(selectedCoin, null)
       selectedAccount = await keyringService.getFilecoinSelectedAccount(
-        coinsChainId.chainId
+        chainId
       )
     }
 
@@ -960,7 +966,9 @@ export async function sendEthTransaction (payload: SendEthTransactionParams) {
       isEIP1559 = payload.hasEIP1559Support
   }
 
-  const { chainId } = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
+  const { chainId } =
+    await apiProxy.braveWalletService.getChainIdForActiveOrigin(
+      BraveWallet.CoinType.ETH)
 
   let addResult
   const txData: BraveWallet.TxData = {
@@ -1060,9 +1068,11 @@ export function getEthTxManagerProxy () {
 export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
   const { jsonRpcService } = getAPIProxy()
   if (token.coin === BraveWallet.CoinType.ETH) {
-    return await jsonRpcService.getERC721Metadata(token.contractAddress, token.tokenId, token.chainId)
+    return await jsonRpcService.getERC721Metadata(
+      token.contractAddress, token.tokenId, token.chainId)
   } else if (token.coin === BraveWallet.CoinType.SOL) {
-    return await jsonRpcService.getSolTokenMetadata(token.chainId, token.contractAddress)
+    return await jsonRpcService.getSolTokenMetadata(
+      token.chainId, token.contractAddress)
   }
 
   return undefined

@@ -35,7 +35,7 @@ export class WalletApiProxy {
       chainChangedEvent: function (chainId, coin, origin) {
         store.dispatch(
           WalletActions.chainChangedEvent({
-            chainId, coin, origin: !!origin ? origin : undefined}))
+            chainId, coin, origin: origin || undefined}))
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
         // TODO: Handle this event.

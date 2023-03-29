@@ -61,6 +61,7 @@ export type SwapParamsPayloadType = {
 }
 
 export type UpdateUnapprovedTransactionGasFieldsType = {
+  chainId: string
   txMetaId: string
   gasLimit: string
   gasPrice?: string
@@ -69,12 +70,14 @@ export type UpdateUnapprovedTransactionGasFieldsType = {
 }
 
 export type UpdateUnapprovedTransactionSpendAllowanceType = {
+  chainId: string
   txMetaId: string
   spenderAddress: string
   allowance: string
 }
 
 export type UpdateUnapprovedTransactionNonceType = {
+  chainId: string
   txMetaId: string
   nonce: string
 }
@@ -127,6 +130,7 @@ export type SetTransactionProviderErrorType = {
 }
 
 export interface RetryTransactionPayload {
+  chainId: string
   transactionId: string
   coinType: BraveWallet.CoinType
   fromAddress: string

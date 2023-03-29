@@ -157,6 +157,7 @@ export const EditGas = ({
   const onSave = () => {
     if (!isEIP1559Transaction) {
       updateUnapprovedTransactionGasFields({
+        chainId: transactionInfo.chainId,
         txMetaId: transactionInfo.id,
         gasPrice: new Amount(gasPrice)
           .multiplyByDecimals(9)
@@ -171,6 +172,7 @@ export const EditGas = ({
 
     if (maxPriorityPanel === MaxPriorityPanels.setCustom) {
       updateUnapprovedTransactionGasFields({
+        chainId: transactionInfo.chainId,
         txMetaId: transactionInfo.id,
         maxPriorityFeePerGas: new Amount(maxPriorityFeePerGas)
           .multiplyByDecimals(9)
@@ -183,6 +185,7 @@ export const EditGas = ({
       })
     } else if (maxPriorityPanel === MaxPriorityPanels.setSuggested) {
       updateUnapprovedTransactionGasFields({
+        chainId: transactionInfo.chainId,
         txMetaId: transactionInfo.id,
         gasLimit: new Amount(gasLimit)
           .toHex(),

@@ -299,6 +299,7 @@ function Container () {
     dispatch(WalletActions.retryTransaction({
       coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      chainId: transaction.chainId,
       transactionId: transaction.id
     }))
   }
@@ -307,6 +308,7 @@ function Container () {
     dispatch(WalletActions.speedupTransaction({
       coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      chainId: transaction.chainId,
       transactionId: transaction.id
     }))
   }
@@ -315,6 +317,7 @@ function Container () {
     dispatch(WalletActions.cancelTransaction({
       coinType: getCoinFromTxDataUnion(transaction.txDataUnion),
       fromAddress: findTransactionAccount(accounts, transaction)?.address || '',
+      chainId: transaction.chainId,
       transactionId: transaction.id
     }))
   }
