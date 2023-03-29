@@ -33,6 +33,7 @@ public class BraveRewardsBannerInfo {
     public static final String PROVIDER = "provider";
     public static final String LINKS = "links";
     public static final String STATUS = "status";
+    public static final String WEB3_URL = "web3_url";
 
     private String mPublisherKey;
     private String mTitle;
@@ -44,6 +45,7 @@ public class BraveRewardsBannerInfo {
     private String mProvider;
     private HashMap<String, String> mLinks;
     private int mStatus;
+    private String mWeb3Url;
 
     public String getPublisherKey() {
         return mPublisherKey;
@@ -81,6 +83,10 @@ public class BraveRewardsBannerInfo {
         return mStatus;
     }
 
+    public String getWeb3Url() {
+        return mWeb3Url;
+    }
+
     public BraveRewardsBannerInfo(String json_external_wallet) throws JSONException {
         fromJson(json_external_wallet);
     }
@@ -93,6 +99,7 @@ public class BraveRewardsBannerInfo {
         mDescription = jsonObj.getString(DESCRIPTION);
         mBackground = jsonObj.getString(BACKGROUND);
         mLogo = jsonObj.getString(LOGO);
+        mWeb3Url = jsonObj.getString(WEB3_URL);
 
         mProvider = jsonObj.getString(PROVIDER);
         JSONObject linksJsonObject = jsonObj.getJSONObject(LINKS);

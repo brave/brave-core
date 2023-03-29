@@ -32,7 +32,7 @@ public interface BraveRewardsObserver {
     default public void onUnblindedTokensReady() {}
     default public void onReconcileComplete(int resultCode, int rewardsType, double amount) {}
     default public void OnRefreshPublisher(int status, String publisherKey){};
-    default public void OnOneTimeTip(int result){};
+    default public void onSendContribution(boolean result){};
     default public void OnPendingContributionSaved(int result){};
     default public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
             int adsReceivedThisMonth, double earningsThisMonth, double earningsLastMonth){};

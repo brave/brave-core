@@ -176,4 +176,34 @@
     <color name="you_are_not_earning_rewards_bg_color">#17171F</color>
 
     <color name="playlist_warning_dialog_bg">#17171F</color>
+    <color name="tipping_details_description_text_color">#8C90A1</color>
+    <color name="link_icon_color">#8C90A1</color>
+    <color name="rewards_background_gradient_start_color">#240F1E</color>
+    <color name="rewards_background_gradient_end_color">#0F0F24</color>
+    <color name="tipping_rewards_background_color">#1E2025</color>
+    <color name="tipping_inside_box_background_color">#1A1C20</color>
+    <color name="tipping_points_stroke_color">#2E3038</color>
+    <color name="tipping_points_selected_color">#0E0E34</color>
+    <color name="tipping_rewards_points_text_color">#AAA8F7</color>
+    <color name="currency_edit_text_background_color">#0E0F11</color>
+    <color name="use_web3_wallet_button_text_color">#AAA8F7</color>
+    <color name="transparent_shadow_background_start_color">#1E2025</color>
+    <color name="transparent_shadow_background_end_color">#001E2025</color>
+    <color name="custodian_name_color">#ACAFBB</color>
+    <color name="tipping_error_alert_message_background_color">#630D1B</color>
+    <color name="tipping_use_web3_button_border_color">#668784F4</color>
+    <color name="verification_tick_mark_background">#8784F4</color>
+    <color name="bottomsheet_top_bar_color">#FFFFFF</color>
+    <color name="custodian_text_background_color">#121316</color>
+    <color name="tootltip_verified_creator_text">#EDEEF1</color>
+    <color name="tootltip_verified_creator_text_secondary">#878DA6</color>
+    <color name="contribution_sent_text_color">#3FA450</color>
+    <color name="thanks_for_supporting_text_color">#AAA8F7</color>
+    <color name="go_back_text_color">#878DA6</color>
+    <color name="terms_of_service_text_color">#EDEEF1</color>
+    <color name="terms_of_service_text_color_default">#878DA6</color>
+    <color name="tipping_warning_default_background">#052743</color>
+    <color name="tipping_logout_warning_background_color">#332500</color>
+
+
 </resources>
