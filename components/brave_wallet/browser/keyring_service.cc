@@ -764,7 +764,7 @@ void KeyringService::MaybeCreateDefaultSolanaAccount() {
     // This is needed for Android to select default coin, because they listen
     // to network change events.
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kSolanaMainnet,
-                                  mojom::CoinType::SOL, false);
+                                  mojom::CoinType::SOL, absl::nullopt, false);
 
     NotifyAccountsAdded(mojom::CoinType::SOL, {address.value()});
   }
@@ -1284,7 +1284,7 @@ bool KeyringService::SetSelectedAccountForCoinSilently(
     json_rpc_service_->SetNetwork(keyring_id == mojom::kFilecoinKeyringId
                                       ? mojom::kFilecoinMainnet
                                       : mojom::kFilecoinTestnet,
-                                  coin, true /* silent */);
+                                  coin, absl::nullopt, true /* silent */);
   }
   return true;
 }

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_SERVICE_H_
 
 #include <list>
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -223,11 +224,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   bool SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
+                  const absl::optional<::url::Origin>& origin,
                   bool silent = false);
   void SetNetwork(const std::string& chain_id,
                   mojom::CoinType coin,
+                  const absl::optional<::url::Origin>& origin,
                   SetNetworkCallback callback) override;
-  void GetNetwork(mojom::CoinType coin, GetNetworkCallback callback) override;
+  void GetNetwork(mojom::CoinType coin,
+                  const absl::optional<::url::Origin>& origin,
+                  GetNetworkCallback callback) override;
   void AddChain(mojom::NetworkInfoPtr chain,
                 AddChainCallback callback) override;
   void AddEthereumChainForOrigin(
@@ -240,11 +245,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                    mojom::CoinType coin,
                    RemoveChainCallback callback) override;
 
-  std::string GetChainId(mojom::CoinType coin) const;
+  std::string GetChainId(mojom::CoinType coin,
+                         const absl::optional<::url::Origin>& origin) const;
   void GetChainId(mojom::CoinType coin,
+                  const absl::optional<::url::Origin>& origin,
                   mojom::JsonRpcService::GetChainIdCallback callback) override;
-  void GetBlockTrackerUrl(
-      mojom::JsonRpcService::GetBlockTrackerUrlCallback callback) override;
   void GetPendingAddChainRequests(
       GetPendingAddChainRequestsCallback callback) override;
   void GetPendingSwitchChainRequests(
@@ -259,18 +264,16 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                         GetKnownNetworksCallback callback) override;
   void GetHiddenNetworks(mojom::CoinType coin,
                          GetHiddenNetworksCallback callback) override;
-  std::string GetNetworkUrl(mojom::CoinType coin) const;
+  std::string GetNetworkUrl(mojom::CoinType coin,
+                            const absl::optional<::url::Origin>& origin) const;
   void GetNetworkUrl(
       mojom::CoinType coin,
+      const absl::optional<::url::Origin>& origin,
       mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
-  void SetCustomNetworkForTesting(const std::string& chain_id,
-                                  mojom::CoinType coin,
-                                  const GURL& provider_url) override;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
 
-  GURL GetBlockTrackerUrlFromNetwork(const std::string& chain_id);
   using GetFilEstimateGasCallback =
       base::OnceCallback<void(const std::string& gas_premium,
                               const std::string& gas_fee_cap,
@@ -479,7 +482,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       GetSolanaTokenAccountsByOwnerCallback callback);
 
  private:
-  void FireNetworkChanged(mojom::CoinType coin);
+  void FireNetworkChanged(mojom::CoinType coin,
+                          const absl::optional<url::Origin>& origin);
   void FirePendingRequestCompleted(const std::string& chain_id,
                                    const std::string& error);
   bool HasRequestFromOrigin(const url::Origin& origin) const;
@@ -637,11 +641,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   std::unique_ptr<APIRequestHelper> api_request_helper_ens_offchain_;
-  // TODO(darkdh): base::flat_map<mojom::CoinType, std::map<chain_id, GURL>>
-  // and replace all GetNetworkURL usages
-  base::flat_map<mojom::CoinType, GURL> network_urls_;
-  // <mojom::CoinType, chain_id>
-  base::flat_map<mojom::CoinType, std::string> chain_ids_;
   // <chain_id, mojom::AddChainRequest>
   base::flat_map<std::string, mojom::AddChainRequestPtr>
       add_chain_pending_requests_;

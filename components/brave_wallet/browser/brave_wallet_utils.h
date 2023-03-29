@@ -150,8 +150,19 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
                                const std::string& chain_id,
                                mojom::CoinType coin);
 
-// Get the current chain ID for coin from kBraveWalletSelectedNetworks pref.
-std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
+// Get/Set the current chain ID for coin from kBraveWalletSelectedNetworks pref
+// when origin is not presetned. If origin is presented,
+// kBraveWalletSelectedNetworksPerOrigin will be used. In addition, if origin is
+// opaque, we will also fallback to kBraveWalletSelectedNetworks but it will be
+// read only, other non http/https scheme will fallback to r/w
+// kBraveWalletSelectedNetworks.
+std::string GetCurrentChainId(PrefService* prefs,
+                              mojom::CoinType coin,
+                              const absl::optional<url::Origin>& origin);
+bool SetCurrentChainId(PrefService* prefs,
+                       mojom::CoinType coin,
+                       const absl::optional<url::Origin>& origin,
+                       const std::string& chain_id);
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin);
 

@@ -807,6 +807,8 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   values.push_back(NetworkInfoToValue(chain2));
   UpdateCustomNetworks(&prefs, std::move(values), mojom::CoinType::ETH);
 
+  EXPECT_FALSE(GetChain(&prefs, "", mojom::CoinType::ETH));
+
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ETH));
   EXPECT_EQ(GetChain(&prefs, "0x5566", mojom::CoinType::ETH), chain1.Clone());
   EXPECT_EQ(GetChain(&prefs, "0x1", mojom::CoinType::ETH),

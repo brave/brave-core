@@ -235,12 +235,6 @@ class EthereumProviderImpl final
       mojom::ProviderError error,
       const std::string& error_message);
 
-  void ContinueAddAndApprove1559Transaction(RequestCallback callback,
-                                            base::Value id,
-                                            mojom::TxData1559Ptr tx_data,
-                                            const std::string& from,
-                                            const url::Origin& origin,
-                                            const std::string& chain_id);
   void ContinueAddAndApprove1559TransactionWithAccounts(
       RequestCallback callback,
       base::Value id,

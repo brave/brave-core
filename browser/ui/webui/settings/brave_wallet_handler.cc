@@ -44,8 +44,9 @@ base::Value::Dict MakeSelectValue(const std::u16string& name,
 
 absl::optional<brave_wallet::mojom::CoinType> ToCoinType(
     absl::optional<int> val) {
-  if (!val)
+  if (!val) {
     return absl::nullopt;
+  }
   auto result = static_cast<brave_wallet::mojom::CoinType>(*val);
   if (result != brave_wallet::mojom::CoinType::ETH &&
       result != brave_wallet::mojom::CoinType::FIL &&
@@ -180,7 +181,9 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
     return;
   }
 
-  result.Set("activeNetwork", brave_wallet::GetCurrentChainId(prefs, *coin));
+  // TODO(darkdh): change this to default network.
+  result.Set("activeNetwork",
+             brave_wallet::GetCurrentChainId(prefs, *coin, absl::nullopt));
 
   auto& networks = result.Set("networks", base::Value::List())->GetList();
   for (const auto& it : brave_wallet::GetAllChains(prefs, *coin)) {
@@ -236,8 +239,9 @@ void BraveWalletHandler::OnAddChain(base::Value javascript_callback,
   result.Append(error == brave_wallet::mojom::ProviderError::kSuccess);
   result.Append(error_message);
   ResolveJavascriptCallback(javascript_callback, result);
-  if (chain_callback_for_testing_)
+  if (chain_callback_for_testing_) {
     std::move(chain_callback_for_testing_).Run();
+  }
 }
 
 void BraveWalletHandler::AddChain(const base::Value::List& args) {
@@ -279,8 +283,9 @@ void BraveWalletHandler::SetActiveNetwork(const base::Value::List& args) {
   auto* json_rpc_service =
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
-  auto result =
-      json_rpc_service ? json_rpc_service->SetNetwork(*chain_id, *coin) : false;
+  auto result = json_rpc_service ? json_rpc_service->SetNetwork(
+                                       *chain_id, *coin, absl::nullopt)
+                                 : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
 }
 

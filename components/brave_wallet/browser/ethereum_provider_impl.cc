@@ -316,33 +316,13 @@ void EthereumProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
                          keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;
-    // If the chain id is not known yet, then get it and set it first
-    if (tx_data_1559->chain_id == "0x0" || tx_data_1559->chain_id.empty()) {
-      json_rpc_service_->GetChainId(
-          mojom::CoinType::ETH, origin,
-          base::BindOnce(
-              &EthereumProviderImpl::ContinueAddAndApprove1559Transaction,
-              weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
-              std::move(tx_data_1559), from, origin));
-    } else {
-      GetAllowedAccounts(
-          false,
-          base::BindOnce(&EthereumProviderImpl::
-                             ContinueAddAndApprove1559TransactionWithAccounts,
-                         weak_factory_.GetWeakPtr(), std::move(callback),
-                         std::move(id), std::move(tx_data_1559), from, origin));
-    }
+    GetAllowedAccounts(
+        false,
+        base::BindOnce(&EthereumProviderImpl::
+                           ContinueAddAndApprove1559TransactionWithAccounts,
+                       weak_factory_.GetWeakPtr(), std::move(callback),
+                       std::move(id), std::move(tx_data_1559), from, origin));
   } else {
-    if (!tx_data_1559) {
-      base::Value formed_response = GetProviderErrorDictionary(
-          brave_wallet::mojom::ProviderError::kInvalidParams,
-          l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA));
-      reject = true;
-      std::move(callback).Run(std::move(id), std::move(formed_response), reject,
-                              "", false);
-      return;
-    }
-
     GetAllowedAccounts(
         false,
         base::BindOnce(&EthereumProviderImpl::ContinueAddAndApproveTransaction,
@@ -408,22 +388,6 @@ void EthereumProviderImpl::OnAddUnapprovedTransactionAdapter(
                              success ? mojom::ProviderError::kSuccess
                                      : mojom::ProviderError::kInternalError,
                              success ? "" : error_message);
-}
-
-void EthereumProviderImpl::ContinueAddAndApprove1559Transaction(
-    RequestCallback callback,
-    base::Value id,
-    mojom::TxData1559Ptr tx_data,
-    const std::string& from,
-    const url::Origin& origin,
-    const std::string& chain_id) {
-  tx_data->chain_id = chain_id;
-  GetAllowedAccounts(
-      false,
-      base::BindOnce(&EthereumProviderImpl::
-                         ContinueAddAndApprove1559TransactionWithAccounts,
-                     weak_factory_.GetWeakPtr(), std::move(callback),
-                     std::move(id), std::move(tx_data), from, origin));
 }
 
 void EthereumProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(

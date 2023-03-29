@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eth_tx_manager.h"
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "url/origin.h"
@@ -45,7 +46,7 @@ size_t CalculatePendingTxCount(
 TxService::TxService(JsonRpcService* json_rpc_service,
                      KeyringService* keyring_service,
                      PrefService* prefs)
-    : prefs_(prefs), weak_factory_(this) {
+    : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
   tx_manager_map_[mojom::CoinType::ETH] = std::unique_ptr<TxManager>(
       new EthTxManager(this, json_rpc_service, keyring_service, prefs));
   tx_manager_map_[mojom::CoinType::SOL] = std::unique_ptr<TxManager>(
@@ -130,6 +131,7 @@ void TxService::AddUnapprovedTransaction(
   auto coin_type = GetCoinTypeFromTxDataUnion(*tx_data_union);
 
   GetTxManager(coin_type)->AddUnapprovedTransaction(
+      json_rpc_service_->GetChainId(coin_type, origin),
       std::move(tx_data_union), from, origin, group_id, std::move(callback));
 }
 

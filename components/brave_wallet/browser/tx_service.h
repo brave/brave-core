@@ -220,6 +220,7 @@ class TxService : public KeyedService,
   FilTxManager* GetFilTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;
   mojo::RemoteSet<mojom::TxServiceObserver> observers_;
   mojo::ReceiverSet<mojom::TxService> tx_service_receivers_;

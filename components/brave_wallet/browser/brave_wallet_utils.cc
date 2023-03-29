@@ -502,6 +502,17 @@ std::vector<mojom::NetworkInfoPtr> MergeKnownAndCustomChains(
   return result;
 }
 
+std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
+  const auto& selected_networks = prefs->GetDict(kBraveWalletSelectedNetworks);
+  const std::string* chain_id =
+      selected_networks.FindString(GetPrefKeyForCoinType(coin));
+  if (!chain_id) {
+    return std::string();
+  }
+
+  return base::ToLowerASCII(*chain_id);
+}
+
 }  // namespace
 
 GURL AddInfuraProjectId(const GURL& url) {
@@ -583,6 +594,9 @@ mojom::NetworkInfoPtr GetCustomChain(PrefService* prefs,
 mojom::NetworkInfoPtr GetChain(PrefService* prefs,
                                const std::string& chain_id,
                                mojom::CoinType coin) {
+  if (chain_id.empty()) {
+    return nullptr;
+  }
   if (auto custom_chain = GetCustomChain(prefs, chain_id, coin)) {
     return custom_chain;
   }
@@ -1414,14 +1428,55 @@ void RemoveHiddenNetwork(PrefService* prefs,
   });
 }
 
-std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
-  const auto& selected_networks = prefs->GetDict(kBraveWalletSelectedNetworks);
-  const std::string* chain_id =
-      selected_networks.FindString(GetPrefKeyForCoinType(coin));
-  if (!chain_id)
-    return std::string();
+std::string GetCurrentChainId(PrefService* prefs,
+                              mojom::CoinType coin,
+                              const absl::optional<url::Origin>& origin) {
+  if (!origin) {
+    return GetCurrentChainId(prefs, coin);
+  }
+  const auto& selected_networks =
+      prefs->GetDict(kBraveWalletSelectedNetworksPerOrigin);
+  const auto* coin_dict =
+      selected_networks.FindDict(GetPrefKeyForCoinType(coin));
+  if (!coin_dict) {
+    return GetCurrentChainId(prefs, coin);
+  }
+  const auto* chain_id_str = coin_dict->FindString(origin->Serialize());
+  if (!chain_id_str) {
+    return GetCurrentChainId(prefs, coin);
+  }
 
-  return base::ToLowerASCII(*chain_id);
+  return base::ToLowerASCII(*chain_id_str);
+}
+
+bool SetCurrentChainId(PrefService* prefs,
+                       mojom::CoinType coin,
+                       const absl::optional<url::Origin>& origin,
+                       const std::string& chain_id) {
+  // We cannot switch to an unknown chain_id
+  if (!KnownChainExists(chain_id, coin) &&
+      !CustomChainExists(prefs, chain_id, coin)) {
+    return false;
+  }
+  if (!origin) {
+    ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    update->Set(GetPrefKeyForCoinType(coin), chain_id);
+  } else {
+    if (origin->opaque()) {
+      return false;
+    }
+    // Only set per origin network for http/https scheme
+    if (origin->scheme() == url::kHttpScheme ||
+        origin->scheme() == url::kHttpsScheme) {
+      ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworksPerOrigin);
+      update->EnsureDict(GetPrefKeyForCoinType(coin))
+          ->Set(origin->Serialize(), chain_id);
+    } else {
+      ScopedDictPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+      update->Set(GetPrefKeyForCoinType(coin), chain_id);
+    }
+  }
+  return true;
 }
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {

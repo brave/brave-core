@@ -97,29 +97,37 @@ GURL Append0xSwapParams(const GURL& swap_url,
                         const brave_wallet::mojom::SwapParams& params,
                         const std::string& chain_id) {
   GURL url = swap_url;
-  if (!params.taker_address.empty())
+  if (!params.taker_address.empty()) {
     url = net::AppendQueryParameter(url, "takerAddress", params.taker_address);
-  if (!params.sell_amount.empty())
+  }
+  if (!params.sell_amount.empty()) {
     url = net::AppendQueryParameter(url, "sellAmount", params.sell_amount);
-  if (!params.buy_amount.empty())
+  }
+  if (!params.buy_amount.empty()) {
     url = net::AppendQueryParameter(url, "buyAmount", params.buy_amount);
-  if (!params.buy_token.empty())
+  }
+  if (!params.buy_token.empty()) {
     url = net::AppendQueryParameter(url, "buyToken", params.buy_token);
-  if (!params.sell_token.empty())
+  }
+  if (!params.sell_token.empty()) {
     url = net::AppendQueryParameter(url, "sellToken", params.sell_token);
+  }
   url =
       net::AppendQueryParameter(url, "buyTokenPercentageFee", GetFee(chain_id));
   url = net::AppendQueryParameter(
       url, "slippagePercentage",
       base::StringPrintf("%.6f", params.slippage_percentage));
   std::string fee_recipient = GetFeeRecipient(chain_id);
-  if (!fee_recipient.empty())
+  if (!fee_recipient.empty()) {
     url = net::AppendQueryParameter(url, "feeRecipient", fee_recipient);
+  }
   std::string affiliate_address = GetAffiliateAddress(chain_id);
-  if (!affiliate_address.empty())
+  if (!affiliate_address.empty()) {
     url = net::AppendQueryParameter(url, "affiliateAddress", affiliate_address);
-  if (!params.gas_price.empty())
+  }
+  if (!params.gas_price.empty()) {
     url = net::AppendQueryParameter(url, "gasPrice", params.gas_price);
+  }
   return url;
 }
 
@@ -128,12 +136,15 @@ GURL AppendJupiterQuoteParams(
     const brave_wallet::mojom::JupiterQuoteParams& params,
     const std::string& chain_id) {
   GURL url = swap_url;
-  if (!params.input_mint.empty())
+  if (!params.input_mint.empty()) {
     url = net::AppendQueryParameter(url, "inputMint", params.input_mint);
-  if (!params.output_mint.empty())
+  }
+  if (!params.output_mint.empty()) {
     url = net::AppendQueryParameter(url, "outputMint", params.output_mint);
-  if (!params.amount.empty())
+  }
+  if (!params.amount.empty()) {
     url = net::AppendQueryParameter(url, "amount", params.amount);
+  }
 
   if (brave_wallet::HasJupiterFeesForTokenMint(params.output_mint)) {
     url = net::AppendQueryParameter(url, "feeBps", GetFee(chain_id));
@@ -293,7 +304,7 @@ void SwapService::IsSwapSupported(const std::string& chain_id,
 void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                 GetPriceQuoteCallback callback) {
   if (!IsEVMNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH))) {
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -305,8 +316,9 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
 
   api_request_helper_.Request(
       net::HttpRequestHeaders::kGetMethod,
-      GetPriceQuoteURL(std::move(swap_params),
-                       json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
+      GetPriceQuoteURL(
+          std::move(swap_params),
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt)),
       "", "", true, std::move(internal_callback), Get0xAPIHeaders());
 }
 
@@ -336,7 +348,7 @@ void SwapService::GetTransactionPayload(
     mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
   if (!IsEVMNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH))) {
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -350,7 +362,7 @@ void SwapService::GetTransactionPayload(
       net::HttpRequestHeaders::kGetMethod,
       GetTransactionPayloadURL(
           std::move(swap_params),
-          json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt)),
       "", "", true, std::move(internal_callback), Get0xAPIHeaders());
 }
 
@@ -381,7 +393,7 @@ void SwapService::OnGetTransactionPayload(
 void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
                                   GetJupiterQuoteCallback callback) {
   if (!IsSolanaNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL))) {
+          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -397,8 +409,9 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
   base::flat_map<std::string, std::string> request_headers;
   api_request_helper_.Request(
       net::HttpRequestHeaders::kGetMethod,
-      GetJupiterQuoteURL(std::move(params),
-                         json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
+      GetJupiterQuoteURL(
+          std::move(params),
+          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt)),
       "", "", true, std::move(internal_callback), request_headers, -1u,
       std::move(conversion_callback));
 }
@@ -428,7 +441,7 @@ void SwapService::GetJupiterSwapTransactions(
     mojom::JupiterSwapParamsPtr params,
     GetJupiterSwapTransactionsCallback callback) {
   if (!IsSolanaNetworkSupported(
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL))) {
+          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt))) {
     std::move(callback).Run(
         nullptr, nullptr,
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_UNSUPPORTED_NETWORK));
@@ -449,7 +462,7 @@ void SwapService::GetJupiterSwapTransactions(
   api_request_helper_.Request(
       "POST",
       GetJupiterSwapTransactionsURL(
-          json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
+          json_rpc_service_->GetChainId(mojom::CoinType::SOL, absl::nullopt)),
       *encoded_params, "application/json", true, std::move(internal_callback));
 }
 

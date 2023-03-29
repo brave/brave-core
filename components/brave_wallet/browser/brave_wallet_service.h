@@ -147,6 +147,13 @@ class BraveWalletService : public KeyedService,
   void SetDefaultBaseCryptocurrency(const std::string& cryptocurrency) override;
   void GetSelectedCoin(GetSelectedCoinCallback callback) override;
   void SetSelectedCoin(mojom::CoinType coin) override;
+  void GetChainIdForActiveOrigin(
+      mojom::CoinType coin,
+      GetChainIdForActiveOriginCallback callback) override;
+  void SetChainIdForActiveOrigin(
+      mojom::CoinType coin,
+      const std::string& chain_id,
+      SetChainIdForActiveOriginCallback callback) override;
   void AddPermission(mojom::CoinType coin,
                      const url::Origin& origin,
                      const std::string& account,
