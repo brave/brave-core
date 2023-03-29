@@ -65,6 +65,8 @@ void BraveWalletServiceDelegate::GetActiveOrigin(
   std::move(callback).Run(MakeOriginInfo(url::Origin()));
 }
 
+void BraveWalletServiceDelegate::ClearWalletUIStoragePartition() {}
+
 void BraveWalletServiceDelegate::GetWebSitesWithPermission(
     mojom::CoinType coin,
     GetWebSitesWithPermissionCallback callback) {

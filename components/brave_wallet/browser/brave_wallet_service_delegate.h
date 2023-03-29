@@ -88,6 +88,8 @@ class BraveWalletServiceDelegate {
 
   virtual void GetActiveOrigin(GetActiveOriginCallback callback);
 
+  virtual void ClearWalletUIStoragePartition();
+
   static std::unique_ptr<BraveWalletServiceDelegate> Create(
       content::BrowserContext* browser_context);
 };
