@@ -1507,6 +1507,25 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   return mojom::CoinType::ETH;
 }
 
+absl::optional<std::string> CoinTypeToKeyringId(
+    mojom::CoinType coin_type,
+    const absl::optional<std::string>& chain_id) {
+  switch (coin_type) {
+    case mojom::CoinType::ETH:
+      return mojom::kDefaultKeyringId;
+    case mojom::CoinType::SOL:
+      return mojom::kSolanaKeyringId;
+    case mojom::CoinType::FIL:
+      if (!chain_id.has_value()) {
+        return mojom::kFilecoinKeyringId;
+      }
+      return GetFilecoinKeyringId(*chain_id);
+    default:
+      NOTREACHED() << "Unsupported coin type";
+      return absl::nullopt;
+  }
+}
+
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
   if (chain.active_rpc_endpoint_index >= 0 &&
       static_cast<size_t>(chain.active_rpc_endpoint_index) <

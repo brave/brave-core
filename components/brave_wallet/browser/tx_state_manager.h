@@ -27,17 +27,17 @@ class Value;
 namespace brave_wallet {
 
 class TxMeta;
-class JsonRpcService;
 
 class TxStateManager {
  public:
-  TxStateManager(PrefService* prefs, JsonRpcService* json_rpc_service);
+  explicit TxStateManager(PrefService* prefs);
   virtual ~TxStateManager();
   TxStateManager(const TxStateManager&) = delete;
 
   void AddOrUpdateTx(const TxMeta& meta);
-  std::unique_ptr<TxMeta> GetTx(const std::string& id);
-  void DeleteTx(const std::string& id);
+  std::unique_ptr<TxMeta> GetTx(const std::string& chain_id,
+                                const std::string& id);
+  void DeleteTx(const std::string& chain_id, const std::string& id);
   void WipeTxs();
 
   static void MigrateAddChainIdToTransactionInfo(PrefService* prefs);
@@ -45,8 +45,9 @@ class TxStateManager {
       PrefService* prefs);
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      absl::optional<mojom::TransactionStatus> status,
-      absl::optional<std::string> from);
+      const absl::optional<std::string>& chain_id,
+      const absl::optional<mojom::TransactionStatus>& status,
+      const absl::optional<std::string>& from);
 
   class Observer : public base::CheckedObserver {
    public:
@@ -63,11 +64,14 @@ class TxStateManager {
   static bool ValueToTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
 
   raw_ptr<PrefService> prefs_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TxStateManagerUnitTest, TxOperations);
-  void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
+  void RetireTxByStatus(const std::string& chain_id,
+                        mojom::TransactionStatus status,
+                        size_t max_num);
+
+  virtual mojom::CoinType GetCoinType() const = 0;
 
   // Each derived class should implement its own ValueToTxMeta to create a
   // specific type of tx meta (ex: EthTxMeta) from a value. TxMeta
@@ -78,8 +82,11 @@ class TxStateManager {
   // Each derived class should provide transaction pref path prefix as
   // coin_type.network_id. For example, ethereum.mainnet or solana.testnet.
   // This will be used to get/set the transaction pref for a specific
-  // coin_type.
-  virtual std::string GetTxPrefPathPrefix() = 0;
+  // coin_type. When chain_id is not provided, prefix will be just coin_type,
+  // ex. ethereum and solana and it will be used to acess all the transactions
+  // across different network for the coin.
+  virtual std::string GetTxPrefPathPrefix(
+      const absl::optional<std::string>& chain_id) = 0;
 
   base::ObserverList<Observer> observers_;
 

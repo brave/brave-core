@@ -366,13 +366,15 @@ void JsonRpcService::RequestInternal(
                                std::move(conversion_callback));
 }
 
-void JsonRpcService::Request(const std::string& json_payload,
+void JsonRpcService::Request(const std::string& chain_id,
+                             const std::string& json_payload,
                              bool auto_retry_on_network_change,
                              base::Value id,
                              mojom::CoinType coin,
                              RequestCallback callback) {
   RequestInternal(
-      json_payload, auto_retry_on_network_change, network_urls_[coin],
+      json_payload, auto_retry_on_network_change,
+      GetNetworkURL(prefs_, chain_id, coin),
       base::BindOnce(&JsonRpcService::OnRequestResult, base::Unretained(this),
                      std::move(callback), std::move(id)));
 }
@@ -607,7 +609,8 @@ void JsonRpcService::MaybeUpdateIsEip1559(const std::string& chain_id) {
     return;
   }
 
-  GetIsEip1559(base::BindOnce(&JsonRpcService::UpdateIsEip1559,
+  GetIsEip1559(chain_id,
+               base::BindOnce(&JsonRpcService::UpdateIsEip1559,
                               weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
@@ -731,12 +734,13 @@ void JsonRpcService::SetCustomNetworkForTesting(const std::string& chain_id,
   FireNetworkChanged(coin);
 }
 
-void JsonRpcService::GetBlockNumber(GetBlockNumberCallback callback) {
+void JsonRpcService::GetBlockNumber(const std::string& chain_id,
+                                    GetBlockNumberCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetBlockNumber,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_blockNumber(), true,
-                  network_urls_[mojom::CoinType::ETH],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -806,7 +810,8 @@ void JsonRpcService::OnGetBlockNumber(GetBlockNumberCallback callback,
   std::move(callback).Run(block_number, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetFeeHistory(GetFeeHistoryCallback callback) {
+void JsonRpcService::GetFeeHistory(const std::string& chain_id,
+                                   GetFeeHistoryCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetFeeHistory,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -814,7 +819,7 @@ void JsonRpcService::GetFeeHistory(GetFeeHistoryCallback callback) {
   RequestInternal(eth::eth_feeHistory("0x28",  // blockCount = 40
                                       kEthereumBlockTagLatest,
                                       std::vector<double>{20, 50, 80}),
-                  true, network_urls_[mojom::CoinType::ETH],
+                  true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -921,10 +926,11 @@ void JsonRpcService::OnFilGetBalance(GetBalanceCallback callback,
   std::move(callback).Run(*balance, mojom::ProviderError::kSuccess, "");
 }
 void JsonRpcService::GetFilStateSearchMsgLimited(
+    const std::string& chain_id,
     const std::string& cid,
     uint64_t period,
     GetFilStateSearchMsgLimitedCallback callback) {
-  auto network_url = network_urls_[mojom::CoinType::FIL];
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::FIL);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         0, mojom::FilecoinProviderError::kInternalError,
@@ -941,8 +947,9 @@ void JsonRpcService::GetFilStateSearchMsgLimited(
       base::BindOnce(&ConvertInt64ToString, "/result/Receipt/ExitCode"));
 }
 
-void JsonRpcService::GetFilBlockHeight(GetFilBlockHeightCallback callback) {
-  auto network_url = network_urls_[mojom::CoinType::FIL];
+void JsonRpcService::GetFilBlockHeight(const std::string& chain_id,
+                                       GetFilBlockHeightCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::FIL);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         0, mojom::FilecoinProviderError::kInternalError,
@@ -979,9 +986,10 @@ void JsonRpcService::OnGetFilBlockHeight(GetFilBlockHeightCallback callback,
   std::move(callback).Run(height, mojom::FilecoinProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetFilTransactionCount(const std::string& address,
+void JsonRpcService::GetFilTransactionCount(const std::string& chain_id,
+                                            const std::string& address,
                                             GetFilTxCountCallback callback) {
-  auto network_url = network_urls_[mojom::CoinType::FIL];
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::FIL);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         0, mojom::FilecoinProviderError::kInternalError,
@@ -997,9 +1005,10 @@ void JsonRpcService::GetFilTransactionCount(const std::string& address,
                   base::BindOnce(&ConvertUint64ToString, "/result"));
 }
 
-void JsonRpcService::GetEthTransactionCount(const std::string& address,
+void JsonRpcService::GetEthTransactionCount(const std::string& chain_id,
+                                            const std::string& address,
                                             GetTxCountCallback callback) {
-  auto network_url = network_urls_[mojom::CoinType::ETH];
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
   if (!network_url.is_valid()) {
     std::move(callback).Run(
         0, mojom::ProviderError::kInternalError,
@@ -1061,13 +1070,14 @@ void JsonRpcService::OnEthGetTransactionCount(
   std::move(callback).Run(count, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetTransactionReceipt(const std::string& tx_hash,
+void JsonRpcService::GetTransactionReceipt(const std::string& chain_id,
+                                           const std::string& tx_hash,
                                            GetTxReceiptCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetTransactionReceipt,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_getTransactionReceipt(tx_hash), true,
-                  network_urls_[mojom::CoinType::ETH],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -1094,13 +1104,14 @@ void JsonRpcService::OnGetTransactionReceipt(
   std::move(callback).Run(receipt, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::SendRawTransaction(const std::string& signed_tx,
+void JsonRpcService::SendRawTransaction(const std::string& chain_id,
+                                        const std::string& signed_tx,
                                         SendRawTxCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnSendRawTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_sendRawTransaction(signed_tx), true,
-                  network_urls_[mojom::CoinType::ETH],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -1203,6 +1214,7 @@ void JsonRpcService::GetERC20TokenAllowance(
     const std::string& contract_address,
     const std::string& owner_address,
     const std::string& spender_address,
+    const std::string& chain_id,
     JsonRpcService::GetERC20TokenAllowanceCallback callback) {
   std::string data;
   if (!erc20::Allowance(owner_address, spender_address, &data)) {
@@ -1217,7 +1229,7 @@ void JsonRpcService::GetERC20TokenAllowance(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_call("", contract_address, "", "", "", data,
                                 kEthereumBlockTagLatest),
-                  true, network_urls_[mojom::CoinType::ETH],
+                  true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -1969,7 +1981,8 @@ GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(
   return GURL();
 }
 
-void JsonRpcService::GetFilEstimateGas(const std::string& from_address,
+void JsonRpcService::GetFilEstimateGas(const std::string& chain_id,
+                                       const std::string& from_address,
                                        const std::string& to_address,
                                        const std::string& gas_premium,
                                        const std::string& gas_fee_cap,
@@ -1990,7 +2003,8 @@ void JsonRpcService::GetFilEstimateGas(const std::string& from_address,
   auto request =
       fil::getEstimateGas(from_address, to_address, gas_premium, gas_fee_cap,
                           gas_limit, nonce, max_fee, value);
-  RequestInternal(request, true, network_urls_[mojom::CoinType::FIL],
+  RequestInternal(request, true,
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::FIL),
                   std::move(internal_callback),
                   base::BindOnce(&ConvertInt64ToString, "/result/GasLimit"));
 }
@@ -2021,7 +2035,8 @@ void JsonRpcService::OnGetFilEstimateGas(GetFilEstimateGasCallback callback,
                           mojom::FilecoinProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetEstimateGas(const std::string& from_address,
+void JsonRpcService::GetEstimateGas(const std::string& chain_id,
+                                    const std::string& from_address,
                                     const std::string& to_address,
                                     const std::string& gas,
                                     const std::string& gas_price,
@@ -2033,7 +2048,7 @@ void JsonRpcService::GetEstimateGas(const std::string& from_address,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_estimateGas(from_address, to_address, gas, gas_price,
                                        value, data),
-                  true, network_urls_[mojom::CoinType::ETH],
+                  true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -2059,12 +2074,13 @@ void JsonRpcService::OnGetEstimateGas(GetEstimateGasCallback callback,
   std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetGasPrice(GetGasPriceCallback callback) {
+void JsonRpcService::GetGasPrice(const std::string& chain_id,
+                                 GetGasPriceCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetGasPrice,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_gasPrice(), true,
-                  network_urls_[mojom::CoinType::ETH],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -2090,12 +2106,13 @@ void JsonRpcService::OnGetGasPrice(GetGasPriceCallback callback,
   std::move(callback).Run(*result, mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetIsEip1559(GetIsEip1559Callback callback) {
+void JsonRpcService::GetIsEip1559(const std::string& chain_id,
+                                  GetIsEip1559Callback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetIsEip1559,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_getBlockByNumber(kEthereumBlockTagLatest, false),
-                  true, network_urls_[mojom::CoinType::ETH],
+                  true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -2123,13 +2140,14 @@ void JsonRpcService::OnGetIsEip1559(GetIsEip1559Callback callback,
                           mojom::ProviderError::kSuccess, "");
 }
 
-void JsonRpcService::GetBlockByNumber(const std::string& block_number,
+void JsonRpcService::GetBlockByNumber(const std::string& chain_id,
+                                      const std::string& block_number,
                                       GetBlockByNumberCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetBlockByNumber,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_getBlockByNumber(block_number, false), true,
-                  network_urls_[mojom::CoinType::ETH],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH),
                   std::move(internal_callback));
 }
 
@@ -2789,6 +2807,7 @@ void JsonRpcService::GetSolTokenMetadata(const std::string& chain_id,
 }
 
 void JsonRpcService::SendFilecoinTransaction(
+    const std::string& chain_id,
     const std::string& signed_tx,
     SendFilecoinTransactionCallback callback) {
   if (signed_tx.empty()) {
@@ -2807,7 +2826,8 @@ void JsonRpcService::SendFilecoinTransaction(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnSendFilecoinTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  RequestInternal(request.value(), true, network_urls_[mojom::CoinType::FIL],
+  RequestInternal(request.value(), true,
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::FIL),
                   std::move(internal_callback));
 }
 
@@ -2835,6 +2855,7 @@ void JsonRpcService::OnSendFilecoinTransaction(
 }
 
 void JsonRpcService::SendSolanaTransaction(
+    const std::string& chain_id,
     const std::string& signed_tx,
     absl::optional<SolanaTransaction::SendOptions> send_options,
     SendSolanaTransactionCallback callback) {
@@ -2849,7 +2870,7 @@ void JsonRpcService::SendSolanaTransaction(
       base::BindOnce(&JsonRpcService::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::sendTransaction(signed_tx, std::move(send_options)),
-                  true, network_urls_[mojom::CoinType::SOL],
+                  true, GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
                   std::move(internal_callback));
 }
 
@@ -2879,12 +2900,13 @@ void JsonRpcService::OnSendSolanaTransaction(
 }
 
 void JsonRpcService::GetSolanaLatestBlockhash(
+    const std::string& chain_id,
     GetSolanaLatestBlockhashCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaLatestBlockhash,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::getLatestBlockhash(), true,
-                  network_urls_[mojom::CoinType::SOL],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
                   std::move(internal_callback),
                   base::BindOnce(&ConvertUint64ToString,
                                  "/result/value/lastValidBlockHeight"));
@@ -2917,6 +2939,7 @@ void JsonRpcService::OnGetSolanaLatestBlockhash(
 }
 
 void JsonRpcService::GetSolanaSignatureStatuses(
+    const std::string& chain_id,
     const std::vector<std::string>& tx_signatures,
     GetSolanaSignatureStatusesCallback callback) {
   auto internal_callback =
@@ -2924,7 +2947,8 @@ void JsonRpcService::GetSolanaSignatureStatuses(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(
       solana::getSignatureStatuses(tx_signatures), true,
-      network_urls_[mojom::CoinType::SOL], std::move(internal_callback),
+      GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
+      std::move(internal_callback),
       base::BindOnce(&ConvertMultiUint64InObjectArrayToString, "/result/value",
                      "", std::vector<std::string>({"slot", "confirmations"})));
 }
@@ -2957,8 +2981,8 @@ void JsonRpcService::OnGetSolanaSignatureStatuses(
 }
 
 void JsonRpcService::GetSolanaAccountInfo(
-    const std::string& pubkey,
     const std::string& chain_id,
+    const std::string& pubkey,
     GetSolanaAccountInfoCallback callback) {
   auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL);
   if (!network_url.is_valid()) {
@@ -2971,16 +2995,10 @@ void JsonRpcService::GetSolanaAccountInfo(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaAccountInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
   RequestInternal(solana::getAccountInfo(pubkey), true, network_url,
                   std::move(internal_callback),
                   solana::ConverterForGetAccountInfo());
-}
-
-void JsonRpcService::GetSolanaAccountInfo(
-    const std::string& pubkey,
-    GetSolanaAccountInfoCallback callback) {
-  JsonRpcService::GetSolanaAccountInfo(pubkey, chain_ids_[mojom::CoinType::SOL],
-                                       std::move(callback));
 }
 
 void JsonRpcService::OnGetSolanaAccountInfo(
@@ -3009,6 +3027,7 @@ void JsonRpcService::OnGetSolanaAccountInfo(
 }
 
 void JsonRpcService::GetSolanaFeeForMessage(
+    const std::string& chain_id,
     const std::string& message,
     GetSolanaFeeForMessageCallback callback) {
   if (message.empty() || !base::Base64Decode(message)) {
@@ -3022,7 +3041,7 @@ void JsonRpcService::GetSolanaFeeForMessage(
       base::BindOnce(&JsonRpcService::OnGetSolanaFeeForMessage,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::getFeeForMessage(message), true,
-                  network_urls_[mojom::CoinType::SOL],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
                   std::move(internal_callback),
                   base::BindOnce(&ConvertUint64ToString, "/result/value"));
 }
@@ -3051,12 +3070,13 @@ void JsonRpcService::OnGetSolanaFeeForMessage(
 }
 
 void JsonRpcService::GetSolanaBlockHeight(
+    const std::string& chain_id,
     GetSolanaBlockHeightCallback callback) {
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaBlockHeight,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(solana::getBlockHeight(), true,
-                  network_urls_[mojom::CoinType::SOL],
+                  GetNetworkURL(prefs_, chain_id, mojom::CoinType::SOL),
                   std::move(internal_callback),
                   base::BindOnce(&ConvertUint64ToString, "/result"));
 }

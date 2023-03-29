@@ -291,7 +291,7 @@ void NftMetadataFetcher::GetSolTokenMetadata(
       base::BindOnce(&NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   json_rpc_service_->GetSolanaAccountInfo(
-      *associated_metadata_account, chain_id, std::move(internal_callback));
+      chain_id, *associated_metadata_account, std::move(internal_callback));
 }
 
 void NftMetadataFetcher::OnGetSolanaAccountInfoTokenMetadata(

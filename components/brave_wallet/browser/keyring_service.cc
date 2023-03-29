@@ -1383,6 +1383,7 @@ void KeyringService::AddDiscoveryAccountsForKeyring(
     return;
   }
   json_rpc_service_->GetEthTransactionCount(
+      mojom::kMainnetChainId,
       keyring->GetDiscoveryAddress(discovery_account_index),
       base::BindOnce(&KeyringService::OnGetTransactionCount,
                      discovery_weak_factory_.GetWeakPtr(),
@@ -1602,7 +1603,7 @@ absl::optional<std::string> KeyringService::SignTransactionByFilecoinKeyring(
     return absl::nullopt;
   }
 
-  std::string keyring_id = GetFilecoinKeyringId(tx->from().network());
+  const std::string& keyring_id = GetFilecoinKeyringId(tx->from().network());
   auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
     return absl::nullopt;

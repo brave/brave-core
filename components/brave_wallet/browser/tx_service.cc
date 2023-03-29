@@ -134,32 +134,35 @@ void TxService::AddUnapprovedTransaction(
 }
 
 void TxService::ApproveTransaction(mojom::CoinType coin_type,
+                                   const std::string& chain_id,
                                    const std::string& tx_meta_id,
                                    ApproveTransactionCallback callback) {
-  GetTxManager(coin_type)->ApproveTransaction(tx_meta_id, std::move(callback));
+  GetTxManager(coin_type)->ApproveTransaction(chain_id, tx_meta_id,
+                                              std::move(callback));
 }
 
 void TxService::RejectTransaction(mojom::CoinType coin_type,
+                                  const std::string& chain_id,
                                   const std::string& tx_meta_id,
                                   RejectTransactionCallback callback) {
-  GetTxManager(coin_type)->RejectTransaction(tx_meta_id, std::move(callback));
+  GetTxManager(coin_type)->RejectTransaction(chain_id, tx_meta_id,
+                                             std::move(callback));
 }
 
 void TxService::GetTransactionInfo(mojom::CoinType coin_type,
+                                   const std::string& chain_id,
                                    const std::string& tx_meta_id,
                                    GetTransactionInfoCallback callback) {
-  GetTxManager(coin_type)->GetTransactionInfo(tx_meta_id, std::move(callback));
+  GetTxManager(coin_type)->GetTransactionInfo(chain_id, tx_meta_id,
+                                              std::move(callback));
 }
 
-void TxService::GetAllTransactionInfo(mojom::CoinType coin_type,
-                                      const std::string& from,
-                                      GetAllTransactionInfoCallback callback) {
-  GetTxManager(coin_type)->GetAllTransactionInfo(from, std::move(callback));
-}
-
-void TxService::GetAllTransactionInfo(mojom::CoinType coin_type,
-                                      GetAllTransactionInfoCallback callback) {
-  GetTxManager(coin_type)->GetAllTransactionInfo(absl::nullopt,
+void TxService::GetAllTransactionInfo(
+    mojom::CoinType coin_type,
+    const absl::optional<std::string>& chain_id,
+    const absl::optional<std::string>& from,
+    GetAllTransactionInfoCallback callback) {
+  GetTxManager(coin_type)->GetAllTransactionInfo(chain_id, from,
                                                  std::move(callback));
 }
 
@@ -172,10 +175,10 @@ void TxService::GetPendingTransactionsCount(
 
   auto it = tx_manager_map_.begin();
 
-  GetAllTransactionInfo(
-      it->first, base::BindOnce(&TxService::OnGetAllTransactionInfo,
-                                weak_factory_.GetWeakPtr(), std::move(callback),
-                                0u, it->first));
+  GetAllTransactionInfo(it->first, absl::nullopt, absl::nullopt,
+                        base::BindOnce(&TxService::OnGetAllTransactionInfo,
+                                       weak_factory_.GetWeakPtr(),
+                                       std::move(callback), 0u, it->first));
 }
 
 void TxService::OnGetAllTransactionInfo(
@@ -196,7 +199,7 @@ void TxService::OnGetAllTransactionInfo(
 
   DCHECK(next_coin_to_check);
   GetAllTransactionInfo(
-      *next_coin_to_check,
+      *next_coin_to_check, absl::nullopt, absl::nullopt,
       base::BindOnce(&TxService::OnGetAllTransactionInfo,
                      weak_factory_.GetWeakPtr(), std::move(callback), counter,
                      *next_coin_to_check));
@@ -204,24 +207,28 @@ void TxService::OnGetAllTransactionInfo(
 
 void TxService::SpeedupOrCancelTransaction(
     mojom::CoinType coin_type,
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
-  GetTxManager(coin_type)->SpeedupOrCancelTransaction(tx_meta_id, cancel,
-                                                      std::move(callback));
+  GetTxManager(coin_type)->SpeedupOrCancelTransaction(
+      chain_id, tx_meta_id, cancel, std::move(callback));
 }
 
 void TxService::RetryTransaction(mojom::CoinType coin_type,
+                                 const std::string& chain_id,
                                  const std::string& tx_meta_id,
                                  RetryTransactionCallback callback) {
-  GetTxManager(coin_type)->RetryTransaction(tx_meta_id, std::move(callback));
+  GetTxManager(coin_type)->RetryTransaction(chain_id, tx_meta_id,
+                                            std::move(callback));
 }
 
 void TxService::GetTransactionMessageToSign(
     mojom::CoinType coin_type,
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
-  GetTxManager(coin_type)->GetTransactionMessageToSign(tx_meta_id,
+  GetTxManager(coin_type)->GetTransactionMessageToSign(chain_id, tx_meta_id,
                                                        std::move(callback));
 }
 
@@ -289,60 +296,67 @@ void TxService::MakeERC1155TransferFromData(
 }
 
 void TxService::SetGasPriceAndLimitForUnapprovedTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& gas_price,
     const std::string& gas_limit,
     SetGasPriceAndLimitForUnapprovedTransactionCallback callback) {
   GetEthTxManager()->SetGasPriceAndLimitForUnapprovedTransaction(
-      tx_meta_id, gas_price, gas_limit, std::move(callback));
+      chain_id, tx_meta_id, gas_price, gas_limit, std::move(callback));
 }
 
 void TxService::SetGasFeeAndLimitForUnapprovedTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& max_priority_fee_per_gas,
     const std::string& max_fee_per_gas,
     const std::string& gas_limit,
     SetGasFeeAndLimitForUnapprovedTransactionCallback callback) {
   GetEthTxManager()->SetGasFeeAndLimitForUnapprovedTransaction(
-      tx_meta_id, max_priority_fee_per_gas, max_fee_per_gas, gas_limit,
-      std::move(callback));
+      chain_id, tx_meta_id, max_priority_fee_per_gas, max_fee_per_gas,
+      gas_limit, std::move(callback));
 }
 
 void TxService::SetDataForUnapprovedTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::vector<uint8_t>& data,
     SetDataForUnapprovedTransactionCallback callback) {
-  GetEthTxManager()->SetDataForUnapprovedTransaction(tx_meta_id, data,
+  GetEthTxManager()->SetDataForUnapprovedTransaction(chain_id, tx_meta_id, data,
                                                      std::move(callback));
 }
 
 void TxService::SetNonceForUnapprovedTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& nonce,
     SetNonceForUnapprovedTransactionCallback callback) {
-  GetEthTxManager()->SetNonceForUnapprovedTransaction(tx_meta_id, nonce,
-                                                      std::move(callback));
+  GetEthTxManager()->SetNonceForUnapprovedTransaction(
+      chain_id, tx_meta_id, nonce, std::move(callback));
 }
 
 void TxService::GetNonceForHardwareTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetNonceForHardwareTransactionCallback callback) {
-  GetEthTxManager()->GetNonceForHardwareTransaction(tx_meta_id,
+  GetEthTxManager()->GetNonceForHardwareTransaction(chain_id, tx_meta_id,
                                                     std::move(callback));
 }
 
 void TxService::ProcessHardwareSignature(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& v,
     const std::string& r,
     const std::string& s,
     ProcessHardwareSignatureCallback callback) {
-  GetEthTxManager()->ProcessHardwareSignature(tx_meta_id, v, r, s,
+  GetEthTxManager()->ProcessHardwareSignature(chain_id, tx_meta_id, v, r, s,
                                               std::move(callback));
 }
 
-void TxService::GetGasEstimation1559(GetGasEstimation1559Callback callback) {
-  GetEthTxManager()->GetGasEstimation1559(std::move(callback));
+void TxService::GetGasEstimation1559(const std::string& chain_id,
+                                     GetGasEstimation1559Callback callback) {
+  GetEthTxManager()->GetGasEstimation1559(chain_id, std::move(callback));
 }
 
 void TxService::MakeSystemProgramTransferTxData(
@@ -355,14 +369,15 @@ void TxService::MakeSystemProgramTransferTxData(
 }
 
 void TxService::MakeTokenProgramTransferTxData(
+    const std::string& chain_id,
     const std::string& spl_token_mint_address,
     const std::string& from_wallet_address,
     const std::string& to_wallet_address,
     uint64_t amount,
     MakeTokenProgramTransferTxDataCallback callback) {
   GetSolanaTxManager()->MakeTokenProgramTransferTxData(
-      spl_token_mint_address, from_wallet_address, to_wallet_address, amount,
-      std::move(callback));
+      chain_id, spl_token_mint_address, from_wallet_address, to_wallet_address,
+      amount, std::move(callback));
 }
 
 void TxService::MakeTxDataFromBase64EncodedTransaction(
@@ -375,25 +390,29 @@ void TxService::MakeTxDataFromBase64EncodedTransaction(
       std::move(callback));
 }
 
-void TxService::GetEstimatedTxFee(const std::string& tx_meta_id,
+void TxService::GetEstimatedTxFee(const std::string& chain_id,
+                                  const std::string& tx_meta_id,
                                   GetEstimatedTxFeeCallback callback) {
-  GetSolanaTxManager()->GetEstimatedTxFee(tx_meta_id, std::move(callback));
+  GetSolanaTxManager()->GetEstimatedTxFee(chain_id, tx_meta_id,
+                                          std::move(callback));
 }
 
 void TxService::ProcessSolanaHardwareSignature(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::vector<uint8_t>& signature,
     ProcessSolanaHardwareSignatureCallback callback) {
-  GetSolanaTxManager()->ProcessSolanaHardwareSignature(tx_meta_id, signature,
-                                                       std::move(callback));
+  GetSolanaTxManager()->ProcessSolanaHardwareSignature(
+      chain_id, tx_meta_id, signature, std::move(callback));
 }
 
 void TxService::ProcessFilHardwareSignature(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::string& signed_message,
     ProcessFilHardwareSignatureCallback callback) {
-  GetFilTxManager()->ProcessFilHardwareSignature(tx_meta_id, signed_message,
-                                                 std::move(callback));
+  GetFilTxManager()->ProcessFilHardwareSignature(
+      chain_id, tx_meta_id, signed_message, std::move(callback));
 }
 
 }  // namespace brave_wallet

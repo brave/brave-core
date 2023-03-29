@@ -32,7 +32,7 @@ SolanaTxManager::SolanaTxManager(TxService* tx_service,
                                  JsonRpcService* json_rpc_service,
                                  KeyringService* keyring_service,
                                  PrefService* prefs)
-    : TxManager(std::make_unique<SolanaTxStateManager>(prefs, json_rpc_service),
+    : TxManager(std::make_unique<SolanaTxStateManager>(prefs),
                 std::make_unique<SolanaBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
@@ -47,6 +47,7 @@ SolanaTxManager::~SolanaTxManager() {
 }
 
 void SolanaTxManager::AddUnapprovedTransaction(
+    const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& from,
     const absl::optional<url::Origin>& origin,
@@ -78,15 +79,16 @@ void SolanaTxManager::AddUnapprovedTransaction(
   meta.set_group_id(group_id);
   meta.set_created_time(base::Time::Now());
   meta.set_status(mojom::TransactionStatus::Unapproved);
-  meta.set_chain_id(GetCurrentChainId(prefs_, mojom::CoinType::SOL));
+  meta.set_chain_id(chain_id);
   tx_state_manager_->AddOrUpdateTx(meta);
   std::move(callback).Run(true, meta.id(), "");
 }
 
-void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
+void SolanaTxManager::ApproveTransaction(const std::string& chain_id,
+                                         const std::string& tx_meta_id,
                                          ApproveTransactionCallback callback) {
   std::unique_ptr<SolanaTxMeta> meta =
-      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+      GetSolanaTxStateManager()->GetSolanaTx(chain_id, tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -100,6 +102,7 @@ void SolanaTxManager::ApproveTransaction(const std::string& tx_meta_id,
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
   if (blockhash.empty()) {
     GetSolanaBlockTracker()->GetLatestBlockhash(
+        chain_id,
         base::BindOnce(&SolanaTxManager::OnGetLatestBlockhash,
                        weak_ptr_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)),
@@ -129,11 +132,11 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   json_rpc_service_->SendSolanaTransaction(
-      meta->tx()->GetSignedTransaction(keyring_service_),
+      meta->chain_id(), meta->tx()->GetSignedTransaction(keyring_service_),
       meta->tx()->send_options(),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), meta->id(),
-                     std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), meta->chain_id(),
+                     meta->id(), std::move(callback)));
 }
 
 void SolanaTxManager::OnGetLatestBlockhashHardware(
@@ -164,12 +167,13 @@ void SolanaTxManager::OnGetLatestBlockhashHardware(
 }
 
 void SolanaTxManager::OnSendSolanaTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     ApproveTransactionCallback callback,
     const std::string& tx_hash,
     mojom::SolanaProviderError error,
     const std::string& error_message) {
-  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(tx_meta_id);
+  std::unique_ptr<TxMeta> meta = tx_state_manager_->GetTx(chain_id, tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -193,7 +197,7 @@ void SolanaTxManager::OnSendSolanaTransaction(
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   if (success) {
-    UpdatePendingTransactions();
+    UpdatePendingTransactions(meta->chain_id());
   }
 
   std::move(callback).Run(
@@ -201,12 +205,14 @@ void SolanaTxManager::OnSendSolanaTransaction(
       mojom::ProviderErrorUnion::NewSolanaProviderError(error), error_message);
 }
 
-void SolanaTxManager::UpdatePendingTransactions() {
-  json_rpc_service_->GetSolanaBlockHeight(base::BindOnce(
-      &SolanaTxManager::OnGetBlockHeight, weak_ptr_factory_.GetWeakPtr()));
+void SolanaTxManager::UpdatePendingTransactions(const std::string& chain_id) {
+  json_rpc_service_->GetSolanaBlockHeight(
+      chain_id, base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
+                               weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
-void SolanaTxManager::OnGetBlockHeight(uint64_t block_height,
+void SolanaTxManager::OnGetBlockHeight(const std::string& chain_id,
+                                       uint64_t block_height,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {
   if (error != mojom::SolanaProviderError::kSuccess) {
@@ -214,7 +220,7 @@ void SolanaTxManager::OnGetBlockHeight(uint64_t block_height,
   }
 
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
-      mojom::TransactionStatus::Submitted, absl::nullopt);
+      chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
   std::vector<std::string> tx_meta_ids;
   std::vector<std::string> tx_signatures;
   for (const auto& pending_transaction : pending_transactions) {
@@ -222,14 +228,20 @@ void SolanaTxManager::OnGetBlockHeight(uint64_t block_height,
     tx_signatures.push_back(pending_transaction->tx_hash());
   }
   json_rpc_service_->GetSolanaSignatureStatuses(
-      tx_signatures, base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
-                                    weak_ptr_factory_.GetWeakPtr(), tx_meta_ids,
-                                    block_height));
-  known_no_pending_tx_ = pending_transactions.empty();
-  CheckIfBlockTrackerShouldRun();
+      chain_id, tx_signatures,
+      base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
+                     weak_ptr_factory_.GetWeakPtr(), chain_id, tx_meta_ids,
+                     block_height));
+  if (pending_transactions.empty()) {
+    known_no_pending_tx_.emplace(chain_id);
+  } else {
+    known_no_pending_tx_.erase(chain_id);
+  }
+  CheckIfBlockTrackerShouldRun(chain_id);
 }
 
 void SolanaTxManager::OnGetSignatureStatuses(
+    const std::string& chain_id,
     const std::vector<std::string>& tx_meta_ids,
     uint64_t block_height,
     const std::vector<absl::optional<SolanaSignatureStatus>>&
@@ -246,7 +258,7 @@ void SolanaTxManager::OnGetSignatureStatuses(
 
   for (size_t i = 0; i < tx_meta_ids.size(); i++) {
     std::unique_ptr<SolanaTxMeta> meta =
-        GetSolanaTxStateManager()->GetSolanaTx(tx_meta_ids[i]);
+        GetSolanaTxStateManager()->GetSolanaTx(chain_id, tx_meta_ids[i]);
     if (!meta) {
       continue;
     }
@@ -282,22 +294,25 @@ void SolanaTxManager::OnGetSignatureStatuses(
 }
 
 void SolanaTxManager::SpeedupOrCancelTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
   NOTIMPLEMENTED();
 }
 
-void SolanaTxManager::RetryTransaction(const std::string& tx_meta_id,
+void SolanaTxManager::RetryTransaction(const std::string& chain_id,
+                                       const std::string& tx_meta_id,
                                        RetryTransactionCallback callback) {
   NOTIMPLEMENTED();
 }
 
 void SolanaTxManager::GetTransactionMessageToSign(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   std::unique_ptr<SolanaTxMeta> meta =
-      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+      GetSolanaTxStateManager()->GetSolanaTx(chain_id, tx_meta_id);
   if (!meta || !meta->tx()) {
     VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
     std::move(callback).Run(nullptr);
@@ -307,6 +322,7 @@ void SolanaTxManager::GetTransactionMessageToSign(
   const std::string blockhash = meta->tx()->message()->recent_blockhash();
   if (blockhash.empty()) {
     GetSolanaBlockTracker()->GetLatestBlockhash(
+        chain_id,
         base::BindOnce(&SolanaTxManager::OnGetLatestBlockhashHardware,
                        weak_ptr_factory_.GetWeakPtr(), std::move(meta),
                        std::move(callback)),
@@ -316,6 +332,10 @@ void SolanaTxManager::GetTransactionMessageToSign(
                                  blockhash, 0,
                                  mojom::SolanaProviderError::kSuccess, "");
   }
+}
+
+mojom::CoinType SolanaTxManager::GetCoinType() const {
+  return mojom::CoinType::SOL;
 }
 
 void SolanaTxManager::MakeSystemProgramTransferTxData(
@@ -357,6 +377,7 @@ void SolanaTxManager::MakeSystemProgramTransferTxData(
 }
 
 void SolanaTxManager::MakeTokenProgramTransferTxData(
+    const std::string& chain_id,
     const std::string& spl_token_mint_address,
     const std::string& from_wallet_address,
     const std::string& to_wallet_address,
@@ -377,7 +398,7 @@ void SolanaTxManager::MakeTokenProgramTransferTxData(
 
   // Check if the receiver's associated token account is existed or not.
   json_rpc_service_->GetSolanaAccountInfo(
-      *to_associated_token_account,
+      chain_id, *to_associated_token_account,
       base::BindOnce(
           &SolanaTxManager::OnGetAccountInfo, weak_ptr_factory_.GetWeakPtr(),
           spl_token_mint_address, from_wallet_address, to_wallet_address,
@@ -499,10 +520,11 @@ void SolanaTxManager::OnGetAccountInfo(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
-void SolanaTxManager::GetEstimatedTxFee(const std::string& tx_meta_id,
+void SolanaTxManager::GetEstimatedTxFee(const std::string& chain_id,
+                                        const std::string& tx_meta_id,
                                         GetEstimatedTxFeeCallback callback) {
   std::unique_ptr<SolanaTxMeta> meta =
-      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+      GetSolanaTxStateManager()->GetSolanaTx(chain_id, tx_meta_id);
   if (!meta) {
     DCHECK(false) << "Transaction should be found";
     std::move(callback).Run(
@@ -512,6 +534,7 @@ void SolanaTxManager::GetEstimatedTxFee(const std::string& tx_meta_id,
   }
 
   GetSolanaBlockTracker()->GetLatestBlockhash(
+      chain_id,
       base::BindOnce(&SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee,
                      weak_ptr_factory_.GetWeakPtr(), std::move(meta),
                      std::move(callback)),
@@ -535,7 +558,7 @@ void SolanaTxManager::OnGetLatestBlockhashForGetEstimatedTxFee(
   const std::string base64_encoded_message =
       meta->tx()->GetBase64EncodedMessage();
   json_rpc_service_->GetSolanaFeeForMessage(
-      base64_encoded_message,
+      meta->chain_id(), base64_encoded_message,
       base::BindOnce(&SolanaTxManager::OnGetFeeForMessage,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -548,9 +571,10 @@ void SolanaTxManager::OnGetFeeForMessage(GetEstimatedTxFeeCallback callback,
 }
 
 void SolanaTxManager::OnLatestBlockhashUpdated(
+    const std::string& chain_id,
     const std::string& blockhash,
     uint64_t last_valid_block_height) {
-  UpdatePendingTransactions();
+  UpdatePendingTransactions(chain_id);
 }
 
 SolanaTxStateManager* SolanaTxManager::GetSolanaTxStateManager() {
@@ -562,16 +586,18 @@ SolanaBlockTracker* SolanaTxManager::GetSolanaBlockTracker() {
 }
 
 std::unique_ptr<SolanaTxMeta> SolanaTxManager::GetTxForTesting(
+    const std::string& chain_id,
     const std::string& tx_meta_id) {
-  return GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+  return GetSolanaTxStateManager()->GetSolanaTx(chain_id, tx_meta_id);
 }
 
 void SolanaTxManager::ProcessSolanaHardwareSignature(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     const std::vector<uint8_t>& signature_bytes,
     ProcessSolanaHardwareSignatureCallback callback) {
   std::unique_ptr<SolanaTxMeta> meta =
-      GetSolanaTxStateManager()->GetSolanaTx(tx_meta_id);
+      GetSolanaTxStateManager()->GetSolanaTx(chain_id, tx_meta_id);
   if (!meta) {
     std::move(callback).Run(
         false,
@@ -595,10 +621,11 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
   tx_state_manager_->AddOrUpdateTx(*meta);
 
   json_rpc_service_->SendSolanaTransaction(
-      base::Base64Encode(*transaction_bytes), meta->tx()->send_options(),
+      meta->chain_id(), base::Base64Encode(*transaction_bytes),
+      meta->tx()->send_options(),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
-                     weak_ptr_factory_.GetWeakPtr(), meta->id(),
-                     std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), meta->chain_id(),
+                     meta->id(), std::move(callback)));
 }
 
 }  // namespace brave_wallet

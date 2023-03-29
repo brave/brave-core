@@ -50,7 +50,8 @@ void EthLogsTracker::RemoveObserver(EthLogsTracker::Observer* observer) {
 }
 
 void EthLogsTracker::GetLogs() {
-  const auto chain_id = json_rpc_service_->GetChainId(mojom::CoinType::ETH);
+  const auto chain_id =
+      json_rpc_service_->GetChainId(mojom::CoinType::ETH, absl::nullopt);
 
   for (auto const& esi : std::as_const(eth_logs_subscription_info_)) {
     json_rpc_service_->EthGetLogs(
@@ -66,8 +67,9 @@ void EthLogsTracker::OnGetLogs(const std::string& subscription,
                                mojom::ProviderError error,
                                const std::string& error_message) {
   if (error == mojom::ProviderError::kSuccess && rawlogs.is_dict()) {
-    for (auto& observer : observers_)
+    for (auto& observer : observers_) {
       observer.OnLogsReceived(subscription, rawlogs.Clone());
+    }
   } else {
     LOG(ERROR) << "OnGetLogs failed";
   }

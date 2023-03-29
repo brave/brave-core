@@ -188,6 +188,11 @@ std::string GetFilecoinChainId(const std::string& keyring_id);
 
 mojom::CoinType GetCoinForKeyring(const std::string& keyring_id);
 
+// optional chain_id only matters to FIL
+absl::optional<std::string> CoinTypeToKeyringId(
+    mojom::CoinType coin_type,
+    const absl::optional<std::string>& chain_id);
+
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 }  // namespace brave_wallet

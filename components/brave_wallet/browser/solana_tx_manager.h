@@ -1,6 +1,6 @@
 /* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this Solanae,
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TX_MANAGER_H_
@@ -40,22 +40,27 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       mojom::SolanaTxManagerProxy::ProcessSolanaHardwareSignatureCallback;
 
   // TxManager
-  void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& chain_id,
+                          const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
 
   void SpeedupOrCancelTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& chain_id,
+                        const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void GetTransactionMessageToSign(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
@@ -73,6 +78,7 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       uint64_t lamports,
       MakeSystemProgramTransferTxDataCallback callback);
   void MakeTokenProgramTransferTxData(
+      const std::string& chain_id,
       const std::string& spl_token_mint_address,
       const std::string& from_wallet_address,
       const std::string& to_wallet_address,
@@ -83,14 +89,17 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       const mojom::TransactionType tx_type,
       mojom::SolanaSendTransactionOptionsPtr send_options,
       MakeTxDataFromBase64EncodedTransactionCallback callback);
-  void GetEstimatedTxFee(const std::string& tx_meta_id,
+  void GetEstimatedTxFee(const std::string& chain_id,
+                         const std::string& tx_meta_id,
                          GetEstimatedTxFeeCallback callback);
   void ProcessSolanaHardwareSignature(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       const std::vector<uint8_t>& signature_bytes,
       ProcessSolanaHardwareSignatureCallback callback);
 
-  std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& tx_meta_id);
+  std::unique_ptr<SolanaTxMeta> GetTxForTesting(const std::string& chain_id,
+                                                const std::string& tx_meta_id);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
@@ -100,10 +109,13 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            ProcessSolanaHardwareSignature);
 
-  // TxManager
-  void UpdatePendingTransactions() override;
+  mojom::CoinType GetCoinType() const override;
 
-  void OnGetBlockHeight(uint64_t block_height,
+  // TxManager
+  void UpdatePendingTransactions(const std::string& chain_id) override;
+
+  void OnGetBlockHeight(const std::string& chain_id,
+                        uint64_t block_height,
                         mojom::SolanaProviderError error,
                         const std::string& error_message);
 
@@ -120,12 +132,14 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
       uint64_t last_valid_block_height,
       mojom::SolanaProviderError error,
       const std::string& error_message);
-  void OnSendSolanaTransaction(const std::string& tx_meta_id,
+  void OnSendSolanaTransaction(const std::string& chain_id,
+                               const std::string& tx_meta_id,
                                ApproveTransactionCallback callback,
                                const std::string& tx_hash,
                                mojom::SolanaProviderError error,
                                const std::string& error_message);
   void OnGetSignatureStatuses(
+      const std::string& chain_id,
       const std::vector<std::string>& tx_meta_ids,
       uint64_t block_height,
       const std::vector<absl::optional<SolanaSignatureStatus>>&
@@ -155,7 +169,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
                           const std::string& error_message);
 
   // SolanaBlockTracker::Observer
-  void OnLatestBlockhashUpdated(const std::string& blockhash,
+  void OnLatestBlockhashUpdated(const std::string& chain_id,
+                                const std::string& blockhash,
                                 uint64_t last_valid_block_height) override;
 
   SolanaTxStateManager* GetSolanaTxStateManager();

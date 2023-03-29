@@ -15,37 +15,42 @@
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet {
 
-EthTxStateManager::EthTxStateManager(PrefService* prefs,
-                                     JsonRpcService* json_rpc_service)
-    : TxStateManager(prefs, json_rpc_service) {}
+EthTxStateManager::EthTxStateManager(PrefService* prefs)
+    : TxStateManager(prefs) {}
 
 EthTxStateManager::~EthTxStateManager() = default;
 
 std::vector<std::unique_ptr<TxMeta>> EthTxStateManager::GetTransactionsByStatus(
-    absl::optional<mojom::TransactionStatus> status,
-    absl::optional<EthAddress> from) {
+    const absl::optional<std::string>& chain_id,
+    const absl::optional<mojom::TransactionStatus>& status,
+    const absl::optional<EthAddress>& from) {
   std::vector<std::unique_ptr<TxMeta>> result;
   absl::optional<std::string> from_string =
       from.has_value() ? absl::optional<std::string>(from->ToChecksumAddress())
                        : absl::nullopt;
-  return TxStateManager::GetTransactionsByStatus(status, from_string);
+  return TxStateManager::GetTransactionsByStatus(chain_id, status, from_string);
 }
 
-std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(const std::string& id) {
+std::unique_ptr<EthTxMeta> EthTxStateManager::GetEthTx(
+    const std::string& chain_id,
+    const std::string& id) {
   return std::unique_ptr<EthTxMeta>{
-      static_cast<EthTxMeta*>(TxStateManager::GetTx(id).release())};
+      static_cast<EthTxMeta*>(TxStateManager::GetTx(chain_id, id).release())};
 }
 
 std::unique_ptr<EthTxMeta> EthTxStateManager::ValueToEthTxMeta(
     const base::Value::Dict& value) {
   return std::unique_ptr<EthTxMeta>{
       static_cast<EthTxMeta*>(ValueToTxMeta(value).release())};
+}
+
+mojom::CoinType EthTxStateManager::GetCoinType() const {
+  return mojom::CoinType::ETH;
 }
 
 std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
@@ -109,11 +114,14 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
   return meta;
 }
 
-std::string EthTxStateManager::GetTxPrefPathPrefix() {
-  return base::StrCat(
-      {kEthereumPrefKey, ".",
-       GetNetworkId(prefs_, mojom::CoinType::ETH,
-                    json_rpc_service_->GetChainId(mojom::CoinType::ETH))});
+std::string EthTxStateManager::GetTxPrefPathPrefix(
+    const absl::optional<std::string>& chain_id) {
+  if (chain_id.has_value()) {
+    return base::StrCat(
+        {kEthereumPrefKey, ".",
+         GetNetworkId(prefs_, mojom::CoinType::ETH, *chain_id)});
+  }
+  return kEthereumPrefKey;
 }
 
 }  // namespace brave_wallet

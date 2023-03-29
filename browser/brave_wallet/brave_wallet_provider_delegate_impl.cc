@@ -78,19 +78,6 @@ absl::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
   }
 }
 
-absl::optional<std::string> CoinTypeToKeyringId(mojom::CoinType coin_type) {
-  switch (coin_type) {
-    case mojom::CoinType::ETH:
-      return mojom::kDefaultKeyringId;
-    case mojom::CoinType::SOL:
-      return mojom::kSolanaKeyringId;
-    case mojom::CoinType::FIL:
-      return mojom::kFilecoinKeyringId;
-    default:
-      return absl::nullopt;
-  }
-}
-
 }  // namespace
 
 BraveWalletProviderDelegateImpl::BraveWalletProviderDelegateImpl(
@@ -128,7 +115,7 @@ void BraveWalletProviderDelegateImpl::ShowWalletOnboarding() {
 
 void BraveWalletProviderDelegateImpl::ShowAccountCreation(
     mojom::CoinType type) {
-  auto keyring_id = CoinTypeToKeyringId(type);
+  auto keyring_id = CoinTypeToKeyringId(type, absl::nullopt);
   if (keyring_id)
     ::brave_wallet::ShowAccountCreation(web_contents_, *keyring_id);
 }
