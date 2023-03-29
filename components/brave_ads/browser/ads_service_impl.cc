@@ -688,8 +688,8 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyPrefDidChange(path);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyPrefDidChange(path);
   }
 }
 
@@ -734,9 +734,9 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      if (ads_client_notifier_.is_bound()) {
-        ads_client_notifier_->NotifyUserDidBecomeActive(idle_time,
-                                                        screen_was_locked);
+      if (bat_ads_client_notifier_.is_bound()) {
+        bat_ads_client_notifier_->NotifyUserDidBecomeActive(idle_time,
+                                                            screen_was_locked);
       }
 
       break;
@@ -744,8 +744,8 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      if (ads_client_notifier_.is_bound()) {
-        ads_client_notifier_->NotifyUserDidBecomeIdle();
+      if (bat_ads_client_notifier_.is_bound()) {
+        bat_ads_client_notifier_->NotifyUserDidBecomeIdle();
       }
 
       break;
@@ -1562,9 +1562,9 @@ void AdsServiceImpl::NotifyTabTextContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyTabTextContentDidChange(tab_id, redirect_chain,
-                                                        text);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabTextContentDidChange(
+        tab_id, redirect_chain, text);
   }
 }
 
@@ -1572,21 +1572,21 @@ void AdsServiceImpl::NotifyTabHtmlContentDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyTabHtmlContentDidChange(tab_id, redirect_chain,
-                                                        html);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabHtmlContentDidChange(
+        tab_id, redirect_chain, html);
   }
 }
 
 void AdsServiceImpl::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyTabDidStartPlayingMedia(tab_id);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabDidStartPlayingMedia(tab_id);
   }
 }
 
 void AdsServiceImpl::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyTabDidStopPlayingMedia(tab_id);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabDidStopPlayingMedia(tab_id);
   }
 }
 
@@ -1594,15 +1594,15 @@ void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
                                         const std::vector<GURL>& redirect_chain,
                                         const bool is_visible,
                                         const bool is_incognito) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyTabDidChange(tab_id, redirect_chain, is_visible,
-                                             is_incognito);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabDidChange(tab_id, redirect_chain,
+                                                 is_visible, is_incognito);
   }
 }
 
 void AdsServiceImpl::NotifyDidCloseTab(const int32_t tab_id) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyDidCloseTab(tab_id);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyDidCloseTab(tab_id);
   }
 }
 
@@ -2071,20 +2071,20 @@ void AdsServiceImpl::Log(const std::string& file,
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyBrowserDidEnterForeground();
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidEnterForeground();
   }
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyBrowserDidEnterBackground();
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidEnterBackground();
   }
 }
 
 void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  if (ads_client_notifier_.is_bound()) {
-    ads_client_notifier_->NotifyDidUpdateResourceComponent(id);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyDidUpdateResourceComponent(id);
   }
 }
 

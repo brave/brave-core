@@ -70,11 +70,11 @@ void AntiTargeting::OnLoadAndParseResource(
                                       << " anti-targeting resource");
 }
 
-void AntiTargeting::OnLocaleDidChange(const std::string& /*locale*/) {
+void AntiTargeting::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
   Load();
 }
 
-void AntiTargeting::OnDidUpdateResourceComponent(const std::string& id) {
+void AntiTargeting::OnNotifyDidUpdateResourceComponent(const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     Load();
   }

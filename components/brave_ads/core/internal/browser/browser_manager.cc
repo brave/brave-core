@@ -59,7 +59,7 @@ void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BrowserManager::OnBrowserDidBecomeActive() {
+void BrowserManager::OnNotifyBrowserDidBecomeActive() {
   if (is_active_) {
     return;
   }
@@ -70,7 +70,7 @@ void BrowserManager::OnBrowserDidBecomeActive() {
   NotifyBrowserDidBecomeActive();
 }
 
-void BrowserManager::OnBrowserDidResignActive() {
+void BrowserManager::OnNotifyBrowserDidResignActive() {
   if (!is_active_) {
     return;
   }
@@ -81,7 +81,7 @@ void BrowserManager::OnBrowserDidResignActive() {
   NotifyBrowserDidResignActive();
 }
 
-void BrowserManager::OnBrowserDidEnterForeground() {
+void BrowserManager::OnNotifyBrowserDidEnterForeground() {
   if (is_in_foreground_) {
     return;
   }
@@ -92,7 +92,7 @@ void BrowserManager::OnBrowserDidEnterForeground() {
   NotifyBrowserDidEnterForeground();
 }
 
-void BrowserManager::OnBrowserDidEnterBackground() {
+void BrowserManager::OnNotifyBrowserDidEnterBackground() {
   if (!is_in_foreground_) {
     return;
   }

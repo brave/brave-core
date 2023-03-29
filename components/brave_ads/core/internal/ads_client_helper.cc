@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
@@ -37,14 +37,14 @@ bool AdsClientHelper::HasInstance() {
 }
 
 // static
-void AdsClientHelper::AddObserver(AdsClientObserver* observer) {
+void AdsClientHelper::AddObserver(AdsClientNotifierObserver* observer) {
   DCHECK(observer);
 
   g_ads_client_instance->AddObserver(observer);
 }
 
 // static
-void AdsClientHelper::RemoveObserver(AdsClientObserver* observer) {
+void AdsClientHelper::RemoveObserver(AdsClientNotifierObserver* observer) {
   DCHECK(observer);
 
   g_ads_client_instance->RemoveObserver(observer);

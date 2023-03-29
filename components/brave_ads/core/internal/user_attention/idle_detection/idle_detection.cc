@@ -25,8 +25,8 @@ IdleDetection::~IdleDetection() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void IdleDetection::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                          const bool screen_was_locked) {
+void IdleDetection::OnNotifyUserDidBecomeActive(const base::TimeDelta idle_time,
+                                                const bool screen_was_locked) {
   BLOG(1, "User is active after " << idle_time);
   if (screen_was_locked) {
     BLOG(1, "Screen was locked before the user become active");
@@ -37,7 +37,7 @@ void IdleDetection::OnUserDidBecomeActive(const base::TimeDelta idle_time,
   SetLastUnIdleTimeDiagnosticEntry();
 }
 
-void IdleDetection::OnUserDidBecomeIdle() {
+void IdleDetection::OnNotifyUserDidBecomeIdle() {
   BLOG(1, "User is idle");
 }
 

@@ -7,12 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_BROWSER_BROWSER_MANAGER_H_
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
 
 namespace brave_ads {
 
-class BrowserManager : public AdsClientObserver {
+class BrowserManager : public AdsClientNotifierObserver {
  public:
   BrowserManager();
 
@@ -40,11 +40,11 @@ class BrowserManager : public AdsClientObserver {
   bool IsBrowserInForeground() const { return is_in_foreground_; }
 
  private:
-  // AdsClientObserver:
-  void OnBrowserDidBecomeActive() override;
-  void OnBrowserDidResignActive() override;
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
+  // AdsClientNotifierObserver:
+  void OnNotifyBrowserDidBecomeActive() override;
+  void OnNotifyBrowserDidResignActive() override;
+  void OnNotifyBrowserDidEnterForeground() override;
+  void OnNotifyBrowserDidEnterBackground() override;
 
   void NotifyBrowserDidBecomeActive() const;
   void NotifyBrowserDidResignActive() const;

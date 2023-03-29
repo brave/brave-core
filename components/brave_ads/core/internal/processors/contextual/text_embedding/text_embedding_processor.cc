@@ -88,11 +88,11 @@ void TextEmbedding::Process(const std::string& html) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbedding::OnLocaleDidChange(const std::string& /*locale*/) {
+void TextEmbedding::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextEmbedding::OnDidUpdateResourceComponent(const std::string& id) {
+void TextEmbedding::OnNotifyDidUpdateResourceComponent(const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }

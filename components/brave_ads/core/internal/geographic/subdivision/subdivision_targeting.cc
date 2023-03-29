@@ -292,12 +292,12 @@ void SubdivisionTargeting::FetchAfterDelay() {
               << FriendlyDateAndTime(fetch_at, /*use_sentence_style*/ true));
 }
 
-void SubdivisionTargeting::OnLocaleDidChange(const std::string& locale) {
+void SubdivisionTargeting::OnNotifyLocaleDidChange(const std::string& locale) {
   MaybeAllowForLocale(locale);
   MaybeFetchForLocale(locale);
 }
 
-void SubdivisionTargeting::OnPrefDidChange(const std::string& path) {
+void SubdivisionTargeting::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kAutoDetectedSubdivisionTargetingCode) {
     OnAutoDetectedSubdivisionTargetingCodePrefChanged();
   } else if (path == prefs::kSubdivisionTargetingCode) {

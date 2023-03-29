@@ -155,7 +155,7 @@ void TabManager::NotifyTabDidStopPlayingMedia(const int32_t id) const {
   }
 }
 
-void TabManager::OnTabHtmlContentDidChange(
+void TabManager::OnNotifyTabHtmlContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
@@ -172,7 +172,7 @@ void TabManager::OnTabHtmlContentDidChange(
   NotifyHtmlContentDidChange(id, redirect_chain, content);
 }
 
-void TabManager::OnTabTextContentDidChange(
+void TabManager::OnNotifyTabTextContentDidChange(
     const int32_t id,
     const std::vector<GURL>& redirect_chain,
     const std::string& content) {
@@ -189,7 +189,7 @@ void TabManager::OnTabTextContentDidChange(
   NotifyTextContentDidChange(id, redirect_chain, content);
 }
 
-void TabManager::OnTabDidStartPlayingMedia(const int32_t id) {
+void TabManager::OnNotifyTabDidStartPlayingMedia(const int32_t id) {
   if (tabs_[id].is_playing_media) {
     return;
   }
@@ -201,7 +201,7 @@ void TabManager::OnTabDidStartPlayingMedia(const int32_t id) {
   NotifyTabDidStartPlayingMedia(id);
 }
 
-void TabManager::OnTabDidStopPlayingMedia(const int32_t id) {
+void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t id) {
   if (!tabs_[id].is_playing_media) {
     return;
   }
@@ -213,10 +213,10 @@ void TabManager::OnTabDidStopPlayingMedia(const int32_t id) {
   NotifyTabDidStopPlayingMedia(id);
 }
 
-void TabManager::OnTabDidChange(const int32_t id,
-                                const std::vector<GURL>& redirect_chain,
-                                const bool is_visible,
-                                const bool is_incognito) {
+void TabManager::OnNotifyTabDidChange(const int32_t id,
+                                      const std::vector<GURL>& redirect_chain,
+                                      const bool is_visible,
+                                      const bool is_incognito) {
   if (is_incognito) {
     BLOG(7, "Tab id " << id << " is incognito");
     return;
@@ -282,7 +282,7 @@ void TabManager::OnTabDidChange(const int32_t id,
   NotifyDidOpenNewTab(tab);
 }
 
-void TabManager::OnDidCloseTab(const int32_t id) {
+void TabManager::OnNotifyDidCloseTab(const int32_t id) {
   BLOG(2, "Tab id " << id << " was closed");
 
   Remove(id);

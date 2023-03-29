@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/ads_client_notifier_manager.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -44,9 +44,9 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   // Binds the receiver by consuming the pending receiver swhich was created.
   void BindReceiver();
 
-  void AddObserver(brave_ads::AdsClientObserver* observer);
+  void AddObserver(brave_ads::AdsClientNotifierObserver* observer);
 
-  void RemoveObserver(brave_ads::AdsClientObserver* observer);
+  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer);
 
   // Invoked when the operating system locale changes.
   void NotifyLocaleDidChange(const std::string& locale) override;
@@ -124,7 +124,7 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
   void NotifyBrowserDidResignActive() override;
 
  private:
-  brave_ads::AdsClientNotifierManager notifier_manager_;
+  brave_ads::AdsClientNotifier notifier_;
 
   mojo::PendingReceiver<bat_ads::mojom::BatAdsClientNotifier> pending_receiver_;
   mojo::Receiver<bat_ads::mojom::BatAdsClientNotifier> receiver_{this};

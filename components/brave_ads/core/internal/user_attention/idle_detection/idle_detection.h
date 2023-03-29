@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_IDLE_DETECTION_IDLE_DETECTION_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_USER_ATTENTION_IDLE_DETECTION_IDLE_DETECTION_H_
 
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 
 namespace base {
 class TimeDelta;
@@ -14,7 +14,7 @@ class TimeDelta;
 
 namespace brave_ads {
 
-class IdleDetection : public AdsClientObserver {
+class IdleDetection : public AdsClientNotifierObserver {
  public:
   IdleDetection();
 
@@ -27,10 +27,10 @@ class IdleDetection : public AdsClientObserver {
   ~IdleDetection() override;
 
  private:
-  // AdsClientObserver:
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
-  void OnUserDidBecomeIdle() override;
+  // AdsClientNotifierObserver:
+  void OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                   bool screen_was_locked) override;
+  void OnNotifyUserDidBecomeIdle() override;
 };
 
 }  // namespace brave_ads

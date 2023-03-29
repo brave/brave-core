@@ -9,7 +9,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
@@ -27,12 +27,12 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
 BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
 
 void BatAdsClientMojoBridge::AddObserver(
-    brave_ads::AdsClientObserver* observer) {
+    brave_ads::AdsClientNotifierObserver* observer) {
   notifier_impl_.AddObserver(observer);
 }
 
 void BatAdsClientMojoBridge::RemoveObserver(
-    brave_ads::AdsClientObserver* observer) {
+    brave_ads::AdsClientNotifierObserver* observer) {
   notifier_impl_.RemoveObserver(observer);
 }
 

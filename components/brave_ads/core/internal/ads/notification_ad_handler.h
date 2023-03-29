@@ -11,7 +11,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
@@ -51,7 +51,7 @@ class NotificationAdHandler final
       public BrowserManagerObserver,
       public notification_ads::EventHandlerObserver,
       public notification_ads::ServingObserver,
-      public AdsClientObserver {
+      public AdsClientNotifierObserver {
  public:
   NotificationAdHandler(
       Account* account,
@@ -82,10 +82,10 @@ class NotificationAdHandler final
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
 
-  // AdsClientObserver:
-  void OnPrefDidChange(const std::string& path) override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyPrefDidChange(const std::string& path) override;
+  void OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                   bool screen_was_locked) override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

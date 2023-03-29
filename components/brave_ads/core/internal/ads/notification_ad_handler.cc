@@ -105,13 +105,13 @@ void NotificationAdHandler::OnBrowserDidEnterBackground() {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAdHandler::OnPrefDidChange(const std::string& path) {
+void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeServeAtRegularIntervals();
   }
 }
 
-void NotificationAdHandler::OnUserDidBecomeActive(
+void NotificationAdHandler::OnNotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
     const bool screen_was_locked) {
   if (!CanServeIfUserIsActive() || !ShouldServe()) {

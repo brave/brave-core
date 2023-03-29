@@ -362,7 +362,7 @@ void Account::NotifyStatementOfAccountsDidChange() const {
   }
 }
 
-void Account::OnPrefDidChange(const std::string& path) {
+void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeResetIssuersAndConfirmations();
 

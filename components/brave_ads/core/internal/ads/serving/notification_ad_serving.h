@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -41,7 +41,7 @@ namespace notification_ads {
 
 class EligibleAdsBase;
 
-class Serving final : public AdsClientObserver {
+class Serving final : public AdsClientNotifierObserver {
  public:
   Serving(geographic::SubdivisionTargeting* subdivision_targeting,
           resource::AntiTargeting* anti_targeting_resource);
@@ -83,8 +83,8 @@ class Serving final : public AdsClientObserver {
   void NotifyDidServeNotificationAd(const NotificationAdInfo& ad) const;
   void NotifyFailedToServeNotificationAd() const;
 
-  // AdsClientObserver:
-  void OnPrefDidChange(const std::string& path) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyPrefDidChange(const std::string& path) override;
 
   base::ObserverList<ServingObserver> observers_;
 

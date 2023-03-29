@@ -578,11 +578,11 @@ void Conversions::NotifyConversionFailed(
   }
 }
 
-void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
+void Conversions::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void Conversions::OnDidUpdateResourceComponent(const std::string& id) {
+void Conversions::OnNotifyDidUpdateResourceComponent(const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }

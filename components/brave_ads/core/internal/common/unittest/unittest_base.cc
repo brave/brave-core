@@ -11,7 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -220,8 +220,8 @@ void UnitTestBase::Initialize() {
 
 void UnitTestBase::MockAdsClientAddObserver() {
   ON_CALL(*ads_client_mock_, AddObserver(_))
-      .WillByDefault(
-          Invoke([=](AdsClientObserver* observer) { AddObserver(observer); }));
+      .WillByDefault(Invoke(
+          [=](AdsClientNotifierObserver* observer) { AddObserver(observer); }));
 }
 
 void UnitTestBase::SetDefaultMocks() {

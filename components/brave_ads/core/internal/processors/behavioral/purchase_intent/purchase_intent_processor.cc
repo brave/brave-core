@@ -195,11 +195,11 @@ uint16_t PurchaseIntent::GetFunnelWeightForSearchQuery(
   return max_weight;
 }
 
-void PurchaseIntent::OnLocaleDidChange(const std::string& /*locale*/) {
+void PurchaseIntent::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void PurchaseIntent::OnDidUpdateResourceComponent(const std::string& id) {
+void PurchaseIntent::OnNotifyDidUpdateResourceComponent(const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }

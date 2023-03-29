@@ -24,7 +24,7 @@ class Time;
 }  // namespace base
 
 namespace brave_ads {
-class AdsClientObserver;
+class AdsClientNotifierObserver;
 struct NotificationAdInfo;
 }  // namespace brave_ads
 
@@ -46,8 +46,8 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient:
-  void AddObserver(brave_ads::AdsClientObserver* observer) override;
-  void RemoveObserver(brave_ads::AdsClientObserver* observer) override;
+  void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
   void BindPendingObservers() override;
 
   bool IsNetworkConnectionAvailable() const override;

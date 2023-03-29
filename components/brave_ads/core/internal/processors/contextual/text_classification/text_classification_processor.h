@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -24,7 +24,7 @@ class TextClassification;
 
 namespace processor {
 
-class TextClassification final : public AdsClientObserver,
+class TextClassification final : public AdsClientNotifierObserver,
                                  public TabManagerObserver {
  public:
   explicit TextClassification(resource::TextClassification* resource);
@@ -40,9 +40,9 @@ class TextClassification final : public AdsClientObserver,
   void Process(const std::string& text);
 
  private:
-  // AdsClientObserver:
-  void OnLocaleDidChange(const std::string& locale) override;
-  void OnDidUpdateResourceComponent(const std::string& id) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

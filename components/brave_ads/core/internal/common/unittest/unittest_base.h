@@ -11,7 +11,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_manager.h"
+#include "brave/components/brave_ads/core/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
@@ -44,7 +44,7 @@ namespace brave_ads {
 
 class Database;
 
-class UnitTestBase : public AdsClientNotifierManager, public testing::Test {
+class UnitTestBase : public AdsClientNotifier, public testing::Test {
  public:
   UnitTestBase();
 

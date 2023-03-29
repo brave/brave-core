@@ -78,11 +78,13 @@ void TextClassification::Process(const std::string& text) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextClassification::OnLocaleDidChange(const std::string& /*locale*/) {
+void TextClassification::OnNotifyLocaleDidChange(
+    const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextClassification::OnDidUpdateResourceComponent(const std::string& id) {
+void TextClassification::OnNotifyDidUpdateResourceComponent(
+    const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }

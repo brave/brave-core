@@ -3,35 +3,33 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_MANAGER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_H_
 
 #include <cstdint>
 #include <string>
 #include <vector>
 
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/core/ads_client_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 
-class AdsClientNotifierManager {
+class AdsClientNotifier {
  public:
-  AdsClientNotifierManager();
+  AdsClientNotifier();
 
-  AdsClientNotifierManager(const AdsClientNotifierManager& other) = delete;
-  AdsClientNotifierManager& operator=(const AdsClientNotifierManager& other) =
-      delete;
+  AdsClientNotifier(const AdsClientNotifier& other) = delete;
+  AdsClientNotifier& operator=(const AdsClientNotifier& other) = delete;
 
-  AdsClientNotifierManager(AdsClientNotifierManager&& other) noexcept = delete;
-  AdsClientNotifierManager& operator=(
-      AdsClientNotifierManager&& other) noexcept = delete;
+  AdsClientNotifier(AdsClientNotifier&& other) noexcept = delete;
+  AdsClientNotifier& operator=(AdsClientNotifier&& other) noexcept = delete;
 
-  virtual ~AdsClientNotifierManager();
+  virtual ~AdsClientNotifier();
 
-  void AddObserver(AdsClientObserver* observer);
+  void AddObserver(AdsClientNotifierObserver* observer);
 
-  void RemoveObserver(AdsClientObserver* observer);
+  void RemoveObserver(AdsClientNotifierObserver* observer);
 
   // Called when the user changes the locale of their operating system. This
   // call is not required if the operating system restarts the browser when
@@ -112,9 +110,9 @@ class AdsClientNotifierManager {
   void NotifyBrowserDidResignActive();
 
  private:
-  base::ObserverList<AdsClientObserver> observers_;
+  base::ObserverList<AdsClientNotifierObserver> observers_;
 };
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_ADS_CLIENT_NOTIFIER_H_
