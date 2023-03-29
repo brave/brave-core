@@ -13,6 +13,8 @@ rust_ffi("challenge_bypass_ristretto_ffi") {
 
   deps = [ "//base" ]
 
+  cflags = [ "-Wunreachable-code-aggressive" ]
+
   if (is_mac || is_ios) {
     frameworks = [ "Security.framework" ]
   }
