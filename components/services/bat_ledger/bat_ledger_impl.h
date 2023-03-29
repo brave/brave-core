@@ -6,17 +6,36 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 
+#include <map>
 #include <memory>
+#include <queue>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_rewards/core/api/api.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
+#include "brave/components/brave_rewards/core/legacy/media/media.h"
+#include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/recovery/recovery.h"
+#include "brave/components/brave_rewards/core/report/report.h"
+#include "brave/components/brave_rewards/core/sku/sku.h"
+#include "brave/components/brave_rewards/core/state/state.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+
+#include "brave/components/brave_rewards/core/ledger.h"  // TODO(sszaloki)
 
 namespace ledger {
 class Ledger;
@@ -39,12 +58,11 @@ class RewardsUtilityServiceImpl
   RewardsUtilityServiceImpl& operator=(const RewardsUtilityServiceImpl&) =
       delete;
 
-  void CreateLedger(
+  // mojom::RewardsUtilityService implementation begin
+  void InitializeLedger(
       mojo::PendingAssociatedRemote<mojom::RewardsService> rewards_service,
-      CreateLedgerCallback callback) override;
-
-  void InitializeLedger(bool execute_create_script,
-                        InitializeLedgerCallback callback) override;
+      bool execute_create_script,
+      InitializeLedgerCallback callback) override;
 
   void SetEnvironment(ledger::mojom::Environment environment) override;
 
@@ -266,9 +284,221 @@ class RewardsUtilityServiceImpl
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
 
+  // mojom::RewardsUtilityService implementation end
+
+  rewards::mojom::RewardsService* rewards_service() const;
+
+  ledger::state::State* state() const;
+
+  virtual ledger::promotion::Promotion* promotion() const;
+
+  ledger::publisher::Publisher* publisher() const;
+
+  braveledger_media::Media* media() const;
+
+  ledger::contribution::Contribution* contribution() const;
+
+  ledger::wallet::Wallet* wallet() const;
+
+  ledger::report::Report* report() const;
+
+  ledger::sku::SKU* sku() const;
+
+  ledger::api::API* api() const;
+
+  virtual ledger::database::Database* database() const;
+
+  ledger::bitflyer::Bitflyer* bitflyer() const;
+
+  ledger::gemini::Gemini* gemini() const;
+
+  ledger::uphold::Uphold* uphold() const;
+
+  // RewardsService async helpers begin
+  template <typename LoadURLCallback>
+  void LoadURLImpl(ledger::mojom::UrlRequestPtr request,
+                   LoadURLCallback callback);
+
+  void LoadURL(ledger::mojom::UrlRequestPtr request,
+               ledger::LegacyLoadURLCallback callback);
+
+  void LoadURL(ledger::mojom::UrlRequestPtr request,
+               ledger::LoadURLCallback callback);
+
+  template <typename RunDBTransactionCallback>
+  void RunDBTransactionImpl(ledger::mojom::DBTransactionPtr transaction,
+                            RunDBTransactionCallback callback);
+
+  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
+                        ledger::LegacyRunDBTransactionCallback callback);
+
+  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
+                        ledger::RunDBTransactionCallback callback);
+  // RewardsService async helpers end
+
+  // RewardsService sync helpers begin
+  std::string URIEncode(const std::string& value) {
+    std::string encoded_value;
+    rewards_service_->URIEncode(value, &encoded_value);
+    return encoded_value;
+  }
+
+  template <typename T>
+  T GetState(const std::string& name) {
+    T value;
+
+    if constexpr (std::is_same_v<T, bool>) {
+      rewards_service_->GetBooleanState(name, &value);
+    } else if constexpr (std::is_same_v<T, int>) {
+      rewards_service_->GetIntegerState(name, &value);
+    } else if constexpr (std::is_same_v<T, double>) {
+      rewards_service_->GetDoubleState(name, &value);
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      rewards_service_->GetStringState(name, &value);
+    } else if constexpr (std::is_same_v<T, int64_t>) {
+      rewards_service_->GetInt64State(name, &value);
+    } else if constexpr (std::is_same_v<T, uint64_t>) {
+      rewards_service_->GetUint64State(name, &value);
+    } else if constexpr (std::is_same_v<T, base::Value>) {
+      rewards_service_->GetValueState(name, &value);
+    } else if constexpr (std::is_same_v<T, base::Time>) {
+      rewards_service_->GetTimeState(name, &value);
+    } else {
+      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
+    }
+
+    return value;
+  }
+
+  template <typename T>
+  void SetState(const std::string& name, T value) {
+    if constexpr (std::is_same_v<T, bool>) {
+      rewards_service_->SetBooleanState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, int>) {
+      rewards_service_->SetIntegerState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, double>) {
+      rewards_service_->SetDoubleState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      rewards_service_->SetStringState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, int64_t>) {
+      rewards_service_->SetInt64State(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, uint64_t>) {
+      rewards_service_->SetUint64State(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, base::Value>) {
+      rewards_service_->SetValueState(name, std::move(value));
+    } else if constexpr (std::is_same_v<T, base::Time>) {
+      rewards_service_->SetTimeState(name, std::move(value));
+    } else {
+      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
+    }
+  }
+
+  void ClearState(const std::string& name) {
+    rewards_service_->ClearState(name);
+  }
+
+  template <typename T>
+  T GetOption(const std::string& name) {
+    T value;
+
+    if constexpr (std::is_same_v<T, bool>) {
+      rewards_service_->GetBooleanOption(name, &value);
+    } else if constexpr (std::is_same_v<T, int>) {
+      rewards_service_->GetIntegerOption(name, &value);
+    } else if constexpr (std::is_same_v<T, double>) {
+      rewards_service_->GetDoubleOption(name, &value);
+    } else if constexpr (std::is_same_v<T, std::string>) {
+      rewards_service_->GetStringOption(name, &value);
+    } else if constexpr (std::is_same_v<T, int64_t>) {
+      rewards_service_->GetInt64Option(name, &value);
+    } else if constexpr (std::is_same_v<T, uint64_t>) {
+      rewards_service_->GetUint64Option(name, &value);
+    } else {
+      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
+    }
+
+    return value;
+  }
+
+  std::string GetLegacyWallet() {
+    std::string wallet;
+    rewards_service_->GetLegacyWallet(&wallet);
+    return wallet;
+  }
+
+  ledger::mojom::ClientInfoPtr GetClientInfo() {
+    auto info = ledger::mojom::ClientInfo::New();
+    rewards_service_->GetClientInfo(&info);
+    return info;
+  }
+
+  absl::optional<std::string> EncryptString(const std::string& value) {
+    absl::optional<std::string> result;
+    rewards_service_->EncryptString(value, &result);
+    return result;
+  }
+
+  absl::optional<std::string> DecryptString(const std::string& value) {
+    absl::optional<std::string> result;
+    rewards_service_->DecryptString(value, &result);
+    return result;
+  }
+  // RewardsService sync helpers end
+
  private:
+  enum class ReadyState {
+    kUninitialized,
+    kInitializing,
+    kReady,
+    kShuttingDown
+  };
+
+  bool IsReady() const;
+
+  void InitializeDatabase(bool execute_create_script,
+                          ledger::LegacyResultCallback callback);
+
+  void OnDatabaseInitialized(ledger::mojom::Result result,
+                             ledger::LegacyResultCallback callback);
+
+  void OnStateInitialized(ledger::LegacyResultCallback callback,
+                          ledger::mojom::Result result);
+
+  void OnInitialized(ledger::mojom::Result result,
+                     ledger::LegacyResultCallback callback);
+
+  void StartServices();
+
+  void OnAllDone(ledger::mojom::Result result,
+                 ledger::LegacyResultCallback callback);
+
+  bool IsShuttingDown() const;
+
+  template <typename T>
+  void WhenReady(T callback);
+
   mojo::Receiver<mojom::RewardsUtilityService> utility_service_receiver_;
-  std::unique_ptr<ledger::Ledger> ledger_;
+
+  mojo::AssociatedRemote<rewards::mojom::RewardsService> rewards_service_;
+  std::unique_ptr<ledger::promotion::Promotion> promotion_;
+  std::unique_ptr<ledger::publisher::Publisher> publisher_;
+  std::unique_ptr<braveledger_media::Media> media_;
+  std::unique_ptr<ledger::contribution::Contribution> contribution_;
+  std::unique_ptr<ledger::wallet::Wallet> wallet_;
+  std::unique_ptr<ledger::database::Database> database_;
+  std::unique_ptr<ledger::report::Report> report_;
+  std::unique_ptr<ledger::sku::SKU> sku_;
+  std::unique_ptr<ledger::state::State> state_;
+  std::unique_ptr<ledger::api::API> api_;
+  std::unique_ptr<ledger::recovery::Recovery> recovery_;
+  std::unique_ptr<ledger::bitflyer::Bitflyer> bitflyer_;
+  std::unique_ptr<ledger::gemini::Gemini> gemini_;
+  std::unique_ptr<ledger::uphold::Uphold> uphold_;
+  std::map<uint32_t, ledger::mojom::VisitData> current_pages_;
+  uint64_t last_tab_active_time_ = 0;
+  uint32_t last_shown_tab_id_ = -1;
+  std::queue<std::function<void()>> ready_callbacks_;
+  ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
 }  // namespace rewards

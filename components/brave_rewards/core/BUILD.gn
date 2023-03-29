@@ -391,8 +391,6 @@ static_library("ledger") {
     "gemini/gemini.h",
     "gemini/gemini_util.cc",
     "gemini/gemini_util.h",
-    "ledger_impl.cc",
-    "ledger_impl.h",
     "legacy/bat_helper.cc",
     "legacy/bat_helper.h",
     "legacy/bat_state.cc",
