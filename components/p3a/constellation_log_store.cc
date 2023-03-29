@@ -178,8 +178,7 @@ void ConstellationLogStore::LoadPersistedUnsentLogs() {
       continue;
     }
 
-    for (const auto [histogram_name, log_value] :
-         inner_epoch_dict.DictItems()) {
+    for (const auto [histogram_name, log_value] : inner_epoch_dict.GetDict()) {
       if (!log_value.is_string()) {
         continue;
       }
