@@ -541,6 +541,29 @@ TEST_F(BraveVPNServiceTest, RegionDataTest) {
   EXPECT_EQ(regions()[0], device_region());
 }
 
+TEST_F(BraveVPNServiceTest, SkusCredentialCacheTest) {
+  std::string env = skus::GetDefaultEnvironment();
+  std::string domain = skus::GetDomain("vpn", env);
+
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": true, "remaining_credential_count": 1 } )");
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  OnPrepareCredentialsPresentation(
+      domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
+  EXPECT_TRUE(HasValidSkusCredential(&local_pref_service_));
+  OnGetSubscriberCredentialV12("inalid", false);
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+
+  // Trying again with valid subscriber credential.
+  // Check cached skus credential is gone and we have valid subs credential
+  // instead.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnGetSubscriberCredentialV12("valid-subs-credentials", true);
+  EXPECT_FALSE(HasValidSkusCredential(&local_pref_service_));
+  EXPECT_TRUE(HasValidSubscriberCredential(&local_pref_service_));
+}
+
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
   std::string env = skus::GetDefaultEnvironment();
   std::string domain = skus::GetDomain("vpn", env);
