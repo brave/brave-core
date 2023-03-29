@@ -17,7 +17,7 @@ interface RewardsUtilityService {
 
   SetEnvironment(ledger.mojom.Environment environment);
 
-  SetDebug(bool is_debug);
+  SetDebug(bool debug);
 
   SetReconcileInterval(int32 interval);
 

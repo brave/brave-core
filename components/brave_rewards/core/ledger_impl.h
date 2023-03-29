@@ -21,6 +21,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
+#include "brave/components/brave_rewards/core/logging/logging.h"  // does not belong in here, components should include it themselves
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
@@ -38,35 +39,29 @@
 #include "brave/components/brave_rewards/core/ledger.h"  // TODO(sszaloki)
 
 namespace ledger {
-class Ledger;
-}
 
-namespace rewards {
-
-class RewardsUtilityServiceImpl
-    : public mojom::RewardsUtilityService,
-      public base::SupportsWeakPtr<RewardsUtilityServiceImpl> {
+class LedgerImpl : public rewards::mojom::RewardsUtilityService,
+                   public base::SupportsWeakPtr<LedgerImpl> {
  public:
-  explicit RewardsUtilityServiceImpl(
-      mojo::PendingReceiver<mojom::RewardsUtilityService>
+  explicit LedgerImpl(
+      mojo::PendingReceiver<rewards::mojom::RewardsUtilityService>
           bat_ledger_pending_receiver);
 
-  ~RewardsUtilityServiceImpl() override;
+  ~LedgerImpl() override;
 
-  RewardsUtilityServiceImpl(const RewardsUtilityServiceImpl&) = delete;
+  LedgerImpl(const LedgerImpl&) = delete;
 
-  RewardsUtilityServiceImpl& operator=(const RewardsUtilityServiceImpl&) =
-      delete;
+  LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   // mojom::RewardsUtilityService implementation begin
-  void InitializeLedger(
-      mojo::PendingAssociatedRemote<mojom::RewardsService> rewards_service,
-      bool execute_create_script,
-      InitializeLedgerCallback callback) override;
+  void InitializeLedger(mojo::PendingAssociatedRemote<
+                            rewards::mojom::RewardsService> rewards_service,
+                        bool execute_create_script,
+                        InitializeLedgerCallback callback) override;
 
   void SetEnvironment(ledger::mojom::Environment environment) override;
 
-  void SetDebug(bool is_debug) override;
+  void SetDebug(bool debug) override;
 
   void SetReconcileInterval(int32_t interval) override;
 
@@ -445,6 +440,8 @@ class RewardsUtilityServiceImpl
   }
   // RewardsService sync helpers end
 
+  bool IsShuttingDown() const;
+
  private:
   enum class ReadyState {
     kUninitialized,
@@ -472,12 +469,11 @@ class RewardsUtilityServiceImpl
   void OnAllDone(ledger::mojom::Result result,
                  ledger::LegacyResultCallback callback);
 
-  bool IsShuttingDown() const;
-
   template <typename T>
   void WhenReady(T callback);
 
-  mojo::Receiver<mojom::RewardsUtilityService> utility_service_receiver_;
+  mojo::Receiver<rewards::mojom::RewardsUtilityService>
+      utility_service_receiver_;
 
   mojo::AssociatedRemote<rewards::mojom::RewardsService> rewards_service_;
   std::unique_ptr<ledger::promotion::Promotion> promotion_;
@@ -501,6 +497,6 @@ class RewardsUtilityServiceImpl
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 
-}  // namespace rewards
+}  // namespace ledger
 
 #endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_

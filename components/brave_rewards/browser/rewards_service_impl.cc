@@ -473,21 +473,10 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   HandleFlags(RewardsFlags::ForCurrentProcess());
 
-  utility_service_->CreateLedger(
-      rewards_service_receiver_.BindNewEndpointAndPassRemote(),
-      base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnLedgerCreated() {
-  if (!Connected()) {
-    BLOG(0, "Ledger instance could not be created");
-    return;
-  }
-
   PrepareLedgerEnvForTesting();
 
   utility_service_->InitializeLedger(
-      false,
+      rewards_service_receiver_.BindNewEndpointAndPassRemote(), false,
       base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 

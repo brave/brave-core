@@ -542,7 +542,7 @@ static_library("ledger") {
     ":publishers_proto",
     "//base",
     "//brave/components/brave_private_cdn",
-    "//brave/components/services/bat_ledger/public/interfaces:interfaces",
+    "//brave/components/brave_rewards/common/mojom:interfaces",
     "//brave/third_party/challenge_bypass_ristretto_ffi",
     "//brave/third_party/rapidjson",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
@@ -563,4 +563,23 @@ static_library("ledger") {
     ":buildflags",
     ":headers",
   ]
+}
+
+static_library("lib") {
+  visibility = [
+    "//brave/test:*",
+    "//chrome/utility:*",
+  ]
+
+  sources = [
+    "ledger_impl.cc",
+    "ledger_impl.h",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_rewards/common/mojom:interfaces",
+    "//brave/components/brave_rewards/core",
+  ]
+
+  deps = [ "//mojo/public/cpp/system" ]
 }

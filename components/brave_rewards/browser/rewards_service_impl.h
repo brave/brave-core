@@ -366,8 +366,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void Reset();
 
-  void OnLedgerCreated();
-
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::mojom::Result result);
 
