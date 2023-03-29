@@ -112,6 +112,10 @@ public class WalletModel {
         return mCryptoModel;
     }
 
+    public NetworkModel getNetworkModel() {
+        return mCryptoModel.getNetworkModel();
+    }
+
     public DappsModel getDappsModel() {
         return mDappsModel;
     }

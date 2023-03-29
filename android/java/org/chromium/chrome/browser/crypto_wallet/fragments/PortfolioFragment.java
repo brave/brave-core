@@ -50,7 +50,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-// import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -192,12 +192,6 @@ public class PortfolioFragment
         mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
                 getViewLifecycleOwner(),
                 allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
-        mPortfolioModel.mNftModels.observe(getViewLifecycleOwner(), nftDataModels -> {
-            if (mPortfolioHelper == null) return;
-            mNftDataModels = nftDataModels;
-            setUpNftList(nftDataModels, mPortfolioHelper.getPerTokenCryptoSum(),
-                    mPortfolioHelper.getPerTokenFiatSum());
-        });
         mNetworkSelectionModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
                         PortfolioFragment.TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
