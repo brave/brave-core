@@ -72,6 +72,8 @@ class SolanaMessage {
 
   static absl::optional<SolanaMessage> FromValue(
       const base::Value::Dict& value);
+  static absl::optional<SolanaMessage> FromDeprecatedLegacyValue(
+      const base::Value::Dict& value);
 
   void SetInstructionsForTesting(
       const std::vector<SolanaInstruction>& instructions) {

@@ -645,4 +645,48 @@ absl::optional<SolanaMessage> SolanaMessage::FromValue(
                        std::move(address_table_lookups));
 }
 
+// static
+absl::optional<SolanaMessage> SolanaMessage::FromDeprecatedLegacyValue(
+    const base::Value::Dict& value) {
+  const std::string* recent_blockhash = value.FindString(kRecentBlockhash);
+  if (!recent_blockhash) {
+    return absl::nullopt;
+  }
+
+  const std::string* last_valid_block_height_string =
+      value.FindString(kLastValidBlockHeight);
+  uint64_t last_valid_block_height = 0;
+  if (!last_valid_block_height_string ||
+      !base::StringToUint64(*last_valid_block_height_string,
+                            &last_valid_block_height)) {
+    return absl::nullopt;
+  }
+
+  const std::string* fee_payer = value.FindString(kFeePayer);
+  if (!fee_payer) {
+    return absl::nullopt;
+  }
+
+  const base::Value::List* instruction_list = value.FindList(kInstructions);
+  if (!instruction_list) {
+    return absl::nullopt;
+  }
+  std::vector<SolanaInstruction> instructions;
+  for (const auto& instruction_value : *instruction_list) {
+    if (!instruction_value.is_dict()) {
+      return absl::nullopt;
+    }
+
+    absl::optional<SolanaInstruction> instruction =
+        SolanaInstruction::FromValue(instruction_value.GetDict());
+    if (!instruction) {
+      return absl::nullopt;
+    }
+    instructions.emplace_back(std::move(instruction.value()));
+  }
+
+  return CreateLegacyMessage(*recent_blockhash, last_valid_block_height,
+                             *fee_payer, std::move(instructions));
+}
+
 }  // namespace brave_wallet
