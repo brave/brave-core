@@ -192,7 +192,7 @@ export class MockedWalletApiProxy {
     InstanceType<typeof BraveWallet.BraveWalletP3AInterface>
   > = {
     reportOnboardingAction: () => {},
-    reportEthereumProvider: () => {}
+    reportJSProvider: () => {}
   }
 
   assetRatioService: Partial<

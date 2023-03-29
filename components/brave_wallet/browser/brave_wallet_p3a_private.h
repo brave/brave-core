@@ -14,8 +14,10 @@ class BraveWalletP3APrivate : public mojom::BraveWalletP3A {
  public:
   BraveWalletP3APrivate() = default;
 
-  void ReportEthereumProvider(
-      mojom::EthereumProviderType provider_type) override;
+  void ReportJSProvider(mojom::JSProviderType provider_type,
+                        mojom::CoinType coin_type,
+                        bool use_native_wallet_enabled,
+                        bool allow_provider_overwrite) override;
   void ReportOnboardingAction(
       mojom::OnboardingAction onboarding_action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;

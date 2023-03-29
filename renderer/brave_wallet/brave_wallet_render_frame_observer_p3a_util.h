@@ -11,6 +11,13 @@
 #include "content/public/renderer/render_frame.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
+namespace v8 {
+class Context;
+template <class T>
+class Local;
+class Isolate;
+}  // namespace v8
+
 namespace brave_wallet {
 
 class BraveWalletRenderFrameObserverP3AUtil {
@@ -18,12 +25,18 @@ class BraveWalletRenderFrameObserverP3AUtil {
   BraveWalletRenderFrameObserverP3AUtil();
   ~BraveWalletRenderFrameObserverP3AUtil();
 
-  void ReportEthereumProvider(
-      content::RenderFrame* render_frame,
-      const brave::mojom::DynamicParams& dynamic_params);
+  void ReportJSProviders(content::RenderFrame* render_frame,
+                         const brave::mojom::DynamicParams& dynamic_params);
 
  private:
   bool EnsureConnected(content::RenderFrame* render_frame);
+
+  void ReportJSProvider(v8::Isolate* isolate,
+                        v8::Local<v8::Context>& context,
+                        mojom::CoinType coin_type,
+                        const char* provider_object_key,
+                        bool use_native_wallet_enabled,
+                        bool allow_provider_overwrite);
 
   mojo::Remote<brave_wallet::mojom::BraveWalletP3A> brave_wallet_p3a_;
 };
