@@ -79,6 +79,9 @@ class PlaylistDownloadRequestManager : public content::WebContentsObserver {
       const {
     return media_detector_component_manager_;
   }
+  MediaDetectorComponentManager* media_detector_component_manager() {
+    return media_detector_component_manager_;
+  }
 
   void SetRunScriptOnMainWorldForTest();
 

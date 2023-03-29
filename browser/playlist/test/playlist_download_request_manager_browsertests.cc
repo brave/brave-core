@@ -158,7 +158,9 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     std::vector<playlist::mojom::PlaylistItemPtr> expected_items;
     base::ranges::for_each(expected_data, [&](ExpectedData& item) {
       auto fix_host = [&](auto& url_str) {
-        ASSERT_FALSE(url_str.empty());
+        if (!base::StartsWith(url_str, "/")) {
+          return;
+        }
 
         // Fix up host so that we can drop port nums.
         GURL new_url = https_server()->GetURL(url_str);
@@ -168,14 +170,12 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
         url_str = new_url.ReplaceComponents(replacements).spec();
       };
 
-      if (!item.thumbnail_source.empty())
-        fix_host(item.thumbnail_source);
-
-      if (!item.media_source.empty())
-        fix_host(item.media_source);
+      fix_host(item.thumbnail_source);
+      fix_host(item.media_source);
 
       expected_items.push_back(CreateItem(item));
     });
+
     EXPECT_EQ(actual_items.size(), expected_items.size());
 
     auto equal = [](const auto& a, const auto& b) {
@@ -318,4 +318,42 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerWithFakeUABrowserTest,
 
   EXPECT_TRUE(base::Contains(user_agent_string, "iPhone"));
   EXPECT_FALSE(base::Contains(user_agent_string, "Chrome"));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+                       OGTagImageWithAbsolutePath) {
+  LoadHTMLAndCheckResult(
+      R"html(
+        <html>
+        <meta property="og:image" content="https://foo.com/img.jpg">
+        <body>
+          <video>
+            <source src="test1.mp4"/>
+          </video>
+        </body></html>
+      )html",
+      {
+          {.name = "",
+           .thumbnail_source = "https://foo.com/img.jpg",
+           .media_source = "/test1.mp4"},
+      });
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+                       OGTagImageWithRelativePath) {
+  LoadHTMLAndCheckResult(
+      R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video>
+            <source src="test1.mp4"/>
+          </video>
+        </body></html>
+      )html",
+      {
+          {.name = "",
+           .thumbnail_source = "/img.jpg",
+           .media_source = "/test1.mp4"},
+      });
 }
