@@ -61,6 +61,8 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
         EXPECT_EQ(address, "339dc5ff-1167-4d69-8dd8-aa77ccb12d74");
         EXPECT_EQ(linking_info, "mock_linking_info");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
@@ -82,6 +84,8 @@ TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(token, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace bitflyer

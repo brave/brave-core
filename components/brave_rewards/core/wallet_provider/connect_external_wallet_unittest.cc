@@ -58,14 +58,8 @@ using ConnectExternalWalletTestParamType = std::tuple<
 class ConnectExternalWalletTest
     : public TestWithParam<ConnectExternalWalletTestParamType> {
  protected:
-  void SetUp() override {
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(Return(&mock_database_));
-  }
-
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
-  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_P(ConnectExternalWalletTest, Paths) {

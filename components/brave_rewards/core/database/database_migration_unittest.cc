@@ -15,7 +15,6 @@
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "build/build_config.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "sql/statement.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -83,17 +82,6 @@ class LedgerDatabaseMigrationTest : public BATLedgerTest {
     std::string init_script;
     ASSERT_TRUE(base::ReadFileToString(path, &init_script));
     ASSERT_TRUE(GetDB()->Execute(init_script.c_str()));
-  }
-
-  void InitializeLedger() {
-    base::RunLoop run_loop;
-    mojom::Result result;
-    GetLedgerImpl()->Initialize(false, [&result, &run_loop](auto r) {
-      result = r;
-      run_loop.Quit();
-    });
-    run_loop.Run();
-    ASSERT_EQ(result, mojom::Result::LEDGER_OK);
   }
 
   int CountTableRows(const std::string& table) {

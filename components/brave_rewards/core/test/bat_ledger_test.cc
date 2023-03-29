@@ -4,12 +4,21 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom-test-utils.h"
 
 namespace ledger {
 
-BATLedgerTest::BATLedgerTest() = default;
+BATLedgerTest::BATLedgerTest() : ledger_({}) {}
 
 BATLedgerTest::~BATLedgerTest() = default;
+
+void BATLedgerTest::InitializeLedger() {
+  rewards::mojom::RewardsUtilityServiceAsyncWaiter sync(&ledger_);
+  const auto result = sync.InitializeLedger(
+      test_rewards_service_receiver_.BindNewEndpointAndPassDedicatedRemote(),
+      false);
+  DCHECK(result == mojom::Result::LEDGER_OK);
+}
 
 void BATLedgerTest::AddNetworkResultForTesting(const std::string& url,
                                                mojom::UrlMethod method,

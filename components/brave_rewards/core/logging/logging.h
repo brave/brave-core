@@ -10,8 +10,8 @@
 #include <string>
 
 #include "base/logging.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/core/logging/logging_util.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 
 namespace ledger {
 

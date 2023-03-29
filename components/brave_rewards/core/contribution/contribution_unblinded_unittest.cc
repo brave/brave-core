@@ -8,7 +8,6 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
-#include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 
@@ -26,10 +25,8 @@ namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
   void SetUp() override {
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(&mock_database_));
-
-    ON_CALL(mock_database_, GetContributionInfo(contribution_id, _))
+    ON_CALL(*mock_ledger_impl_.mock_database(),
+            GetContributionInfo(contribution_id, _))
         .WillByDefault(
             Invoke([](const std::string& id,
                       database::GetContributionInfoCallback callback) {
@@ -45,14 +42,13 @@ class UnblindedTest : public ::testing::Test {
   }
 
  protected:
-  base::test::TaskEnvironment scoped_task_environment_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
   Unblinded unblinded_{&mock_ledger_impl_};
-  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(mock_database_, GetReservedUnblindedTokens(_, _))
+  ON_CALL(*mock_ledger_impl_.mock_database(), GetReservedUnblindedTokens(_, _))
       .WillByDefault(
           Invoke([](const std::string&,
                     database::GetUnblindedTokenListCallback callback) {
@@ -72,6 +68,8 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
                    [](const mojom::Result result) {
                      ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
                    });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
@@ -118,6 +116,8 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
                                                         publisher_list);
     EXPECT_STREQ(publisher_key.c_str(), entry.publisher_key);
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace contribution

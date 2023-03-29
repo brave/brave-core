@@ -44,9 +44,6 @@ class PublisherTest : public testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(&mock_database_));
-
     ON_CALL(*mock_ledger_impl_.mock_rewards_service(),
             GetDoubleState(state::kScoreA, _))
         .WillByDefault([this](const std::string&, auto callback) {
@@ -77,7 +74,6 @@ class PublisherTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
   Publisher publisher_{&mock_ledger_impl_};
-  database::MockDatabase mock_database_{&mock_ledger_impl_};
 
   double a_ = 0;
   double b_ = 0;

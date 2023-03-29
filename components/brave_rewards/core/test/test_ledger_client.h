@@ -16,8 +16,8 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/core/ledger_database.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 
 namespace ledger {
 

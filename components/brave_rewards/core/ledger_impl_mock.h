@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_MOCK_H_
 
+#include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -32,11 +33,14 @@ class MockLedgerImpl : private AddMockRewardsService, public LedgerImpl {
 
   MockRewardsService* mock_rewards_service();
 
+  database::MockDatabase* mock_database();
+
+  MOCK_METHOD2(InitializeDatabase, void(bool, LegacyResultCallback));
+
   MOCK_CONST_METHOD0(database, database::Database*());
 
-  MOCK_CONST_METHOD0(promotion, promotion::Promotion*());
-
-  MOCK_METHOD2(Initialize, void(bool, LegacyResultCallback));
+ private:
+  database::MockDatabase mock_database_{this};
 };
 
 }  // namespace ledger

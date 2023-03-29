@@ -9,7 +9,6 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
-#include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
@@ -23,16 +22,10 @@ namespace ledger {
 namespace database {
 
 class DatabaseActivityInfoTest : public ::testing::Test {
-  void SetUp() override {
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(Return(&mock_database_));
-  }
-
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
   DatabaseActivityInfo activity_{&mock_ledger_impl_};
-  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {

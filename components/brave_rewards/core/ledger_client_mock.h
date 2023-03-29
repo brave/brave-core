@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ledger {

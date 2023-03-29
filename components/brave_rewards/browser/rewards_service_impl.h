@@ -27,10 +27,10 @@
 #include "base/values.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -365,8 +365,6 @@ class RewardsServiceImpl : public RewardsService,
                                               bool success);
 
   void Reset();
-
-  void OnLedgerCreated();
 
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::mojom::Result result);

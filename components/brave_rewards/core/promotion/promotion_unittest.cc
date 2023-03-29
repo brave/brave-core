@@ -67,9 +67,6 @@ class PromotionTest : public testing::Test {
           std::move(callback).Run(std::move(wallet));
         });
 
-    ON_CALL(mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(&mock_database_));
-
     ON_CALL(*mock_ledger_impl_.mock_rewards_service(), LoadURL(_, _))
         .WillByDefault(
             [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
@@ -84,12 +81,11 @@ class PromotionTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
   Promotion promotion_{&mock_ledger_impl_};
-  database::MockDatabase mock_database_{&mock_ledger_impl_};
 };
 
 TEST_F(PromotionTest, DISABLED_LegacyPromotionIsNotOverwritten) {
   bool inserted = false;
-  ON_CALL(mock_database_, GetAllPromotions(_))
+  ON_CALL(*mock_ledger_impl_.mock_database(), GetAllPromotions(_))
       .WillByDefault([&inserted](ledger::GetAllPromotionsCallback callback) {
         auto promotion = mojom::Promotion::New();
         base::flat_map<std::string, mojom::PromotionPtr> map;
@@ -106,7 +102,7 @@ TEST_F(PromotionTest, DISABLED_LegacyPromotionIsNotOverwritten) {
         callback(std::move(map));
       });
 
-  EXPECT_CALL(mock_database_, SavePromotion(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(), SavePromotion(_, _)).Times(1);
 
   promotion_.Fetch(base::DoNothing());
   inserted = true;

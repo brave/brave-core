@@ -24,6 +24,8 @@ class BATLedgerTest : public testing::Test {
   BATLedgerTest();
   ~BATLedgerTest() override;
 
+  void InitializeLedger();
+
  protected:
   // Returns the |TaskEnvironment| for this test.
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
@@ -47,8 +49,7 @@ class BATLedgerTest : public testing::Test {
   TestRewardsService test_rewards_service_;
   mojo::AssociatedReceiver<rewards::mojom::RewardsService>
       test_rewards_service_receiver_{&test_rewards_service_};
-  LedgerImpl ledger_{
-      test_rewards_service_receiver_.BindNewEndpointAndPassDedicatedRemote()};
+  LedgerImpl ledger_;
 };
 
 }  // namespace ledger
