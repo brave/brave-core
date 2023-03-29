@@ -172,7 +172,7 @@ void StarRandomnessMeta::AttestServer(bool make_info_request_after) {
   nitro_utils::RequestAndVerifyAttestationDocument(
       attestation_url, url_loader_factory_.get(),
       base::BindOnce(&StarRandomnessMeta::HandleAttestationResult,
-                     base::Unretained(this), make_info_request_after));
+                     weak_ptr_factory_.GetWeakPtr(), make_info_request_after));
 }
 
 void StarRandomnessMeta::HandleAttestationResult(

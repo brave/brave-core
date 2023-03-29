@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
+#include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/p3a/constellation/rs/cxx/src/lib.rs.h"
@@ -97,6 +98,8 @@ class StarRandomnessMeta {
 
   scoped_refptr<net::X509Certificate> approved_cert_;
   bool attestation_pending_ = false;
+
+  base::WeakPtrFactory<StarRandomnessMeta> weak_ptr_factory_{this};
 };
 
 }  // namespace p3a
