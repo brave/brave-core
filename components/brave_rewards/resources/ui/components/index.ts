@@ -36,7 +36,6 @@ import TableTransactions from './tableTransactions'
 import ThumbLikePicker from './thumbLikePicker'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
-import WalletSummary from './walletSummary'
 
 export {
   AdRowsDetails,
@@ -71,6 +70,5 @@ export {
   TableTransactions,
   ThumbLikePicker,
   Tokens,
-  Tooltip,
-  WalletSummary
+  Tooltip
 }

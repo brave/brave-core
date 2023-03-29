@@ -6,7 +6,6 @@ import styled, { css } from 'styled-components'
 import { SummaryType as TransactionType } from '../modalActivity'
 
 const colors: Record<TransactionType, string> = {
-  grant: '#9f22a1',
   ads: '#9752cb',
   contribute: '#696fdc',
   monthly: '#696fdc',
