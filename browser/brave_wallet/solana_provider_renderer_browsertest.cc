@@ -328,9 +328,13 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
     EXPECT_EQ(param->encoded_serialized_msg,
               brave_wallet::Base58Encode(kSerializedMessage));
     if (error_ == SolanaProviderError::kSuccess) {
-      std::move(callback).Run(SolanaProviderError::kSuccess, "", kSignedTx);
+      std::move(callback).Run(
+          SolanaProviderError::kSuccess, "", kSignedTx,
+          brave_wallet::mojom::SolanaMessageVersion::kLegacy);
     } else {
-      std::move(callback).Run(error_, error_message_, std::vector<uint8_t>());
+      std::move(callback).Run(
+          error_, error_message_, std::vector<uint8_t>(),
+          brave_wallet::mojom::SolanaMessageVersion::kLegacy);
       ClearError();
     }
   }
@@ -342,11 +346,14 @@ class TestSolanaProvider final : public brave_wallet::mojom::SolanaProvider {
                 brave_wallet::Base58Encode(kSerializedMessage));
     }
     if (error_ == SolanaProviderError::kSuccess) {
-      std::move(callback).Run(SolanaProviderError::kSuccess, "",
-                              {kSignedTx, kSignedTx});
+      std::move(callback).Run(
+          SolanaProviderError::kSuccess, "", {kSignedTx, kSignedTx},
+          {brave_wallet::mojom::SolanaMessageVersion::kLegacy,
+           brave_wallet::mojom::SolanaMessageVersion::kLegacy});
     } else {
-      std::move(callback).Run(error_, error_message_,
-                              std::vector<std::vector<uint8_t>>());
+      std::move(callback).Run(
+          error_, error_message_, std::vector<std::vector<uint8_t>>(),
+          std::vector<brave_wallet::mojom::SolanaMessageVersion>());
       ClearError();
     }
   }

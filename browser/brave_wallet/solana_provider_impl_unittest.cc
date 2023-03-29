@@ -355,7 +355,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
             std::vector<mojom::SignaturePubkeyPairPtr>()),
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
-                                       const std::vector<uint8_t>& result) {
+                                       const std::vector<uint8_t>& result,
+                                       mojom::SolanaMessageVersion version) {
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           result_out = std::move(result);
@@ -394,7 +395,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](mojom::SolanaProviderError error,
                 const std::string& error_message,
-                const std::vector<std::vector<uint8_t>>& result) {
+                const std::vector<std::vector<uint8_t>>& result,
+                const std::vector<mojom::SolanaMessageVersion>& versions) {
               EXPECT_EQ(error, expected_error);
               EXPECT_EQ(error_message, expected_error_message);
               result_out = std::move(result);

@@ -78,6 +78,8 @@ class SolanaMessage {
     instructions_ = instructions;
   }
 
+  mojom::SolanaMessageVersion version() const { return version_; }
+
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);
 

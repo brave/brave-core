@@ -177,10 +177,12 @@ interface SolanaProvider {
   // Transaction with signature in wire format.
   SignTransaction(SolanaSignTransactionParam param)
     => (SolanaProviderError error, string error_message,
-        array<uint8> serialized_tx);
+        array<uint8> serialized_tx,
+        SolanaMessageVersion version);
   SignAllTransactions(array<SolanaSignTransactionParam> params)
     => (SolanaProviderError error, string error_message,
-        array<array<uint8>> serialized_txs);
+        array<array<uint8>> serialized_txs,
+        array<SolanaMessageVersion> versions);
   // It takes a base58 encoded serialized Message and return an object
   // containing both base58 encoded public key and signature as
   // { publicKey: <base58 encoded string>,
