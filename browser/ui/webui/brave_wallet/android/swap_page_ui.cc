@@ -149,7 +149,7 @@ void SwapPageUI::CreatePageHandler(
   brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
   brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
-      profive, std::move(ipfs_service_receiver));
+      profile, std::move(ipfs_service_receiver));
   brave_wallet::BraveWalletService* wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
   wallet_service->Bind(std::move(brave_wallet_service_receiver));

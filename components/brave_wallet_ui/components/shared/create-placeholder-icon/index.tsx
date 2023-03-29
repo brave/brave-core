@@ -86,7 +86,12 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
 
     // memos
     React.useEffect(() => {
-      translateToNftGateway(tokenImageURL).then(setIpfsUrl)
+      let ignore = false
+      translateToNftGateway(tokenImageURL).then(
+        (v) => { if (!ignore) setIpfsUrl(v) })
+      return () => {
+        ignore = true
+      }
     }, [tokenImageURL])
 
     const remoteImage = React.useMemo(() => {

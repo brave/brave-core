@@ -39,8 +39,17 @@ export const NftIcon = (props: NftIconProps) => {
   const [remoteCid, setRemoteCid] = React.useState<string>()
 
   React.useEffect(() => {
-    translateToNftGateway(tokenImageURL).then((v) => {setRemoteImage(v)})
-    extractIpfsUrl(tokenImageURL).then(setRemoteCid)
+    let ignore = false
+    translateToNftGateway(tokenImageURL).then((v) => {
+      if (!ignore) setRemoteImage(v)
+    })
+    extractIpfsUrl(tokenImageURL).then((v) => {
+      if (!ignore) setRemoteCid(v)
+    })
+
+    return () => {
+      ignore = true;
+    };
   }, [tokenImageURL])
 
   const loadingCommand: UpdateLoadingMessage = {

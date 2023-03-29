@@ -1144,14 +1144,9 @@ export function refreshPortfolioFilterOptions () {
 // Checks whether set of urls have ipfs:// scheme or are gateway-like urls
 export const areSupportedForPinning = async (urls: string[]) => {
   const results = await Promise.all(urls.flatMap((v) => extractIpfsUrl(stripERC20TokenImageURL(v))))
-  for (const result of results) {
-    if (!(result?.startsWith(IPFS_PROTOCOL) || false)) {
-      return false
-    }
-  }
-  return true
+  return results.every(result => result?.startsWith(IPFS_PROTOCOL))
 }
-    
+
 // Extracts ipfs:// url from gateway-like url
 export const extractIpfsUrl = async (url: string | undefined) => {
   const { braveWalletIpfsService } = getAPIProxy()

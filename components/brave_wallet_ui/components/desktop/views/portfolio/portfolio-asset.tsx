@@ -389,9 +389,15 @@ export const PortfolioAsset = (props: Props) => {
   const [nftPinnable, setNftPinnable] = React.useState<boolean>()
 
   React.useEffect(() => {
+    let ignore = false
     if (nftMetadata?.imageURL) {
-      areSupportedForPinning([nftMetadata?.imageURL]).then(setNftPinnable)
-      extractIpfsUrl(nftMetadata?.imageURL).then(setIpfsImageUrl)
+      areSupportedForPinning([nftMetadata?.imageURL]).then(
+        (v) => {if (!ignore) setNftPinnable(v)})
+      extractIpfsUrl(nftMetadata?.imageURL).then(
+        (v) => {if (!ignore) setIpfsImageUrl(v)})
+    }
+    return () => {
+      ignore = true
     }
   }, [nftMetadata])
 

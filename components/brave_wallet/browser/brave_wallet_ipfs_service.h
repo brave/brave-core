@@ -10,12 +10,11 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
+#include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
 
 namespace brave_wallet {
 
@@ -23,6 +22,9 @@ class BraveWalletIpfsService : public KeyedService, public mojom::IpfsService {
  public:
   explicit BraveWalletIpfsService(PrefService* pref_service);
   ~BraveWalletIpfsService() override;
+
+  BraveWalletIpfsService(const BraveWalletIpfsService&) = delete;
+  BraveWalletIpfsService& operator=(const BraveWalletIpfsService&) = delete;
 
   mojo::PendingRemote<mojom::IpfsService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::IpfsService> receiver);
