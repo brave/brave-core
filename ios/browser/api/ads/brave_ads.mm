@@ -29,6 +29,8 @@
 #include "brave/components/brave_ads/core/ad_event_history.h"
 #include "brave/components/brave_ads/core/ads.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
+#include "brave/components/brave_ads/core/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/build_channel.h"
 #include "brave/components/brave_ads/core/database.h"
@@ -121,6 +123,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 @interface BraveAds () <AdsClientBridge> {
   AdsClientIOS* adsClient;
+  brave_ads::AdsClientNotifier* adsClientNotifier;
   brave_ads::Ads* ads;
   brave_ads::Database* adsDatabase;
   brave_ads::AdEventHistory* adEventHistory;
@@ -204,8 +207,10 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
   if (ads != nil) {
     delete ads;
+    delete adsClientNotifier;
     delete adsClient;
     ads = nil;
+    adsClientNotifier = nil;
     adsClient = nil;
     adEventHistory = nil;
   }
@@ -259,6 +264,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adEventHistory = new brave_ads::AdEventHistory();
 
   adsClient = new AdsClientIOS(self);
+  adsClientNotifier = new brave_ads::AdsClientNotifier();
   ads = brave_ads::Ads::CreateInstance(adsClient);
   ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
@@ -297,6 +303,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
         if (self->ads != nil) {
           delete self->ads;
         }
+        if (self->adsClientNotifier != nil) {
+          delete self->adsClientNotifier;
+        }
         if (self->adsClient != nil) {
           delete self->adsClient;
         }
@@ -307,6 +316,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           delete self->adEventHistory;
         }
         self->ads = nil;
+        self->adsClientNotifier = nil;
         self->adsClient = nil;
         self->adsDatabase = nil;
         self->adEventHistory = nil;
@@ -379,7 +389,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 - (void)savePref:(NSString*)name {
   if ([self isAdsServiceRunning]) {
-    ads->OnPrefDidChange(base::SysNSStringToUTF8(name));
+    adsClientNotifier->NotifyPrefDidChange(base::SysNSStringToUTF8(name));
   }
 
   [self savePrefs];
@@ -464,18 +474,29 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 
 #pragma mark - Observers
 
+- (void)addObserver:(brave_ads::AdsClientNotifierObserver*)observer {
+  adsClientNotifier->AddObserver(observer);
+}
+
+- (void)removeObserver:(brave_ads::AdsClientNotifierObserver*)observer {
+  adsClientNotifier->RemoveObserver(observer);
+}
+
+- (void)bindPendingObservers {
+}
+
 - (void)applicationDidBecomeActive {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnBrowserDidEnterForeground();
+  adsClientNotifier->NotifyBrowserDidEnterForeground();
 }
 
 - (void)applicationDidBackground {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnBrowserDidEnterBackground();
+  adsClientNotifier->NotifyBrowserDidEnterBackground();
 }
 
 #pragma mark - History
@@ -540,24 +561,24 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  ads->OnTabTextContentDidChange((int32_t)tabId, urls,
-                                 base::SysNSStringToUTF8(text));
-  ads->OnTabHtmlContentDidChange((int32_t)tabId, urls,
-                                 base::SysNSStringToUTF8(html));
+  adsClientNotifier->NotifyTabTextContentDidChange(
+      (int32_t)tabId, urls, base::SysNSStringToUTF8(text));
+  adsClientNotifier->NotifyTabHtmlContentDidChange(
+      (int32_t)tabId, urls, base::SysNSStringToUTF8(html));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnTabDidStartPlayingMedia((int32_t)tabId);
+  adsClientNotifier->NotifyTabDidStartPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnTabDidStopPlayingMedia((int32_t)tabId);
+  adsClientNotifier->NotifyTabDidStopPlayingMedia((int32_t)tabId);
 }
 
 - (void)reportTabUpdated:(NSInteger)tabId
@@ -573,15 +594,16 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
     urls.push_back(net::GURLWithNSURL(redirectURL));
   }
   urls.push_back(net::GURLWithNSURL(url));
-  ads->OnTabDidChange((int32_t)tabId, urls, isSelected, [self isBrowserActive],
-                      isPrivate);
+  const bool isVisible = isSelected && [self isBrowserActive];
+  adsClientNotifier->NotifyTabDidChange((int32_t)tabId, urls, isVisible,
+                                        isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->OnDidCloseTab((int32_t)tabId);
+  adsClientNotifier->NotifyDidCloseTab((int32_t)tabId);
 }
 
 - (void)reportNotificationAdEvent:(NSString*)placementId
@@ -615,18 +637,18 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   }
   ads->MaybeServeInlineContentAd(
       base::SysNSStringToUTF8(dimensionsArg),
-      base::BindOnce(^(
-          const std::string& dimensions,
-          const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
-        if (!ad) {
-          completion(base::SysUTF8ToNSString(dimensions), nil);
-          return;
-        }
+      base::BindOnce(
+          ^(const std::string& dimensions,
+            const absl::optional<brave_ads::InlineContentAdInfo>& ad) {
+            if (!ad) {
+              completion(base::SysUTF8ToNSString(dimensions), nil);
+              return;
+            }
 
-        const auto inline_content_ad =
-            [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
-        completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
-      }));
+            const auto inline_content_ad =
+                [[InlineContentAdIOS alloc] initWithInlineContentAdInfo:*ad];
+            completion(base::SysUTF8ToNSString(dimensions), inline_content_ad);
+          }));
 }
 
 - (void)reportInlineContentAdEvent:(NSString*)placementId
@@ -825,8 +847,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                    if (success) {
                      const std::string bridged_language_code_adsResource_idkey =
                          base::SysNSStringToUTF8(languageCodeAdsResourceId);
-                     strongSelf->ads->OnDidUpdateResourceComponent(
-                         bridged_language_code_adsResource_idkey);
+                     strongSelf->adsClientNotifier
+                         ->NotifyDidUpdateResourceComponent(
+                             bridged_language_code_adsResource_idkey);
                    }
                  }];
 
@@ -863,8 +886,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      const std::string bridged_country_code_adsResource_idkey =
                          base::SysNSStringToUTF8(countryCodeAdsResourceId);
 
-                     strongSelf->ads->OnDidUpdateResourceComponent(
-                         bridged_country_code_adsResource_idkey);
+                     strongSelf->adsClientNotifier
+                         ->NotifyDidUpdateResourceComponent(
+                             bridged_country_code_adsResource_idkey);
                    }
                  }];
 
@@ -939,8 +963,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
                      }
 
                      BLOG(1, @"Notifying ads resource observers");
-                     strongSelf->ads->OnDidUpdateResourceComponent(
-                         base::SysNSStringToUTF8(key));
+                     strongSelf->adsClientNotifier
+                         ->NotifyDidUpdateResourceComponent(
+                             base::SysNSStringToUTF8(key));
                    }];
   }
 }
