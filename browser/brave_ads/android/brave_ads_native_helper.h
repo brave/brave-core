@@ -19,7 +19,7 @@ static void JNI_BraveAdsNativeHelper_SetAdsEnabled(
     const base::android::JavaParamRef<jobject>& j_profile_android,
     jboolean should_enable_ads);
 
-static jboolean JNI_BraveAdsNativeHelper_IsSupportedLocale(
+static jboolean JNI_BraveAdsNativeHelper_IsSupportedRegion(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android);
 

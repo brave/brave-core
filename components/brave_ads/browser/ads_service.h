@@ -46,9 +46,6 @@ class AdsService : public KeyedService {
   // static
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-  // Returns |true| if the user's locale supports ads.
-  virtual bool IsSupportedLocale() const = 0;
-
   // Returns |true| if ads are enabled.
   virtual bool IsEnabled() const = 0;
 

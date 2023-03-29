@@ -11,7 +11,6 @@
 #include "base/base_switches.h"
 #include "base/check.h"
 #include "base/containers/circular_deque.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/feature_list.h"
@@ -46,7 +45,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/core/ad_constants.h"
 #include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/ads.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/new_tab_page_ad_value_util.h"
@@ -362,6 +361,8 @@ AdsServiceImpl::AdsServiceImpl(
 
   MigratePrefs();
 
+  DisableAdsIfUnsupportedRegion();
+
   MigrateConfirmationState();
 
   rewards_service_->AddObserver(this);
@@ -437,9 +438,9 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
     return;
   }
 
-  if (!IsSupportedLocale()) {
-    VLOG(6) << brave_l10n::GetDefaultLocaleString()
-            << " locale does not support ads";
+  if (!IsSupportedRegion()) {
+    VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
+            << " region does not support ads";
     return;
   }
 
@@ -1160,166 +1161,34 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
   SetEnabled(false);
 }
 
-void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
-    const std::string& country_code,
-    const std::vector<std::string>& supported_country_codes) {
-  if (base::Contains(supported_country_codes, country_code)) {
-    return;
+void AdsServiceImpl::DisableAdsIfUnsupportedRegion() {
+  if (!IsSupportedRegion() && IsEnabled()) {
+    SetEnabled(false);
   }
-
-  SetEnabled(false);
 }
 
 void AdsServiceImpl::MigratePrefsVersion1To2() {
-  // Intentionally empty as we no longer need to migrate ads per day due to
-  // deprecation of prefs::kAdsPerDay
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
   DisableAdsIfUpgradingFromPreBraveAdsBuild();
-
-  // Disable ads for unsupported legacy country_codes due to a bug where ads
-  // were enabled even if the users country code was not supported
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR"   // France
-  };
-
-  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
-  // Disable ads for unsupported legacy country codes due to a bug where ads
-  // were enabled even if the users country code was not supported
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR",  // France
-      "AU",  // Australia
-      "NZ",  // New Zealand
-      "IE"   // Ireland
-  };
-
-  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
+  // Intentionally empty as migration is no longer required
 }
 
-void AdsServiceImpl::MigratePrefsVersion4To5() {
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
-  // Disable ads for unsupported legacy country codes due to a bug where ads
-  // were enabled even if the users country code was not supported
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR",  // France
-      "AU",  // Australia
-      "NZ",  // New Zealand
-      "IE",  // Ireland
-      "AR",  // Argentina
-      "AT",  // Austria
-      "BR",  // Brazil
-      "CH",  // Switzerland
-      "CL",  // Chile
-      "CO",  // Colombia
-      "DK",  // Denmark
-      "EC",  // Ecuador
-      "IL",  // Israel
-      "IN",  // India
-      "IT",  // Italy
-      "JP",  // Japan
-      "KR",  // Korea
-      "MX",  // Mexico
-      "NL",  // Netherlands
-      "PE",  // Peru
-      "PH",  // Philippines
-      "PL",  // Poland
-      "SE",  // Sweden
-      "SG",  // Singapore
-      "VE",  // Venezuela
-      "ZA"   // South Africa
-  };
-
-  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
-}
+void AdsServiceImpl::MigratePrefsVersion4To5() {}
 
 void AdsServiceImpl::MigratePrefsVersion5To6() {
-  // Intentionally empty as we no longer need to migrate ads per day due to
-  // deprecation of prefs::kAdsPerDay
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion6To7() {
-  // Disable ads for newly supported country codes due to a bug where ads were
-  // enabled even if the users country code was not supported
-
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR",  // France
-      "AU",  // Australia
-      "NZ",  // New Zealand
-      "IE",  // Ireland
-      "AR",  // Argentina
-      "AT",  // Austria
-      "BR",  // Brazil
-      "CH",  // Switzerland
-      "CL",  // Chile
-      "CO",  // Colombia
-      "DK",  // Denmark
-      "EC",  // Ecuador
-      "IL",  // Israel
-      "IN",  // India
-      "IT",  // Italy
-      "JP",  // Japan
-      "KR",  // Korea
-      "MX",  // Mexico
-      "NL",  // Netherlands
-      "PE",  // Peru
-      "PH",  // Philippines
-      "PL",  // Poland
-      "SE",  // Sweden
-      "SG",  // Singapore
-      "VE",  // Venezuela
-      "ZA",  // South Africa
-      "KY"   // Cayman Islands
-  };
-
-  const bool is_a_legacy_country_code =
-      base::Contains(legacy_country_codes, country_code);
-
-  if (is_a_legacy_country_code) {
-    // Do not disable Brave Ads for legacy country codes introduced before
-    // version 1.3.x
-    return;
-  }
-
-  const int last_schema_version = GetPrefService()->GetInteger(
-      prefs::kSupportedCountryCodesLastSchemaVersion);
-
-  if (last_schema_version >= 4) {
-    // Do not disable Brave Ads if |kSupportedCountryCodesLastSchemaVersion|
-    // is newer than or equal to schema version 4. This can occur if a user is
-    // upgrading from an older version of 1.3.x or above
-    return;
-  }
-
-  SetEnabled(false);
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion7To8() {
@@ -1331,8 +1200,7 @@ void AdsServiceImpl::MigratePrefsVersion7To8() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion8To9() {
-  // Intentionally empty as we no longer need to migrate ads per day due to
-  // deprecation of prefs::kAdsPerDay
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion9To10() {
@@ -1413,10 +1281,6 @@ void AdsServiceImpl::Shutdown() {
   }
 
   VLOG(2) << "Shutdown bat-ads service";
-}
-
-bool AdsServiceImpl::IsSupportedLocale() const {
-  return brave_ads::IsSupportedLocale(brave_l10n::GetDefaultLocaleString());
 }
 
 bool AdsServiceImpl::IsEnabled() const {

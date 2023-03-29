@@ -78,7 +78,7 @@ public class BraveAdsSignupDialog {
         boolean shouldShow = shouldShowOnboardingDialog() && !PackageUtils.isFirstInstall(context)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
                         Profile.getLastUsedRegularProfile())
-                && BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedRegularProfile())
+                && BraveAdsNativeHelper.nativeIsSupportedRegion(Profile.getLastUsedRegularProfile())
                 && braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported();
 
         boolean shouldShowForViewCount = shouldShowForViewCount();

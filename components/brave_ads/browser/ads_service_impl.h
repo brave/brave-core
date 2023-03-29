@@ -190,9 +190,7 @@ class AdsServiceImpl : public AdsService,
                     bool is_dry_run = false);
 
   void DisableAdsIfUpgradingFromPreBraveAdsBuild();
-  void DisableAdsForUnsupportedCountryCodes(
-      const std::string& country_code,
-      const std::vector<std::string>& country_codes);
+  void DisableAdsIfUnsupportedRegion();
   void MigratePrefsVersion1To2();
   void MigratePrefsVersion2To3();
   void MigratePrefsVersion3To4();
@@ -209,8 +207,6 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsService:
-  bool IsSupportedLocale() const override;
-
   bool IsEnabled() const override;
   void SetEnabled(bool is_enabled) override;
 

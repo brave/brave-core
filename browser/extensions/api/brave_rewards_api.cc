@@ -25,6 +25,7 @@
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_ads/core/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -963,7 +964,7 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
 
   if (params->key == "adsEnabled") {
     ads_service->SetEnabled(params->value == "true" &&
-                            ads_service->IsSupportedLocale());
+                            brave_ads::IsSupportedRegion());
   }
 
   return RespondNow(NoArguments());
@@ -1346,8 +1347,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsSupportedFunction::Run() {
     return RespondNow(WithArguments(false));
   }
 
-  const bool supported = ads_service->IsSupportedLocale();
-  return RespondNow(WithArguments(supported));
+  return RespondNow(WithArguments(brave_ads::IsSupportedRegion()));
 }
 
 BraveRewardsGetAdsDataFunction::~BraveRewardsGetAdsDataFunction() = default;
@@ -1366,7 +1366,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
     ads_data.Set("shouldAllowAdsSubdivisionTargeting", false);
     ads_data.Set("adsUIEnabled", false);
   } else {
-    ads_data.Set("adsIsSupported", ads_service->IsSupportedLocale());
+    ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
     ads_data.Set("adsEnabled", ads_service->IsEnabled());
     ads_data.Set(
         "adsPerHour",

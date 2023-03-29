@@ -684,7 +684,6 @@ test("brave_browser_tests") {
   ]
 
   sources = [
-    "//brave/browser/brave_ads/ads_service_browsertest.cc",
     "//brave/browser/brave_ads/brave_stats_helper_browsertest.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.cc",
     "//brave/browser/brave_ads/notification_helper/notification_helper_impl_mock.h",
@@ -834,8 +833,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_ads/common",
-    "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_perf_predictor/browser",
