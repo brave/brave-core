@@ -78,16 +78,15 @@ class LedgerImpl : public Ledger {
 
   virtual database::Database* database() const;
 
-  virtual void LoadURL(mojom::UrlRequestPtr request,
-                       LegacyLoadURLCallback callback);
+  void LoadURL(mojom::UrlRequestPtr request, LegacyLoadURLCallback callback);
 
-  virtual void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback);
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback);
 
-  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                LegacyRunDBTransactionCallback callback);
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        LegacyRunDBTransactionCallback callback);
 
-  virtual void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                RunDBTransactionCallback callback);
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback);
 
   bool IsShuttingDown() const;
 
