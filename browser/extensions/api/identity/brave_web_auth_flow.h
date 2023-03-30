@@ -11,9 +11,13 @@
 #include <set>
 #include <string>
 
+#include "base/functional/callback.h"
 #include "chrome/browser/extensions/api/identity/extension_token_key.h"
 #include "chrome/browser/extensions/api/identity/identity_get_auth_token_error.h"
 #include "chrome/browser/extensions/api/identity/web_auth_flow.h"
+#include "url/gurl.h"
+
+class Profile;
 
 namespace extensions {
 
