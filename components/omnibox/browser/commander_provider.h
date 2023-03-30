@@ -10,8 +10,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/commander/common/commander_frontend_delegate.h"
-#include "brave/components/commander/common/commander_item_model.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
+#include "brave/components/commander/browser/commander_item_model.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_provider_listener.h"

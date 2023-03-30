@@ -12,8 +12,8 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/commander/common/commander_frontend_delegate.h"
-#include "brave/components/commander/common/commander_item_model.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
+#include "brave/components/commander/browser/commander_item_model.h"
 #include "chrome/browser/ui/commander/command_source.h"
 #include "components/keyed_service/core/keyed_service.h"
 

@@ -11,7 +11,7 @@ source_set("browser_tests") {
 
   deps = [
     "//base",
-    "//brave/components/commander/common",
+    "//brave/components/commander/browser",
     "//chrome/browser/profiles",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",

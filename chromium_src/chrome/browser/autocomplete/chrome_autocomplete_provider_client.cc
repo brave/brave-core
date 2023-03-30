@@ -7,7 +7,7 @@
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 #include "brave/browser/ui/commander/commander_service_factory.h"
-#include "brave/components/commander/common/commander_frontend_delegate.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
 
 commander::CommanderFrontendDelegate*
 ChromeAutocompleteProviderClient::GetCommanderDelegate() {

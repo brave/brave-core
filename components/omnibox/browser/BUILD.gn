@@ -46,6 +46,6 @@ source_set("unit_tests") {
     sources +=
         [ "//brave/components/omnibox/browser/commander_provider_unittest.cc" ]
 
-    deps += [ "//brave/components/commander/common" ]
+    deps += [ "//brave/components/commander/browser" ]
   }
 }

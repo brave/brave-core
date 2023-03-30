@@ -9,7 +9,7 @@
 #include "components/omnibox/browser/autocomplete_provider_client.h"
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
-#include "brave/components/commander/common/commander_frontend_delegate.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
 #define GetTopSites                                                          \
   GetTopSites_Unused() {                                                     \
     return nullptr;                                                          \

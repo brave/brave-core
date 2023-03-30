@@ -48,5 +48,5 @@ if (!is_android && !is_ios) {
   ]
 
   brave_components_omnibox_browser_deps +=
-      [ "//brave/components/commander/common" ]
+      [ "//brave/components/commander/browser" ]
 }

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_COMMANDER_COMMON_COMMANDER_ITEM_MODEL_H_
-#define BRAVE_COMPONENTS_COMMANDER_COMMON_COMMANDER_ITEM_MODEL_H_
+#ifndef BRAVE_COMPONENTS_COMMANDER_BROWSER_COMMANDER_ITEM_MODEL_H_
+#define BRAVE_COMPONENTS_COMMANDER_BROWSER_COMMANDER_ITEM_MODEL_H_
 
 #include <string>
 #include <vector>
@@ -16,7 +16,7 @@ namespace commander {
 
 // See chrome/browser/ui/commander/commander_view_model.h for details on these
 // structs. They exist to get around some deps violations.
-struct COMPONENT_EXPORT(COMMANDER_COMMON) CommandItemModel {
+struct COMPONENT_EXPORT(COMMANDER_BROWSER) CommandItemModel {
  public:
   CommandItemModel(const std::u16string& title,
                    const std::vector<gfx::Range>& matched_ranges,
@@ -34,4 +34,4 @@ struct COMPONENT_EXPORT(COMMANDER_COMMON) CommandItemModel {
 
 }  // namespace commander
 
-#endif  // BRAVE_COMPONENTS_COMMANDER_COMMON_COMMANDER_ITEM_MODEL_H_
+#endif  // BRAVE_COMPONENTS_COMMANDER_BROWSER_COMMANDER_ITEM_MODEL_H_

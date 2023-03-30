@@ -540,7 +540,7 @@ source_set("ui") {
   }
 
   if (!is_android && !is_ios) {
-    deps += [ "//brave/components/commander/common" ]
+    deps += [ "//brave/components/commander/browser" ]
   }
 
   # This is no longer compiled into Chromium on Android, but we still

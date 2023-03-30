@@ -6,7 +6,7 @@
 #include "brave/browser/ui/browser_commands.h"
 
 #include "brave/browser/ui/commander/commander_service_factory.h"
-#include "brave/components/commander/common/commander_frontend_delegate.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 

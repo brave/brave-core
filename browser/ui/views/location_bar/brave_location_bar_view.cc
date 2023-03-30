@@ -19,7 +19,7 @@
 #include "brave/browser/ui/views/location_bar/brave_news_location_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/components/brave_news/common/features.h"
-#include "brave/components/commander/common/commander_frontend_delegate.h"
+#include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_theme_resources.h"

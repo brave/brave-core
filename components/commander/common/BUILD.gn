@@ -10,18 +10,11 @@ component("common") {
   defines = [ "IS_COMMANDER_COMMON_IMPL" ]
 
   sources = [
-    "commander_frontend_delegate.h",
-    "commander_item_model.cc",
-    "commander_item_model.h",
     "constants.cc",
     "constants.h",
     "features.cc",
     "features.h",
   ]
 
-  deps = [
-    "//base",
-    "//ui/gfx",
-    "//url",
-  ]
+  deps = [ "//base" ]
 }

@@ -3,8 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
 #include <vector>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_search_conversion/utils.h"
@@ -67,7 +69,7 @@ void MaybeAddCommanderProvider(AutocompleteController::Providers& providers,
                                AutocompleteController* controller) {
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (commander::CommanderEnabled()) {
-    providers.push_back(new commander::CommanderProvider(
+    providers.push_back(base::MakeRefCounted<commander::CommanderProvider>(
         controller->autocomplete_provider_client(), controller));
   }
 #endif
