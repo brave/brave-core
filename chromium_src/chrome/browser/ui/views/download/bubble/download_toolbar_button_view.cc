@@ -5,7 +5,9 @@
 
 #include "chrome/browser/ui/views/download/bubble/download_toolbar_button_view.h"
 
+#include "base/ranges/algorithm.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "components/vector_icons/vector_icons.h"
 #include "ui/gfx/geometry/skia_conversions.h"
 
 namespace gfx {
@@ -49,4 +51,49 @@ SkColor DownloadToolbarButtonView::GetIconColor() const {
 
   // Otherwise, always use inactive color.
   return GetColorProvider()->GetColor(kColorDownloadToolbarButtonInactive);
+}
+
+void DownloadToolbarButtonView::PaintButtonContents(gfx::Canvas* canvas) {
+  // Don't draw anything but alert icon when insecure download is in-progress.
+  if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
+    return;
+  }
+
+  DownloadToolbarButtonViewChromium::PaintButtonContents(canvas);
+}
+
+void DownloadToolbarButtonView::UpdateIcon() {
+  if (!GetWidget()) {
+    return;
+  }
+
+  DownloadToolbarButtonViewChromium::UpdateIcon();
+
+  // Replace Icon when insecure download is in-progress.
+  if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
+    const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
+    SkColor icon_color =
+        GetColorProvider()->GetColor(ui::kColorAlertMediumSeverity);
+
+    SetImageModel(ButtonState::STATE_NORMAL,
+                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
+    SetImageModel(ButtonState::STATE_HOVERED,
+                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
+    SetImageModel(ButtonState::STATE_PRESSED,
+                  ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
+    SetImageModel(
+        Button::STATE_DISABLED,
+        ui::ImageModel::FromVectorIcon(
+            *new_icon, GetForegroundColor(ButtonState::STATE_DISABLED)));
+  }
+}
+
+bool DownloadToolbarButtonView::HasInsecureDownloads(
+    const std::vector<DownloadUIModelPtr>& models) const {
+  return base::ranges::any_of(models, [](const auto& model) {
+    return (model->GetInsecureDownloadStatus() ==
+                download::DownloadItem::InsecureDownloadStatus::BLOCK ||
+            model->GetInsecureDownloadStatus() ==
+                download::DownloadItem::InsecureDownloadStatus::WARN);
+  });
 }
