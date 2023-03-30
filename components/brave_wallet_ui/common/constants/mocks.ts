@@ -299,11 +299,13 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
           'accountMetas': [
             {
               'pubkey': mockSolanaAccount.address,
+              'addrTableLookupIndex': undefined,
               'isSigner': true,
               'isWritable': true
             },
             {
               'pubkey': mockSolanaAccount.address,
+              'addrTableLookupIndex': undefined,
               'isSigner': true,
               'isWritable': true
             }
@@ -312,6 +314,17 @@ export const mockSolDappSignTransactionRequest: BraveWallet.SignTransactionReque
           'decodedData': undefined
         }
       ],
+      'version': BraveWallet.SolanaMessageVersion.kLegacy,
+      'messageHeader': {
+        'numRequiredSignatures': 1,
+        'numReadonlySignedAccounts': 0,
+        'numReadonlyUnsignedAccounts': 1
+      },
+      'staticAccountKeys': [
+        mockSolanaAccount.address,
+        '11111111111111111111111111111111'
+      ],
+      'addressTableLookups': [],
       'sendOptions': undefined,
       'signTransactionParam': undefined
     }
@@ -345,11 +358,13 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
           accountMetas: [
             {
               pubkey: mockSolanaAccount.address,
+              'addrTableLookupIndex': undefined,
               isSigner: true,
               isWritable: true
             },
             {
               pubkey: mockSolanaAccount.address,
+              'addrTableLookupIndex': undefined,
               isSigner: true,
               isWritable: true
             }
@@ -378,6 +393,17 @@ export const mockSolDappSignAndSendTransactionRequest: SerializableTransactionIn
           }
         }
       ],
+      'version': BraveWallet.SolanaMessageVersion.kLegacy,
+      'messageHeader': {
+        'numRequiredSignatures': 1,
+        'numReadonlySignedAccounts': 0,
+        'numReadonlyUnsignedAccounts': 1
+      },
+      'staticAccountKeys': [
+        mockSolanaAccount.address,
+        '11111111111111111111111111111111'
+      ],
+      'addressTableLookups': [],
       sendOptions: undefined,
       signTransactionParam: undefined
     }
@@ -434,11 +460,13 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
           'accountMetas': [
             {
               'pubkey': mockSolanaAccount.address,
+              'addrTableLookupIndex': undefined,
               'isSigner': true,
               'isWritable': true
             },
             {
               'pubkey': mockSolanaAccount.address,
+              'addrTableLookupIndex': undefined,
               'isSigner': true,
               'isWritable': true
             }
@@ -446,6 +474,17 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
           'data': [2, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0],
           'decodedData': undefined
         }],
+        'version': BraveWallet.SolanaMessageVersion.kLegacy,
+        'messageHeader': {
+          'numRequiredSignatures': 1,
+          'numReadonlySignedAccounts': 0,
+          'numReadonlyUnsignedAccounts': 1
+        },
+        'staticAccountKeys': [
+          mockSolanaAccount.address,
+          '11111111111111111111111111111111'
+        ],
+        'addressTableLookups': [],
         'sendOptions': undefined,
         'signTransactionParam': undefined
       }
@@ -469,11 +508,13 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
             'accountMetas': [
               {
                 'pubkey': mockSolanaAccount.address,
+                'addrTableLookupIndex': undefined,
                 'isSigner': true,
                 'isWritable': true
               },
               {
                 'pubkey': mockSolanaAccount.address,
+                'addrTableLookupIndex': undefined,
                 'isSigner': true,
                 'isWritable': true
               }
@@ -482,6 +523,17 @@ export const mockSolDappSignAllTransactionsRequest: BraveWallet.SignAllTransacti
             'decodedData': undefined
           }
         ],
+        'version': BraveWallet.SolanaMessageVersion.kLegacy,
+        'messageHeader': {
+          'numRequiredSignatures': 1,
+          'numReadonlySignedAccounts': 0,
+          'numReadonlyUnsignedAccounts': 1
+        },
+        'staticAccountKeys': [
+          mockSolanaAccount.address,
+          '11111111111111111111111111111111'
+        ],
+        'addressTableLookups': [],
         'sendOptions': undefined,
         'signTransactionParam': undefined
       }
