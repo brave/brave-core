@@ -17,6 +17,7 @@
 
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -87,35 +88,45 @@ void GetTextFromImage(const std::string& language_code,
     return;
   }
 
-  ScopedHString language_hstring = ScopedHString::Create(language_code);
-  if (!language_hstring.is_valid()) {
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
-  }
-
-  ComPtr<ILanguage> language;
-  hr = language_factory->CreateLanguage(language_hstring.get(), &language);
-  if (FAILED(hr)) {
-    VLOG(2) << "Create language failed: "
-            << logging::SystemErrorCodeToString(hr);
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
-  }
-
-  boolean is_supported = false;
-  hr = engine_factory->IsLanguageSupported(language.Get(), &is_supported);
-  if (FAILED(hr) || !is_supported) {
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
-  }
-
   ComPtr<IOcrEngine> ocr_engine;
-  hr = engine_factory->TryCreateFromLanguage(language.Get(), &ocr_engine);
-  if (FAILED(hr)) {
-    VLOG(2) << "Create engine failed from language: "
-            << logging::SystemErrorCodeToString(hr);
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
+  if (language_code.empty()) {
+    hr = engine_factory->TryCreateFromUserProfileLanguages(&ocr_engine);
+    if (FAILED(hr)) {
+      VLOG(2) << "Create engine failed from language: "
+              << logging::SystemErrorCodeToString(hr);
+      RunOnUIThread(std::move(callback_run_on_ui_thread));
+      return;
+    }
+  } else {
+    ScopedHString language_hstring = ScopedHString::Create(language_code);
+    if (!language_hstring.is_valid()) {
+      RunOnUIThread(std::move(callback_run_on_ui_thread));
+      return;
+    }
+
+    ComPtr<ILanguage> language;
+    hr = language_factory->CreateLanguage(language_hstring.get(), &language);
+    if (FAILED(hr)) {
+      VLOG(2) << "Create language failed: "
+              << logging::SystemErrorCodeToString(hr);
+      RunOnUIThread(std::move(callback_run_on_ui_thread));
+      return;
+    }
+
+    boolean is_supported = false;
+    hr = engine_factory->IsLanguageSupported(language.Get(), &is_supported);
+    if (FAILED(hr) || !is_supported) {
+      RunOnUIThread(std::move(callback_run_on_ui_thread));
+      return;
+    }
+
+    hr = engine_factory->TryCreateFromLanguage(language.Get(), &ocr_engine);
+    if (FAILED(hr)) {
+      VLOG(2) << "Create engine failed from language: "
+              << logging::SystemErrorCodeToString(hr);
+      RunOnUIThread(std::move(callback_run_on_ui_thread));
+      return;
+    }
   }
 
   ComPtr<ISoftwareBitmapStatics> bitmap_factory;
@@ -149,7 +160,7 @@ void GetTextFromImage(const std::string& language_code,
                  std::move(recognizer), std::move(callback_run_on_ui_thread)));
 }
 
-base::flat_set<std::string> GetAvailableRecognizerLanguages() {
+std::vector<std::string> GetAvailableRecognizerLanguages() {
   // Loads functions dynamically at runtime to prevent library dependencies.
   if (!base::win::ResolveCoreWinRTDelayload()) {
     VLOG(2) << "Failed loading functions from combase.dll";
@@ -181,7 +192,16 @@ base::flat_set<std::string> GetAvailableRecognizerLanguages() {
     return {};
   }
 
-  base::flat_set<std::string> available_language_codes;
+  WCHAR name[128]{};
+  ULONG nameLen = std::size(name);
+  ULONG langs = 0;
+  GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &langs,
+                              reinterpret_cast<PZZWSTR>(&name), &nameLen);
+  const std::string default_language =
+      brave_l10n::GetISOLanguageCode(base::WideToUTF8(std::wstring(name)));
+
+  // Locate default language at 0.
+  std::vector<std::string> language_codes = {default_language};
   for (uint32_t i = 0; i < lang_count; ++i) {
     ComPtr<ILanguage> lang;
     hr = available_languages->GetAt(i, &lang);
@@ -195,11 +215,16 @@ base::flat_set<std::string> GetAvailableRecognizerLanguages() {
       continue;
     }
 
-    available_language_codes.insert(
-        brave_l10n::GetISOLanguageCode(ScopedHString(text).GetAsUTF8()));
+    const auto code =
+        brave_l10n::GetISOLanguageCode(ScopedHString(text).GetAsUTF8());
+    if (base::ranges::find(language_codes, code) != language_codes.end()) {
+      continue;
+    }
+
+    language_codes.push_back(code);
   }
 
-  return available_language_codes;
+  return language_codes;
 }
 
 }  // namespace text_recognition

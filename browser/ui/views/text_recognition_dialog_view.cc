@@ -19,18 +19,48 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "content/public/browser/browser_thread.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/combobox_model.h"
 #include "ui/gfx/geometry/insets.h"
+#include "ui/views/controls/combobox/combobox.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/scroll_view.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_client_view.h"
 
+namespace {
+
 #if BUILDFLAG(IS_WIN)
-#include "brave/components/text_recognition/browser/text_recognition_helper_win.h"
+class TargetLanguageComboboxModel : public ui::ComboboxModel {
+ public:
+  explicit TargetLanguageComboboxModel(
+      const std::vector<std::string>& languages)
+      : languages_(languages) {}
+
+  TargetLanguageComboboxModel(const TargetLanguageComboboxModel&) = delete;
+  TargetLanguageComboboxModel& operator=(const TargetLanguageComboboxModel&) =
+      delete;
+
+  ~TargetLanguageComboboxModel() override = default;
+
+  // Overridden from ui::ComboboxModel:
+  size_t GetItemCount() const override { return languages_.size(); }
+
+  std::u16string GetItemAt(size_t index) const override {
+    return base::UTF8ToUTF16(languages_[index]);
+  }
+
+  absl::optional<size_t> GetDefaultIndex() const override { return 0; }
+
+ private:
+  const std::vector<std::string> languages_;
+};
 #endif
+
+}  // namespace
 
 namespace brave {
 
@@ -46,19 +76,22 @@ void ShowTextRecognitionDialog(content::WebContents* web_contents,
     TextRecognitionDialogView* text_recognition_dialog =
         static_cast<TextRecognitionDialogView*>(
             active_dialog->widget_delegate());
-    text_recognition_dialog->StartExtractingText(image);
+    text_recognition_dialog->set_image(image);
+    text_recognition_dialog->StartExtractingText();
     return;
   }
 
-  auto* new_dialog = constrained_window::ShowWebModalDialogViews(
-      new TextRecognitionDialogView(image), web_contents);
+  auto* delegate = new TextRecognitionDialogView(image);
+  auto* new_dialog =
+      constrained_window::ShowWebModalDialogViews(delegate, web_contents);
   dialog_tracker->SetActiveDialog(new_dialog);
   new_dialog->Show();
 }
 
 }  // namespace brave
 
-TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image) {
+TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
+    : image_(image) {
   SetModalType(ui::MODAL_TYPE_CHILD);
   SetButtons(ui::DIALOG_BUTTON_OK);
   SetButtonLabel(ui::DIALOG_BUTTON_OK,
@@ -71,7 +104,13 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image) {
       .SetMainAxisAlignment(views::LayoutAlignment::kStart)
       .SetInteriorMargin(gfx::Insets::TLBR(24, 26, 0, 26));
 
-  header_label_ = AddChildView(std::make_unique<views::Label>());
+  header_container_ = AddChildView(std::make_unique<views::View>());
+  header_container_->SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kHorizontal)
+      .SetMainAxisAlignment(views::LayoutAlignment::kStart);
+
+  header_label_ =
+      header_container_->AddChildView(std::make_unique<views::Label>());
   const int size_diff = 14 - views::Label::GetDefaultFontList().GetFontSize();
   header_label_->SetFontList(
       views::Label::GetDefaultFontList()
@@ -81,15 +120,33 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image) {
   header_label_->SetProperty(views::kMarginsKey,
                              gfx::Insets::TLBR(0, 0, 10, 0));
 
-  StartExtractingText(image);
+#if BUILDFLAG(IS_WIN)
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
+      base::BindOnce(&text_recognition::GetAvailableRecognizerLanguages),
+      base::BindOnce(
+          &TextRecognitionDialogView::OnGetAvailableRecognizerLanguages,
+          weak_factory_.GetWeakPtr()));
+#endif
+
+  StartExtractingText();
 }
 
 TextRecognitionDialogView::~TextRecognitionDialogView() = default;
 
-void TextRecognitionDialogView::StartExtractingText(const SkBitmap& image) {
-  if (image.empty()) {
+void TextRecognitionDialogView::StartExtractingText(
+    const std::string& language_code) {
+  if (image_.empty()) {
     UpdateContents({});
+    AdjustWidgetSize();
     return;
+  }
+
+  // Clear previous text.
+  if (scroll_view_) {
+    RemoveChildViewT(scroll_view_);
+    scroll_view_ = nullptr;
   }
 
   header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
@@ -99,21 +156,37 @@ void TextRecognitionDialogView::StartExtractingText(const SkBitmap& image) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&text_recognition::GetTextFromImage, image),
+      base::BindOnce(&text_recognition::GetTextFromImage, image_),
       base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
                      weak_factory_.GetWeakPtr()));
 #endif
 
 #if BUILDFLAG(IS_WIN)
-  helper_ = std::make_unique<text_recognition::TextRecognitionHelperWin>();
-  helper_->GetTextFromImage(
-      image, base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
-                            weak_factory_.GetWeakPtr()));
+  if (combobox_) {
+    combobox_->SetVisible(false);
+  }
+
+  scoped_refptr<base::SequencedTaskRunner> task_runner =
+      base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+  task_runner->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &text_recognition::GetTextFromImage, language_code, image_,
+          base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
+                         weak_factory_.GetWeakPtr())));
 #endif
 }
 
 void TextRecognitionDialogView::OnGetTextFromImage(
     const std::vector<std::string>& text) {
+  CHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+#if BUILDFLAG(IS_WIN)
+  if (combobox_) {
+    combobox_->SetVisible(true);
+  }
+#endif
+
   UpdateContents(text);
   AdjustWidgetSize();
 
@@ -138,11 +211,11 @@ void TextRecognitionDialogView::UpdateContents(
   ui::ScopedClipboardWriter(ui::ClipboardBuffer::kCopyPaste)
       .WriteText(unified_string);
 
-  if (!scroll_view_) {
-    scroll_view_ = AddChildView(std::make_unique<views::ScrollView>());
-    scroll_view_->SetProperty(views::kMarginsKey, gfx::Insets::VH(0, 10));
-    scroll_view_->ClipHeightTo(0, 350);
-  }
+  CHECK(!scroll_view_);
+  scroll_view_ = AddChildView(std::make_unique<views::ScrollView>());
+  scroll_view_->SetProperty(views::kMarginsKey, gfx::Insets::VH(0, 10));
+  scroll_view_->ClipHeightTo(0, 350);
+
   auto* label =
       scroll_view_->SetContents(std::make_unique<views::Label>(unified_string));
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
@@ -153,6 +226,34 @@ void TextRecognitionDialogView::UpdateContents(
 void TextRecognitionDialogView::AdjustWidgetSize() {
   GetWidget()->SetSize(GetDialogClientView()->GetPreferredSize());
 }
+
+#if BUILDFLAG(IS_WIN)
+void TextRecognitionDialogView::OnGetAvailableRecognizerLanguages(
+    const std::vector<std::string>& languages) {
+  CHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+
+  // Add combobox for selecting languages with fetched available languages.
+  auto* spacer =
+      header_container_->AddChildView(std::make_unique<views::View>());
+  spacer->SetProperty(
+      views::kFlexBehaviorKey,
+      views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                               views::MaximumFlexSizeRule::kUnbounded));
+  combobox_ = header_container_->AddChildView(std::make_unique<views::Combobox>(
+      std::make_unique<TargetLanguageComboboxModel>(languages)));
+  combobox_->SetMenuSelectionAtCallback(
+      base::BindRepeating(&TextRecognitionDialogView::OnLanguageOptionchanged,
+                          base::Unretained(this)));
+  combobox_->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 0, 10, 0));
+}
+
+bool TextRecognitionDialogView::OnLanguageOptionchanged(size_t index) {
+  CHECK(combobox_);
+  StartExtractingText(
+      base::UTF16ToUTF8(combobox_->GetModel()->GetItemAt(index)));
+  return false;
+}
+#endif
 
 BEGIN_METADATA(TextRecognitionDialogView, views::DialogDelegateView)
 END_METADATA

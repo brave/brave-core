@@ -20,15 +20,10 @@
 class SkBitmap;
 
 namespace views {
+class Combobox;
 class Label;
 class ScrollView;
 }  // namespace views
-
-#if BUILDFLAG(IS_WIN)
-namespace text_recognition {
-class TextRecognitionHelperWin;
-}  // namespace text_recognition
-#endif
 
 class TextRecognitionDialogView : public views::DialogDelegateView {
  public:
@@ -40,12 +35,21 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
       delete;
   ~TextRecognitionDialogView() override;
 
-  void StartExtractingText(const SkBitmap& image);
+  // If |language_code| is empty, system default profile language
+  // is used for detecting text from image. Only used on Windows.
+  void StartExtractingText(const std::string& language_code = {});
+  void set_image(const SkBitmap& image) { image_ = image; }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TextRecognitionBrowserTest, TextRecognitionTest);
 
   void OnGetTextFromImage(const std::vector<std::string>& text);
+
+#if BUILDFLAG(IS_WIN)
+  void OnGetAvailableRecognizerLanguages(
+      const std::vector<std::string>& languages);
+  bool OnLanguageOptionchanged(size_t index);
+#endif
 
   // Show |text| in this dialog and copy it to clipboard.
   void UpdateContents(const std::vector<std::string>& text);
@@ -53,9 +57,12 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
 
   raw_ptr<views::Label> header_label_ = nullptr;
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+  raw_ptr<views::View> header_container_ = nullptr;
+  SkBitmap image_;
 
 #if BUILDFLAG(IS_WIN)
-  std::unique_ptr<text_recognition::TextRecognitionHelperWin> helper_;
+  // Only used on Windows to show selectable target language list.
+  raw_ptr<views::Combobox> combobox_ = nullptr;
 #endif
 
   base::OnceCallback<void(const std::vector<std::string>&)>

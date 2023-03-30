@@ -21,8 +21,6 @@ component("browser") {
 
   if (is_win) {
     sources += [
-      "text_recognition_helper_win.cc",
-      "text_recognition_helper_win.h",
       "text_recognition_win.cc",
       "text_recognizer_win.cc",
       "text_recognizer_win.h",
