@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/rotating_hash_user_data.h"
 
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/sys_info.h"
@@ -27,8 +28,11 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
 
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
 
+  TransactionInfo transaction;
+  transaction.creative_instance_id = kCreativeInstanceId;
+
   // Act
-  const base::Value::Dict user_data = GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data = GetRotatingHash(transaction);
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(
@@ -43,15 +47,16 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
+  TransactionInfo transaction;
+  transaction.creative_instance_id = kCreativeInstanceId;
+
   AdvanceClockTo(TimeFromString("2 June 2022 11:000", /*is_local*/ false));
-  const base::Value::Dict user_data_before =
-      GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data_before = GetRotatingHash(transaction);
 
   // Act
   AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 
-  const base::Value::Dict user_data_after =
-      GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data_after = GetRotatingHash(transaction);
 
   // Assert
   EXPECT_EQ(user_data_before, user_data_after);
@@ -62,15 +67,16 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashDifferentAfterNextHour) {
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
+  TransactionInfo transaction;
+  transaction.creative_instance_id = kCreativeInstanceId;
+
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data_before =
-      GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data_before = GetRotatingHash(transaction);
 
   // Act
   AdvanceClockBy(base::Hours(1));
 
-  const base::Value::Dict user_data_after =
-      GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data_after = GetRotatingHash(transaction);
 
   // Assert
   EXPECT_NE(user_data_before, user_data_after);
@@ -82,15 +88,16 @@ TEST_F(BatAdsRotatingHashUserDataTest,
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 
+  TransactionInfo transaction;
+  transaction.creative_instance_id = kCreativeInstanceId;
+
   AdvanceClockTo(TimeFromString("2 June 2022 11:00", /*is_local*/ false));
-  const base::Value::Dict user_data_before =
-      GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data_before = GetRotatingHash(transaction);
 
   // Act
   AdvanceClockBy(base::Days(1));
 
-  const base::Value::Dict user_data_after =
-      GetRotatingHash(kCreativeInstanceId);
+  const base::Value::Dict user_data_after = GetRotatingHash(transaction);
 
   // Assert
   EXPECT_NE(user_data_before, user_data_after);

@@ -25,7 +25,7 @@ constexpr char kTitle[] = "title";
 constexpr char kDescription[] = "description";
 
 constexpr char kJson[] =
-    R"({"adAction":"view","adType":"ad_notification","advertiserId":"5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2","brand":"title","brandDisplayUrl":"brave.com","brandInfo":"description","brandUrl":"https://brave.com/","campaignId":"84197fc8-830a-4a8e-8339-7a70c2bfa104","creativeInstanceId":"3519f52c-46a4-4c48-9c2b-c264c0067f04","creativeSetId":"c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123","flaggedAd":false,"likeAction":0,"placementId":"f0948316-df6f-4e31-814d-d0b5f2a1f28c","savedAd":false})";
+    R"({"adAction":"view","adType":"ad_notification","advertiserId":"5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2","brand":"title","brandDisplayUrl":"brave.com","brandInfo":"description","brandUrl":"https://brave.com/","campaignId":"84197fc8-830a-4a8e-8339-7a70c2bfa104","creativeInstanceId":"3519f52c-46a4-4c48-9c2b-c264c0067f04","creativeSetId":"c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123","flaggedAd":false,"likeAction":0,"placementId":"f0948316-df6f-4e31-814d-d0b5f2a1f28c","savedAd":false,"segment":"untargeted"})";
 
 }  // namespace
 

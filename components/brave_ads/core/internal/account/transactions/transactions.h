@@ -31,6 +31,7 @@ using GetCallback =
 using RemoveAllCallback = base::OnceCallback<void(const bool)>;
 
 TransactionInfo Add(const std::string& creative_instance_id,
+                    const std::string& segment,
                     double value,
                     const AdType& ad_type,
                     const ConfirmationType& confirmation_type,

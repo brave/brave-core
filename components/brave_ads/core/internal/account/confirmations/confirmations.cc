@@ -88,11 +88,6 @@ Confirmations::~Confirmations() {
 void Confirmations::Confirm(const TransactionInfo& transaction) {
   DCHECK(transaction.IsValid());
 
-  BLOG(1, "Confirming " << transaction.confirmation_type << " for "
-                        << transaction.ad_type << " with transaction id "
-                        << transaction.id << " and creative instance id "
-                        << transaction.creative_instance_id);
-
   ConfirmTransaction(transaction);
 }
 
@@ -143,23 +138,24 @@ void Confirmations::StopRetrying() {
 }
 
 void Confirmations::ConfirmTransaction(const TransactionInfo& transaction) {
-  BuildDynamicUserDataForTransaction(transaction);
+  BLOG(1, "Confirming " << transaction.confirmation_type << " for "
+                        << transaction.ad_type << " with transaction id "
+                        << transaction.id << " and creative instance id "
+                        << transaction.creative_instance_id);
+
+  BuildDynamicUserData(transaction);
 }
 
-void Confirmations::BuildDynamicUserDataForTransaction(
-    const TransactionInfo& transaction) {
+void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
   const ConfirmationDynamicUserDataBuilder user_data_builder;
-  user_data_builder.Build(
-      base::BindOnce(&Confirmations::BuildFixedUserDataForTransaction,
-                     base::Unretained(this), transaction));
+  user_data_builder.Build(base::BindOnce(&Confirmations::BuildFixedUserData,
+                                         base::Unretained(this), transaction));
 }
 
-void Confirmations::BuildFixedUserDataForTransaction(
+void Confirmations::BuildFixedUserData(
     const TransactionInfo& transaction,
     base::Value::Dict dynamic_opted_in_user_data) {
-  const ConfirmationUserDataBuilder user_data_builder(
-      transaction.created_at, transaction.creative_instance_id,
-      transaction.confirmation_type);
+  const ConfirmationUserDataBuilder user_data_builder(transaction);
   user_data_builder.Build(
       base::BindOnce(&Confirmations::CreateAndRedeem, base::Unretained(this),
                      transaction, std::move(dynamic_opted_in_user_data)));
@@ -173,10 +169,8 @@ void Confirmations::CreateAndRedeem(
   opted_in_user_data.dynamic = std::move(dynamic_opted_in_user_data);
   opted_in_user_data.fixed = std::move(fixed_opted_in_user_data);
 
-  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
-      token_generator_, transaction.created_at, transaction.id,
-      transaction.creative_instance_id, transaction.confirmation_type,
-      transaction.ad_type, opted_in_user_data);
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateConfirmation(token_generator_, transaction, opted_in_user_data);
   if (!confirmation) {
     BLOG(0, "Failed to create and redeem confirmation token");
     return;

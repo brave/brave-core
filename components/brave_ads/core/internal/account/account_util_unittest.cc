@@ -49,7 +49,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   // Arrange
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 

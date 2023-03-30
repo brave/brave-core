@@ -27,7 +27,8 @@ bool TransactionInfo::operator==(const TransactionInfo& other) const {
   return id == other.id &&
          DoubleEquals(created_at.ToDoubleT(), other.created_at.ToDoubleT()) &&
          creative_instance_id == other.creative_instance_id &&
-         DoubleEquals(value, other.value) && ad_type == other.ad_type &&
+         segment == other.segment && DoubleEquals(value, other.value) &&
+         ad_type == other.ad_type &&
          confirmation_type == other.confirmation_type &&
          DoubleEquals(reconciled_at.ToDoubleT(),
                       other.reconciled_at.ToDoubleT());
@@ -38,10 +39,10 @@ bool TransactionInfo::operator!=(const TransactionInfo& other) const {
 }
 
 bool TransactionInfo::IsValid() const {
-  return !(id.empty() || creative_instance_id.empty() ||
-           ad_type == AdType::kUndefined ||
-           confirmation_type == ConfirmationType::kUndefined ||
-           created_at.is_null());
+  return !id.empty() && !creative_instance_id.empty() &&
+         ad_type != AdType::kUndefined &&
+         confirmation_type != ConfirmationType::kUndefined &&
+         !created_at.is_null();
 }
 
 }  // namespace brave_ads

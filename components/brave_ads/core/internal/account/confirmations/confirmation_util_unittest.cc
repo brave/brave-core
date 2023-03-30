@@ -8,9 +8,11 @@
 #include <memory>
 
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
@@ -25,13 +27,6 @@ namespace brave_ads {
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace {
-
-constexpr char kTransactionId[] = "8b742869-6e4a-490c-ac31-31b49130098a";
-constexpr char kCreativeInstanceId[] = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
-
-}  // namespace
 
 class BatAdsConfirmationUtilTest : public UnitTestBase {
  protected:
@@ -54,11 +49,13 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   ON_CALL(*token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(1)));
 
+  const TransactionInfo transaction =
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+
   // Act
-  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
-      token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
-      kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
-      /*user_data*/ {});
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateConfirmation(token_generator_mock_.get(), transaction,
+                         /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
   // Assert
@@ -84,11 +81,13 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   ON_CALL(*token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(1)));
 
+  const TransactionInfo transaction =
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+
   // Act
-  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
-      token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
-      kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
-      /*user_data*/ {});
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateConfirmation(token_generator_mock_.get(), transaction,
+                         /*user_data*/ {});
   ASSERT_TRUE(confirmation);
 
   // Assert
@@ -101,11 +100,13 @@ TEST_F(BatAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
   ON_CALL(*token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(1)));
 
+  const TransactionInfo transaction =
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
+
   // Act
-  const absl::optional<ConfirmationInfo> confirmation = CreateConfirmation(
-      token_generator_mock_.get(), /*created_at*/ Now(), kTransactionId,
-      kCreativeInstanceId, ConfirmationType::kViewed, AdType::kNotificationAd,
-      /*user_data*/ {});
+  const absl::optional<ConfirmationInfo> confirmation =
+      CreateConfirmation(token_generator_mock_.get(), transaction,
+                         /*user_data*/ {});
 
   // Assert
   EXPECT_FALSE(confirmation);

@@ -7,6 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
@@ -22,8 +23,11 @@ TEST_F(BatAdsCreatedAtTimestampUserDataTest, GetCreatedAtTimestamp) {
       TimeFromString("November 18 2020 12:34:56.789", /*is_local*/ false);
   AdvanceClockTo(time);
 
+  TransactionInfo transaction;
+  transaction.created_at = time;
+
   // Act
-  const base::Value::Dict user_data = GetCreatedAtTimestamp(time);
+  const base::Value::Dict user_data = GetCreatedAtTimestamp(transaction);
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(

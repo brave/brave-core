@@ -1,20 +1,36 @@
 # User Data
 
-| user data  | optional  | explanation  |
-|---|---|---|
-| build channel  | no  | Browser build channel  |
-| catalog  | no  |  Catalog id  |
-| conversion  | yes  | Envelope encryption for verifiable conversions  |
-| created at timestamp  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
-| diagnostic id  | yes  | Diagnostic id from brave://rewards-internals to help diagnose issues.  |
-| locale  | yes  | Privacy-preserving operating system locale  |
-| mutated  | yes  | A change in the structure of the genes or chromosomes of an organism  |
-| odyssey  | no  | A host and guest relationship is a binary that is seen throughout The Odyssey, especially during Odysseus' long journey  |
-| platform  | no  | Operating system  |
-| rotating hash  | yes  | Privacy-preserving time-based rotating hash  |
-| studies  | no  | User studies. See [Griffin](https://github.com/brave/brave-browser/wiki/Brave-Variations-(Griffin))  |
-| system timestamp  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
-| totals  | no  | Total count of confirmation tokens for each creative  |
-| version number  | no  | Browser version number  |
+Mutable user data is changed when a confirmation fails and is retried later.
+
+## Sent with Anonymous Confirmation Tokens
+
+See [anonymous confirmation token redemption](../utility/redeem_unblinded_token/README.md).
+
+| user data  | optional  | mutable  | description  |
+|---|---|---|---|
+| buildChannel  | no  | no  | Browser build channel  |
+| catalog  | no  | no  |  Catalog id  |
+| conversion  | yes  | no  | Envelope encryption for verifiable conversions  |
+| createdAtTimestamp  | no  | no  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
+| diagnosticId  | yes  | yes  | Diagnostic id from brave://rewards-internals to help diagnose issues.  |
+| locale  | yes  | no  | Privacy-preserving operating system locale  |
+| mutated  | yes  | no  | A change in the structure of the genes or chromosomes of an organism  |
+| odyssey  | no  | no  | A host and guest relationship is a binary that is seen throughout The Odyssey, especially during Odysseus' long journey  |
+| platform  | no  | no  | Operating system  |
+| rotating_hash  | yes  | no  | Privacy-preserving time-based rotating hash  |
+| segment  | yes  | no  | Advertising segment taxonomy for the chosen ad  |
+| studies  | no  | no  | User studies. See [Griffin](https://github.com/brave/brave-browser/wiki/Brave-Variations-(Griffin))  |
+| systemTimestamp  | no  | yes  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
+| versionNumber  | no  | no  | Browser version number  |
+
+## Sent with Identifiable Confirmation Tokens
+
+See [identifiable confirmation token redemption](../utility/redeem_unblinded_payment_tokens/README.md).
+
+| user data  | optional  | mutable  | description  |
+|---|---|---|---|
+| odyssey  | no  | no  | A host and guest relationship is a binary that is seen throughout The Odyssey, especially during Odysseus' long journey  |
+| platform  | no  | no  | Operating system  |
+| totals  | no  | no  | Total count of confirmation tokens for each creative  |
 
 Please add to it!

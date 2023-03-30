@@ -30,7 +30,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
   AdvanceClockTo(TimeFromString("1 February 2020", /*is_local*/ false));
@@ -87,7 +87,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   TransactionList transactions;
   const TransactionInfo transaction =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction);
 
   const base::Time next_token_redemption_at =

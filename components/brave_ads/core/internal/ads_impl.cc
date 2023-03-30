@@ -588,13 +588,13 @@ void AdsImpl::OnStatementOfAccountsDidChange() {
 
 void AdsImpl::OnConversion(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  account_->Deposit(conversion_queue_item.creative_instance_id,
-                    conversion_queue_item.ad_type,
-                    ConfirmationType::kConversion);
+  account_->Deposit(
+      conversion_queue_item.creative_instance_id, conversion_queue_item.ad_type,
+      conversion_queue_item.segment, ConfirmationType::kConversion);
 }
 
 void AdsImpl::OnDidTransferAd(const AdInfo& ad) {
-  account_->Deposit(ad.creative_instance_id, ad.type,
+  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kTransferred);
 }
 

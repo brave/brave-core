@@ -51,25 +51,25 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.02, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(0.03, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(0.02, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
   // Act
@@ -86,25 +86,25 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.02, ConfirmationType::kViewed, Now());
+      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_2);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(0.03, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 =
-      BuildTransaction(0.02, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_5);
 
   // Act
@@ -121,21 +121,21 @@ TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.01, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
 
   AdvanceClockTo(TimeFromString("25 December 2020", /*is_local*/ true));
 
   const TransactionInfo transaction_2 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
+      BuildTransaction(/*value*/ 0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 =
-      BuildTransaction(0.03, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 =
-      BuildTransaction(0.02, ConfirmationType::kViewed);
+      BuildTransaction(/*value*/ 0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
 
   // Act

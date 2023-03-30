@@ -77,7 +77,7 @@ void NewTabPageAdHandler::OnNewTabPageAdServed(const NewTabPageAdInfo& ad) {
 void NewTabPageAdHandler::OnNewTabPageAdViewed(const NewTabPageAdInfo& ad) {
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
-  account_->Deposit(ad.creative_instance_id, ad.type,
+  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kViewed);
 }
 
@@ -86,7 +86,7 @@ void NewTabPageAdHandler::OnNewTabPageAdClicked(const NewTabPageAdInfo& ad) {
 
   HistoryManager::GetInstance()->Add(ad, ConfirmationType::kClicked);
 
-  account_->Deposit(ad.creative_instance_id, ad.type,
+  account_->Deposit(ad.creative_instance_id, ad.type, ad.segment,
                     ConfirmationType::kClicked);
 }
 

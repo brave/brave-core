@@ -6,14 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_ROTATING_HASH_USER_DATA_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_ROTATING_HASH_USER_DATA_H_
 
-#include <string>
-
 #include "base/values.h"
 
-namespace brave_ads::user_data {
+namespace brave_ads {
 
-base::Value::Dict GetRotatingHash(const std::string& creative_instance_id);
+struct TransactionInfo;
 
-}  // namespace brave_ads::user_data
+namespace user_data {
+
+base::Value::Dict GetRotatingHash(const TransactionInfo& transaction);
+
+}  // namespace user_data
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_USER_DATA_ROTATING_HASH_USER_DATA_H_
