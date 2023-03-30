@@ -251,18 +251,21 @@ public class Utils {
         if (focusedView != null) imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
     }
 
-    public static void openBuySendSwapActivity(Activity activity,
-            BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol) {
-        assert activity != null;
-        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
-        buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
-        buySendSwapActivityIntent.putExtra("swapFromAssetSymbol", swapFromAssetSymbol);
-        activity.startActivity(buySendSwapActivityIntent);
-    }
-
     public static void openBuySendSwapActivity(
             Activity activity, BuySendSwapActivity.ActivityType activityType) {
-        openBuySendSwapActivity(activity, activityType, null);
+        openBuySendSwapActivity(activity, activityType, null, null);
+    }
+
+    public static void openBuySendSwapActivity(Activity activity,
+            BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol,
+            String chainId) {
+        assert activity != null;
+        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+        buySendSwapActivityIntent.putExtra(
+                BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
+        buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_SYMBOL, swapFromAssetSymbol);
+        buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
+        activity.startActivity(buySendSwapActivityIntent);
     }
 
     public static void openAssetDetailsActivity(
@@ -287,6 +290,8 @@ public class Utils {
      */
     public static String getShortNameOfNetwork(String networkName) {
         if (!TextUtils.isEmpty(networkName)) {
+            // If the length is small then show network name as it is.
+            if (networkName.length() < 14) return networkName;
             String firstWord = networkName.split(" ")[0];
             if (firstWord.length() > 18) {
                 return firstWord.substring(0, 16) + "..";
@@ -1563,16 +1568,14 @@ public class Utils {
         BlockchainRegistry blockchainRegistry = activity.getBlockchainRegistry();
         AssetRatioService assetRatioService = activity.getAssetRatioService();
         JsonRpcService jsonRpcService = activity.getJsonRpcService();
-        BraveWalletP3a braveWalletP3A = activity.getBraveWalletP3A();
         assert braveWalletService != null && blockchainRegistry != null && assetRatioService != null
-                && jsonRpcService != null
-                && braveWalletP3A != null : "Invalid service initialization";
+                && jsonRpcService != null : "Invalid service initialization";
 
-        if (JavaUtils.anyNull(braveWalletService, blockchainRegistry, assetRatioService,
-                    jsonRpcService, braveWalletP3A))
+        if (JavaUtils.anyNull(
+                    braveWalletService, blockchainRegistry, assetRatioService, jsonRpcService))
             return;
 
-        AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(4);
+        AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(3);
 
         TokenUtils.getUserOrAllTokensFiltered(braveWalletService, blockchainRegistry,
                 selectedNetwork, selectedNetwork.coin, TokenUtils.TokenType.ALL, userAssetsOnly,
@@ -1604,30 +1607,13 @@ public class Utils {
                     BalanceHelper.getBlockchainTokensBalances(jsonRpcService, selectedNetwork,
                             accountInfos, tokens, getBlockchainTokensBalancesContext);
 
-                    AsyncUtils.GetP3ABalancesContext getP3ABalancesContext =
-                            new AsyncUtils.GetP3ABalancesContext(
-                                    multiResponse.singleResponseComplete);
-                    BalanceHelper.getP3ABalances(
-                            activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
-
                     multiResponse.setWhenAllCompletedAction(() -> {
-                        // P3A active accounts
-                        HashMap<Integer, HashSet<String>> activeAddresses =
-                                getP3ABalancesContext.activeAddresses;
-                        BalanceHelper.updateActiveAddresses(
-                                new AsyncUtils.GetNativeAssetsBalancesResponseContext[] {
-                                        getNativeAssetsBalancesContext},
-                                new AsyncUtils.GetBlockchainTokensBalancesResponseContext[] {
-                                        getBlockchainTokensBalancesContext},
-                                activeAddresses);
-                        for (int coinType : P3ACoinTypes) {
-                            braveWalletP3A.recordActiveWalletCount(
-                                    activeAddresses.get(coinType).size(), coinType);
-                        }
-
                         callback.call(fetchPricesContext.assetPrices, fullTokenList,
                                 getNativeAssetsBalancesContext.nativeAssetsBalances,
                                 getBlockchainTokensBalancesContext.blockchainTokensBalances);
+                        logP3ARecords(JavaUtils.asArray(getNativeAssetsBalancesContext),
+                                JavaUtils.asArray(getBlockchainTokensBalancesContext), activityRef,
+                                allNetworks, selectedNetwork);
                     });
                 });
     }
@@ -1739,5 +1725,37 @@ public class Utils {
         }
 
         return num.doubleValue();
+    }
+
+    private static void logP3ARecords(
+            AsyncUtils.GetNativeAssetsBalancesResponseContext[] nativeAssetsBalancesResponses,
+            AsyncUtils
+                    .GetBlockchainTokensBalancesResponseContext[] blockchainTokensBalancesResponses,
+            WeakReference<BraveWalletBaseActivity> activityRef, List<NetworkInfo> allNetworks,
+            NetworkInfo selectedNetwork) {
+        BraveWalletBaseActivity activity = activityRef.get();
+        if (activity == null || activity.isFinishing()
+                || JavaUtils.anyNull(activity.getBraveWalletP3A()))
+            return;
+        BraveWalletP3a braveWalletP3A = activity.getBraveWalletP3A();
+
+        AsyncUtils.MultiResponseHandler multiResponse = new AsyncUtils.MultiResponseHandler(1);
+
+        AsyncUtils.GetP3ABalancesContext getP3ABalancesContext =
+                new AsyncUtils.GetP3ABalancesContext(multiResponse.singleResponseComplete);
+        BalanceHelper.getP3ABalances(
+                activityRef, allNetworks, selectedNetwork, getP3ABalancesContext);
+
+        multiResponse.setWhenAllCompletedAction(() -> {
+            HashMap<Integer, HashSet<String>> activeAddresses =
+                    getP3ABalancesContext.activeAddresses;
+            // P3A active accounts
+            BalanceHelper.updateActiveAddresses(nativeAssetsBalancesResponses,
+                    blockchainTokensBalancesResponses, activeAddresses);
+            for (int coinType : P3ACoinTypes) {
+                braveWalletP3A.recordActiveWalletCount(
+                        activeAddresses.get(coinType).size(), coinType);
+            }
+        });
     }
 }

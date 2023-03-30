@@ -41,6 +41,10 @@ public class JavaUtils {
         return filteredList;
     }
 
+    public static <T> List<T> filter(T[] items, Predicate<T> filter) {
+        return filter(Arrays.asList(items), filter);
+    }
+
     public static <T> T find(List<T> list, Predicate<T> predicate) {
         for (T item : list) {
             if (predicate.test(item)) {
@@ -73,6 +77,11 @@ public class JavaUtils {
             if (item == null) return true;
         }
         return false;
+    }
+
+    @SafeVarargs
+    public static <T> T[] asArray(T... items) {
+        return items;
     }
 
     /**

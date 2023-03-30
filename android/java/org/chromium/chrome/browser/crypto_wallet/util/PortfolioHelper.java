@@ -5,55 +5,56 @@
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
-import static org.chromium.chrome.browser.crypto_wallet.util.Utils.fromHexWei;
+import static java.util.stream.Collectors.toMap;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetPrice;
-import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.BalanceHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo_base.mojom.TimeDelta;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class PortfolioHelper {
     private static final String TAG = "PortfolioHelper";
     private final WeakReference<BraveWalletBaseActivity> mActivity;
     private NetworkInfo mSelectedNetwork;
-    private AccountInfo[] mAccountInfos;
+    private List<NetworkInfo> mSelectedNetworks;
+    private final AccountInfo[] mAccountInfos;
 
     // Data supplied as result
     private List<BlockchainToken> mUserAssets; // aka selected assets
     private Double mTotalFiatSum;
+    // Always use Utils#tokenToString(BlockchainToken) to create key
     private HashMap<String, Double> mPerTokenFiatSum;
     private HashMap<String, Double> mPerTokenCryptoSum;
     private AssetTimePrice[] mFiatHistory;
     private int mFiatHistoryTimeframe;
-    private List<NetworkInfo> mCryptoNetworks;
+    private final List<NetworkInfo> mCryptoNetworks;
+    private Map<String, Integer> mAssertSortPriorityPerCoinIndex;
 
     public PortfolioHelper(BraveWalletBaseActivity activity, List<NetworkInfo> cryptoNetworks,
             AccountInfo[] accountInfos) {
         mActivity = new WeakReference<BraveWalletBaseActivity>(activity);
         mCryptoNetworks = cryptoNetworks;
         mAccountInfos = accountInfos;
+        mSelectedNetworks = Collections.emptyList();
         mUserAssets = new ArrayList<>();
+        mAssertSortPriorityPerCoinIndex = Collections.emptyMap();
     }
 
     public void setSelectedNetwork(NetworkInfo selectedNetwork) {
@@ -90,12 +91,15 @@ public class PortfolioHelper {
             return true;
         }
 
-        for (AssetTimePrice assetTimePrice : mFiatHistory) {
-            if (Double.valueOf(assetTimePrice.price) > 0.001d) {
-                return false;
+        try {
+            for (AssetTimePrice assetTimePrice : mFiatHistory) {
+                if (Double.parseDouble(assetTimePrice.price) > 0.001d) {
+                    return false;
+                }
             }
+        } catch (NullPointerException | NumberFormatException ignored) {
+            return true;
         }
-
         return true;
     }
 
@@ -106,6 +110,78 @@ public class PortfolioHelper {
         return Double.valueOf(mFiatHistory[mFiatHistory.length - 1].price);
     }
 
+    public void fetchAllAssetsAndDetails(Callbacks.Callback1<PortfolioHelper> callback) {
+        resetResultData();
+        if (mActivity.get() == null || mSelectedNetworks.isEmpty()) return;
+        int totalNetworks = mSelectedNetworks.size();
+        AtomicInteger resCount = new AtomicInteger();
+        List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances = new ArrayList<>();
+
+        for (NetworkInfo networkInfo : mSelectedNetworks) {
+            List<AccountInfo> accountInfosPerCoin = JavaUtils.filter(
+                    mAccountInfos, accountInfo -> accountInfo.coin == networkInfo.coin);
+            Utils.getTxExtraInfo(mActivity, mCryptoNetworks, networkInfo,
+                    accountInfosPerCoin.toArray(new AccountInfo[0]), null, true,
+                    (assetPrices, userAssetsList, nativeAssetsBalances,
+                            blockchainTokensBalances) -> {
+                        mUserAssets.addAll(Arrays.asList(userAssetsList));
+
+                        AssetAccountsNetworkBalance asset = new AssetAccountsNetworkBalance(
+                                assetPrices, userAssetsList, nativeAssetsBalances,
+                                blockchainTokensBalances, networkInfo, accountInfosPerCoin);
+                        assetAccountsNetworkBalances.add(asset);
+
+                        // Calculate balances only after the responses of network list are fetched
+                        if (resCount.incrementAndGet() == totalNetworks) {
+                            mUserAssets.sort(Comparator.comparing(
+                                    token -> mAssertSortPriorityPerCoinIndex.get(token.chainId)));
+                            createBalanceRecords(assetAccountsNetworkBalances);
+                            callback.call(this);
+                        }
+                    });
+        }
+    }
+
+    private void createBalanceRecords(
+            List<AssetAccountsNetworkBalance> assetAccountsNetworkBalances) {
+        for (AssetAccountsNetworkBalance assetAccountsNetworkBalance :
+                assetAccountsNetworkBalances) {
+            // Sum across accounts
+            for (AccountInfo accountInfo : assetAccountsNetworkBalance.accountInfos) {
+                final String accountAddressLower =
+                        accountInfo.address.toLowerCase(Locale.getDefault());
+                HashMap<String, Double> thisAccountTokensBalances =
+                        Utils.getOrDefault(assetAccountsNetworkBalance.blockchainTokensBalances,
+                                accountAddressLower, new HashMap<String, Double>());
+                for (BlockchainToken userAsset : assetAccountsNetworkBalance.userAssetsList) {
+                    String currentAssetKey = Utils.tokenToString(userAsset);
+                    double prevTokenCryptoBalanceSum =
+                            Utils.getOrDefault(mPerTokenCryptoSum, currentAssetKey, 0.0d);
+                    final double thisCryptoBalance =
+                            Utils.isNativeToken(assetAccountsNetworkBalance.networkInfo, userAsset)
+                            ? Utils.getOrDefault(assetAccountsNetworkBalance.nativeAssetsBalances,
+                                    accountAddressLower, 0.0d)
+                            : Utils.getOrDefault(thisAccountTokensBalances, currentAssetKey, 0.0d);
+
+                    mPerTokenCryptoSum.put(
+                            currentAssetKey, prevTokenCryptoBalanceSum + thisCryptoBalance);
+
+                    double prevTokenFiatBalanceSum =
+                            Utils.getOrDefault(mPerTokenFiatSum, currentAssetKey, 0.0d);
+                    double thisTokenPrice =
+                            Utils.getOrDefault(assetAccountsNetworkBalance.assetPrices,
+                                    userAsset.symbol.toLowerCase(Locale.getDefault()), 0.0d);
+                    double thisFiatBalance = thisTokenPrice * thisCryptoBalance;
+
+                    mPerTokenFiatSum.put(
+                            currentAssetKey, prevTokenFiatBalanceSum + thisFiatBalance);
+
+                    mTotalFiatSum += thisFiatBalance;
+                }
+            }
+        }
+    }
+
     public void calculateBalances(Runnable runWhenDone) {
         resetResultData();
         if (mActivity.get() == null || mActivity.get().isFinishing()) return;
@@ -113,9 +189,8 @@ public class PortfolioHelper {
         Utils.getTxExtraInfo(mActivity, mCryptoNetworks, mSelectedNetwork, mAccountInfos, null,
                 true,
                 (assetPrices, userAssetsList, nativeAssetsBalances, blockchainTokensBalances) -> {
-                    mUserAssets = Arrays.asList(userAssetsList);
-
-                    // Sum accross accounts
+                    mUserAssets.addAll(Arrays.asList(userAssetsList));
+                    // Sum across accounts
                     for (AccountInfo accountInfo : mAccountInfos) {
                         final String accountAddressLower =
                                 accountInfo.address.toLowerCase(Locale.getDefault());
@@ -152,7 +227,7 @@ public class PortfolioHelper {
     }
 
     private void resetResultData() {
-        mUserAssets = Collections.emptyList();
+        mUserAssets.clear();
         mTotalFiatSum = 0.0d;
         mPerTokenFiatSum = new HashMap<String, Double>();
         mPerTokenCryptoSum = new HashMap<String, Double>();
@@ -257,5 +332,40 @@ public class PortfolioHelper {
 
             runWhenDone.run();
         });
+    }
+
+    public void setSelectedNetworks(List<NetworkInfo> mSelectedNetworks) {
+        this.mSelectedNetworks = mSelectedNetworks;
+        updateAssetSortPriority(mSelectedNetworks);
+    }
+
+    // Update map of Map<ChainId, Priority/Network-Index>, to be used for sorting "All Networks"
+    // asset list
+    private void updateAssetSortPriority(List<NetworkInfo> networks) {
+        mAssertSortPriorityPerCoinIndex =
+                IntStream.range(0, networks.size())
+                        .boxed()
+                        .collect(toMap(i -> networks.get(i).chainId, Function.identity()));
+    }
+
+    private static class AssetAccountsNetworkBalance {
+        HashMap<String, Double> assetPrices;
+        BlockchainToken[] userAssetsList;
+        HashMap<String, Double> nativeAssetsBalances;
+        HashMap<String, HashMap<String, Double>> blockchainTokensBalances;
+        NetworkInfo networkInfo;
+        List<AccountInfo> accountInfos;
+
+        public AssetAccountsNetworkBalance(HashMap<String, Double> assetPrices,
+                BlockchainToken[] userAssetsList, HashMap<String, Double> nativeAssetsBalances,
+                HashMap<String, HashMap<String, Double>> blockchainTokensBalances,
+                NetworkInfo networkInfo, List<AccountInfo> accountInfos) {
+            this.assetPrices = assetPrices;
+            this.userAssetsList = userAssetsList;
+            this.nativeAssetsBalances = nativeAssetsBalances;
+            this.blockchainTokensBalances = blockchainTokensBalances;
+            this.networkInfo = networkInfo;
+            this.accountInfos = accountInfos;
+        }
     }
 }

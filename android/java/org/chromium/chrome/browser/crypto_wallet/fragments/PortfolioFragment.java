@@ -50,6 +50,7 @@ import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -57,6 +58,7 @@ import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -67,9 +69,12 @@ import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+
 public class PortfolioFragment
         extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
     private static final String TAG = "PortfolioFragment";
@@ -156,8 +161,7 @@ public class PortfolioFragment
         mBtnChangeNetwork.setOnLongClickListener(v -> {
             NetworkInfo networkInfo = null;
             if (mWalletModel != null) {
-                networkInfo =
-                        mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+                networkInfo = mNetworkInfo;
             }
             if (networkInfo != null) {
                 Toast.makeText(requireContext(), networkInfo.chainName, Toast.LENGTH_SHORT).show();
@@ -190,19 +194,21 @@ public class PortfolioFragment
                 allNetworkInfos -> { mAllNetworkInfos = allNetworkInfos; });
         mNetworkSelectionModel =
                 mWalletModel.getCryptoModel().getNetworkModel().openNetworkSelectorModel(
-                        PortfolioFragment.TAG, NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK,
+                        PortfolioFragment.TAG, NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER,
                         getLifecycle());
         // Show pending transactions fab to process pending txs
         mNetworkSelectionModel.getSelectedNetwork().observe(
-                getViewLifecycleOwner(), networkInfo -> {
-                    if (networkInfo == null) return;
-                    if (mNetworkInfo != null && !mNetworkInfo.chainId.equals(networkInfo.chainId)) {
+                getViewLifecycleOwner(), localNetworkInfo -> {
+                    if (localNetworkInfo == null) return;
+                    if (mNetworkInfo != null
+                            && !mNetworkInfo.chainId.equals(localNetworkInfo.chainId)) {
                         // Clean up list to avoid user clicking on an asset of the previously
                         // selected network after the network has been changed
                         clearAssets();
                     }
-                    mNetworkInfo = networkInfo;
-                    mBtnChangeNetwork.setText(Utils.getShortNameOfNetwork(networkInfo.chainName));
+                    mNetworkInfo = localNetworkInfo;
+                    mBtnChangeNetwork.setText(
+                            Utils.getShortNameOfNetwork(localNetworkInfo.chainName));
                     updatePortfolioGetPendingTx();
                 });
         // Show pending transactions fab to process pending txs
@@ -293,11 +299,12 @@ public class PortfolioFragment
     }
 
     private void setUpCoinList(List<BlockchainToken> userAssets,
-            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum) {
+            HashMap<String, Double> perTokenCryptoSum, HashMap<String, Double> perTokenFiatSum,
+            List<NetworkInfo> networkInfos) {
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
         mWalletCoinAdapter = Utils.setupVisibleAssetList(userAssets, perTokenCryptoSum,
-                perTokenFiatSum, tokensPath, getResources(), mAllNetworkInfos);
+                perTokenFiatSum, tokensPath, getResources(), networkInfos);
         mWalletCoinAdapter.setOnWalletListItemClick(PortfolioFragment.this);
         mRvCoins.setAdapter(mWalletCoinAdapter);
         mRvCoins.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -314,7 +321,7 @@ public class PortfolioFragment
         NetworkInfo selectedNetwork = null;
         if (mWalletModel != null) {
             selectedNetwork =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+                    mWalletModel.getCryptoModel().getNetworkModel().getNetwork(asset.chainId);
         }
         if (selectedNetwork == null) {
             return;
@@ -326,7 +333,8 @@ public class PortfolioFragment
     private void openNetworkSelection() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
-            activity.openNetworkSelection();
+            activity.openNetworkSelection(
+                    NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, PortfolioFragment.TAG);
         } catch (ActivityNotFoundException e) {
             Log.e(TAG, "openNetworkSelection " + e);
         }
@@ -387,49 +395,41 @@ public class PortfolioFragment
     private void updatePortfolioGetPendingTx() {
         if (mWalletModel == null) return;
 
-        final NetworkInfo selectedNetwork =
-                mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
+        final NetworkInfo selectedNetwork = mNetworkInfo;
         if (selectedNetwork == null) {
             return;
         }
-        mWalletModel.getKeyringModel().getKeyringPerId(
-                AssetUtils.getKeyringForCoinType(selectedNetwork.coin), keyringInfo -> {
-                    if (keyringInfo == null) return;
-                    AccountInfo[] accountInfos = new AccountInfo[] {};
-                    if (keyringInfo != null) {
-                        accountInfos = keyringInfo.accountInfos;
+
+        Activity activity = getActivity();
+        if (!(activity instanceof BraveWalletActivity)) return;
+        mPortfolioModel.fetchAssets(
+                selectedNetwork, (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
+                    if (!AndroidUtils.canUpdateFragmentUi(this)) return;
+                    mPortfolioHelper = portfolioHelper;
+
+                    final String fiatSumString = String.format(
+                            Locale.getDefault(), "$%,.2f", mPortfolioHelper.getTotalFiatSum());
+
+                    mFiatSumString = fiatSumString;
+                    mBalance.setText(mFiatSumString);
+                    mBalance.invalidate();
+
+                    List<BlockchainToken> tokens = new ArrayList<>();
+
+                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
+                        if (!token.isErc721 && !token.isNft) {
+                            // Add only coins and not NFTs.
+                            tokens.add(token);
+                        }
                     }
-                    Activity activity = getActivity();
-                    final AccountInfo[] accountInfosFinal = accountInfos;
-                    if (!(activity instanceof BraveWalletActivity)) return;
+
                     LiveDataUtil.observeOnce(
                             mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
-                            allNetworks -> {
-                                mPortfolioHelper =
-                                        new PortfolioHelper((BraveWalletActivity) activity,
-                                                allNetworks, accountInfosFinal);
-
-                                mPortfolioHelper.setSelectedNetwork(selectedNetwork);
-                                mPortfolioHelper.calculateBalances(() -> {
-                                    final String fiatSumString = String.format(Locale.getDefault(),
-                                            "$%,.2f", mPortfolioHelper.getTotalFiatSum());
-                                    mFiatSumString = fiatSumString;
-                                    mBalance.setText(mFiatSumString);
-                                    mBalance.invalidate();
-
-                                    List<BlockchainToken> tokens = new ArrayList<>();
-
-                                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
-                                        if (!token.isErc721 && !token.isNft) {
-                                            // Add only coins and not NFTs.
-                                            tokens.add(token);
-                                        }
-                                    }
-                                    setUpCoinList(tokens, mPortfolioHelper.getPerTokenCryptoSum(),
-                                            mPortfolioHelper.getPerTokenFiatSum());
-                                    updatePortfolioGraph();
-                                });
+                            networkInfos -> {
+                                setUpCoinList(tokens, mPortfolioHelper.getPerTokenCryptoSum(),
+                                        mPortfolioHelper.getPerTokenFiatSum(), networkInfos);
                             });
+                    updatePortfolioGraph();
                 });
     }
 
@@ -460,14 +460,25 @@ public class PortfolioFragment
     }
 
     private void onEditVisibleAssetsClick() {
-        NetworkInfo selectedNetwork = null;
-        if (mWalletModel != null) {
-            selectedNetwork =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
-        }
+        NetworkInfo selectedNetwork = mNetworkInfo;
         if (selectedNetwork == null) {
             return;
         }
+        // TODO(pav): Remove this workaround once all network option is supported by
+        // EditVisibleAssetsBottomSheetDialogFragment. This workaround is to show default network
+        // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
+        // selected
+        if (selectedNetwork.chainId.equals(
+                    NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
+            LiveDataUtil.observeOnce(
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
+                    defaultNetwork -> { showEditVisibleDialog(defaultNetwork); });
+            return;
+        }
+        showEditVisibleDialog(selectedNetwork);
+    }
+
+    private void showEditVisibleDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);

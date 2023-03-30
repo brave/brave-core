@@ -204,6 +204,11 @@ public class AssetUtils {
             put(BraveWalletConstants.SOLANA_MAINNET, Arrays.asList("sol"));
             put(BraveWalletConstants.FILECOIN_MAINNET, Arrays.asList("fil"));
             put(BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID, Arrays.asList("avax", "avaxc"));
+            // Test Net
+            put(BraveWalletConstants.GOERLI_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.SEPOLIA_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.SOLANA_TESTNET, Arrays.asList("sol"));
+            put(BraveWalletConstants.SOLANA_DEVNET, Arrays.asList("sol"));
         }
     };
     public static String httpifyIpfsUrl(String url) {
