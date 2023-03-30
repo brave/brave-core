@@ -40,7 +40,7 @@ deps = {
       'condition': 'checkout_android',
       'dep_type': 'cipd',
   },
-  "third_party/playlist-component/src": "https://github.com/brave/playlist-component.git@5434730bf7342f1ba5c057f1640882bb38604a85",
+  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@5434730bf7342f1ba5c057f1640882bb38604a85",
 }
 
 recursedeps = [
