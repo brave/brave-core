@@ -1276,6 +1276,10 @@ public class Utils {
                 p.setColor(0xFF2AC194);
                 txStatus = context.getResources().getString(R.string.wallet_tx_status_confirmed);
                 break;
+            case TransactionStatus.SIGNED:
+                p.setColor(0xFFFFD43B);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_signed);
+                break;
             case TransactionStatus.ERROR:
             default:
                 p.setColor(0xFFEE6374);

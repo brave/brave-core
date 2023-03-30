@@ -2612,6 +2612,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_WALLET_TX_STATUS_CONFIRMED" desc="Brave wallet tx status is confirmed">
       Confirmed
     </message>
+    <message name="IDS_WALLET_TX_STATUS_SIGNED" desc="Brave wallet tx status is signed">
+      Signed
+    </message>
     <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
       Error
     </message>
