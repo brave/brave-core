@@ -9,13 +9,13 @@
 #include "build/build_config.h"
 #include "content/public/browser/service_process_host.h"
 
-namespace rewards::mojom {
-class RewardsUtilityService;
-}  // namespace rewards::mojom
+namespace ledger::mojom {
+class LedgerImplFactory;
+}  // namespace ledger::mojom
 
 template <>
 inline sandbox::mojom::Sandbox
-content::GetServiceSandboxType<rewards::mojom::RewardsUtilityService>() {
+content::GetServiceSandboxType<ledger::mojom::LedgerImplFactory>() {
 #if !BUILDFLAG(IS_ANDROID)
   return sandbox::mojom::Sandbox::kNoSandbox;
 #else

@@ -8,11 +8,11 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
-#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "brave/components/services/ledger/ledger_impl_factory_impl.h"
+#include "brave/components/services/ledger/public/interfaces/ledger_impl_factory.mojom.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
@@ -51,9 +51,9 @@ auto RunTorLauncher(mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
 }
 #endif
 
-auto RunRewardsUtilityService(
-    mojo::PendingReceiver<rewards::mojom::RewardsUtilityService> receiver) {
-  return std::make_unique<ledger::LedgerImpl>(std::move(receiver));
+auto RunLedgerFactory(
+    mojo::PendingReceiver<ledger::mojom::LedgerImplFactory> receiver) {
+  return std::make_unique<ledger::LedgerImplFactoryImpl>(std::move(receiver));
 }
 
 auto RunBatAdsService(
@@ -80,7 +80,7 @@ void BraveContentUtilityClient::RegisterMainThreadServices(
   services.Add(RunTorLauncher);
 #endif
 
-  services.Add(RunRewardsUtilityService);
+  services.Add(RunLedgerFactory);
 
   services.Add(RunBatAdsService);
 

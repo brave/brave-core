@@ -28,36 +28,34 @@ bool testing() {
 namespace ledger {
 
 LedgerImpl::LedgerImpl(
-    mojo::PendingReceiver<rewards::mojom::RewardsUtilityService>
-        pending_receiver)
-    : utility_service_receiver_(this, std::move(pending_receiver)) {}
+    mojo::PendingAssociatedReceiver<rewards::mojom::RewardsUtilityService>
+        rewards_utility_service,
+    mojo::PendingAssociatedRemote<rewards::mojom::RewardsService>
+        rewards_service)
+    : rewards_utility_service_(this, std::move(rewards_utility_service)),
+      rewards_service_(std::move(rewards_service)),
+      promotion_(std::make_unique<promotion::Promotion>(this)),
+      publisher_(std::make_unique<publisher::Publisher>(this)),
+      media_(std::make_unique<braveledger_media::Media>(this)),
+      contribution_(std::make_unique<contribution::Contribution>(this)),
+      wallet_(std::make_unique<wallet::Wallet>(this)),
+      database_(std::make_unique<database::Database>(this)),
+      report_(std::make_unique<report::Report>(this)),
+      sku_(sku::SKUFactory::Create(this, sku::SKUType::kMerchant)),
+      state_(std::make_unique<state::State>(this)),
+      api_(std::make_unique<api::API>(this)),
+      recovery_(std::make_unique<recovery::Recovery>(this)),
+      bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
+      gemini_(std::make_unique<gemini::Gemini>(this)),
+      uphold_(std::make_unique<uphold::Uphold>(this)) {
+  DCHECK(base::ThreadPoolInstance::Get());
+  set_ledger_client_for_logging(rewards_service_.get());
+}
 
 LedgerImpl::~LedgerImpl() = default;
 
-void LedgerImpl::InitializeLedger(
-    mojo::PendingAssociatedRemote<rewards::mojom::RewardsService>
-        rewards_service,
-    bool execute_create_script,
-    InitializeLedgerCallback callback) {
-  rewards_service_.Bind(std::move(rewards_service));
-  promotion_ = std::make_unique<ledger::promotion::Promotion>(this);
-  publisher_ = std::make_unique<ledger::publisher::Publisher>(this);
-  media_ = std::make_unique<braveledger_media::Media>(this);
-  contribution_ = std::make_unique<ledger::contribution::Contribution>(this);
-  wallet_ = std::make_unique<ledger::wallet::Wallet>(this);
-  database_ = std::make_unique<ledger::database::Database>(this);
-  report_ = std::make_unique<ledger::report::Report>(this);
-  sku_ = ledger::sku::SKUFactory::Create(this, ledger::sku::SKUType::kMerchant);
-  state_ = std::make_unique<ledger::state::State>(this);
-  api_ = std::make_unique<ledger::api::API>(this);
-  recovery_ = std::make_unique<ledger::recovery::Recovery>(this);
-  bitflyer_ = std::make_unique<ledger::bitflyer::Bitflyer>(this);
-  gemini_ = std::make_unique<ledger::gemini::Gemini>(this);
-  uphold_ = std::make_unique<ledger::uphold::Uphold>(this);
-
-  DCHECK(base::ThreadPoolInstance::Get());
-  ledger::set_ledger_client_for_logging(rewards_service_.get());
-
+void LedgerImpl::InitializeLedger(bool execute_create_script,
+                                  InitializeLedgerCallback callback) {
   if (ready_state_ != ReadyState::kUninitialized) {
     BLOG(0, "Ledger already initializing");
     return std::move(callback).Run(ledger::mojom::Result::LEDGER_ERROR);
@@ -69,22 +67,22 @@ void LedgerImpl::InitializeLedger(
 }
 
 void LedgerImpl::SetEnvironment(ledger::mojom::Environment environment) {
-  DCHECK(!rewards_service_.is_bound() || testing());
+  DCHECK(IsUninitialized() || testing());
   ledger::_environment = environment;
 }
 
 void LedgerImpl::SetDebug(bool debug) {
-  DCHECK(!rewards_service_.is_bound() || testing());
+  DCHECK(IsUninitialized() || testing());
   ledger::is_debug = debug;
 }
 
 void LedgerImpl::SetReconcileInterval(int32_t interval) {
-  DCHECK(!rewards_service_.is_bound() || testing());
+  DCHECK(IsUninitialized() || testing());
   ledger::reconcile_interval = interval;
 }
 
 void LedgerImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(!rewards_service_.is_bound() || testing());
+  DCHECK(IsUninitialized() || testing());
   ledger::retry_interval = interval;
 }
 
@@ -965,6 +963,10 @@ void LedgerImpl::RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
 
 bool LedgerImpl::IsShuttingDown() const {
   return ready_state_ == ReadyState::kShuttingDown;
+}
+
+bool LedgerImpl::IsUninitialized() const {
+  return ready_state_ == ReadyState::kUninitialized;
 }
 
 bool LedgerImpl::IsReady() const {

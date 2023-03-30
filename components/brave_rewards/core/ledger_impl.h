@@ -31,21 +31,23 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 #include "brave/components/brave_rewards/core/ledger.h"  // TODO(sszaloki)
 
 namespace ledger {
 
-class LedgerImpl : public rewards::mojom::RewardsUtilityService,
-                   public base::SupportsWeakPtr<LedgerImpl> {
+class LedgerImpl : public rewards::mojom::RewardsUtilityService {
  public:
   explicit LedgerImpl(
-      mojo::PendingReceiver<rewards::mojom::RewardsUtilityService>
-          bat_ledger_pending_receiver);
+      mojo::PendingAssociatedReceiver<rewards::mojom::RewardsUtilityService>
+          rewards_utility_service,
+      mojo::PendingAssociatedRemote<rewards::mojom::RewardsService>
+          rewards_service);
 
   ~LedgerImpl() override;
 
@@ -54,9 +56,7 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   // mojom::RewardsUtilityService implementation begin
-  void InitializeLedger(mojo::PendingAssociatedRemote<
-                            rewards::mojom::RewardsService> rewards_service,
-                        bool execute_create_script,
+  void InitializeLedger(bool execute_create_script,
                         InitializeLedgerCallback callback) override;
 
   void SetEnvironment(ledger::mojom::Environment environment) override;
@@ -450,6 +450,8 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
     kShuttingDown
   };
 
+  bool IsUninitialized() const;
+
   bool IsReady() const;
 
   virtual void InitializeDatabase(bool execute_create_script,
@@ -472,9 +474,8 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
   template <typename T>
   void WhenReady(T callback);
 
-  mojo::Receiver<rewards::mojom::RewardsUtilityService>
-      utility_service_receiver_;
-
+  mojo::AssociatedReceiver<rewards::mojom::RewardsUtilityService>
+      rewards_utility_service_;
   mojo::AssociatedRemote<rewards::mojom::RewardsService> rewards_service_;
   std::unique_ptr<ledger::promotion::Promotion> promotion_;
   std::unique_ptr<ledger::publisher::Publisher> publisher_;

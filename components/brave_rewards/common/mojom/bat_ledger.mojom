@@ -12,7 +12,6 @@ import "mojo/public/mojom/base/values.mojom";
 
 interface RewardsUtilityService {
   InitializeLedger(
-      pending_associated_remote<RewardsService> rewards_service,
       bool execute_create_script) => (ledger.mojom.Result result);
 
   SetEnvironment(ledger.mojom.Environment environment);

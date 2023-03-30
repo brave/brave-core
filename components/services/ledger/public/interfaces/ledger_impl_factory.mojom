@@ -1,0 +1,13 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+module ledger.mojom;
+
+import "brave/components/brave_rewards/common/mojom/bat_ledger.mojom";
+
+interface LedgerImplFactory {
+  CreateLedger(
+      pending_associated_receiver<rewards.mojom.RewardsUtilityService> rewards_utility_service,
+      pending_associated_remote<rewards.mojom.RewardsService> rewards_service) => ();
+};

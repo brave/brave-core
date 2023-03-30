@@ -15,7 +15,10 @@ AddMockRewardsService::AddMockRewardsService() = default;
 
 AddMockRewardsService::~AddMockRewardsService() = default;
 
-MockLedgerImpl::MockLedgerImpl() : LedgerImpl({}) {
+MockLedgerImpl::MockLedgerImpl()
+    : LedgerImpl({},
+                 mock_rewards_service_receiver_
+                     .BindNewEndpointAndPassDedicatedRemote()) {
   ON_CALL(*this, InitializeDatabase(_, _))
       .WillByDefault([](bool, LegacyResultCallback callback) {
         callback(mojom::Result::LEDGER_OK);
@@ -23,9 +26,7 @@ MockLedgerImpl::MockLedgerImpl() : LedgerImpl({}) {
   ON_CALL(*this, database()).WillByDefault(Return(&mock_database_));
 
   rewards::mojom::RewardsUtilityServiceAsyncWaiter sync(this);
-  const auto result = sync.InitializeLedger(
-      mock_rewards_service_receiver_.BindNewEndpointAndPassDedicatedRemote(),
-      false);
+  const auto result = sync.InitializeLedger(false);
   DCHECK(result == mojom::Result::LEDGER_OK);
 }
 

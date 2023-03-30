@@ -455,29 +455,32 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   BLOG(1, "Starting ledger process");
 
-  if (!utility_service_.is_bound()) {
+  if (!ledger_impl_factory_.is_bound()) {
     content::ServiceProcessHost::Launch(
-        utility_service_.BindNewPipeAndPassReceiver(),
+        ledger_impl_factory_.BindNewPipeAndPassReceiver(),
         content::ServiceProcessHost::Options()
             .WithDisplayName(IDS_UTILITY_PROCESS_LEDGER_NAME)
             .Pass());
 
-    utility_service_.set_disconnect_handler(
+    ledger_impl_factory_.set_disconnect_handler(
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
-  // Environment
+  ledger_impl_factory_->CreateLedger(
+      utility_service_.BindNewEndpointAndPassReceiver(),
+      rewards_service_receiver_.BindNewEndpointAndPassRemote(),
+      base::BindOnce(&RewardsServiceImpl::OnCreateLedger, AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnCreateLedger() {
   SetEnvironment(GetDefaultServerEnvironment());
-
   SetDebug(false);
-
   HandleFlags(RewardsFlags::ForCurrentProcess());
-
   PrepareLedgerEnvForTesting();
 
   utility_service_->InitializeLedger(
-      rewards_service_receiver_.BindNewEndpointAndPassRemote(), false,
-      base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
+      false,
+      base::BindOnce(&RewardsServiceImpl::OnInitializeLedger, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
@@ -844,7 +847,7 @@ void RewardsServiceImpl::Shutdown() {
   brave_rewards::RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnLedgerInitialized(ledger::mojom::Result result) {
+void RewardsServiceImpl::OnInitializeLedger(ledger::mojom::Result result) {
   if (result == ledger::mojom::Result::LEDGER_OK) {
     StartNotificationTimers();
   }
@@ -1447,6 +1450,7 @@ void RewardsServiceImpl::Reset() {
   current_media_fetchers_.clear();
   utility_service_.reset();
   rewards_service_receiver_.reset();
+  ledger_impl_factory_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
   ledger_database_.Reset();
   BLOG(1, "Successfully reset rewards service");
