@@ -264,13 +264,13 @@ export const ConnectWithSite = (props: Props) => {
         )}
       </ScrollContainer>
       <ButtonRow padding={16} isReadyToConnect={isReadyToConnect}>
-        <NavButton size="large" kind="secondary" onClick={onCancel}>
+        <NavButton size="large" kind="outline" onClick={onCancel}>
           {getLocale('braveWalletButtonCancel')}
         </NavButton>
         <HorizontalSpace space="16px" />
         <NavButton
           size="large"
-          kind="primary"
+          kind="filled"
           isDisabled={!addressToConnect}
           onClick={onNext}
         >

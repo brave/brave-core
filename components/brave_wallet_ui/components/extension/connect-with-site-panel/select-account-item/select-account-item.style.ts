@@ -82,5 +82,5 @@ export const BalanceText = styled.span`
 export const SelectedIcon = styled(Icon)<{ isSelected: boolean }>`
   --leo-icon-size: 20px;
   color: ${(p) =>
-    p.isSelected ? leo.color.primary[40] : leo.color.icon};
+    p.isSelected ? leo.color.primary[40] : leo.color.icon.default};
 `
