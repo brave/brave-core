@@ -79,6 +79,8 @@ import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
+import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -1065,11 +1067,15 @@ public class Utils {
             if (txInfo.txHash == null || txInfo.txHash.isEmpty()) {
                 return;
             }
-            boolean isFileCoinEvmNet =
-                    TextUtils.equals(
-                            txInfo.chainId, BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID)
-                    || TextUtils.equals(txInfo.chainId,
-                            BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID);
+            TxData1559 tx1559Data = txInfo.txDataUnion != null
+                            && txInfo.txDataUnion.which() == TxDataUnion.Tag.EthTxData1559
+                    ? txInfo.txDataUnion.getEthTxData1559()
+                    : null;
+            boolean isFileCoinEvmNet = tx1559Data != null
+                    && (TextUtils.equals(tx1559Data.chainId,
+                                BraveWalletConstants.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID)
+                            || TextUtils.equals(tx1559Data.chainId,
+                                    BraveWalletConstants.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID));
             if (isFileCoinEvmNet) {
                 openAddress("/" + txInfo.txHash, jsonRpcService, activity, coinType);
             } else {
