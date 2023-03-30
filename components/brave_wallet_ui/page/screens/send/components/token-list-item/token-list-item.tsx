@@ -91,9 +91,11 @@ export const TokenListItem = (props: Props) => {
 
   const networkDescription = React.useMemo(() => {
     if (tokensNetwork) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', token.symbol)
-        .replace('$2', tokensNetwork.chainName ?? '')
+      return token.symbol !== ''
+        ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+          .replace('$1', token.symbol)
+          .replace('$2', tokensNetwork.chainName ?? '')
+        : tokensNetwork.chainName
     }
     return token.symbol
   }, [tokensNetwork, token.symbol])
