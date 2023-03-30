@@ -47,7 +47,7 @@ class BATLedgerTest : public testing::Test {
  private:
   base::test::TaskEnvironment task_environment_;
   TestRewardsService test_rewards_service_;
-  mojo::AssociatedReceiver<rewards::mojom::RewardsService>
+  mojo::AssociatedReceiver<mojom::RewardsService>
       test_rewards_service_receiver_{&test_rewards_service_};
   LedgerImpl ledger_;
 };

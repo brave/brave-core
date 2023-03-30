@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-module rewards.mojom;
+module ledger.mojom;
 
 import "brave/components/brave_rewards/common/mojom/ledger.mojom";
 import "brave/components/brave_rewards/common/mojom/ledger_database.mojom";
@@ -10,9 +10,8 @@ import "brave/components/brave_rewards/common/mojom/ledger_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
-interface RewardsUtilityService {
-  InitializeLedger(
-      pending_associated_remote<RewardsService> rewards_service,
+interface Ledger {
+  Initialize(
       bool execute_create_script) => (ledger.mojom.Result result);
 
   SetEnvironment(ledger.mojom.Environment environment);

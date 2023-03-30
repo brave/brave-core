@@ -15,8 +15,7 @@
 
 namespace ledger {
 
-void set_ledger_client_for_logging(
-    rewards::mojom::RewardsService* ledger_client);
+void set_ledger_client_for_logging(mojom::RewardsService* ledger_client);
 
 void Log(const char* file,
          const int line,

@@ -7,10 +7,9 @@
 
 namespace ledger {
 
-rewards::mojom::RewardsService* g_rewards_service = nullptr;  // NOT OWNED
+mojom::RewardsService* g_rewards_service = nullptr;  // NOT OWNED
 
-void set_ledger_client_for_logging(
-    rewards::mojom::RewardsService* rewards_service) {
+void set_ledger_client_for_logging(mojom::RewardsService* rewards_service) {
   DCHECK(rewards_service);
   g_rewards_service = rewards_service;
 }

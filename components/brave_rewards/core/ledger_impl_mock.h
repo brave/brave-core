@@ -21,7 +21,7 @@ class AddMockRewardsService {
   ~AddMockRewardsService();
 
   MockRewardsService mock_rewards_service_;
-  mojo::AssociatedReceiver<rewards::mojom::RewardsService>
+  mojo::AssociatedReceiver<mojom::RewardsService>
       mock_rewards_service_receiver_{&mock_rewards_service_};
 };
 

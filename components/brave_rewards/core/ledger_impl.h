@@ -31,21 +31,22 @@
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 #include "brave/components/brave_rewards/core/ledger.h"  // TODO(sszaloki)
 
 namespace ledger {
 
-class LedgerImpl : public rewards::mojom::RewardsUtilityService,
-                   public base::SupportsWeakPtr<LedgerImpl> {
+class LedgerImpl : public mojom::Ledger {
  public:
   explicit LedgerImpl(
-      mojo::PendingReceiver<rewards::mojom::RewardsUtilityService>
-          bat_ledger_pending_receiver);
+      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
+      mojo::PendingAssociatedRemote<mojom::RewardsService>
+          rewards_service_remote);
 
   ~LedgerImpl() override;
 
@@ -54,10 +55,8 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   // mojom::RewardsUtilityService implementation begin
-  void InitializeLedger(mojo::PendingAssociatedRemote<
-                            rewards::mojom::RewardsService> rewards_service,
-                        bool execute_create_script,
-                        InitializeLedgerCallback callback) override;
+  void Initialize(bool execute_create_script,
+                  InitializeCallback callback) override;
 
   void SetEnvironment(ledger::mojom::Environment environment) override;
 
@@ -281,7 +280,7 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
 
   // mojom::RewardsUtilityService implementation end
 
-  rewards::mojom::RewardsService* rewards_service() const;
+  mojom::RewardsService* rewards_service() const;
 
   ledger::state::State* state() const;
 
@@ -450,6 +449,8 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
     kShuttingDown
   };
 
+  bool IsUninitialized() const;
+
   bool IsReady() const;
 
   virtual void InitializeDatabase(bool execute_create_script,
@@ -472,10 +473,8 @@ class LedgerImpl : public rewards::mojom::RewardsUtilityService,
   template <typename T>
   void WhenReady(T callback);
 
-  mojo::Receiver<rewards::mojom::RewardsUtilityService>
-      utility_service_receiver_;
-
-  mojo::AssociatedRemote<rewards::mojom::RewardsService> rewards_service_;
+  mojo::AssociatedReceiver<mojom::Ledger> receiver_;
+  mojo::AssociatedRemote<mojom::RewardsService> rewards_service_;
   std::unique_ptr<ledger::promotion::Promotion> promotion_;
   std::unique_ptr<ledger::publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;

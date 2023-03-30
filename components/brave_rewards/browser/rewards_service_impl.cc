@@ -293,7 +293,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
-      rewards_service_receiver_(this),
+      receiver_(this),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
@@ -455,29 +455,31 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
 
   BLOG(1, "Starting ledger process");
 
-  if (!utility_service_.is_bound()) {
+  if (!ledger_factory_.is_bound()) {
     content::ServiceProcessHost::Launch(
-        utility_service_.BindNewPipeAndPassReceiver(),
+        ledger_factory_.BindNewPipeAndPassReceiver(),
         content::ServiceProcessHost::Options()
             .WithDisplayName(IDS_UTILITY_PROCESS_LEDGER_NAME)
             .Pass());
 
-    utility_service_.set_disconnect_handler(
+    ledger_factory_.set_disconnect_handler(
         base::BindOnce(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
   }
 
-  // Environment
+  ledger_factory_->CreateLedger(
+      ledger_.BindNewEndpointAndPassReceiver(),
+      receiver_.BindNewEndpointAndPassRemote(),
+      base::BindOnce(&RewardsServiceImpl::OnCreateLedger, AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnCreateLedger() {
   SetEnvironment(GetDefaultServerEnvironment());
-
   SetDebug(false);
-
   HandleFlags(RewardsFlags::ForCurrentProcess());
-
   PrepareLedgerEnvForTesting();
 
-  utility_service_->InitializeLedger(
-      rewards_service_receiver_.BindNewEndpointAndPassRemote(), false,
-      base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
+  ledger_->Initialize(
+      false, base::BindOnce(&RewardsServiceImpl::OnInitialize, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
@@ -558,7 +560,7 @@ void RewardsServiceImpl::CreateRewardsWallet(
       std::move(callback).Run(CreateRewardsWalletResult::kSuccess);
     };
 
-    self->utility_service_->CreateRewardsWallet(
+    self->ledger_->CreateRewardsWallet(
         country,
         base::BindOnce(on_created, self, country, std::move(callback)));
   };
@@ -658,7 +660,7 @@ void RewardsServiceImpl::GetAvailableCountries(
     return std::move(callback).Run(kNonBitflyerCountries);
   };
 
-  utility_service_->GetExternalWallet(
+  ledger_->GetExternalWallet(
       GetExternalWalletType(),
       base::BindOnce(on_external_wallet, std::move(callback)));
 }
@@ -673,7 +675,7 @@ void RewardsServiceImpl::GetActivityInfoList(
                          std::vector<ledger::mojom::PublisherInfoPtr>());
   }
 
-  utility_service_->GetActivityInfoList(
+  ledger_->GetActivityInfoList(
       start, limit, std::move(filter),
       base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
                      std::move(callback)));
@@ -684,7 +686,7 @@ void RewardsServiceImpl::GetPublishersVisitedCount(
   if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback), 0);
   }
-  utility_service_->GetPublishersVisitedCount(std::move(callback));
+  ledger_->GetPublishersVisitedCount(std::move(callback));
 }
 
 void RewardsServiceImpl::GetExcludedList(
@@ -694,7 +696,7 @@ void RewardsServiceImpl::GetExcludedList(
                          std::vector<ledger::mojom::PublisherInfoPtr>());
   }
 
-  utility_service_->GetExcludedList(
+  ledger_->GetExcludedList(
       base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList, AsWeakPtr(),
                      std::move(callback)));
 }
@@ -725,7 +727,7 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
   data->path = url.path();
   data->tab_id = tab_id.id();
   data->url = url.scheme() + "://" + *publisher_domain + "/";
-  utility_service_->OnLoad(std::move(data), GetCurrentTimestamp());
+  ledger_->OnLoad(std::move(data), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnUnload(SessionID tab_id) {
@@ -733,7 +735,7 @@ void RewardsServiceImpl::OnUnload(SessionID tab_id) {
     return;
   }
 
-  utility_service_->OnUnload(tab_id.id(), GetCurrentTimestamp());
+  ledger_->OnUnload(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnShow(SessionID tab_id) {
@@ -741,7 +743,7 @@ void RewardsServiceImpl::OnShow(SessionID tab_id) {
     return;
   }
 
-  utility_service_->OnShow(tab_id.id(), GetCurrentTimestamp());
+  ledger_->OnShow(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnHide(SessionID tab_id) {
@@ -749,7 +751,7 @@ void RewardsServiceImpl::OnHide(SessionID tab_id) {
     return;
   }
 
-  utility_service_->OnHide(tab_id.id(), GetCurrentTimestamp());
+  ledger_->OnHide(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnForeground(SessionID tab_id) {
@@ -757,7 +759,7 @@ void RewardsServiceImpl::OnForeground(SessionID tab_id) {
     return;
   }
 
-  utility_service_->OnForeground(tab_id.id(), GetCurrentTimestamp());
+  ledger_->OnForeground(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnBackground(SessionID tab_id) {
@@ -765,7 +767,7 @@ void RewardsServiceImpl::OnBackground(SessionID tab_id) {
     return;
   }
 
-  utility_service_->OnBackground(tab_id.id(), GetCurrentTimestamp());
+  ledger_->OnBackground(tab_id.id(), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
@@ -791,9 +793,8 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
   data->path = url.spec();
   data->tab_id = tab_id.id();
 
-  utility_service_->OnXHRLoad(tab_id.id(), url.spec(), parts,
-                              first_party_url.spec(), referrer.spec(),
-                              std::move(data));
+  ledger_->OnXHRLoad(tab_id.id(), url.spec(), parts, first_party_url.spec(),
+                     referrer.spec(), std::move(data));
 }
 
 void RewardsServiceImpl::OnRestorePublishers(
@@ -813,7 +814,7 @@ void RewardsServiceImpl::RestorePublishers() {
     return;
   }
 
-  utility_service_->RestorePublishers(
+  ledger_->RestorePublishers(
       base::BindOnce(&RewardsServiceImpl::OnRestorePublishers, AsWeakPtr()));
 }
 
@@ -837,14 +838,14 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
-  rewards_service_receiver_.reset();
+  receiver_.reset();
   url_loaders_.clear();
 
-  utility_service_.reset();
+  ledger_.reset();
   brave_rewards::RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnLedgerInitialized(ledger::mojom::Result result) {
+void RewardsServiceImpl::OnInitialize(ledger::mojom::Result result) {
   if (result == ledger::mojom::Result::LEDGER_OK) {
     StartNotificationTimers();
   }
@@ -880,7 +881,7 @@ void RewardsServiceImpl::GetAutoContributeProperties(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  utility_service_->GetAutoContributeProperties(std::move(callback));
+  ledger_->GetAutoContributeProperties(std::move(callback));
 }
 
 void RewardsServiceImpl::OnReconcileComplete(
@@ -1120,7 +1121,7 @@ void RewardsServiceImpl::GetRewardsParameters(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  utility_service_->GetRewardsParameters(
+  ledger_->GetRewardsParameters(
       base::BindOnce(&OnGetRewardsParameters, std::move(callback)));
 }
 
@@ -1162,7 +1163,7 @@ void RewardsServiceImpl::FetchPromotions(FetchPromotionsCallback callback) {
     std::move(callback).Run(std::move(promotions));
   };
 
-  utility_service_->FetchPromotions(
+  ledger_->FetchPromotions(
       base::BindOnce(on_fetch, AsWeakPtr(), std::move(callback)));
 }
 
@@ -1253,7 +1254,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
   std::string json;
   base::JSONWriter::Write(solution, &json);
 
-  utility_service_->AttestPromotion(
+  ledger_->AttestPromotion(
       promotion_id, json,
       base::BindOnce(&RewardsServiceImpl::OnAttestPromotion, AsWeakPtr(),
                      std::move(callback)));
@@ -1271,7 +1272,7 @@ void RewardsServiceImpl::ClaimPromotion(
       AsWeakPtr(),
       std::move(callback));
 
-  utility_service_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
+  ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
 }
 
 void RewardsServiceImpl::ClaimPromotion(
@@ -1287,7 +1288,7 @@ void RewardsServiceImpl::ClaimPromotion(
       promotion_id,
       std::move(callback));
 
-  utility_service_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
+  ledger_->ClaimPromotion(promotion_id, "", std::move(claim_callback));
 }
 
 std::vector<std::string> RewardsServiceImpl::GetExternalWalletProviders()
@@ -1318,7 +1319,7 @@ void RewardsServiceImpl::AttestPromotion(
                          ledger::mojom::Result::LEDGER_ERROR, nullptr);
   }
 
-  utility_service_->AttestPromotion(
+  ledger_->AttestPromotion(
       promotion_id, solution,
       base::BindOnce(&RewardsServiceImpl::OnAttestPromotion, AsWeakPtr(),
                      std::move(callback)));
@@ -1345,7 +1346,7 @@ void RewardsServiceImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
     return DeferCallback(FROM_HERE, std::move(callback), 0);
   }
 
-  utility_service_->GetReconcileStamp(std::move(callback));
+  ledger_->GetReconcileStamp(std::move(callback));
 }
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -1394,8 +1395,8 @@ void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
     return;
   }
 
-  utility_service_->Shutdown(base::BindOnce(&RewardsServiceImpl::OnStopLedger,
-                                            AsWeakPtr(), std::move(callback)));
+  ledger_->Shutdown(base::BindOnce(&RewardsServiceImpl::OnStopLedger,
+                                   AsWeakPtr(), std::move(callback)));
 }
 
 void RewardsServiceImpl::OnStopLedger(StopLedgerCallback callback,
@@ -1445,8 +1446,9 @@ void RewardsServiceImpl::Reset() {
   }
 
   current_media_fetchers_.clear();
-  utility_service_.reset();
-  rewards_service_receiver_.reset();
+  ledger_.reset();
+  receiver_.reset();
+  ledger_factory_.reset();
   ready_ = std::make_unique<base::OneShotEvent>();
   ledger_database_.Reset();
   BLOG(1, "Successfully reset rewards service");
@@ -1626,7 +1628,7 @@ void RewardsServiceImpl::GetPublisherMinVisitTime(
     return DeferCallback(FROM_HERE, std::move(callback), 0);
   }
 
-  utility_service_->GetPublisherMinVisitTime(std::move(callback));
+  ledger_->GetPublisherMinVisitTime(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherMinVisitTime(
@@ -1635,7 +1637,7 @@ void RewardsServiceImpl::SetPublisherMinVisitTime(
     return;
   }
 
-  utility_service_->SetPublisherMinVisitTime(duration_in_seconds);
+  ledger_->SetPublisherMinVisitTime(duration_in_seconds);
 }
 
 void RewardsServiceImpl::GetPublisherMinVisits(
@@ -1644,7 +1646,7 @@ void RewardsServiceImpl::GetPublisherMinVisits(
     return DeferCallback(FROM_HERE, std::move(callback), 0);
   }
 
-  utility_service_->GetPublisherMinVisits(std::move(callback));
+  ledger_->GetPublisherMinVisits(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherMinVisits(int visits) const {
@@ -1652,7 +1654,7 @@ void RewardsServiceImpl::SetPublisherMinVisits(int visits) const {
     return;
   }
 
-  utility_service_->SetPublisherMinVisits(visits);
+  ledger_->SetPublisherMinVisits(visits);
 }
 
 void RewardsServiceImpl::GetPublisherAllowNonVerified(
@@ -1661,7 +1663,7 @@ void RewardsServiceImpl::GetPublisherAllowNonVerified(
     return DeferCallback(FROM_HERE, std::move(callback), false);
   }
 
-  utility_service_->GetPublisherAllowNonVerified(std::move(callback));
+  ledger_->GetPublisherAllowNonVerified(std::move(callback));
 }
 
 void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
@@ -1669,7 +1671,7 @@ void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
     return;
   }
 
-  utility_service_->SetPublisherAllowNonVerified(allow);
+  ledger_->SetPublisherAllowNonVerified(allow);
 }
 
 void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
@@ -1677,7 +1679,7 @@ void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
     return;
   }
 
-  utility_service_->SetAutoContributionAmount(amount);
+  ledger_->SetAutoContributionAmount(amount);
 }
 
 void RewardsServiceImpl::GetAutoContributeEnabled(
@@ -1686,7 +1688,7 @@ void RewardsServiceImpl::GetAutoContributeEnabled(
     return DeferCallback(FROM_HERE, std::move(callback), false);
   }
 
-  utility_service_->GetAutoContributeEnabled(std::move(callback));
+  ledger_->GetAutoContributeEnabled(std::move(callback));
 }
 
 void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
@@ -1694,7 +1696,7 @@ void RewardsServiceImpl::SetAutoContributeEnabled(bool enabled) {
     return;
   }
 
-  utility_service_->SetAutoContributeEnabled(enabled);
+  ledger_->SetAutoContributeEnabled(enabled);
 }
 
 void RewardsServiceImpl::OnGetBalanceReport(
@@ -1713,7 +1715,7 @@ void RewardsServiceImpl::GetBalanceReport(
                          ledger::mojom::Result::LEDGER_OK, nullptr);
   }
 
-  utility_service_->GetBalanceReport(
+  ledger_->GetBalanceReport(
       static_cast<ledger::mojom::ActivityMonth>(month), year,
       base::BindOnce(&RewardsServiceImpl::OnGetBalanceReport, AsWeakPtr(),
                      std::move(callback)));
@@ -1749,8 +1751,8 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   visit_data->url = parsed_url.scheme() + "://" + *publisher_domain + "/";
   visit_data->favicon_url = favicon_url;
 
-  utility_service_->GetPublisherActivityFromUrl(windowId, std::move(visit_data),
-                                                publisher_blob);
+  ledger_->GetPublisherActivityFromUrl(windowId, std::move(visit_data),
+                                       publisher_blob);
 }
 
 void RewardsServiceImpl::OnPanelPublisherInfo(
@@ -1775,7 +1777,7 @@ void RewardsServiceImpl::GetAutoContributionAmount(
     return DeferCallback(FROM_HERE, std::move(callback), 0);
   }
 
-  utility_service_->GetAutoContributionAmount(std::move(callback));
+  ledger_->GetAutoContributionAmount(std::move(callback));
 }
 
 void RewardsServiceImpl::FetchFavIcon(const std::string& url,
@@ -1839,7 +1841,7 @@ void RewardsServiceImpl::GetPublisherBanner(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  utility_service_->GetPublisherBanner(
+  ledger_->GetPublisherBanner(
       publisher_id, base::BindOnce(&RewardsServiceImpl::OnPublisherBanner,
                                    AsWeakPtr(), std::move(callback)));
 }
@@ -1873,7 +1875,7 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
   info->amount = amount;
   info->created_at = GetCurrentTimestamp();
 
-  utility_service_->SaveRecurringTip(
+  ledger_->SaveRecurringTip(
       std::move(info), base::BindOnce(&RewardsServiceImpl::OnSaveRecurringTip,
                                       AsWeakPtr(), std::move(callback)));
 }
@@ -1887,7 +1889,7 @@ void RewardsServiceImpl::SendContribution(
     return DeferCallback(FROM_HERE, std::move(callback), false);
   }
 
-  utility_service_->SendContribution(
+  ledger_->SendContribution(
       publisher_key, amount, set_monthly,
       base::BindOnce(&RewardsServiceImpl::OnContributionSent, AsWeakPtr(),
                      set_monthly, std::move(callback)));
@@ -1914,8 +1916,7 @@ void RewardsServiceImpl::UpdateMediaDuration(
     return;
   }
 
-  utility_service_->UpdateMediaDuration(window_id, publisher_key, duration,
-                                        first_visit);
+  ledger_->UpdateMediaDuration(window_id, publisher_key, duration, first_visit);
 }
 
 void RewardsServiceImpl::IsPublisherRegistered(
@@ -1925,7 +1926,7 @@ void RewardsServiceImpl::IsPublisherRegistered(
     return DeferCallback(FROM_HERE, std::move(callback), false);
   }
 
-  utility_service_->IsPublisherRegistered(publisher_id, std::move(callback));
+  ledger_->IsPublisherRegistered(publisher_id, std::move(callback));
 }
 
 void RewardsServiceImpl::GetPublisherInfo(
@@ -1936,7 +1937,7 @@ void RewardsServiceImpl::GetPublisherInfo(
                          ledger::mojom::Result::LEDGER_ERROR, nullptr);
   }
 
-  utility_service_->GetPublisherInfo(publisher_key, std::move(callback));
+  ledger_->GetPublisherInfo(publisher_key, std::move(callback));
 }
 
 void RewardsServiceImpl::GetPublisherPanelInfo(
@@ -1947,7 +1948,7 @@ void RewardsServiceImpl::GetPublisherPanelInfo(
                          ledger::mojom::Result::LEDGER_ERROR, nullptr);
   }
 
-  utility_service_->GetPublisherPanelInfo(publisher_key, std::move(callback));
+  ledger_->GetPublisherPanelInfo(publisher_key, std::move(callback));
 }
 
 void RewardsServiceImpl::SavePublisherInfo(
@@ -1959,8 +1960,8 @@ void RewardsServiceImpl::SavePublisherInfo(
                          ledger::mojom::Result::LEDGER_ERROR);
   }
 
-  utility_service_->SavePublisherInfo(window_id, std::move(publisher_info),
-                                      std::move(callback));
+  ledger_->SavePublisherInfo(window_id, std::move(publisher_info),
+                             std::move(callback));
 }
 
 void RewardsServiceImpl::GetRecurringTips(
@@ -1970,7 +1971,7 @@ void RewardsServiceImpl::GetRecurringTips(
                          std::vector<ledger::mojom::PublisherInfoPtr>());
   }
 
-  utility_service_->GetRecurringTips(std::move(callback));
+  ledger_->GetRecurringTips(std::move(callback));
 }
 
 void RewardsServiceImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
@@ -1979,7 +1980,7 @@ void RewardsServiceImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
                          std::vector<ledger::mojom::PublisherInfoPtr>());
   }
 
-  utility_service_->GetOneTimeTips(std::move(callback));
+  ledger_->GetOneTimeTips(std::move(callback));
 }
 
 void RewardsServiceImpl::OnRecurringTip(const ledger::mojom::Result result) {
@@ -1995,7 +1996,7 @@ void RewardsServiceImpl::RemoveRecurringTip(
     return;
   }
 
-  utility_service_->RemoveRecurringTip(
+  ledger_->RemoveRecurringTip(
       publisher_key,
       base::BindOnce(&RewardsServiceImpl::OnRecurringTip, AsWeakPtr()));
 }
@@ -2024,7 +2025,7 @@ void RewardsServiceImpl::SetPublisherExclude(
       exclude ? ledger::mojom::PublisherExclude::EXCLUDED
               : ledger::mojom::PublisherExclude::INCLUDED;
 
-  utility_service_->SetPublisherExclude(
+  ledger_->SetPublisherExclude(
       publisher_key, status,
       base::BindOnce(&RewardsServiceImpl::OnSetPublisherExclude, AsWeakPtr(),
                      publisher_key, exclude));
@@ -2182,7 +2183,7 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  utility_service_->GetRewardsInternalsInfo(std::move(callback));
+  ledger_->GetRewardsInternalsInfo(std::move(callback));
 }
 
 void RewardsServiceImpl::OnTip(const std::string& publisher_key,
@@ -2194,7 +2195,7 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
   }
   publisher->id = publisher_key;
 
-  utility_service_->SavePublisherInfoForTip(
+  ledger_->SavePublisherInfoForTip(
       std::move(publisher),
       base::BindOnce(&RewardsServiceImpl::OnTipPublisherSaved, AsWeakPtr(),
                      publisher_key, amount, recurring));
@@ -2225,11 +2226,11 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
     return SaveRecurringTip(publisher_key, amount, std::move(callback));
   }
 
-  utility_service_->OneTimeTip(publisher_key, amount, std::move(callback));
+  ledger_->OneTimeTip(publisher_key, amount, std::move(callback));
 }
 
 bool RewardsServiceImpl::Connected() const {
-  return utility_service_.is_bound();
+  return ledger_.is_bound();
 }
 
 void RewardsServiceImpl::StartProcessForTesting(base::OnceClosure callback) {
@@ -2250,8 +2251,8 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
     return;
   }
 
-  utility_service_->SetTesting();
-  utility_service_->SetStateMigrationTargetVersionForTesting(  // IN-TEST
+  ledger_->SetTesting();
+  ledger_->SetStateMigrationTargetVersionForTesting(  // IN-TEST
       ledger_state_target_version_for_testing_);
   SetRetryInterval(1);
 
@@ -2271,45 +2272,45 @@ void RewardsServiceImpl::StartContributionsForTesting() {
     return;
   }
 
-  utility_service_->StartContributionsForTesting();  // IN-TEST
+  ledger_->StartContributionsForTesting();  // IN-TEST
 }
 
 void RewardsServiceImpl::GetEnvironment(GetEnvironmentCallback callback) {
-  if (!utility_service_.is_bound()) {
+  if (!ledger_.is_bound()) {
     return DeferCallback(FROM_HERE, std::move(callback),
                          GetDefaultServerEnvironment());
   }
-  utility_service_->GetEnvironment(std::move(callback));
+  ledger_->GetEnvironment(std::move(callback));
 }
 
 void RewardsServiceImpl::GetDebug(GetDebugCallback callback) {
-  utility_service_->GetDebug(std::move(callback));
+  ledger_->GetDebug(std::move(callback));
 }
 
 void RewardsServiceImpl::GetReconcileInterval(
     GetReconcileIntervalCallback callback) {
-  utility_service_->GetReconcileInterval(std::move(callback));
+  ledger_->GetReconcileInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::GetRetryInterval(GetRetryIntervalCallback callback) {
-  utility_service_->GetRetryInterval(std::move(callback));
+  ledger_->GetRetryInterval(std::move(callback));
 }
 
 void RewardsServiceImpl::SetEnvironment(
     ledger::mojom::Environment environment) {
-  utility_service_->SetEnvironment(environment);
+  ledger_->SetEnvironment(environment);
 }
 
 void RewardsServiceImpl::SetDebug(bool debug) {
-  utility_service_->SetDebug(debug);
+  ledger_->SetDebug(debug);
 }
 
 void RewardsServiceImpl::SetReconcileInterval(const int32_t interval) {
-  utility_service_->SetReconcileInterval(interval);
+  ledger_->SetReconcileInterval(interval);
 }
 
 void RewardsServiceImpl::SetRetryInterval(int32_t interval) {
-  utility_service_->SetRetryInterval(interval);
+  ledger_->SetRetryInterval(interval);
 }
 
 void RewardsServiceImpl::GetPendingContributionsTotal(
@@ -2318,7 +2319,7 @@ void RewardsServiceImpl::GetPendingContributionsTotal(
     return DeferCallback(FROM_HERE, std::move(callback), 0);
   }
 
-  utility_service_->GetPendingContributionsTotal(std::move(callback));
+  ledger_->GetPendingContributionsTotal(std::move(callback));
 }
 
 void RewardsServiceImpl::PublisherListNormalized(
@@ -2353,7 +2354,7 @@ void RewardsServiceImpl::RefreshPublisher(
     return DeferCallback(FROM_HERE, std::move(callback),
                          ledger::mojom::PublisherStatus::NOT_VERIFIED, "");
   }
-  utility_service_->RefreshPublisher(
+  ledger_->RefreshPublisher(
       publisher_key,
       base::BindOnce(&RewardsServiceImpl::OnRefreshPublisher, AsWeakPtr(),
                      std::move(callback), publisher_key));
@@ -2379,7 +2380,7 @@ void RewardsServiceImpl::SetInlineTippingPlatformEnabled(
   }
 
   const auto platform = ConvertInlineTipStringToPlatform(key);
-  utility_service_->SetInlineTippingPlatformEnabled(platform, enabled);
+  ledger_->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
 void RewardsServiceImpl::GetInlineTippingPlatformEnabled(
@@ -2390,8 +2391,7 @@ void RewardsServiceImpl::GetInlineTippingPlatformEnabled(
   }
 
   const auto platform = ConvertInlineTipStringToPlatform(key);
-  utility_service_->GetInlineTippingPlatformEnabled(platform,
-                                                    std::move(callback));
+  ledger_->GetInlineTippingPlatformEnabled(platform, std::move(callback));
 }
 
 void RewardsServiceImpl::GetShareURL(
@@ -2401,7 +2401,7 @@ void RewardsServiceImpl::GetShareURL(
     return DeferCallback(FROM_HERE, std::move(callback), "");
   }
 
-  utility_service_->GetShareURL(args, std::move(callback));
+  ledger_->GetShareURL(args, std::move(callback));
 }
 
 void RewardsServiceImpl::GetPendingContributions(
@@ -2412,7 +2412,7 @@ void RewardsServiceImpl::GetPendingContributions(
         std::vector<ledger::mojom::PendingContributionInfoPtr>());
   }
 
-  utility_service_->GetPendingContributions(std::move(callback));
+  ledger_->GetPendingContributions(std::move(callback));
 }
 
 void RewardsServiceImpl::OnPendingContributionRemoved(
@@ -2427,7 +2427,7 @@ void RewardsServiceImpl::RemovePendingContribution(const uint64_t id) {
     return;
   }
 
-  utility_service_->RemovePendingContribution(
+  ledger_->RemovePendingContribution(
       id, base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemoved,
                          AsWeakPtr()));
 }
@@ -2444,7 +2444,7 @@ void RewardsServiceImpl::RemoveAllPendingContributions() {
     return;
   }
 
-  utility_service_->RemoveAllPendingContributions(base::BindOnce(
+  ledger_->RemoveAllPendingContributions(base::BindOnce(
       &RewardsServiceImpl::OnRemoveAllPendingContributions, AsWeakPtr()));
 }
 
@@ -2481,7 +2481,7 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
         base::unexpected(ledger::mojom::FetchBalanceError::kUnexpected));
   }
 
-  utility_service_->FetchBalance(std::move(callback));
+  ledger_->FetchBalance(std::move(callback));
 }
 
 bool RewardsServiceImpl::IsAutoContributeSupported() const {
@@ -2507,8 +2507,7 @@ void RewardsServiceImpl::GetExternalWallet(GetExternalWalletCallback callback) {
         base::unexpected(ledger::mojom::GetExternalWalletError::kUnexpected));
   }
 
-  utility_service_->GetExternalWallet(GetExternalWalletType(),
-                                      std::move(callback));
+  ledger_->GetExternalWallet(GetExternalWalletType(), std::move(callback));
 }
 
 void RewardsServiceImpl::ConnectExternalWallet(
@@ -2540,8 +2539,8 @@ void RewardsServiceImpl::ConnectExternalWallet(
         it.GetUnescapedValue();
   }
 
-  utility_service_->ConnectExternalWallet(wallet_type, query_parameters,
-                                          std::move(callback));
+  ledger_->ConnectExternalWallet(wallet_type, query_parameters,
+                                 std::move(callback));
 }
 
 void RewardsServiceImpl::ShowNotification(const std::string& type,
@@ -2568,7 +2567,7 @@ void RewardsServiceImpl::RecordBackendP3AStats() {
     return;
   }
 
-  utility_service_->GetRecurringTips(base::BindOnce(
+  ledger_->GetRecurringTips(base::BindOnce(
       &RewardsServiceImpl::OnRecordBackendP3AStatsRecurring, AsWeakPtr()));
 }
 
@@ -2578,7 +2577,7 @@ void RewardsServiceImpl::OnRecordBackendP3AStatsRecurring(
     return;
   }
 
-  utility_service_->GetAllContributions(
+  ledger_->GetAllContributions(
       base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AStatsContributions,
                      AsWeakPtr(), list.size()));
 }
@@ -2697,7 +2696,7 @@ void RewardsServiceImpl::GetMonthlyReport(
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  utility_service_->GetMonthlyReport(
+  ledger_->GetMonthlyReport(
       static_cast<ledger::mojom::ActivityMonth>(month), year,
       base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReport, AsWeakPtr(),
                      std::move(callback)));
@@ -2756,7 +2755,7 @@ void RewardsServiceImpl::GetAllMonthlyReportIds(
                          std::vector<std::string>());
   }
 
-  utility_service_->GetAllMonthlyReportIds(std::move(callback));
+  ledger_->GetAllMonthlyReportIds(std::move(callback));
 }
 
 void RewardsServiceImpl::GetAllContributions(
@@ -2766,7 +2765,7 @@ void RewardsServiceImpl::GetAllContributions(
                          std::vector<ledger::mojom::ContributionInfoPtr>());
   }
 
-  utility_service_->GetAllContributions(std::move(callback));
+  ledger_->GetAllContributions(std::move(callback));
 }
 
 void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
@@ -2775,7 +2774,7 @@ void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
                          std::vector<ledger::mojom::PromotionPtr>());
   }
 
-  utility_service_->GetAllPromotions(
+  ledger_->GetAllPromotions(
       base::BindOnce(&RewardsServiceImpl::OnGetAllPromotions, AsWeakPtr(),
                      std::move(callback)));
 }
@@ -2859,7 +2858,7 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
                          std::vector<ledger::mojom::EventLogPtr>());
   }
 
-  utility_service_->GetEventLogs(std::move(callback));
+  ledger_->GetEventLogs(std::move(callback));
 }
 
 void RewardsServiceImpl::EncryptString(const std::string& value,
@@ -2887,7 +2886,7 @@ void RewardsServiceImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
     return DeferCallback(FROM_HERE, std::move(callback), nullptr);
   }
 
-  utility_service_->GetRewardsWallet(std::move(callback));
+  ledger_->GetRewardsWallet(std::move(callback));
 }
 
 bool RewardsServiceImpl::IsBitFlyerRegion() const {

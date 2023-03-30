@@ -31,6 +31,7 @@
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "brave/components/services/ledger/public/interfaces/ledger_factory.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -89,7 +90,7 @@ using GetTestResponseCallback = base::RepeatingCallback<void(
 using StopLedgerCallback = base::OnceCallback<void(ledger::mojom::Result)>;
 
 class RewardsServiceImpl : public RewardsService,
-                           public rewards::mojom::RewardsService,
+                           public ledger::mojom::RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
@@ -366,6 +367,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void Reset();
 
+  void OnCreateLedger();
+
   void OnResult(ledger::LegacyResultCallback callback,
                 ledger::mojom::Result result);
 
@@ -401,7 +404,7 @@ class RewardsServiceImpl : public RewardsService,
                              const bool exclude,
                              const ledger::mojom::Result result);
 
-  void OnLedgerInitialized(ledger::mojom::Result result);
+  void OnInitialize(ledger::mojom::Result result);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
                         const ledger::mojom::Result result,
@@ -633,9 +636,9 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  mojo::AssociatedReceiver<rewards::mojom::RewardsService>
-      rewards_service_receiver_;
-  mojo::Remote<rewards::mojom::RewardsUtilityService> utility_service_;
+  mojo::Remote<ledger::mojom::LedgerFactory> ledger_factory_;
+  mojo::AssociatedReceiver<ledger::mojom::RewardsService> receiver_;
+  mojo::AssociatedRemote<ledger::mojom::Ledger> ledger_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 

@@ -47,7 +47,7 @@ base::FilePath GetTestDataPath();
 
 // An implementation of mojom::RewardsService useful for unit testing.
 // A full SQLite database is provided, loaded in memory.
-class TestRewardsService : public rewards::mojom::RewardsService {
+class TestRewardsService : public mojom::RewardsService {
  public:
   TestRewardsService();
 

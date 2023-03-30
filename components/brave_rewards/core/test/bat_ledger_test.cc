@@ -8,15 +8,16 @@
 
 namespace ledger {
 
-BATLedgerTest::BATLedgerTest() : ledger_({}) {}
+BATLedgerTest::BATLedgerTest()
+    : ledger_({},
+              test_rewards_service_receiver_
+                  .BindNewEndpointAndPassDedicatedRemote()) {}
 
 BATLedgerTest::~BATLedgerTest() = default;
 
 void BATLedgerTest::InitializeLedger() {
-  rewards::mojom::RewardsUtilityServiceAsyncWaiter sync(&ledger_);
-  const auto result = sync.InitializeLedger(
-      test_rewards_service_receiver_.BindNewEndpointAndPassDedicatedRemote(),
-      false);
+  mojom::LedgerAsyncWaiter sync(&ledger_);
+  const auto result = sync.Initialize(false);
   DCHECK(result == mojom::Result::LEDGER_OK);
 }
 

@@ -15,7 +15,7 @@
 
 namespace ledger {
 
-class MockRewardsService : public rewards::mojom::RewardsService {
+class MockRewardsService : public mojom::RewardsService {
  public:
   MockRewardsService();
 
