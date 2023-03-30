@@ -34,7 +34,6 @@ void BatAdsServiceImpl::Create(
 void BatAdsServiceImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
                                    SetSysInfoCallback callback) {
   brave_ads::SysInfo().device_id = sys_info->device_id;
-  brave_ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
 
   std::move(callback).Run();
 }

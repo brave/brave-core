@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/sys_info.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "url/gurl.h"
 
@@ -35,210 +34,8 @@ constexpr char kExpectedContent[] =
 class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForLargeAnonmityCountryForRPill) {
+       BuildUrlForLargeAnonmityCountry) {
   // Arrange
-  SysInfo().is_uncertain_future = true;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  privacy::SetUnblindedTokens(1);
-
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
-
-  // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content = kExpectedContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForAnonymousCountryForRPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = true;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  privacy::SetUnblindedTokens(1);
-
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
-
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
-
-  // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content = kExpectedContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForOtherCountryForRPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = true;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  privacy::SetUnblindedTokens(1);
-
-  MockBuildChannel(BuildChannelType::kRelease);
-
-  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
-
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
-
-  // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content = kExpectedContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannelForRPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = true;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  privacy::SetUnblindedTokens(1);
-
-  MockBuildChannel(BuildChannelType::kNightly);
-
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
-
-  // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content = kExpectedContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForAnonymousCountryAndNonReleaseBuildChannelForRPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = true;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  privacy::SetUnblindedTokens(1);
-
-  MockBuildChannel(BuildChannelType::kNightly);
-
-  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_AS"};
-
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
-
-  // Act
-  const mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content = kExpectedContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForOtherCountryAndNonReleaseBuildChannelForRPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = true;
-
-  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
-      EnvironmentType::kStaging);
-
-  privacy::SetUnblindedTokens(1);
-
-  MockBuildChannel(BuildChannelType::kNightly);
-
-  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
-
-  const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
-  ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
-
-  // Act
-  mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
-
-  // Assert
-  mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
-  expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.1 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
-  expected_url_request->content = kExpectedContent;
-  expected_url_request->content_type = "application/json";
-  expected_url_request->method = mojom::UrlRequestMethodType::kPost;
-
-  EXPECT_EQ(url_request, expected_url_request);
-}
-
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForLargeAnonmityCountryForBPill) {
-  // Arrange
-  SysInfo().is_uncertain_future = false;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -256,9 +53,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+  expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
@@ -267,10 +62,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForAnonymousCountryForBPill) {
+       BuildUrlForAnonymousCountry) {
   // Arrange
-  SysInfo().is_uncertain_future = false;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -290,9 +83,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+  expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
@@ -300,11 +91,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForOtherCountryForBPill) {
+TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest, BuildUrlForOtherCountry) {
   // Arrange
-  SysInfo().is_uncertain_future = false;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -324,9 +112,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+  expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
@@ -335,10 +121,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannelForBPill) {
+       BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannel) {
   // Arrange
-  SysInfo().is_uncertain_future = false;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -356,9 +140,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+  expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
@@ -367,10 +149,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForAnonymousCountryAndNonReleaseBuildChannelForBPill) {
+       BuildUrlForAnonymousCountryAndNonReleaseBuildChannel) {
   // Arrange
-  SysInfo().is_uncertain_future = false;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -390,9 +170,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+  expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;
@@ -401,10 +179,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 }
 
 TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
-       BuildUrlForOtherCountryAndNonReleaseBuildChannelForBPill) {
+       BuildUrlForOtherCountryAndNonReleaseBuildChannel) {
   // Arrange
-  SysInfo().is_uncertain_future = false;
-
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
@@ -424,9 +200,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   // Assert
   mojom::UrlRequestInfoPtr expected_url_request = mojom::UrlRequestInfo::New();
   expected_url_request->url = GURL(kExpectedUrl);
-  expected_url_request->headers = {
-      "Via: 1.0 brave, 1.1 ads-serve.brave.com (Apache/1.1)",
-      "accept: application/json"};
+  expected_url_request->headers = {"accept: application/json"};
   expected_url_request->content = kExpectedContent;
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethodType::kPost;

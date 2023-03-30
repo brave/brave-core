@@ -98,8 +98,6 @@ class AdsServiceImpl : public AdsService,
   void OnMigrateConfirmationState(bool success);
   void GetDeviceId();
   void OnGetDeviceId(std::string device_id);
-  void DetectUncertainFuture();
-  void OnDetectUncertainFuture(bool is_uncertain_future);
 
   bool UserHasOptedIn() const;
 

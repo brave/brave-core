@@ -16,7 +16,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token_preimage.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_key.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/verification_signature.h"
-#include "brave/components/brave_ads/core/internal/server/headers/via_header_util.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
@@ -27,9 +26,6 @@ namespace {
 
 std::vector<std::string> BuildHeaders() {
   std::vector<std::string> headers;
-
-  const std::string via_header = server::BuildViaHeader();
-  headers.push_back(via_header);
 
   const std::string accept_header = "accept: application/json";
   headers.push_back(accept_header);

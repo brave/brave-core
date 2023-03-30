@@ -15,7 +15,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_payload_json_writer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
-#include "brave/components/brave_ads/core/internal/server/headers/via_header_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -24,9 +23,6 @@ namespace {
 
 std::vector<std::string> BuildHeaders() {
   std::vector<std::string> headers;
-
-  const std::string via_header = server::BuildViaHeader();
-  headers.push_back(via_header);
 
   const std::string accept_header = "accept: application/json";
   headers.push_back(accept_header);

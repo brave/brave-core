@@ -224,13 +224,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 + (BraveAdsSysInfo*)sysInfo {
   auto sys_info = [[BraveAdsSysInfo alloc] init];
   sys_info.deviceId = base::SysUTF8ToNSString(brave_ads::SysInfo().device_id);
-  sys_info.isUncertainFuture = brave_ads::SysInfo().is_uncertain_future;
   return sys_info;
 }
 
 + (void)setSysInfo:(BraveAdsSysInfo*)sysInfo {
   brave_ads::SysInfo().device_id = base::SysNSStringToUTF8(sysInfo.deviceId);
-  brave_ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
 + (BraveAdsBuildChannelInfo*)buildChannelInfo {

@@ -17,7 +17,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
-#include "brave/components/brave_ads/core/internal/server/headers/via_header_util.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 #include "url/gurl.h"
 
@@ -86,9 +85,6 @@ std::vector<std::string> RequestSignedTokensUrlRequestBuilder::BuildHeaders(
 
   const std::string content_type_header = "content-type: application/json";
   headers.push_back(content_type_header);
-
-  const std::string via_header = server::BuildViaHeader();
-  headers.push_back(via_header);
 
   const std::string accept_header = "accept: application/json";
   headers.push_back(accept_header);

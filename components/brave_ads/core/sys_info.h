@@ -11,8 +11,7 @@
 namespace brave_ads {
 
 // Returns system information. |device_id| containing machine characteristics
-// which should not be stored to disk or transmitted. |is_uncertain_future|
-// containing |true| for guest operating systems otherwise |false|.
+// which should not be stored to disk or transmitted.
 mojom::SysInfo& SysInfo();
 
 }  // namespace brave_ads
