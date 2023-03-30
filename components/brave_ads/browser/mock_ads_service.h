@@ -53,8 +53,6 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD1(OnDidUpdateResourceComponent, void(const std::string&));
 
-  MOCK_METHOD1(TriggerUserGestureEvent, void(int32_t));
-
   MOCK_METHOD1(GetStatementOfAccounts, void(GetStatementOfAccountsCallback));
 
   MOCK_METHOD2(MaybeServeInlineContentAd,
@@ -117,6 +115,7 @@ class MockAdsService : public AdsService {
                     bool is_visible,
                     bool is_incognito));
   MOCK_METHOD1(NotifyDidCloseTab, void(int32_t tab_id));
+  MOCK_METHOD1(NotifyUserGestureEventTriggered, void(int32_t));
   MOCK_METHOD0(NotifyBrowserDidBecomeActive, void());
   MOCK_METHOD0(NotifyBrowserDidResignActive, void());
 

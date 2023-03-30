@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
@@ -22,7 +23,8 @@ namespace brave_ads {
 
 struct TabInfo;
 
-class UserActivityManager final : public BrowserManagerObserver,
+class UserActivityManager final : public AdsClientNotifierObserver,
+                                  public BrowserManagerObserver,
                                   public TabManagerObserver {
  public:
   UserActivityManager();
@@ -40,13 +42,15 @@ class UserActivityManager final : public BrowserManagerObserver,
   static bool HasInstance();
 
   void RecordEvent(UserActivityEventType event_type);
-  void RecordEventForPageTransition(int32_t type);
 
   UserActivityEventList GetHistoryForTimeWindow(
       base::TimeDelta time_window) const;
 
  private:
   void RecordEventForPageTransition(PageTransitionType type);
+
+  // AdsClientNotifierObserver:
+  void OnNotifyUserGestureEventTriggered(int32_t type) override;
 
   // BrowserManagerObserver:
   void OnBrowserDidBecomeActive() override;

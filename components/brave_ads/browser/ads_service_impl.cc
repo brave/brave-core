@@ -882,12 +882,15 @@ void AdsServiceImpl::CloseAllNotificationAds() {
 
 void AdsServiceImpl::OnPrefetchNewTabPageAd(
     absl::optional<base::Value::Dict> dict) {
+  DCHECK(!prefetched_new_tab_page_ad_);
+  DCHECK(is_prefetching_new_tab_page_ad_);
+
+  is_prefetching_new_tab_page_ad_ = false;
+
   if (!dict) {
     VLOG(1) << "Failed to prefetch new tab page ad";
     return;
   }
-
-  DCHECK(!prefetched_new_tab_page_ad_);
   prefetched_new_tab_page_ad_ = NewTabPageAdFromValue(*dict);
 }
 
@@ -1260,6 +1263,7 @@ void AdsServiceImpl::Shutdown() {
   idle_state_timer_.Stop();
 
   prefetched_new_tab_page_ad_.reset();
+  is_prefetching_new_tab_page_ad_ = false;
 
   CloseAllNotificationAds();
 
@@ -1383,13 +1387,6 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   bat_ads_->GetDiagnostics(std::move(callback));
 }
 
-void AdsServiceImpl::TriggerUserGestureEvent(
-    const int32_t page_transition_type) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerUserGestureEvent(page_transition_type);
-  }
-}
-
 void AdsServiceImpl::GetStatementOfAccounts(
     GetStatementOfAccountsCallback callback) {
   if (!bat_ads_.is_bound()) {
@@ -1427,16 +1424,12 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
     return;
   }
 
-  if (!is_bat_ads_initialized_) {
-    return;
-  }
+  if (!prefetched_new_tab_page_ad_ && !is_prefetching_new_tab_page_ad_) {
+    is_prefetching_new_tab_page_ad_ = true;
 
-  if (prefetched_new_tab_page_ad_) {
-    return;
+    bat_ads_->MaybeServeNewTabPageAd(
+        base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
   }
-
-  bat_ads_->MaybeServeNewTabPageAd(
-      base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
 }
 
 absl::optional<NewTabPageAdInfo>
@@ -1446,7 +1439,7 @@ AdsServiceImpl::GetPrefetchedNewTabPageAdForDisplay() {
   }
 
   absl::optional<NewTabPageAdInfo> ad;
-  if (prefetched_new_tab_page_ad_) {
+  if (prefetched_new_tab_page_ad_ && prefetched_new_tab_page_ad_->IsValid()) {
     ad = prefetched_new_tab_page_ad_;
     prefetched_new_tab_page_ad_.reset();
   }
@@ -1603,6 +1596,14 @@ void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
 void AdsServiceImpl::NotifyDidCloseTab(const int32_t tab_id) {
   if (bat_ads_client_notifier_.is_bound()) {
     bat_ads_client_notifier_->NotifyDidCloseTab(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyUserGestureEventTriggered(
+    const int32_t page_transition_type) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyUserGestureEventTriggered(
+        page_transition_type);
   }
 }
 

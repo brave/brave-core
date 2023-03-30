@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <utility>
-
 #include "brave/components/services/bat_ads/bat_ads_client_notifier_impl.h"
+
+#include <utility>
 
 namespace bat_ads {
 
@@ -14,16 +14,6 @@ BatAdsClientNotifierImpl::BatAdsClientNotifierImpl(
     : pending_receiver_(std::move(client_notifier)) {}
 
 BatAdsClientNotifierImpl::~BatAdsClientNotifierImpl() = default;
-
-// mojo::PendingAssociatedRemote<bat_ads::mojom::BatAdsClientNotifier>
-// BatAdsClientNotifierImpl::CreatePendingReceiverAndPassRemote() {
-//   return pending_receiver_.InitWithNewEndpointAndPassRemote();
-// }
-
-void BatAdsClientNotifierImpl::BindReceiver() {
-  DCHECK(pending_receiver_.is_valid());
-  receiver_.Bind(std::move(pending_receiver_));
-}
 
 void BatAdsClientNotifierImpl::AddObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
@@ -35,6 +25,11 @@ void BatAdsClientNotifierImpl::RemoveObserver(
     brave_ads::AdsClientNotifierObserver* observer) {
   DCHECK(observer);
   notifier_.RemoveObserver(observer);
+}
+
+void BatAdsClientNotifierImpl::BindReceiver() {
+  DCHECK(pending_receiver_.is_valid());
+  receiver_.Bind(std::move(pending_receiver_));
 }
 
 void BatAdsClientNotifierImpl::NotifyLocaleDidChange(
@@ -52,38 +47,45 @@ void BatAdsClientNotifierImpl::NotifyDidUpdateResourceComponent(
 }
 
 void BatAdsClientNotifierImpl::NotifyTabTextContentDidChange(
-    int32_t tab_id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   notifier_.NotifyTabTextContentDidChange(tab_id, redirect_chain, text);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabHtmlContentDidChange(
-    int32_t tab_id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   notifier_.NotifyTabHtmlContentDidChange(tab_id, redirect_chain, html);
 }
 
-void BatAdsClientNotifierImpl::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
+void BatAdsClientNotifierImpl::NotifyTabDidStartPlayingMedia(
+    const int32_t tab_id) {
   notifier_.NotifyTabDidStartPlayingMedia(tab_id);
 }
 
-void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
+void BatAdsClientNotifierImpl::NotifyTabDidStopPlayingMedia(
+    const int32_t tab_id) {
   notifier_.NotifyTabDidStopPlayingMedia(tab_id);
 }
 
 void BatAdsClientNotifierImpl::NotifyTabDidChange(
-    int32_t tab_id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    bool is_visible,
-    bool is_incognito) {
+    const bool is_visible,
+    const bool is_incognito) {
   notifier_.NotifyTabDidChange(tab_id, redirect_chain, is_visible,
                                is_incognito);
 }
 
-void BatAdsClientNotifierImpl::NotifyDidCloseTab(int32_t tab_id) {
+void BatAdsClientNotifierImpl::NotifyDidCloseTab(const int32_t tab_id) {
   notifier_.NotifyDidCloseTab(tab_id);
+}
+
+void BatAdsClientNotifierImpl::NotifyUserGestureEventTriggered(
+    const int32_t page_transition_type) {
+  notifier_.NotifyUserGestureEventTriggered(page_transition_type);
 }
 
 void BatAdsClientNotifierImpl::NotifyUserDidBecomeIdle() {
@@ -91,8 +93,8 @@ void BatAdsClientNotifierImpl::NotifyUserDidBecomeIdle() {
 }
 
 void BatAdsClientNotifierImpl::NotifyUserDidBecomeActive(
-    base::TimeDelta idle_time,
-    bool screen_was_locked) {
+    const base::TimeDelta idle_time,
+    const bool screen_was_locked) {
   notifier_.NotifyUserDidBecomeActive(idle_time, screen_was_locked);
 }
 

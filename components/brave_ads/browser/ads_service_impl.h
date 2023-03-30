@@ -232,8 +232,6 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void MaybeServeInlineContentAd(
@@ -300,6 +298,7 @@ class AdsServiceImpl : public AdsService,
                           bool is_visible,
                           bool is_incognito) override;
   void NotifyDidCloseTab(int32_t tab_id) override;
+  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
   void NotifyBrowserDidBecomeActive() override;
   void NotifyBrowserDidResignActive() override;
 
@@ -442,6 +441,7 @@ class AdsServiceImpl : public AdsService,
       notification_ad_timers_;
 
   absl::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
+  bool is_prefetching_new_tab_page_ad_ = false;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;
 

@@ -87,6 +87,12 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
   // Invoked when a browser tab with the specified |tab_id| is closed.
   virtual void OnNotifyDidCloseTab(int32_t tab_id) {}
 
+  // Called when a page navigation was initiated by a user gesture.
+  // |page_transition_type| containing the page transition type, see enums for
+  // |PageTransitionType|.
+  virtual void OnNotifyUserGestureEventTriggered(int32_t page_transition_type) {
+  }
+
   // Invoked when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile
   // devices.

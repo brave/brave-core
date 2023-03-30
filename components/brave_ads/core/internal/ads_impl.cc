@@ -172,13 +172,6 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   std::move(callback).Run(/*success*/ true);
 }
 
-void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
-  if (IsInitialized()) {
-    UserActivityManager::GetInstance()->RecordEventForPageTransition(
-        page_transition_type);
-  }
-}
-
 void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
                                        const std::string& recovery_seed) {
   account_->SetWallet(payment_id, recovery_seed);

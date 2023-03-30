@@ -97,14 +97,6 @@ void NotificationAdHandler::OnWalletDidUpdate(const WalletInfo& /*wallet*/) {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAdHandler::OnBrowserDidEnterForeground() {
-  MaybeServeAtRegularIntervals();
-}
-
-void NotificationAdHandler::OnBrowserDidEnterBackground() {
-  MaybeServeAtRegularIntervals();
-}
-
 void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeServeAtRegularIntervals();
@@ -129,6 +121,14 @@ void NotificationAdHandler::OnNotifyUserDidBecomeActive(
   }
 
   serving_->MaybeServeAd();
+}
+
+void NotificationAdHandler::OnBrowserDidEnterForeground() {
+  MaybeServeAtRegularIntervals();
+}
+
+void NotificationAdHandler::OnBrowserDidEnterBackground() {
+  MaybeServeAtRegularIntervals();
 }
 
 void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(

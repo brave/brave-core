@@ -55,11 +55,6 @@ class ADS_EXPORT Ads {
   // argument - |base::Value::List| containing info of the obtained diagnostics.
   virtual void GetDiagnostics(GetDiagnosticsCallback callback) = 0;
 
-  // Called when a page navigation was initiated by a user gesture.
-  // |page_transition_type| containing the page transition type, see enums for
-  // |PageTransitionType|.
-  virtual void TriggerUserGestureEvent(int32_t page_transition_type) = 0;
-
   // Called when the user's Brave Rewards wallet has changed.
   virtual void OnRewardsWalletDidChange(const std::string& payment_id,
                                         const std::string& recovery_seed) = 0;

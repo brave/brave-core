@@ -45,8 +45,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
   void OnRewardsWalletDidChange(const std::string& payment_id,
                                 const std::string& recovery_seed) override;
 

@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
 
-#include <utility>
+#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -43,7 +43,7 @@ void AdsClientNotifier::NotifyDidUpdateResourceComponent(
 }
 
 void AdsClientNotifier::NotifyTabTextContentDidChange(
-    int32_t tab_id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& text) {
   for (auto& observer : observers_) {
@@ -52,7 +52,7 @@ void AdsClientNotifier::NotifyTabTextContentDidChange(
 }
 
 void AdsClientNotifier::NotifyTabHtmlContentDidChange(
-    int32_t tab_id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
   for (auto& observer : observers_) {
@@ -60,32 +60,39 @@ void AdsClientNotifier::NotifyTabHtmlContentDidChange(
   }
 }
 
-void AdsClientNotifier::NotifyTabDidStartPlayingMedia(int32_t tab_id) {
+void AdsClientNotifier::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
   for (auto& observer : observers_) {
     observer.OnNotifyTabDidStartPlayingMedia(tab_id);
   }
 }
 
-void AdsClientNotifier::NotifyTabDidStopPlayingMedia(int32_t tab_id) {
+void AdsClientNotifier::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
   for (auto& observer : observers_) {
     observer.OnNotifyTabDidStopPlayingMedia(tab_id);
   }
 }
 
 void AdsClientNotifier::NotifyTabDidChange(
-    int32_t tab_id,
+    const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    bool is_visible,
-    bool is_incognito) {
+    const bool is_visible,
+    const bool is_incognito) {
   for (auto& observer : observers_) {
     observer.OnNotifyTabDidChange(tab_id, redirect_chain, is_visible,
                                   is_incognito);
   }
 }
 
-void AdsClientNotifier::NotifyDidCloseTab(int32_t tab_id) {
+void AdsClientNotifier::NotifyDidCloseTab(const int32_t tab_id) {
   for (auto& observer : observers_) {
     observer.OnNotifyDidCloseTab(tab_id);
+  }
+}
+
+void AdsClientNotifier::NotifyUserGestureEventTriggered(
+    const int32_t page_transition_type) {
+  for (auto& observer : observers_) {
+    observer.OnNotifyUserGestureEventTriggered(page_transition_type);
   }
 }
 
@@ -95,8 +102,9 @@ void AdsClientNotifier::NotifyUserDidBecomeIdle() {
   }
 }
 
-void AdsClientNotifier::NotifyUserDidBecomeActive(base::TimeDelta idle_time,
-                                                  bool screen_was_locked) {
+void AdsClientNotifier::NotifyUserDidBecomeActive(
+    const base::TimeDelta idle_time,
+    const bool screen_was_locked) {
   for (auto& observer : observers_) {
     observer.OnNotifyUserDidBecomeActive(idle_time, screen_was_locked);
   }

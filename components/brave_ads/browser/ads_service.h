@@ -111,11 +111,6 @@ class AdsService : public KeyedService {
   // Called when a resource component has been updated.
   virtual void OnDidUpdateResourceComponent(const std::string& id) = 0;
 
-  // Called when a page navigation was initiated by a user gesture.
-  // |page_transition_type| containing the page transition type, see enums for
-  // |PageTransitionType|.
-  virtual void TriggerUserGestureEvent(int32_t page_transition_type) = 0;
-
   // Called to get the statement of accounts. The callback takes five arguments
   // - |bool| is set to |true| if successful otherwise |false|. |double|
   // containing the next payment date which is the number of seconds since epoch
@@ -282,6 +277,12 @@ class AdsService : public KeyedService {
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
   virtual void NotifyDidCloseTab(int32_t tab_id) = 0;
+
+  // Called when a page navigation was initiated by a user gesture.
+  // |page_transition_type| containing the page transition type, see enums for
+  // |PageTransitionType|.
+  virtual void NotifyUserGestureEventTriggered(
+      int32_t page_transition_type) = 0;
 
   // Invoked when the browser did become active.
   virtual void NotifyBrowserDidBecomeActive() = 0;

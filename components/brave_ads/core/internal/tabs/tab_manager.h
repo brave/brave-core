@@ -21,7 +21,7 @@ class GURL;
 
 namespace brave_ads {
 
-class TabManager : public AdsClientNotifierObserver {
+class TabManager final : public AdsClientNotifierObserver {
  public:
   TabManager();
 

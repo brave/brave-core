@@ -46,6 +46,8 @@ interface BatAdsClientNotifier {
                      bool is_incognito);
   NotifyDidCloseTab(int32 tab_id);
 
+  NotifyUserGestureEventTriggered(int32 page_transition_type);
+
   NotifyUserDidBecomeIdle();
   NotifyUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,
                             bool screen_was_locked);
@@ -150,8 +152,6 @@ interface BatAds {
   Shutdown() => (bool success);
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
-
-  TriggerUserGestureEvent(int32 page_transition_type);
 
   // Account
   OnRewardsWalletDidChange(string payment_id, string recovery_seed);

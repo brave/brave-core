@@ -13,6 +13,8 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 
+class GURL;
+
 namespace brave_ads {
 
 class AdsClientNotifier {
@@ -28,7 +30,6 @@ class AdsClientNotifier {
   virtual ~AdsClientNotifier();
 
   void AddObserver(AdsClientNotifierObserver* observer);
-
   void RemoveObserver(AdsClientNotifierObserver* observer);
 
   // Called when the user changes the locale of their operating system. This
@@ -84,6 +85,11 @@ class AdsClientNotifier {
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
   void NotifyDidCloseTab(int32_t tab_id);
+
+  // Called when a page navigation was initiated by a user gesture.
+  // |page_transition_type| containing the page transition type, see enums for
+  // |PageTransitionType|.
+  virtual void NotifyUserGestureEventTriggered(int32_t page_transition_type);
 
   // Invoked when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile

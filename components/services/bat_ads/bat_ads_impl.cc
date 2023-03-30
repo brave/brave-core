@@ -54,10 +54,6 @@ void BatAdsImpl::Shutdown(ShutdownCallback callback) {
   ads_->Shutdown(std::move(callback));
 }
 
-void BatAdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
-  ads_->TriggerUserGestureEvent(page_transition_type);
-}
-
 void BatAdsImpl::MaybeGetNotificationAd(
     const std::string& placement_id,
     MaybeGetNotificationAdCallback callback) {

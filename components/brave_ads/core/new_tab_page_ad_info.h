@@ -31,6 +31,8 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
 
   bool IsValid() const;
 
+  bool HasValidCreativeInstanceIdAndCampaignId() const;
+
   std::string company_name;
   GURL image_url;
   std::string alt;

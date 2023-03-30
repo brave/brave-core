@@ -30,11 +30,11 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
   ~BatAdsServiceImpl() override;
 
   // BatAdsService:
-  void Create(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
-      mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
-      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier,
-      CreateCallback callback) override;
+  void Create(mojo::PendingAssociatedRemote<mojom::BatAdsClient> bat_ads_client,
+              mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
+              mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+                  bat_ads_client_notifier,
+              CreateCallback callback) override;
 
   void SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
                   SetSysInfoCallback callback) override;

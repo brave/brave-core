@@ -13,8 +13,8 @@
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
-#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 namespace bat_ads {
 
@@ -33,20 +33,11 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
 
   ~BatAdsClientNotifierImpl() override;
 
-  // // Creates a pending receiver, connecting it to a new PendingRemote which
-  // is
-  // // returned for transmission elsewhere (typically to a Remote who will
-  // consume
-  // // it to start making calls).
-  // mojo::PendingAssociatedRemote<bat_ads::mojom::BatAdsClientNotifier>
-  // CreatePendingReceiverAndPassRemote();
+  void AddObserver(brave_ads::AdsClientNotifierObserver* observer);
+  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer);
 
   // Binds the receiver by consuming the pending receiver swhich was created.
   void BindReceiver();
-
-  void AddObserver(brave_ads::AdsClientNotifierObserver* observer);
-
-  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer);
 
   // Invoked when the operating system locale changes.
   void NotifyLocaleDidChange(const std::string& locale) override;
@@ -98,6 +89,11 @@ class BatAdsClientNotifierImpl : public bat_ads::mojom::BatAdsClientNotifier {
 
   // Invoked when a browser tab with the specified |tab_id| is closed.
   void NotifyDidCloseTab(int32_t tab_id) override;
+
+  // Called when a page navigation was initiated by a user gesture.
+  // |page_transition_type| containing the page transition type, see enums for
+  // |PageTransitionType|.
+  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
 
   // Invoked when a user has been idle for the threshold set in
   // |prefs::kIdleTimeThreshold|. NOTE: This should not be called on mobile

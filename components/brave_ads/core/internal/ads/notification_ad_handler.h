@@ -48,10 +48,10 @@ struct WalletInfo;
 
 class NotificationAdHandler final
     : public AccountObserver,
+      public AdsClientNotifierObserver,
       public BrowserManagerObserver,
       public notification_ads::EventHandlerObserver,
-      public notification_ads::ServingObserver,
-      public AdsClientNotifierObserver {
+      public notification_ads::ServingObserver {
  public:
   NotificationAdHandler(
       Account* account,
@@ -78,14 +78,14 @@ class NotificationAdHandler final
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
 
-  // BrowserManagerObserver:
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
-
   // AdsClientNotifierObserver:
   void OnNotifyPrefDidChange(const std::string& path) override;
   void OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
                                    bool screen_was_locked) override;
+
+  // BrowserManagerObserver:
+  void OnBrowserDidEnterForeground() override;
+  void OnBrowserDidEnterBackground() override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

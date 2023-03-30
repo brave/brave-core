@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-class BrowserManager : public AdsClientNotifierObserver {
+class BrowserManager final : public AdsClientNotifierObserver {
  public:
   BrowserManager();
 
