@@ -37,7 +37,6 @@ import { TokenLists } from './components/token-lists/token-list'
 
 // Styled Components
 import {
-  StyledWrapper,
   BalanceTitle,
   BalanceText,
   BalanceRow
@@ -168,11 +167,11 @@ export const PortfolioOverview = () => {
     })
     return grandTotal.formatAsFiat(defaultCurrencies.fiat)
   },
-  [
-    visibleAssetOptions,
-    defaultCurrencies.fiat,
-    transactionSpotPrices
-  ])
+    [
+      visibleAssetOptions,
+      defaultCurrencies.fiat,
+      transactionSpotPrices
+    ])
 
   const isZeroBalance = React.useMemo((): boolean => {
     // In some cases we need to check if the balance is zero
@@ -225,17 +224,18 @@ export const PortfolioOverview = () => {
 
   // render
   return (
-    <StyledWrapper>
-      <Row alignItems='flex-start' justifyContent='flex-start'>
-        <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
-      </Row>
+    <>
+      <Column fullWidth={true} justifyContent='flex-start'>
+        <Row alignItems='flex-start' justifyContent='flex-start'>
+          <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
+        </Row>
 
-      <Row justifyContent='space-between'>
-        <Column>
-          <BalanceRow>
-            {hideBalances
-              ? <PlaceholderText isBig>******</PlaceholderText>
-              : <div>
+        <Row justifyContent='space-between'>
+          <Column>
+            <BalanceRow>
+              {hideBalances
+                ? <PlaceholderText isBig>******</PlaceholderText>
+                : <div>
                   <BalanceText>
                     {fullPortfolioFiatBalance !== ''
                       ? `${hoverBalance || fullPortfolioFiatBalance}`
@@ -243,58 +243,60 @@ export const PortfolioOverview = () => {
                     }
                   </BalanceText>
                 </div>
-            }
-            <HorizontalSpace space='16px' />
-            <ToggleVisibilityButton
-              isVisible={!hideBalances}
-              onClick={onToggleHideBalances}
-            />
-          </BalanceRow>
-        </Column>
+              }
+              <HorizontalSpace space='16px' />
+              <ToggleVisibilityButton
+                isVisible={!hideBalances}
+                onClick={onToggleHideBalances}
+              />
+            </BalanceRow>
+          </Column>
 
-        <Column>
-          <BalanceRow>
-            <ChartControlBar
-              disabled={!showChart}
-              onSelectTimeframe={onChangeTimeline}
-              onDisabledChanged={onToggleShowChart}
-              selectedTimeline={selectedPortfolioTimeline}
-              timelineOptions={ChartTimelineOptions}
-            />
-          </BalanceRow>
-        </Column>
-      </Row>
+          <Column>
+            <BalanceRow>
+              <ChartControlBar
+                disabled={!showChart}
+                onSelectTimeframe={onChangeTimeline}
+                onDisabledChanged={onToggleShowChart}
+                selectedTimeline={selectedPortfolioTimeline}
+                timelineOptions={ChartTimelineOptions}
+              />
+            </BalanceRow>
+          </Column>
+        </Row>
 
-      <VerticalSpace space='20px' />
+        <VerticalSpace space='20px' />
 
-      <ColumnReveal hideContent={!showChart}>
-        <PortfolioOverviewChart
-          hasZeroBalance={isZeroBalance}
-          onHover={setHoverBalance}
-        />
-      </ColumnReveal>
-
+        <ColumnReveal hideContent={!showChart}>
+          <PortfolioOverviewChart
+            hasZeroBalance={isZeroBalance}
+            onHover={setHoverBalance}
+          />
+        </ColumnReveal>
+      </Column>
       <TokenLists
         userAssetList={userAssetList}
         networks={networkList}
         estimatedItemSize={58}
+        enableScroll={true}
         renderToken={({ item, viewMode }) =>
           viewMode === 'list'
-          ? <PortfolioAssetItem
+            ? <PortfolioAssetItem
               action={() => onSelectAsset(item.asset)}
               key={getAssetIdKey(item.asset)}
               assetBalance={item.assetBalance}
               token={item.asset}
               hideBalances={hideBalances}
             />
-          : <NFTGridViewItem
+            : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
               token={item.asset}
               onSelectAsset={() => onSelectAsset(item.asset)}
             />
         }
       />
-    </StyledWrapper>
+
+    </>
   )
 }
 

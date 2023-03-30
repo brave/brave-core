@@ -29,8 +29,7 @@ import { useSafePageSelector, useSafeWalletSelector } from '../common/hooks/use-
 // style
 import 'emptykit.css'
 import {
-  SimplePageWrapper,
-  WalletWidgetStandIn
+  SimplePageWrapper
 } from './screens/page-screen.styles'
 
 // components
@@ -44,8 +43,9 @@ import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send-page/send-screen'
-import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
-import { FeatureRequestButton } from '../components/shared/feature-request-button/feature-request-button'
+import {
+  WalletPageWrapper
+} from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 
 export const Container = () => {
   // routing
@@ -115,16 +115,6 @@ export const Container = () => {
   // computed
   const walletNotYetCreated = (!isWalletCreated || setupStillInProgress)
 
-  const showBuySendSwapSidebar =
-    isWalletCreated && !isWalletLocked &&
-    (
-      walletLocation.includes(WalletRoutes.Portfolio) ||
-      walletLocation.includes(WalletRoutes.Accounts) ||
-      walletLocation.includes(WalletRoutes.Market) ||
-      walletLocation.includes(WalletRoutes.Activity) ||
-      walletLocation.includes(WalletRoutes.Nfts)
-    )
-
   // effects
   React.useEffect(() => {
     if (hasIncorrectPassword) {
@@ -163,7 +153,12 @@ export const Container = () => {
         walletLocation.includes(WalletRoutes.DepositFundsPage) ||
         walletLocation.includes(WalletRoutes.FundWalletPage) ||
         walletLocation.includes(WalletRoutes.LocalIpfsNode) ||
-        walletLocation.includes(WalletRoutes.InspectNfts)
+        walletLocation.includes(WalletRoutes.InspectNfts) ||
+        walletLocation.includes(WalletRoutes.Portfolio) ||
+        walletLocation.includes(WalletRoutes.Market) ||
+        walletLocation.includes(WalletRoutes.Nfts) ||
+        walletLocation.includes(WalletRoutes.Activity) ||
+        walletLocation.includes(WalletRoutes.Accounts)
       ) {
         toobarElement.hidden = true
         rootElement.style.setProperty('min-height', '100vh')
@@ -194,76 +189,128 @@ export const Container = () => {
   }
 
   return (
-    <WalletPageLayout maintainWidth={walletLocation === WalletRoutes.Swap}>
-      <WalletSubViewLayout noPadding={walletLocation === WalletRoutes.Swap}>
+    <>
+      <Switch>
 
-        <Switch>
+        {walletNotYetCreated
+          ?
+          <WalletPageLayout>
+            <WalletSubViewLayout>
+              <OnboardingRoutes />
+            </WalletSubViewLayout>
+          </WalletPageLayout>
 
-          {walletNotYetCreated
-            ? <OnboardingRoutes />
+          // Post-onboarding flows
+          : <Switch>
 
-            // Post-onboarding flows
-            : <Switch>
+            <Route path={WalletRoutes.OnboardingComplete} exact>
+              <WalletPageLayout>
+                <WalletSubViewLayout>
+                  <OnboardingSuccess />
+                </WalletSubViewLayout>
+              </WalletPageLayout>
+            </Route>
 
-              <Route path={WalletRoutes.OnboardingComplete} exact>
-                <OnboardingSuccess />
+            <Route path={WalletRoutes.Restore} exact={true}>
+              <WalletPageLayout>
+                <WalletSubViewLayout>
+                  <SimplePageWrapper>
+                    <RestoreWallet />
+                  </SimplePageWrapper>
+                </WalletSubViewLayout>
+              </WalletPageLayout>
+            </Route>
+
+            {isWalletLocked &&
+              <Route path={WalletRoutes.Unlock} exact={true}>
+                <WalletPageLayout>
+                  <WalletSubViewLayout>
+                    <SimplePageWrapper>
+                      <LockScreen
+                        value={inputValue}
+                        onSubmit={unlockWallet}
+                        disabled={inputValue === ''}
+                        onPasswordChanged={handlePasswordChanged}
+                        hasPasswordError={hasIncorrectPassword}
+                        onShowRestore={onToggleShowRestore}
+                      />
+                    </SimplePageWrapper>
+                  </WalletSubViewLayout>
+                </WalletPageLayout>
               </Route>
+            }
 
-              {!isWalletLocked &&
-                <Route path={WalletRoutes.FundWalletPage} exact>
+            {!isWalletLocked &&
+              <Route path={WalletRoutes.Backup}>
+                <WalletPageLayout>
+                  <WalletSubViewLayout>
+                    <SimplePageWrapper>
+                      <BackupWalletRoutes />
+                    </SimplePageWrapper>
+                  </WalletSubViewLayout>
+                </WalletPageLayout>
+              </Route>
+            }
+
+            {!isWalletLocked &&
+              <Route path={WalletRoutes.FundWalletPage} exact>
+                <WalletPageWrapper
+                  wrapContentInBox={true}
+                  cardWidth={456}
+                  cardOverflow='visible'
+                >
                   <FundWalletScreen />
-                </Route>
-              }
-
-              {!isWalletLocked &&
-                <Route path={WalletRoutes.DepositFundsPage} exact>
-                  <DepositFundsScreen />
-                </Route>
-              }
-
-              <Route path={WalletRoutes.Restore} exact={true}>
-                <SimplePageWrapper>
-                  <RestoreWallet />
-                </SimplePageWrapper>
+                </WalletPageWrapper>
               </Route>
+            }
 
-              {isWalletLocked &&
-                <Route path={WalletRoutes.Unlock} exact={true}>
-                  <SimplePageWrapper>
-                    <LockScreen
-                      value={inputValue}
-                      onSubmit={unlockWallet}
-                      disabled={inputValue === ''}
-                      onPasswordChanged={handlePasswordChanged}
-                      hasPasswordError={hasIncorrectPassword}
-                      onShowRestore={onToggleShowRestore}
-                    />
-                  </SimplePageWrapper>
-                </Route>
-              }
+            {!isWalletLocked &&
+              <Route path={WalletRoutes.DepositFundsPage} exact>
+                <WalletPageWrapper
+                  wrapContentInBox={true}
+                  cardWidth={456}
+                  cardOverflow='visible'
+                >
+                  <DepositFundsScreen />
+                </WalletPageWrapper>
+              </Route>
+            }
 
-              {!isWalletLocked &&
-                <Route path={WalletRoutes.Swap} exact={true}>
+            {!isWalletLocked &&
+              <Route path={WalletRoutes.Swap} exact={true}>
+                <WalletPageWrapper hideBackground={true}>
                   <Swap />
-                </Route>
-              }
+                </WalletPageWrapper>
+              </Route>
+            }
 
-              {!isWalletLocked &&
-                <Route path={WalletRoutes.Send} exact={true}>
+            {!isWalletLocked &&
+              <Route path={WalletRoutes.Send} exact={true}>
+                <WalletPageWrapper hideBackground={true}>
                   <SendScreen />
-                </Route>
-              }
+                </WalletPageWrapper>
+              </Route>
+            }
 
-              {!isWalletLocked &&
-                <Route path={WalletRoutes.Backup}>
-                  <SimplePageWrapper>
-                    <BackupWalletRoutes />
-                  </SimplePageWrapper>
-                </Route>
-              }
-
-              {!isWalletLocked &&
-                <Route path={WalletRoutes.CryptoPage}>
+            {!isWalletLocked &&
+              <Route path={WalletRoutes.CryptoPage}>
+                <WalletPageWrapper
+                  noPadding={
+                    walletLocation === WalletRoutes.LocalIpfsNode ||
+                    walletLocation === WalletRoutes.InspectNfts
+                  }
+                  wrapContentInBox={
+                    walletLocation !== WalletRoutes.LocalIpfsNode &&
+                    walletLocation !== WalletRoutes.InspectNfts
+                  }
+                  cardOverflow={
+                    walletLocation === WalletRoutes.Portfolio ||
+                      walletLocation === WalletRoutes.Activity ||
+                      walletLocation === WalletRoutes.Nfts
+                      ? 'visible'
+                      : 'hidden'
+                  }
+                >
                   <CryptoView
                     needsBackup={!isWalletBackedUp}
                     defaultEthereumWallet={defaultEthereumWallet}
@@ -272,27 +319,17 @@ export const Container = () => {
                     isMetaMaskInstalled={isMetaMaskInstalled}
                     sessionRoute={sessionRoute}
                   />
-                </Route>
-              }
 
-              {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
-              {!isWalletLocked && <Redirect to={WalletRoutes.Portfolio} />}
+                </WalletPageWrapper>
+              </Route>
+            }
 
-            </Switch>
-          }
-        </Switch>
-      </WalletSubViewLayout>
-
-      {showBuySendSwapSidebar &&
-        <WalletWidgetStandIn>
-          <BuySendSwapDepositNav />
-        </WalletWidgetStandIn>
-      }
-
-      {!isWalletLocked && walletLocation !== WalletRoutes.Swap && walletLocation !== WalletRoutes.Send &&
-        <FeatureRequestButton />
-      }
-    </WalletPageLayout>
+            {isWalletLocked && <Redirect to={WalletRoutes.Unlock} />}
+            {!isWalletLocked && <Redirect to={WalletRoutes.Portfolio} />}
+          </Switch>
+        }
+      </Switch>
+    </>
   )
 }
 

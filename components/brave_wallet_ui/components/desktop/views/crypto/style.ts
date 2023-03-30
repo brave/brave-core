@@ -11,4 +11,5 @@ export const StyledWrapper = styled.div`
   justify-content: flex-start;
   width: 100%;
   position: relative;
+  height: 100%;
 `

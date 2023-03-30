@@ -45,6 +45,7 @@ import {
   DividerRow
 } from '../../style'
 import {
+  Column,
   HorizontalSpace,
   Row,
   ToggleVisibilityButton
@@ -137,27 +138,38 @@ export const AccountsAndTransactionsList = ({
     <>
       {selectedAsset &&
         <>
-          <DividerRow>
-            <DividerText>{isNonFungibleToken ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
-            <Row justifyContent='flex-end'>
-              {!isNonFungibleToken &&
-                <WithHideBalancePlaceholder
-                  size='small'
-                  hideBalances={hideBalances}
-                >
-                  <AssetBalanceDisplay>
-                    {fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)} {formattedFullAssetBalance}
-                  </AssetBalanceDisplay>
-                </WithHideBalancePlaceholder>
-              }
-              <HorizontalSpace space='16px' />
-              <ToggleVisibilityButton
-                isVisible={!hideBalances}
-                onClick={() => setHideBalances(prev => !prev)}
-              />
-            </Row>
-          </DividerRow>
-          <SubDivider />
+          <Column fullWidth={true} alignItems='flex-start'>
+            <DividerRow>
+              <DividerText>
+                {
+                  isNonFungibleToken
+                    ? getLocale('braveWalletOwner')
+                    : getLocale('braveWalletAccounts')
+                }
+              </DividerText>
+              <Row justifyContent='flex-end'>
+                {!isNonFungibleToken &&
+                  <WithHideBalancePlaceholder
+                    size='small'
+                    hideBalances={hideBalances}
+                  >
+                    <AssetBalanceDisplay>
+                      {
+                        fullAssetFiatBalance
+                          .formatAsFiat(defaultCurrencies.fiat)
+                      } {formattedFullAssetBalance}
+                    </AssetBalanceDisplay>
+                  </WithHideBalancePlaceholder>
+                }
+                <HorizontalSpace space='16px' />
+                <ToggleVisibilityButton
+                  isVisible={!hideBalances}
+                  onClick={() => setHideBalances(prev => !prev)}
+                />
+              </Row>
+            </DividerRow>
+            <SubDivider />
+          </Column>
           {accountsList.map((account) =>
             <PortfolioAccountItem
               spotPrices={transactionSpotPrices}
@@ -184,8 +196,12 @@ export const AccountsAndTransactionsList = ({
               text={getLocale('braveWalletAddAccount')}
             />
           </ButtonRow>
-          <DividerText>{getLocale('braveWalletTransactions')}</DividerText>
-          <SubDivider />
+
+          <Column fullWidth={true} alignItems='flex-start'>
+            <DividerText>{getLocale('braveWalletTransactions')}</DividerText>
+            <SubDivider />
+          </Column>
+
           {nonRejectedTransactions.length !== 0 ? (
             <>
               {nonRejectedTransactions.map((transaction) =>

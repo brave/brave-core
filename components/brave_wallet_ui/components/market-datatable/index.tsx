@@ -20,7 +20,6 @@ import { BuyButtonOption, DepositButtonOption } from '../../options/account-list
 
 // Styled components
 import {
-  AssetsColumnItemSpacer,
   AssetsColumnWrapper,
   StyledWrapper,
   TableWrapper,
@@ -67,7 +66,6 @@ const renderCells = (
     priceChange24h,
     priceChangePercentage24h,
     marketCap,
-    marketCapRank,
     totalVolume
   } = coinMarkDataItem
 
@@ -83,9 +81,6 @@ const renderCells = (
       {/* <AssetsColumnItemSpacer>
           <AssetWishlistStar active={true} />
         </AssetsColumnItemSpacer> */}
-      <AssetsColumnItemSpacer>
-        <TextWrapper alignment="center">{marketCapRank}</TextWrapper>
-      </AssetsColumnItemSpacer>
       <AssetNameAndIcon
         assetName={name}
         symbol={symbol}

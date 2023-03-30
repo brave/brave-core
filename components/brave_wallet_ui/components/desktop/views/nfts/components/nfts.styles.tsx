@@ -12,7 +12,8 @@ export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  justify-content: center;
+  justify-content: flex-start;
+  height: 100%;
 `
 
 export const FilterTokenRow = styled.div`
@@ -27,18 +28,15 @@ export const FilterTokenRow = styled.div`
 
 export const NftGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 25px;
   box-sizing: border-box;
   width: 100%;
   padding-top: 10px;
-  @media screen and (max-width: 1350px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  @media screen and (max-width: 1150px) {
+  @media screen and (max-width: 700px) {
     grid-template-columns: repeat(3, 1fr);
   }
-  @media screen and (max-width: 950px) {
+  @media screen and (max-width: 545px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `

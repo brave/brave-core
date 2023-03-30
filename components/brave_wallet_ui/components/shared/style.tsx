@@ -150,9 +150,11 @@ export const ScrollableColumn = styled(Column) <{
   marginBottom?: string
 }>`
   justify-content: flex-start;
+  align-items: flex-start;
   max-height: ${(p) => p.maxHeight || '100%'};
   overflow-y: ${(p) => p.scrollDisabled ? 'unset' : 'auto'};
   margin-bottom: ${(p) => p.marginBottom || 'unset'};
+  width: 100%;
 `
 
 export const Flex = styled.div`

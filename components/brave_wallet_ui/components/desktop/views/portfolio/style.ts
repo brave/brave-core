@@ -14,7 +14,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 20px;
+  height: 100%;
 `
 
 export const TopRow = styled.div`

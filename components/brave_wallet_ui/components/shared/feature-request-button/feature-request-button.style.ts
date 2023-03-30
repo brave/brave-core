@@ -25,6 +25,7 @@ export const Button = styled(WalletButton)`
   outline: none;
   border-radius: 40px;
   cursor: pointer;
+  z-index: 10;
 `
 
 export const ButtonText = styled.span`

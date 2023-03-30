@@ -15,6 +15,8 @@ interface StyleProps {
 export const StyledWrapper = styled.div<Partial<StyleProps>>`
   width: 100%;
   height: 200px;
+  min-height: 200px;
+  max-height: 200px;
   margin-bottom: 30px;
   box-sizing: border-box;
   position: relative;

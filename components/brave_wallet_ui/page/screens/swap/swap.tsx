@@ -25,9 +25,6 @@ import { useLazyGetTokenBalancesForChainIdQuery } from '../../../common/slices/a
 // Types
 import { BraveWallet, WalletAccountType } from '../../../constants/types'
 
-// Components
-import { BuySendSwapDepositNav } from '../../../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
-
 // Adapters
 import {
   makeBlockchainToken,
@@ -45,12 +42,7 @@ import {
 } from './adapters'
 import { hasEIP1559Support } from '../../../utils/network-utils'
 
-export interface Props {
-  hideNav?: boolean
-}
-
-export const Swap = (props: Props) => {
-  const { hideNav } = props
+export const Swap = () => {
 
   const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
@@ -143,7 +135,6 @@ export const Swap = (props: Props) => {
 
   return (
     <div>
-      {!hideNav && <BuySendSwapDepositNav isTab={true} isSwap={true} />}
       {selectedNetwork && selectedAccount && (
         <SwapInterface
           getLocale={getLocale}

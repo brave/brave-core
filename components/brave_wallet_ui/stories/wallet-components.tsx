@@ -14,7 +14,7 @@ import './locale'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared'
 import { ChartControlBar } from '../components/desktop/chart-control-bar/chart-control-bar'
-import { BuySendSwapDepositNav } from '../components/desktop/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+import { WalletNav } from '../components/desktop/wallet-nav/wallet-nav'
 import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-banner'
 import { LocalIpfsNodeScreen } from '../components/desktop/local-ipfs-node/local-ipfs-node'
 import { InspectNftsScreen } from '../components/desktop/inspect-nfts/inspect-nfts'
@@ -129,7 +129,7 @@ _LoadingSkeleton.story = {
 
 export const _BuySendSwapDeposit = () => {
   return (
-    <BuySendSwapDepositNav />
+    <WalletNav />
   )
 }
 

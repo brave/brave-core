@@ -4,16 +4,33 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
+
+// Hooks
+import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
+
+// Types
+import {
+  WalletRoutes
+} from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
 
 // Styled Components
-import { HeaderWrapper, BraveLogo } from './tab-header.style'
+import {
+  HeaderWrapper,
+  BraveLogo,
+  SettingsButton,
+  SettingsIcon,
+  SettingsWrapper
+} from './tab-header.style'
 import { HorizontalDivider, Row, Text } from '../../send/shared.styles'
 
 // Components
-// import { ToggleThemeButton } from './toggle-theme-button/toggle-theme-button'
+import {
+  WalletMorePopup
+} from '../../../../components/desktop/wallet-more-popup/index'
 
 interface Props {
   title: string
@@ -21,6 +38,27 @@ interface Props {
 
 export const TabHeader = (props: Props) => {
   const { title } = props
+
+  // Routing
+  const history = useHistory()
+
+  // State
+  const [showSettings, setShowSettings] = React.useState<boolean>(false)
+
+  // Refs
+  const settingsModalRef = React.useRef<HTMLDivElement>(null)
+
+  // Methods
+  const onShowBackup = () => {
+    history.push(WalletRoutes.Backup)
+  }
+
+  // Hooks
+  useOnClickOutside(
+    settingsModalRef,
+    () => setShowSettings(false),
+    showSettings
+  )
 
   // render
   return (
@@ -32,8 +70,20 @@ export const TabHeader = (props: Props) => {
           {getLocale(title)}
         </Text>
       </Row>
-      {/* Disabling Theme Toggle until we can make it work correctly with brave-core */}
-      {/* <ToggleThemeButton onClick={() => { }} /> */}
+      <SettingsWrapper
+        ref={settingsModalRef}
+      >
+        <SettingsButton onClick={() => setShowSettings(prev => !prev)}>
+          <SettingsIcon name='more-horizontal' />
+        </SettingsButton>
+        {showSettings &&
+          <WalletMorePopup
+            onClickBackup={onShowBackup}
+            onClosePopup={() => setShowSettings(false)}
+            yPosition={50}
+          />
+        }
+      </SettingsWrapper>
     </HeaderWrapper>
   )
 }

@@ -7,7 +7,7 @@ import { OpenNewIcon } from 'brave-ui/components/icons'
 import { LockIconD, SafeIcon, InternetIcon, InfoIcon, SettingsAdvancedIcon } from '../../../assets/svg-icons/nav-button-icons'
 import { WalletButton } from '../../shared/style'
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<{ yPosition?: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -17,7 +17,7 @@ export const StyledWrapper = styled.div`
   border-radius: 8px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
   position: absolute;
-  top: 35px;
+  top: ${(p) => p.yPosition !== undefined ? p.yPosition : 35}px;
   right: 15px;
   z-index: 20;
  `

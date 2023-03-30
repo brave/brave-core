@@ -33,6 +33,8 @@ import {
   WalletIcon
 } from './style'
 
+import { ScrollableColumn, Column } from '../../../shared/style'
+
 // Components
 import {
   AccountListItem,
@@ -84,85 +86,96 @@ export const Accounts = () => {
   // render
   return (
     <StyledWrapper>
+      <ScrollableColumn>
+        <Column fullWidth={true} alignItems='flex-start'>
+          <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
+          <DisclaimerText>
+            {getLocale('braveWalletAccountsPrimaryDisclaimer')}
+          </DisclaimerText>
+          <SubDivider />
+        </Column>
 
-      <SectionTitle>{getLocale('braveWalletAccountsPrimary')}</SectionTitle>
-
-      <DisclaimerText>{getLocale('braveWalletAccountsPrimaryDisclaimer')}</DisclaimerText>
-
-      <SubDivider />
-
-      <PrimaryListContainer>
-        {primaryAccounts.map((account) =>
-          <AccountListItem
-            key={account.id}
-            isHardwareWallet={false}
-            onClick={onSelectAccount}
-            account={account}
-          />
-        )}
-      </PrimaryListContainer>
-
-      <ButtonRow>
-        <AddButton
-          buttonType='secondary'
-          onSubmit={onClickAddAccount('create')}
-          text={getLocale('braveWalletCreateAccountButton')}
-        />
-      </ButtonRow>
-
-      <SectionTitle>{getLocale('braveWalletAccountsSecondary')}</SectionTitle>
-
-      <DisclaimerText>{getLocale('braveWalletAccountsSecondaryDisclaimer')}</DisclaimerText>
-
-      <SubDivider />
-
-      <SecondaryListContainer isHardwareWallet={false}>
-        {secondaryAccounts.map((account) =>
-          <AccountListItem
-            key={account.id}
-            isHardwareWallet={false}
-            onClick={onSelectAccount}
-            account={account}
-          />
-        )}
-      </SecondaryListContainer>
-
-      {Object.keys(trezorAccounts).map(key =>
-        <SecondaryListContainer key={key} isHardwareWallet={true}>
-          {sortAccountsByName(trezorAccounts[key]).map((account: WalletAccountType) =>
+        <PrimaryListContainer>
+          {primaryAccounts.map((account) =>
             <AccountListItem
               key={account.id}
-              isHardwareWallet={true}
+              isHardwareWallet={false}
+              onClick={onSelectAccount}
+              account={account}
+            />
+          )}
+        </PrimaryListContainer>
+
+        <ButtonRow>
+          <AddButton
+            buttonType='secondary'
+            onSubmit={onClickAddAccount('create')}
+            text={getLocale('braveWalletCreateAccountButton')}
+          />
+        </ButtonRow>
+
+        <Column fullWidth={true} alignItems='flex-start'>
+          <SectionTitle>
+            {getLocale('braveWalletAccountsSecondary')}
+          </SectionTitle>
+          <DisclaimerText>
+            {getLocale('braveWalletAccountsSecondaryDisclaimer')}
+          </DisclaimerText>
+          <SubDivider />
+        </Column>
+
+        <SecondaryListContainer isHardwareWallet={false}>
+          {secondaryAccounts.map((account) =>
+            <AccountListItem
+              key={account.id}
+              isHardwareWallet={false}
               onClick={onSelectAccount}
               account={account}
             />
           )}
         </SecondaryListContainer>
-      )}
 
-      {Object.keys(ledgerAccounts).map(key =>
-        <SecondaryListContainer key={key} isHardwareWallet={true}>
-          {sortAccountsByName(ledgerAccounts[key]).map((account: WalletAccountType) =>
-            <AccountListItem
-              key={account.id}
-              isHardwareWallet={true}
-              onClick={onSelectAccount}
-              account={account}
-            />
-          )}
-        </SecondaryListContainer>
-      )}
+        {Object.keys(trezorAccounts).map(key =>
+          <SecondaryListContainer key={key} isHardwareWallet={true}>
+            {sortAccountsByName(trezorAccounts[key])
+              .map((account: WalletAccountType) =>
+                <AccountListItem
+                  key={account.id}
+                  isHardwareWallet={true}
+                  onClick={onSelectAccount}
+                  account={account}
+                />
+              )}
+          </SecondaryListContainer>
+        )}
 
-      <ButtonRow>
-        <StyledButton onClick={onClickAddAccount('import')}>
-          <WalletIcon />
-          <ButtonText>{getLocale('braveWalletAddAccountImport')}</ButtonText>
-        </StyledButton>
-        <StyledButton onClick={onClickAddAccount('hardware')}>
-          <HardwareIcon />
-          <ButtonText>{getLocale('braveWalletAddAccountImportHardware')}</ButtonText>
-        </StyledButton>
-      </ButtonRow>
+        {Object.keys(ledgerAccounts).map(key =>
+          <SecondaryListContainer key={key} isHardwareWallet={true}>
+            {sortAccountsByName(ledgerAccounts[key])
+              .map((account: WalletAccountType) =>
+                <AccountListItem
+                  key={account.id}
+                  isHardwareWallet={true}
+                  onClick={onSelectAccount}
+                  account={account}
+                />
+              )}
+          </SecondaryListContainer>
+        )}
+
+        <ButtonRow>
+          <StyledButton onClick={onClickAddAccount('import')}>
+            <WalletIcon />
+            <ButtonText>{getLocale('braveWalletAddAccountImport')}</ButtonText>
+          </StyledButton>
+          <StyledButton onClick={onClickAddAccount('hardware')}>
+            <HardwareIcon />
+            <ButtonText>
+              {getLocale('braveWalletAddAccountImportHardware')}
+            </ButtonText>
+          </StyledButton>
+        </ButtonRow>
+      </ScrollableColumn>
     </StyledWrapper>
   )
 }
