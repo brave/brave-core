@@ -342,6 +342,10 @@ Config.prototype.buildArgs = function () {
       // paths, which makes Goma cache unusable.
       args.enable_dsyms = false
     }
+  } else {
+    if (this.targetOS === 'android') {
+      args.chrome_pgo_phase = 2
+    }
   }
 
   if (this.shouldSign()) {
