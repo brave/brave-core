@@ -128,8 +128,6 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
         return null
       }
 
-      const negative = summaryItem.color === 'contribute'
-
       return (
         <ListToken
           key={`${this.props.id}-summary-${i}`}
@@ -139,7 +137,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
           color={summaryItem.color}
           size={'small'}
           border={i === 0 ? 'first' : 'default'}
-          isNegative={negative}
+          isNegative={false}
           link={item.token.link}
         />
       )
