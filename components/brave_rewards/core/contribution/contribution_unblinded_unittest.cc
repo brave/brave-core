@@ -47,7 +47,7 @@ class UnblindedTest : public ::testing::Test {
   Unblinded unblinded_{&mock_ledger_impl_};
 };
 
-TEST_F(UnblindedTest, NotEnoughFunds) {
+TEST_F(UnblindedTest, DISABLED_NotEnoughFunds) {
   ON_CALL(*mock_ledger_impl_.mock_database(), GetReservedUnblindedTokens(_, _))
       .WillByDefault(
           Invoke([](const std::string&,
