@@ -46,7 +46,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<UntrustedVPNPanelUIConfig>());
   }

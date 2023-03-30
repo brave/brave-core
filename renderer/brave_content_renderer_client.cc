@@ -115,7 +115,7 @@ void BraveContentRendererClient::RenderFrameCreated(
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     new brave_vpn::VpnRenderFrameObserver(render_frame,
                                           content::ISOLATED_WORLD_ID_GLOBAL);
   }

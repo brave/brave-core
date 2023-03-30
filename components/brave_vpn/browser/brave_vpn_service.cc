@@ -49,7 +49,7 @@ BraveVpnService::BraveVpnService(
       profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
       api_request_(url_loader_factory) {
-  DCHECK(IsBraveVPNEnabled());
+  DCHECK(IsBraveVPNFeatureEnabled());
 #if !BUILDFLAG(IS_ANDROID)
   connection_api_ = connection_api;
   observed_.Observe(GetBraveVPNConnectionAPI());
@@ -57,6 +57,11 @@ BraveVpnService::BraveVpnService(
   pref_change_registrar_.Init(local_prefs_);
   pref_change_registrar_.Add(
       prefs::kBraveVPNSelectedRegion,
+      base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
+                          base::Unretained(this)));
+  policy_pref_change_registrar_.Init(profile_prefs_);
+  policy_pref_change_registrar_.Add(
+      prefs::kManagedBraveVPNDisabled,
       base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
                           base::Unretained(this)));
 
@@ -67,6 +72,10 @@ BraveVpnService::BraveVpnService(
 }
 
 BraveVpnService::~BraveVpnService() = default;
+
+bool BraveVpnService::IsBraveVPNEnabled() const {
+  return ::brave_vpn::IsBraveVPNEnabled(profile_prefs_);
+}
 
 void BraveVpnService::CheckInitialState() {
   if (HasValidSubscriberCredential(local_prefs_)) {
@@ -145,6 +154,12 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
     return;
 
   if (state == ConnectionState::CONNECTED) {
+    // If user connected vpn from the system and launched the browser
+    // we detected it was disabled by policies and disabling it.
+    if (IsConnected() && IsBraveVPNDisabledByPolicy(profile_prefs_)) {
+      GetBraveVPNConnectionAPI()->Disconnect();
+      return;
+    }
     RecordP3A(true);
   }
 
@@ -508,6 +523,12 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     for (const auto& obs : observers_) {
       obs->OnSelectedRegionChanged(
           GetRegionPtrWithNameFromRegionList(GetSelectedRegion(), regions_));
+    }
+    return;
+  }
+  if (pref_name == prefs::kManagedBraveVPNDisabled) {
+    if (IsConnected() && IsBraveVPNDisabledByPolicy(profile_prefs_)) {
+      GetBraveVPNConnectionAPI()->Disconnect();
     }
     return;
   }

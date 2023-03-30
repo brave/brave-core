@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
@@ -67,8 +68,9 @@ BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  if (!IsBraveVPNEnabled())
+  if (!brave_vpn::IsAllowedForContext(context)) {
     return nullptr;
+  }
 
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto shared_url_loader_factory =

@@ -119,7 +119,7 @@ bool VpnRenderFrameObserver::IsValueAllowed(
 }
 
 bool VpnRenderFrameObserver::IsAllowed() {
-  DCHECK(brave_vpn::IsBraveVPNEnabled());
+  DCHECK(brave_vpn::IsBraveVPNFeatureEnabled());
 
   if (!skus::IsSafeOrigin(render_frame()->GetWebFrame()->GetSecurityOrigin())) {
     return false;

@@ -11,6 +11,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_vpn/dns/brave_vpn_dns_observer_service_win.h"
+#include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -47,7 +48,7 @@ BraveVpnDnsObserverService* BraveVpnDnsObserverFactory::GetServiceForContext(
           brave_vpn::features::kBraveVPNDnsProtection)) {
     return nullptr;
   }
-  DCHECK(IsBraveVPNEnabled());
+  DCHECK(brave_vpn::IsAllowedForContext(context));
   return static_cast<BraveVpnDnsObserverService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }

@@ -5,6 +5,7 @@
 
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -23,6 +24,10 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/components/ipfs/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 namespace {
@@ -44,6 +49,10 @@ const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
 #endif
 #if BUILDFLAG(ENABLE_IPFS)
     {policy::key::kIPFSEnabled, kIPFSEnabled, base::Value::Type::BOOLEAN},
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+    {policy::key::kBraveVPNDisabled, brave_vpn::prefs::kManagedBraveVPNDisabled,
+     base::Value::Type::BOOLEAN},
 #endif
 };
 

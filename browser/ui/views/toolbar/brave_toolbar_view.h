@@ -31,6 +31,7 @@ class BraveToolbarView : public ToolbarView,
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   BraveVPNButton* brave_vpn_button() const { return brave_vpn_; }
+  bool IsBraveVPNButtonVisible() const;
   void OnVPNButtonVisibilityChanged();
 #endif
 
@@ -67,6 +68,7 @@ class BraveToolbarView : public ToolbarView,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   raw_ptr<BraveVPNButton> brave_vpn_ = nullptr;
   BooleanPrefMember show_brave_vpn_button_;
+  BooleanPrefMember hide_brave_vpn_button_by_policy_;
 #endif
 
   BooleanPrefMember show_bookmarks_button_;

@@ -482,14 +482,6 @@ class BraveVPNServiceTest : public testing::Test {
   base::HistogramTester histogram_tester_;
 };
 
-TEST(BraveVPNFeatureTest, FeatureTest) {
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  EXPECT_TRUE(IsBraveVPNEnabled());
-#else
-  EXPECT_FALSE(IsBraveVPNEnabled());
-#endif
-}
-
 TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // Give invalid json data as a server response and check sanitized(empty
   // string) result is returned.

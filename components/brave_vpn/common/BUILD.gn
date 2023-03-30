@@ -38,7 +38,9 @@ source_set("unit_tests") {
   deps = [
     ":common",
     "//base",
+    "//base/test:test_support",
     "//brave/components/skus/browser",
+    "//brave/components/skus/common",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

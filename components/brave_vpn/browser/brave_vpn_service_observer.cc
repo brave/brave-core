@@ -20,7 +20,7 @@ void BraveVPNServiceObserver::Observe(BraveVpnService* service) {
   if (!service)
     return;
 
-  if (IsBraveVPNEnabled()) {
+  if (service->IsBraveVPNEnabled()) {
     mojo::PendingRemote<mojom::ServiceObserver> listener;
     receiver_.Bind(listener.InitWithNewPipeAndPassReceiver());
     service->AddObserver(std::move(listener));
