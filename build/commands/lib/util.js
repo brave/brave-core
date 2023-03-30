@@ -25,26 +25,31 @@ async function applyPatches() {
   const patchesPath = path.join(coreRepoPath, 'patches')
   const v8PatchesPath = path.join(patchesPath, 'v8')
   const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
+  const devtoolsFrontendPatchesPath = path.join(patchesPath, 'third_party', 'devtools-frontend', 'src')
 
   const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
   const catapultRepoPath = path.join(chromiumRepoPath, 'third_party', 'catapult')
+  const devtoolsFrontendRepoPath = path.join(chromiumRepoPath, 'third_party', 'devtools-frontend', 'src')
 
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
   const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
   const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
+  const devtoolsFrontendPatcher = new GitPatcher(devtoolsFrontendPatchesPath, devtoolsFrontendRepoPath)
 
   const chromiumPatchStatus = await chromiumPatcher.applyPatches()
   const v8PatchStatus = await v8Patcher.applyPatches()
   const catapultPatchStatus = await catapultPatcher.applyPatches()
+  const devtoolsFrontendPatchStatus = await devtoolsFrontendPatcher.applyPatches()
 
   // Log status for all patches
   // Differentiate entries for logging
   v8PatchStatus.forEach(s => s.path = path.join('v8', s.path))
   catapultPatchStatus.forEach(
     s => s.path = path.join('third_party', 'catapult', s.path))
-  const allPatchStatus =
-    chromiumPatchStatus.concat(v8PatchStatus).concat(catapultPatchStatus)
+  devtoolsFrontendPatchStatus.forEach(
+    s => s.path = path.join('third_party', 'devtools-frontend', 'src', s.path))
+  const allPatchStatus = [...chromiumPatchStatus, ...v8PatchStatus, ...catapultPatchStatus, ...devtoolsFrontendPatchStatus]
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)

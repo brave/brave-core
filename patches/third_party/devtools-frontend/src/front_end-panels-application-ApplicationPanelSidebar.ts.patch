@@ -1,0 +1,13 @@
+diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
+index 9becc447d320e36196e7f475984d8b64899c0cdb..cf3375f8003ea973a525740029215f83cd4e1763 100644
+--- a/front_end/panels/application/ApplicationPanelSidebar.ts
++++ b/front_end/panels/application/ApplicationPanelSidebar.ts
+@@ -352,7 +352,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+     storageTreeElement.appendChild(this.cookieListTreeElement);
+ 
+     this.trustTokensTreeElement = new TrustTokensTreeElement(panel);
+-    storageTreeElement.appendChild(this.trustTokensTreeElement);
++    // storageTreeElement.appendChild(this.trustTokensTreeElement);
+ 
+     this.interestGroupTreeElement = new InterestGroupTreeElement(panel);
+     storageTreeElement.appendChild(this.interestGroupTreeElement);
