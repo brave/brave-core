@@ -6,9 +6,8 @@
 .tags*
 /.idea/
 /components/brave_new_tab_ui/data/LICENSE
-/components/brave_rewards/resources/extension/brave_rewards/out/
 /components/brave_webtorrent/extension/out/
-/components/playlist/browser/resources/playlist-component
+/components/brave_rewards/resources/extension/brave_rewards/out/
 /components/third_party/adblock/LICENSE
 /components/third_party/local_data/LICENSE
 /dist/
@@ -19,6 +18,7 @@ patches/**/*.patchinfo
 /third_party/argon2/src
 /third_party/ethash/src
 /third_party/bitcoin-core/src
+/third_party/playlist-component/src
 /third_party/rapidjson/src
 /third_party/rust/cxx
 *.xcodeproj
