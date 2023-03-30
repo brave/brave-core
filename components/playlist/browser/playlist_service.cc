@@ -621,7 +621,6 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 
   DCHECK(!playlist_id.empty());
 
-  base::Value::List id_list;
   {
     ScopedDictPrefUpdate playlists_update(prefs_, kPlaylistsPref);
     base::Value::Dict* target_playlist =
@@ -633,16 +632,13 @@ void PlaylistService::RemovePlaylist(const std::string& playlist_id) {
 
     auto playlist = ConvertValueToPlaylist(*target_playlist,
                                            prefs_->GetDict(kPlaylistItemsPref));
-    for (const auto& items : playlist->items)
-      id_list.Append(base::Value(items->id));
+    for (const auto& item : playlist->items) {
+      RemoveItemFromPlaylist(PlaylistId(playlist_id), PlaylistItemId(item->id),
+                             /* delete= */ true);
+    }
 
     playlists_update->Remove(playlist_id);
   }
-
-  // TODO(sko) Iterating this will cause a callback to be called a lot of
-  // times.
-  for (const auto& item_id : id_list)
-    DeletePlaylistItemData(item_id.GetString());
 
   NotifyPlaylistChanged(mojom::PlaylistEvent::kListRemoved, playlist_id);
 }
