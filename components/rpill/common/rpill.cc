@@ -9,9 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "base/barrier_closure.h"
 #include "base/functional/callback.h"
-#include "base/functional/callback_helpers.h"
 #include "base/strings/string_util.h"
 #include "base/system/sys_info.h"
 
@@ -19,19 +17,9 @@ namespace brave_rpill {
 
 namespace {
 
-struct DeviceInfo {
-  std::string manufacturer_name;
-  std::string model_name;
-
-  std::string id() const {
-    return base::ToLowerASCII(manufacturer_name + model_name);
-  }
-};
-
-bool IsUncertainFuture(DeviceInfo* device_info_ptr) {
-  DCHECK(device_info_ptr);
-
-  const std::string device_id = device_info_ptr->id();
+bool IsUncertainFuture(const base::SysInfo::HardwareInfo& hardware_info) {
+  const std::string device_id =
+      base::ToLowerASCII(hardware_info.manufacturer + hardware_info.model);
 
   static const char* const kKeywords[] = {"kvm",
                                           "bochs",
@@ -52,35 +40,17 @@ bool IsUncertainFuture(DeviceInfo* device_info_ptr) {
   return false;
 }
 
-void OnDeviceInfoReady(IsUncertainFutureCallback callback,
-                       std::unique_ptr<DeviceInfo> device_info) {
-  const bool is_uncertain_future = IsUncertainFuture(device_info.get());
-  std::move(callback).Run(is_uncertain_future);
-}
-
-void OnHardwareInfoReady(DeviceInfo* device_info_ptr,
-                         base::ScopedClosureRunner done_closure,
+void OnHardwareInfoReady(IsUncertainFutureCallback callback,
                          base::SysInfo::HardwareInfo hardware_info) {
-  DCHECK(device_info_ptr);
-
-  device_info_ptr->manufacturer_name = std::move(hardware_info.manufacturer);
-  device_info_ptr->model_name = std::move(hardware_info.model);
+  const bool is_uncertain_future = IsUncertainFuture(hardware_info);
+  std::move(callback).Run(is_uncertain_future);
 }
 
 }  // namespace
 
 void DetectUncertainFuture(IsUncertainFutureCallback callback) {
-  std::unique_ptr<DeviceInfo> device_info = std::make_unique<DeviceInfo>();
-  DeviceInfo* device_info_ptr = device_info.get();
-
-  base::RepeatingClosure done_closure = base::BarrierClosure(
-      /*num_closures=*/1,
-      base::BindOnce(&OnDeviceInfoReady, std::move(callback),
-                     std::move(device_info)));
-
   base::SysInfo::GetHardwareInfo(
-      base::BindOnce(&OnHardwareInfoReady, device_info_ptr,
-                     base::ScopedClosureRunner(done_closure)));
+      base::BindOnce(&OnHardwareInfoReady, std::move(callback)));
 }
 
 }  // namespace brave_rpill
