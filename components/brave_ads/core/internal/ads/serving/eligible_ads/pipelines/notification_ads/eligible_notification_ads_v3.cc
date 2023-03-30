@@ -49,8 +49,7 @@ void EligibleAdsV3::OnGetForUserModel(
     const AdEventList& ad_events) {
   if (!success) {
     BLOG(1, "Failed to get ad events");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   GetBrowsingHistory(std::move(user_model), ad_events, std::move(callback));
@@ -60,10 +59,9 @@ void EligibleAdsV3::GetBrowsingHistory(
     targeting::UserModelInfo user_model,
     const AdEventList& ad_events,
     GetEligibleAdsCallback<CreativeNotificationAdList> callback) {
-  const int max_count = features::GetBrowsingHistoryMaxCount();
-  const int days_ago = features::GetBrowsingHistoryDaysAgo();
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
-      max_count, days_ago,
+      features::GetBrowsingHistoryMaxCount(),
+      features::GetBrowsingHistoryDaysAgo(),
       base::BindOnce(&EligibleAdsV3::GetEligibleAds, base::Unretained(this),
                      std::move(user_model), ad_events, std::move(callback)));
 }
@@ -89,22 +87,19 @@ void EligibleAdsV3::OnGetEligibleAds(
     const CreativeNotificationAdList& creative_ads) {
   if (!success) {
     BLOG(1, "Failed to get ads");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   if (creative_ads.empty()) {
     BLOG(1, "No eligible ads");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   const CreativeNotificationAdList eligible_creative_ads =
       FilterCreativeAds(creative_ads, ad_events, browsing_history);
   if (eligible_creative_ads.empty()) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   absl::optional<CreativeNotificationAdInfo> creative_ad;
@@ -113,8 +108,7 @@ void EligibleAdsV3::OnGetEligibleAds(
 
   if (!creative_ad) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
-    std::move(callback).Run(/*had_opportunity*/ false, {});
-    return;
+    return std::move(callback).Run(/*had_opportunity*/ false, {});
   }
 
   BLOG(1, eligible_creative_ads.size()

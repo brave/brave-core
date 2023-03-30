@@ -35,22 +35,23 @@ TEST_F(BatAdsEmbeddingProcessingTest, EmbedText) {
   task_environment_.RunUntilIdle();
   ASSERT_TRUE(resource.IsInitialized());
 
-  const ml::pipeline::EmbeddingProcessing* const embedding_processing =
+  const ml::pipeline::EmbeddingProcessing* const processing_pipeline =
       resource.Get();
-  ASSERT_TRUE(embedding_processing);
+  ASSERT_TRUE(processing_pipeline);
 
   const std::vector<std::tuple<std::string, std::vector<float>>> k_samples = {
-      {"this simple unittest", {0.5, 0.4, 1.0}},
-      {"this is a simple unittest", {0.5, 0.4, 1.0}},
-      {"this is @ #1a simple unittest", {0.5, 0.4, 1.0}},
-      {"that is a test", {0.0, 0.0, 0.0}},
-      {"this 54 is simple", {0.85, 0.2, 1.0}},
+      {"this simple unittest", {0.5F, 0.4F, 1.0F}},
+      {"this is a simple unittest", {0.5F, 0.4F, 1.0F}},
+      {"this is @ #1a simple unittest", {0.5F, 0.4F, 1.0F}},
+      {"that is a test", {0.0F, 0.0F, 0.0F}},
+      {"this 54 is simple", {0.85F, 0.2F, 1.0F}},
       {{}, {}}};
 
   for (const auto& [text, expected_embedding] : k_samples) {
     // Act
     const ml::pipeline::TextEmbeddingInfo text_embedding =
-        embedding_processing->EmbedText(text);
+        processing_pipeline->EmbedText(text);
+
     // Assert
     EXPECT_EQ(expected_embedding, text_embedding.embedding);
   }

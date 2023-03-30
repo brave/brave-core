@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/check.h"
 #include "base/check_op.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/eligible_ads_predictor_util.h"
@@ -38,6 +39,7 @@ absl::optional<T> MaybePredictAdUsingEmbeddings(
   const std::vector<double> probabilities =
       ComputeProbabilities(votes_registry);
 
+  DCHECK_EQ(paced_creative_ads.size(), probabilities.size());
   const double rand = base::RandDouble();
   double sum = 0.0;
 

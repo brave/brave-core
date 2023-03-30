@@ -17,7 +17,7 @@ class BatAdsVectorDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
   // Arrange
-  const std::vector<float> v_5{1.0, 2.0, 3.0, 4.0, 5.0};
+  const std::vector<float> v_5{1.0F, 2.0F, 3.0F, 4.0F, 5.0F};
   const VectorData dense_data_vector_5(v_5);
 
   // Act
@@ -218,17 +218,17 @@ TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
             sparse_data_vector_5.GetData());
 }
 
-TEST_F(BatAdsVectorDataTest, GetMagnitude) {
+TEST_F(BatAdsVectorDataTest, GetNorm) {
   const VectorData vector_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
-  double magnitude = vector_1.GetMagnitude();
-  EXPECT_EQ(magnitude, 4.0);
+  double magnitude = vector_1.GetNorm();
+  EXPECT_EQ(4.0, magnitude);
 }
 
 TEST_F(BatAdsVectorDataTest, ComputeSimilarity) {
   const VectorData vector_1({-1.0, 1.0, 2.0, -2.0, 2.0, 1.0, 1.0});
   const VectorData vector_2({-2.0, 1.0, 1.0, -1.0, 2.0, 2.0, 1.0});
   const float similarity = vector_1.ComputeSimilarity(vector_2);
-  EXPECT_EQ(similarity, 0.875);
+  EXPECT_EQ(0.875, similarity);
 }
 
 }  // namespace brave_ads::ml

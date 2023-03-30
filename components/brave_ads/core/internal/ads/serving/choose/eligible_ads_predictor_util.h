@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_ELIGIBLE_ADS_PREDICTOR_UTIL_H_
 
-#include <algorithm>
 #include <cstddef>
+#include <iterator>
 #include <vector>
 
 #include "base/check_op.h"
@@ -188,7 +188,7 @@ std::vector<int> ComputeVoteRegistry(
 
     auto iter = base::ranges::max_element(
         similarity_scores.cbegin(), similarity_scores.cend(),
-        [](const auto& a, const auto& b) { return a < b; });
+        [](const auto& lhs, const auto& rhs) { return lhs < rhs; });
 
     while (iter != similarity_scores.end()) {
       const size_t index = std::distance(similarity_scores.cbegin(), iter);

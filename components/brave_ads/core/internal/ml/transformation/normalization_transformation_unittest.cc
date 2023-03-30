@@ -42,15 +42,15 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
 
   std::vector<double> components;
   double s = 0.0;
-  for (const double x : norm_data->GetData()) {
-    components.push_back(x);
-    s += x * x;
+  for (const double component : norm_data->GetData()) {
+    components.push_back(component);
+    s += component * component;
   }
 
   // Assert
-  for (double const& x : components) {
-    ASSERT_TRUE(x >= 0.0);
-    ASSERT_TRUE(x <= 1.0);
+  for (double const& component : components) {
+    ASSERT_TRUE(component >= 0.0);
+    ASSERT_TRUE(component <= 1.0);
   }
   EXPECT_TRUE(std::fabs(s - 1.0) < kTolerance);
 }

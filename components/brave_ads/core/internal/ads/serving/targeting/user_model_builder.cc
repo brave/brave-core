@@ -27,7 +27,7 @@ namespace {
 void OnGetTextEmbeddingHtmlEvents(
     UserModelInfo user_model,
     BuildUserModelCallback callback,
-    bool success,
+    const bool success,
     const TextEmbeddingHtmlEventList& text_embedding_html_events) {
   if (!success) {
     BLOG(1, "Failed to get text embedding events");

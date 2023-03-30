@@ -32,14 +32,14 @@ TEST(BatAdsStringConversionsUtilTest, FalseBoolToString) {
   EXPECT_EQ("false", value);
 }
 
-TEST(BatAdsStringConversionsUtilTest, ConvertDelimitedStringToVector) {
+TEST(BatAdsStringConversionsUtilTest, DelimitedStringToVector) {
   // Arrange
-  const std::string string = "1.2,2.3,3.4,4.5,5.6";
+  const std::string delimited_string = "1.2,2.3,3.4,4.5,5.6";
   const std::string delimiter = ",";
 
   // Act
   const std::vector<float> vector =
-      ConvertDelimitedStringToVector(string, delimiter);
+      DelimitedStringToVector(delimited_string, delimiter);
 
   // Assert
   const std::vector<float> expected_vector = {1.2F, 2.3F, 3.4F, 4.5F, 5.6F};
@@ -54,14 +54,14 @@ TEST(BatAdsStringConversionsUtilTest, ConvertVectorToDelimitedString) {
   const std::string delimiter = ",";
 
   // Act
-  const std::string string = ConvertVectorToDelimitedString(vector, delimiter);
+  const std::string string = VectorToDelimitedString(vector, delimiter);
   const std::vector<float> string_vector =
-      ConvertDelimitedStringToVector(string, delimiter);
+      DelimitedStringToVector(string, delimiter);
 
   // Assert
   const std::string expected_string = "1.2,2.3,3.4,4.5,5.6";
   const std::vector<float> expected_vector =
-      ConvertDelimitedStringToVector(expected_string, delimiter);
+      DelimitedStringToVector(expected_string, delimiter);
   for (size_t i = 0; i < vector.size(); i++) {
     EXPECT_NEAR(expected_vector[i], string_vector[i], 0.001F);
   }
@@ -73,9 +73,9 @@ TEST(BatAdsStringConversionsUtilTest, ReflexiveConvertVectorToDelimitedString) {
   const std::string delimiter = ",";
 
   // Act
-  const std::string string = ConvertVectorToDelimitedString(vector, delimiter);
+  const std::string string = VectorToDelimitedString(vector, delimiter);
   const std::vector<float> string_vector =
-      ConvertDelimitedStringToVector(string, delimiter);
+      DelimitedStringToVector(string, delimiter);
 
   // Assert
   for (size_t i = 0; i < vector.size(); i++) {

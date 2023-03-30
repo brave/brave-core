@@ -18,10 +18,10 @@ namespace brave_ads {
 
 TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseInteger) {
   // Arrange
-  const std::vector<int> vector = {1, 2, 3, 4, 5};
+  const std::vector<int> score = {1, 2, 3, 4, 5};
 
   // Act
-  const int normalizing_constant = CalculateNormalizingConstantBase(vector);
+  const int normalizing_constant = CalculateNormalizingConstant(score);
 
   // Assert
   EXPECT_EQ(15, normalizing_constant);
@@ -29,10 +29,10 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseInteger) {
 
 TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantBaseDouble) {
   // Arrange
-  const std::vector<double> vector = {1.3, 2.7, 3.1, 4.8, 5.2};
+  const std::vector<double> score = {1.3, 2.7, 3.1, 4.8, 5.2};
 
   // Act
-  const double normalizing_constant = CalculateNormalizingConstantBase(vector);
+  const double normalizing_constant = CalculateNormalizingConstant(score);
 
   // Assert
   EXPECT_DOUBLE_EQ(17.1, normalizing_constant);
@@ -45,7 +45,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstantWithEmptyAds) {
 
   // Act
   const double normalizing_constant =
-      CalculateNormalizingConstant(creative_ad_predictors);
+      CalculateNormalizingConstantFromPredictors(creative_ad_predictors);
 
   // Assert
   EXPECT_DOUBLE_EQ(0.0, normalizing_constant);
@@ -72,7 +72,7 @@ TEST(BatAdsSampleAdsTest, CalculateNormalizingConstant) {
 
   // Act
   const double normalizing_constant =
-      CalculateNormalizingConstant(creative_ad_predictors);
+      CalculateNormalizingConstantFromPredictors(creative_ad_predictors);
 
   // Assert
   EXPECT_DOUBLE_EQ(6.6, normalizing_constant);
@@ -198,8 +198,8 @@ TEST(BatAdsSampleAdsTest, ComputeProbabilities) {
   const std::vector<double> probabilities = ComputeProbabilities(scores);
 
   // Assert
-  const std::vector<double> expected = {0.1, 0.0, 0.5, 0.4};
-  EXPECT_EQ(expected, probabilities);
+  const std::vector<double> expected_probabilities = {0.1, 0.0, 0.5, 0.4};
+  EXPECT_EQ(expected_probabilities, probabilities);
 }
 
 }  // namespace brave_ads

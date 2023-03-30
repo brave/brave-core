@@ -21,21 +21,20 @@ std::string BoolToString(const bool value) {
   return value ? kTrue : kFalse;
 }
 
-std::vector<float> ConvertDelimitedStringToVector(
-    const std::string& string,
-    const std::string& delimiter) {
-  const std::vector<std::string> components = base::SplitString(
+std::vector<float> DelimitedStringToVector(const std::string& string,
+                                           const base::StringPiece delimiter) {
+  const std::vector<std::string> string_components = base::SplitString(
       string, delimiter, base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  std::vector<float> vector;
-  vector.reserve(components.size());
-  for (const auto& component : components) {
+  std::vector<float> vector_components;
+  vector_components.reserve(string_components.size());
+  for (const auto& string_component : string_components) {
     double value;
-    base::StringToDouble(component, &value);
-    vector.push_back(static_cast<float>(value));
+    base::StringToDouble(string_component, &value);
+    vector_components.push_back(static_cast<float>(value));
   }
 
-  return vector;
+  return vector_components;
 }
 
 }  // namespace brave_ads

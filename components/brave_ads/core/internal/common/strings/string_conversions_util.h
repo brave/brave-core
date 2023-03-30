@@ -16,19 +16,19 @@ namespace brave_ads {
 
 std::string BoolToString(bool value);
 
-std::vector<float> ConvertDelimitedStringToVector(const std::string& string,
-                                                  const std::string& delimiter);
+std::vector<float> DelimitedStringToVector(const std::string& string,
+                                           base::StringPiece delimiter);
 
 template <typename T>
-std::string ConvertVectorToDelimitedString(const std::vector<T>& vector,
-                                           const std::string& delimiter) {
-  std::vector<std::string> list;
-  list.reserve(vector.size());
-  for (const auto& item : vector) {
-    list.emplace_back(base::NumberToString(item));
+std::string VectorToDelimitedString(const std::vector<T>& vector_components,
+                                    const base::StringPiece delimiter) {
+  std::vector<std::string> string_components;
+  string_components.reserve(vector_components.size());
+  for (const auto& vector_component : vector_components) {
+    string_components.emplace_back(base::NumberToString(vector_component));
   }
 
-  return base::JoinString(list, delimiter);
+  return base::JoinString(string_components, delimiter);
 }
 
 }  // namespace brave_ads

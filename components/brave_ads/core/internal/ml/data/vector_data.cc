@@ -13,8 +13,7 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
+#include "base/ranges/algorithm.h"
 
 namespace brave_ads::ml {
 
@@ -152,19 +151,19 @@ void VectorData::AddElementWise(const VectorData& other) {
     return;
   }
 
-  size_t this_index = 0;
+  size_t index = 0;
   size_t other_index = 0;
-  while (this_index < storage_->GetSize() &&
+  while (index < storage_->GetSize() &&
          other_index < other.storage_->GetSize()) {
-    if (storage_->GetPointAt(this_index) ==
+    if (storage_->GetPointAt(index) ==
         other.storage_->GetPointAt(other_index)) {
-      storage_->values()[this_index] += other.storage_->values()[other_index];
-      ++this_index;
+      storage_->values()[index] += other.storage_->values()[other_index];
+      ++index;
       ++other_index;
     } else {
-      if (storage_->GetPointAt(this_index) <
+      if (storage_->GetPointAt(index) <
           other.storage_->GetPointAt(other_index)) {
-        ++this_index;
+        ++index;
       } else {
         ++other_index;
       }
@@ -177,14 +176,14 @@ void VectorData::DivideByScalar(const float scalar) {
     return;
   }
 
-  size_t this_index = 0;
-  while (this_index < storage_->GetSize()) {
-    storage_->values()[this_index] /= scalar;
-    ++this_index;
+  size_t index = 0;
+  while (index < storage_->GetSize()) {
+    storage_->values()[index] /= scalar;
+    ++index;
   }
 }
 
-double VectorData::GetMagnitude() const {
+double VectorData::GetNorm() const {
   return sqrt(std::accumulate(storage_->values().cbegin(),
                               storage_->values().cend(), 0.0,
                               [](const double& lhs, float rhs) -> double {
@@ -193,18 +192,17 @@ double VectorData::GetMagnitude() const {
 }
 
 void VectorData::Normalize() {
-  const double vector_length = GetMagnitude();
-  if (vector_length > kMinimumVectorLength) {
+  const double vector_norm = GetNorm();
+  if (vector_norm > kMinimumVectorLength) {
     for (float& item : storage_->values()) {
-      item /= static_cast<float>(vector_length);
+      item /= static_cast<float>(vector_norm);
     }
   }
 }
 
 float VectorData::ComputeSimilarity(const VectorData& other) const {
-  DCHECK(this->GetDimensionCount() == other.GetDimensionCount());
-  return static_cast<float>((*this * other) /
-                            (GetMagnitude() * other.GetMagnitude()));
+  DCHECK(GetDimensionCount() == other.GetDimensionCount());
+  return static_cast<float>((*this * other) / (GetNorm() * other.GetNorm()));
 }
 
 int VectorData::GetDimensionCount() const {
@@ -220,26 +218,8 @@ int VectorData::GetNonZeroElementCount() const {
                                 [](const float value) { return value != 0; });
 }
 
-std::vector<float> VectorData::GetData() const {
+std::vector<float>& VectorData::GetData() const {
   return storage_->values();
-}
-
-std::string VectorData::GetVectorAsString() const {
-  if (storage_->DimensionCount() == 0) {
-    return {};
-  }
-
-  size_t storage_size = storage_->GetSize();
-  if (storage_size == 0) {
-    return {};
-  }
-
-  std::vector<std::string> vector_as_string;
-  for (size_t index = 0; index < storage_size; ++index) {
-    vector_as_string.push_back(base::NumberToString(storage_->values()[index]));
-  }
-
-  return base::JoinString(vector_as_string, " ");
 }
 
 }  // namespace brave_ads::ml

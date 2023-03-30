@@ -43,8 +43,8 @@ int BindParameters(
     BindString(command, index++, text_embedding_html_event.locale);
     BindString(command, index++, text_embedding_html_event.hashed_text_base64);
     BindString(command, index++,
-               ConvertVectorToDelimitedString(
-                   text_embedding_html_event.embedding, kDelimiter));
+               VectorToDelimitedString(text_embedding_html_event.embedding,
+                                       kDelimiter));
 
     count++;
   }
@@ -62,7 +62,7 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
   text_embedding_html_event.locale = ColumnString(record, 1);
   text_embedding_html_event.hashed_text_base64 = ColumnString(record, 2);
   text_embedding_html_event.embedding =
-      ConvertDelimitedStringToVector(ColumnString(record, 3), kDelimiter);
+      DelimitedStringToVector(ColumnString(record, 3), kDelimiter);
 
   return text_embedding_html_event;
 }

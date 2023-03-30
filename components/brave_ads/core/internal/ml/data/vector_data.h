@@ -50,10 +50,9 @@ class VectorData final : public Data {
 
   int GetDimensionCount() const;
   int GetNonZeroElementCount() const;
-  double GetMagnitude() const;
+  double GetNorm() const;
 
-  std::vector<float> GetData() const;
-  std::string GetVectorAsString() const;
+  std::vector<float>& GetData() const;
 
  private:
   std::unique_ptr<class VectorDataStorage> storage_;

@@ -15,6 +15,8 @@
 
 namespace brave_ads::database::table {
 
+constexpr char kEmbeddingStringDelimiter[] = ",";
+
 class Embeddings final : public TableInterface {
  public:
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -30,8 +32,6 @@ class Embeddings final : public TableInterface {
   std::string BuildInsertOrUpdateQuery(
       mojom::DBCommandInfo* command,
       const CreativeAdList& creative_ads) const;
-
-  static void MigrateToV26(mojom::DBTransactionInfo* transaction);
 };
 
 }  // namespace brave_ads::database::table

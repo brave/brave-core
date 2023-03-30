@@ -178,8 +178,8 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   for (const int vote : vote_registry) {
     total_votes += vote;
   }
-  ASSERT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
-  ASSERT_EQ(static_cast<int>(text_embeddings.size()),
+  EXPECT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
+  EXPECT_EQ(static_cast<int>(text_embeddings.size()),
             vote_registry.at(creative_ads.size() - 1));
 }
 
@@ -217,9 +217,9 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   for (const int vote : vote_registry) {
     total_votes += vote;
   }
-  ASSERT_EQ(3 * static_cast<int>(text_embeddings.size()), total_votes);
-  ASSERT_EQ(vote_registry.at(0), vote_registry.at(creative_ads.size() - 1));
-  ASSERT_EQ(static_cast<int>(text_embeddings.size()),
+  EXPECT_EQ(3 * static_cast<int>(text_embeddings.size()), total_votes);
+  EXPECT_EQ(vote_registry.at(0), vote_registry.at(creative_ads.size() - 1));
+  EXPECT_EQ(static_cast<int>(text_embeddings.size()),
             vote_registry.at(creative_ads.size() - 1));
 }
 
@@ -258,8 +258,8 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   for (const int vote : vote_registry) {
     total_votes += vote;
   }
-  ASSERT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
-  ASSERT_EQ(static_cast<int>(text_embeddings.size()),
+  EXPECT_EQ(static_cast<int>(text_embeddings.size()), total_votes);
+  EXPECT_EQ(static_cast<int>(text_embeddings.size()),
             vote_registry.at(creative_ads.size() - 1));
 }
 

@@ -24,7 +24,6 @@ namespace brave_ads::database::table {
 namespace {
 
 constexpr char kTableName[] = "embeddings";
-constexpr char kDelimiter[] = ",";
 
 int BindParameters(mojom::DBCommandInfo* command,
                    const CreativeAdList& creative_ads) {
@@ -36,13 +35,30 @@ int BindParameters(mojom::DBCommandInfo* command,
   for (const auto& creative_ad : creative_ads) {
     BindString(command, index++, creative_ad.creative_set_id);
     BindString(command, index++,
-               base::ToLowerASCII(ConvertVectorToDelimitedString(
-                   creative_ad.embedding, kDelimiter)));
+               base::ToLowerASCII(VectorToDelimitedString(
+                   creative_ad.embedding, kEmbeddingStringDelimiter)));
 
     count++;
   }
 
   return count;
+}
+
+void MigrateToV27(mojom::DBTransactionInfo* transaction) {
+  DCHECK(transaction);
+
+  const std::string query =
+      "CREATE TABLE IF NOT EXISTS embeddings"
+      "(creative_set_id TEXT NOT NULL, "
+      "embedding TEXT NOT NULL, "
+      "PRIMARY KEY (creative_set_id), "
+      "UNIQUE(creative_set_id) ON CONFLICT REPLACE)";
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace
@@ -81,8 +97,8 @@ void Embeddings::Migrate(mojom::DBTransactionInfo* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 26: {
-      MigrateToV26(transaction);
+    case 27: {
+      MigrateToV27(transaction);
       break;
     }
 
@@ -107,23 +123,6 @@ std::string Embeddings::BuildInsertOrUpdateQuery(
       "embedding) VALUES %s",
       GetTableName().c_str(),
       BuildBindingParameterPlaceholders(2, count).c_str());
-}
-
-void Embeddings::MigrateToV26(mojom::DBTransactionInfo* transaction) {
-  DCHECK(transaction);
-
-  const std::string query =
-      "CREATE TABLE IF NOT EXISTS embeddings"
-      "(creative_set_id TEXT NOT NULL, "
-      "embedding TEXT NOT NULL, "
-      "PRIMARY KEY (creative_set_id), "
-      "UNIQUE(creative_set_id) ON CONFLICT REPLACE)";
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace brave_ads::database::table
