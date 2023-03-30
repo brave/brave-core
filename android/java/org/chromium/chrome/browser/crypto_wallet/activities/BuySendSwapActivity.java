@@ -786,7 +786,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 : WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST;
         mFromAssetText.setOnClickListener(v -> {
             EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
-                    EditVisibleAssetsBottomSheetDialogFragment.newInstance(fromAdapterType);
+                    EditVisibleAssetsBottomSheetDialogFragment.newInstance(fromAdapterType, false);
 
             bottomSheetDialogFragment.setOnAssetClickListener(
                     new EditVisibleAssetsBottomSheetDialogFragment
@@ -862,7 +862,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mToAssetText.setOnClickListener(v -> {
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                                WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST);
+                                WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST, false);
                 bottomSheetDialogFragment.setSelectedNetwork(mSelectedNetwork);
                 bottomSheetDialogFragment.setOnAssetClickListener(
                         new EditVisibleAssetsBottomSheetDialogFragment
