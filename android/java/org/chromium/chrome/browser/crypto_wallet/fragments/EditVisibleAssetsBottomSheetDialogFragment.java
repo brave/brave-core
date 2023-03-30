@@ -289,7 +289,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                     mSelectedNetwork.coin, TokenUtils.TokenType.ALL, userAssets -> {
                                         TokenUtils.getAllTokensFiltered(braveWalletService,
                                                 blockchainRegistry, mSelectedNetwork,
-                                                mSelectedNetwork.coin, TokenUtils.TokenType.ALL,
+                                                mSelectedNetwork.coin, mNftsOnly ? TokenUtils.TokenType.NFTS : TokenUtils.TokenType.NON_NFTS,
                                                 tokens -> {
                                                     setUpAssetsList(view, tokens, userAssets);
                                                 });
