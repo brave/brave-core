@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <string>
 
-#include "base/compiler_specific.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/win/windows_types.h"
@@ -116,22 +115,12 @@ TargetGetModuleFileNameA(GetModuleFileNameAFunction orig,
   return result;
 }
 
-#if defined(ADDRESS_SANITIZER)
-static int g_asan_init_skip_count = 2;
-#endif
-
-NO_SANITIZE("address")
 SANDBOX_INTERCEPT DWORD WINAPI
 TargetGetModuleFileNameW(GetModuleFileNameWFunction orig,
                          HMODULE hModule,
                          LPWSTR lpFilename,
                          DWORD nSize) {
   const auto result = orig(hModule, lpFilename, nSize);
-#if defined(ADDRESS_SANITIZER)
-  if (g_asan_init_skip_count--) {
-    return result;
-  }
-#endif
   if (result != 0) {
     return PatchFilename(lpFilename, result, nSize);
   }

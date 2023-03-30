@@ -616,6 +616,10 @@ static_library("browser_tests_runner") {
 
   public_deps = [ ":browser_test_support" ]
 
+  if (is_win) {
+    public_configs = [ "//build/config/win:delayloads" ]
+  }
+
   sources = [ "base/browser_tests_main.cc" ]
 }
 
@@ -682,10 +686,6 @@ test("brave_browser_tests") {
     "//build/config:precompiled_headers",
     "//chrome/test:disable_thinlto_cache_flags",
   ]
-
-  if (is_win) {
-    configs += [ "//build/config/win:delayloads" ]
-  }
 
   sources = [
     "//brave/browser/brave_ads/brave_stats_helper_browsertest.cc",

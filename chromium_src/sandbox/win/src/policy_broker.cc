@@ -23,8 +23,7 @@ namespace sandbox {
 namespace {
 bool SetupModuleFilenameInterceptions(InterceptionManager* manager,
                                       const TargetConfig* config) {
-  if (!base::FeatureList::IsEnabled(kModuleFileNamePatch) ||
-      !config->ShouldPatchModuleFileName()) {
+  if (!config->ShouldPatchModuleFileName()) {
     return true;
   }
 
@@ -33,10 +32,13 @@ bool SetupModuleFilenameInterceptions(InterceptionManager* manager,
     return false;
   }
 
+#if !defined(ADDRESS_SANITIZER)
+  // This function is called too early in ASAN initialization.
   if (!INTERCEPT_EAT(manager, kKerneldllName, GetModuleFileNameW,
                      GET_MODULE_FILENAME_W_ID, 3)) {
     return false;
   }
+#endif
 
 #if (PSAPI_VERSION > 1)
   if (!INTERCEPT_EAT(manager, kKerneldllName, K32GetModuleFileNameExA,
