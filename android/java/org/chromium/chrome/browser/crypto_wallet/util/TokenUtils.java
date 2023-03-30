@@ -50,7 +50,7 @@ public class TokenUtils {
 
         // Don't apply any filter, the list will include all tokens.
         ALL
-    };
+    }
 
     /**
      * Filter tokens by type and add native token (when needed).

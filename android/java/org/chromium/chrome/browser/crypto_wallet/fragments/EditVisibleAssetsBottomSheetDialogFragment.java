@@ -95,7 +95,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         return new EditVisibleAssetsBottomSheetDialogFragment(type, nftsOnly);
     }
 
-    private EditVisibleAssetsBottomSheetDialogFragment(WalletCoinAdapter.AdapterType type, boolean nftsOnly) {
+    private EditVisibleAssetsBottomSheetDialogFragment(
+            WalletCoinAdapter.AdapterType type, boolean nftsOnly) {
         mType = type;
         mNftsOnly = nftsOnly;
     }
@@ -289,7 +290,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                     mSelectedNetwork.coin, TokenUtils.TokenType.ALL, userAssets -> {
                                         TokenUtils.getAllTokensFiltered(braveWalletService,
                                                 blockchainRegistry, mSelectedNetwork,
-                                                mSelectedNetwork.coin, mNftsOnly ? TokenUtils.TokenType.NFTS : TokenUtils.TokenType.NON_NFTS,
+                                                mSelectedNetwork.coin,
+                                                mNftsOnly ? TokenUtils.TokenType.NFTS
+                                                          : TokenUtils.TokenType.NON_NFTS,
                                                 tokens -> {
                                                     setUpAssetsList(view, tokens, userAssets);
                                                 });
