@@ -391,6 +391,8 @@ static_library("ledger") {
     "gemini/gemini.h",
     "gemini/gemini_util.cc",
     "gemini/gemini_util.h",
+    "ledger_impl.cc",
+    "ledger_impl.h",
     "legacy/bat_helper.cc",
     "legacy/bat_helper.h",
     "legacy/bat_state.cc",
@@ -563,23 +565,4 @@ static_library("ledger") {
     ":buildflags",
     ":headers",
   ]
-}
-
-static_library("lib") {
-  visibility = [
-    "//brave/test:*",
-    "//chrome/utility:*",
-  ]
-
-  sources = [
-    "ledger_impl.cc",
-    "ledger_impl.h",
-  ]
-
-  public_deps = [
-    "//brave/components/brave_rewards/common/mojom:interfaces",
-    "//brave/components/brave_rewards/core",
-  ]
-
-  deps = [ "//mojo/public/cpp/system" ]
 }
