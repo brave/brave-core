@@ -28,13 +28,16 @@
 #include "services/network/public/mojom/network_service.mojom-forward.h"
 
 #define Init virtual Init
+
 #if !BUILDFLAG(IS_ANDROID)
 #define StartTearDown virtual StartTearDown
+#define PostDestroyThreads virtual PostDestroyThreads
 #endif  // !BUILDFLAG(IS_ANDROID)
+
 #include "src/chrome/browser/browser_process_impl.h"  // IWYU pragma: export
-#if !BUILDFLAG(IS_ANDROID)
+
+#undef PostDestroyThreads
 #undef StartTearDown
-#endif  // !BUILDFLAG(IS_ANDROID)
 #undef Init
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_BROWSER_PROCESS_IMPL_H_

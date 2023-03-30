@@ -173,10 +173,15 @@ void BraveBrowserProcessImpl::Init() {
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveBrowserProcessImpl::StartTearDown() {
-  ad_block_service_.reset();
   brave_stats_updater_.reset();
   brave_referrals_service_.reset();
   BrowserProcessImpl::StartTearDown();
+}
+
+void BraveBrowserProcessImpl::PostDestroyThreads() {
+  BrowserProcessImpl::PostDestroyThreads();
+  // AdBlockService should outlive its own worker thread.
+  ad_block_service_.reset();
 }
 #endif
 
