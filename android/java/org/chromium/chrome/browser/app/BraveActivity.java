@@ -199,7 +199,6 @@ import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
@@ -2028,7 +2027,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     // as upstream does, to keep the GmsCore process alive.
     private void executeInitSafeBrowsing(long delay) {
         // SafeBrowsingBridge.getSafeBrowsingState() has to be executed on a main thread
-        PostTask.postDelayedTask(UiThreadTaskTraits.DEFAULT, () -> {
+        PostTask.postDelayedTask(TaskTraits.UI_DEFAULT, () -> {
             if (SafeBrowsingBridge.getSafeBrowsingState() != SafeBrowsingState.NO_SAFE_BROWSING) {
                 // initSafeBrowsing could be executed on a background thread
                 PostTask.postTask(TaskTraits.USER_VISIBLE_MAY_BLOCK,

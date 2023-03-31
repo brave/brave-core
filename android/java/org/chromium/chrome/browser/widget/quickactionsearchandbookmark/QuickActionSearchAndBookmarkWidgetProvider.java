@@ -35,6 +35,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.library_loader.ProcessInitException;
 import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.browserservices.intents.WebappConstants;
@@ -58,7 +59,6 @@ import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.favicon.LargeIconBridge.LargeIconCallback;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.webapps.ShortcutSource;
-import org.chromium.content_public.browser.UiThreadTaskTraits;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.url.GURL;
 
@@ -140,7 +140,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
                     mNativeLoaded = true;
                     for (Runnable runnable :
                             QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables) {
-                        PostTask.postTask(UiThreadTaskTraits.DEFAULT, runnable);
+                        PostTask.postTask(TaskTraits.UI_DEFAULT, runnable);
                     }
                     QuickActionSearchAndBookmarkWidgetProvider.mUpdateAppWidgetsRunnables.clear();
                 }
