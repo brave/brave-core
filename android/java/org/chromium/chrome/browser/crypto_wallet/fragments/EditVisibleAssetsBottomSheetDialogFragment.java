@@ -75,7 +75,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     public static final String TAG_FRAGMENT =
             EditVisibleAssetsBottomSheetDialogFragment.class.getName();
     private WalletCoinAdapter walletCoinAdapter;
-    private WalletCoinAdapter.AdapterType mType;
+    private final WalletCoinAdapter.AdapterType mType;
+    private final boolean mNftsOnly;
     private NetworkInfo mSelectedNetwork;
     private DismissListener mDismissListener;
     private Boolean mIsAssetsListChanged;
@@ -90,12 +91,14 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     }
 
     public static EditVisibleAssetsBottomSheetDialogFragment newInstance(
-            WalletCoinAdapter.AdapterType type) {
-        return new EditVisibleAssetsBottomSheetDialogFragment(type);
+            WalletCoinAdapter.AdapterType type, boolean nftsOnly) {
+        return new EditVisibleAssetsBottomSheetDialogFragment(type, nftsOnly);
     }
 
-    private EditVisibleAssetsBottomSheetDialogFragment(WalletCoinAdapter.AdapterType type) {
+    private EditVisibleAssetsBottomSheetDialogFragment(
+            WalletCoinAdapter.AdapterType type, boolean nftsOnly) {
         mType = type;
+        mNftsOnly = nftsOnly;
     }
 
     // TODO (Wengling): add an interface for getting services that can be shared between activity
@@ -287,7 +290,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                     mSelectedNetwork.coin, TokenUtils.TokenType.ALL, userAssets -> {
                                         TokenUtils.getAllTokensFiltered(braveWalletService,
                                                 blockchainRegistry, mSelectedNetwork,
-                                                mSelectedNetwork.coin, TokenUtils.TokenType.ALL,
+                                                mSelectedNetwork.coin,
+                                                mNftsOnly ? TokenUtils.TokenType.NFTS
+                                                          : TokenUtils.TokenType.NON_NFTS,
                                                 tokens -> {
                                                     setUpAssetsList(view, tokens, userAssets);
                                                 });

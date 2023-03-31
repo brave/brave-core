@@ -481,7 +481,7 @@ public class PortfolioFragment
     private void showEditVisibleDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
-                        WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST);
+                        WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);
 
         bottomSheetDialogFragment.setSelectedNetwork(selectedNetwork);
         bottomSheetDialogFragment.setDismissListener(

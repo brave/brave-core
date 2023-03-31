@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
@@ -26,10 +26,34 @@ import java.util.List;
 import java.util.Locale;
 
 public class TokenUtils {
-    public enum TokenType { ERC20, ERC721, SOL, ALL }
-    ;
+    /**
+     * Type of token used for filtering an array of {@code BlockchainToken}.
+     * See {@link #filterTokens(NetworkInfo, BlockchainToken[], TokenUtils.TokenType, boolean)}.
+     */
+    public enum TokenType {
+        // Filter out all tokens that are not NFTs.
+        // Note: native assets won't be included when using this token type.
+        NFTS,
 
-    /* Filter tokens by type and add native token.
+        // Filter out all tokens that don't belong to ERC20 standard.
+        ERC20,
+
+        // Filter out all tokens that don't belong to ERC721 standard.
+        ERC721,
+
+        // Filter out all tokens that are not solana coins.
+        SOL,
+
+        // Filter out all tokens that are NFTs.
+        // Note: a custom asset may or may not be an NFT.
+        NON_NFTS,
+
+        // Don't apply any filter, the list will include all tokens.
+        ALL
+    }
+
+    /**
+     * Filter tokens by type and add native token (when needed).
      *
      * BlockchainRegistry.getAllTokens does not return the chain's native token;
      * BraveWalletService.getUserAssets contains the native asset on init, but:
@@ -51,6 +75,9 @@ public class TokenUtils {
         Utils.removeIf(arrayTokens, t -> {
             boolean typeFilter;
             switch (tokenType) {
+                case NFTS:
+                    typeFilter = !t.isErc721 && !t.isNft;
+                    break;
                 case ERC20:
                     typeFilter = !t.isErc20;
                     break;
@@ -59,6 +86,9 @@ public class TokenUtils {
                     break;
                 case SOL:
                     typeFilter = t.coin != CoinType.SOL;
+                    break;
+                case NON_NFTS:
+                    typeFilter = t.isErc721 || t.isNft;
                     break;
                 case ALL:
                     typeFilter = false;
@@ -69,7 +99,11 @@ public class TokenUtils {
             return typeFilter || isSameToken(t, nativeAsset) || (keepVisibleOnly && !t.visible);
         });
 
-        arrayTokens.add(0, nativeAsset);
+        // The native assets are not added
+        // when filtering only NFTs.
+        if (tokenType != TokenType.NFTS) {
+            arrayTokens.add(0, nativeAsset);
+        }
         return arrayTokens.toArray(new BlockchainToken[0]);
     }
 
