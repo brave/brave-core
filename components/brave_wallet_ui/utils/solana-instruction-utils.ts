@@ -151,7 +151,13 @@ export const getSolInstructionAccountParamsObj = (
   let newAccount: string = ''
 
   accountParams.forEach(({ name }, i) => {
-    const value = accountMetas[i]?.pubkey
+    // Do not show account public key of address table lookup account because
+    // it might give the wrong impression to users. For example, users might
+    // think they're sending funds to this address table lookup account, but
+    // actually they're sending to the account pointed by the index in this
+    // address table lookup account.
+    const isAddrTableLookupAccount = accountMetas[i]?.addrTableLookupIndex
+    const value = isAddrTableLookupAccount ? '' : accountMetas[i]?.pubkey
 
     switch (name) {
       case BraveWallet.FROM_ACCOUNT: {
