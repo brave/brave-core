@@ -616,6 +616,10 @@ static_library("browser_tests_runner") {
 
   public_deps = [ ":browser_test_support" ]
 
+  if (is_win) {
+    public_configs = [ "//build/config/win:delayloads" ]
+  }
+
   sources = [ "base/browser_tests_main.cc" ]
 }
 

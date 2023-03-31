@@ -61,7 +61,8 @@ template <template <class T> class FromTo, typename CharT>
 absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
                                         DWORD length,
                                         DWORD size) {
-  if (!base::EndsWith(filename, FromTo<CharT>::kBrave,
+  if (!base::EndsWith(base::BasicStringPiece(filename, length),
+                      FromTo<CharT>::kBrave,
                       base::CompareCase::INSENSITIVE_ASCII)) {
     return absl::nullopt;
   }
@@ -71,14 +72,16 @@ absl::optional<DWORD> PatchFilenameImpl(CharT* filename,
   static_assert(kBraveLen <= kChromeLen);
   constexpr DWORD kLenDiff = kChromeLen - kBraveLen;
 
+  --size;  // space for null-terminator
+
   const size_t brave_pos = length - kBraveLen;
   ReplaceAt(filename + brave_pos, size - brave_pos, FromTo<CharT>::kChrome);
   if (size < length + kLenDiff) {
     ::SetLastError(ERROR_INSUFFICIENT_BUFFER);
   }
-  const auto result = std::min(size, length + kLenDiff);
-  filename[result] = 0;
-  return result;
+  length = std::min(size, length + kLenDiff);
+  filename[length] = 0;
+  return length;
 }
 
 template <typename CharT>
