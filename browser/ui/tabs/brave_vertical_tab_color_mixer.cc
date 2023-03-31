@@ -38,7 +38,7 @@ ChromeColorIds GetMappedChromeColorId(BraveColorIds brave_color_id) {
   return kChromiumColorMap.at(brave_color_id);
 }
 
-ui::ColorRecipe GetCustomColorOrDefaultColor(
+ui::ColorTransform GetCustomColorOrDefaultColor(
     const scoped_refptr<ui::ColorProviderManager::ThemeInitializerSupplier>&
         custom_theme,
     BraveColorIds color_id,
@@ -110,8 +110,16 @@ void AddBraveVerticalTabDarkThemeColorMixer(
            SkColorSetRGB(0x68, 0x6D, 0x7D)},
       });
   for (const auto& [color_id, default_color] : kDefaultColorMap) {
-    mixer[color_id] =
+    auto color =
         GetCustomColorOrDefaultColor(key.custom_theme, color_id, default_color);
+    if (color_id == kColorBraveVerticalTabActiveBackground ||
+        color_id == kColorBraveVerticalTabInactiveBackground) {
+      mixer[color_id] = ui::GetResultingPaintColor(
+          /* foreground_transform= */ color,
+          /* background_transform= */ kColorToolbar);
+    } else {
+      mixer[color_id] = color;
+    }
   }
 }
 
