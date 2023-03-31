@@ -15,6 +15,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
@@ -70,6 +71,7 @@ void PlaylistDownloadRequestManager::CreateWebContents() {
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
   if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+    DVLOG(2) << __func__ << " Faked UA to detect media files";
     blink::UserAgentOverride user_agent(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
         "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
@@ -135,8 +137,21 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
     GURL url(absl::get<std::string>(request.url_or_contents));
     DCHECK(url.is_valid());
     DCHECK(web_contents_);
-    web_contents_->GetController().LoadURLWithParams(
-        content::NavigationController::LoadURLParams(url));
+    DVLOG(2) << "Load URL to detect media files: " << url.spec();
+    auto load_url_params = content::NavigationController::LoadURLParams(url);
+    if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+      load_url_params.override_user_agent =
+          content::NavigationController::UA_OVERRIDE_TRUE;
+    }
+
+    content::NavigationController& controller = web_contents_->GetController();
+    controller.LoadURLWithParams(load_url_params);
+
+    if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
+      for (int i = 0; i < controller.GetEntryCount(); ++i) {
+        controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
+      }
+    }
   } else {
     auto weak_contents =
         absl::get<base::WeakPtr<content::WebContents>>(request.url_or_contents);
@@ -149,6 +164,8 @@ void PlaylistDownloadRequestManager::RunMediaDetector(Request request) {
       return;
     }
 
+    DVLOG(2) << "Try detecting media files from existing web contents: "
+             << web_contents_->GetVisibleURL();
     GetMedia(weak_contents.get());
   }
 }
@@ -311,6 +328,9 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     items.push_back(std::move(item));
   }
 
+  DVLOG(2) << __func__
+           << " Media detection result size: " << value.GetList().size() << " "
+           << items.size();
   std::move(callback).Run(std::move(items));
 }
 
