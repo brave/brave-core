@@ -3,6 +3,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-include_rules = [
-  "+ui/gfx"
-]
+assert(!is_android && !is_ios)
+
+component("common") {
+  output_name = "commander_common"
+  defines = [ "IS_COMMANDER_COMMON_IMPL" ]
+
+  sources = [
+    "constants.cc",
+    "constants.h",
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}

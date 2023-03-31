@@ -232,6 +232,7 @@ brave_chrome_browser_deps = [
 
 if (!is_android && !is_ios) {
   brave_chrome_browser_deps += [
+    "//brave/components/commander/browser",
     "//brave/components/commands/browser",
     "//brave/components/commands/common",
   ]
