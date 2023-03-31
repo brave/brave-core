@@ -21,8 +21,8 @@
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/ledger_database.h"
+#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave/ios/browser/api/ledger/brave_ledger_observer.h"
@@ -43,25 +43,40 @@
 #error "This file requires ARC support."
 #endif
 
-#define BLOG(verbose_level, format, ...)                  \
+namespace ledger {
+
+template <typename T>
+struct task_deleter {
+ private:
+  scoped_refptr<base::TaskRunner> task_runner;
+
+ public:
+  task_deleter()
+      : task_runner(base::SequencedTaskRunner::GetCurrentDefault()) {}
+  ~task_deleter() = default;
+
+  void operator()(T* ptr) const {
+    if (base::SequencedTaskRunner::GetCurrentDefault() != task_runner) {
+      task_runner->PostTask(FROM_HERE,
+                            base::BindOnce([](T* ptr) { delete ptr; }, ptr));
+    } else {
+      delete ptr;
+    }
+  }
+};
+
+template <typename T, typename... Args>
+std::unique_ptr<T, task_deleter<T>> make_task_ptr(Args&&... args) {
+  return {new T(std::forward<Args>(args)...), task_deleter<T>()};
+}
+
+}  // namespace ledger
+
+#define LLOG(verbose_level, format, ...)                  \
   [self log:(__FILE__)                                    \
        line:(__LINE__)verboseLevel:(verbose_level)message \
            :base::SysNSStringToUTF8(                      \
                 [NSString stringWithFormat:(format), ##__VA_ARGS__])]
-
-#define BATLedgerReadonlyBridge(__type, __objc_getter, __cpp_getter) \
-  -(__type)__objc_getter {                                           \
-    return ledger->__cpp_getter();                                   \
-  }
-
-#define BATLedgerBridge(__type, __objc_getter, __objc_setter, __cpp_getter, \
-                        __cpp_setter)                                       \
-  -(__type)__objc_getter {                                                  \
-    return ledger->__cpp_getter();                                          \
-  }                                                                         \
-  -(void)__objc_setter : (__type)newValue {                                 \
-    ledger->__cpp_setter(newValue);                                         \
-  }
 
 NSString* const BraveLedgerErrorDomain = @"BraveLedgerErrorDomain";
 NSNotificationName const BraveLedgerNotificationAdded =
@@ -108,10 +123,15 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 };
 
 @interface BraveLedger () <LedgerClientBridge> {
-  LedgerClientIOS* ledgerClient;
-  ledger::Ledger* ledger;
+  // DO NOT ACCESS DIRECTLY, use `postLedgerTask` or ensure you are accessing
+  // _ledger from a task posted in `_ledgerTaskRunner`
+  std::unique_ptr<ledger::LedgerImpl, ledger::task_deleter<ledger::LedgerImpl>>
+      _ledger;
+  std::unique_ptr<LedgerClientIOS, ledger::task_deleter<LedgerClientIOS>>
+      _ledgerClient;
   base::SequenceBound<ledger::LedgerDatabase> rewardsDatabase;
   scoped_refptr<base::SequencedTaskRunner> databaseQueue;
+  scoped_refptr<base::SequencedTaskRunner> _ledgerTaskRunner;
 }
 
 @property(nonatomic, copy) NSString* storagePath;
@@ -137,7 +157,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 /// Notifications
 
-@property(nonatomic) NSMutableArray<RewardsNotification*>* mNotifications;
 @property(nonatomic) NSTimer* notificationStartupTimer;
 @property(nonatomic) NSDate* lastNotificationCheckDate;
 
@@ -149,8 +168,15 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (instancetype)initWithStateStoragePath:(NSString*)path {
   if ((self = [super init])) {
+    _ledgerTaskRunner = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::WithBaseSyncPrimitives(),
+         base::TaskPriority::USER_VISIBLE,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
     self.storagePath = path;
-    self.commonOps = [[BraveCommonOperations alloc] initWithStoragePath:path];
+    self.commonOps =
+        [[BraveCommonOperations alloc] initWithStoragePath:path
+                                                taskRunner:_ledgerTaskRunner];
     self.state = [[NSMutableDictionary alloc]
                      initWithContentsOfFile:self.randomStatePath]
                      ?: [[NSMutableDictionary alloc] init];
@@ -186,8 +212,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     rewardsDatabase = base::SequenceBound<ledger::LedgerDatabase>(
         databaseQueue, base::FilePath(dbPath));
 
-    ledgerClient = new LedgerClientIOS(self);
-    ledger = ledger::Ledger::CreateInstance(ledgerClient);
+    _ledgerTaskRunner->PostTask(
+        FROM_HERE, base::BindOnce(^{
+          self->_ledgerClient = ledger::make_task_ptr<LedgerClientIOS>(self);
+          self->_ledger = ledger::make_task_ptr<ledger::LedgerImpl>(
+              self->_ledgerClient->MakeRemote());
+        }));
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter
@@ -207,8 +237,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)dealloc {
   [NSNotificationCenter.defaultCenter removeObserver:self];
   [self.notificationStartupTimer invalidate];
-  delete ledger;
-  delete ledgerClient;
 }
 
 - (void)handleFlags:(const brave_rewards::RewardsFlags&)flags {
@@ -249,6 +277,13 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }];
 }
 
+- (void)postLedgerTask:(void (^)(ledger::LedgerImpl*))task {
+  _ledgerTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
+                                CHECK(self->_ledger != nullptr);
+                                task(self->_ledger.get());
+                              }));
+}
+
 - (void)initializeLedgerService:(BOOL)executeMigrateScript
                      completion:(nullable void (^)())completion {
   if (self.initialized || self.initializing) {
@@ -256,59 +291,66 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   self.initializing = YES;
 
-  BLOG(3, @"DB: Migrate from CoreData? %@",
+  LLOG(3, @"DB: Migrate from CoreData? %@",
        (executeMigrateScript ? @"YES" : @"NO"));
-  ledger->Initialize(executeMigrateScript, ^(ledger::mojom::Result result) {
-    self.initialized = (result == ledger::mojom::Result::LEDGER_OK ||
-                        result == ledger::mojom::Result::NO_LEDGER_STATE ||
-                        result == ledger::mojom::Result::NO_PUBLISHER_STATE);
-    self.initializing = NO;
-    if (self.initialized) {
-      self.prefs[kMigrationSucceeded] = @(YES);
-      [self savePrefs];
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->Initialize(
+        executeMigrateScript, base::BindOnce(^(ledger::mojom::Result result) {
+          self.initialized =
+              (result == ledger::mojom::Result::LEDGER_OK ||
+               result == ledger::mojom::Result::NO_LEDGER_STATE ||
+               result == ledger::mojom::Result::NO_PUBLISHER_STATE);
+          self.initializing = NO;
+          if (self.initialized) {
+            self.prefs[kMigrationSucceeded] = @(YES);
+            [self savePrefs];
 
-      [self getRewardsParameters:nil];
-      [self fetchBalance:nil];
-
-      [self readNotificationsFromDisk];
-    } else {
-      BLOG(0, @"Ledger Initialization Failed with error: %d", result);
-      if (result == ledger::mojom::Result::DATABASE_INIT_FAILED) {
-        // Failed to migrate data...
-        switch (self.migrationType) {
-          case BATLedgerDatabaseMigrationTypeDefault:
-            BLOG(0,
-                 @"DB: Full migration failed, attempting BAT only migration.");
-            self.dataMigrationFailed = YES;
-            self.migrationType = BATLedgerDatabaseMigrationTypeTokensOnly;
-            [self resetRewardsDatabase];
-            // attempt re-initialize without other data
-            [self initializeLedgerService:YES completion:completion];
-            return;
-          case BATLedgerDatabaseMigrationTypeTokensOnly:
-            BLOG(0, @"DB: BAT only migration failed. Initializing without "
-                    @"migration.");
-            self.dataMigrationFailed = YES;
-            self.migrationType = BATLedgerDatabaseMigrationTypeNone;
-            [self resetRewardsDatabase];
-            // attempt initialize without migrating at all
-            [self initializeLedgerService:NO completion:completion];
-            return;
-          default:
-            break;
-        }
-      }
-    }
-    self.initializationResult = static_cast<LedgerResult>(result);
-    if (completion) {
-      completion();
-    }
-    for (BraveLedgerObserver* observer in [self.observers copy]) {
-      if (observer.walletInitalized) {
-        observer.walletInitalized(self.initializationResult);
-      }
-    }
-  });
+            [self getRewardsParameters:nil];
+            [self fetchBalance:nil];
+          } else {
+            LLOG(0, @"Ledger Initialization Failed with error: %d", result);
+            if (result == ledger::mojom::Result::DATABASE_INIT_FAILED) {
+              // Failed to migrate data...
+              switch (self.migrationType) {
+                case BATLedgerDatabaseMigrationTypeDefault:
+                  LLOG(0, @"DB: Full migration failed, attempting BAT only "
+                          @"migration.");
+                  self.dataMigrationFailed = YES;
+                  self.migrationType = BATLedgerDatabaseMigrationTypeTokensOnly;
+                  [self resetRewardsDatabase];
+                  // attempt re-initialize without other data
+                  [self initializeLedgerService:YES completion:completion];
+                  return;
+                case BATLedgerDatabaseMigrationTypeTokensOnly:
+                  LLOG(0,
+                       @"DB: BAT only migration failed. Initializing without "
+                       @"migration.");
+                  self.dataMigrationFailed = YES;
+                  self.migrationType = BATLedgerDatabaseMigrationTypeNone;
+                  [self resetRewardsDatabase];
+                  // attempt initialize without migrating at all
+                  [self initializeLedgerService:NO completion:completion];
+                  return;
+                default:
+                  break;
+              }
+            }
+          }
+          self.initializationResult = static_cast<LedgerResult>(result);
+          if (completion) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+              completion();
+            });
+          }
+          dispatch_async(dispatch_get_main_queue(), ^{
+            for (BraveLedgerObserver* observer in [self.observers copy]) {
+              if (observer.walletInitalized) {
+                observer.walletInitalized(self.initializationResult);
+              }
+            }
+          });
+        }));
+  }];
 }
 
 - (void)databaseNeedsMigration:(void (^)(BOOL needsMigration))completion {
@@ -324,7 +366,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   // Can we even check the DB
   if (!rewardsDatabase) {
-    BLOG(3, @"DB: No rewards database object");
+    LLOG(3, @"DB: No rewards database object");
     completion(YES);
     return;
   }
@@ -339,7 +381,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       ledger::mojom::DBCommand::RecordBindingType::STRING_TYPE};
   transaction->commands.push_back(command->Clone());
 
-  [self runDBTransaction:std::move(transaction)
+  [self runDbTransaction:std::move(transaction)
                 callback:base::BindOnce(^(
                              ledger::mojom::DBCommandResponsePtr response) {
                   // Failed to even run the check, tables probably don't exist,
@@ -347,7 +389,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                   if (response->status !=
                       ledger::mojom::DBCommandResponse::Status::RESPONSE_OK) {
                     [self resetRewardsDatabase];
-                    BLOG(3, @"DB: Failed to run transaction with status: %d",
+                    LLOG(3, @"DB: Failed to run transaction with status: %d",
                          response->status);
                     completion(YES);
                     return;
@@ -359,7 +401,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                   // doesn't exist? Restart from scratch
                   if (record.empty() || record.front()->fields.empty()) {
                     [self resetRewardsDatabase];
-                    BLOG(3, @"DB: Migrate because we couldnt find tables in "
+                    LLOG(3, @"DB: Migrate because we couldnt find tables in "
                             @"sqlite_master");
                     completion(YES);
                     return;
@@ -388,13 +430,14 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       databaseQueue, base::FilePath(base::SysNSStringToUTF8(dbPath)));
 }
 
-- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback {
+- (void)createScript:
+    (ledger::mojom::LedgerClient::GetCreateScriptCallback)callback {
   NSString* migrationScript = @"";
   switch (self.migrationType) {
     case BATLedgerDatabaseMigrationTypeNone:
       // We shouldn't be migrating, therefore doesn't make sense that
       // `getCreateScript` was called
-      BLOG(0,
+      LLOG(0,
            @"DB: Attempted CoreData migration with an empty migration script");
       break;
     case BATLedgerDatabaseMigrationTypeTokensOnly:
@@ -405,7 +448,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     default:
       migrationScript = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   }
-  callback(base::SysNSStringToUTF8(migrationScript), 10);
+  std::move(callback).Run(base::SysNSStringToUTF8(migrationScript), 10);
 }
 
 - (NSString*)randomStatePath {
@@ -446,132 +489,121 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateRewardsWallet(
-      "",
-      base::BindOnce(^(ledger::mojom::CreateRewardsWalletResult create_result) {
-        const auto strongSelf = weakSelf;
-        if (!strongSelf) {
-          return;
-        }
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->CreateRewardsWallet(
+        "", base::BindOnce(^(
+                ledger::mojom::CreateRewardsWalletResult create_result) {
+          const auto strongSelf = weakSelf;
+          if (!strongSelf) {
+            return;
+          }
 
-        ledger::mojom::Result result =
-            create_result == ledger::mojom::CreateRewardsWalletResult::kSuccess
-                ? ledger::mojom::Result::LEDGER_OK
-                : ledger::mojom::Result::LEDGER_ERROR;
+          ledger::mojom::Result result =
+              create_result ==
+                      ledger::mojom::CreateRewardsWalletResult::kSuccess
+                  ? ledger::mojom::Result::LEDGER_OK
+                  : ledger::mojom::Result::LEDGER_ERROR;
 
-        NSError* error = nil;
-        if (result != ledger::mojom::Result::LEDGER_OK) {
-          std::map<ledger::mojom::Result, std::string> errorDescriptions{
-              {ledger::mojom::Result::LEDGER_ERROR,
-               "The wallet was already initialized"},
-              {ledger::mojom::Result::BAD_REGISTRATION_RESPONSE,
-               "Request credentials call failure or malformed data"},
-              {ledger::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
-               "Missing master user token from registered persona"},
-          };
-          NSDictionary* userInfo = @{};
-          const auto description =
-              errorDescriptions[static_cast<ledger::mojom::Result>(result)];
-          if (description.length() > 0) {
-            userInfo = @{
-              NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)
+          NSError* error = nil;
+          if (result != ledger::mojom::Result::LEDGER_OK) {
+            std::map<ledger::mojom::Result, std::string> errorDescriptions{
+                {ledger::mojom::Result::LEDGER_ERROR,
+                 "The wallet was already initialized"},
+                {ledger::mojom::Result::BAD_REGISTRATION_RESPONSE,
+                 "Request credentials call failure or malformed data"},
+                {ledger::mojom::Result::REGISTRATION_VERIFICATION_FAILED,
+                 "Missing master user token from registered persona"},
             };
-          }
-          error = [NSError errorWithDomain:BraveLedgerErrorDomain
-                                      code:static_cast<NSInteger>(result)
-                                  userInfo:userInfo];
-        }
-
-        [strongSelf startNotificationTimers];
-        strongSelf.initializingWallet = NO;
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-          if (completion) {
-            completion(error);
-          }
-
-          for (BraveLedgerObserver* observer in [strongSelf.observers copy]) {
-            if (observer.walletInitalized) {
-              observer.walletInitalized(static_cast<LedgerResult>(result));
+            NSDictionary* userInfo = @{};
+            const auto description =
+                errorDescriptions[static_cast<ledger::mojom::Result>(result)];
+            if (description.length() > 0) {
+              userInfo = @{
+                NSLocalizedDescriptionKey : base::SysUTF8ToNSString(description)
+              };
             }
+            error = [NSError errorWithDomain:BraveLedgerErrorDomain
+                                        code:static_cast<NSInteger>(result)
+                                    userInfo:userInfo];
           }
-        });
-      }));
+
+          [strongSelf startNotificationTimers];
+          strongSelf.initializingWallet = NO;
+
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+              completion(error);
+            }
+
+            for (BraveLedgerObserver* observer in [strongSelf.observers copy]) {
+              if (observer.walletInitalized) {
+                observer.walletInitalized(static_cast<LedgerResult>(result));
+              }
+            }
+          });
+        }));
+  }];
 }
 
 - (void)currentWalletInfo:
     (void (^)(LedgerRewardsWallet* _Nullable wallet))completion {
-  ledger->GetRewardsWallet(^(ledger::mojom::RewardsWalletPtr wallet) {
-    if (wallet.get() == nullptr) {
-      completion(nil);
-      return;
-    }
-    const auto bridgedWallet =
-        [[LedgerRewardsWallet alloc] initWithRewardsWallet:*wallet];
-    completion(bridgedWallet);
-  });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetRewardsWallet(
+        base::BindOnce(^(ledger::mojom::RewardsWalletPtr wallet) {
+          const auto bridgedWallet =
+              wallet.get() != nullptr
+                  ? [[LedgerRewardsWallet alloc] initWithRewardsWallet:*wallet]
+                  : nil;
+          dispatch_async(dispatch_get_main_queue(), ^{
+            completion(bridgedWallet);
+          });
+        }));
+  }];
 }
 
 - (void)getRewardsParameters:
     (void (^)(LedgerRewardsParameters* _Nullable))completion {
-  ledger->GetRewardsParameters(base::BindOnce(^(
-      ledger::mojom::RewardsParametersPtr info) {
-    if (info) {
-      self.rewardsParameters = [[LedgerRewardsParameters alloc]
-          initWithRewardsParametersPtr:std::move(info)];
-    } else {
-      self.rewardsParameters = nil;
-    }
-    const auto __weak weakSelf = self;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      if (completion) {
-        completion(weakSelf.rewardsParameters);
-      }
-    });
-  }));
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetRewardsParameters(
+        base::BindOnce(^(ledger::mojom::RewardsParametersPtr info) {
+          if (info) {
+            self.rewardsParameters = [[LedgerRewardsParameters alloc]
+                initWithRewardsParametersPtr:std::move(info)];
+          } else {
+            self.rewardsParameters = nil;
+          }
+          const auto __weak weakSelf = self;
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+              completion(weakSelf.rewardsParameters);
+            }
+          });
+        }));
+  }];
 }
 
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
-  ledger->FetchBalance(base::BindOnce(
-      ^(base::expected<ledger::mojom::BalancePtr,
-                       ledger::mojom::FetchBalanceError> result) {
-        const auto strongSelf = weakSelf;
-        if (result.has_value()) {
-          strongSelf.balance = [[LedgerBalance alloc]
-              initWithBalancePtr:std::move(result.value())];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-          for (BraveLedgerObserver* observer in [self.observers copy]) {
-            if (observer.fetchedBalance) {
-              observer.fetchedBalance();
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->FetchBalance(base::BindOnce(
+        ^(base::expected<ledger::mojom::BalancePtr,
+                         ledger::mojom::FetchBalanceError> result) {
+          const auto strongSelf = weakSelf;
+          if (result.has_value()) {
+            strongSelf.balance = [[LedgerBalance alloc]
+                initWithBalancePtr:std::move(result.value())];
+          }
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+              completion(strongSelf.balance);
             }
-          }
-          if (completion) {
-            completion(strongSelf.balance);
-          }
-        });
-      }));
+          });
+        }));
+  }];
 }
 
-- (void)pendingContributionsTotal:(void (^)(double amount))completion {
-  ledger->GetPendingContributionsTotal(^(double total) {
-    completion(total);
-  });
-}
-
-- (void)drainStatusForDrainId:(NSString*)drainId
-                   completion:(void (^)(LedgerResult result,
-                                        LedgerDrainStatus status))completion {
-  ledger->GetDrainStatus(
-      base::SysNSStringToUTF8(drainId),
-      ^(ledger::mojom::Result result, ledger::mojom::DrainStatus status) {
-        completion(static_cast<LedgerResult>(result),
-                   static_cast<LedgerDrainStatus>(status));
-      });
-}
-
-- (std::string)getLegacyWallet {
+- (void)legacyWallet:
+    (ledger::mojom::LedgerClient::GetLegacyWalletCallback)callback {
   NSDictionary* externalWallets =
       self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
   std::string wallet;
@@ -585,7 +617,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
       wallet = base::SysNSStringToUTF8(dataString);
     }
   }
-  return wallet;
+  std::move(callback).Run(wallet);
 }
 
 #pragma mark - Publishers
@@ -595,125 +627,80 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                            filter:(LedgerActivityInfoFilter*)filter
                        completion:(void (^)(NSArray<LedgerPublisherInfo*>*))
                                       completion {
-  auto cppFilter =
-      filter ? filter.cppObjPtr : ledger::mojom::ActivityInfoFilter::New();
-  if (filter.excluded == LedgerExcludeFilterFilterExcluded) {
-    ledger->GetExcludedList(^(
-        std::vector<ledger::mojom::PublisherInfoPtr> list) {
-      const auto publishers = NSArrayFromVector(
-          &list,
-          ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-            return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-          });
-      completion(publishers);
-    });
-  } else {
-    ledger->GetActivityInfoList(
-        start, limit, std::move(cppFilter),
-        ^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
-          const auto publishers = NSArrayFromVector(
-              &list, ^LedgerPublisherInfo*(
-                  const ledger::mojom::PublisherInfoPtr& info) {
-                return
-                    [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-              });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    auto cppFilter =
+        filter ? filter.cppObjPtr : ledger::mojom::ActivityInfoFilter::New();
+    if (filter.excluded == LedgerExcludeFilterFilterExcluded) {
+      ledger->GetExcludedList(base::BindOnce(^(
+          std::vector<ledger::mojom::PublisherInfoPtr> list) {
+        const auto publishers = NSArrayFromVector(
+            &list,
+            ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
+              return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+            });
+        dispatch_async(dispatch_get_main_queue(), ^{
           completion(publishers);
         });
-  }
+      }));
+    } else {
+      ledger->GetActivityInfoList(
+          start, limit, std::move(cppFilter),
+          base::BindOnce(^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
+            const auto publishers = NSArrayFromVector(
+                &list, ^LedgerPublisherInfo*(
+                    const ledger::mojom::PublisherInfoPtr& info) {
+                  return
+                      [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+                });
+            dispatch_async(dispatch_get_main_queue(), ^{
+              completion(publishers);
+            });
+          }));
+    }
+  }];
 }
 
 - (void)fetchPublisherActivityFromURL:(NSURL*)URL
                            faviconURL:(nullable NSURL*)faviconURL
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId {
-  if (!URL.absoluteString) {
-    return;
-  }
-
-  GURL parsedUrl(base::SysNSStringToUTF8(URL.absoluteString));
-
-  if (!parsedUrl.is_valid()) {
-    return;
-  }
-
-  url::Origin origin = url::Origin::Create(parsedUrl);
-  std::string baseDomain = GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-
-  if (baseDomain == "") {
-    return;
-  }
-
-  ledger::mojom::VisitDataPtr visitData = ledger::mojom::VisitData::New();
-  visitData->domain = visitData->name = baseDomain;
-  visitData->path = parsedUrl.PathForRequest();
-  visitData->url = origin.Serialize();
-
-  if (faviconURL.absoluteString) {
-    visitData->favicon_url = base::SysNSStringToUTF8(faviconURL.absoluteString);
-  }
-
-  std::string blob = std::string();
-  if (publisherBlob) {
-    blob = base::SysNSStringToUTF8(publisherBlob);
-  }
-
-  ledger->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
-}
-
-- (void)updatePublisherExclusionState:(NSString*)publisherId
-                                state:(LedgerPublisherExclude)state {
-  ledger->SetPublisherExclude(
-      base::SysNSStringToUTF8(publisherId),
-      (ledger::mojom::PublisherExclude)state,
-      base::BindOnce(^(ledger::mojom::Result result) {
-        if (result != ledger::mojom::Result::LEDGER_OK) {
-          return;
-        }
-        for (BraveLedgerObserver* observer in [self.observers copy]) {
-          if (observer.excludedSitesChanged) {
-            observer.excludedSitesChanged(publisherId, state);
-          }
-        }
-      }));
-}
-
-- (void)restoreAllExcludedPublishers {
-  ledger->RestorePublishers(base::BindOnce(^(ledger::mojom::Result result) {
-    if (result != ledger::mojom::Result::LEDGER_OK) {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    if (!URL.absoluteString) {
       return;
     }
 
-    for (BraveLedgerObserver* observer in [self.observers copy]) {
-      if (observer.excludedSitesChanged) {
-        observer.excludedSitesChanged(
-            @"-1", static_cast<LedgerPublisherExclude>(
-                       ledger::mojom::PublisherExclude::ALL));
-      }
-    }
-  }));
-}
+    GURL parsedUrl(base::SysNSStringToUTF8(URL.absoluteString));
 
-- (void)publisherBannerForId:(NSString*)publisherId
-                  completion:(void (^)(LedgerPublisherBanner* _Nullable banner))
-                                 completion {
-  ledger->GetPublisherBanner(base::SysNSStringToUTF8(publisherId), ^(
-                                 ledger::mojom::PublisherBannerPtr banner) {
-    auto bridgedBanner =
-        banner.get() != nullptr
-            ? [[LedgerPublisherBanner alloc] initWithPublisherBanner:*banner]
-            : nil;
-    // native libs prefixes the logo and background image with this URL scheme
-    const auto imagePrefix = @"chrome://rewards-image/";
-    bridgedBanner.background = [bridgedBanner.background
-        stringByReplacingOccurrencesOfString:imagePrefix
-                                  withString:@""];
-    bridgedBanner.logo =
-        [bridgedBanner.logo stringByReplacingOccurrencesOfString:imagePrefix
-                                                      withString:@""];
-    completion(bridgedBanner);
-  });
+    if (!parsedUrl.is_valid()) {
+      return;
+    }
+
+    url::Origin origin = url::Origin::Create(parsedUrl);
+    std::string baseDomain = GetDomainAndRegistry(
+        origin.host(),
+        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+    if (baseDomain == "") {
+      return;
+    }
+
+    ledger::mojom::VisitDataPtr visitData = ledger::mojom::VisitData::New();
+    visitData->domain = visitData->name = baseDomain;
+    visitData->path = parsedUrl.PathForRequest();
+    visitData->url = origin.Serialize();
+
+    if (faviconURL.absoluteString) {
+      visitData->favicon_url =
+          base::SysNSStringToUTF8(faviconURL.absoluteString);
+    }
+
+    std::string blob = std::string();
+    if (publisherBlob) {
+      blob = base::SysNSStringToUTF8(publisherBlob);
+    }
+
+    ledger->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
+  }];
 }
 
 - (void)refreshPublisherWithId:(NSString*)publisherId
@@ -723,95 +710,42 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     completion(LedgerPublisherStatusNotVerified);
     return;
   }
-  ledger->RefreshPublisher(base::SysNSStringToUTF8(publisherId), ^(
-                               ledger::mojom::PublisherStatus status) {
-    completion(static_cast<LedgerPublisherStatus>(status));
-  });
-}
-
-#pragma mark - SKUs
-
-- (void)processSKUItems:(NSArray<LedgerSKUOrderItem*>*)items
-             completion:
-                 (void (^)(LedgerResult result, NSString* orderID))completion {
-  ledger->ProcessSKU(
-      VectorFromNSArray(items,
-                        ^ledger::mojom::SKUOrderItem(LedgerSKUOrderItem* item) {
-                          return *item.cppObjPtr;
-                        }),
-      ledger::constant::kWalletUnBlinded,
-      ^(const ledger::mojom::Result result, const std::string& order_id) {
-        completion(static_cast<LedgerResult>(result),
-                   base::SysUTF8ToNSString(order_id));
-      });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->RefreshPublisher(
+        base::SysNSStringToUTF8(publisherId),
+        base::BindOnce(^(ledger::mojom::PublisherStatus status) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            completion(static_cast<LedgerPublisherStatus>(status));
+          });
+        }));
+  }];
 }
 
 #pragma mark - Tips
 
 - (void)listRecurringTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion {
-  ledger->GetRecurringTips(
-      ^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
-        const auto publishers = NSArrayFromVector(
-            &list,
-            ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-              return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-            });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetRecurringTips(base::BindOnce(^(
+        std::vector<ledger::mojom::PublisherInfoPtr> list) {
+      const auto publishers = NSArrayFromVector(
+          &list,
+          ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
+            return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
+          });
+      dispatch_async(dispatch_get_main_queue(), ^{
         completion(publishers);
       });
-}
-
-- (void)addRecurringTipToPublisherWithId:(NSString*)publisherId
-                                  amount:(double)amount
-                              completion:(void (^)(BOOL success))completion {
-  ledger::mojom::RecurringTipPtr info = ledger::mojom::RecurringTip::New();
-  info->publisher_key = base::SysNSStringToUTF8(publisherId);
-  info->amount = amount;
-  info->created_at = [[NSDate date] timeIntervalSince1970];
-  ledger->SaveRecurringTip(std::move(info), ^(ledger::mojom::Result result) {
-    const auto success = (result == ledger::mojom::Result::LEDGER_OK);
-    if (success) {
-      for (BraveLedgerObserver* observer in [self.observers copy]) {
-        if (observer.recurringTipAdded) {
-          observer.recurringTipAdded(publisherId);
-        }
-      }
-    }
-    completion(success);
-  });
+    }));
+  }];
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  ledger->RemoveRecurringTip(
-      base::SysNSStringToUTF8(publisherId), ^(ledger::mojom::Result result) {
-        if (result == ledger::mojom::Result::LEDGER_OK) {
-          for (BraveLedgerObserver* observer in [self.observers copy]) {
-            if (observer.recurringTipRemoved) {
-              observer.recurringTipRemoved(publisherId);
-            }
-          }
-        }
-      });
-}
-
-- (void)listOneTimeTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion {
-  ledger->GetOneTimeTips(^(std::vector<ledger::mojom::PublisherInfoPtr> list) {
-    const auto publishers = NSArrayFromVector(
-        &list,
-        ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-          return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-        });
-    completion(publishers);
-  });
-}
-
-- (void)tipPublisherDirectly:(LedgerPublisherInfo*)publisher
-                      amount:(double)amount
-                    currency:(NSString*)currency
-                  completion:(void (^)(LedgerResult result))completion {
-  ledger->OneTimeTip(base::SysNSStringToUTF8(publisher.id), amount,
-                     ^(ledger::mojom::Result result) {
-                       completion(static_cast<LedgerResult>(result));
-                     });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->RemoveRecurringTip(base::SysNSStringToUTF8(publisherId),
+                               base::BindOnce(^(ledger::mojom::Result result){
+                                   // Not Used
+                               }));
+  }];
 }
 
 #pragma mark - Grants
@@ -832,67 +766,61 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 }
 
 - (void)updatePendingAndFinishedPromotions:(void (^)())completion {
-  ledger->GetAllPromotions(^(
-      base::flat_map<std::string, ledger::mojom::PromotionPtr> map) {
-    NSMutableArray* promos = [[NSMutableArray alloc] init];
-    for (auto it = map.begin(); it != map.end(); ++it) {
-      if (it->second.get() != nullptr) {
-        [promos
-            addObject:[[LedgerPromotion alloc] initWithPromotion:*it->second]];
-      }
-    }
-    for (LedgerPromotion* promo in [self.mPendingPromotions copy]) {
-      [self
-          clearNotificationWithID:[self
-                                      notificationIDForPromo:promo.cppObjPtr]];
-    }
-    [self.mFinishedPromotions removeAllObjects];
-    [self.mPendingPromotions removeAllObjects];
-    for (LedgerPromotion* promotion in promos) {
-      if (promotion.status == LedgerPromotionStatusFinished) {
-        [self.mFinishedPromotions addObject:promotion];
-      } else if (promotion.status == LedgerPromotionStatusActive ||
-                 promotion.status == LedgerPromotionStatusAttested) {
-        [self.mPendingPromotions addObject:promotion];
-        bool isUGP = promotion.type == LedgerPromotionTypeUgp;
-        auto notificationKind = isUGP ? RewardsNotificationKindGrant
-                                      : RewardsNotificationKindGrantAds;
-
-        [self addNotificationOfKind:notificationKind
-                           userInfo:nil
-                     notificationID:[self notificationIDForPromo:promotion
-                                                                     .cppObjPtr]
-                           onlyOnce:YES];
-      }
-    }
-    if (completion) {
-      completion();
-    }
-    for (BraveLedgerObserver* observer in [self.observers copy]) {
-      if (observer.promotionsAdded) {
-        observer.promotionsAdded(self.pendingPromotions);
-      }
-      if (observer.finishedPromotionsAdded) {
-        observer.finishedPromotionsAdded(self.finishedPromotions);
-      }
-    }
-  });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetAllPromotions(base::BindOnce(
+        ^(base::flat_map<std::string, ledger::mojom::PromotionPtr> map) {
+          NSMutableArray* promos = [[NSMutableArray alloc] init];
+          for (auto it = map.begin(); it != map.end(); ++it) {
+            if (it->second.get() != nullptr) {
+              [promos addObject:[[LedgerPromotion alloc]
+                                    initWithPromotion:*it->second]];
+            }
+          }
+          [self.mFinishedPromotions removeAllObjects];
+          [self.mPendingPromotions removeAllObjects];
+          for (LedgerPromotion* promotion in promos) {
+            if (promotion.status == LedgerPromotionStatusFinished) {
+              [self.mFinishedPromotions addObject:promotion];
+            } else if (promotion.status == LedgerPromotionStatusActive ||
+                       promotion.status == LedgerPromotionStatusAttested) {
+              [self.mPendingPromotions addObject:promotion];
+            }
+          }
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+              completion();
+            }
+            for (BraveLedgerObserver* observer in [self.observers copy]) {
+              if (observer.promotionsAdded) {
+                observer.promotionsAdded(self.pendingPromotions);
+              }
+              if (observer.finishedPromotionsAdded) {
+                observer.finishedPromotionsAdded(self.finishedPromotions);
+              }
+            }
+          });
+        }));
+  }];
 }
 
 - (void)fetchPromotions:
     (nullable void (^)(NSArray<LedgerPromotion*>* grants))completion {
-  ledger->FetchPromotions(
-      base::BindOnce(^(ledger::mojom::Result result,
-                       std::vector<ledger::mojom::PromotionPtr> promotions) {
-        if (result != ledger::mojom::Result::LEDGER_OK) {
-          return;
-        }
-        [self updatePendingAndFinishedPromotions:^{
-          if (completion) {
-            completion(self.pendingPromotions);
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->FetchPromotions(
+        base::BindOnce(^(ledger::mojom::Result result,
+                         std::vector<ledger::mojom::PromotionPtr> promotions) {
+          if (result != ledger::mojom::Result::LEDGER_OK) {
+            return;
           }
-        }];
-      }));
+          [self updatePendingAndFinishedPromotions:^{
+            if (completion) {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                completion(self.pendingPromotions);
+              });
+            }
+          }];
+        }));
+  }];
 }
 
 - (void)claimPromotion:(NSString*)promotionId
@@ -905,19 +833,23 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                                                         options:0
                                                           error:nil];
   if (!jsonData) {
-    BLOG(0, @"Missing JSON payload while attempting to claim promotion");
+    LLOG(0, @"Missing JSON payload while attempting to claim promotion");
     return;
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData
                                                 encoding:NSUTF8StringEncoding];
-  ledger->ClaimPromotion(
-      base::SysNSStringToUTF8(promotionId), base::SysNSStringToUTF8(jsonString),
-      base::BindOnce(^(ledger::mojom::Result result, const std::string& nonce) {
-        const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
-        dispatch_async(dispatch_get_main_queue(), ^{
-          completion(static_cast<LedgerResult>(result), bridgedNonce);
-        });
-      }));
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->ClaimPromotion(
+        base::SysNSStringToUTF8(promotionId),
+        base::SysNSStringToUTF8(jsonString),
+        base::BindOnce(
+            ^(ledger::mojom::Result result, const std::string& nonce) {
+              const auto bridgedNonce = base::SysUTF8ToNSString(nonce);
+              dispatch_async(dispatch_get_main_queue(), ^{
+                completion(static_cast<LedgerResult>(result), bridgedNonce);
+              });
+            }));
+  }];
 }
 
 - (void)attestPromotion:(NSString*)promotionId
@@ -925,102 +857,55 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
              completion:
                  (void (^)(LedgerResult result,
                            LedgerPromotion* _Nullable promotion))completion {
-  ledger->AttestPromotion(
-      base::SysNSStringToUTF8(promotionId),
-      base::SysNSStringToUTF8(solution.JSONPayload),
-      base::BindOnce(^(ledger::mojom::Result result,
-                       ledger::mojom::PromotionPtr promotion) {
-        if (promotion.get() == nullptr) {
-          if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              completion(static_cast<LedgerResult>(result), nil);
-            });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->AttestPromotion(
+        base::SysNSStringToUTF8(promotionId),
+        base::SysNSStringToUTF8(solution.JSONPayload),
+        base::BindOnce(^(ledger::mojom::Result result,
+                         ledger::mojom::PromotionPtr promotion) {
+          if (promotion.get() == nullptr) {
+            if (completion) {
+              dispatch_async(dispatch_get_main_queue(), ^{
+                completion(static_cast<LedgerResult>(result), nil);
+              });
+            }
+            return;
           }
-          return;
-        }
 
-        const auto bridgedPromotion =
-            [[LedgerPromotion alloc] initWithPromotion:*promotion];
-        if (result == ledger::mojom::Result::LEDGER_OK) {
-          [self fetchBalance:nil];
-          [self clearNotificationWithID:
-                    [self notificationIDForPromo:std::move(promotion)]];
-        }
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-          if (completion) {
-            completion(static_cast<LedgerResult>(result), bridgedPromotion);
-          }
+          const auto bridgedPromotion =
+              [[LedgerPromotion alloc] initWithPromotion:*promotion];
           if (result == ledger::mojom::Result::LEDGER_OK) {
-            for (BraveLedgerObserver* observer in [self.observers copy]) {
-              if (observer.promotionClaimed) {
-                observer.promotionClaimed(bridgedPromotion);
+            [self fetchBalance:nil];
+          }
+
+          dispatch_async(dispatch_get_main_queue(), ^{
+            if (completion) {
+              completion(static_cast<LedgerResult>(result), bridgedPromotion);
+            }
+            if (result == ledger::mojom::Result::LEDGER_OK) {
+              for (BraveLedgerObserver* observer in [self.observers copy]) {
+                if (observer.promotionClaimed) {
+                  observer.promotionClaimed(bridgedPromotion);
+                }
               }
             }
-          }
-        });
-      }));
-}
-
-#pragma mark - History
-
-- (void)balanceReportForMonth:(LedgerActivityMonth)month
-                         year:(int)year
-                   completion:
-                       (void (^)(LedgerBalanceReportInfo* _Nullable info))
-                           completion {
-  ledger->GetBalanceReport(
-      (ledger::mojom::ActivityMonth)month, year,
-      ^(const ledger::mojom::Result result,
-        ledger::mojom::BalanceReportInfoPtr info) {
-        auto bridgedInfo = info.get() != nullptr
-                               ? [[LedgerBalanceReportInfo alloc]
-                                     initWithBalanceReportInfo:*info.get()]
-                               : nil;
-        completion(result == ledger::mojom::Result::LEDGER_OK ? bridgedInfo
-                                                              : nil);
-      });
-}
-
-- (nullable LedgerAutoContributeProperties*)autoContributeProperties {
-  ledger::mojom::AutoContributePropertiesPtr props =
-      ledger->GetAutoContributeProperties();
-  if (!props) {
-    return nil;
-  }
-  return [[LedgerAutoContributeProperties alloc]
-      initWithAutoContributePropertiesPtr:std::move(props)];
+          });
+        }));
+  }];
 }
 
 #pragma mark - Pending Contributions
 
-- (void)pendingContributions:
-    (void (^)(NSArray<LedgerPendingContributionInfo*>* publishers))completion {
-  ledger->GetPendingContributions(
-      ^(std::vector<ledger::mojom::PendingContributionInfoPtr> list) {
-        const auto convetedList = NSArrayFromVector(
-            &list, ^LedgerPendingContributionInfo*(
-                const ledger::mojom::PendingContributionInfoPtr& info) {
-              return [[LedgerPendingContributionInfo alloc]
-                  initWithPendingContributionInfo:*info];
-            });
-        completion(convetedList);
-      });
-}
-
-- (void)removePendingContribution:(LedgerPendingContributionInfo*)info
-                       completion:(void (^)(LedgerResult result))completion {
-  ledger->RemovePendingContribution(
-      info.id, ^(const ledger::mojom::Result result) {
-        completion(static_cast<LedgerResult>(result));
-      });
-}
-
 - (void)removeAllPendingContributions:
     (void (^)(LedgerResult result))completion {
-  ledger->RemoveAllPendingContributions(^(const ledger::mojom::Result result) {
-    completion(static_cast<LedgerResult>(result));
-  });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->RemoveAllPendingContributions(
+        base::BindOnce(^(const ledger::mojom::Result result) {
+          dispatch_async(dispatch_get_main_queue(), ^{
+            completion(static_cast<LedgerResult>(result));
+          });
+        }));
+  }];
 }
 
 #pragma mark - Reconcile
@@ -1029,43 +914,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                contribution:(ledger::mojom::ContributionInfoPtr)contribution {
   // TODO we changed from probi to amount, so from string to double
   if (result == ledger::mojom::Result::LEDGER_OK) {
-    if (contribution->type == ledger::mojom::RewardsType::RECURRING_TIP) {
-      [self showTipsProcessedNotificationIfNeccessary];
-    }
     [self fetchBalance:nil];
-  }
-
-  if ((result == ledger::mojom::Result::LEDGER_OK &&
-       contribution->type == ledger::mojom::RewardsType::AUTO_CONTRIBUTE) ||
-      result == ledger::mojom::Result::LEDGER_ERROR ||
-      result == ledger::mojom::Result::NOT_ENOUGH_FUNDS ||
-      result == ledger::mojom::Result::TIP_ERROR) {
-    const auto contributionId =
-        base::SysUTF8ToNSString(contribution->contribution_id);
-    const auto info = @{
-      @"viewingId" : contributionId,
-      @"result" : @((LedgerResult)result),
-      @"type" : @((LedgerRewardsType)contribution->type),
-      @"amount" : [@(contribution->amount) stringValue]
-    };
-
-    [self addNotificationOfKind:RewardsNotificationKindAutoContribute
-                       userInfo:info
-                 notificationID:[NSString stringWithFormat:@"contribution_%@",
-                                                           contributionId]];
-  }
-
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.balanceReportUpdated) {
-      observer.balanceReportUpdated();
-    }
-    if (observer.reconcileCompleted) {
-      observer.reconcileCompleted(
-          static_cast<LedgerResult>(result),
-          base::SysUTF8ToNSString(contribution->contribution_id),
-          static_cast<LedgerRewardsType>(contribution->type),
-          [@(contribution->amount) stringValue]);
-    }
   }
 }
 
@@ -1073,28 +922,53 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 
 - (void)rewardsInternalInfo:
     (void (^)(LedgerRewardsInternalsInfo* _Nullable info))completion {
-  ledger->GetRewardsInternalsInfo(
-      ^(ledger::mojom::RewardsInternalsInfoPtr info) {
-        auto bridgedInfo = info.get() != nullptr
-                               ? [[LedgerRewardsInternalsInfo alloc]
-                                     initWithRewardsInternalsInfo:*info.get()]
-                               : nil;
-        completion(bridgedInfo);
-      });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetRewardsInternalsInfo(
+        base::BindOnce(^(ledger::mojom::RewardsInternalsInfoPtr info) {
+          auto bridgedInfo = info.get() != nullptr
+                                 ? [[LedgerRewardsInternalsInfo alloc]
+                                       initWithRewardsInternalsInfo:*info.get()]
+                                 : nil;
+          dispatch_async(dispatch_get_main_queue(), ^{
+            completion(bridgedInfo);
+          });
+        }));
+  }];
 }
 
 - (void)allContributions:
     (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion {
-  ledger->GetAllContributions(^(
-      std::vector<ledger::mojom::ContributionInfoPtr> list) {
-    const auto convetedList =
-        NSArrayFromVector(&list, ^LedgerContributionInfo*(
-                              const ledger::mojom::ContributionInfoPtr& info) {
-          return
-              [[LedgerContributionInfo alloc] initWithContributionInfo:*info];
-        });
-    completion(convetedList);
-  });
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetAllContributions(
+        base::BindOnce(^(std::vector<ledger::mojom::ContributionInfoPtr> list) {
+          const auto convetedList = NSArrayFromVector(
+              &list, ^LedgerContributionInfo*(
+                  const ledger::mojom::ContributionInfoPtr& info) {
+                return [[LedgerContributionInfo alloc]
+                    initWithContributionInfo:*info];
+              });
+          dispatch_async(dispatch_get_main_queue(), ^{
+            completion(convetedList);
+          });
+        }));
+  }];
+}
+
+- (void)fetchAutoContributeProperties:
+    (void (^)(LedgerAutoContributeProperties* _Nullable properties))completion {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->GetAutoContributeProperties(
+        base::BindOnce(^(ledger::mojom::AutoContributePropertiesPtr props) {
+          auto properties =
+              props.get() != nullptr
+                  ? [[LedgerAutoContributeProperties alloc]
+                        initWithAutoContributePropertiesPtr:std::move(props)]
+                  : nil;
+          dispatch_async(dispatch_get_main_queue(), ^{
+            completion(properties);
+          });
+        }));
+  }];
 }
 
 #pragma mark - Reporting
@@ -1104,12 +978,18 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
+  const auto time = [[NSDate date] timeIntervalSince1970];
   if (_selectedTabId != selectedTabId) {
-    ledger->OnHide(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
+    const auto oldTabId = _selectedTabId;
+    [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+      ledger->OnHide(oldTabId, time);
+    }];
   }
   _selectedTabId = selectedTabId;
   if (_selectedTabId > 0) {
-    ledger->OnShow(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
+    [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+      ledger->OnShow(selectedTabId, time);
+    }];
   }
 }
 
@@ -1118,8 +998,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  ledger->OnForeground(self.selectedTabId,
-                       [[NSDate date] timeIntervalSince1970]);
+  const auto time = [[NSDate date] timeIntervalSince1970];
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->OnForeground(self.selectedTabId, time);
+  }];
 
   // Check if the last notification check was more than a day ago
   if (fabs([self.lastNotificationCheckDate timeIntervalSinceNow]) > kOneDay) {
@@ -1132,8 +1014,10 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  ledger->OnBackground(self.selectedTabId,
-                       [[NSDate date] timeIntervalSince1970]);
+  const auto time = [[NSDate date] timeIntervalSince1970];
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->OnBackground(self.selectedTabId, time);
+  }];
 }
 
 - (void)reportLoadedPageWithURL:(NSURL*)url tabId:(UInt32)tabId {
@@ -1141,26 +1025,30 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
-  url::Origin origin = url::Origin::Create(parsedUrl);
-  const std::string baseDomain = GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const auto time = [[NSDate date] timeIntervalSince1970];
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
+    url::Origin origin = url::Origin::Create(parsedUrl);
+    const std::string baseDomain = GetDomainAndRegistry(
+        origin.host(),
+        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
-  if (baseDomain == "") {
-    return;
-  }
+    if (baseDomain == "") {
+      return;
+    }
 
-  const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
+    const std::string publisher_url =
+        origin.scheme() + "://" + baseDomain + "/";
 
-  ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
-  data->name = baseDomain;
-  data->domain = origin.host();
-  data->path = parsedUrl.path();
-  data->tab_id = tabId;
-  data->url = publisher_url;
+    ledger::mojom::VisitDataPtr data = ledger::mojom::VisitData::New();
+    data->name = baseDomain;
+    data->domain = origin.host();
+    data->path = parsedUrl.path();
+    data->tab_id = tabId;
+    data->url = publisher_url;
 
-  ledger->OnLoad(std::move(data), [[NSDate date] timeIntervalSince1970]);
+    ledger->OnLoad(std::move(data), time);
+  }];
 }
 
 - (void)reportXHRLoad:(NSURL*)url
@@ -1171,28 +1059,31 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  base::flat_map<std::string, std::string> partsMap;
-  const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
-                                          resolvingAgainstBaseURL:NO];
-  for (NSURLQueryItem* item in urlComponents.queryItems) {
-    std::string value =
-        item.value != nil ? base::SysNSStringToUTF8(item.value) : "";
-    partsMap[base::SysNSStringToUTF8(item.name)] = value;
-  }
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    base::flat_map<std::string, std::string> partsMap;
+    const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
+                                            resolvingAgainstBaseURL:NO];
+    for (NSURLQueryItem* item in urlComponents.queryItems) {
+      std::string value =
+          item.value != nil ? base::SysNSStringToUTF8(item.value) : "";
+      partsMap[base::SysNSStringToUTF8(item.name)] = value;
+    }
 
-  auto visit = ledger::mojom::VisitData::New();
-  visit->path = base::SysNSStringToUTF8(url.absoluteString);
-  visit->tab_id = tabId;
+    auto visit = ledger::mojom::VisitData::New();
+    visit->path = base::SysNSStringToUTF8(url.absoluteString);
+    visit->tab_id = tabId;
 
-  std::string ref = referrerURL != nil
-                        ? base::SysNSStringToUTF8(referrerURL.absoluteString)
-                        : "";
-  std::string fpu = firstPartyURL != nil
-                        ? base::SysNSStringToUTF8(firstPartyURL.absoluteString)
-                        : "";
+    std::string ref = referrerURL != nil
+                          ? base::SysNSStringToUTF8(referrerURL.absoluteString)
+                          : "";
+    std::string fpu =
+        firstPartyURL != nil
+            ? base::SysNSStringToUTF8(firstPartyURL.absoluteString)
+            : "";
 
-  ledger->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
-                    partsMap, fpu, ref, std::move(visit));
+    ledger->OnXHRLoad(tabId, base::SysNSStringToUTF8(url.absoluteString),
+                      partsMap, fpu, ref, std::move(visit));
+  }];
 }
 
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId {
@@ -1200,249 +1091,282 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     return;
   }
 
-  ledger->OnUnload(tabId, [[NSDate date] timeIntervalSince1970]);
+  const auto time = [[NSDate date] timeIntervalSince1970];
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->OnUnload(tabId, time);
+  }];
 }
 
 #pragma mark - Preferences
 
-BATLedgerBridge(int,
-                minimumVisitDuration,
-                setMinimumVisitDuration,
-                GetPublisherMinVisitTime,
-                SetPublisherMinVisitTime)
-
-        BATLedgerBridge(int,
-                        minimumNumberOfVisits,
-                        setMinimumNumberOfVisits,
-                        GetPublisherMinVisits,
-                        SetPublisherMinVisits)
-
-            BATLedgerBridge(BOOL,
-                            allowUnverifiedPublishers,
-                            setAllowUnverifiedPublishers,
-                            GetPublisherAllowNonVerified,
-                            SetPublisherAllowNonVerified)
-
-                BATLedgerReadonlyBridge(double,
-                                        contributionAmount,
-                                        GetAutoContributionAmount)
-
-    - (void)setContributionAmount : (double)contributionAmount {
-  ledger->SetAutoContributionAmount(contributionAmount);
+- (void)setMinimumVisitDuration:(int)minimumVisitDuration {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->SetPublisherMinVisitTime(minimumVisitDuration);
+  }];
 }
 
-BATLedgerBridge(BOOL,
-                isAutoContributeEnabled,
-                setAutoContributeEnabled,
-                GetAutoContributeEnabled,
-                SetAutoContributeEnabled)
+- (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->SetPublisherMinVisits(minimumNumberOfVisits);
+  }];
+}
 
-    - (void)setBooleanState : (const std::string&)name value : (bool)value {
+- (void)setAllowUnverifiedPublishers:(bool)allowUnverifiedPublishers {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->SetPublisherAllowNonVerified(allowUnverifiedPublishers);
+  }];
+}
+
+- (void)setContributionAmount:(double)contributionAmount {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->SetAutoContributionAmount(contributionAmount);
+  }];
+}
+
+- (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
+  [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
+    ledger->SetAutoContributeEnabled(autoContributeEnabled);
+  }];
+}
+
+- (void)setBooleanState:(const std::string&)name
+                  value:(bool)value
+               callback:(ledger::mojom::LedgerClient::SetBooleanStateCallback)
+                            callback {
   const auto key = base::SysUTF8ToNSString(name);
   self.prefs[key] = [NSNumber numberWithBool:value];
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (bool)getBooleanState:(const std::string&)name {
+- (void)booleanState:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetBooleanStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
   if (![self.prefs objectForKey:key]) {
-    return NO;
+    std::move(callback).Run(false);
+    return;
   }
-
-  return [self.prefs[key] boolValue];
+  std::move(callback).Run([self.prefs[key] boolValue]);
 }
 
-- (void)setIntegerState:(const std::string&)name value:(int)value {
+- (void)setIntegerState:(const std::string&)name
+                  value:(int32_t)value
+               callback:(ledger::mojom::LedgerClient::SetIntegerStateCallback)
+                            callback {
   const auto key = base::SysUTF8ToNSString(name);
   self.prefs[key] = [NSNumber numberWithInt:value];
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (int)getIntegerState:(const std::string&)name {
+- (void)integerState:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetIntegerStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
-  return [self.prefs[key] intValue];
+  std::move(callback).Run([self.prefs[key] intValue]);
 }
 
-- (void)setDoubleState:(const std::string&)name value:(double)value {
+- (void)setDoubleState:(const std::string&)name
+                 value:(double)value
+              callback:(ledger::mojom::LedgerClient::SetDoubleStateCallback)
+                           callback {
   const auto key = base::SysUTF8ToNSString(name);
   self.prefs[key] = [NSNumber numberWithDouble:value];
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (double)getDoubleState:(const std::string&)name {
+- (void)doubleState:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetDoubleStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
-  return [self.prefs[key] doubleValue];
+  std::move(callback).Run([self.prefs[key] doubleValue]);
 }
 
 - (void)setStringState:(const std::string&)name
-                 value:(const std::string&)value {
+                 value:(const std::string&)value
+              callback:(ledger::mojom::LedgerClient::SetStringStateCallback)
+                           callback {
   const auto key = base::SysUTF8ToNSString(name);
   self.prefs[key] = base::SysUTF8ToNSString(value);
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (std::string)getStringState:(const std::string&)name {
+- (void)stringState:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetStringStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
   const auto value = (NSString*)self.prefs[key];
   if (!value) {
-    return "";
+    std::move(callback).Run("");
+    return;
   }
-  return base::SysNSStringToUTF8(value);
+  std::move(callback).Run(base::SysNSStringToUTF8(value));
 }
 
-- (void)setInt64State:(const std::string&)name value:(int64_t)value {
+- (void)setInt64State:(const std::string&)name
+                value:(int64_t)value
+             callback:
+                 (ledger::mojom::LedgerClient::SetInt64StateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
   self.prefs[key] = [NSNumber numberWithLongLong:value];
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (int64_t)getInt64State:(const std::string&)name {
+- (void)int64State:(const std::string&)name
+          callback:
+              (ledger::mojom::LedgerClient::GetInt64StateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
-  return [self.prefs[key] longLongValue];
+  std::move(callback).Run([self.prefs[key] longLongValue]);
 }
 
-- (void)setUint64State:(const std::string&)name value:(uint64_t)value {
+- (void)setUint64State:(const std::string&)name
+                 value:(uint64_t)value
+              callback:(ledger::mojom::LedgerClient::SetUint64StateCallback)
+                           callback {
   const auto key = base::SysUTF8ToNSString(name);
   self.prefs[key] = [NSNumber numberWithUnsignedLongLong:value];
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (uint64_t)getUint64State:(const std::string&)name {
+- (void)uint64State:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetUint64StateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
-  return [self.prefs[key] unsignedLongLongValue];
+  std::move(callback).Run([self.prefs[key] unsignedLongLongValue]);
 }
 
-- (void)setValueState:(const std::string&)name value:(base::Value)value {
+- (void)setValueState:(const std::string&)name
+                value:(base::Value)value
+             callback:
+                 (ledger::mojom::LedgerClient::SetValueStateCallback)callback {
   std::string json;
   if (base::JSONWriter::Write(value, &json)) {
     const auto key = base::SysUTF8ToNSString(name);
     self.prefs[key] = base::SysUTF8ToNSString(json);
     [self savePrefs];
   }
+  std::move(callback).Run();
 }
 
-- (base::Value)getValueState:(const std::string&)name {
+- (void)valueState:(const std::string&)name
+          callback:
+              (ledger::mojom::LedgerClient::GetValueStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
   const auto json = (NSString*)self.prefs[key];
   if (!json) {
-    return base::Value();
+    std::move(callback).Run(base::Value());
+    return;
   }
 
   auto value = base::JSONReader::Read(base::SysNSStringToUTF8(json));
   if (!value) {
-    return base::Value();
+    std::move(callback).Run(base::Value());
+    return;
   }
 
-  return std::move(*value);
+  std::move(callback).Run(std::move(*value));
 }
 
-- (void)setTimeState:(const std::string&)name time:(base::Time)time {
+- (void)setTimeState:(const std::string&)name
+               value:(base::Time)value
+            callback:
+                (ledger::mojom::LedgerClient::SetTimeStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
-  self.prefs[key] = @(time.ToDoubleT());
+  self.prefs[key] = @(value.ToDoubleT());
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (base::Time)getTimeState:(const std::string&)name {
+- (void)timeState:(const std::string&)name
+         callback:(ledger::mojom::LedgerClient::GetTimeStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
-  return base::Time::FromDoubleT([self.prefs[key] doubleValue]);
+  std::move(callback).Run(
+      base::Time::FromDoubleT([self.prefs[key] doubleValue]));
 }
 
-- (void)clearState:(const std::string&)name {
+- (void)clearState:(const std::string&)name
+          callback:(ledger::mojom::LedgerClient::ClearStateCallback)callback {
   const auto key = base::SysUTF8ToNSString(name);
   [self.prefs removeObjectForKey:key];
   [self savePrefs];
+  std::move(callback).Run();
 }
 
-- (bool)getBooleanOption:(const std::string&)name {
+- (void)booleanOption:(const std::string&)name
+             callback:(ledger::mojom::LedgerClient::GetBooleanOptionCallback)
+                          callback {
   DCHECK(!name.empty());
 
   const auto it = kBoolOptions.find(name);
   DCHECK(it != kBoolOptions.end());
 
-  return kBoolOptions.at(name);
+  std::move(callback).Run(kBoolOptions.at(name));
 }
 
-- (int)getIntegerOption:(const std::string&)name {
+- (void)integerOption:(const std::string&)name
+             callback:(ledger::mojom::LedgerClient::GetIntegerOptionCallback)
+                          callback {
   DCHECK(!name.empty());
 
   const auto it = kIntegerOptions.find(name);
   DCHECK(it != kIntegerOptions.end());
 
-  return kIntegerOptions.at(name);
+  std::move(callback).Run(kIntegerOptions.at(name));
 }
 
-- (double)getDoubleOption:(const std::string&)name {
+- (void)doubleOption:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetDoubleOptionCallback)callback {
   DCHECK(!name.empty());
 
   const auto it = kDoubleOptions.find(name);
   DCHECK(it != kDoubleOptions.end());
 
-  return kDoubleOptions.at(name);
+  std::move(callback).Run(kDoubleOptions.at(name));
 }
 
-- (std::string)getStringOption:(const std::string&)name {
+- (void)stringOption:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetStringOptionCallback)callback {
   DCHECK(!name.empty());
 
   const auto it = kStringOptions.find(name);
   DCHECK(it != kStringOptions.end());
 
-  return kStringOptions.at(name);
+  std::move(callback).Run(kStringOptions.at(name));
 }
 
-- (int64_t)getInt64Option:(const std::string&)name {
+- (void)int64Option:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetInt64OptionCallback)callback {
   DCHECK(!name.empty());
 
   const auto it = kInt64Options.find(name);
   DCHECK(it != kInt64Options.end());
 
-  return kInt64Options.at(name);
+  std::move(callback).Run(kInt64Options.at(name));
 }
 
-- (uint64_t)getUint64Option:(const std::string&)name {
+- (void)uint64Option:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetUint64OptionCallback)callback {
   DCHECK(!name.empty());
 
   const auto it = kUInt64Options.find(name);
   DCHECK(it != kUInt64Options.end());
 
-  return kUInt64Options.at(name);
+  std::move(callback).Run(kUInt64Options.at(name));
 }
 
 #pragma mark - Notifications
 
-- (NSArray<RewardsNotification*>*)notifications {
-  return [self.mNotifications copy];
-}
-
-- (void)clearNotificationWithID:(NSString*)notificationID {
-  for (RewardsNotification* n in self.notifications) {
-    if ([n.id isEqualToString:notificationID]) {
-      [self clearNotification:n];
-      return;
-    }
-  }
-}
-
-- (void)clearNotification:(RewardsNotification*)notification {
-  [self.mNotifications removeObject:notification];
-  [self writeNotificationsToDisk];
-
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.notificationsRemoved) {
-      observer.notificationsRemoved(@[ notification ]);
-    }
-  }
-}
-
 - (void)clearAllNotifications {
-  NSArray* notifications = [self.mNotifications copy];
-  [self.mNotifications removeAllObjects];
-  [self writeNotificationsToDisk];
-
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.notificationsRemoved) {
-      observer.notificationsRemoved(notifications);
-    }
-  }
+  // Not used on iOS
 }
 
 - (void)startNotificationTimers {
@@ -1464,140 +1388,29 @@ BATLedgerBridge(BOOL,
   [self fetchPromotions:nil];
 }
 
-- (void)showTipsProcessedNotificationIfNeccessary {
-  if (!self.autoContributeEnabled) {
-    return;
-  }
-  [self addNotificationOfKind:RewardsNotificationKindTipsProcessed
-                     userInfo:nil
-               notificationID:@"rewards_notification_tips_processed"];
-}
-
-- (void)addNotificationOfKind:(RewardsNotificationKind)kind
-                     userInfo:(nullable NSDictionary*)userInfo
-               notificationID:(nullable NSString*)identifier {
-  [self addNotificationOfKind:kind
-                     userInfo:userInfo
-               notificationID:identifier
-                     onlyOnce:NO];
-}
-
-- (void)addNotificationOfKind:(RewardsNotificationKind)kind
-                     userInfo:(nullable NSDictionary*)userInfo
-               notificationID:(nullable NSString*)identifier
-                     onlyOnce:(BOOL)onlyOnce {
-  NSParameterAssert(kind != RewardsNotificationKindInvalid);
-  NSString* notificationID = [identifier copy];
-  if (!identifier || identifier.length == 0) {
-    notificationID = [NSUUID UUID].UUIDString;
-  } else if (onlyOnce) {
-    const auto idx = [self.mNotifications
-        indexOfObjectPassingTest:^BOOL(RewardsNotification* _Nonnull obj,
-                                       NSUInteger index, BOOL* _Nonnull stop) {
-          return obj.displayed && [obj.id isEqualToString:identifier];
-        }];
-    if (idx != NSNotFound) {
-      return;
-    }
-  }
-
-  const auto notification = [[RewardsNotification alloc]
-      initWithID:notificationID
-       dateAdded:[[NSDate date] timeIntervalSince1970]
-            kind:kind
-        userInfo:userInfo];
-  if (onlyOnce) {
-    notification.displayed = YES;
-  }
-
-  [self.mNotifications addObject:notification];
-
-  // Post to observers
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.notificationAdded) {
-      observer.notificationAdded(notification);
-    }
-  }
-
-  [NSNotificationCenter.defaultCenter
-      postNotificationName:BraveLedgerNotificationAdded
-                    object:nil];
-
-  [self writeNotificationsToDisk];
-}
-
-- (void)readNotificationsFromDisk {
-  const auto path =
-      [self.storagePath stringByAppendingPathComponent:@"notifications"];
-  const auto data = [NSData dataWithContentsOfFile:path];
-  if (!data) {
-    // Nothing to read
-    self.mNotifications = [[NSMutableArray alloc] init];
-    return;
-  }
-
-  NSError* error;
-  self.mNotifications = [NSKeyedUnarchiver unarchivedObjectOfClass:NSArray.self
-                                                          fromData:data
-                                                             error:&error];
-  if (!self.mNotifications) {
-    self.mNotifications = [[NSMutableArray alloc] init];
-    if (error) {
-      BLOG(0, @"Failed to unarchive notifications on disk: %@",
-           error.debugDescription);
-    }
-  }
-}
-
-- (void)writeNotificationsToDisk {
-  const auto path =
-      [self.storagePath stringByAppendingPathComponent:@"notifications"];
-  if (self.notifications.count == 0) {
-    // Nothing to write, delete anything we have stored
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-      [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
-    }
-    return;
-  }
-
-  NSError* error;
-  const auto data =
-      [NSKeyedArchiver archivedDataWithRootObject:self.notifications
-                            requiringSecureCoding:YES
-                                            error:&error];
-  if (!data) {
-    if (error) {
-      BLOG(0, @"Failed to write notifications to disk: %@",
-           error.debugDescription);
-    }
-    return;
-  }
-
-  [data writeToURL:[NSURL fileURLWithPath:path isDirectory:NO]
-           options:NSDataWritingAtomic
-             error:nil];
-}
-
 #pragma mark - State
 
-- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback {
+- (void)loadLedgerState:
+    (ledger::mojom::LedgerClient::LoadLedgerStateCallback)callback {
   const auto contents =
       [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::mojom::Result::LEDGER_OK, contents);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::mojom::Result::NO_LEDGER_STATE, contents);
+    std::move(callback).Run(ledger::mojom::Result::NO_LEDGER_STATE, contents);
   }
   [self startNotificationTimers];
 }
 
-- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback {
+- (void)loadPublisherState:
+    (ledger::mojom::LedgerClient::LoadPublisherStateCallback)callback {
   const auto contents =
       [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
   if (contents.length() > 0) {
-    callback(ledger::mojom::Result::LEDGER_OK, contents);
+    std::move(callback).Run(ledger::mojom::Result::LEDGER_OK, contents);
   } else {
-    callback(ledger::mojom::Result::NO_PUBLISHER_STATE, contents);
+    std::move(callback).Run(ledger::mojom::Result::NO_PUBLISHER_STATE,
+                            contents);
   }
 }
 
@@ -1612,8 +1425,8 @@ BATLedgerBridge(BOOL,
       stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
-- (void)loadURL:(ledger::mojom::UrlRequestPtr)request
-       callback:(ledger::client::LoadURLCallback)callback {
+- (void)loadUrl:(ledger::mojom::UrlRequestPtr)request
+       callback:(ledger::mojom::LedgerClient::LoadURLCallback)callback {
   std::map<ledger::mojom::UrlMethod, std::string> methodMap{
       {ledger::mojom::UrlMethod::GET, "GET"},
       {ledger::mojom::UrlMethod::POST, "POST"},
@@ -1637,83 +1450,55 @@ BATLedgerBridge(BOOL,
                 const std::string& errorDescription, int statusCode,
                 const std::string& response,
                 const base::flat_map<std::string, std::string>& headers) {
-              ledger::mojom::UrlResponse url_response;
-              url_response.url = base::SysNSStringToUTF8(copiedURL);
-              url_response.error = errorDescription;
-              url_response.status_code = statusCode;
-              url_response.body = response;
-              url_response.headers = headers;
+              auto url_response = ledger::mojom::UrlResponse::New();
+              url_response->url = base::SysNSStringToUTF8(copiedURL);
+              url_response->error = errorDescription;
+              url_response->status_code = statusCode;
+              url_response->body = response;
+              url_response->headers = headers;
 
               if (cb) {
-                std::move(*cb).Run(url_response);
+                std::move(*cb).Run(std::move(url_response));
               }
             }];
 }
 
-- (std::string)URIEncode:(const std::string&)value {
+- (void)uriEncode:(const std::string&)value
+         callback:(ledger::mojom::LedgerClient::URIEncodeCallback)callback {
   const auto allowedCharacters =
       [NSMutableCharacterSet alphanumericCharacterSet];
   [allowedCharacters addCharactersInString:@"-._~"];
   const auto string = base::SysUTF8ToNSString(value);
   const auto encoded = [string
       stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
-  return base::SysNSStringToUTF8(encoded);
+  std::move(callback).Run(base::SysNSStringToUTF8(encoded));
 }
 
 - (void)fetchFavIcon:(const std::string&)url
-          faviconKey:(const std::string&)favicon_key
-            callback:(ledger::client::FetchIconCallback)callback {
-  const auto pageURL = [NSURL URLWithString:base::SysUTF8ToNSString(url)];
-  if (!self.faviconFetcher || !pageURL) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      callback(NO, std::string());
-    });
-    return;
-  }
-  self.faviconFetcher(pageURL, ^(NSURL* _Nullable faviconURL) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-      callback(faviconURL != nil,
-               base::SysNSStringToUTF8(faviconURL.absoluteString));
-    });
-  });
+          faviconKey:(const std::string&)faviconKey
+            callback:
+                (ledger::mojom::LedgerClient::FetchFavIconCallback)callback {
+  std::move(callback).Run(NO, std::string());
 }
 
 #pragma mark - Logging
 
-- (void)log:(const char*)file
-            line:(const int)line
-    verboseLevel:(const int)verbose_level
+- (void)log:(const std::string&)file
+            line:(int32_t)line
+    verboseLevel:(int32_t)verboseLevel
          message:(const std::string&)message {
-  const int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (verbose_level <= vlog_level) {
-    logging::LogMessage(file, line, -verbose_level).stream() << message;
+  const int vlog_level =
+      logging::GetVlogLevelHelper(file.c_str(), file.length());
+  if (verboseLevel <= vlog_level) {
+    logging::LogMessage(file.c_str(), line, -verboseLevel).stream() << message;
   }
 }
 
 #pragma mark - Publisher Database
 
-- (void)handlePublisherListing:(NSArray<LedgerPublisherInfo*>*)publishers
-                         start:(uint32_t)start
-                         limit:(uint32_t)limit
-                      callback:(ledger::PublisherInfoListCallback)callback {
-  callback(VectorFromNSArray(
-      publishers, ^ledger::mojom::PublisherInfoPtr(LedgerPublisherInfo* info) {
-        return info.cppObjPtr;
-      }));
-}
 - (void)publisherListNormalized:
     (std::vector<ledger::mojom::PublisherInfoPtr>)list {
-  const auto list_converted = NSArrayFromVector(
-      &list,
-      ^LedgerPublisherInfo*(const ledger::mojom::PublisherInfoPtr& info) {
-        return [[LedgerPublisherInfo alloc] initWithPublisherInfo:*info];
-      });
-
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.publisherListNormalized) {
-      observer.publisherListNormalized(list_converted);
-    }
-  }
+  // Not used on iOS
 }
 
 - (void)onPanelPublisherInfo:(ledger::mojom::Result)result
@@ -1735,76 +1520,49 @@ BATLedgerBridge(BOOL,
 - (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
                             publisherKey:(const std::string&)publisher_key
                            publisherName:(const std::string&)publisher_name {
-  switch (result) {
-    case ledger::mojom::Result::PENDING_PUBLISHER_REMOVED: {
-      const auto publisherID = base::SysUTF8ToNSString(publisher_key);
-      for (BraveLedgerObserver* observer in [self.observers copy]) {
-        if (observer.pendingContributionsRemoved) {
-          observer.pendingContributionsRemoved(@[ publisherID ]);
-        }
-      }
-      break;
-    }
-    case ledger::mojom::Result::VERIFIED_PUBLISHER: {
-      const auto notificationID =
-          [NSString stringWithFormat:@"verified_publisher_%@",
-                                     base::SysUTF8ToNSString(publisher_key)];
-      const auto name = base::SysUTF8ToNSString(publisher_name);
-      [self addNotificationOfKind:RewardsNotificationKindVerifiedPublisher
-                         userInfo:@{@"publisher_name" : name}
-                   notificationID:notificationID];
-      break;
-    }
-    default:
-      break;
-  }
+  // Not used on iOS
+}
+
+- (void)onPublisherRegistryUpdated {
+  // Not used on iOS
+}
+
+- (void)onPublisherUpdated:(const std::string&)publisherId {
+  // Not used on iOS
 }
 
 - (void)showNotification:(const std::string&)type
-                    args:(const std::vector<std::string>&)args
-                callback:(ledger::LegacyResultCallback)callback {
-  const auto notificationID = base::SysUTF8ToNSString(type);
-  const auto info = [[NSMutableDictionary<NSNumber*, NSString*> alloc] init];
-  for (NSUInteger i = 0; i < args.size(); i++) {
-    info[@(i)] = base::SysUTF8ToNSString(args[i]);
-  }
-  [self addNotificationOfKind:RewardsNotificationKindGeneralLedger
-                     userInfo:info
-               notificationID:notificationID
-                     onlyOnce:NO];
+                    args:(std::vector<std::string>)args
+                callback:(ledger::mojom::LedgerClient::ShowNotificationCallback)
+                             callback {
+  // Not used on iOS
 }
-- (ledger::mojom::ClientInfoPtr)getClientInfo {
+
+- (void)clientInfo:
+    (ledger::mojom::LedgerClient::GetClientInfoCallback)callback {
   auto info = ledger::mojom::ClientInfo::New();
   info->os = ledger::mojom::OperatingSystem::UNDEFINED;
   info->platform = ledger::mojom::Platform::IOS;
-  return info;
+  std::move(callback).Run(std::move(info));
 }
 
 - (void)unblindedTokensReady {
   [self fetchBalance:nil];
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.balanceReportUpdated) {
-      observer.balanceReportUpdated();
-    }
-  }
 }
 
 - (void)reconcileStampReset {
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.reconcileStampReset) {
-      observer.reconcileStampReset();
-    }
-  }
+  // Not used on iOS
 }
 
-- (void)runDBTransaction:(ledger::mojom::DBTransactionPtr)transaction
-                callback:(ledger::client::RunDBTransactionCallback)callback {
+- (void)runDbTransaction:(ledger::mojom::DBTransactionPtr)transaction
+                callback:(ledger::mojom::LedgerClient::RunDBTransactionCallback)
+                             callback {
   __weak BraveLedger* weakSelf = self;
   DCHECK(rewardsDatabase);
   rewardsDatabase.AsyncCall(&ledger::LedgerDatabase::RunTransaction)
       .WithArgs(std::move(transaction))
       .Then(base::BindOnce(
-          ^(ledger::client::RunDBTransactionCallback completion,
+          ^(ledger::RunDBTransactionCallback completion,
             ledger::mojom::DBCommandResponsePtr response) {
             if (weakSelf)
               std::move(completion).Run(std::move(response));
@@ -1813,41 +1571,49 @@ BATLedgerBridge(BOOL,
 }
 
 - (void)pendingContributionSaved:(const ledger::mojom::Result)result {
-  for (BraveLedgerObserver* observer in [self.observers copy]) {
-    if (observer.pendingContributionAdded) {
-      observer.pendingContributionAdded();
-    }
-  }
+  // Not used on iOS
 }
 
 - (void)walletDisconnected:(const std::string&)wallet_type {
-  const auto bridgedType =
-      static_cast<ExternalWalletType>(base::SysUTF8ToNSString(wallet_type));
-  for (BraveLedgerObserver* observer in self.observers) {
-    if (observer.externalWalletDisconnected) {
-      observer.externalWalletDisconnected(bridgedType);
-    }
-  }
+  // Not used on iOS
 }
 
-- (void)deleteLog:(ledger::LegacyResultCallback)callback {
-  callback(ledger::mojom::Result::LEDGER_OK);
+- (void)deleteLog:(ledger::mojom::LedgerClient::DeleteLogCallback)callback {
+  std::move(callback).Run(ledger::mojom::Result::LEDGER_OK);
 }
 
-- (absl::optional<std::string>)encryptString:(const std::string&)value {
+- (void)encryptString:(const std::string&)value
+             callback:
+                 (ledger::mojom::LedgerClient::EncryptStringCallback)callback {
   std::string encrypted_value;
   if (!OSCrypt::EncryptString(value, &encrypted_value)) {
-    return {};
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
-  return encrypted_value;
+  std::move(callback).Run(absl::make_optional(encrypted_value));
 }
 
-- (absl::optional<std::string>)decryptString:(const std::string&)value {
+- (void)decryptString:(const std::string&)value
+             callback:
+                 (ledger::mojom::LedgerClient::DecryptStringCallback)callback {
   std::string decrypted_value;
   if (!OSCrypt::DecryptString(value, &decrypted_value)) {
-    return {};
+    std::move(callback).Run(absl::nullopt);
+    return;
   }
-  return decrypted_value;
+  std::move(callback).Run(absl::make_optional(decrypted_value));
+}
+
+- (void)externalWalletConnected {
+  // Not used on iOS
+}
+
+- (void)externalWalletLoggedOut {
+  // Not used on iOS
+}
+
+- (void)externalWalletReconnected {
+  // Not used on iOS
 }
 
 @end
