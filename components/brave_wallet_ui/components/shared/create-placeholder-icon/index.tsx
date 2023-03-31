@@ -13,9 +13,8 @@ import {
   stripERC20TokenImageURL,
   isRemoteImageURL,
   isValidIconExtension,
-  addIpfsGateway,
-  isIpfs,
-  isDataURL
+  isDataURL,
+  isIpfs
 } from '../../../utils/string-utils'
 
 // Styled components
@@ -23,6 +22,7 @@ import { IconWrapper, PlaceholderText } from './style'
 
 // Options
 import { makeNativeAssetLogo } from '../../../options/asset-options'
+import { translateToNftGateway } from '../../../common/async/lib'
 
 interface Config {
   size: 'big' | 'medium' | 'small'
@@ -82,12 +82,24 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       }
     }, [needsPlaceholder, asset.contractAddress, asset.name])
 
+    const [ipfsUrl, setIpfsUrl] = React.useState<string>()
+
+    // memos
+    React.useEffect(() => {
+      let ignore = false
+      translateToNftGateway(tokenImageURL).then(
+        (v) => { if (!ignore) setIpfsUrl(v) })
+      return () => {
+        ignore = true
+      }
+    }, [tokenImageURL])
+
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
-        return `chrome://image?${addIpfsGateway(tokenImageURL)}`
+        return `chrome://image?${ipfsUrl}`
       }
       return ''
-    }, [isRemoteURL, tokenImageURL])
+    }, [isRemoteURL, tokenImageURL, ipfsUrl])
 
     if (needsPlaceholder) {
       return (

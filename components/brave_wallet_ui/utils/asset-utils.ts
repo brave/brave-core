@@ -10,7 +10,6 @@ import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wal
 import Amount from './amount'
 import {
   getRampNetworkPrefix,
-  addIpfsGateway
 } from './string-utils'
 
 import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
@@ -79,29 +78,6 @@ export const auroraSupportedContractAddresses = [
   '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e' // YFI
 ].map(contractAddress => contractAddress.toLowerCase())
 
-export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
-  const newLogo = token.logo?.startsWith('ipfs://')
-    ? addIpfsGateway(token.logo)
-    : token.logo?.startsWith('data:image/')
-      ? token.logo
-      : `chrome://erc-token-images/${token.logo}`
-
-  if (token.logo === newLogo) {
-    // nothing to change
-    return token
-  }
-
-  try {
-    token.logo = newLogo
-    return token
-  } catch {
-    // the token object was immutable, return a new token object
-    return {
-      ...token,
-      logo: newLogo
-    }
-  }
-}
 
 export const addChainIdToToken = (
   token: BraveWallet.BlockchainToken,

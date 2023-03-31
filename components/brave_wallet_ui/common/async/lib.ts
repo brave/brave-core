@@ -31,7 +31,7 @@ import { getFilecoinKeyringIdFromNetwork, getNetworkInfo, getNetworksByCoinType 
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
-import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
+import { getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
 import { walletApi } from '../slices/api.slice'
 
@@ -48,6 +48,7 @@ import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_
 import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
 import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
+import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -300,17 +301,20 @@ export const getAllBuyAssets = async (): Promise<{
   )
 
   // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const rampAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(rampAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
-  const sardineAssetOptions: BraveWallet.BlockchainToken[] = sardineAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const sardineAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(sardineAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
-  const transakAssetOptions: BraveWallet.BlockchainToken[] = transakAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const transakAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(transakAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
   // separate native assets from tokens
   const {
@@ -376,9 +380,10 @@ export const getAllSellAssets = async (): Promise<{
   )
 
   // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const rampAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(rampAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
   // separate native assets from tokens
   const {
@@ -1136,6 +1141,59 @@ export function refreshPortfolioFilterOptions () {
     ) {
       dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOption.id))
       window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION)
+    }
+  }
+}
+
+// Checks whether set of urls have ipfs:// scheme or are gateway-like urls
+export const areSupportedForPinning = async (urls: string[]) => {
+  const results =
+    await Promise.all(
+      urls.flatMap((v) => extractIpfsUrl(stripERC20TokenImageURL(v))))
+  return results.every(result => result?.startsWith(IPFS_PROTOCOL))
+}
+
+// Extracts ipfs:// url from gateway-like url
+export const extractIpfsUrl = async (url: string | undefined) => {
+  const { braveWalletIpfsService } = getAPIProxy()
+  const trimmedUrl = url ? url.trim() : ''
+   if (isIpfs(trimmedUrl)) {
+    return trimmedUrl
+  }
+  return (await braveWalletIpfsService
+    .extractIPFSUrlFromGatewayLikeUrl(trimmedUrl))?.ipfsUrl || undefined
+}
+
+// Translates ipfs:// url or gateway-like url to the NFT gateway url
+export const translateToNftGateway = async (url: string | undefined) => {
+  const { braveWalletIpfsService } = getAPIProxy()
+  const trimmedUrl = url ? url.trim() : ''
+  const testUrl =
+    isIpfs(trimmedUrl) ? trimmedUrl : await extractIpfsUrl(trimmedUrl)
+  return (await braveWalletIpfsService
+    .translateToNFTGatewayURL(testUrl || '')).translatedUrl || ''
+}
+
+export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
+  const newLogo = token.logo?.startsWith('ipfs://')
+    ? (await translateToNftGateway(token.logo))
+    : token.logo?.startsWith('data:image/')
+      ? token.logo
+      : `chrome://erc-token-images/${token.logo}`
+
+  if (token.logo === newLogo) {
+    // nothing to change
+    return token
+  }
+
+  try {
+    token.logo = newLogo
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      logo: newLogo
     }
   }
 }

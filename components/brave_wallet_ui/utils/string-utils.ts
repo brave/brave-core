@@ -6,9 +6,6 @@
 import { BraveWallet, WalletRoutes, TokenStandards } from '../constants/types'
 import { getLocale } from '../../common/locale'
 
-const IPFS_GATEWAY = 'https://ipfs.io/ipfs/'
-const IPFS_PROTOCOL = 'ipfs://'
-
 export const stripERC20TokenImageURL = (url?: string) =>
   url?.replace('chrome://erc-token-images/', '')
 
@@ -16,23 +13,11 @@ export const toProperCase = (value: string) =>
   value.replace(/\w\S*/g,
     (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
 
-export const isIpfs = (url?: string) => url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
-
 export const isRemoteImageURL = (url?: string) =>
   url?.startsWith('http://') || url?.startsWith('https://') || url?.startsWith('data:image/') || isIpfs(url)
 
 export const isValidIconExtension = (url?: string) =>
   url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || url?.endsWith('.svg') || url?.endsWith('.gif')
-
-export const addIpfsGateway = (url: string | undefined) => {
-  const trimmedUrl = url ? url.trim() : ''
-  return isIpfs(trimmedUrl) ? trimmedUrl.replace(IPFS_PROTOCOL, IPFS_GATEWAY) : trimmedUrl
-}
-
-export const reverseHttpifiedIpfsUrl = (url: string | undefined) => {
-  const trimmedUrl = url ? url.trim() : ''
-  return trimmedUrl.startsWith(IPFS_GATEWAY) ? trimmedUrl.replace(IPFS_GATEWAY, IPFS_PROTOCOL) : trimmedUrl
-}
 
 export const isDataURL = (url?: string) => url?.startsWith('chrome://erc-token-images/')
 
@@ -137,6 +122,9 @@ export const isComponentInStorybook = (hostname: string = window.location.hostna
   return ['localhost', '127.0.0.1'].includes(window.location.hostname)
 }
 
-export const isNftPinnable = (tokenLogo: string) => {
-  return reverseHttpifiedIpfsUrl(stripERC20TokenImageURL(tokenLogo)).startsWith('ipfs://')
+
+export const IPFS_PROTOCOL = 'ipfs://'
+
+export const isIpfs = (url?: string) => {
+  return url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
 }
