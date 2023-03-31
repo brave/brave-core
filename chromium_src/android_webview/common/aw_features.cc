@@ -16,7 +16,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kWebViewAppsPackageNamesServerSideAllowlist,
      base::FEATURE_DISABLED_BY_DEFAULT},
     {kWebViewEnumerateDevicesCache, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kWebViewMeasureScreenCoverage, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
