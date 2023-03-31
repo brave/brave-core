@@ -786,3 +786,52 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripWithScrollableTabBrowserTest, Sanity) {
   ToggleVerticalTabStrip();
   Browser::Create(Browser::CreateParams(browser()->profile(), true));
 }
+
+// * Non-type argument of 'float' or 'double' for template is unsupported
+// * Passing template as argument of IN_PROC_BROWSER_TEST_F is not working
+// > thus, use macro instead.
+#define VERTICAL_TAB_STRIP_DPI_TEST(RATIO, DPI)                           \
+  class DPI##VerticalTabStripBrowserTest                                  \
+      : public VerticalTabStripBrowserTest {                              \
+   public:                                                                \
+    void SetUp() override {                                               \
+      base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(          \
+          "force-device-scale-factor", base::NumberToString(RATIO));      \
+      VerticalTabStripBrowserTest::SetUp();                               \
+    }                                                                     \
+    void SetUpOnMainThread() override {                                   \
+      VerticalTabStripBrowserTest::SetUpOnMainThread();                   \
+      /* Start up with vertical tab enabled - there shouldn't be crash */ \
+      ToggleVerticalTabStrip();                                           \
+    }                                                                     \
+  };                                                                      \
+                                                                          \
+  IN_PROC_BROWSER_TEST_F(DPI##VerticalTabStripBrowserTest, DPI) {         \
+    /* Manipulate size and state */                                       \
+    auto* prefs = browser()->profile()->GetOriginalProfile()->GetPrefs(); \
+    browser_view()->Maximize();                                           \
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);          \
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, false);         \
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);          \
+                                                                          \
+    browser_view()->Restore();                                            \
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);          \
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, false);         \
+    prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);          \
+                                                                          \
+    /* Get back to horizontal tab strip - there shouldn't be crash */     \
+    ToggleVerticalTabStrip();                                             \
+  }
+
+// Available DPIs on Windows
+VERTICAL_TAB_STRIP_DPI_TEST(1.00f, Dpi100)
+VERTICAL_TAB_STRIP_DPI_TEST(1.25f, Dpi125)
+VERTICAL_TAB_STRIP_DPI_TEST(1.50f, Dpi150)
+VERTICAL_TAB_STRIP_DPI_TEST(1.75f, Dpi175)
+VERTICAL_TAB_STRIP_DPI_TEST(2.00f, Dpi200)
+VERTICAL_TAB_STRIP_DPI_TEST(2.25f, Dpi225)
+VERTICAL_TAB_STRIP_DPI_TEST(2.50f, Dpi250)
+VERTICAL_TAB_STRIP_DPI_TEST(3.00f, Dpi300)
+VERTICAL_TAB_STRIP_DPI_TEST(3.50f, Dpi350)
+
+#undef VERTICAL_TAB_STRIP_DPI_TEST
