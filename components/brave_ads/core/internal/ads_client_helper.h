@@ -10,6 +10,8 @@
 
 namespace brave_ads {
 
+class AdsClientNotifierObserver;
+
 class AdsClientHelper final {
  public:
   explicit AdsClientHelper(AdsClient* ads_client);
@@ -25,6 +27,9 @@ class AdsClientHelper final {
   static AdsClient* GetInstance();
 
   static bool HasInstance();
+
+  static void AddObserver(AdsClientNotifierObserver* observer);
+  static void RemoveObserver(AdsClientNotifierObserver* observer);
 };
 
 }  // namespace brave_ads

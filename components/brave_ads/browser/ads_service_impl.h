@@ -232,25 +232,6 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnTabHtmlContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnTabDidStartPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidStopPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidChange(const SessionID& tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active) override;
-  void OnDidCloseTab(const SessionID& tab_id) override;
-
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void MaybeServeInlineContentAd(
@@ -303,6 +284,23 @@ class AdsServiceImpl : public AdsService,
                      ToggleSavedAdCallback callback) override;
   void ToggleFlaggedAd(base::Value::Dict value,
                        ToggleFlaggedAdCallback callback) override;
+
+  void NotifyTabTextContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& text) override;
+  void NotifyTabHtmlContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& html) override;
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidChange(int32_t tab_id,
+                          const std::vector<GURL>& redirect_chain,
+                          bool is_visible,
+                          bool is_incognito) override;
+  void NotifyDidCloseTab(int32_t tab_id) override;
+  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+  void NotifyBrowserDidBecomeActive() override;
+  void NotifyBrowserDidResignActive() override;
 
   // bat_ads::mojom::BatAdsClient:
   void IsNetworkConnectionAvailable(
@@ -443,6 +441,7 @@ class AdsServiceImpl : public AdsService,
       notification_ad_timers_;
 
   absl::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
+  bool is_prefetching_new_tab_page_ad_ = false;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;
 
@@ -476,6 +475,7 @@ class AdsServiceImpl : public AdsService,
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
 };
 
 }  // namespace brave_ads

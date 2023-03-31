@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
@@ -24,12 +25,10 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_features.h"
 #include "brave/components/brave_ads/core/internal/conversions/sorts/conversions_sort_factory.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/country_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave_base/random.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -209,14 +208,12 @@ ConversionList SortConversions(const ConversionList& conversions) {
 Conversions::Conversions() {
   resource_ = std::make_unique<resource::Conversions>();
 
-  LocaleManager::GetInstance()->AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 Conversions::~Conversions() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -581,11 +578,11 @@ void Conversions::NotifyConversionFailed(
   }
 }
 
-void Conversions::OnLocaleDidChange(const std::string& /*locale*/) {
+void Conversions::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void Conversions::OnResourceDidUpdate(const std::string& id) {
+void Conversions::OnNotifyDidUpdateResourceComponent(const std::string& id) {
   if (IsValidCountryComponentId(id)) {
     resource_->Load();
   }

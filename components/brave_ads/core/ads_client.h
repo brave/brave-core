@@ -20,11 +20,22 @@
 
 namespace brave_ads {
 
+class AdsClientNotifierObserver;
 struct NotificationAdInfo;
 
 class ADS_EXPORT AdsClient {
  public:
   virtual ~AdsClient() = default;
+
+  // Called to add an ads client observer. Observers will not be scheduled until
+  // |BindObservers| is called.
+  virtual void AddObserver(AdsClientNotifierObserver* observer) = 0;
+
+  // Called to remove an ads client observer.
+  virtual void RemoveObserver(AdsClientNotifierObserver* observer) = 0;
+
+  // Called to bind pending ads client observers.
+  virtual void BindPendingObservers() = 0;
 
   // Returns |true| if there is an available network connection.
   virtual bool IsNetworkConnectionAvailable() const = 0;

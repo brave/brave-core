@@ -7,6 +7,7 @@
 
 #include "base/check_op.h"
 #include "base/hash/hash.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "url/gurl.h"
 
@@ -19,9 +20,13 @@ TabManager* g_tab_manager_instance = nullptr;
 TabManager::TabManager() {
   DCHECK(!g_tab_manager_instance);
   g_tab_manager_instance = this;
+
+  AdsClientHelper::AddObserver(this);
 }
 
 TabManager::~TabManager() {
+  AdsClientHelper::RemoveObserver(this);
+
   DCHECK_EQ(this, g_tab_manager_instance);
   g_tab_manager_instance = nullptr;
 }
@@ -53,139 +58,6 @@ bool TabManager::IsVisible(const int32_t id) const {
   }
 
   return visible_tab_id_ == id;
-}
-
-void TabManager::OnDidChange(const int32_t id,
-                             const std::vector<GURL>& redirect_chain,
-                             const bool is_visible,
-                             const bool is_incognito) {
-  if (is_incognito) {
-    BLOG(7, "Tab id " << id << " is incognito");
-    return;
-  }
-
-  if (!is_visible) {
-    BLOG(7, "Tab id " << id << " is occluded");
-
-    if (!GetForId(id)) {
-      // Re-add reloaded tabs when browser is restarted
-      TabInfo tab;
-      tab.id = id;
-      tab.redirect_chain = redirect_chain;
-      Add(tab);
-    } else {
-      if (tabs_[id].redirect_chain == redirect_chain) {
-        return;
-      }
-
-      BLOG(2, "Tab id " << id << " did change");
-
-      tabs_[id].redirect_chain = redirect_chain;
-
-      NotifyTabDidChange(tabs_[id]);
-    }
-
-    return;
-  }
-
-  if (visible_tab_id_ == id) {
-    if (tabs_[id].redirect_chain == redirect_chain) {
-      return;
-    }
-
-    BLOG(2, "Tab id " << id << " was updated");
-
-    tabs_[id].redirect_chain = redirect_chain;
-
-    return NotifyTabDidChange(tabs_[id]);
-  }
-
-  BLOG(2, "Tab id " << id << " is visible");
-
-  last_visible_tab_id_ = visible_tab_id_;
-
-  visible_tab_id_ = id;
-
-  if (const absl::optional<TabInfo> tab = GetForId(id)) {
-    BLOG(2, "Focused on existing tab id " << id);
-
-    Update(*tab);
-
-    return NotifyTabDidChangeFocus(id);
-  }
-
-  BLOG(2, "Opened a new tab with id " << id);
-
-  TabInfo tab;
-  tab.id = id;
-  tab.redirect_chain = redirect_chain;
-  Add(tab);
-
-  NotifyDidOpenNewTab(tab);
-}
-
-void TabManager::OnTextContentDidChange(const int32_t id,
-                                        const std::vector<GURL>& redirect_chain,
-                                        const std::string& content) {
-  DCHECK(!redirect_chain.empty());
-
-  const uint32_t hash = base::FastHash(content);
-  if (hash == last_text_content_hash_) {
-    return;
-  }
-  last_text_content_hash_ = hash;
-
-  BLOG(2, "Tab id " << id << " text content changed");
-
-  NotifyTextContentDidChange(id, redirect_chain, content);
-}
-
-void TabManager::OnHtmlContentDidChange(const int32_t id,
-                                        const std::vector<GURL>& redirect_chain,
-                                        const std::string& content) {
-  DCHECK(!redirect_chain.empty());
-
-  const uint32_t hash = base::FastHash(content);
-  if (hash == last_html_content_hash_) {
-    return;
-  }
-  last_html_content_hash_ = hash;
-
-  BLOG(2, "Tab id " << id << " HTML content changed");
-
-  NotifyHtmlContentDidChange(id, redirect_chain, content);
-}
-
-void TabManager::OnDidClose(const int32_t id) {
-  BLOG(2, "Tab id " << id << " was closed");
-
-  Remove(id);
-
-  NotifyDidCloseTab(id);
-}
-
-void TabManager::OnDidStartPlayingMedia(const int32_t id) {
-  if (tabs_[id].is_playing_media) {
-    return;
-  }
-
-  BLOG(2, "Tab id " << id << " is playing media");
-
-  tabs_[id].is_playing_media = true;
-
-  NotifyTabDidStartPlayingMedia(id);
-}
-
-void TabManager::OnDidStopPlayingMedia(const int32_t id) {
-  if (!tabs_[id].is_playing_media) {
-    return;
-  }
-
-  BLOG(2, "Tab id " << id << " stopped playing media");
-
-  tabs_[id].is_playing_media = false;
-
-  NotifyTabDidStopPlayingMedia(id);
 }
 
 bool TabManager::IsPlayingMedia(const int32_t id) const {
@@ -281,6 +153,141 @@ void TabManager::NotifyTabDidStopPlayingMedia(const int32_t id) const {
   for (TabManagerObserver& observer : observers_) {
     observer.OnTabDidStopPlayingMedia(id);
   }
+}
+
+void TabManager::OnNotifyTabHtmlContentDidChange(
+    const int32_t id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& content) {
+  DCHECK(!redirect_chain.empty());
+
+  const uint32_t hash = base::FastHash(content);
+  if (hash == last_html_content_hash_) {
+    return;
+  }
+  last_html_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << id << " HTML content changed");
+
+  NotifyHtmlContentDidChange(id, redirect_chain, content);
+}
+
+void TabManager::OnNotifyTabTextContentDidChange(
+    const int32_t id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& content) {
+  DCHECK(!redirect_chain.empty());
+
+  const uint32_t hash = base::FastHash(content);
+  if (hash == last_text_content_hash_) {
+    return;
+  }
+  last_text_content_hash_ = hash;
+
+  BLOG(2, "Tab id " << id << " text content changed");
+
+  NotifyTextContentDidChange(id, redirect_chain, content);
+}
+
+void TabManager::OnNotifyTabDidStartPlayingMedia(const int32_t id) {
+  if (tabs_[id].is_playing_media) {
+    return;
+  }
+
+  BLOG(2, "Tab id " << id << " is playing media");
+
+  tabs_[id].is_playing_media = true;
+
+  NotifyTabDidStartPlayingMedia(id);
+}
+
+void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t id) {
+  if (!tabs_[id].is_playing_media) {
+    return;
+  }
+
+  BLOG(2, "Tab id " << id << " stopped playing media");
+
+  tabs_[id].is_playing_media = false;
+
+  NotifyTabDidStopPlayingMedia(id);
+}
+
+void TabManager::OnNotifyTabDidChange(const int32_t id,
+                                      const std::vector<GURL>& redirect_chain,
+                                      const bool is_visible,
+                                      const bool is_incognito) {
+  if (is_incognito) {
+    BLOG(7, "Tab id " << id << " is incognito");
+    return;
+  }
+
+  if (!is_visible) {
+    BLOG(7, "Tab id " << id << " is occluded");
+
+    if (!GetForId(id)) {
+      // Re-add reloaded tabs when browser is restarted
+      TabInfo tab;
+      tab.id = id;
+      tab.redirect_chain = redirect_chain;
+      Add(tab);
+    } else {
+      if (tabs_[id].redirect_chain == redirect_chain) {
+        return;
+      }
+
+      BLOG(2, "Tab id " << id << " did change");
+
+      tabs_[id].redirect_chain = redirect_chain;
+
+      NotifyTabDidChange(tabs_[id]);
+    }
+
+    return;
+  }
+
+  if (visible_tab_id_ == id) {
+    if (tabs_[id].redirect_chain == redirect_chain) {
+      return;
+    }
+
+    BLOG(2, "Tab id " << id << " was updated");
+
+    tabs_[id].redirect_chain = redirect_chain;
+
+    return NotifyTabDidChange(tabs_[id]);
+  }
+
+  BLOG(2, "Tab id " << id << " is visible");
+
+  last_visible_tab_id_ = visible_tab_id_;
+
+  visible_tab_id_ = id;
+
+  if (const absl::optional<TabInfo> tab = GetForId(id)) {
+    BLOG(2, "Focused on existing tab id " << id);
+
+    Update(*tab);
+
+    return NotifyTabDidChangeFocus(id);
+  }
+
+  BLOG(2, "Opened a new tab with id " << id);
+
+  TabInfo tab;
+  tab.id = id;
+  tab.redirect_chain = redirect_chain;
+  Add(tab);
+
+  NotifyDidOpenNewTab(tab);
+}
+
+void TabManager::OnNotifyDidCloseTab(const int32_t id) {
+  BLOG(2, "Tab id " << id << " was closed");
+
+  Remove(id);
+
+  NotifyDidCloseTab(id);
 }
 
 }  // namespace brave_ads

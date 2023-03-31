@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/build_channel.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
 namespace bat_ads {
 
@@ -22,11 +23,15 @@ BatAdsServiceImpl::BatAdsServiceImpl(
 BatAdsServiceImpl::~BatAdsServiceImpl() = default;
 
 void BatAdsServiceImpl::Create(
-    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> bat_ads_client,
     mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier> bat_ads_client_notifier,
     CreateCallback callback) {
+  DCHECK(bat_ads.is_valid());
   associated_receivers_.Add(
-      std::make_unique<BatAdsImpl>(std::move(client_info)), std::move(bat_ads));
+      std::make_unique<BatAdsImpl>(std::move(bat_ads_client),
+                                   std::move(bat_ads_client_notifier)),
+      std::move(bat_ads));
 
   std::move(callback).Run();
 }

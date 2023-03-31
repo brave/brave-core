@@ -10,15 +10,13 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
 #include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 
 namespace brave_ads::resource {
 
-class AntiTargeting final : public LocaleManagerObserver,
-                            public ResourceManagerObserver {
+class AntiTargeting final : public AdsClientNotifierObserver {
  public:
   AntiTargeting();
 
@@ -39,11 +37,9 @@ class AntiTargeting final : public LocaleManagerObserver,
  private:
   void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
 
-  // LocaleManagerObserver:
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   bool is_initialized_ = false;
 

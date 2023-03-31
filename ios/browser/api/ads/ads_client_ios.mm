@@ -19,6 +19,19 @@ AdsClientIOS::~AdsClientIOS() {
   bridge_ = nil;
 }
 
+void AdsClientIOS::AddObserver(brave_ads::AdsClientNotifierObserver* observer) {
+  [bridge_ addObserver:observer];
+}
+
+void AdsClientIOS::RemoveObserver(
+    brave_ads::AdsClientNotifierObserver* observer) {
+  [bridge_ removeObserver:observer];
+}
+
+void AdsClientIOS::BindPendingObservers() {
+  [bridge_ bindPendingObservers];
+}
+
 bool AdsClientIOS::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
 }

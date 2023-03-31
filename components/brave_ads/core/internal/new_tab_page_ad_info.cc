@@ -52,4 +52,8 @@ bool NewTabPageAdInfo::IsValid() const {
   return true;
 }
 
+bool NewTabPageAdInfo::HasValidCreativeInstanceIdAndCampaignId() const {
+  return !creative_instance_id.empty() && !campaign_id.empty();
+}
+
 }  // namespace brave_ads

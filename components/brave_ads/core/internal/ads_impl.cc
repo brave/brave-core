@@ -32,8 +32,6 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
@@ -54,11 +52,10 @@
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_classification/text_classification_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/studies/studies_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
@@ -86,11 +83,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
   diagnostic_manager_ = std::make_unique<DiagnosticManager>();
   flag_manager_ = std::make_unique<FlagManager>();
   history_manager_ = std::make_unique<HistoryManager>();
-  idle_detection_manager_ = std::make_unique<IdleDetectionManager>();
-  locale_manager_ = std::make_unique<LocaleManager>();
+  idle_detection_ = std::make_unique<IdleDetection>();
   notification_ad_manager_ = std::make_unique<NotificationAdManager>();
-  pref_manager_ = std::make_unique<PrefManager>();
-  resource_manager_ = std::make_unique<ResourceManager>();
   tab_manager_ = std::make_unique<TabManager>();
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 
@@ -178,108 +172,9 @@ void AdsImpl::Shutdown(ShutdownCallback callback) {
   std::move(callback).Run(/*success*/ true);
 }
 
-void AdsImpl::OnLocaleDidChange(const std::string& locale) {
-  LocaleManager::GetInstance()->OnLocaleDidChange(locale);
-}
-
-void AdsImpl::OnPrefDidChange(const std::string& path) {
-  if (IsInitialized()) {
-    PrefManager::GetInstance()->OnPrefDidChange(path);
-  }
-}
-
-void AdsImpl::OnTabHtmlContentDidChange(const int32_t tab_id,
-                                        const std::vector<GURL>& redirect_chain,
-                                        const std::string& html) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnHtmlContentDidChange(tab_id, redirect_chain,
-                                                      html);
-  }
-}
-
-void AdsImpl::OnTabTextContentDidChange(const int32_t tab_id,
-                                        const std::vector<GURL>& redirect_chain,
-                                        const std::string& text) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnTextContentDidChange(tab_id, redirect_chain,
-                                                      text);
-  }
-}
-
-void AdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
-  if (IsInitialized()) {
-    UserActivityManager::GetInstance()->RecordEventForPageTransition(
-        page_transition_type);
-  }
-}
-
-void AdsImpl::OnUserDidBecomeIdle() {
-  if (IsInitialized()) {
-    IdleDetectionManager::GetInstance()->UserDidBecomeIdle();
-  }
-}
-
-void AdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                    const bool screen_was_locked) {
-  if (IsInitialized()) {
-    IdleDetectionManager::GetInstance()->UserDidBecomeActive(idle_time,
-                                                             screen_was_locked);
-  }
-}
-
-void AdsImpl::OnBrowserDidEnterForeground() {
-  BrowserManager::GetInstance()->OnBrowserDidEnterForeground();
-}
-
-void AdsImpl::OnBrowserDidEnterBackground() {
-  BrowserManager::GetInstance()->OnBrowserDidEnterBackground();
-}
-
-void AdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnDidStartPlayingMedia(tab_id);
-  }
-}
-
-void AdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnDidStopPlayingMedia(tab_id);
-  }
-}
-
-void AdsImpl::OnTabDidChange(const int32_t tab_id,
-                             const std::vector<GURL>& redirect_chain,
-                             const bool is_active,
-                             const bool is_browser_active,
-                             const bool is_incognito) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  if (is_browser_active) {
-    BrowserManager::GetInstance()->OnBrowserDidBecomeActive();
-  } else {
-    BrowserManager::GetInstance()->OnBrowserDidResignActive();
-  }
-
-  const bool is_visible = is_active && is_browser_active;
-  TabManager::GetInstance()->OnDidChange(tab_id, redirect_chain, is_visible,
-                                         is_incognito);
-}
-
-void AdsImpl::OnDidCloseTab(const int32_t tab_id) {
-  if (IsInitialized()) {
-    TabManager::GetInstance()->OnDidClose(tab_id);
-  }
-}
-
 void AdsImpl::OnRewardsWalletDidChange(const std::string& payment_id,
                                        const std::string& recovery_seed) {
   account_->SetWallet(payment_id, recovery_seed);
-}
-
-void AdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  ResourceManager::GetInstance()->UpdateResource(id);
 }
 
 absl::optional<NotificationAdInfo> AdsImpl::MaybeGetNotificationAd(
@@ -558,6 +453,8 @@ void AdsImpl::OnMigrateNotificationState(InitializeCallback callback,
   BLOG(1, "Successfully initialized ads");
 
   is_initialized_ = true;
+
+  AdsClientHelper::GetInstance()->BindPendingObservers();
 
   UserActivityManager::GetInstance()->RecordEvent(
       UserActivityEventType::kInitializedAds);

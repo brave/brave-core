@@ -9,16 +9,14 @@
 #include <string>
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads::geographic {
 
-class SubdivisionTargeting final : public LocaleManagerObserver,
-                                   public PrefManagerObserver {
+class SubdivisionTargeting final : public AdsClientNotifierObserver {
  public:
   SubdivisionTargeting();
 
@@ -61,11 +59,9 @@ class SubdivisionTargeting final : public LocaleManagerObserver,
   void Retry();
   void FetchAfterDelay();
 
-  // LocaleManagerObserver:
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  // PrefManagerObserver:
-  void OnPrefDidChange(const std::string& path) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyPrefDidChange(const std::string& path) override;
 
   Timer timer_;
   BackoffTimer retry_timer_;

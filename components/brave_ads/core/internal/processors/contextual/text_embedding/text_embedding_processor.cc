@@ -7,17 +7,16 @@
 
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor_util.h"
 #include "brave/components/brave_ads/core/internal/resources/contextual/text_embedding/text_embedding_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/language_components.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "url/gurl.h"
 
@@ -35,14 +34,12 @@ TextEmbedding::TextEmbedding(resource::TextEmbedding* resource)
     : resource_(resource) {
   DCHECK(resource_);
 
-  LocaleManager::GetInstance()->AddObserver(this);
-  ResourceManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 TextEmbedding::~TextEmbedding() {
-  LocaleManager::GetInstance()->RemoveObserver(this);
-  ResourceManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 }
 
@@ -91,11 +88,11 @@ void TextEmbedding::Process(const std::string& html) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void TextEmbedding::OnLocaleDidChange(const std::string& /*locale*/) {
+void TextEmbedding::OnNotifyLocaleDidChange(const std::string& /*locale*/) {
   resource_->Load();
 }
 
-void TextEmbedding::OnResourceDidUpdate(const std::string& id) {
+void TextEmbedding::OnNotifyDidUpdateResourceComponent(const std::string& id) {
   if (IsValidLanguageComponentId(id)) {
     resource_->Load();
   }

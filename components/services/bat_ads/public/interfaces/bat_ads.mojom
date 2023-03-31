@@ -14,11 +14,48 @@ import "url/mojom/url.mojom";
 
 interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
-         pending_associated_receiver<BatAds> bat_ads) => ();
+         pending_associated_receiver<BatAds> bat_ads,
+         pending_receiver<BatAdsClientNotifier>
+             bat_ads_client_notifier) => ();
 
   SetSysInfo(brave_ads.mojom.SysInfo sys_info) => ();
 
   SetBuildChannel(brave_ads.mojom.BuildChannelInfo build_channel) => ();
+};
+
+interface BatAdsClientNotifier {
+  // See AdsClientNotifier for documentation.
+
+  NotifyLocaleDidChange(string locale);
+
+  NotifyPrefDidChange(string path);
+
+  NotifyDidUpdateResourceComponent(string id);
+
+  NotifyTabHtmlContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                string html);
+  NotifyTabTextContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                string text);
+  NotifyTabDidStartPlayingMedia(int32 tab_id);
+  NotifyTabDidStopPlayingMedia(int32 tab_id);
+  NotifyTabDidChange(int32 tab_id,
+                     array<url.mojom.Url> redirect_chain,
+                     bool is_visible,
+                     bool is_incognito);
+  NotifyDidCloseTab(int32 tab_id);
+
+  NotifyUserGestureEventTriggered(int32 page_transition_type);
+
+  NotifyUserDidBecomeIdle();
+  NotifyUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,
+                            bool screen_was_locked);
+
+  NotifyBrowserDidEnterForeground();
+  NotifyBrowserDidEnterBackground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidResignActive();
 };
 
 interface BatAdsClient {
@@ -115,42 +152,6 @@ interface BatAds {
   Shutdown() => (bool success);
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
-
-  OnLocaleDidChange(string locale);
-
-  OnPrefDidChange(string path);
-
-  OnDidUpdateResourceComponent(string id);
-
-  // User Interaction
-  OnUserDidBecomeIdle();
-  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,
-                        bool screen_was_locked);
-
-  TriggerUserGestureEvent(int32 page_transition_type);
-
-  // Browser
-  OnBrowserDidEnterForeground();
-  OnBrowserDidEnterBackground();
-
-  // Tabs
-  OnTabDidChange(int32 tab_id,
-                 array<url.mojom.Url> redirect_chain,
-                 bool is_active,
-                 bool is_browser_active,
-                 bool is_incognito);
-
-  OnTabHtmlContentDidChange(int32 tab_id,
-                            array<url.mojom.Url> redirect_chain,
-                            string html);
-  OnTabTextContentDidChange(int32 tab_id,
-                            array<url.mojom.Url> redirect_chain,
-                            string text);
-
-  OnTabDidStartPlayingMedia(int32 tab_id);
-  OnTabDidStopPlayingMedia(int32 tab_id);
-
-  OnDidCloseTab(int32 tab_id);
 
   // Account
   OnRewardsWalletDidChange(string payment_id, string recovery_seed);

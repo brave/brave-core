@@ -22,11 +22,8 @@
 #include "brave/components/brave_ads/core/internal/transfer/transfer_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-class GURL;
-
 namespace base {
 class Time;
-class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
@@ -65,16 +62,13 @@ class DatabaseManager;
 class DiagnosticManager;
 class FlagManager;
 class HistoryManager;
-class IdleDetectionManager;
+class IdleDetection;
 class InlineContentAdHandler;
-class LocaleManager;
 class NewTabPageAdHandler;
 class NotificationAdHandler;
 class NotificationAdManager;
 class PredictorsManager;
-class PrefManager;
 class PromotedContentAd;
-class ResourceManager;
 class SearchResultAd;
 class TabManager;
 class Transfer;
@@ -104,38 +98,6 @@ class AdsImpl final : public Ads,
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnPrefDidChange(const std::string& path) override;
-
-  void OnDidUpdateResourceComponent(const std::string& id) override;
-
-  void OnTabHtmlContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
-  void OnUserDidBecomeIdle() override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
-
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
-
-  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
-  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
-
-  void OnTabDidChange(int32_t tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active,
-                      bool is_incognito) override;
-  void OnDidCloseTab(int32_t tab_id) override;
 
   void OnRewardsWalletDidChange(const std::string& payment_id,
                                 const std::string& recovery_seed) override;
@@ -230,12 +192,9 @@ class AdsImpl final : public Ads,
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
-  std::unique_ptr<LocaleManager> locale_manager_;
+  std::unique_ptr<IdleDetection> idle_detection_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<PrefManager> pref_manager_;
-  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 

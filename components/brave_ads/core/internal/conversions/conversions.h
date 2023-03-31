@@ -12,14 +12,13 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_observer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversion_id_pattern_info.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
 class GURL;
@@ -33,8 +32,7 @@ class Conversions;
 struct AdEventInfo;
 struct VerifiableConversionInfo;
 
-class Conversions final : public LocaleManagerObserver,
-                          public ResourceManagerObserver,
+class Conversions final : public AdsClientNotifierObserver,
                           public TabManagerObserver {
  public:
   Conversions();
@@ -112,11 +110,9 @@ class Conversions final : public LocaleManagerObserver,
   void NotifyConversionFailed(
       const ConversionQueueItemInfo& conversion_queue_item) const;
 
-  // LocaleManagerObserver:
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnHtmlContentDidChange(int32_t tab_id,

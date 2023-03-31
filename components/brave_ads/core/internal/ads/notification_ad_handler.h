@@ -11,13 +11,12 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager_observer.h"
 
 namespace base {
 class TimeDelta;
@@ -49,11 +48,10 @@ struct WalletInfo;
 
 class NotificationAdHandler final
     : public AccountObserver,
+      public AdsClientNotifierObserver,
       public BrowserManagerObserver,
-      public IdleDetectionManagerObserver,
       public notification_ads::EventHandlerObserver,
-      public notification_ads::ServingObserver,
-      public PrefManagerObserver {
+      public notification_ads::ServingObserver {
  public:
   NotificationAdHandler(
       Account* account,
@@ -80,16 +78,14 @@ class NotificationAdHandler final
   // AccountObserver:
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
 
+  // AdsClientNotifierObserver:
+  void OnNotifyPrefDidChange(const std::string& path) override;
+  void OnNotifyUserDidBecomeActive(base::TimeDelta idle_time,
+                                   bool screen_was_locked) override;
+
   // BrowserManagerObserver:
   void OnBrowserDidEnterForeground() override;
   void OnBrowserDidEnterBackground() override;
-
-  // PrefManagerObserver:
-  void OnPrefDidChange(const std::string& path) override;
-
-  // IdleDetectionManagerObserver:
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
 
   // notification_ads::ServingObserver:
   void OnOpportunityAroseToServeNotificationAd(

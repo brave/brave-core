@@ -31,7 +31,6 @@
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -55,7 +54,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
       refill_unblinded_tokens_(
           std::make_unique<RefillUnblindedTokens>(token_generator_)),
       wallet_(std::make_unique<Wallet>()) {
-  PrefManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 
   confirmations_->SetDelegate(this);
   issuers_->SetDelegate(this);
@@ -64,7 +63,7 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
 }
 
 Account::~Account() {
-  PrefManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 void Account::AddObserver(AccountObserver* observer) {
@@ -363,7 +362,7 @@ void Account::NotifyStatementOfAccountsDidChange() const {
   }
 }
 
-void Account::OnPrefDidChange(const std::string& path) {
+void Account::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeResetIssuersAndConfirmations();
 

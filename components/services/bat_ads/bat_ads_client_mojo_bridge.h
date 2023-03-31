@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
+#include "brave/components/services/bat_ads/bat_ads_client_notifier_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -23,6 +24,7 @@ class Time;
 }  // namespace base
 
 namespace brave_ads {
+class AdsClientNotifierObserver;
 struct NotificationAdInfo;
 }  // namespace brave_ads
 
@@ -31,7 +33,8 @@ namespace bat_ads {
 class BatAdsClientMojoBridge : public brave_ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info);
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
 
   BatAdsClientMojoBridge(const BatAdsClientMojoBridge&) = delete;
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
@@ -43,6 +46,10 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient:
+  void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void BindPendingObservers() override;
+
   bool IsNetworkConnectionAvailable() const override;
 
   bool IsBrowserActive() const override;
@@ -128,6 +135,7 @@ class BatAdsClientMojoBridge : public brave_ads::AdsClient {
 
  private:
   mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
+  BatAdsClientNotifierImpl notifier_impl_;
 };
 
 }  // namespace bat_ads

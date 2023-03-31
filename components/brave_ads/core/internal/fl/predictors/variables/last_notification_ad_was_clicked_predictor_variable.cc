@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/last_notification_ad_was_clicked_predictor_variable.h"
 
-#include <iostream>
-
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
@@ -41,11 +39,6 @@ std::string LastNotificationAdWasClickedPredictorVariable::GetValue() const {
   const HistoryItemList history_items = HistoryManager::Get(
       HistoryFilterType::kNone, HistorySortType::kDescendingOrder, from_time,
       to_time);
-
-  std::cout << "FOOBAR.size: " << history_items.size() << std::endl;
-  for (const auto& history_item : history_items) {
-    std::cout << "FOOBAR: " << history_item.ad_content.type << std::endl;
-  }
 
   const auto iter = base::ranges::find_if(
       history_items, [](const HistoryItemInfo& history_item) {

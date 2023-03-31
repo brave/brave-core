@@ -11,8 +11,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager_observer.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager_observer.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 
@@ -31,8 +30,7 @@ struct PurchaseIntentSiteInfo;
 
 namespace processor {
 
-class PurchaseIntent final : public LocaleManagerObserver,
-                             public ResourceManagerObserver,
+class PurchaseIntent final : public AdsClientNotifierObserver,
                              public TabManagerObserver {
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
@@ -56,11 +54,9 @@ class PurchaseIntent final : public LocaleManagerObserver,
 
   uint16_t GetFunnelWeightForSearchQuery(const std::string& search_query) const;
 
-  // LocaleManagerObserver:
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  // ResourceManagerObserver:
-  void OnResourceDidUpdate(const std::string& id) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyLocaleDidChange(const std::string& locale) override;
+  void OnNotifyDidUpdateResourceComponent(const std::string& id) override;
 
   // TabManagerObserver:
   void OnTextContentDidChange(int32_t tab_id,

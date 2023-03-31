@@ -24,7 +24,6 @@
 #include "brave/components/brave_ads/core/notification_ad_value_util.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
 
 namespace bat_ads {
 
@@ -38,8 +37,11 @@ brave_ads::CategoryContentOptActionType ToCategoryContentOptActionType(
 }  // namespace
 
 BatAdsImpl::BatAdsImpl(
-    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client)
-    : bat_ads_client_mojo_proxy_(new BatAdsClientMojoBridge(std::move(client))),
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier)
+    : bat_ads_client_mojo_proxy_(
+          new BatAdsClientMojoBridge(std::move(client),
+                                     std::move(client_notifier))),
       ads_(brave_ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
 
 BatAdsImpl::~BatAdsImpl() = default;
@@ -50,70 +52,6 @@ void BatAdsImpl::Initialize(InitializeCallback callback) {
 
 void BatAdsImpl::Shutdown(ShutdownCallback callback) {
   ads_->Shutdown(std::move(callback));
-}
-
-void BatAdsImpl::OnLocaleDidChange(const std::string& locale) {
-  ads_->OnLocaleDidChange(locale);
-}
-
-void BatAdsImpl::OnPrefDidChange(const std::string& path) {
-  ads_->OnPrefDidChange(path);
-}
-
-void BatAdsImpl::OnTabHtmlContentDidChange(
-    const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  ads_->OnTabHtmlContentDidChange(tab_id, redirect_chain, html);
-}
-
-void BatAdsImpl::OnTabTextContentDidChange(
-    const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& text) {
-  ads_->OnTabTextContentDidChange(tab_id, redirect_chain, text);
-}
-
-void BatAdsImpl::TriggerUserGestureEvent(const int32_t page_transition_type) {
-  ads_->TriggerUserGestureEvent(page_transition_type);
-}
-
-void BatAdsImpl::OnUserDidBecomeActive(const base::TimeDelta idle_time,
-                                       const bool screen_was_locked) {
-  ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
-}
-
-void BatAdsImpl::OnUserDidBecomeIdle() {
-  ads_->OnUserDidBecomeIdle();
-}
-
-void BatAdsImpl::OnBrowserDidEnterForeground() {
-  ads_->OnBrowserDidEnterForeground();
-}
-
-void BatAdsImpl::OnBrowserDidEnterBackground() {
-  ads_->OnBrowserDidEnterBackground();
-}
-
-void BatAdsImpl::OnTabDidStartPlayingMedia(const int32_t tab_id) {
-  ads_->OnTabDidStartPlayingMedia(tab_id);
-}
-
-void BatAdsImpl::OnTabDidStopPlayingMedia(const int32_t tab_id) {
-  ads_->OnTabDidStopPlayingMedia(tab_id);
-}
-
-void BatAdsImpl::OnTabDidChange(const int32_t tab_id,
-                                const std::vector<GURL>& redirect_chain,
-                                const bool is_active,
-                                const bool is_browser_active,
-                                const bool is_incognito) {
-  ads_->OnTabDidChange(tab_id, redirect_chain, is_active, is_browser_active,
-                       is_incognito);
-}
-
-void BatAdsImpl::OnDidCloseTab(const int32_t tab_id) {
-  ads_->OnDidCloseTab(tab_id);
 }
 
 void BatAdsImpl::MaybeGetNotificationAd(
@@ -296,10 +234,6 @@ void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
   ad_content.is_flagged = ads_->ToggleFlaggedAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
-}
-
-void BatAdsImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  ads_->OnDidUpdateResourceComponent(id);
 }
 
 }  // namespace bat_ads

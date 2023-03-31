@@ -15,8 +15,6 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
-class GURL;
-
 namespace brave_ads {
 class Ads;
 struct InlineContentAdInfo;
@@ -29,8 +27,9 @@ class BatAdsClientMojoBridge;
 
 class BatAdsImpl : public mojom::BatAds {
  public:
-  explicit BatAdsImpl(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client);
+  BatAdsImpl(
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
 
   BatAdsImpl(const BatAdsImpl&) = delete;
   BatAdsImpl& operator=(const BatAdsImpl&) = delete;
@@ -45,37 +44,6 @@ class BatAdsImpl : public mojom::BatAds {
   void Shutdown(ShutdownCallback callback) override;
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
-
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnPrefDidChange(const std::string& path) override;
-
-  void OnDidUpdateResourceComponent(const std::string& id) override;
-
-  void OnTabHtmlContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
-  void OnUserDidBecomeIdle() override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
-
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
-
-  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
-  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
-  void OnTabDidChange(int32_t tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active,
-                      bool is_incognito) override;
-  void OnDidCloseTab(int32_t tab_id) override;
 
   void OnRewardsWalletDidChange(const std::string& payment_id,
                                 const std::string& recovery_seed) override;

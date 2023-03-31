@@ -11,6 +11,7 @@
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
@@ -55,11 +56,13 @@ UserActivityManager::UserActivityManager() {
   DCHECK(!g_user_activity_manager_instance);
   g_user_activity_manager_instance = this;
 
+  AdsClientHelper::AddObserver(this);
   BrowserManager::GetInstance()->AddObserver(this);
   TabManager::GetInstance()->AddObserver(this);
 }
 
 UserActivityManager::~UserActivityManager() {
+  AdsClientHelper::RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
   TabManager::GetInstance()->RemoveObserver(this);
 
@@ -90,12 +93,6 @@ void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {
   }
 
   LogEvent(event_type);
-}
-
-void UserActivityManager::RecordEventForPageTransition(const int32_t type) {
-  const auto page_transition_type = static_cast<PageTransitionType>(type);
-
-  RecordEventForPageTransition(page_transition_type);
 }
 
 UserActivityEventList UserActivityManager::GetHistoryForTimeWindow(
@@ -145,6 +142,13 @@ void UserActivityManager::RecordEventForPageTransition(
   }
 
   RecordEvent(*event_type);
+}
+
+void UserActivityManager::OnNotifyUserGestureEventTriggered(
+    const int32_t type) {
+  const auto page_transition_type = static_cast<PageTransitionType>(type);
+
+  RecordEventForPageTransition(page_transition_type);
 }
 
 void UserActivityManager::OnBrowserDidBecomeActive() {

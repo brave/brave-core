@@ -11,6 +11,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_ads/core/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
@@ -20,15 +21,12 @@
 #include "brave/components/brave_ads/core/internal/database/database_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
-#include "brave/components/brave_ads/core/internal/resources/resource_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -46,7 +44,7 @@ namespace brave_ads {
 
 class Database;
 
-class UnitTestBase : public testing::Test {
+class UnitTestBase : public AdsClientNotifier, public testing::Test {
  public:
   UnitTestBase();
 
@@ -139,6 +137,8 @@ class UnitTestBase : public testing::Test {
  private:
   void Initialize();
 
+  void MockAdsClientAddObserver();
+
   void SetDefaultMocks();
 
   void SetDefaultPrefs();
@@ -167,12 +167,9 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<DiagnosticManager> diagnostic_manager_;
   std::unique_ptr<FlagManager> flag_manager_;
   std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetectionManager> idle_detection_manager_;
-  std::unique_ptr<LocaleManager> locale_manager_;
+  std::unique_ptr<IdleDetection> idle_detection_;
   std::unique_ptr<NotificationAdManager> notification_ad_manager_;
   std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<PrefManager> pref_manager_;
-  std::unique_ptr<ResourceManager> resource_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
 };

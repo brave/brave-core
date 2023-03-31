@@ -16,10 +16,10 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler.h"
 #include "brave/components/brave_ads/core/internal/ads/notification_ad_handler_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_event_predictor_variable_util.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/notification_ad_served_at_predictor_variable_util.h"
@@ -31,7 +31,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_manager.h"
+#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 
@@ -60,8 +60,7 @@ NotificationAdHandler::NotificationAdHandler(
   serving_->AddObserver(this);
 
   BrowserManager::GetInstance()->AddObserver(this);
-  PrefManager::GetInstance()->AddObserver(this);
-  IdleDetectionManager::GetInstance()->AddObserver(this);
+  AdsClientHelper::AddObserver(this);
 }
 
 NotificationAdHandler::~NotificationAdHandler() {
@@ -69,8 +68,7 @@ NotificationAdHandler::~NotificationAdHandler() {
   event_handler_->RemoveObserver(this);
   serving_->RemoveObserver(this);
   BrowserManager::GetInstance()->RemoveObserver(this);
-  PrefManager::GetInstance()->RemoveObserver(this);
-  IdleDetectionManager::GetInstance()->RemoveObserver(this);
+  AdsClientHelper::RemoveObserver(this);
 }
 
 void NotificationAdHandler::MaybeServeAtRegularIntervals() {
@@ -99,21 +97,13 @@ void NotificationAdHandler::OnWalletDidUpdate(const WalletInfo& /*wallet*/) {
   MaybeServeAtRegularIntervals();
 }
 
-void NotificationAdHandler::OnBrowserDidEnterForeground() {
-  MaybeServeAtRegularIntervals();
-}
-
-void NotificationAdHandler::OnBrowserDidEnterBackground() {
-  MaybeServeAtRegularIntervals();
-}
-
-void NotificationAdHandler::OnPrefDidChange(const std::string& path) {
+void NotificationAdHandler::OnNotifyPrefDidChange(const std::string& path) {
   if (path == prefs::kEnabled) {
     MaybeServeAtRegularIntervals();
   }
 }
 
-void NotificationAdHandler::OnUserDidBecomeActive(
+void NotificationAdHandler::OnNotifyUserDidBecomeActive(
     const base::TimeDelta idle_time,
     const bool screen_was_locked) {
   if (!CanServeIfUserIsActive() || !ShouldServe()) {
@@ -131,6 +121,14 @@ void NotificationAdHandler::OnUserDidBecomeActive(
   }
 
   serving_->MaybeServeAd();
+}
+
+void NotificationAdHandler::OnBrowserDidEnterForeground() {
+  MaybeServeAtRegularIntervals();
+}
+
+void NotificationAdHandler::OnBrowserDidEnterBackground() {
+  MaybeServeAtRegularIntervals();
 }
 
 void NotificationAdHandler::OnOpportunityAroseToServeNotificationAd(

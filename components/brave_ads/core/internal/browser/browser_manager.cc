@@ -27,9 +27,13 @@ BrowserManager::BrowserManager() {
 
   is_in_foreground_ = is_browser_active;
   LogBrowserForegroundState();
+
+  AdsClientHelper::AddObserver(this);
 }
 
 BrowserManager::~BrowserManager() {
+  AdsClientHelper::RemoveObserver(this);
+
   DCHECK_EQ(this, g_browser_manager_instance);
   g_browser_manager_instance = nullptr;
 }
@@ -55,7 +59,7 @@ void BrowserManager::RemoveObserver(BrowserManagerObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void BrowserManager::OnBrowserDidBecomeActive() {
+void BrowserManager::OnNotifyBrowserDidBecomeActive() {
   if (is_active_) {
     return;
   }
@@ -66,7 +70,7 @@ void BrowserManager::OnBrowserDidBecomeActive() {
   NotifyBrowserDidBecomeActive();
 }
 
-void BrowserManager::OnBrowserDidResignActive() {
+void BrowserManager::OnNotifyBrowserDidResignActive() {
   if (!is_active_) {
     return;
   }
@@ -77,7 +81,7 @@ void BrowserManager::OnBrowserDidResignActive() {
   NotifyBrowserDidResignActive();
 }
 
-void BrowserManager::OnBrowserDidEnterForeground() {
+void BrowserManager::OnNotifyBrowserDidEnterForeground() {
   if (is_in_foreground_) {
     return;
   }
@@ -88,7 +92,7 @@ void BrowserManager::OnBrowserDidEnterForeground() {
   NotifyBrowserDidEnterForeground();
 }
 
-void BrowserManager::OnBrowserDidEnterBackground() {
+void BrowserManager::OnNotifyBrowserDidEnterBackground() {
   if (!is_in_foreground_) {
     return;
   }

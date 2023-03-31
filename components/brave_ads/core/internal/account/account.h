@@ -12,12 +12,12 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
+#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
-#include "brave/components/brave_ads/core/internal/deprecated/prefs/pref_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 
 namespace brave_ads {
@@ -37,7 +37,7 @@ struct IssuersInfo;
 struct TransactionInfo;
 struct WalletInfo;
 
-class Account final : public PrefManagerObserver,
+class Account final : public AdsClientNotifierObserver,
                       public ConfirmationsDelegate,
                       public IssuersDelegate,
                       public RedeemUnblindedPaymentTokensDelegate,
@@ -117,8 +117,8 @@ class Account final : public PrefManagerObserver,
 
   void NotifyStatementOfAccountsDidChange() const;
 
-  // PrefManagerObserver:
-  void OnPrefDidChange(const std::string& path) override;
+  // AdsClientNotifierObserver:
+  void OnNotifyPrefDidChange(const std::string& path) override;
 
   // ConfirmationsDelegate:
   void OnDidConfirm(const ConfirmationInfo& confirmation) override;
