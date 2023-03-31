@@ -140,6 +140,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   void Init() override;
 #if !BUILDFLAG(IS_ANDROID)
   void StartTearDown() override;
+  void PostDestroyThreads() override;
 #endif
 
   void CreateProfileManager();
