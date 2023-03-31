@@ -270,7 +270,8 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
           [](BlockchainTokenPtr token,
              const absl::optional<std::string>& service,
              BraveWalletPinService::ValidateCallback callback) {
-            std::move(callback).Run(true, nullptr);
+            std::move(callback).Run(
+                mojom::TokenValidationResult::kValidationPassed);
           }));
 
   EXPECT_CALL(*GetBraveWalletPinService(),
