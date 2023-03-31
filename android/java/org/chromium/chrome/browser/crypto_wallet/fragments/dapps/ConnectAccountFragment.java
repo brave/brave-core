@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -73,7 +72,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
     }
@@ -139,7 +138,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
             // 0 is a max bitmap size for download
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), pageUrl, 0, imageCallback);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "initComponents " + e);
         }
         assert mWalletModel != null;

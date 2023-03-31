@@ -10,7 +10,6 @@ package org.chromium.chrome.browser.dialogs;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -122,7 +121,7 @@ public class BraveAdsSignupDialog {
                 try {
                     // Enable ads
                     BraveActivity.getBraveActivity().openRewardsPanel();
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "showNewUserDialog " + e);
                 }
             }
@@ -149,7 +148,7 @@ public class BraveAdsSignupDialog {
                 try {
                     BraveActivity braveActivity = BraveActivity.getBraveActivity();
                     braveActivity.openRewardsPanel();
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "showExistingUserDialog " + e);
                 }
             }

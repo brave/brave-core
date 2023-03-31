@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.permission;
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -96,7 +95,7 @@ public class BraveDappPermissionPromptDialog
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveDappPermissionPromptDialog constructor " + e);
         }
     }
@@ -147,7 +146,7 @@ public class BraveDappPermissionPromptDialog
             if (mPermissionDialogPositiveButton != null) {
                 mPermissionDialogPositiveButton.setEnabled(false);
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "show " + e);
         }
         initAccounts();

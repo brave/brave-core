@@ -10,7 +10,6 @@ import static org.chromium.chrome.browser.crypto_wallet.util.Utils.ONBOARDING_FI
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.RESTORE_WALLET_ACTION;
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.UNLOCK_WALLET_ACTION;
 
-import android.content.ActivityNotFoundException;
 import android.os.Build;
 import android.os.Handler;
 import android.view.Menu;
@@ -137,7 +136,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
@@ -434,7 +433,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 try {
                     BraveActivity activity = BraveActivity.getBraveActivity();
                     activity.showWalletPanel(true);
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "gotoNextPage " + e);
                 }
                 return;

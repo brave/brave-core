@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
@@ -181,7 +180,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         ChromeActivity activity = null;
         try {
             activity = BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "initializeWithNative " + e);
         }
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
@@ -254,7 +253,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 if (HomepageManager.isHomepageEnabled()) {
                     try {
                         BraveActivity.getBraveActivity().setComesFromNewTab(true);
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "HomeButton click " + e);
                     }
                     mOriginalHomeButtonRunnable.run();
@@ -294,7 +293,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 ChromeActivity activity = BraveActivity.getBraveActivity();
                 mTabSwitcherModeCoordinator.showToolbarOnTop(
                         !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(activity));
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "setBottomToolbarVisible " + e);
                 mTabSwitcherModeCoordinator.showToolbarOnTop(
                         !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(mContext));

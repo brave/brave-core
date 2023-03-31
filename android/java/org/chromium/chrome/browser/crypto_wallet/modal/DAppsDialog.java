@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -112,7 +111,7 @@ public class DAppsDialog extends Dialog implements ConnectionErrorHandler {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openBraveWallet(true, false, false);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openWallet " + e);
         }
     }

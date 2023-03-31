@@ -10,7 +10,6 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
@@ -545,7 +544,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     if (BraveStatsUtil.hasWritePermission(BraveActivity.getBraveActivity())) {
                         BraveStatsUtil.shareStats(R.layout.brave_stats_share_layout);
                     }
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "setUpMainLayout shareImage click " + e);
                 }
             }

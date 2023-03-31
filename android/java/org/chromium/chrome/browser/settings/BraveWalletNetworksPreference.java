@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.settings;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -124,7 +123,7 @@ public class BraveWalletNetworksPreference extends Preference
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "updateNetworksList " + e);
         }
         assert mJsonRpcService != null;

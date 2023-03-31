@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.ntp_background_images;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -142,7 +141,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
                 public void onClick(View v) {
                     try {
                         BraveActivity.getBraveActivity().openRewardsPanel();
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "onViewCreated turnOnAdsButton click " + e);
                     }
                     dismiss();

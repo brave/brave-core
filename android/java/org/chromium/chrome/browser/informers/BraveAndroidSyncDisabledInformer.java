@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.informers;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -102,7 +101,7 @@ public class BraveAndroidSyncDisabledInformer {
                     activity.getString(R.string.brave_android_sync_disabled_ok),
                     "\n\n" + activity.getString(R.string.brave_android_sync_disabled_dont_show),
                     false);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showAndroidSyncDisabled " + e);
         }
     }

@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -1444,7 +1443,7 @@ public class Utils {
         ChromeActivity chromeActivity = null;
         try {
             chromeActivity = BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "getProfile " + e);
         }
         if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();

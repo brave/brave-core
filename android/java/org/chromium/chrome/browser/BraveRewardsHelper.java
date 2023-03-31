@@ -8,7 +8,6 @@ package org.chromium.chrome.browser;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -317,7 +316,8 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
       return BraveActivity.getChromeTabbedActivity();
     }
 
-    static public BraveActivity getBraveActivity() throws ActivityNotFoundException {
+    static public BraveActivity getBraveActivity()
+            throws BraveActivity.BraveActivityNotFoundException {
       return BraveActivity.getBraveActivity();
     }
 

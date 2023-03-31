@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -218,7 +217,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreateDialog " + e);
         }
         return dialog;

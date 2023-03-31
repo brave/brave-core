@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
-import android.content.ActivityNotFoundException;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -113,7 +112,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
     }
@@ -352,7 +351,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                         mExecutor, mHandler, mAccountImage, fromAddress, true);
                 mAccountName.setText(accountText);
             });
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "updateAccount " + e);
         }
     }
@@ -365,7 +364,7 @@ public class SignTransactionFragment extends BaseDAppsBottomSheetDialogFragment 
                         if (networkInfo == null) return;
                         mNetworkName.setText(networkInfo.chainName);
                     });
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "updateNetwork " + e);
         }
     }

@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -158,7 +157,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         BraveActivity braveActivity = null;
         try {
             braveActivity = BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
         assert braveActivity != null;

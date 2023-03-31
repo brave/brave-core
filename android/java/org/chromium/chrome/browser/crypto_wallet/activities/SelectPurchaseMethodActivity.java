@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.util.Utils.warnWhenError;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -92,7 +91,7 @@ public class SelectPurchaseMethodActivity extends BraveWalletBaseActivity {
             if (mWalletModel != null && mWalletModel.getCryptoModel() != null) {
                 mBuyModel = mWalletModel.getCryptoModel().getBuyModel();
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "finishNativeInitialization " + e);
         }
         if (mWalletModel != null && mBuyModel != null) {
