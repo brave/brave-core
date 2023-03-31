@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #import "base/containers/flat_map.h"
+#include "base/task/sequenced_task_runner.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,8 +27,10 @@ typedef void (^BATNetworkCompletionBlock)(
 OBJC_EXPORT
 @interface BraveCommonOperations : NSObject
 
+- (instancetype)initWithStoragePath:(nullable NSString*)storagePath;
 - (instancetype)initWithStoragePath:(nullable NSString*)storagePath
-    NS_DESIGNATED_INITIALIZER;
+                         taskRunner:(scoped_refptr<base::SequencedTaskRunner>)
+                                        taskRunner NS_DESIGNATED_INITIALIZER;
 
 #pragma mark -
 

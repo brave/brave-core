@@ -1,13 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #import "common_operations.h"
 #include <vector>
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
 
-@interface BraveCommonOperations ()
+@interface BraveCommonOperations () {
+  scoped_refptr<base::SequencedTaskRunner> _taskRunner;
+}
 @property(nonatomic, copy) NSString* storagePath;
 @property(nonatomic, assign) uint32_t currentTimerID;
 @property(nonatomic, copy)
@@ -18,10 +21,19 @@
 @implementation BraveCommonOperations
 
 - (instancetype)initWithStoragePath:(NSString*)storagePath {
+  return
+      [self initWithStoragePath:storagePath
+                     taskRunner:base::SequencedTaskRunner::GetCurrentDefault()];
+}
+
+- (instancetype)initWithStoragePath:(NSString*)storagePath
+                         taskRunner:(scoped_refptr<base::SequencedTaskRunner>)
+                                        taskRunner {
   if ((self = [super init])) {
     self.storagePath = storagePath;
     _timers = [[NSMutableDictionary alloc] init];
     _runningTasks = [[NSMutableArray alloc] init];
+    _taskRunner = taskRunner;
 
     // Setup the ads directory for persistant storage
     if (self.storagePath.length > 0) {
@@ -105,46 +117,43 @@
             return;
           };
           const auto strongSelf = weakSelf;
-
-          const auto response = (NSHTTPURLResponse*)urlResponse;
-          std::string body;
-          if (data && data.length > 0) {
-            body =
-                std::string(static_cast<const char*>(data.bytes), data.length);
-          }
-          std::string errorDescription;
-          if (error) {
-            errorDescription = error.localizedDescription.UTF8String;
-          }
-          // For some reason I couldn't just do `base::flat_map<std::string,
-          // std::string> responseHeaders;` due to base::flat_map's non-const
-          // key insertion
-          auto* responseHeaders =
-              new base::flat_map<std::string, std::string>();
-          [response.allHeaderFields
-              enumerateKeysAndObjectsUsingBlock:^(NSString* _Nonnull key,
-                                                  NSString* _Nonnull obj,
-                                                  BOOL* _Nonnull stop) {
-                if (![key isKindOfClass:NSString.class] ||
-                    ![obj isKindOfClass:NSString.class]) {
-                  return;
+          strongSelf->_taskRunner->PostTask(
+              FROM_HERE, base::BindOnce(^{
+                const auto response = (NSHTTPURLResponse*)urlResponse;
+                std::string body;
+                if (data && data.length > 0) {
+                  body = std::string(static_cast<const char*>(data.bytes),
+                                     data.length);
                 }
-                std::string stringKey(key.UTF8String);
-                std::string stringValue(obj.UTF8String);
-                responseHeaders->insert(std::make_pair(stringKey, stringValue));
-              }];
-          auto copiedHeaders =
-              base::flat_map<std::string, std::string>(*responseHeaders);
-          const auto __weak weakSelf2 = strongSelf;
-          dispatch_async(dispatch_get_main_queue(), ^{
-            if (!weakSelf2) {
-              return;
-            }
-            [weakSelf2.runningTasks removeObject:task];
-            callback(errorDescription, (int)response.statusCode, body,
-                     copiedHeaders);
-          });
-          delete responseHeaders;
+                std::string errorDescription;
+                if (error) {
+                  errorDescription = error.localizedDescription.UTF8String;
+                }
+                // For some reason I couldn't just do
+                // `base::flat_map<std::string, std::string> responseHeaders;`
+                // due to base::flat_map's non-const key insertion
+                auto* responseHeaders =
+                    new base::flat_map<std::string, std::string>();
+                [response.allHeaderFields
+                    enumerateKeysAndObjectsUsingBlock:^(NSString* _Nonnull key,
+                                                        NSString* _Nonnull obj,
+                                                        BOOL* _Nonnull stop) {
+                      if (![key isKindOfClass:NSString.class] ||
+                          ![obj isKindOfClass:NSString.class]) {
+                        return;
+                      }
+                      std::string stringKey(key.UTF8String);
+                      std::string stringValue(obj.UTF8String);
+                      responseHeaders->insert(
+                          std::make_pair(stringKey, stringValue));
+                    }];
+                auto copiedHeaders =
+                    base::flat_map<std::string, std::string>(*responseHeaders);
+                [strongSelf.runningTasks removeObject:task];
+                callback(errorDescription, (int)response.statusCode, body,
+                         copiedHeaders);
+                delete responseHeaders;
+              }));
         }];
   // dataTaskWithRequest returns _Nonnull, so no need to worry about initialized
   // variable being nil

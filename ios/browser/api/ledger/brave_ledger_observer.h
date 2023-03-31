@@ -48,61 +48,6 @@ NS_SWIFT_NAME(LedgerObserver)
 @property(nonatomic, copy, nullable) void (^promotionClaimed)
     (LedgerPromotion* promotion);
 
-/// A reconcile transaction completed and the user may have an updated balance
-/// and likely an updated balance report
-@property(nonatomic, copy, nullable) void (^reconcileCompleted)
-    (LedgerResult result,
-     NSString* viewingId,
-     LedgerRewardsType type,
-     NSString* probi);
-
-/// The users balance report has been updated
-@property(nonatomic, copy, nullable) void (^balanceReportUpdated)();
-
-/// The exclusion state of a given publisher has been changed
-@property(nonatomic, copy, nullable) void (^excludedSitesChanged)
-    (NSString* publisherKey, LedgerPublisherExclude excluded);
-
-/// Called when the ledger removes activity info for a given publisher
-@property(nonatomic, copy, nullable) void (^activityRemoved)
-    (NSString* publisherKey);
-
-/// The publisher list was normalized and saved
-@property(nonatomic, copy, nullable) void (^publisherListNormalized)
-    (NSArray<LedgerPublisherInfo*>* normalizedList);
-
-@property(nonatomic, copy, nullable) void (^pendingContributionAdded)();
-
-@property(nonatomic, copy, nullable) void (^pendingContributionsRemoved)
-    (NSArray<NSString*>* publisherKeys);
-
-@property(nonatomic, copy, nullable) void (^recurringTipAdded)
-    (NSString* publisherKey);
-
-@property(nonatomic, copy, nullable) void (^recurringTipRemoved)
-    (NSString* publisherKey);
-
-// A users contribution was added
-@property(nonatomic, copy, nullable) void (^contributionAdded)
-    (BOOL successful, LedgerRewardsType type);
-
-/// A notification was added to the wallet
-@property(nonatomic, copy, nullable) void (^notificationAdded)
-    (RewardsNotification* notification);
-
-/// A notification was removed from the wallet
-@property(nonatomic, copy, nullable) void (^notificationsRemoved)
-    (NSArray<RewardsNotification*>* notification);
-
-/// Wallet balance was fetched and updated
-@property(nonatomic, copy, nullable) void (^fetchedBalance)();
-
-@property(nonatomic, copy, nullable) void (^externalWalletDisconnected)
-    (NSString* type);
-
-/// The reconcile stamp reset
-@property(nonatomic, copy, nullable) void (^reconcileStampReset)();
-
 @end
 
 NS_ASSUME_NONNULL_END
