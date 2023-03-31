@@ -109,7 +109,7 @@ export const BackButton = styled(WalletButton)`
 
 export const BackIcon = styled(Icon)`
   --leo-icon-size: 24px;
-  color: ${leo.color.icon};
+  color: ${leo.color.iconTint};
 `
 
 export const GradientLine = styled.div`
