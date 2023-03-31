@@ -21,10 +21,6 @@ static ExternalWalletType const ExternalWalletTypeUphold = @"uphold";
 static ExternalWalletType const ExternalWalletTypeAnonymous = @"anonymous";
 static ExternalWalletType const ExternalWalletTypeUnblindedTokens = @"blinded";
 
-typedef void (^LedgerFaviconFetcher)(
-    NSURL* pageURL,
-    void (^completion)(NSURL* _Nullable faviconURL));
-
 /// The error domain for ledger related errors
 OBJC_EXPORT NSString* const BraveLedgerErrorDomain;
 
@@ -39,8 +35,6 @@ OBJC_EXPORT BraveGeneralLedgerNotificationID const
 
 OBJC_EXPORT
 @interface BraveLedger : NSObject
-
-@property(nonatomic, copy, nullable) LedgerFaviconFetcher faviconFetcher;
 
 /// Create a brave ledger that will read and write its state to the given path
 - (instancetype)initWithStateStoragePath:(NSString*)path;
@@ -108,17 +102,6 @@ OBJC_EXPORT
 /// The users current wallet balance and related info
 @property(nonatomic, readonly, nullable) LedgerBalance* balance;
 
-/// Returns reserved amount of pending contributions to publishers.
-- (void)pendingContributionsTotal:(void (^)(double amount))completion
-    NS_SWIFT_NAME(pendingContributionsTotal(completion:));
-
-/// Obtain a drain status given some drain ID previously obtained from
-/// `linkBraveWalletToPaymentId:completion:`
-- (void)drainStatusForDrainId:(NSString *)drainId
-                   completion:(void (^)(LedgerResult result,
-                                        LedgerDrainStatus status))completion
-    NS_SWIFT_NAME(drainStatus(for:completion:));
-
 #pragma mark - Publishers
 
 @property(nonatomic, readonly, getter=isLoadingPublisherList)
@@ -144,34 +127,10 @@ OBJC_EXPORT
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId;
 
-/// Update a publishers exclusion state
-- (void)updatePublisherExclusionState:(NSString*)publisherId
-                                state:(LedgerPublisherExclude)state
-    NS_SWIFT_NAME(updatePublisherExclusionState(withId:state:));
-
-/// Restore all sites which had been previously excluded
-- (void)restoreAllExcludedPublishers;
-
-/// Get the publisher banner given some publisher key
-///
-/// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
-/// instead when obtaining a publisher given a URL
-///
-/// @note `completion` callback is called synchronously
-- (void)publisherBannerForId:(NSString*)publisherId
-                  completion:(void (^)(LedgerPublisherBanner* _Nullable banner))
-                                 completion;
-
 /// Refresh a publishers verification status
 - (void)refreshPublisherWithId:(NSString*)publisherId
                     completion:
                         (void (^)(LedgerPublisherStatus status))completion;
-
-#pragma mark - SKUs
-
-- (void)processSKUItems:(NSArray<LedgerSKUOrderItem*>*)items
-             completion:
-                 (void (^)(LedgerResult result, NSString* orderID))completion;
 
 #pragma mark - Tips
 
@@ -180,23 +139,8 @@ OBJC_EXPORT
 /// @note `completion` callback is called synchronously
 - (void)listRecurringTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion;
 
-- (void)addRecurringTipToPublisherWithId:(NSString*)publisherId
-                                  amount:(double)amount
-                              completion:(void (^)(BOOL success))completion
-    NS_SWIFT_NAME(addRecurringTip(publisherId:amount:completion:));
-
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId
     NS_SWIFT_NAME(removeRecurringTip(publisherId:));
-
-/// Get a list of publishers who the user has made direct tips too
-///
-/// @note `completion` callback is called synchronously
-- (void)listOneTimeTips:(void (^)(NSArray<LedgerPublisherInfo*>*))completion;
-
-- (void)tipPublisherDirectly:(LedgerPublisherInfo*)publisher
-                      amount:(double)amount
-                    currency:(NSString*)currency
-                  completion:(void (^)(LedgerResult result))completion;
 
 #pragma mark - Promotions
 
@@ -223,24 +167,7 @@ OBJC_EXPORT
 
 #pragma mark - Pending Contributions
 
-- (void)pendingContributions:
-    (void (^)(NSArray<LedgerPendingContributionInfo*>* publishers))completion;
-
-- (void)removePendingContribution:(LedgerPendingContributionInfo*)info
-                       completion:(void (^)(LedgerResult result))completion;
-
 - (void)removeAllPendingContributions:(void (^)(LedgerResult result))completion;
-
-#pragma mark - History
-
-- (void)balanceReportForMonth:(LedgerActivityMonth)month
-                         year:(int)year
-                   completion:
-                       (void (^)(LedgerBalanceReportInfo* _Nullable info))
-                           completion;
-
-@property(nonatomic, nullable, readonly)
-    LedgerAutoContributeProperties* autoContributeProperties;
 
 #pragma mark - Misc
 
@@ -251,6 +178,9 @@ OBJC_EXPORT
     (void (^)(NSArray<LedgerContributionInfo*>* contributions))completion;
 
 @property(nonatomic, readonly, copy) NSString* rewardsDatabasePath;
+
+- (void)fetchAutoContributeProperties:
+    (void (^)(LedgerAutoContributeProperties* _Nullable properties))completion;
 
 #pragma mark - Reporting
 
@@ -274,29 +204,17 @@ OBJC_EXPORT
 #pragma mark - Preferences
 
 /// The number of seconds before a publisher is added.
-@property(nonatomic, assign) int minimumVisitDuration;
+- (void)setMinimumVisitDuration:(int)minimumVisitDuration;
 /// The minimum number of visits before a publisher is added
-@property(nonatomic, assign) int minimumNumberOfVisits;
+- (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits;
 /// Whether or not to allow auto contributions to unverified publishers
-@property(nonatomic, assign) BOOL allowUnverifiedPublishers;
+- (void)setAllowUnverifiedPublishers:(bool)allowUnverifiedPublishers;
 /// The auto-contribute amount
-@property(nonatomic, assign) double contributionAmount;
+- (void)setContributionAmount:(double)contributionAmount;
 /// Whether or not the user will automatically contribute
-@property(nonatomic, assign, getter=isAutoContributeEnabled)
-    BOOL autoContributeEnabled;
+- (void)setAutoContributeEnabled:(bool)autoContributeEnabled;
 /// A custom user agent for network operations on ledger
 @property(nonatomic, copy, nullable) NSString* customUserAgent;
-
-#pragma mark - Notifications
-
-/// Gets a list of notifications awaiting user interaction
-@property(nonatomic, readonly) NSArray<RewardsNotification*>* notifications;
-
-/// Clear a given notification
-- (void)clearNotification:(RewardsNotification*)notification;
-
-/// Clear all the notifications
-- (void)clearAllNotifications;
 
 @end
 
