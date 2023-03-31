@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index bacad4d847ccb78aabf8f55c31f861c6668929ed..b794ec07f08d3f857073caccf1a6ff7f35edb248 100644
+index bacad4d847ccb78aabf8f55c31f861c6668929ed..2f2ab4ecdf32e023409dbc3fe565841c125f9a1f 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -192,6 +192,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {

@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index a2568c2c78508e72ce31897fb586410636880e56..4accf4ed9809ef6d0d0dcdbe143d4b9aee0adf39 100644
+index edf9b2956a21731c9a8f82662c5d0aef604c47be..ad376b3409a9691365185058e2e1747127871858 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
 @@ -169,6 +169,7 @@ template("build_webui") {
@@ -18,7 +18,7 @@ index a2568c2c78508e72ce31897fb586410636880e56..4accf4ed9809ef6d0d0dcdbe143d4b9a
      }
    }
  
-@@ -235,6 +237,7 @@ template("build_webui") {
+@@ -239,6 +241,7 @@ template("build_webui") {
            }
          }
        }
