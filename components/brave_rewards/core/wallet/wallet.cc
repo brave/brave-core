@@ -111,7 +111,7 @@ bool Wallet::SetWallet(mojom::RewardsWalletPtr wallet) {
   std::string json;
   base::JSONWriter::Write(new_wallet, &json);
 
-  ledger_->SetState(state::kWalletBrave, json);
+  ledger_->SetState(state::kWalletBrave, std::move(json));
 
   ledger_->database()->SaveEventLog(state::kRecoverySeed, event_string);
 

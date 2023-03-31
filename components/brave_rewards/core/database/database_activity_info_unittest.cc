@@ -50,7 +50,7 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 7u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   auto info = mojom::PublisherInfo::New();
@@ -99,7 +99,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   activity_.GetRecordsList(0, 0, mojom::ActivityInfoFilter::New(),
@@ -131,7 +131,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   auto filter = mojom::ActivityInfoFilter::New();
@@ -171,7 +171,7 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
             "WHERE publisher_id = ? AND reconcile_stamp = ?";
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   activity_.DeleteRecord("publisher_key", [](mojom::Result) {});

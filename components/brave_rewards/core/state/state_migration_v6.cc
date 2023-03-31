@@ -33,7 +33,7 @@ void StateMigrationV6::Migrate(ledger::LegacyResultCallback callback) {
 
   std::string brave_json;
   base::JSONWriter::Write(brave, &brave_json);
-  ledger_->SetState(kWalletBrave, brave_json);
+  ledger_->SetState(kWalletBrave, std::move(brave_json));
 
   callback(mojom::Result::LEDGER_OK);
 }

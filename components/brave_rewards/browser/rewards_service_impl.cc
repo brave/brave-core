@@ -842,7 +842,7 @@ void RewardsServiceImpl::Shutdown() {
   url_loaders_.clear();
 
   ledger_.reset();
-  brave_rewards::RewardsService::Shutdown();
+  RewardsService::Shutdown();
 }
 
 void RewardsServiceImpl::OnInitialize(ledger::mojom::Result result) {
@@ -1540,9 +1540,9 @@ void RewardsServiceImpl::GetValueState(const std::string& name,
 }
 
 void RewardsServiceImpl::SetTimeState(const std::string& name,
-                                      base::Time time,
+                                      base::Time value,
                                       SetTimeStateCallback callback) {
-  profile_->GetPrefs()->SetTime(GetPrefPath(name), time);
+  profile_->GetPrefs()->SetTime(GetPrefPath(name), value);
   std::move(callback).Run();
 }
 

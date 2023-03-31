@@ -80,6 +80,11 @@ TEST_F(WalletTest, CreateWallet) {
         std::move(callback).Run(std::move(response));
       });
 
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
+
   // Create a wallet when there is no current wallet information.
   wallet_.CreateWalletIfNecessary(
       absl::nullopt,

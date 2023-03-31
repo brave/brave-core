@@ -31,7 +31,7 @@ class BATLedgerTest : public testing::Test {
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
 
   // Returns the |TestLedgerClient| instance for this test.
-  TestLedgerClient* GetTestLedgerClient() { return &test_ledger_client_; }
+  TestLedgerClient* GetTestLedgerClient() { return &client_; }
 
   // Returns the |LedgerImpl| instance for this test.
   LedgerImpl* GetLedgerImpl() { return &ledger_; }
@@ -46,9 +46,8 @@ class BATLedgerTest : public testing::Test {
 
  private:
   base::test::TaskEnvironment task_environment_;
-  TestLedgerClient test_ledger_client_;
-  mojo::AssociatedReceiver<mojom::LedgerClient> test_ledger_client_receiver_{
-      &test_ledger_client_};
+  TestLedgerClient client_;
+  mojo::AssociatedReceiver<mojom::LedgerClient> client_receiver_{&client_};
   LedgerImpl ledger_;
 };
 

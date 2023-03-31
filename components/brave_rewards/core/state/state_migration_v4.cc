@@ -18,7 +18,7 @@ StateMigrationV4::StateMigrationV4(LedgerImpl* ledger) : ledger_(ledger) {
 
 StateMigrationV4::~StateMigrationV4() = default;
 
-void StateMigrationV4::Migrate(ledger::ResultCallback callback) {
+void StateMigrationV4::Migrate(ResultCallback callback) {
   ledger_->client()->DeleteLog(std::move(callback));
 }
 

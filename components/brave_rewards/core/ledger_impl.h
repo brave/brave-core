@@ -1,7 +1,7 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_H_
@@ -21,8 +21,9 @@
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
+#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
-#include "brave/components/brave_rewards/core/logging/logging.h"  // does not belong in here, components should include it themselves
+#include "brave/components/brave_rewards/core/logging/logging.h"
 #include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
@@ -36,8 +37,6 @@
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-
-#include "brave/components/brave_rewards/core/ledger.h"  // TODO(sszaloki)
 
 namespace ledger {
 
@@ -342,7 +341,7 @@ class LedgerImpl : public mojom::Ledger {
 
     if constexpr (std::is_same_v<T, bool>) {
       ledger_client_->GetBooleanState(name, &value);
-    } else if constexpr (std::is_same_v<T, int>) {
+    } else if constexpr (std::is_same_v<T, int32_t>) {
       ledger_client_->GetIntegerState(name, &value);
     } else if constexpr (std::is_same_v<T, double>) {
       ledger_client_->GetDoubleState(name, &value);
@@ -367,7 +366,7 @@ class LedgerImpl : public mojom::Ledger {
   void SetState(const std::string& name, T value) {
     if constexpr (std::is_same_v<T, bool>) {
       ledger_client_->SetBooleanState(name, std::move(value));
-    } else if constexpr (std::is_same_v<T, int>) {
+    } else if constexpr (std::is_same_v<T, int32_t>) {
       ledger_client_->SetIntegerState(name, std::move(value));
     } else if constexpr (std::is_same_v<T, double>) {
       ledger_client_->SetDoubleState(name, std::move(value));
@@ -392,7 +391,7 @@ class LedgerImpl : public mojom::Ledger {
 
     if constexpr (std::is_same_v<T, bool>) {
       ledger_client_->GetBooleanOption(name, &value);
-    } else if constexpr (std::is_same_v<T, int>) {
+    } else if constexpr (std::is_same_v<T, int32_t>) {
       ledger_client_->GetIntegerOption(name, &value);
     } else if constexpr (std::is_same_v<T, double>) {
       ledger_client_->GetDoubleOption(name, &value);

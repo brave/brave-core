@@ -40,7 +40,7 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
             "VALUES (?, ?, ?, ?, ?, ?)";
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   auto info = mojom::BalanceReportInfo::New();
@@ -72,7 +72,7 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   balance_report_.GetAllRecords(
@@ -98,7 +98,7 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
         ASSERT_EQ(transaction->commands[1]->command, query);
         ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
         ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020,
@@ -121,7 +121,7 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
         ASSERT_EQ(transaction->commands[0]->command, query);
         ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
         ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   balance_report_.DeleteAllRecords([](mojom::Result) {});

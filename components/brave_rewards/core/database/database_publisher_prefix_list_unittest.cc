@@ -80,7 +80,7 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
                   "INSERT OR REPLACE INTO publisher_prefix_list (hash_prefix) "
                   "VALUES (x'000186A0')");
 
-        std::move(callback).Run(nullptr);
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   database_prefix_list_.Reset(CreateReader(100'001), [](mojom::Result) {});

@@ -25,8 +25,7 @@ MockLedgerImpl::MockLedgerImpl()
       });
   ON_CALL(*this, database()).WillByDefault(Return(&mock_database_));
 
-  mojom::LedgerAsyncWaiter sync(this);
-  const auto result = sync.Initialize(false);
+  const auto result = mojom::LedgerAsyncWaiter(this).Initialize(false);
   DCHECK(result == mojom::Result::LEDGER_OK);
 }
 

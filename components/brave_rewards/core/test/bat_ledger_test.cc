@@ -9,9 +9,7 @@
 namespace ledger {
 
 BATLedgerTest::BATLedgerTest()
-    : ledger_({},
-              test_ledger_client_receiver_
-                  .BindNewEndpointAndPassDedicatedRemote()) {}
+    : ledger_({}, client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {}
 
 BATLedgerTest::~BATLedgerTest() = default;
 
@@ -25,13 +23,12 @@ void BATLedgerTest::AddNetworkResultForTesting(const std::string& url,
                                                mojom::UrlMethod method,
                                                mojom::UrlResponsePtr response) {
   DCHECK(response);
-  GetTestLedgerClient()->AddNetworkResultForTesting(url, method,
-                                                    std::move(response));
+  client_.AddNetworkResultForTesting(url, method, std::move(response));
 }
 
 void BATLedgerTest::SetLogCallbackForTesting(
     TestLedgerClient::LogCallback callback) {
-  GetTestLedgerClient()->SetLogCallbackForTesting(callback);
+  client_.SetLogCallbackForTesting(callback);
 }
 
 }  // namespace ledger

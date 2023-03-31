@@ -69,10 +69,9 @@ void DatabaseInitialize::GetCreateScript(
                      base::Unretained(this), std::move(callback)));
 }
 
-void DatabaseInitialize::ExecuteCreateScript(
-    ledger::LegacyResultCallback callback,
-    const std::string& script,
-    int table_version) {
+void DatabaseInitialize::ExecuteCreateScript(LegacyResultCallback callback,
+                                             const std::string& script,
+                                             int table_version) {
   if (script.empty()) {
     BLOG(1, "Script is empty");
     callback(mojom::Result::LEDGER_ERROR);

@@ -11,9 +11,16 @@
 
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_database.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ledger {
+
+inline const auto db_error_response = [] {
+  auto response = mojom::DBCommandResponse::New();
+  response->status = mojom::DBCommandResponse::Status::RESPONSE_ERROR;
+  return response;
+}();
 
 class MockLedgerClient : public mojom::LedgerClient {
  public:
