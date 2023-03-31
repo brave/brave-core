@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -111,6 +112,7 @@ class BraveStatsUpdater {
   scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
 
   std::unique_ptr<misc_metrics::GeneralBrowserUsage> general_browser_usage_p3a_;
+  base::WeakPtrFactory<BraveStatsUpdater> weak_ptr_factory_{this};
 };
 
 // Registers the preferences used by BraveStatsUpdater
