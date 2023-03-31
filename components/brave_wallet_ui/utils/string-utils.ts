@@ -125,5 +125,6 @@ export const isComponentInStorybook = (hostname: string = window.location.hostna
 
 export const IPFS_PROTOCOL = 'ipfs://'
 
-export const isIpfs = (url?: string) => url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
-
+export const isIpfs = (url?: string) => {
+  return url?.toLowerCase()?.startsWith(IPFS_PROTOCOL)
+}

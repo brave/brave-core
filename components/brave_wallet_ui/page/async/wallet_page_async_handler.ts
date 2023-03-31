@@ -306,7 +306,8 @@ handler.on(WalletPageActions.getNFTMetadata.type, async (store, payload: BraveWa
           ? 'SPL'
           : '',
       tokenID: payload.tokenId,
-      imageURL: response.image.startsWith('data:image/') ? response.image : await translateToNftGateway(response.image),
+      imageURL: response.image.startsWith('data:image/') ?
+        response.image : await translateToNftGateway(response.image),
       imageMimeType: 'image/*',
       floorFiatPrice: '',
       floorCryptoPrice: '',

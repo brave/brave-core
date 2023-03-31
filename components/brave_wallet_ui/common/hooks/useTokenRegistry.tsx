@@ -32,7 +32,8 @@ export function useTokenRegistry () {
     Promise.all(networkList.map(async (network) => {
       getTokenList(network).then(
         async (result) => {
-          const formattedListWithIcons = await Promise.all(result.tokens.map(async (token) => {
+            const formattedListWithIcons =
+              await Promise.all(result.tokens.map(async (token) => {
             return await addLogoToToken(token)
           }))
           registry[network.chainId] = formattedListWithIcons

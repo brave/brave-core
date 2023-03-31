@@ -104,7 +104,10 @@ import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
 import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
-import { areSupportedForPinning, extractIpfsUrl } from '../../../../common/async/lib'
+import {
+  areSupportedForPinning,
+  extractIpfsUrl
+} from '../../../../common/async/lib'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -626,7 +629,9 @@ export const PortfolioAsset = (props: Props) => {
         updated
       }))
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus, currentNftPinningStatus, ipfsImageUrl])
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata,
+      networkList, nftMetadataError, nftPinningStatus,
+      currentNftPinningStatus, ipfsImageUrl])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))

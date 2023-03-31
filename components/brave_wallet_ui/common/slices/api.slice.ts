@@ -2702,10 +2702,11 @@ async function fetchUserAssetsForNetwork (
   )
 
   // Adds a logo and chainId to each token object
-  const tokenList: BraveWallet.BlockchainToken[] = await Promise.all(tokens.map(async (token) => {
-    const updatedToken = await addLogoToToken(token)
-    return addChainIdToToken(updatedToken, network.chainId)
-  }))
+  const tokenList: BraveWallet.BlockchainToken[] =
+    await Promise.all(tokens.map(async (token) => {
+      const updatedToken = await addLogoToToken(token)
+      return addChainIdToToken(updatedToken, network.chainId)
+    }))
 
   if (tokenList.length === 0) {
     // Creates a network's Native Asset if nothing was returned

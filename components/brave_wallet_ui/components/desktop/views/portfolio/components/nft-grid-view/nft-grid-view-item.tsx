@@ -69,7 +69,8 @@ export const NFTGridViewItem = (props: Props) => {
   React.useEffect(() => {
     let ignore = false
     const tokenImageURL = stripERC20TokenImageURL(token.logo)
-    translateToNftGateway(tokenImageURL).then((v) => {if (!ignore) setRemoteImage(v)})
+    translateToNftGateway(tokenImageURL).then(
+      (v) => {if (!ignore) setRemoteImage(v)})
     return () => {
       ignore = true
     }

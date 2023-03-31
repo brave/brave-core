@@ -17,7 +17,10 @@ import { useExplorer } from '../../../common/hooks'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
-import { isValidateUrl, stripERC20TokenImageURL } from '../../../utils/string-utils'
+import {
+  isValidateUrl,
+  stripERC20TokenImageURL
+} from '../../../utils/string-utils'
 
 // Styled Components
 import {
@@ -64,7 +67,9 @@ interface Props {
   imageIpfsUrl?: string
 }
 
-export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, tokenNetwork, nftPinningStatus, imageIpfsUrl }: Props) => {
+export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError,
+                             tokenNetwork, nftPinningStatus,
+                             imageIpfsUrl }: Props) => {
   // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
@@ -203,7 +208,11 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError, token
                     <DetailSectionRow>
                       <DetailSectionColumn>
                         <DetailSectionTitle>{getLocale('braveWalletNFTDetailImageAddress')}</DetailSectionTitle>
-                        <HighlightedDetailSectionValue href={stripERC20TokenImageURL(imageIpfsUrl)} target='_blank'>{stripERC20TokenImageURL(imageIpfsUrl)}</HighlightedDetailSectionValue>
+                        <HighlightedDetailSectionValue
+                          href={stripERC20TokenImageURL(imageIpfsUrl)}
+                          target='_blank'>
+                            {stripERC20TokenImageURL(imageIpfsUrl)}
+                        </HighlightedDetailSectionValue>
                       </DetailSectionColumn>
                     </DetailSectionRow>
                   </>

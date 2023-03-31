@@ -3,7 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { extractIpfsUrl, translateToNftGateway } from '../../../common/async/lib'
+import {
+  extractIpfsUrl,
+  translateToNftGateway
+} from '../../../common/async/lib'
 import * as React from 'react'
 import { CSSProperties } from 'react'
 
