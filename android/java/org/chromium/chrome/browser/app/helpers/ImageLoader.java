@@ -59,6 +59,8 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 public class ImageLoader {
     private static final String TAG = "ImageLoader";
     private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
@@ -275,19 +277,18 @@ public class ImageLoader {
             if (callback != null) callback.onLoadFailed();
             return;
         }
-        try {
-            Glide.with(context)
-                    .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
-                                                          : imageFetcherFacade.drawable)
-                    .transform(getTransformations(isCircular))
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .priority(Priority.IMMEDIATE)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(GlideException glideException, Object model,
-                                Target<Drawable> target, boolean isFirstResource) {
-                            return callback != null && callback.onLoadFailed();
-                        }
+        Glide.with(context)
+                .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
+                                                      : imageFetcherFacade.drawable)
+                .transform(getTransformations(context, isCircular))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .priority(Priority.IMMEDIATE)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(GlideException glideException, Object model,
+                            Target<Drawable> target, boolean isFirstResource) {
+                        return callback != null && callback.onLoadFailed();
+                    }
 
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model,
@@ -303,12 +304,12 @@ public class ImageLoader {
         }
     }
 
-    private static BitmapTransformation[] getTransformations(boolean isCircular) {
+    private static BitmapTransformation[] getTransformations(Context context, boolean isCircular) {
         if (isCircular) {
             return new BitmapTransformation[] {
-                    new FitCenter(), new RoundedCorners(32), new CircleCrop()};
+                    new FitCenter(), new CircleCrop()};
         }
-        return new BitmapTransformation[] {new FitCenter(), new RoundedCorners(32)};
+        return new BitmapTransformation[] {new FitCenter(), new RoundedCorners(dpToPx(context, WalletConstants.RECT_ROUNDED_CORNERS_DP))};
     }
 
     /**

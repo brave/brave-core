@@ -82,7 +82,7 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
                         walletListItemModel.getBlockchainToken().contractAddress,
                         walletListItemModel.getBlockchainToken().symbol,
                         context.getResources().getDisplayMetrics().density, null, context, false,
-                        (float) 0.9);
+                        (float) 0.9, false);
             }
         }
     }

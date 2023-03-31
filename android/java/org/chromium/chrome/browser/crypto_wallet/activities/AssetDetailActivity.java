@@ -144,7 +144,7 @@ public class AssetDetailActivity
         } else {
             Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, mContractAddress,
                     mAssetSymbol, getResources().getDisplayMetrics().density, assetTitleText, this,
-                    false, (float) 0.5);
+                    false, (float) 0.5, true);
         }
 
         TextView assetPriceText = findViewById(R.id.asset_price_text);

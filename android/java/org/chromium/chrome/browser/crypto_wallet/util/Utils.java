@@ -755,8 +755,8 @@ public class Utils {
             return;
         }
         executor.execute(() -> {
-            Bitmap bitmap1 = Blockies.createIcon(addresses[0], true);
-            Bitmap bitmap2 = scaleDown(Blockies.createIcon(addresses[1], true), (float) 0.6);
+            Bitmap bitmap1 = Blockies.createIcon(addresses[0], true, true);
+            Bitmap bitmap2 = scaleDown(Blockies.createIcon(addresses[1], true, true), (float) 0.6);
             final Bitmap bitmap = overlayBitmapToCenter(bitmap1, bitmap2);
             handler.post(() -> {
                 if (iconImg != null) {
@@ -791,10 +791,10 @@ public class Utils {
 
     public static void setBlockiesBitmapCustomAsset(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, String symbol, float scale, TextView textView,
-            Context context, boolean drawCaratDown, float scaleDown) {
+            Context context, boolean drawCaratDown, float scaleDown, boolean circular) {
         executor.execute(() -> {
             final Bitmap bitmap =
-                    drawTextToBitmap(scaleDown(Blockies.createIcon(source, true), scaleDown),
+                    drawTextToBitmap(scaleDown(Blockies.createIcon(source, true, circular), scaleDown),
                             symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
             handler.post(() -> {
                 if (iconImg != null) {
@@ -830,7 +830,7 @@ public class Utils {
     public static void setBlockiesBitmapResource(ExecutorService executor, Handler handler,
             ImageView iconImg, String source, boolean makeLowerCase) {
         executor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase);
+            final Bitmap bitmap = Blockies.createIcon(source, makeLowerCase, true);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);

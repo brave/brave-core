@@ -216,7 +216,7 @@ public class BravePermissionAccountsListAdapter
 
     private void setBlockiesBitmapResource(ImageView iconImg, String source) {
         mExecutor.execute(() -> {
-            final Bitmap bitmap = Blockies.createIcon(source, true);
+            final Bitmap bitmap = Blockies.createIcon(source, true, true);
             mHandler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);

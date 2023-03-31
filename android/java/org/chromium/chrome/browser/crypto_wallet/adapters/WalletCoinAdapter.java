@@ -215,7 +215,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                             walletListItemModel.getBlockchainToken().contractAddress,
                             walletListItemModel.getBlockchainToken().symbol,
                             context.getResources().getDisplayMetrics().density, null, context,
-                            false, (float) 0.9);
+                            false, (float) 0.9, true);
                 }
                 if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                     onWalletListItemClick.onMaybeShowTrashButton(

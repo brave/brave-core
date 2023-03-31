@@ -125,7 +125,7 @@ public class AddTokenFragment extends BaseDAppsFragment {
                     mCurrentAddSuggestTokenRequest.token.contractAddress,
                     mCurrentAddSuggestTokenRequest.token.symbol,
                     getActivity().getResources().getDisplayMetrics().density, null, getActivity(),
-                    false, (float) 0.9);
+                    false, (float) 0.9, true);
         }
         String tokenName = mCurrentAddSuggestTokenRequest.token.name;
         if (tokenName.isEmpty()) {

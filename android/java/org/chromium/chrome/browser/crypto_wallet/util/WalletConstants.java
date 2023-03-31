@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.List;
 
 public final class WalletConstants {
+
+    // Radius of the oval used to round the corners in density-independent pixels.
+    public final static int RECT_ROUNDED_CORNERS_DP = 16;
+
     public static final long MILLI_SECOND = 1000;
 
     // The maximum bitmap size used by {@code WebContents#downloadImage}.
