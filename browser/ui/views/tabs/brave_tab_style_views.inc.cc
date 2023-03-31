@@ -105,7 +105,8 @@ SkPath BraveVerticalTabStyle::GetPath(PathType path_type,
     return {};
   }
 
-  CHECK_EQ(tab()->bounds().height(), aligned_bounds.height() / scale)
+  CHECK_EQ(tab()->bounds().height(),
+           std::round(aligned_bounds.height() / scale))
       << "We don't want it to be off by 1 dip";
 
   const bool is_pinned = tab()->data().pinned;
