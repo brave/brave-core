@@ -344,7 +344,10 @@ void BraveStatsUpdater::DetectUncertainFuture() {
 }
 
 void BraveStatsUpdater::OnReferralInitialization() {
-  stats_preconditions_barrier_.Run();
+  pref_change_registrar_ = nullptr;
+  if (stats_preconditions_barrier_) {
+    stats_preconditions_barrier_.Run();
+  }
 }
 
 void BraveStatsUpdater::OnDetectUncertainFuture(
@@ -354,10 +357,13 @@ void BraveStatsUpdater::OnDetectUncertainFuture(
   } else {
     arch_ = ProcessArch::kArchMetal;
   }
-  stats_preconditions_barrier_.Run();
+  if (stats_preconditions_barrier_) {
+    stats_preconditions_barrier_.Run();
+  }
 }
 
 void BraveStatsUpdater::StartServerPingStartupTimer() {
+  stats_preconditions_barrier_.Reset();
   stats_startup_complete_ = true;
   server_ping_startup_timer_->Start(
       FROM_HERE, base::Seconds(kUpdateServerStartupPingDelaySeconds), this,
