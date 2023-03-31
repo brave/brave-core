@@ -133,9 +133,9 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
-  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x42, 0x3E, 0xEE)};
+  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x87, 0x84, 0xF4)};
   mixer[kColorDownloadToolbarButtonRingBackground] = {
-      SkColorSetARGB(0x33, 0x00, 0x00, 0x00)};
+      SkColorSetARGB(0x33, 0x16, 0x17, 0x1D)};
 }
 
 }  // namespace
