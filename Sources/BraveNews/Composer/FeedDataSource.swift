@@ -259,11 +259,24 @@ public class FeedDataSource: ObservableObject {
   }
 
   /// A set of Brave News specific errors that could occur outside of JSON decoding or network errors
-  enum BraveNewsError: Error {
+  enum BraveNewsError: LocalizedError {
+    /// There are no followed locales or items and thus no reason to generate cards
+    case invalidLoad
     /// The resource data that was loaded was empty after parsing
-    case resourceEmpty
+    case resourceEmpty(resource: String)
     /// Something went wrong
     case unknownError
+    
+    var localizedDescription: String {
+      switch self {
+      case .invalidLoad:
+        return "The load failed because there were either no items to show or the list of followed locales is empty"
+      case .resourceEmpty(let resource):
+        return "The resource (\(resource)) downloaded did not have any parsable data"
+      case .unknownError:
+        return "An unknown error occured"
+      }
+    }
   }
   
   private func on<T>(queue: DispatchQueue, work: @escaping () -> T) async -> T {
@@ -369,7 +382,7 @@ public class FeedDataSource: ObservableObject {
   private func loadGlobalSources() async throws -> [FeedItem.Source] {
     let sources = try await loadResource(.globalSources, decodedTo: [FailableDecodable<FeedItem.Source>].self)
     if sources.isEmpty {
-      throw BraveNewsError.resourceEmpty
+      throw BraveNewsError.resourceEmpty(resource: NewsResource.globalSources.name)
     }
     return sources.compactMap(\.wrappedValue)
   }
@@ -377,7 +390,7 @@ public class FeedDataSource: ObservableObject {
   private func loadLegacySources(for localeIdentifier: String) async throws -> [FeedItem.LegacySource] {
     let sources = try await loadResource(.sources, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.LegacySource>].self)
     if sources.isEmpty {
-      throw BraveNewsError.resourceEmpty
+      throw BraveNewsError.resourceEmpty(resource: "\(NewsResource.sources.name)-\(localeIdentifier)")
     }
     return sources.compactMap(\.wrappedValue)
   }
@@ -386,7 +399,7 @@ public class FeedDataSource: ObservableObject {
     do {
       let items = try await loadResource(.feed, localeIdentifier: localeIdentifier, decodedTo: [FailableDecodable<FeedItem.Content>].self)
       if items.isEmpty {
-        throw BraveNewsError.resourceEmpty
+        throw BraveNewsError.resourceEmpty(resource: "\(NewsResource.feed.name)-\(localeIdentifier)")
       }
       return items.compactMap(\.wrappedValue)
     } catch {
@@ -399,7 +412,7 @@ public class FeedDataSource: ObservableObject {
     do {
       let items = try await loadResource(.sourceSuggestions, localeIdentifier: localeIdentifier, decodedTo: [String: [FailableDecodable<FeedItem.SourceSimilarity>]].self)
       if items.isEmpty {
-        throw BraveNewsError.resourceEmpty
+        throw BraveNewsError.resourceEmpty(resource: "\(NewsResource.sourceSuggestions.name)-\(localeIdentifier)")
       }
       return items.mapValues { $0.compactMap(\.wrappedValue) }
     } catch {
@@ -606,7 +619,7 @@ public class FeedDataSource: ObservableObject {
           }
         }
         if !followedLocales.isEmpty && self.items.isEmpty {
-          throw BraveNewsError.resourceEmpty
+          throw BraveNewsError.invalidLoad
         }
         self.reloadCards(from: self.items, sources: self.sources, completion: completion)
       } catch {
@@ -634,6 +647,23 @@ public class FeedDataSource: ObservableObject {
       return false
     }
     return true
+  }
+  
+  public func fetchCachedFiles(resourceKeys: [URLResourceKey] = []) async -> [URL] {
+    let fileManager = FileManager.default
+    guard let braveNewsPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName) else {
+      return []
+    }
+    var files: [URL] = []
+    guard let enumerator = fileManager.enumerator(
+      at: braveNewsPath,
+      includingPropertiesForKeys: resourceKeys,
+      options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
+    ) else { return [] }
+    while let fileURL = enumerator.nextObject() as? URL {
+      files.append(fileURL)
+    }
+    return files
   }
 
   // MARK: - Sources
