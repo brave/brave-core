@@ -12,6 +12,7 @@ clean=0
 build_simulator=0
 build_device=0
 release_flag="Release"
+other_flags=""
 brave_browser_dir="${@: -1}"
 
 sim_dir="out/ios_Release_"$current_arch"_simulator"
@@ -23,6 +24,7 @@ function usage() {
   echo " --debug:           Builds a debug instead of release framework. (Should not be pushed with the repo)"
   echo " --build-simulator: Build only for simulator"
   echo " --build-device:    Build only for device"
+  echo " --no-goma:         Builds without goma"
   exit 1
 }
 
@@ -52,6 +54,10 @@ case $i in
     ;;
     --build-device)
     build_device=1
+    shift
+    ;;
+    --no-goma)
+    other_flags+=" --goma_offline"
     shift
     ;;
 esac
@@ -99,13 +105,13 @@ bc_framework_args=""
 mc_framework_args=""
 
 if [ "$build_simulator" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios --target_arch=$target_architecture --target_environment=simulator
+  npm run build -- $release_flag --target_os=ios --target_arch=$target_architecture --target_environment=simulator $other_flags
   bc_framework_args="-framework $sim_dir/BraveCore.framework -debug-symbols $(pwd)/$sim_dir/BraveCore.dSYM"
   mc_framework_args="-framework $sim_dir/MaterialComponents.framework"
 fi
 
 if [ "$build_device" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios --target_arch=arm64
+  npm run build -- $release_flag --target_os=ios --target_arch=arm64 $other_flags
   bc_framework_args="$bc_framework_args -framework $device_dir/BraveCore.framework -debug-symbols $(pwd)/$device_dir/BraveCore.dSYM"
   mc_framework_args="$mc_framework_args -framework $device_dir/MaterialComponents.framework"
 fi
