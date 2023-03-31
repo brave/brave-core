@@ -51,7 +51,13 @@ import { PortfolioTransactionItem } from '../../../components/desktop'
 import { SearchBar } from '../../../components/shared'
 
 // styles
-import { Column, LoadingIcon, Text, VerticalSpacer } from '../../../components/shared/style'
+import {
+  Column,
+  LoadingIcon,
+  Text,
+  VerticalSpacer,
+  ScrollableColumn
+} from '../../../components/shared/style'
 import {
   LoadingSkeletonStyleProps,
   Skeleton
@@ -279,6 +285,7 @@ export const TransactionsScreen: React.FC = () => {
               </Column>
             }
 
+          <ScrollableColumn>
             {filteredTransactions.map(tx =>
               <PortfolioTransactionItem
                 key={tx.id}
@@ -286,6 +293,7 @@ export const TransactionsScreen: React.FC = () => {
                 transaction={tx}
               />
             )}
+          </ScrollableColumn>
 
             {txsForSelectedChain &&
               txsForSelectedChain.length !== 0 &&

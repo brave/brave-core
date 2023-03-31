@@ -11,7 +11,7 @@ import FacebookIcon from '../../../assets/svg-icons/facebook-icon.svg'
 import { OpenNewIcon } from 'brave-ui/components/icons'
 import Copy from '../../../assets/svg-icons/nft-ipfs/copy.svg'
 
-export const nftMediaSize = '440px'
+export const nftMediaSize = '300px'
 
 export const StyledWrapper = styled.div`
   display: flex;

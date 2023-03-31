@@ -5,15 +5,11 @@
 
 import * as React from 'react'
 import {
-  useDispatch,
   useSelector
 } from 'react-redux'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
-
-// Actions
-import { PanelActions } from '../../../panel/actions'
 
 // Components
 import { create, background } from 'ethereum-blockies'
@@ -76,7 +72,6 @@ export const ConnectedPanel = (props: Props) => {
     navAction
   } = props
 
-  const dispatch = useDispatch()
   const {
     defaultCurrencies,
     transactionSpotPrices: spotPrices,
@@ -132,10 +127,6 @@ export const ConnectedPanel = (props: Props) => {
       setShowMore(false)
     }
   }, [showMore])
-
-  const onOpenSettings = React.useCallback(() => {
-    dispatch(PanelActions.openWalletSettings())
-  }, [])
 
   // effects
   React.useEffect(() => {
@@ -249,7 +240,6 @@ export const ConnectedPanel = (props: Props) => {
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
       <ConnectedHeader
         onExpand={onExpand}
-        onClickSetting={onOpenSettings}
         onClickMore={onShowMore}
         onClickViewOnBlockExplorer={selectedAccount ? onClickViewOnBlockExplorer('address', selectedAccountAddress) : undefined}
         showMore={showMore}

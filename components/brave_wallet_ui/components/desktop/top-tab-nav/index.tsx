@@ -11,39 +11,24 @@ import {
 // Styled Components
 import {
   StyledWrapper,
-  MoreIcon,
-  MoreRow,
-  MoreButton,
-  EmptyPadding,
   Line
 } from './style'
 
 // Components
 import {
-  TopTabNavButton,
-  WalletMorePopup
+  TopTabNavButton
 } from '../'
 
 export interface Props {
   tabList: TopTabNavObjectType[]
   selectedTab?: TabNavTypes
-  hasMoreButtons?: boolean
-  showMore?: boolean
   onSelectTab: (id: TabNavTypes) => void
-  onClickSettings?: () => void
-  onClickBackup?: () => void
-  onClickMore?: () => void
 }
 
 function TopTabNav (props: Props) {
   const {
     tabList,
     selectedTab,
-    hasMoreButtons,
-    showMore,
-    onClickMore,
-    onClickSettings,
-    onClickBackup,
     onSelectTab
   } = props
 
@@ -61,22 +46,7 @@ function TopTabNav (props: Props) {
           text={option.name}
         />
       )}
-      <MoreRow>
-        {hasMoreButtons ? (
-          <MoreButton onClick={onClickMore}>
-            <MoreIcon />
-          </MoreButton>
-        ) : (
-          <EmptyPadding />
-        )}
-        <Line />
-      </MoreRow>
-      {showMore &&
-        <WalletMorePopup
-          onClickBackup={onClickBackup}
-          onClickSetting={onClickSettings}
-        />
-      }
+      <Line />
     </StyledWrapper>
   )
 }

@@ -18,7 +18,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 40px;
+  height: 100%;
 `
 
 export const PrimaryListContainer = styled.div`
@@ -92,7 +92,7 @@ export const WalletInfoRow = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  margin: 30px 0px;
+  margin-top: 30px;
 `
 
 export const WalletInfoLeftSide = styled.div`

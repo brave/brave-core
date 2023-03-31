@@ -33,10 +33,10 @@ function initialize () {
   render(
     <Provider store={store}>
       <BraveCoreThemeProvider
-            dark={walletDarkTheme}
-            light={walletLightTheme}
-          >
-        <Swap hideNav={true}/>
+        dark={walletDarkTheme}
+        light={walletLightTheme}
+      >
+        <Swap />
       </BraveCoreThemeProvider>
     </Provider>, document.getElementById('root'))
 }

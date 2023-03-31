@@ -22,7 +22,6 @@ import { WalletMorePopup } from '../../desktop'
 export interface Props {
   onExpand: () => void
   onClickMore: () => void
-  onClickSetting: () => void
   onClickViewOnBlockExplorer?: () => void
   showMore: boolean
 }
@@ -30,7 +29,6 @@ export interface Props {
 export const ConnectedHeader = (props: Props) => {
   const {
     onClickMore,
-    onClickSetting,
     onExpand,
     onClickViewOnBlockExplorer,
     showMore
@@ -44,7 +42,6 @@ export const ConnectedHeader = (props: Props) => {
       <ActionIcon onClick={onClickMore} />
       {showMore &&
         <WalletMorePopup
-          onClickSetting={onClickSetting}
           onClickViewOnBlockExplorer={onClickViewOnBlockExplorer}
         />
       }

@@ -59,16 +59,16 @@ interface Props {
 }
 
 export const TokenLists = ({
-                             userAssetList,
-                             networks,
-                             renderToken,
-                             hideAddButton,
-                             enableScroll,
-                             maxListHeight,
-                             hideAssetFilter,
-                             hideAccountFilter,
-                             hideAutoDiscovery
-                           }: Props) => {
+  userAssetList,
+  networks,
+  renderToken,
+  hideAddButton,
+  enableScroll,
+  maxListHeight,
+  hideAssetFilter,
+  hideAccountFilter,
+  hideAutoDiscovery
+}: Props) => {
   // routing
   const history = useHistory()
   const { tokenId } = useParams<{ tokenId?: string }>()
@@ -182,9 +182,11 @@ export const TokenLists = ({
       }
       {nonFungibleTokens.length !== 0 &&
         <>
-          <Spacer />
-          <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-          <SubDivider />
+          <Column fullWidth={true} alignItems='flex-start'>
+            <Spacer />
+            <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+            <SubDivider />
+          </Column>
           {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
         </>
       }

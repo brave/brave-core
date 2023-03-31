@@ -993,6 +993,9 @@ export type NavIDTypes =
   | 'deposit'
   | 'activity'
   | 'portfolio'
+  | 'nfts'
+  | 'market'
+  | 'accounts'
 
 export interface NavOption {
   id: NavIDTypes

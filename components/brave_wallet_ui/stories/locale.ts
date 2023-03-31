@@ -704,7 +704,7 @@ provideStrings({
   braveWalletMarketDataAssetsColumn: 'Assets',
   braveWalletMarketDataPriceColumn: 'Price',
   braveWalletMarketData24HrColumn: '24Hr',
-  braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
+  braveWalletMarketDataMarketCapColumn: 'Cap',
   braveWalletMarketDataVolumeColumn: 'Volume',
   braveWalletMarketDataBuyDepositColumn: 'Buy/Deposit',
 

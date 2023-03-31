@@ -29,21 +29,26 @@ import {
 } from './style'
 
 export interface Props {
-  onClickSetting?: () => void
   onClickViewOnBlockExplorer?: () => void
   onClickBackup?: () => void
+  onClosePopup?: () => void
+  yPosition?: number
 }
 
-const WalletMorePopup = (props: Props) => {
+export const WalletMorePopup = (props: Props) => {
   const {
-    onClickSetting,
     onClickViewOnBlockExplorer,
-    onClickBackup
+    onClickBackup,
+    onClosePopup,
+    yPosition
   } = props
 
   // redux
   const dispatch = useDispatch()
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
+  const selectedNetwork =
+    useSelector(
+      ({ wallet }: { wallet: WalletState }
+      ) => wallet.selectedNetwork)
 
   // methods
   const lockWallet = React.useCallback(() => {
@@ -55,61 +60,105 @@ const WalletMorePopup = (props: Props) => {
       return
     }
 
-    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH ? 'ethereum' : 'solana'
+    const route = selectedNetwork.coin === BraveWallet.CoinType.ETH
+      ? 'ethereum'
+      : 'solana'
+
     chrome.tabs.create({ url: `brave://settings/content/${route}` }, () => {
       if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        console.error(
+          'tabs.create failed: ' +
+          chrome.runtime.lastError.message
+        )
       }
     })
-  }, [selectedNetwork])
+    if (onClosePopup) {
+      onClosePopup()
+    }
+  }, [selectedNetwork, onClosePopup])
 
   const onClickHelpCenter = React.useCallback(() => {
-    chrome.tabs.create({ url: 'https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ' }, () => {
+    chrome.tabs.create(
+      {
+        url: 'https://support.brave.com/hc/en-us/articles/4415497656461-Brave-Wallet-FAQ'
+      }, () => {
+        if (chrome.runtime.lastError) {
+          console.error(
+            'tabs.create failed: '
+            + chrome.runtime.lastError.message
+          )
+        }
+      })
+    if (onClosePopup) {
+      onClosePopup()
+    }
+  }, [onClosePopup])
+
+  const onClickSettings = React.useCallback(() => {
+    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
       if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+        console.error(
+          'tabs.create failed: ' +
+          chrome.runtime.lastError.message
+        )
       }
     })
-  }, [])
+    if (onClosePopup) {
+      onClosePopup()
+    }
+  }, [onClosePopup])
 
   return (
-    <StyledWrapper>
+    <StyledWrapper yPosition={yPosition}>
 
       <PopupButton onClick={lockWallet}>
         <LockIcon />
-        <PopupButtonText>{getLocale('braveWalletWalletPopupLock')}</PopupButtonText>
+        <PopupButtonText>
+          {getLocale('braveWalletWalletPopupLock')}
+        </PopupButtonText>
       </PopupButton>
 
       {onClickBackup &&
         <PopupButton onClick={onClickBackup}>
           <BackupIcon />
-          <PopupButtonText>{getLocale('braveWalletBackupButton')}</PopupButtonText>
+          <PopupButtonText>
+            {getLocale('braveWalletBackupButton')}
+          </PopupButtonText>
         </PopupButton>
       }
 
-      {selectedNetwork && selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
+      {
+        selectedNetwork &&
+        selectedNetwork.coin !== BraveWallet.CoinType.FIL &&
         <PopupButton onClick={onClickConnectedSites}>
           <ConnectedSitesIcon />
-          <PopupButtonText>{getLocale('braveWalletWalletPopupConnectedSites')}</PopupButtonText>
+          <PopupButtonText>
+            {getLocale('braveWalletWalletPopupConnectedSites')}
+          </PopupButtonText>
         </PopupButton>
       }
 
-      {onClickSetting &&
-        <PopupButton onClick={onClickSetting}>
-          <SettingsIcon />
-          <PopupButtonText>{getLocale('braveWalletWalletPopupSettings')}</PopupButtonText>
-        </PopupButton>
-      }
+      <PopupButton onClick={onClickSettings}>
+        <SettingsIcon />
+        <PopupButtonText>
+          {getLocale('braveWalletWalletPopupSettings')}
+        </PopupButtonText>
+      </PopupButton>
 
       {onClickViewOnBlockExplorer &&
         <PopupButton onClick={onClickViewOnBlockExplorer}>
           <ExplorerIcon />
-          <PopupButtonText>{getLocale('braveWalletTransactionExplorer')}</PopupButtonText>
+          <PopupButtonText>
+            {getLocale('braveWalletTransactionExplorer')}
+          </PopupButtonText>
         </PopupButton>
       }
 
       <PopupButton onClick={onClickHelpCenter}>
         <HelpCenterIcon />
-        <PopupButtonText>{getLocale('braveWalletHelpCenter')}</PopupButtonText>
+        <PopupButtonText>
+          {getLocale('braveWalletHelpCenter')}
+        </PopupButtonText>
       </PopupButton>
     </StyledWrapper>
   )

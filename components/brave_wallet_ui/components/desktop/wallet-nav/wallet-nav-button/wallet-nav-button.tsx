@@ -1,7 +1,7 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
@@ -16,16 +16,15 @@ import { NavOption } from '../../../../constants/types'
 import { NavTooltip } from '../../../shared/nav-tooltip/nav-tooltip'
 
 // Styled Components
-import { StyledButton, ButtonIcon } from './buy-send-swap-deposit-button.style'
+import { StyledButton, ButtonIcon } from './wallet-nav-button.style'
 
 export interface Props {
   option: NavOption
-  isTab?: boolean
   isSwap?: boolean
 }
 
-export const BuySendSwapDepositButton = (props: Props) => {
-  const { option, isTab, isSwap } = props
+export const WalletNavButton = (props: Props) => {
+  const { option, isSwap } = props
 
   // State
   const [active, setActive] = React.useState(false)
@@ -51,21 +50,19 @@ export const BuySendSwapDepositButton = (props: Props) => {
     <StyledButton
       onMouseEnter={showTip}
       onMouseLeave={hideTip}
-      isTab={isTab}
       onClick={onClick}
-      isSelected={walletLocation === option.route}
+      isSelected={walletLocation.includes(option.route)}
     >
-      <ButtonIcon isTab={isTab} icon={option.icon} />
-      {!isTab && getLocale(option.name)}
+      <ButtonIcon name={option.icon} />
       <NavTooltip
         text={getLocale(option.name)}
         orientation='right'
         distance={60}
-        showTip={!!isTab && active}
+        showTip={active}
         isSwap={isSwap}
       />
     </StyledButton>
   )
 }
 
-export default BuySendSwapDepositButton
+export default WalletNavButton
