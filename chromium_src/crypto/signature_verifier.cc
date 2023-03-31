@@ -6,14 +6,17 @@
 #ifndef BRAVE_CHROMIUM_SRC_CRYPTO_SIGNATURE_VERIFIER_CC_
 #define BRAVE_CHROMIUM_SRC_CRYPTO_SIGNATURE_VERIFIER_CC_
 
-#define BRAVE_VERIFY_INIT_ALGO_SWITCH \
-  case ECDSA_SHA384:                  \
-    pkey_type = EVP_PKEY_EC;          \
-    digest = EVP_sha384();            \
-    break;
+#include "brave/chromium_src/crypto/signature_verifier.h"  // IWYU pragma: export
+
+#define ECDSA_SHA256       \
+  ECDSA_SHA384:            \
+  pkey_type = EVP_PKEY_EC; \
+  digest = EVP_sha384();   \
+  break;                   \
+  case ECDSA_SHA256
 
 #include "src/crypto/signature_verifier.cc"
 
-#undef BRAVE_VERIFY_INIT_ALGO_SWITCH
+#undef ECDSA_SHA256
 
 #endif  // BRAVE_CHROMIUM_SRC_CRYPTO_SIGNATURE_VERIFIER_CC_
