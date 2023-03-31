@@ -402,7 +402,7 @@ bool LogOutWallet(LedgerImpl* ledger,
     ledger->client()->ShowNotification(
         notification.empty() ? ledger::notifications::kWalletDisconnected
                              : notification,
-        {}, base::BindOnce([](mojom::Result) {}));
+        {}, base::DoNothing());
   }
 
   return true;

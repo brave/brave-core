@@ -17,12 +17,11 @@ namespace ledger {
 class TestLedgerClientTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  TestLedgerClient test_ledger_client_;
+  TestLedgerClient client_;
 };
 
 TEST_F(TestLedgerClientTest, CanAccessDatabaseDirectly) {
-  sql::Database* db =
-      test_ledger_client_.database()->GetInternalDatabaseForTesting();
+  sql::Database* db = client_.database()->GetInternalDatabaseForTesting();
   ASSERT_TRUE(db->Execute("CREATE TABLE test_table (num INTEGER);"));
   ASSERT_TRUE(db->Execute("INSERT INTO test_table VALUES (42);"));
   sql::Statement s(db->GetUniqueStatement("SELECT num FROM test_table"));

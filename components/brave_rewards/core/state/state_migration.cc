@@ -41,17 +41,17 @@ StateMigration::StateMigration(LedgerImpl* ledger)
 
 StateMigration::~StateMigration() = default;
 
-void StateMigration::Start(ledger::ResultCallback callback) {
+void StateMigration::Start(ResultCallback callback) {
   Migrate(std::move(callback));
 }
 
-void StateMigration::FreshInstall(ledger::ResultCallback callback) {
+void StateMigration::FreshInstall(ResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
   ledger_->state()->SetVersion(kCurrentVersionNumber);
   std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-void StateMigration::Migrate(ledger::ResultCallback callback) {
+void StateMigration::Migrate(ResultCallback callback) {
   int current_version = ledger_->state()->GetVersion();
 
   if (current_version < 0) {
@@ -134,7 +134,7 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
   NOTREACHED();
 }
 
-void StateMigration::OnMigration(ledger::ResultCallback callback,
+void StateMigration::OnMigration(ResultCallback callback,
                                  int version,
                                  mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {

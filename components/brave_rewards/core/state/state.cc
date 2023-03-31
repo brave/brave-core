@@ -159,7 +159,7 @@ State::State(LedgerImpl* ledger)
 
 State::~State() = default;
 
-void State::Initialize(ledger::ResultCallback callback) {
+void State::Initialize(ResultCallback callback) {
   migration_->Start(std::move(callback));
 }
 
@@ -468,7 +468,7 @@ bool State::SetEncryptedString(const std::string& key,
   std::string base64_string;
   base::Base64Encode(*encrypted, &base64_string);
 
-  ledger_->SetState(key, base64_string);
+  ledger_->SetState(key, std::move(base64_string));
   return true;
 }
 

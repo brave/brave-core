@@ -31,7 +31,7 @@ class DatabaseInitialize {
 
   void GetCreateScript(ledger::LegacyResultCallback callback);
 
-  void ExecuteCreateScript(ledger::LegacyResultCallback callback,
+  void ExecuteCreateScript(LegacyResultCallback callback,
                            const std::string& script,
                            int table_version);
 

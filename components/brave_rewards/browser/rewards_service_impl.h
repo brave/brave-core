@@ -509,7 +509,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetValueState(const std::string& name,
                      GetValueStateCallback callback) override;
   void SetTimeState(const std::string& name,
-                    base::Time time,
+                    base::Time value,
                     SetTimeStateCallback callback) override;
   void GetTimeState(const std::string& name,
                     GetTimeStateCallback callback) override;
@@ -567,7 +567,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void DeleteLog(DeleteLogCallback callback) override;
 
-  // end mojom::RewardsService
+  // end mojom::LedgerClient
 
   void OnRefreshPublisher(RefreshPublisherCallback callback,
                           const std::string& publisher_key,
@@ -636,9 +636,9 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  mojo::Remote<ledger::mojom::LedgerFactory> ledger_factory_;
   mojo::AssociatedReceiver<ledger::mojom::LedgerClient> receiver_;
   mojo::AssociatedRemote<ledger::mojom::Ledger> ledger_;
+  mojo::Remote<ledger::mojom::LedgerFactory> ledger_factory_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 

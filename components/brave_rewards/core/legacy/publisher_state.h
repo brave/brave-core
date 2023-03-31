@@ -41,8 +41,8 @@ class LegacyPublisherState {
       std::vector<ledger::mojom::BalanceReportInfoPtr>* reports);
 
  private:
-  void OnLoad(ledger::LegacyResultCallback callback,
-              ledger::mojom::Result result,
+  void OnLoad(LegacyResultCallback callback,
+              mojom::Result result,
               const std::string& data);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
