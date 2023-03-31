@@ -583,6 +583,18 @@ class SolanaProviderTest : public InProcessBrowserTest {
         .ExtractBool();
   }
 
+  bool GetIsBraveWalletViaProxy() {
+    return EvalJs(web_contents(), "getIsBraveWalletViaProxy()",
+                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+        .ExtractBool();
+  }
+
+  void CallSolanaDisconnectViaProxy() {
+    ASSERT_TRUE(EvalJs(web_contents(), "solanaDisconnectViaProxy()",
+                       content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                    .ExtractBool());
+  }
+
   void WaitForResultReady() {
     content::DOMMessageQueue message_queue;
     std::string message;
@@ -1162,6 +1174,15 @@ IN_PROC_BROWSER_TEST_F(SolanaProviderTest, NoCrashOnShortLivedIframes) {
       https_server_for_files()->GetURL("a.test", "/short_lived_iframes.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   ReloadAndWaitForLoadStop(browser());
+}
+
+IN_PROC_BROWSER_TEST_F(SolanaProviderTest, CallViaProxy) {
+  GURL url =
+      https_server_for_files()->GetURL("a.test", "/solana_provider.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+  EXPECT_TRUE(GetIsBraveWalletViaProxy());
+  CallSolanaDisconnectViaProxy();
 }
 
 }  // namespace brave_wallet

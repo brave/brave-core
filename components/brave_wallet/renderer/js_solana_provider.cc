@@ -33,6 +33,7 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "v8/include/v8-microtask-queue.h"
+#include "v8/include/v8-proxy.h"
 #include "v8/include/v8-typed-array.h"
 
 namespace brave_wallet {
@@ -57,6 +58,29 @@ constexpr char kWalletStandardOnDemandScript[] = R"((function () {
     window.braveSolana.walletStandardInit()
   })
 })())";
+constexpr char kSolanaProxyHandlerScript[] = R"((function() {
+  const handler = {
+    get: (target, property, receiver) => {
+      const value = target[property];
+      if (typeof value === 'function' &&
+          (property === 'connect' || property === 'disconnect' ||
+           property === 'signAndSendTransaction' ||
+           property === 'signMessage' || property === 'request' ||
+           property === 'signTransaction' ||
+           property === 'signAllTransactions' ||
+           property === 'walletStandardInit')) {
+        return new Proxy(value, {
+          apply: (targetFunc, thisArg, args) => {
+            return targetFunc.call(target, ...args);
+          }
+        });
+      }
+      return value;
+    }
+  };
+  return handler;
+})())";
+constexpr char kSolanaProxyScript[] = "solana_proxy.js";
 
 }  // namespace
 
@@ -127,17 +151,34 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
     return;
   }
   v8::Local<v8::Value> provider_value = provider.ToV8();
+  v8::Local<v8::Object> provider_object =
+      provider_value->ToObject(context).ToLocalChecked();
 
-  SetProviderNonWritable(context, global, provider_value,
+  // Create a proxy to the actual JSSolanaProvider object which will be
+  // exposed via window.braveSolana and window.solana.
+  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
+  v8::Local<v8::Proxy> solana_proxy;
+  auto solana_proxy_handler_val =
+      ExecuteScript(web_frame, kSolanaProxyHandlerScript, kSolanaProxyScript);
+  v8::Local<v8::Object> solana_proxy_handler_obj =
+      solana_proxy_handler_val.ToLocalChecked()
+          ->ToObject(context)
+          .ToLocalChecked();
+  if (!v8::Proxy::New(context, provider_object, solana_proxy_handler_obj)
+           .ToLocal(&solana_proxy)) {
+    return;
+  }
+
+  SetProviderNonWritable(context, global, solana_proxy,
                          gin::StringToV8(isolate, kBraveSolana), true);
 
   // window.solana will be removed in the future, we use window.braveSolana
   // mainly from now on and keep window.solana for compatibility
   if (!allow_overwrite_window_solana) {
-    SetProviderNonWritable(context, global, provider_value,
+    SetProviderNonWritable(context, global, solana_proxy,
                            gin::StringToV8(isolate, kSolana), true);
   } else {
-    global->Set(context, gin::StringToSymbol(isolate, kSolana), provider_value)
+    global->Set(context, gin::StringToSymbol(isolate, kSolana), solana_proxy)
         .Check();
   }
 
@@ -151,8 +192,6 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
                            gin::StringToV8(isolate, method), false);
   }
 
-  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
-
   ExecuteScript(web_frame,
                 LoadDataResource(
                     IDR_BRAVE_WALLET_SCRIPT_SOLANA_PROVIDER_SCRIPT_BUNDLE_JS),
@@ -164,6 +203,8 @@ void JSSolanaProvider::Install(bool allow_overwrite_window_solana,
 
 gin::ObjectTemplateBuilder JSSolanaProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
+  // Note: When adding a new method, you would need to update the list in
+  // kSolanaProxyHandlerScript too otherwise the function call would fail.
   return gin::Wrappable<JSSolanaProvider>::GetObjectTemplateBuilder(isolate)
       .SetProperty("isPhantom", &JSSolanaProvider::GetIsPhantom)
       .SetProperty("isBraveWallet", &JSSolanaProvider::GetIsBraveWallet)
