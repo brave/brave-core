@@ -224,9 +224,7 @@ void MessageManager::StartScheduledUpload(bool is_star,
   Scheduler* scheduler;
   std::string logging_prefix = "MessageManager::StartScheduledUpload (";
   if (is_star) {
-    if (!IsSTAREnabled()) {
-      return;
-    }
+    CHECK(IsSTAREnabled());
     log_store = star_send_log_store_.get();
     scheduler = star_upload_scheduler_.get();
     logging_prefix += "STAR ";
@@ -271,8 +269,9 @@ void MessageManager::StartScheduledUpload(bool is_star,
 }
 
 void MessageManager::StartScheduledStarPrep() {
+  CHECK(IsSTAREnabled());
   bool p3a_enabled = local_state_->GetBoolean(p3a::kP3AEnabled);
-  if (!p3a_enabled || !IsSTAREnabled()) {
+  if (!p3a_enabled) {
     return;
   }
   if (base::Time::Now() - rotation_scheduler_->GetLastStarRotationTime() <

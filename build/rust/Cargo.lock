@@ -58,7 +58,7 @@ checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 [[package]]
 name = "adss-rs"
 version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=7acfc2dfd12126f38dd81ea4734f37d6239d9605#7acfc2dfd12126f38dd81ea4734f37d6239d9605"
+source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
 dependencies = [
  "rand 0.8.5",
  "sharks",
@@ -157,12 +157,6 @@ name = "base64"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "904dfeac50f3cdaba28fc6f57fdcddb75f49ed61346676a78c4ffe55877802fd"
-
-[[package]]
-name = "base64"
-version = "0.20.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0ea22880d78093b0cbe17c89f64a7d457941e65759157ec6cb31a31d652b05e5"
 
 [[package]]
 name = "bigdecimal"
@@ -1803,10 +1797,10 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
 name = "ppoprf"
-version = "0.0.1"
-source = "git+https://github.com/djandries/sta-rs?rev=7acfc2dfd12126f38dd81ea4734f37d6239d9605#7acfc2dfd12126f38dd81ea4734f37d6239d9605"
+version = "0.1.0"
+source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
 dependencies = [
- "base64 0.20.0",
+ "base64 0.13.0",
  "bincode",
  "bitvec",
  "curve25519-dalek",
@@ -2419,7 +2413,7 @@ dependencies = [
 [[package]]
 name = "sharks"
 version = "0.5.0"
-source = "git+https://github.com/djandries/sta-rs?rev=7acfc2dfd12126f38dd81ea4734f37d6239d9605#7acfc2dfd12126f38dd81ea4734f37d6239d9605"
+source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
 dependencies = [
  "bitvec",
  "byteorder",
@@ -2534,7 +2528,7 @@ dependencies = [
 [[package]]
 name = "sta-rs"
 version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=7acfc2dfd12126f38dd81ea4734f37d6239d9605#7acfc2dfd12126f38dd81ea4734f37d6239d9605"
+source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
 dependencies = [
  "adss-rs",
  "ppoprf",
@@ -2553,7 +2547,6 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 [[package]]
 name = "star-constellation"
 version = "0.1.0"
-source = "git+https://github.com/brave/constellation?rev=c33e740c46062060b86e30504bca07147c6da5b8#c33e740c46062060b86e30504bca07147c6da5b8"
 dependencies = [
  "bincode",
  "lazy_static",
@@ -2604,7 +2597,7 @@ dependencies = [
 [[package]]
 name = "strobe-rng"
 version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=7acfc2dfd12126f38dd81ea4734f37d6239d9605#7acfc2dfd12126f38dd81ea4734f37d6239d9605"
+source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
 dependencies = [
  "rand_core 0.6.3",
  "strobe-rs",
