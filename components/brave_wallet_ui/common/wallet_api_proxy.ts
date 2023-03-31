@@ -27,6 +27,7 @@ export class WalletApiProxy {
   braveWalletP3A = new BraveWallet.BraveWalletP3ARemote()
   braveWalletPinService = new BraveWallet.WalletPinServiceRemote()
   braveWalletAutoPinService = new BraveWallet.WalletAutoPinServiceRemote()
+  braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
   addJsonRpcServiceObserver (store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({

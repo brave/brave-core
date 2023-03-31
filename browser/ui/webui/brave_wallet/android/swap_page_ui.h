@@ -59,7 +59,9 @@ class SwapPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
           brave_wallet_pin_service_receiver,
       mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-          brave_wallet_auto_pin_service_receiver) override;
+          brave_wallet_auto_pin_service_receiver,
+      mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+          ipfs_service_receiver) override;
 
   std::unique_ptr<WalletPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;

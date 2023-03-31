@@ -25,6 +25,7 @@ interface Props {
   tokenNetwork?: BraveWallet.NetworkInfo
   imageUrl?: string
   nftPinningStatus?: PinningStatusType | undefined
+  imageIpfsUrl?: string
 }
 
 export const NftContent = (props: Props) => {

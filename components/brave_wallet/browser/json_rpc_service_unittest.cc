@@ -1562,7 +1562,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     base::RunLoop loop;
     json_rpc_service_->GetSolTokenMetadata(
         mojom::kSolanaMainnet, token_mint_address,
-        base::BindLambdaForTesting([&](const std::string& url,
+        base::BindLambdaForTesting([&](const std::string& token_url,
                                        const std::string& response,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {

@@ -64,7 +64,6 @@ import getAPIProxy from '../async/bridge'
 import WalletApiProxy from '../wallet_api_proxy'
 import {
   addChainIdToToken,
-  addLogoToToken,
   getAssetIdKey,
   GetBlockchainTokenIdArg,
   isNativeAsset
@@ -109,6 +108,7 @@ import {
   getTypedSolanaTxInstructions,
   TypedSolanaInstructionWithParams
 } from '../../utils/solana-instruction-utils'
+import { addLogoToToken } from '../async/lib'
 
 export type AssetPriceById = BraveWallet.AssetPrice & {
   id: EntityId
@@ -620,12 +620,12 @@ export function createWalletApi (
                   )
 
                   const fullTokensListForChain: BraveWallet.BlockchainToken[] =
-                    tokens.map((token) => {
+                    await Promise.all(tokens.map(async (token) => {
                       return addChainIdToToken(
-                        addLogoToToken(token),
+                        await addLogoToToken(token),
                         network.chainId
                       )
-                    })
+                    }))
 
                   tokenIdsByChainId[network.chainId] =
                     fullTokensListForChain.map(getAssetIdKey)
@@ -2702,10 +2702,11 @@ async function fetchUserAssetsForNetwork (
   )
 
   // Adds a logo and chainId to each token object
-  const tokenList: BraveWallet.BlockchainToken[] = tokens.map((token) => {
-    const updatedToken = addLogoToToken(token)
-    return addChainIdToToken(updatedToken, network.chainId)
-  })
+  const tokenList: BraveWallet.BlockchainToken[] =
+    await Promise.all(tokens.map(async (token) => {
+      const updatedToken = await addLogoToToken(token)
+      return addChainIdToToken(updatedToken, network.chainId)
+    }))
 
   if (tokenList.length === 0) {
     // Creates a network's Native Asset if nothing was returned

@@ -50,6 +50,7 @@ const App = () => {
   const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
   const [imageUrl, setImageUrl] = React.useState<string>()
   const [nftPinningStatus, setNftPinningStatus] = React.useState<PinningStatusType>()
+  const [imageIpfsUrl, setImageIpfsUrl] = React.useState<string>()
 
   // handle postMessage from wallet ui by setting component state
   // each message has a payload parameter containing the event data
@@ -107,7 +108,8 @@ const App = () => {
         case NftUiCommand.UpdateNftPinningStatus:
           {
             const { payload } = message as UpdateNftPinningStatus
-            setNftPinningStatus(payload)
+            setNftPinningStatus(payload.status)
+            setImageIpfsUrl(payload.url || '')
             break
           }
       }
@@ -147,6 +149,7 @@ const App = () => {
         displayMode={displayMode}
         nftMetadataError={nftMetadataError}
         nftPinningStatus={nftPinningStatus}
+        imageIpfsUrl={imageIpfsUrl}
       />
     </BraveCoreThemeProvider>
     </BrowserRouter>
