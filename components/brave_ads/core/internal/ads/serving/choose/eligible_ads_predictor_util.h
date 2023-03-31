@@ -192,6 +192,7 @@ std::vector<int> ComputeVoteRegistry(
 
     while (iter != similarity_scores.end()) {
       const size_t index = std::distance(similarity_scores.cbegin(), iter);
+      DCHECK_LT(index, vote_registry.size());
       vote_registry[index]++;
 
       iter =

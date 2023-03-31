@@ -68,7 +68,7 @@ std::vector<double> ComputeProbabilities(const std::vector<T>& scores) {
 
   const double normalizing_constant = CalculateNormalizingConstant(scores);
 
-  for (const auto& score : scores) {
+  for (const auto score : scores) {
     probabilities.push_back(score / normalizing_constant);
   }
 

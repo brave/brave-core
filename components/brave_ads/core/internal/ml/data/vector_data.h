@@ -41,18 +41,19 @@ class VectorData final : public Data {
   ~VectorData() override;
 
   // Mathematical vector operations
-  friend double operator*(const VectorData& lhs, const VectorData& rhs);
+  friend float operator*(const VectorData& lhs, const VectorData& rhs);
   float ComputeSimilarity(const VectorData& other) const;
 
   void AddElementWise(const VectorData& other);
   void DivideByScalar(float scalar);
   void Normalize();
 
+  bool IsEmpty() const;
   int GetDimensionCount() const;
   int GetNonZeroElementCount() const;
-  double GetNorm() const;
+  float GetNorm() const;
 
-  std::vector<float>& GetData() const;
+  const std::vector<float>& GetData() const;
 
  private:
   std::unique_ptr<class VectorDataStorage> storage_;

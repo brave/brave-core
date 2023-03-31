@@ -11,7 +11,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/check.h"
 #include "base/check_op.h"
 #include "base/ranges/algorithm.h"
 
@@ -89,7 +88,7 @@ VectorData::VectorData(int dimension_count,
   size_t i = 0;
   for (auto iter = data.cbegin(); iter != data.cend(); iter++, i++) {
     points[i] = iter->first;
-    values[i] = iter->second;
+    values[i] = static_cast<float>(iter->second);
   }
   storage_ = std::make_unique<VectorDataStorage>(
       dimension_count, std::move(points), std::move(values));
@@ -107,25 +106,24 @@ VectorData& VectorData::operator=(VectorData&& vector_data) noexcept {
   return *this;
 }
 
-double operator*(const VectorData& lhs, const VectorData& rhs) {
-  if ((lhs.storage_->DimensionCount() == 0) ||
-      (rhs.storage_->DimensionCount() == 0)) {
-    return std::numeric_limits<double>::quiet_NaN();
+float operator*(const VectorData& lhs, const VectorData& rhs) {
+  if (lhs.IsEmpty() || rhs.IsEmpty()) {
+    return std::numeric_limits<float>::quiet_NaN();
   }
 
-  if (lhs.storage_->DimensionCount() != rhs.storage_->DimensionCount()) {
-    return std::numeric_limits<double>::quiet_NaN();
+  if (lhs.GetDimensionCount() != rhs.GetDimensionCount()) {
+    return std::numeric_limits<float>::quiet_NaN();
   }
 
-  double dot_product = 0.0;
+  float dot_product = 0.0;
   size_t lhs_index = 0;
   size_t rhs_index = 0;
   while (lhs_index < lhs.storage_->GetSize() &&
          rhs_index < rhs.storage_->GetSize()) {
     if (lhs.storage_->GetPointAt(lhs_index) ==
         rhs.storage_->GetPointAt(rhs_index)) {
-      dot_product += double{lhs.storage_->values()[lhs_index]} *
-                     rhs.storage_->values()[rhs_index];
+      dot_product +=
+          lhs.storage_->values()[lhs_index] * rhs.storage_->values()[rhs_index];
       ++lhs_index;
       ++rhs_index;
     } else {
@@ -142,12 +140,11 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
 }
 
 void VectorData::AddElementWise(const VectorData& other) {
-  if ((storage_->DimensionCount() == 0) ||
-      (other.storage_->DimensionCount() == 0)) {
+  if (IsEmpty() || other.IsEmpty()) {
     return;
   }
 
-  if (storage_->DimensionCount() != other.storage_->DimensionCount()) {
+  if (GetDimensionCount() != other.GetDimensionCount()) {
     return;
   }
 
@@ -172,37 +169,39 @@ void VectorData::AddElementWise(const VectorData& other) {
 }
 
 void VectorData::DivideByScalar(const float scalar) {
-  if (storage_->DimensionCount() == 0) {
+  if (IsEmpty()) {
     return;
   }
 
-  size_t index = 0;
-  while (index < storage_->GetSize()) {
-    storage_->values()[index] /= scalar;
-    ++index;
+  for (float& value : storage_->values()) {
+    value /= scalar;
   }
 }
 
-double VectorData::GetNorm() const {
-  return sqrt(std::accumulate(storage_->values().cbegin(),
-                              storage_->values().cend(), 0.0,
-                              [](const double& lhs, float rhs) -> double {
-                                return lhs + double{rhs} * rhs;
-                              }));
+float VectorData::GetNorm() const {
+  return static_cast<float>(sqrt(
+      std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
+                      0.0, [](const float& lhs, const float rhs) -> float {
+                        return lhs + rhs * rhs;
+                      })));
 }
 
 void VectorData::Normalize() {
-  const double vector_norm = GetNorm();
+  const float vector_norm = GetNorm();
   if (vector_norm > kMinimumVectorLength) {
-    for (float& item : storage_->values()) {
-      item /= static_cast<float>(vector_norm);
+    for (float& value : storage_->values()) {
+      value /= vector_norm;
     }
   }
 }
 
 float VectorData::ComputeSimilarity(const VectorData& other) const {
   DCHECK(GetDimensionCount() == other.GetDimensionCount());
-  return static_cast<float>((*this * other) / (GetNorm() * other.GetNorm()));
+  return (*this * other) / (GetNorm() * other.GetNorm());
+}
+
+bool VectorData::IsEmpty() const {
+  return GetDimensionCount() == 0;
 }
 
 int VectorData::GetDimensionCount() const {
@@ -210,15 +209,15 @@ int VectorData::GetDimensionCount() const {
 }
 
 int VectorData::GetNonZeroElementCount() const {
-  if (storage_->DimensionCount() == 0) {
+  if (IsEmpty()) {
     return 0;
   }
 
-  return base::ranges::count_if(storage_->values(),
-                                [](const float value) { return value != 0; });
+  return static_cast<int>(base::ranges::count_if(
+      storage_->values(), [](const float value) { return value != 0; }));
 }
 
-std::vector<float>& VectorData::GetData() const {
+const std::vector<float>& VectorData::GetData() const {
   return storage_->values();
 }
 

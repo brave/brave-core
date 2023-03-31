@@ -38,21 +38,22 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
 
   ASSERT_EQ(DataType::kVector, data->GetType());
 
-  const VectorData* const norm_data = static_cast<VectorData*>(data.release());
+  const VectorData* const vector_data =
+      static_cast<VectorData*>(data.release());
 
   std::vector<double> components;
   double s = 0.0;
-  for (const double component : norm_data->GetData()) {
+  for (const double component : vector_data->GetData()) {
     components.push_back(component);
     s += component * component;
   }
 
   // Assert
   for (double const& component : components) {
-    ASSERT_TRUE(component >= 0.0);
-    ASSERT_TRUE(component <= 1.0);
+    ASSERT_GE(component, 0.0);
+    ASSERT_LE(component, 1.0);
   }
-  EXPECT_TRUE(std::fabs(s - 1.0) < kTolerance);
+  EXPECT_LT(std::fabs(s - 1.0), kTolerance);
 }
 
 TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {

@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 
 namespace brave_ads {

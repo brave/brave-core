@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
 
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/functional/callback.h"
