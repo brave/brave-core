@@ -163,10 +163,6 @@
       "android/java/org/chromium/chrome/browser/qrreader/CameraSource\\.java",
       "browser/notifications/android/java/src/org/chromium/chrome/browser/notifications/BraveNotificationManagerProxyImpl\\.java",
     ],
-    "/#include <random>": [
-      "components/brave_rewards/core/common/security_util\\.cc",
-      "components/brave_rewards/core/legacy/bat_helper\\.cc",
-    ],
     "leveldb::DB::Open": [
       "components/brave_shields/browser/https_everywhere_service\\.cc",
     ],
