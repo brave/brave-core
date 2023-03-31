@@ -61,7 +61,7 @@ struct AddAccountView: View {
   }
 
   private var isJSONImported: Bool {
-    guard let data = privateKey.data(using: .utf8) else {
+    guard selectedCoin == .eth, let data = privateKey.data(using: .utf8) else {
       return false
     }
     do {
@@ -125,6 +125,11 @@ struct AddAccountView: View {
             tag: coin,
             selection: $selectedCoin) {
               addAccountView
+                .onDisappear {
+                  name = ""
+                  originPassword = ""
+                  privateKey = ""
+                }
             } label: {
               HStack(spacing: 10) {
                 Image(coin.iconName, bundle: .module)
