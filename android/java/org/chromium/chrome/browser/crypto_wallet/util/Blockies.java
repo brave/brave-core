@@ -199,7 +199,7 @@ public class Blockies {
         if (circular) {
             canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
         } else {
-            canvas.drawRoundRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), WalletConstants.RECT_ROUNDED_CORNERS_DP, WalletConstants.RECT_ROUNDED_CORNERS_DP, paint);
+            canvas.drawRoundRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), WalletConstants.SMALL_RECT_ROUNDED_CORNERS_DP, WalletConstants.SMALL_RECT_ROUNDED_CORNERS_DP, paint);
         }
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);

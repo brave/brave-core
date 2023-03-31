@@ -10,7 +10,8 @@ import java.util.List;
 public final class WalletConstants {
 
     // Radius of the oval used to round the corners in density-independent pixels.
-    public final static int RECT_ROUNDED_CORNERS_DP = 16;
+    public final static int SMALL_RECT_ROUNDED_CORNERS_DP = 4;
+    public final static int RECT_ROUNDED_CORNERS_DP = 12;
 
     public static final long MILLI_SECOND = 1000;
 
