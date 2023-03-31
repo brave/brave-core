@@ -25,7 +25,7 @@ bool IsBraveVPNEnabled(content::BrowserContext* context) {
   return brave_vpn::IsBraveVPNEnabled(user_prefs::UserPrefs::Get(context)) &&
          IsAllowedForContext(context);
 #else
-  return IsAllowedForContext(context);
+  return brave::IsRegularProfile(context);
 #endif
 }
 

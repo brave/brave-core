@@ -58,6 +58,7 @@ class BraveVPNOSConnectionAPISim : public BraveVPNOSConnectionAPIBase {
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest,
                            ConnectionStateUpdateWithPurchasedStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, ResetConnectionStateTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy);
 
   void OnCreated(const std::string& name, bool success);
   void OnConnected(const std::string& name, bool success);

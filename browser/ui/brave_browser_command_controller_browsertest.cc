@@ -14,6 +14,7 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/chrome_notification_types.h"
+#include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser_list.h"
@@ -21,6 +22,11 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/policy_constants.h"
+#include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
@@ -33,7 +39,9 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/features.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
@@ -44,8 +52,26 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
 #endif
   }
-
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    provider_.SetDefaultReturns(
+        /*is_initialization_complete_return=*/true,
+        /*is_first_policy_load_complete_return=*/true);
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+  }
+
+  void BlockVPNByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveVPNDisabled, policy::POLICY_LEVEL_MANDATORY,
+                 policy::POLICY_SCOPE_MACHINE, policy::POLICY_SOURCE_PLATFORM,
+                 base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(
+        brave_vpn::IsBraveVPNDisabledByPolicy(browser()->profile()->GetPrefs()),
+        value);
+  }
+
   void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
     auto* service =
         brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->profile());
@@ -91,6 +117,39 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
   }
 
+  void CheckBraveVPNCommandsDisabledByPolicy(Browser* browser) {
+    auto* command_controller = browser->command_controller();
+    SetPurchasedUserForBraveVPN(browser, false);
+    EXPECT_FALSE(
+        command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(
+        IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
+    EXPECT_FALSE(
+        command_controller->IsCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_ABOUT_BRAVE_VPN));
+    EXPECT_FALSE(
+        command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
+
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
+
+    SetPurchasedUserForBraveVPN(browser, true);
+    EXPECT_FALSE(
+        command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_VPN_PANEL));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(
+        IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON));
+    EXPECT_FALSE(
+        command_controller->IsCommandEnabled(IDC_SEND_BRAVE_VPN_FEEDBACK));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_ABOUT_BRAVE_VPN));
+    EXPECT_FALSE(
+        command_controller->IsCommandEnabled(IDC_MANAGE_BRAVE_VPN_PLAN));
+
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BRAVE_VPN_MENU));
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
+  }
+
+ private:
+  policy::MockConfigurationPolicyProvider provider_;
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif
 };
@@ -115,6 +174,12 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+  EXPECT_FALSE(
+      brave_vpn::IsBraveVPNDisabledByPolicy(browser()->profile()->GetPrefs()));
+  CheckBraveVPNCommands(browser());
+  BlockVPNByPolicy(true);
+  CheckBraveVPNCommandsDisabledByPolicy(browser());
+  BlockVPNByPolicy(false);
   CheckBraveVPNCommands(browser());
 #endif
 
