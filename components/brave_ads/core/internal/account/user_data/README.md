@@ -2,9 +2,9 @@
 
 Mutable user data is changed when a confirmation fails and is retried later.
 
-## Sent with Anonymous Confirmation Tokens
+## Redeemed with Anonymous Confirmation Tokens
 
-See [anonymous confirmation token redemption](../utility/redeem_unblinded_token/README.md).
+See [anonymous confirmation token redemption](../utility/redeem_confirmation/README.md).
 
 | user data  | optional  | mutable  | description  |
 |---|---|---|---|
@@ -22,7 +22,7 @@ See [anonymous confirmation token redemption](../utility/redeem_unblinded_token/
 | systemTimestamp  | no  | yes  | Privacy-preserving [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) timestamp  |
 | versionNumber  | no  | no  | Browser version number  |
 
-## Sent with Identifiable Confirmation Tokens
+## Redeemed with Identifiable Confirmation Tokens
 
 See [identifiable confirmation token redemption](../utility/redeem_unblinded_payment_tokens/README.md).
 

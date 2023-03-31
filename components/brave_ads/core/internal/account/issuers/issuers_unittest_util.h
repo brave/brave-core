@@ -8,13 +8,20 @@
 
 #include "brave/components/brave_ads/core/internal/account/issuers/public_key_alias.h"
 
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h"
+
 namespace brave_ads {
 
 struct IssuersInfo;
 
+URLResponseMap GetValidIssuersUrlResponses();
+URLResponseMap GetInvalidIssuersUrlResponses();
+
 IssuersInfo BuildIssuers(int ping,
                          const PublicKeyMap& confirmations_public_keys,
                          const PublicKeyMap& payments_public_keys);
+
+IssuersInfo BuildIssuers();
 
 void BuildAndSetIssuers();
 

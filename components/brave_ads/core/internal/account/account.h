@@ -61,14 +61,14 @@ class Account final : public AdsClientNotifierObserver,
                  const std::string& recovery_seed);
   const WalletInfo& GetWallet() const;
 
+  void Process();
+
   void Deposit(const std::string& creative_instance_id,
                const AdType& ad_type,
                const std::string& segment,
                const ConfirmationType& confirmation_type) const;
 
   static void GetStatement(GetStatementOfAccountsCallback callback);
-
-  void Process();
 
  private:
   void MaybeGetIssuers() const;

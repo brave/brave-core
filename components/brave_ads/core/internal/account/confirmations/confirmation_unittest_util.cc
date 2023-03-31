@@ -66,13 +66,13 @@ absl::optional<OptedInInfo> CreateOptedIn(
   opted_in.user_data = opted_in_user_data;
 
   // Credential
-  ConfirmationInfo new_confirmation = confirmation;
-  new_confirmation.opted_in = opted_in;
+  ConfirmationInfo mutable_confirmation = confirmation;
+  mutable_confirmation.opted_in = opted_in;
 
   const absl::optional<std::string> credential =
       json::writer::WriteOptedInCredential(
           *unblinded_token,
-          json::writer::WriteConfirmationPayload(new_confirmation));
+          json::writer::WriteConfirmationPayload(mutable_confirmation));
   if (!credential) {
     BLOG(0, "Failed to create opted-in credential");
     return absl::nullopt;

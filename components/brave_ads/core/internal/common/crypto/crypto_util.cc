@@ -73,7 +73,9 @@ std::vector<uint8_t> Sha256(const std::string& value) {
 
 absl::optional<KeyPairInfo> GenerateSignKeyPairFromSeed(
     const std::vector<uint8_t>& seed) {
-  DCHECK(!seed.empty());
+  if (seed.empty()) {
+    return absl::nullopt;
+  }
 
   const absl::optional<std::vector<uint8_t>> derived_key = GetHKDF(seed);
   if (!derived_key) {

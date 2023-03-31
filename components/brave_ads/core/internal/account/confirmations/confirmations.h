@@ -6,13 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_CONFIRMATIONS_H_
 
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_interface.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 
 namespace brave_ads {
@@ -22,10 +21,9 @@ class TokenGeneratorInterface;
 struct UnblindedPaymentTokenInfo;
 }  // namespace privacy
 
-class RedeemUnblindedToken;
 struct TransactionInfo;
 
-class Confirmations final : public RedeemUnblindedTokenDelegate {
+class Confirmations final : public RedeemConfirmationDelegate {
  public:
   explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
 
@@ -67,23 +65,20 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   void Redeem(const ConfirmationInfo& confirmation);
 
-  // RedeemUnblindedTokenDelegate:
-  void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;
-  void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
-                                  bool should_retry) override;
-  void OnDidRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                 const privacy::UnblindedPaymentTokenInfo&
-                                     unblinded_payment_token) override;
-  void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
-                                      bool should_retry,
-                                      bool should_backoff) override;
+  // RedeemConfirmationDelegate:
+  void OnDidRedeemOptedInConfirmation(const ConfirmationInfo& confirmation,
+                                      const privacy::UnblindedPaymentTokenInfo&
+                                          unblinded_payment_token) override;
+  void OnDidRedeemOptedOutConfirmation(
+      const ConfirmationInfo& confirmation) override;
+  void OnFailedToRedeemConfirmation(const ConfirmationInfo& confirmation,
+                                    bool should_retry,
+                                    bool should_backoff) override;
 
   raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 
   const raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
       nullptr;  // NOT OWNED
-
-  std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
   BackoffTimer retry_timer_;
 

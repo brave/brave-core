@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/opted_in_user_data_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_factory.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -74,11 +74,8 @@ void RemoveFromRetryQueue(const ConfirmationInfo& confirmation) {
 }  // namespace
 
 Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
-    : token_generator_(token_generator),
-      redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>()) {
+    : token_generator_(token_generator) {
   DCHECK(token_generator_);
-
-  redeem_unblinded_token_->SetDelegate(this);
 }
 
 Confirmations::~Confirmations() {
@@ -173,7 +170,7 @@ void Confirmations::CreateAndRedeem(
   const absl::optional<ConfirmationInfo> confirmation =
       CreateConfirmation(token_generator_, transaction, opted_in_user_data);
   if (!confirmation) {
-    BLOG(0, "Failed to create and redeem confirmation token");
+    BLOG(0, "Failed to create confirmation");
     return;
   }
 
@@ -191,57 +188,42 @@ void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
 void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
     const ConfirmationInfo& confirmation,
     base::Value::Dict dynamic_opted_in_user_data) {
-  ConfirmationInfo mutable_confirmation = confirmation;
-
-  if (confirmation.opted_in) {
-    mutable_confirmation.opted_in->user_data.dynamic =
-        std::move(dynamic_opted_in_user_data);
-
-    mutable_confirmation.opted_in->credential_base64url =
-        CreateOptedInCredential(mutable_confirmation);
+  if (!confirmation.opted_in) {
+    return Redeem(confirmation);
   }
 
+  ConfirmationInfo mutable_confirmation = confirmation;
+  mutable_confirmation.opted_in->user_data.dynamic =
+      std::move(dynamic_opted_in_user_data);
+  mutable_confirmation.opted_in->credential_base64url =
+      CreateOptedInCredential(mutable_confirmation);
   Redeem(mutable_confirmation);
 }
 
 void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
   DCHECK(IsValid(confirmation));
 
-  redeem_unblinded_token_->Redeem(confirmation);
+  // Self-destructs.
+  RedeemConfirmationInterface* redeem_confirmation =
+      RedeemConfirmationFactory::Build();
+
+  redeem_confirmation->SetDelegate(weak_factory_.GetWeakPtr());
+
+  // The below call to |Redeem| deletes |redeem_confirmation| after failing to
+  // or successfully redeeming the confirmation.
+  redeem_confirmation->Redeem(confirmation);
 }
 
-void Confirmations::OnDidSendConfirmation(
-    const ConfirmationInfo& confirmation) {
-  if (delegate_) {
-    delegate_->OnDidConfirm(confirmation);
-  }
-
-  StopRetrying();
-
-  ProcessRetryQueue();
-}
-
-void Confirmations::OnFailedToSendConfirmation(
-    const ConfirmationInfo& confirmation,
-    const bool should_retry) {
-  if (should_retry) {
-    AppendToRetryQueue(confirmation);
-  }
-
-  if (delegate_) {
-    delegate_->OnFailedToConfirm(confirmation);
-  }
-
-  ProcessRetryQueue();
-}
-
-void Confirmations::OnDidRedeemUnblindedToken(
+void Confirmations::OnDidRedeemOptedInConfirmation(
     const ConfirmationInfo& confirmation,
     const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token) {
+  DCHECK(IsValid(confirmation));
+
   if (privacy::UnblindedPaymentTokenExists(unblinded_payment_token)) {
     BLOG(1, "Unblinded payment token is a duplicate");
-    return OnFailedToRedeemUnblindedToken(confirmation, /*should_retry*/ false,
-                                          /*should_backoff*/ false);
+    return OnFailedToRedeemConfirmation(confirmation,
+                                        /*should_retry*/ false,
+                                        /*should_backoff*/ false);
   }
 
   privacy::AddUnblindedPaymentTokens({unblinded_payment_token});
@@ -264,7 +246,20 @@ void Confirmations::OnDidRedeemUnblindedToken(
   ProcessRetryQueue();
 }
 
-void Confirmations::OnFailedToRedeemUnblindedToken(
+void Confirmations::OnDidRedeemOptedOutConfirmation(
+    const ConfirmationInfo& confirmation) {
+  DCHECK(IsValid(confirmation));
+
+  if (delegate_) {
+    delegate_->OnDidConfirm(confirmation);
+  }
+
+  StopRetrying();
+
+  ProcessRetryQueue();
+}
+
+void Confirmations::OnFailedToRedeemConfirmation(
     const ConfirmationInfo& confirmation,
     const bool should_retry,
     const bool should_backoff) {
