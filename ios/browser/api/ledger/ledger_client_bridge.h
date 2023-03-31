@@ -9,74 +9,143 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <vector>
-#include "brave/components/brave_rewards/core/ledger_client.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
+
+NS_ASSUME_NONNULL_BEGIN
 
 @protocol LedgerClientBridge
 @required
 
-- (void)fetchFavIcon:(const std::string&)url
-          faviconKey:(const std::string&)favicon_key
-            callback:(ledger::client::FetchIconCallback)callback;
-- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback;
-- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback;
-- (void)loadURL:(ledger::mojom::UrlRequestPtr)request
-       callback:(ledger::client::LoadURLCallback)callback;
-- (void)log:(const char*)file
-            line:(const int)line
-    verboseLevel:(const int)verbose_level
-         message:(const std::string&)message;
-- (void)onPanelPublisherInfo:(ledger::mojom::Result)result
-               publisherInfo:(ledger::mojom::PublisherInfoPtr)publisher_info
-                    windowId:(uint64_t)windowId;
+- (void)loadLedgerState:
+    (ledger::mojom::LedgerClient::LoadLedgerStateCallback)callback;
+- (void)loadPublisherState:
+    (ledger::mojom::LedgerClient::LoadPublisherStateCallback)callback;
 - (void)onReconcileComplete:(ledger::mojom::Result)result
                contribution:(ledger::mojom::ContributionInfoPtr)contribution;
+- (void)onPanelPublisherInfo:(ledger::mojom::Result)result
+               publisherInfo:(ledger::mojom::PublisherInfoPtr)publisherInfo
+                    windowId:(uint64_t)windowId;
+- (void)fetchFavIcon:(const std::string&)url
+          faviconKey:(const std::string&)faviconKey
+            callback:
+                (ledger::mojom::LedgerClient::FetchFavIconCallback)callback;
+- (void)loadUrl:(ledger::mojom::UrlRequestPtr)request
+       callback:(ledger::mojom::LedgerClient::LoadURLCallback)callback;
+- (void)uriEncode:(const std::string&)value
+         callback:(ledger::mojom::LedgerClient::URIEncodeCallback)callback;
 - (void)publisherListNormalized:
     (std::vector<ledger::mojom::PublisherInfoPtr>)list;
-- (std::string)URIEncode:(const std::string&)value;
+- (void)onPublisherRegistryUpdated;
+- (void)onPublisherUpdated:(const std::string&)publisherId;
+- (void)booleanState:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetBooleanStateCallback)callback;
+- (void)setBooleanState:(const std::string&)name
+                  value:(bool)value
+               callback:(ledger::mojom::LedgerClient::SetBooleanStateCallback)
+                            callback;
+- (void)integerState:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetIntegerStateCallback)callback;
+- (void)setIntegerState:(const std::string&)name
+                  value:(int32_t)value
+               callback:(ledger::mojom::LedgerClient::SetIntegerStateCallback)
+                            callback;
+- (void)doubleState:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetDoubleStateCallback)callback;
+- (void)setDoubleState:(const std::string&)name
+                 value:(double)value
+              callback:
+                  (ledger::mojom::LedgerClient::SetDoubleStateCallback)callback;
+- (void)stringState:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetStringStateCallback)callback;
+- (void)setStringState:(const std::string&)name
+                 value:(const std::string&)value
+              callback:
+                  (ledger::mojom::LedgerClient::SetStringStateCallback)callback;
+- (void)int64State:(const std::string&)name
+          callback:(ledger::mojom::LedgerClient::GetInt64StateCallback)callback;
+- (void)setInt64State:(const std::string&)name
+                value:(int64_t)value
+             callback:
+                 (ledger::mojom::LedgerClient::SetInt64StateCallback)callback;
+- (void)uint64State:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetUint64StateCallback)callback;
+- (void)setUint64State:(const std::string&)name
+                 value:(uint64_t)value
+              callback:
+                  (ledger::mojom::LedgerClient::SetUint64StateCallback)callback;
+- (void)valueState:(const std::string&)name
+          callback:(ledger::mojom::LedgerClient::GetValueStateCallback)callback;
+- (void)setValueState:(const std::string&)name
+                value:(base::Value)value
+             callback:
+                 (ledger::mojom::LedgerClient::SetValueStateCallback)callback;
+- (void)timeState:(const std::string&)name
+         callback:(ledger::mojom::LedgerClient::GetTimeStateCallback)callback;
+- (void)setTimeState:(const std::string&)name
+               value:(base::Time)value
+            callback:
+                (ledger::mojom::LedgerClient::SetTimeStateCallback)callback;
+- (void)clearState:(const std::string&)name
+          callback:(ledger::mojom::LedgerClient::ClearStateCallback)callback;
+- (void)booleanOption:(const std::string&)name
+             callback:(ledger::mojom::LedgerClient::GetBooleanOptionCallback)
+                          callback;
+- (void)integerOption:(const std::string&)name
+             callback:(ledger::mojom::LedgerClient::GetIntegerOptionCallback)
+                          callback;
+- (void)doubleOption:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetDoubleOptionCallback)callback;
+- (void)stringOption:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetStringOptionCallback)callback;
+- (void)int64Option:(const std::string&)name
+           callback:
+               (ledger::mojom::LedgerClient::GetInt64OptionCallback)callback;
+- (void)uint64Option:(const std::string&)name
+            callback:
+                (ledger::mojom::LedgerClient::GetUint64OptionCallback)callback;
 - (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
-                            publisherKey:(const std::string&)publisher_key
-                           publisherName:(const std::string&)publisher_name;
-- (void)setBooleanState:(const std::string&)name value:(bool)value;
-- (bool)getBooleanState:(const std::string&)name;
-- (void)setIntegerState:(const std::string&)name value:(int)value;
-- (int)getIntegerState:(const std::string&)name;
-- (void)setDoubleState:(const std::string&)name value:(double)value;
-- (double)getDoubleState:(const std::string&)name;
-- (void)setStringState:(const std::string&)name value:(const std::string&)value;
-- (std::string)getStringState:(const std::string&)name;
-- (void)setInt64State:(const std::string&)name value:(int64_t)value;
-- (int64_t)getInt64State:(const std::string&)name;
-- (void)setUint64State:(const std::string&)name value:(uint64_t)value;
-- (uint64_t)getUint64State:(const std::string&)name;
-- (void)setValueState:(const std::string&)name value:(base::Value)value;
-- (base::Value)getValueState:(const std::string&)name;
-- (void)setTimeState:(const std::string&)name time:(base::Time)time;
-- (base::Time)getTimeState:(const std::string&)name;
-- (void)clearState:(const std::string&)name;
-- (std::string)getLegacyWallet;
+                            publisherKey:(const std::string&)publisherKey
+                           publisherName:(const std::string&)publisherName;
+- (void)legacyWallet:
+    (ledger::mojom::LedgerClient::GetLegacyWalletCallback)callback;
 - (void)showNotification:(const std::string&)type
-                    args:(const std::vector<std::string>&)args
-                callback:(ledger::client::LegacyResultCallback)callback;
-- (bool)getBooleanOption:(const std::string&)name;
-- (int)getIntegerOption:(const std::string&)name;
-- (double)getDoubleOption:(const std::string&)name;
-- (std::string)getStringOption:(const std::string&)name;
-- (int64_t)getInt64Option:(const std::string&)name;
-- (uint64_t)getUint64Option:(const std::string&)name;
-- (ledger::mojom::ClientInfoPtr)getClientInfo;
+                    args:(std::vector<std::string>)args
+                callback:(ledger::mojom::LedgerClient::ShowNotificationCallback)
+                             callback;
+- (void)clientInfo:(ledger::mojom::LedgerClient::GetClientInfoCallback)callback;
 - (void)unblindedTokensReady;
 - (void)reconcileStampReset;
-- (void)runDBTransaction:(ledger::mojom::DBTransactionPtr)transaction
-                callback:(ledger::client::RunDBTransactionCallback)callback;
-- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
-- (void)pendingContributionSaved:(const ledger::mojom::Result)result;
+- (void)runDbTransaction:(ledger::mojom::DBTransactionPtr)transaction
+                callback:(ledger::mojom::LedgerClient::RunDBTransactionCallback)
+                             callback;
+- (void)createScript:
+    (ledger::mojom::LedgerClient::GetCreateScriptCallback)callback;
+- (void)pendingContributionSaved:(ledger::mojom::Result)result;
+- (void)log:(const std::string&)file
+            line:(int32_t)line
+    verboseLevel:(int32_t)verboseLevel
+         message:(const std::string&)message;
 - (void)clearAllNotifications;
-// TODO(zenparsing): This method is no longer called and should be removed.
-- (void)walletDisconnected:(const std::string&)wallet_type;
-- (void)deleteLog:(ledger::client::LegacyResultCallback)callback;
-- (absl::optional<std::string>)encryptString:(const std::string&)value;
-- (absl::optional<std::string>)decryptString:(const std::string&)value;
+- (void)externalWalletConnected;
+- (void)externalWalletLoggedOut;
+- (void)externalWalletReconnected;
+- (void)deleteLog:(ledger::mojom::LedgerClient::DeleteLogCallback)callback;
+- (void)encryptString:(const std::string&)value
+             callback:
+                 (ledger::mojom::LedgerClient::EncryptStringCallback)callback;
+- (void)decryptString:(const std::string&)value
+             callback:
+                 (ledger::mojom::LedgerClient::DecryptStringCallback)callback;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif  // BRAVE_IOS_BROWSER_API_LEDGER_LEDGER_CLIENT_BRIDGE_H_

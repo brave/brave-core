@@ -310,7 +310,11 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
           delete self->adsClient;
         }
         if (self->adsDatabase != nil) {
-          delete self->adsDatabase;
+          self->databaseQueue->PostTask(
+              FROM_HERE,
+              base::BindOnce(
+                  [](brave_ads::Database* database) { delete database; },
+                  self->adsDatabase));
         }
         if (self->adEventHistory != nil) {
           delete self->adEventHistory;

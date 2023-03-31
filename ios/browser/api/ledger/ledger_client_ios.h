@@ -9,28 +9,35 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <vector>
-#import "brave/components/brave_rewards/core/ledger_client.h"
+
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
+
+#include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 @protocol LedgerClientBridge;
 
-class LedgerClientIOS : public ledger::LedgerClient {
+class LedgerClientIOS : public ledger::mojom::LedgerClient {
  public:
   explicit LedgerClientIOS(id<LedgerClientBridge> bridge);
   ~LedgerClientIOS() override;
 
+  mojo::PendingAssociatedRemote<ledger::mojom::LedgerClient> MakeRemote();
+
  private:
   __unsafe_unretained id<LedgerClientBridge> bridge_;
+  mojo::AssociatedReceiver<ledger::mojom::LedgerClient> receiver_;
 
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
-                    ledger::client::FetchIconCallback callback) override;
-  void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
-  void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
+                    FetchFavIconCallback callback) override;
+  void LoadLedgerState(LoadLedgerStateCallback callback) override;
+  void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(ledger::mojom::UrlRequestPtr request,
-               ledger::client::LoadURLCallback callback) override;
-  void Log(const char* file,
-           const int line,
-           const int verbose_level,
+               LoadURLCallback callback) override;
+  void Log(const std::string& file,
+           int32_t line,
+           int32_t verbose_level,
            const std::string& message) override;
   void OnPanelPublisherInfo(ledger::mojom::Result result,
                             ledger::mojom::PublisherInfoPtr publisher_info,
@@ -42,55 +49,85 @@ class LedgerClientIOS : public ledger::LedgerClient {
       ledger::mojom::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(
       std::vector<ledger::mojom::PublisherInfoPtr> list) override;
-  std::string URIEncode(const std::string& value) override;
+  void URIEncode(const std::string& value, URIEncodeCallback callback) override;
   void OnContributeUnverifiedPublishers(
       ledger::mojom::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
-  void SetBooleanState(const std::string& name, bool value) override;
-  bool GetBooleanState(const std::string& name) const override;
-  void SetIntegerState(const std::string& name, int value) override;
-  int GetIntegerState(const std::string& name) const override;
-  void SetDoubleState(const std::string& name, double value) override;
-  double GetDoubleState(const std::string& name) const override;
+  void SetBooleanState(const std::string& name,
+                       bool value,
+                       SetBooleanStateCallback callback) override;
+  void GetBooleanState(const std::string& name,
+                       GetBooleanStateCallback callback) override;
+  void SetIntegerState(const std::string& name,
+                       int32_t value,
+                       SetIntegerStateCallback callback) override;
+  void GetIntegerState(const std::string& name,
+                       GetIntegerStateCallback callback) override;
+  void SetDoubleState(const std::string& name,
+                      double value,
+                      SetDoubleStateCallback callback) override;
+  void GetDoubleState(const std::string& name,
+                      GetDoubleStateCallback callback) override;
   void SetStringState(const std::string& name,
-                      const std::string& value) override;
-  std::string GetStringState(const std::string& name) const override;
-  void SetInt64State(const std::string& name, int64_t value) override;
-  int64_t GetInt64State(const std::string& name) const override;
-  void SetUint64State(const std::string& name, uint64_t value) override;
-  uint64_t GetUint64State(const std::string& name) const override;
-  void SetValueState(const std::string& name, base::Value value) override;
-  base::Value GetValueState(const std::string& name) const override;
-  void SetTimeState(const std::string& name, base::Time time) override;
-  base::Time GetTimeState(const std::string& name) const override;
-  void ClearState(const std::string& name) override;
-  std::string GetLegacyWallet() override;
+                      const std::string& value,
+                      SetStringStateCallback) override;
+  void GetStringState(const std::string& name,
+                      GetStringStateCallback callback) override;
+  void SetInt64State(const std::string& name,
+                     int64_t value,
+                     SetInt64StateCallback callback) override;
+  void GetInt64State(const std::string& name,
+                     GetInt64StateCallback callback) override;
+  void SetUint64State(const std::string& name,
+                      uint64_t value,
+                      SetUint64StateCallback callback) override;
+  void GetUint64State(const std::string& name,
+                      GetUint64StateCallback callback) override;
+  void SetValueState(const std::string& name,
+                     base::Value value,
+                     SetValueStateCallback callback) override;
+  void GetValueState(const std::string& name,
+                     GetValueStateCallback callback) override;
+  void SetTimeState(const std::string& name,
+                    base::Time value,
+                    SetTimeStateCallback callback) override;
+  void GetTimeState(const std::string& name,
+                    GetTimeStateCallback callback) override;
+  void ClearState(const std::string& name,
+                  ClearStateCallback callback) override;
+  void GetLegacyWallet(GetLegacyWalletCallback callback) override;
   void ShowNotification(const std::string& type,
                         const std::vector<std::string>& args,
-                        ledger::client::LegacyResultCallback callback) override;
-  bool GetBooleanOption(const std::string& name) const override;
-  int GetIntegerOption(const std::string& name) const override;
-  double GetDoubleOption(const std::string& name) const override;
-  std::string GetStringOption(const std::string& name) const override;
-  int64_t GetInt64Option(const std::string& name) const override;
-  uint64_t GetUint64Option(const std::string& name) const override;
-  ledger::mojom::ClientInfoPtr GetClientInfo() override;
+                        ShowNotificationCallback callback) override;
+  void GetBooleanOption(const std::string& name,
+                        GetBooleanOptionCallback callback) override;
+  void GetIntegerOption(const std::string& name,
+                        GetIntegerOptionCallback callback) override;
+  void GetDoubleOption(const std::string& name,
+                       GetDoubleOptionCallback callback) override;
+  void GetStringOption(const std::string& name,
+                       GetStringOptionCallback callback) override;
+  void GetInt64Option(const std::string& name,
+                      GetInt64OptionCallback callback) override;
+  void GetUint64Option(const std::string& name,
+                       GetUint64OptionCallback callback) override;
+  void GetClientInfo(GetClientInfoCallback callback) override;
   void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
-  void RunDBTransaction(
-      ledger::mojom::DBTransactionPtr transaction,
-      ledger::client::RunDBTransactionCallback callback) override;
-  void GetCreateScript(
-      ledger::client::GetCreateScriptCallback callback) override;
+  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback) override;
+  void GetCreateScript(GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::mojom::Result result) override;
   void ClearAllNotifications() override;
-  void ExternalWalletConnected() const override;
-  void ExternalWalletLoggedOut() const override;
-  void ExternalWalletReconnected() const override;
-  void DeleteLog(ledger::client::LegacyResultCallback callback) override;
-  absl::optional<std::string> EncryptString(const std::string& value) override;
-  absl::optional<std::string> DecryptString(const std::string& value) override;
+  void ExternalWalletConnected() override;
+  void ExternalWalletLoggedOut() override;
+  void ExternalWalletReconnected() override;
+  void DeleteLog(DeleteLogCallback callback) override;
+  void EncryptString(const std::string& value,
+                     EncryptStringCallback callback) override;
+  void DecryptString(const std::string& value,
+                     DecryptStringCallback callback) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_LEDGER_LEDGER_CLIENT_IOS_H_
