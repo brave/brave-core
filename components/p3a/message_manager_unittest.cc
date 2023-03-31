@@ -86,8 +86,9 @@ class P3AMessageManagerTest : public testing::Test,
           url_loader_factory.ClearResponses();
 
           if (request.url == GURL(std::string(kTestHost) + "/info")) {
-            if (interceptor_no_response_from_randomness) {
-              url_loader_factory.AddResponse(request.url.spec(), "");
+            if (interceptor_invalid_response_from_randomness) {
+              url_loader_factory.AddResponse(
+                  request.url.spec(), "invalid response that is not json");
               return;
             }
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
@@ -95,17 +96,21 @@ class P3AMessageManagerTest : public testing::Test,
                 request.url.spec(),
                 "{\"currentEpoch\":" + base::NumberToString(current_epoch) +
                     ", \"nextEpochTime\": \"" + TimeToISO8601(next_epoch_time) +
-                    "\"}");
+                    "\"}",
+                interceptor_status_code_from_randomness);
             info_request_made = true;
           } else if (request.url ==
                      GURL(std::string(kTestHost) + "/randomness")) {
-            if (interceptor_no_response_from_randomness) {
-              url_loader_factory.AddResponse(request.url.spec(), "");
+            if (interceptor_invalid_response_from_randomness) {
+              url_loader_factory.AddResponse(
+                  request.url.spec(), "invalid response that is not json");
               return;
             }
             std::string resp_json =
                 HandleRandomnessRequest(request, current_epoch);
-            url_loader_factory.AddResponse(request.url.spec(), resp_json);
+            url_loader_factory.AddResponse(
+                request.url.spec(), resp_json,
+                interceptor_status_code_from_randomness);
 
             points_requests_made++;
           } else if (request.url == p3a_config.p3a_json_upload_url) {
@@ -179,7 +184,8 @@ class P3AMessageManagerTest : public testing::Test,
 
   std::set<std::string> p3a_star_sent_messages;
 
-  bool interceptor_no_response_from_randomness = false;
+  bool interceptor_invalid_response_from_randomness = false;
+  net::HttpStatusCode interceptor_status_code_from_randomness = net::HTTP_OK;
   bool info_request_made = false;
   size_t points_requests_made = 0;
 
@@ -297,7 +303,8 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
   task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
   ResetInterceptorStores();
 
-  interceptor_no_response_from_randomness = true;
+  // server will return invalid response body
+  interceptor_invalid_response_from_randomness = true;
 
   // skip ahead to next epoch
   current_epoch++;
@@ -309,15 +316,19 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
   // server.
   EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
 
+  // sever will return valid response body but invalid status code
+  interceptor_invalid_response_from_randomness = false;
+  interceptor_status_code_from_randomness = net::HTTP_INTERNAL_SERVER_ERROR;
+
   current_epoch++;
   next_epoch_time += base::Days(kEpochLenDays);
   task_environment_.FastForwardBy(base::Days(kEpochLenDays));
 
-  // randomness server still unavailable. no new measurements should have been
-  // recorded in the previous epoch.
+  // no new measurements should have been recorded in the previous epoch.
   EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
 
-  interceptor_no_response_from_randomness = false;
+  // restore randomness server functionality
+  interceptor_status_code_from_randomness = net::HTTP_OK;
 
   current_epoch++;
   next_epoch_time += base::Days(kEpochLenDays);

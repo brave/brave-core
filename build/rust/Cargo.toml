@@ -78,3 +78,7 @@ package = "serde"
 [patch.crates-io.toml_v0_5]
 path = "../../../third_party/rust/toml/v0_5/crate"
 package = "toml"
+
+[patch.crates-io.star-constellation]
+path = "../../third_party/constellation/crate"
+package = "star-constellation"
