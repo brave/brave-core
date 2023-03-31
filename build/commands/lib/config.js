@@ -344,7 +344,7 @@ Config.prototype.buildArgs = function () {
     }
   } else {
     if (this.targetOS === 'android') {
-      args.chrome_pgo_phase = 2
+      args.clang_use_default_sample_profile = true
     }
   }
 
