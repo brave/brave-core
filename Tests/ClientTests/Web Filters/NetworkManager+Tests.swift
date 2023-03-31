@@ -40,7 +40,6 @@ extension NetworkManager {
         let resourceURL = bundle.url(forResource: "debouncing", withExtension: "json")
         let data = try Data(contentsOf: resourceURL!)
         return data
-        
       case .genericContentBlockingBehaviors, .filterListContentBlockingBehaviors:
         let bundle = Bundle.module
         let resourceURL = bundle.url(forResource: "content-blocking", withExtension: "json")

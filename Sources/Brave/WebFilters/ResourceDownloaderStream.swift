@@ -11,6 +11,7 @@ struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol 
   struct DownloadResult: Equatable {
     let date: Date
     let fileURL: URL
+    let isModified: Bool
   }
   
   typealias Element = Result<DownloadResult, Error>
@@ -34,14 +35,13 @@ struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol 
       // After that we wait only for changes while sleeping
       do {
         self.firstLoad = false
-        let result = try await resourceDownloader.download(resource: resource)
-        
-        switch result {
-        case .downloaded(let url, let date), .notModified(let url, let date):
-          return .success(DownloadResult(date: date, fileURL: url))
-        }
-      } catch {
+        let result = try await result()
+        return .success(result)
+      } catch let error as URLError {
+        // Soft fail these errors
         return .failure(error)
+      } catch {
+        throw error
       }
     }
     
@@ -50,21 +50,34 @@ struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol 
       try await Task.sleep(seconds: fetchInterval)
       
       do {
-        let result = try await resourceDownloader.download(resource: resource)
-        
-        switch result {
-        case .downloaded(let url, let date):
-          return .success(DownloadResult(date: date, fileURL: url))
-        case .notModified:
-          continue
-        }
-      } catch {
+        let result = try await result()
+        guard result.isModified else { continue }
+        return .success(result)
+      } catch let error as URLError {
+        // Soft fail these errors
         return .failure(error)
+      } catch {
+        throw error
       }
+    }
+  }
+  
+  private func result() async throws -> DownloadResult {
+    switch try await resourceDownloader.download(resource: resource) {
+    case .downloaded(let url, let date):
+      return DownloadResult(date: date, fileURL: url, isModified: true)
+    case .notModified(let url, let date):
+      return DownloadResult(date: date, fileURL: url, isModified: false)
     }
   }
   
   func makeAsyncIterator() -> ResourceDownloaderStream {
     return self
+  }
+  
+  static func cachedResult(for resource: ResourceDownloader.Resource) throws -> DownloadResult? {
+    guard let fileURL = ResourceDownloader.downloadedFileURL(for: resource) else { return nil }
+    guard let creationDate = try ResourceDownloader.creationDate(for: resource) else { return nil }
+    return DownloadResult(date: creationDate, fileURL: fileURL, isModified: false)
   }
 }

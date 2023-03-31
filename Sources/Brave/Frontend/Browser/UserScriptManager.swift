@@ -192,6 +192,16 @@ class UserScriptManager {
       return
     }
     
+    #if DEBUG
+    ContentBlockerManager.log.debug("Loaded \(userScripts.count + customScripts.count) scripts:")
+    userScripts.sorted(by: { $0.rawValue < $1.rawValue}).forEach { scriptType in
+      ContentBlockerManager.log.debug(" \(scriptType.debugDescription)")
+    }
+    customScripts.sorted(by: { $0.order < $1.order}).forEach { scriptType in
+      ContentBlockerManager.log.debug(" #\(scriptType.order) \(scriptType.debugDescription)")
+    }
+    #endif
+    
     loadScripts(into: tab, scripts: userScripts)
     
     webView.configuration.userContentController.do { scriptController in
@@ -309,3 +319,28 @@ class UserScriptManager {
     }
   }
 }
+
+#if DEBUG
+extension UserScriptType: CustomDebugStringConvertible {
+  var debugDescription: String {
+    switch self {
+    case .domainUserScript(let domainUserScript):
+      return "domainUserScript(\(domainUserScript.associatedDomains.joined(separator: ", ")))"
+    case .engineScript(let configuration):
+      return "engineScript(\(configuration.frameURL))"
+    case .farblingProtection(let etld):
+      return "farblingProtection(\(etld))"
+    case .nacl:
+      return "nacl"
+    case .siteStateListener:
+      return "siteStateListener"
+    }
+  }
+}
+
+extension UserScriptManager.ScriptType: CustomDebugStringConvertible {
+  var debugDescription: String {
+    return rawValue
+  }
+}
+#endif

@@ -1,4 +1,4 @@
-// Copyright 2022 The Brave Authors. All rights reserved.
+// Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -11,17 +11,17 @@ import BraveUI
 
 /// A view showing enabled and disabled community filter lists
 struct FilterListsView: View {
-  @ObservedObject private var downloader = FilterListResourceDownloader.shared
+  @ObservedObject private var filterListDownloader = FilterListResourceDownloader.shared
   
   var body: some View {
     List {
       Section {
-        ForEach($downloader.filterLists) { $filterList in
+        ForEach($filterListDownloader.filterLists) { $filterList in
           Toggle(isOn: $filterList.isEnabled) {
             VStack(alignment: .leading) {
-              Text(filterList.title)
+              Text(filterList.entry.title)
                 .foregroundColor(Color(.bravePrimary))
-              Text(filterList.description)
+              Text(filterList.entry.desc)
                 .font(.caption)
                 .foregroundColor(Color(.secondaryBraveLabel))
             }

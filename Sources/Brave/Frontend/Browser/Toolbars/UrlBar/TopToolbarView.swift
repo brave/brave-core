@@ -185,7 +185,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     if let currentURL = currentURL {
       let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
       let domain = Domain.getOrCreate(forUrl: currentURL, persistent: !isPrivateBrowsing)
-      if domain.shield_allOff == 1 {
+      if domain.areAllShieldsOff {
         shieldIcon = shieldsOffIcon
       }
       if currentURL.isLocal || currentURL.isLocalUtility {

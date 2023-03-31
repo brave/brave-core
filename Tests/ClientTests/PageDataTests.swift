@@ -45,7 +45,7 @@ final class PageDataTests: XCTestCase {
       pageData.addSubframeURL(forRequestURL: subFrameURL, isForMainFrame: false)
       
       // Then
-      // We get an aditional scripts for sub-frame
+      // We get no aditional scripts for sub-frame
       // NOTE: This is because we have no engines on AdBlockStats.
       // If we were to add some engines we might see additional types
       let addedSubFrameFrameRequestTypes = pageData.makeUserScriptTypes(domain: domain)

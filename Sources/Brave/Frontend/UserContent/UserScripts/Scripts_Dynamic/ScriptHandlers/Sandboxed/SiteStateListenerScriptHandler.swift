@@ -64,10 +64,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       if let pageData = tab.currentPageData {
         Task { @MainActor in
           let domain = pageData.domain(persistent: !tab.isPrivate)
-          
-          guard domain.shield_allOff?.boolValue != true else {
-            return
-          }
+          if domain.areAllShieldsOff { return }
           
           let models = await AdBlockStats.shared.cosmeticFilterModels(forFrameURL: frameURL, domain: domain)
           let args = try await self.makeArgs(from: models, frameURL: frameURL)

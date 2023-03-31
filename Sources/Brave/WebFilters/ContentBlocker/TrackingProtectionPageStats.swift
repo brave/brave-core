@@ -46,7 +46,7 @@ class TPStatsBlocklistChecker {
     case ad
   }
 
-  @MainActor func blockedTypes(requestURL: URL, sourceURL: URL, loadedRuleTypes: Set<ContentBlockerManager.BlocklistRuleType>, resourceType: AdblockEngine.ResourceType) async -> BlockedType? {
+  @MainActor func blockedTypes(requestURL: URL, sourceURL: URL, enabledRuleTypes: Set<ContentBlockerManager.GenericBlocklistType>, resourceType: AdblockEngine.ResourceType) async -> BlockedType? {
     guard let host = requestURL.host, !host.isEmpty else {
       // TP Stats init isn't complete yet
       return nil
@@ -56,7 +56,7 @@ class TPStatsBlocklistChecker {
       return .image
     }
 
-    if loadedRuleTypes.contains(.general(.blockAds)) || loadedRuleTypes.contains(.general(.blockTrackers)) {
+    if enabledRuleTypes.contains(.blockAds) || enabledRuleTypes.contains(.blockTrackers) {
       if await AdBlockStats.shared.shouldBlock(requestURL: requestURL, sourceURL: sourceURL, resourceType: resourceType) {
         return .ad
       }
