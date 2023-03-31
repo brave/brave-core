@@ -66,7 +66,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
         Task { @MainActor in
           // Check if we need to update the cookie consent switch
           if let filterList = filterLists.first(where: { filterList in
-            filterList.componentId == FilterList.cookieConsentNoticesComponentID
+            filterList.entry.componentId == FilterList.cookieConsentNoticesComponentID
           }) {
             // Toggle only if it's needed or an endless loop might be created
             self.toggleSwitchIfNeeded(
@@ -77,7 +77,7 @@ class BraveShieldsAndPrivacySettingsController: TableViewController {
           
           // Check if we need to update the block mobile notifications switch
           if let filterList = filterLists.first(where: { filterList in
-            filterList.componentId == FilterList.mobileAnnoyancesComponentID
+            filterList.entry.componentId == FilterList.mobileAnnoyancesComponentID
           }) {
             // Toggle only if it's needed or an endless loop might be created
             self.toggleSwitchIfNeeded(

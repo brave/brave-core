@@ -12,6 +12,11 @@ import os.log
 public actor AdblockResourceDownloader: Sendable {
   public static let shared = AdblockResourceDownloader()
   
+  /// All the different resources this downloader handles
+  static let handledResources: [ResourceDownloader.Resource] = [
+    .genericContentBlockingBehaviors, .generalCosmeticFilters
+  ]
+  
   /// A formatter that is used to format a version number
   private let fileVersionDateFormatter: DateFormatter = {
     let dateFormatter = DateFormatter()
@@ -23,20 +28,56 @@ public actor AdblockResourceDownloader: Sendable {
   
   /// The resource downloader that will be used to download all our resoruces
   private let resourceDownloader: ResourceDownloader
-  /// All the resources that this downloader handles
-  private let handledResources: [ResourceDownloader.Resource] = [.genericContentBlockingBehaviors, .generalCosmeticFilters]
 
   init(networkManager: NetworkManager = NetworkManager()) {
     self.resourceDownloader = ResourceDownloader(networkManager: networkManager)
   }
   
   /// Load the cached data and await the results
-  public func loadCachedData() async {
-    await withTaskGroup(of: Void.self) { group in
-      for resource in handledResources {
-        group.addTask {
-          await self.loadCachedData(for: resource)
+  public func loadCachedAndBundledDataIfNeeded() async {
+    // Compile bundled blocklists but only if we don't have anything already loaded.
+    await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach { genericType in
+      let type = ContentBlockerManager.BlocklistType.generic(genericType)
+      
+      // Only compile these rules it if it is not already set
+      guard await !ContentBlockerManager.shared.hasRuleList(for: type) else {
+        ContentBlockerManager.log.debug("Rule list already loaded for `\(type.identifier)`")
+        return
+      }
+      
+      do {
+        try await ContentBlockerManager.shared.compileBundledRuleList(for: genericType)
+      } catch {
+        assertionFailure("A bundled file should not fail to compile")
+      }
+    }
+    
+    // Here we load downloaded resources if we need to
+    await Self.handledResources.asyncConcurrentForEach { resource in
+      await self.loadCachedOrBundledData(for: resource)
+    }
+  }
+  
+  /// This reloads bundled data. This is needed in case the bundled data changed since last app update.
+  /// This is done on the background to speed up launch time. We don't recompile downloadable resources.
+  public func reloadBundledOnlyData() async {
+    // Compile bundled blocklists for non-downloadable types
+    await ContentBlockerManager.GenericBlocklistType.allCases.asyncConcurrentForEach { genericType in
+      let type = ContentBlockerManager.BlocklistType.generic(genericType)
+      
+      if genericType == .blockAds {
+        // This type of rule list may be replaced by a downloaded version.
+        // Only compile it if it is not already set.
+        // All other ones we always re-compile since the bundled versions might have been updated.
+        guard await !ContentBlockerManager.shared.hasRuleList(for: type) else {
+          return
         }
+      }
+       
+      do {
+        try await ContentBlockerManager.shared.compileBundledRuleList(for: genericType)
+      } catch {
+        assertionFailure("A bundled file should not fail to compile")
       }
     }
   }
@@ -45,7 +86,7 @@ public actor AdblockResourceDownloader: Sendable {
   public func startFetching() {
     let fetchInterval = AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
     
-    for resource in handledResources {
+    for resource in Self.handledResources {
       startFetching(resource: resource, every: fetchInterval)
     }
   }
@@ -53,15 +94,10 @@ public actor AdblockResourceDownloader: Sendable {
   /// Start fetching the given resource at regular intervals
   private func startFetching(resource: ResourceDownloader.Resource, every fetchInterval: TimeInterval) {
     Task { @MainActor in
-      if let fileURL = ResourceDownloader.downloadedFileURL(for: resource) {
-        let date = try ResourceDownloader.creationDate(for: resource)
-        await self.handle(downloadedFileURL: fileURL, for: resource, date: date)
-      }
-      
       for try await result in await self.resourceDownloader.downloadStream(for: resource, every: fetchInterval) {
         switch result {
         case .success(let downloadResult):
-          await self.handle(downloadedFileURL: downloadResult.fileURL, for: resource, date: downloadResult.date)
+          await self.handle(downloadResult: downloadResult, for: resource)
         case .failure(let error):
           Logger.module.error("\(error.localizedDescription)")
         }
@@ -70,37 +106,60 @@ public actor AdblockResourceDownloader: Sendable {
   }
   
   /// Load cached data for the given resource. Ensures this is done on the MainActor
-  private func loadCachedData(for resource: ResourceDownloader.Resource) async {
-    if let fileURL = ResourceDownloader.downloadedFileURL(for: resource) {
-      let date = try? ResourceDownloader.creationDate(for: resource)
-      await handle(downloadedFileURL: fileURL, for: resource, date: date)
+  private func loadCachedOrBundledData(for resource: ResourceDownloader.Resource) async {
+    do {
+      // Check if we have cached results for the given resource
+      if let cachedResult = try ResourceDownloaderStream.cachedResult(for: resource) {
+        await handle(downloadResult: cachedResult, for: resource)
+      }
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to load cached data for resource \(resource.cacheFileName): \(error)"
+      )
     }
   }
   
   /// Handle the downloaded file url for the given resource
-  private func handle(downloadedFileURL: URL, for resource: ResourceDownloader.Resource, date: Date?) async {
-    let version = date != nil ? fileVersionDateFormatter.string(from: date!) : nil
+  private func handle(downloadResult: ResourceDownloaderStream.DownloadResult, for resource: ResourceDownloader.Resource) async {
+    let version = fileVersionDateFormatter.string(from: downloadResult.date)
     
     switch resource {
-    case .genericFilterRules:
-      await AdBlockEngineManager.shared.add(
-        resource: AdBlockEngineManager.Resource(type: .ruleList, source: .adBlock),
-        fileURL: downloadedFileURL,
-        version: version
-      )
-      
     case .generalCosmeticFilters:
       await AdBlockEngineManager.shared.add(
         resource: AdBlockEngineManager.Resource(type: .dat, source: .cosmeticFilters),
-        fileURL: downloadedFileURL,
+        fileURL: downloadResult.fileURL,
         version: version
       )
       
     case .genericContentBlockingBehaviors:
-      await ContentBlockerManager.shared.set(resource: ContentBlockerManager.Resource(
-        url: downloadedFileURL,
-        sourceType: .downloaded(version: version)
-      ), for: .general(.blockAds))
+      let blocklistType = ContentBlockerManager.BlocklistType.generic(.blockAds)
+      
+      if !downloadResult.isModified {
+        // If the file is not modified first we need to see if we already have a cached value loaded
+        // We don't what to bother recompiling this file if we already loaded it
+        guard await !(ContentBlockerManager.shared.hasRuleList(for: blocklistType)) else {
+          // We don't want to recompile something that we alrady have loaded
+          ContentBlockerManager.log.debug("Cached rule list exists for `\(blocklistType.identifier)`")
+          return
+        }
+      }
+      
+      do {
+        guard let encodedContentRuleList = try ResourceDownloader.string(for: resource) else {
+          assertionFailure("This file was downloaded successfully so it should not be nil")
+          return
+        }
+        
+        // try to compile
+        try await ContentBlockerManager.shared.compile(
+          encodedContentRuleList: encodedContentRuleList,
+          for: .generic(.blockAds)
+        )
+      } catch {
+        ContentBlockerManager.log.error(
+          "Failed to compile downloaded content blocker resource: \(error.localizedDescription)"
+        )
+      }
       
     default:
       assertionFailure("Should not be handling this resource type")

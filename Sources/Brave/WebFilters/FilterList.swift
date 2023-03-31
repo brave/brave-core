@@ -35,27 +35,12 @@ struct FilterList: Identifiable {
     ]
   }
   
-  let uuid: String
-  let title: String
-  let description: String
-  let componentId: String
-  let urlString: String
+  var id: String { return entry.uuid }
+  let entry: AdblockFilterListCatalogEntry
   var isEnabled: Bool = false
-  let languages: [String]
   
-  var id: String { return uuid }
-  
-  init(from filterList: AdblockFilterListCatalogEntry, isEnabled: Bool) {
-    self.uuid = filterList.uuid
-    self.title = filterList.title
-    self.description = filterList.desc
-    self.componentId = filterList.componentId
+  init(from entry: AdblockFilterListCatalogEntry, isEnabled: Bool) {
+    self.entry = entry
     self.isEnabled = isEnabled
-    self.urlString = filterList.url
-    self.languages = filterList.languages
-  }
-  
-  func makeRuleType() -> ContentBlockerManager.BlocklistRuleType {
-    return .filterList(uuid: uuid)
   }
 }

@@ -54,27 +54,30 @@ class AdBlockEngineManagerTests: XCTestCase {
     AdblockEngine.setDomainResolver(AdblockEngine.defaultDomainResolver)
     
     Task.detached {
-      for (source, url) in filterListURLs {
+      for (index, (source, url)) in filterListURLs.enumerated() {
         await engineManager.add(
           resource: .init(type: .ruleList, source: source),
           fileURL: url,
-          version: nil
+          version: "1.0",
+          relativeOrder: index
         )
       }
       
-      for (source, url) in filterListDATURLs {
+      for (index, (source, url)) in filterListDATURLs.enumerated() {
         await engineManager.add(
           resource: .init(type: .dat, source: source),
           fileURL: url,
-          version: nil
+          version: "1.0",
+          relativeOrder: index + filterListURLs.count
         )
       }
       
-      for (source, url) in resourceURLs {
+      for (index, (source, url)) in resourceURLs.enumerated() {
         await engineManager.add(
           resource: .init(type: .jsonResources, source: source),
           fileURL: url,
-          version: nil
+          version: "1.0",
+          relativeOrder: index + filterListURLs.count + filterListDATURLs.count
         )
       }
       
@@ -86,13 +89,13 @@ class AdBlockEngineManagerTests: XCTestCase {
         let cachedEngines = stats.cachedEngines(for: domain)
         XCTAssertEqual(cachedEngines.count, 3)
         
-        let types = await stats.makeEngineScriptTypes(frameURL: url, isMainFrame: true, domain: domain)
+        let types = stats.makeEngineScriptTypes(frameURL: url, isMainFrame: true, domain: domain)
         // We should have no scripts injected
         XCTAssertEqual(types.count, 0)
         
         let url2 = URL(string:  "https://stackoverflow.com")!
         let domain2 = Domain.getOrCreate(forUrl: url2, persistent: false)
-        let types2 = await stats.makeEngineScriptTypes(frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true, domain: domain2)
+        let types2 = stats.makeEngineScriptTypes(frameURL: URL(string:  "https://reddit.com")!, isMainFrame: true, domain: domain2)
         // We should have 1 engine script injected
         XCTAssertEqual(types2.count, 1)
         XCTAssertTrue(types2.contains(where: { scriptType in
@@ -122,19 +125,21 @@ class AdBlockEngineManagerTests: XCTestCase {
     let setupExpectation = expectation(description: "Compiled engine resources")
     
     Task {
-      for _ in (0..<numberOfEngines) {
+      for index in (0..<numberOfEngines) {
         let uuid = UUID().uuidString
         
         await engineManager.add(
           resource: .init(type: .dat, source: .filterList(uuid: uuid)),
           fileURL: sampleAdBlockDatURL,
-          version: nil
+          version: "1.0",
+          relativeOrder: index
         )
         
         await engineManager.add(
           resource: .init(type: .jsonResources, source: .filterList(uuid: uuid)),
           fileURL: sampleResourceURL,
-          version: nil
+          version: "1.0",
+          relativeOrder: index
         )
       }
       

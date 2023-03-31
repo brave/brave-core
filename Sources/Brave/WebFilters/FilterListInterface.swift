@@ -8,23 +8,27 @@ import Data
 
 protocol FilterListInterface {
   @MainActor var uuid: String { get }
-  @MainActor var filterListComponentId: String? { get }
+  @MainActor var debugTitle: String { get }
 }
- 
+
 extension FilterListInterface {
-  @MainActor var resources: [ResourceDownloader.Resource] {
-    guard let filterListComponentId = self.filterListComponentId else { return [] }
-    
-    return [
-      .filterListContentBlockingBehaviors(uuid: uuid, componentId: filterListComponentId)
-    ]
+  @MainActor func makeResource(componentId: String) -> ResourceDownloader.Resource {
+    return .filterListContentBlockingBehaviors(
+      uuid: uuid, componentId: componentId
+    )
   }
 }
 
 extension FilterListSetting: FilterListInterface {
-  @MainActor var filterListComponentId: String? { return componentId }
+  var debugTitle: String {
+    return "\(uuid) \(componentId ?? "unknown")"
+  }
 }
 
 extension FilterList: FilterListInterface {
-  @MainActor var filterListComponentId: String? { return componentId }
+  var uuid: String { entry.uuid }
+  
+  var debugTitle: String {
+    return "\(entry.title) \(entry.componentId)"
+  }
 }

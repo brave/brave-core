@@ -585,8 +585,8 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         domainForShields.shield_adblockAndTp = true
         
         // Load block lists
-        let enabledRuleTypes = ContentBlockerManager.shared.compiledRuleTypes(for: domainForShields)
-        tab.contentBlocker.ruleListTypes = enabledRuleTypes
+        let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domainForShields)
+        tab.contentBlocker.set(ruleLists: ruleLists)
 
         let isScriptsEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
         preferences.allowsContentJavaScript = isScriptsEnabled

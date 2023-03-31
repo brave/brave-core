@@ -38,6 +38,10 @@ public final class Domain: NSManagedObject, CRUD {
   
   private static let containsEthereumPermissionsPredicate = NSPredicate(format: "wallet_permittedAccounts != nil && wallet_permittedAccounts != ''")
   private static let containsSolanaPermissionsPredicate = NSPredicate(format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''")
+  
+  @MainActor public var areAllShieldsOff: Bool {
+    return shield_allOff?.boolValue ?? false
+  }
 
   /// A domain can be created in many places,
   /// different save strategies are used depending on its relationship(eg. attached to a Bookmark) or browsing mode.

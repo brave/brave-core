@@ -44,11 +44,11 @@ class LinkPreviewViewController: UIViewController {
       return
     }
 
+    // Add rule lists for this page
     let domain = Domain.getOrCreate(forUrl: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
-    let compiledRuleTypes = ContentBlockerManager.shared.compiledRuleTypes(for: domain)
     
     Task(priority: .userInitiated) {
-      let ruleLists = await ContentBlockerManager.shared.loadRuleLists(for: Set(compiledRuleTypes.map({ $0.ruleType })))
+      let ruleLists = await ContentBlockerManager.shared.ruleLists(for: domain)
       for ruleList in ruleLists {
         webView.configuration.userContentController.add(ruleList)
       }
