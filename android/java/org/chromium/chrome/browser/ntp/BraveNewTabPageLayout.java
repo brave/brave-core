@@ -9,7 +9,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -230,7 +229,7 @@ public class BraveNewTabPageLayout
                         mNewsItemsFeedCard = existingNewsFeedObject;
                     }
                 }
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "onFinishInflate " + e);
             }
         }
@@ -323,7 +322,7 @@ public class BraveNewTabPageLayout
 
                             BraveActivity.getBraveActivity().setLastTabId(tab.getId());
                         }
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "onAttachedToWindow " + e);
                     }
                 });
@@ -461,7 +460,7 @@ public class BraveNewTabPageLayout
                 } else {
                     keepPosition();
                 }
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "setNtpRecyclerView " + e);
             }
         } else {
@@ -503,7 +502,7 @@ public class BraveNewTabPageLayout
                                         firstVisiblePosition);
                             }
                         }
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "onScrollStateChanged " + e);
                     }
                 }
@@ -679,7 +678,7 @@ public class BraveNewTabPageLayout
                 try {
                     mDatabaseHelper.insertAd(currentDisplayAd, mItemPosition,
                             BraveActivity.getBraveActivity().getActivityTab().getId());
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "insertAd " + e);
                 }
             }
@@ -761,7 +760,7 @@ public class BraveNewTabPageLayout
                     }
                 }, 10);
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "keepPosition " + e);
         }
     }
@@ -844,7 +843,7 @@ public class BraveNewTabPageLayout
             if (mNewsItemsFeedCard != null && mNewsItemsFeedCard.size() > 0) {
                 try {
                     BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "onDetachedFromWindow " + e);
                 }
             }
@@ -1013,7 +1012,7 @@ public class BraveNewTabPageLayout
                     try {
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                         BraveActivity.getBraveActivity().setLoadedFeed(true);
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "getFeed " + e);
                     }
                 });
@@ -1071,7 +1070,7 @@ public class BraveNewTabPageLayout
         }
         try {
             BraveActivity.getBraveActivity().setComesFromNewTab(false);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "processFeed " + e);
         }
     }

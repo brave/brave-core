@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.util;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -113,7 +112,7 @@ public class TabUtils {
                 BraveActivity activity = null;
                 try {
                     activity = BraveActivity.getBraveActivity();
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "showBookmarkTabPopupMenu popup click " + e);
                 }
                 if (currentTab == null || activity == null) {
@@ -169,7 +168,7 @@ public class TabUtils {
                 }
             });
             popup.show(); // showing popup menu
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showTabPopupMenu " + e);
         }
     }
@@ -181,7 +180,7 @@ public class TabUtils {
                     ? braveActivity.getCurrentTabModel().isIncognito()
                     : false;
             openNewTab(braveActivity, isIncognito);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openNewTab " + e);
         }
     }
@@ -196,7 +195,7 @@ public class TabUtils {
         try {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
             braveActivity.getTabCreator(isIncognito).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInNewTab " + e);
         }
     }
@@ -210,7 +209,7 @@ public class TabUtils {
                         TabLaunchType.FROM_LONGPRESS_BACKGROUND_IN_GROUP,
                         braveActivity.getActivityTab(), isIncognito);
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInNewTabInBackground " + e);
         }
     }
@@ -222,7 +221,7 @@ public class TabUtils {
                 LoadUrlParams loadUrlParams = new LoadUrlParams(url);
                 braveActivity.getActivityTab().loadUrl(loadUrlParams);
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInSameTab " + e);
         }
     }
@@ -242,7 +241,7 @@ public class TabUtils {
                 return;
             }
             rewardsLayout.setVisibility(View.VISIBLE);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "enableRewardsButton " + e);
         }
     }

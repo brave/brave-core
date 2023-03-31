@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -59,7 +58,7 @@ public class BraveSyncInformers {
         BraveActivity activity = null;
         try {
             activity = BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showSyncV2NeedsSetup " + e);
             return;
         }

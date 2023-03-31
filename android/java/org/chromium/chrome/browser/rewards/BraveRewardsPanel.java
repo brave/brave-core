@@ -11,7 +11,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -299,7 +298,7 @@ public class BraveRewardsPanel
         });
         try {
             mBraveActivity = BraveRewardsHelper.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             mBraveActivity = null;
             Log.e(TAG, "BraveRewardsPanel constructor " + e);
         }

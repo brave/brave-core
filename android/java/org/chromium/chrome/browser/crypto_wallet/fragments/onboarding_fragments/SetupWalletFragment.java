@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -84,7 +83,7 @@ public class SetupWalletFragment extends CryptoOnboardingFragment {
     private void checkOnBraveActivity(boolean setupAction, boolean restoreAction) {
         try {
             BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "checkOnBraveActivity " + e);
             Intent intent = new Intent(getActivity(), ChromeTabbedActivity.class);
             intent.putExtra(Utils.RESTART_WALLET_ACTIVITY, true);

@@ -230,7 +230,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             mSendModel = mWalletModel.getCryptoModel().createSendModel();
             mIntentChainId = intent.getStringExtra(ASSET_CHAIN_ID);
             updateNetworkPerAssetChain(mIntentChainId);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
 

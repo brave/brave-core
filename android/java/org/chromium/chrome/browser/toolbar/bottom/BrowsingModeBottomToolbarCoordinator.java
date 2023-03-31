@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import android.content.ActivityNotFoundException;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -136,7 +135,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                         return;
                     }
                     activity.addOrEditBookmark(tab);
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "BookmarkButton click " + e);
                 }
             };

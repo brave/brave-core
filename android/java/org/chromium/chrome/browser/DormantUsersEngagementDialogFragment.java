@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser;
 
-import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,7 +69,7 @@ public class DormantUsersEngagementDialogFragment extends BraveDialogFragment {
             public void onClick(View v) {
                 try {
                     BraveSetDefaultBrowserUtils.setDefaultBrowser(BraveActivity.getBraveActivity());
-                } catch (ActivityNotFoundException e) {
+                } catch (BraveActivity.BraveActivityNotFoundException e) {
                     Log.e(TAG, "onViewCreated doneButton click " + e);
                 }
                 dismiss();

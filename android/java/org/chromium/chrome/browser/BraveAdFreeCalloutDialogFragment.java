@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser;
 
-import android.content.ActivityNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -65,7 +64,7 @@ public class BraveAdFreeCalloutDialogFragment extends BraveDialogFragment {
             try {
                 BraveActivity braveActivity = BraveActivity.getBraveActivity();
                 braveActivity.focusSearchBox();
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "onViewCreated btnVideos click " + e);
             }
 

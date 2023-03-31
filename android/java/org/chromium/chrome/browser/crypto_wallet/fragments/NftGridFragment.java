@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -89,7 +88,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
     }

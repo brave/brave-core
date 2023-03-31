@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.informers;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -80,7 +79,7 @@ public class BraveSyncAccountDeletedInformer {
                     activity.getString(R.string.ok), "",
                     activity.getString(R.string.brave_sync_account_deleted_infobar_link_text, ""),
                     false);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "show " + e);
         }
     }

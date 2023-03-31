@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -279,6 +278,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private NewTabPageManager mNewTabPageManager;
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
+
+    /**
+     * Serves as a general exception for failed attempts to get BraveActivity.
+     */
+    public static class BraveActivityNotFoundException extends Exception {
+        public BraveActivityNotFoundException(String message) {
+            super(message);
+        }
+    }
 
     public BraveActivity() {}
 
@@ -1740,13 +1748,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     @NonNull
-    static public BraveActivity getBraveActivity() throws ActivityNotFoundException {
+    static public BraveActivity getBraveActivity() throws BraveActivityNotFoundException {
         BraveActivity activity = (BraveActivity) getActivityOfType(BraveActivity.class);
         if (activity != null) {
             return activity;
         }
 
-        throw new ActivityNotFoundException("BraveActivity Not Found");
+        throw new BraveActivityNotFoundException("BraveActivity Not Found");
     }
 
     @Override

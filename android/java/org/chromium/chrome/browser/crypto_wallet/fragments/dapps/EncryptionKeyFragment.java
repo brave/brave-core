@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
-import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -76,7 +75,7 @@ public class EncryptionKeyFragment extends Fragment implements View.OnClickListe
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
     }

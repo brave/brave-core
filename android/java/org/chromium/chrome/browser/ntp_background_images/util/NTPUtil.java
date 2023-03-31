@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.ntp_background_images.util;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -117,7 +116,7 @@ public class NTPUtil {
                     try {
                         BraveRewardsHelper.setShowBraveRewardsOnboardingOnce(true);
                         BraveActivity.getBraveActivity().openRewardsPanel();
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "showBREBottomBanner takeTourButton click " + e);
                     }
                     breBottomBannerLayout.setVisibility(View.GONE);
@@ -139,7 +138,7 @@ public class NTPUtil {
                     try {
                         nonDisruptiveBannerLayout.setVisibility(View.GONE);
                         BraveActivity.getBraveActivity().openRewardsPanel();
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "showNonDisruptiveBanner nonDisruptiveBannerLayout click " + e);
                     }
                 }
@@ -184,7 +183,7 @@ public class NTPUtil {
                         nonDisruptiveBannerLayout.setVisibility(View.GONE);
                         try {
                             BraveActivity.getBraveActivity().openRewardsPanel();
-                        } catch (ActivityNotFoundException e) {
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
                         }
                         sponsoredTab.updateBannerPref();
                     }

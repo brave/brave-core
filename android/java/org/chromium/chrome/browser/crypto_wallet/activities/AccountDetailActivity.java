@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -229,7 +228,7 @@ public class AccountDetailActivity
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "finishNativeInitialization " + e);
         }
         assert mJsonRpcService != null;

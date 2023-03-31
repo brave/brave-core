@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -118,7 +117,7 @@ public class PortfolioFragment
             mWalletModel = activity.getWalletModel();
             mPortfolioModel = mWalletModel.getCryptoModel().getPortfolioModel();
             mWalletModel.getCryptoModel().getPortfolioModel().discoverAssetsOnAllSupportedChains();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
     }
@@ -335,7 +334,7 @@ public class PortfolioFragment
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openNetworkSelection(
                     NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, PortfolioFragment.TAG);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openNetworkSelection " + e);
         }
     }

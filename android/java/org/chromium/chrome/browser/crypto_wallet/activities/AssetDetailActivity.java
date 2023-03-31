@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -107,7 +106,7 @@ public class AssetDetailActivity
                 finish();
                 return;
             }
-        } catch (ActivityNotFoundException ignored) {
+        } catch (BraveActivity.BraveActivityNotFoundException ignored) {
             finish();
             return;
         }

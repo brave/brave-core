@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.onboarding;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
         viewPager.setAdapter(onboardingViewPagerAdapter);
         try {
             BraveActivity.getBraveActivity().hideRewardsOnboardingIcon();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onCreate " + e);
         }
     }
@@ -58,7 +57,7 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
     public void onContinueToWallet() {
         try {
             BraveActivity.getBraveActivity().openRewardsPanel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onContinueToWallet " + e);
         }
         finish();

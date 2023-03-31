@@ -1492,7 +1492,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           BraveActivity mainActivity = BraveActivity.getBraveActivity();
           mBraveSyncTextDevicesTitle.setText(
                   getResources().getString(R.string.brave_sync_loading_devices_title));
-      } catch (ActivityNotFoundException e) {
+      } catch (BraveActivity.BraveActivityNotFoundException e) {
           Log.e(TAG, "setSyncDoneLayout " + e);
       }
 
