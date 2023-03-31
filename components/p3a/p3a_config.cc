@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/p3a_config.h"
 
+#include "base/check.h"
 #include "base/command_line.h"
 #include "base/logging.h"
 #include "brave/components/p3a/buildflags.h"
@@ -36,15 +37,18 @@ void MaybeReadStringFromCommandLine(base::CommandLine* cmdline,
   }
 }
 
-void MaybeReadURLFromCommandLine(base::CommandLine* cmdline,
-                                 const char* switch_name,
-                                 GURL* config_value) {
+void MaybeReadURLFromCommandLineAndCheck(base::CommandLine* cmdline,
+                                         const char* switch_name,
+                                         GURL* config_value) {
   if (cmdline->HasSwitch(switch_name)) {
     GURL url = GURL(cmdline->GetSwitchValueASCII(switch_name));
     if (url.is_valid()) {
       *config_value = url;
     }
   }
+#if defined(OFFICIAL_BUILD)
+  CHECK(config_value->is_valid() && config_value->SchemeIsHTTPOrHTTPS());
+#endif  // !OFFICIAL_BUILD
 }
 
 void MaybeReadBoolFromCommandLine(base::CommandLine* cmdline,
@@ -91,16 +95,21 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
       cmdline, switches::kP3AExpressRotationIntervalSeconds,
       &config.json_rotation_intervals[MetricLogType::kExpress]);
 
-  MaybeReadURLFromCommandLine(cmdline, switches::kP3AJsonUploadUrl,
-                              &config.p3a_json_upload_url);
-  MaybeReadURLFromCommandLine(cmdline, switches::kP3ACreativeUploadUrl,
-                              &config.p3a_creative_upload_url);
-  MaybeReadURLFromCommandLine(cmdline, switches::kP2AJsonUploadUrl,
-                              &config.p2a_json_upload_url);
-  MaybeReadURLFromCommandLine(cmdline, switches::kP3AStarUploadUrl,
-                              &config.p3a_star_upload_url);
+  MaybeReadURLFromCommandLineAndCheck(cmdline, switches::kP3AJsonUploadUrl,
+                                      &config.p3a_json_upload_url);
+  MaybeReadURLFromCommandLineAndCheck(cmdline, switches::kP3ACreativeUploadUrl,
+                                      &config.p3a_creative_upload_url);
+  MaybeReadURLFromCommandLineAndCheck(cmdline, switches::kP2AJsonUploadUrl,
+                                      &config.p2a_json_upload_url);
+  MaybeReadURLFromCommandLineAndCheck(cmdline, switches::kP3AStarUploadUrl,
+                                      &config.p3a_star_upload_url);
   MaybeReadStringFromCommandLine(cmdline, switches::kP3AStarRandomnessHost,
                                  &config.star_randomness_host);
+#if defined(OFFICIAL_BUILD)
+  GURL star_randomness_url(config.star_randomness_host);
+  CHECK(star_randomness_url.is_valid() &&
+        star_randomness_url.SchemeIsHTTPOrHTTPS());
+#endif  // !OFFICIAL_BUILD
 
   MaybeReadBoolFromCommandLine(cmdline, switches::kP3ADisableStarAttestation,
                                &config.disable_star_attestation);

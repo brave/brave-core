@@ -33,7 +33,7 @@ namespace p3a {
 
 namespace {
 
-constexpr uint8_t kInitialEpoch = 5;
+constexpr uint8_t kInitialEpoch = 2;
 constexpr size_t kUploadIntervalSeconds = 120;
 constexpr size_t kEpochLenDays = 4;
 constexpr char kTestHost[] = "https://localhost:8443";
@@ -86,6 +86,10 @@ class P3AMessageManagerTest : public testing::Test,
           url_loader_factory.ClearResponses();
 
           if (request.url == GURL(std::string(kTestHost) + "/info")) {
+            if (interceptor_no_response_from_randomness) {
+              url_loader_factory.AddResponse(request.url.spec(), "");
+              return;
+            }
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
             url_loader_factory.AddResponse(
                 request.url.spec(),
@@ -95,6 +99,10 @@ class P3AMessageManagerTest : public testing::Test,
             info_request_made = true;
           } else if (request.url ==
                      GURL(std::string(kTestHost) + "/randomness")) {
+            if (interceptor_no_response_from_randomness) {
+              url_loader_factory.AddResponse(request.url.spec(), "");
+              return;
+            }
             std::string resp_json =
                 HandleRandomnessRequest(request, current_epoch);
             url_loader_factory.AddResponse(request.url.spec(), resp_json);
@@ -171,6 +179,7 @@ class P3AMessageManagerTest : public testing::Test,
 
   std::set<std::string> p3a_star_sent_messages;
 
+  bool interceptor_no_response_from_randomness = false;
   bool info_request_made = false;
   size_t points_requests_made = 0;
 
@@ -270,6 +279,63 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
   next_epoch_time += base::Days(kEpochLenDays);
   task_environment_.FastForwardBy(base::Days(kEpochLenDays) +
                                   base::Seconds(kUploadIntervalSeconds * 100));
+
+  ASSERT_TRUE(info_request_made);
+  EXPECT_EQ(points_requests_made, 7U);
+  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
+}
+
+TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
+  ASSERT_TRUE(info_request_made);
+
+  std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
+
+  for (size_t i = 0; i < test_histograms.size(); i++) {
+    message_manager->UpdateMetricValue(test_histograms[i], i + 1);
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  ResetInterceptorStores();
+
+  interceptor_no_response_from_randomness = true;
+
+  // skip ahead to next epoch
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // We are at the beginning of the new epoch. measurements from previous epoch
+  // should not be sent since we are unable to get the current epoch from the
+  // server.
+  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // randomness server still unavailable. no new measurements should have been
+  // recorded in the previous epoch.
+  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+
+  interceptor_no_response_from_randomness = false;
+
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // randomness server is now available. no new measurements should have been
+  // recorded in the previous epoch due to previous unavailability.
+  // randomness points should be requested for the current epoch.
+  // messages from the first epoch should be sent.
+  ASSERT_TRUE(info_request_made);
+  EXPECT_EQ(points_requests_made, 7U);
+  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
+
+  ResetInterceptorStores();
+
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
 
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);

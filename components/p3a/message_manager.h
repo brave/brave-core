@@ -83,7 +83,7 @@ class MessageManager : public MetricLogStore::Delegate {
   void StartScheduledUpload(bool is_star, MetricLogType log_type);
   void StartScheduledStarPrep();
 
-  MetricLogType GetLogTypeForHistogram(const std::string& histogram_name);
+  MetricLogType GetLogTypeForHistogram(base::StringPiece histogram_name);
 
   void OnLogUploadComplete(bool is_ok,
                            int response_code,

@@ -50,11 +50,13 @@ MessageManager::MessageManager(PrefService* local_state,
         std::make_unique<MetricLogStore>(this, local_state_, false, log_type);
     json_log_stores_[log_type]->LoadPersistedUnsentLogs();
   }
-  star_prep_log_store_ = std::make_unique<MetricLogStore>(
-      this, local_state_, true, MetricLogType::kTypical);
-  star_prep_log_store_->LoadPersistedUnsentLogs();
-  star_send_log_store_ =
-      std::make_unique<StarLogStore>(local_state_, kMaxEpochsToRetain);
+  if (IsSTAREnabled()) {
+    star_prep_log_store_ = std::make_unique<MetricLogStore>(
+        this, local_state_, true, MetricLogType::kTypical);
+    star_prep_log_store_->LoadPersistedUnsentLogs();
+    star_send_log_store_ =
+        std::make_unique<StarLogStore>(local_state_, kMaxEpochsToRetain);
+  }
 }
 
 MessageManager::~MessageManager() = default;
@@ -82,18 +84,6 @@ void MessageManager::Init(
         config_->randomize_upload_interval, config_->average_upload_interval);
     json_upload_schedulers_[log_type]->Start();
   }
-  star_prep_scheduler_ = std::make_unique<Scheduler>(
-      base::BindRepeating(&MessageManager::StartScheduledStarPrep,
-                          base::Unretained(this)),
-      config_->randomize_upload_interval, config_->average_upload_interval);
-  star_upload_scheduler_ = std::make_unique<Scheduler>(
-      base::BindRepeating(&MessageManager::StartScheduledUpload,
-                          base::Unretained(this), true,
-                          MetricLogType::kTypical),
-      config_->randomize_upload_interval, config_->average_upload_interval);
-
-  star_upload_scheduler_->Start();
-
   rotation_scheduler_ = std::make_unique<RotationScheduler>(
       local_state_, config_.get(),
       base::BindRepeating(&MessageManager::DoJsonRotation,
@@ -101,26 +91,39 @@ void MessageManager::Init(
       base::BindRepeating(&MessageManager::DoStarRotation,
                           base::Unretained(this)));
 
-  star_helper_ = std::make_unique<StarHelper>(
-      local_state_, url_loader_factory,
-      base::BindRepeating(&MessageManager::OnNewStarMessage,
-                          base::Unretained(this)),
-      base::BindRepeating(&MessageManager::OnRandomnessServerInfoReady,
-                          base::Unretained(this)),
-      config_.get());
   if (IsSTAREnabled()) {
+    star_prep_scheduler_ = std::make_unique<Scheduler>(
+        base::BindRepeating(&MessageManager::StartScheduledStarPrep,
+                            base::Unretained(this)),
+        config_->randomize_upload_interval, config_->average_upload_interval);
+    star_upload_scheduler_ = std::make_unique<Scheduler>(
+        base::BindRepeating(&MessageManager::StartScheduledUpload,
+                            base::Unretained(this), true,
+                            MetricLogType::kTypical),
+        config_->randomize_upload_interval, config_->average_upload_interval);
+
+    star_upload_scheduler_->Start();
+
+    star_helper_ = std::make_unique<StarHelper>(
+        local_state_, url_loader_factory,
+        base::BindRepeating(&MessageManager::OnNewStarMessage,
+                            base::Unretained(this)),
+        base::BindRepeating(&MessageManager::OnRandomnessServerInfoReady,
+                            base::Unretained(this)),
+        config_.get());
     star_helper_->UpdateRandomnessServerInfo();
   }
 }
 
 void MessageManager::UpdateMetricValue(base::StringPiece histogram_name,
                                        size_t bucket) {
-  std::string histogram_name_str = std::string(histogram_name);
-  MetricLogType log_type = GetLogTypeForHistogram(histogram_name_str);
-  if (log_type == MetricLogType::kTypical) {
-    // Only update typical metrics, until express/slow STAR metrics are
-    // supported
-    star_prep_log_store_->UpdateValue(std::string(histogram_name), bucket);
+  MetricLogType log_type = GetLogTypeForHistogram(histogram_name);
+  if (IsSTAREnabled()) {
+    if (log_type == MetricLogType::kTypical) {
+      // Only update typical metrics, until express/slow STAR metrics are
+      // supported
+      star_prep_log_store_->UpdateValue(std::string(histogram_name), bucket);
+    }
   }
   json_log_stores_[log_type].get()->UpdateValue(std::string(histogram_name),
                                                 bucket);
@@ -131,7 +134,9 @@ void MessageManager::RemoveMetricValue(base::StringPiece histogram_name) {
     json_log_stores_[log_type]->RemoveValueIfExists(
         std::string(histogram_name));
   }
-  star_prep_log_store_->RemoveValueIfExists(std::string(histogram_name));
+  if (IsSTAREnabled()) {
+    star_prep_log_store_->RemoveValueIfExists(std::string(histogram_name));
+  }
 }
 
 void MessageManager::DoJsonRotation(MetricLogType log_type) {
@@ -141,11 +146,11 @@ void MessageManager::DoJsonRotation(MetricLogType log_type) {
 }
 
 void MessageManager::DoStarRotation() {
-  star_prep_scheduler_->Stop();
-  star_prep_log_store_->ResetUploadStamps();
   if (!IsSTAREnabled()) {
     return;
   }
+  star_prep_scheduler_->Stop();
+  star_prep_log_store_->ResetUploadStamps();
   VLOG(2) << "MessageManager doing star rotation at " << base::Time::Now();
   star_helper_->UpdateRandomnessServerInfo();
   delegate_->OnRotation(MetricLogType::kTypical, true);
@@ -219,6 +224,9 @@ void MessageManager::StartScheduledUpload(bool is_star,
   Scheduler* scheduler;
   std::string logging_prefix = "MessageManager::StartScheduledUpload (";
   if (is_star) {
+    if (!IsSTAREnabled()) {
+      return;
+    }
     log_store = star_send_log_store_.get();
     scheduler = star_upload_scheduler_.get();
     logging_prefix += "STAR ";
@@ -295,14 +303,15 @@ void MessageManager::StartScheduledStarPrep() {
 }
 
 MetricLogType MessageManager::GetLogTypeForHistogram(
-    const std::string& histogram_name) {
+    base::StringPiece histogram_name) {
+  std::string histogram_name_str = std::string(histogram_name);
   MetricLogType result = MetricLogType::kTypical;
   if (p3a::kCollectedExpressHistograms.contains(histogram_name) ||
-      delegate_->GetDynamicMetricLogType(histogram_name) ==
+      delegate_->GetDynamicMetricLogType(histogram_name_str) ==
           MetricLogType::kExpress) {
     result = MetricLogType::kExpress;
   } else if (p3a::kCollectedSlowHistograms.contains(histogram_name) ||
-             delegate_->GetDynamicMetricLogType(histogram_name) ==
+             delegate_->GetDynamicMetricLogType(histogram_name_str) ==
                  MetricLogType::kSlow) {
     result = MetricLogType::kSlow;
   }

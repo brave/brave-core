@@ -144,6 +144,12 @@ void StarRandomnessMeta::RequestServerInfo() {
   rnd_server_info_ = nullptr;
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(config_->star_randomness_host + "/info");
+  if (!resource_request->url.is_valid() ||
+      !resource_request->url.SchemeIsHTTPOrHTTPS()) {
+    VLOG(2) << "StarRandomnessMeta: star randomness host invalid, skipping "
+               "server info request";
+    return;
+  }
 
   url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), GetRandomnessRequestAnnotation());
@@ -169,6 +175,11 @@ void StarRandomnessMeta::AttestServer(bool make_info_request_after) {
 
   VLOG(2) << "StarRandomnessMeta: starting attestation";
   GURL attestation_url = GURL(config_->star_randomness_host + "/attestation");
+  if (!attestation_url.is_valid() || !attestation_url.SchemeIsHTTPOrHTTPS()) {
+    VLOG(2) << "StarRandomnessMeta: star randomness host invalid, skipping "
+               "server attestation";
+    return;
+  }
   nitro_utils::RequestAndVerifyAttestationDocument(
       attestation_url, url_loader_factory_.get(),
       base::BindOnce(&StarRandomnessMeta::HandleAttestationResult,

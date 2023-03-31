@@ -50,20 +50,23 @@ class P3AStarHelperTest : public testing::Test {
         [&](const network::ResourceRequest& request) {
           url_loader_factory.ClearResponses();
 
+          std::string response;
           if (request.url == GURL(std::string(kTestHost) + "/info")) {
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
-            url_loader_factory.AddResponse(
-                request.url.spec(),
-                "{\"currentEpoch\":" + base::NumberToString(kTestEpoch) +
-                    ", \"nextEpochTime\": \"" + kTestNextEpochTime + "\"}");
+
+            response = "{\"currentEpoch\":" + base::NumberToString(kTestEpoch) +
+                       ", \"nextEpochTime\": \"" + kTestNextEpochTime + "\"}";
             info_request_made = true;
           } else if (request.url ==
                      GURL(std::string(kTestHost) + "/randomness")) {
-            std::string resp_json =
-                HandleRandomnessRequest(request, kTestEpoch);
-            url_loader_factory.AddResponse(request.url.spec(), resp_json);
-
+            response = HandleRandomnessRequest(request, kTestEpoch);
             points_request_made = true;
+          }
+          if (!response.empty()) {
+            if (interceptor_send_bad_response) {
+              response = "this is a bad response that is not json";
+            }
+            url_loader_factory.AddResponse(request.url.spec(), response);
           }
         }));
   }
@@ -91,15 +94,16 @@ class P3AStarHelperTest : public testing::Test {
   P3AConfig p3a_config;
   std::unique_ptr<StarHelper> star_manager;
   TestingPrefServiceSimple local_state;
+  bool interceptor_send_bad_response = false;
 
-  RandomnessServerInfo* server_info_from_callback;
+  RandomnessServerInfo* server_info_from_callback = nullptr;
   std::unique_ptr<std::string> serialized_message_from_callback;
 
   std::string histogram_name_from_callback;
   uint8_t epoch_from_callback;
 
-  bool info_request_made;
-  bool points_request_made;
+  bool info_request_made = false;
+  bool points_request_made = false;
 };
 
 TEST_F(P3AStarHelperTest, CanRetrieveServerInfo) {
@@ -127,6 +131,29 @@ TEST_F(P3AStarHelperTest, CanRetrieveServerInfo) {
   EXPECT_NE(server_info_from_callback, nullptr);
   EXPECT_EQ(server_info_from_callback->current_epoch, kTestEpoch);
   EXPECT_EQ(server_info_from_callback->next_epoch_time, exp_next_epoch_time);
+}
+
+TEST_F(P3AStarHelperTest, CannotRetrieveServerInfo) {
+  base::Time exp_next_epoch_time;
+  ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
+
+  interceptor_send_bad_response = true;
+
+  SetUpStarManager();
+  star_manager->UpdateRandomnessServerInfo();
+  task_environment_.RunUntilIdle();
+
+  ASSERT_TRUE(info_request_made);
+
+  // callback should not be executed if info retrieval failed
+  EXPECT_EQ(server_info_from_callback, nullptr);
+
+  // See if info retrieval retry is scheduled
+  info_request_made = false;
+  task_environment_.FastForwardBy(base::Seconds(6));
+
+  ASSERT_TRUE(info_request_made);
+  EXPECT_EQ(server_info_from_callback, nullptr);
 }
 
 TEST_F(P3AStarHelperTest, GenerateBasicMessage) {
