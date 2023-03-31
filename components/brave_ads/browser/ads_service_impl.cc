@@ -60,6 +60,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
@@ -2101,6 +2102,22 @@ void AdsServiceImpl::OnRewardsWalletUpdated() {
 
 void AdsServiceImpl::OnExternalWalletConnected() {
   SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, true);
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  if (!IsEnabled() || !CheckIfCanShowNotificationAds()) {
+    return;
+  }
+
+  base::Value::Dict dict;
+  dict.Set("title",
+           brave_l10n::GetLocalizedResourceUTF16String(
+               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE));
+  dict.Set("body",
+           brave_l10n::GetLocalizedResourceUTF16String(
+               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY));
+  dict.Set("uuid", base::GUID::GenerateRandomV4().AsLowercaseString());
+  ShowNotificationAd(std::move(dict));
+#endif
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {
