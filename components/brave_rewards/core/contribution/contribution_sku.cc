@@ -11,7 +11,6 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/sku/sku_brave.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -79,7 +78,7 @@ ContributionSKU::ContributionSKU(LedgerImpl* ledger) : ledger_(ledger) {
   credentials_ = credential::CredentialsFactory::Create(
       ledger_, mojom::CredsBatchType::SKU);
   DCHECK(credentials_);
-  sku_ = sku::SKUFactory::Create(ledger_, sku::SKUType::kBrave);
+  sku_ = std::make_unique<sku::SKU>(ledger);
   DCHECK(sku_);
 }
 

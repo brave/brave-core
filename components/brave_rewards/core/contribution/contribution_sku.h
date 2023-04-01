@@ -12,7 +12,7 @@
 
 #include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
 #include "brave/components/brave_rewards/core/ledger.h"
-#include "brave/components/brave_rewards/core/sku/sku_factory.h"
+#include "brave/components/brave_rewards/core/sku/sku.h"
 
 namespace ledger {
 class LedgerImpl;

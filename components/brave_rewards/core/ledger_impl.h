@@ -28,7 +28,6 @@
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/recovery/recovery.h"
 #include "brave/components/brave_rewards/core/report/report.h"
-#include "brave/components/brave_rewards/core/sku/sku.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -291,8 +290,6 @@ class LedgerImpl : public mojom::Ledger {
 
   report::Report* report();
 
-  sku::SKU* sku();
-
   api::API* api();
 
   virtual database::Database* database();
@@ -466,8 +463,6 @@ class LedgerImpl : public mojom::Ledger {
   wallet::Wallet wallet_{this};
   database::Database database_{this};
   report::Report report_{this};
-  std::unique_ptr<sku::SKU> sku_{
-      sku::SKUFactory::Create(this, sku::SKUType::kMerchant)};
   state::State state_{this};
   api::API api_{this};
   recovery::Recovery recovery_{this};

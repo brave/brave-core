@@ -13,7 +13,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
-#include "brave/components/brave_rewards/core/sku/sku_factory.h"
 
 using std::placeholders::_1;
 
@@ -800,10 +799,6 @@ wallet::Wallet* LedgerImpl::wallet() {
 
 report::Report* LedgerImpl::report() {
   return &report_;
-}
-
-sku::SKU* LedgerImpl::sku() {
-  return sku_.get();
 }
 
 api::API* LedgerImpl::api() {
