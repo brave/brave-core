@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="es-419">
+<translation id="3478449063771497234">Las notificaciones están desactivadas</translation>
+<translation id="7466579932043491502">Puede que Recompensas de Brave no funcione si las notificaciones están desactivadas.</translation>
+<translation id="4259212006412783790">ACTIVAR</translation>
+<translation id="6112331814131703370">Bloquear avisos de cambiar a aplicación</translation>
 <translation id="4744921452903670666">¡Denos su opinión!</translation>
 <translation id="2524310205387880526">Calificar Brave</translation>
 <translation id="4104400246019119780">¡Gracias!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">¡Ya están aquí sus recompensas por los anuncios de <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194">Recompensas de <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Le quedan <ph name="TOKEN"/> días para reclamar</translation>
-<translation id="2323069945529668668">¡Uy!</translation>
-<translation id="7510166204621526816">El servidor de Brave Rewards no responde. Solucionaremos este inconveniente lo antes posible.</translation>
 <translation id="683765328936486920">en YouTube</translation>
 <translation id="8969049974285901797">en Twitch</translation>
 <translation id="3101693828171454453">no son suficientes <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="5050890334032852465">Guardar lista de seguimiento de la cuenta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Ir a Ramp</translation>
+<translation id="3956169227169516344">Seleccionar método de compra</translation>
 <translation id="8488282162676695335">Billetera de Brave</translation>
 <translation id="3784455785234192852">Bloqueo</translation>
 <translation id="8796429300536029044">Detalles del NFT</translation>
@@ -625,6 +627,10 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="414639769490080648">La cantidad de minutos que debe esperar hasta que la billetera Brave se bloquee automáticamente</translation>
 <translation id="4993345308607970390">Restablecer billetera de Brave</translation>
 <translation id="4322846864135539519">¿Seguro que quieres restablecer Recompensas de Brave? Si no tienes una copia de seguridad de tu billetera, podrías perder todos los datos de la cuenta (incluidos los fondos asociados a ella). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="6915083716464390008">Selecciona una de las siguientes opciones</translation>
+<translation id="7667423728712601865">Compra criptomonedas con Visa o Mastercard.</translation>
+<translation id="3101839349578102016">Compre al instante con su cuenta bancaria. Con menos comisiones.</translation>
+<translation id="7269640984027668973">Comprar con <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Borrar información sobre transacciones y nonce</translation>
 <translation id="5693968582510626466">Borrar transacciones puede ser útil para los desarrolladores o para borrar el estado en un servidor local</translation>
 <translation id="5421107279168565467">¿Seguro que quieres restablecer toda la información sobre transacciones y valores de seguridad ("nonce")? Esta opción suelen seleccionarla los desarrolladores que tienen un servidor de prueba local. Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
@@ -799,7 +805,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="3506416339268164412">La dirección de recepción es la dirección de contrato del token</translation>
 <translation id="3494964159182650590">Resumen de recompensas</translation>
 <translation id="590733288489975971">Recompensas de anuncios</translation>
-<translation id="207268487070188114">Propina por única vez</translation>
+<translation id="2613359062756190460">Propinas por única vez</translation>
 <translation id="7577100371127227294">Propinas mensuales</translation>
 <translation id="7091980679045978090">Ganancias estimadas</translation>
 <translation id="1346059596910821859">Propina</translation>

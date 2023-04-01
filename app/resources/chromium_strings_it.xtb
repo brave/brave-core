@@ -10,12 +10,10 @@
 <translation id="8522292744959221145">Per controllare che le tue password siano protette da violazioni dei dati e altri problemi di sicurezza, <ph name="BEGIN_LINK"/>accedi a Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Informazioni su Brave</translation>
 <translation id="1203500561924088507">L'installazione è terminata. Dovrai riavviare il browser per poter utilizzare <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="8905049883018921395">Se attivi l'opzione, Brave libera spazio dalle schede non attive. In questo modo le schede attive e altre app hanno più risorse per il computer e mantengono Brave veloce. Le schede inattive si riattivano automaticamente quando ci torni. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Risparmio memoria ha reso Brave più veloce</translation>
 <translation id="4798342026247191171">Configura il tuo nuovo profilo di Brave</translation>
 <translation id="113959764510199339">Brave sta cercando di visualizzare le password.</translation>
 <translation id="8132634101975074716">Hai eseguito l'accesso a Brave.</translation>
-<translation id="4168469784091952813">Puoi goderti al meglio l'esperienza di Brave</translation>
 <translation id="5147525139567260139">Condividi una scheda di Brave</translation>
 <translation id="1530633922026945685">Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera per creare una mappa 3D dell'ambiente circostante</translation>
 <translation id="4449148723378534338">Esamina i controlli per la privacy e la sicurezza più importanti in Brave</translation>
@@ -104,16 +102,17 @@
 <translation id="691208314680168371">La cronologia di navigazione, ossia un record dei siti visitati da Brave sul dispositivo in uso.</translation>
 <translation id="1384923383737428730">È stato rilevato software dannoso sul tuo computer. Brave può rimuoverlo, ripristinare le tue impostazioni e disattivare le estensioni per ristabilire il normale funzionamento del browser.</translation>
 <translation id="1073077513148817424">Un altro account ha già eseguito l'accesso. Per tenere separata la tua navigazione, Brave può creare per te il tuo profilo personale.</translation>
+<translation id="4250277591581952830">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.15 o versioni successive. Su questo computer è installato macOS 10.13.</translation>
 <translation id="7029305463989165490">Per inviare un numero da <ph name="ORIGIN"/> al tuo telefono Android, accedi a Brave su entrambi i dispositivi.</translation>
 <translation id="4304059894777924102">Brave non può controllare le tue password. Prova a controllare la connessione a Internet.</translation>
 <translation id="2100587595569959771">Scopri di più sulla personalizzazione degli annunci in Brave</translation>
 <translation id="1807774211756215222">Apri link in una nuova &amp;scheda di Brave</translation>
-<translation id="7453070689008684791">Brave accederà al tuo Drive per inserire suggerimenti nella barra degli indirizzi</translation>
 <translation id="2106568569080763501">Brave ti consente di fare clic su un numero di telefono sul Web e di chiamarlo con Skype.</translation>
 <translation id="2401189691232800402">Sistema Chrome OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">Ricevi assistenza per Chrome OS</translation>
 <translation id="6009720635797285369">Accedi ai tuoi contenuti del browser Brave da <ph name="ACCOUNT_EMAIL"/></translation>
+<translation id="5111297589157398321">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.15 o versioni successive. Su questo computer è installato macOS 10.14.</translation>
 <translation id="6315734375101223238">Personalizza e controlla Brave. C'è qualcosa che richiede la tua attenzione. Fai clic per avere informazioni dettagliate.</translation>
 <translation id="7130675370997202556">Fai clic sul tuo nome per aprire Brave e iniziare a navigare.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> ha già eseguito l'accesso a questo profilo Brave. Per tenere separata la tua navigazione, Brave può creare per te il tuo profilo personale.</translation>
@@ -182,7 +181,7 @@
 <translation id="232381795826373334">Apri PDF in Brave</translation>
 <translation id="5381032481466106256">Se attivi l'opzione, uscirai anche da Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{È disponibile un aggiornamento di Brave}=1{È disponibile un aggiornamento di Brave}other{È disponibile un aggiornamento di Brave da # giorni}}</translation>
-<translation id="4378573854226202617">Brave richiede Windows 10 o versioni successive.</translation>
+<translation id="4378573854226202617">Brave richiede Windows 7 o versioni successive.</translation>
 <translation id="5646769069113654257">Riavvia subito Brave</translation>
 <translation id="2335583906071111058">Visualizza Brave in questa lingua</translation>
 <translation id="7207456302801184289">Benvenuto in Brave</translation>
@@ -202,6 +201,7 @@
 <translation id="3693188491491843187">Rendi Brave più veloce</translation>
 <translation id="608006075545470555">Aggiungi profilo di lavoro a questo browser</translation>
 <translation id="5849446944780602366">È disponibile un nuovo aggiornamento.</translation>
+<translation id="5505258595603236622">Quando questa modalità è attiva, Brave risparmia carica della batteria limitando l'attività in background e gli effetti visivi, ad esempio lo scorrimento continuo e le frequenze di fotogrammi dei video.</translation>
 <translation id="7433698744896946664">Consenti all'estensione di mostrare le richieste di accesso nella barra degli strumenti di Brave</translation>
 <translation id="492209281555538239">Brave salverà la password nel tuo Account Brave affinché tu non debba memorizzarla.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave.</translation>
@@ -260,6 +260,7 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="126871877963043118">Quando sono attive le prove, Ad measurement consente ai siti che visiti di chiedere a Brave informazioni che li aiutino a valutare il rendimento dei loro annunci. Ad measurement limita il tracciamento tra siti trasferendo il minor numero possibile di informazioni tra i siti.</translation>
 <translation id="4392161457256085190">Dopodiché, un sito che visiti può chiedere a Brave di conoscere i tuoi interessi per personalizzare gli annunci che ti vengono mostrati. Brave può condividere fino a 3 interessi.</translation>
 <translation id="6418340404893954563">Le password inefficaci sono facili da indovinare. Consenti a Brave di <ph name="BEGIN_LINK"/>creare e memorizzare password efficaci per te<ph name="END_LINK"/>.</translation>
+<translation id="7164968566146897003">Se attivi l'opzione, Brave libera spazio dalle schede non attive. In questo modo le schede attive e altre app hanno più risorse per il computer e mantengono Brave veloce. Le schede inattive si riattivano automaticamente quando ci torni.</translation>
 <translation id="196626648343945705">Brave non è attivo</translation>
 <translation id="3453763134178591239">Termini di Chrome OS</translation>
 <translation id="3335606533094650083">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere al microfono</translation>
@@ -320,6 +321,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8622246347342688645">Brave non può controllare le tue password perché non hai effettuato l'accesso</translation>
 <translation id="96347285368592620">Brave sta cercando di copiare le password.</translation>
 <translation id="89367911614620585">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
+<translation id="5196445203969439095">Fai di più con Brave</translation>
 <translation id="3360368475735266712">Accedi per sincronizzare e personalizzare Brave sui tuoi dispositivi</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
 <translation id="3098618823450433881">Per accedere ai tuoi contenuti del browser Brave su tutti i tuoi dispositivi, accedi e attiva la sincronizzazione</translation>
@@ -330,9 +332,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
 <translation id="8550334526674375523">Questo profilo di lavoro è completamente separato dal tuo profilo personale.</translation>
 <translation id="2452889775041290116">Uno dei tuoi genitori ha disattivato "Autorizzazioni per siti, app ed estensioni" per Brave. L'aggiunta di <ph name="EXTENSION_TYPE_PARAMETER"/> non è consentita.</translation>
-<translation id="8502436661255886343">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.13 o versioni successive. Su questo computer è installato macOS 10.12.</translation>
 <translation id="227028348235968071">Brave può controllare le tue password quando accedi con il tuo Account Brave</translation>
-<translation id="4226455268610449503">Quando questa modalità è attiva, Brave risparmia carica della batteria limitando l'attività in background e gli effetti visivi, ad esempio lo scorrimento continuo e le frequenze di fotogrammi dei video. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Brave Software Inc. Tutti i diritti riservati.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Come utilizziamo questi dati:<ph name="END_BOLD"/> i siti possono memorizzare su Brave informazioni relative ai tuoi interessi. Ad esempio, se visiti un sito per acquistare scarpe per una maratona, il sito potrebbe definire come tuo interesse le maratone. Se in un secondo momento visiti un altro sito per registrarti a una gara, il sito può mostrarti un annuncio relativo a scarpe da corsa in base ai tuoi interessi.</translation>
 <translation id="3052349005266761501">Avvio di Brave...</translation>
@@ -360,13 +360,15 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="7902365066753170041">Riavvia per aggiornare &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="296137235951584143">Personalizza Brave</translation>
 <translation id="7977787072794666032">Brave potrebbe non funzionare correttamente perché non è più supportato su Windows XP o Windows Vista</translation>
 <translation id="8180288330711585962">Certificati gestiti da Brave</translation>
-<translation id="1611678871603620428">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.13 o versioni successive. Su questo computer è installato il sistema operativo X 10.11.</translation>
 <translation id="4484434718272972655">Chi usa Brave?</translation>
 <translation id="7173394303099002355">Usa la funzionalità di sicurezza più efficace di Brave</translation>
 <translation id="5775101967851558962">Cancella sempre i dati dei siti dal dispositivo alla chiusura di Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="479793348545936567">Se vuoi utilizzare questo account soltanto una volta, puoi usare la modalità Ospite nel browser Brave. Se vuoi aggiungere un account per qualcun altro, <ph name="LINK_BEGIN"/>aggiungi un nuovo profilo<ph name="LINK_END"/> al tuo <ph name="DEVICE_TYPE"/>.
 
 Le autorizzazioni già concesse a siti web e app possono essere applicate a questo account. Puoi gestire le catene di sincronizzazione di Brave nelle <ph name="SETTINGS_LINK_BEGIN"/>Impostazioni<ph name="SETTINGS_LINK_END"/>.</translation>
@@ -384,6 +386,6 @@ Le autorizzazioni già concesse a siti web e app possono essere applicate a ques
 <translation id="3829358914761176693">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare un aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="2176087127109773485">Puoi gestire le catene di sincronizzazione di Brave per cui hai eseguito l’accesso. Le catene di sincronizzazione di Brave sono utilizzate per il browser di Brave, per Play Store, per Gmail e altro ancora. Se invece vuoi aggiungere un account per un’altra persona, per esempio per un familiare, aggiungi un nuovo profilo al tuo <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
-<translation id="137466361146087520">Google Chrome Beta</translation>
-<translation id="7535429826459677826">Google Chrome Dev</translation>
+<translation id="79269250264141507">Quando digiti qualcosa nella barra degli indirizzi o nella casella di ricerca, Brave invia il testo digitato al tuo motore di ricerca predefinito per ottenere suggerimenti migliori. Questa opzione è disattivata nella modalità privata.</translation>
+<translation id="3739288578188828252">Quando digiti qualcosa nella barra degli indirizzi o nella casella di ricerca, Brave invia il testo digitato a Google Drive per ottenere suggerimenti. Questa opzione è disattivata nella modalità privata.</translation>
 </translationbundle>

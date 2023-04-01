@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="3478449063771497234">알림 비활성화됨</translation>
+<translation id="7466579932043491502">알림이 비활성화된 중에는 Brave Rewards가 동작하지 않을 수 있습니다.</translation>
+<translation id="4259212006412783790">켜기</translation>
+<translation id="6112331814131703370">'앱으로 전환' 요청 차단</translation>
 <translation id="4744921452903670666">어떻게 생각하시는지 알려주세요!</translation>
 <translation id="2524310205387880526">Brave 평가</translation>
 <translation id="4104400246019119780">감사합니다!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162"><ph name="MONTH_VALUE"/> 광고 리워드가 도착했습니다!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> 리워드: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">받을 수 있는 기한 <ph name="TOKEN"/>일 남음</translation>
-<translation id="2323069945529668668">이런!</translation>
-<translation id="7510166204621526816">Brave 보상 서버가 응답하지 않습니다. 가능한 한 신속히 이 문제를 해결하겠습니다.</translation>
 <translation id="683765328936486920">YouTube에서 활동</translation>
 <translation id="8969049974285901797">Twitch에서 활동</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>이 충분하지 않습니다</translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">계정 주시목록 저장</translation>
 <translation id="7755766175599167100">토큰 검색</translation>
 <translation id="3835223348537121988">잔액:</translation>
-<translation id="6888491517683356528">Ramp로 이동</translation>
+<translation id="3956169227169516344">구매 수단 선택</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
 <translation id="3784455785234192852">잠금</translation>
 <translation id="8796429300536029044">NFT 세부정보</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">동작이 없을 때 Brave 월렛이 자동으로 잠길 때까지의 시간(분)</translation>
 <translation id="4993345308607970390">Brave 월렛 초기화</translation>
 <translation id="4322846864135539519">Brave Rewards을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
+<translation id="6915083716464390008">다음 옵션 중 하나 선택</translation>
+<translation id="7667423728712601865">Visa 또는 Mastercard로 암호화폐를 구입할 수 있습니다.</translation>
+<translation id="3101839349578102016">은행 계좌로 즉시 매수. 수수료는 더 낮게.</translation>
+<translation id="7269640984027668973"><ph name="RAMP_PROVIDER"/> 구매</translation>
 <translation id="4862812525895306758">트랜잭션 및 논스 정보 지우기</translation>
 <translation id="5693968582510626466">트랜잭션 지우기는 개발자가 로컬 서버에서 상태를 지울 때 유용합니다.</translation>
 <translation id="5421107279168565467">트랜잭션 및 논스 정보를 초기화하시겠습니까? 이 옵션은 주로 로컬 테스트 서버를 운용하는 개발자가 사용합니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">수신 주소가 토큰의 컨트랙트 주소입니다.</translation>
 <translation id="3494964159182650590">보상 요약</translation>
 <translation id="590733288489975971">광고로 받은 리워드</translation>
-<translation id="207268487070188114">일회성 팁</translation>
+<translation id="2613359062756190460">일회성 팁</translation>
 <translation id="7577100371127227294">매달 지불되는 팁</translation>
 <translation id="7091980679045978090">예상 수익</translation>
 <translation id="1346059596910821859">팁</translation>

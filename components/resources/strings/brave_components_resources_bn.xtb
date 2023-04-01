@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">Brave Rewards দেখান</translation>
 <translation id="5585019845078534178">কার্ডগুলি</translation>
 <translation id="3870475560794762985">স্পন্সর করা ছবিগুলি দেখান</translation>
-<translation id="8466529005131466476">আপনি স্পনসর্ড সাইটগুলি দেখার মাধ্যমে উপার্জন করতে পারেন।</translation>
-<translation id="3955742714798578476">আপনি স্পনসর্ড ছবিগুলি দেখার মাধ্যমে উপার্জন করছেন।</translation>
-<translation id="7822618650711767369">স্পনসর্ড ছবিগুলি Brave সাপোর্ট করে। Brave পুরস্কারের মাধ্যমে, আপনি স্পনসর্ড ছবিগুলি থেকে উপার্জনের একটি অংশ আয় করতে পারেন এবং কনটেন্ট নির্মাতাদেরও সহায়তা করতে পারেন!</translation>
-<translation id="5579480493856401823">স্পনসর্ড সাইটগুলি বন্ধ করলে আপনার উপার্জিত টোকেন সংখ্যা এবং কন্টেন্ট নির্মাতাদের দেওয়া সমর্থন প্রতি মাসে কমায়।</translation>
+<translation id="2414654907269324670">স্পনসর্ড ছবিগুলির জন্য আপনি BAT উপার্জন করছেন।</translation>
+<translation id="4942016616604700968">রিওয়ার্ডস সক্ষম করুন</translation>
+<translation id="5684562942023496754">স্পনসর্ড ছবিগুলি দেখার জন্য আপনি উপার্জন করতে পারেন।</translation>
+<translation id="8934374643857605034">একজন Brave পুরস্কার ব্যবহারকারী হিসেবে, স্পনসর্ড ছবিগুলি দেখার জন্য আপনি BAT উপার্জন করতে পারেন।</translation>
+<translation id="5236449703984229754">Brave বিজ্ঞাপনগুলি সক্রিয় করার পরে স্পনসর্ড ছবিগুলি দেখার জন্য আপনি BAT উপার্জন করতে পারবেন। Brave বিজ্ঞাপনগুলি বন্ধ থাকা সত্বেও স্পনসর্ড ছবিগুলি চালু করলে তা Brave এর মিশনকে সমর্থন করে।</translation>
+<translation id="1570714748649804013">একজন Brave পুরস্কার ব্যবহারকারী হিসেবে, আপনার দেখা স্পনসর্ড ছবিগুলির জন্য আপনি BAT উপার্জন করেন। স্পনসর্ড ছবিগুলি নিষ্ক্রিয় করলে আপনি যে পরিমাণ উপার্জন করছেন তা কমে যাবে।</translation>
+<translation id="8998727244653964783">একটি কাস্টোডিয়াল অ্যাকাউন্টকে Brave পুরস্কারগুলির সাথে সংযুক্ত করলে আপনি স্পনসর্ড ছবিগুলি দেখার জন্য BAT উপার্জন করতে পারবেন। উপরন্তু, স্পনসর্ড ছবিগুলির মাধ্যমে আপনি স্রষ্টাদের সমর্থন করতে সহায়তা করছেন।</translation>
+<translation id="5512383650263136662">Brave পুরস্কারগুলির মাধ্যমে স্পনসর্ড ছবিগুলি দেখার জন্য আপনি BAT উপার্জন করতে পারেন। একজন পুরস্কার ব্যবহারকারী নন? স্পনসর্ড ছবিগুলি চালু করা, তা সত্বেও, Brave এর মিশনকে সমর্থন করে।</translation>
 <translation id="2875302873837723333">সেরা সাইটগুলি</translation>
 <translation id="8173998484743827990">Brave পরিসংখ্যান</translation>
 <translation id="383680190590774040">ঘড়ি</translation>
@@ -90,12 +94,12 @@
 <translation id="7894417427965898400">ফিড পরিচালনা করুন</translation>
 <translation id="9164544612367905452">আনছে …</translation>
 <translation id="1276592121036104130">নতুন বিষয়বস্তু লোড করুন</translation>
-<translation id="2875288128871360696">Brave নিউজের জন্য স্ক্রোল করুন</translation>
-<translation id="8510120023634509743">Brave নিউজ উৎসগুলি রিসেট করুন</translation>
-<translation id="75825199302994272">আপনার সমস্ত Brave নিউজ পাবলিশার নির্বাচনগুলি তাদের ডিফল্ট অবস্থায় রিসেট করা হবে?</translation>
+<translation id="2875288128871360696">ব্রেভ নিউজের জন্য স্ক্রোল করুন</translation>
+<translation id="8510120023634509743">ব্রেভ নিউজ উৎসগুলি রিসেট করুন</translation>
+<translation id="75825199302994272">আপনার সমস্ত ব্রেভ নিউজ পাবলিশার নির্বাচনগুলি তাদের ডিফল্ট অবস্থায় রিসেট করা হবে?</translation>
 <translation id="954001034349395856">সমস্ত উৎসগুলি</translation>
 <translation id="8890516388109605451">উৎস</translation>
-<translation id="5158129253322921540">বিষয়বস্তুগুলি ডিসেবল করুন <ph name="PUBLISHER_NAME"/> থেকে ;</translation>
+<translation id="5158129253322921540">বিষয়বস্তুগুলি ডিসেবলড্ করুন <ph name="PUBLISHER_NAME"/> থেকে</translation>
 <translation id="3189348785087463371">প্রচারিত</translation>
 <translation id="4541978218358617681">বিজ্ঞাপন</translation>
 <translation id="1776831331757823105">ঘড়ি</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 সেকন্ড</translation>
 <translation id="8610523985422563960">1 মিনিট</translation>
 <translation id="2807328214759298515">পর্যন্ত</translation>
-<translation id="9031738692126722094">এই সাইটগুলিতে বিষয়বস্তু-স্তরের পরামর্শগুলি সক্ষম করুন</translation>
+<translation id="7483857210736407752">সাইটগুলিতে টিপ বোতামগুলি দেখান</translation>
 <translation id="7583327070390027131">পরবর্তী মাসিক বখশিশের তারিখ</translation>
 <translation id="6231182869178328516">Brave Browser ব্যবহার করে আমি এইমাত্র <ph name="NAME"/> টিপ দিয়েছি। https://brave.com/tips তে এটি পরীক্ষা করে দেখুন।</translation>
 <translation id="5916536234616514390"><ph name="HASHTAG"/>ভালো লেগেছে, আমাকে নির্মাতাকে সহায়তা করতে দিন! <ph name="HASHTAG2"/>BAT-এর মাধ্যমে এইমাত্র <ph name="NAME"/> টিপ দেওয়া হয়েছে। <ph name="DATE"/> এর আগে তারা https://creators.brave.com যাচাই করলে, তারা BAT ব্যবহার করতে পারবেন!</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">বর্তমানে কোনো Brave বিজ্ঞাপনের ইতিহাস নেই</translation>
 <translation id="5345727496083327478">আপনি এই বিভাগ থেকে আর বিজ্ঞাপন পাবেন না</translation>
 <translation id="2631006050119455616">সেভ করা হয়েছে</translation>
-<translation id="3819257035322786455">ব্যাকআপ</translation>
 <translation id="6976444672879155794">স্বয়ংক্রিয়-অবদান [[processor]]</translation>
 <translation id="8804164990146287819">সম্মত হয়েছেন</translation>
 <translation id="7262285991915892790">এতে BAT আইকনটি টেনে আনুন</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">মেয়াদ শেষ হওয়ার তারিখ মধ্যে ব্যবহৃত না হওয়া [[currency]] স্বয়ংক্রিয়ভাবে Brave User Growth Pool-এ ফিরে আসবে।</translation>
 <translation id="279567716178902927">মেয়াদত্তির্ণের তারিখ মঞ্জুর করুন</translation>
 <translation id="1389143276807887637">আমদানি করুন</translation>
-<translation id="3810973564298564668">পরিচালনা</translation>
-<translation id="6302422639282249274">ব্রেভ রিওয়ার্ডসমূহ পরিচালনা করুন</translation>
 <translation id="211044356803193224">মাসিক টিপগুলি!</translation>
 <translation id="2487641031722095938">এটি কি আপনার শুভ দিন!</translation>
 <translation id="6255773350565723852">আপনার টোকেন অনুমোদন হচ্ছে।</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">সংরক্ষিত থেকে সরান</translation>
 <translation id="5530851178552343773">অবদানগুলি পেতে যে নির্মাতারা এখনও সাইন আপ করেননি তাদের জন্য আপনি [[reservedAmount]] [[currency]] নির্ধারণ করেছেন। তারা যাচাই না করা পর্যন্ত বা 90 দিন পেরিয়ে না যাওয়া পর্যন্ত আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে।</translation>
 <translation id="5939518447894949180">রিসেট করুন</translation>
+<translation id="3349204812119681938">Brave রিওয়ার্ড রিসেট করুন</translation>
 <translation id="5669281110673664811">এক্সক্লুড তালিকা মুছে দিন</translation>
 <translation id="1797334173232638045">আপনার পিন করা সাইটগুলো এতে সরে গেছে</translation>
-<translation id="542042553430131913">যদি আপনার Brave রিওয়ার্ডস যাচাই করা না থাকে, তাহলে আপনার BAT ব্যালেন্স আপনার ডিভাইসের লোকাল ফাইলে সংরক্ষণ করা হবে।</translation>
-<translation id="2142973554991645476">আপনাকে যদি আপনার ব্রাউজার সাফ করা, পুনরায় ইনস্টল অথবা পুনরায় ফরম্যাট করার সময় আপনি যদি আপনার BAT সুরক্ষিত করতে চান, এবং BAT যোগ করা অথবা প্রত্যাহার করার মতো সুবিধাগুলি উপভোগ করতে চান, তাহলে আমরা আপনাকে <ph name="LINK_BEGIN"/>যাচাই করা<ph name="LINK_END"/>-এর উপদেশ দেব।</translation>
 <translation id="5317144262906129592">আপনি টিপ পাঠিয়ে এই কনটেন্ট নির্মাতাকে সমর্থন করতে পারেন। এটি দুর্দান্ত কনটেন্ট তৈরি করার জন্য তাঁদের ধন্যবাদ জানানোর একটি উপায়।</translation>
 <translation id="3074127054582480056">মনোযোগ</translation>
 <translation id="3659457123782988823">আপনি কি আপনার Brave রিওয়ার্ডস রিসেট করার ব্যাপারে নিশ্চিত?</translation>
 <translation id="1666001796278936721">রিসেট করলে, আপনার বর্তমান Brave পুরস্কার প্রোফাইল মুছে যাবে এবং আপনি সম্পূর্ণ একটি নতুন Brave পুরস্কার প্রোফাইল দিয়ে শুরু করবেন। যাতে কোনও ভুল না হয় সেজন্য রিসেট শুরু করার আগে <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/>।</translation>
-<translation id="94095197509579227">মনে রাখবেন: আপনি এই মাসে <ph name="BAT_AMOUNT"/> উপার্জন করবেন বলে মনে করা হচ্ছে, আপনি এখনই এটি রিসেট করলে এটি হারিয়ে যাবে।</translation>
 <translation id="4806029412510565611">আমি জানি যে আমার ডিভাইস থেকে আমার বর্তমান Brave পুরস্কার প্রোফাইল ও Brave পুরস্কার ডেটা মুছে যাবে এবং আমি <ph name="LINK_BEGIN"/>রিসেটিং সম্বন্ধে সহায়তা নিবন্ধ<ph name="LINK_END"/> পড়েছি।</translation>
 <translation id="4914597931214386232">মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে</translation>
 <translation id="3494964159182650590">রিওয়ার্ডসের সংক্ষিপ্তসার</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">বিশদ বিবরণ দেখুন</translation>
 <translation id="4206899127409458763">আপনার Brave রিওয়ার্ডস প্রোফাইল তৈরি করা হচ্ছে</translation>
 <translation id="1988679729106502285">টীকা:</translation>
-<translation id="942863887222585572">আপনি <ph name="USER_PROVIDER"/>-এ সংযুক্ত হয়েছেন, তবে এই ক্রিয়েটর <ph name="CREATOR_PROVIDER"/>-তে সংযুক্ত হয়েছেন। এর মানে আপনার টিপ এই ক্রিয়েটরের কাছে পৌঁছাবে না। আপনার দেওয়া যে কোনো টিপ আপাতত মুলতুবি থাকবে এবং 90 দিনের জন্য স্বয়ংক্রিয়ভাবে পুনরায় চেষ্টা করবে।</translation>
 <translation id="5530734056858418442">এই নির্মাতা এখনও সাইন আপ করেননি। আপনার দ্বারা প্রেরণ করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনরায় চেষ্টা করবে।</translation>
 <translation id="3197752845651180812">মুলতুবি অবদান</translation>
 <translation id="6964891561514920613">সব মুলতুবি অবদান দেখান</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">অযাচাইকৃত স্রষ্টা</translation>
 <translation id="6020176662032623904">যাচাই করা স্রষ্টা</translation>
 <translation id="215037911651623564">ক্রিয়েটর ভেরিফিকেশনের স্ট্যাটাস রিফ্রেশ করুন</translation>
-<translation id="8946576491316456643">এখন যদি আপনি কোনও পরামর্শ প্রদান করেন সেটি মুলতুবি থাকবে এবং 90 দিন পর স্বয়ংক্রিয়ভাবে আবার চেষ্টা করা হবে। <ph name="LINK_BEGIN"/>আরও জানুন<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">এখনকার জন্য, আপনার করা যে কোনও টিক মুলতুবি থাকবে এবং 90 দিন ধরে স্বয়ংক্রিয়ভাবে পুনঃপ্রচেষ্টা করবে।</translation>
 <translation id="7826318737761918938">এই নির্মাতা এখনও সাইন আপ করেন নি।</translation>
 <translation id="3573568055713372419">আপনি <ph name="USER_PROVIDER"/>-এ সংযুক্ত হয়েছেন, তবে এই ক্রিয়েটর <ph name="CREATOR_PROVIDER"/>-তে সংযুক্ত হয়েছেন। এর মানে আপনার টিপ এই ক্রিয়েটরের কাছে পৌঁছাবে না।</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/> এ <ph name="NAME"/></translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">একটি হার্ডওয়্যার ওয়ালেট সংযুক্ত করুন</translation>
 <translation id="1483493594462132177">পাঠান</translation>
 <translation id="538450413584738399">সোয়াপ করুন</translation>
+<translation id="3488255243387417752">বিক্রয় করুন</translation>
+<translation id="5223034545851554347">এই অ্যাকাউন্টে আপনার পর্যাপ্ত <ph name="TOKEN_SYMBOL"/> নেই।</translation>
 <translation id="9113988219764868805">টোকেন পাঠান</translation>
 <translation id="4254256922305105713">NFT পাঠান</translation>
 <translation id="3453833142586986467">টোকেন নির্বাচন করুন</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">প্রথম</translation>
 <translation id="4709524402122994378">লেনদেনসমূহ</translation>
 <translation id="4591079278963448049">সংশ্লিষ্ট টোকেন অ্যাকাউন্ট এখনও বিদ্যমান নেই। এটি তৈরি এবং ফান্ড করতে একটি ছোটো অঙ্কের SOL খরচ করা হবে।</translation>
+<translation id="1426320910664514906">গ্যাসের সীমা</translation>
+<translation id="1229774280326250926">গ্যাস সংক্রান্ত প্রিমিয়াম</translation>
+<translation id="148169246131967347">গ্যাস ফি ক্যাপ</translation>
 <translation id="523862956770478816">সাইটের অনুমতি</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> অ্যাকাউন্ট সংযুক্ত হয়েছে</translation>
 <translation id="4804818685124855865">সংযোগ বিচ্ছিন্ন করুন</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">একটি বৈধ ETH ঠিকানা নয়</translation>
 <translation id="2832270987629018596">কোনও বৈধ SOL ঠিকানা নয়</translation>
 <translation id="882486206986535424">একটি বৈধ ঠিকানা নয়</translation>
-<translation id="6825399159373612149">ডোমেন <ph name="DOMAIN_NAME"/> নিবন্ধিত নয়</translation>
+<translation id="8684908590733515816">ডোমেনের একটি লিঙ্ক করা <ph name="COIN_TYPE_SYMBOL"/> ঠিকানা নেই</translation>
 <translation id="8971278306757462297">প্রাপ্ত ঠিকানাটি আপনার নিজের ঠিকানা</translation>
 <translation id="3506416339268164412">প্রাপ্তির ঠিকানাটি একটি টোকেনের চুক্তির ঠিকানা</translation>
+<translation id="6370376419663123629">ঠিকানা সঠিক বলে মনে হচ্ছে না</translation>
+<translation id="3767148796886402380">ঠিকানাটি যে সঠিক তা নিশ্চিত করতে আপনার ঠিকানা পরীক্ষা করুন (যেমন, ছোটো হাতের ও বড় হাতের অক্ষর)।</translation>
+<translation id="2585599787090762065">এটি আমি কীভাবে সমাধান করব?</translation>
+<translation id="5517732667776806421">চেকসামের তথ্য নেই</translation>
 <translation id="2975056993833847787">এই ঠিকানা যাচাই করা যাবে না (checksum অনুপস্থিত)। এগিয়ে যান?</translation>
 <translation id="6320252966164556855">ঠিকানা যাচাইকরণ পাস করেনি (অবৈধ চেকসাম)। অনুগ্রহ করে, ছোট হাতের অক্ষরগুলিকে বড় হাতের অক্ষর দিয়ে প্রতিস্থাপন করে আবার চেষ্টা করুন।</translation>
 <translation id="4667144295226514387">গ্যাসের সীমা পাওয়া যাচ্ছে না</translation>
 <translation id="2021522108838444624">পরিমাণ অবশ্যই 0-এর বেশি হতে হবে</translation>
 <translation id="8464365289405373974">ঠিকানা প্রয়োজন</translation>
 <translation id="4884792073752467460">অবৈধ প্রাপকের ঠিকানা</translation>
+<translation id="8585995109882455949">কীভাবে আমি সথিক ঠিকানাটি খুঁজে পাব?</translation>
+<translation id="8395402412470376435">Brave বৈধতা যাচাই করে এবং ব্যবহারকারীদের ভুল ক্যাপিটালাইজেশনের কারণে ফান্ডগুলি ভুল ঠিকানায় পাঠানো থেকে আটকায়। এটি যে ইথেরিয়ামের একটি সঠিক ঠিকানা তা যাচাই করার জন্য এই "চেকসাম" প্রক্রিয়া ব্যবহার করা হয়।</translation>
+<translation id="4583433813614292221">1. যান</translation>
+<translation id="5393164213211430081">2. ETH ঠিকানা কপি করুন ও লিখুন</translation>
+<translation id="2378355054306959991">আরো সহায়তা প্রয়োজন?</translation>
 <translation id="862585889767884824">এর</translation>
 <translation id="9106265941552476098"><ph name="TRANSACTION_LENGTH"/> লেনদেন প্রত্যাখ্যান করুন</translation>
 <translation id="1118876217803190221">অপর্যান্ত ব্যালেন্স</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">টোকেন স্ট্যান্ডার্ড</translation>
 <translation id="9033453977881595182">টোকেন আইডি</translation>
 <translation id="6332387008245531841">যোগাযোগের ঠিকানা</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">ছবির অবস্থান বা ঠিকানা</translation>
 <translation id="2962388922926051374"><ph name="URL"/>- এ 'eth_chainId' পদ্ধতির জন্য অনুরোধ ব্যর্থ হয়েছে</translation>
 <translation id="8325036459845654666">এই নেটওয়ার্ক ইতিমধ্যে যোগ করা হয়েছে।</translation>
 <translation id="554350381160981853">টাইপ করা তথ্য সাক্ষর করা শুধুমাত্র Firmware 1.10.5 অথবা এর উচ্চ ভার্সন সহ Trezor Model One-এ হয়ে থাকে</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">একটি বৈধ FIL ঠিকানা নয়</translation>
 <translation id="3898731124813934210">Wyre দিয়ে ক্রয় করুন</translation>
 <translation id="5522073372365069684">Ramp দিয়ে ক্রয় করুন</translation>
+<translation id="6153197326949684688"><ph name="OFFRAMP_PROVIDER"/> এর মাধ্যমে বিক্রয় করুন</translation>
+<translation id="6097502401711916278">ন্যুনতম অর্থরাশি অবশ্যই <ph name="FIAT_AMOUNT"/> বা তার বেশি হতে হবে।</translation>
 <translation id="7902920577183739843">Sardine দিয়ে কিনুন</translation>
 <translation id="6534275647567011533">Transak-এর মাধ্যমে কিনুন</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Visa বা Mastercard দিয়ে ক্রিপ্টো কিনুন।</translation>
+<translation id="3648994606506382289">কার্ড এবং ব্যাঙ্ক ট্রান্সফারগুলির মাধ্যমে ক্রিপ্টো কেনার সহজতম, দ্রুততম এবং সবচেয়ে সস্তা উপায়।</translation>
 <translation id="3101839349578102016">আপনার ব্যাঙ্ক একাউন্ট দিয়ে তাৎক্ষণিক কিনুন। কম ফি।</translation>
 <translation id="8528916244724490964">সকল নেটওয়ার্ক</translation>
 <translation id="4038403584813842767">ভারসাম্য ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">BPF লোডার</translation>
 <translation id="2334098351242742927">Ed25519 প্রোগ্রাম</translation>
 <translation id="8780753288764281797">Secp256k1 প্রোগ্রাম</translation>
-<translation id="5275550100743015683">ঠিকানা থেকে:</translation>
-<translation id="2678433693746214764">সম্বোধন করা:</translation>
-<translation id="4576396475962922672">নতুন আ্যাকাউন্ট:</translation>
+<translation id="6421371987002247943">টোকেন প্রোগ্রাম</translation>
+<translation id="8642855779894264066">সংশ্লিষ্ট টোকেন প্রোগ্রাম</translation>
+<translation id="3585645354490191700">MetaData প্রোগ্রাম</translation>
+<translation id="1971875492220112280">SysvarRent প্রোগ্রাম</translation>
 <translation id="4719005063558335704">অ্যাকাউন্টসমূহ:</translation>
 <translation id="4337554812324118382">তথ্য:</translation>
 <translation id="569870799832027680">প্রোগ্রাম আইডি:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">প্রিফ্লাইট এড়িয়ে যান:</translation>
 <translation id="3568017348462868931">কারেন্সি নির্বাচন করুন</translation>
 <translation id="4420924466038521900">মুদ্রা অনুসন্ধান করুন</translation>
-<translation id="8060029310790625334">সহায়তা কেন্দ্র</translation>
+<translation id="4412698727486357573">সহায়তা কেন্দ্র</translation>
 <translation id="2095142195578664632">সাহায্য দরকার? দেখুন</translation>
 <translation id="3253669416991680932">এই হার্ডওয়্যার ওয়ালেট এই অপারেশন সমর্থন করে না।</translation>
 <translation id="7457027586454688423">আপনার Brave ওয়ালেট পাসওয়ার্ড লিখুন</translation>
@@ -1430,8 +1448,6 @@
 <translation id="1026825928738055872">আপনি কি "<ph name="ACCOUNT_NAME"/>" সরানোর বিষয়ে নিশ্চিত?</translation>
 <translation id="3910551537328657217">অনুরোধ বৈশিষ্ট্য</translation>
 <translation id="7657322905916621147">রিকভারি বাক্যাংশটি 12, 15, 18, 21, বা 24 শব্দের হতে হবে</translation>
-<translation id="5307206077701819797">আপনার ওয়ালেটে কোনো NFT পাওয়া যায়নি। আপনি "পোর্টফোলিও" ট্যাবের নীচে "+ দৃশ্যমান সম্পদ" বোতামে ক্লিক করে NFT যোগ করতে পারেন</translation>
-<translation id="3528540388456395658">কোনো NFT ম্যাচিং সার্চ বা ফিল্টার পাওয়া যায়নি</translation>
 <translation id="5026874946691314267">এটি আবার দেখাবেন না</translation>
 <translation id="434502623875309667">ঠিকানা রেজোলিউশনের অফচেইন নেটওয়ার্কের অনুরোধ প্রয়োজন। এগিয়ে যাবেন?</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">ওয়ালেট পুনরায় সংযোগ করুন</translation>
 <translation id="4029551149873989025">নেটওয়ার্ক সোয়াপ করুন</translation>
 <translation id="7561262633951061138">সেরা</translation>
+<translation id="8060029310790625334">সহায়তা কেন্দ্র</translation>
 <translation id="3143110700666266545">এই অ্যাপ নিম্নোক্ত তৃতীয় পক্ষের APIs ব্যবহার করে:</translation>
 <translation id="163536108506359457">Brave সোয়াপ, সমর্থিত <ph name="NETWORKS"/> নেটওয়ার্কগুলোর জন্য DEX এগ্রিগেটর হিসাবে <ph name="AGGREGATOR"/> ব্যবহার করে। <ph name="AGGREGATOR"/> একটি লেনদেন (কোটেশন পাওয়া সহ) পূরণ করতে <ph name="NETWORK"/> ওয়ালেট অ্যাড্রেস এবং IP অ্যাড্রেস প্রক্রিয়াকরণ করবে। <ph name="AGGREGATOR"/> শুধুমাত্র লেনদেন প্রক্রিয়াকরণের উদ্দেশ্যে এই ডেটা ব্যবহারকরণ করবে।</translation>
 <translation id="1847885264294023691"><ph name="AGGREGATOR"/> গোপনীয়তা নীতির জন্য এখানে ক্লিক করুন।</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">নির্ভুল মানের টোকেন ডেসিমেল প্রয়োজন</translation>
 <translation id="3797613444743816037">মিন্ট‌ অ্যাড্রেস</translation>
 <translation id="7951915459354237451">ফি সীমা, বেস ফির থেকে কম সেট করা হয়। আপনার লেনদেনে অনেক সময় লাগতে পারে বা ব্যর্থও হতে পারে।</translation>
+<translation id="2227702748249086756">ফি এর অনুমানগুলি টেনে আনতে পারল না</translation>
+<translation id="5361710044667743492">কেন উপলভ্য নয়?</translation>
+<translation id="3668838456083358569">কিছু NFT ডেটা AWS, Google Cloud ইত্যাদির মতো কেন্দ্রীভূত সার্ভারে সংরক্ষিত। এই ক্ষেত্রে, আপনার NFT ডেটা IPFS নেটওয়ার্কে পিন করা উপলভ্য নয়।</translation>
+<translation id="1293258969121701010">আপনার কম্পিউটারে IPFS চালনা করে আপনি পারবেন:</translation>
+<translation id="4568942135611119076">নিশ্চিত করতে পারবেন যে আপনার NFT ডেটা অনলাইন থাকে এবং এটি বিকৃত করা যাবে না।</translation>
+<translation id="4915883034746438977">কন্টেন্ট আইডেন্টিফায়ার (CID) ব্যবহার করে একটি ভুল ডেটা থেকে কন্টেন্ট ফিরে পেতে পারেন।</translation>
+<translation id="1373647012698032676">সত্যতার প্রমাণপত্রে অংশগ্রহণ এবং IPFS নেটওয়ার্ককে সমৃদ্ধ এবং মজবুত করতে পারবেন।</translation>
+<translation id="1806204385270226865">আমার NFTগুলি অনলাইন রাখুন</translation>
+<translation id="4323376551843624309">NFT পিন করা সক্রিয় করুন</translation>
+<translation id="6501331923135442324">ওয়েব3 এর অংশ হয়ে ওঠার দিকে একটি বড় পদক্ষেপ</translation>
+<translation id="5361073938927187534">IPFS নোড চালান এবং আপনার NFTগুলি সর্বদা অনলাইন রাখুন</translation>
+<translation id="1060267371223703324">আমার কোন NFTগুলি পিন করা যাবে তা পরীক্ষা করুন</translation>
+<translation id="2641083452974145848">এখন আপনি আপনার IPFS চালাতে এবং ওয়েব 3 এর অংশ হয়ে উঠতে পারবেন। আপনার NFT ডেটা সবসময়ের জন্য অনলাইন থাকবে এবং বিকৃত করা যাবে না।</translation>
+<translation id="4460927368826360904">আপনি IPFS নোড চালাচ্ছেন। ফাইল স্থানীয় IPFS নোডে টেনে আনা হচ্ছে।</translation>
+<translation id="2260350263892668490"><ph name="PINNABLE"/>টির মধ্যে <ph name="PINNED"/>টি NFT, IPFS-এ সফলভাবে পিন করা হয়েছে।</translation>
+<translation id="1474962961180773583"><ph name="TOTAL"/>টির মধ্যে <ph name="PINNABLE"/>টি উপলভ্য!</translation>
+<translation id="6852656829524945421">পিন করা যাবে না</translation>
+<translation id="7698019251444927442">আপনি IPFS নোড চালাচ্ছেন</translation>
+<translation id="5584313306739463968">স্থানীয় IPFS নোড চলছে না</translation>
+<translation id="7527548209942671618">আপনার স্থানীয় IPFS নোডে পিন করা হয়েছে</translation>
+<translation id="5659058832308365026">NFT ডেটা আপনার স্থানীয় IPFS নোডে পিন করা হচ্ছে</translation>
+<translation id="4919133452617704550">আপনার স্থানীয় IPFS নোডে পিন করা যাবে না</translation>
+<translation id="3225624966527491351">NFT আমদানি করুন</translation>
+<translation id="9085765419770918643">এখানে এখনও কোনও NFT নেই।</translation>
+<translation id="8445532667841598737">কয়েকটি যোগ করার জন্য প্রস্তুত? আমদানি করতে শুধু নিচের বোতামটি ক্লিক করুন।</translation>
+<translation id="9136462955850040542">সোলানা (SPL) এবং ইথেরিয়াম (ERC-721)-এ NFT গুলির সাথে সুসংগত।</translation>
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="3745016858329272300">সাধারণ তথ্য</translation>
 <translation id="4045404575593562245">টর নিয়ন্ত্রণ ইভেন্টগুলি</translation>
@@ -1582,6 +1625,8 @@
 <translation id="6531019308847917584">আঙুলের ছাপ মূদ্রণ অবরুদ্ধ করুন</translation>
 <translation id="1899608006846124237">আঙুলের ছাপের মূদ্রণ আক্রমণাত্মকভাবে অবরুদ্ধ করুন</translation>
 <translation id="8034285923190068220">আঙ্গুলের ছাপ নেওয়ার অনুমতি দিন</translation>
+<translation id="7638541189782135885">HTTP সংযোগগুলি আপগ্রেড করবেন না</translation>
+<translation id="2570787596946026998">শুধুমাত্র HTTPS দিয়ে সংযোগ করে</translation>
 <translation id="1992750560347846445">সাইট রিপোর্ট করুন</translation>
 <translation id="2387532482048804818">শিল্ড আপের সাথে সাইটটি সঠিকভাবে কাজ না করলে আমাদের বলুন।</translation>
 <translation id="3795015906457257780">আপনি Brave এর গোপনীয়তা সুরক্ষা ছাড়াই এই সাইটটি দেখছেন।</translation>
@@ -1660,8 +1705,16 @@
 <translation id="888284761945060750">আপনার সংস্থার পলিসি অনুযায়ী নিরাপদ DNS নিষ্ক্রিয় করা আছে। নিরাপদ DNS ছাড়া Brave VPN ব্যবহার করলে আপনি যে সব সাইট দেখেছেন আপনার ইন্টারনেট সার্ভিস প্রোভাইডার বা সংস্থার কাছে সেসব সাইটের নাম প্রকাশ হয়ে যেতে পারে।</translation>
 <translation id="6593224083874259773">Windows-এ Brave VPN</translation>
 <translation id="3153983908111684619">এটি সংযুক্ত থাকার স BraveVPN এই সেটিং লক করে</translation>
-<translation id="6507543978646831931">Windows-এর স্মার্ট মাল্টি-হোমড নেম রেজোলিউশন নামে একটি ফিচার আছে, যা আপনার লোকেশন ও আপনি যে সাইটগুলোতে যান সেই তথ্য প্রকাশ করতে পারে। আপনি এখন Brave VPN চালু করেছেন, এই এক্সপোজারকে সুরক্ষিত রাখতে ব্রাউজারের মধ্যে আমরা DNS সেটিংস পরিবর্তন করেছি। VPN সংযুক্ত থাকার সময়ে এই সেটিংস কার্যকর ও লক থাকবে। <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">Windows এর একটি বৈশিষ্ট্য আছে যাকে বলা হয় স্মার্ট মাল্টি-হোম্‌ড নেম রেজোলিউশন, যা আপনার অবস্থান এবং আপনার ভিজিট করা সাইটগুলি সম্পর্কে তথ্য প্রকাশ করতে পারে।
+
+Brave এর একটি সহায়ক পরিষেবা রয়েছে যা আপনাকে আপনার VPN সংযোগে যেভাবে DNS কোয়্যারিগুলি করা হয় সেটিকে ফিল্টার করে এই এক্সপোজার থেকে আপনাকে রক্ষা করে।
+
+যদিও, আমরা লক্ষ্য করেছি যে এই সহায়ক পরিষেবাটি চলছে না - এবং আমরা আপনাকে অরক্ষিত রাখতে চাই না। এই এক্সপোজার থেকে আপনাকে রক্ষা করতে, ব্রাউজারে আমরা DNS সেটিংস পরিবর্তন করেছি। VPN কানেক্টেড থাকাকালীন সেটিংস কাজ করবে এবং লক করা থাকবে।
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">এই সম্পর্কে আমাকে আর সতর্ক করবেন না।</translation>
 <translation id="2740531572673183784">ঠিক আছে</translation>
 <translation id="9061845622728745852">সময় জোন:</translation>
+<translation id="8295393906499561642">সেশনের মেয়াদ শেষ হয়ে গেছে</translation>
+<translation id="3312623558576021182">আপনার VPN সেশন রিফ্রেশ করতে অনুগ্রহ করে আপনার <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave অ্যাকাউন্ট<ph name="BRAVE_ACCOUNT_END"/> দিয়ে লগ ইন করুন।</translation>
 </translationbundle>

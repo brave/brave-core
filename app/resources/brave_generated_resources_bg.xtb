@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave награди</translation>
 <translation id="7561196759112975576">Винаги</translation>
 <translation id="7961015016161918242">Никога</translation>
+<translation id="7973394300052703468">Нов поверителен прозорец</translation>
 <translation id="4615489450165434530">Подаване на сигнал за нефункциониращ сайт</translation>
 <translation id="8097438084542431276">Копиране на чиста връзка</translation>
 <translation id="4678672101289648246">Само на страницата на нов раздел</translation>
+<translation id="6516243500644829484">Нов &amp;прозорец в режим „инкогнито“</translation>
 <translation id="1209739344687072997">Докладвайте нефункциониращ сайт</translation>
 <translation id="7630214457764713113">Копиране на чиста връзка</translation>
 <translation id="8294286161128352783">Само на страницата на нов раздел</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">Отворете линка в поверителен прозорец с Tor</translation>
 <translation id="3425600262621021599">Отворете линка в Brave поверителен прозорец с Tor</translation>
 <translation id="3229091547987707389">Импортиране и споделяне на директория</translation>
+<translation id="474217410105706308">Спиране на звука на раздела</translation>
 <translation id="2804710924397009224">Скриване на иконата Brave Rewards</translation>
 <translation id="5029193871181468990">Скриване на иконата за награди в Brave</translation>
 <translation id="2808103541110899519">Скриване на иконата за портфейл в Brave</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">Водещи сайтове</translation>
 <translation id="7859704718976024901">История на сърфирането</translation>
 <translation id="8820817407110198400">Лента на отметките</translation>
-<translation id="6333347122924254968">Показване на иконата с Brave награди в адресната лента</translation>
 <translation id="2245286910966863912">Показване на бутона Brave News в адресната лента.</translation>
 <translation id="383007806262310953">Показване на лентата на отметките</translation>
 <translation id="4054323497808446566">Лентата за отметки е видима на всички страници</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
 <translation id="6531019308847917584">Блокиране на пръстовите отпечатъци</translation>
 <translation id="5533533363827555308">Строго, може да повреди сайтове</translation>
+<translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
+<translation id="3357319404342882895">Конкретна</translation>
 <translation id="8823559166155093873">Блокиране на бисквитките</translation>
 <translation id="5770288601196774623">Само между сайтовете</translation>
 <translation id="3587482841069643663">Всички</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">Създаване на потребителски филтри</translation>
 <translation id="4618274268052410139">Добавете потребителските филтри, които сте създали, по един на ред, в долното поле. Използвайте <ph name="BEGIN_LINK"/>синтаксис за филтри Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Добавяне</translation>
-<translation id="571950783952070673">Списък с URL адреси</translation>
+<translation id="3075903430639801825">Наименование на списък</translation>
 <translation id="9204006549413740506">Последно актуализиране</translation>
 <translation id="6745592621698551453">Актуализиране сега</translation>
 <translation id="5334844597069022743">Преглед на източника</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">Показване на непроверени сайтове в списъка</translation>
 <translation id="5510618543889994434">Разрешете приноси за видеоклипове</translation>
 <translation id="924777189963477634">С включването на автоматичен принос се съгласявате с <ph name="BEGIN_LINK_TOS"/>Условията за ползване<ph name="END_LINK_TOS"/> и <ph name="BEGIN_LINK_PP"/>Политиката за поверителност<ph name="END_LINK_PP"/>.</translation>
-<translation id="5733490796524078528">Бутони за бакшиши</translation>
+<translation id="6333347122924254968">Показване на иконата с награди в Brave в адресната лента</translation>
+<translation id="7483857210736407752">Покажи бутоните за бакшиш на страниците</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">Питане, когато сайтът иска да осъществи достъп до API на доставчик на Solana</translation>
 <translation id="2777102601740875941">Блокиране на достъп на сайтове до API на доставчик на Solana</translation>
 <translation id="4206299587103092719">Влизане чрез Google</translation>
-<translation id="7458736153596040880">Да се отправи запитване, когато даден сайт иска да използва предишно влизане чрез Google</translation>
-<translation id="459266451581663214">Блокиране на използването от сайтове на предишно влизане чрез Google</translation>
-<translation id="8098954941070626949">Разрешаване на сайтовете да използват предишно влизане чрез Google</translation>
+<translation id="9110294136812584522">Страници може да поиксат предходни вписвания в Google посредством бисквитки на трети страни</translation>
+<translation id="2903783737778379345">Не разрешавайте предходни вписвания в Google посредством бисквитки на трети страни</translation>
+<translation id="2570833232754279153">Не е разрешено да се ползват бисквитки на трети страни за предходни вписвания в Google.</translation>
+<translation id="6880817299303842099">Разрешено е да се ползват бисквитки на трети страни за предходни вписвания в Google.</translation>
 <translation id="6414370348346025511">Стандартната защита е включена.</translation>
 <translation id="5565355416171743213">Започнете да използвате синхронизирането</translation>
 <translation id="4332558599726753990">Синхронизиране настройка</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">Мрежи на портфейла</translation>
 <translation id="5975930666279943472">Изчистване на информацията за трансакциите на портфейла и nonce</translation>
 <translation id="5693968582510626466">Изчистването на трансакциите може да бъде полезно за разработчиците или при изчистване на състоянието на локален сървър</translation>
+<translation id="4440478655766953083">Автоматично закачане на NFT</translation>
+<translation id="464460032678285850">NFT, който са добавени към Brave Wallet, могат автоматично да бъдат закачени към локалния IPFS възел.
+Бележка: IPFS daemon може да бъде стартиран за целите на закачане, за да може Вашият локален възел да сподели кеширани данни и закачени NFT към IPFS мрежата.</translation>
 <translation id="4993345308607970390">Нулиране на портфейл в Brave</translation>
 <translation id="9216386092464743272">Сигурни ли сте, че искате да нулирате цялата информация за трансакциите и nonce? Тази опция се използва предимно от програмисти, които извършват локален тест на сървъра. Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>
 <translation id="6369495274982305511">Сигурни ли сте, че искате да нулирате портфейла си? Ако той няма резервно копие, с нулирането ще загубите всичките си данни за сметката (включително всички свързани средства). Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>

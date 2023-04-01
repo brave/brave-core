@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
+<translation id="3478449063771497234">Aviseringar har inaktiverats</translation>
+<translation id="7466579932043491502">Brave Rewards fungerar eventuellt inte när aviseringar har inaktiverats.</translation>
+<translation id="4259212006412783790">SLÅ PÅ</translation>
+<translation id="6112331814131703370">Blockera "Växla till appen"-aviseringar</translation>
 <translation id="4744921452903670666">Berätta vad du tycker!</translation>
 <translation id="2524310205387880526">Betygsätt Brave</translation>
 <translation id="4104400246019119780">Tack!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Dina <ph name="MONTH_VALUE"/> är här!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Rewards: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Du har <ph name="TOKEN"/> dagar kvar att göra anspråk</translation>
-<translation id="2323069945529668668">Hoppsan!</translation>
-<translation id="7510166204621526816">Servern för Brave Rewards svarar inte. Vi åtgärdar detta så snart som möjligt.</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
 <translation id="3101693828171454453">inte tillräckligt med <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5050890334032852465">Spara kontobevakningslista</translation>
 <translation id="7755766175599167100">Sök tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Fortsätt till Ramp</translation>
+<translation id="3956169227169516344">Välj köpsätt</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lås</translation>
 <translation id="8796429300536029044">Info om NFT</translation>
@@ -625,6 +627,10 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="414639769490080648">Antalet minuter att vänta tills Brave Wallet automatiskt låses</translation>
 <translation id="4993345308607970390">Återställ Brave Wallet</translation>
 <translation id="4322846864135539519">Är du säker på att du vill återställa dina Brave-belöningar? Om din plånbok saknar säkerhetskopia kommer återställning leda till att alla data för kontot går förlorade (inklusive eventuellt kapital associerat med kontot). Skriv ”<ph name="CONFIRMATION_PHRASE"/>” för att bekräfta.</translation>
+<translation id="6915083716464390008">Välj ett av följande alternativ</translation>
+<translation id="7667423728712601865">Köp kryptovaluta med Visa eller Mastercard.</translation>
+<translation id="3101839349578102016">Köp direkt med ditt bankkonto. Lägre avgifter.</translation>
+<translation id="7269640984027668973">Köp med <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Rensa transaktions- och nonce-information</translation>
 <translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
 <translation id="5421107279168565467">Är du säker på att du vill återställa transaktions- och nonce-informationen? Det här alternativet används oftast av utvecklare som kör en lokal testserver. Skriv <ph name="CONFIRMATION_PHRASE"/> för att bekräfta.</translation>
@@ -799,7 +805,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
 <translation id="3494964159182650590">Sammanfattning av Rewards</translation>
 <translation id="590733288489975971">Belöningar från Ads</translation>
-<translation id="207268487070188114">Engångsdricks</translation>
+<translation id="2613359062756190460">Engångsdricks</translation>
 <translation id="7577100371127227294">Månatlig dricks</translation>
 <translation id="7091980679045978090">Beräknade intäkter</translation>
 <translation id="1346059596910821859">Dricks</translation>

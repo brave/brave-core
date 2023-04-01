@@ -177,7 +177,6 @@
 <translation id="1984417487208496350">Защита отключена (не рекомендуется)</translation>
 <translation id="1986685561493779662">Это имя уже используется.</translation>
 <translation id="1995884366040846621">Чтобы продолжить, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> передаст ваше имя, адрес электронной почты и фото профиля на этот сайт. Ознакомьтесь с его <ph name="BEGIN_LINK1"/>политикой конфиденциальности<ph name="END_LINK1"/>.</translation>
-<translation id="2000419248597011803">Отправлять некоторые файлы cookie и поисковые запросы из адресной строки в поисковую систему по умолчанию</translation>
 <translation id="6968892567705775281">Учитывать контекст в поиске Brave?</translation>
 <translation id="2009341475524975924">Для оценки эффективности рекламы сайты могут обмениваться некоторыми типами данных, например информацией о времени суток, когда вам было показано объявление.</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# файл}one{# файл}few{# файла}many{# файлов}other{# файла}}</translation>
@@ -294,9 +293,7 @@
 <translation id="2656405586795711023">Веб-приложения</translation>
 <translation id="2669454659051515572">Скачанные файлы будут доступны всем пользователям этого устройства.</translation>
 <translation id="2702516483241149200">Теперь можно поделиться ссылкой, которая прокручивает страницу до этого текста.</translation>
-<translation id="2704606927547763573">Скопировано</translation>
 <translation id="2707726405694321444">Обновить страницу</translation>
-<translation id="2709516037105925701">Автозаполнение</translation>
 <translation id="271033894570825754">Новый</translation>
 <translation id="2711073837061989559">Эксперименты</translation>
 <translation id="2718352093833049315">Только Wi-Fi</translation>
@@ -346,6 +343,7 @@
 <translation id="2951071800649516099">Добавьте страницы в список для чтения.</translation>
 <translation id="2961208450284224863">{READING_LIST_UNREAD_PAGE_COUNT,plural, =1{<ph name="READING_LIST_UNREAD_PAGE_COUNT_ONE"/> непрочитанная страница}one{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрочитанная страница}few{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрочитанные страницы}many{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрочитанных страниц}other{<ph name="READING_LIST_UNREAD_PAGE_COUNT_MANY"/> непрочитанной страницы}}</translation>
 <translation id="2961210776189273067">Обращение</translation>
+<translation id="296370266220139811">Экономьте время на вводе</translation>
 <translation id="2979639724566107830">Открыть в новом окне</translation>
 <translation id="2981364137500752533">Можно открыть не более пяти окон.</translation>
 <translation id="2983102365694924129">Подбираются на основе ваших действий на сайте. Параметр отключен.</translation>
@@ -378,13 +376,13 @@
 <translation id="3066573403916685335">Перейти вниз</translation>
 <translation id="3070005020161560471">Переводить автоматически</translation>
 <translation id="1094255666887095087">Приложение "<ph name="APP_NAME"/>" откроется в Brave. Продолжая, вы принимаете <ph name="BEGIN_LINK1"/>Условия использования Brave<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Дополнительные условия использования Brave и Chrome OS<ph name="END_LINK2"/>. Также действует <ph name="BEGIN_LINK3"/>Политика конфиденциальности<ph name="END_LINK3"/>.</translation>
+<translation id="3083194063661536258">Выполнен выход. Кнопка. Открывает диалоговое окно для входа и включения синхронизации.</translation>
 <translation id="3091010850649238832">Показать содержимое буфера обмена</translation>
 <translation id="821565628224723530">Передавать некоторые изображения в Brave, чтобы улучшить их описание</translation>
 <translation id="3104179992611025423">Браузером управляют родители.</translation>
 <translation id="3114507951000454849">Будьте в курсе новостей <ph name="NEWS_ICON"/></translation>
 <translation id="311958134571892113">связана с</translation>
 <translation id="3123734510202723619">Оповещения</translation>
-<translation id="3130863904455712965">История и другие данные</translation>
 <translation id="3134784203083076891">"</translation>
 <translation id="5063487983358782016">Главная страница Brave</translation>
 <translation id="3157931365184549694">Восстановить</translation>
@@ -441,6 +439,7 @@
 <translation id="3421726884497337397">Настройте параметры блокировки сторонних файлов cookie</translation>
 <translation id="5265419033369521352">Защищает вас в браузере Brave и может использоваться для повышения безопасности в других приложениях Brave при входе в аккаунт.</translation>
 <translation id="3429160811076349561">Функции отключены</translation>
+<translation id="3432973700170747422">Удалить за последн. 15 мин.</translation>
 <translation id="3435465986463792564">Открыто много окон? Ими можно управлять здесь.</translation>
 <translation id="3435738964857648380">Безопасность</translation>
 <translation id="3443221991560634068">Обновить страницу</translation>
@@ -470,6 +469,7 @@
 <translation id="3577473026931028326">Произошла ошибка. Повторите попытку.</translation>
 <translation id="3587482841069643663">Все</translation>
 <translation id="3587596251841506391">Помогать Brave делать Интернет безопаснее</translation>
+<translation id="3597179440835065298">Более подходящие подсказки</translation>
 <translation id="3602290021589620013">Предварительный просмотр</translation>
 <translation id="3616113530831147358">Аудио</translation>
 <translation id="3622349720008044802">Управление окнами</translation>
@@ -504,7 +504,6 @@
 <translation id="3819183753496523827">Нет подключения к интернету. Проверьте соединение и повторите попытку.</translation>
 <translation id="3830886834687455630">Чтобы проверить пароли, обновите сервисы Google Play</translation>
 <translation id="3856096718352044181">Убедитесь, что это действительный поставщик услуг, или повторите попытку позже.</translation>
-<translation id="3858127568696903256">Контент, на который вы подписаны</translation>
 <translation id="3858860766373142691">Название</translation>
 <translation id="3861633093716975811">Популярные видео</translation>
 <translation id="3874520961715512166">Сайт удален.</translation>
@@ -605,7 +604,6 @@
 <translation id="4452411734226507615">Закрыть вкладку "<ph name="TAB_TITLE"/>"</translation>
 <translation id="4452548195519783679">Закладка добавлена в папку "<ph name="FOLDER_NAME"/>"</translation>
 <translation id="4461614516424362539">Вы можете использовать этот телефон как электронный ключ на устройствах, привязанных с помощью QR-кода. Если устройство удалено из списка связанных, на нем нужно будет снова отсканировать QR-код.</translation>
-<translation id="4479839115899251637">Убрать из списка для чтения</translation>
 <translation id="3133489217401741157">Установка модуля "<ph name="MODULE"/>" для Brave…</translation>
 <translation id="4484496141267039529">Нет подключения. Повторите попытку позже.</translation>
 <translation id="53119194224775367">Все данные приложения Brave, включая файлы, настройки, аккаунты и базы данных, будут безвозвратно удалены.</translation>
@@ -725,6 +723,7 @@
 <translation id="5005498671520578047">Копировать пароль</translation>
 <translation id="5011311129201317034"><ph name="SITE"/> запрашивает разрешение на подключение</translation>
 <translation id="5016205925109358554">С засечками</translation>
+<translation id="5017529052065664584">Последние 15 минут</translation>
 <translation id="5032430150487044192">Не удалось создать QR-код.</translation>
 <translation id="5039804452771397117">Разрешить</translation>
 <translation id="5040262127954254034">Конфиденциальность</translation>
@@ -856,6 +855,7 @@
 <translation id="5813552293717797987">Этим браузером управляют <ph name="PARENT_NAME_1"/> и <ph name="PARENT_NAME_2"/>.</translation>
 <translation id="5814131985548525293">Чтобы использовать голосовой ввод, нажмите на значок микрофона</translation>
 <translation id="5814749351757353073">Подпишитесь на любимые сайты</translation>
+<translation id="5822875253699806474">Чтобы быстро возвращаться к просмотренным сайтам, включите синхронизацию вкладок и истории.</translation>
 <translation id="583281660410589416">Неизвестно</translation>
 <translation id="5833984609253377421">Отправить ссылку</translation>
 <translation id="4099502324559761073">Чтобы отсканировать QR-код, разрешите Brave доступ к камере.</translation>
@@ -894,10 +894,12 @@
 <translation id="6000203700195075278">Снова подписаться</translation>
 <translation id="6002122790816966947">Ваши устройства</translation>
 <translation id="6005538289190791541">Предложенный пароль</translation>
+<translation id="6011308810877101166">Улучшать подсказки при поиске</translation>
 <translation id="6039379616847168523">Перейти к следующей вкладке</translation>
 <translation id="6040143037577758943">Закрыть</translation>
 <translation id="604124094241169006">Автоматически</translation>
 <translation id="6042308850641462728">Ещё</translation>
+<translation id="6049046116080614938">Вы вошли как <ph name="USER_NAME"/>. <ph name="USER_EMAIL"/>. Кнопка. Открывает настройки.</translation>
 <translation id="604996488070107836">Не удалось скачать файл <ph name="FILE_NAME"/> из-за неизвестной ошибки.</translation>
 <translation id="605721222689873409">ГГ</translation>
 <translation id="6059830886158432458">Управление рекомендациями</translation>
@@ -960,7 +962,6 @@
 <translation id="6397616442223433927">Подключение восстановлено</translation>
 <translation id="8789425457808164956">Чтобы отправить вкладку на другое устройство, войдите на нем в Brave.</translation>
 <translation id="6402652558933147609"><ph name="ERROR_CODE"/>: <ph name="VIOLATED_URL"/>.</translation>
-<translation id="6403371459378431832">Синхронизируйте данные на всех устройствах</translation>
 <translation id="6404511346730675251">Изменить закладку</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
 <translation id="6407224748847589805">Не удается подключиться к компьютеру. Выберите другой способ подтверждения.</translation>
@@ -1105,6 +1106,7 @@
 <translation id="8208853227947884571">У вас установлена последняя версия Brave.</translation>
 <translation id="7105047059074518658">Чтобы работать с Brave на разных устройствах было проще, войдите в аккаунт</translation>
 <translation id="7106762743910369165">Этим браузером управляет ваша организация.</translation>
+<translation id="7116588989735740310">Чтобы легко возвращаться к сайтам, просмотренным на других устройствах, включите синхронизацию вкладок и истории.</translation>
 <translation id="7130504491556983216">Когда вы начнете посещать сайты, здесь появится список ваших интересов.</translation>
 <translation id="7138678301420049075">Другое</translation>
 <translation id="7146622961999026732">Кажется, следующие сайты и приложения важны для вас:</translation>
@@ -1181,6 +1183,7 @@
 <translation id="751961395872307827">Не удалось подключиться к сайту</translation>
 <translation id="752220631458524187">Отключите кабель по окончании работы.</translation>
 <translation id="7523960634226602883">Включить камеру и использовать для поиска Brave Объектив</translation>
+<translation id="7539698981064401140">Синхронизируйте вкладки и историю</translation>
 <translation id="7562080006725997899">Очистить историю</translation>
 <translation id="7814200940910057384">Данные Brave удалены</translation>
 <translation id="7577900504646297215">Управление интересами</translation>
@@ -1192,6 +1195,7 @@
 <translation id="7596558890252710462">Операционная система</translation>
 <translation id="7605594153474022051">Ошибка синхронизации</translation>
 <translation id="649070405679044769">Вы вошли в аккаунт</translation>
+<translation id="7612989789287281429">Вход в аккаунт…</translation>
 <translation id="7616551326690708776">Выберите шаблон для выделенного текста.</translation>
 <translation id="7619072057915878432">Не удалось скачать файл <ph name="FILE_NAME"/> из-за сбоев сети.</translation>
 <translation id="7207456302801184289">Добро пожаловать в Brave!</translation>
@@ -1209,11 +1213,12 @@
 <translation id="7682724950699840886">Убедитесь, что на вашем устройстве достаточно свободного места. Затем снова попробуйте экспортировать пароли.</translation>
 <translation id="7686086654630106285">Сведения о рекламе, рекомендуемой сайтами</translation>
 <translation id="2667018639405889513">Некоторые посещаемые вами страницы загружаются предварительно. Если переход выполняется с сайта на платформе Brave, предзагрузка может осуществляться через серверы Brave.</translation>
+<translation id="7691043218961417207">Находите интересный контент</translation>
 <translation id="7698359219371678927">Написать письмо в приложении "<ph name="APP_NAME"/>"</translation>
-<translation id="7704317875155739195">Заполнять поисковые запросы и URL автоматически</translation>
 <translation id="7707922173985738739">Использовать мобильный Интернет</translation>
 <translation id="7709094866268987903">Здесь будут появляться удаленные вами интересы.</translation>
 <translation id="7709918231054955894">Просматривайте все свои вкладки</translation>
+<translation id="772434085369393266">Принудительно использовать протокол HTTPS и предупреждать, если загружаемые сайты его не поддерживают. Вы не можете изменить этот параметр, так как включена Дополнительная защита.</translation>
 <translation id="7725024127233776428">Здесь будут страницы, которые вы добавляете в закладки.</translation>
 <translation id="7757787379047923882">Текст с устройства <ph name="DEVICE_NAME"/></translation>
 <translation id="7762668264895820836">SD-карта <ph name="SD_CARD_NUMBER"/></translation>
@@ -1265,6 +1270,7 @@
 <translation id="7968014550143838305">Добавлено в список для чтения.</translation>
 <translation id="7971136598759319605">Последние действия: 1 день назад</translation>
 <translation id="7975379999046275268">Просмотреть страницу <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
+<translation id="7981085434646346979">Вы вошли как <ph name="USER_NAME"/>. Кнопка. Открывает настройки.</translation>
 <translation id="7986497153528221272">Чтобы просматривать пароли, включите на устройстве блокировку экрана.</translation>
 <translation id="7995059495660416932">Вы увидите контент, когда он станет доступен.</translation>
 <translation id="799576009106109668">Работа браузера станет быстрее благодаря автоматической загрузке контента с учетом просматриваемой в настоящий момент страницы.</translation>
@@ -1280,7 +1286,6 @@
 <translation id="8037750541064988519">Осталось <ph name="DAYS"/> дн.</translation>
 <translation id="8037801708772278989">Проверено только что.</translation>
 <translation id="804335162455518893">SD-карта не найдена</translation>
-<translation id="8048728378294435881">Создайте резервную копию данных и используйте их на любом устройстве.</translation>
 <translation id="8051695050440594747">Доступно <ph name="MEGABYTES"/> МБ</translation>
 <translation id="8058655154417507695">Год окончания срока действия</translation>
 <translation id="2317945146070194624">Открыть в новой вкладке</translation>
@@ -1357,6 +1362,7 @@
 <translation id="8461694314515752532">Задать кодовую фразу для шифрования синхронизированных данных</translation>
 <translation id="8466613982764129868">Проверьте, подключено ли устройство <ph name="TARGET_DEVICE_NAME"/> к Интернету.</translation>
 <translation id="8473863474539038330">Адреса и другие данные</translation>
+<translation id="847433688444405067">Работайте на разных устройствах</translation>
 <translation id="8481980314595922412">Функции включены</translation>
 <translation id="8485434340281759656"><ph name="DESCRIPTION"/> <ph name="FILE_SIZE"/> <ph name="SEPARATOR"/></translation>
 <translation id="8489271220582375723">Открыть страницу "История"</translation>
@@ -1409,6 +1415,7 @@
 <translation id="8712637175834984815">Готово</translation>
 <translation id="8725066075913043281">Повторить попытку</translation>
 <translation id="8746155870861185046">Поделиться выделенным</translation>
+<translation id="874726034427945498">Чтобы получать более точные подсказки в адресной строке, включите синхронизацию вкладок и истории.</translation>
 <translation id="8748850008226585750">Содержимое скрыто</translation>
 <translation id="8756969031206844760">Обновить пароль?</translation>
 <translation id="8766529642647037772">Создать ссылку с похожим выделением?</translation>
@@ -1449,10 +1456,10 @@
 <translation id="8945143127965743188"><ph name="LANG"/> – не удалось скачать этот языковой пакет. Повторите попытку позже.</translation>
 <translation id="8955719471735800169">В начало</translation>
 <translation id="8965591936373831584">ожидание</translation>
-<translation id="8967427617812342790">Добавить в список для чтения</translation>
 <translation id="8970887620466824814">Произошла ошибка</translation>
 <translation id="8972098258593396643">Скачать в папку по умолчанию?</translation>
 <translation id="8987641763863173640">Управляйте настройками предварительного просмотра видео</translation>
+<translation id="8987736167266086032">Продолжайте работу с того места, где остановились</translation>
 <translation id="5320085753638900910">История браузера влияет на предложенные интересы, которые представлены ниже, и на то, какую рекламу вы будете видеть. Чтобы обеспечивать вашу конфиденциальность, Brave каждый месяц автоматически удаляет ваши интересы. Они могут обновляться, если вы их не удалите.</translation>
 <translation id="8996847606757455498">Выбрать другого поставщика</translation>
 <translation id="3275122921244685452">Вы входите в аккаунт, которым управляет администратор домена <ph name="MANAGED_DOMAIN"/>. Он может контролировать ваши данные Brave, которые теперь будут связаны с управляемым аккаунтом. При выходе из системы все данные Brave, хранящиеся на этом устройстве, будут удалены, но останутся в вашем аккаунте Brave.</translation>
@@ -1469,6 +1476,7 @@
 <translation id="9069999660519089861">Непрочитанных страниц не найдено</translation>
 <translation id="9070377983101773829">Голосовой поиск</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
+<translation id="9084103763810123431">Чтобы продолжить просмотр на других устройствах, включите синхронизацию вкладок и истории.</translation>
 <translation id="9086302186042011942">Выполняется синхронизация</translation>
 <translation id="9086455579313502267">Нет доступа к сети</translation>
 <translation id="9099220545925418560">Подбираются на основе истории браузера. Параметр отключен.</translation>
@@ -1516,6 +1524,7 @@
 <translation id="992745192656291733">Вкладок: <ph name="TAB_COUNT"/></translation>
 <translation id="996149300115483134">Меню карточки из ленты закрыто</translation>
 <translation id="5186185447130319458">Приватное</translation>
+<translation id="79269250264141507">Когда вы набираете текст в адресной строке или в поле поиска, Brave отправляет его в поисковую систему по умолчанию, чтобы получить лучшие предложения. В режиме «‎Приватный» эта функция отключена.</translation>
 <translation id="5711390076756601471">Блокировка вкладок инкогнито при выходе из браузера Brave</translation>
 <translation id="1014490034578104945">Разблокировка экрана для просмотра вкладок инкогнито</translation>
 <translation id="4390099071040105838">API помогает сайтам бороться с мошенниками и обнаруживать ботов</translation>

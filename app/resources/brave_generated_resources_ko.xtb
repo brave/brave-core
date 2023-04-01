@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7561196759112975576">항상</translation>
 <translation id="7961015016161918242">사용하지 않음</translation>
+<translation id="7973394300052703468">새 시크릿 창(&amp;I)</translation>
 <translation id="4615489450165434530">작동이 멈춘 사이트 보고</translation>
 <translation id="8097438084542431276">클린 링크 복사</translation>
 <translation id="4678672101289648246">새 탭 페이지에서만</translation>
+<translation id="6516243500644829484">새 &amp;시크릿 창</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="7630214457764713113">클린 링크 복사</translation>
 <translation id="8294286161128352783">새 탭 페이지에서만</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
 <translation id="3229091547987707389">디렉토리 가져오기 및 공유</translation>
+<translation id="474217410105706308">탭 음소거</translation>
 <translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
 <translation id="5029193871181468990">Brave Rewards 아이콘 숨기기</translation>
 <translation id="2808103541110899519">Brave 월렛 아이콘 숨기기</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">인기 사이트</translation>
 <translation id="7859704718976024901">검색 내역</translation>
 <translation id="8820817407110198400">북마크</translation>
-<translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
 <translation id="2245286910966863912">주소 표시줄에 Brave News 버튼 표시</translation>
 <translation id="383007806262310953">북마크바 표시</translation>
 <translation id="4054323497808446566">모든 페이지에서 북마크 바 표시</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">스크립트 차단</translation>
 <translation id="6531019308847917584">지문 차단</translation>
 <translation id="5533533363827555308">엄격, 사이트가 손상될 수 있음</translation>
+<translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
+<translation id="3357319404342882895">엄격</translation>
 <translation id="8823559166155093873">쿠키 차단</translation>
 <translation id="5770288601196774623">교차 사이트 한정</translation>
 <translation id="3587482841069643663">전체</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">맞춤 필터 만들기</translation>
 <translation id="4618274268052410139">만들어둔 맞춤 필터를 아래 필드에 한 줄씩 추가합니다. <ph name="BEGIN_LINK"/>Adblock 필터 문법<ph name="END_LINK"/>을 사용하세요.</translation>
 <translation id="7791543448312431591">추가</translation>
-<translation id="571950783952070673">목록 URL</translation>
+<translation id="3075903430639801825">목록 제목</translation>
 <translation id="9204006549413740506">최근 업데이트</translation>
 <translation id="6745592621698551453">지금 업데이트</translation>
 <translation id="5334844597069022743">소스 보기</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">목록에서 비인증 사이트 표시</translation>
 <translation id="5510618543889994434">동영상에 기부 허용</translation>
 <translation id="924777189963477634">자동 기부를 켜면 <ph name="BEGIN_LINK_TOS"/>이용약관<ph name="END_LINK_TOS"/> 및 <ph name="BEGIN_LINK_PP"/>개인정보처리방침<ph name="END_LINK_PP"/>에 동의하게 됩니다.</translation>
-<translation id="5733490796524078528">팁 버튼</translation>
+<translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
+<translation id="7483857210736407752">사이트상에 팁 버튼 표시</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">사이트가 Solana 제공자 API에 액세스하려고 할 때 묻기</translation>
 <translation id="2777102601740875941">사이트의 Solana 제공자 API 액세스 차단</translation>
 <translation id="4206299587103092719">Google 로그인</translation>
-<translation id="7458736153596040880">사이트가 기존 Google 로그인 사용을 요구하면 묻기</translation>
-<translation id="459266451581663214">사이트가 기존 Google 로그인을 사용하지 못하도록 차단</translation>
-<translation id="8098954941070626949">사이트가 기존 Google 로그인을 사용할 수 있도록 허용</translation>
+<translation id="9110294136812584522">사이트가 타사 쿠키를 통해 레거시 Google 로그인을 사용할지 물어볼 수 있도록 허용</translation>
+<translation id="2903783737778379345">타사 쿠키를 통한 레거시 Google 로그인 허용 안 함</translation>
+<translation id="2570833232754279153">레거시 Google 로그인에 타사 쿠키 사용 허용 안 됨</translation>
+<translation id="6880817299303842099">레거시 Google 로그인에 타사 쿠키 사용 허용됨</translation>
 <translation id="6414370348346025511">표준 보호가 켜져 있습니다.</translation>
 <translation id="5565355416171743213">동기화 사용 시작</translation>
 <translation id="4332558599726753990">동기화 설정</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">월렛 네트워크</translation>
 <translation id="5975930666279943472">월렛 트랜잭션 및 임시 정보 지우기</translation>
 <translation id="5693968582510626466">트랜잭션 지우기는 개발자가 로컬 서버에서 상태를 지울 때 유용합니다.</translation>
+<translation id="4440478655766953083">자동으로 NFT 고정</translation>
+<translation id="464460032678285850">Brave 월렛에 추가된 NFT가 자동으로 로컬 IPFS 노드에 고정됩니다.
+    참고: 고정 목적으로 IPFS 대몬이 시작되어, 로컬 노드가 캐시된 데이터와 고정된 NFT를 IPFS 네트워크로 공유합니다.</translation>
 <translation id="4993345308607970390">Brave 월렛 초기화</translation>
 <translation id="9216386092464743272">월렛 트랜잭션 및 임시 정보를 초기화하시겠습니까? 이 옵션은 주로 로컬 테스트 서버를 운용하는 개발자가 사용합니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
 <translation id="6369495274982305511">월렛을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>

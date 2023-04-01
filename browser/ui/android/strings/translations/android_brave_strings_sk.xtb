@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sk">
+<translation id="3478449063771497234">Upozornenia sú zakázané</translation>
+<translation id="7466579932043491502">Brave Odmeny nemusia fungovať, ak sú upozornenia zakázané.</translation>
+<translation id="4259212006412783790">ZAPNÚŤ</translation>
+<translation id="6112331814131703370">Blokovať upozornenia ‚Prejsť na aplikáciu‘</translation>
 <translation id="4744921452903670666">Povedzte nám, čo si myslíte!</translation>
 <translation id="2524310205387880526">Ohodnotiť Brave</translation>
 <translation id="4104400246019119780">Ďakujeme!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Práve dorazili vaše odmeny z reklám za mesiac <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Odmeny: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Na vyzdvihnutie máte ešte <ph name="TOKEN"/> dní</translation>
-<translation id="2323069945529668668">Ou!</translation>
-<translation id="7510166204621526816">Server odmien Brave neodpovedá. Opravíme to čo najskôr.</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch.tv</translation>
 <translation id="3101693828171454453">nedostatok <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="5050890334032852465">Uložiť zoznam sledovania účtu</translation>
 <translation id="7755766175599167100">Hľadať tokeny</translation>
 <translation id="3835223348537121988">Zostatok:</translation>
-<translation id="6888491517683356528">Pokračovať na platformu Ramp</translation>
+<translation id="3956169227169516344">Vybrať spôsob nákupu</translation>
 <translation id="8488282162676695335">Peňaženka Brave</translation>
 <translation id="3784455785234192852">Uzamknúť</translation>
 <translation id="8796429300536029044">Podrobnosti o NFT</translation>
@@ -625,6 +627,10 @@ Naozaj chcete pokračovať?</translation>
 <translation id="414639769490080648">Počet minút čakania do automatického uzamknutia peňaženky Brave</translation>
 <translation id="4993345308607970390">Resetovanie peňaženky Brave</translation>
 <translation id="4322846864135539519">Naozaj chcete resetovať Brave Rewards? Ak nemáte peňaženku zálohovanú, resetovanie spôsobí, že prídete o všetky údaje účtu (vrátane všetkých súvisiacich finančných prostriedkov). Na potvrdenie napíšte „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="6915083716464390008">Vyberte jednu z nasledujúcich možností</translation>
+<translation id="7667423728712601865">Kupujte kryptomeny pomocou karty Visa alebo Mastercard.</translation>
+<translation id="3101839349578102016">Okamžitý nákup pomocou bankového účtu. Nižšie poplatky.</translation>
+<translation id="7269640984027668973">Kúpiť cez <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Vymazať transakciu &amp; informácie o nonce</translation>
 <translation id="5693968582510626466">Vymazanie transakcií môže byť užitočné pre vývojárov alebo pri vymazaní stavu na lokálnom serveri</translation>
 <translation id="5421107279168565467">Naozaj chcete vynulovať transakcie a informácie o nonce? Túto možnosť väčšinou používajú vývojári, ktorí prevádzkujú lokálny testovací server. Napíšte „<ph name="CONFIRMATION_PHRASE"/>“ pre potvrdenie.</translation>
@@ -799,7 +805,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="3506416339268164412">Adresa prijímateľa je kontaktná adresa tokenu</translation>
 <translation id="3494964159182650590">Súhrn odmien</translation>
 <translation id="590733288489975971">Odmeny za reklamy</translation>
-<translation id="207268487070188114">Jednorazový príspevok</translation>
+<translation id="2613359062756190460">Jednorazové príspevky</translation>
 <translation id="7577100371127227294">Mesačné príspevky</translation>
 <translation id="7091980679045978090">Odhadované výnosy</translation>
 <translation id="1346059596910821859">Príspevok</translation>

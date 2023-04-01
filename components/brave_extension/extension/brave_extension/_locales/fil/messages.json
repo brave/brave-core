@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "Matuto pa",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Idagdag sa Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Alisin sa Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Idagdag sa Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Alisin sa Chrome",
+    "description": "Message for removing an extension from Chrome"
   }
 }

@@ -10,12 +10,10 @@
 <translation id="8522292744959221145">若要检查您的密码是否未曾遭遇数据泄露和其他安全问题，请<ph name="BEGIN_LINK"/>登录 Brave<ph name="END_LINK"/>。</translation>
 <translation id="8541922081612557424">关于 Brave</translation>
 <translation id="1203500561924088507">感谢您完成安装。您必须重启浏览器才能使用 <ph name="BUNDLE_NAME"/>。</translation>
-<translation id="8905049883018921395">开启此设置后，Brave 会释放闲置标签页占用的内存。这可让使用中的标签页和其他应用获得更多计算机资源，并让 Brave 保持快速运行。当您返回到闲置标签页时，它们会自动重新变为活动状态。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">省内存模式提高了 Brave 的运行速度</translation>
 <translation id="4798342026247191171">设置您的新 Brave 个人资料</translation>
 <translation id="113959764510199339">Brave 正尝试显示密码。</translation>
 <translation id="8132634101975074716">您已登录 Brave！</translation>
-<translation id="4168469784091952813">您可以充分利用 Brave</translation>
 <translation id="5147525139567260139">共享 Brave 标签页</translation>
 <translation id="1530633922026945685">Brave 需要获得相应权限，才能使用您的摄像头为您的周边环境创建 3D 地图</translation>
 <translation id="4449148723378534338">检查 Brave 中重要的隐私控制设置和安全控件</translation>
@@ -104,16 +102,17 @@
 <translation id="691208314680168371">您的浏览记录，即您在此设备上使用 Brave 访问过的网站的记录。</translation>
 <translation id="1384923383737428730">您的计算机上存在有害软件。Brave 可以移除该软件、恢复您的设置并停用扩展程序，以确保您的浏览器能够重新正常运行。</translation>
 <translation id="1073077513148817424">另一帐号已经登录。Brave 可为您创建一份专属的个人资料，以将您的浏览数据单独存储。</translation>
+<translation id="4250277591581952830">若要接收后续 Brave 更新，您需使用 macOS 10.15 或更高版本。该计算机目前使用的是 macOS 10.13。</translation>
 <translation id="7029305463989165490">若要从 <ph name="ORIGIN"/> 向您的 Android 手机发送电话号码，请在这两部设备上分别登录 Brave。</translation>
 <translation id="4304059894777924102">Brave 无法检查您的密码。请检查您的互联网连接。</translation>
 <translation id="2100587595569959771">在 Brave 设置中详细了解广告个性化</translation>
 <translation id="1807774211756215222">在 Brave 新标签页中打开链接(&amp;T)</translation>
-<translation id="7453070689008684791">Brave 将访问您的云端硬盘，以在地址栏提供建议</translation>
 <translation id="2106568569080763501">您可以在 Brave 中点击网上的电话号码，然后通过 Skype 拨打！</translation>
 <translation id="2401189691232800402">Brave 操作系统</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">获取有关 Brave 操作系统的帮助</translation>
 <translation id="6009720635797285369">从 <ph name="ACCOUNT_EMAIL"/> 获取您的 Brave 浏览器信息</translation>
+<translation id="5111297589157398321">若要接收后续 Brave 更新，您需使用 macOS 10.15 或更高版本。该计算机目前使用的是 macOS 10.14。</translation>
 <translation id="6315734375101223238">自定义和控制 Brave。出了点需要您注意的状况 - 点击即可查看详情。</translation>
 <translation id="7130675370997202556">点击您的姓名即可打开Brave并开始浏览。</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/>已登录这份 Brave 个人资料。Brave 可为您创建一份专属的个人资料，以将您的浏览数据单独存储。</translation>
@@ -182,7 +181,7 @@
 <translation id="232381795826373334">在 Brave 中打开 PDF 文件</translation>
 <translation id="5381032481466106256">当此设置处于开启状态时，关闭所有窗口的操作也会致使您退出 Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{有一项可用的 Brave 更新}=1{有一项可用的 Brave 更新}other{有一项可用的 Brave 更新（已发布 # 天）}}</translation>
-<translation id="4378573854226202617">Brave 仅支持 Windows 10 或更高版本的操作系统。</translation>
+<translation id="4378573854226202617">Brave 仅支持 Windows 7 或更高版本的操作系统。</translation>
 <translation id="5646769069113654257">请立即重启 Brave</translation>
 <translation id="2335583906071111058">以这种语言显示 Brave</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
@@ -202,6 +201,7 @@
 <translation id="3693188491491843187">提高 Brave 的运行速度</translation>
 <translation id="608006075545470555">向此浏览器添加工作资料</translation>
 <translation id="5849446944780602366">有可用的更新。欢迎自定义和控制 Brave。</translation>
+<translation id="5505258595603236622">开启此设置后，Brave 会通过限制后台活动和视觉效果（例如流畅滚动和视频帧速率）来节省电池电量。</translation>
 <translation id="7433698744896946664">允许扩展程序在 Brave 工具栏中显示访问请求</translation>
 <translation id="492209281555538239">Brave 会将此密码保存在您的 Brave 帐号中，因此您不必记住它。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 存在危险，因此 Brave 已将其拦截。</translation>
@@ -260,6 +260,7 @@
 <translation id="126871877963043118">在试用期间，Ad measurement 允许您访问的网站向 Brave 请求信息来对网站上的广告进行效果衡量。Ad measurement 会在网站间传输尽可能少的信息，从而限制跨网站跟踪。</translation>
 <translation id="4392161457256085190">之后，您访问的网站可向 Brave 请求查看您的兴趣，以便向您展示个性化广告。Brave 最多可共享 3 项兴趣信息。</translation>
 <translation id="6418340404893954563">安全系数低的密码容易被人猜到。不妨让 Brave <ph name="BEGIN_LINK"/>为您创建并记住安全系数高的密码<ph name="END_LINK"/>。</translation>
+<translation id="7164968566146897003">开启此设置后，Brave 会释放闲置标签页占用的内存。这可让使用中的标签页和其他应用获得更多计算机资源，并让 Brave 保持快速运行。当您返回到闲置标签页时，它们会自动重新变为活动状态。</translation>
 <translation id="196626648343945705">Brave 处于闲置状态</translation>
 <translation id="3453763134178591239">Brave 操作系统条款</translation>
 <translation id="3335606533094650083">Brave 需要获得相应权限，才能允许此网站使用您的麦克风</translation>
@@ -320,6 +321,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8622246347342688645">Brave 无法检查您的密码，因为您未登录</translation>
 <translation id="96347285368592620">Brave 正在尝试复制密码。</translation>
 <translation id="89367911614620585">此文件可能存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="5196445203969439095">Brave 功能多，任您探索</translation>
 <translation id="3360368475735266712">登录即可在您的所有设备上同步并个性化设置 Brave</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 之前使用的是 Brave</translation>
 <translation id="3098618823450433881">如需在您的所有设备上访问自己的 Brave 浏览器信息，请登录您的帐号，然后开启同步功能</translation>
@@ -330,9 +332,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2097604701283463988">Brave版本太旧</translation>
 <translation id="8550334526674375523">此工作资料与您的个人资料是完全分开的。</translation>
 <translation id="2452889775041290116">您的家长已为 Brave 停用“网站、应用和扩展程序的权限”。因此，您无法添加该<ph name="EXTENSION_TYPE_PARAMETER"/>。</translation>
-<translation id="8502436661255886343">若要接收后续 Brave 更新，您需使用 macOS 10.13 或更高版本。该计算机目前使用的是 macOS 10.12。</translation>
 <translation id="227028348235968071">您需要先登录 Brave 帐号才能使用 Brave 的密码检查功能。</translation>
-<translation id="4226455268610449503">开启此设置后，Brave 会通过限制后台活动和视觉效果（例如流畅滚动和视频帧速率）来节省电池电量。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">版权所有<ph name="YEAR"/> Brave Software Inc。保留所有权利。</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>我们会如何使用这些数据<ph name="END_BOLD"/>：网站可以将您的兴趣信息存储在 Brave 中。例如，如果您访问某个网站购买马拉松跑鞋，系统可能会根据该网站推测您对跑马拉松感兴趣。之后，如果您访问其他网站报名参加比赛，相应网站就可以根据您的兴趣向您展示跑鞋广告。</translation>
 <translation id="3052349005266761501">正在启动 Brave…</translation>
@@ -360,13 +360,15 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2444257125841652328">您的系统管理员已将 Brave 配置为使用备用浏览器访问 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="7902365066753170041">重新启动以更新 Brave(&amp;C)</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="296137235951584143">定制您的专属 Brave</translation>
 <translation id="7977787072794666032">Brave 可能无法正常运行，因为它不再支持 Windows XP 和 Windows Vista</translation>
 <translation id="8180288330711585962">由 Brave 管理的证书</translation>
-<translation id="1611678871603620428">若要接收后续 Brave 更新，您需使用 macOS 10.13 或更高版本。该计算机目前使用的是 OS X 10.11。</translation>
 <translation id="4484434718272972655">谁在使用 Brave？</translation>
 <translation id="7173394303099002355">获享 Brave 的最强安全保护</translation>
 <translation id="5775101967851558962">始终在关闭 Brave 时清除设备上的网站数据</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="137466361146087520">Google Chrome 测试版</translation>
+<translation id="7535429826459677826">Google Chrome 开发者版</translation>
 <translation id="479793348545936567">如果你只想一次性使用此账户，可以使用 Brave 浏览器访客模式。如果你想为他人添加账户, <ph name="LINK_BEGIN"/>添加一个个人资料文件<ph name="LINK_END"/>到你的 <ph name="DEVICE_TYPE"/>。
 
 你已给予网站和应用的权限可应用于此账户。你可以在<ph name="SETTINGS_LINK_BEGIN"/>设置<ph name="SETTINGS_LINK_END"/>中管理你的 Brave 同步链。</translation>
@@ -384,6 +386,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用此项更新}=1{您的管理员要求您重新启动 Brave 以应用此项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用此项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用一项更新}=1{您的管理员要求您重新启动 Brave 以应用一项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用一项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="2176087127109773485">您可以管理已登录的 Brave 同步链。您的 Brave 同步链用于 Brave 浏览器、应用商店、Gmail 等。如果您想为其他人（例如家庭成员）添加帐户，则请将新的个人资料添加到您的 <ph name="DEVICE_TYPE"/> 上。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
-<translation id="137466361146087520">Google Chrome 测试版</translation>
-<translation id="7535429826459677826">Google Chrome 开发者版</translation>
+<translation id="79269250264141507">当您在地址栏或搜索框中输入时，Brave 会将您输入的内容发送到默认搜索引擎，以获得更好的建议。这是私密的。</translation>
+<translation id="3739288578188828252">当您在地址栏或搜索框中输入时，Brave 会将您输入的内容发送到谷歌 Drive 以获得项目建议。这是私密的。</translation>
 </translationbundle>
