@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="gl">
+<translation id="3478449063771497234">As notificacións están desactivadas</translation>
+<translation id="7466579932043491502">É posible que Recompensas de Brave non funcione coas notificacións desactivadas.</translation>
+<translation id="4259212006412783790">ACTIVAR</translation>
+<translation id="6112331814131703370">Bloquear avisos de "Cambiar á aplicación"</translation>
 <translation id="4744921452903670666">Dinos que che parece!</translation>
 <translation id="2524310205387880526">Valore Brave</translation>
 <translation id="4104400246019119780">Grazas!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Xa están aquí as túas recompensas polos anuncios de <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194">Recompensas de <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Tes <ph name="TOKEN"/> días para reclamar</translation>
-<translation id="2323069945529668668">Vaites!</translation>
-<translation id="7510166204621526816">O servidor das recompensas de Brave non está respondendo. Corrixiremos isto canto antes.</translation>
 <translation id="683765328936486920">en YouTube</translation>
 <translation id="8969049974285901797">en Twitch</translation>
 <translation id="3101693828171454453">non hai suficientes <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Seguro que queres facelo?</translation>
 <translation id="5050890334032852465">Gardar a lista de seguimento da conta</translation>
 <translation id="7755766175599167100">Buscar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Continuar con Ramp</translation>
+<translation id="3956169227169516344">Seleccionar método de compra</translation>
 <translation id="8488282162676695335">Carteira Brave</translation>
 <translation id="3784455785234192852">Bloquear</translation>
 <translation id="8796429300536029044">Detalles do NFT</translation>
@@ -625,6 +627,10 @@ Seguro que queres facelo?</translation>
 <translation id="414639769490080648">Número de minutos que é preciso agardar para que Brave Wallet se bloquee automaticamente</translation>
 <translation id="4993345308607970390">Restablecer carteira de Brave</translation>
 <translation id="4322846864135539519">Seguro que queres restablecer Recompensas de Brave? Se non tes unha copia de seguranza da túa carteira, o restablecemento provocará que perdas todos os datos da conta (incluídos os fondos asociados). Escribe "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="6915083716464390008">Selecciona unha das seguintes opcións</translation>
+<translation id="7667423728712601865">Compra criptomoedas con Visa ou Mastercard.</translation>
+<translation id="3101839349578102016">Compra de xeito instantáneo coa túa conta bancaria e goza de taxas máis baixas.</translation>
+<translation id="7269640984027668973">Compra con <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Información clara de transacción e nonce</translation>
 <translation id="5693968582510626466">Borrar transaccións pode ser útil para os programadores ou cando se borra o estado nun servidor local</translation>
 <translation id="5421107279168565467">Está seguro de que desexa restablecer a información da transacción e de nonce? Esta opción utilízana principalmente os desenvolvedores que usan un servidor de proba local. Escriba "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
@@ -799,7 +805,7 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="3506416339268164412">O enderezo de recepción é o enderezo do contrato dun token</translation>
 <translation id="3494964159182650590">Resumo de recompensas</translation>
 <translation id="590733288489975971">Recompensas de Brave Ads</translation>
-<translation id="207268487070188114">Consello para unha soa vez</translation>
+<translation id="2613359062756190460">Consellos para unha soa vez</translation>
 <translation id="7577100371127227294">Consellos mensuais</translation>
 <translation id="7091980679045978090">Ingresos estimados</translation>
 <translation id="1346059596910821859">Vaciar</translation>

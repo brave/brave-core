@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
+<translation id="3478449063771497234">Нотификациите са деактивирани</translation>
+<translation id="7466579932043491502">Brave Rewards може да не работи докато нотификациите са деактивирани</translation>
+<translation id="4259212006412783790">ВКЛЮЧИ</translation>
+<translation id="6112331814131703370">Блокирай нотификации „Превключи към приложение“</translation>
 <translation id="4744921452903670666">Споделете вашето мнение!</translation>
 <translation id="2524310205387880526">Оценете Brave</translation>
 <translation id="4104400246019119780">Благодарим!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Вашите награди от рекламите за <ph name="MONTH_VALUE"/> са тук!</translation>
 <translation id="2716238748894345194">Награди за <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Остават ви <ph name="TOKEN"/> дни за заявяване</translation>
-<translation id="2323069945529668668">Упс!</translation>
-<translation id="7510166204621526816">Сървърът на Brave Rewards не отговаря. Ще поправим това възможно най-скоро.</translation>
 <translation id="683765328936486920">в YouTube</translation>
 <translation id="8969049974285901797">в Twitch</translation>
 <translation id="3101693828171454453">не достатъчно <ph name="TOKEN"/>s</translation>
@@ -612,7 +614,7 @@
 <translation id="5050890334032852465">Запазване на списъка за наблюдение на акаунта</translation>
 <translation id="7755766175599167100">Търсене на маркери</translation>
 <translation id="3835223348537121988">Баланс:</translation>
-<translation id="6888491517683356528">Продължете към Ramp</translation>
+<translation id="3956169227169516344">Избери метод на покупка</translation>
 <translation id="8488282162676695335">Портфейл в Brave</translation>
 <translation id="3784455785234192852">Заключване</translation>
 <translation id="8796429300536029044">Данни за NFT</translation>
@@ -626,6 +628,10 @@
 <translation id="414639769490080648">Оставащи минути до автоматичното заключване на портфейл на Brave</translation>
 <translation id="4993345308607970390">Нулиране на портфейл в Brave</translation>
 <translation id="4322846864135539519">Наистина ли искате да нулирате своите награди в Brave? Ако портфейлът ви няма резервно копие, нулирането ще предизвика загуба на всички данни на сметката (включително всички свързани средства). Въведете „<ph name="CONFIRMATION_PHRASE"/>“ за потвърждаване.</translation>
+<translation id="6915083716464390008">Избери една от следните опции</translation>
+<translation id="7667423728712601865">Купете криптовалута с Visa или Mastercard.</translation>
+<translation id="3101839349578102016">Незабавна покупка с вашата банкова сметка. По-ниски такси.</translation>
+<translation id="7269640984027668973">Купи с <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Изчистване на транзакцията; информация за еднократно използван числов параметър</translation>
 <translation id="5693968582510626466">Изчистването на трансакциите може да бъде полезно за разработчиците или при изчистване на състоянието на локален сървър</translation>
 <translation id="5421107279168565467">Наистина ли искате да нулирате информацията за транзакциите и еднократно използвания числов параметър? Тази опция се използва предимно от разработчици, занимаващи се с локален тестов сървър. Въведете „<ph name="CONFIRMATION_PHRASE"/>“, за да потвърдите.</translation>
@@ -800,7 +806,7 @@
 <translation id="3506416339268164412">Адресът на получаване е адресът на договора на токена</translation>
 <translation id="3494964159182650590">Резюме на наградите</translation>
 <translation id="590733288489975971">Награди от реклами</translation>
-<translation id="207268487070188114">Еднократно дарение</translation>
+<translation id="2613359062756190460">Еднократни дарения</translation>
 <translation id="7577100371127227294">Ежемесечни дарения</translation>
 <translation id="7091980679045978090">Приблизителни печалби</translation>
 <translation id="1346059596910821859">Бакшиш</translation>

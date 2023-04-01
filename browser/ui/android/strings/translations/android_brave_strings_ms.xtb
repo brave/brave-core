@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
+<translation id="3478449063771497234">Pemberitahuan dinyahdayakan</translation>
+<translation id="7466579932043491502">Ganjaran Brave mungkin tidak berfungsi semasa pemberitahuan dinyahdayakan.</translation>
+<translation id="4259212006412783790">HIDUPKAN</translation>
+<translation id="6112331814131703370">Sekat Notis 'Tukar kepada Aplikasi'</translation>
 <translation id="4744921452903670666">Berikan maklum balas anda!</translation>
 <translation id="2524310205387880526">Nilaikan Brave</translation>
 <translation id="4104400246019119780">Terima kasih!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Ganjaran Iklan <ph name="MONTH_VALUE"/> anda telah tiba!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Ganjaran: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Tinggal <ph name="TOKEN"/> hari lagi untuk anda membuat tuntutan</translation>
-<translation id="2323069945529668668">Oh oh!</translation>
-<translation id="7510166204621526816">Pelayar Ganjaran Brave tidak memberi respons. Kami akan baiki secepat mungkin.</translation>
 <translation id="683765328936486920">di YouTube</translation>
 <translation id="8969049974285901797">di Twitch</translation>
 <translation id="3101693828171454453">tidak cukup <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="5050890334032852465">Simpan senarai tonton akaun</translation>
 <translation id="7755766175599167100">Cari token</translation>
 <translation id="3835223348537121988">Baki:</translation>
-<translation id="6888491517683356528">Teruskan ke Ramp</translation>
+<translation id="3956169227169516344">Pilih Kaedah Pembelian</translation>
 <translation id="8488282162676695335">Dompet Brave</translation>
 <translation id="3784455785234192852">Kunci</translation>
 <translation id="8796429300536029044">Butiran NFT</translation>
@@ -625,6 +627,10 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="414639769490080648">Bilangan minit untuk menunggu sehingga Brave Wallet dikunci secara automatik</translation>
 <translation id="4993345308607970390">Tetapkan Semula Brave Wallet</translation>
 <translation id="4322846864135539519">Betulkah anda mahu menetapkan semula Ganjaran Brave anda? Jika dompet anda tidak disandarkan, penetapan semula akan menyebabkan anda kehilangan semua data akaun (termasuk sebarang dana yang berkaitan). Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
+<translation id="6915083716464390008">Pilih salah satu pilihan berikut</translation>
+<translation id="7667423728712601865">Beli kripto dengan Visa atau Mastercard.</translation>
+<translation id="3101839349578102016">Beli segera dengan akaun bank anda. Yuran lebih rendah.</translation>
+<translation id="7269640984027668973">Beli dengan <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Kosongkan maklumat transaksi &amp; nonce</translation>
 <translation id="5693968582510626466">Mengosongkan transaksi mungkin berguna untuk pembangun atau apabila membersihkan keadaan pada pelayan tempatan</translation>
 <translation id="5421107279168565467">Betulkah anda ingin menetapkan semula maklumat transaksi dan nonce? Pilihan ini kebanyakannya digunakan oleh pembangun yang menjalankan pelayan ujian setempat. Taip "<ph name="CONFIRMATION_PHRASE"/>" untuk mengesahkan.</translation>
@@ -799,7 +805,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
 <translation id="3494964159182650590">Ringkasan Ganjaran</translation>
 <translation id="590733288489975971">Ganjaran dari Iklan</translation>
-<translation id="207268487070188114">Petua Satu Kali</translation>
+<translation id="2613359062756190460">Tip Sekali Guna</translation>
 <translation id="7577100371127227294">Tip Bulanan</translation>
 <translation id="7091980679045978090">Anggaran pendapatan</translation>
 <translation id="1346059596910821859">Tip</translation>

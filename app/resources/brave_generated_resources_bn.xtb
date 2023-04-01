@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7561196759112975576">সবসময়য়</translation>
 <translation id="7961015016161918242">কখনই নয়</translation>
+<translation id="7973394300052703468">নতুন &amp;ছদ্মবেশী উইন্ডো</translation>
 <translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="8097438084542431276">ক্লিন লিঙ্ক কপি করুন</translation>
 <translation id="4678672101289648246">শুধুমাত্র নতুন ট্যাব পেজে</translation>
+<translation id="6516243500644829484">নতুন &amp;ছদ্মবেশ উইন্ডো</translation>
 <translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="7630214457764713113">ক্লিন লিঙ্ক কপি করুন</translation>
 <translation id="8294286161128352783">শুধুমাত্র নতুন ট্যাব পেজে</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3229091547987707389">একটি ডিরেক্টরি পাঠান এবং শেয়ার করুন</translation>
+<translation id="474217410105706308">ট্যাব মিউট করুন</translation>
 <translation id="2804710924397009224">ব্রেভ রিওয়ার্ড আইকন লুকান</translation>
 <translation id="5029193871181468990">Brave রিওয়ার্ড আইকন লুকান</translation>
 <translation id="2808103541110899519">Brave ওয়ালেট আইকন লুকান</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">সেরা সাইট</translation>
 <translation id="7859704718976024901">ব্রাউজিং ইতিহাস</translation>
 <translation id="8820817407110198400">বুকমার্ক বার</translation>
-<translation id="6333347122924254968">ঠিকানা বারে Brave পুরস্কারসমূহ দেখান</translation>
 <translation id="2245286910966863912">অ্যাড্রেস বারে Brave সংবাদ বোতাম দেখান</translation>
 <translation id="383007806262310953">বুকমার্ক বার দেখান</translation>
 <translation id="4054323497808446566">বুকমার্ক বার সব পেজে দেখা যাচ্ছে</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
 <translation id="6531019308847917584">আঙুলের ছাপ মূদ্রণ অবরুদ্ধ করুন</translation>
 <translation id="5533533363827555308">কঠোর, সাইটগুলিকে ভাঙ্গতে পারে</translation>
+<translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
+<translation id="3357319404342882895">সঠিক</translation>
 <translation id="8823559166155093873">কুকি-গুলি অবরুদ্ধ করুন</translation>
 <translation id="5770288601196774623">শুধুমাত্র ক্রস-সাইট</translation>
 <translation id="3587482841069643663">সকল</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">কাস্টম ফিল্টারগুলো তৈরি করুন</translation>
 <translation id="4618274268052410139">নিচে লাইন অনুযায়ী, ক্ষেত্রের মধ্যে আপনি যে ফিল্টার যোগ করেছেন সেই কাস্টম ফিল্টার যোগ করুন। <ph name="BEGIN_LINK"/>Adblock ফিল্টারের সিনট্যাক্স<ph name="END_LINK"/> ব্যবহারের বিষয়ে নিশ্চিত থাকুন।</translation>
 <translation id="7791543448312431591">জুড়ুন</translation>
-<translation id="571950783952070673">লিস্টের URL</translation>
+<translation id="3075903430639801825">শিরোনাম তালিকাবদ্ধ করুন</translation>
 <translation id="9204006549413740506">শেষ আপডেট হয়েছে</translation>
 <translation id="6745592621698551453">এখনই আপডেট করুন</translation>
 <translation id="5334844597069022743">সূত্র দেখান</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">তালিকাতে অ-যাচাইকৃত সাইটগুলি দেখান</translation>
 <translation id="5510618543889994434">ভিডিওতে অবদান করার অনুমতি দিন</translation>
 <translation id="924777189963477634">স্বয়ংক্রিয় অবদান চালু করে, আপনি <ph name="BEGIN_LINK_TOS"/>পরিষেবার শর্তাবলী<ph name="END_LINK_TOS"/> এবং <ph name="BEGIN_LINK_PP"/>গোপনীয়তা নীতি<ph name="END_LINK_PP"/>-র সাথে সম্মত হন।</translation>
-<translation id="5733490796524078528">ইঙ্গিত বোতাম</translation>
+<translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
+<translation id="7483857210736407752">সাইটগুলিতে টিপ বোতামগুলি দেখান</translation>
 <translation id="3905400818082450708">রেড্ডিট</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">যখন কোনও সাইট Solana প্রদানকারী API অ্যাক্সেস করতে চায় সে বিষয়ে জিজ্ঞাসা করুন</translation>
 <translation id="2777102601740875941">যখন কোনও সাইট Solana প্রদানকারী API অ্যাক্সেস করতে তাদের ব্লক করুন</translation>
 <translation id="4206299587103092719">Google সাইন-ইন</translation>
-<translation id="7458736153596040880">কোনো সাইট লিগ্যাসি Google সাইন-ইন ব্যবহার করতে চাইলে জিজ্ঞাসা করুন</translation>
-<translation id="459266451581663214">লিগ্যাসি Google সাইন-ইন ব্যবহার করা থেকে সাইটগুলোকে ব্লক করুন</translation>
-<translation id="8098954941070626949">লিগ্যাসি Google সাইন-ইন ব্যবহার করতে সাইটগুলোকে অনুমতি দিন</translation>
+<translation id="9110294136812584522">সাইটগুলি তৃতীয়-পক্ষের কুকিজের মাধ্যমে লিগ্যাসি Google সাইন-ইন ব্যবহার করতে বলতে পারে</translation>
+<translation id="2903783737778379345">তৃতীয়-পক্ষের কুকিজের মাধ্যমে লিগ্যাসি Google সাইন-ইনকে অনুমতি দেবেন না</translation>
+<translation id="2570833232754279153">লিগ্যাসি Google সাইন-ইন-এর জন্য তৃতীয় পক্ষের কুকিজ ব্যবহারের অনুমতি নেই</translation>
+<translation id="6880817299303842099">লিগ্যাসি Google সাইন-ইন-এর জন্য তৃতীয় পক্ষের কুকিজ ব্যবহারের অনুমতি আছে</translation>
 <translation id="6414370348346025511">স্ট্যান্ডার্ড সুরক্ষা চালু আছে।</translation>
 <translation id="5565355416171743213">সিঙ্কের ব্যবহার শুরু করুন</translation>
 <translation id="4332558599726753990">সিঙ্ক সেটআপ</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">ওয়ালেট নেটওয়ার্ক</translation>
 <translation id="5975930666279943472">ওয়ালেটের লেনদেন এবং বর্তমান তথ্য সাফ করুন</translation>
 <translation id="5693968582510626466">লেনদেনগুলো সাফ করা ডেভেলপারদের জন্য বা একটি স্থানীয় সার্ভারে অবস্থা সাফ করার জন্য উপকারী হতে পারে</translation>
+<translation id="4440478655766953083">NFTগুলি স্বয়ংক্রিয়ভাবে পিন হয়</translation>
+<translation id="464460032678285850">Brave ওয়ালেটে যুক্ত হওয়া NFTগুলি স্বয়ংক্রিয়ভাবে স্থানীয় IPFS নোডে পিন হতে পারে।
+    দ্রষ্টব্য: পিন করার জন্য IPFS ডেমন শুরু করা হতে পারে তাই আপনার স্থানীয় নোড IPFS নেটওয়ার্কে ক্যাশে ডেটা এবং পিন করা NFTগুলি শেয়ার করবে।</translation>
 <translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
 <translation id="9216386092464743272">আপনি কি আপনার ওয়ালেটের সব লেনদেন এবং বর্তমান তথ্য রিসেট করার বিষয়ে নিশ্চিত? এই বিকল্পটি বেশিরভাগ ক্ষেত্রে একটি স্থানীয় টেস্ট সার্ভার চালনাকারী ডেভেলপাররা ব্যবহার করেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
 <translation id="6369495274982305511">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>

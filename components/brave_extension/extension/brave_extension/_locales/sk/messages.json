@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "Dozvedieť sa viac",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Pridať do prehliadača Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Odstrániť z Chromu",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Pridať do Chromu",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Odstrániť z prehliadača Chrome",
+    "description": "Message for removing an extension from Chrome"
   }
 }

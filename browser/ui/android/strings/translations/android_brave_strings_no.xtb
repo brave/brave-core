@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
+<translation id="3478449063771497234">Varslinger er deaktivert</translation>
+<translation id="7466579932043491502">Brave Rewards fungerer kanskje ikke mens varslinger er deaktivert.</translation>
+<translation id="4259212006412783790">SLÅ PÅ</translation>
+<translation id="6112331814131703370">Blokk varslinger om å bytte til appen</translation>
 <translation id="4744921452903670666">Fortell oss hva du synes!</translation>
 <translation id="2524310205387880526">Ranger Brave</translation>
 <translation id="4104400246019119780">Takk!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Ads-belønningene dine for <ph name="MONTH_VALUE"/> er her!</translation>
 <translation id="2716238748894345194">Belønning for <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Du har <ph name="TOKEN"/> dager på deg til å innløse</translation>
-<translation id="2323069945529668668">Oisann!</translation>
-<translation id="7510166204621526816">Brave-serveren svarer ikke. Vi vil rette opp i dette så raskt som mulig.</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
 <translation id="3101693828171454453">ikke nok <ph name="TOKEN"/>er</translation>
@@ -611,7 +613,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5050890334032852465">Lagre kontoliste</translation>
 <translation id="7755766175599167100">Søk etter tokener</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Gå til Ramp</translation>
+<translation id="3956169227169516344">Velg kjøpsmetode.</translation>
 <translation id="8488282162676695335">Brave-lommebok</translation>
 <translation id="3784455785234192852">Lås</translation>
 <translation id="8796429300536029044">NFT-detalj</translation>
@@ -625,6 +627,10 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="414639769490080648">Antall minutter før Brave-lommeboken automatisk låses</translation>
 <translation id="4993345308607970390">Tilbakestill Brave-lommebok</translation>
 <translation id="4322846864135539519">Er du sikker på at du vil tilbakestille Brave-belønningene dine? Hvis du ikke har sikkerhetskopiert lommeboken din, vil dette gjøre at du mister alle kontodataene (inkludert tilknyttede midler). Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte dette.</translation>
+<translation id="6915083716464390008">Velg en av de følgende alternativene</translation>
+<translation id="7667423728712601865">Kjøp krypto med Visa eller Mastercard.</translation>
+<translation id="3101839349578102016">Umiddelbart kjøp med bankkontoen din. Lavere avgifter.</translation>
+<translation id="7269640984027668973">Kjøp med <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Fjern transaksjons- og nonce-info</translation>
 <translation id="5693968582510626466">Sletting av transaksjoner kan være nyttig for utviklere eller ved sletting av tilstanden på en lokal server</translation>
 <translation id="5421107279168565467">Er du sikker på at du vil tilbakestille transaksjons- og nonce-informasjonen? Dette alternativet brukes primært av utviklere som kjører en lokal testserver. Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte valget.</translation>
@@ -799,7 +805,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="3506416339268164412">Mottaksadressen er en tokens kontraktadresse</translation>
 <translation id="3494964159182650590">Sammendrag av belønninger</translation>
 <translation id="590733288489975971">Rewards fra Ads</translation>
-<translation id="207268487070188114">Engangsdriks</translation>
+<translation id="2613359062756190460">Engangstips</translation>
 <translation id="7577100371127227294">Månedlige tips</translation>
 <translation id="7091980679045978090">Beregnet inntekt</translation>
 <translation id="1346059596910821859">Tips</translation>

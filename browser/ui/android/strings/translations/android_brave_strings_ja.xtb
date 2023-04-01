@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
+<translation id="3478449063771497234">通知は無効です</translation>
+<translation id="7466579932043491502">通知が無効な状態では、Brave Rewardsが機能しない場合があります。</translation>
+<translation id="4259212006412783790">有効にする</translation>
+<translation id="6112331814131703370">「アプリに切り替える」通知をブロック</translation>
 <translation id="4744921452903670666">ご意見をお聞かせください！</translation>
 <translation id="2524310205387880526">Braveを評価する</translation>
 <translation id="4104400246019119780">ありがとうございます！</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162"><ph name="MONTH_VALUE"/>の広告閲覧報酬が届きました！</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/>のリワード: <ph name="TOKEN"/>BAT</translation>
 <translation id="1649629664206601032">獲得まであと<ph name="TOKEN"/>日</translation>
-<translation id="2323069945529668668">おっと！</translation>
-<translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
 <translation id="683765328936486920">YouTubeで</translation>
 <translation id="8969049974285901797">Twitchで</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>足りません</translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
 <translation id="7755766175599167100">トークンの検索</translation>
 <translation id="3835223348537121988">残高:</translation>
-<translation id="6888491517683356528">Rampヘ進む</translation>
+<translation id="3956169227169516344">購入方法を選択</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="3784455785234192852">ロック</translation>
 <translation id="8796429300536029044">NFTの詳細</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="4993345308607970390">Braveウォレットをリセット</translation>
 <translation id="4322846864135539519">Braveリワードをリセットしますか？ウォレットがバックアップされていない場合、リセットすると（紐づく資金を含む）すべてのアカウントデータが失われます。確認のため「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="6915083716464390008">以下のオプションのいずれかを選択</translation>
+<translation id="7667423728712601865">VisaまたはMastercardで暗号資産を購入。</translation>
+<translation id="3101839349578102016">銀行口座で即座に購入。手数料が安くなる</translation>
+<translation id="7269640984027668973"><ph name="RAMP_PROVIDER"/>で購入</translation>
 <translation id="4862812525895306758">トランザクション &amp; ノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="5421107279168565467">トランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認して実行するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">受取アドレスはトークンのコントラクトアドレスとなります</translation>
 <translation id="3494964159182650590">リワードの概要</translation>
 <translation id="590733288489975971">Adsによる報酬</translation>
-<translation id="207268487070188114">ワンタイムチップ</translation>
+<translation id="2613359062756190460">一度だけチップを送る</translation>
 <translation id="7577100371127227294">月々のチップ</translation>
 <translation id="7091980679045978090">推定報酬</translation>
 <translation id="1346059596910821859">チップ</translation>
@@ -1036,7 +1042,7 @@
 <translation id="4982630604810554641">ドメインを検索中...</translation>
 <translation id="4159738248012488342">チップ金額を選択してください</translation>
 <translation id="3586775666459823714">NFTs</translation>
-<translation id="707569835145765061">要対応: vBATを引き続き保管するためにカストディアルアカウントを接続してください</translation>
+<translation id="707569835145765061">要対応: カストディアルアカウントとの接続をしない場合、これまで獲得したvBATは消滅します。</translation>
 <translation id="1776742005329298234"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。この日までにカストディアルアカウントを接続し、獲得した残高をカストディアルアカウントに移行できるようにしてください。この設定を行わない場合、残高は失われます。</translation>
 <translation id="5089752671190341407">サポート終了前までは、お気に入りのクリエイターにvBATで貢献できます</translation>
 <translation id="171158953146804144"><ph name="DUE_DATE"/>より、既存のバーチャルBAT残高のサポートを終了します。残念ながら、お住まいの地域 (<ph name="REGION"/>) には、収益を引き出すために利用可能なカストディアンが存在しません。上記の日程まではお気に入りのクリエイターに貢献することができます。</translation>

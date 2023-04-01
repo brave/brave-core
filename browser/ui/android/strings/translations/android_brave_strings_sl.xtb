@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
+<translation id="3478449063771497234">Obvestila so izključena</translation>
+<translation id="7466579932043491502">Ko so obvestila izključena, storitev nagrad Brave morda ne bo delovala.</translation>
+<translation id="4259212006412783790">VKLOP</translation>
+<translation id="6112331814131703370">Onemogočite obvestila 'Prehod na aplikacijo'</translation>
 <translation id="4744921452903670666">Delite svoje mnenje z nami!</translation>
 <translation id="2524310205387880526">Ocenite brskalnik Brave</translation>
 <translation id="4104400246019119780">Hvala!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Vaše nagrade z oglasov<ph name="MONTH_VALUE"/> Ads Rewards so tu!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Nagrade: <ph name="TOKEN"/> žetoni BAT</translation>
 <translation id="1649629664206601032">Za zahtevo imate še <ph name="TOKEN"/> dni</translation>
-<translation id="2323069945529668668">Ojoj!</translation>
-<translation id="7510166204621526816">Strežnik Brave Rewards se ne odziva. Težavo bomo rešili takoj, ko bo mogoče.</translation>
 <translation id="683765328936486920">na platformi YouTube</translation>
 <translation id="8969049974285901797">na platformi Twitch</translation>
 <translation id="3101693828171454453">ni dovolj <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="5050890334032852465">Shrani seznam za spremljanje računa</translation>
 <translation id="7755766175599167100">Išči žetone</translation>
 <translation id="3835223348537121988">Stanje:</translation>
-<translation id="6888491517683356528">Naprej na Ramp</translation>
+<translation id="3956169227169516344">Izberite način nakupa</translation>
 <translation id="8488282162676695335">Denarnica Brave</translation>
 <translation id="3784455785234192852">Zakleni</translation>
 <translation id="8796429300536029044">Podrobnost NFT</translation>
@@ -625,6 +627,10 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="414639769490080648">Število minut čakanja, da se Brave  denarnica samodejno zaklene</translation>
 <translation id="4993345308607970390">Ponastavi denarnico Brave</translation>
 <translation id="4322846864135539519">Ste prepričani, da želite ponastaviti svoje nagrade Brave? Če vaša denarnica ni varnostno kopirana, boste zaradi ponastavitve izgubili vse podatke o računu (vključno z vsemi povezanimi sredstvi). Napišite "<ph name="CONFIRMATION_PHRASE"/>", da potrdite.</translation>
+<translation id="6915083716464390008">Izberite eno od naslednjih možnosti</translation>
+<translation id="7667423728712601865">Kupite kriptovaluto s kartico Visa ali Mastercard.</translation>
+<translation id="3101839349578102016">Takojšnji nakup z vašim bančnim računom. Nižje pristojbine.</translation>
+<translation id="7269640984027668973">Nakupujte z <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Počisti informacije o transakkciji &amp; nonce</translation>
 <translation id="5693968582510626466">Transakcije brisanja so lahko uporabne za razvijalce ali pri čiščenju stanja na lokalnem strežniku</translation>
 <translation id="5421107279168565467">Ali ste prepričani, da želite ponastaviti informacije o transakciji in nonce? To možnost večinoma uporabljajo razvijalci, ki uporabljajo lokalni testni strežnik. Vnesite "<ph name="CONFIRMATION_PHRASE"/>" za potrditev.</translation>
@@ -799,7 +805,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="3506416339268164412">Prejemni naslov je pogodbeni naslov žetona</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>
 <translation id="590733288489975971">Nagrade z oglaševanjem</translation>
-<translation id="207268487070188114">Enkratna napitnina</translation>
+<translation id="2613359062756190460">Enkratne donacije</translation>
 <translation id="7577100371127227294">Mesečni prispevki</translation>
 <translation id="7091980679045978090">Ocenjen zaslužek</translation>
 <translation id="1346059596910821859">Donacija</translation>

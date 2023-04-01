@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
+<translation id="3478449063771497234">Notificările sunt dezactivate</translation>
+<translation id="7466579932043491502">Este posibil ca Recompensele Brave să nu funcționeze dacă notificările sunt dezactivate.</translation>
+<translation id="4259212006412783790">ACTIVAȚI</translation>
+<translation id="6112331814131703370">Blocați anunțurile „Treceți la aplicație”</translation>
 <translation id="4744921452903670666">Spuneți-ne părerea dvs.!</translation>
 <translation id="2524310205387880526">Evaluați Brave</translation>
 <translation id="4104400246019119780">Mulțumim!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Au sosit recompensele din anunțuri pentru <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194">Recompense pentru <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Aveți <ph name="TOKEN"/> de zile la dispoziție pentru a revendica</translation>
-<translation id="2323069945529668668">Uh oh!</translation>
-<translation id="7510166204621526816">Serverul Brave Rewards nu răspunde. Vom remedia aceasta cât mai curând posibil.</translation>
 <translation id="683765328936486920">pe YouTube</translation>
 <translation id="8969049974285901797">pe Twitch</translation>
 <translation id="3101693828171454453">insuficiente <ph name="TOKEN"/></translation>
@@ -612,7 +614,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5050890334032852465">Salvarea listei cu activele de urmărit</translation>
 <translation id="7755766175599167100">Căutați token-uri</translation>
 <translation id="3835223348537121988">Sold:</translation>
-<translation id="6888491517683356528">Continuați la rampă</translation>
+<translation id="3956169227169516344">Selectați metoda de achiziționare</translation>
 <translation id="8488282162676695335">Portofelul Brave</translation>
 <translation id="3784455785234192852">Blocați</translation>
 <translation id="8796429300536029044">Detaliu NFT</translation>
@@ -626,6 +628,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="4993345308607970390">Resetați portofelul Brave</translation>
 <translation id="4322846864135539519">Sigur doriți să resetați recompensele dvs. Brave? Dacă nu ați realizat o copie de rezervă a portofelului, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
+<translation id="6915083716464390008">Selectați una dintre următoarele opțiuni</translation>
+<translation id="7667423728712601865">Cumpărați criptomonede utilizând un card Visa sau Mastercard.</translation>
+<translation id="3101839349578102016">Cumpărați instant cu contul dvs. bancar. Taxe mai mici.</translation>
+<translation id="7269640984027668973">Achiziționați folosind <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Ștergeți informațiile referitoare la tranzacții și nonce</translation>
 <translation id="5693968582510626466">Ștergerea tranzacțiilor poate fi utilă pentru dezvoltatori sau în cazul golirii informațiilor pe un server local</translation>
 <translation id="5421107279168565467">Sigur doriți să resetați toate tranzacțiile din portofel și informația nonce? Această opțiune este utilizată în principal de dezvoltatori care rulează un server de test local. Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
@@ -800,7 +806,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3506416339268164412">Adresa destinatară este o adresă din contractul pentru un token.</translation>
 <translation id="3494964159182650590">Rezumat recompense</translation>
 <translation id="590733288489975971">Recompense din reclame</translation>
-<translation id="207268487070188114">Contribuție unică</translation>
+<translation id="2613359062756190460">Cadouri bănești o singură dată</translation>
 <translation id="7577100371127227294">Plăți lunare</translation>
 <translation id="7091980679045978090">Câștiguri estimate</translation>
 <translation id="1346059596910821859">Indiciu</translation>
