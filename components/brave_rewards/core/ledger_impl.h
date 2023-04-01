@@ -43,7 +43,6 @@ namespace ledger {
 class LedgerImpl : public mojom::Ledger {
  public:
   explicit LedgerImpl(
-      mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
       mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote);
 
   ~LedgerImpl() override;
@@ -56,7 +55,7 @@ class LedgerImpl : public mojom::Ledger {
   void Initialize(bool execute_create_script,
                   InitializeCallback callback) override;
 
-  void SetEnvironment(ledger::mojom::Environment environment) override;
+  void SetEnvironment(mojom::Environment environment) override;
 
   void SetDebug(bool debug) override;
 
@@ -97,8 +96,7 @@ class LedgerImpl : public mojom::Ledger {
 
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
 
-  void OnLoad(ledger::mojom::VisitDataPtr visit_data,
-              uint64_t current_time) override;
+  void OnLoad(mojom::VisitDataPtr visit_data, uint64_t current_time) override;
 
   void OnUnload(uint32_t tab_id, uint64_t current_time) override;
 
@@ -115,10 +113,10 @@ class LedgerImpl : public mojom::Ledger {
                  const base::flat_map<std::string, std::string>& parts,
                  const std::string& first_party_url,
                  const std::string& referrer,
-                 ledger::mojom::VisitDataPtr visit_data) override;
+                 mojom::VisitDataPtr visit_data) override;
 
   void SetPublisherExclude(const std::string& publisher_key,
-                           ledger::mojom::PublisherExclude exclude,
+                           mojom::PublisherExclude exclude,
                            SetPublisherExcludeCallback callback) override;
 
   void RestorePublishers(RestorePublishersCallback callback) override;
@@ -143,12 +141,12 @@ class LedgerImpl : public mojom::Ledger {
 
   void SetAutoContributeEnabled(bool enabled) override;
 
-  void GetBalanceReport(ledger::mojom::ActivityMonth month,
+  void GetBalanceReport(mojom::ActivityMonth month,
                         int32_t year,
                         GetBalanceReportCallback callback) override;
 
   void GetPublisherActivityFromUrl(uint64_t window_id,
-                                   ledger::mojom::VisitDataPtr visit_data,
+                                   mojom::VisitDataPtr visit_data,
                                    const std::string& publisher_blob) override;
 
   void GetAutoContributionAmount(
@@ -169,7 +167,7 @@ class LedgerImpl : public mojom::Ledger {
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
 
-  void SaveRecurringTip(ledger::mojom::RecurringTipPtr info,
+  void SaveRecurringTip(mojom::RecurringTipPtr info,
                         SaveRecurringTipCallback callback) override;
 
   void SendContribution(const std::string& publisher_id,
@@ -183,7 +181,7 @@ class LedgerImpl : public mojom::Ledger {
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
-                           ledger::mojom::ActivityInfoFilterPtr filter,
+                           mojom::ActivityInfoFilterPtr filter,
                            GetActivityInfoListCallback callback) override;
 
   void GetPublishersVisitedCount(
@@ -211,15 +209,14 @@ class LedgerImpl : public mojom::Ledger {
                              GetPublisherPanelInfoCallback callback) override;
 
   void SavePublisherInfo(uint64_t window_id,
-                         ledger::mojom::PublisherInfoPtr publisher_info,
+                         mojom::PublisherInfoPtr publisher_info,
                          SavePublisherInfoCallback callback) override;
 
-  void SetInlineTippingPlatformEnabled(
-      ledger::mojom::InlineTipsPlatforms platform,
-      bool enabled) override;
+  void SetInlineTippingPlatformEnabled(mojom::InlineTipsPlatforms platform,
+                                       bool enabled) override;
 
   void GetInlineTippingPlatformEnabled(
-      ledger::mojom::InlineTipsPlatforms platform,
+      mojom::InlineTipsPlatforms platform,
       GetInlineTippingPlatformEnabledCallback callback) override;
 
   void GetShareURL(const base::flat_map<std::string, std::string>& args,
@@ -248,21 +245,21 @@ class LedgerImpl : public mojom::Ledger {
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
 
-  void GetTransactionReport(ledger::mojom::ActivityMonth month,
+  void GetTransactionReport(mojom::ActivityMonth month,
                             int year,
                             GetTransactionReportCallback callback) override;
 
-  void GetContributionReport(ledger::mojom::ActivityMonth month,
+  void GetContributionReport(mojom::ActivityMonth month,
                              int year,
                              GetContributionReportCallback callback) override;
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
   void SavePublisherInfoForTip(
-      ledger::mojom::PublisherInfoPtr info,
+      mojom::PublisherInfoPtr info,
       SavePublisherInfoForTipCallback callback) override;
 
-  void GetMonthlyReport(ledger::mojom::ActivityMonth month,
+  void GetMonthlyReport(mojom::ActivityMonth month,
                         int year,
                         GetMonthlyReportCallback callback) override;
 
@@ -278,54 +275,51 @@ class LedgerImpl : public mojom::Ledger {
 
   // mojom::Ledger implementation end
 
-  mojom::LedgerClient* client() const;
+  mojom::LedgerClient* client();
 
-  ledger::state::State* state() const;
+  state::State* state();
 
-  virtual ledger::promotion::Promotion* promotion() const;
+  virtual promotion::Promotion* promotion();
 
-  ledger::publisher::Publisher* publisher() const;
+  publisher::Publisher* publisher();
 
-  braveledger_media::Media* media() const;
+  braveledger_media::Media* media();
 
-  ledger::contribution::Contribution* contribution() const;
+  contribution::Contribution* contribution();
 
-  ledger::wallet::Wallet* wallet() const;
+  wallet::Wallet* wallet();
 
-  ledger::report::Report* report() const;
+  report::Report* report();
 
-  ledger::sku::SKU* sku() const;
+  sku::SKU* sku();
 
-  ledger::api::API* api() const;
+  api::API* api();
 
-  virtual ledger::database::Database* database() const;
+  virtual database::Database* database();
 
-  ledger::bitflyer::Bitflyer* bitflyer() const;
+  bitflyer::Bitflyer* bitflyer();
 
-  ledger::gemini::Gemini* gemini() const;
+  gemini::Gemini* gemini();
 
-  ledger::uphold::Uphold* uphold() const;
+  uphold::Uphold* uphold();
 
   // mojom::LedgerClient async helpers begin
   template <typename LoadURLCallback>
-  void LoadURLImpl(ledger::mojom::UrlRequestPtr request,
-                   LoadURLCallback callback);
+  void LoadURLImpl(mojom::UrlRequestPtr request, LoadURLCallback callback);
 
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
-               ledger::LegacyLoadURLCallback callback);
+  void LoadURL(mojom::UrlRequestPtr request, LegacyLoadURLCallback callback);
 
-  void LoadURL(ledger::mojom::UrlRequestPtr request,
-               ledger::LoadURLCallback callback);
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback);
 
   template <typename RunDBTransactionCallback>
-  void RunDBTransactionImpl(ledger::mojom::DBTransactionPtr transaction,
+  void RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
                             RunDBTransactionCallback callback);
 
-  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
-                        ledger::LegacyRunDBTransactionCallback callback);
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        LegacyRunDBTransactionCallback callback);
 
-  void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
-                        ledger::RunDBTransactionCallback callback);
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback);
   // mojom::LedgerClient async helpers end
 
   // mojom::LedgerClient sync helpers begin
@@ -414,8 +408,8 @@ class LedgerImpl : public mojom::Ledger {
     return wallet;
   }
 
-  ledger::mojom::ClientInfoPtr GetClientInfo() {
-    auto info = ledger::mojom::ClientInfo::New();
+  mojom::ClientInfoPtr GetClientInfo() {
+    auto info = mojom::ClientInfo::New();
     ledger_client_->GetClientInfo(&info);
     return info;
   }
@@ -448,42 +442,39 @@ class LedgerImpl : public mojom::Ledger {
   bool IsReady() const;
 
   virtual void InitializeDatabase(bool execute_create_script,
-                                  ledger::LegacyResultCallback callback);
+                                  LegacyResultCallback callback);
 
-  void OnDatabaseInitialized(ledger::mojom::Result result,
-                             ledger::LegacyResultCallback callback);
+  void OnDatabaseInitialized(mojom::Result result,
+                             LegacyResultCallback callback);
 
-  void OnStateInitialized(ledger::LegacyResultCallback callback,
-                          ledger::mojom::Result result);
+  void OnStateInitialized(LegacyResultCallback callback, mojom::Result result);
 
-  void OnInitialized(ledger::mojom::Result result,
-                     ledger::LegacyResultCallback callback);
+  void OnInitialized(mojom::Result result, LegacyResultCallback callback);
 
   void StartServices();
 
-  void OnAllDone(ledger::mojom::Result result,
-                 ledger::LegacyResultCallback callback);
+  void OnAllDone(mojom::Result result, LegacyResultCallback callback);
 
   template <typename T>
   void WhenReady(T callback);
 
-  mojo::AssociatedReceiver<mojom::Ledger> receiver_;
   mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_;
-  std::unique_ptr<ledger::promotion::Promotion> promotion_;
-  std::unique_ptr<ledger::publisher::Publisher> publisher_;
-  std::unique_ptr<braveledger_media::Media> media_;
-  std::unique_ptr<ledger::contribution::Contribution> contribution_;
-  std::unique_ptr<ledger::wallet::Wallet> wallet_;
-  std::unique_ptr<ledger::database::Database> database_;
-  std::unique_ptr<ledger::report::Report> report_;
-  std::unique_ptr<ledger::sku::SKU> sku_;
-  std::unique_ptr<ledger::state::State> state_;
-  std::unique_ptr<ledger::api::API> api_;
-  std::unique_ptr<ledger::recovery::Recovery> recovery_;
-  std::unique_ptr<ledger::bitflyer::Bitflyer> bitflyer_;
-  std::unique_ptr<ledger::gemini::Gemini> gemini_;
-  std::unique_ptr<ledger::uphold::Uphold> uphold_;
-  std::map<uint32_t, ledger::mojom::VisitData> current_pages_;
+  promotion::Promotion promotion_{this};
+  publisher::Publisher publisher_{this};
+  braveledger_media::Media media_{this};
+  contribution::Contribution contribution_{this};
+  wallet::Wallet wallet_{this};
+  database::Database database_{this};
+  report::Report report_{this};
+  std::unique_ptr<sku::SKU> sku_{
+      sku::SKUFactory::Create(this, sku::SKUType::kMerchant)};
+  state::State state_{this};
+  api::API api_{this};
+  recovery::Recovery recovery_{this};
+  bitflyer::Bitflyer bitflyer_{this};
+  gemini::Gemini gemini_{this};
+  uphold::Uphold uphold_{this};
+  std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;

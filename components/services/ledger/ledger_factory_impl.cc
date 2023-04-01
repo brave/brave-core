@@ -5,6 +5,7 @@
 
 #include "brave/components/services/ledger/ledger_factory_impl.h"
 
+#include <memory>
 #include <utility>
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -21,8 +22,12 @@ void LedgerFactoryImpl::CreateLedger(
     mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
     CreateLedgerCallback callback) {
-  ledger_ = std::make_unique<LedgerImpl>(std::move(ledger_receiver),
-                                         std::move(ledger_client_remote));
+  if (!ledger_) {
+    ledger_ = mojo::MakeSelfOwnedAssociatedReceiver(
+        std::make_unique<LedgerImpl>(std::move(ledger_client_remote)),
+        std::move(ledger_receiver));
+  }
+
   std::move(callback).Run();
 }
 

@@ -16,8 +16,7 @@ AddMockLedgerClient::AddMockLedgerClient() = default;
 AddMockLedgerClient::~AddMockLedgerClient() = default;
 
 MockLedgerImpl::MockLedgerImpl()
-    : LedgerImpl({},
-                 mock_ledger_client_receiver_
+    : LedgerImpl(mock_ledger_client_receiver_
                      .BindNewEndpointAndPassDedicatedRemote()) {
   ON_CALL(*this, InitializeDatabase(_, _))
       .WillByDefault([](bool, LegacyResultCallback callback) {

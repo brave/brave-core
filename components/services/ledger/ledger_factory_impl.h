@@ -6,13 +6,12 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
 
-#include <memory>
-
 #include "brave/components/services/ledger/public/interfaces/ledger_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
 
 namespace ledger {
 
@@ -33,7 +32,7 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
 
  private:
   mojo::Receiver<mojom::LedgerFactory> receiver_;
-  std::unique_ptr<mojom::Ledger> ledger_;
+  mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger> ledger_;
 };
 
 }  // namespace ledger

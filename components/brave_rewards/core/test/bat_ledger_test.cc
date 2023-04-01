@@ -9,7 +9,7 @@
 namespace ledger {
 
 BATLedgerTest::BATLedgerTest()
-    : ledger_({}, client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {}
+    : ledger_(client_receiver_.BindNewEndpointAndPassDedicatedRemote()) {}
 
 BATLedgerTest::~BATLedgerTest() = default;
 
