@@ -558,7 +558,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       if let requestURL = navigationAction.request.url,
          let targetFrame = navigationAction.targetFrame {
         tab.currentPageData?.addSubframeURL(forRequestURL: requestURL, isForMainFrame: targetFrame.isMainFrame)
-        let scriptTypes = tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+        let scriptTypes = await tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
         tab.setCustomUserScript(scripts: scriptTypes)
       }
       
@@ -615,7 +615,7 @@ extension PlaylistWebLoader: WKNavigationDelegate {
     if let responseURL = responseURL,
        tab.currentPageData?.upgradeFrameURL(forResponseURL: responseURL, isForMainFrame: navigationResponse.isForMainFrame) == true,
        let domain = tab.currentPageData?.domain(persistent: false) {
-      let scriptTypes = tab.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
+      let scriptTypes = await tab.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
       tab.setCustomUserScript(scripts: scriptTypes)
     }
 
