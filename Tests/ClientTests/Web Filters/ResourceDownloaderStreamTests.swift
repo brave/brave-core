@@ -11,8 +11,8 @@ class ResourceDownloaderStreamTests: XCTestCase {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
     expectation.expectedFulfillmentCount = 2
-    let resource = ResourceDownloader.Resource.debounceRules
-    let downloader = ResourceDownloader(networkManager: NetworkManager.makeNetworkManager(
+    let resource = BraveS3Resource.genericContentBlockingBehaviors
+    let downloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 200
     ))
     
@@ -33,8 +33,8 @@ class ResourceDownloaderStreamTests: XCTestCase {
   func testSequenceWithErrorDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
-    let resource = ResourceDownloader.Resource.debounceRules
-    let downloader = ResourceDownloader(networkManager: NetworkManager.makeNetworkManager(
+    let resource = BraveS3Resource.genericContentBlockingBehaviors
+    let downloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 404
     ))
     
@@ -52,7 +52,7 @@ class ResourceDownloaderStreamTests: XCTestCase {
     task.cancel()
   }
   
-  @MainActor private func ensureSuccessResult(result: Result<ResourceDownloaderStream.DownloadResult, Error>, file: StaticString = #filePath, line: UInt = #line) {
+  @MainActor private func ensureSuccessResult(result: Result<ResourceDownloader<BraveS3Resource>.DownloadResult, Error>, file: StaticString = #filePath, line: UInt = #line) {
     // Then
     switch result {
     case .success:
@@ -62,7 +62,7 @@ class ResourceDownloaderStreamTests: XCTestCase {
     }
   }
   
-  @MainActor private func ensureErrorResult(result: Result<ResourceDownloaderStream.DownloadResult, Error>, file: StaticString = #filePath, line: UInt = #line) {
+  @MainActor private func ensureErrorResult(result: Result<ResourceDownloader<BraveS3Resource>.DownloadResult, Error>, file: StaticString = #filePath, line: UInt = #line) {
     // Then
     switch result {
     case .success:

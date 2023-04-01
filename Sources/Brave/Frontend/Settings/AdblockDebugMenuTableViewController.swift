@@ -32,7 +32,18 @@ class AdblockDebugMenuTableViewController: TableViewController {
         self.actionsSection,
         self.datesSection,
         self.bundledListsSection(names: listNames),
-        self.downloadedResourcesSection()
+        self.downloadedResourcesSection(
+          header: "Ad-Block Resources",
+          footer: "Files downloaded using the AdBlockResourceDownloader",
+          resources: AdblockResourceDownloader.handledResources
+        ),
+        self.downloadedResourcesSection(
+          header: "Filter lists",
+          footer: "Files downloaded using the FilterListResourceDownloader",
+          resources: FilterListResourceDownloader.shared.filterLists.map({ filterList in
+            return filterList.makeResource(componentId: filterList.entry.componentId)
+          })
+        )
       ]
     }
   }
@@ -137,30 +148,32 @@ class AdblockDebugMenuTableViewController: TableViewController {
     return section
   }
   
-  private func downloadedResourcesSection() -> Section {
-    func createRows(from resources: [ResourceDownloader.Resource]) -> [Row] {
+  private func downloadedResourcesSection<Resource: DownloadResourceInterface>(
+    header: Section.Extremity?, footer: Section.Extremity?, resources: [Resource]
+  ) -> Section {
+    func createRows(from resources: [Resource]) -> [Row] {
       resources.compactMap { createRow(from: $0) }
     }
     
-    func getEtag(from resource: ResourceDownloader.Resource) -> String? {
+    func getEtag(from resource: Resource) -> String? {
       do {
-        return try ResourceDownloader.etag(for: resource)
+        return try resource.createdEtag()
       } catch {
         return nil
       }
     }
     
-    func getFileCreation(for resource: ResourceDownloader.Resource) -> String? {
+    func getFileCreation(for resource: Resource) -> String? {
       do {
-        guard let date = try ResourceDownloader.creationDate(for: resource) else { return nil }
+        guard let date = try resource.creationDate() else { return nil }
         return Self.fileDateFormatter.string(from: date)
       } catch {
         return nil
       }
     }
     
-    func createRow(from resource: ResourceDownloader.Resource) -> Row? {
-      guard let fileURL = ResourceDownloader.downloadedFileURL(for: resource) else {
+    func createRow(from resource: Resource) -> Row? {
+      guard let fileURL = resource.downloadedFileURL else {
         return nil
       }
       
@@ -173,18 +186,9 @@ class AdblockDebugMenuTableViewController: TableViewController {
       return Row(text: fileURL.lastPathComponent, detailText: detailText, cellClass: MultilineSubtitleCell.self)
     }
     
-    var resources = FilterListResourceDownloader.shared.filterLists.map { filterList -> ResourceDownloader.Resource in
-      return filterList.makeResource(componentId: filterList.entry.componentId)
-    }
-    
-    resources.append(contentsOf: [
-      .genericContentBlockingBehaviors, .genericFilterRules, .generalCosmeticFilters, .generalScriptletResources
-    ])
-    
     return Section(
-      header: "Downloaded resources",
-      rows: createRows(from: resources),
-      footer: "Lists downloaded from the internet at app launch using the ResourceDownloader."
+      header: header, rows: createRows(from: resources),
+      footer: footer
     )
   }
 }

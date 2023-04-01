@@ -218,11 +218,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   }
 
   func sceneWillEnterForeground(_ scene: UIScene) {
-    // The reason we need to call this method here instead of `applicationDidBecomeActive`
-    // is that this method is only invoked whenever the application is entering the foreground where as
-    // `applicationDidBecomeActive` will get called whenever the Touch ID authentication overlay disappears.
-    DebouncingResourceDownloader.shared.startLoading()
-
     if let scene = scene as? UIWindowScene {
       scene.browserViewController?.windowProtection = windowProtection
     }

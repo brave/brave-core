@@ -108,11 +108,11 @@ public class FilterListResourceDownloader: ObservableObject {
   /// Manager that handles updates to filter list settings in core data
   private let settingsManager: FilterListSettingsManager
   /// The resource downloader that downloads our resources
-  private let resourceDownloader: ResourceDownloader
+  private let resourceDownloader: ResourceDownloader<BraveS3Resource>
   /// The filter list subscription
   private var filterListSubscription: AnyCancellable?
   /// Fetch content blocking tasks per filter list
-  private var fetchTasks: [ResourceDownloader.Resource: Task<Void, Error>]
+  private var fetchTasks: [BraveS3Resource: Task<Void, Error>]
   /// Ad block service tasks per filter list UUID
   private var adBlockServiceTasks: [String: Task<Void, Error>]
   /// A marker that says if fetching has started
@@ -358,7 +358,7 @@ public class FilterListResourceDownloader: ObservableObject {
   
   /// Start fetching the resource for the given filter list
   private func startFetchingGenericContentBlockingBehaviors(for filterList: FilterList) {
-    let resource = ResourceDownloader.Resource.filterListContentBlockingBehaviors(
+    let resource = BraveS3Resource.filterListContentBlockingBehaviors(
       uuid: filterList.entry.uuid,
       componentId: filterList.entry.componentId
     )
@@ -387,12 +387,12 @@ public class FilterListResourceDownloader: ObservableObject {
   }
   
   /// Cancel all fetching tasks for the given resource
-  private func stopFetching(resource: ResourceDownloader.Resource) {
+  private func stopFetching(resource: BraveS3Resource) {
     fetchTasks[resource]?.cancel()
     fetchTasks.removeValue(forKey: resource)
   }
   
-  private func handle(downloadResult: ResourceDownloaderStream.DownloadResult, for filterList: FilterListInterface) async {
+  private func handle(downloadResult: ResourceDownloader<BraveS3Resource>.DownloadResult, for filterList: FilterListInterface) async {
     if !downloadResult.isModified {
       // if the file is not modified first we need to see if we already have a cached value loaded
       guard await !ContentBlockerManager.shared.hasRuleList(for: .filterList(uuid: filterList.uuid)) else {

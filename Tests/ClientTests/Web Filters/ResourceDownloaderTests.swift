@@ -10,45 +10,37 @@ class ResourceDownloaderTests: XCTestCase {
   func testSuccessfulResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
-    let resource = ResourceDownloader.Resource.debounceRules
-    let firstDownloader = ResourceDownloader(networkManager: NetworkManager.makeNetworkManager(
+    let resource = BraveS3Resource.genericContentBlockingBehaviors
+    let firstDownloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 200, etag: "123"
     ))
-    let secondDownloader = ResourceDownloader(networkManager: NetworkManager.makeNetworkManager(
+    let secondDownloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 304, etag: "123"
     ))
     
     Task {
       do {
         // When
+        // We do first download
         let result = try await firstDownloader.download(resource: resource)
         
         // Then
         // We get a download result
-        switch result {
-        case .downloaded:
-          XCTAssertNotNil(try ResourceDownloader.data(for: resource))
-          XCTAssertNotNil(try ResourceDownloader.etag(for: resource))
-        case .notModified:
-          XCTFail("Not modified recieved")
-        }
-      } catch {
-        XCTFail(error.localizedDescription)
-      }
-      
-      do {
+        XCTAssertNotNil(try resource.downloadedData())
+        XCTAssertNotNil(try resource.createdEtag())
+        XCTAssertTrue(result.isModified)
+        
         // When
-        let result = try await secondDownloader.download(resource: resource)
+        // We re-download
+        let result2 = try await secondDownloader.download(resource: resource)
         
         // Then
-        // We get a not modified result
-        switch result {
-        case .downloaded:
-          XCTFail("Not modified recieved")
-        case .notModified:
-          XCTAssertNotNil(try ResourceDownloader.data(for: resource))
-          XCTAssertNotNil(try ResourceDownloader.etag(for: resource))
-        }
+        // We get a non modified result
+        XCTAssertNotNil(try resource.downloadedData())
+        XCTAssertNotNil(try resource.createdEtag())
+        XCTAssertFalse(result2.isModified)
+        // Same download date
+        XCTAssertEqual(result2.date, result.date)
       } catch {
         XCTFail(error.localizedDescription)
       }
@@ -62,8 +54,8 @@ class ResourceDownloaderTests: XCTestCase {
   func testFailedResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resource")
-    let resource = ResourceDownloader.Resource.debounceRules
-    let downloader = ResourceDownloader(networkManager: NetworkManager.makeNetworkManager(
+    let resource = BraveS3Resource.genericContentBlockingBehaviors
+    let downloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
       for: [resource], statusCode: 404
     ))
     
