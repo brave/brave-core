@@ -115,11 +115,13 @@ void SpeedreaderTabHelper::BindSpeedreaderHost(
     mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver,
     content::RenderFrameHost* rfh) {
   auto* sender = content::WebContents::FromRenderFrameHost(rfh);
-  if (!sender)
+  if (!sender) {
     return;
+  }
   auto* tab_helper = SpeedreaderTabHelper::FromWebContents(sender);
-  if (!tab_helper)
+  if (!tab_helper) {
     return;
+  }
   tab_helper->BindReceiver(std::move(receiver));
 }
 
@@ -152,8 +154,9 @@ bool SpeedreaderTabHelper::IsEnabledForSite() {
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
-  if (!IsSpeedreaderEnabled())
+  if (!IsSpeedreaderEnabled()) {
     return false;
+  }
   return speedreader::IsEnabledForSite(content_rules_, url);
 }
 
@@ -184,13 +187,15 @@ void SpeedreaderTabHelper::ProcessIconClick() {
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
-  if (!IsSpeedreaderEnabled())
+  if (!IsSpeedreaderEnabled()) {
     return;
+  }
 
   const bool enabled = speedreader::IsEnabledForSite(
       content_rules_, web_contents()->GetLastCommittedURL());
-  if (enabled == on)
+  if (enabled == on) {
     return;
+  }
 
   speedreader::SetEnabledForSite(content_rules_,
                                  web_contents()->GetLastCommittedURL(), on);
@@ -334,11 +339,13 @@ void SpeedreaderTabHelper::OnShowOriginalPage() {
 void SpeedreaderTabHelper::SetTheme(Theme theme) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
+  }
 
-  if (speedreader_service->GetTheme() == theme)
+  if (speedreader_service->GetTheme() == theme) {
     return;
+  }
   speedreader_service->SetTheme(theme);
 }
 
@@ -360,10 +367,12 @@ Theme SpeedreaderTabHelper::GetTheme() {
 void SpeedreaderTabHelper::SetFontFamily(FontFamily font) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (speedreader_service->GetFontFamily() == font)
+  }
+  if (speedreader_service->GetFontFamily() == font) {
     return;
+  }
 
   speedreader_service->SetFontFamily(font);
 }
@@ -376,10 +385,12 @@ FontFamily SpeedreaderTabHelper::GetFontFamily() {
 void SpeedreaderTabHelper::SetFontSize(FontSize size) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (speedreader_service->GetFontSize() == size)
+  }
+  if (speedreader_service->GetFontSize() == size) {
     return;
+  }
 
   speedreader_service->SetFontSize(size);
 }
@@ -391,10 +402,12 @@ FontSize SpeedreaderTabHelper::GetFontSize() const {
 void SpeedreaderTabHelper::SetContentStyle(ContentStyle style) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (speedreader_service->GetContentStyle() == style)
+  }
+  if (speedreader_service->GetContentStyle() == style) {
     return;
+  }
 
   speedreader_service->SetContentStyle(style);
 }
@@ -474,10 +487,12 @@ void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
 
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (!PageStateIsDistilled(distill_state_))
+  }
+  if (!PageStateIsDistilled(distill_state_)) {
     return;
+  }
 
   if (path == kSpeedreaderPrefTheme) {
     SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
@@ -502,8 +517,9 @@ void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
     UpdateState(State::kNotDistillable);
   }
 
-  if (!is_visible_)
+  if (!is_visible_) {
     return;
+  }
 #if !BUILDFLAG(IS_ANDROID)
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
