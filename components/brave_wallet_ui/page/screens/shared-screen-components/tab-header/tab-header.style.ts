@@ -62,5 +62,5 @@ export const SettingsButton = styled(StyledButton)`
 
 export const SettingsIcon = styled(Icon)`
   --leo-icon-size: 20px;
-  color: ${leo.color.icon};
+  color: ${leo.color.iconTint};
 `
