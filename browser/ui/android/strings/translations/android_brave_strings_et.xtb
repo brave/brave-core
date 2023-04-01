@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="et">
+<translation id="3478449063771497234">Märguanded on keelatud</translation>
+<translation id="7466579932043491502">Kui märguanded on keelatud, ei pruugi Brave’i auhinnad toimida.</translation>
+<translation id="4259212006412783790">LÜLITA SISSE</translation>
+<translation id="6112331814131703370">Blokeeri teatised „Lülitu rakendusele“</translation>
 <translation id="4744921452903670666">Andke meile teada, mida arvate!</translation>
 <translation id="2524310205387880526">Hinda Brave’i</translation>
 <translation id="4104400246019119780">Täname!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Teie reklaamipreemiad kuu <ph name="MONTH_VALUE"/> eest on kohal!</translation>
 <translation id="2716238748894345194">Kuu <ph name="MONTH_VALUE"/> preemiad: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Teil on vastuvõtmiseks aega jäänud <ph name="TOKEN"/> päeva</translation>
-<translation id="2323069945529668668">Oi ei!</translation>
-<translation id="7510166204621526816">Brave Rewardsi server hetkel ei vasta. Parandame selle võimalikult kiiresti.</translation>
 <translation id="683765328936486920">YouTube'is</translation>
 <translation id="8969049974285901797">Twitch'is</translation>
 <translation id="3101693828171454453">pole piisavalt <ph name="TOKEN"/>eid</translation>
@@ -611,7 +613,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="5050890334032852465">Salvesta konto vaatamisloend</translation>
 <translation id="7755766175599167100">Otsi tokeneid</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Ava Ramp</translation>
+<translation id="3956169227169516344">Valige ostumeetod</translation>
 <translation id="8488282162676695335">Brave'i rahakott</translation>
 <translation id="3784455785234192852">Lukusta</translation>
 <translation id="8796429300536029044">NFT üksikasjad</translation>
@@ -625,6 +627,10 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="414639769490080648">Minutite arv enne Brave’i rahakoti automaatset lukustamist</translation>
 <translation id="4993345308607970390">Brave'i rahakoti lähtestamine</translation>
 <translation id="4322846864135539519">Kas soovite kindlasti oma Brave'i Preemiad lähtestada? Kui rahakott ei ole varundatud, siis kaotate lähtestamise korral kõik kontoandmed (sealhulgas kõik seotud rahalised vahendid). Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="6915083716464390008">Tehke üks järgmistest valikutest</translation>
+<translation id="7667423728712601865">Krüpto ostmine Visa või Mastercardi abil.</translation>
+<translation id="3101839349578102016">Kohene ost teie pangakonto kaudu. Madalamad tasud.</translation>
+<translation id="7269640984027668973">Osta pakkujaga <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Kustuta tehingu- ja nonsiteave</translation>
 <translation id="5693968582510626466">Tehingute kustutamine võib olla kasulik arendajatele või kohalikus serveris oleku kustutamisel.</translation>
 <translation id="5421107279168565467">Kas soovite kindlasti lähtestada tehingu- ja nonsiteabe? Seda valikut kasutavad enamasti kohalikku testserverit käitavad arendajad. Tippige kinnituseks „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
@@ -799,7 +805,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
 <translation id="3494964159182650590">Preemiate kokkuvõte</translation>
 <translation id="590733288489975971">Preemiad Adsilt</translation>
-<translation id="207268487070188114">Ühekordne annetus</translation>
+<translation id="2613359062756190460">Ühekordsed preemiad</translation>
 <translation id="7577100371127227294">Igakuised preemiad</translation>
 <translation id="7091980679045978090">Hinnanguline tulu</translation>
 <translation id="1346059596910821859">Premeeri</translation>

@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "Aflați mai multe",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Adăugați la Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Eliminați din Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Adaugă în Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Eliminați din Chrome",
+    "description": "Message for removing an extension from Chrome"
   }
 }

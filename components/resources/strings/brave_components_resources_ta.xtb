@@ -39,6 +39,7 @@
 <translation id="4643117005422448078">முன்னணி தளங்கள்</translation>
 <translation id="3446024864193919737">பிரேவ் வெகுமதிகளை காட்டு</translation>
 <translation id="3870475560794762985">ஆதரவளிக்கப்பட்ட படங்களை காட்டு</translation>
+<translation id="4942016616604700968">வெகுமதிகளை இயக்கு</translation>
 <translation id="2875302873837723333">முன்னணி தளங்கள்</translation>
 <translation id="3333887201479867589">பிரேவ் வெகுமதிகள்</translation>
 <translation id="385051799172605136">முந்தைய பக்கம்</translation>
@@ -119,7 +120,6 @@
 <translation id="9026369588205476247">உம் தனியுரிமையை பாதுகாக்க, இந்த பிரேவ் வெகுமதிகள் அறிக்கை உம் சாதனம் (இக்கணினி) தவிர்த்து வேறெங்கும் சேமிக்கவோ பதியவோ குறித்துவைக்கபடவோ இல்லை. உம் சாதனத்தில் தரவு இழப்பு நிகழ்ந்தால் பிரேவிலிருந்து பெற இயலாது.</translation>
 <translation id="3587482841069643663">அனைத்தும்</translation>
 <translation id="2631006050119455616">சேமிக்கப்பட்டது</translation>
-<translation id="3819257035322786455">மறுபிரதி</translation>
 <translation id="8804164990146287819">தனியுரிமை கொள்கை</translation>
 <translation id="7656781188259414093">இலக்கு.</translation>
 <translation id="13853865024308201">உரிமைகோரு</translation>
@@ -132,8 +132,6 @@
 <translation id="298067735430872465">விளம்பரங்களிலிருந்து வருவாய்</translation>
 <translation id="3412655388715513818">இத்தளத்தை விலக்கு</translation>
 <translation id="1389143276807887637">இறக்குமதி செய்</translation>
-<translation id="3810973564298564668">நிர்வகி</translation>
-<translation id="6302422639282249274">பிரேவ் வெகுமதிகளை நிர்வகி</translation>
 <translation id="3453206261112715431">இலவச கிள்ளாக்கு நல்கை</translation>
 <translation id="4448429859987034344">வாழ்த்துக்கள்!</translation>
 <translation id="1770001816413426741">வெகுமதிகள் காலம்</translation>
@@ -151,6 +149,7 @@
 <translation id="1110535155349301542">நீக்கு</translation>
 <translation id="8204292894173669182">சேமித்ததிலிருந்து நீக்கு</translation>
 <translation id="5939518447894949180">மீட்டமை</translation>
+<translation id="3349204812119681938">பிரேவ் வெகுமதிகளை அகரமாக்கு</translation>
 <translation id="3074127054582480056">கவனத்திற்கு</translation>
 <translation id="4914597931214386232">கிள்ளாக்கு நல்கைகள் உரிமைகோரப்பட்டது</translation>
 <translation id="3494964159182650590">வெகுமதிகள் சுருக்கம்</translation>
@@ -247,6 +246,7 @@
 <translation id="4430019312045809116">அளவு</translation>
 <translation id="6129953537138746214">இடைவெளி</translation>
 <translation id="2687968143695057804">புதிய கணக்கு</translation>
+<translation id="4412698727486357573">உதவி மையம்</translation>
 <translation id="8297006494302853456">வலுவாக இல்லை</translation>
 <translation id="6657585470893396449">கடவுச்சொல்</translation>
 <translation id="5026874946691314267">மீண்டும் இதை காட்டாதே</translation>

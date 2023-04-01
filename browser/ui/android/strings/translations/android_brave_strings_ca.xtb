@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ca">
+<translation id="3478449063771497234">Les notificacions estan desactivades</translation>
+<translation id="7466579932043491502">És possible que Brave Rewards no funcioni si les notificacions estan desactivades.</translation>
+<translation id="4259212006412783790">ACTIVAR</translation>
+<translation id="6112331814131703370">Bloqueja els avisos «Canvia a l'aplicació»</translation>
 <translation id="4744921452903670666">Doneu-nos la vostra opinió!</translation>
 <translation id="2524310205387880526">Valoreu Brave</translation>
 <translation id="4104400246019119780">Gràcies!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Les vostres Recompenses d'anuncis d'<ph name="MONTH_VALUE"/> ja són aquí!</translation>
 <translation id="2716238748894345194">Recompenses d'<ph name="MONTH_VALUE"/>: BAT <ph name="TOKEN"/></translation>
 <translation id="1649629664206601032">Us queden <ph name="TOKEN"/> dies per reclamar-los</translation>
-<translation id="2323069945529668668">Ah oh!</translation>
-<translation id="7510166204621526816">El servidor Brave Rewards no respon. Ho arreglarem tan aviat com sigui possible.</translation>
 <translation id="683765328936486920">al YouTube</translation>
 <translation id="8969049974285901797">al Twitch</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>s insuficients.</translation>
@@ -611,7 +613,7 @@ Segur que vols continuar?</translation>
 <translation id="5050890334032852465">Guarda la llista de seguiment del compte</translation>
 <translation id="7755766175599167100">Cerca criptovalors</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Continua a Ramp</translation>
+<translation id="3956169227169516344">Selecciona el mètode de compra</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="3784455785234192852">Bloqueig</translation>
 <translation id="8796429300536029044">Detall d'NFT</translation>
@@ -625,6 +627,10 @@ Segur que vols continuar?</translation>
 <translation id="414639769490080648">El nombre de minuts que s'esperarà abans que es bloquegi automàticament la cartera de Brave</translation>
 <translation id="4993345308607970390">Reinicia la Brave Wallet</translation>
 <translation id="4322846864135539519">Segur que vols restablir les vostres recompenses de Brave? Si la teva cartera no té una còpia de seguretat, amb la reinicialització perdràs totes les dades del compte (incloent-hi els fons associats). Escriu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
+<translation id="6915083716464390008">Selecciona una de les opcions següents</translation>
+<translation id="7667423728712601865">Compra criptomonedes amb Visa o Mastercard.</translation>
+<translation id="3101839349578102016">Compra instantània amb el teu compte bancari. Tarifes més baixes.</translation>
+<translation id="7269640984027668973">Compra amb <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Esborra la informació de les transaccions i de nonce</translation>
 <translation id="5693968582510626466">Esborrar les transaccions pot ser útil per als desenvolupadors o quan s'esborra l'estat en un servidor local</translation>
 <translation id="5421107279168565467">Segur que voleu restablir la informació de les transaccions i de nonce? Aquesta opció l'utilitzen principalment els desenvolupadors que executen un servidor de proves local. Escriviu "<ph name="CONFIRMATION_PHRASE"/>" per confirmar-ho.</translation>
@@ -799,7 +805,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="3506416339268164412">L'adreça de recepció és l'adreça de contracte d'un testimoni</translation>
 <translation id="3494964159182650590">Resum de recompenses</translation>
 <translation id="590733288489975971">Brave Rewards de Brave Ads</translation>
-<translation id="207268487070188114">Propina d'una sola vegada</translation>
+<translation id="2613359062756190460">Propina d'una sola vegada</translation>
 <translation id="7577100371127227294">Propines Mensuals</translation>
 <translation id="7091980679045978090">Guanys estimats</translation>
 <translation id="1346059596910821859">Propina</translation>

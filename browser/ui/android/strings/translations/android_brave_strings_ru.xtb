@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
+<translation id="3478449063771497234">Уведомления отключены</translation>
+<translation id="7466579932043491502">Brave Rewards может не работать после отключения уведомлений.</translation>
+<translation id="4259212006412783790">ВКЛЮЧИТЬ</translation>
+<translation id="6112331814131703370">Блокировать всплывающие окна и не переходить в приложения</translation>
 <translation id="4744921452903670666">Поделитесь своим мнением</translation>
 <translation id="2524310205387880526">Оценить Brave</translation>
 <translation id="4104400246019119780">Спасибо!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Вы получили награды за просмотр рекламы в следующем месяце: <ph name="MONTH_VALUE"/>.</translation>
 <translation id="2716238748894345194">Вознаграждение за <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Получить награду можно в течение <ph name="TOKEN"/> дн.</translation>
-<translation id="2323069945529668668">Ой!</translation>
-<translation id="7510166204621526816">Сервер Brave Rewards не отвечает. Мы устраним проблему как можно скорее.</translation>
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
 <translation id="3101693828171454453">недостаточно <ph name="TOKEN"/>ов</translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">Сохранить список просмотра</translation>
 <translation id="7755766175599167100">Поиск баллов</translation>
 <translation id="3835223348537121988">Баланс:</translation>
-<translation id="6888491517683356528">Перейти в Ramp</translation>
+<translation id="3956169227169516344">Выбрать способ оплаты</translation>
 <translation id="8488282162676695335">Кошелек Brave</translation>
 <translation id="3784455785234192852">Заблокировать</translation>
 <translation id="8796429300536029044">Сведения об NFT</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">Через сколько минут кошелек Brave автоматически блокируется</translation>
 <translation id="4993345308607970390">Сбросить кошелек Brave</translation>
 <translation id="4322846864135539519">Сбросить Brave Награды? Если вы не сделали резервную копию кошелька, то все данные счета (в том числе связанные с ним средства) будут утеряны. Для подтверждения введите «<ph name="CONFIRMATION_PHRASE"/>».</translation>
+<translation id="6915083716464390008">Выберите один из вариантов</translation>
+<translation id="7667423728712601865">Покупайте криптовалюту с помощью карт Visa или Mastercard.</translation>
+<translation id="3101839349578102016">Мгновенная покупка с помощью банковского счета с низкой комиссией.</translation>
+<translation id="7269640984027668973">Купить с помощью <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Очистить информацию о транзакциях и одноразовых кодах</translation>
 <translation id="5693968582510626466">Сброс информации о транзакциях может пригодиться разработчикам или при очистке state локального сервера.</translation>
 <translation id="5421107279168565467">Удалить информацию о транзакциях и одноразовых кодах? Обычно это делают разработчики, запускающие локальный тестовый сервер. Для подтверждения введите <ph name="CONFIRMATION_PHRASE"/>.</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">Адрес получателя совпадает с адресом контракта токена</translation>
 <translation id="3494964159182650590">Суммарное вознаграждение</translation>
 <translation id="590733288489975971">Вознаграждения за рекламу</translation>
-<translation id="207268487070188114">Единоразовый платеж</translation>
+<translation id="2613359062756190460">Разовая поддержка</translation>
 <translation id="7577100371127227294">Ежемесячные платежи</translation>
 <translation id="7091980679045978090">Приблизительный доход</translation>
 <translation id="1346059596910821859">Дать чаевые</translation>

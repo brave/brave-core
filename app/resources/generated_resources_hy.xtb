@@ -38,6 +38,7 @@
 <translation id="103279545524624934">Android հավելվածները գործարկելու համար ազատեք սկավառակի տարածքը:</translation>
 <translation id="1033780634303702874">Մուտք գործել ձեր հաջորդական սարքեր</translation>
 <translation id="1034484273907870301">Ներդիրների մանրապատկերների հատված պլանշետի ռեժիմի համար</translation>
+<translation id="1035875743511577452">Սեղմեք «Փոխել թեման»՝ նկարիչների ստեղծագործություններից, բնությունից և այլ աղբյուրներից ոգեշնչված թեմաներ ուսումնասիրելու համար</translation>
 <translation id="1036348656032585052">Անջատել</translation>
 <translation id="1036511912703768636">Մտնել այս USB սարքերից ցանկացածը</translation>
 <translation id="1038168778161626396">Միայն կոդավորում</translation>
@@ -66,6 +67,7 @@
 <translation id="1059484610606223931">Hypertext Transport Protocol (HTTPS)</translation>
 <translation id="1059944192885972544">«<ph name="SEARCH_TEXT"/>» հարցումով որոնման համար գտնվել է <ph name="NUM"/> ներդիր</translation>
 <translation id="1060292118287751956">Սահմանում է էկրանի թարմացման հաճախականությունը</translation>
+<translation id="1060570945511946595">Կառավարել տոմսերը</translation>
 <translation id="1061130374843955397">Բարի գալուստ <ph name="DEVICE_TYPE"/></translation>
 <translation id="1061373870045429865">Ստեղծել QR կոդ այս հղման համար</translation>
 <translation id="1061904396131502319">Շուտով ընդմիջման ժամն է</translation>
@@ -95,6 +97,7 @@
 <translation id="1081956462909987459">{NUM_TABS,plural, =1{<ph name="GROUP_TITLE"/> – 1 ներդիր}one{<ph name="GROUP_TITLE"/> – # ներդիր}other{<ph name="GROUP_TITLE"/> – # ներդիր}}</translation>
 <translation id="1082214733466244292">Ձեր ադմինիստրատորն արգելափակել է այս սարքի որոշ գործառույթներ</translation>
 <translation id="8073477228424628709"><ph name="THIRD_PARTY_TOOL_NAME"/>-ը ցանկանում է վերականգնել ձեր Brave-ի կարգավորումները իրենց բնօրինակ կանխադրվածների: Այս գործողության հետևանքով կվերակայվի ձեր գլխավոր էջը, նոր ներդիրի էջը և որոնման համակարգը, կանջատվեն ընդլայնումները, և բոլոր ներդիրները կապաամրացվեն: Կջնջվեն նաև այլ ժամանակավոր և քեշավորված տվյալներ, ինչպես օրինակ՝ քուքիները, բովանդակության և կայքի տվյալները:</translation>
+<translation id="1082725763867769612">Անցանց ֆայլեր</translation>
 <translation id="1084096383128641877">Եթե հեռացնեք այս գաղտնաբառը, ձեր հաշիվը չի ջնջվի <ph name="DOMAIN"/> կայքից։ Անվտանգության նկատառումներով փոխեք գաղտնաբառը կամ ջնջեք հաշիվը <ph name="DOMAIN_LINK"/> կայքում։</translation>
 <translation id="1084288067399862432">Կոտրված գաղտնաբառը փոխվեց։
 
@@ -199,6 +202,7 @@
 <translation id="1174073918202301297">Դյուրանցումն ավելացվեց</translation>
 <translation id="4720923867206970346">Brave-ը կզգուշացնի ձեզ, եթե միացումը վտանգավոր լինի</translation>
 <translation id="7425564871384359440">Այցելությունների պատմությունը բոլոր համաժամացված սարքերից և Brave հաշվից ջնջելու համար <ph name="BEGIN_LINK"/>անցեք համաժամացման կարգավորումներ<ph name="END_LINK"/>:</translation>
+<translation id="1175131936083782305">Ձեր ադմինիստրատորն անջատել է այս գործառույթը։</translation>
 <translation id="1175364870820465910">&amp;Տպել…</translation>
 <translation id="1176471985365269981">Չի թույլատրվում ձեր սարքում խմբագրել ֆայլեր և պանակներ</translation>
 <translation id="1177863135347784049">Անհատականացված</translation>
@@ -211,6 +215,7 @@
 <translation id="1186771945450942097">Հեռացնել վնասարար ծրագիրը</translation>
 <translation id="1187722533808055681">Անցումներ ակտիվ ռեժիմ</translation>
 <translation id="1188807932851744811">Մատյանը վերբեռնված չէ:</translation>
+<translation id="1190086046506744802">Շատ հեռու</translation>
 <translation id="11901918071949011">{NUM_FILES,plural, =1{Օգտագործել ձեր համակարգչում պահված ֆայլը}one{Օգտագործել ձեր համակարգչում պահված # ֆայլ}other{Օգտագործել ձեր համակարգչում պահված # ֆայլ}}</translation>
 <translation id="6072162090264941173">Այցելությունների պատմությունը այս սարքից ջնջելու, սակայն Brave հաշվում պահպանելու համար <ph name="BEGIN_LINK"/>դուրս գրվեք հաշվից<ph name="END_LINK"/>:</translation>
 <translation id="1191353342579061195">Ընտրեք ձեզ հարմար թեմա։ Թեման, պաստառը, էկրանապահը և այլ տարրեր փոխելու համար պարզապես սեղմեք մկնիկի աջ կոճակն աշխատասեղանին։</translation>
@@ -218,6 +223,7 @@
 Համաձայն <ph name="DOMAIN"/> տիրույթի կանոնների՝ խելացի քարտը պետք է տեղադրված լինի։}one{Դուք # վայրկյանից ավտոմատ դուրս կգաք համակարգից։
 Համաձայն <ph name="DOMAIN"/> տիրույթի կանոնների՝ խելացի քարտը պետք է տեղադրված լինի։}other{Դուք # վայրկյանից ավտոմատ դուրս կգաք համակարգից։
 Համաձայն <ph name="DOMAIN"/> տիրույթի կանոնների՝ խելացի քարտը պետք է տեղադրված լինի։}}</translation>
+<translation id="119330003005586565">Էջեր, որոնք կարդացել եք</translation>
 <translation id="1193927020065025187">Այս կայքը կարող է խաբեությամբ համոզել ձեզ, որ թույլատրեք ձանձրացնող ծանուցումների ուղարկումը</translation>
 <translation id="1195210374336998651">Անցնել հավելվածի կարգավորումներ</translation>
 <translation id="1195447618553298278">Անհայտ սխալ:</translation>
@@ -281,6 +287,7 @@
 <translation id="1244303850296295656">Ընդլայնման սխալ</translation>
 <translation id="1245628370644070008">Սարքի տվյալների վերականգնում</translation>
 <translation id="1246863218384630739">Չհաջողվեց տեղադրել «<ph name="VM_NAME"/>» վիրտուալ մեքենան․ պատկերի URL-ը վերադարձրել է <ph name="HTTP_ERROR"/> սխալի կոդը։ Դիմեք ձեր ադմինիստրատորին։</translation>
+<translation id="1247372569136754018">Խոսափող (ներքին)</translation>
 <translation id="1249818027270187058">{NUM_SITES,plural, =1{Ծանուցումները թույլատրված չեն 1 կայքի համար}one{Ծանուցումները թույլատրված չեն {NUM_SITES} կայքի համար}other{Ծանուցումները թույլատրված չեն {NUM_SITES} կայքի համար}}</translation>
 <translation id="1251366534849411931">Պակասում է բացող ձևավոր փակագիծ՝ <ph name="ERROR_LINE"/></translation>
 <translation id="1251480783646955802">Կայքերի և տեղադրված հավելվածների կողմից պահված <ph name="TOTAL_USAGE"/> ծավալով տվյալները կջնջվեն։</translation>
@@ -373,6 +380,8 @@
 <translation id="1068826216368845969">Ակտիվացրեք Օգնականը «Ok Brave» հրահանգի միջոցով։ Մարտկոցի լիցքը տնտեսելու համար ընտրեք «Միացնել (խորհուրդ է տրվում)» կարգավորումը։ Օգնականը կպատասխանի, միայն երբ սարքը միացված է հոսանքին կամ լիցքավորվում է։</translation>
 <translation id="13392265090583506">Հատուկ գործառույթներ</translation>
 <translation id="1340527397989195812">Պահուստավորել սարքի վրայի մեդիա ֆայլերը Ֆայլեր հավելվածի միջոցով:</translation>
+<translation id="1341701348342335220">Հրաշալի է</translation>
+<translation id="1341871421050612057">Հնարավոր չէ համաժամացնել <ph name="USERNAME"/> հաշվի հետ</translation>
 <translation id="1343865611738742294">Լինուքսի հավելվածներին հասանելի դարձրեք USB սարքերը: Երբ USB սարքը հեռացվի, Լինուքսը չի պահի այն:</translation>
 <translation id="1343920184519992513">Շարունակել այն պահից, որտեղ կանգ եմ առել, և բացել էջերի որոշակի խումբ</translation>
 <translation id="134589511016534552">Մեդիա բովանդակությամբ ներդիրները ցուցադրվում են նաև «Բաց ներդիրներ» բաժնում</translation>
@@ -408,6 +417,7 @@
 <translation id="1378848228640136848">{NUM_COMPROMISED,plural, =0{Կոտրված գաղտնաբառեր չկան}=1{1 կոտրված գաղտնաբառ}one{{NUM_COMPROMISED} կոտրված գաղտնաբառ}other{{NUM_COMPROMISED} կոտրված գաղտնաբառ}}</translation>
 <translation id="1380028686461971526">Ավտոմատ միանալ ցանցին</translation>
 <translation id="3390076845266164299">Այս լեզվով (<ph name="LANGUAGE"/>) խոսքի ձայնագրությունը մշակման համար ուղարկվում է Brave-ին</translation>
+<translation id="1383381142702995121">Կառավարել այս ընդլայնումը</translation>
 <translation id="1383597849754832576">Չհաջողվեց ներբեռնել ենթագրերի ֆայլը։ Փորձեք ավելի ուշ։</translation>
 <translation id="1383861834909034572">Ավարտվելուն պես կբացվի</translation>
 <translation id="1383876407941801731">Որոնում</translation>
@@ -480,6 +490,7 @@
 <translation id="1430915738399379752">Տպում</translation>
 <translation id="1431188203598586230">Ծրագրային վերջին թարմացում</translation>
 <translation id="1432581352905426595">Կառավարել որոնման համակարգերը</translation>
+<translation id="1433478348197382180">Ընթերցման ռեժիմ</translation>
 <translation id="1434696352799406980">Մեկնարկի ձեր էջը, նոր ներդիրի էջը, որոնման համակարգը և ամրացված ներդիրները կվերակայվեն: Բացի այդ, կանջատվեն նաև բոլոր ընդլայնումները, և կջնջվեն քուքիներն ու նման ժամանակավոր տվյալները: Իսկ ձեր էջանիշները, պատմությունը և պահված գաղտնաբառերը չեն ջնջվի:</translation>
 <translation id="1434886155212424586">Գլխավոր էջը Նոր ներդիրի էջն է</translation>
 <translation id="1436390408194692385">Վավեր է դեռ <ph name="TICKET_TIME_LEFT"/></translation>
@@ -536,6 +547,7 @@
 <translation id="1482626744466814421">Էջանշել այս ներդիրը...</translation>
 <translation id="1482772681918035149">փոփոխել գաղտնաբառերը</translation>
 <translation id="1483493594462132177">Ուղարկել</translation>
+<translation id="1484102317210609525"><ph name="DEVICE_NAME"/> (HDMI/DP)</translation>
 <translation id="1484979925941077974">Կայքն օգտագործում է Bluetooth-ը</translation>
 <translation id="1485015260175968628">Այժմ կարող է.</translation>
 <translation id="1485141095922496924">Տարբերակ <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
@@ -546,6 +558,7 @@
 <translation id="1495677929897281669">Վերադառնալ ներդիր</translation>
 <translation id="1500297251995790841">Անհայտ սարք [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="6440894523770886280">Իմանալ ավելին Brave-ի չաջակցվող հավելվածների մասին</translation>
+<translation id="1501480321619201731">Ջնջել խումբը</translation>
 <translation id="4632223202473558409">Ավտոմատ կերպով Brave-ին է ուղարկում օգտագործման վիճակագրությունը։ Խափանումների մասին հաշվետվությունները կարող եք միացնել/անջատել ձեր սարքի կարգավորումներում։</translation>
 <translation id="150411034776756821">Հեռացնել <ph name="SITE"/> կայքը</translation>
 <translation id="1504551620756424144">Ընդհանուր պանակները Windows-ում հասանելի են այստեղ՝ <ph name="BASE_DIR"/>։</translation>
@@ -581,6 +594,7 @@
 <translation id="1526560967942511387">Անանուն փաստաթուղթ</translation>
 <translation id="1527336312600375509">Էկրանի թարմացման հաճախականությունը</translation>
 <translation id="152913213824448541">Մոտակա սարքերի հետ փոխանակման կոնտակտներ</translation>
+<translation id="1529769834253316556">Տողի բարձրությունը</translation>
 <translation id="1529891865407786369">Սնուցման աղբյուր</translation>
 <translation id="1531275250079031713">Ցուցադրել «Ավելացնել նոր Wi-Fi ցանց» պատուհանը</translation>
 <translation id="1531734061664070992"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/></translation>
@@ -622,6 +636,7 @@
 <translation id="1567387640189251553">Գաղտնաբառի մուտքագրումից հետո այլ ստեղնաշար է միացվել։ Հնարավոր է՝ ինչ-որ մեկը փորձում է իմանալ, թե ինչ ստեղներ եք սեղմում։</translation>
 <translation id="156793199942386351">«<ph name="CURRENTKEY"/>» ստեղնն արդեն նշանակված է «<ph name="ACTION"/>» գործողության համար։ Սեղմեք որևէ ստեղն՝ <ph name="RESPONSE"/> համար։</translation>
 <translation id="1567993339577891801">JavaScript Console</translation>
+<translation id="1569466257325986920">Հաջորդ անգամ, երբ ձեր Brave հաշվի գաղտնաբառը փոխվի, ձեր լոկալ տվյալներն ավտոմատ կերպով կվերականգնվեն, հենց որ մուտք գործեք Brave հաշիվ</translation>
 <translation id="1570604804919108255">Միացնել ծանուցումների ձայնը</translation>
 <translation id="1571304935088121812">Պատճենել օգտանունը</translation>
 <translation id="1571738973904005196">Դիտել ներդիրը՝ <ph name="TAB_ORIGIN"/></translation>
@@ -811,6 +826,7 @@
 <translation id="1725562816265788801">Ներդիրների ոլորում</translation>
 <translation id="1726503915437308071">Շեղ տառատեսակ</translation>
 <translation id="1729533290416704613">Այն նաև վերահսկում է ցուցադրվող էջերը, երբ դուք որոնում եք կատարում Omnibox-ից:</translation>
+<translation id="1730666151302379551">Մոռացել եմ հին գաղտնաբառը</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>Հավելվածներ հեռացնելու համար անցեք Կարգավորումներ &gt; Google Play Խանութ &gt; Կառավարել Android-ի կարգավորումները &gt; Հավելվածներ կամ Հավելվածների կառավարիչ: Այնուհետև հպեք այն հավելվածին, որը ցանկանում եք հեռացնել (անհրաժեշտ հավելվածը գտնելու կարող եք թերթել աջ կամ ձախ): Ապա սեղմեք «Ապատեղադրել» կամ «Անջատել» կոճակը:<ph name="END_PARAGRAPH1"/></translation>
 <translation id="1730989807608739928">Ոլորել դեպի վերջին ներդիրը</translation>
 <translation id="1731911755844941020">Հարցումն ուղարկվում է…</translation>
@@ -874,6 +890,7 @@
 <translation id="1781979858217752599">Հասանելի դարձնել պատուհանի աուդիո բովանդակությունը</translation>
 <translation id="1782101999402987960">Ադմինիստրատորն արգելափակում է թարմացումները</translation>
 <translation id="1782196717298160133">Ձեր հեռախոսը որոնվում է</translation>
+<translation id="1782541958479207225">{NUM_NOTES,plural, =1{1 նշում}one{# նշում}other{# նշում}}</translation>
 <translation id="1784707308176068866">Աշխատեցնել ֆոնային ռեժիմում, եթե դա պահանջում է համագործակցող որևէ հավելված</translation>
 <translation id="1784849162047402014">Սարքի սկավառակում ազատ տարածքը քիչ է</translation>
 <translation id="1787350673646245458">Օգտատիրոջ պատկեր</translation>
@@ -920,6 +937,7 @@
 <translation id="1819721979226826163">Հպեք Հավելվածների ծանուցումներ &gt; Google Play ծառայություններ։</translation>
 <translation id="1820028137326691631">Մուտքագրեք ադմինիստրատորի տրամադրած գաղտնաբառը</translation>
 <translation id="3707821975049107110">Արդեն օգտվո՞ւմ եք Brave-ից։ Մուտք գործեք հաշիվ։</translation>
+<translation id="1823768272150895732">Տառատեսակ</translation>
 <translation id="1823781806707127806">Ավելացնել այցելությունների առկա պատմությունը կառավարվող պրոֆիլում</translation>
 <translation id="18245044880483936">Պահուստավորված տվյալները տեղ չեն զբաղեցնում ձեր երեխայի Google Drive-ի տարածքում։</translation>
 <translation id="1825565032302550710">Միացքը պետք է լինի 1024 – 65535 միջակայքում</translation>
@@ -981,7 +999,6 @@
 <translation id="1869433484041798909">Էջանշման կոճակ</translation>
 <translation id="7175072311426658869">Բացել Brave դիտարկիչում</translation>
 <translation id="187145082678092583">Ավելի քիչ հավելվածներ</translation>
-<translation id="1871463148436682760">Պատրա՛ստ է</translation>
 <translation id="1871534214638631766">Ցույց տալ առնչվող տեղեկություններ՝ բովանդակության վրա երկար սեղմելու կամ մկնիկի աջ կոճակը սեղմելու դեպքում</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> սարքը թարմացված է</translation>
 <translation id="1873920700418191231">Նորից թույլտվություններ տրամադրել <ph name="WEBSITE"/> կայքի համար</translation>
@@ -1083,6 +1100,7 @@
 <translation id="1965624977906726414">Հատուկ թույլտվություններ չունի:</translation>
 <translation id="1966649499058910679">Ընդգծել բառը, երբ այն հնչեցվում է</translation>
 <translation id="1967970931040389207">Միացնել թեժ կետը</translation>
+<translation id="1969011864782743497"><ph name="DEVICE_NAME"/> (USB)</translation>
 <translation id="1969654639948595766">WebRTC տեքստային մատյաններ (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="1972325230031091483">Դուք ավելի արագ կդիտեք վեբ էջերը, քանի որ բովանդակությունը նախապես բեռնվում է՝ ընթացիկ բացված վեբ էջի հիման վրա։</translation>
 <translation id="197288927597451399">Տեղադրել</translation>
@@ -1095,7 +1113,7 @@
 <translation id="1975841812214822307">Հեռացնել…</translation>
 <translation id="1976150099241323601">Մուտք անվտանգության սարք</translation>
 <translation id="1977965994116744507"><ph name="DEVICE_TYPE"/> սարքն ապակողպելու համար մոտեցրեք հեռախոսը։</translation>
-<translation id="1978057560491495741">Հասցեի հեռացում</translation>
+<translation id="1978666928180318515">Հեռացնել Bruschetta-ն</translation>
 <translation id="1979095679518582070">Այս գործառույթն անջատելու դեպքում ձեր սարքը նախկինի պես կուղարկի տվյալներ, որոնք անհրաժեշտ են հիմնական ծառայություններին (օրինակ՝ համակարգային թարմացումներին ու անվտանգությանը)։</translation>
 <translation id="1979280758666859181">Դուք անցնում եք <ph name="PRODUCT_NAME"/>-ի ավելի թողարկման վարկածի, որի տարբերակն ավելի հին է: Որպեսզի փոփոխությունը կիրառվի, տարբերակը պետք է համընկնի ձեր սարքում տեղադրված տարբերակի հետ:</translation>
 <translation id="197989455406964291">KDC-ն չի աջակցում գաղտնագրման տեսակը</translation>
@@ -1117,7 +1135,6 @@
 <translation id="5123795870522389058">Brave-ին անհրաժեշտ է թույլտվություն՝ ձեր սարքին միանալու նպատակով Bluetooth-ն օգտագործելու համար</translation>
 <translation id="1997616988432401742">Ձեր վկայագրերը</translation>
 <translation id="1999115740519098545">Մեկնարկի ժամանակ</translation>
-<translation id="2000419248597011803">Ձեր կանխադրված որոնիչին է ուղարկում հասցեագոտու և որոնման դաշտի հարցումները, ինչպես նաև որոշ քուքիներ</translation>
 <translation id="2002109485265116295">Իրական ժամանակում</translation>
 <translation id="2003130567827682533">Միացեք Wi-Fi ցանցի՝ տվյալների փոխանցման «<ph name="NAME"/>» ծառայությունն ակտիվացնելու համար</translation>
 <translation id="2004697686368036666">Որոշ կայքերում գործառույթները կարող են չաշխատել</translation>
@@ -1336,6 +1353,7 @@
 <translation id="2182058453334755893">Պատճենվեց սեղմատախտակին</translation>
 <translation id="2183570493397356669">«Շարունակել» կոճակն անջատված է</translation>
 <translation id="8098574385249290065">Թույլ տալ Brave-ին ընտրել՝ որ կայքերում ձայն նվագարկվի (խորհուրդ է տրվում)</translation>
+<translation id="2186206192313702726">Brave Տեսապակի</translation>
 <translation id="2186711480981247270">Էջն ուղարկվել է այլ սարքից</translation>
 <translation id="2187675480456493911">Համաժամացված է ձեր հաշվին կցված այլ սարքերի հետ։ Այլ օգտատերերի կողմից փոփոխված կարգավորումները չեն համաժամացվի։ <ph name="LINK_BEGIN"/>Իմանալ ավելին<ph name="LINK_END"/></translation>
 <translation id="2187895286714876935">Սերվերի վկայագրի ներմուծման սխալ</translation>
@@ -1359,6 +1377,7 @@
 <translation id="2203088913459920044">Անվանման մեջ կարող են օգտագործվել տառեր, թվեր և հատուկ նշաններ</translation>
 <translation id="220321590587754225">Չհաջողվեց միանալ։ Նորից փորձեք։</translation>
 <translation id="3750252396973215586">«<ph name="BRAND"/>» կարող է ստուգել ձեր գաղտնաբառերը, երբ մտնեք Brave հաշիվ։</translation>
+<translation id="2204020417499639567">Էլ. հասցեի դաշտը լրացված է։</translation>
 <translation id="2204034823255629767">Կարդալ և փոխել այն ամենն, ինչ դուք մուտքագրում եք</translation>
 <translation id="2204387456724731099">Չհաջողվեց թարգմանել ընտրված տեքստը</translation>
 <translation id="2210462644007531147">Չհաջողվեց ավարտել տեղադրումը</translation>
@@ -1410,6 +1429,7 @@
 <translation id="225163402930830576">Թարմացնել ցանցերը</translation>
 <translation id="2252017960592955005">Անվտանգ դիտում (բետա)</translation>
 <translation id="225240747099314620">Օգտագործել նույնացուցիչները պաշտպանված բովանդակության համար (կարող է անհրաժեշտ լինել, որ համակարգիչը վերագործարկվի)</translation>
+<translation id="2253318212986772520">Չհաջողվեց բեռնել <ph name="PRINTER_NAME"/> տպիչի PPD ֆայլը։</translation>
 <translation id="2255077166240162850">Այս սարքն արդեն կողպվել է այլ տիրույթում կամ ռեժիմում։</translation>
 <translation id="2255317897038918278">Microsoft ժամադրոշմ</translation>
 <translation id="2256115617011615191">Վերագործարկել հիմա</translation>
@@ -1548,13 +1568,13 @@
 <translation id="2352662711729498748">&lt;1 ՄԲ</translation>
 <translation id="2352810082280059586">Կողպէկրանի ծանուցումներն ավտոմատ պահվում են <ph name="LOCK_SCREEN_APP_NAME"/> հավելվածում: Ձեր վերջին նշումը կպահպանվի կողպէկրանի վրա:</translation>
 <translation id="2353297238722298836">Տեսախցիկի ու խոսափողի օգտագործումը թույլատրված է</translation>
+<translation id="2353910600995338714">Արտահանումը կատարված է</translation>
 <translation id="2355314311311231464">Համաժամացումը ձախողվեց, քանի որ ձեր հաշվի տվյալները չհաջողվեց բեռնել։ Նորից փորձեք։ Սխալի կոդը՝ <ph name="ERROR_CODE"/>։</translation>
 <translation id="2355477091455974894">Էներգիայի տնտեսման տարբերակներ</translation>
 <translation id="2355604387869345912">Միացնել մուտքի ակնթարթային կետը</translation>
 <translation id="2356070529366658676">Հարցնել</translation>
 <translation id="2357330829548294574">Հեռացնել <ph name="USER_NAME"/>-ին</translation>
 <translation id="2358561147588818967">Կայքերը կարող են JavaScript բովանդակություն օգտագործել</translation>
-<translation id="2358703245148663432">Այլ սարք</translation>
 <translation id="2358777858338503863">Սեղմեք՝ <ph name="ORIGIN"/> կայքում թույլատրելու համար՝</translation>
 <translation id="2359071692152028734">Լինուքսի հավելվածները կարող են չարձագանքել։</translation>
 <translation id="2359345697448000899">Կառավարեք ձեր ընդլայնումները` Գործիքների ընտրացանկում սեղմելով Ընդլայնումներ:</translation>
@@ -1568,6 +1588,7 @@
 <translation id="2364498172489649528">Անցել է ստուգում</translation>
 <translation id="2365507699358342471">Այս կայքը կարող է տեսնել սեղմատախտակին պատճենված տեքստն ու պատկերները:</translation>
 <translation id="2367972762794486313">Ցույց տալ հավելվածները</translation>
+<translation id="2369058545741334020">Բացել ընթերցման ռեժիմում</translation>
 <translation id="236939127352773362">Երբ մոտակա սարքերը միմյանց հետ տվյալներ են փոխանակում</translation>
 <translation id="2371076942591664043">Բացել ավարտվելուն &amp;պես</translation>
 <translation id="2373666622366160481">Հարմարեցնել թղթին</translation>
@@ -1599,12 +1620,15 @@
 <translation id="2408018932941436077">Քարտը պահվում է</translation>
 <translation id="2408955596600435184">Մուտքագրեք ձեր PIN կոդը</translation>
 <translation id="2409268599591722235">Սկսել</translation>
+<translation id="2409709393952490731">Օգտագործել հեռախոս կամ պլանշետ</translation>
 <translation id="2410079346590497630">կառուցման մասին</translation>
 <translation id="2410298923485357543">Օգտագործել բնական ձայնը, երբ սարքը միացած է ինտերնետին</translation>
 <translation id="2410754283952462441">Ընտրեք հաշիվ</translation>
 <translation id="241082044617551207">Անհայտ փլագին</translation>
 <translation id="2410940059315936967">Կայքը, որն այցելել եք, կարող է այլ կայքերից զետեղել բովանդակություն, օրինակ՝ պատկերներ, գովազդ և տեքստ։ Այդպիսի կայքերի քուքիները կոչվում են երրորդ կողմի քուքիներ։</translation>
+<translation id="2411666601450687801">Այս սարքում արգելված է վիրտուալ մեքենաների օգտագործումը</translation>
 <translation id="2412753904894530585">Kerberos</translation>
+<translation id="2414886740292270097">Մուգ</translation>
 <translation id="2416435988630956212">Ստեղնաշարի գործառական ստեղներ</translation>
 <translation id="2418307627282545839">Պահպանում է պայծառ և նուրբ գույները</translation>
 <translation id="2419131370336513030">Դիտել տեղադրված հավելվածները</translation>
@@ -1634,6 +1658,7 @@
 <translation id="2442916515643169563">Տեքստի ստվերը</translation>
 <translation id="2443487764245141020">Կայքերին նաև կարող է անհրաժեշտ լինել ձեր սարքը ճանաչել նույնացուցիչի միջոցով</translation>
 <translation id="244475495405467108">Փակել ձախ կողմի ներդիրները</translation>
+<translation id="2444874983932528148">Հեշտությամբ շարունակեք այնտեղից, որտեղ կանգ էիք առել</translation>
 <translation id="2445081178310039857">Հարկավոր է ընդլայնման արմատային գրացուցակը:</translation>
 <translation id="2445484935443597917">Ստեղծել նոր պրոֆիլ</translation>
 <translation id="2445726032315793326">Մասնակի խոշորացույց</translation>
@@ -1662,6 +1687,7 @@
 <translation id="2467755475704469005">Սարքեր չեն հայտնաբերվել։ <ph name="BEGIN_LINK"/>Իմանալ ավելին<ph name="END_LINK"/></translation>
 <translation id="2468178265280335214">Հպահարթակով ոլորման արագացում</translation>
 <translation id="2468205691404969808">Օգտագործում է քուքիները՝ ձեր նախընտրանքները հիշելու համար, նույնիսկ եթե չեք այցելում այդ կայքեր</translation>
+<translation id="2468247643665097563">Դասավորել</translation>
 <translation id="2468402215065996499">Տամագոչի</translation>
 <translation id="2468470085922875120">Դուք օգտագործում եք գաղտնաբառեր, որոնք դժվար է կռահել</translation>
 <translation id="2468845464436879514">{NUM_TABS,plural, =1{<ph name="GROUP_TITLE"/> – 1 ներդիր}one{<ph name="GROUP_TITLE"/> – # ներդիր}other{<ph name="GROUP_TITLE"/> – # ներդիր}}</translation>
@@ -1803,13 +1829,13 @@
 <translation id="25899519884572181">Դուրս գալ ընթերցման ռեժիմից</translation>
 <translation id="2593499352046705383">Սկսելուց առաջ համոզվեք, որ ձեր տվյալները պահուստավորված են։ <ph name="DEVICE_OS"/>-ը տեղադրելու դեպքում կոշտ սկավառակում առկա բոլոր տվյալները կվրագրվեն։ Իմացեք ավելին g.co/flex/InstallGuide էջում։</translation>
 <translation id="2129873093718581193">Որոնեք Brave-ում կամ մուտքագրեք հասցեն</translation>
-<translation id="4184352123422682452">Արագ բացելու համար դյուրանցում ավելացրեք Brave գաղտնաբառերի կառավարչում։</translation>
 <translation id="2599048253926156421">Օգտանունը պատճենվեց սեղմատախտակին</translation>
 <translation id="2602501489742255173">Սկսելու համար մատը սահեցրեք վերև</translation>
 <translation id="2603115962224169880">Մաքրեք համակարգիչը</translation>
 <translation id="2603355571917519942">Voice Match-ը պատրաստ է</translation>
 <translation id="2604129989323098489">Կայքը սովորաբար ուղարկում է ձեր էկրանների մասին տեղեկությունների հարցում, որպեսզի կարողանա խելացի կերպով բացել և տեղադրել պատուհաններ, օրինակ՝ կողք կողքի ցույց տալ փաստաթղթեր կամ լիաէկրան բովանդակություն</translation>
 <translation id="2604255671529671813">Ցանցի միացման սխալ</translation>
+<translation id="2604805099836652105">«<ph name="ADDRESS_LABEL"/>» հասցեի ձևը լրացված է։</translation>
 <translation id="2605668923777146443">Better Together ռեժիմի ընտրանքները տեսնելու համար անցեք <ph name="LINK_BEGIN"/>Կարգավորումներ<ph name="LINK_END"/>։</translation>
 <translation id="2606246518223360146">Կցել տվյալները</translation>
 <translation id="2606454609872547359">Ոչ, շարունակել առանց ChromeVox-ի</translation>
@@ -1853,6 +1879,9 @@
 <translation id="2642111877055905627">Ֆուտբոլի գնդակ</translation>
 <translation id="2643064289437760082">Դուք միշտ կարող եք ջնջել գովազդի արդյունավետության գնահատման տվյալները՝ ջնջելով այցելությունների պատմությունը</translation>
 <translation id="2643698698624765890">Կառավարեք ընդլայնումները` Պատուհանի ցանկում սեղմելով Ընդլայնումներ:</translation>
+<translation id="2643887015830197688">Օգտագործել HTTPS հաղորդակարգը և նախազգուշացնել, երբ բեռնվող կայքերը չեն աջակցում այն։
+
+    Դուք չեք կարող փոխել այս կարգավորումը, քանի որ միացված է Լրացուցիչ պաշտպանությունը։</translation>
 <translation id="2645047101481282803">Ձեր սարքը կառավարվում է <ph name="PROFILE_NAME"/> տիրույթի կողմից</translation>
 <translation id="2645388244376970260">Այս ներդիրը հեռարձակվում է «<ph name="DEVICE_NAME"/>» սարքին</translation>
 <translation id="2645435784669275700">ChromeOS</translation>
@@ -1865,6 +1894,7 @@
 <translation id="2653659639078652383">Ուղարկել</translation>
 <translation id="265390580714150011">Դաշտի արժեք</translation>
 <translation id="2654553774144920065">Տպելու հարցում</translation>
+<translation id="265748523151262387">Մնացեք կապի մեջ ձեր հեռախոսի օգնությամբ</translation>
 <translation id="2657612187216250073">Նշորդի հատուկ գործառույթների կարգավորումներ</translation>
 <translation id="2658941648214598230">Ցույց տա՞լ սկզբնական բովանդակությունը</translation>
 <translation id="2659381484350128933"><ph name="FOOTNOTE_POINTER"/>Տարբեր սարքերում գործառույթները կարող են տարբեր լինել</translation>
@@ -1890,7 +1920,7 @@
 <translation id="2672142220933875349">Սխալ CRX ֆայլ: Ապափաթեթավորումը ձախողվեց:</translation>
 <translation id="2673135533890720193">Կարդալ ձեր զննարկման պատմությունը</translation>
 <translation id="2674764818721168631">Անջատված է</translation>
-<translation id="2676492189600898281">Ինքնալրացման մասին կարծիքի հայտնում</translation>
+<translation id="2675570801872027281">Չհաջողվեց հեռացնել Bruschetta-ն։ Նորից փորձեք։</translation>
 <translation id="2678063897982469759">Նորից միացնել</translation>
 <translation id="2678100101831051676">Չհաջողվեց հեռարձակել։</translation>
 <translation id="268053382412112343">Պատ&amp;մություն</translation>
@@ -2047,7 +2077,6 @@
 <translation id="2804043232879091219">Չհաջողվեց բացել այլընտրանքային դիտարկիչը</translation>
 <translation id="2804667941345577550">Դուք դուրս կգրվեք հաշվից այս կայքում և բաց ներդիրներում</translation>
 <translation id="2804680522274557040">Տեսախցիկն անջատված է</translation>
-<translation id="280518252911523675">Եթե շարունակեք առանց ձեր հին գաղտնաբառը մուտքագրելու, սարքի տվյալները կջնջվեն։ Դուք մուտք կգործեք ձեր Brave հաշիվ՝ այս պրոֆիլը նորից կարգավորելու համար։</translation>
 <translation id="2805539617243680210">Պատրաստ է</translation>
 <translation id="2805646850212350655">Microsoft-ի գաղտնագրված ֆայլային համակարգ</translation>
 <translation id="2805756323405976993">Հավելվածներ</translation>
@@ -2082,7 +2111,6 @@
 <translation id="2835547721736623118">Խոսքի ճանաչման ծառայություն</translation>
 <translation id="2836232638504556905">Շարունակելու համար <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ընկերությունը կփոխանցի ձեր անունը, էլ․ հասցեն և պրոֆիլի նկարը այս կայքին։ Ծանոթացեք այս կայքի <ph name="BEGIN_LINK"/>գաղտնիության քաղաքականությանը<ph name="END_LINK"/>։</translation>
 <translation id="2836269494620652131">Խափանում</translation>
-<translation id="2836635946302913370">Այս օգտանունով մուտքը կասեցվել է ձեր ադմինիստրատորի կողմից:</translation>
 <translation id="283669119850230892"><ph name="NETWORK_ID"/> ցանցն օգտագործելու համար նախ կապակցվեք համացանցին:</translation>
 <translation id="2838379631617906747">Տեղադրվում է</translation>
 <translation id="2839032553903800133">Ծանուցումներն արգելափակված են</translation>
@@ -2163,7 +2191,6 @@
 <translation id="2908358077082926882">Նշանակումը չեղարկելու և <ph name="RESPONSE"/> համար նորից սեղմեք «<ph name="CURRENTKEY"/>»։</translation>
 <translation id="2909506265808101667">Չհաջողվեց միանալ Brave-ի ծառայություններին։ Ստուգեք կապը և նորից փորձեք։ Սխալի կոդը՝ <ph name="ERROR_CODE"/>։</translation>
 <translation id="2910318910161511225">Միացեք ցանցին և կրկին փորձեք</translation>
-<translation id="291056154577034373">ՉԿԱՐԴԱՑՎԱԾ</translation>
 <translation id="2910718431259223434">Սխալ առաջացավ։ Փորձեք նորից կամ կապվեք սարքի սեփականատիրոջ կամ ադմինիստրատորի հետ։ Սխալի կոդը՝ <ph name="ERROR_CODE"/>։</translation>
 <translation id="2912247081180973411">Փակել պատուհանները</translation>
 <translation id="2913331724188855103">Թույլատրել կայքերին պահել և կարդալ քուքիների տվյալները (խորհուրդ է տրվում)</translation>
@@ -2379,6 +2406,7 @@
 <translation id="3103451787721578293">Նշեք, թե որն է այս տվյալները վերբեռնելու պատճառը՝</translation>
 <translation id="3105339775057145050">Վերջին անհաջող թարմացումը</translation>
 <translation id="4566550081126272435">Վերադառնա՞լ Brave-ին</translation>
+<translation id="3105990244222795498"><ph name="DEVICE_NAME"/> (Bluetooth)</translation>
 <translation id="310671807099593501">Կայքն օգտագործում է Bluetooth-ը</translation>
 <translation id="3108931485517391283">Չհաջողվեց ստանալ ֆայլը</translation>
 <translation id="3108957152224931571">Գունանշման գույնը</translation>
@@ -2397,6 +2425,7 @@
 <translation id="3122464029669770682">CPU</translation>
 <translation id="3122496702278727796">Չհաջողվեց ստեղծել տվյալների գրացուցակը</translation>
 <translation id="3124111068741548686">USER նկարագրիչներ</translation>
+<translation id="10925962326134232">Անհատականացրեք Brave-ը՝ ձեր դիտարկիչին նոր տեսք հաղորդելու համար</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="3127860049873093642">Լիցքավորման և աշխատանքի հետ կապված խնդիրներից խուսափելու համար օգտագործեք համատեղելի Dell կամ USB Type-C հոսանքի ադապտեր:</translation>
 <translation id="3127862849166875294">Սկավառակի չափի փոխում Լինուքսում</translation>
@@ -2405,6 +2434,7 @@
 <translation id="3129215702932019810">Չհաջողվեց գործարկել հավելվածը</translation>
 <translation id="3130528281680948470">Սարքը կվերականգնվի: Բոլոր օգտատերերի հաշիվները և տեղային տվյալները կհեռացվեն: Գործողությունը հնարավոր չէ հետարկել:</translation>
 <translation id="3130863904455712965">Պատմություն և այլ տվյալներ</translation>
+<translation id="3130966412954727147">Կայքերը, որոնք այցելում եք, կարող են ստուգել՝ արդյոք դուք իրական օգտատեր եք, թե ռոբոտ։</translation>
 <translation id="313205617302240621">Մոռացե՞լ եք գաղտնաբառը:</translation>
 <translation id="3132277757485842847">Ձեր հեռախոսի հետ կապն ընդհատվել է։ Համոզվեք, որ այն մոտակայքում է, ապակողպված է, և որ Bluetooth-ն ու Wi-Fi-ը միացված են։</translation>
 <translation id="3132896062549112541">Կանոն</translation>
@@ -2445,6 +2475,7 @@
 <translation id="3177909033752230686">Էջի լեզուն՝</translation>
 <translation id="3177914167275935955">Ձեր սարքում առկա է Brave Education-ի լիցենզիա, բայց ձեր օգտանունը կապված չէ Brave for Education հաշվի հետ։ Ստեղծեք Brave for Education հաշիվ՝ մեկ այլ սարքում անցնելով g.co/workspace/edusignup էջ։</translation>
 <translation id="3179982752812949580">Տեքստի տառատեսակը</translation>
+<translation id="3180284704187420717">Պահեք ձեր էջանիշները, գաղտնաբառերը և ավելին համաժամացման միջոցով</translation>
 <translation id="3201899458094819285">Անվտանգ դիտարկում (պաշտպանում է ձեզ և ձեր սարքը վտանգավոր կայքերից)</translation>
 <translation id="3182749001423093222">Ուղղագրության ստուգում</translation>
 <translation id="3183139917765991655">Պրոֆիլի ներմուծիչ</translation>
@@ -2588,6 +2619,7 @@
 <translation id="3315442055907669208">Անցնել ընթերցման ռեժիմի</translation>
 <translation id="3317459757438853210">Երկկողմանի</translation>
 <translation id="3317678681329786349">Տեսախցիկի ու խոսափողի օգտագործումն արգելված է</translation>
+<translation id="3319306431415395200">Թարգմանել պատկերում առկա տեքստը <ph name="VISUAL_SEARCH_PROVIDER"/>-ի միջոցով</translation>
 <translation id="3320630259304269485">Ապահով դիտարկում (պաշտպանություն վտանգավոր կայքերից) և անվտանգության այլ կարգավորումներ։</translation>
 <translation id="3323521181261657960">Սարքի օգտագործման ժամանակն ավելացվել է</translation>
 <translation id="9044258386077615750">Այստեղ արված փոփոխությունները կիրառվում են միայն Brave դիտարկիչում։ Lacros Brave դիտարկիչի կարգավորումները փոխելու համար բացեք Lacros Brave-ը և անցեք կարգավորումներ։</translation>
@@ -2608,6 +2640,7 @@
 <translation id="3341699307020049241">PIN կոդը սխալ է: Դուք ունեք ևս <ph name="RETRIES"/> փորձ:</translation>
 <translation id="3341703758641437857">Թույլատրել ֆայլերի բացումը հղումներով</translation>
 <translation id="3342361181740736773">«<ph name="TRIGGERING_EXTENSION_NAME"/>» ծրագիրը փորձում է հեռացնել այս ընդլայնումը։</translation>
+<translation id="3343046414300263892">Մեծացնել տառաչափը</translation>
 <translation id="3343977377045378693">Կարգավորում</translation>
 <translation id="3345634917232014253">Անվտանգության ստուգումը հենց նոր արվեց</translation>
 <translation id="3345886924813989455">Աջակցվող դիտարկիչ չի գտնվել</translation>
@@ -2636,6 +2669,7 @@
 <translation id="3370260763947406229">Ավտոմատ շտկում</translation>
 <translation id="3371140690572404006">USB-C սարք (առջևի ձախակողմյան միացք)</translation>
 <translation id="337286756654493126">Կարդալ հավելվածում բացված պանակները</translation>
+<translation id="3373059063088819384">Բացել ընթերցման ռեժիմում</translation>
 <translation id="3373701465337594448">Եթե գործառույթը միացված է, այստեղ կցուցադրվի ձեզ հետաքրքրող կայքերի ցանկը</translation>
 <translation id="3374294321938930390">«<ph name="BOOKMARK_TITLE"/>» էջանիշը տեղափոխվեց «<ph name="NEW_FOLDER_TITLE"/>» պանակ։</translation>
 <translation id="3378572629723696641">Այս ընդլայնումը հավանաբար վնասված է:</translation>
@@ -2865,6 +2899,7 @@
 <translation id="3582057310199111521">Մուտքագրվել է կասկածելի կայքում և հայտնաբերվել տվյալների արտահոսքում</translation>
 <translation id="3582299299336701326">Բաց գույները դարձնել մուգ, իսկ մուգ գույները՝ բաց։ Սեղմեք Որոնում + Ctrl + H՝ գունաշրջումը միացնելու և անջատելու համար։</translation>
 <translation id="3584169441612580296">Կարդալ և փոխել լուսանկարները, երաժշտությունը և ձեր համակարգչում պահվող այլ մեդիա ֆայլերը</translation>
+<translation id="3584527007414070635">Շարունակեք «<ph name="MODULE_TITLE"/>» հարցումով որոնումը</translation>
 <translation id="3586787825263265024"><ph name="APPLICATION_NAME"/> հավելվածի աշխատանքի համար պահանջվում է OneDrive պահոց։</translation>
 <translation id="3586806079541226322">Չհաջողվեց բացել ֆայլը</translation>
 <translation id="3587438013689771191">Իմանալ ավելին «<ph name="SUBPAGE_TITLE"/>» ենթաէջի մասին</translation>
@@ -2879,12 +2914,14 @@
 <translation id="3593152357631900254">Միացնել Fuzzy-Pinyin ռեժիմը</translation>
 <translation id="3593965109698325041">Վկայագրի անվան սահմանափակումներ</translation>
 <translation id="3596012367874587041">Հավելվածի կարգավորումներ</translation>
+<translation id="234627930958727416">Սեղմեք «Անհատականացնել Brave-ը»</translation>
 <translation id="3599221874935822507">Ուռուցիկ</translation>
 <translation id="3600051066689725006">Տեղեկություններ վեբ հարցման մասին</translation>
 <translation id="360180734785106144">Առաջարկել նոր գործառույթներ, հենց որ դրանք հասանելի լինեն</translation>
 <translation id="3602290021589620013">Նախադիտում</translation>
 <translation id="3602870520245633055">Տպում և սկանավորում</translation>
 <translation id="3603622770190368340">Ցանցային վկայագրի ստացում</translation>
+<translation id="3605156246402033687">{COUNT,plural, =1{{COUNT} հաշվում նույն գաղտնաբառն է օգտագործվում}one{{COUNT} հաշվում նույն գաղտնաբառն է օգտագործվում}other{{COUNT} հաշվում նույն գաղտնաբառն է օգտագործվում}}</translation>
 <translation id="3605780360466892872">Գործարար</translation>
 <translation id="3609277884604412258">Արագ որոնում</translation>
 <translation id="3610241585790874201">Ձեր սարքում չի թույլատրվում տվյալներ պահել</translation>
@@ -2927,6 +2964,7 @@
 <translation id="3637203148990213388">Լրացուցիչ հաշիվներ</translation>
 <translation id="3639220004740062347">Դուրս գալ ընթերցման ռեժիմից</translation>
 <translation id="3640214691812501263">Ավելացնե՞լ «<ph name="EXTENSION_NAME"/>» ընդլայնումը <ph name="USER_NAME"/>-ի համար:</translation>
+<translation id="3640347231390550691">Պաշտպանեք ձեր գաղտնաբառերը ֆիշինգից</translation>
 <translation id="3640613767643722554">Սովորեցրեք Օգնականին ճանաչել ձեր ձայնը</translation>
 <translation id="3641456520301071208">Կայքերը կարող են ձեր տեղադրության տվյալներն օգտագործելու թույլտվություն հայցել</translation>
 <translation id="3642070413432681490">Շրջանաձև նշորդ</translation>
@@ -2937,6 +2975,7 @@
 <translation id="3647654707956482440">Չհաջողվեց օգտագործել այս հղումը։ Ստուգեք տառասխալների առկայությունը կամ նորից փորձեք այլ հղումով։</translation>
 <translation id="3647998456578545569">{COUNT,plural, =1{Ստացվեց <ph name="ATTACHMENTS"/> <ph name="DEVICE_NAME"/> սարքից}one{Ստացվեց <ph name="ATTACHMENTS"/> <ph name="DEVICE_NAME"/> սարքից}other{Ստացվեց <ph name="ATTACHMENTS"/> <ph name="DEVICE_NAME"/> սարքից}}</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> սարքը հայտնաբերվել է</translation>
+<translation id="2305261982089259173">Կայքը, որն այցելում եք, կարող է Brave-ից պահել տեղեկություններ, որոնք հավաստում են, որ դուք իրական օգտատեր եք։ Երբ դուք կայքեր եք դիտարկում, դրանք կարող են ստուգել Brave-ի միջոցով և հաստատել առաջին կայքից՝ արդյոք դուք վստահելի օգտատեր եք։</translation>
 <translation id="3650753875413052677">Գրանցման սխալ</translation>
 <translation id="3650845953328929506">Մատյանի վերբեռնումը դեռ չի սկսվել:</translation>
 <translation id="3650952250015018111">«<ph name="APP_NAME"/>» հավելվածին հասանելի դարձրեք հետևյալ սարք(եր)ը՝</translation>
@@ -3013,11 +3052,14 @@
 <translation id="371300529209814631">Հետ/առաջ</translation>
 <translation id="3713047097299026954">Անվտանգության այս բանալին մուտքի տվյալներ չունի</translation>
 <translation id="3713091615825314967">Ինքնաթարմացումը միացված է:</translation>
+<translation id="371370241367527062">Առջևի խոսափող</translation>
 <translation id="3714195043138862580">Այս դեմո սարքի տրամադրումը չեղարկվել է։</translation>
+<translation id="3719310907809321183"><ph name="CARD_IDENTIFIER"/> քարտի ձևը լրացված է։</translation>
 <translation id="3719826155360621982">Գլխավոր էջ</translation>
 <translation id="372062398998492895">CUPS</translation>
 <translation id="8397843425685839889">Դուք և Brave-ը</translation>
 <translation id="3722108462506185496">Չհաջողվեց մեկնարկել վիրտուալ մեքենայի ծառայությունը: Նորից փորձեք:</translation>
+<translation id="3722624153992426516">Ստացվել է ուղեցույց՝ <ph name="IMPORT_CERTIFICATE__INSTRUCTION_NAME"/></translation>
 <translation id="3726965532284929944">QT</translation>
 <translation id="3727144509609414201">Հասանելի Wi-Fi ցանցեր</translation>
 <translation id="3727187387656390258">Հետազոտել ելնող պատուհանը</translation>
@@ -3105,6 +3147,7 @@
 <translation id="3797900183766075808">&amp;Որոնել «<ph name="SEARCH_TERMS"/>»-ը <ph name="SEARCH_ENGINE"/>-ում</translation>
 <translation id="3798449238516105146">Տարբերակ</translation>
 <translation id="3798632811625902122">«<ph name="DEVICE"/>» Bluetooth սարքը զուգակցման թույլտվություն է խնդրում։</translation>
+<translation id="3798670284305777884">Բարձրախոս (ներքին)</translation>
 <translation id="3799128412641261490">Switch Access-ի կարգավորումներ</translation>
 <translation id="3800030395703848668">Դիտել տեսակավորման պարամետրերը</translation>
 <translation id="3800806661949714323">Ցույց տալ բոլորը (հանձնարարելի)</translation>
@@ -3155,7 +3198,6 @@
 <translation id="3828953470056652895">Ես կարդացել և ընդունում եմ <ph name="BEGIN_LINK1"/>Brave-ի օգտագործման պայմանները<ph name="END_LINK1"/>, <ph name="BEGIN_LINK2"/>Brave-ի և ChromeOS-ի օգտագործման լրացուցիչ պայմանները<ph name="END_LINK2"/> և <ph name="BEGIN_LINK3"/>Play-ի օգտագործման պայմանները<ph name="END_LINK3"/>։</translation>
 <translation id="3829765597456725595">SMB ցանցային պահեստ</translation>
 <translation id="3830654885961023588">{NUM_EXTENSIONS,plural, =1{Ձեր ադմինիստրատորը նորից 1 վտանգավոր ընդլայնում է միացրել}one{Ձեր ադմինիստրատորը նորից {NUM_EXTENSIONS} վտանգավոր ընդլայնում է միացրել}other{Ձեր ադմինիստրատորը նորից {NUM_EXTENSIONS} վտանգավոր ընդլայնում է միացրել}}</translation>
-<translation id="3831436149286513437">Google Drive-ի որոնման առաջարկներ</translation>
 <translation id="3834728400518755610">Խոսափողի կարգավորման փոփոխությունից հետո անհրաժեշտ է անջատել Լինուքսը։ Շարունակելու համար անջատեք Լինուքսը։</translation>
 <translation id="3834775135533257713">Չհաջողվեց ավելացնել «<ph name="TO_INSTALL_APP_NAME"/>» հավելվածը, քանի որ այն հակասում է «<ph name="INSTALLED_APP_NAME"/>» հավելվածին:</translation>
 <translation id="3835904559946595746">Չհաջողվեց վերականգնել Լինուքսի պահուստավորված տվյալները</translation>
@@ -3343,6 +3385,7 @@
 <translation id="3988996860813292272">Ընտրեք ժամային գոտին</translation>
 <translation id="399179161741278232">Ներմուծված</translation>
 <translation id="3992008114154328194"><ph name="FILE_NAME"/> ֆայլը ներբեռնվում է, <ph name="STATUS"/></translation>
+<translation id="3993259701827857030">Պահուստավորեք տվյալները</translation>
 <translation id="3993887353483242788">Համաժամացրեք ձեր <ph name="DEVICE_TYPE"/> սարքը, որպեսզի ձեր նախընտրանքները (հավելվածները, կարգավորումները, Wi-Fi-ի գաղտնաբառերը, լեզուները, պաստառները, ստեղնային դյուրանցումները և այլն) հասանելի լինեն բոլոր սարքերում, երբ մուտք գործեք Brave հաշիվ։</translation>
 <translation id="3994318741694670028">Ձեր համակարգիչը կազմաձևված է սարքակազմի սխալ ID-ով։ Սա թույլ չի տալիս, որպեսզի ChromeOS Flex-ը ստանա անվտանգության վերջին թարմացումները, և ձեր համակարգիչը <ph name="BEGIN_BOLD"/>կարող է վնասաբեր հարձակումների թիրախ դառնալ<ph name="END_BOLD"/>։</translation>
 <translation id="3994374631886003300"><ph name="DEVICE_TYPE"/> սարքն ապակողպելու համար ապակողպեք ձեր հեռախոսը և այն մոտեցրեք սարքին։</translation>
@@ -3369,6 +3412,7 @@
 <translation id="402211067068791756"><ph name="TOTAL_USAGE"/> ծավալով տվյալները, որոնք պահվել են ցուցադրված կայքերի կողմից, կջնջվեն։</translation>
 <translation id="4022426551683927403">&amp;Ավելացնել բառացանկին</translation>
 <translation id="4025039777635956441">Անջատել նշված կայքի ձայնը</translation>
+<translation id="402707738228916911">Ստացվել է ուղեցույց՝ <ph name="AUTHORIZE_INSTRUCTION_NAME"/></translation>
 <translation id="4027958407426528157">Բացեք կայքերը ձեր <ph name="DEVICE_TYPE"/> սարքում տեղադրված հավելվածներում</translation>
 <translation id="4028467762035011525">Ավելացնել ներածման մեթոդներ</translation>
 <translation id="4029556917477724407">Վերադառնալ «<ph name="PAGE_TITLE"/>» էջից</translation>
@@ -3378,7 +3422,6 @@
 <translation id="4033471457476425443">Նոր պանակ ավելացնել</translation>
 <translation id="5267915042712078903">Այցելությունների պատմությունն ընդմիշտ կջնջվի այս սարքից։ Այս պրոֆիլի Brave հաշիվները կարող են օգտագործվել ձեր <ph name="DEVICE_TYPE"/> սարքի այլ հավելվածների կողմից։ Հաշիվները հեռացնելու համար անցեք <ph name="BEGIN_LINK"/><ph name="SETTING_SECTION"/> &gt; <ph name="ACCOUNTS_SECTION"/><ph name="END_LINK"/>։</translation>
 <translation id="4033963223187371752">Ապահով կայքերը կարող են պարունակել ոչ անվտանգ ներկառուցված բովանդակություն, օրինակ՝ պատկերներ կամ շրջանակներ։</translation>
-<translation id="4034741552964543387">Շարունակել առանց սարքի տվյալների</translation>
 <translation id="4034824040120875894">Տպիչ</translation>
 <translation id="4035758313003622889">&amp;Խնդիրների կառավարիչ</translation>
 <translation id="4035877632587724847">Չթույլատրել</translation>
@@ -3458,6 +3501,7 @@
 <translation id="4102469565336584882">Կոդն անվավեր է։ Մուտքագրումը պետք է լինի LPA ձևաչափով՝ 1$&lt;smdp address&gt;$&lt;activation code&gt;</translation>
 <translation id="4102906002417106771">Վերագործարկել՝ Powerwash-ը գործարկելու համար</translation>
 <translation id="4104163789986725820">Ար&amp;տահանել…</translation>
+<translation id="4104944259562794668">Այս պարամետրը կարող եք նորից միացնել՝ անցնելով Կարգավորումներ &gt; Անվտանգություն և գաղտնիություն &gt; Կողպէկրան և մուտք</translation>
 <translation id="4107048419833779140">Գտնել և անջատել հիշասարքերը</translation>
 <translation id="4108314971463891922">Հետևել</translation>
 <translation id="4109135793348361820">Տեղափոխել պատուհանը <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
@@ -3577,16 +3621,15 @@
 <translation id="4232375817808480934">Kerberos-ի կարգավորում</translation>
 <translation id="4235965441080806197">Չեղարկել մուտքը</translation>
 <translation id="4236163961381003811">Բացահայտեք այլ ընդլայնումներ</translation>
+<translation id="4237282663517880406">Ցույց տալ Google Drive-ի առաջարկները</translation>
 <translation id="4241182343707213132">Վերագործարկեք՝ կազմակերպության հավելվածները թարմացնելու համար</translation>
 <translation id="4242145785130247982">Սպասառուների բազմակի վկայագրեր չեն աջակցվում</translation>
 <translation id="4242533952199664413">Բացել կարգավորումները</translation>
 <translation id="4242577469625748426">Չհաջողվեց քաղաքականության կարգավորումները կիրառել սարքի նկատմամբ՝ <ph name="VALIDATION_ERROR"/>:</translation>
 <translation id="4243504193894350135">Տպիչի աշխատանքը դադարեցված է</translation>
-<translation id="424423026762293842">Սարքի տվյալների վերականգնում</translation>
 <translation id="4244238649050961491">Որոնել ստիլուսի համար այլ հավելվածներ</translation>
 <translation id="4246980464509998944">Լրացուցիչ մեկնաբանություններ՝</translation>
 <translation id="424726838611654458">Միշտ բացել Adobe Reader-ում</translation>
-<translation id="4247901771970415646">Չհաջողվեց համաժամացնել <ph name="USERNAME"/> հաշվի հետ</translation>
 <translation id="4248098802131000011">Պաշտպանեք ձեր գաղտնաբառերը տվյալների արտահոսքից և անվտանգության հետ կապված այլ խնդիրներից</translation>
 <translation id="4249248555939881673">Սպասում է ցանցի կապակցմանը…</translation>
 <translation id="4249373718504745892">Այս էջին արգելված է օգտագործել ձեր տեսախցիկն ու խոսափողը:</translation>
@@ -3613,6 +3656,7 @@
 <translation id="426652736638196239">IBAN-ը կպահվի միայն այս սարքում</translation>
 <translation id="4266679478228765574">Եթե պանակները ջնջեք, կհեռացվի միայն դրանց հասանելիությունը։ Ֆայլերը կպահպանվեն։</translation>
 <translation id="4267455501101322486">Ուսումնական ռեսուրսներից օգտվելու համար խնդրեք ծնողին, որ թույլատրի ձեզ հաշիվ ավելացել</translation>
+<translation id="4267792239557443927">{COUNT,plural, =0{Գաղտնաբառեր չեն գտնվել}=1{Գտնվել է 1 արդյունք}one{Գտնվել է {COUNT} արդյունք}other{Գտնվել է {COUNT} արդյունք}}</translation>
 <translation id="4267924571297947682">Ծնողից թույլտվություն խնդրեք</translation>
 <translation id="4267953847983678297">Ավտոմատ միանալ բջջային ցանցին</translation>
 <translation id="4268025649754414643">Բանալիների կոդավորում</translation>
@@ -3718,6 +3762,7 @@
 <translation id="4369215744064167350">Կայքի հարցումը հաստատվել է</translation>
 <translation id="4369735607080757018">Գովազդի արդյունավետությունը գնահատելու համար կայքերը փոխանակվում են որոշակի տվյալներով, օրինակ՝ տեղեկություններով, թե երբ է գովազդը ձեզ ցուցադրվել</translation>
 <translation id="4370975561335139969">Մուտքագրված էլփոստը և գաղտնաբառը չեն համընկնում</translation>
+<translation id="4374805630006466253">Օգտագործել մեկ այլ հեռախոս կամ պլանշետ</translation>
 <translation id="4374831787438678295">Լինուքսի տեղադրիչ</translation>
 <translation id="4375035964737468845">Բացել ներբեռնված ֆայլերը</translation>
 <translation id="4376226992615520204">Տեղորոշումն անջատված է</translation>
@@ -3760,7 +3805,6 @@
 <translation id="4404843640767531781">Ձեր ծնողն արգելափակել է <ph name="APP_NAME"/> հավելվածը։ Խնդրեք նրան տրամադրել ձեզ հավելվածի օգտագործման թույլտվություն։</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
 <translation id="4405224443901389797">Տեղափոխել…</translation>
-<translation id="440653823335387109">ԿԱՐԴԱՑՎԱԾ ԷՋԵՐ</translation>
 <translation id="4406883609789734330">Կենդանի ենթագրեր</translation>
 <translation id="4407039574263172582">Շարունակելու համար <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> ընկերությունը կփոխանցի ձեր անունը, էլ․ հասցեն և պրոֆիլի նկարը այս կայքին։ Ծանոթացեք այս կայքի <ph name="BEGIN_LINK"/>օգտագործման պայմաններին<ph name="END_LINK"/>։</translation>
 <translation id="4408599188496843485">Օգ&amp;նություն</translation>
@@ -3809,6 +3853,7 @@
 <translation id="4443536555189480885">&amp;Օգնություն</translation>
 <translation id="4444304522807523469">Մուտք գործել փաստաթղթի տեսածրիչներ, որոնց կցված են USB-ի կամ տեղային ցանցի միջոցով</translation>
 <translation id="4444512841222467874">Եթե չազատեք տարածք, օգտատերերն ու տվյալները կարող են ավտոմատ ջնջվել:</translation>
+<translation id="4445446646109808714">Վերջնական օգտագործողի հետ լիցենզիոն համաձայնագիր՝ <ph name="EULA_LINK"/></translation>
 <translation id="4446933390699670756">Հայելային</translation>
 <translation id="4448914100439890108">Թաքցնել <ph name="USERNAME"/> հաշվի գաղտնաբառը <ph name="DOMAIN"/> տիրույթում</translation>
 <translation id="4449948729197510913">Ձեր օգտանունը պատկանում է ձեր կազմակերպության կորպորատիվ հաշվին։ Սարքերը հաշվում գրանցելու համար նախ հաստատեք տիրույթի պատկանելիությունը ադմինիստրատորի վահանակում։ Հաստատելու համար ձեզ անհրաժեշտ կլինեն հաշվի ադմինիստրատորի արտոնություններ։</translation>
@@ -3861,6 +3906,7 @@
 <translation id="4495419450179050807">Ցույց չտալ այս էջում</translation>
 <translation id="4497145443434063861">Համակարգիչը և Chromecast-ը տարբեր Wi-Fi ցանցերում են գտնվում (օր.՝ մեկը 2,4 ԳՀց, մյուսը՝. 5 ԳՀց)</translation>
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> փլագինը խափանվել է</translation>
+<translation id="4500647907053779331">&amp;Ընտրությունը թարգմանել <ph name="LANGUAGE"/></translation>
 <translation id="450099669180426158">Բացականչական նշանի պատկերակ</translation>
 <translation id="4501530680793980440">Հեռացման հաստատում</translation>
 <translation id="4502423230170890588">Հեռացնել սարքից</translation>
@@ -3880,7 +3926,6 @@
 <translation id="4513872120116766993">Տեքստի կանխատեսում</translation>
 <translation id="4513946894732546136">Հետադարձ կապ</translation>
 <translation id="451407183922382411">Մշակող՝ <ph name="COMPANY_NAME"/></translation>
-<translation id="451515744433878153">Հեռացնել</translation>
 <translation id="4515872537870654449">Կապվեք Dell-ի սպասարկման ծառայության հետ։ Եթե հովացումը չաշխատի, դոկ-կայանը կանջատվի:</translation>
 <translation id="4518840066030486079">Shift ստեղնի ռեժիմի ոճ</translation>
 <translation id="4519331665958994620">Կայքերը կարող են տեսախցիկն օգտագործելու թույլտվություն հայցել</translation>
@@ -3892,9 +3937,12 @@
 <translation id="4522890784888918985">Դուստր հաշիվները չեն աջակցվում</translation>
 <translation id="4523876148417776526">Կայքերի ցուցակները (XML ձևաչափով) դեռ չեն բեռնվել։</translation>
 <translation id="4524832533047962394">Օպերացիոն համակարգի այս տարբերակը չի աջակցում գրանցման տրամադրված ռեժիմը: Թարմացրեք տարբերակը:</translation>
+<translation id="4526051299161934899">Թաքցված պահված ներդիրների խմբեր</translation>
+<translation id="4526853756266614740">Ընտրեք պատկեր, և թեման ակնթարթորեն կկիրառվի</translation>
 <translation id="452750746583162491">Ստուգեք ձեր համաժամացված տվյալները</translation>
 <translation id="4527929807707405172">Միացնել հետադարձ ոլորումը։ <ph name="LINK_BEGIN"/>Իմանալ ավելին<ph name="LINK_END"/></translation>
 <translation id="4528494169189661126">Թարգմանության առաջարկ</translation>
+<translation id="4528638190900283934">Մուտք գործեք՝ լրացուցիչ գործառույթներից օգտվելու համար</translation>
 <translation id="2856152593455781015">Brave-ի Կենդանի ենթագրերը կարող են չաշխատել</translation>
 <translation id="4530494379350999373">Ծագում</translation>
 <translation id="4531924570968473143">Ո՞ւմ եք ուզում ավելացնել այս <ph name="DEVICE_TYPE"/> սարքում</translation>
@@ -4165,6 +4213,7 @@
 <translation id="477647109558161443">Ստեղծել աշխատասեղանի դյուրանցում</translation>
 <translation id="4776594120007763294">Սեղմեք կոճակը՝ ավելացնելու էջ՝ այն ավելի ուշ կարդալու համար</translation>
 <translation id="4777458362738635055">Սարքի մյուս օգտատերերը կարող են օգտագործել այս ցանցը</translation>
+<translation id="477781522763920796">Այս կարգավորումն աշխատում է առանց ձեզ նույնականացնելու կամ թույլատրելու կայքերին տեսնել ձեր այցելությունների պատմությունը։</translation>
 <translation id="4777825441726637019">Play Խանութ</translation>
 <translation id="4777943778632837590">Կարգավորել DNS-ների հասցեները</translation>
 <translation id="4779083564647765204">Խոշորացում</translation>
@@ -4190,12 +4239,14 @@
 <translation id="4800839971935185386">Դիտեք անվան և պատկերակի փոփոխությունները</translation>
 <translation id="4801448226354548035">Թաքցնել հաշիվները</translation>
 <translation id="4801512016965057443">Թույլ տալ բջջային տվյալների ռոումինգը</translation>
+<translation id="4804311503028830356">Սեղմեք հետ սլաքը՝ այլ տարբերակներ ուսումնասիրելու համար</translation>
 <translation id="4804818685124855865">Անջատել</translation>
 <translation id="4804827417948292437">Ավոկադո</translation>
 <translation id="4806457879608775995">Ծանոթացեք այս պայմաններին և կառավարեք ձեր հաշվի տվյալները</translation>
 <translation id="4807098396393229769">Քարտապանի անունը</translation>
 <translation id="4808667324955055115">Ելնող պատուհաններն արգելափակված են՝</translation>
 <translation id="4809079943450490359">Հրահանգներ ձեր սարքի ադմինիստրատորի կողմից՝</translation>
+<translation id="4809447465126035330">Ջնջել</translation>
 <translation id="480990236307250886">Բացել գլխավոր էջը</translation>
 <translation id="4809927044794281115">Բաց թեմա</translation>
 <translation id="4811212958317149293">Ստեղնաշարի ավտոմատ սկանավորում Switch Access-ի միջոցով</translation>
@@ -4212,6 +4263,7 @@
 <translation id="4824037980212326045">Լինուքսի պահուստավորում և վերականգնում</translation>
 <translation id="4824958205181053313">Չեղարկե՞լ համաժամացումը</translation>
 <translation id="4825532258163983651">Չհաջողվեց ջնջել անցաբառը</translation>
+<translation id="4827283332383516812">Ջնջել քարտը</translation>
 <translation id="4827675678516992122">Չհաջողվեց միանալ</translation>
 <translation id="4536267179863600153">Ուղղագրության կատարելագործված ստուգում Brave-ում (տեքստն ուղարկվում է Brave-ին՝ ուղղագրության առաջարկներ ստանալու համար)</translation>
 <translation id="4827904420700932487">Ստեղծել QR կոդ այս պատկերի համար</translation>
@@ -4248,7 +4300,6 @@
 <translation id="4852916668365817106">Մկնիկի գույնը</translation>
 <translation id="4853020600495124913">Բացել &amp;նոր պատուհանում</translation>
 <translation id="4854317507773910281">Հաստատման համար ընտրեք ծնողի հաշիվը</translation>
-<translation id="4854603338816296098">Հասցեն հեռացվեց</translation>
 <translation id="485480310608090163">Այլ կարգավորումներ և թույլտվություններ</translation>
 <translation id="4858913220355269194">Ֆուտբոլ</translation>
 <translation id="4862642413395066333">OCSP պատասխանների ստորագրում</translation>
@@ -4386,7 +4437,6 @@
 <translation id="4977942889532008999">Մուտքի հաստատում</translation>
 <translation id="4980805016576257426">Այս ընդլայնումը վնասաբեր ծրագիր է պարունակում:</translation>
 <translation id="6298472828264321822">Այցելությունների պատմությունը բոլոր համաժամացված սարքերից և Brave հաշվից ջնջելու համար <ph name="BEGIN_LINK"/>մտեք հաշիվ<ph name="END_LINK"/>:</translation>
-<translation id="4982111327868342436">Ցանկացած սարքում շարունակեք աշխատանքն այնտեղից, որտեղ կանգ էիք առել</translation>
 <translation id="6814280300414171363">Դուք ցանկացած ժամանակ կարող եք անցնել կարգավորումներ և ընտրել, թե ինչն եք ուզում համաժամացնել։ Brave-ը կարող է ձեր պատմության հիման վրա անհատականացնել Որոնումը և այլ ծառայությունները։</translation>
 <translation id="4986728572522335985">Անվտանգության բանալու վրա պահված բոլոր տվյալները, այդ թվում՝ դրա PIN կոդերը կջնջվեն:</translation>
 <translation id="4988526792673242964">Էջեր</translation>
@@ -4501,7 +4551,6 @@
 <translation id="5097306410549350357">Իմանալ ավելին տեղադրության տվյալների օգտագործման մասին</translation>
 <translation id="5097349930204431044">Ձեր այցելած կայքերը կարող են որոշել ձեր նախասիրությունները և հետագայում ձեզ ավելի համապատասխան գովազդ ցույց տալ</translation>
 <translation id="5097874180538493929">Ավտոմատ սեղմել, երբ նշորդը կանգնում է</translation>
-<translation id="5101683448725092498">Պահուստավորեք ձեր տվյալները</translation>
 <translation id="5101839224773798795">Ավտոմատ սեղմել, երբ մկնիկի նշորդը կանգնում է</translation>
 <translation id="5106350808162641062">Հեռացնել</translation>
 <translation id="510695978163689362"><ph name="USER_EMAIL"/> հաշիվը վերահսկվում է Family Link-ի կողմից։ Դուք կարող եք ուսումնական հաշիվներ ավելացնել՝ դպրոցական նյութերը ծնողական վերահսկողության ներքո օգտագործելու համար։</translation>
@@ -4796,6 +4845,7 @@
 <translation id="5382591305415226340">Կառավարել աջակցվող հղումները</translation>
 <translation id="5383377866517186886">Տեսախցիկն անջատված է Mac-ի համակարգի կարգավորումներում</translation>
 <translation id="5383740867328871413">Անանուն խումբ – <ph name="GROUP_CONTENTS"/> – <ph name="COLLAPSED_STATE"/></translation>
+<translation id="5385612634631487511"><ph name="EXTENSION_NAME"/> (ID՝ <ph name="EXTENSION_ID"/>)</translation>
 <translation id="538822246583124912">Կորպորատիվ կանոն է փոխվել։ Գործիքագոտում ավելացվել է «Փորձարկումներ» կոճակը։ Սեղմեք կոճակը՝ փորձարկումները միացնելու պատուհանը բացելու համար։</translation>
 <translation id="5388885445722491159">Զուգակցված է</translation>
 <translation id="5390112241331447203">Ներառել system_logs.txt ֆայլը, որն ուղարկվում է կարծիքի հաշվետվություններում։</translation>
@@ -4991,6 +5041,7 @@
 <translation id="5556459405103347317">Վերաբեռնել</translation>
 <translation id="5558129378926964177">Խոշո&amp;րացնել</translation>
 <translation id="5558247502209241936">Միացնել հավելվածի՝ պատուհանում բացումը</translation>
+<translation id="5559311991468302423">Հասցեի ջնջում</translation>
 <translation id="55601339223879446">Կարգավորեք աշխատասեղանի սահմանագծերը տվյալ էկրանում</translation>
 <translation id="5561162485081632007">Հայտնաբերում է վտանգավոր իրադարձություններն ու զգուշացնում դրանց մասին</translation>
 <translation id="5562781907504170924">Այս ներդիրը միացած է Bluetooth սարքի:</translation>
@@ -5009,6 +5060,7 @@
 <translation id="5578059481725149024">Ավտոմատ մուտք</translation>
 <translation id="5581134892342029705">Թարգմանությունը կատարված է (<ph name="LANGUAGE"/>)</translation>
 <translation id="558170650521898289">Microsoft Windows-ի սարքակազմի սարքավարի հաստատում</translation>
+<translation id="5581876958763461074">Բոլոր նշումները</translation>
 <translation id="5581972110672966454">Չհաջողվեց միացնել սարքը տիրույթին։ Փորձեք նորից կամ կապվեք սարքի սեփականատիրոջ կամ ադմինիստրատորի հետ։ Սխալի կոդը՝ <ph name="ERROR_CODE"/>։</translation>
 <translation id="5582839680698949063">Հիմնական ընտրացանկ</translation>
 <translation id="5583640892426849032">Backspace</translation>
@@ -5026,6 +5078,7 @@
 <translation id="5588033542900357244">(<ph name="RATING_COUNT"/>)</translation>
 <translation id="558918721941304263">Հավելվածների բեռնում…</translation>
 <translation id="5590418976913374224">Հնչեցնել ձայնային ազդանշան սարքը գործարկելիս</translation>
+<translation id="5591465468509111843">Շատ լայն</translation>
 <translation id="5592595402373377407">Բավարար քանակությամբ տվյալներ չկան:</translation>
 <translation id="5594899180331219722">Ընտրել ֆայլ</translation>
 <translation id="5595307023264033512">Կայքերի կողմից օգտագործվող ընդհանուր տարածքը՝ <ph name="TOTAL_USAGE"/></translation>
@@ -5058,7 +5111,6 @@
 <translation id="5623842676595125836">Մատյան</translation>
 <translation id="5624120631404540903">Կառավարել գաղտնաբառերը</translation>
 <translation id="5625225435499354052">Փոփոխել Google Pay-ում</translation>
-<translation id="5625631605902707678">Տվյալների համաժամացում սարքերում</translation>
 <translation id="5626134646977739690">Անուն՝</translation>
 <translation id="5627086634964711283">Այն նաև վերահսկում է, թե ինչ էջ պետք է ցուցադրվի Սկիզբ կոճակը սեղմելիս:</translation>
 <translation id="8142180567942285208">Որոնեք ավելին Brave-ի օգնությամբ</translation>
@@ -5086,6 +5138,7 @@
 <translation id="5643620609347735571">Մաքրել և շարունակել</translation>
 <translation id="5646376287012673985">Տեղադրություն</translation>
 <translation id="5646558797914161501">Բիզնեսմեն</translation>
+<translation id="5648021990716966815">Խոսափողի հարակցիչ</translation>
 <translation id="5648166631817621825">Վերջին 7 օրվա</translation>
 <translation id="5651308944918885595">«Փոխանակում մոտակա սարքերի հետ» գործառույթի հայտնաբերելիություն</translation>
 <translation id="5653154844073528838">Դուք ունեք <ph name="PRINTER_COUNT"/> պահված տպիչ։</translation>
@@ -5166,7 +5219,6 @@
 <translation id="5736092224453113618">{NUM_FILES,plural, =0{Այս տվյալները կամ ձեր սարքը չեն համապատասխանում կազմակերպության անվտանգության կանոններին։ Խնդրի լուծման համար դիմեք ձեր ադմինիստրատորին։}=1{Այս ֆայլը կամ ձեր սարքը չի համապատասխանում կազմակերպության անվտանգության կանոններին։ Խնդրի լուծման համար դիմեք ձեր ադմինիստրատորին։}one{Այս ֆայլերը չեն համապատասխանում կազմակերպության անվտանգության կանոններին։ Խնդրի լուծման համար դիմեք ձեր ադմինիստրատորին։}other{Այս ֆայլերը չեն համապատասխանում կազմակերպության անվտանգության կանոններին։ Խնդրի լուծման համար դիմեք ձեր ադմինիստրատորին։}}</translation>
 <translation id="5736796278325406685">Մուտքագրեք վավեր օգտանուն</translation>
 <translation id="5738093759615225354">Այս անցաքարտը պետք է ձեր համակարգիչ մուտք գործելու համար</translation>
-<translation id="5738329404678738022">Համաժամացրեք ձեր էջանիշները և ավելին</translation>
 <translation id="5739017626473506901">Մուտք գործեք, որպեսզի օգնեք <ph name="USER_NAME"/>-ին ուսումնական հաշիվ ավելացնել</translation>
 <translation id="5739235828260127894">Պահանջվում է հաստատում: <ph name="LINK_BEGIN"/>Մանրամասն<ph name="LINK_END"/></translation>
 <translation id="5739458112391494395">Շատ մեծ</translation>
@@ -5188,7 +5240,6 @@
 <translation id="5757375109985023827">Ընտրեք ներդիր՝ դիտելու համար</translation>
 <translation id="5758631781033351321">Ձեր ընթերցանության ցանկը կգտնեք այստեղ</translation>
 <translation id="5759728514498647443"><ph name="APP_NAME"/>-ի միջոցով ուղարկված փաստաթղթերը հնարավոր է կարդալ <ph name="APP_NAME"/> հավելվածով:</translation>
-<translation id="5760508342220592715">Մուտք գործեք հաշիվ՝ ավելի շատ առավելություններից օգտվելու համար</translation>
 <translation id="5762787084360227629">Մուտքագրել Brave հաշվի տվյալները</translation>
 <translation id="5763751966069581670">USB սարքեր չեն գտնվել</translation>
 <translation id="5764483294734785780">Պա&amp;հել ձայնանյութը որպես…</translation>
@@ -5224,9 +5275,9 @@
 <translation id="5792295754950501287">«<ph name="CARD_DESCRIPTION"/>» քարտին առնչվող այլ գործողություններ</translation>
 <translation id="5792728279623964091">Հպեք միացնելու/անջատելու կոճակին</translation>
 <translation id="5792874008054171483"><ph name="SITE_NAME"/> կայքի հետ կապված այլ գործողություններ</translation>
+<translation id="5793317771769868848">Վճարման այս եղանակը կջնջվի այս սարքից</translation>
 <translation id="5793339252089865437">Բջջային ինտերնետով թարմացումների ներբեռնումը կարող է հավելյալ ծախսեր առաջացնել։</translation>
 <translation id="5793420564274426163">Զուգակցման հաստատում</translation>
-<translation id="5793430094159150686">Ձեր գաղտնաբառը փոխվել է։ Ձեր սարքի տվյալները վերականգնելու համար դուք պետք է մուտքագրեք ձեր հին գաղտնաբառը։</translation>
 <translation id="5794034487966529952">«<ph name="DESK_TITLE"/>» աշխատասեղանում բացված է դիտարկիչի<ph name="NUM_BROWSERS"/> պատուհան</translation>
 <translation id="5794414402486823030">Միշտ բացել համակարգի դիտման ծրագրի միջոցով</translation>
 <translation id="5794700615121138172">Լինուքսի ընդհանուր պանակներ</translation>
@@ -5241,6 +5292,7 @@
 <translation id="5801051031414037185">Կարգավորել հեռախոսը</translation>
 <translation id="5801568494490449797">Նախընտրանքներ</translation>
 <translation id="5804241973901381774">Թույլտվություններ</translation>
+<translation id="5804259315582798390">Չհաջողվեց միացնել սարքի տվյալների վերականգնումը</translation>
 <translation id="5805268472388605531">Շեշտը և հատուկ նշանները տեսնելու համար սեղմած պահեք ստեղնաշարի ստեղները</translation>
 <translation id="5805697420284793859">Պատուհանների կառավարիչ</translation>
 <translation id="5806447147478173900">Ցուցադրվող կայքերի կողմից օգտագործվող ընդհանուր տարածքը՝ <ph name="TOTAL_USAGE"/></translation>
@@ -5325,6 +5377,7 @@
 <translation id="5877064549588274448">Վարկածը փոխվել է: Փոփոխությունները կիրառելու համար վերագործարկեք սարքը:</translation>
 <translation id="5877584842898320529">Նշված տպիչը հասանելի չէ կամ ճիշտ չէ տեղադրված: <ph name="BR"/> Ստուգեք ձեր տպիչը կամ փորձեք ընտրել մեկ այլ տպիչ:</translation>
 <translation id="5878945009165002849">Արգելափակել նույնականացման ծառայությունների մուտքի հարցումները</translation>
+<translation id="5881710783061958569">Եթե այո, ապա փոխեք ձեր պահված գաղտնաբառը <ph name="BRAND"/>ում, որպեսզի այն համապատասխանի ձեր նոր գաղտնաբառին։</translation>
 <translation id="5882449899683447569">Սխալի պատճառով չհաջողվեց ներմուծել գաղտնաբառերը</translation>
 <translation id="5882919346125742463">Պահված ցանցեր</translation>
 <translation id="5883356647197510494">Ավտոմատ արգելափակված թույլտվություններ՝ <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/></translation>
@@ -5453,6 +5506,7 @@
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Որպեսզի շարունակեք կայքեր այցելել, խնդրեք ադմինիստրատորին հեռացնել այս հավելվածը։}one{Որպեսզի շարունակեք կայքեր այցելել, խնդրեք ադմինիստրատորին հեռացնել այս հավելվածը։}other{Որպեսզի շարունակեք կայքեր այցելել, խնդրեք ադմինիստրատորին հեռացնել այս հավելվածները։}}</translation>
 <translation id="5993508466487156420">{NUM_SITES,plural, =1{1 կայքի ստուգումն ավարտվեց}one{{NUM_SITES} կայքի ստուգումն ավարտվեց}other{{NUM_SITES} կայքերի ստուգումն ավարտվեց}}</translation>
 <translation id="5997337190805127100">Մանրամասն կայքերի հասանելիության մասին</translation>
+<translation id="5998458948782718639">Օգնեք բարելավել ինքնալրացման գործառույթը</translation>
 <translation id="6000758707621254961">«<ph name="SEARCH_TEXT"/>»-ի որոնման <ph name="RESULT_COUNT"/> արդյունք</translation>
 <translation id="6001839398155993679">Եկեք սկսենք</translation>
 <translation id="6002122790816966947">Ձեր սարքերը</translation>
@@ -5467,8 +5521,10 @@
 <translation id="6007240208646052708">Ձայնային որոնումը ձեր լեզվով հասանելի չէ:</translation>
 <translation id="2626511583221319874">Երբ այս պարամետրը միացված է, Brave Translate-ը կառաջարկի թարգմանել կայքերը ձեր նախընտրած լեզվով։ Այն կարող է նաև ավտոմատ կերպով թարգմանել կայքերը։</translation>
 <translation id="6011193465932186973">Մատնահետք</translation>
+<translation id="6011308810877101166">Բարելավել որոնման առաջարկները</translation>
 <translation id="6011908034087870826">Հղումն ուղարկվում է <ph name="DEVICE_NAME"/> սարքին</translation>
 <translation id="6013027779243312217">Ստացեք ենթագրեր մեդիա բովանդակության համար</translation>
+<translation id="6014293228235665243">Չկարդացված</translation>
 <translation id="6015796118275082299">Տարի</translation>
 <translation id="6016178549409952427">Անցնել լրացուցիչ բովանդակություն <ph name="CURRENT_ELEMENT"/>՝ <ph name="TOTAL_ELEMENTS"/>-ից</translation>
 <translation id="6016551720757758985">Հաստատեք Powerwash-ը՝ նախկին տարբերակին վերադարձով</translation>
@@ -5538,6 +5594,7 @@
 <translation id="6075907793831890935">Փոխանակել տվյալները <ph name="HOSTNAME"/> անունով սարքի հետ</translation>
 <translation id="6076175485108489240">Տեղորոշման տվյալների օգտագործում: Թույլ տվեք հավելվածներին և ծառայություններին օգտագործել ձեր սարքի գտնվելու վայրի մասին տվյալները: Brave-ը պարբերաբար հավաքում և անանուն օգտագործում է տեղադրության մասին տվյալները՝ տեղորոշման ճշգրտությունը բարելավելու համար: <ph name="BEGIN_LINK1"/>Իմանալ ավելին<ph name="END_LINK1"/></translation>
 <translation id="6076491747490570887">Սառը մոխրագույն</translation>
+<translation id="6076576896267434196"><ph name="EXTENSION_NAME"/> ընդլայնումը հայցում է ձեր հաշվի տվյալների օգտագործման թույլտվություն</translation>
 <translation id="6077131872140550515">Հեռացնել նախընտրելի ցանցերից</translation>
 <translation id="6077189836672154517">Խորհուրդներ և ծանուցումներ <ph name="DEVICE_TYPE"/> սարքի վերաբերյալ</translation>
 <translation id="6077476112742402730">Ձայնային ներածում</translation>
@@ -5626,6 +5683,7 @@
 <translation id="6150961653851236686">Այս լեզուն օգտագործվում է էջերը թարգմանելիս</translation>
 <translation id="6151323131516309312"><ph name="SITE_NAME"/>-ը որոնելու համար սեղմեք <ph name="SEARCH_KEY"/></translation>
 <translation id="6151771661215463137">Ֆայլն արդեն առկա է ներբեռնումների պանակում։</translation>
+<translation id="6152918902620844577">Սպասում է հաջորդ գործողությանը</translation>
 <translation id="6154240335466762404">Հեռացնել բոլոր միացքները</translation>
 <translation id="615436196126345398">Հաղորդակարգ</translation>
 <translation id="6155141482566063812">Ֆոնային ներդիրում օգտագործվում է ձեր էկրանը</translation>
@@ -5647,7 +5705,7 @@
 <translation id="617213288191670920">Լեզուներ չեն ավելացվել</translation>
 <translation id="6173623053897475761">Նորից մուտքագրեք PIN-ը</translation>
 <translation id="6175314957787328458">Microsoft տիրույթի GUID</translation>
-<translation id="6176043333338857209">Bluetooth-ը ժամանակավորապես կմիանա՝ անվտանգության բանալին միացնելու համար</translation>
+<translation id="6177412385419165772">Հեռացում…</translation>
 <translation id="6178664161104547336">Ընտրեք վկայագիր</translation>
 <translation id="6178682841350631965">Ձեր մուտքի տվյալները թարմացվեցին</translation>
 <translation id="6180510783007738939">«Գիծ» գործիք</translation>
@@ -5709,6 +5767,7 @@
 <translation id="6234474535228214774">Սպասում է տեղադրման</translation>
 <translation id="6235208551686043831">Սարքի տեսախցիկն անջատված է։ Պահեք ձեր eSIM-ի QR կոդը տեսախցիկի առջև։</translation>
 <translation id="6237474966939441970">Ստիլուսի միջոցով նշումներ կատարելու հավելվածներ</translation>
+<translation id="623755660902014047">Ընթերցման ռեժիմ</translation>
 <translation id="6238767809035845642">Այլ սարքից ուղարկված տեքստ</translation>
 <translation id="6238923052227198598">Ցուցադրել վերջին նշումը կողպէկրանին</translation>
 <translation id="6239558157302047471">Վերաբեռնել &amp;շրջանակը</translation>
@@ -5774,7 +5833,6 @@
 <translation id="6295158916970320988">Բոլոր կայքերը</translation>
 <translation id="6295855836753816081">Պահում...</translation>
 <translation id="6298962879096096191">Android հավելվածներ տեղադրելու համար օգտագործել Google Play-ը</translation>
-<translation id="6300125580697461004">Կարծիք հայտնել էներգիայի տնտեսման մասին</translation>
 <translation id="6300177430812514606">Չի թույլատրվում ավարտել տվյալների ուղարկումն ու ստացումը</translation>
 <translation id="630065524203833229">Ե&amp;լք</translation>
 <translation id="6300718114348072351">Չհաջողվեց ավտոմատ կարգավորել <ph name="PRINTER_NAME"/> տպիչը։ Նշեք տպիչի վերաբերյալ լրացուցիչ մանրամասներ։ <ph name="LINK_BEGIN"/>Իմանալ ավելին<ph name="LINK_END"/></translation>
@@ -5782,6 +5840,7 @@
 <translation id="630292539633944562">Անձնական տեղեկությունների հուշումներ</translation>
 <translation id="6305607932814307878">Գլոբալ քաղաքականություն՝</translation>
 <translation id="6305909198255586420">Տեղադրեք ձեր հիմնական պրոֆիլի միջոցով</translation>
+<translation id="630750887748244481">Ձեր ծնողն անջատել է «Թույլտվություններ կայքերի, հավելվածների և ընդլայնումների համար» պարամետրը Brave-ում։ Այս ընդլայնումը չի թույլատրվում ավելացնել։</translation>
 <translation id="6307990684951724544">Համակարգը զբաղված է</translation>
 <translation id="6308493641021088955">Մուտք «<ph name="EXTENSION_NAME"/>» ընդլայնման միջոցով</translation>
 <translation id="6308937455967653460">Պահել հղ&amp;ումը որպես…</translation>
@@ -5846,6 +5905,7 @@
 <translation id="6368276408895187373">Միացված է – <ph name="VARIATION_NAME"/></translation>
 <translation id="636850387210749493">Ձեռնարկության գրանցում</translation>
 <translation id="6370021412472292592">Չհաջողվեց բեռնել մանիֆեստը:</translation>
+<translation id="637135143619858508">Հեռու</translation>
 <translation id="6374077068638737855">Iceweasel</translation>
 <translation id="6374469231428023295">Փորձել կրկին</translation>
 <translation id="6374635887697228982">Ստանա՞լ զեղչեր</translation>
@@ -5889,6 +5949,7 @@
 <translation id="6410668567036790476">Որոնման համակարգի ավելացում</translation>
 <translation id="641469293210305670">Թարմացումների և հավելվածների տեղադրում</translation>
 <translation id="6414878884710400018">Բացել համակարգի կարգավորումները</translation>
+<translation id="6415816101512323589">Միացնե՞լ լոկալ տվյալների վերականգնումը՝ ձեր տվյալները պաշտպանելու համար</translation>
 <translation id="6415900369006735853">Միացեք համացանցին հեռախոսի միջոցով։</translation>
 <translation id="6416743254476733475">Թույլատրեք կամ արգելափակեք ձեր համակարգչում։</translation>
 <translation id="2862205630718215619">Brave Օգնական</translation>
@@ -5976,7 +6037,6 @@
 <translation id="6491376743066338510">Լիազորումը ձախողվեց</translation>
 <translation id="6494327278868541139">Ցույց տալ լրացուցիչ պաշտպանության մանրամասն նկարագրությունը</translation>
 <translation id="6494445798847293442">Հավաստագրման կենտրոն չէ</translation>
-<translation id="6497548114956205206">Իմանալ ավելին էներգիայի տնտեսման մասին</translation>
 <translation id="6497784818439587832">Փոխեք էկրանի չափը՝ տարրերը ավելի մեծ կամ ավելի փոքր դարձնելու համար</translation>
 <translation id="6497789971060331894">Մկնիկով հետադարձ ոլորում</translation>
 <translation id="6498249116389603658">&amp;Ձեր բոլոր լեզուները</translation>
@@ -6060,6 +6120,7 @@
 <translation id="656293578423618167">Ֆայլի ուղին կամ անունը չափազանց երկար է: Տվեք ավելի կարճ անուն կամ պահեք այլ տեղում:</translation>
 <translation id="6568283005472142698">Որոնում ներդիրներում</translation>
 <translation id="65711204837946324">Ներբեռնելու համար պահանջվում է թույլտվություն</translation>
+<translation id="6571533309669248172">Տեքստի ձևաչափում</translation>
 <translation id="6571772921213691236">Մուտքի տվյալների փոփոխում</translation>
 <translation id="6572081226337824427">Ձեր կողմից այցելվող որոշ էջեր նախապես են բեռնվում։</translation>
 <translation id="657229725818377235">Ստացեք ավելի լավ պաշտպանություն վտանգավոր կայքերից և ֆայլերից</translation>
@@ -6102,6 +6163,7 @@
 <translation id="6597331566371766302">Հետևյալ ընդլայնումներն արգելափակվել են ձեր ադմինիստրատորի կողմից՝</translation>
 <translation id="6601262427770154296">Կառավարել օգտատիրոջ բառարանները</translation>
 <translation id="6601612474695404578">Որոշ կայքեր իրենց էջերը բեռնելու համար օգտագործում են երրորդ կողմի քուքիներ։ Եթե կայքը չի աշխատում, փորձեք թույլատրել քուքիները։</translation>
+<translation id="6602581642873576447">Սպամի և խարդախության կանխումն անջատված է</translation>
 <translation id="6602937173026466876">Հասանելիություն տպիչներին</translation>
 <translation id="6602956230557165253">Նավիգացիայի համար օգտագործեք ձախ և աջ սլաքաստեղները:</translation>
 <translation id="6603185457265641428">Կարգավորեք պատմության համաժամացումը</translation>
@@ -6124,6 +6186,7 @@
 <translation id="6619801788773578757">Ավելացնել կրպակ-հավելված</translation>
 <translation id="6619990499523117484">Հաստատեք ձեր PIN կոդը</translation>
 <translation id="6620254580880484313">Կոնտեյների անվանումը</translation>
+<translation id="6620927550847360014">Հեռացնե՞լ Bruschetta-ն ձեր <ph name="DEVICE_TYPE"/>-ից</translation>
 <translation id="8127050479140582768">Այս ներդիրը մեկ այլ սարք ուղարկելու համար մուտք գործեք Brave երկու սարքերում էլ</translation>
 <translation id="6622980291894852883">Շարունակել պատկերների արգելափակումը</translation>
 <translation id="6624036901798307345">Պլանշետի ռեժիմում սեղմեք ներդիրների հաշվիչի կոճակը գործիքագոտում՝ բացելու նոր ներդիրների հատվածը, որը ցույց է տալիս բոլոր ներդիրների մանրապատկերները։</translation>
@@ -6182,6 +6245,7 @@
 <translation id="6678717876183468697">Հարցման URL-ը</translation>
 <translation id="6680442031740878064">Հասանելի է <ph name="AVAILABLE_SPACE"/></translation>
 <translation id="6680650203439190394">Խոսքի արագությունը</translation>
+<translation id="6683022854667115063">Ականջակալներ</translation>
 <translation id="6683087162435654533">Վերականգնել բոլոր ներդիրները</translation>
 <translation id="6684827949542560880">Ներբեռնվում է վերջին թարմացումը</translation>
 <translation id="668599234725812620">Բացել Google Play-ը</translation>
@@ -6225,6 +6289,7 @@
 <translation id="6721744718589119342">Մենք կարող ենք էլփոստով ձեզնից լրացուցիչ տեղեկություններ խնդրել կամ հաղորդել թարմացումների մասին</translation>
 <translation id="6721972322305477112">&amp;Ֆայլ</translation>
 <translation id="672208878794563299">Այս կայքը հաջորդ անգամ նորից կհարցնի։</translation>
+<translation id="6722744767592605627">Դուք կարող եք վերականգնել <ph name="EMAIL"/> հաշիվը, սակայն սարքի տվյալները կջնջվեն։</translation>
 <translation id="6723661294526996303">Ներմուծել էջանիշներն ու կարգավորումները…</translation>
 <translation id="6723839827191551955">Կառավարեք մեդիա ֆայլերը, որոնք հեռարձակում եք։</translation>
 <translation id="6723839937902243910">Սնուցում</translation>
@@ -6273,6 +6338,7 @@
 <translation id="6774710250118040929">Նոր գաղտնաբառի ավելացում</translation>
 <translation id="6775163072363532304">Այստեղ կցուցադրվեն հասանելի սարքերը</translation>
 <translation id="677646486571529447">Ավելացնել նշում</translation>
+<translation id="6776589734354015877">Ձեզ հասանելի կլինեն լրացուցիչ գործառույթներ</translation>
 <translation id="6776729248872343918">Միացնել արագ զուգակցումը</translation>
 <translation id="6777817260680419853">Վերահասցեավորումն արգելափակված է</translation>
 <translation id="6779092717724412415">Այսպիսի ընդգծում ստեղծելու համար ընտրեք ցանկացած տեքստ և սեղմեք մկնիկի աջ կոճակը։</translation>
@@ -6337,6 +6403,7 @@
 <translation id="6818547713623251698">Դիտել հեռախոսի լուսանկարները, մեդիաֆայլերը, ծանուցումները և հավելվածները</translation>
 <translation id="6818802132960437751">Վիրուսներից պաշտպանության ներկառուցված համակարգ</translation>
 <translation id="6818920801736417483">Պահե՞լ գաղտնաբառերը</translation>
+<translation id="6820079682647046800">Kerberos իսկորոշումը ձախողվեց</translation>
 <translation id="6823174134746916417">Հպահարթակի tap-to-click գործառույթը</translation>
 <translation id="6824564591481349393">Պատճենել &amp;էլփոստի հասցեն</translation>
 <translation id="6824584962142919697">&amp;Ստուգել տարրերը</translation>
@@ -6362,6 +6429,7 @@
 <translation id="6839916869147598086">Մուտքի էջը փոխվել է</translation>
 <translation id="6840155290835956714">Հարցնել՝ մինչ ուղարկելը</translation>
 <translation id="6840184929775541289">Հավաստագրման կենտրոն չէ</translation>
+<translation id="6840214587087739194">Հասցեն ջնջվել է</translation>
 <translation id="6841143363521180029">Ֆայլը գաղտնագրված է</translation>
 <translation id="6841186874966388268">Սխալներ</translation>
 <translation id="6842136130964845393">Հաստատեք ձեր ինքնությունը, որպեսզի պահված գաղտնաբառերը միշտ հասանելի լինեն ձեզ</translation>
@@ -6489,6 +6557,7 @@
 <translation id="6955698182324067397">Դուք միացնում եք ChromeOS-ի վրիպազերծման գործառույթները, որոնք կկարգավորեն sshd daemon-ը և թույլ կտան սկզբնաբեռնել USB կրիչից։</translation>
 <translation id="6955893174999506273">Նշանակել ևս 1 փոխանջատիչ</translation>
 <translation id="6957044667612803194">Անվտանգության բանալին չի աջակցում PIN կոդեր</translation>
+<translation id="6960133692707095572">Այցելել առանց տոմսի</translation>
 <translation id="6960507406838246615">Պահանջվում է թարմացնել Լինուքսը</translation>
 <translation id="8979541182892637256">Չհաջողվեց ներբեռնել <ph name="LANGUAGE"/> լեզվով խոսքի ճանաչման ֆայլերը։ Ավելի ուշ մենք կփորձենք նորից ներբեռնել ֆայլերը։ Մինչև ներբեռնման ավարտը խոսքի ձայնագրությունները փոխանցվում են Brave-ին՝ մշակման համար։</translation>
 <translation id="696103774840402661">Այս <ph name="DEVICE_TYPE"/> սարքի բոլոր օգտատերերի ֆայլերն ու տեղային տվյալները ընդմիշտ ջնջվել են։</translation>
@@ -6604,9 +6673,10 @@
 <translation id="7044211973375150246">Կա հավելված, որը կարգավորված է այնպես, որ կարողանա բացել նույն հղումները, ինչ <ph name="APP_NAME"/> հավելվածը։ Դա նշանակում է, որ <ph name="APP_NAME_2"/> հավելվածը չի կարողանա բացել աջակցվող հղումներ։</translation>
 <translation id="7044606776288350625">Տվյալների համաժամացում</translation>
 <translation id="7047059339731138197">Ընտրեք ֆոնը</translation>
-<translation id="7048457618657122233">Կիսվել հղումով՝ <ph name="SHARE_TARGET"/></translation>
 <translation id="7049293980323620022">Պահե՞լ ֆայլը:</translation>
 <translation id="7050037487872780845">Թեժ կետի սխալ կազմաձև</translation>
+<translation id="7050519587566342213">Դիտարկումն ավելի հարմար է դառնում, քանի որ կայքերը սկսում են ավելի շատ ձեզ վստահել։</translation>
+<translation id="7051551856857948729">Թաքցնել IBAN-ի արժեքը</translation>
 <translation id="7052237160939977163">Ուղարկել կատարողականության հետագծման տվյալները</translation>
 <translation id="7053983685419859001">Արգելափակել</translation>
 <translation id="7055152154916055070">Վերահասցեավորումն արգելափակված է՝</translation>
@@ -6673,7 +6743,6 @@
 <translation id="711840821796638741">Ցուցադրել կառավարվող էջանիշները</translation>
 <translation id="8651796563067586593">Այս էջում կարող եք կառավարել ձեր Brave հաշիվները, որոնցում մուտք եք գործել։ <ph name="LINK_BEGIN"/>Իմանալ ավելին<ph name="LINK_END"/></translation>
 <translation id="5450502361144700252">Brave դիտարկիչի և Android սարքի թրաֆիկը կարգելահանվեն, երբ VPN-ի հետ կապը վերականգնվի</translation>
-<translation id="7120865473764644444">Չհաջողվեց միանալ համաժամացման սերվերին: Նորից ենք փորձում…</translation>
 <translation id="7121438501124788993">Մշակողի ռեժիմ</translation>
 <translation id="7121728544325372695">Խելացի գծիկներ</translation>
 <translation id="7123030151043029868">Թույլատրվում է ավտոմատ ներբեռնել մի քանի ֆայլ</translation>
@@ -6802,6 +6871,7 @@
 <translation id="7255002516883565667">Տվյալ պահին դուք ունեք մի քարտ, որը կարող է օգտագործվել միայն այս սարքում</translation>
 <translation id="7255935316994522020">Կիրառել</translation>
 <translation id="7256069762010468647">Կայքն օգտագործում է ձեր տեսախցիկը</translation>
+<translation id="7256634071279256947">Հետևի խոսափող</translation>
 <translation id="7256710573727326513">Բացել ներդիրով</translation>
 <translation id="7257173066616499747">Wi-Fi ցանցեր</translation>
 <translation id="725758059478686223">Տպման ծառայություն</translation>
@@ -6821,6 +6891,7 @@
 <translation id="7269736181983384521">«Փոխանակում մոտակա սարքերի հետ» գործառույթի տվյալների օգտագործում</translation>
 <translation id="7272674038937250585">Որևէ նկարագրություն չկա</translation>
 <translation id="7273110280511444812">վերջին անգամ կցվել է <ph name="DATE"/>-ին</translation>
+<translation id="7273921429569738933">Սպամի և խարդախության կանխումը միացված է</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> մինչև լրիվ լիցքավորվելը</translation>
 <translation id="727952162645687754">Ներբեռնման սխալ</translation>
 <translation id="1484912962860902625">Վնասաբեր ծրագրեր որոնելիս սխալ առաջացավ</translation>
@@ -6891,6 +6962,7 @@
 <translation id="7352651011704765696">Ինչ-որ սխալ տեղի ունեցավ</translation>
 <translation id="7353261921908507769">Ձեր կոնտակտները կարող են տվյալներով կիսվել ձեզ հետ, երբ մոտակայքում են։ Տվյալների փոխանցումը չի սկսվի, մինչև դուք չհաստատեք։</translation>
 <translation id="735361434055555355">Linux-ը տեղադրվում է...</translation>
+<translation id="7354120289251608189">Այժմ դուք ցանկացած ժամանակ կարող եք փոխել դիտարկիչի տեսքը</translation>
 <translation id="7356908624372060336">Ցանցային մատյաններ</translation>
 <translation id="735745346212279324">VPN-ն ապակապակցված է</translation>
 <translation id="7358324924540718595">Հիշողություններն այսօր թաքցված են</translation>
@@ -7040,6 +7112,7 @@
 <translation id="7476989672001283112">Ավտոմատ արգելափակված թույլտվություններ՝ <ph name="PERMISSION"/> ու ևս <ph name="COUNT"/></translation>
 <translation id="7477748600276493962">Ստեղծել QR կոդ այս էջի համար</translation>
 <translation id="7477793887173910789">Վերահսկեք երաժշտությունը, տեսանյութերը և այլն</translation>
+<translation id="7478069565037869084">Լայն</translation>
 <translation id="7478485216301680444">Հնարավոր չէ տեղադրել kiosk հավելվածը:</translation>
 <translation id="7478658909253570368">Թույլ չտալ կայքերին միանալ հաջորդական միացքներին</translation>
 <translation id="7479221278376295180">Տվյալներ հիշողության օգտագործման մասին</translation>
@@ -7109,7 +7182,6 @@
 <translation id="7550830279652415241">bookmarks_<ph name="DATESTAMP"/>.html</translation>
 <translation id="7551059576287086432"><ph name="FILE_NAME"/> ֆայլի ներբեռնումը ձախողվեց</translation>
 <translation id="7551643184018910560">Ամրացնել դարակում</translation>
-<translation id="7552658769580484674">Ինքնալրացման մասին կարծիքի հայտնում</translation>
 <translation id="7552846755917812628">Փորձեք անել հետևյալը՝</translation>
 <translation id="7553012839257224005">Լինուքսի կոնտեյները ստուգվում է</translation>
 <translation id="7553242001898162573">Մուտքագրեք ձեր գաղտնաբառը</translation>
@@ -7171,6 +7243,7 @@
 <translation id="7609148976235050828">Միացեք համացանցին և նորից փորձեք:</translation>
 <translation id="7612401678989660900">Հասանելի դարձնել հավելվածների և կայքերի համար, որոնք ունեն խոսափողի օգտագործման թույլտվություն</translation>
 <translation id="7612655942094160088">Միացնել կապակցված հեռախոսի գործառույթները։</translation>
+<translation id="7612989789287281429">Մուտք…</translation>
 <translation id="7614260613810441905">Հարցնել, երբ որևէ կայք ուզենա փոփոխել ձեր սարքի ֆայլերը և պանակները (խորհուրդ է տրվում)</translation>
 <translation id="761530003705945209">Կրկնօրինակ Google Drive-ում։ Ցանկացած ժամանակ հեշտությամբ վերականգնեք ձեր տվյալները կամ տեղափոխեք մեկ այլ սարք։ Պահուստավորումը ներառում է հավելվածների տվյալները։ Կրկնօրինակները վերբեռնվում են Brave և գաղտնագրվում ձեր Brave հաշվի գաղտնաբառի միջոցով։</translation>
 <translation id="7615365294369022248">Չհաջողվեց ավելացնել հաշիվը</translation>
@@ -7287,13 +7360,13 @@
 <translation id="7702574632857388784">Հեռացնել «<ph name="FILE_NAME"/>» ֆայլը ցանկից</translation>
 <translation id="7702907602086592255">Տիրույթ</translation>
 <translation id="7704305437604973648">Խնդիր</translation>
-<translation id="7704317875155739195">Ավտոմատ լրացնել որոնման հարցումները և URL-ները</translation>
 <translation id="7704521324619958564">Բացել Play Խանութը</translation>
 <translation id="7705276765467986571">Չհաջողվեց բեռնել էջանիշի մոդելը:</translation>
 <translation id="7705334495398865155">Նշել սարքակազմի պատահական նույնացուցիչ (BSSID), որպեսզի մյուս օգտատերերը չկարողանան հետագծել այս սարքը։</translation>
 <translation id="7705524343798198388">VPN</translation>
 <translation id="7707108266051544351">Այս կայքին արգելվել է օգտագործել շարժման տվիչները:</translation>
 <translation id="7707922173985738739">Օգտագործել բջջային ինտերնետ</translation>
+<translation id="770831926727930011">Սարքի տվյալները պաշտպանված են ձեր հին գաղտնաբառով։ Մուտքագրեք ձեր հին գաղտնաբառը՝ սարքի տվյալները վերականգնելու համար։</translation>
 <translation id="7709152031285164251">Չհաջողվեց՝ <ph name="INTERRUPT_REASON"/></translation>
 <translation id="7710568461918838723">&amp;Հեռարձակել...</translation>
 <translation id="7711900714716399411">Օգտագործեք USB մալուխ՝ հեռախոսը համակարգչին միացնելու համար։ Եթե հեռախոսն արդեն միացված է, USB մալուխն անջատեք հեռախոսից և նորից միացրեք։</translation>
@@ -7323,6 +7396,7 @@
 <translation id="7730683939467795481">Այս էջը փոփոխվել է «<ph name="EXTENSION_NAME"/>» ընդլայնման կողմից</translation>
 <translation id="7735165285389721951">Steam-ի տեղադրումն ընթացքում է։ Նախքան նորից փորձելը սպասեք դրա ավարտին։</translation>
 <translation id="7737115349420013392">Զուգակցում «<ph name="DEVICE_NAME"/>» սարքի հետ...</translation>
+<translation id="7737203573077018777">Ստացվել է ուղեցույց՝ <ph name="PROOF_OF_POSSESSION_INSTRUCTION_NAME"/></translation>
 <translation id="7737846262459425222">Դուք ցանկացած ժամանակ կարող եք փոխել սա՝ անցնելով Կարգավորումներ &gt; Brave Օգնական &gt; Էկրանի համատեքստ։</translation>
 <translation id="7737948071472253612">Չի թույլատրվում օգտագործել ձեր տեսախցիկը</translation>
 <translation id="77381465218432215">Ցույց տալ հնչյունատարբերիչ նիշեր և հատուկ նշաններ</translation>
@@ -7419,7 +7493,6 @@
 <translation id="7819605256207059717">Արգելափակվել է ձեր կազմակերպության կողմից</translation>
 <translation id="7820561748632634942">Նշանակե՞լ այլ փոխանջատիչներ</translation>
 <translation id="782057141565633384">Պատճենել տեսանյութի հասցեն</translation>
-<translation id="7822187537422052256">Իսկապե՞ս ուզում եք հեռացնել այս հաշիվը։</translation>
 <translation id="7824864914877854148">Չհաջողվեց ավարտել սխալի պատճառով</translation>
 <translation id="782590969421016895">Օգտագործել ընթացիկ էջերը</translation>
 <translation id="7826174860695147464">Հնացած դիտարկիչների աջակցում (LBS) – Ներքին</translation>
@@ -7522,6 +7595,7 @@
 <translation id="7912080627461681647">Ձեր գաղտնաբառը փոխվել է սերվերում։ Դուրս եկեք հաշվից ու նորից մուտք գործեք։</translation>
 <translation id="7912974581251770345">Թարգմանություն</translation>
 <translation id="7915457674565721553">Ծնողական վերահսկողությունը կարգավորելու համար միացեք համացանցին</translation>
+<translation id="7916364730877325865">Ձեր կազմակերպությունը չի թույլատրում միացնել այս հաշվի հետ համաժամացումը</translation>
 <translation id="7918257978052780342">Գրանցվել</translation>
 <translation id="7919123827536834358">Ավտոմատ թարգմանել այս լեզուներով էջերը</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> վ</translation>
@@ -7575,7 +7649,6 @@
 <translation id="7955177647836564772">Եթե Smart Lock-ը միացված է, և հեռախոսն ապակողպված է, PIN կոդ կամ գաղտնաբառ մուտքագրելու կարիք չկա</translation>
 <translation id="7956373551960864128">Ձեր պահված տպիչները</translation>
 <translation id="7957074856830851026">Տեսնել սարքի մասին տեղեկություններ, օրինակ՝ սերիական համարը և օբյեկտի ID-ն</translation>
-<translation id="7957186326898555886">Կարծիք հայտնել հիշողության տնտեսման մասին</translation>
 <translation id="7959074893852789871">Ֆայլը մի քանի վկայագիր ունի, որոնցից մի քանիսը չեն ներմուծվել՝</translation>
 <translation id="7961015016161918242">Երբեք</translation>
 <translation id="7963001036288347286">Հպահարթակի արագացում</translation>
@@ -7613,6 +7686,7 @@
 <translation id="7990863024647916394"><ph name="DISPLAY_NAME"/> Ձայն <ph name="COUNT"/></translation>
 <translation id="7991296728590311172">Switch Access-ի կարգավորումներ</translation>
 <translation id="7992203134935383159">Խոսքի սինթեզ</translation>
+<translation id="7994515119120860317">Թարգմանել պատկերում առկա տեքստը <ph name="VISUAL_SEARCH_PROVIDER"/>-ի միջոցով</translation>
 <translation id="799570308305997052">Վեբ դիտում</translation>
 <translation id="7997826902155442747">Գործընթացների առաջնահերթություն</translation>
 <translation id="7999229196265990314">Ստեղծվել են հետևյալ ֆայլերը՝
@@ -7645,6 +7719,7 @@
 <translation id="8023801379949507775">Թարմացնել ընդլայնումները հիմա</translation>
 <translation id="8025151549289123443">Կողպէկրան և մուտք</translation>
 <translation id="8026334261755873520">Դիտարկումների տվյալների մաքրում</translation>
+<translation id="8026471514777758216">Ձեր բոլոր սարքերը</translation>
 <translation id="8028060951694135607">Microsoft-ի բանալիների վերականգնում</translation>
 <translation id="8028803902702117856">Ներբեռնվում է <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="8028993641010258682">Չափ</translation>
@@ -7656,6 +7731,7 @@
 <translation id="8033023935541439900">Շեշտի նշանների ընտրացանկը բացվեց։ Ձախ և աջ սլաքների օգնությամբ ընտրեք ձեր ուզած շեշտը, այնուհետև սեղմեք Enter՝ այն զետեղելու համար։</translation>
 <translation id="8033827949643255796">ընտրվեց</translation>
 <translation id="8033958968890501070">Ժամանակը սպառվել է</translation>
+<translation id="8036193484521570992">Օգնեք բարելավել ինքնալրացման գործառույթը</translation>
 <translation id="8037117027592400564">Տեքստի ընթերցում սինթեզված խոսքի միջոցով</translation>
 <translation id="8037357227543935929">Հարցնել (կանխադրված)</translation>
 <translation id="803771048473350947">Ֆայլ</translation>
@@ -7692,7 +7768,6 @@
 <translation id="8059417245945632445">&amp;Հետազոտել սարքերը</translation>
 <translation id="8059456211585183827">Տպիչներ չկան, որոնք կարող եք պահել։</translation>
 <translation id="8061091456562007989">Հետ փոխել</translation>
-<translation id="8061965471006133016">Ձեր գաղտնաբառերի և այլ տվյալների լրացուցիչ պաշտպանություն</translation>
 <translation id="8061970399284390013">Ուղղագրության և քերականության ստուգում</translation>
 <translation id="8061991877177392872">Դուք արդեն կարգավորել եք Voice Match-ը այլ սարքում։ Այս նախկին ձայնագրություններն օգտագործվել են՝ ձեր ձայնի նմուշն այս սարքում ստեղծելու համար։</translation>
 <translation id="8062844841289846053">{COUNT,plural, =1{1 թերթ}one{{COUNT} թերթ}other{{COUNT} թերթ}}</translation>
@@ -7853,6 +7928,7 @@
 <translation id="8206745257863499010">Բլյուզ</translation>
 <translation id="8206859287963243715">Բջջային</translation>
 <translation id="8207404892907560325">Ընտրեք անցաբառ</translation>
+<translation id="8207794858944505786"><ph name="DEFAULT_VM_NAME"/> վիրտուալ մեքենան գոյություն ունի, սակայն չի աջակցվում։ Վիրտուալ մեքենայի վավեր տեսակն է՝ <ph name="VM_TYPE"/>։ Դիմեք ձեր ադմինիստրատորին։</translation>
 <translation id="8208188204689616705">Այս կայքերը <ph name="FPS_OWNER"/>-ի կողմից սահմանված խմբում են։ Խմբի կայքերը կարող են տեսնել ձեր գործողությունները խմբում։</translation>
 <translation id="8208216423136871611">Չպահել</translation>
 <translation id="8210398899759134986">{MUTED_NOTIFICATIONS_COUNT,plural, =1{Նոր ծանուցում}one{# նոր ծանուցում}other{# նոր ծանուցում}}</translation>
@@ -7866,7 +7942,6 @@
 <translation id="822050276545350872">Սպասելու կարիք այլևս չի լինի</translation>
 <translation id="8221491193165283816">Դուք սովորաբար արգելափակում եք ծանուցումները։ Այս կայքում ծանուցումներ ստանալու համար սեղմեք այստեղ։</translation>
 <translation id="822347941086490485">HID սարքերի որոնում…</translation>
-<translation id="8223573963214454788">Շարունակել և ջնջել տվյալները</translation>
 <translation id="8225046344534779393">Ստուգեք կապը</translation>
 <translation id="8225173734540525852"><ph name="APPLICATION_NAME"/> հավելվածի աշխատանքի համար պահանջվում է Google Drive պահոց։</translation>
 <translation id="8225265270453771718">Կիսվեք հավելվածի պատուհանով</translation>
@@ -7902,6 +7977,7 @@
 <translation id="8251509999076836464">Զուգակցում «<ph name="DEVICE_NAME"/>» սարքի հետ</translation>
 <translation id="8251578425305135684">Մանրապատկերը հեռացվել է:</translation>
 <translation id="825238165904109940">Միշտ ցույց տալ ամբողջական URL-ները</translation>
+<translation id="8252538334423261825">Չհաջողվեց ավելացնել ընդլայնումը</translation>
 <translation id="8252569384384439529">Վերբեռնում...</translation>
 <translation id="8253198102038551905">Ցանցի հատկությունները տեսնելու համար սեղմեք «+»</translation>
 <translation id="8255212965098517578">Նոր լուսանկարներ, ծանուցումներ և հավելվածներ</translation>
@@ -7930,6 +8006,7 @@
 <translation id="8272443605911821513">Կառավարեք ձեր ընդլայնումները՝ «Լրացուցիչ գործիքներում» սեղմելով Ընդլայնումներ:</translation>
 <translation id="8272786333453048167">Նորից թույլատրել</translation>
 <translation id="8273905181216423293">Ներբեռնել</translation>
+<translation id="827488840488530039">Էջը, որը փորձում եք այցելել, չկարողացավ հաստատել ձեր Kerberos տոմսերը</translation>
 <translation id="8274921654076766238">Խոշորացույցի տեղափոխում ստեղնաշարի միջոցով</translation>
 <translation id="8274924778568117936">Տեղադրման ժամանակ <ph name="DEVICE_TYPE"/> սարքը չանջատեք և չփակեք: Թարմացումից հետո <ph name="DEVICE_TYPE"/>-ն ավտոմատ կվերագործարկվի:</translation>
 <translation id="8275038454117074363">Ներմուծել</translation>
@@ -7998,7 +8075,6 @@
 <translation id="8340547030807793004"><ph name="DEVICE"/> սարքի հետ կապված այլ գործողություններ</translation>
 <translation id="8341557223534936723">{NUM_SITES,plural, =1{Ստուգեք <ph name="BEGIN_BOLD"/>1 կայք<ph name="END_BOLD"/>, որը վերջերս բազմաթիվ ծանուցումներ է ուղարկել}one{Ստուգեք <ph name="BEGIN_BOLD"/>{NUM_SITES} կայք<ph name="END_BOLD"/>, որը վերջերս բազմաթիվ ծանուցումներ է ուղարկել}other{Ստուգեք <ph name="BEGIN_BOLD"/>{NUM_SITES} կայքեր<ph name="END_BOLD"/>, որոնք վերջերս բազմաթիվ ծանուցումներ են ուղարկել}}</translation>
 <translation id="8342221978608739536">Չեմ փորձել</translation>
-<translation id="8342399870062010251">Իմանալ ավելին հիշողության տնտեսման մասին</translation>
 <translation id="8342861492835240085">Ընտրել հավաքածու</translation>
 <translation id="8345848587667658367">Այժմ դուք կարող եք դիտել ձեր հեռախոսի վերջին լուսանկարները, մեդիաֆայլերը, ծանուցումներն ու հավելվածները</translation>
 <translation id="8347227221149377169">Տպելու առաջադրանքներ</translation>
@@ -8017,6 +8093,7 @@
 <translation id="8358912028636606457">Ներդիրի ձայնի հեռարձակումն այս սարքում չի աջակցվում:</translation>
 <translation id="2921493528667739769">Պահել իմ Brave հաշվում</translation>
 <translation id="8360140320636871023">Անհատականացրեք ձեր էկրանի թեման</translation>
+<translation id="8360267485906769442">«Կարծիք հայտնել» կոճակ</translation>
 <translation id="8363095875018065315">կայուն</translation>
 <translation id="8363142353806532503">Խոսափողի օգտագործումն արգելված է</translation>
 <translation id="8366396658833131068">Ցանցի կապակցումը վերականգնվել է: Kiosk հավելվածը գործարկելու համար ընտրեք այլ ցանց կամ սեղմեք «Շարունակել» կոճակը:</translation>
@@ -8163,6 +8240,7 @@
 <translation id="8498214519255567734">Թույլ է տալիս ավելի հանգիստ նայել էկրանին և կարդալ թույլ լուսավորության պայմաններում</translation>
 <translation id="8498395510292172881">Շարունակեք կարդալ Brave-ում</translation>
 <translation id="8499083585497694743">Միացնել խոսափողը</translation>
+<translation id="8499526927826495298">Ուղարկել <ph name="BEGIN_LINK1"/>ինքնալրացման մետատվյալները<ph name="END_LINK1"/></translation>
 <translation id="8502536196501630039">Google Play-ից հավելվածներ օգտագործելու համար նախ պետք է վերականգնեք ձեր հավելվածները: Որոշ տվյալներ հնարավոր է չպահպանվեն:</translation>
 <translation id="8503813439785031346">Օգտանուն</translation>
 <translation id="850382998924680137">Դիտել եք այսօր</translation>
@@ -8184,6 +8262,7 @@
 <translation id="8525306231823319788">Լիաէկրան</translation>
 <translation id="8526813720153458066">SSH</translation>
 <translation id="8528074251912154910">Ավելացնել լեզուներ</translation>
+<translation id="8528479410903501741">Պահել IBAN-ը</translation>
 <translation id="8528962588711550376">Մուտք...</translation>
 <translation id="8529925957403338845">Չհաջողվեց մոդեմի ակնթարթային ռեժիմով կապ հաստատել</translation>
 <translation id="8531701051932785007">Բարելավված Ապահով դիտարկումն անջատված է</translation>
@@ -8291,12 +8370,14 @@
 <translation id="8634348081024879304">Դուք այլևս չեք կարողանա օգտագործել ձեր վիրտուալ քարտը՝ Google Pay-ի միջոցով վճարումներ կատարելու համար։ <ph name="BEGIN_LINK"/>Իմանալ ավելին վիրտուալ քարտերի մասին<ph name="END_LINK"/></translation>
 <translation id="8635628933471165173">Վերաբեռնում…</translation>
 <translation id="8636284842992792762">Ընդլայնումների նախապատրաստում…</translation>
+<translation id="8636323803535540285">Արագ բացելու համար դյուրանցում ավելացրեք <ph name="BRAND"/>ում</translation>
 <translation id="8636500887554457830">Թույլ չտալ կայքերին ցուցադրել ելնող պատուհաններ և օգտագործել վերահասցեավորումներ</translation>
 <translation id="8637688295594795546">Համակարգի թարմացումը մատչելի է: Պատրաստվում է ներբեռնել…</translation>
 <translation id="8639047128869322042">Վնասաբեր ծրագրերի որոնում...</translation>
 <translation id="8639635302972078117">Օգտագործման և դիագնոստիկ տվյալների ուղարկում։ Այս սարքը Brave-ին ավտոմատ ուղարկում է ախտորոշման, ինչպես նաև սարքի և հավելվածի օգտագործման մասին տվյալներ։ Այս տեղեկությունները չեն օգտագործվի ձեր երեխային նույնականացնելու համար և կօգնեն բարելավել համակարգի ու հավելվածի աշխատանքի կայունությունը։ Հավաքված տեղեկությունների մի մասը օգտակար կլինի մեր գործընկերների, օրինակ, Android ծրագրավորողների համար։ Եթե Վեբ որոնման և հավելվածների լրացուցիչ պատմությունը միացված է, այս տվյալները կպահվեն երեխայի Brave հաշվում։</translation>
 <translation id="8642900771896232685">2 վայրկյան</translation>
 <translation id="8642947597466641025">Մեծացնել տեքստը</translation>
+<translation id="8643403533759285912">Ջնջել խումբը</translation>
 <translation id="6529597483902964581"><ph name="FILE_NAME"/> ֆայլը կարող է վտանգավոր լինել: Ստուգե՞լ այն Brave-ի լրացուցիչ պաշտպանության միջոցով։</translation>
 <translation id="8644047503904673749">{COUNT,plural, =0{Քուքիներ չկան}=1{Արգելափակված է 1 քուքի}one{Արգելափակված է # քուքի}other{Արգելափակված է # քուքի}}</translation>
 <translation id="864423554496711319">Ձեր հաշվում պահված սարքեր</translation>
@@ -8304,7 +8385,6 @@
 <translation id="8645354835496065562">Միշտ թույլատրել տվիչների օգտագործումը</translation>
 <translation id="8645920082661222035">Հայտնաբերում է վտանգավոր իրադարձություններն ու զգուշացնում դրանց մասին</translation>
 <translation id="8646209145740351125">Անջատել համաժամացումը</translation>
-<translation id="8646340610303779673">Չհաջողվեց բեռնել PPD ֆայլը։</translation>
 <translation id="864637694230589560">Կայքերը հաճախ ծանուցումներ են ուղարկում՝ տեղեկացնելու ձեզ հրատապ լուրերի կամ զրույցի հաղորդագրությունների մասին</translation>
 <translation id="8646467750715887511">Էջերը բեռնվում են միայն, եթե բացում եք դրանք։</translation>
 <translation id="8647385344110255847">Ձեր թույլտվությամբ երեխան կարող է հավելվածներ տեղադրել Google Play-ի միջոցով</translation>
@@ -8368,12 +8448,15 @@
 <translation id="869884720829132584">Հավելվածների ընտրացանկ</translation>
 <translation id="869891660844655955">Սպառման ժամկետ</translation>
 <translation id="8699188901396699995">PPD ֆայլ «<ph name="PRINTER_NAME"/>» տպիչի համար</translation>
+<translation id="8702278591052316269">Թաքցված պահված ներդիրների խմբեր պարունակող ընտրացանկ</translation>
 <translation id="8702825062053163569">Ձեր <ph name="DEVICE_TYPE"/> սարքը կողպվել է։</translation>
+<translation id="8703166594516496633">Փոքրացնել տառաչափը</translation>
 <translation id="8703346390800944767">Բաց թողնել գովազդը</translation>
 <translation id="8705331520020532516">Սերիական համարը</translation>
 <translation id="8705580154597116082">Հեռախոսի միջոցով հասանելի է Wi-Fi ցանց</translation>
 <translation id="8705629851992224300">Չհաջողվեց կարդալ անվտանգության բանալին</translation>
 <translation id="8706111173576263877">QR կոդը սկանավորվեց։</translation>
+<translation id="8707318721234217615">Տառերի միջև տարածություն</translation>
 <translation id="8708000541097332489">Մաքրել ելնելիս</translation>
 <translation id="870805141700401153">Microsoftի Առանձին կոդի ստորագրում</translation>
 <translation id="8708671767545720562">&amp;Լրացուցիչ տեղեկություններ</translation>
@@ -8447,6 +8530,7 @@
 <translation id="4570609078116869893">Ինքնաթարմացնել Brave-ը բոլոր օգտատերերի համար</translation>
 <translation id="8770406935328356739">Ընդլայնման արմատային գրացուցակ</translation>
 <translation id="8771300903067484968">Գլխավոր էջը վերակայվել է կանխադրված ֆոնով։</translation>
+<translation id="8773280816776735812">Ցույց տալ IBAN-ի արժեքը</translation>
 <translation id="8773302562181397928">Պահել «<ph name="PRINTER_NAME"/>» տպիչը</translation>
 <translation id="8774379074441005279">Հաստատեք վերականգնումը</translation>
 <translation id="8774934320277480003">Վերին լուսանցք</translation>
@@ -8644,7 +8728,6 @@
 <translation id="8952831374766033534">Կազմաձևումը չի աջակցվում՝ <ph name="ERROR_LINE"/></translation>
 <translation id="8953476467359856141">Լիցքավորման ընթացքում</translation>
 <translation id="895347679606913382">Մեկնարկ…</translation>
-<translation id="8956230710625245889">Բացել Reader-ում</translation>
 <translation id="8957757410289731985">Կարգավորել պրոֆիլը</translation>
 <translation id="895944840846194039">JavaScript հիշողություն</translation>
 <translation id="8960208913905765425">Արագ պատասխաններ․ չափման միավորների փոխարկում</translation>
@@ -8765,6 +8848,7 @@
 <translation id="90528604757378587">Աշխատանքը ֆոնային ռեժիմում և որոշ վիզուալ էֆեկտներ, օրինակ՝ սահուն ոլորումը, կարող են սահմանափակվել։</translation>
 <translation id="9053563360605707198">Տպել երկու կողմին</translation>
 <translation id="9055636786322918818">Օգտագործել RC4 գաղտնագրումը։ Այս տարբերակի օգտագործումն ապահով չէ, քանի որ RC4 գաղտնագրերը հուսալի չեն։</translation>
+<translation id="9056788090206401048">Bluetooth-ը պետք է միացված լինի, որպեսզի կարողանաք օգտագործել ձեր անցաբառը մեկ այլ սարքում։ Սա կարող եք ցանկացած ժամանակ կառավարել կարգավորումներում։</translation>
 <translation id="9056810968620647706">Համընկնումներ չեն գտնվել:</translation>
 <translation id="9057007989365783744"><ph name="SUPERVISED_USER_NAME"/>-ին անհրաժեշտ է հետևյալ բովանդակությունն օգտագործելու թույլտվություն՝</translation>
 <translation id="9057354806206861646">Ժամանակացույցի թարմացում</translation>
@@ -8812,7 +8896,6 @@
 <translation id="9094038138851891550">Օգտանունն անվավեր է</translation>
 <translation id="9094859731829297286">Պահպանե՞լ ֆիքսված չափ Լինուքսի սկավառակի համար</translation>
 <translation id="9094982973264386462">Հեռացնել</translation>
-<translation id="9095253524804455615">Հեռացնել</translation>
 <translation id="9095364055741191097">Չհաջողվեց վերականգնել սարքի տվյալները</translation>
 <translation id="9099220545925418560">Ձեր այցելությունների պատմության հիման վրա։ Այս կարգավորումն անջատված է։</translation>
 <translation id="9100416672768993722">Ներածման նախորդ եղանակին անցնելու համար սեղմեք <ph name="BEGIN_SHORTCUT"/><ph name="BEGIN_CTRL"/>Ctrl<ph name="END_CTRL"/><ph name="SEPARATOR"/><ph name="BEGIN_SPACE"/>բացատ<ph name="END_SPACE"/><ph name="END_SHORTCUT"/></translation>
@@ -8928,7 +9011,6 @@
 <translation id="9203904171912129171">Ընտրեք սարքը</translation>
 <translation id="920410963177453528">Սեղմեք իջնող ցանկը՝ այլ վահանակ ընտրելու համար</translation>
 <translation id="9206889157914079472">Ստիլուսի միջոցով նշումների ստեղծում կողպէկրանից</translation>
-<translation id="9208192193641542858">Սարքի տվյալները պաշտպանված են ձեր հին գաղտնաբառով։ Եթե դուք վերջերս փոխել եք գաղտնաբառը, ապա փորձեք օգտագործել ձեր հին գաղտնաբառը։</translation>
 <translation id="9209563766569767417">Լինուքսի կոնտեյների կարգավորումները ստուգվում են</translation>
 <translation id="9209689095351280025">Կայքերը չեն կարող օգտագործել քուքիները, որոնց միջոցով հետագծվում են ձեր գործողությունները համացանցում։</translation>
 <translation id="9211177926627870898">Պահանջվում է թարմացում</translation>

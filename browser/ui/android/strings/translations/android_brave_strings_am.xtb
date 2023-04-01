@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="am">
+<translation id="3478449063771497234">ማሳወቂያዎች ተሰናክለዋል</translation>
+<translation id="7466579932043491502">Brave Rewards ማሳወቂያዎች ተሰናክለው ላይሰሩ ይችላሉ።</translation>
+<translation id="4259212006412783790">አብራ</translation>
+<translation id="6112331814131703370">'ወደ መተግበሪያው ቀይር' ማስታወቂያዎችን አግድ</translation>
 <translation id="4744921452903670666">ምን እንደሚያስቡ ይንገሩን!</translation>
 <translation id="2524310205387880526">ለ Brave ደረጃ ስጥ</translation>
 <translation id="4104400246019119780">እናመሰግናለን!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">የእርስዎ <ph name="MONTH_VALUE"/> የማስታወቂያ ሽልማቶች እዚህ ናቸው!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> ሽልማቶች፦ <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">ለመጠየቅ <ph name="TOKEN"/> ቀናት ይቀርዎታል</translation>
-<translation id="2323069945529668668">ውይ!</translation>
-<translation id="7510166204621526816">የብሬቭ ሽልማት ሰርቨር እየሰራ አይደለም፡፡ ይህንን በተቻለን ፍጥነት እናስተካክላለን፡፡</translation>
 <translation id="683765328936486920">ዩቲዩብ ላይ</translation>
 <translation id="8969049974285901797">Twitch ላይ</translation>
 <translation id="3101693828171454453">በቂ ያልሆነ <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">የመለያ የክትትል ዝርዝርን ኣስቀምጥ</translation>
 <translation id="7755766175599167100">ቶክኖችን ፈልግ</translation>
 <translation id="3835223348537121988">ሂሳብ፡</translation>
-<translation id="6888491517683356528">ወደ Ramp ይቀጥሉ</translation>
+<translation id="3956169227169516344">የግዢ ዘዴን ይምረጡ</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
 <translation id="3784455785234192852">ቆልፍ</translation>
 <translation id="8796429300536029044">የNFT ዝርዝር</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="4993345308607970390">የBraveን ቦርሳ እንደገና አስጀምር</translation>
 <translation id="4322846864135539519">የBrave ሽልማቶችዎን ዳግም ለማስጀመር እንደሚፈልጉ እርግጠኛ ነዎት? ለእርስዎ ዋሌት ምትኬ ካልተቀመጠለት ዳግም ማስጀመር ሁሉንም የመለያ ውሂብ (ማንኛውንም ተዛማጅ የገንዘብ ድጋፎችን ጨምሮ) እንዲያጡ ያደርግዎታል። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
+<translation id="6915083716464390008">ከሚከተሉት ምርጫዎች አንዱን ይምረጡ</translation>
+<translation id="7667423728712601865">በቪዛ ወይም በማስተርካርድ ክሪፕቶን ይግዙ።</translation>
+<translation id="3101839349578102016">በባንክ ሂሳብዎ ወዲያውኑ ይግዙ። ዝቅተኛ ክፍያዎች።</translation>
+<translation id="7269640984027668973">በ <ph name="RAMP_PROVIDER"/> ይግዙ</translation>
 <translation id="4862812525895306758">ግብይቱን አጽዳ &amp; የnonce መረጃ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
 <translation id="5421107279168565467">እርግጠኛ ነዎት፣ ግብይቱን እና የ nonce መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው ጥቅም ላይ የሚውለው የአካባቢያዊ የሙከራ ሰርቨር በሚያስኬዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይተይቡ።</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">የተቀባዩ አድራሻ የማስመሰያ ውል አድራሻ ነው።</translation>
 <translation id="3494964159182650590">የሽልማት ማጠቃለያ</translation>
 <translation id="590733288489975971">ከማስታወቂያዎች የተገኙ ሽልማቶች</translation>
-<translation id="207268487070188114">የአንድ-ጊዜ ጠቃሚ ምክር</translation>
+<translation id="2613359062756190460">የአንድ ግዜ ምክሮች</translation>
 <translation id="7577100371127227294">ወርሓዊ መረጃዎች</translation>
 <translation id="7091980679045978090">ግምታዊ ገቢዎች</translation>
 <translation id="1346059596910821859">ምክር</translation>
