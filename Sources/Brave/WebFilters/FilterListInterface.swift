@@ -12,7 +12,7 @@ protocol FilterListInterface {
 }
 
 extension FilterListInterface {
-  @MainActor func makeResource(componentId: String) -> ResourceDownloader.Resource {
+  @MainActor func makeResource(componentId: String) -> BraveS3Resource {
     return .filterListContentBlockingBehaviors(
       uuid: uuid, componentId: componentId
     )

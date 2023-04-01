@@ -465,24 +465,10 @@ public class DebouncingResourceDownloader {
   }()
 
   public static let shared = DebouncingResourceDownloader()
-  private let networkManager: NetworkManager
-  private let servicesKeyName = "SERVICES_KEY"
-  private let servicesKeyHeaderValue = "BraveServiceKey"
-  private let cacheFileName = "ios-debouce"
-  private let cacheFolderName = "debounce-data"
-  private var matcher: Matcher?
-
-  /// A boolean indicating if this is a first time load of this downloader so we only load cached data once
-  private var initialLoad = true
-  /// Initialized with year 1970 to force adblock fetch at first launch.
-  private var lastFetchDate = Date(timeIntervalSince1970: 0)
-  /// How frequently to fetch the data
-  private lazy var fetchInterval = AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
+  private(set) var matcher: Matcher?
 
   /// Initialize this instance with a network manager
-  init(networkManager: NetworkManager = NetworkManager()) {
-    self.networkManager = networkManager
-  }
+  init() {}
 
   /// Setup this downloader with rule `JSON` data.
   ///
@@ -494,87 +480,6 @@ public class DebouncingResourceDownloader {
     let rules = try jsonDecoder.decode([Result<MatcherRule, Error>].self, from: ruleData)
     matcher = Matcher(rules: rules)
   }
-
-  /// Downloads the required resources if they are not available. Loads any cached data if it already exists.
-  public func startLoading() {
-    let now = Date()
-    let resourceURL = self.resourceURL
-    let cacheFileName = [self.cacheFileName, "json"].joined(separator: ".")
-    let etagFileName = [cacheFileName, "etag"].joined(separator: ".")
-    let cacheFolderName = self.cacheFolderName
-
-    guard let cacheFolderURL = FileManager.default.getOrCreateFolder(name: cacheFolderName) else {
-      Logger.module.error("Failed to get folder: \(cacheFolderName)")
-      return
-    }
-
-    if initialLoad {
-      initialLoad = false
-
-      do {
-        // Load data from disk if we have it
-        if let cachedData = try self.dataFromDocument(inFolder: cacheFolderURL, fileName: cacheFileName) {
-          try setup(withRulesJSON: cachedData)
-        }
-      } catch {
-        Logger.module.error("\(error.localizedDescription)")
-      }
-    }
-
-    if now.timeIntervalSince(lastFetchDate) >= fetchInterval {
-      lastFetchDate = now
-
-      let networkManager = self.networkManager
-      let etag: String?
-      let customHeaders: [String: String]
-
-      if let servicesKeyValue = Bundle.main.getPlistString(for: self.servicesKeyName) {
-        customHeaders = [self.servicesKeyHeaderValue: servicesKeyValue]
-      } else {
-        customHeaders = [:]
-      }
-
-      do {
-        etag = try self.stringFromDocument(inFolder: cacheFolderURL, fileName: etagFileName)
-      } catch {
-        etag = nil
-        Logger.module.error("\(error.localizedDescription)")
-      }
-
-      Task { [weak self] in
-        guard let self = self else { return }
-
-        let resource = try await networkManager.downloadResource(
-          with: resourceURL,
-          resourceType: .cached(etag: etag),
-          checkLastServerSideModification: !AppConstants.buildChannel.isPublic,
-          customHeaders: customHeaders
-        )
-
-        guard !resource.data.isEmpty else {
-          return
-        }
-
-        do {
-          // Save the data to file
-          try self.writeDataToDisk(
-            data: resource.data, inFolder: cacheFolderURL, fileName: cacheFileName
-          )
-
-          // Save the etag to file
-          if let data = resource.etag?.data(using: .utf8) {
-            try self.writeDataToDisk(
-              data: data, inFolder: cacheFolderURL, fileName: etagFileName
-            )
-          }
-
-          try setup(withRulesJSON: resource.data)
-        } catch {
-          Logger.module.error("\(error.localizedDescription)")
-        }
-      }
-    }
-  }
   
   /// Get a possible redirect url for the given URL. Does this
   ///
@@ -583,40 +488,6 @@ public class DebouncingResourceDownloader {
   func redirectChain(for url: URL) -> [(url: URL, rule: RedirectRule)] {
     return matcher?.redirectChain(from: url) ?? []
   }
-
-  /// Load data from disk  given by the folderName and fileName
-  /// and found in the `applicationSupportDirectory` `SearchPathDirectory`.
-  ///
-  /// - Note: `fileName` must contain the full file name including the extension.
-  private func dataFromDocument(inFolder folderURL: URL, fileName: String) throws -> Data? {
-    let fileUrl = folderURL.appendingPathComponent(fileName)
-    return FileManager.default.contents(atPath: fileUrl.path)
-  }
-
-  /// Load string from the document given by the `folderName` and `fileName`
-  /// and found in the `applicationSupportDirectory` `SearchPathDirectory`.
-  ///
-  /// - Note: `fileName` must contain the full file name including the extension.
-  private func stringFromDocument(inFolder folderURL: URL, fileName: String) throws -> String? {
-    let fileUrl = folderURL.appendingPathComponent(fileName)
-    guard let data = FileManager.default.contents(atPath: fileUrl.path) else { return nil }
-    return String(data: data, encoding: .utf8)
-  }
-
-  /// Write data to disk to a file given by `folderName` and `fileName`
-  /// into the `applicationSupportDirectory` `SearchPathDirectory`.
-  ///
-  /// - Note: `fileName` must contain the full file name including the extension.
-  @discardableResult
-  func writeDataToDisk(data: Data, inFolder folderURL: URL, fileName: String) throws -> URL {
-    let fileUrl = folderURL.appendingPathComponent(fileName)
-    try data.write(to: fileUrl, options: [.atomic])
-    return fileUrl
-  }
-}
-
-enum DirectoryError: Error {
-  case cannotFindSearchPathDirectory
 }
 
 extension URL {

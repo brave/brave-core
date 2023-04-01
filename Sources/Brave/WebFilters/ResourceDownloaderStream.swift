@@ -6,21 +6,14 @@
 import Foundation
 
 /// An endless sequence iterator for the given resource
-struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol {
-  /// An object representing the download
-  struct DownloadResult: Equatable {
-    let date: Date
-    let fileURL: URL
-    let isModified: Bool
-  }
-  
-  typealias Element = Result<DownloadResult, Error>
-  private let resource: ResourceDownloader.Resource
-  private let resourceDownloader: ResourceDownloader
+struct ResourceDownloaderStream<Resource: DownloadResourceInterface>: Sendable, AsyncSequence, AsyncIteratorProtocol {
+  typealias Element = Result<ResourceDownloader<Resource>.DownloadResult, Error>
+  private let resource: Resource
+  private let resourceDownloader: ResourceDownloader<Resource>
   private let fetchInterval: TimeInterval
   private var firstLoad = true
   
-  init(resource: ResourceDownloader.Resource, resourceDownloader: ResourceDownloader, fetchInterval: TimeInterval) {
+  init(resource: Resource, resourceDownloader: ResourceDownloader<Resource>, fetchInterval: TimeInterval) {
     self.resource = resource
     self.resourceDownloader = resourceDownloader
     self.fetchInterval = fetchInterval
@@ -35,7 +28,7 @@ struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol 
       // After that we wait only for changes while sleeping
       do {
         self.firstLoad = false
-        let result = try await result()
+        let result = try await resourceDownloader.download(resource: resource)
         return .success(result)
       } catch let error as URLError {
         // Soft fail these errors
@@ -50,7 +43,7 @@ struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol 
       try await Task.sleep(seconds: fetchInterval)
       
       do {
-        let result = try await result()
+        let result = try await resourceDownloader.download(resource: resource)
         guard result.isModified else { continue }
         return .success(result)
       } catch let error as URLError {
@@ -62,22 +55,7 @@ struct ResourceDownloaderStream: Sendable, AsyncSequence, AsyncIteratorProtocol 
     }
   }
   
-  private func result() async throws -> DownloadResult {
-    switch try await resourceDownloader.download(resource: resource) {
-    case .downloaded(let url, let date):
-      return DownloadResult(date: date, fileURL: url, isModified: true)
-    case .notModified(let url, let date):
-      return DownloadResult(date: date, fileURL: url, isModified: false)
-    }
-  }
-  
   func makeAsyncIterator() -> ResourceDownloaderStream {
     return self
-  }
-  
-  static func cachedResult(for resource: ResourceDownloader.Resource) throws -> DownloadResult? {
-    guard let fileURL = ResourceDownloader.downloadedFileURL(for: resource) else { return nil }
-    guard let creationDate = try ResourceDownloader.creationDate(for: resource) else { return nil }
-    return DownloadResult(date: creationDate, fileURL: fileURL, isModified: false)
   }
 }

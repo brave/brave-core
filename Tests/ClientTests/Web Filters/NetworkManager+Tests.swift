@@ -9,7 +9,7 @@ import BraveCore
 
 extension NetworkManager {
   private struct ResourceNotFoundError: Error {}
-  static func makeNetworkManager(for resources: [ResourceDownloader.Resource], statusCode: Int = 200, etag: String? = nil) -> NetworkManager {
+  static func makeNetworkManager(for resources: [BraveS3Resource], statusCode: Int = 200, etag: String? = nil) -> NetworkManager {
     let session = BaseMockNetworkSession { url in
       guard let resource = resources.first(where: { resource in
         url.absoluteURL == resource.externalURL
@@ -20,8 +20,7 @@ extension NetworkManager {
       
       let data = try await self.mockData(for: resource)
       
-      let response = ResourceDownloader.getMockResponse(
-        for: resource,
+      let response = resource.makeMockResponse(
         statusCode: statusCode,
         headerFields: etag != nil ? ["Etag": etag!] : nil
       )
@@ -32,7 +31,7 @@ extension NetworkManager {
     return NetworkManager(session: session)
   }
   
-  static func mockData(for resource: ResourceDownloader.Resource) async throws -> Data {
+  static func mockData(for resource: BraveS3Resource) async throws -> Data {
     try await Task<Data, Error>.detached(priority: .background) {
       switch resource {
       case .debounceRules:
@@ -51,5 +50,17 @@ extension NetworkManager {
         return Data()
       }
     }.value
+  }
+}
+
+extension DownloadResourceInterface {
+  /// Convenience method for tests
+  func makeMockResponse(
+    statusCode code: Int = 200,
+    headerFields: [String: String]? = nil
+  ) -> HTTPURLResponse {
+    return HTTPURLResponse(
+      url: externalURL, statusCode: code,
+      httpVersion: "HTTP/1.1", headerFields: headerFields)!
   }
 }
