@@ -1,4 +1,4 @@
-# Urls
+# URL Request Builder
 
 URL request builders are used to construct URLs programmatically. A URL builder
 typically takes in various input parameters, such as the host name, path, query

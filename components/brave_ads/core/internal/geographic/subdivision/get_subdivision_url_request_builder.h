@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_GEOGRAPHIC_SUBDIVISION_GET_SUBDIVISION_URL_REQUEST_BUILDER_H_
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/internal/server/url/url_request_builder_interface.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/url_request_builder_interface.h"
 
 namespace brave_ads::geographic {
 

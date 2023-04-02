@@ -4,40 +4,40 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
 
-class BatAdsGeoServerHostTest : public UnitTestBase {};
+class BatAdsStaticUrlHostTest : public UnitTestBase {};
 
-TEST_F(BatAdsGeoServerHostTest, GetProductionHost) {
+TEST_F(BatAdsStaticUrlHostTest, GetProductionUrlHost) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kProduction);
 
   // Act
-  const std::string host = server::GetGeoHost();
+  const std::string url_host = GetStaticUrlHost();
 
   // Assert
-  const std::string expected_host = "https://geo.ads.brave.com";
-  EXPECT_EQ(expected_host, host);
+  const std::string expected_url_host = "https://static.ads.brave.com";
+  EXPECT_EQ(expected_url_host, url_host);
 }
 
-TEST_F(BatAdsGeoServerHostTest, GetStagingHost) {
+TEST_F(BatAdsStaticUrlHostTest, GetStagingUrlHost) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
   // Act
-  const std::string host = server::GetGeoHost();
+  const std::string url_host = GetStaticUrlHost();
 
   // Assert
-  const std::string expected_host = "https://geo.ads.bravesoftware.com";
-  EXPECT_EQ(expected_host, host);
+  const std::string expected_url_host = "https://static.ads.bravesoftware.com";
+  EXPECT_EQ(expected_url_host, url_host);
 }
 
 }  // namespace brave_ads
