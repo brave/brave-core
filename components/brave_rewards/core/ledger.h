@@ -121,9 +121,6 @@ using GetRewardsWalletCallback = std::function<void(mojom::RewardsWalletPtr)>;
 using PostSuggestionsClaimCallback =
     base::OnceCallback<void(mojom::Result result, std::string drain_id)>;
 
-using GetDrainCallback =
-    std::function<void(mojom::Result result, mojom::DrainStatus status)>;
-
 using RunDBTransactionCallback =
     base::OnceCallback<void(mojom::DBCommandResponsePtr)>;
 

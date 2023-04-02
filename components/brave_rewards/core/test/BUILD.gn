@@ -43,7 +43,6 @@ source_set("test") {
     "//brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util_unittest.cc",
     "//brave/components/brave_rewards/core/endpoint/promotion/get_available/get_available_unittest.cc",
     "//brave/components/brave_rewards/core/endpoint/promotion/get_captcha/get_captcha_unittest.cc",
-    "//brave/components/brave_rewards/core/endpoint/promotion/get_drain/get_drain_unittest.cc",
     "//brave/components/brave_rewards/core/endpoint/promotion/get_signed_creds/get_signed_creds_unittest.cc",
     "//brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet_unittest.cc",
     "//brave/components/brave_rewards/core/endpoint/promotion/post_bat_loss/post_bat_loss_unittest.cc",

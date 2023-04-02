@@ -701,10 +701,5 @@ void Promotion::OnLastCheckTimerElapsed() {
   Fetch(base::DoNothing());
 }
 
-void Promotion::GetDrainStatus(const std::string& drain_id,
-                               ledger::GetDrainCallback callback) {
-  promotion_server_->get_drain()->Request(drain_id, callback);
-}
-
 }  // namespace promotion
 }  // namespace ledger

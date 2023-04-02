@@ -10,7 +10,6 @@
 
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_available/get_available.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_captcha/get_captcha.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/get_drain/get_drain.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_signed_creds/get_signed_creds.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/post_bat_loss/post_bat_loss.h"
@@ -66,8 +65,6 @@ class PromotionServer {
 
   promotion::PostSuggestionsClaim* post_suggestions_claim() const;
 
-  promotion::GetDrain* get_drain() const;
-
  private:
   std::unique_ptr<promotion::GetAvailable> get_available_;
   std::unique_ptr<promotion::PostCreds> post_creds_;
@@ -84,7 +81,6 @@ class PromotionServer {
   std::unique_ptr<promotion::PutDevicecheck> put_devicecheck_;
   std::unique_ptr<promotion::PostSuggestions> post_suggestions_;
   std::unique_ptr<promotion::PostSuggestionsClaim> post_suggestions_claim_;
-  std::unique_ptr<promotion::GetDrain> get_drain_;
 };
 
 }  // namespace endpoint

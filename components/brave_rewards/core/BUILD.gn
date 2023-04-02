@@ -294,8 +294,6 @@ static_library("ledger") {
     "endpoint/promotion/get_available/get_available.h",
     "endpoint/promotion/get_captcha/get_captcha.cc",
     "endpoint/promotion/get_captcha/get_captcha.h",
-    "endpoint/promotion/get_drain/get_drain.cc",
-    "endpoint/promotion/get_drain/get_drain.h",
     "endpoint/promotion/get_signed_creds/get_signed_creds.cc",
     "endpoint/promotion/get_signed_creds/get_signed_creds.h",
     "endpoint/promotion/get_wallet/get_wallet.cc",
