@@ -8,6 +8,7 @@
 
 #include <list>
 #include <memory>
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -77,6 +78,20 @@ class DirectFeedController {
                  mojom::BraveNewsController::FindFeedsCallback callback);
 
  private:
+  struct FindFeedRequest {
+    FindFeedRequest(const GURL& possible_feed_or_site_url,
+                    mojom::BraveNewsController::FindFeedsCallback callback);
+    FindFeedRequest(FindFeedRequest&&);
+    FindFeedRequest& operator=(FindFeedRequest&&);
+    ~FindFeedRequest();
+
+    GURL possible_feed_or_site_url;
+    mojom::BraveNewsController::FindFeedsCallback callback;
+  };
+
+  // TODO(sko) We might want to adjust this value.
+  static constexpr size_t kMaxOngoingRequests = 2;
+
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
@@ -97,9 +112,24 @@ class DirectFeedController {
                   const GURL& feed_url,
                   const std::unique_ptr<std::string> response_body);
 
+  void FindFeedsImpl(const GURL& possible_feed_or_site_url);
+  void OnFindFeedsImplResponse(
+      const GURL& feed_url,
+      std::vector<mojom::FeedSearchResultItemPtr> results);
+
   raw_ptr<PrefService> prefs_;
   SimpleURLLoaderList url_loaders_;
+
+  // TODO(sko) We should have a way to cancel requests.
+  // e.g. Navigate to different sites, quit app.
+  // Witthout that, some heavy RSS feed parsing work will prevent new feeds from
+  // detection and app from shutdown.
+  std::queue<FindFeedRequest> pending_requests_;
+  base::flat_map<GURL, std::vector<FindFeedRequest>> ongoing_requests_;
+
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  base::WeakPtrFactory<DirectFeedController> weak_ptr_factory_{this};
 };
 
 }  // namespace brave_news
