@@ -34,7 +34,7 @@ void IdleDetection::OnNotifyUserDidBecomeActive(const base::TimeDelta idle_time,
 
   idle_detection::MaybeUpdateIdleTimeThreshold();
 
-  SetLastUnIdleTimeDiagnosticEntry();
+  SetLastUnIdleTimeDiagnosticEntry(base::Time::Now());
 }
 
 void IdleDetection::OnNotifyUserDidBecomeIdle() {

@@ -9,13 +9,14 @@
 #include <string>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_interface.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/diagnostic_entry_interface.h"
 
 namespace brave_ads {
 
 class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
  public:
-  void SetLastUnIdleTime(base::Time time);
+  LastUnIdleTimeDiagnosticEntry() = default;
+  explicit LastUnIdleTimeDiagnosticEntry(base::Time last_unidle_at);
 
   // DiagnosticEntryInterface:
   DiagnosticEntryType GetType() const override;
@@ -23,7 +24,7 @@ class LastUnIdleTimeDiagnosticEntry final : public DiagnosticEntryInterface {
   std::string GetValue() const override;
 
  private:
-  base::Time last_unidle_time_;
+  base::Time last_unidle_at_;
 };
 
 }  // namespace brave_ads

@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_util.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_value_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_id_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry.h"
@@ -59,7 +59,7 @@ void DiagnosticManager::SetEntry(
 }
 
 void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
-  std::move(callback).Run(ToValue(diagnostics_));
+  std::move(callback).Run(DiagnosticsToValue(diagnostics_));
 }
 
 }  // namespace brave_ads

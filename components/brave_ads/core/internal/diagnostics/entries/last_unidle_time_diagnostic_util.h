@@ -6,9 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_LAST_UNIDLE_TIME_DIAGNOSTIC_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DIAGNOSTICS_ENTRIES_LAST_UNIDLE_TIME_DIAGNOSTIC_UTIL_H_
 
+namespace base {
+class Time;
+}  // namespace base
+
 namespace brave_ads {
 
-void SetLastUnIdleTimeDiagnosticEntry();
+void SetLastUnIdleTimeDiagnosticEntry(base::Time last_unidle_at);
 
 }  // namespace brave_ads
 

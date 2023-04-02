@@ -39,7 +39,7 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
 
   AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local*/ true));
 
-  SetLastUnIdleTimeDiagnosticEntry();
+  SetLastUnIdleTimeDiagnosticEntry(Now());
 
   // Act
   DiagnosticManager::GetInstance()->GetDiagnostics(

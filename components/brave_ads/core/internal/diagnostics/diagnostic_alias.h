@@ -9,8 +9,8 @@
 #include <memory>
 
 #include "base/containers/flat_map.h"
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_interface.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_entry_types.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/diagnostic_entry_interface.h"
 
 namespace brave_ads {
 
