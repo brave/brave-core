@@ -54,7 +54,7 @@ class SearchResultAdHandlerTest : public ::testing::Test {
  public:
   SearchResultAdHandlerTest() {
     feature_list_.InitAndEnableFeature(
-        features::kSupportBraveSearchResultAdConfirmationEvents);
+        features::kShouldTriggerSearchResultAdEvents);
   }
 
   static void SimulateOnRetrieveSearchResultAdEntities(

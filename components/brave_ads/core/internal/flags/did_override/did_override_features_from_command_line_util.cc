@@ -13,6 +13,7 @@
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
@@ -39,6 +40,7 @@ const base::Feature* const kFeatures[] = {
     &features::kAccount,
     &features::kConversions,
     &features::kEligibleAds,
+    &features::kShouldTriggerSearchResultAdEvents,
     &inline_content_ads::features::kFeature,
     &new_tab_page_ads::features::kFeature,
     &notification_ads::features::kFeature,

@@ -53,7 +53,7 @@ void SearchResultAdTabHelper::MaybeCreateForWebContents(
     content::WebContents* web_contents) {
   DCHECK(web_contents);
   if (!base::FeatureList::IsEnabled(
-          features::kSupportBraveSearchResultAdConfirmationEvents) ||
+          features::kShouldTriggerSearchResultAdEvents) ||
       !web_contents->GetBrowserContext() ||
       web_contents->GetBrowserContext()->IsOffTheRecord()) {
     return;
