@@ -13,6 +13,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "base/time/time.h"
 #include "brave/browser/ui/views/text_recognition_dialog_tracker.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/text_recognition/browser/text_recognition.h"
@@ -32,6 +33,8 @@
 #include "ui/views/window/dialog_client_view.h"
 
 namespace {
+
+constexpr base::TimeDelta kShowResultDelay = base::Milliseconds(400);
 
 #if BUILDFLAG(IS_WIN)
 class TargetLanguageComboboxModel : public ui::ComboboxModel {
@@ -91,7 +94,12 @@ void ShowTextRecognitionDialog(content::WebContents* web_contents,
 }  // namespace brave
 
 TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
-    : image_(image) {
+    : image_(image),
+      show_result_timer_(FROM_HERE,
+                         kShowResultDelay,
+                         base::BindRepeating(
+                             &TextRecognitionDialogView::OnShowResultTimerFired,
+                             base::Unretained(this))) {
   SetModalType(ui::MODAL_TYPE_CHILD);
   SetButtons(ui::DIALOG_BUTTON_OK);
   SetButtonLabel(ui::DIALOG_BUTTON_OK,
@@ -137,9 +145,12 @@ TextRecognitionDialogView::~TextRecognitionDialogView() = default;
 
 void TextRecognitionDialogView::StartExtractingText(
     const std::string& language_code) {
+  result_ = absl::nullopt;
+  show_result_timer_.Reset();
+
   if (image_.empty()) {
-    UpdateContents({});
-    AdjustWidgetSize();
+    show_result_timer_.Stop();
+    OnGetTextFromImage({});
     return;
   }
 
@@ -162,8 +173,9 @@ void TextRecognitionDialogView::StartExtractingText(
 #endif
 
 #if BUILDFLAG(IS_WIN)
+  // Disable till extracting finished.
   if (combobox_) {
-    combobox_->SetVisible(false);
+    combobox_->SetEnabled(false);
   }
 
   scoped_refptr<base::SequencedTaskRunner> task_runner =
@@ -181,9 +193,15 @@ void TextRecognitionDialogView::StartExtractingText(
 void TextRecognitionDialogView::OnGetTextFromImage(
     const std::vector<std::string>& text) {
   CHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+  if (show_result_timer_.IsRunning()) {
+    result_ = text;
+    return;
+  }
+
 #if BUILDFLAG(IS_WIN)
+  // Can choose another language when previous detect is finished.
   if (combobox_) {
-    combobox_->SetVisible(true);
+    combobox_->SetEnabled(true);
   }
 #endif
 
@@ -197,6 +215,9 @@ void TextRecognitionDialogView::OnGetTextFromImage(
 
 void TextRecognitionDialogView::UpdateContents(
     const std::vector<std::string>& text) {
+  CHECK(!show_result_timer_.IsRunning())
+      << "Update when timer is fired or stopped.";
+
   if (text.empty()) {
     header_label_->SetText(brave_l10n::GetLocalizedResourceUTF16String(
         IDS_TEXT_RECOGNITION_DIALOG_HEADER_FAILED));
@@ -227,6 +248,18 @@ void TextRecognitionDialogView::AdjustWidgetSize() {
   GetWidget()->SetSize(GetDialogClientView()->GetPreferredSize());
 }
 
+void TextRecognitionDialogView::OnShowResultTimerFired() {
+  // Fired before getting text from image.
+  // Will be updated when text is fetched.
+  if (!result_) {
+    return;
+  }
+
+  // Fired after getting text from image.
+  // Show the result now.
+  OnGetTextFromImage(*result_);
+}
+
 #if BUILDFLAG(IS_WIN)
 void TextRecognitionDialogView::OnGetAvailableRecognizerLanguages(
     const std::vector<std::string>& languages) {
@@ -245,6 +278,8 @@ void TextRecognitionDialogView::OnGetAvailableRecognizerLanguages(
       base::BindRepeating(&TextRecognitionDialogView::OnLanguageOptionchanged,
                           base::Unretained(this)));
   combobox_->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 0, 10, 0));
+  combobox_->SetEnabled(result_ ? true : false);
+  AdjustWidgetSize();
 }
 
 bool TextRecognitionDialogView::OnLanguageOptionchanged(size_t index) {
