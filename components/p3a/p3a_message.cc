@@ -23,7 +23,7 @@
 namespace p3a {
 
 namespace {
-constexpr std::size_t kP3AStarAttributeCount = 8;
+constexpr std::size_t kP3AConstellationAttributeCount = 8;
 }  // namespace
 
 MessageMetainfo::MessageMetainfo() = default;
@@ -99,33 +99,36 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
   return result;
 }
 
-std::string GenerateP3AStarMessage(base::StringPiece metric_name,
-                                   uint64_t metric_value,
-                                   const MessageMetainfo& meta) {
+std::string GenerateP3AConstellationMessage(base::StringPiece metric_name,
+                                            uint64_t metric_value,
+                                            const MessageMetainfo& meta) {
   base::Time::Exploded exploded;
   meta.date_of_install.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
 
-  std::array<std::array<std::string, 2>, kP3AStarAttributeCount> attributes = {{
-      {"metric_name", std::string(metric_name)},
-      {"metric_value", base::NumberToString(metric_value)},
-      {"version", meta.version},
-      {"yoi", base::NumberToString(exploded.year)},
-      {"channel", meta.channel},
-      {"platform", meta.platform},
-      {"country_code", meta.country_code},
-      {"woi", base::NumberToString(meta.woi)},
-  }};
+  std::array<std::array<std::string, 2>, kP3AConstellationAttributeCount>
+      attributes = {{
+          {"metric_name", std::string(metric_name)},
+          {"metric_value", base::NumberToString(metric_value)},
+          {"version", meta.version},
+          {"yoi", base::NumberToString(exploded.year)},
+          {"channel", meta.channel},
+          {"platform", meta.platform},
+          {"country_code", meta.country_code},
+          {"woi", base::NumberToString(meta.woi)},
+      }};
 
-  std::array<std::string, kP3AStarAttributeCount> serialized_attributes;
+  std::array<std::string, kP3AConstellationAttributeCount>
+      serialized_attributes;
 
   std::transform(attributes.begin(), attributes.end(),
                  serialized_attributes.begin(), [](auto& attr) -> std::string {
-                   return base::JoinString(attr,
-                                           kP3AMessageStarKeyValueSeparator);
+                   return base::JoinString(
+                       attr, kP3AMessageConstellationKeyValueSeparator);
                  });
 
-  return base::JoinString(serialized_attributes, kP3AMessageStarLayerSeparator);
+  return base::JoinString(serialized_attributes,
+                          kP3AMessageConstellationKeyValueSeparator);
 }
 
 void MessageMetainfo::Init(PrefService* local_state,

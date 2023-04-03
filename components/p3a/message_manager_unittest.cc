@@ -49,7 +49,7 @@ class P3AMessageManagerTest : public testing::Test,
         shared_url_loader_factory(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory)) {
-    scoped_feature_list_.InitWithFeatures({features::kSTAR}, {});
+    scoped_feature_list_.InitWithFeatures({features::kConstellation}, {});
   }
 
   absl::optional<MetricLogType> GetDynamicMetricLogType(
@@ -57,10 +57,10 @@ class P3AMessageManagerTest : public testing::Test,
     return absl::optional<MetricLogType>();
   }
 
-  void OnRotation(MetricLogType log_type, bool is_star) override {}
+  void OnRotation(MetricLogType log_type, bool is_constellation) override {}
 
   void OnMetricCycled(const std::string& histogram_name,
-                      bool is_star) override {}
+                      bool is_constellation) override {}
 
  protected:
   void SetUp() override {
@@ -75,7 +75,8 @@ class P3AMessageManagerTest : public testing::Test,
     p3a_config.average_upload_interval = base::Seconds(kUploadIntervalSeconds);
     p3a_config.p3a_json_upload_url = GURL(std::string(kTestHost) + "/p3a_json");
     p3a_config.p2a_json_upload_url = GURL(std::string(kTestHost) + "/p2a_json");
-    p3a_config.p3a_star_upload_url = GURL(std::string(kTestHost) + "/p3a_star");
+    p3a_config.p3a_constellation_upload_url =
+        GURL(std::string(kTestHost) + "/p3a_constellation");
 
     P3AService::RegisterPrefs(local_state.registry(), true);
 
@@ -121,12 +122,12 @@ class P3AMessageManagerTest : public testing::Test,
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
             StoreJsonMetricInMap(request, true);
             url_loader_factory.AddResponse(request.url.spec(), "{}");
-          } else if (request.url == p3a_config.p3a_star_upload_url) {
+          } else if (request.url == p3a_config.p3a_constellation_upload_url) {
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
             std::string message = std::string(ExtractBodyFromRequest(request));
-            EXPECT_EQ(p3a_star_sent_messages.find(message),
-                      p3a_star_sent_messages.end());
-            p3a_star_sent_messages.insert(message);
+            EXPECT_EQ(p3a_constellation_sent_messages.find(message),
+                      p3a_constellation_sent_messages.end());
+            p3a_constellation_sent_messages.insert(message);
             url_loader_factory.AddResponse(request.url.spec(), "{}");
           }
         }));
@@ -142,7 +143,7 @@ class P3AMessageManagerTest : public testing::Test,
   void ResetInterceptorStores() {
     p3a_json_sent_metrics.clear();
     p2a_json_sent_metrics.clear();
-    p3a_star_sent_messages.clear();
+    p3a_constellation_sent_messages.clear();
     info_request_made = false;
     points_requests_made = 0;
   }
@@ -182,7 +183,7 @@ class P3AMessageManagerTest : public testing::Test,
   std::map<std::string, size_t> p3a_json_sent_metrics;
   std::map<std::string, size_t> p2a_json_sent_metrics;
 
-  std::set<std::string> p3a_star_sent_messages;
+  std::set<std::string> p3a_constellation_sent_messages;
 
   bool interceptor_invalid_response_from_randomness = false;
   net::HttpStatusCode interceptor_status_code_from_randomness = net::HTTP_OK;
@@ -255,7 +256,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendJson) {
   }
 }
 
-TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
+TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
   ASSERT_TRUE(info_request_made);
 
   std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
@@ -268,7 +269,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
 
   EXPECT_EQ(points_requests_made, 7U);
   // Should not send metrics, since they are in current epoch
-  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 
   ResetInterceptorStores();
   current_epoch++;
@@ -278,7 +279,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
 
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 
   ResetInterceptorStores();
   current_epoch++;
@@ -288,10 +289,10 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStar) {
 
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 }
 
-TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
+TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationServerUnavailable) {
   ASSERT_TRUE(info_request_made);
 
   std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
@@ -314,7 +315,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
   // We are at the beginning of the new epoch. measurements from previous epoch
   // should not be sent since we are unable to get the current epoch from the
   // server.
-  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 
   // sever will return valid response body but invalid status code
   interceptor_invalid_response_from_randomness = false;
@@ -325,7 +326,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
   task_environment_.FastForwardBy(base::Days(kEpochLenDays));
 
   // no new measurements should have been recorded in the previous epoch.
-  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 
   // restore randomness server functionality
   interceptor_status_code_from_randomness = net::HTTP_OK;
@@ -340,7 +341,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
   // messages from the first epoch should be sent.
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 
   ResetInterceptorStores();
 
@@ -350,7 +351,7 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendStarServerUnavailable) {
 
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 7U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 }
 
 TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
@@ -376,7 +377,7 @@ TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
                                   base::Seconds(kUploadIntervalSeconds * 100));
 
   EXPECT_EQ(points_requests_made, 0U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
@@ -393,7 +394,7 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
   EXPECT_EQ(points_requests_made, 0U);
   EXPECT_EQ(p3a_json_sent_metrics.size(), 0U);
   EXPECT_EQ(p2a_json_sent_metrics.size(), 0U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 
   current_epoch++;
   next_epoch_time += base::Days(kEpochLenDays);
@@ -401,7 +402,7 @@ TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
                                   base::Seconds(kUploadIntervalSeconds * 100));
 
   EXPECT_EQ(points_requests_made, 0U);
-  EXPECT_EQ(p3a_star_sent_messages.size(), 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 }
 
 }  // namespace p3a

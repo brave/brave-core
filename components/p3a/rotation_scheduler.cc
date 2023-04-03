@@ -20,8 +20,8 @@ constexpr char kLastTypicalJsonRotationTimeStampPref[] =
     "p3a.last_rotation_timestamp";
 constexpr char kLastExpressJsonRotationTimeStampPref[] =
     "p3a.last_express_rotation_timestamp";
-constexpr char kLastStarRotationTimeStampPref[] =
-    "p3a.last_star_rotation_timestamp";
+constexpr char kLastConstellationRotationTimeStampPref[] =
+    "p3a.last_constellation_rotation_timestamp";
 
 base::Time NextFirstDayOfMonth(base::Time time) {
   base::Time::Exploded exploded;
@@ -96,9 +96,9 @@ RotationScheduler::RotationScheduler(
     PrefService* local_state,
     const P3AConfig* config,
     JsonRotationCallback json_rotation_callback,
-    StarRotationCallback star_rotation_callback)
+    ConstellationRotationCallback constellation_rotation_callback)
     : json_rotation_callback_(json_rotation_callback),
-      star_rotation_callback_(star_rotation_callback),
+      constellation_rotation_callback_(constellation_rotation_callback),
       local_state_(local_state),
       config_(config) {
   for (MetricLogType log_type : kAllMetricLogTypes) {
@@ -115,7 +115,7 @@ void RotationScheduler::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kLastSlowRotationTimeStampPref, year_ago);
   registry->RegisterTimePref(kLastTypicalJsonRotationTimeStampPref, year_ago);
   registry->RegisterTimePref(kLastExpressJsonRotationTimeStampPref, year_ago);
-  registry->RegisterTimePref(kLastStarRotationTimeStampPref, year_ago);
+  registry->RegisterTimePref(kLastConstellationRotationTimeStampPref, year_ago);
 }
 
 void RotationScheduler::InitJsonTimer(MetricLogType log_type) {
@@ -145,9 +145,10 @@ void RotationScheduler::InitJsonTimer(MetricLogType log_type) {
   UpdateJsonTimer(log_type);
 }
 
-void RotationScheduler::InitStarTimer(base::Time next_epoch_time) {
-  star_rotation_timer_.Start(FROM_HERE, next_epoch_time + base::Seconds(5),
-                             this, &RotationScheduler::HandleStarTimerTrigger);
+void RotationScheduler::InitConstellationTimer(base::Time next_epoch_time) {
+  constellation_rotation_timer_.Start(
+      FROM_HERE, next_epoch_time + base::Seconds(5), this,
+      &RotationScheduler::HandleConstellationTimerTrigger);
 }
 
 void RotationScheduler::UpdateJsonTimer(MetricLogType log_type) {
@@ -175,8 +176,8 @@ base::Time RotationScheduler::GetLastJsonRotationTime(MetricLogType log_type) {
   return last_json_rotation_times_[log_type];
 }
 
-base::Time RotationScheduler::GetLastStarRotationTime() {
-  return last_star_rotation_time_;
+base::Time RotationScheduler::GetLastConstellationRotationTime() {
+  return last_constellation_rotation_time_;
 }
 
 void RotationScheduler::HandleJsonTimerTrigger(MetricLogType log_type) {
@@ -187,11 +188,11 @@ void RotationScheduler::HandleJsonTimerTrigger(MetricLogType log_type) {
   json_rotation_callback_.Run(log_type);
 }
 
-void RotationScheduler::HandleStarTimerTrigger() {
-  last_star_rotation_time_ = base::Time::Now();
-  local_state_->SetTime(kLastStarRotationTimeStampPref,
-                        last_star_rotation_time_);
-  star_rotation_callback_.Run();
+void RotationScheduler::HandleConstellationTimerTrigger() {
+  last_constellation_rotation_time_ = base::Time::Now();
+  local_state_->SetTime(kLastConstellationRotationTimeStampPref,
+                        last_constellation_rotation_time_);
+  constellation_rotation_callback_.Run();
 }
 
 }  // namespace p3a

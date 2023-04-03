@@ -33,7 +33,7 @@ class MetricLogStore : public metrics::LogStore {
     virtual std::string SerializeLog(base::StringPiece histogram_name,
                                      uint64_t value,
                                      MetricLogType log_type,
-                                     bool is_star,
+                                     bool is_constellation,
                                      const std::string& upload_type) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
     virtual bool IsActualMetric(const std::string& histogram_name) const = 0;
@@ -43,7 +43,7 @@ class MetricLogStore : public metrics::LogStore {
 
   MetricLogStore(Delegate* delegate,
                  PrefService* local_state,
-                 bool is_star,
+                 bool is_constellation,
                  MetricLogType type);
   ~MetricLogStore() override;
 
@@ -113,7 +113,7 @@ class MetricLogStore : public metrics::LogStore {
   std::string staged_log_hash_;
   std::string staged_log_signature_;
 
-  bool is_star_;
+  bool is_constellation_;
 };
 
 }  // namespace p3a

@@ -82,12 +82,12 @@ P3AConfig::P3AConfig()
       p3a_json_upload_url(BUILDFLAG(P3A_JSON_UPLOAD_URL)),
       p3a_creative_upload_url(BUILDFLAG(P3A_CREATIVE_UPLOAD_URL)),
       p2a_json_upload_url(BUILDFLAG(P2A_JSON_UPLOAD_URL)),
-      p3a_star_upload_url(BUILDFLAG(P3A_STAR_UPLOAD_URL)),
+      p3a_constellation_upload_url(BUILDFLAG(P3A_CONSTELLATION_UPLOAD_URL)),
       star_randomness_host(BUILDFLAG(STAR_RANDOMNESS_HOST)) {
   CheckURL(p3a_json_upload_url);
   CheckURL(p3a_creative_upload_url);
   CheckURL(p2a_json_upload_url);
-  CheckURL(p3a_star_upload_url);
+  CheckURL(p3a_constellation_upload_url);
   CheckURL(GURL(star_randomness_host));
 }
 
@@ -128,9 +128,9 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
   config.p2a_json_upload_url =
       GetURLFromCommandLineOrDefault(cmdline, switches::kP2AJsonUploadUrl,
                                      std::move(config.p2a_json_upload_url));
-  config.p3a_star_upload_url =
-      GetURLFromCommandLineOrDefault(cmdline, switches::kP3AStarUploadUrl,
-                                     std::move(config.p3a_star_upload_url));
+  config.p3a_constellation_upload_url = GetURLFromCommandLineOrDefault(
+      cmdline, switches::kP3AConstellationUploadUrl,
+      std::move(config.p3a_constellation_upload_url));
   config.star_randomness_host = GetStringFromCommandLineOrDefault(
       cmdline, switches::kP3AStarRandomnessHost,
       std::move(config.star_randomness_host));
@@ -150,7 +150,8 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
           << ", p2a_json_upload_url_ = " << config.p2a_json_upload_url.spec()
           << ", p3a_creative_upload_url_ = "
           << config.p3a_creative_upload_url.spec()
-          << ", p3a_star_upload_url_ = " << config.p3a_star_upload_url.spec()
+          << ", p3a_constellation_upload_url_ = "
+          << config.p3a_constellation_upload_url.spec()
           << ", star_randomness_host_ = " << config.star_randomness_host
           << ", ignore_server_errors_ = " << config.ignore_server_errors
           << ", disable_star_attestation = " << config.disable_star_attestation;

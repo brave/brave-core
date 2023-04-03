@@ -152,7 +152,7 @@ void P3AService::RemoveDynamicMetric(const std::string& histogram_name) {
 }
 
 base::CallbackListSubscription P3AService::RegisterRotationCallback(
-    base::RepeatingCallback<void(MetricLogType log_type, bool is_star)>
+    base::RepeatingCallback<void(MetricLogType log_type, bool is_constellation)>
         callback) {
   DCheckCurrentlyOnUIThread();
   return rotation_callbacks_.Add(std::move(callback));
@@ -184,13 +184,13 @@ void P3AService::Init(
   histogram_values_ = {};
 }
 
-void P3AService::OnRotation(MetricLogType log_type, bool is_star) {
-  rotation_callbacks_.Notify(log_type, is_star);
+void P3AService::OnRotation(MetricLogType log_type, bool is_constellation) {
+  rotation_callbacks_.Notify(log_type, is_constellation);
 }
 
 void P3AService::OnMetricCycled(const std::string& histogram_name,
-                                bool is_star) {
-  metric_cycled_callbacks_.Notify(histogram_name, is_star);
+                                bool is_constellation) {
+  metric_cycled_callbacks_.Notify(histogram_name, is_constellation);
 }
 
 absl::optional<MetricLogType> P3AService::GetDynamicMetricLogType(

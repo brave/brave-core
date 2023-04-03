@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/p3a/star_helper.h"
+#include "brave/components/p3a/constellation_helper.h"
 
 #include <memory>
 #include <utility>
@@ -31,9 +31,9 @@ constexpr char kTestHost[] = "https://localhost:8443";
 
 }  // namespace
 
-class P3AStarHelperTest : public testing::Test {
+class P3AConstellationHelperTest : public testing::Test {
  public:
-  P3AStarHelperTest()
+  P3AConstellationHelperTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         shared_url_loader_factory(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -44,7 +44,7 @@ class P3AStarHelperTest : public testing::Test {
     p3a_config.disable_star_attestation = true;
     p3a_config.star_randomness_host = kTestHost;
 
-    StarHelper::RegisterPrefs(local_state.registry());
+    ConstellationHelper::RegisterPrefs(local_state.registry());
 
     url_loader_factory.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
@@ -71,8 +71,8 @@ class P3AStarHelperTest : public testing::Test {
         }));
   }
 
-  void SetUpStarManager() {
-    star_manager = std::make_unique<StarHelper>(
+  void SetUpHelper() {
+    helper = std::make_unique<ConstellationHelper>(
         &local_state, shared_url_loader_factory,
         base::BindLambdaForTesting(
             [this](std::string histogram_name, uint8_t epoch,
@@ -92,7 +92,7 @@ class P3AStarHelperTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory;
   P3AConfig p3a_config;
-  std::unique_ptr<StarHelper> star_manager;
+  std::unique_ptr<ConstellationHelper> helper;
   TestingPrefServiceSimple local_state;
   bool interceptor_send_bad_response = false;
 
@@ -106,12 +106,12 @@ class P3AStarHelperTest : public testing::Test {
   bool points_request_made = false;
 };
 
-TEST_F(P3AStarHelperTest, CanRetrieveServerInfo) {
+TEST_F(P3AConstellationHelperTest, CanRetrieveServerInfo) {
   base::Time exp_next_epoch_time;
   ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
 
-  SetUpStarManager();
-  star_manager->UpdateRandomnessServerInfo();
+  SetUpHelper();
+  helper->UpdateRandomnessServerInfo();
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(info_request_made);
@@ -123,8 +123,8 @@ TEST_F(P3AStarHelperTest, CanRetrieveServerInfo) {
 
   // See if cached server info is used on next execution
   info_request_made = false;
-  SetUpStarManager();
-  star_manager->UpdateRandomnessServerInfo();
+  SetUpHelper();
+  helper->UpdateRandomnessServerInfo();
   task_environment_.RunUntilIdle();
 
   ASSERT_FALSE(info_request_made);
@@ -133,14 +133,14 @@ TEST_F(P3AStarHelperTest, CanRetrieveServerInfo) {
   EXPECT_EQ(server_info_from_callback->next_epoch_time, exp_next_epoch_time);
 }
 
-TEST_F(P3AStarHelperTest, CannotRetrieveServerInfo) {
+TEST_F(P3AConstellationHelperTest, CannotRetrieveServerInfo) {
   base::Time exp_next_epoch_time;
   ASSERT_TRUE(base::Time::FromString(kTestNextEpochTime, &exp_next_epoch_time));
 
   interceptor_send_bad_response = true;
 
-  SetUpStarManager();
-  star_manager->UpdateRandomnessServerInfo();
+  SetUpHelper();
+  helper->UpdateRandomnessServerInfo();
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(info_request_made);
@@ -156,17 +156,17 @@ TEST_F(P3AStarHelperTest, CannotRetrieveServerInfo) {
   EXPECT_EQ(server_info_from_callback, nullptr);
 }
 
-TEST_F(P3AStarHelperTest, GenerateBasicMessage) {
-  SetUpStarManager();
-  star_manager->UpdateRandomnessServerInfo();
+TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
+  SetUpHelper();
+  helper->UpdateRandomnessServerInfo();
   task_environment_.RunUntilIdle();
 
   MessageMetainfo meta_info;
   meta_info.Init(&local_state, "release", "2022-01-01");
 
-  star_manager->StartMessagePreparation(
-      kTestHistogramName,
-      GenerateP3AStarMessage(kTestHistogramName, kTestEpoch, meta_info));
+  helper->StartMessagePreparation(
+      kTestHistogramName, GenerateP3AConstellationMessage(
+                              kTestHistogramName, kTestEpoch, meta_info));
   task_environment_.RunUntilIdle();
 
   ASSERT_TRUE(points_request_made);

@@ -29,7 +29,7 @@ struct P3AConfig {
   // Endpoint for uploading P2A metrics in JSON format
   GURL p2a_json_upload_url;
   // Endpoint for uploading P3A metrics encrypted by Constellation/STAR
-  GURL p3a_star_upload_url;
+  GURL p3a_constellation_upload_url;
   // Host for generating randomness points for STAR encryption of measurements
   std::string star_randomness_host;
 

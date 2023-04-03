@@ -8,7 +8,13 @@
 namespace p3a {
 namespace features {
 
-BASE_FEATURE(kSTAR, "BraveP3ASTAR", base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kConstellation,
+             "BraveP3AConstellation",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsConstellationEnabled() {
+  return base::FeatureList::IsEnabled(features::kConstellation);
+}
 
 }  // namespace features
 }  // namespace p3a

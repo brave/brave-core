@@ -25,10 +25,10 @@ class P3AMetricLogStoreTest : public testing::Test,
   std::string SerializeLog(base::StringPiece histogram_name,
                            uint64_t value,
                            MetricLogType log_type,
-                           bool is_star,
+                           bool is_constellation,
                            const std::string& upload_type) override {
     return std::string(histogram_name) + "_" + base::NumberToString(value) +
-           "_" + base::NumberToString(is_star) + "_" + upload_type;
+           "_" + base::NumberToString(is_constellation) + "_" + upload_type;
   }
 
   bool IsActualMetric(const std::string& histogram_name) const override {

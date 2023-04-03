@@ -14,13 +14,17 @@ buildflag_header("buildflags") {
     "P3A_JSON_UPLOAD_URL=\"$p3a_json_upload_url\"",
     "P3A_CREATIVE_UPLOAD_URL=\"$p3a_creative_upload_url\"",
     "P2A_JSON_UPLOAD_URL=\"$p2a_json_upload_url\"",
-    "P3A_STAR_UPLOAD_URL=\"$p3a_star_upload_url\"",
+    "P3A_CONSTELLATION_UPLOAD_URL=\"$p3a_constellation_upload_url\"",
     "STAR_RANDOMNESS_HOST=\"$star_randomness_host\"",
   ]
 }
 
 static_library("p3a") {
   sources = [
+    "constellation_helper.cc",
+    "constellation_helper.h",
+    "constellation_log_store.cc",
+    "constellation_log_store.h",
     "features.cc",
     "features.h",
     "histograms_braveizer.cc",
@@ -52,10 +56,6 @@ static_library("p3a") {
     "rotation_scheduler.h",
     "scheduler.cc",
     "scheduler.h",
-    "star_helper.cc",
-    "star_helper.h",
-    "star_log_store.cc",
-    "star_log_store.h",
     "star_randomness_meta.cc",
     "star_randomness_meta.h",
     "star_randomness_points.cc",
@@ -96,6 +96,8 @@ static_library("p3a") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "constellation_helper_unittest.cc",
+    "constellation_log_store_unittest.cc",
     "message_manager_unittest.cc",
     "metric_log_store_unittest.cc",
     "metric_names_unittest.cc",
@@ -104,8 +106,6 @@ source_set("unit_tests") {
     "p3a_service_unittest.cc",
     "rotation_scheduler_unittest.cc",
     "scheduler_unittest.cc",
-    "star_helper_unittest.cc",
-    "star_log_store_unittest.cc",
     "star_randomness_test_util.cc",
     "star_randomness_test_util.h",
   ]

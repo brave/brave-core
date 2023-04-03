@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_STAR_LOG_STORE_H_
-#define BRAVE_COMPONENTS_P3A_STAR_LOG_STORE_H_
+#ifndef BRAVE_COMPONENTS_P3A_CONSTELLATION_LOG_STORE_H_
+#define BRAVE_COMPONENTS_P3A_CONSTELLATION_LOG_STORE_H_
 
 #include <memory>
 #include <string>
@@ -26,13 +26,13 @@ namespace p3a {
 // prefs on the fly. All messages from previous epochs could be loaded using
 // |LoadPersistedUnsentLogs()|. The function will also remove epochs are exceed
 // the "keep epoch count".
-class StarLogStore : public metrics::LogStore {
+class ConstellationLogStore : public metrics::LogStore {
  public:
-  StarLogStore(PrefService* local_state, size_t keep_epoch_count);
-  ~StarLogStore() override;
+  ConstellationLogStore(PrefService* local_state, size_t keep_epoch_count);
+  ~ConstellationLogStore() override;
 
-  StarLogStore(const StarLogStore&) = delete;
-  StarLogStore& operator=(const StarLogStore&) = delete;
+  ConstellationLogStore(const ConstellationLogStore&) = delete;
+  ConstellationLogStore& operator=(const ConstellationLogStore&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -92,4 +92,4 @@ class StarLogStore : public metrics::LogStore {
 
 }  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_STAR_LOG_STORE_H_
+#endif  // BRAVE_COMPONENTS_P3A_CONSTELLATION_LOG_STORE_H_

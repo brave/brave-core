@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/p3a/star_log_store.h"
+#include "brave/components/p3a/constellation_log_store.h"
 
 #include <memory>
 #include <set>
@@ -20,19 +20,20 @@ constexpr size_t kTestKeepEpochCount = 4;
 
 }  // namespace
 
-class P3AStarLogStoreTest : public testing::Test {
+class P3AConstellationLogStoreTest : public testing::Test {
  public:
-  P3AStarLogStoreTest() {}
+  P3AConstellationLogStoreTest() {}
 
  protected:
   void SetUp() override {
-    StarLogStore::RegisterPrefs(local_state.registry());
-    log_store =
-        std::make_unique<StarLogStore>(&local_state, kTestKeepEpochCount);
+    ConstellationLogStore::RegisterPrefs(local_state.registry());
+    log_store = std::make_unique<ConstellationLogStore>(&local_state,
+                                                        kTestKeepEpochCount);
   }
 
-  std::string GenerateMockStarMessage() {
-    return "log msg " + base::NumberToString(curr_test_star_message_id++);
+  std::string GenerateMockConstellationMessage() {
+    return "log msg " +
+           base::NumberToString(curr_test_constellation_message_id++);
   }
 
   void UpdateSomeMessages(uint8_t epoch, size_t message_count) {
@@ -41,7 +42,7 @@ class P3AStarLogStoreTest : public testing::Test {
     for (uint64_t i = 1; i <= message_count; i++) {
       std::string histogram_name =
           "Brave.Test.Metric" + base::NumberToString(i);
-      std::string content = GenerateMockStarMessage();
+      std::string content = GenerateMockConstellationMessage();
       log_store->UpdateMessage(histogram_name, epoch, content);
     }
   }
@@ -67,12 +68,12 @@ class P3AStarLogStoreTest : public testing::Test {
     ASSERT_FALSE(log_store->has_staged_log());
   }
 
-  size_t curr_test_star_message_id;
-  std::unique_ptr<StarLogStore> log_store;
+  size_t curr_test_constellation_message_id;
+  std::unique_ptr<ConstellationLogStore> log_store;
   TestingPrefServiceSimple local_state;
 };
 
-TEST_F(P3AStarLogStoreTest, CurrentEpochNoStage) {
+TEST_F(P3AConstellationLogStoreTest, CurrentEpochNoStage) {
   log_store->SetCurrentEpoch(1);
 
   ASSERT_FALSE(log_store->has_unsent_logs());
@@ -84,7 +85,7 @@ TEST_F(P3AStarLogStoreTest, CurrentEpochNoStage) {
   ASSERT_FALSE(log_store->has_staged_log());
 }
 
-TEST_F(P3AStarLogStoreTest, PreviousEpochStaging) {
+TEST_F(P3AConstellationLogStoreTest, PreviousEpochStaging) {
   log_store->SetCurrentEpoch(1);
 
   UpdateSomeMessages(1, 5);
@@ -95,7 +96,7 @@ TEST_F(P3AStarLogStoreTest, PreviousEpochStaging) {
   ConsumeMessages(5);
 }
 
-TEST_F(P3AStarLogStoreTest, PreviousEpochsStaging) {
+TEST_F(P3AConstellationLogStoreTest, PreviousEpochsStaging) {
   log_store->SetCurrentEpoch(1);
   UpdateSomeMessages(1, 5);
 
@@ -115,7 +116,7 @@ TEST_F(P3AStarLogStoreTest, PreviousEpochsStaging) {
   ConsumeMessages(14);
 }
 
-TEST_F(P3AStarLogStoreTest, UpdatePreviousEpochMessage) {
+TEST_F(P3AConstellationLogStoreTest, UpdatePreviousEpochMessage) {
   log_store->SetCurrentEpoch(1);
 
   log_store->SetCurrentEpoch(2);
@@ -126,7 +127,7 @@ TEST_F(P3AStarLogStoreTest, UpdatePreviousEpochMessage) {
   ConsumeMessages(3);
 }
 
-TEST_F(P3AStarLogStoreTest, DiscardShouldNotDelete) {
+TEST_F(P3AConstellationLogStoreTest, DiscardShouldNotDelete) {
   log_store->SetCurrentEpoch(1);
 
   UpdateSomeMessages(1, 1);
@@ -150,7 +151,7 @@ TEST_F(P3AStarLogStoreTest, DiscardShouldNotDelete) {
   ASSERT_FALSE(log_store->has_unsent_logs());
 }
 
-TEST_F(P3AStarLogStoreTest, ShouldDeleteOldMessages) {
+TEST_F(P3AConstellationLogStoreTest, ShouldDeleteOldMessages) {
   log_store->SetCurrentEpoch(1);
 
   UpdateSomeMessages(1, 3);

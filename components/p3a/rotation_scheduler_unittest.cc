@@ -35,7 +35,7 @@ class P3ARotationSchedulerTest : public testing::Test {
         &local_state_, &config_,
         base::BindLambdaForTesting(
             [&](MetricLogType log_type) { json_rotation_counts_[log_type]++; }),
-        base::BindLambdaForTesting([&]() { star_rotation_count_++; }));
+        base::BindLambdaForTesting([&]() { constellation_rotation_count_++; }));
   }
 
   content::BrowserTaskEnvironment task_environment_;
@@ -43,7 +43,7 @@ class P3ARotationSchedulerTest : public testing::Test {
   P3AConfig config_;
   std::unique_ptr<RotationScheduler> scheduler_;
   base::flat_map<MetricLogType, size_t> json_rotation_counts_;
-  size_t star_rotation_count_ = 0;
+  size_t constellation_rotation_count_ = 0;
 };
 
 TEST_F(P3ARotationSchedulerTest, JsonRotation) {
@@ -57,28 +57,28 @@ TEST_F(P3ARotationSchedulerTest, JsonRotation) {
   EXPECT_EQ(json_rotation_counts_[MetricLogType::kSlow], 3u);
 }
 
-TEST_F(P3ARotationSchedulerTest, StarRotation) {
+TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
   task_environment_.FastForwardBy(base::Days(7));
   // Should be 0 since the timer has not started
-  EXPECT_EQ(star_rotation_count_, 0u);
+  EXPECT_EQ(constellation_rotation_count_, 0u);
 
-  scheduler_->InitStarTimer(task_environment_.GetMockClock()->Now() +
-                            base::Days(7));
+  scheduler_->InitConstellationTimer(task_environment_.GetMockClock()->Now() +
+                                     base::Days(7));
 
   task_environment_.FastForwardBy(base::Days(3));
-  EXPECT_EQ(star_rotation_count_, 0u);
+  EXPECT_EQ(constellation_rotation_count_, 0u);
 
   task_environment_.FastForwardBy(base::Days(4));
-  EXPECT_EQ(star_rotation_count_, 1u);
+  EXPECT_EQ(constellation_rotation_count_, 1u);
 
   task_environment_.FastForwardBy(base::Days(7));
-  // Should not rotate again until InitStarTimer sets the timer
-  EXPECT_EQ(star_rotation_count_, 1u);
+  // Should not rotate again until InitConstellationTimer sets the timer
+  EXPECT_EQ(constellation_rotation_count_, 1u);
 
-  scheduler_->InitStarTimer(task_environment_.GetMockClock()->Now() +
-                            base::Days(7));
+  scheduler_->InitConstellationTimer(task_environment_.GetMockClock()->Now() +
+                                     base::Days(7));
   task_environment_.FastForwardBy(base::Days(7));
-  EXPECT_EQ(star_rotation_count_, 2u);
+  EXPECT_EQ(constellation_rotation_count_, 2u);
 }
 
 }  // namespace p3a

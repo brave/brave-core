@@ -11,7 +11,7 @@
 
 namespace p3a {
 
-// Handles scheduling of metric uploads/STAR metric preparation.
+// Handles scheduling of metric uploads/Constellation metric preparation.
 // Will callback to MessageManager on a given interval.
 class Scheduler : public metrics::MetricsScheduler {
  public:
