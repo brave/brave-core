@@ -73,7 +73,7 @@ void DownloadToolbarButtonView::UpdateIcon() {
   if (HasInsecureDownloads(bubble_controller()->GetMainView())) {
     const gfx::VectorIcon* new_icon = &vector_icons::kNotSecureWarningIcon;
     SkColor icon_color =
-        GetColorProvider()->GetColor(ui::kColorAlertMediumSeverity);
+        GetColorProvider()->GetColor(ui::kColorAlertMediumSeverityIcon);
 
     SetImageModel(ButtonState::STATE_NORMAL,
                   ui::ImageModel::FromVectorIcon(*new_icon, icon_color));
