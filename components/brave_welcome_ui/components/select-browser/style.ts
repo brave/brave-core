@@ -101,4 +101,12 @@ export const ActionBox = styled.div`
   button {
     color: white;
   }
+
+  button:nth-child(2) {
+    &[disabled] {
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(8px);
+      color: rgba(255, 255, 255, 0.32);
+    }
+  }
 `
