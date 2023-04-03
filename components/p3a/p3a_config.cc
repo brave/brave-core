@@ -19,7 +19,7 @@ namespace {
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
-base::TimeDelta GetTimeDeltaFromCommandLineOrDefault(
+base::TimeDelta MaybeOverrideTimeDeltaFromCommandLine(
     base::CommandLine* cmdline,
     const char* switch_name,
     base::TimeDelta default_config_value) {
@@ -34,7 +34,7 @@ base::TimeDelta GetTimeDeltaFromCommandLineOrDefault(
   return result;
 }
 
-std::string GetStringFromCommandLineOrDefault(
+std::string MaybeOverrideStringFromCommandLine(
     base::CommandLine* cmdline,
     const char* switch_name,
     std::string default_config_value) {
@@ -45,9 +45,9 @@ std::string GetStringFromCommandLineOrDefault(
   return result;
 }
 
-GURL GetURLFromCommandLineOrDefault(base::CommandLine* cmdline,
-                                    const char* switch_name,
-                                    GURL default_config_value) {
+GURL MaybeOverrideURLFromCommandLine(base::CommandLine* cmdline,
+                                     const char* switch_name,
+                                     GURL default_config_value) {
   GURL result = std::move(default_config_value);
   if (cmdline->HasSwitch(switch_name)) {
     GURL url = GURL(cmdline->GetSwitchValueASCII(switch_name));
@@ -58,9 +58,9 @@ GURL GetURLFromCommandLineOrDefault(base::CommandLine* cmdline,
   return result;
 }
 
-bool GetBoolFromCommandLineOrDefault(base::CommandLine* cmdline,
-                                     const char* switch_name,
-                                     bool default_config_value) {
+bool MaybeOverrideBoolFromCommandLine(base::CommandLine* cmdline,
+                                      const char* switch_name,
+                                      bool default_config_value) {
   bool result = default_config_value;
   if (cmdline->HasSwitch(switch_name)) {
     result = true;
@@ -70,7 +70,7 @@ bool GetBoolFromCommandLineOrDefault(base::CommandLine* cmdline,
 
 inline void CheckURL(const GURL& url) {
 #if defined(OFFICIAL_BUILD)
-  CHECK(config_value->is_valid() && config_value->SchemeIsHTTPOrHTTPS());
+  CHECK(url.is_valid() && url.SchemeIsHTTPOrHTTPS());
 #endif  // !OFFICIAL_BUILD
 }
 
@@ -99,7 +99,7 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
   P3AConfig config;
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
 
-  config.average_upload_interval = GetTimeDeltaFromCommandLineOrDefault(
+  config.average_upload_interval = MaybeOverrideTimeDeltaFromCommandLine(
       cmdline, switches::kP3AUploadIntervalSeconds,
       std::move(config.average_upload_interval));
 
@@ -107,39 +107,39 @@ P3AConfig P3AConfig::LoadFromCommandLine() {
       !cmdline->HasSwitch(switches::kP3ADoNotRandomizeUploadInterval);
 
   config.json_rotation_intervals[MetricLogType::kSlow] =
-      GetTimeDeltaFromCommandLineOrDefault(
+      MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3ASlowRotationIntervalSeconds,
           std::move(config.json_rotation_intervals[MetricLogType::kSlow]));
   config.json_rotation_intervals[MetricLogType::kTypical] =
-      GetTimeDeltaFromCommandLineOrDefault(
+      MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3ATypicalRotationIntervalSeconds,
           std::move(config.json_rotation_intervals[MetricLogType::kTypical]));
   config.json_rotation_intervals[MetricLogType::kExpress] =
-      GetTimeDeltaFromCommandLineOrDefault(
+      MaybeOverrideTimeDeltaFromCommandLine(
           cmdline, switches::kP3AExpressRotationIntervalSeconds,
           std::move(config.json_rotation_intervals[MetricLogType::kExpress]));
 
   config.p3a_json_upload_url =
-      GetURLFromCommandLineOrDefault(cmdline, switches::kP3AJsonUploadUrl,
-                                     std::move(config.p3a_json_upload_url));
-  config.p3a_creative_upload_url =
-      GetURLFromCommandLineOrDefault(cmdline, switches::kP3ACreativeUploadUrl,
-                                     std::move(config.p3a_creative_upload_url));
+      MaybeOverrideURLFromCommandLine(cmdline, switches::kP3AJsonUploadUrl,
+                                      std::move(config.p3a_json_upload_url));
+  config.p3a_creative_upload_url = MaybeOverrideURLFromCommandLine(
+      cmdline, switches::kP3ACreativeUploadUrl,
+      std::move(config.p3a_creative_upload_url));
   config.p2a_json_upload_url =
-      GetURLFromCommandLineOrDefault(cmdline, switches::kP2AJsonUploadUrl,
-                                     std::move(config.p2a_json_upload_url));
-  config.p3a_constellation_upload_url = GetURLFromCommandLineOrDefault(
+      MaybeOverrideURLFromCommandLine(cmdline, switches::kP2AJsonUploadUrl,
+                                      std::move(config.p2a_json_upload_url));
+  config.p3a_constellation_upload_url = MaybeOverrideURLFromCommandLine(
       cmdline, switches::kP3AConstellationUploadUrl,
       std::move(config.p3a_constellation_upload_url));
-  config.star_randomness_host = GetStringFromCommandLineOrDefault(
+  config.star_randomness_host = MaybeOverrideStringFromCommandLine(
       cmdline, switches::kP3AStarRandomnessHost,
       std::move(config.star_randomness_host));
 
-  config.disable_star_attestation = GetBoolFromCommandLineOrDefault(
+  config.disable_star_attestation = MaybeOverrideBoolFromCommandLine(
       cmdline, switches::kP3ADisableStarAttestation,
       config.disable_star_attestation);
 
-  config.ignore_server_errors = GetBoolFromCommandLineOrDefault(
+  config.ignore_server_errors = MaybeOverrideBoolFromCommandLine(
       cmdline, switches::kP3AIgnoreServerErrors, config.ignore_server_errors);
 
   VLOG(2) << "P3AConfig parameters are:"
