@@ -314,16 +314,19 @@ public class NTPUtil {
             imageBitmap = BitmapFactory.decodeStream(inputStream, null, options);
             inputStream.close();
         } catch (IOException exc) {
-            Log.e("NTP", exc.getMessage());
+            Log.e(TAG, "getBitmapFromImagePath: IOException: " + exc.getMessage());
         } catch (IllegalArgumentException exc) {
-            Log.e("NTP", exc.getMessage());
+            Log.e(TAG, "getBitmapFromImagePath: IllegalArgumentException: " + exc.getMessage());
+        } catch (OutOfMemoryError exc) {
+            Log.e(TAG, "getBitmapFromImagePath: OutOfMemoryError: " + exc.getMessage());
         } finally {
             try {
                 if (inputStream != null) {
                     inputStream.close();
                 }
             } catch (IOException exception) {
-                Log.e("NTP", exception.getMessage());
+                Log.e(TAG,
+                        "getBitmapFromImagePath IOException in finally: " + exception.getMessage());
                 return null;
             }
         }
@@ -399,7 +402,7 @@ public class NTPUtil {
             return bitmapWithGradient;
         } catch (Exception exc) {
             exc.printStackTrace();
-            Log.e("NTP", exc.getMessage());
+            Log.e(TAG, "getCalculatedBitmap: " + exc.getMessage());
             return null;
         } finally {
             if (imageBitmap != null && !imageBitmap.isRecycled()) imageBitmap.recycle();
@@ -418,7 +421,7 @@ public class NTPUtil {
             inputStream.close();
         } catch (IOException exc) {
             exc.printStackTrace();
-            Log.e("NTP", exc.getMessage());
+            Log.e(TAG, "getTopSiteBitmap IOException: " + exc.getMessage());
             topSiteIcon = null;
         } finally {
             try {
@@ -427,7 +430,7 @@ public class NTPUtil {
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
-                Log.e("NTP", exception.getMessage());
+                Log.e(TAG, "getTopSiteBitmap IOException in finally: " + exception.getMessage());
                 topSiteIcon = null;
             }
         }
