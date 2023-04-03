@@ -22,6 +22,8 @@ source_set("sidebar") {
     "sidebar_service_delegate_impl.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
+    "sidebar_tab_helper.cc",
+    "sidebar_tab_helper.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
   ]
@@ -36,6 +38,7 @@ source_set("sidebar") {
     "//content/public/common",
     "//extensions/buildflags",
     "//skia",
+    "//third_party/abseil-cpp:absl",
     "//url",
   ]
 
