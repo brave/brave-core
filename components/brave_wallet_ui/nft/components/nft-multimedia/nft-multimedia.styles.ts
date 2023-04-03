@@ -10,8 +10,6 @@ export const MultiMediaWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
 `
 
 export const NftMediaIframe = styled.iframe<{ visible: boolean }>`
@@ -24,9 +22,7 @@ export const NftMediaIframe = styled.iframe<{ visible: boolean }>`
 `
 
 export const MediaSkeletonWrapper = styled.div`
-  width: 100%;
-  min-width: 100%;
-  height: 100%;
-  margin-right: 28px;
+  width: 75%;
+  height: 500px;
   border-radius: 12px;
 `

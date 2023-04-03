@@ -11,15 +11,12 @@ import FacebookIcon from '../../../assets/svg-icons/facebook-icon.svg'
 import { OpenNewIcon } from 'brave-ui/components/icons'
 import Copy from '../../../assets/svg-icons/nft-ipfs/copy.svg'
 
-export const nftMediaSize = '300px'
-
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  min-height: ${nftMediaSize};
 `
 
 export const DetailColumn = styled.div`
@@ -27,7 +24,7 @@ export const DetailColumn = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: calc(100% - ${nftMediaSize});
+  width: 100%;
 `
 
 export const TokenName = styled.span`

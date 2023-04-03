@@ -5,7 +5,6 @@
 
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import { nftMediaSize } from '../nft-details/nft-details-styles'
 
 export const ImageWrapper = styled.div`
   display: flex;
@@ -18,10 +17,9 @@ export const ImageWrapper = styled.div`
 export const MultimediaWrapper = styled.div`
   position: relative;
   display: flex;
-  align-items: flex-start;
-  margin-right: 28px;
-  flex: 1 0 ${nftMediaSize};
-  height: ${nftMediaSize};
+  align-items: center;
+  width: 100%;
+  height: auto;
   overflow: hidden;
 `
 

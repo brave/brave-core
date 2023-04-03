@@ -74,13 +74,6 @@ export type ToggleNftModal = CommandMessage & {
   payload: boolean
 }
 
-export type IframeSize = CommandMessage & {
-  payload: {
-    width: number
-    height: number
-  }
-}
-
 export const sendMessageToNftUiFrame = (targetWindow: Window | null, message: CommandMessage) => {
   if (targetWindow && !isComponentInStorybook()) {
     targetWindow.postMessage(message, braveNftDisplayOrigin)
