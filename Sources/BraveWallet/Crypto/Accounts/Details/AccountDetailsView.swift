@@ -24,10 +24,13 @@ struct AccountDetailsView: View {
   @State private var isPresentingRemoveConfirmation: Bool = false
 
   @Environment(\.presentationMode) @Binding private var presentationMode
+  
+  private var isDoneDisabled: Bool {
+    name.isEmpty || !name.isValidAccountName
+  }
 
   private func renameAccountAndDismiss() {
-    if name.isEmpty {
-      // Show error?
+    guard !name.isEmpty && name.isValidAccountName else {
       return
     }
     keyringStore.renameAccount(account, name: name)
@@ -44,20 +47,34 @@ struct AccountDetailsView: View {
             .listRowBackground(Color(.braveGroupedBackground))
         }
         Section(
-          header: WalletListHeaderView(
-            title: Text(Strings.Wallet.accountDetailsNameTitle)
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-          )
-        ) {
-          TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
+          content: {
+            Group {
+              if #available(iOS 16, *) {
+                TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
+              } else {
+                TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
+              }
+            }
             .introspectTextField { tf in
               if editMode && !isFieldFocused && !tf.isFirstResponder {
                 isFieldFocused = tf.becomeFirstResponder()
               }
             }
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }
+          },
+          header: {
+            WalletListHeaderView(
+              title: Text(Strings.Wallet.accountDetailsNameTitle)
+                .font(.subheadline.weight(.semibold))
+                .foregroundColor(Color(.bravePrimary))
+            )
+          },
+          footer: {
+            SectionFooterErrorView(
+              errorMessage: name.isValidAccountName ? nil : Strings.Wallet.accountNameLengthError
+            )
+          }
+        )
         Section {
           NavigationLink(destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)) {
             Text(Strings.Wallet.accountPrivateKey)
@@ -96,8 +113,8 @@ struct AccountDetailsView: View {
         ToolbarItemGroup(placement: .confirmationAction) {
           Button(action: renameAccountAndDismiss) {
             Text(Strings.done)
-              .foregroundColor(Color(.braveBlurpleTint))
           }
+          .disabled(isDoneDisabled)
         }
       }
     }

@@ -31,9 +31,11 @@ struct AddAccountView: View {
   var onDismiss: (() -> Void)?
 
   private func addAccount(for coin: BraveWallet.CoinType) {
+    let accountName = name.isEmpty ? defaultAccountName(for: coin, isPrimary: privateKey.isEmpty) : name
+    guard accountName.isValidAccountName else { return }
+    
     if privateKey.isEmpty {
       // Add normal account
-      let accountName = name.isEmpty ? defaultAccountName(for: coin, isPrimary: true) : name
       keyringStore.addPrimaryAccount(accountName, coin: coin) { success in
         if success {
           onCreate?()
@@ -51,7 +53,6 @@ struct AddAccountView: View {
           failedToImport = true
         }
       }
-      let accountName = name.isEmpty ? defaultAccountName(for: coin, isPrimary: false) : name
       if isJSONImported {
         keyringStore.addSecondaryAccount(accountName, json: privateKey, password: originPassword, completion: handler)
       } else {
@@ -103,6 +104,7 @@ struct AddAccountView: View {
         Text(Strings.Wallet.add)
       }
         .buttonStyle(BraveFilledButtonStyle(size: .small))
+        .disabled(!name.isValidAccountName)
     )
     .alert(isPresented: $failedToImport) {
       Alert(
@@ -203,15 +205,29 @@ struct AddAccountView: View {
 
   private var accountNameSection: some View {
     Section(
-      header: WalletListHeaderView(
-        title: Text(Strings.Wallet.accountDetailsNameTitle)
-          .font(.subheadline.weight(.semibold))
-          .foregroundColor(Color(.bravePrimary))
-      )
-    ) {
-      TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-    }
+      content: {
+        Group {
+          if #available(iOS 16, *) {
+            TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
+          } else {
+            TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
+          }
+        }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      },
+      header: {
+        WalletListHeaderView(
+          title: Text(Strings.Wallet.accountDetailsNameTitle)
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(.bravePrimary))
+        )
+      },
+      footer: {
+        SectionFooterErrorView(
+          errorMessage: name.isValidAccountName ? nil : Strings.Wallet.accountNameLengthError
+        )
+      }
+    )
   }
 
   private var originPasswordSection: some View {
