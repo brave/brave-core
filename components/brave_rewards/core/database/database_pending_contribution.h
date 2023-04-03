@@ -35,7 +35,8 @@ class DatabasePendingContribution : public DatabaseTable {
   void DeleteAllRecords(ledger::LegacyResultCallback callback);
 
  private:
-  void OnGetReservedAmount(mojom::DBCommandResponsePtr response,
+  void OnGetReservedAmount(
+      mojom::DBCommandResponsePtr response,
       ledger::GetPendingContributionsTotalCallback callback);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,

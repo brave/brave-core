@@ -179,10 +179,11 @@ class Publisher {
                             const std::string& publisher_key,
                             ledger::GetPublisherBannerCallback callback);
 
-  void OnGetPublisherBannerPublisher(ledger::GetPublisherBannerCallback callback,
-                                     const mojom::PublisherBanner& banner,
-                                     mojom::Result result,
-                                     mojom::PublisherInfoPtr publisher_info);
+  void OnGetPublisherBannerPublisher(
+      ledger::GetPublisherBannerCallback callback,
+      const mojom::PublisherBanner& banner,
+      mojom::Result result,
+      mojom::PublisherInfoPtr publisher_info);
 
   void OnGetPublisherBannerForSavePublisherInfo(
       mojom::PublisherBannerPtr banner,

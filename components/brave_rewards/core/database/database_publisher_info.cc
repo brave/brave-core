@@ -88,7 +88,8 @@ void DatabasePublisherInfo::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabasePublisherInfo::GetRecord(const std::string& publisher_key,
+void DatabasePublisherInfo::GetRecord(
+    const std::string& publisher_key,
     ledger::GetPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");

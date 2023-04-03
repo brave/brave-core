@@ -601,8 +601,9 @@ void Publisher::OnPanelPublisherInfo(mojom::Result result,
   }
 }
 
-void Publisher::GetPublisherBanner(const std::string& publisher_key,
-                                   ledger::GetPublisherBannerCallback callback) {
+void Publisher::GetPublisherBanner(
+    const std::string& publisher_key,
+    ledger::GetPublisherBannerCallback callback) {
   const auto banner_callback = std::bind(&Publisher::OnGetPublisherBanner, this,
                                          _1, publisher_key, callback);
 
@@ -616,9 +617,10 @@ void Publisher::GetPublisherBanner(const std::string& publisher_key,
   GetServerPublisherInfo(publisher_key, banner_callback);
 }
 
-void Publisher::OnGetPublisherBanner(mojom::ServerPublisherInfoPtr info,
-                                     const std::string& publisher_key,
-                                     ledger::GetPublisherBannerCallback callback) {
+void Publisher::OnGetPublisherBanner(
+    mojom::ServerPublisherInfoPtr info,
+    const std::string& publisher_key,
+    ledger::GetPublisherBannerCallback callback) {
   auto banner = mojom::PublisherBanner::New();
 
   if (info) {

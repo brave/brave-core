@@ -76,9 +76,10 @@ void Database::NormalizeActivityInfoList(
   activity_info_->NormalizeList(std::move(list), callback);
 }
 
-void Database::GetActivityInfoList(uint32_t start,
-                                   uint32_t limit,
-                                   mojom::ActivityInfoFilterPtr filter,
+void Database::GetActivityInfoList(
+    uint32_t start,
+    uint32_t limit,
+    mojom::ActivityInfoFilterPtr filter,
     ledger::GetActivityInfoListCallback callback) {
   activity_info_->GetRecordsList(start, limit, std::move(filter), callback);
 }
@@ -432,7 +433,8 @@ void Database::GetPublisherInfo(const std::string& publisher_key,
   publisher_info_->GetRecord(publisher_key, callback);
 }
 
-void Database::GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
+void Database::GetPanelPublisherInfo(
+    mojom::ActivityInfoFilterPtr filter,
     ledger::GetPublisherPanelInfoCallback callback) {
   publisher_info_->GetPanelRecord(std::move(filter), callback);
 }
