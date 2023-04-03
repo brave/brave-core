@@ -148,7 +148,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
   // Assert
 }
 
-TEST_F(BatAdsRedeemOptedInConfirmationTest, RedeemIfConfirmationWasCreated) {
+TEST_F(BatAdsRedeemOptedInConfirmationTest,
+       RedeemIfConfirmationWasPreviouslyCreated) {
   // Arrange
   const URLResponseMap url_responses = {
       {// Fetch payment token request

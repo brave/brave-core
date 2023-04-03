@@ -17,7 +17,6 @@
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "components/sessions/core/session_id.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class GURL;
