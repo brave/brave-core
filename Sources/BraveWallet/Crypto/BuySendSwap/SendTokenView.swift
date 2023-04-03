@@ -140,33 +140,10 @@ struct SendTokenView: View {
         }
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.sendCryptoToTitle)),
-          footer: Group {
-            if let error = sendTokenStore.addressError {
-              HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Image(systemName: "exclamationmark.circle.fill")
-                Text(error.localizedDescription)
-                  .fixedSize(horizontal: false, vertical: true)
-                  .animation(nil, value: error.localizedDescription)
-              }
-              .transition(
-                .asymmetric(
-                  insertion: .opacity.animation(.default),
-                  removal: .identity
-                )
-              )
-              .font(.footnote)
-              .foregroundColor(Color(.braveErrorLabel))
-              .padding(.bottom)
-            } else {
-              // SwiftUI will add/remove this Section footer when addressError
-              // optionality is changed. This can cause keyboard to dismiss.
-              // By using clear square, the footer remains and section is not
-              // redrawn, so the keyboard does not dismiss as user types.
-              Color.clear.frame(width: 1, height: 1)
-                .accessibility(hidden: true)
-                .transition(.identity)
-            }
-          }
+          footer:
+            SectionFooterErrorView(
+              errorMessage: sendTokenStore.addressError?.localizedDescription
+            )
         ) {
           VStack {
             HStack(spacing: 14.0) {

@@ -317,4 +317,9 @@ public extension String {
   var endsWithSupportedUDExtension: Bool {
     WalletConstants.supportedUDExtensions.contains(where: hasSuffix)
   }
+  
+  /// Returns true if `Self` is a valid account name
+  var isValidAccountName: Bool {
+    self.count <= 30
+  }
 }

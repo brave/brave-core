@@ -155,6 +155,13 @@ extension Strings {
       value: "Enter account name",
       comment: "The placeholder of the text field which allows the user to edit the account's name"
     )
+    public static let accountNameLengthError = NSLocalizedString(
+      "wallet.accountNameLengthError",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Account name must be at most 30 characters long",
+      comment: "The error shown below the account name field when adding or renaming a wallet account if the length is longer than 30 characters."
+    )
     public static let accountPrivateKey = NSLocalizedString(
       "wallet.accountPrivateKey",
       tableName: "BraveWallet",
