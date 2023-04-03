@@ -22,11 +22,11 @@
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
+namespace brave_ads {
+
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::NiceMock;
-
-namespace brave_ads {
 
 UnitTestBase::UnitTestBase()
     : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
