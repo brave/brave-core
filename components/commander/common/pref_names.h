@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_COMMANDER_COMMON_PREFS_H_
-#define BRAVE_COMPONENTS_COMMANDER_COMMON_PREFS_H_
+#ifndef BRAVE_COMPONENTS_COMMANDER_COMMON_PREF_NAMES_H_
+#define BRAVE_COMPONENTS_COMMANDER_COMMON_PREF_NAMES_H_
 
 #include "base/component_export.h"
 
@@ -15,4 +15,4 @@ extern const char kCommanderFrecencies[];
 
 }  // namespace commander::prefs
 
-#endif  // BRAVE_COMPONENTS_COMMANDER_COMMON_PREFS_H_
+#endif  // BRAVE_COMPONENTS_COMMANDER_COMMON_PREF_NAMES_H_

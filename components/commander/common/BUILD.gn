@@ -14,8 +14,8 @@ component("common") {
     "constants.h",
     "features.cc",
     "features.h",
-    "prefs.cc",
-    "prefs.h",
+    "pref_names.cc",
+    "pref_names.h",
   ]
 
   deps = [ "//base" ]

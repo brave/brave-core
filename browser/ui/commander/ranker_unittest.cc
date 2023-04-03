@@ -9,27 +9,24 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/commander/common/prefs.h"
+#include "brave/components/commander/common/pref_names.h"
 #include "chrome/browser/ui/commander/command_source.h"
-#include "chrome/test/base/testing_profile.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "content/public/test/browser_task_environment.h"
-#include "third_party/googletest/src/googletest/include/gtest/gtest.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 class RankerUnitTest : public testing::Test {
  public:
-  RankerUnitTest() : ranker_(profile_.GetPrefs()) {}
+  RankerUnitTest() : ranker_(&prefs_) {}
   ~RankerUnitTest() override = default;
 
   void SetUp() override {
-    profile_.GetTestingPrefService()->registry()->RegisterDictionaryPref(
+    prefs_.registry()->RegisterDictionaryPref(
         commander::prefs::kCommanderFrecencies);
   }
 
  protected:
-  content::BrowserTaskEnvironment task_environment_;
-
-  TestingProfile profile_;
+  TestingPrefServiceSimple prefs_;
   commander::Ranker ranker_;
 };
 

@@ -31,8 +31,8 @@ class Ranker {
             size_t max_results);
 
  private:
-  std::string GetId(const CommandItem& item);
-  std::tuple<int, base::Time> GetInfo(const std::string& id);
+  std::string GetId(const CommandItem& item) const;
+  std::tuple<int, base::Time> GetInfo(const std::string& id) const;
 
   raw_ptr<PrefService> prefs_;
 };

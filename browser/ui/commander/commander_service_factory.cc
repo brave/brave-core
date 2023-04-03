@@ -7,7 +7,7 @@
 
 #include "base/memory/singleton.h"
 #include "brave/browser/ui/commander/commander_service.h"
-#include "brave/components/commander/common/prefs.h"
+#include "brave/components/commander/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"

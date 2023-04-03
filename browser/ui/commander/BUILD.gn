@@ -30,10 +30,9 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//brave/components/commander/browser",
-    "//chrome/browser/profiles",
-    "//chrome/browser/ui:ui",
-    "//chrome/test:test_support",
-    "//chrome/test:test_support_ui",
     "//components/sync_preferences:test_support",
+    "//components/prefs:test_support",
+    "//chrome/browser/ui",
+    "//testing/gtest"
   ]
 }

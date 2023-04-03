@@ -13,7 +13,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/commander/common/prefs.h"
+#include "brave/components/commander/common/pref_names.h"
 #include "chrome/browser/ui/commander/command_source.h"
 #include "components/history/core/browser/keyword_search_term_util.h"
 #include "components/prefs/pref_service.h"
@@ -25,7 +25,7 @@ Ranker::Ranker(PrefService* prefs) : prefs_(prefs) {}
 Ranker::~Ranker() = default;
 
 void Ranker::Visit(const CommandItem& item) {
-  auto id = GetId(item);
+  const auto id = GetId(item);
   ScopedDictPrefUpdate update(prefs_, prefs::kCommanderFrecencies);
 
   auto* entry = update->EnsureDict(id);
@@ -52,12 +52,12 @@ void Ranker::Rank(std::vector<std::unique_ptr<CommandItem>>& items,
       });
 }
 
-std::string Ranker::GetId(const CommandItem& item) {
+std::string Ranker::GetId(const CommandItem& item) const {
   // TODO(fallaciousreasoning): Introduce a more stable id for commands.
   return base::UTF16ToUTF8(item.title);
 }
 
-std::tuple<int, base::Time> Ranker::GetInfo(const std::string& id) {
+std::tuple<int, base::Time> Ranker::GetInfo(const std::string& id) const {
   auto* entry = prefs_->GetDict(prefs::kCommanderFrecencies).FindDict(id);
   if (!entry) {
     return std::make_tuple(0, base::Time::Min());
