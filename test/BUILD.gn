@@ -1112,6 +1112,7 @@ test("brave_browser_tests") {
       "//chrome/browser/extensions/extension_apitest.cc",
       "//chrome/browser/extensions/extension_apitest.h",
     ]
+    deps += [ "//brave/browser/extensions/api/identity/test:browsertests" ]
   }
 
   if (is_android) {
