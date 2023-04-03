@@ -132,15 +132,4 @@ using UnverifiedPublishersCallback =
 
 }  // namespace ledger
 
-namespace ledger {
-
-inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
-inline bool is_debug = false;
-inline bool is_testing = false;
-inline int state_migration_target_version_for_testing = -1;
-inline int reconcile_interval = 0;  // minutes
-inline int retry_interval = 0;      // seconds
-
-}  // namespace ledger
-
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_H_

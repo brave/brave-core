@@ -13,6 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "crypto/random.h"

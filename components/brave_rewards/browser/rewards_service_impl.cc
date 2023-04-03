@@ -2257,14 +2257,6 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
   SetRetryInterval(1);
 
   profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
-
-  // this is needed because we are using braveledger_request_util::buildURL
-  // directly in RewardsBrowserTest
-  #if defined(OFFICIAL_BUILD)
-  ledger::_environment = ledger::mojom::Environment::PRODUCTION;
-#else
-  ledger::_environment = ledger::mojom::Environment::STAGING;
-#endif
 }
 
 void RewardsServiceImpl::StartContributionsForTesting() {
