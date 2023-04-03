@@ -820,9 +820,9 @@ public class Utils {
 
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
-        int x = (bitmap.getWidth() - bounds.width()) / 2;
-        int y = (bitmap.getHeight() + bounds.height()) / 2;
-        canvas.drawText(text, x, y, paint);
+        float x = (bitmap.getWidth() - bounds.width()) / 2f;
+        float y = (bitmap.getHeight() + bounds.height()) / 2f;
+        canvas.drawText(text, x - bounds.left, y - bounds.bottom, paint);
 
         return bitmap;
     }
