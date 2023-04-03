@@ -17,6 +17,29 @@
 #include "chrome/browser/ui/views/tabs/window_finder.h"
 #include "ui/views/view_utils.h"
 
+namespace {
+
+int GetXCoordinateAdjustmentForMultiSelectedTabs(
+    const std::vector<TabSlotView*>& dragged_views,
+    int source_view_index) {
+  if (dragged_views.at(source_view_index)->GetTabSlotViewType() ==
+          TabSlotView::ViewType::kTabGroupHeader ||
+      source_view_index == 0) {
+    return 0;
+  }
+
+  // When selecting multiple tabs, the x coordinate is not exactly same with
+  // where it was pressed. Because Chromium adjust it by the width of previous
+  // tabs(See TabStrip::GetSizeNeededForViews() and its call sites). But we
+  // don't want this behavior. With this adjustment selecting multiple tabs
+  // without dragging make tabs or the window jump around by the amount of the
+  // width of other tabs. https://github.com/brave/brave-browser/issues/29465
+  return TabStrip::GetSizeNeededForViews(std::vector(
+      dragged_views.begin(), dragged_views.begin() + source_view_index));
+}
+
+}  // namespace
+
 TabDragController::TabDragController() = default;
 
 TabDragController::~TabDragController() = default;
@@ -59,8 +82,10 @@ void TabDragController::Init(TabDragContext* source_context,
   }
 
   // Adjust coordinate for vertical mode.
+  const int x = mouse_offset.x() - GetXCoordinateAdjustmentForMultiSelectedTabs(
+                                       dragging_views, source_view_index_);
   source_view_offset = mouse_offset.y();
-  start_point_in_screen_ = gfx::Point(mouse_offset.x(), source_view_offset);
+  start_point_in_screen_ = gfx::Point(x, source_view_offset);
   views::View::ConvertPointToScreen(source_view, &start_point_in_screen_);
 
   last_point_in_screen_ = start_point_in_screen_;
@@ -258,6 +283,9 @@ gfx::Rect TabDragController::CalculateDraggedBrowserBounds(
     DCHECK(!drag_bounds->empty());
     bounds.Offset(-(mouse_offset_.OffsetFromOrigin()));
     bounds.Offset({-drag_bounds->front().x(), 0});
+    bounds.Offset({-GetXCoordinateAdjustmentForMultiSelectedTabs(
+                       attached_views_, source_view_index_),
+                   0});
 
     auto* browser_view = static_cast<BraveBrowserView*>(
         BrowserView::GetBrowserViewForNativeWindow(
