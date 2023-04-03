@@ -136,24 +136,25 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
                        CommandsAreUpdatedViaOmnibox) {
   omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Create tab"}));
+      base::StrCat({commander::kCommandPrefix, u" NT Right"}));
 
   EXPECT_LE(1, commander()->GetResultSetId());
 
   auto items = commander()->GetItems();
   ASSERT_EQ(1u, items.size());
-  EXPECT_EQ(u"Create new tab", items[0].title);
+  EXPECT_EQ(u"New Tab To Right", items[0].title);
 }
 
 IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest, CommandsCanBeSelected) {
   omnibox()->SetUserText(
-      base::StrCat({commander::kCommandPrefix, u" Create tab"}));
+      base::StrCat({commander::kCommandPrefix, u" New tab"}));
 
   EXPECT_LE(1, commander()->GetResultSetId());
 
   auto items = commander()->GetItems();
-  ASSERT_EQ(1u, items.size());
-  EXPECT_EQ(u"Create new tab", items[0].title);
+  ASSERT_EQ(2u, items.size());
+  EXPECT_EQ(u"New Tab", items[0].title);
+  EXPECT_EQ(u"New Tab To Right", items[1].title);
 
   EXPECT_EQ(1, browser()->tab_strip_model()->count());
   commander()->SelectCommand(0, commander()->GetResultSetId());
@@ -168,9 +169,10 @@ IN_PROC_BROWSER_TEST_F(CommanderServiceBrowserTest,
   EXPECT_LE(1, commander()->GetResultSetId());
 
   auto items = commander()->GetItems();
-  ASSERT_EQ(2u, items.size());
+  ASSERT_EQ(3u, items.size());
   EXPECT_EQ(u"Pin tab...", items[0].title);
-  EXPECT_EQ(u"Close unpinned tabs", items[1].title);
+  EXPECT_EQ(u"Window Pin Tab", items[1].title);
+  EXPECT_EQ(u"Close unpinned tabs", items[2].title);
 
   commander()->SelectCommand(0, 1);
   EXPECT_LE(2, commander()->GetResultSetId());
