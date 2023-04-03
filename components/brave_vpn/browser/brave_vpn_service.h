@@ -105,6 +105,8 @@ class BraveVpnService :
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
   void ResetConnectionState() override;
+  void EnableOnDemand(bool enable) override;
+  void GetOnDemandState(GetOnDemandStateCallback callback) override;
 #else
   // mojom::vpn::ServiceHandler
   void GetPurchaseToken(GetPurchaseTokenCallback callback) override;

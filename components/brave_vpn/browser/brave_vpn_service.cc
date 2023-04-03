@@ -297,6 +297,23 @@ void BraveVpnService::ResetConnectionState() {
   connection_manager_->ResetConnectionState();
 }
 
+void BraveVpnService::EnableOnDemand(bool enable) {
+#if BUILDFLAG(IS_MAC)
+  VLOG(2) << __func__ << ": enabled" << enable;
+  local_prefs_->SetBoolean(prefs::kBraveVPNOnDemandEnabled, enable);
+#endif
+}
+
+void BraveVpnService::GetOnDemandState(GetOnDemandStateCallback callback) {
+#if BUILDFLAG(IS_MAC)
+  std::move(callback).Run(
+      /*available*/ true,
+      /*enabled*/ local_prefs_->GetBoolean(prefs::kBraveVPNOnDemandEnabled));
+#else
+  std::move(callback).Run(false, false);
+#endif
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(

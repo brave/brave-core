@@ -80,6 +80,10 @@
     Expires
   </message>
 
+  <message name="IDS_BRAVE_VPN_RECONNECT_AUTOMATICALLY" desc="Label to toggle reconnect toggle">
+    Reconnect automatically
+  </message>
+
   <message name="IDS_BRAVE_VPN_MANAGE_SUBSCRIPTION" desc="Link text to redirect user to manage account page">
     Manage subscription
   </message>

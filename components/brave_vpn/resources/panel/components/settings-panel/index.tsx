@@ -8,6 +8,7 @@ import { getLocale } from '../../../../../common/locale'
 import * as S from './style'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
+import Toggle from '$web-components/toggle'
 
 interface Props {
   closeSettingsPanel: React.MouseEventHandler<HTMLButtonElement>
@@ -15,6 +16,11 @@ interface Props {
 }
 
 function SettingsPanel (props: Props) {
+  const [onDemand, setOnDemand] =
+    React.useState({ available: false, enabled: false})
+
+  getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+
   const handleClick = (entry: string) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
   }
@@ -26,6 +32,10 @@ function SettingsPanel (props: Props) {
     }
     handleClick(entry)
   }
+  const handleToggleChange = (isOn: boolean) => {
+    getPanelBrowserAPI().serviceHandler.enableOnDemand(isOn)
+  }
+
   return (
     <S.Box>
       <S.PanelContent>
@@ -40,6 +50,20 @@ function SettingsPanel (props: Props) {
           </S.BackButton>
         </S.PanelHeader>
         <S.List>
+          {onDemand.available && <li>
+            <S.ReconnectBox>
+              <span>
+                {getLocale('braveVpnReconnectAutomatically')}
+              </span>
+              <Toggle
+                isOn={onDemand.enabled}
+                onChange={handleToggleChange}
+                brand='vpn'
+                size='sm'
+                aria-label='Reconnect automatically'
+              />
+            </S.ReconnectBox>
+          </li>}
           <li>
             <a href="#" onClick={handleClick.bind(this, 'manage')} onKeyDown={handleKeyDown.bind(this, 'manage')}>
               {getLocale('braveVpnManageSubscription')}

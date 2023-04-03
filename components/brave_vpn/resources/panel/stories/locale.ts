@@ -23,6 +23,7 @@ provideStrings({
   braveVpnStatus: 'Status',
   braveVpnExpires: 'Expires',
   braveVpnManageSubscription: 'Manage subscription',
+  braveVpnReconnectAutomatically: 'Reconnect automatically',
   braveVpnContactSupport: 'Contact technical support',
   braveVpnAbout: 'About',
   braveVpnErrorPanelHeader: 'Brave VPN',

@@ -18,6 +18,9 @@
 #include "base/files/file_util.h"
 #include "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 // Referenced GuardianConnect implementation.
@@ -188,6 +191,19 @@ void IKEv2ConnectionAPIImplMac::CreateVPNConnectionImpl(
     [vpn_manager setProtocolConfiguration:CreateProtocolConfig(info)];
     [vpn_manager setLocalizedDescription:base::SysUTF8ToNSString(
                                              info.connection_name())];
+    if (IsOnDemandEnabled()) {
+      [vpn_manager setOnDemandEnabled:YES];
+      NEOnDemandRuleConnect* vpn_server_connect_rule =
+          [[NEOnDemandRuleConnect alloc] init];
+      vpn_server_connect_rule.interfaceTypeMatch =
+          NEOnDemandRuleInterfaceTypeAny;
+      vpn_server_connect_rule.probeURL = [NSURL
+          URLWithString:
+              [NSString
+                  stringWithFormat:@"https://%@/vpnsrv/api/server-status",
+                                   base::SysUTF8ToNSString(info.hostname())]];
+      [vpn_manager setOnDemandRules:@[ vpn_server_connect_rule ]];
+    }
 
     [vpn_manager saveToPreferencesWithCompletionHandler:^(NSError* save_error) {
       if (save_error) {
@@ -278,7 +294,17 @@ void IKEv2ConnectionAPIImplMac::DisconnectImpl(const std::string& name) {
       return;
     }
 
-    [[vpn_manager connection] stopVPNTunnel];
+    // Always clear on-demand bit when user disconnect vpn connection.
+    [vpn_manager setOnDemandEnabled:NO];
+    [vpn_manager saveToPreferencesWithCompletionHandler:^(NSError* save_error) {
+      if (save_error) {
+        SetLastConnectionError(
+            base::SysNSStringToUTF8([save_error localizedDescription]));
+        LOG(ERROR) << "Create - saveToPrefs error: "
+                   << GetLastConnectionError();
+      }
+      [[vpn_manager connection] stopVPNTunnel];
+    }];
   }];
 }
 
@@ -342,6 +368,10 @@ bool IKEv2ConnectionAPIImplMac::IsPlatformNetworkAvailable() {
   BOOL isReachable = flags & kSCNetworkReachabilityFlagsReachable;
   BOOL needsConnection = flags & kSCNetworkReachabilityFlagsConnectionRequired;
   return isReachable && !needsConnection;
+}
+
+bool IKEv2ConnectionAPIImplMac::IsOnDemandEnabled() const {
+  return manager_->local_prefs()->GetBoolean(prefs::kBraveVPNOnDemandEnabled);
 }
 
 }  // namespace brave_vpn

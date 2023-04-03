@@ -14,8 +14,8 @@ export const Box = styled.div`
 export const List = styled.ul`
   list-style-type: none;
   padding: 0;
-  margin: 0;
-  text-align: center;
+  margin: 8px;
+  text-align: left;
 
   li {
     margin-bottom: 28px;
@@ -76,5 +76,20 @@ export const BackButton = styled.button`
 
   svg {
     fill: ${(p) => p.theme.color.interactive05};
+  }
+`
+
+export const ReconnectBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  span {
+    font-family: ${(p) => p.theme.fontFamily.heading};
+    font-size: 13px;
+    font-weight: 600;
+    color: ${(p) => p.theme.color.interactive05};
   }
 `

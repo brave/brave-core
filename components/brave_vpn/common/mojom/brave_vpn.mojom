@@ -73,6 +73,16 @@ interface ServiceHandler {
   [EnableIfNot=is_android]
   ResetConnectionState();
 
+  // on demand and automatic reconnect both have same meaning.
+  // When on demand is enabled, vpn is connected(automatically) at anytime when network request is made.
+  [EnableIfNot=is_android]
+  EnableOnDemand(bool enable);
+
+  // true to |available| when on demand feature is supported.
+  // |enabled| is only valid when |available| is true.
+  [EnableIfNot=is_android]
+  GetOnDemandState() => (bool available, bool enabled);
+
   [EnableIf=is_android]
   GetPurchaseToken() => (string token);
 };

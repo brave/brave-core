@@ -28,6 +28,7 @@ class IKEv2ConnectionAPIImplMac : public SystemVPNConnectionAPIImplBase {
   bool IsPlatformNetworkAvailable() override;
 
   void ObserveVPNConnectionChange();
+  bool IsOnDemandEnabled() const;
 
   id vpn_observer_ = nil;
 };
