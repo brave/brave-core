@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDER_RANKER_H_
 #define BRAVE_BROWSER_UI_COMMANDER_RANKER_H_
 
+#include <memory>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -25,7 +27,8 @@ class Ranker {
   void Visit(const CommandItem& item);
   double GetRank(const CommandItem& item);
 
-  void Rank(std::vector<std::unique_ptr<CommandItem>>& items, size_t max_results);
+  void Rank(std::vector<std::unique_ptr<CommandItem>>& items,
+            size_t max_results);
 
  private:
   std::string GetId(const CommandItem& item);

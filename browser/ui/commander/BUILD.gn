@@ -26,11 +26,14 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = ["ranker_unittest.cc"]
+  sources = [ "ranker_unittest.cc" ]
   deps = [
     "//base",
     "//brave/components/commander/browser",
     "//chrome/browser/profiles",
-    "//chrome/test:test_support_ui"
+    "//chrome/browser/ui:ui",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//components/sync_preferences:test_support",
   ]
 }

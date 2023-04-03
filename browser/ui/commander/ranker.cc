@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
+#include <string>
 #include <tuple>
 
 #include "base/strings/utf_string_conversions.h"

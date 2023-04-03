@@ -4,11 +4,11 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/commander/ranker.h"
+
 #include <memory>
 #include <utility>
 #include <vector>
 
-#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/components/commander/common/prefs.h"
 #include "chrome/browser/ui/commander/command_source.h"
 #include "chrome/test/base/testing_profile.h"
@@ -49,6 +49,54 @@ TEST_F(RankerUnitTest, EqualRankSortsAlphabetically) {
   EXPECT_EQ(u"B", items[1]->title);
 }
 
-TEST_F(RankerUnitTest, OnlyFirstNResultsAreSorted) {}
+TEST_F(RankerUnitTest, OnlyFirstNResultsAreSorted) {
+  auto one = std::make_unique<commander::CommandItem>();
+  one->title = u"A";
+  one->score = 500;
 
-TEST_F(RankerUnitTest, ScoreIsWeightedByVisits) {}
+  auto two = std::make_unique<commander::CommandItem>();
+  two->title = u"B";
+  two->score = 100;
+
+  auto three = std::make_unique<commander::CommandItem>();
+  three->title = u"C";
+  three->score = 50;
+
+  std::vector<std::unique_ptr<commander::CommandItem>> items;
+  items.push_back(std::move(three));
+  items.push_back(std::move(two));
+  items.push_back(std::move(one));
+
+  ranker_.Rank(items, 1);
+  ASSERT_EQ(3u, items.size());
+  EXPECT_EQ(u"A", items[0]->title);
+}
+
+TEST_F(RankerUnitTest, ScoreIsWeightedByVisits) {
+  auto one = std::make_unique<commander::CommandItem>();
+  one->title = u"A";
+  one->score = 100;
+
+  auto two = std::make_unique<commander::CommandItem>();
+  two->title = u"B";
+  two->score = 100;
+
+  auto three = std::make_unique<commander::CommandItem>();
+  three->title = u"C";
+  three->score = 100;
+
+  ranker_.Visit(*one.get());
+  ranker_.Visit(*one.get());
+  ranker_.Visit(*two.get());
+
+  std::vector<std::unique_ptr<commander::CommandItem>> items;
+  items.push_back(std::move(three));
+  items.push_back(std::move(two));
+  items.push_back(std::move(one));
+
+  ranker_.Rank(items, 3);
+  ASSERT_EQ(3u, items.size());
+  EXPECT_EQ(u"A", items[0]->title);
+  EXPECT_EQ(u"B", items[1]->title);
+  EXPECT_EQ(u"C", items[2]->title);
+}
