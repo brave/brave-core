@@ -47,6 +47,9 @@ std::map<std::string, float> Task::GetConfig() {
 TaskResult::TaskResult(Task task, PerformanceReport report)
     : task_(task), report_(report) {}
 
+TaskResult::TaskResult(const TaskResult& other) = default;
+TaskResult::~TaskResult() = default;
+
 Task TaskResult::GetTask() {
   return task_;
 }
@@ -54,8 +57,6 @@ Task TaskResult::GetTask() {
 PerformanceReport TaskResult::GetReport() {
   return report_;
 }
-
-TaskResult::~TaskResult() = default;
 
 TaskResultResponse::TaskResultResponse(bool success) : success_(success) {}
 

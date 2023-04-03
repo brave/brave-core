@@ -28,7 +28,14 @@ Model* FederatedTaskRunner::GetModel() {
   return model_.get();
 }
 
-TaskResult FederatedTaskRunner::Run() {
+absl::optional<TaskResult> FederatedTaskRunner::Run() {
+  if (training_data_.empty()) {
+    return absl::nullopt;
+  }
+  if (model_->GetBatchSize() > training_data_.size()) {
+    return absl::nullopt;
+  }
+
   PerformanceReport report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::Training) {
     report = model_->Train(training_data_);
@@ -37,7 +44,7 @@ TaskResult FederatedTaskRunner::Run() {
   }
 
   TaskResult result(task_, report);
-  return result;
+  return absl::optional<TaskResult>(result);
 }
 
 void FederatedTaskRunner::SetTrainingData(DataSet training_data) {

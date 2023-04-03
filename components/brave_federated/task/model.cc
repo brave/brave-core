@@ -5,10 +5,12 @@
 
 #include "brave/components/brave_federated/task/model.h"
 
-#include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <numeric>
+#include <utility>
 
+#include "base/check_op.h"
 #include "base/rand_util.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/task/model_util.h"
@@ -61,8 +63,12 @@ void Model::SetBias(float new_bias) {
   bias_ = new_bias;
 }
 
-size_t Model::GetModelSize() {
+size_t Model::GetModelSize() const {
   return weights_.size();
+}
+
+size_t Model::GetBatchSize() const {
+  return batch_size_;
 }
 
 std::vector<float> Model::Predict(const DataSet& dataset) {
@@ -91,6 +97,8 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
   for (size_t i = 0; i < train_dataset.size(); i++) {
     data_indices.push_back(i);
   }
+
+  DCHECK_LE(GetBatchSize(), train_dataset.size());
 
   Weights d_w(features);
   std::vector<float> err(batch_size_, 10000);

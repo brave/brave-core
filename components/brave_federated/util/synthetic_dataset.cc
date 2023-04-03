@@ -10,8 +10,8 @@
 #include <fstream>
 #include <random>
 
+#include "base/check.h"
 #include "base/rand_util.h"
-#include "base/time/time.h"
 
 namespace brave_federated {
 
@@ -59,9 +59,9 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
   for (size_t i = 0; i < size; i++) {
     std::vector<float> tmp = LinearAlgebraUtil::AddVectors(
         LinearAlgebraUtil::MultiplyMatrixVector(W, xs[i]), b);
+    DCHECK(tmp.size() == 2);
 
     float ymax = 0.0;
-
     if (Softmax(tmp[0]) >= Softmax(tmp[1])) {
       ymax = 1.0;
     } else {
