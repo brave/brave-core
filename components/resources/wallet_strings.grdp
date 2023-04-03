@@ -653,6 +653,8 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_ACCOUNT" desc="Label for Solana Address Lookup Table Account section">Address Lookup Table Account:</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">Address Lookup Table Index:</message>
   <message name="IDS_BRAVE_WALLET_SELECT_CURRENCY" desc="Currency selector title">Select currency</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CURRENCY" desc="Search placeholder for coin search input">Search currencies</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help center link label">Help center</message>

@@ -51,9 +51,11 @@ export const InstructionParamBox = styled.div`
   }
 `
 
-export const AddressText = styled.span`
+export const AddressText = styled.span<
+  { isBold?: true }
+>`
   font-family: Poppins;
-  font-weight: 400;
+  font-weight: ${(p) => p.isBold ? 600 : 400};
   color: ${(p) => p.theme.color.text02};
   font-size: 12px;
   margin-left: 4px;
