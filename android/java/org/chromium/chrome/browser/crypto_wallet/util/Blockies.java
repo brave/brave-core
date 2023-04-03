@@ -29,7 +29,7 @@ public class Blockies {
 
     public static Bitmap createIcon(String address, boolean lowerCase, boolean circular) {
         if (lowerCase) {
-            return createIcon(address.toLowerCase(Locale.getDefault()), circular);
+            return createIcon(address.toLowerCase(Locale.ENGLISH), circular);
         }
 
         return createIcon(address, circular);
