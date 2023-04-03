@@ -6,13 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_COMMANDER_RANKER_H_
 #define BRAVE_BROWSER_UI_COMMANDER_RANKER_H_
 
-#include <cstddef>
-#include <memory>
 #include <tuple>
 #include <vector>
+
 #include "base/time/time.h"
 #include "chrome/browser/ui/commander/command_source.h"
 #include "components/prefs/pref_service.h"
+
 namespace commander {
 
 class Ranker {
