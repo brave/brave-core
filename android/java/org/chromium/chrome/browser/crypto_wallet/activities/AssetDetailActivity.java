@@ -450,10 +450,6 @@ public class AssetDetailActivity
             final String cryptoBalanceString =
                     String.format(Locale.ENGLISH, "%.4f %s", thisAccountBalance, mAsset.symbol);
 
-            // If NFT, only show the account that owns
-            // it (i.e. balance = 1)
-            if (mAsset.isNft && thisAccountBalance != 1.) continue;
-
             WalletListItemModel model = new WalletListItemModel(R.drawable.ic_eth, accountInfo.name,
                     accountInfo.address, fiatBalanceString, cryptoBalanceString,
                     accountInfo.isImported);
