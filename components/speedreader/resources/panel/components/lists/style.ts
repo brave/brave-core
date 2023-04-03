@@ -5,26 +5,30 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  border: 1px solid ${p => p.theme.color.divider01};
-  border-radius: 2000px;
-  padding: 3px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-flow: column;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  min-height: 48px;
+  background-color: transparent;
 
   button {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 0;
-    background-color: transparent;
-    padding: 4px 8px;
+    display: flex;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    justify-content: center;
+    border-radius: 4px;
     border: 0;
-    border-radius: 100px;
-    width: 100%;
-    height: 100%;
     cursor: pointer;
+    align-items: center;
+    color:#6B7084;
+    background-color: transparent;
+
+    &:hover {
+      color: black;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
   }
 
   .sm {
@@ -33,6 +37,7 @@ export const Box = styled.div`
   }
 
   .is-active {
-    background: ${p => p.theme.color.divider01};
+    color: black;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 `

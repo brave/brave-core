@@ -27,8 +27,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_panel_view.h"
 #endif
 
 namespace speedreader {
@@ -147,8 +146,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<WebUIBubbleManagerT<SpeedreaderPanelUI>>
-      speedreader_webui_bubble_manager_;
+  std::unique_ptr<ReaderModePanelView> speedreader_webui_bubble_manager_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

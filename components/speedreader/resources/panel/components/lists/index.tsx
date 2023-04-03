@@ -9,9 +9,38 @@ import fontSerifSvg from '../../svg/fontSerif'
 import fontSansSvg from '../../svg/fontSans'
 import fontMonoSvg from '../../svg/fontMono'
 import fontDyslexicSvg from '../../svg/fontDyslexic'
-import contentTextOnlySvg from '../../svg/contentTextOnly'
-import contentTextWithImagesSvg from '../../svg/contentTextWithImages'
-import { FontFamily, ContentStyle } from '../../api/browser'
+import SettingsSVG from '../../svg/settings'
+import HeadphonesSVG from '../../svg/headphones'
+import OriginalSVG from '../../svg/original'
+import AiSVG from '../../svg/ai'
+import { FontFamily } from '../../api/browser'
+
+export enum MainButtonType {
+  None,
+  Options,
+  TextToSpeech,
+  ShowOriginal,
+  AI
+}
+
+const mainButtonsOptions = [
+  {
+    type: MainButtonType.Options,
+    svgIcon: SettingsSVG
+  },
+  {
+    type: MainButtonType.TextToSpeech,
+    svgIcon: HeadphonesSVG
+  },
+  {
+    type: MainButtonType.ShowOriginal,
+    svgIcon: OriginalSVG
+  },
+  {
+    type: MainButtonType.AI,
+    svgIcon: AiSVG
+  }
+]
 
 const fontStyleOptions = [
   {
@@ -33,19 +62,6 @@ const fontStyleOptions = [
     title: 'Dyslexic',
     family: FontFamily.kDyslexic,
     svgIcon: fontDyslexicSvg
-  }
-]
-
-const contentStyleOptions = [
-  {
-    title: 'Text with images',
-    contentStyle: ContentStyle.kDefault,
-    svgIcon: contentTextWithImagesSvg
-  },
-  {
-    title: 'Text only',
-    contentStyle: ContentStyle.kTextOnly,
-    svgIcon: contentTextOnlySvg
   }
 ]
 
@@ -82,6 +98,33 @@ function Option (props: OptionType) {
   )
 }
 
+interface MainButtonsListProps {
+  activeButton: MainButtonType;
+  onClick?: Function
+}
+
+export function MainButtonsList (props: MainButtonsListProps) {
+  const handleClick = (active: MainButtonType) => {
+    props.onClick?.(active)
+  }
+
+  return (
+    <ListBox>
+      {mainButtonsOptions.map(entry => {
+        return (
+          <Option
+            key={entry.type}
+            isSelected={props.activeButton === entry.type}
+            onClick={handleClick.bind(this, entry.type)}
+          >
+           <div>{<entry.svgIcon />}</div>
+          </Option>
+        )
+      })}        
+    </ListBox>
+  )
+}
+
 interface FontStyleListProps {
   activeFontFamily: FontFamily
   onClick?: Function
@@ -103,36 +146,7 @@ export function FontStyleList (props: FontStyleListProps) {
           >
             <div className="sm">
               <div>{<entry.svgIcon />}</div>
-              {entry.title}
             </div>
-          </Option>
-        )
-      })}
-    </ListBox>
-  )
-}
-
-interface ContentStyleProps {
-  activeContentStyle: ContentStyle
-  onClick?: Function
-}
-
-export function ContentList (props: ContentStyleProps) {
-  const handleClick = (contentStyle: ContentStyle) => {
-    props.onClick?.(contentStyle)
-  }
-
-  return (
-    <ListBox>
-      {contentStyleOptions.map(entry => {
-        return (
-          <Option
-            key={entry.title}
-            isSelected={props.activeContentStyle === entry.contentStyle}
-            ariaLabel={entry.title}
-            onClick={handleClick.bind(this, entry.contentStyle)}
-          >
-            <div>{<entry.svgIcon />}</div>
           </Option>
         )
       })}
