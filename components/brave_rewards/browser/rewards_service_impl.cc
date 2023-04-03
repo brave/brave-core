@@ -482,11 +482,6 @@ void RewardsServiceImpl::OnCreateLedger() {
       false, base::BindOnce(&RewardsServiceImpl::OnInitialize, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnResult(ledger::LegacyResultCallback callback,
-                                  ledger::mojom::Result result) {
-  callback(result);
-}
-
 void RewardsServiceImpl::CreateRewardsWallet(
     const std::string& country,
     CreateRewardsWalletCallback callback) {

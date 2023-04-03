@@ -29,7 +29,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
-#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/ledger/public/interfaces/ledger_factory.mojom.h"
 #include "build/build_config.h"
@@ -368,9 +367,6 @@ class RewardsServiceImpl : public RewardsService,
   void Reset();
 
   void OnCreateLedger();
-
-  void OnResult(ledger::LegacyResultCallback callback,
-                ledger::mojom::Result result);
 
   void OnLedgerStateLoaded(LoadLedgerStateCallback callback,
                            std::pair<std::string, base::Value> data);
