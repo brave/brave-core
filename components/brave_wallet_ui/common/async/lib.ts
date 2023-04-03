@@ -1171,7 +1171,7 @@ export const translateToNftGateway = async (url: string | undefined) => {
   const testUrl =
     isIpfs(trimmedUrl) ? trimmedUrl : await extractIpfsUrl(trimmedUrl)
   return (await braveWalletIpfsService
-    .translateToNFTGatewayURL(testUrl || '')).translatedUrl || ''
+    .translateToNFTGatewayURL(testUrl || '')).translatedUrl || trimmedUrl
 }
 
 export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
