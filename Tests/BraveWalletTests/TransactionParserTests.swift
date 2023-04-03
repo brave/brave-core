@@ -895,9 +895,9 @@ class TransactionParserTests: XCTestCase {
       decodedData: .init(
         instructionType: UInt32(BraveWallet.SolanaSystemInstruction.transfer.rawValue),
         accountParams: [
-          .init(name: "from_account", localizedName: "From Account"),
-          .init(name: "to_account", localizedName: "To Account"),],
-        params: [.init(name: "lamports", localizedName: "Lamports", value: "10000", type: .uint64)]
+          .init(name: BraveWallet.FromAccount, localizedName: "From Account"),
+          .init(name: BraveWallet.ToAccount, localizedName: "To Account"),],
+        params: [.init(name: BraveWallet.Lamports, localizedName: "Lamports", value: "10000", type: .uint64)]
       )
     )
     let expectedParsedTransfer = SolanaTxDetails.ParsedSolanaInstruction(
@@ -925,14 +925,14 @@ class TransactionParserTests: XCTestCase {
       decodedData: .init(
         instructionType: UInt32(BraveWallet.SolanaSystemInstruction.withdrawNonceAccount.rawValue),
         accountParams: [
-          .init(name: "nonce_account", localizedName: "Nonce Account"),
-          .init(name: "to_account", localizedName: "To Account"),
+          .init(name: BraveWallet.NonceAccount, localizedName: "Nonce Account"),
+          .init(name: BraveWallet.ToAccount, localizedName: "To Account"),
           .init(name: "recentblockhashes_sysvar", localizedName: "RecentBlockhashes sysvar"),
           .init(name: "rent_sysvar", localizedName: "Rent sysvar"),
           .init(name: "nonce_authority", localizedName: "Nonce Authority")
         ],
         params: [
-          .init(name: "lamports", localizedName: "Lamports", value: "40", type: .uint64)
+          .init(name: BraveWallet.Lamports, localizedName: "Lamports", value: "40", type: .uint64)
         ]
       )
     )
@@ -961,11 +961,11 @@ class TransactionParserTests: XCTestCase {
       decodedData: .init(
         instructionType: UInt32(BraveWallet.SolanaSystemInstruction.createAccount.rawValue),
         accountParams: [
-          .init(name: "from_account", localizedName: "From Account"),
-          .init(name: "new_account", localizedName: "New Account"),
+          .init(name: BraveWallet.FromAccount, localizedName: "From Account"),
+          .init(name: BraveWallet.NewAccount, localizedName: "New Account"),
         ],
         params: [
-          .init(name: "lamports", localizedName: "Lamports", value: "2000", type: .uint64),
+          .init(name: BraveWallet.Lamports, localizedName: "Lamports", value: "2000", type: .uint64),
           .init(name: "space", localizedName: "Space", value: "1", type: .unknown),
           .init(name: "owner_program", localizedName: "Owner Program", value: toPubkey, type: .unknown)
         ]
@@ -995,11 +995,11 @@ class TransactionParserTests: XCTestCase {
       decodedData: .init(
         instructionType: UInt32(BraveWallet.SolanaSystemInstruction.createAccountWithSeed.rawValue),
         accountParams: [
-          .init(name: "from_account", localizedName: "From Account"),
+          .init(name: BraveWallet.FromAccount, localizedName: "From Account"),
           .init(name: "created_account", localizedName: "Created Account"),
         ],
         params: [
-          .init(name: "lamports", localizedName: "Lamports", value: "300", type: .uint64),
+          .init(name: BraveWallet.Lamports, localizedName: "Lamports", value: "300", type: .uint64),
           .init(name: "base", localizedName: "Base", value: toPubkey, type: .unknown),
           .init(name: "seed", localizedName: "Seed", value: "", type: .unknown),
           .init(name: "space", localizedName: "Space", value: "1", type: .unknown),

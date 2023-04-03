@@ -40,13 +40,13 @@ extension BraveWallet.SolanaInstruction {
   
   /// Returns the `to_account` pubkey for the instruction if available
   var toPubkey: String? {
-    guard let index = decodedData?.accountParams.firstIndex(where: { $0.name == "to_account" }) else { return nil }
+    guard let index = decodedData?.accountParams.firstIndex(where: { $0.name == BraveWallet.ToAccount }) else { return nil }
     return accountMetas[safe: index]?.pubkey
   }
   
   /// Returns the `from_account` pubkey for the instruction if available
   var fromPubkey: String? {
-    guard let index = decodedData?.accountParams.firstIndex(where: { $0.name == "from_account" }) else { return nil }
+    guard let index = decodedData?.accountParams.firstIndex(where: { $0.name == BraveWallet.FromAccount }) else { return nil }
     return accountMetas[safe: index]?.pubkey
   }
 }
@@ -138,27 +138,7 @@ extension BraveWallet.SolanaTokenInstruction {
 }
 
 extension BraveWallet.DecodedSolanaInstructionData {
-  func paramFor(_ paramKey: ParamKey) -> BraveWallet.SolanaInstructionParam? {
-    params.first(where: { $0.name == paramKey.rawValue })
-  }
-  
-  // brave-core/components/brave_wallet/browser/solana_instruction_data_decoder.cc
-  // GetSystemInstructionParams() / GetTokenInstructionParams()
-  enum ParamKey: String {
-    case lamports
-    case amount
-    case decimals
-    case space
-    case owner
-    case base
-    case seed
-    case fromSeed = "from_seed"
-    case fromOwner = "from_owner"
-    case nonceAccount = "nonce_account"
-    case authorityType = "authority_type"
-    case newAuthority = "new_authority"
-    case mintAuthority = "mint_authority"
-    case freezeAuthority = "freeze_authority"
-    case numOfSigners = "num_of_signers"
+  func paramFor(_ paramName: String) -> BraveWallet.SolanaInstructionParam? {
+    params.first(where: { $0.name == paramName })
   }
 }
