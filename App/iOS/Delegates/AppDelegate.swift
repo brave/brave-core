@@ -145,9 +145,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     migration = Migration(braveCore: braveCore)
 
-    // Must happen before passcode check, otherwise may unnecessarily reset keychain
-    migration?.moveDatabaseToApplicationDirectory()
-
     // Passcode checking, must happen on immediate launch
     if !DataController.shared.storeExists() {
       // Reset password authentication prior to `WindowProtection`
