@@ -423,7 +423,7 @@ export const PortfolioAsset = (props: Props) => {
       return getNftPinningStatus(selectedAsset)
     }
     return undefined
-  }, [nftPinnable, isNftAsset, selectedAsset])
+  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
@@ -623,7 +623,7 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (nftPinningStatus && selectedAsset && nftDetailsRef?.current) {
+    if (currentNftPinningStatus && nftDetailsRef?.current) {
       const command: UpdateNftPinningStatus = {
         command: NftUiCommand.UpdateNftPinningStatus,
         payload: {
@@ -644,7 +644,7 @@ export const PortfolioAsset = (props: Props) => {
       }))
     }
   }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata,
-      networkList, nftMetadataError, nftPinningStatus,
+      networkList, nftMetadataError,
       currentNftPinningStatus, ipfsImageUrl])
 
   React.useEffect(() => {
