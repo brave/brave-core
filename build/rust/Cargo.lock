@@ -57,8 +57,8 @@ checksum = "f26201604c87b1e01bd3d98f8d5d9a8fcbb815e8cedb41ffccbeb4bf593a35fe"
 
 [[package]]
 name = "adss-rs"
-version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
+version = "0.2.0"
+source = "git+https://github.com/brave/sta-rs?rev=a0381f242314a906425e39f73656717e024636f3#a0381f242314a906425e39f73656717e024636f3"
 dependencies = [
  "rand 0.8.5",
  "sharks",
@@ -1797,8 +1797,8 @@ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
 
 [[package]]
 name = "ppoprf"
-version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
+version = "0.2.0"
+source = "git+https://github.com/brave/sta-rs?rev=a0381f242314a906425e39f73656717e024636f3#a0381f242314a906425e39f73656717e024636f3"
 dependencies = [
  "base64 0.13.0",
  "bincode",
@@ -2413,7 +2413,7 @@ dependencies = [
 [[package]]
 name = "sharks"
 version = "0.5.0"
-source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
+source = "git+https://github.com/brave/sta-rs?rev=a0381f242314a906425e39f73656717e024636f3#a0381f242314a906425e39f73656717e024636f3"
 dependencies = [
  "bitvec",
  "byteorder",
@@ -2527,8 +2527,8 @@ dependencies = [
 
 [[package]]
 name = "sta-rs"
-version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
+version = "0.2.0"
+source = "git+https://github.com/brave/sta-rs?rev=a0381f242314a906425e39f73656717e024636f3#a0381f242314a906425e39f73656717e024636f3"
 dependencies = [
  "adss-rs",
  "ppoprf",
@@ -2546,7 +2546,7 @@ checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
 name = "star-constellation"
-version = "0.1.0"
+version = "0.2.0"
 dependencies = [
  "bincode",
  "lazy_static",
@@ -2596,8 +2596,8 @@ dependencies = [
 
 [[package]]
 name = "strobe-rng"
-version = "0.1.0"
-source = "git+https://github.com/djandries/sta-rs?rev=e2b0092582402b20a49eb563b7fcddef7da39311#e2b0092582402b20a49eb563b7fcddef7da39311"
+version = "0.2.0"
+source = "git+https://github.com/brave/sta-rs?rev=a0381f242314a906425e39f73656717e024636f3#a0381f242314a906425e39f73656717e024636f3"
 dependencies = [
  "rand_core 0.6.3",
  "strobe-rs",

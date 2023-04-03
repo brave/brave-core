@@ -48,9 +48,7 @@ class P3AMessageManagerTest : public testing::Test,
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         shared_url_loader_factory(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &url_loader_factory)) {
-    scoped_feature_list_.InitWithFeatures({features::kConstellation}, {});
-  }
+                &url_loader_factory)) {}
 
   absl::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override {
@@ -63,7 +61,11 @@ class P3AMessageManagerTest : public testing::Test,
                       bool is_constellation) override {}
 
  protected:
-  void SetUp() override {
+  void SetUpManager(bool is_constellation_enabled) {
+    if (is_constellation_enabled) {
+      scoped_feature_list_.InitWithFeatures({features::kConstellation}, {});
+    }
+
     base::Time future_mock_time;
     if (base::Time::FromString("2050-01-04", &future_mock_time)) {
       task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
@@ -86,12 +88,23 @@ class P3AMessageManagerTest : public testing::Test,
         [&](const network::ResourceRequest& request) {
           url_loader_factory.ClearResponses();
 
-          if (request.url == GURL(std::string(kTestHost) + "/info")) {
+          if (request.url == GURL(std::string(kTestHost) + "/info") ||
+              request.url == GURL(std::string(kTestHost) + "/randomness")) {
             if (interceptor_invalid_response_from_randomness) {
+              // next epoch time is missing!
+              url_loader_factory.AddResponse(
+                  request.url.spec(),
+                  "{\"currentEpoch\":" + base::NumberToString(current_epoch) +
+                      "}");
+              return;
+            } else if (interceptor_invalid_response_from_randomness_non_json) {
               url_loader_factory.AddResponse(
                   request.url.spec(), "invalid response that is not json");
               return;
             }
+          }
+
+          if (request.url == GURL(std::string(kTestHost) + "/info")) {
             EXPECT_EQ(request.method, net::HttpRequestHeaders::kGetMethod);
             url_loader_factory.AddResponse(
                 request.url.spec(),
@@ -102,11 +115,6 @@ class P3AMessageManagerTest : public testing::Test,
             info_request_made = true;
           } else if (request.url ==
                      GURL(std::string(kTestHost) + "/randomness")) {
-            if (interceptor_invalid_response_from_randomness) {
-              url_loader_factory.AddResponse(
-                  request.url.spec(), "invalid response that is not json");
-              return;
-            }
             std::string resp_json =
                 HandleRandomnessRequest(request, current_epoch);
             url_loader_factory.AddResponse(
@@ -186,6 +194,7 @@ class P3AMessageManagerTest : public testing::Test,
   std::set<std::string> p3a_constellation_sent_messages;
 
   bool interceptor_invalid_response_from_randomness = false;
+  bool interceptor_invalid_response_from_randomness_non_json = false;
   net::HttpStatusCode interceptor_status_code_from_randomness = net::HTTP_OK;
   bool info_request_made = false;
   size_t points_requests_made = 0;
@@ -222,6 +231,7 @@ class P3AMessageManagerTest : public testing::Test,
 };
 
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendJson) {
+  SetUpManager(true);
   std::vector<std::string> test_histograms = GetTestHistogramNames(3, 4);
 
   for (size_t i = 0; i < test_histograms.size(); i++) {
@@ -256,7 +266,34 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendJson) {
   }
 }
 
+TEST_F(P3AMessageManagerTest, UpdateLogsAndDontSendConstellation) {
+  // don't perform any constellation activity if feature is disabled
+  SetUpManager(false);
+  ASSERT_FALSE(info_request_made);
+
+  std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
+
+  for (size_t i = 0; i < test_histograms.size(); i++) {
+    message_manager->UpdateMetricValue(test_histograms[i], i + 1);
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_EQ(points_requests_made, 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
+
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays) +
+                                  base::Seconds(kUploadIntervalSeconds * 100));
+
+  ASSERT_FALSE(info_request_made);
+  EXPECT_EQ(points_requests_made, 0U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
+}
+
 TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
+  SetUpManager(true);
   ASSERT_TRUE(info_request_made);
 
   std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
@@ -292,7 +329,8 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellation) {
   EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 }
 
-TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationServerUnavailable) {
+TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationInvalidResponse) {
+  SetUpManager(true);
   ASSERT_TRUE(info_request_made);
 
   std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
@@ -304,7 +342,8 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationServerUnavailable) {
   task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
   ResetInterceptorStores();
 
-  // server will return invalid response body
+  // server will return invalid response body that is json, but has missing
+  // fields
   interceptor_invalid_response_from_randomness = true;
 
   // skip ahead to next epoch
@@ -317,15 +356,100 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationServerUnavailable) {
   // server.
   EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 
-  // sever will return valid response body but invalid status code
+  // server will return response body that is not json
   interceptor_invalid_response_from_randomness = false;
-  interceptor_status_code_from_randomness = net::HTTP_INTERNAL_SERVER_ERROR;
+  interceptor_invalid_response_from_randomness_non_json = true;
 
   current_epoch++;
   next_epoch_time += base::Days(kEpochLenDays);
   task_environment_.FastForwardBy(base::Days(kEpochLenDays));
 
   // no new measurements should have been recorded in the previous epoch.
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
+
+  // restore randomness server functionality
+  interceptor_invalid_response_from_randomness_non_json = false;
+
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // randomness server is now providing correct response . no new measurements
+  // should have been recorded in the previous epoch due to previous
+  // unavailability. randomness points should be requested for the current
+  // epoch. messages from the first epoch should be sent.
+  ASSERT_TRUE(info_request_made);
+  EXPECT_EQ(points_requests_made, 7U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
+}
+
+TEST_F(P3AMessageManagerTest,
+       UpdateLogsAndSendConstellationInvalidClientRequest) {
+  SetUpManager(true);
+  ASSERT_TRUE(info_request_made);
+
+  std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
+
+  for (size_t i = 0; i < test_histograms.size(); i++) {
+    message_manager->UpdateMetricValue(test_histograms[i], i + 1);
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  ResetInterceptorStores();
+
+  // server will return HTTP 500 to indicate an invalid client request.
+  interceptor_status_code_from_randomness = net::HTTP_BAD_REQUEST;
+
+  // skip ahead to next epoch
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // We are at the beginning of the new epoch. measurements from previous epoch
+  // should not be sent since we are unable to get the current epoch from the
+  // server.
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
+
+  // restore randomness server functionality
+  interceptor_status_code_from_randomness = net::HTTP_OK;
+
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // randomness server is now accepting client request. no new measurements
+  // should have been recorded in the previous epoch due to previous
+  // unavailability. randomness points should be requested for the current
+  // epoch. messages from the first epoch should be sent.
+  ASSERT_TRUE(info_request_made);
+  EXPECT_EQ(points_requests_made, 7U);
+  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
+}
+
+TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationUnavailable) {
+  SetUpManager(true);
+  ASSERT_TRUE(info_request_made);
+
+  std::vector<std::string> test_histograms = GetTestHistogramNames(7, 0);
+
+  for (size_t i = 0; i < test_histograms.size(); i++) {
+    message_manager->UpdateMetricValue(test_histograms[i], i + 1);
+  }
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds * 100));
+  ResetInterceptorStores();
+
+  // server will return HTTP 500 to indicate unavailability.
+  interceptor_status_code_from_randomness = net::HTTP_INTERNAL_SERVER_ERROR;
+
+  // skip ahead to next epoch
+  current_epoch++;
+  next_epoch_time += base::Days(kEpochLenDays);
+  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
+
+  // We are at the beginning of the new epoch. measurements from previous epoch
+  // should not be sent since we are unable to get the current epoch from the
+  // server.
   EXPECT_EQ(p3a_constellation_sent_messages.size(), 0U);
 
   // restore randomness server functionality
@@ -342,19 +466,10 @@ TEST_F(P3AMessageManagerTest, UpdateLogsAndSendConstellationServerUnavailable) {
   ASSERT_TRUE(info_request_made);
   EXPECT_EQ(points_requests_made, 7U);
   EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
-
-  ResetInterceptorStores();
-
-  current_epoch++;
-  next_epoch_time += base::Days(kEpochLenDays);
-  task_environment_.FastForwardBy(base::Days(kEpochLenDays));
-
-  ASSERT_TRUE(info_request_made);
-  EXPECT_EQ(points_requests_made, 7U);
-  EXPECT_EQ(p3a_constellation_sent_messages.size(), 7U);
 }
 
 TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
+  SetUpManager(true);
   std::vector<std::string> test_histograms = GetTestHistogramNames(3, 3);
 
   for (const std::string& histogram_name : test_histograms) {
@@ -381,6 +496,7 @@ TEST_F(P3AMessageManagerTest, DoesNotSendRemovedMetricValue) {
 }
 
 TEST_F(P3AMessageManagerTest, ShouldNotSendIfDisabled) {
+  SetUpManager(true);
   std::vector<std::string> test_histograms = GetTestHistogramNames(3, 3);
 
   for (const std::string& histogram_name : test_histograms) {
