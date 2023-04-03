@@ -34,7 +34,7 @@ public class SwapServiceFactory {
 
     public SwapService getSwapService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = SwapServiceFactoryJni.get().getInterfaceToSwapService(profile);
+        long nativeHandle = SwapServiceFactoryJni.get().getInterfaceToSwapService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         SwapService swapService = SwapService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) swapService).getProxyHandler();
@@ -43,12 +43,12 @@ public class SwapServiceFactory {
         return swapService;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToSwapService(Profile profile);
+        long getInterfaceToSwapService(Profile profile);
     }
 }

@@ -17,11 +17,11 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_BlockchainRegistryFactory_GetInterfaceToBlockchainRegistry(
+static jlong JNI_BlockchainRegistryFactory_GetInterfaceToBlockchainRegistry(
     JNIEnv* env) {
   auto pending = brave_wallet::BlockchainRegistry::GetInstance()->MakeRemote();
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 static base::android::ScopedJavaLocalRef<jstring>

@@ -32,7 +32,7 @@ public class BraveNewsControllerFactory {
 
     public BraveNewsController getBraveNewsController(
             ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = BraveNewsControllerFactoryJni.get().getInterfaceToBraveNewsController();
+        long nativeHandle = BraveNewsControllerFactoryJni.get().getInterfaceToBraveNewsController();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         BraveNewsController braveNewsController =
                 BraveNewsController.MANAGER.attachProxy(handle, 0);
@@ -42,12 +42,12 @@ public class BraveNewsControllerFactory {
         return braveNewsController;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToBraveNewsController();
+        long getInterfaceToBraveNewsController();
     }
 }

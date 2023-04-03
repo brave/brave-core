@@ -34,7 +34,7 @@ public class BlockchainRegistryFactory {
     private BlockchainRegistryFactory() {}
 
     public BlockchainRegistry getBlockchainRegistry(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = BlockchainRegistryFactoryJni.get().getInterfaceToBlockchainRegistry();
+        long nativeHandle = BlockchainRegistryFactoryJni.get().getInterfaceToBlockchainRegistry();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         BlockchainRegistry blockchainRegistry = BlockchainRegistry.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) blockchainRegistry).getProxyHandler();
@@ -48,13 +48,13 @@ public class BlockchainRegistryFactory {
         return BlockchainRegistryFactoryJni.get().getTokensIconsLocation(profile);
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToBlockchainRegistry();
+        long getInterfaceToBlockchainRegistry();
         String getTokensIconsLocation(Profile profile);
     }
 }

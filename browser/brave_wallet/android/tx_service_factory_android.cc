@@ -13,34 +13,34 @@
 namespace chrome {
 namespace android {
 
-static jint JNI_TxServiceFactory_GetInterfaceToTxService(
+static jlong JNI_TxServiceFactory_GetInterfaceToTxService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   auto pending =
       brave_wallet::TxServiceFactory::GetInstance()->GetForContext(profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
-static jint JNI_TxServiceFactory_GetInterfaceToEthTxManagerProxy(
+static jlong JNI_TxServiceFactory_GetInterfaceToEthTxManagerProxy(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   auto pending = brave_wallet::TxServiceFactory::GetInstance()
                      ->GetEthTxManagerProxyForContext(profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
-static jint JNI_TxServiceFactory_GetInterfaceToSolanaTxManagerProxy(
+static jlong JNI_TxServiceFactory_GetInterfaceToSolanaTxManagerProxy(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   auto pending = brave_wallet::TxServiceFactory::GetInstance()
                      ->GetSolanaTxManagerProxyForContext(profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

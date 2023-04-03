@@ -12,14 +12,14 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_PlaylistServiceFactoryAndroid_GetInterfaceToPlaylistService(
+static jlong JNI_PlaylistServiceFactoryAndroid_GetInterfaceToPlaylistService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   auto pending =
       playlist::PlaylistServiceFactory::GetInstance()->GetForContext(profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

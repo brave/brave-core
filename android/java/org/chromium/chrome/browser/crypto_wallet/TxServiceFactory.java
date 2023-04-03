@@ -38,7 +38,7 @@ public class TxServiceFactory {
 
     public TxService getTxService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToTxService(profile);
+        long nativeHandle = TxServiceFactoryJni.get().getInterfaceToTxService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         TxService txService = TxService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) txService).getProxyHandler();
@@ -49,7 +49,7 @@ public class TxServiceFactory {
 
     public EthTxManagerProxy getEthTxManagerProxy(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToEthTxManagerProxy(profile);
+        long nativeHandle = TxServiceFactoryJni.get().getInterfaceToEthTxManagerProxy(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         EthTxManagerProxy ethTxManagerProxy = EthTxManagerProxy.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) ethTxManagerProxy).getProxyHandler();
@@ -61,7 +61,7 @@ public class TxServiceFactory {
     public SolanaTxManagerProxy getSolanaTxManagerProxy(
             ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToSolanaTxManagerProxy(profile);
+        long nativeHandle = TxServiceFactoryJni.get().getInterfaceToSolanaTxManagerProxy(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         SolanaTxManagerProxy solanaTxManagerProxy =
                 SolanaTxManagerProxy.MANAGER.attachProxy(handle, 0);
@@ -71,14 +71,14 @@ public class TxServiceFactory {
         return solanaTxManagerProxy;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToTxService(Profile profile);
-        int getInterfaceToEthTxManagerProxy(Profile profile);
-        int getInterfaceToSolanaTxManagerProxy(Profile profile);
+        long getInterfaceToTxService(Profile profile);
+        long getInterfaceToEthTxManagerProxy(Profile profile);
+        long getInterfaceToSolanaTxManagerProxy(Profile profile);
     }
 }
