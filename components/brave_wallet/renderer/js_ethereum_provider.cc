@@ -41,17 +41,18 @@ constexpr char kEthereumProviderScript[] = "ethereum_provider.js";
 constexpr char kEthereumProxyHandlerScript[] = R"((function() {
   const handler = {
     get: (target, property, receiver) => {
-      if (typeof target[property] === 'function' &&
+      const value = target[property];
+      if (typeof value === 'function' &&
           (property === 'request' || property === 'isConnected' ||
            property === 'enable' || property === 'sendAsync' ||
            property === 'send')) {
-        return new Proxy(target[property], {
+        return new Proxy(value, {
           apply: (targetFunc, thisArg, args) => {
             return targetFunc.call(target, ...args);
           }
         });
       }
-      return target[property];
+      return value;
     }
   };
   return handler;

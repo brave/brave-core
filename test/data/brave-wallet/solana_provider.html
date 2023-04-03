@@ -164,6 +164,24 @@
     accountChangedResult = ''
   }
 
+  function getIsBraveWalletViaProxy() {
+    proxy1 = new Proxy(window.solana, {})
+    proxy2 = new Proxy(window.braveSolana, {})
+    window.domAutomationController.send(
+        proxy1.isBraveWallet && proxy2.isBraveWallet)
+  }
+
+  async function solanaDisconnectViaProxy() {
+    proxy1 = new Proxy(window.solana, {})
+    proxy2 = new Proxy(window.braveSolana, {})
+    const result1 = await proxy1.disconnect()
+    const result2 = await proxy2.disconnect()
+    if (result1 === undefined && result2 === undefined)
+      window.domAutomationController.send(true)
+    else
+      window.domAutomationController.send(false)
+  }
+
 </script>
 
 <body>
