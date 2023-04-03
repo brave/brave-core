@@ -88,6 +88,8 @@ source_set("ui") {
       "browser_commands.cc",
       "browser_commands.h",
       "browser_dialogs.h",
+      "commander/brave_simple_command_source.cc",
+      "commander/brave_simple_command_source.h",
       "commander/commander_service.cc",
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
@@ -184,6 +186,8 @@ source_set("ui") {
       "whats_new/whats_new_util.cc",
       "whats_new/whats_new_util.h",
     ]
+
+    deps += [ "//chrome/browser/ui/commander:fuzzy_finder" ]
 
     if (enable_pin_shortcut) {
       sources += [
