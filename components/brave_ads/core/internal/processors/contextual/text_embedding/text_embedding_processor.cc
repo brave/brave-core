@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/locale/locale_manager.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_processing.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
@@ -61,9 +60,14 @@ void TextEmbedding::Process(const std::string& html) {
       resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
       processing_pipeline->EmbedText(text);
-  const std::vector<float> embedding = text_embedding.embedding;
-  if (!embedding.empty() && *base::ranges::min_element(embedding) == 0.0 &&
-      *base::ranges::max_element(embedding) == 0.0) {
+
+  if (text_embedding.embedding.empty()) {
+    BLOG(1, "Embedding is empty");
+    return;
+  }
+
+  if (*base::ranges::min_element(text_embedding.embedding) == 0.0 &&
+      *base::ranges::max_element(text_embedding.embedding) == 0.0) {
     BLOG(1, "Not enough words to embed text");
     return;
   }

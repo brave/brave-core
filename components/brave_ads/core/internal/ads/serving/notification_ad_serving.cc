@@ -117,7 +117,7 @@ void Serving::OnBuildUserModel(const targeting::UserModelInfo& user_model) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, base::BindOnce(&Serving::OnGetForUserModel,
-                                 base::Unretained(this), user_model));
+                                 weak_factory_.GetWeakPtr(), user_model));
 }
 
 void Serving::OnGetForUserModel(

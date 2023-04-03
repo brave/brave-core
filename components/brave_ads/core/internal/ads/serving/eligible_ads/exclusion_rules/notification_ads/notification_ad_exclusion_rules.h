@@ -22,6 +22,7 @@ class AntiTargeting;
 
 class DismissedExclusionRule;
 class PerHourExclusionRule;
+class EmbeddingExclusionRule;
 
 namespace notification_ads {
 
@@ -43,6 +44,7 @@ class ExclusionRules final : public ExclusionRulesBase {
  private:
   std::unique_ptr<DismissedExclusionRule> dismissed_exclusion_rule_;
   std::unique_ptr<PerHourExclusionRule> per_hour_exclusion_rule_;
+  std::unique_ptr<EmbeddingExclusionRule> embedding_exclusion_rule_;
 };
 
 }  // namespace notification_ads

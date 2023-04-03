@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
-
 namespace brave_ads::ml::pipeline {
 
 struct TextEmbeddingInfo final {

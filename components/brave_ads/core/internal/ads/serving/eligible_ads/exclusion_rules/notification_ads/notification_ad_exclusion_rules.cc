@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
 
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dismissed_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/embedding_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
@@ -27,6 +28,9 @@ ExclusionRules::ExclusionRules(
 
   per_hour_exclusion_rule_ = std::make_unique<PerHourExclusionRule>(ad_events);
   exclusion_rules_.push_back(per_hour_exclusion_rule_.get());
+
+  embedding_exclusion_rule_ = std::make_unique<EmbeddingExclusionRule>();
+  exclusion_rules_.push_back(embedding_exclusion_rule_.get());
 }
 
 ExclusionRules::~ExclusionRules() = default;

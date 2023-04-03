@@ -33,8 +33,8 @@ absl::optional<T> MaybePredictAdUsingEmbeddings(
     return absl::nullopt;
   }
 
-  const std::vector<int> votes_registry =
-      ComputeVoteRegistry(paced_creative_ads, user_model.embeddings_history);
+  const std::vector<int> votes_registry = ComputeVoteRegistry(
+      paced_creative_ads, user_model.text_embedding_html_events);
 
   const std::vector<double> probabilities =
       ComputeProbabilities(votes_registry);

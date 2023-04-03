@@ -28,6 +28,8 @@ EligibleAdsV3::EligibleAdsV3(
     resource::AntiTargeting* anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
+EligibleAdsV3::~EligibleAdsV3() = default;
+
 void EligibleAdsV3::GetForUserModel(
     targeting::UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
@@ -36,8 +38,9 @@ void EligibleAdsV3::GetForUserModel(
   database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&EligibleAdsV3::OnGetForUserModel, base::Unretained(this),
-                     std::move(user_model), std::move(callback)));
+      base::BindOnce(&EligibleAdsV3::OnGetForUserModel,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,7 +65,7 @@ void EligibleAdsV3::GetBrowsingHistory(
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       features::GetBrowsingHistoryMaxCount(),
       features::GetBrowsingHistoryDaysAgo(),
-      base::BindOnce(&EligibleAdsV3::GetEligibleAds, base::Unretained(this),
+      base::BindOnce(&EligibleAdsV3::GetEligibleAds, weak_factory_.GetWeakPtr(),
                      std::move(user_model), ad_events, std::move(callback)));
 }
 
@@ -73,7 +76,7 @@ void EligibleAdsV3::GetEligibleAds(
     const BrowsingHistoryList& browsing_history) {
   database::table::CreativeNewTabPageAds database_table;
   database_table.GetAll(base::BindOnce(
-      &EligibleAdsV3::OnGetEligibleAds, base::Unretained(this), user_model,
+      &EligibleAdsV3::OnGetEligibleAds, weak_factory_.GetWeakPtr(), user_model,
       ad_events, browsing_history, std::move(callback)));
 }
 

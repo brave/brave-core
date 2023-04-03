@@ -35,7 +35,7 @@ void OnGetTextEmbeddingHtmlEvents(
     return;
   }
 
-  user_model.embeddings_history = text_embedding_html_events;
+  user_model.text_embedding_html_events = text_embedding_html_events;
 
   std::move(callback).Run(user_model);
 }

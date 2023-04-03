@@ -20,7 +20,7 @@ namespace brave_ads {
 
 template <typename T>
 T CalculateNormalizingConstant(const std::vector<T>& scores) {
-  return std::accumulate(scores.cbegin(), scores.cend(), 0.0);
+  return std::accumulate(scores.cbegin(), scores.cend(), T{});
 }
 
 template <typename T>
