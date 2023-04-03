@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/ads.h"
@@ -229,6 +230,8 @@ class AdsImpl final : public Ads,
   std::unique_ptr<SearchResultAd> search_result_ad_handler_;
 
   std::unique_ptr<UserReactions> user_reactions_;
+
+  base::WeakPtrFactory<AdsImpl> weak_factory_{this};
 };
 
 }  // namespace brave_ads

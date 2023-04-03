@@ -173,7 +173,7 @@ void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
   AdsClientHelper::GetInstance()->Load(
       kConfirmationStateFilename,
       base::BindOnce(&ConfirmationStateManager::OnLoaded,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 bool ConfirmationStateManager::IsInitialized() const {

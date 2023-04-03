@@ -109,7 +109,7 @@ void EventHandler::FireEvent(const std::string& placement_id,
   database_table.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(&EventHandler::OnGetForCreativeInstanceId,
-                     base::Unretained(this), placement_id, event_type));
+                     weak_factory_.GetWeakPtr(), placement_id, event_type));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,8 +140,8 @@ void EventHandler::FireEvent(const InlineContentAdInfo& ad,
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kInlineContentAd,
-      base::BindOnce(&EventHandler::OnGetAdEvents, base::Unretained(this), ad,
-                     event_type));
+      base::BindOnce(&EventHandler::OnGetAdEvents, weak_factory_.GetWeakPtr(),
+                     ad, event_type));
 }
 
 void EventHandler::OnGetAdEvents(

@@ -43,7 +43,7 @@ class TextEmbedding final {
 
   std::unique_ptr<ml::pipeline::EmbeddingProcessing> embedding_processing_;
 
-  base::WeakPtrFactory<TextEmbedding> weak_ptr_factory_{this};
+  base::WeakPtrFactory<TextEmbedding> weak_factory_{this};
 };
 
 }  // namespace resource

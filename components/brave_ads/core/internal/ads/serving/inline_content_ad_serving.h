@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/inline_content_ad_serving_observer.h"
@@ -76,6 +77,8 @@ class Serving final {
   base::ObserverList<ServingObserver> observers_;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
+
+  base::WeakPtrFactory<Serving> weak_factory_{this};
 };
 
 }  // namespace inline_content_ads

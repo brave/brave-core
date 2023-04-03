@@ -78,7 +78,7 @@ class RefillUnblindedTokens final {
 
   BackoffTimer retry_timer_;
 
-  base::WeakPtrFactory<RefillUnblindedTokens> weak_ptr_factory_{this};
+  base::WeakPtrFactory<RefillUnblindedTokens> weak_factory_{this};
 };
 
 }  // namespace brave_ads

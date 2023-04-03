@@ -70,7 +70,7 @@ void Serving::MaybeServeAd(const std::string& dimensions,
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,
-      base::BindOnce(&Serving::OnGetForUserModel, base::Unretained(this),
+      base::BindOnce(&Serving::OnGetForUserModel, weak_factory_.GetWeakPtr(),
                      user_model, dimensions, std::move(callback)));
 }
 

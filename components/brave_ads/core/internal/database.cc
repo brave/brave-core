@@ -22,8 +22,8 @@ namespace brave_ads {
 Database::Database(base::FilePath path) : db_path_(std::move(path)) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  db_.set_error_callback(
-      base::BindRepeating(&Database::OnErrorCallback, base::Unretained(this)));
+  db_.set_error_callback(base::BindRepeating(&Database::OnErrorCallback,
+                                             weak_factory_.GetWeakPtr()));
 }
 
 Database::~Database() = default;
@@ -121,7 +121,7 @@ mojom::DBCommandResponseInfo::StatusType Database::Initialize(
     is_initialized_ = true;
     memory_pressure_listener_ = std::make_unique<base::MemoryPressureListener>(
         FROM_HERE, base::BindRepeating(&Database::OnMemoryPressure,
-                                       base::Unretained(this)));
+                                       weak_factory_.GetWeakPtr()));
   } else {
     table_version = meta_table_.GetVersionNumber();
   }

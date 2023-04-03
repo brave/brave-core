@@ -214,8 +214,8 @@ void SubdivisionTargeting::Fetch() {
   BLOG(7, UrlRequestHeadersToString(url_request));
 
   AdsClientHelper::GetInstance()->UrlRequest(
-      std::move(url_request),
-      base::BindOnce(&SubdivisionTargeting::OnFetch, base::Unretained(this)));
+      std::move(url_request), base::BindOnce(&SubdivisionTargeting::OnFetch,
+                                             weak_factory_.GetWeakPtr()));
 }
 
 void SubdivisionTargeting::OnFetch(const mojom::UrlResponseInfo& url_response) {
@@ -273,7 +273,7 @@ bool SubdivisionTargeting::ParseJson(const std::string& json) {
 void SubdivisionTargeting::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
+      base::BindOnce(&SubdivisionTargeting::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching subdivision target "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
@@ -286,7 +286,7 @@ void SubdivisionTargeting::FetchAfterDelay() {
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, delay,
-      base::BindOnce(&SubdivisionTargeting::Fetch, base::Unretained(this)));
+      base::BindOnce(&SubdivisionTargeting::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Fetch ads subdivision target "
               << FriendlyDateAndTime(fetch_at, /*use_sentence_style*/ true));

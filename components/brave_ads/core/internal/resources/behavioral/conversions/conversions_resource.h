@@ -40,7 +40,7 @@ class Conversions final {
 
   std::unique_ptr<ConversionsInfo> conversions_info_;
 
-  base::WeakPtrFactory<Conversions> weak_ptr_factory_{this};
+  base::WeakPtrFactory<Conversions> weak_factory_{this};
 };
 
 }  // namespace brave_ads::resource

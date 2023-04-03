@@ -45,7 +45,7 @@ class PurchaseIntent final {
 
   std::unique_ptr<targeting::PurchaseIntentInfo> purchase_intent_;
 
-  base::WeakPtrFactory<PurchaseIntent> weak_ptr_factory_{this};
+  base::WeakPtrFactory<PurchaseIntent> weak_factory_{this};
 };
 
 }  // namespace resource

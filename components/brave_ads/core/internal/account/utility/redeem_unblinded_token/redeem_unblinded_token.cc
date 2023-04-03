@@ -78,7 +78,7 @@ void RedeemUnblindedToken::CreateConfirmation(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemUnblindedToken::OnCreateConfirmation,
-                     base::Unretained(this), confirmation));
+                     weak_factory_.GetWeakPtr(), confirmation));
 }
 
 void RedeemUnblindedToken::OnCreateConfirmation(
@@ -123,7 +123,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemUnblindedToken::OnFetchPaymentToken,
-                     base::Unretained(this), confirmation));
+                     weak_factory_.GetWeakPtr(), confirmation));
 }
 
 void RedeemUnblindedToken::OnFetchPaymentToken(

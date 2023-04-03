@@ -539,7 +539,7 @@ void ClientStateManager::Load(InitializeCallback callback) {
 
   AdsClientHelper::GetInstance()->Load(
       kClientStateFilename,
-      base::BindOnce(&ClientStateManager::OnLoaded, base::Unretained(this),
+      base::BindOnce(&ClientStateManager::OnLoaded, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 

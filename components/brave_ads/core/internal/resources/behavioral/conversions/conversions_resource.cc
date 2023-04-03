@@ -31,7 +31,7 @@ bool Conversions::IsInitialized() const {
 void Conversions::Load() {
   LoadAndParseResource(kResourceId, features::GetConversionsResourceVersion(),
                        base::BindOnce(&Conversions::OnLoadAndParseResource,
-                                      weak_ptr_factory_.GetWeakPtr()));
+                                      weak_factory_.GetWeakPtr()));
 }
 
 void Conversions::OnLoadAndParseResource(

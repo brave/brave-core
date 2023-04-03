@@ -8,6 +8,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 
@@ -62,6 +63,8 @@ class RedeemUnblindedToken final {
                                       bool should_backoff);
 
   raw_ptr<RedeemUnblindedTokenDelegate> delegate_ = nullptr;
+
+  base::WeakPtrFactory<RedeemUnblindedToken> weak_factory_{this};
 };
 
 }  // namespace brave_ads

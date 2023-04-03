@@ -68,7 +68,7 @@ void Serving::MaybeServeAd(MaybeServeNewTabPageAdCallback callback) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model,
-      base::BindOnce(&Serving::OnGetForUserModel, base::Unretained(this),
+      base::BindOnce(&Serving::OnGetForUserModel, weak_factory_.GetWeakPtr(),
                      std::move(callback), user_model));
 }
 

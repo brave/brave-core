@@ -31,12 +31,14 @@ ConfirmationUserDataBuilder::ConfirmationUserDataBuilder(
   DCHECK(transaction_.IsValid());
 }
 
+ConfirmationUserDataBuilder::~ConfirmationUserDataBuilder() = default;
+
 void ConfirmationUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   user_data::GetConversion(
       transaction_.creative_instance_id, transaction_.confirmation_type,
       base::BindOnce(&ConfirmationUserDataBuilder::OnGetConversion,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

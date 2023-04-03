@@ -8,6 +8,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_delegate.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
@@ -55,6 +56,8 @@ class Issuers {
 
   Timer timer_;
   BackoffTimer retry_timer_;
+
+  base::WeakPtrFactory<Issuers> weak_factory_{this};
 };
 
 }  // namespace brave_ads

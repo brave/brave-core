@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_callback.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_alias.h"
@@ -35,6 +36,7 @@ class EligibleAdsV1 final : public EligibleAdsBase {
  public:
   EligibleAdsV1(geographic::SubdivisionTargeting* subdivision_targeting,
                 resource::AntiTargeting* anti_targeting);
+  ~EligibleAdsV1() override;
 
   void GetForUserModel(
       targeting::UserModelInfo user_model,
@@ -113,6 +115,8 @@ class EligibleAdsV1 final : public EligibleAdsBase {
       const CreativeInlineContentAdList& creative_ads,
       const AdEventList& ad_events,
       const BrowsingHistoryList& browsing_history);
+
+  base::WeakPtrFactory<EligibleAdsV1> weak_factory_{this};
 };
 
 }  // namespace inline_content_ads

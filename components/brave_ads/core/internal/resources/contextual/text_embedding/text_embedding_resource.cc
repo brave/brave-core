@@ -33,7 +33,7 @@ void TextEmbedding::Load() {
   LoadAndParseResource(kResourceId,
                        targeting::features::GetTextEmbeddingResourceVersion(),
                        base::BindOnce(&TextEmbedding::OnLoadAndParseResource,
-                                      weak_ptr_factory_.GetWeakPtr()));
+                                      weak_factory_.GetWeakPtr()));
 }
 
 void TextEmbedding::OnLoadAndParseResource(

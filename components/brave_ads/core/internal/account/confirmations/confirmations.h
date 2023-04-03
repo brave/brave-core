@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
@@ -85,6 +86,8 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
   BackoffTimer retry_timer_;
+
+  base::WeakPtrFactory<Confirmations> weak_factory_{this};
 };
 
 }  // namespace brave_ads

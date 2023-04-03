@@ -110,7 +110,7 @@ void Confirmations::Retry() {
   DCHECK(!retry_timer_.IsRunning());
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Confirmations::OnRetry, base::Unretained(this)));
+      base::BindOnce(&Confirmations::OnRetry, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry sending failed confirmations "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));
@@ -149,16 +149,17 @@ void Confirmations::ConfirmTransaction(const TransactionInfo& transaction) {
 void Confirmations::BuildDynamicUserData(const TransactionInfo& transaction) {
   const ConfirmationDynamicUserDataBuilder user_data_builder;
   user_data_builder.Build(base::BindOnce(&Confirmations::BuildFixedUserData,
-                                         base::Unretained(this), transaction));
+                                         weak_factory_.GetWeakPtr(),
+                                         transaction));
 }
 
 void Confirmations::BuildFixedUserData(
     const TransactionInfo& transaction,
     base::Value::Dict dynamic_opted_in_user_data) {
   const ConfirmationUserDataBuilder user_data_builder(transaction);
-  user_data_builder.Build(
-      base::BindOnce(&Confirmations::CreateAndRedeem, base::Unretained(this),
-                     transaction, std::move(dynamic_opted_in_user_data)));
+  user_data_builder.Build(base::BindOnce(
+      &Confirmations::CreateAndRedeem, weak_factory_.GetWeakPtr(), transaction,
+      std::move(dynamic_opted_in_user_data)));
 }
 
 void Confirmations::CreateAndRedeem(
@@ -184,7 +185,7 @@ void Confirmations::RecreateOptedInDynamicUserDataAndRedeem(
   const ConfirmationDynamicUserDataBuilder user_data_builder;
   user_data_builder.Build(
       base::BindOnce(&Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem,
-                     base::Unretained(this), confirmation));
+                     weak_factory_.GetWeakPtr(), confirmation));
 }
 
 void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(

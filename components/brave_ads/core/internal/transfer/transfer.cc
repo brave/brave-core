@@ -116,7 +116,7 @@ void Transfer::OnTransferAd(const int32_t tab_id,
 
   LogAdEvent(
       ad, ConfirmationType::kTransferred,
-      base::BindOnce(&Transfer::OnLogAdEvent, base::Unretained(this), ad));
+      base::BindOnce(&Transfer::OnLogAdEvent, weak_factory_.GetWeakPtr(), ad));
 }
 
 void Transfer::OnLogAdEvent(const AdInfo& ad, const bool success) {
