@@ -107,4 +107,35 @@ class KeyringStoreTests: XCTestCase {
       XCTAssertNil(error)
     }
   }
+  
+  @MainActor func testIsStrongPassword() async {
+    let (keyringService, rpcService, walletService) = setupServices()
+    let store = KeyringStore(
+      keyringService: keyringService,
+      walletService: walletService,
+      rpcService: rpcService
+    )
+    
+    let invalidPassword1 = ""
+    var isStrongPassword = await store.isStrongPassword(invalidPassword1)
+    XCTAssertFalse(isStrongPassword)
+    
+    let invalidPassword2 = "1234"
+    isStrongPassword = await store.isStrongPassword(invalidPassword2)
+    XCTAssertFalse(isStrongPassword)
+    
+    let validPassword = "12345678"
+    isStrongPassword = await store.isStrongPassword(validPassword)
+    XCTAssertTrue(isStrongPassword)
+    
+    let uuid = UUID().uuidString
+    // first 30 characters of uuid
+    let validPassword2 = String(uuid[uuid.startIndex..<uuid.index(uuid.startIndex, offsetBy: 30)])
+    isStrongPassword = await store.isStrongPassword(validPassword2)
+    XCTAssertTrue(isStrongPassword)
+    
+    let strongPassword = "LDKH66BJbLsHQPEAK@4_zak*"
+    isStrongPassword = await store.isStrongPassword(strongPassword)
+    XCTAssertTrue(isStrongPassword)
+  }
 }

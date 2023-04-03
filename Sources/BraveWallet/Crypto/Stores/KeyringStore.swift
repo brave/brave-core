@@ -210,7 +210,15 @@ public class KeyringStore: ObservableObject {
   }
 
   func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {
-    keyringService.isStrongPassword(password, completion: completion)
+    completion(password.count >= 8)
+  }
+  
+  @MainActor func isStrongPassword(_ password: String) async -> Bool {
+    await withCheckedContinuation { continuation in
+      isStrongPassword(password) { isStrong in
+        continuation.resume(returning: isStrong)
+      }
+    }
   }
 
   func createWallet(password: String, completion: ((String) -> Void)? = nil) {

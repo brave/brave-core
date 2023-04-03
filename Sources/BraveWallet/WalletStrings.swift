@@ -635,7 +635,7 @@ extension Strings {
       "wallet.passwordDoesNotMeetRequirementsError",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "Passwords must be at least 7 characters, and contain at least one letter, one number, and one special character.",
+      value: "Passwords must be at least 8 characters.",
       comment: "The error message displayed when a user enters a password that does not meet the requirements"
     )
     public static let passwordsDontMatchError = NSLocalizedString(
