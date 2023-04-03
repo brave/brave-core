@@ -12,6 +12,7 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"

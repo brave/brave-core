@@ -7,8 +7,10 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_sku.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 

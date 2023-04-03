@@ -11,33 +11,59 @@
 #include <queue>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
-#include "brave/components/brave_rewards/core/api/api.h"
-#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
-#include "brave/components/brave_rewards/core/contribution/contribution.h"
-#include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/ledger.h"
-#include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
-#include "brave/components/brave_rewards/core/promotion/promotion.h"
-#include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/recovery/recovery.h"
-#include "brave/components/brave_rewards/core/report/report.h"
-#include "brave/components/brave_rewards/core/state/state.h"
-#include "brave/components/brave_rewards/core/uphold/uphold.h"
-#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
+namespace braveledger_media {
+class Media;
+}
+
 namespace ledger {
+
+namespace promotion {
+class Promotion;
+}
+namespace publisher {
+class Publisher;
+}
+namespace contribution {
+class Contribution;
+}
+namespace wallet {
+class Wallet;
+}
+namespace database {
+class Database;
+}
+namespace report {
+class Report;
+}
+namespace state {
+class State;
+}
+namespace api {
+class API;
+}
+namespace recovery {
+class Recovery;
+}
+namespace bitflyer {
+class Bitflyer;
+}
+namespace gemini {
+class Gemini;
+}
+namespace uphold {
+class Uphold;
+}
 
 class LedgerImpl : public mojom::Ledger {
  public:
@@ -456,19 +482,19 @@ class LedgerImpl : public mojom::Ledger {
   void WhenReady(T callback);
 
   mojo::AssociatedRemote<mojom::LedgerClient> ledger_client_;
-  promotion::Promotion promotion_{this};
-  publisher::Publisher publisher_{this};
-  braveledger_media::Media media_{this};
-  contribution::Contribution contribution_{this};
-  wallet::Wallet wallet_{this};
-  database::Database database_{this};
-  report::Report report_{this};
-  state::State state_{this};
-  api::API api_{this};
-  recovery::Recovery recovery_{this};
-  bitflyer::Bitflyer bitflyer_{this};
-  gemini::Gemini gemini_{this};
-  uphold::Uphold uphold_{this};
+  std::unique_ptr<promotion::Promotion> promotion_;
+  std::unique_ptr<publisher::Publisher> publisher_;
+  std::unique_ptr<braveledger_media::Media> media_;
+  std::unique_ptr<contribution::Contribution> contribution_;
+  std::unique_ptr<wallet::Wallet> wallet_;
+  std::unique_ptr<database::Database> database_;
+  std::unique_ptr<report::Report> report_;
+  std::unique_ptr<state::State> state_;
+  std::unique_ptr<api::API> api_;
+  std::unique_ptr<recovery::Recovery> recovery_;
+  std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
+  std::unique_ptr<gemini::Gemini> gemini_;
+  std::unique_ptr<uphold::Uphold> uphold_;
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;

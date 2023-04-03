@@ -16,11 +16,14 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/wallet_info_properties.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_transfer.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"
+#include "brave/components/brave_rewards/core/state/state.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 #include "brave/third_party/challenge_bypass_ristretto_ffi/src/wrapper.h"
 
@@ -98,7 +101,7 @@ void Promotion::Initialize() {
   ledger_->database()->GetAllPromotions(retry_callback);
 }
 
-void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
+void Promotion::Fetch(ledger::FetchPromotionsCallback callback) {
   // If we fetched promotions recently, fulfill this request from the
   // database instead of querying the server again
   if (!ledger::is_testing && _environment != mojom::Environment::STAGING) {
@@ -128,7 +131,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   promotion_server_->get_available()->Request(client, std::move(url_callback));
 }
 
-void Promotion::OnFetch(ledger::FetchPromotionCallback callback,
+void Promotion::OnFetch(ledger::FetchPromotionsCallback callback,
                         mojom::Result result,
                         std::vector<mojom::PromotionPtr> list,
                         const std::vector<std::string>& corrupted_promotions) {
@@ -163,7 +166,7 @@ void Promotion::OnFetch(ledger::FetchPromotionCallback callback,
 }
 
 void Promotion::OnGetAllPromotions(
-    ledger::FetchPromotionCallback callback,
+    ledger::FetchPromotionsCallback callback,
     std::vector<mojom::PromotionPtr> list,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
@@ -225,7 +228,7 @@ void Promotion::OnGetAllPromotions(
 }
 
 void Promotion::OnGetAllPromotionsFromDatabase(
-    ledger::FetchPromotionCallback callback,
+    ledger::FetchPromotionsCallback callback,
     base::flat_map<std::string, mojom::PromotionPtr> promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
 
@@ -421,7 +424,7 @@ void Promotion::OnComplete(ledger::AttestPromotionCallback callback,
 void Promotion::ProcessFetchedPromotions(
     const mojom::Result result,
     std::vector<mojom::PromotionPtr> promotions,
-    ledger::FetchPromotionCallback callback) {
+    ledger::FetchPromotionsCallback callback) {
   const uint64_t now = util::GetCurrentTimeStamp();
   ledger_->state()->SetPromotionLastFetchStamp(now);
   last_check_timer_.Stop();

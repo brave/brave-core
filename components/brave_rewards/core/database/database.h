@@ -65,7 +65,7 @@ class Database {
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,
-                           ledger::PublisherInfoListCallback callback);
+                           ledger::GetActivityInfoListCallback callback);
 
   void DeleteActivityInfo(const std::string& publisher_key,
                           ledger::LegacyResultCallback callback);
@@ -106,7 +106,7 @@ class Database {
 
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
-                      ledger::PublisherInfoListCallback callback);
+                      ledger::GetOneTimeTipsCallback callback);
 
   void GetContributionReport(const mojom::ActivityMonth month,
                              const int year,
@@ -218,10 +218,10 @@ class Database {
                                ledger::LegacyResultCallback callback);
 
   void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback);
+      ledger::GetPendingContributionsTotalCallback callback);
 
   void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback);
+      ledger::GetPendingContributionsCallback callback);
 
   void GetUnverifiedPublishersForPendingContributions(
       ledger::UnverifiedPublishersCallback callback);
@@ -278,14 +278,14 @@ class Database {
                          ledger::LegacyResultCallback callback);
 
   void GetPublisherInfo(const std::string& publisher_key,
-                        ledger::PublisherInfoCallback callback);
+                        ledger::GetPublisherInfoCallback callback);
 
   void GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
-                             ledger::PublisherInfoCallback callback);
+                             ledger::GetPublisherPanelInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
 
-  void GetExcludedList(ledger::PublisherInfoListCallback callback);
+  void GetExcludedList(ledger::GetExcludedListCallback callback);
 
   /**
    * RECURRING TIPS
@@ -306,7 +306,7 @@ class Database {
   void GetNextMonthlyContributionTime(
       base::OnceCallback<void(absl::optional<base::Time>)> callback);
 
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback);
+  void GetRecurringTips(ledger::GetRecurringTipsCallback callback);
 
   void RemoveRecurringTip(const std::string& publisher_key,
                           ledger::LegacyResultCallback callback);

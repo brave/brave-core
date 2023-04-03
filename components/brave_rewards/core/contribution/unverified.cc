@@ -8,8 +8,12 @@
 #include "base/guid.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/unverified.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

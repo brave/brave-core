@@ -32,7 +32,7 @@ class Promotion {
 
   void Initialize();
 
-  void Fetch(ledger::FetchPromotionCallback callback);
+  void Fetch(ledger::FetchPromotionsCallback callback);
 
   void Claim(const std::string& promotion_id,
              const std::string& payload,
@@ -47,18 +47,18 @@ class Promotion {
   virtual void TransferTokens(ledger::PostSuggestionsClaimCallback callback);
 
  private:
-  void OnFetch(ledger::FetchPromotionCallback callback,
+  void OnFetch(ledger::FetchPromotionsCallback callback,
                mojom::Result result,
                std::vector<mojom::PromotionPtr> list,
                const std::vector<std::string>& corrupted_promotions);
 
   void OnGetAllPromotions(
-      ledger::FetchPromotionCallback callback,
+      ledger::FetchPromotionsCallback callback,
       std::vector<mojom::PromotionPtr> list,
       base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void OnGetAllPromotionsFromDatabase(
-      ledger::FetchPromotionCallback callback,
+      ledger::FetchPromotionsCallback callback,
       base::flat_map<std::string, mojom::PromotionPtr> promotions);
 
   void LegacyClaimedSaved(
@@ -94,7 +94,7 @@ class Promotion {
 
   void ProcessFetchedPromotions(const mojom::Result result,
                                 std::vector<mojom::PromotionPtr> promotions,
-                                ledger::FetchPromotionCallback callback);
+                                ledger::FetchPromotionsCallback callback);
 
   void GetCredentials(ledger::ResultCallback callback,
                       mojom::PromotionPtr promotion);

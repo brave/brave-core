@@ -24,9 +24,9 @@ class DatabasePendingContribution : public DatabaseTable {
   void InsertOrUpdateList(std::vector<mojom::PendingContributionPtr> list,
                           ledger::LegacyResultCallback callback);
 
-  void GetReservedAmount(ledger::PendingContributionsTotalCallback callback);
+  void GetReservedAmount(ledger::GetPendingContributionsTotalCallback callback);
 
-  void GetAllRecords(ledger::PendingContributionInfoListCallback callback);
+  void GetAllRecords(ledger::GetPendingContributionsCallback callback);
 
   void GetUnverifiedPublishers(ledger::UnverifiedPublishersCallback callback);
 
@@ -36,10 +36,10 @@ class DatabasePendingContribution : public DatabaseTable {
 
  private:
   void OnGetReservedAmount(mojom::DBCommandResponsePtr response,
-                           ledger::PendingContributionsTotalCallback callback);
+      ledger::GetPendingContributionsTotalCallback callback);
 
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       ledger::PendingContributionInfoListCallback callback);
+                       ledger::GetPendingContributionsCallback callback);
 
   void OnGetUnverifiedPublishers(mojom::DBCommandResponsePtr response,
                                  ledger::UnverifiedPublishersCallback callback);

@@ -9,8 +9,10 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

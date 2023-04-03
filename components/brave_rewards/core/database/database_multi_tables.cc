@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_multi_tables.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/promotion/promotion_util.h"

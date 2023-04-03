@@ -11,6 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 
 using std::placeholders::_1;
 
@@ -215,7 +216,7 @@ void DatabaseActivityInfo::GetRecordsList(
     const int start,
     const int limit,
     mojom::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetActivityInfoListCallback callback) {
   if (!filter) {
     callback({});
     return;
@@ -269,7 +270,7 @@ void DatabaseActivityInfo::GetRecordsList(
 
 void DatabaseActivityInfo::OnGetRecordsList(
     mojom::DBCommandResponsePtr response,
-    ledger::PublisherInfoListCallback callback) {
+    ledger::GetActivityInfoListCallback callback) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});

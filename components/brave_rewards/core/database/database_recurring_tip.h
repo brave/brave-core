@@ -36,14 +36,14 @@ class DatabaseRecurringTip : public DatabaseTable {
   void GetNextMonthlyContributionTime(
       base::OnceCallback<void(absl::optional<base::Time>)> callback);
 
-  void GetAllRecords(ledger::PublisherInfoListCallback callback);
+  void GetAllRecords(ledger::GetRecurringTipsCallback callback);
 
   void DeleteRecord(const std::string& publisher_key,
                     ledger::LegacyResultCallback callback);
 
  private:
   void OnGetAllRecords(mojom::DBCommandResponsePtr response,
-                       ledger::PublisherInfoListCallback callback);
+                       ledger::GetRecurringTipsCallback callback);
 };
 
 }  // namespace database

@@ -8,6 +8,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v1.h"

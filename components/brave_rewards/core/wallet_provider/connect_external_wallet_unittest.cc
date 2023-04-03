@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+#include <utility>
+
 #include "base/containers/flat_map.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -11,6 +14,7 @@
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*ConnectExternalWalletTest*

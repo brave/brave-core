@@ -10,6 +10,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"

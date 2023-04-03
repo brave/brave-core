@@ -27,7 +27,6 @@ class API {
   void FetchParameters(ledger::GetRewardsParametersCallback callback);
 
  private:
-  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<APIParameters> parameters_;
 };
 

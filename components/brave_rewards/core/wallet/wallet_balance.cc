@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"

@@ -8,11 +8,14 @@
 #include <vector>
 
 #include "base/strings/string_split.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/bat_helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/test/task_environment.h"
-#include "brave/components/brave_rewards/core/endpoint/payment/post_credentials/post_credentials.h"
+#include "brave/components/brave_rewards/core/endpoint/payment/get_credentials/get_credentials.h"
 #include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"

@@ -3,12 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+#include <vector>
+
 #include "base/files/file_util.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"

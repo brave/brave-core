@@ -7,6 +7,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace ledger {

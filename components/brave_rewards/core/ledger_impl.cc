@@ -5,14 +5,29 @@
 
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 
+#include <vector>
+
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/types/always_false.h"
+#include "brave/components/brave_rewards/core/api/api.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/promotion/promotion.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
+#include "brave/components/brave_rewards/core/recovery/recovery.h"
+#include "brave/components/brave_rewards/core/report/report.h"
+#include "brave/components/brave_rewards/core/state/state.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 
 using std::placeholders::_1;
 
@@ -28,7 +43,20 @@ namespace ledger {
 
 LedgerImpl::LedgerImpl(
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote)
-    : ledger_client_(std::move(ledger_client_remote)) {
+    : ledger_client_(std::move(ledger_client_remote)),
+      promotion_(std::make_unique<promotion::Promotion>(this)),
+      publisher_(std::make_unique<publisher::Publisher>(this)),
+      media_(std::make_unique<braveledger_media::Media>(this)),
+      contribution_(std::make_unique<contribution::Contribution>(this)),
+      wallet_(std::make_unique<wallet::Wallet>(this)),
+      database_(std::make_unique<database::Database>(this)),
+      report_(std::make_unique<report::Report>(this)),
+      state_(std::make_unique<state::State>(this)),
+      api_(std::make_unique<api::API>(this)),
+      recovery_(std::make_unique<recovery::Recovery>(this)),
+      bitflyer_(std::make_unique<bitflyer::Bitflyer>(this)),
+      gemini_(std::make_unique<gemini::Gemini>(this)),
+      uphold_(std::make_unique<uphold::Uphold>(this)) {
   DCHECK(base::ThreadPoolInstance::Get());
   set_ledger_client_for_logging(ledger_client_.get());
 }
@@ -407,13 +435,13 @@ void LedgerImpl::GetCreationStamp(GetCreationStampCallback callback) {
 
 void LedgerImpl::GetRewardsInternalsInfo(
     GetRewardsInternalsInfoCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     auto info = mojom::RewardsInternalsInfo::New();
 
-    mojom::RewardsWalletPtr wallet = wallet_.GetWallet();
+    mojom::RewardsWalletPtr wallet = wallet_->GetWallet();
     if (!wallet) {
       BLOG(0, "Wallet is null");
-      callback(std::move(info));
+      std::move(callback).Run(std::move(info));
       return;
     }
 
@@ -435,7 +463,7 @@ void LedgerImpl::GetRewardsInternalsInfo(
           secret_key, &public_key, &new_secret_key);
     }
 
-    callback(std::move(info));
+    std::move(callback).Run(std::move(info));
   });
 }
 
@@ -753,7 +781,7 @@ void LedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 }
 
 void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
-  WhenReady([this, callback = ToLegacyCallback(std::move(callback))]() {
+  WhenReady([this, callback = std::move(callback)]() mutable {
     auto rewards_wallet = wallet()->GetWallet();
     if (rewards_wallet) {
       // While the wallet creation flow is running, the Rewards wallet data may
@@ -763,62 +791,60 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
         rewards_wallet = nullptr;
       }
     }
-    callback(std::move(rewards_wallet));
+    std::move(callback).Run(std::move(rewards_wallet));
   });
 }
-
-// -----------------------
 
 mojom::LedgerClient* LedgerImpl::client() {
   return ledger_client_.get();
 }
 
 state::State* LedgerImpl::state() {
-  return &state_;
+  return state_.get();
 }
 
 promotion::Promotion* LedgerImpl::promotion() {
-  return &promotion_;
+  return promotion_.get();
 }
 
 publisher::Publisher* LedgerImpl::publisher() {
-  return &publisher_;
+  return publisher_.get();
 }
 
 braveledger_media::Media* LedgerImpl::media() {
-  return &media_;
+  return media_.get();
 }
 
 contribution::Contribution* LedgerImpl::contribution() {
-  return &contribution_;
+  return contribution_.get();
 }
 
 wallet::Wallet* LedgerImpl::wallet() {
-  return &wallet_;
+  return wallet_.get();
 }
 
 report::Report* LedgerImpl::report() {
-  return &report_;
+  return report_.get();
 }
 
 api::API* LedgerImpl::api() {
-  return &api_;
+  return api_.get();
 }
 
 database::Database* LedgerImpl::database() {
-  return &database_;
+  return database_.get();
 }
 
 bitflyer::Bitflyer* LedgerImpl::bitflyer() {
-  return &bitflyer_;
+  return bitflyer_.get();
 }
 
 gemini::Gemini* LedgerImpl::gemini() {
-  return &gemini_;
+  return gemini_.get();
 }
 
 uphold::Uphold* LedgerImpl::uphold() {
-  return &uphold_;
+  return uphold_.get();
 }
 
 template <typename LoadURLCallback>
@@ -981,7 +1007,7 @@ void LedgerImpl::StartServices() {
   contribution()->Initialize();
   promotion()->Initialize();
   api()->Initialize();
-  recovery_.Check();
+  recovery_->Check();
 }
 
 void LedgerImpl::OnAllDone(mojom::Result result,

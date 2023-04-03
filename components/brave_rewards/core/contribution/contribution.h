@@ -83,7 +83,7 @@ class Contribution {
                       const std::string& contribution_id,
                       ledger::LegacyResultCallback callback);
 
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback);
+  void GetRecurringTips(ledger::GetRecurringTipsCallback callback);
 
  private:
   enum class MonthlyContributionOptions { kDefault, kSendAllContributions };

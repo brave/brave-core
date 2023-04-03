@@ -17,6 +17,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/test_ledger_client.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 

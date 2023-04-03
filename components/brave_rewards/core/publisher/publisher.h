@@ -36,7 +36,7 @@ class Publisher {
       database::GetServerPublisherInfoCallback callback);
 
   void RefreshPublisher(const std::string& publisher_key,
-                        ledger::OnRefreshPublisherCallback callback);
+                        ledger::RefreshPublisherCallback callback);
 
   void SetPublisherServerListTimer();
 
@@ -58,7 +58,7 @@ class Publisher {
                                    const std::string& publisher_blob);
 
   void GetPublisherBanner(const std::string& publisher_key,
-                          ledger::PublisherBannerCallback callback);
+                          ledger::GetPublisherBannerCallback callback);
 
   mojom::ActivityInfoFilterPtr CreateActivityFilter(
       const std::string& publisher_id,
@@ -97,7 +97,7 @@ class Publisher {
                            const bool first_visit);
 
   void GetPublisherPanelInfo(const std::string& publisher_key,
-                             ledger::GetPublisherInfoCallback callback);
+                             ledger::GetPublisherPanelInfoCallback callback);
 
   void SavePublisherInfo(uint64_t window_id,
                          mojom::PublisherInfoPtr publisher_info,
@@ -115,7 +115,7 @@ class Publisher {
 
   void OnGetPanelPublisherInfo(const mojom::Result result,
                                mojom::PublisherInfoPtr info,
-                               ledger::GetPublisherInfoCallback callback);
+                               ledger::GetPublisherPanelInfoCallback callback);
 
   void onPublisherActivitySave(uint64_t windowId,
                                const mojom::VisitData& visit_data,
@@ -177,9 +177,9 @@ class Publisher {
 
   void OnGetPublisherBanner(mojom::ServerPublisherInfoPtr info,
                             const std::string& publisher_key,
-                            ledger::PublisherBannerCallback callback);
+                            ledger::GetPublisherBannerCallback callback);
 
-  void OnGetPublisherBannerPublisher(ledger::PublisherBannerCallback callback,
+  void OnGetPublisherBannerPublisher(ledger::GetPublisherBannerCallback callback,
                                      const mojom::PublisherBanner& banner,
                                      mojom::Result result,
                                      mojom::PublisherInfoPtr publisher_info);

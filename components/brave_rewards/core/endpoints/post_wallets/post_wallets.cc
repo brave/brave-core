@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger::endpoints {
