@@ -836,17 +836,19 @@ export const PortfolioAsset = (props: Props) => {
           />
         }
 
-        <NftMultimedia
-          onLoad={onNftDetailsLoad}
-          visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
-          ref={nftDetailsRef}
-          sandbox="allow-scripts allow-popups allow-same-origin"
-          allow="clipboard-write"
-          src='chrome-untrusted://nft-display'
-          allowFullScreen
-        />
+        {!nftMetadataError &&
+          <NftMultimedia
+            onLoad={onNftDetailsLoad}
+            visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
+            ref={nftDetailsRef}
+            sandbox="allow-scripts allow-popups allow-same-origin"
+            allow="clipboard-write"
+            src='chrome-untrusted://nft-display'
+            allowFullScreen
+          />
+        }
 
-        {isNftAsset && nftMetadata && selectedAsset &&
+        {isNftAsset && selectedAsset &&
           <NftDetails
             selectedAsset={selectedAsset}
             nftMetadata={nftMetadata}

@@ -217,7 +217,7 @@ export const NftDetails = ({
                     </DetailSectionRow>
                   </>
                 }
-                {selectedAsset && nftPinningStatus?.code &&
+                {selectedAsset && nftPinningStatus?.code && nftPinningStatus.code !== BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED &&
                   <DetailSectionRow>
                     <DetailSectionColumn>
                       <Row marginBottom={16} />

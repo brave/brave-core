@@ -216,7 +216,7 @@ export const ErrorMessage = styled.p`
   line-height: 16px;
   color: ${(p) => p.theme.color.text02};
   word-break: break-word;
-  margin-top: 50px;
+  margin: 24px 0;
 `
 
 export const NftStandard = styled.div`
