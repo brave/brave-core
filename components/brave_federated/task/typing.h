@@ -53,6 +53,7 @@ class Task {
 class TaskResult {
  public:
   explicit TaskResult(Task task, PerformanceReport report);
+  TaskResult(const TaskResult& other);
   ~TaskResult();
 
   Task GetTask();

@@ -27,8 +27,6 @@ namespace {
 namespace brave_federated {
 
 bool ValidatePullTaskInsResponse(const flower::PullTaskInsResponse response) {
-
-
   // TODO(lminto): Add multiple tasks validation
   int max_tasks = 1;
   for (int i = 0; i < max_tasks; i++) {

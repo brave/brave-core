@@ -15,6 +15,7 @@
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/linear_algebra_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_federated {
 
@@ -29,7 +30,7 @@ class FederatedTaskRunner final {
 
   Model* GetModel();
 
-  TaskResult Run();
+  absl::optional<TaskResult> Run();
 
   void SetTrainingData(DataSet training_data);
   void SetTestData(DataSet test_data);

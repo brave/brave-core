@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_TASK_MODEL_H_
 
+#include <cstddef>
 #include <map>
 #include <memory>
 #include <string>
@@ -55,7 +56,8 @@ class Model {
   float GetBias();
   void SetBias(float new_bias);
 
-  size_t GetModelSize();
+  size_t GetModelSize() const;
+  size_t GetBatchSize() const;
 
  private:
   int num_iterations_;

@@ -23,12 +23,13 @@
 #include "net/base/backoff_entry.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_federated {
 
 namespace {
 
-TaskResult LoadDatasetAndRunTask(
+absl::optional<TaskResult> LoadDatasetAndRunTask(
     std::unique_ptr<FederatedTaskRunner> task_runner) {
   auto synthetic_dataset = std::make_unique<SyntheticDataset>(500);
   SyntheticDataset test_dataset = synthetic_dataset->SeparateTestData(50);
@@ -40,14 +41,15 @@ TaskResult LoadDatasetAndRunTask(
   return task_runner->Run();
 }
 
-}
+}  // namespace
 
 LearningService::LearningService(
     EligibilityService* eligibility_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : url_loader_factory_(url_loader_factory),
       eligibility_service_(eligibility_service),
-      communication_adapter_(std::make_unique<CommunicationAdapter>(url_loader_factory_)) {
+      communication_adapter_(
+          std::make_unique<CommunicationAdapter>(url_loader_factory_)) {
   DCHECK(!init_task_timer_);
   post_results_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
       /*.num_errors_to_ignore = */ 0,
@@ -174,9 +176,14 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void LearningService::OnTaskResultComputed(TaskResult result) {
+void LearningService::OnTaskResultComputed(absl::optional<TaskResult> result) {
+  if (!result.has_value()) {
+    VLOG(2) << "Task result computation failed";
+    return;
+  }
+
   TaskResultList results;
-  results.push_back(result);
+  results.push_back(result.value());
   PostTaskResults(results);
 }
 

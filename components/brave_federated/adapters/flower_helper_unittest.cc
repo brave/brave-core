@@ -164,7 +164,6 @@ TEST(BraveFederatedLearningFlowerHelperTest,
   EXPECT_EQ(task_list.size(), 0U);
 }
 
-
 TEST(BraveFederatedLearningFlowerHelperTest,
      ParseTaskWithoutParametersFromResponseBody) {
   // Arrange

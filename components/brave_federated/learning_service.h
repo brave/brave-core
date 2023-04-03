@@ -17,6 +17,7 @@
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/backoff_entry.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace network {
 
@@ -49,7 +50,7 @@ class LearningService : public Observer {
 
   void HandleTasksOrReconnect(TaskList tasks, int reconnect);
 
-  void OnTaskResultComputed(TaskResult result);
+  void OnTaskResultComputed(absl::optional<TaskResult> result);
   void OnPostTaskResults(TaskResultResponse response);
 
   scoped_refptr<network::SharedURLLoaderFactory>
