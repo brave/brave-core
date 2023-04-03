@@ -35,7 +35,7 @@
 #include "brave/components/brave_rewards/core/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 
 namespace ledger {

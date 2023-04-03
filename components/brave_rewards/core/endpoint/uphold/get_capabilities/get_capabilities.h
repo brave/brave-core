@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_capabilities.h"
 
 // GET https://api.uphold.com/v0/me/capabilities

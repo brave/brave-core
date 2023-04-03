@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/suggestions/claim
 //

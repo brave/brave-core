@@ -8,7 +8,7 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/post_oauth/post_oauth_gemini.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "net/http/http_status_code.h"

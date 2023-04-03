@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/attestation/attestation_impl.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace ledger {

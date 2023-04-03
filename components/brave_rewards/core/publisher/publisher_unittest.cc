@@ -9,7 +9,7 @@
 #include "base/containers/flat_map.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"

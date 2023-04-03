@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v10.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v11.h"

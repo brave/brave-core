@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CALLBACKS_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CALLBACKS_H_
 
 #include <memory>
 #include <string>
@@ -132,4 +132,4 @@ using UnverifiedPublishersCallback =
 
 }  // namespace ledger
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_CALLBACKS_H_

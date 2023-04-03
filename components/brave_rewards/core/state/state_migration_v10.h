@@ -10,7 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/endpoint/promotion/get_wallet/get_wallet.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

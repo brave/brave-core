@@ -14,7 +14,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"

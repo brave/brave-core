@@ -23,7 +23,7 @@
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_captcha/put_captcha.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_devicecheck/put_devicecheck.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/put_safetynet/put_safetynet.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

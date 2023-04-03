@@ -10,7 +10,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/database/database_migration.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;

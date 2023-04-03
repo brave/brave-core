@@ -7,7 +7,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/constants.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "testing/gtest/include/gtest/gtest.h"
