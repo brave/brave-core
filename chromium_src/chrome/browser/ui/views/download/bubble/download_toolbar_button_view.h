@@ -8,6 +8,7 @@
 
 #include "chrome/browser/download/bubble/download_bubble_ui_controller.h"
 #include "chrome/browser/download/bubble/download_display_controller.h"
+#include "chrome/browser/download/download_ui_model.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 
 #define DownloadToolbarButtonView DownloadToolbarButtonViewChromium
@@ -39,7 +40,7 @@ class DownloadToolbarButtonView : public DownloadToolbarButtonViewChromium {
 
  private:
   bool HasInsecureDownloads(
-      const std::vector<DownloadUIModelPtr>& models) const;
+      const std::vector<DownloadUIModel::DownloadUIModelPtr>& models) const;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_BUBBLE_DOWNLOAD_TOOLBAR_BUTTON_VIEW_H_

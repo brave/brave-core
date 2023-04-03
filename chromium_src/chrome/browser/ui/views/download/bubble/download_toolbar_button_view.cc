@@ -89,7 +89,7 @@ void DownloadToolbarButtonView::UpdateIcon() {
 }
 
 bool DownloadToolbarButtonView::HasInsecureDownloads(
-    const std::vector<DownloadUIModelPtr>& models) const {
+    const std::vector<DownloadUIModel::DownloadUIModelPtr>& models) const {
   return base::ranges::any_of(models, [](const auto& model) {
     return (model->GetInsecureDownloadStatus() ==
                 download::DownloadItem::InsecureDownloadStatus::BLOCK ||
