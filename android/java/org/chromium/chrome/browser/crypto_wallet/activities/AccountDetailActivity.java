@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.util.LiveDataUtil;
@@ -181,8 +182,8 @@ public class AccountDetailActivity
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                     allNetworks -> {
-                        Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
-                                selectedNetwork, accounts, null, false,
+                        Utils.getTxExtraInfo(new WeakReference<>(this), TokenUtils.TokenType.ALL,
+                                allNetworks, selectedNetwork, accounts, null, false,
                                 (assetPrices, fullTokenList, nativeAssetsBalances,
                                         blockchainTokensBalances) -> {
                                     for (AccountInfo accountInfo : accounts) {

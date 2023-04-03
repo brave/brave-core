@@ -401,7 +401,7 @@ public class PortfolioFragment
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchAssets(
+        mPortfolioModel.fetchNonNftAssets(
                 selectedNetwork, (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
@@ -414,13 +414,7 @@ public class PortfolioFragment
                     mBalance.invalidate();
 
                     List<BlockchainToken> tokens = new ArrayList<>();
-
-                    for (BlockchainToken token : mPortfolioHelper.getUserAssets()) {
-                        if (!token.isErc721 && !token.isNft) {
-                            // Add only coins and not NFTs.
-                            tokens.add(token);
-                        }
-                    }
+                    tokens.addAll(mPortfolioHelper.getUserAssets());
 
                     LiveDataUtil.observeOnce(
                             mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,

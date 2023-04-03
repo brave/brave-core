@@ -110,7 +110,7 @@ public class PortfolioHelper {
         return Double.valueOf(mFiatHistory[mFiatHistory.length - 1].price);
     }
 
-    public void fetchAllAssetsAndDetails(Callbacks.Callback1<PortfolioHelper> callback) {
+    public void fetchNonNftAssetsAndDetails(Callbacks.Callback1<PortfolioHelper> callback) {
         resetResultData();
         if (mActivity.get() == null || mSelectedNetworks.isEmpty()) return;
         int totalNetworks = mSelectedNetworks.size();
@@ -120,8 +120,8 @@ public class PortfolioHelper {
         for (NetworkInfo networkInfo : mSelectedNetworks) {
             List<AccountInfo> accountInfosPerCoin = JavaUtils.filter(
                     mAccountInfos, accountInfo -> accountInfo.coin == networkInfo.coin);
-            Utils.getTxExtraInfo(mActivity, mCryptoNetworks, networkInfo,
-                    accountInfosPerCoin.toArray(new AccountInfo[0]), null, true,
+            Utils.getTxExtraInfo(mActivity, TokenUtils.TokenType.NON_NFTS, mCryptoNetworks,
+                    networkInfo, accountInfosPerCoin.toArray(new AccountInfo[0]), null, true,
                     (assetPrices, userAssetsList, nativeAssetsBalances,
                             blockchainTokensBalances) -> {
                         mUserAssets.addAll(Arrays.asList(userAssetsList));
@@ -186,8 +186,8 @@ public class PortfolioHelper {
         resetResultData();
         if (mActivity.get() == null || mActivity.get().isFinishing()) return;
 
-        Utils.getTxExtraInfo(mActivity, mCryptoNetworks, mSelectedNetwork, mAccountInfos, null,
-                true,
+        Utils.getTxExtraInfo(mActivity, TokenUtils.TokenType.ALL, mCryptoNetworks, mSelectedNetwork,
+                mAccountInfos, null, true,
                 (assetPrices, userAssetsList, nativeAssetsBalances, blockchainTokensBalances) -> {
                     mUserAssets.addAll(Arrays.asList(userAssetsList));
                     // Sum across accounts

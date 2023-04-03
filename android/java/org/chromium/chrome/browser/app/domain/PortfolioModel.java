@@ -142,7 +142,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mBraveWalletService.discoverAssetsOnAllSupportedChains();
     }
 
-    public void fetchAssets(NetworkInfo selectedNetwork,
+    public void fetchNonNftAssets(NetworkInfo selectedNetwork,
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
         synchronized (mLock) {
@@ -166,7 +166,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                                         mAllNetworkInfos, accountInfos);
                                         mPortfolioHelper.setSelectedNetworks(
                                                 NetworkUtils.nonTestNetwork(mAllNetworkInfos));
-                                        mPortfolioHelper.fetchAllAssetsAndDetails(callback);
+                                        mPortfolioHelper.fetchNonNftAssetsAndDetails(callback);
                                     });
                         } else {
                             mKeyringService.getKeyringInfo(
@@ -177,7 +177,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                                         mAllNetworkInfos, keyringInfo.accountInfos);
                                         mPortfolioHelper.setSelectedNetworks(
                                                 Arrays.asList(selectedNetwork));
-                                        mPortfolioHelper.fetchAllAssetsAndDetails(callback);
+                                        mPortfolioHelper.fetchNonNftAssetsAndDetails(callback);
                                     });
                         }
                     });

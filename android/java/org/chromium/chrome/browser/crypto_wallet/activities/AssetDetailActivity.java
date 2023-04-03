@@ -325,9 +325,9 @@ public class AssetDetailActivity
                             R.drawable.ic_eth, mAsset.name, mAsset.symbol, mAsset.tokenId, "", "");
                     LiveDataUtil.observeOnce(
                             mWalletModel.getNetworkModel().mCryptoNetworks, allNetworks -> {
-                                Utils.getTxExtraInfo(new WeakReference<>(this), allNetworks,
-                                        mAssetNetwork, accountInfos, new BlockchainToken[] {mAsset},
-                                        false,
+                                Utils.getTxExtraInfo(new WeakReference<>(this),
+                                        TokenUtils.TokenType.ALL, allNetworks, mAssetNetwork,
+                                        accountInfos, new BlockchainToken[] {mAsset}, false,
                                         (assetPrices, fullTokenList, nativeAssetsBalances,
                                                 blockchainTokensBalances) -> {
                                             thisAssetItemModel.setBlockchainToken(mAsset);
