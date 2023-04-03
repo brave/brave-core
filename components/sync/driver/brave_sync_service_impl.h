@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -23,6 +24,7 @@ class BraveSyncAuthManager;
 class SyncServiceImplDelegate;
 class SyncServiceCrypto;
 struct SyncProtocolError;
+struct TypeEntitiesCount;
 
 class BraveSyncServiceImpl : public SyncServiceImpl {
  public:
@@ -38,6 +40,10 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   // SyncEngineHost override.
   void OnEngineInitialized(bool success,
                            bool is_first_time_sync_configure) override;
+  void OnSyncCycleCompleted(const SyncCycleSnapshot& snapshot) override;
+
+  // SyncPrefObserver implementation.
+  void OnPreferredDataTypesPrefChange() override;
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
@@ -90,6 +96,10 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   void LocalDeviceAppeared();
 
+  void UpdateP3AObjectsNumber();
+  void OnGotEntityCounts(
+      const std::vector<syncer::TypeEntitiesCount>& entity_counts);
+
   brave_sync::Prefs brave_sync_prefs_;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
@@ -107,6 +117,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   // delete account case. When it's a normal leave procedure, we must not call
   // BraveSyncServiceImpl::StopAndClear from BraveSyncServiceImpl::ResetEngine
   bool initiated_self_device_info_deleted_ = false;
+
+  int completed_cycles_count_ = 0;
 
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;

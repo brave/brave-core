@@ -11,10 +11,12 @@
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_sync/brave_sync_p3a.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/sync/driver/brave_sync_auth_manager.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/model/type_entities_count.h"
 #include "components/sync/protocol/sync_protocol_error.h"
 
 namespace syncer {
@@ -303,6 +305,42 @@ void BraveSyncServiceImpl::LocalDeviceAppeared() {
   DCHECK(join_chain_result_callback_);
   std::move(join_chain_result_callback_).Run(true);
   SyncServiceImpl::NotifyObservers();
+}
+
+namespace {
+const int kCyclesBeforeUpdateP3AObjects = 10;
+}  // namespace
+
+void BraveSyncServiceImpl::OnSyncCycleCompleted(
+    const SyncCycleSnapshot& snapshot) {
+  SyncServiceImpl::OnSyncCycleCompleted(snapshot);
+  if (completed_cycles_count_ % kCyclesBeforeUpdateP3AObjects == 0) {
+    UpdateP3AObjectsNumber();
+  }
+  ++completed_cycles_count_;
+}
+
+void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
+  GetEntityCountsForDebugging(BindOnce(&BraveSyncServiceImpl::OnGotEntityCounts,
+                                       weak_ptr_factory_.GetWeakPtr()));
+}
+
+void BraveSyncServiceImpl::OnGotEntityCounts(
+    const std::vector<syncer::TypeEntitiesCount>& entity_counts) {
+  int total_entities = 0;
+  for (const syncer::TypeEntitiesCount& count : entity_counts) {
+    total_entities += count.non_tombstone_entities;
+  }
+
+  brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
+}
+
+void BraveSyncServiceImpl::OnPreferredDataTypesPrefChange() {
+  SyncServiceImpl::OnPreferredDataTypesPrefChange();
+
+  brave_sync::p3a::RecordEnabledTypes(
+      GetUserSettings()->IsSyncEverythingEnabled(),
+      GetUserSettings()->GetSelectedTypes());
 }
 
 }  // namespace syncer
