@@ -156,7 +156,7 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
   if (state == ConnectionState::CONNECTED) {
     // If user connected vpn from the system and launched the browser
     // we detected it was disabled by policies and disabling it.
-    if (IsConnected() && IsBraveVPNDisabledByPolicy(profile_prefs_)) {
+    if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
       GetBraveVPNConnectionAPI()->Disconnect();
       return;
     }
@@ -527,7 +527,7 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
   if (pref_name == prefs::kManagedBraveVPNDisabled) {
-    if (IsConnected() && IsBraveVPNDisabledByPolicy(profile_prefs_)) {
+    if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
       GetBraveVPNConnectionAPI()->Disconnect();
     }
     return;

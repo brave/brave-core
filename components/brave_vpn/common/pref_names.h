@@ -10,7 +10,8 @@
 
 namespace brave_vpn {
 namespace prefs {
-constexpr char kManagedBraveVPNDisabled[] = "brave.brave_vpn.diabled_by_policy";
+constexpr char kManagedBraveVPNDisabled[] =
+    "brave.brave_vpn.disabled_by_policy";
 constexpr char kBraveVPNLocalStateMigrated[] = "brave.brave_vpn.migrated";
 constexpr char kBraveVPNRootPref[] = "brave.brave_vpn";
 constexpr char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
