@@ -10,7 +10,7 @@ import { BraveWallet } from '../../constants/types'
 // selectors
 import { PageSelectors } from '../../page/selectors'
 import { WalletSelectors } from '../selectors'
-import { useSafeWalletSelector, useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
+import { useSafePageSelector, useSafeWalletSelector, useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
 
 // utils
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
@@ -37,6 +37,8 @@ export function useNftPin () {
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
   const nftsPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+  const isAutoPinEnabled = useSafePageSelector(PageSelectors.isAutoPinEnabled)
+
 
   // hooks
   const { isTokenPinningSupported } = useLib()
@@ -83,8 +85,9 @@ export function useNftPin () {
 
   const isIpfsBannerVisible = React.useMemo(() => {
     return isIpfsBannerEnabled &&
-      pinningStatusSummary !== OverallPinningStatus.NO_PINNED_ITEMS
-  }, [isIpfsBannerEnabled, pinningStatusSummary])
+      (pinningStatusSummary !== OverallPinningStatus.NO_PINNED_ITEMS ||
+       !isAutoPinEnabled)
+  }, [isIpfsBannerEnabled, pinningStatusSummary, isAutoPinEnabled])
 
   // methods
   const onToggleShowIpfsBanner = React.useCallback(() => {
