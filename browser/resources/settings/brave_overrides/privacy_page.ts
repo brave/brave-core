@@ -315,8 +315,8 @@ function InsertCookiesSubpage (
           <cr-button slot="subpage-title-extra" id="remove-all-button"
             on-click="onRemoveAllCookiesFromSite_">
           </cr-button>
-          <site-data-details-subpage page-title="{{pageTitle}}">
-          </site-data-details-subpage>
+          <brave-site-data-details-subpage page-title="{{pageTitle}}">
+          </brave-site-data-details-subpage>
         </settings-subpage>
       </template>`)
   const cookiesTemplate = templateContent.

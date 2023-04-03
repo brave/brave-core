@@ -26,6 +26,13 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_ui.h"
 
+/*
+ * Restored Chromium's site data details subpage
+ * https://chromium.googlesource.com/chromium/src/+/
+ * 22ecdb41cdc603d40b47f92addcd52933fdef445/chrome/browser/ui/webui/settings/
+ * settings_cookies_view_handler.cc
+ */
+
 namespace settings {
 
 CookiesViewHandler::Request::Request(TreeModelBatchBehavior batch_behavior,

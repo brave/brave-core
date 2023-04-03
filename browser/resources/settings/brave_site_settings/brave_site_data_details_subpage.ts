@@ -27,7 +27,7 @@ import {Route, RouteObserverMixin, RouteObserverMixinInterface, Router} from '..
 
 import {CookieDataForDisplay, CookieDetails, getCookieData} from './cookie_info.js';
 import {LocalDataBrowserProxy, LocalDataBrowserProxyImpl} from './local_data_browser_proxy.js';
-import {getTemplate} from './site_data_details_subpage.html.js';
+import {getTemplate} from './brave_site_data_details_subpage.html.js';
 
 
 const categoryLabels: {[key: string]: string} = {
@@ -43,7 +43,11 @@ const categoryLabels: {[key: string]: string} = {
 };
 
 /**
- * 'site-data-details-subpage' Display cookie contents.
+ * 'brave-site-data-details-subpage' Display cookie contents.
+ * Restore removed from Chromium site data details subpage
+ * https://chromium.googlesource.com/chromium/src/+/
+ * 22ecdb41cdc603d40b47f92addcd52933fdef445/chrome/browser/resources/settings/
+ * site_settings/site_data_details_subpage.js
  */
 
 const SiteDataDetailsSubpageElementBase =
@@ -52,10 +56,10 @@ const SiteDataDetailsSubpageElementBase =
           RouteObserverMixinInterface,
     };
 
-export class SiteDataDetailsSubpageElement extends
+export class BraveSiteDataDetailsSubpageElement extends
     SiteDataDetailsSubpageElementBase {
   static get is() {
-    return 'site-data-details-subpage';
+    return 'brave-site-data-details-subpage';
   }
 
   static get template() {
@@ -170,9 +174,9 @@ export class SiteDataDetailsSubpageElement extends
 
 declare global {
   interface HTMLElementTagNameMap {
-    'site-data-details-subpage': SiteDataDetailsSubpageElement;
+    'brave-site-data-details-subpage': BraveSiteDataDetailsSubpageElement;
   }
 }
 
 customElements.define(
-    SiteDataDetailsSubpageElement.is, SiteDataDetailsSubpageElement);
+  BraveSiteDataDetailsSubpageElement.is, BraveSiteDataDetailsSubpageElement);

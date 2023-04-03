@@ -12,7 +12,8 @@ export class BraveSettingsPrivacyPageElement
     // Intentionally not casting to SiteDataDetailsSubpageElement, as this would
     // require importing site_data_details_subpage.js and would endup in the
     // main JS bundle.
-    const node = this.shadowRoot!.querySelector('site-data-details-subpage');
+    const node =
+      this.shadowRoot!.querySelector('brave-site-data-details-subpage');
     if (node) {
       node.removeAll();
     }
