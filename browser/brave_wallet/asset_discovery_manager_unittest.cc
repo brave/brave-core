@@ -1657,8 +1657,7 @@ TEST_F(AssetDiscoveryManagerUnitTest, ParseNFTsFromSimpleHash) {
         "name": "Token #2",
         "image_url": "https://nftimages-cdn.simplehash.com/2.png",
         "contract": {
-          "type": "ERC721",
-          "symbol": "TWO"
+          "type": "ERC721"
         },
         "collection": {
           "spam_score": 0
@@ -1699,7 +1698,8 @@ TEST_F(AssetDiscoveryManagerUnitTest, ParseNFTsFromSimpleHash) {
   EXPECT_EQ(result->second[1]->is_erc721, true);
   EXPECT_EQ(result->second[1]->is_erc1155, false);
   EXPECT_EQ(result->second[1]->is_nft, true);
-  EXPECT_EQ(result->second[1]->symbol, "TWO");
+  // If symbol is null, it should be saved as an empty string
+  EXPECT_EQ(result->second[1]->symbol, "");
   EXPECT_EQ(result->second[1]->decimals, 0);
   EXPECT_EQ(result->second[1]->visible, true);
   EXPECT_EQ(result->second[1]->token_id, "0x2");
@@ -1714,7 +1714,6 @@ TEST_F(AssetDiscoveryManagerUnitTest, ParseNFTsFromSimpleHash) {
   // 4. Missing token_id
   // 5. Missing standard
   // 6. Missing spam_score
-  // 7. Missing symbol
   json = R"({
     "next": "https://api.simplehash.com/api/v0/nfts/next",
     "previous": null,
@@ -1784,17 +1783,6 @@ TEST_F(AssetDiscoveryManagerUnitTest, ParseNFTsFromSimpleHash) {
           "symbol": "SIX"
         },
         "collection": {
-        }
-      },
-      {
-        "chain": "polygon",
-        "contract_address": "0x7777777777777777777777777777777777777777",
-        "token_id": "7",
-        "contract": {
-          "type": "ERC721"
-        },
-        "collection": {
-          "spam_score": 0
         }
       }
     ]

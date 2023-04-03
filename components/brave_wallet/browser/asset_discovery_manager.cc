@@ -778,12 +778,15 @@ AssetDiscoveryManager::ParseNFTsFromSimpleHash(const base::Value& json_value,
     // is_nft
     token->is_nft = true;
 
-    // symbol (required)
+    // symbol
     auto* symbol = contract->FindString("symbol");
     if (!symbol) {
-      continue;
+      // If symbol is null, assign an empty string to avoid display issues
+      // on the frontend
+      token->symbol = "";
+    } else {
+      token->symbol = *symbol;
     }
-    token->symbol = *symbol;
 
     // decimals
     token->decimals = 0;

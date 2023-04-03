@@ -107,10 +107,13 @@ export const PortfolioAssetItem = ({
   }, [token, networks])
 
   const NetworkDescription = React.useMemo(() => {
+
     if (tokensNetwork && !isPanel) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
+      return token.symbol !== ''
+      ? getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', token.symbol)
         .replace('$2', tokensNetwork.chainName ?? '')
+      : tokensNetwork.chainName
     }
     return token.symbol
   }, [tokensNetwork, token])
