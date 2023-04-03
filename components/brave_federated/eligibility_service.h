@@ -11,13 +11,13 @@
 
 namespace brave_federated {
 
-class Observer;
+class EligibilityObserver;
 
 // Certain classes of federated tasks might be computationally and bandwidth
 // expensive to run on the client. For these classes we require the client's
-// device to be attached to power and on a Wi-Fi connection. EligibilityService
-// monitors the device battery and power state to determine if the device is
-// eligible to run federated tasks.
+// device to be attached to power and on a Wi-Fi/Ethernet connection.
+// EligibilityService monitors the device battery and power state to determine
+// if the device is eligible to run federated tasks.
 class EligibilityService
     : public base::PowerStateObserver,
       public net::NetworkChangeNotifier::NetworkChangeObserver {
@@ -28,8 +28,8 @@ class EligibilityService
   EligibilityService(const EligibilityService&) = delete;
   EligibilityService& operator=(const EligibilityService&) = delete;
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
+  void AddObserver(EligibilityObserver* observer);
+  void RemoveObserver(EligibilityObserver* observer);
 
   bool IsEligible() const;
 
@@ -47,7 +47,7 @@ class EligibilityService
 
   void NotifyObservers(bool is_eligible);
 
-  base::ObserverList<Observer> observers_;
+  base::ObserverList<EligibilityObserver> observers_;
   bool is_eligible_ = false;
   bool is_on_battery_power_;
   net::NetworkChangeNotifier::ConnectionType connection_type_;

@@ -88,7 +88,7 @@ std::vector<float> Model::Predict(const DataSet& dataset) {
 
 PerformanceReport Model::Train(const DataSet& train_dataset) {
   auto data_prep_cumulative_duration = base::TimeDelta();
-  auto train_exec_cumulative_duration = base::TimeDelta();
+  auto training_cumulative_duration = base::TimeDelta();
 
   auto data_start_ts = base::ThreadTicks::Now();
 
@@ -126,7 +126,6 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 
     p_w = weights_;
     float p_b = bias_;
-    float d_b;
 
     std::vector<float> pred = Predict(x);
 
@@ -136,7 +135,8 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
         LinearAlgebraUtil::TransposeMatrix(x), err);
     d_w = LinearAlgebraUtil::MultiplyVectorScalar(d_w, (-2.0 / batch_size_));
 
-    d_b = (-2.0 / batch_size_) * std::accumulate(err.begin(), err.end(), 0.0);
+    const float d_b =
+        (-2.0 / batch_size_) * std::accumulate(err.begin(), err.end(), 0.0);
 
     weights_ = LinearAlgebraUtil::SubtractVector(
         p_w, LinearAlgebraUtil::MultiplyVectorScalar(d_w, learning_rate_));
@@ -149,17 +149,17 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 
     data_prep_cumulative_duration +=
         base::TimeDelta(exec_start_ts - data_start_ts);
-    train_exec_cumulative_duration +=
+    training_cumulative_duration +=
         base::TimeDelta(exec_end_ts - exec_start_ts);
   }
 
   float accuracy = training_loss;
 
   std::map<std::string, double> metrics = std::map<std::string, double>();
-  metrics.insert(
-      {"data_prep_duration", data_prep_cumulative_duration.InSecondsF()});
-  metrics.insert(
-      {"train_duration", train_exec_cumulative_duration.InSecondsF()});
+  metrics.insert({"data_prep_duration_in_seconds",
+                  data_prep_cumulative_duration.InSecondsF()});
+  metrics.insert({"training_duration_in_seconds",
+                  training_cumulative_duration.InSecondsF()});
 
   std::vector<Weights> reported_model;
   reported_model.push_back(weights_);
@@ -173,22 +173,24 @@ PerformanceReport Model::Train(const DataSet& train_dataset) {
 }
 
 PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
+  DCHECK(!test_dataset.empty());
+
   auto data_start_ts = base::ThreadTicks::Now();
 
   int num_features = test_dataset[0].size();
-  DataSet X(test_dataset.size(), std::vector<float>(num_features));
-  std::vector<float> y(test_dataset.size());
+  DataSet features(test_dataset.size(), std::vector<float>(num_features));
+  std::vector<float> ground_truth(test_dataset.size());
 
   for (size_t i = 0; i < test_dataset.size(); i++) {
     std::vector<float> point = test_dataset[i];
-    y[i] = point.back();
+    ground_truth[i] = point.back();
     point.pop_back();
-    X[i] = point;
+    features[i] = point;
   }
 
   auto exec_start_ts = base::ThreadTicks::Now();
 
-  std::vector<float> predicted_value = Predict(X);
+  std::vector<float> predicted_value = Predict(features);
   int total_correct = 0;
   for (size_t i = 0; i < test_dataset.size(); i++) {
     if (predicted_value[i] >= threshold_) {
@@ -197,21 +199,23 @@ PerformanceReport Model::Evaluate(const DataSet& test_dataset) {
       predicted_value[i] = 0.0;
     }
 
-    if (predicted_value[i] == y[i]) {
+    if (predicted_value[i] == ground_truth[i]) {
       total_correct++;
     }
   }
   float accuracy = total_correct * 1.0 / test_dataset.size();
-  float test_loss = ComputeNLL(y, Predict(X));
+  float test_loss = ComputeNLL(ground_truth, Predict(features));
 
   auto exec_end_ts = base::ThreadTicks::Now();
 
   auto data_prep_duration = base::TimeDelta(exec_start_ts - data_start_ts);
-  auto train_exec_duration = base::TimeDelta(exec_end_ts - exec_start_ts);
+  auto evaluation_duration = base::TimeDelta(exec_end_ts - exec_start_ts);
 
   std::map<std::string, double> metrics = std::map<std::string, double>();
-  metrics.insert({"data_prep_duration", data_prep_duration.InSecondsF()});
-  metrics.insert({"eval_duration", train_exec_duration.InSecondsF()});
+  metrics.insert(
+      {"data_prep_duration_in_seconds", data_prep_duration.InSecondsF()});
+  metrics.insert(
+      {"evaluation_duration_in_seconds", evaluation_duration.InSecondsF()});
 
   return PerformanceReport(test_dataset.size(),  // dataset_size
                            test_loss,            // loss

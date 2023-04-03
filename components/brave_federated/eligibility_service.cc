@@ -6,6 +6,8 @@
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
 
+#include "base/logging.h"
+
 namespace brave_federated {
 
 EligibilityService::EligibilityService()
@@ -14,6 +16,7 @@ EligibilityService::EligibilityService()
               this)) {
   connection_type_ = net::NetworkChangeNotifier::GetConnectionType();
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
+  VLOG(2) << "Eligibility Service initialized";
 }
 
 EligibilityService::~EligibilityService() {
@@ -21,13 +24,13 @@ EligibilityService::~EligibilityService() {
   net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
 }
 
-void EligibilityService::AddObserver(Observer* observer) {
+void EligibilityService::AddObserver(EligibilityObserver* observer) {
   DCHECK(observer);
 
   observers_.AddObserver(observer);
 }
 
-void EligibilityService::RemoveObserver(Observer* observer) {
+void EligibilityService::RemoveObserver(EligibilityObserver* observer) {
   DCHECK(observer);
 
   observers_.RemoveObserver(observer);
@@ -40,6 +43,10 @@ void EligibilityService::NotifyObservers(bool is_eligible) {
 }
 
 bool EligibilityService::IsEligible() const {
+  VLOG(2) << "Eligibility Service: is_on_battery_power_ : "
+          << is_on_battery_power_
+          << ", connection_eligibility : " << IsConnectedToWifiOrEthernet();
+
   return !is_on_battery_power_ && IsConnectedToWifiOrEthernet();
 }
 
@@ -55,6 +62,8 @@ void EligibilityService::MaybeChangeEligibility() {
 }
 
 bool EligibilityService::IsConnectedToWifiOrEthernet() const {
+  VLOG(2) << "Eligibility Service: connection_type_ : " << connection_type_;
+
   return connection_type_ == net::NetworkChangeNotifier::CONNECTION_WIFI ||
          connection_type_ == net::NetworkChangeNotifier::CONNECTION_ETHERNET;
 }

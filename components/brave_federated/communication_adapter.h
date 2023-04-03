@@ -12,8 +12,6 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/brave_federated/features.h"
-#include "brave/components/brave_federated/learning_service.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/backoff_entry.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -54,6 +52,8 @@ class CommunicationAdapter {
   std::unique_ptr<net::BackoffEntry> reconnect_backoff_entry_;
   std::unique_ptr<const net::BackoffEntry::Policy> request_task_policy_;
   std::unique_ptr<net::BackoffEntry> request_task_backoff_entry_;
+
+  base::WeakPtrFactory<CommunicationAdapter> weak_factory_{this};
 };
 
 }  // namespace brave_federated

@@ -36,32 +36,32 @@ class Task {
   Task(const Task& other);
   ~Task();
 
-  TaskId GetId();
-  TaskType GetType();
-  std::string GetToken();
-  std::vector<Weights> GetParameters();
-  std::map<std::string, float> GetConfig();
+  const TaskId& GetId() const;
+  const TaskType& GetType() const;
+  const std::string& GetToken() const;
+  const std::vector<Weights>& GetParameters() const;
+  const std::map<std::string, float>& GetConfig() const;
 
  private:
-  TaskId task_id_;
-  TaskType type_;
-  std::string token_;
-  std::vector<Weights> parameters_;
-  std::map<std::string, float> config_;
+  const TaskId task_id_;
+  const TaskType type_;
+  const std::string token_;
+  const std::vector<Weights> parameters_;
+  const std::map<std::string, float> config_;
 };
 
 class TaskResult {
  public:
-  explicit TaskResult(Task task, PerformanceReport report);
+  TaskResult(Task task, PerformanceReport report);
   TaskResult(const TaskResult& other);
   ~TaskResult();
 
-  Task GetTask();
-  PerformanceReport GetReport();
+  const Task& GetTask() const;
+  const PerformanceReport& GetReport() const;
 
  private:
-  Task task_;
-  PerformanceReport report_;
+  const Task task_;
+  const PerformanceReport report_;
 };
 
 class TaskResultResponse {

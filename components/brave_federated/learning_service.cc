@@ -19,8 +19,6 @@
 #include "brave/components/brave_federated/task/model.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "brave/components/brave_federated/util/synthetic_dataset.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "net/base/backoff_entry.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -75,9 +73,8 @@ LearningService::~LearningService() {
   if (participating_) {
     StopParticipating();
   }
-  if (initialized_) {
-    eligibility_service_->RemoveObserver(this);
-  }
+
+  eligibility_observation_.Reset();
 }
 
 void LearningService::Init() {
@@ -85,12 +82,13 @@ void LearningService::Init() {
   DCHECK(eligibility_service_);
   DCHECK(init_task_timer_);
 
-  eligibility_service_->AddObserver(this);
+  VLOG(1) << "Initializing federated learning service.";
+  eligibility_observation_.Observe(eligibility_service_);
   if (eligibility_service_->IsEligible()) {
     StartParticipating();
   }
 
-  initialized_ = true;
+  VLOG(1) << "Eligibility: " << eligibility_service_->IsEligible();
 }
 
 void LearningService::OnEligibilityChanged(bool is_eligible) {
@@ -123,7 +121,7 @@ void LearningService::StopParticipating() {
 
 void LearningService::GetTasks() {
   communication_adapter_->GetTasks(base::BindOnce(
-      &LearningService::HandleTasksOrReconnect, base::Unretained(this)));
+      &LearningService::HandleTasksOrReconnect, weak_factory_.GetWeakPtr()));
 }
 
 void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
@@ -135,7 +133,6 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     return;
   }
 
-  // TODO(lminto): for now, disregard all tasks beyond the first one
   // TODO(stevelaskaridis): extract into a utility function
   Task task = tasks.at(0);
   float lr = 0.01;
@@ -146,13 +143,11 @@ void LearningService::HandleTasksOrReconnect(TaskList tasks, int reconnect) {
     VLOG(2) << "Learning rate applied from server: " << lr;
   }
 
-  ModelSpec spec{
-      32,   // num_params
-      64,   // batch_size
-      lr,   // learning_rate
-      500,  // num_iterations
-      0.5   // threshold
-  };
+  ModelSpec spec{.num_params = 32,
+                 .batch_size = 64,
+                 .learning_rate = lr,
+                 .num_iterations = 500,
+                 .threshold = 0.5};
 
   if (static_cast<int>(task.GetParameters().at(0).size()) != spec.num_params &&
       task.GetParameters().at(1).size() != 1U) {
@@ -182,17 +177,9 @@ void LearningService::OnTaskResultComputed(absl::optional<TaskResult> result) {
     return;
   }
 
-  TaskResultList results;
-  results.push_back(result.value());
-  PostTaskResults(results);
-}
-
-void LearningService::PostTaskResults(TaskResultList results) {
-  for (const auto& result : results) {
-    communication_adapter_->PostTaskResult(
-        result, base::BindOnce(&LearningService::OnPostTaskResults,
-                               weak_factory_.GetWeakPtr()));
-  }
+  communication_adapter_->PostTaskResult(
+      result.value(), base::BindOnce(&LearningService::OnPostTaskResults,
+                                     weak_factory_.GetWeakPtr()));
 }
 
 void LearningService::OnPostTaskResults(TaskResultResponse response) {

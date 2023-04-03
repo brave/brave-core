@@ -20,17 +20,6 @@ package flower;
 import "node.proto";
 import "task.proto";
 
-service Driver {
-  // Return a set of nodes
-  rpc GetNodes(GetNodesRequest) returns (GetNodesResponse) {}
-
-  // Create one or more tasks
-  rpc PushTaskIns(PushTaskInsRequest) returns (PushTaskInsResponse) {}
-
-  // Get task results
-  rpc PullTaskRes(PullTaskResRequest) returns (PullTaskResResponse) {}
-}
-
 // GetNodes messages
 message GetNodesRequest {}
 message GetNodesResponse {

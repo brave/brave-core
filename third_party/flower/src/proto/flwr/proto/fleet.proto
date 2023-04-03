@@ -20,18 +20,6 @@ package flower;
 import "node.proto";
 import "task.proto";
 
-service Fleet {
-  // Retrieve one or more tasks, if possible
-  //
-  // HTTP API path: /api/v1/fleet/pull-task-ins
-  rpc PullTaskIns(PullTaskInsRequest) returns (PullTaskInsResponse) {}
-
-  // Complete one or more tasks, if possible
-  //
-  // HTTP API path: /api/v1/fleet/push-task-res
-  rpc PushTaskRes(PushTaskResRequest) returns (PushTaskResResponse) {}
-}
-
 // PullTaskIns messages
 message PullTaskInsRequest {
   Node node = 1;

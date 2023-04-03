@@ -1,5 +1,3 @@
-import("//third_party/grpc/grpc_library.gni")
-
 static_library("flower") {
   include_dirs = [ "src/cc/flwr/include" ]
   sources = [
@@ -7,16 +5,7 @@ static_library("flower") {
     "src/brave/flwr/serde.h",
   ]
   deps = [
-    "//brave/third_party/flower/src/proto/flwr/proto:transport_grpc_proto",
-    "//components/grpc_support",
-    "//net",
-    "//third_party/grpc:grpc++",
+    "//brave/third_party/flower/src/proto/flwr/proto:transport_proto",
     "//third_party/protobuf:protobuf_lite",
-  ]
-
-  configs -= [ "//build/config/compiler:chromium_code" ]
-  configs += [
-    "//build/config/compiler:no_chromium_code",
-    "//build/config/compiler:exceptions",
   ]
 }

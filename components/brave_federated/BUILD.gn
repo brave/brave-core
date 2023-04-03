@@ -56,11 +56,9 @@ static_library("brave_federated") {
     "//components/keyed_service/core",
     "//components/metrics",
     "//components/prefs",
-    "//content/public/browser",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//sql",
-    "//third_party/grpc:grpc++",
   ]
 
   configs += [ "//third_party/eigen3:eigen_includes" ]

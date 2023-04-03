@@ -28,15 +28,13 @@ class FederatedTaskRunner final {
   FederatedTaskRunner(Task task, std::unique_ptr<Model> model);
   ~FederatedTaskRunner();
 
-  Model* GetModel();
-
   absl::optional<TaskResult> Run();
 
   void SetTrainingData(DataSet training_data);
   void SetTestData(DataSet test_data);
 
   void SetWeights(ModelWeights weights);
-  ModelWeights GetWeights();
+  ModelWeights GetWeights() const;
 
  private:
   PerformanceReport Evaluate();

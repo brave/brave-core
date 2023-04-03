@@ -60,4 +60,3 @@ venv/
 test_get_pkgs
 build/config/gclient_args.gni
 third_party/rust/target
-*.csv
