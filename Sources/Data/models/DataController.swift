@@ -55,8 +55,7 @@ public class DataController {
   public func initializeOnce() {
     if initializationCompleted { return }
 
-    configureContainer(container, store: storeURL)
-    createOldDocumentStoreIfNeeded()
+    configureContainer(container, store: supportStoreURL)
     initializationCompleted = true
   }
 
@@ -66,128 +65,12 @@ public class DataController {
   public static var sharedInMemory: DataController = InMemoryDataController()
 
   public func storeExists() -> Bool {
-    return FileManager.default.fileExists(atPath: storeURL.path)
+    return FileManager.default.fileExists(atPath: supportStoreURL.path)
   }
 
   private let container = NSPersistentContainer(
     name: DataController.modelName,
     managedObjectModel: DataController.model)
-
-  // MARK: - Old Database migration methods
-
-  /// Returns old pre 1.12 persistent container or nil if it doesn't exist on the device.
-  public var oldDocumentStore: NSPersistentContainer?
-  private var migrationContainer: NSPersistentContainer?
-
-  private func createOldDocumentStoreIfNeeded() {
-    let fm = FileManager.default
-    guard
-      let urls = fm.urls(
-        for: FileManager.SearchPathDirectory.documentDirectory,
-        in: .userDomainMask
-      ).last
-    else { return }
-
-    let name = DataController.databaseName
-    let path = urls.appendingPathComponent(name).path
-
-    if fm.fileExists(atPath: path) {
-      migrationContainer = NSPersistentContainer(name: DataController.modelName, managedObjectModel: DataController.model)
-      if let migrationContainer = migrationContainer {
-        configureContainer(migrationContainer, store: oldDocumentStoreURL)
-      }
-    }
-  }
-
-  public var newStoreExists: Bool {
-    let fm = FileManager.default
-    guard
-      let urls = fm.urls(
-        for: FileManager.SearchPathDirectory.applicationSupportDirectory,
-        in: .userDomainMask
-      ).last
-    else { return false }
-
-    let name = DataController.databaseName
-    let path = urls.appendingPathComponent(name).path
-
-    return fm.fileExists(atPath: path)
-  }
-
-  public func migrateToNewPathIfNeeded() throws {
-    enum MigrationError: Error {
-      case OldStoreMissing(String)
-      case MigrationFailed(String)
-      case CleanupFailed(String)
-    }
-
-    // This logic must account for 4 different situations:
-    // 1. New Users (no migration, use new location
-    // 2. Upgraded users with successful migration (use new database)
-    // 3. Upgraded users with unsuccessful migrations (use new database, ignore old files)
-    // 4. Upgrading users (attempt migration, if fail, use old store, if successful delete old files)
-    //      - re-attempt migration on every new app version, until they are in #2
-
-    if oldDocumentStore == nil || newStoreExists {
-      // Old store absent, no data to migrate (#1 | #3)
-      // or
-      // New store already exists, do not attempt to overwrite (#2)
-
-      // Update flag to avoid re-running this logic
-      Preferences.Database.DocumentToSupportDirectoryMigration.completed.value = true
-      return
-    }
-
-    // Going to attempt migration (#4 in some level)
-    guard let migrationContainer = migrationContainer else {
-      throw MigrationError.OldStoreMissing("Migration container missing")
-    }
-
-    let coordinator = migrationContainer.persistentStoreCoordinator
-
-    guard let oldStore = coordinator.persistentStore(for: oldDocumentStoreURL) else {
-      throw MigrationError.OldStoreMissing("Old store unavailable")
-    }
-
-    // Attempting actual database migration Document -> Support 🤞
-    do {
-      let migrationOptions = [
-        NSPersistentStoreFileProtectionKey: true
-      ]
-      try coordinator.migratePersistentStore(oldStore, to: supportStoreURL, options: migrationOptions, withType: NSSQLiteStoreType)
-    } catch {
-      throw MigrationError.MigrationFailed("Document -> Support database migration failed: \(error.localizedDescription)")
-      // Migration failed somehow, and old store is present. Flag not being updated 😭
-    }
-
-    // Regardless of cleanup logic, the actual migration was successful, so we're just going for it 🙀😎
-    Preferences.Database.DocumentToSupportDirectoryMigration.completed.value = true
-
-    // Cleanup time 🧹
-    do {
-      try coordinator.destroyPersistentStore(at: oldDocumentStoreURL, ofType: NSSQLiteStoreType, options: nil)
-
-      let documentFiles = try FileManager.default.contentsOfDirectory(
-        at: oldDocumentStoreURL.deletingLastPathComponent(),
-        includingPropertiesForKeys: nil,
-        options: [])
-
-      // Delete all Brave.X files
-      try documentFiles
-        .filter { $0.lastPathComponent.hasPrefix(DataController.databaseName) }
-        .forEach(FileManager.default.removeItem)
-    } catch {
-      throw MigrationError.CleanupFailed("Document -> Support database cleanup failed: \(error.localizedDescription)")
-      // Do not re-point store, as the migration was successful, just the clean up failed
-    }
-
-    // At this point, everything was a pure success 👏
-  }
-
-  /// Warning! Please use `storeURL`. This is for migration purpose only.
-  private var oldDocumentStoreURL: URL {
-    return storeURL(for: FileManager.SearchPathDirectory.documentDirectory)
-  }
 
   /// Warning! Please use `storeURL`. This is for migration purposes only.
   private var supportStoreURL: URL {
@@ -270,14 +153,6 @@ public class DataController {
     storeDescription.setOption(completeProtection, forKey: NSPersistentStoreFileProtectionKey)
 
     container.persistentStoreDescriptions = [storeDescription]
-  }
-
-  var storeURL: URL {
-    let supportDirectory = Preferences.Database.DocumentToSupportDirectoryMigration.completed.value
-    if !supportDirectory {
-      assertionFailure("App wants to use very old document store, this can't be right.")
-    }
-    return supportDirectory ? supportStoreURL : oldDocumentStoreURL
   }
 
   private func configureContainer(_ container: NSPersistentContainer, store: URL) {

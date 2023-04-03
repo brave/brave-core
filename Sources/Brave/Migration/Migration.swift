@@ -49,28 +49,6 @@ public class Migration {
     )
   }
 
-  public func moveDatabaseToApplicationDirectory() {
-    if Preferences.Database.DocumentToSupportDirectoryMigration.completed.value {
-      // Migration has been done in some regard, so drop out.
-      return
-    }
-
-    if Preferences.Database.DocumentToSupportDirectoryMigration.previousAttemptedVersion.value == AppInfo.appVersion {
-      // Migration has already been attempted for this version.
-      return
-    }
-
-    // Moves Coredata sqlite file from documents dir to application support dir.
-    do {
-      try DataController.shared.migrateToNewPathIfNeeded()
-    } catch {
-      Logger.module.error("\(error.localizedDescription)")
-    }
-
-    // Regardless of what happened, we attemtped a migration and document it:
-    Preferences.Database.DocumentToSupportDirectoryMigration.previousAttemptedVersion.value = AppInfo.appVersion
-  }
-
   @objc private func enableUserSelectedTypesForSync() {
     guard braveCore.syncAPI.isInSyncGroup else {
       Logger.module.info("Sync is not active")
