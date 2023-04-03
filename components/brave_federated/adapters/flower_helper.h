@@ -9,16 +9,14 @@
 #include <string>
 
 #include "brave/components/brave_federated/task/typing.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/fleet.pb.h"
-#include "brave/third_party/flower/src/proto/flwr/proto/transport.pb.h"
 
 namespace brave_federated {
 
-bool ValidatePullTaskInsResponse(const flower::PullTaskInsResponse response);
+std::string BuildGetTasksPayload();
+
 TaskList ParseTaskListFromResponseBody(const std::string& response_body);
 
-std::string BuildGetTasksPayload();
-std::string BuildPostTaskResultsPayload(TaskResult result);
+std::string BuildPostTaskResultsPayload(const TaskResult& result);
 
 }  // namespace brave_federated
 

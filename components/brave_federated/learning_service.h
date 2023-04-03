@@ -11,10 +11,9 @@
 #include <string>
 
 #include "base/memory/scoped_refptr.h"
-#include "base/time/time.h"
+#include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_federated/eligibility_service_observer.h"
-#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/task/typing.h"
 #include "net/base/backoff_entry.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -30,9 +29,9 @@ namespace brave_federated {
 class CommunicationAdapter;
 class EligibilityService;
 
-class LearningService : public Observer {
+class LearningService : public EligibilityObserver {
  public:
-  explicit LearningService(
+  LearningService(
       EligibilityService* eligibility_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~LearningService() override;
@@ -46,7 +45,6 @@ class LearningService : public Observer {
   void StopParticipating();
 
   void GetTasks();
-  void PostTaskResults(TaskResultList results);
 
   void HandleTasksOrReconnect(TaskList tasks, int reconnect);
 
@@ -61,10 +59,12 @@ class LearningService : public Observer {
 
   std::unique_ptr<base::RetainingOneShotTimer> reconnect_timer_;
   bool participating_ = false;
-  bool initialized_ = false;
 
   std::unique_ptr<const net::BackoffEntry::Policy> post_results_policy_;
   std::unique_ptr<net::BackoffEntry> post_results_backoff_entry_;
+
+  base::ScopedObservation<EligibilityService, EligibilityObserver>
+      eligibility_observation_{this};
 
   base::WeakPtrFactory<LearningService> weak_factory_{this};
 };

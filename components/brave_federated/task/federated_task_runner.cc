@@ -24,22 +24,25 @@ FederatedTaskRunner::FederatedTaskRunner(Task task,
 
 FederatedTaskRunner::~FederatedTaskRunner() = default;
 
-Model* FederatedTaskRunner::GetModel() {
-  return model_.get();
-}
-
 absl::optional<TaskResult> FederatedTaskRunner::Run() {
-  if (training_data_.empty()) {
-    return absl::nullopt;
-  }
-  if (model_->GetBatchSize() > training_data_.size()) {
-    return absl::nullopt;
-  }
-
   PerformanceReport report(0, 0, 0, {}, {});
   if (task_.GetType() == TaskType::Training) {
+    if (training_data_.empty()) {
+      return absl::nullopt;
+    }
+    if (model_->GetBatchSize() > training_data_.size()) {
+      return absl::nullopt;
+    }
+
     report = model_->Train(training_data_);
   } else if (task_.GetType() == TaskType::Evaluation) {
+    if (test_data_.empty()) {
+      return absl::nullopt;
+    }
+    if (model_->GetBatchSize() > test_data_.size()) {
+      return absl::nullopt;
+    }
+
     report = model_->Evaluate(test_data_);
   }
 
@@ -60,7 +63,7 @@ void FederatedTaskRunner::SetWeights(ModelWeights weights) {
   model_->SetBias(std::get<1>(weights));
 }
 
-ModelWeights FederatedTaskRunner::GetWeights() {
+ModelWeights FederatedTaskRunner::GetWeights() const {
   return std::make_tuple(model_->GetWeights(), model_->GetBias());
 }
 

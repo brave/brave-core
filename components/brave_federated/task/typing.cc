@@ -24,23 +24,23 @@ Task::Task(TaskId task_id,
 Task::Task(const Task& other) = default;
 Task::~Task() = default;
 
-TaskId Task::GetId() {
+const TaskId& Task::GetId() const {
   return task_id_;
 }
 
-TaskType Task::GetType() {
+const TaskType& Task::GetType() const {
   return type_;
 }
 
-std::string Task::GetToken() {
+const std::string& Task::GetToken() const {
   return token_;
 }
 
-std::vector<Weights> Task::GetParameters() {
+const std::vector<Weights>& Task::GetParameters() const {
   return parameters_;
 }
 
-std::map<std::string, float> Task::GetConfig() {
+const std::map<std::string, float>& Task::GetConfig() const {
   return config_;
 }
 
@@ -50,11 +50,11 @@ TaskResult::TaskResult(Task task, PerformanceReport report)
 TaskResult::TaskResult(const TaskResult& other) = default;
 TaskResult::~TaskResult() = default;
 
-Task TaskResult::GetTask() {
+const Task& TaskResult::GetTask() const {
   return task_;
 }
 
-PerformanceReport TaskResult::GetReport() {
+const PerformanceReport& TaskResult::GetReport() const {
   return report_;
 }
 

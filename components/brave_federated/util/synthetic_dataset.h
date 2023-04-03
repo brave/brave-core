@@ -13,21 +13,19 @@
 
 namespace brave_federated {
 
+// This class generates the synthetic dataset of size |size| around given
+// vector |m| of size |ms_size| and given bias |b|.
 class SyntheticDataset {
  public:
-  // Generates the synthetic dataset of size |size| around given vector |m| of
-  // size ms_size and given bias |b|.
   explicit SyntheticDataset(int number_of_samples);
-  ~SyntheticDataset();
   SyntheticDataset(const SyntheticDataset& synthetic_dataset);
 
   explicit SyntheticDataset(DataSet data_points);
-  // SyntheticDataset(Weights ms, float b, size_t size);
-  // SyntheticDataset(float alpha, float beta, int num_features, size_t size);
   SyntheticDataset(std::vector<Weights> W,
                    std::vector<float> b,
                    int num_features,
                    size_t size);
+  ~SyntheticDataset();
 
   SyntheticDataset SeparateTestData(int num_training);
 
