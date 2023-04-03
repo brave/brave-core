@@ -16,10 +16,9 @@ export const NftListWrapper = styled.div`
 export const List = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 22.5px;
+  grid-gap:16px;
   box-sizing: border-box;
   width: 100%;
-  padding-top: 16px;
 `
 export const NftItem = styled.div`
   position: relative;

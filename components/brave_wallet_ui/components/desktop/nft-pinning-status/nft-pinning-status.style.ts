@@ -20,7 +20,7 @@ const getBackground = (
       return '#FFFCF0'
 
     case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
-      return '#FFF0F2'
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'rgba(227, 36, 68, 0.2)' : '#FFF0F2'
 
     case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
       return 'rgba(213, 245, 218, 1)'
@@ -114,7 +114,11 @@ export const Text = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.color.text02};
+  color: #C2C4CF;
+  @media (prefers-color-scheme: dark) {
+    color: #495057
+  }
+  
 `
 
 export const ReasonsTooltipWrapper = styled.div`
