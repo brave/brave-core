@@ -419,7 +419,7 @@ enum TransactionParser {
           symbol = "SOL"
           switch instructionType {
           case .transfer, .transferWithSeed:
-            if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
+            if let instructionLamports = instruction.decodedData?.paramFor(BraveWallet.Lamports)?.value,
                let instructionLamportsValue = BDouble(instructionLamports),
                let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
                let toPubkey = instruction.accountMetas[safe: 1]?.pubkey,
@@ -427,7 +427,7 @@ enum TransactionParser {
               valueFromInstructions += instructionLamportsValue
             }
           case .withdrawNonceAccount:
-            if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
+            if let instructionLamports = instruction.decodedData?.paramFor(BraveWallet.Lamports)?.value,
                let instructionLamportsValue = BDouble(instructionLamports) {
               if let nonceAccount = instruction.accountMetas[safe: 0]?.pubkey,
                  nonceAccount == fromAddress {
@@ -437,7 +437,7 @@ enum TransactionParser {
               }
             }
           case .createAccount, .createAccountWithSeed:
-            if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
+            if let instructionLamports = instruction.decodedData?.paramFor(BraveWallet.Lamports)?.value,
                let instructionLamportsValue = BDouble(instructionLamports) {
               if let fromPubkey = instruction.accountMetas[safe: 0]?.pubkey,
                  fromPubkey == fromAddress {
@@ -445,7 +445,7 @@ enum TransactionParser {
               }
             }
           default:
-            if let instructionLamports = instruction.decodedData?.paramFor(.lamports)?.value,
+            if let instructionLamports = instruction.decodedData?.paramFor(BraveWallet.Lamports)?.value,
                let instructionLamportsValue = BDouble(instructionLamports) {
               valueFromInstructions += instructionLamportsValue
             }
@@ -528,7 +528,7 @@ enum TransactionParser {
       }
       details.append(contentsOf: accounts)
       
-      if let lamportsParam = decodedData.paramFor(.lamports),
+      if let lamportsParam = decodedData.paramFor(BraveWallet.Lamports),
          let lamportsValue = formatter.decimalString(for: lamportsParam.value, radix: .decimal, decimals: 9)?.trimmingTrailingZeros {
         details.append(.init(key: Strings.Wallet.solanaAmount, value: "\(lamportsValue) SOL"))
       }
@@ -543,7 +543,7 @@ enum TransactionParser {
       
     } else if instruction.isTokenProgram {
       let accounts = decodedData.accountParams.enumerated().compactMap { (index, param) -> SolanaTxDetails.ParsedSolanaInstruction.KeyValue? in
-        if param.name == "signers" { // special case
+        if param.name == BraveWallet.Signers { // special case
           // the signers are the `accountMetas` from this index to the end of the array
           // its possible to have any number of signers, including 0
           if instruction.accountMetas[safe: index] != nil {
@@ -561,8 +561,8 @@ enum TransactionParser {
       }
       details.append(contentsOf: accounts)
       
-      if let amountParam = decodedData.paramFor(.amount),
-         let decimalsParam = decodedData.paramFor(.decimals),
+      if let amountParam = decodedData.paramFor(BraveWallet.Amount),
+         let decimalsParam = decodedData.paramFor(BraveWallet.Decimals),
          let decimals = Int(decimalsParam.value),
          let amountValue = formatter.decimalString(for: amountParam.value, radix: .decimal, decimals: decimals)?.trimmingTrailingZeros {
         details.append(.init(key: Strings.Wallet.solanaAmount, value: amountValue))
