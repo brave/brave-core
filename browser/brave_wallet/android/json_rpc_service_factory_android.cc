@@ -12,7 +12,7 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_JsonRpcServiceFactory_GetInterfaceToJsonRpcService(
+static jlong JNI_JsonRpcServiceFactory_GetInterfaceToJsonRpcService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
@@ -20,7 +20,7 @@ static jint JNI_JsonRpcServiceFactory_GetInterfaceToJsonRpcService(
       brave_wallet::JsonRpcServiceFactory::GetInstance()->GetForContext(
           profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

@@ -37,7 +37,7 @@ public class PlaylistServiceFactoryAndroid {
         if (profile == null) {
             return null;
         }
-        int nativeHandle =
+        long nativeHandle =
                 PlaylistServiceFactoryAndroidJni.get().getInterfaceToPlaylistService(profile);
         if (nativeHandle == -1) {
             return null;
@@ -50,12 +50,12 @@ public class PlaylistServiceFactoryAndroid {
         return playlistService;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToPlaylistService(Profile profile);
+        long getInterfaceToPlaylistService(Profile profile);
     }
 }

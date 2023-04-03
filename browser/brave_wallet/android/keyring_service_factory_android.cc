@@ -12,7 +12,7 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_KeyringServiceFactory_GetInterfaceToKeyringService(
+static jlong JNI_KeyringServiceFactory_GetInterfaceToKeyringService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
@@ -20,7 +20,7 @@ static jint JNI_KeyringServiceFactory_GetInterfaceToKeyringService(
       brave_wallet::KeyringServiceFactory::GetInstance()->GetForContext(
           profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

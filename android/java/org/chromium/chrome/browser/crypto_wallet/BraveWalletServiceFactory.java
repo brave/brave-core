@@ -35,7 +35,7 @@ public class BraveWalletServiceFactory {
 
     public BraveWalletService getBraveWalletService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle =
+        long nativeHandle =
                 BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         BraveWalletService braveWalletService = BraveWalletService.MANAGER.attachProxy(handle, 0);
@@ -47,7 +47,8 @@ public class BraveWalletServiceFactory {
 
     public BraveWalletP3a getBraveWalletP3A(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletP3A(profile);
+        long nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletP3A(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         BraveWalletP3a braveWalletP3A = BraveWalletP3a.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) braveWalletP3A).getProxyHandler();
@@ -56,13 +57,13 @@ public class BraveWalletServiceFactory {
         return braveWalletP3A;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToBraveWalletService(Profile profile);
-        int getInterfaceToBraveWalletP3A(Profile profile);
+        long getInterfaceToBraveWalletService(Profile profile);
+        long getInterfaceToBraveWalletP3A(Profile profile);
     }
 }

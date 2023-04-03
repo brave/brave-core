@@ -38,7 +38,7 @@ public class CookieListOptInServiceFactory {
         if (profile == null) {
             return null;
         }
-        int nativeHandle =
+        long nativeHandle =
                 CookieListOptInServiceFactoryJni.get().getInterfaceToCookieListOptInService(
                         profile);
         if (nativeHandle == -1) {
@@ -53,12 +53,12 @@ public class CookieListOptInServiceFactory {
         return cookieListOptInPageAndroidHandler;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToCookieListOptInService(Profile profile);
+        long getInterfaceToCookieListOptInService(Profile profile);
     }
 }

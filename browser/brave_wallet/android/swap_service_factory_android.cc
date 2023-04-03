@@ -12,14 +12,14 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_SwapServiceFactory_GetInterfaceToSwapService(
+static jlong JNI_SwapServiceFactory_GetInterfaceToSwapService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   auto pending =
       brave_wallet::SwapServiceFactory::GetInstance()->GetForContext(profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

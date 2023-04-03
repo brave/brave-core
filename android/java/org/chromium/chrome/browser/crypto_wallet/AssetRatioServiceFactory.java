@@ -36,7 +36,7 @@ public class AssetRatioServiceFactory {
 
     public AssetRatioService getAssetRatioService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle =
+        long nativeHandle =
                 AssetRatioServiceFactoryJni.get().getInterfaceToAssetRatioService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         AssetRatioService assetRatioService = AssetRatioService.MANAGER.attachProxy(handle, 0);
@@ -46,12 +46,12 @@ public class AssetRatioServiceFactory {
         return assetRatioService;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToAssetRatioService(Profile profile);
+        long getInterfaceToAssetRatioService(Profile profile);
     }
 }

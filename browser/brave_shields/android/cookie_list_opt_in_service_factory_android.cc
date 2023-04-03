@@ -11,18 +11,18 @@
 
 namespace chrome {
 namespace android {
-static jint
+static jlong
 JNI_CookieListOptInServiceFactory_GetInterfaceToCookieListOptInService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   if (profile == nullptr)
-    return static_cast<jint>(-1);
+    return static_cast<jlong>(-1);
 
   auto pending = brave_shields::CookieListOptInServiceFactory::GetInstance()
                      ->GetForContext(profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

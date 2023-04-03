@@ -36,7 +36,7 @@ public class JsonRpcServiceFactory {
 
     public JsonRpcService getJsonRpcService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // always use regular profile
-        int nativeHandle = JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService(profile);
+        long nativeHandle = JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         JsonRpcService jsonRpcService = JsonRpcService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) jsonRpcService).getProxyHandler();
@@ -45,12 +45,12 @@ public class JsonRpcServiceFactory {
         return jsonRpcService;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToJsonRpcService(Profile profile);
+        long getInterfaceToJsonRpcService(Profile profile);
     }
 }

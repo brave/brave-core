@@ -34,7 +34,7 @@ public class KeyringServiceFactory {
 
     public KeyringService getKeyringService(ConnectionErrorHandler connectionErrorHandler) {
         Profile profile = Utils.getProfile(false); // Always use regular profile
-        int nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService(profile);
+        long nativeHandle = KeyringServiceFactoryJni.get().getInterfaceToKeyringService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         KeyringService keyringService = KeyringService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) keyringService).getProxyHandler();
@@ -43,12 +43,12 @@ public class KeyringServiceFactory {
         return keyringService;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToKeyringService(Profile profile);
+        long getInterfaceToKeyringService(Profile profile);
     }
 }
