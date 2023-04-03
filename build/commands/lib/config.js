@@ -168,7 +168,7 @@ const Config = function () {
   this.p3aJsonUploadUrl = getNPMConfig(['p3a_json_upload_url']) || ''
   this.p3aCreativeUploadUrl = getNPMConfig(['p3a_creative_upload_url']) || ''
   this.p2aJsonUploadUrl = getNPMConfig(['p2a_json_upload_url']) || ''
-  this.p3aStarUploadUrl = getNPMConfig(['p3a_star_upload_url']) || ''
+  this.p3aConstellationUploadUrl = getNPMConfig(['p3a_constellation_upload_url']) || ''
   this.starRandomnessHost = getNPMConfig(['star_randomness_host']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
@@ -326,7 +326,7 @@ Config.prototype.buildArgs = function () {
     p3a_json_upload_url: this.p3aJsonUploadUrl,
     p3a_creative_upload_url: this.p3aCreativeUploadUrl,
     p2a_json_upload_url: this.p2aJsonUploadUrl,
-    p3a_star_upload_url: this.p3aStarUploadUrl,
+    p3a_constellation_upload_url: this.p3aConstellationUploadUrl,
     star_randomness_host: this.starRandomnessHost,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),

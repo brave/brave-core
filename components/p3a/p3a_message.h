@@ -17,8 +17,8 @@ class PrefService;
 
 namespace p3a {
 
-constexpr const char* kP3AMessageStarKeyValueSeparator = "|";
-constexpr const char* kP3AMessageStarLayerSeparator = ";";
+constexpr const char* kP3AMessageConstellationKeyValueSeparator = "|";
+constexpr const char* kP3AMessageConstellationLayerSeparator = ";";
 
 class MessageMetainfo {
  public:
@@ -40,7 +40,8 @@ class MessageMetainfo {
   std::string country_code;
 
  private:
-  // Used to report major/minor version numbers to reduce amount of STAR tags
+  // Used to report major/minor version numbers to reduce amount of
+  // Constellation tags
   void InitVersion();
 
   // Ensures that country represent the big enough cohort that will not
@@ -54,9 +55,9 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-std::string GenerateP3AStarMessage(base::StringPiece metric_name,
-                                   uint64_t metric_value,
-                                   const MessageMetainfo& meta);
+std::string GenerateP3AConstellationMessage(base::StringPiece metric_name,
+                                            uint64_t metric_value,
+                                            const MessageMetainfo& meta);
 
 }  // namespace p3a
 

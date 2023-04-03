@@ -31,10 +31,10 @@ namespace p3a {
 struct P3AConfig;
 
 class Uploader;
-class StarLogStore;
+class ConstellationLogStore;
 class RotationScheduler;
 class Scheduler;
-class StarHelper;
+class ConstellationHelper;
 class Uploader;
 
 struct RandomnessServerInfo;
@@ -44,8 +44,8 @@ struct RandomnessServerInfo;
 // in their appropriate LogStore instances. The Scheduler calls
 // methods in this class via callbacks and propagates metric upload to the
 // Uploader. The RotationScheduler also calls methods in this
-// class to handle reporting period rotation. STAR message preparation is also
-// triggered from this class.
+// class to handle reporting period rotation. Constellation message preparation
+// is also triggered from this class.
 class MessageManager : public MetricLogStore::Delegate {
  public:
   using IsDynamicMetricRegisteredCallback =
@@ -54,11 +54,11 @@ class MessageManager : public MetricLogStore::Delegate {
    public:
     virtual absl::optional<MetricLogType> GetDynamicMetricLogType(
         const std::string& histogram_name) const = 0;
-    virtual void OnRotation(MetricLogType log_type, bool is_star) = 0;
+    virtual void OnRotation(MetricLogType log_type, bool is_constellation) = 0;
     // A metric "cycle" is a transmission to the P3A JSON server,
-    // or a STAR preparation for the current epoch.
+    // or a Constellation preparation for the current epoch.
     virtual void OnMetricCycled(const std::string& histogram_name,
-                                bool is_star) = 0;
+                                bool is_constellation) = 0;
     virtual ~Delegate() {}
   };
   MessageManager(PrefService* local_state,
@@ -80,32 +80,33 @@ class MessageManager : public MetricLogStore::Delegate {
   void RemoveMetricValue(base::StringPiece histogram_name);
 
  private:
-  void StartScheduledUpload(bool is_star, MetricLogType log_type);
-  void StartScheduledStarPrep();
+  void StartScheduledUpload(bool is_constellation, MetricLogType log_type);
+  void StartScheduledConstellationPrep();
 
   MetricLogType GetLogTypeForHistogram(base::StringPiece histogram_name);
 
   void OnLogUploadComplete(bool is_ok,
                            int response_code,
-                           bool is_star,
+                           bool is_constellation,
                            MetricLogType log_type);
 
-  void OnNewStarMessage(std::string histogram_name,
-                        uint8_t epoch,
-                        std::unique_ptr<std::string> serialized_message);
+  void OnNewConstellationMessage(
+      std::string histogram_name,
+      uint8_t epoch,
+      std::unique_ptr<std::string> serialized_message);
 
   void OnRandomnessServerInfoReady(RandomnessServerInfo* server_info);
 
   // Restart the uploading process (i.e. mark all values as unsent).
   void DoJsonRotation(MetricLogType log_type);
 
-  void DoStarRotation();
+  void DoConstellationRotation();
 
   // MetricLogStore::Delegate
   std::string SerializeLog(base::StringPiece histogram_name,
                            const uint64_t value,
                            MetricLogType log_type,
-                           bool is_star,
+                           bool is_constellation,
                            const std::string& upload_type) override;
   bool IsActualMetric(const std::string& histogram_name) const override;
   bool IsEphemeralMetric(const std::string& histogram_name) const override;
@@ -118,16 +119,16 @@ class MessageManager : public MetricLogStore::Delegate {
 
   base::flat_map<MetricLogType, std::unique_ptr<MetricLogStore>>
       json_log_stores_;
-  std::unique_ptr<MetricLogStore> star_prep_log_store_;
-  std::unique_ptr<StarLogStore> star_send_log_store_;
+  std::unique_ptr<MetricLogStore> constellation_prep_log_store_;
+  std::unique_ptr<ConstellationLogStore> constellation_send_log_store_;
 
   std::unique_ptr<Uploader> uploader_;
   base::flat_map<MetricLogType, std::unique_ptr<Scheduler>>
       json_upload_schedulers_;
-  std::unique_ptr<Scheduler> star_prep_scheduler_;
-  std::unique_ptr<Scheduler> star_upload_scheduler_;
+  std::unique_ptr<Scheduler> constellation_prep_scheduler_;
+  std::unique_ptr<Scheduler> constellation_upload_scheduler_;
 
-  std::unique_ptr<StarHelper> star_helper_;
+  std::unique_ptr<ConstellationHelper> constellation_helper_;
 
   std::unique_ptr<RotationScheduler> rotation_scheduler_;
 

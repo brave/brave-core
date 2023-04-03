@@ -16,7 +16,7 @@ net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation();
 
 net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
     base::StringPiece upload_type,
-    bool is_star);
+    bool is_constellation);
 
 }  // namespace p3a
 

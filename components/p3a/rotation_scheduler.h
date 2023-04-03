@@ -26,13 +26,14 @@ namespace p3a {
 class RotationScheduler {
   using JsonRotationCallback =
       base::RepeatingCallback<void(MetricLogType log_type)>;
-  using StarRotationCallback = base::RepeatingCallback<void()>;
+  using ConstellationRotationCallback = base::RepeatingCallback<void()>;
 
  public:
-  RotationScheduler(PrefService* local_state,
-                    const P3AConfig* config,
-                    JsonRotationCallback json_rotation_callback,
-                    StarRotationCallback star_rotation_callback);
+  RotationScheduler(
+      PrefService* local_state,
+      const P3AConfig* config,
+      JsonRotationCallback json_rotation_callback,
+      ConstellationRotationCallback constellation_rotation_callback);
 
   ~RotationScheduler();
 
@@ -41,27 +42,27 @@ class RotationScheduler {
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  void InitStarTimer(base::Time next_epoch_time);
+  void InitConstellationTimer(base::Time next_epoch_time);
 
   base::Time GetLastJsonRotationTime(MetricLogType log_type);
-  base::Time GetLastStarRotationTime();
+  base::Time GetLastConstellationRotationTime();
 
  private:
   void InitJsonTimer(MetricLogType log_type);
   void UpdateJsonTimer(MetricLogType log_type);
 
   void HandleJsonTimerTrigger(MetricLogType log_type);
-  void HandleStarTimerTrigger();
+  void HandleConstellationTimerTrigger();
 
   base::flat_map<MetricLogType, std::unique_ptr<base::WallClockTimer>>
       json_rotation_timers_;
-  base::WallClockTimer star_rotation_timer_;
+  base::WallClockTimer constellation_rotation_timer_;
 
   JsonRotationCallback json_rotation_callback_;
-  StarRotationCallback star_rotation_callback_;
+  ConstellationRotationCallback constellation_rotation_callback_;
 
   base::flat_map<MetricLogType, base::Time> last_json_rotation_times_;
-  base::Time last_star_rotation_time_;
+  base::Time last_constellation_rotation_time_;
 
   PrefService* local_state_;
   const raw_ptr<const P3AConfig> config_;

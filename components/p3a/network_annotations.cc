@@ -60,8 +60,8 @@ net::NetworkTrafficAnnotationTag GetRandomnessServerInfoAnnotation() {
 
 net::NetworkTrafficAnnotationTag GetP3AUploadAnnotation(
     base::StringPiece upload_type,
-    bool is_star) {
-  if (is_star) {
+    bool is_constellation) {
+  if (is_constellation) {
     if (upload_type == kP3ACreativeUploadType ||
         upload_type == kP3AUploadType) {
       return net::DefineNetworkTrafficAnnotation("p3a", R"(

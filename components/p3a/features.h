@@ -12,7 +12,9 @@ namespace p3a {
 namespace features {
 
 // See https://github.com/brave/brave-browser/issues/24338 for more info.
-BASE_DECLARE_FEATURE(kSTAR);
+BASE_DECLARE_FEATURE(kConstellation);
+
+bool IsConstellationEnabled();
 
 }  // namespace features
 }  // namespace p3a

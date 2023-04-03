@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_STAR_HELPER_H_
-#define BRAVE_COMPONENTS_P3A_STAR_HELPER_H_
+#ifndef BRAVE_COMPONENTS_P3A_CONSTELLATION_HELPER_H_
+#define BRAVE_COMPONENTS_P3A_CONSTELLATION_HELPER_H_
 
 #include <memory>
 #include <string>
@@ -28,23 +28,24 @@ namespace p3a {
 struct P3AConfig;
 
 // Class that contains high-level methods for preparing/generating
-// Constellation/STAR encrypted measurements.
-class StarHelper {
+// Constellation encrypted measurements.
+class ConstellationHelper {
  public:
-  using StarMessageCallback = base::RepeatingCallback<void(
+  using ConstellationMessageCallback = base::RepeatingCallback<void(
       std::string histogram_name,
       uint8_t epoch,
       std::unique_ptr<std::string> serialized_message)>;
 
-  StarHelper(PrefService* local_state,
-             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-             StarMessageCallback message_callback,
-             StarRandomnessMeta::RandomnessServerInfoCallback info_callback,
-             const P3AConfig* config);
-  ~StarHelper();
+  ConstellationHelper(
+      PrefService* local_state,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ConstellationMessageCallback message_callback,
+      StarRandomnessMeta::RandomnessServerInfoCallback info_callback,
+      const P3AConfig* config);
+  ~ConstellationHelper();
 
-  StarHelper(const StarHelper&) = delete;
-  StarHelper& operator=(const StarHelper&) = delete;
+  ConstellationHelper(const ConstellationHelper&) = delete;
+  ConstellationHelper& operator=(const ConstellationHelper&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -72,11 +73,11 @@ class StarHelper {
   StarRandomnessMeta rand_meta_manager_;
   StarRandomnessPoints rand_points_manager_;
 
-  StarMessageCallback message_callback_;
+  ConstellationMessageCallback message_callback_;
 
   ::rust::Box<constellation::PPOPRFPublicKeyWrapper> null_public_key_;
 };
 
 }  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_STAR_HELPER_H_
+#endif  // BRAVE_COMPONENTS_P3A_CONSTELLATION_HELPER_H_

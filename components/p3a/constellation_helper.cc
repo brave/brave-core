@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/star_helper.h"
+#include "brave/components/p3a/constellation_helper.h"
 
 #include <algorithm>
 #include <utility>
@@ -26,14 +26,14 @@ namespace p3a {
 
 namespace {
 
-constexpr std::size_t kP3AStarCurrentThreshold = 50;
+constexpr std::size_t kP3AConstellationCurrentThreshold = 50;
 
 }  // namespace
 
-StarHelper::StarHelper(
+ConstellationHelper::ConstellationHelper(
     PrefService* local_state,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    StarMessageCallback message_callback,
+    ConstellationMessageCallback message_callback,
     StarRandomnessMeta::RandomnessServerInfoCallback info_callback,
     const P3AConfig* config)
     : rand_meta_manager_(local_state,
@@ -42,32 +42,32 @@ StarHelper::StarHelper(
                          config),
       rand_points_manager_(
           url_loader_factory,
-          base::BindRepeating(&StarHelper::HandleRandomnessData,
+          base::BindRepeating(&ConstellationHelper::HandleRandomnessData,
                               base::Unretained(this)),
           config),
       message_callback_(message_callback),
       null_public_key_(constellation::get_ppoprf_null_public_key()) {}
 
-StarHelper::~StarHelper() {}
+ConstellationHelper::~ConstellationHelper() {}
 
-void StarHelper::RegisterPrefs(PrefRegistrySimple* registry) {
+void ConstellationHelper::RegisterPrefs(PrefRegistrySimple* registry) {
   StarRandomnessMeta::RegisterPrefs(registry);
 }
 
-void StarHelper::UpdateRandomnessServerInfo() {
+void ConstellationHelper::UpdateRandomnessServerInfo() {
   rand_meta_manager_.RequestServerInfo();
 }
 
-bool StarHelper::StartMessagePreparation(std::string histogram_name,
-                                         std::string serialized_log) {
+bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
+                                                  std::string serialized_log) {
   auto* rnd_server_info = rand_meta_manager_.GetCachedRandomnessServerInfo();
   if (rnd_server_info == nullptr) {
-    LOG(ERROR) << "StarHelper: measurement preparation failed due to "
+    LOG(ERROR) << "ConstellationHelper: measurement preparation failed due to "
                   "unavailable server info";
     return false;
   }
   std::vector<std::string> layers =
-      base::SplitString(serialized_log, kP3AMessageStarLayerSeparator,
+      base::SplitString(serialized_log, kP3AMessageConstellationLayerSeparator,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
 
@@ -75,7 +75,7 @@ bool StarHelper::StartMessagePreparation(std::string histogram_name,
 
   auto prepare_res = constellation::prepare_measurement(layers, epoch);
   if (!prepare_res.error.empty()) {
-    LOG(ERROR) << "StarHelper: measurement preparation failed: "
+    LOG(ERROR) << "ConstellationHelper: measurement preparation failed: "
                << prepare_res.error.c_str();
     return false;
   }
@@ -89,7 +89,7 @@ bool StarHelper::StartMessagePreparation(std::string histogram_name,
   return true;
 }
 
-void StarHelper::HandleRandomnessData(
+void ConstellationHelper::HandleRandomnessData(
     std::string histogram_name,
     uint8_t epoch,
     ::rust::Box<constellation::RandomnessRequestStateWrapper>
@@ -101,7 +101,7 @@ void StarHelper::HandleRandomnessData(
     return;
   }
   if (resp_points->empty()) {
-    LOG(ERROR) << "StarHelper: no points for randomness request";
+    LOG(ERROR) << "ConstellationHelper: no points for randomness request";
     message_callback_.Run(histogram_name, epoch, nullptr);
     return;
   }
@@ -116,7 +116,7 @@ void StarHelper::HandleRandomnessData(
                         std::make_unique<std::string>(final_msg));
 }
 
-bool StarHelper::ConstructFinalMessage(
+bool ConstellationHelper::ConstructFinalMessage(
     rust::Box<constellation::RandomnessRequestStateWrapper>&
         randomness_request_state,
     const rust::Vec<constellation::VecU8>& resp_points,
@@ -127,9 +127,9 @@ bool StarHelper::ConstructFinalMessage(
   auto msg_res = constellation::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
       resp_proofs.empty() ? *null_public_key_ : *rnd_server_info->public_key,
-      {}, kP3AStarCurrentThreshold);
+      {}, kP3AConstellationCurrentThreshold);
   if (!msg_res.error.empty()) {
-    LOG(ERROR) << "StarHelper: message construction failed: "
+    LOG(ERROR) << "ConstellationHelper: message construction failed: "
                << msg_res.error.c_str();
     return false;
   }

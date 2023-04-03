@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/star_log_store.h"
+#include "brave/components/p3a/constellation_log_store.h"
 
 #include <memory>
 #include <set>
@@ -22,31 +22,32 @@ namespace p3a {
 
 namespace {
 
-constexpr char kPrefName[] = "p3a.star_logs";
+constexpr char kPrefName[] = "p3a.constellation_logs";
 
 }  // namespace
 
-StarLogStore::StarLogStore(PrefService* local_state, size_t keep_epoch_count)
+ConstellationLogStore::ConstellationLogStore(PrefService* local_state,
+                                             size_t keep_epoch_count)
     : local_state_(local_state), keep_epoch_count_(keep_epoch_count) {
   DCHECK(local_state);
   DCHECK_GT(keep_epoch_count, 0U);
 }
 
-StarLogStore::~StarLogStore() = default;
+ConstellationLogStore::~ConstellationLogStore() = default;
 
-bool StarLogStore::LogKeyCompare::operator()(const LogKey& lhs,
-                                             const LogKey& rhs) const {
+bool ConstellationLogStore::LogKeyCompare::operator()(const LogKey& lhs,
+                                                      const LogKey& rhs) const {
   return std::tie(lhs.epoch, lhs.histogram_name) <
          std::tie(rhs.epoch, rhs.histogram_name);
 }
 
-void StarLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
+void ConstellationLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kPrefName);
 }
 
-void StarLogStore::UpdateMessage(const std::string& histogram_name,
-                                 uint8_t epoch,
-                                 const std::string& msg) {
+void ConstellationLogStore::UpdateMessage(const std::string& histogram_name,
+                                          uint8_t epoch,
+                                          const std::string& msg) {
   ScopedDictPrefUpdate update(local_state_, kPrefName);
   std::string epoch_key = base::NumberToString(epoch);
   base::Value::Dict* epoch_dict = update->EnsureDict(epoch_key);
@@ -59,7 +60,7 @@ void StarLogStore::UpdateMessage(const std::string& histogram_name,
   }
 }
 
-void StarLogStore::RemoveMessageIfExists(const LogKey& key) {
+void ConstellationLogStore::RemoveMessageIfExists(const LogKey& key) {
   log_.erase(key);
   unsent_entries_.erase(key);
 
@@ -76,26 +77,26 @@ void StarLogStore::RemoveMessageIfExists(const LogKey& key) {
   }
 }
 
-void StarLogStore::SetCurrentEpoch(uint8_t current_epoch) {
+void ConstellationLogStore::SetCurrentEpoch(uint8_t current_epoch) {
   current_epoch_ = current_epoch;
 }
 
-bool StarLogStore::has_unsent_logs() const {
+bool ConstellationLogStore::has_unsent_logs() const {
   return !unsent_entries_.empty();
 }
 
-bool StarLogStore::has_staged_log() const {
+bool ConstellationLogStore::has_staged_log() const {
   return staged_entry_key_ != nullptr;
 }
 
-const std::string& StarLogStore::staged_log() const {
+const std::string& ConstellationLogStore::staged_log() const {
   DCHECK(staged_entry_key_);
   DCHECK(!staged_log_.empty());
 
   return staged_log_;
 }
 
-std::string StarLogStore::staged_log_type() const {
+std::string ConstellationLogStore::staged_log_type() const {
   DCHECK(staged_entry_key_);
   if (base::StartsWith(staged_entry_key_->histogram_name, "Brave.P2A",
                        base::CompareCase::SENSITIVE)) {
@@ -104,22 +105,22 @@ std::string StarLogStore::staged_log_type() const {
   return kP3AUploadType;
 }
 
-const std::string& StarLogStore::staged_log_hash() const {
+const std::string& ConstellationLogStore::staged_log_hash() const {
   NOTREACHED();
   return staged_log_hash_;
 }
 
-const std::string& StarLogStore::staged_log_signature() const {
+const std::string& ConstellationLogStore::staged_log_signature() const {
   NOTREACHED();
   return staged_log_signature_;
 }
 
-absl::optional<uint64_t> StarLogStore::staged_log_user_id() const {
+absl::optional<uint64_t> ConstellationLogStore::staged_log_user_id() const {
   NOTREACHED();
   return absl::nullopt;
 }
 
-void StarLogStore::StageNextLog() {
+void ConstellationLogStore::StageNextLog() {
   // Stage the next item.
   DCHECK(has_unsent_logs());
   uint64_t rand_idx = base::RandGenerator(unsent_entries_.size());
@@ -128,12 +129,12 @@ void StarLogStore::StageNextLog() {
 
   staged_log_ = log_.at(*staged_entry_key_);
 
-  VLOG(2) << "StarLogStore::StageNextLog: staged epoch = "
+  VLOG(2) << "ConstellationLogStore::StageNextLog: staged epoch = "
           << static_cast<int>(staged_entry_key_->epoch)
           << ", histogram_name = " << staged_entry_key_->histogram_name;
 }
 
-void StarLogStore::DiscardStagedLog() {
+void ConstellationLogStore::DiscardStagedLog() {
   if (!has_staged_log()) {
     return;
   }
@@ -141,18 +142,19 @@ void StarLogStore::DiscardStagedLog() {
   staged_log_.clear();
 }
 
-void StarLogStore::MarkStagedLogAsSent() {
+void ConstellationLogStore::MarkStagedLogAsSent() {
   if (!has_staged_log()) {
     return;
   }
   RemoveMessageIfExists(*staged_entry_key_);
 }
 
-void StarLogStore::TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) {
+void ConstellationLogStore::TrimAndPersistUnsentLogs(
+    bool overwrite_in_memory_store) {
   NOTREACHED();
 }
 
-void StarLogStore::LoadPersistedUnsentLogs() {
+void ConstellationLogStore::LoadPersistedUnsentLogs() {
   log_.clear();
   unsent_entries_.clear();
 

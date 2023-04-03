@@ -32,8 +32,7 @@ constexpr char kP3ASlowRotationIntervalSeconds[] =
 constexpr char kP3AJsonUploadUrl[] = "p3a-json-upload-url";
 constexpr char kP3ACreativeUploadUrl[] = "p3a-creative-upload-url";
 constexpr char kP2AJsonUploadUrl[] = "p2a-json-upload-url";
-constexpr char kP3AStarUploadUrl[] = "p3a-star-upload-url";
-constexpr char kP2AStarUploadUrl[] = "p2a-star-upload-url";
+constexpr char kP3AConstellationUploadUrl[] = "p3a-constellation-upload-url";
 
 constexpr char kP3ADisableStarAttestation[] = "p3a-disable-star-attestation";
 // Do not try to resent values even if a cloud returned an HTTP error, just

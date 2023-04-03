@@ -24,7 +24,7 @@ namespace {
 constexpr char kTypicalJsonLogPrefName[] = "p3a.logs";
 constexpr char kSlowJsonLogPrefName[] = "p3a.logs_slow";
 constexpr char kExpressJsonLogPrefName[] = "p3a.logs_express";
-constexpr char kStarPrepPrefName[] = "p3a.logs.star_prep";
+constexpr char kConstellationPrepPrefName[] = "p3a.logs.constellation_prep";
 constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
@@ -64,12 +64,12 @@ std::string GetUploadType(const std::string& histogram_name) {
 
 MetricLogStore::MetricLogStore(Delegate* delegate,
                                PrefService* local_state,
-                               bool is_star,
+                               bool is_constellation,
                                MetricLogType type)
     : delegate_(delegate),
       local_state_(local_state),
       type_(type),
-      is_star_(is_star) {
+      is_constellation_(is_constellation) {
   DCHECK(delegate_);
   DCHECK(local_state);
 }
@@ -80,12 +80,12 @@ void MetricLogStore::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kTypicalJsonLogPrefName);
   registry->RegisterDictionaryPref(kExpressJsonLogPrefName);
   registry->RegisterDictionaryPref(kSlowJsonLogPrefName);
-  registry->RegisterDictionaryPref(kStarPrepPrefName);
+  registry->RegisterDictionaryPref(kConstellationPrepPrefName);
 }
 
 const char* MetricLogStore::GetPrefName() const {
-  if (is_star_) {
-    return kStarPrepPrefName;
+  if (is_constellation_) {
+    return kConstellationPrepPrefName;
   } else {
     switch (type_) {
       case MetricLogType::kTypical:
@@ -100,9 +100,10 @@ const char* MetricLogStore::GetPrefName() const {
 
 void MetricLogStore::UpdateValue(const std::string& histogram_name,
                                  uint64_t value) {
-  if (is_star_) {
+  if (is_constellation_) {
     if (IsMetricP2A(histogram_name) || IsMetricCreative(histogram_name)) {
-      // Only non-creative P3A metrics are currently supported for STAR.
+      // Only non-creative P3A metrics are currently supported for
+      // Constellation.
       return;
     }
   }
@@ -226,9 +227,9 @@ void MetricLogStore::StageNextLog() {
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
-  staged_log_ =
-      delegate_->SerializeLog(staged_entry_key_, staged_entry_value, type_,
-                              is_star_, GetUploadType(staged_entry_key_));
+  staged_log_ = delegate_->SerializeLog(staged_entry_key_, staged_entry_value,
+                                        type_, is_constellation_,
+                                        GetUploadType(staged_entry_key_));
 
   VLOG(2) << "MetricLogStore::StageNextLog: staged " << staged_entry_key_;
 }

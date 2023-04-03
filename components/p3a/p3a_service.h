@@ -65,13 +65,13 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
   // Callbacks are invoked after rotation for a particular log type,
   // before metrics are sent. Useful for just-in-time metrics collection
   base::CallbackListSubscription RegisterRotationCallback(
-      base::RepeatingCallback<void(MetricLogType log_type, bool is_star)>
-          callback);
+      base::RepeatingCallback<void(MetricLogType log_type,
+                                   bool is_constellation)> callback);
   // Callbacks are invoked for each metric is sent to the P3A JSON server,
-  // or STAR message preparation.
+  // or Constellation message preparation.
   base::CallbackListSubscription RegisterMetricCycledCallback(
       base::RepeatingCallback<void(const std::string& histogram_name,
-                                   bool is_star)> callback);
+                                   bool is_constellation)> callback);
 
   bool IsP3AEnabled() const;
 
@@ -85,8 +85,9 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
                           base::HistogramBase::Sample sample);
 
   // P3AMessageManager::Delegate
-  void OnRotation(MetricLogType log_type, bool is_star) override;
-  void OnMetricCycled(const std::string& histogram_name, bool is_star) override;
+  void OnRotation(MetricLogType log_type, bool is_constellation) override;
+  void OnMetricCycled(const std::string& histogram_name,
+                      bool is_constellation) override;
   absl::optional<MetricLogType> GetDynamicMetricLogType(
       const std::string& histogram_name) const override;
 
@@ -131,11 +132,12 @@ class P3AService : public base::RefCountedThreadSafe<P3AService>,
       histogram_sample_callbacks_;
 
   // Contains callbacks registered via `RegisterRotationCallback`
-  base::RepeatingCallbackList<void(MetricLogType log_type, bool is_star)>
+  base::RepeatingCallbackList<void(MetricLogType log_type,
+                                   bool is_constellation)>
       rotation_callbacks_;
   // Contains callbacks registered via `RegisterMetricCycledCallback`
   base::RepeatingCallbackList<void(const std::string& histogram_name,
-                                   bool is_star)>
+                                   bool is_constellation)>
       metric_cycled_callbacks_;
 };
 

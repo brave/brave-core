@@ -32,15 +32,16 @@ constexpr char kP3ACreativeUploadType[] = "p3a_creative";
 
 struct P3AConfig;
 
-// Handles uploading of JSON and STAR metrics to Brave servers.
+// Handles uploading of JSON and Constellation metrics to Brave servers.
 // The endpoint used may differ depending on whether the measurement
-// is P3A, P2A, NTP-SI P3A as well as whether it is in JSON or STAR format.
+// is P3A, P2A, NTP-SI P3A as well as whether it is in JSON or Constellation
+// format.
 class Uploader {
  public:
   using UploadCompleteCallback =
       base::RepeatingCallback<void(bool is_ok,
                                    int response_code,
-                                   bool is_star,
+                                   bool is_constellation,
                                    MetricLogType log_type)>;
 
   Uploader(scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
@@ -55,10 +56,10 @@ class Uploader {
   // From metrics::MetricsLogUploader
   void UploadLog(const std::string& compressed_log_data,
                  const std::string& upload_type,
-                 bool is_star,
+                 bool is_constellation,
                  MetricLogType log_type);
 
-  void OnUploadComplete(bool is_star,
+  void OnUploadComplete(bool is_constellation,
                         MetricLogType log_type,
                         scoped_refptr<net::HttpResponseHeaders> headers);
 
