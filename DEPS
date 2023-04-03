@@ -6,7 +6,7 @@ gclient_gn_args = [
 ]
 
 vars = {
-  'brave_rust_version': '"1.67.0"',
+  'brave_rust_version': Str('1.67.1'),
   'download_prebuilt_sparkle': True,
 }
 
@@ -70,40 +70,21 @@ hooks = [
   {
     'name': 'download_rust_deps',
     'pattern': '.',
-    'condition': 'checkout_android',
     'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'android'
+      'vpython3', 'script/download_rust_deps.py',
+      '--rust_version={brave_rust_version}',
+      '--checkout_android={checkout_android}',
+      '--checkout_ios={checkout_ios}',
+      '--checkout_linux={checkout_linux}',
+      '--checkout_mac={checkout_mac}',
+      '--checkout_win={checkout_win}',
     ]
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'condition': 'checkout_mac or checkout_ios',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'ios'
-    ]
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'condition': 'checkout_win',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'win32'
-    ]
-  },
-  {
-    'name': 'download_rust_deps',
-    'pattern': '.',
-    'condition': 'checkout_linux',
-    'action': [
-      'vpython3', 'script/download_rust_deps.py', Var('brave_rust_version'), 'linux'
-    ],
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
     'name': 'web_discovery_project_npm_deps',
     'pattern': '.',
-    'condition': 'not checkout_android and not checkout_ios',
+    'condition': 'checkout_linux or checkout_mac or checkout_win',
     'action': ['vpython3', 'script/web_discovery_project.py', '--install'],
   },
   {

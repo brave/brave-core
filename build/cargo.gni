@@ -115,8 +115,13 @@ template("cargo_build") {
     ]
 
     if (is_apple) {
+      if (host_cpu == "arm64") {
+        rust_host_toolchain = "aarch64-apple-darwin"
+      } else {
+        rust_host_toolchain = "x86_64-apple-darwin"
+      }
       toolchain_home =
-          "$rustup_home/toolchains/$brave_rust_version-x86_64-apple-darwin"
+          "$rustup_home/toolchains/$brave_rust_version-$rust_host_toolchain"
       std_src_home = "$toolchain_home/lib/rustlib/src/rust/library/std/src"
       force_rebuild_inputs += [ "$std_src_home/personality/gcc.rs" ]
     }

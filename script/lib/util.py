@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # Copyright (c) 2021 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -6,6 +5,7 @@
 
 from __future__ import print_function
 
+import argparse
 import atexit
 import contextlib
 import errno
@@ -27,8 +27,27 @@ import zipfile
 from .config import is_verbose_mode
 from .env_util import get_vs_env
 
+_PLATFORM_MAPPING = {
+    'cygwin': 'win',
+    'darwin': 'mac',
+    'linux2': 'linux',
+    'linux': 'linux',
+    'win32': 'win',
+}
+
 BOTO_DIR = os.path.abspath(os.path.join(__file__, '..', '..', '..', 'vendor',
                                         'boto'))
+
+
+def get_host_os():
+    """Returns the host OS with a predictable string."""
+    if sys.platform in _PLATFORM_MAPPING:
+        return _PLATFORM_MAPPING[sys.platform]
+
+    try:
+        return os.uname().sysname.lower()
+    except AttributeError:
+        return sys.platform
 
 
 def get_host_arch():
@@ -40,6 +59,8 @@ def get_host_arch():
         host_arch = 'ia32'
     elif host_arch in ['x86_64', 'amd64']:
         host_arch = 'x64'
+    elif host_arch.startswith('arm64') or host_arch.startswith('aarch64'):
+        host_arch = 'arm64'
     elif host_arch.startswith('arm'):
         host_arch = 'arm'
 
@@ -293,11 +314,12 @@ def import_vs_env(target_arch):
     os.environ.update(env)
 
 
-def get_platform():
-    PLATFORM = {
-        'cygwin': 'win32',
-        'darwin': 'darwin',
-        'linux2': 'linux',
-        'win32': 'win32',
-    }[sys.platform]
-    return PLATFORM
+def str2bool(v):
+    if isinstance(v, bool):
+        return v
+    v = v.lower()
+    if v in ('yes', 'true', 't', 'y', '1'):
+        return True
+    if v in ('no', 'false', 'f', 'n', '0'):
+        return False
+    raise argparse.ArgumentTypeError('Boolean value expected.')
