@@ -24,6 +24,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ui/commander/brave_simple_command_source.h"
+#include "brave/browser/ui/commander/ranker.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
@@ -50,7 +51,8 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 }
 }  // namespace
 
-CommanderService::CommanderService(Profile* profile) : profile_(profile) {
+CommanderService::CommanderService(Profile* profile)
+    : profile_(profile), ranker_(profile->GetPrefs()) {
   command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
   command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
   command_sources_.push_back(std::make_unique<WindowCommandSource>());
@@ -113,6 +115,10 @@ void CommanderService::SelectCommand(uint32_t command_index,
   current_result_set_id_++;
 
   auto* item = items_[command_index].get();
+
+  // Record that we selected this command to increase it's rank next time.
+  ranker_.Visit(*item);
+
   if (item->GetType() == CommandItem::Type::kOneShot) {
     std::move(absl::get<base::OnceClosure>(item->command)).Run();
     Hide();
@@ -206,15 +212,7 @@ void CommanderService::UpdateCommands() {
     }
   }
 
-  // Sort at most |kMaxResults| by score and then alphabetically.
-  auto max_elements = std::min(items.size(), kMaxResults);
-  std::partial_sort(
-      std::begin(items), std::begin(items) + max_elements, std::end(items),
-      [](const std::unique_ptr<CommandItem>& left,
-         const std::unique_ptr<CommandItem>& right) {
-        return (left->score == right->score) ? left->title < right->title
-                                             : left->score > right->score;
-      });
+  ranker_.Rank(items, kMaxResults);
   if (items.size() > kMaxResults) {
     items.resize(kMaxResults);
   }

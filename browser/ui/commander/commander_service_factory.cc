@@ -7,9 +7,11 @@
 
 #include "base/memory/singleton.h"
 #include "brave/browser/ui/commander/commander_service.h"
+#include "brave/components/commander/common/prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_keyed_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "content/public/browser/browser_context.h"
 
 namespace commander {
@@ -34,6 +36,11 @@ CommanderServiceFactory::~CommanderServiceFactory() = default;
 KeyedService* CommanderServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   return new CommanderService(Profile::FromBrowserContext(context));
+}
+
+void CommanderServiceFactory::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterDictionaryPref(prefs::kCommanderFrecencies);
 }
 
 }  // namespace commander
