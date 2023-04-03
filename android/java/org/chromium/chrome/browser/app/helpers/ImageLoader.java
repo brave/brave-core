@@ -34,6 +34,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
 
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.WebContentsFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
@@ -59,6 +60,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ImageLoader {
+    private static final String TAG = "ImageLoader";
     private static final List<String> ANIMATED_LIST = Arrays.asList(".gif");
     private static final String UNUSED_CLIENT_NAME = "unused";
     private static final String BASE64_ENCODING_PATTERN =
@@ -273,27 +275,32 @@ public class ImageLoader {
             if (callback != null) callback.onLoadFailed();
             return;
         }
-        Glide.with(context)
-                .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
-                                                      : imageFetcherFacade.drawable)
-                .transform(getTransformations(isCircular))
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .priority(Priority.IMMEDIATE)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(GlideException glideException, Object model,
-                            Target<Drawable> target, boolean isFirstResource) {
-                        return callback != null && callback.onLoadFailed();
-                    }
+        try {
+            Glide.with(context)
+                    .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
+                                                          : imageFetcherFacade.drawable)
+                    .transform(getTransformations(isCircular))
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .priority(Priority.IMMEDIATE)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(GlideException glideException, Object model,
+                                Target<Drawable> target, boolean isFirstResource) {
+                            return callback != null && callback.onLoadFailed();
+                        }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model,
-                            Target<Drawable> target, DataSource dataSource,
-                            boolean isFirstResource) {
-                        return callback != null && callback.onResourceReady(resource, target);
-                    }
-                })
-                .into(imageView);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model,
+                                Target<Drawable> target, DataSource dataSource,
+                                boolean isFirstResource) {
+                            return callback != null && callback.onResourceReady(resource, target);
+                        }
+                    })
+                    .into(imageView);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "loadImage error: " + e.getMessage());
+            if (callback != null) callback.onLoadFailed();
+        }
     }
 
     private static BitmapTransformation[] getTransformations(boolean isCircular) {
