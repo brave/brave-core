@@ -10,12 +10,12 @@
 
 namespace brave_federated {
 
-class Observer : public base::CheckedObserver {
+class EligibilityObserver : public base::CheckedObserver {
  public:
   virtual void OnEligibilityChanged(bool is_eligible) = 0;
 
  protected:
-  ~Observer() override = default;
+  ~EligibilityObserver() override = default;
 };
 
 }  // namespace brave_federated

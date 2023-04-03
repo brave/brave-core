@@ -81,28 +81,6 @@ Configs ConfigsFromProto(
   return config;
 }
 
-std::vector<float> GetVectorFromString(std::string string) {
-  const int k_vector_size = string.size() / sizeof(double);
-  double parameters_array[k_vector_size];
-  std::memcpy(parameters_array, string.data(), string.size());
-
-  std::vector<double> parameters_vector(parameters_array,
-                                        parameters_array + k_vector_size);
-
-  std::vector<float> parameters_vector_float(parameters_vector.begin(),
-                                             parameters_vector.end());
-  return parameters_vector_float;
-}
-
-std::string GetStringFromVector(std::vector<float> vector) {
-  std::vector<double> double_vector(vector.begin(), vector.end());
-  std::ostringstream oss;
-  oss.write(reinterpret_cast<const char*>(double_vector.data()),
-            double_vector.size() * sizeof(double));
-
-  return oss.str();
-}
-
 std::vector<std::vector<float>> GetVectorsFromParameters(
     flower::Parameters parameters_msg) {
   std::vector<std::vector<float>> tensors;
@@ -127,4 +105,26 @@ flower::Parameters GetParametersFromVectors(
   }
 
   return flower_parameters;
+}
+
+std::vector<float> GetVectorFromString(std::string string) {
+  const int k_vector_size = string.size() / sizeof(double);
+  double parameters_array[k_vector_size];
+  std::memcpy(parameters_array, string.data(), string.size());
+
+  std::vector<double> parameters_vector(parameters_array,
+                                        parameters_array + k_vector_size);
+
+  std::vector<float> parameters_vector_float(parameters_vector.begin(),
+                                             parameters_vector.end());
+  return parameters_vector_float;
+}
+
+std::string GetStringFromVector(std::vector<float> vector) {
+  std::vector<double> double_vector(vector.begin(), vector.end());
+  std::ostringstream oss;
+  oss.write(reinterpret_cast<const char*>(double_vector.data()),
+            double_vector.size() * sizeof(double));
+
+  return oss.str();
 }

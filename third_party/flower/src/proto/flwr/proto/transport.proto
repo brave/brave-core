@@ -17,10 +17,6 @@ syntax = "proto3";
 
 package flower;
 
-service FlowerService {
-  rpc Join(stream ClientMessage) returns (stream ServerMessage) {}
-}
-
 enum Code {
   OK = 0;
   GET_PROPERTIES_NOT_IMPLEMENTED = 1;

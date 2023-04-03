@@ -26,25 +26,28 @@ namespace brave_federated {
 
 namespace {
 
-// TODO(lminto): update this annotation
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("federated_learning", R"(
         semantics {
           sender: "Federated Learning"
           description:
-            "Report of anonymized engagement statistics. For more info see "
+            "Federated model updates based off toy task and locally generated "
+            "synthetic dataset."
           trigger:
-            "Reports are automatically generated on startup and at intervals
-            " "while Brave is running."
+            "Reports are generated when the brave-federated flag is enabled "
+            "and learning tasks are made available by the federated server. "
+            "Reports are NOT generated when the user is on battery power "
+            "or when the device is on a metered network (not WiFi/Ethernet). "
           data:
-            "Anonymized and encrypted engagement data."
+            "Simple federated model updates based off toy task and locally "
+            "generated synthetic data."
           destination: WEBSITE
         }
         policy {
           cookies_allowed: NO
           setting:
-            "This service is enabled only when opted in to ads and having "
-            "P3A is enabled."
+            "This experimental feature is only enabled in Nightly builds and"
+            "can be disabled via the 'brave://flags/#brave-federated' "
           policy_exception_justification:
             "Not implemented."
         }
@@ -55,7 +58,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 CommunicationAdapter::CommunicationAdapter(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url_loader_factory_(url_loader_factory) {
+    : url_loader_factory_(std::move(url_loader_factory)) {
   reconnect_policy_ = std::make_unique<const net::BackoffEntry::Policy>(
       /*.num_errors_to_ignore = */ 0,
       /*.initial_delay_ms = */ 10 * 1000,
@@ -99,8 +102,8 @@ void CommunicationAdapter::GetTasks(GetTaskCallback callback) {
   url_loader_->AttachStringForUpload(payload, "application/protobuf");
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
-      base::BindOnce(&CommunicationAdapter::OnGetTasks, base::Unretained(this),
-                     std::move(callback)));
+      base::BindOnce(&CommunicationAdapter::OnGetTasks,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void CommunicationAdapter::OnGetTasks(
@@ -115,14 +118,13 @@ void CommunicationAdapter::OnGetTasks(
   if (failed_request) {
     VLOG(1) << "Failed to request tasks, retrying in "
             << reconnect_delay_in_seconds << "s";
-    std::move(callback).Run({}, reconnect_delay_in_seconds);
-    return;
+    return std::move(callback).Run({}, reconnect_delay_in_seconds);
   }
 
   auto headers = url_loader_->ResponseInfo()->headers;
   int response_code = headers->response_code();
-  // TODO(lminto): Check headers (as per Daniel instructions)
-  if (response_code == net::HTTP_OK) {
+  if (response_code == net::HTTP_OK &&
+      headers->HasHeaderValue("Content-Type", "application/protobuf")) {
     TaskList task_list = ParseTaskListFromResponseBody(*response_body);
     bool empty_task_list = task_list.empty();
     VLOG(2) << "Received " << task_list.size() << " tasks from FL service";
@@ -133,12 +135,10 @@ void CommunicationAdapter::OnGetTasks(
     if (empty_task_list) {
       VLOG(1) << "No tasks received from FL service, retrying in "
               << request_task_delay_in_seconds << "s";
-      std::move(callback).Run({}, request_task_delay_in_seconds);
-      return;
+      return std::move(callback).Run({}, request_task_delay_in_seconds);
     }
 
-    std::move(callback).Run(task_list, request_task_delay_in_seconds);
-    return;
+    return std::move(callback).Run(task_list, request_task_delay_in_seconds);
   }
 
   VLOG(1) << "Failed to request tasks. Response code: " << response_code;
@@ -164,7 +164,7 @@ void CommunicationAdapter::PostTaskResult(TaskResult result,
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
       base::BindOnce(&CommunicationAdapter::OnPostTaskResult,
-                     base::Unretained(this), std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void CommunicationAdapter::OnPostTaskResult(
@@ -172,18 +172,20 @@ void CommunicationAdapter::OnPostTaskResult(
     std::unique_ptr<std::string> response_body) {
   if (!url_loader_->ResponseInfo() || !url_loader_->ResponseInfo()->headers) {
     VLOG(1) << "Failed to post task results";
-    return;
+    TaskResultResponse response(/*successful*/ false);
+    return std::move(callback).Run(response);
   }
 
   auto headers = url_loader_->ResponseInfo()->headers;
   int response_code = headers->response_code();
   if (response_code == net::HTTP_OK) {
     TaskResultResponse response(/*successful*/ true);
-    std::move(callback).Run(response);
-    return;
+    return std::move(callback).Run(response);
   }
 
-  VLOG(1) << "Failed to post task results" << response_code;
+  VLOG(1) << "Response code is not 200" << response_code;
+  TaskResultResponse response(/*successful*/ false);
+  return std::move(callback).Run(response);
 }
 
 }  // namespace brave_federated

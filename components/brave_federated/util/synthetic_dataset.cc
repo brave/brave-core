@@ -9,14 +9,15 @@
 #include <cmath>
 #include <fstream>
 #include <random>
+#include <utility>
 
-#include "base/check.h"
+#include "base/check_op.h"
 #include "base/rand_util.h"
 
 namespace brave_federated {
 
 SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> data_points)
-    : data_points_(data_points) {}
+    : data_points_(std::move(data_points)) {}
 
 SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
                                    std::vector<float> b,
@@ -57,20 +58,20 @@ SyntheticDataset::SyntheticDataset(std::vector<std::vector<float>> W,
 
   std::vector<std::vector<float>> data_points;
   for (size_t i = 0; i < size; i++) {
-    std::vector<float> tmp = LinearAlgebraUtil::AddVectors(
+    std::vector<float> y_s = LinearAlgebraUtil::AddVectors(
         LinearAlgebraUtil::MultiplyMatrixVector(W, xs[i]), b);
-    DCHECK(tmp.size() == 2);
+    DCHECK_EQ(y_s.size(), 2U);
 
-    float ymax = 0.0;
-    if (Softmax(tmp[0]) >= Softmax(tmp[1])) {
-      ymax = 1.0;
+    float y_max = 0.0;
+    if (Softmax(y_s[0]) >= Softmax(y_s[1])) {
+      y_max = 1.0;
     } else {
-      ymax = 0.0;
+      y_max = 0.0;
     }
 
     std::vector<float> data_point;
     data_point.insert(data_point.end(), xs[i].begin(), xs[i].end());
-    data_point.push_back(ymax);
+    data_point.push_back(y_max);
 
     data_points.push_back(data_point);
   }

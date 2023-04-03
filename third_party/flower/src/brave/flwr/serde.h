@@ -37,8 +37,8 @@ class ScalarValue {
   std::optional<std::string> string_value_ = std::nullopt;
 };
 
-typedef std::map<std::string, float> Configs;
-typedef std::map<std::string, double> Metrics;
+using Configs = std::map<std::string, float>;
+using Metrics = std::map<std::string, double>;
 
 /**
  * Serialize client scalar type to protobuf scalar type

@@ -54,4 +54,3 @@ venv/
 .storybook-out
 test_get_pkgs
 build/config/gclient_args.gni
-*.csv

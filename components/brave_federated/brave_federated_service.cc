@@ -9,9 +9,7 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "base/path_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
-#include "brave/components/brave_federated/data_stores/data_store.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_federated/learning_service.h"
