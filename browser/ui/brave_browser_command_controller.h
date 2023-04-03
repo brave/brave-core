@@ -7,13 +7,9 @@
 #define BRAVE_BROWSER_UI_BRAVE_BROWSER_COMMAND_CONTROLLER_H_
 
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-
-#if BUILDFLAG(ENABLE_IPFS)
 #include "components/prefs/pref_change_registrar.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
@@ -73,7 +69,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   bool ExecuteBraveCommandWithDisposition(int id,
                                           WindowOpenDisposition disposition,
                                           base::TimeTicks time_stamp);
-
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  PrefChangeRegistrar brave_vpn_pref_change_registrar_;
+#endif
   Browser* const browser_;
 
   CommandUpdaterImpl brave_command_updater_;

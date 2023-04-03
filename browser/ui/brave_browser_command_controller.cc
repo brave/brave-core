@@ -36,6 +36,7 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -146,6 +147,16 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandForSidebar();
   UpdateCommandForBraveVPN();
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (brave_vpn::IsAllowedForContext(browser_->profile())) {
+    brave_vpn_pref_change_registrar_.Init(browser_->profile()->GetPrefs());
+    brave_vpn_pref_change_registrar_.Add(
+        brave_vpn::prefs::kManagedBraveVPNDisabled,
+        base::BindRepeating(
+            &BraveBrowserCommandController::UpdateCommandForBraveVPN,
+            base::Unretained(this)));
+  }
+#endif
   bool add_new_profile_enabled = !is_guest_session;
   bool open_guest_profile_enabled = !is_guest_session;
   if (!is_guest_session) {

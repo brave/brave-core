@@ -13,6 +13,7 @@ class BrowserContext;
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled(content::BrowserContext* context);
+bool IsAllowedForContext(content::BrowserContext* context);
 
 }  // namespace brave_vpn
 

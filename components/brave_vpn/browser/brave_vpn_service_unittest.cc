@@ -260,6 +260,13 @@ class BraveVPNServiceTest : public testing::Test {
     return service_->GetPurchasedStateSync();
   }
 
+  void BlockVPNByPolicy(bool value) {
+    profile_pref_service_.SetManagedPref(prefs::kManagedBraveVPNDisabled,
+                                         base::Value(value));
+    EXPECT_EQ(brave_vpn::IsBraveVPNDisabledByPolicy(&profile_pref_service_),
+              value);
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   mojom::Region device_region() const {
     if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
@@ -482,14 +489,6 @@ class BraveVPNServiceTest : public testing::Test {
   base::HistogramTester histogram_tester_;
 };
 
-TEST(BraveVPNFeatureTest, FeatureTest) {
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  EXPECT_TRUE(IsBraveVPNEnabled());
-#else
-  EXPECT_FALSE(IsBraveVPNEnabled());
-#endif
-}
-
 TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // Give invalid json data as a server response and check sanitized(empty
   // string) result is returned.
@@ -707,6 +706,22 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   test_api->SetConnectionState(ConnectionState::CONNECTED);
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+}
+
+TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
+  // Prepare valid connection info.
+  auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
+
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  test_api->SetConnectionState(ConnectionState::CONNECTED);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+  BlockVPNByPolicy(true);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(ConnectionState::DISCONNECTED, observer.GetConnectionState());
 }
 
 TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {

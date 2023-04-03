@@ -486,7 +486,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     registry.ForWebUI<VPNPanelUI>()
         .Add<brave_vpn::mojom::PanelHandlerFactory>();
   }

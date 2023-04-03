@@ -78,7 +78,7 @@ class BraveVpnService :
   }
   void BindInterface(mojo::PendingReceiver<mojom::ServiceHandler> receiver);
   void ReloadPurchasedState();
-
+  bool IsBraveVPNEnabled() const;
 #if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
   void RemoveVPNConnection();
@@ -233,6 +233,7 @@ class BraveVpnService :
   raw_ptr<BraveVPNOSConnectionAPI> connection_api_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar policy_pref_change_registrar_;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   SEQUENCE_CHECKER(sequence_checker_);

@@ -7,10 +7,13 @@
 
 #include "base/json/json_reader.h"
 #include "base/logging.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/skus/browser/skus_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -96,7 +99,7 @@ TEST(BraveVPNUtilsUnitTest, Migrate) {
                                 &local_state_pref_service);
   EXPECT_TRUE(local_state_pref_service.HasPrefPath(
       brave_vpn::prefs::kBraveVPNRootPref));
-  vpn_settings->RemovePath("show_button");
+  vpn_settings->GetIfDict()->Remove("show_button");
   EXPECT_EQ(
       local_state_pref_service.GetDict(brave_vpn::prefs::kBraveVPNRootPref),
       *vpn_settings);
@@ -190,7 +193,33 @@ TEST(BraveVPNUtilsUnitTest, AlreadyMigrated) {
 }
 
 TEST(BraveVPNUtilsUnitTest, VPNPaymentsEnv) {
-  EXPECT_EQ("production", GetBraveVPNPaymentsEnv(skus::kEnvProduction));
-  EXPECT_EQ("staging", GetBraveVPNPaymentsEnv(skus::kEnvStaging));
-  EXPECT_EQ("development", GetBraveVPNPaymentsEnv(skus::kEnvDevelopment));
+  EXPECT_EQ("production",
+            brave_vpn::GetBraveVPNPaymentsEnv(skus::kEnvProduction));
+  EXPECT_EQ("staging", brave_vpn::GetBraveVPNPaymentsEnv(skus::kEnvStaging));
+  EXPECT_EQ("development",
+            brave_vpn::GetBraveVPNPaymentsEnv(skus::kEnvDevelopment));
+}
+
+TEST(BraveVPNUtilsUnitTest, IsBraveVPNEnabled) {
+  sync_preferences::TestingPrefServiceSyncable profile_pref_service;
+  brave_vpn::RegisterProfilePrefs(profile_pref_service.registry());
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeatures(
+      {brave_vpn::features::kBraveVPN, skus::features::kSkusFeature}, {});
+
+  EXPECT_TRUE(brave_vpn::IsBraveVPNFeatureEnabled());
+  profile_pref_service.SetManagedPref(
+      brave_vpn::prefs::kManagedBraveVPNDisabled, base::Value(false));
+  EXPECT_TRUE(brave_vpn::IsBraveVPNEnabled(&profile_pref_service));
+  profile_pref_service.SetManagedPref(
+      brave_vpn::prefs::kManagedBraveVPNDisabled, base::Value(true));
+  EXPECT_FALSE(brave_vpn::IsBraveVPNEnabled(&profile_pref_service));
+}
+
+TEST(BraveVPNUtilsUnitTest, FeatureTest) {
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  EXPECT_TRUE(brave_vpn::IsBraveVPNFeatureEnabled());
+#else
+  EXPECT_FALSE(brave_vpn::IsBraveVPNFeatureEnabled());
+#endif
 }
