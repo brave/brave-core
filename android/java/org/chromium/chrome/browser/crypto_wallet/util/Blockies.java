@@ -62,8 +62,8 @@ public class Blockies {
         return createCanvas(imgdata, color, bgColor, spotColor, SCALE, circular);
     }
 
-    private static Bitmap createCanvas(
-            double[] imgData, String color, String bgcolor, String spotcolor, int scale, boolean circular) {
+    private static Bitmap createCanvas(double[] imgData, String color, String bgcolor,
+            String spotcolor, int scale, boolean circular) {
         int width = (int) Math.sqrt(imgData.length);
 
         int w = width * scale;
@@ -197,9 +197,12 @@ public class Blockies {
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
         if (circular) {
-            canvas.drawCircle(bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
+            canvas.drawCircle(
+                    bitmap.getWidth() / 2, bitmap.getHeight() / 2, bitmap.getWidth() / 2, paint);
         } else {
-            canvas.drawRoundRect(0, 0, bitmap.getWidth(), bitmap.getHeight(), WalletConstants.SMALL_RECT_ROUNDED_CORNERS_DP, WalletConstants.SMALL_RECT_ROUNDED_CORNERS_DP, paint);
+            canvas.drawRoundRect(0, 0, bitmap.getWidth(), bitmap.getHeight(),
+                    WalletConstants.SMALL_RECT_ROUNDED_CORNERS_DP,
+                    WalletConstants.SMALL_RECT_ROUNDED_CORNERS_DP, paint);
         }
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);

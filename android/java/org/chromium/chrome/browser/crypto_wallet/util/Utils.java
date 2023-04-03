@@ -793,9 +793,9 @@ public class Utils {
             ImageView iconImg, String source, String symbol, float scale, TextView textView,
             Context context, boolean drawCaratDown, float scaleDown, boolean circular) {
         executor.execute(() -> {
-            final Bitmap bitmap =
-                    drawTextToBitmap(scaleDown(Blockies.createIcon(source, true, circular), scaleDown),
-                            symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
+            final Bitmap bitmap = drawTextToBitmap(
+                    scaleDown(Blockies.createIcon(source, true, circular), scaleDown),
+                    symbol.isEmpty() ? "" : symbol.substring(0, 1), scale, scaleDown);
             handler.post(() -> {
                 if (iconImg != null) {
                     iconImg.setImageBitmap(bitmap);

@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.app.helpers;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -58,8 +60,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class ImageLoader {
     private static final String TAG = "ImageLoader";
@@ -306,10 +306,10 @@ public class ImageLoader {
 
     private static BitmapTransformation[] getTransformations(Context context, boolean isCircular) {
         if (isCircular) {
-            return new BitmapTransformation[] {
-                    new FitCenter(), new CircleCrop()};
+            return new BitmapTransformation[] {new FitCenter(), new CircleCrop()};
         }
-        return new BitmapTransformation[] {new FitCenter(), new RoundedCorners(dpToPx(context, WalletConstants.RECT_ROUNDED_CORNERS_DP))};
+        return new BitmapTransformation[] {new FitCenter(),
+                new RoundedCorners(dpToPx(context, WalletConstants.RECT_ROUNDED_CORNERS_DP))};
     }
 
     /**
