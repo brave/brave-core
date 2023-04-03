@@ -5,34 +5,65 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  border: 1px solid ${p => p.theme.color.divider01};
-  border-radius: 2000px;
-  padding: 3px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  grid-auto-flow: column;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  min-height: 48px;
+  background-color: transparent;
+`
 
-  button {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 0;
-    background-color: transparent;
-    padding: 4px 8px;
-    border: 0;
-    border-radius: 100px;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
+export const Button = styled.button`
+  display: flex;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 4px;
+  border: 0;
+  cursor: pointer;
+  align-items: center;
+  background-color: transparent;
+
+  &.group {
+    width: 32px;
+
+    border-radius: 0;
+    border-style: solid;
+    border-color: var(--color-border);
+
+    border-left-width: 0;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-right-width: 1px;
   }
 
-  .sm {
-    font-size: 11px;
-    line-height: 1.1;
+  &.group:first-of-type {
+    border-left-width: 1px;
+    border-radius: 4px 0 0 4px;
   }
 
-  .is-active {
-    background: ${p => p.theme.color.divider01};
+  &.group:last-of-type {
+    border-radius: 0 4px 4px 0;
   }
+
+  &.is-active {
+    background-color: rgba(19, 22, 32, 0.08);
+  }
+
+  &:enabled {
+    &:hover {
+      background-color: rgba(19, 22, 32, 0.05);
+    }
+  }
+`
+
+export const CurrentState = styled(Button)`
+  gap: 8px;
+  width: 78px !important;
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: -0.289412px;
 `

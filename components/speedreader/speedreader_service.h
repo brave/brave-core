@@ -9,7 +9,8 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "brave/components/speedreader/common/speedreader_panel.mojom.h"
+#include "base/observer_list.h"
+#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -17,17 +18,27 @@ class PrefRegistrySimple;
 class PrefService;
 
 namespace speedreader {
-using mojom::ContentStyle;
-using mojom::FontFamily;
-using mojom::FontSize;
-using mojom::Theme;
 
 class SpeedreaderService : public KeyedService {
  public:
+  class Observer : public base::CheckedObserver {
+    public:
+     virtual void OnSiteSettingsChanged(
+         const mojom::SiteSettings& site_settings) {}
+     virtual void OnTtsSettingsChanged(const mojom::TtsSettings& tts_settings) {
+     }
+
+    protected:
+    ~Observer() override = default;
+  };
+
   explicit SpeedreaderService(PrefService* prefs);
   ~SpeedreaderService() override;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
   void ToggleSpeedreader();
   void DisableSpeedreaderForTest();
@@ -35,27 +46,22 @@ class SpeedreaderService : public KeyedService {
   bool ShouldPromptUserToEnable() const;
   void IncrementPromptCount();
 
-  void SetTheme(Theme theme_name);
-  Theme GetTheme() const;
+  void SetSiteSettings(const mojom::SiteSettings& site_settings);
+  mojom::SiteSettings GetSiteSettings() const;
+
+  void SetTtsSettings(const mojom::TtsSettings& tts_settings);
+  mojom::TtsSettings GetTtsSettings() const;  
+
   std::string GetThemeName() const;
-
-  void SetFontSize(FontSize size);
-  FontSize GetFontSize() const;
   std::string GetFontSizeName() const;
-
-  void SetFontFamily(FontFamily font);
-  FontFamily GetFontFamily() const;
   std::string GetFontFamilyName() const;
-
-  void SetContentStyle(ContentStyle style);
-  ContentStyle GetContentStyle() const;
-  std::string GetContentStyleName() const;
 
   SpeedreaderService(const SpeedreaderService&) = delete;
   SpeedreaderService& operator=(const SpeedreaderService&) = delete;
 
  private:
   raw_ptr<PrefService> prefs_ = nullptr;
+  base::ObserverList<Observer> observers_;
 };
 
 }  // namespace speedreader

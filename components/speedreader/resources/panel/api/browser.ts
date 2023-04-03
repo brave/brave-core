@@ -2,16 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as SpeedreaderPanel from 'gen/brave/components/speedreader/common/speedreader_panel.mojom.m.js'
+import * as mojom from 'gen/brave/components/speedreader/common/speedreader_toolbar.mojom.m.js'
 
 // Provide access to all the generated types
-export * from 'gen/brave/components/speedreader/common/speedreader_panel.mojom.m.js'
+export * from 'gen/brave/components/speedreader/common/speedreader_toolbar.mojom.m.js'
 
-const factory = SpeedreaderPanel.PanelFactory.getRemote()
+const factory = mojom.ToolbarFactory.getRemote()
 
-export const panelHandler = new SpeedreaderPanel.PanelHandlerRemote()
-export const panelDataHandler = new SpeedreaderPanel.PanelDataHandlerRemote()
+export const dataHandler = new mojom.ToolbarDataHandlerRemote()
+export const eventsHandler = new mojom.ToolbarEventsHandlerCallbackRouter()
 
 factory.createInterfaces(
-  panelHandler.$.bindNewPipeAndPassReceiver(),
-  panelDataHandler.$.bindNewPipeAndPassReceiver())
+  dataHandler.$.bindNewPipeAndPassReceiver(),
+  eventsHandler.$.bindNewPipeAndPassRemote())

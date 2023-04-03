@@ -28,8 +28,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/ui/webui/speedreader/speedreader_panel_ui.h"
-#include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_panel_view.h"
 #endif
 
 namespace speedreader {
@@ -74,8 +73,8 @@ class BraveBrowserView : public BrowserView,
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;
-  void ShowSpeedreaderWebUIBubble(Browser* browser) override;
-  void HideSpeedreaderWebUIBubble() override;
+  void ShowReaderModeToolbar(Browser* browser) override;
+  void HideReaderModeToolbar() override;
   bool GetTabStripVisible() const override;
 #if BUILDFLAG(IS_WIN)
   bool GetSupportsTitle() const override;
@@ -159,8 +158,7 @@ class BraveBrowserView : public BrowserView,
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<WebUIBubbleManagerT<SpeedreaderPanelUI>>
-      speedreader_webui_bubble_manager_;
+  std::unique_ptr<ReaderModePanelView> reader_mode_panel_view_;
 #endif
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;

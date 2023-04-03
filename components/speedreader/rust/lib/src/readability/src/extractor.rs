@@ -318,11 +318,14 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
 
 pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
     if let Some(first_child) = root.first_child() {
+        let meta_area = dom::create_element_simple(dom, "div", "", None);
+        dom::set_attr("id", "3bafd2b4-a87d-4471-8134-7a9cca092000", meta_area.clone(), true);
+
         // Add in the title
         if !meta.title.is_empty() {
             let title_header =
                 dom::create_element_simple(dom, "h1", "title metadata", Some(&meta.title));
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(title_header));
+            dom.append(&meta_area, NodeOrText::AppendNode(title_header));
         }
         // Add in the description
         if let Some(ref text) = meta.description {
@@ -337,17 +340,17 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
                 "subhead metadata",
                 Some(&text[..slice_offset]),
             );
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(description));
+            dom.append(&meta_area, NodeOrText::AppendNode(description));
         }
 
         // Vertical split
         if meta.author.is_some() || meta.last_modified.is_some() {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+            dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
 
         let metadata_parent = dom::create_element_simple(dom, "div", "metadata", None);
-        dom.append_before_sibling(&first_child, NodeOrText::AppendNode(metadata_parent.clone()));
+        dom.append(&meta_area, NodeOrText::AppendNode(metadata_parent.clone()));
 
         // Add in the author
         if let Some(ref text) = meta.author {
@@ -393,8 +396,16 @@ pub fn post_process(dom: &mut Sink, root: Handle, meta: &Meta) {
             || meta.last_modified.is_some()
         {
             let splitter = dom::create_element_simple(dom, "hr", "", None);
-            dom.append_before_sibling(&first_child, NodeOrText::AppendNode(splitter));
+            dom.append(&meta_area, NodeOrText::AppendNode(splitter));
         }
+
+        let content =
+            dom::create_element_simple(dom, "div", "", None);
+        dom::set_attr("id", "7c08a417-bf02-4241-a55e-ad5b8dc88f69", content.clone(), true);
+        dom.reparent_children(&root, &content);
+
+        dom.append(&root, NodeOrText::AppendNode(meta_area));
+        dom.append(&root, NodeOrText::AppendNode(content));
 
         // Our CSS formats based on id="article".
         dom::set_attr("id", "article", root, true);

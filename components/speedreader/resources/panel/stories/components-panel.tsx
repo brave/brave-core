@@ -9,7 +9,7 @@ import { withKnobs } from '@storybook/addon-knobs'
 import './locale'
 import MainPanel from '../components/main-panel'
 import ThemeProvider from '$web-common/BraveCoreThemeProvider'
-import { ContentStyle, FontFamily, FontSize, SiteSettings, Theme } from '../api/browser'
+import { FontFamily, FontSize, PlaybackSpeed, SiteSettings, Theme, TtsSettings } from '../api/browser'
 
 export default {
   title: 'Speedreader/Panels',
@@ -35,21 +35,27 @@ export const _Main = () => {
   const siteSettings: SiteSettings = {
     isEnabled: true,
     fontFamily: FontFamily.kSans,
-    contentStyle: ContentStyle.kDefault,
     fontSize: FontSize.k100,
     theme: Theme.kDark,
     host: 'www.nytimes.com'
+  }
+
+  const ttsSettings: TtsSettings = {
+    voice: "",
+    speed: PlaybackSpeed.k100
   }
 
   return (
     <S.PanelFrame>
       <MainPanel
         siteSettings={siteSettings}
+        ttsSettings={ttsSettings}
         onThemeChange={() => {}}
         onFontSizeChange={() => {}}
-        onContentStyleChange={() => {}}
-        onFontFamilyChange={() => {}}
+        onFontFamilyChange={() => {}}        
         onToggleChange={() => {}}
+        onTtsSpeedChange={()=> {}}
+        onTtsVoiceChange={()=> {}}
       />
     </S.PanelFrame>
   )

@@ -195,7 +195,7 @@
     "META": {"sizes": {"includes": [30]}},
     "includes": [61000],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_speedreader_panel/brave_speedreader_panel.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-brave_speedreader_toolbar/brave_speedreader_toolbar.grd": {
     "META": {"sizes": {"includes": [20]}},
     "includes": [61020],
   },

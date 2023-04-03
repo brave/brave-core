@@ -5,13 +5,51 @@
 import * as React from 'react'
 
 import * as S from './style'
-import fontSerifSvg from '../../svg/fontSerif'
-import fontSansSvg from '../../svg/fontSans'
-import fontMonoSvg from '../../svg/fontMono'
-import fontDyslexicSvg from '../../svg/fontDyslexic'
-import contentTextOnlySvg from '../../svg/contentTextOnly'
-import contentTextWithImagesSvg from '../../svg/contentTextWithImages'
-import { FontFamily, ContentStyle } from '../../api/browser'
+import fontSerifSvg from '../../svg/readermode_serif'
+import fontSansSvg from '../../svg/readermode_sans'
+import fontMonoSvg from '../../svg/readermode_mono'
+import fontDyslexicSvg from '../../svg/readermode_dislexyc'
+import SettingsSVG from '../../svg/characters'
+import HeadphonesSVG from '../../svg/headphones'
+import OriginalSVG from '../../svg/product_speedreader'
+import AiSVG from '../../svg/product_brave_ai'
+import PlusSVG from '../../svg/plus_add'
+import MinusSVG from '../../svg/minus'
+import RewindSVG from '../../svg/rewind_outline'
+import PlaySVG from '../../svg/play_outline'
+import StopSVG from '../../svg/pause_outline'
+import ForwardSVG from '../../svg/forward_outline'
+import SpeedSVG from '../../svg/speed'
+import FontSizeSVG from '../../svg/font_size'
+import { FontFamily, FontSize, PlaybackSpeed } from '../../api/browser'
+import classnames from '$web-common/classnames'
+
+export enum MainButtonType {
+  None,
+  Options,
+  TextToSpeech,
+  ShowOriginal,
+  AI
+}
+
+const mainButtonsOptions = [
+  {
+    type: MainButtonType.Options,
+    svgIcon: SettingsSVG
+  },
+  {
+    type: MainButtonType.TextToSpeech,
+    svgIcon: HeadphonesSVG
+  },
+  {
+    type: MainButtonType.ShowOriginal,
+    svgIcon: OriginalSVG
+  },
+  {
+    type: MainButtonType.AI,
+    svgIcon: AiSVG
+  }
+]
 
 const fontStyleOptions = [
   {
@@ -36,27 +74,15 @@ const fontStyleOptions = [
   }
 ]
 
-const contentStyleOptions = [
-  {
-    title: 'Text with images',
-    contentStyle: ContentStyle.kDefault,
-    svgIcon: contentTextWithImagesSvg
-  },
-  {
-    title: 'Text only',
-    contentStyle: ContentStyle.kTextOnly,
-    svgIcon: contentTextOnlySvg
-  }
-]
-
 type OptionType = {
   isSelected: boolean
   children: JSX.Element
   onClick?: Function
   ariaLabel?: string
+  inGroup?: boolean
 }
 
-function ListBox (props: React.PropsWithChildren<{}>) {
+function ListBox(props: React.PropsWithChildren<{}>) {
   return (
     <S.Box role="listbox" aria-orientation="horizontal">
       {props.children}
@@ -64,21 +90,53 @@ function ListBox (props: React.PropsWithChildren<{}>) {
   )
 }
 
-function Option (props: OptionType) {
+function Option(props: OptionType) {
   const handleClick = () => {
     props.onClick?.()
   }
 
+  const optionClass = classnames({
+    'is-active': props.isSelected,
+    'group': props?.inGroup
+  })
+
   return (
-    <button
+    <S.Button
       role="option"
-      className={props.isSelected ? 'is-active' : ''}
+      className={optionClass}
       aria-selected={props.isSelected}
       aria-label={props?.ariaLabel}
       onClick={handleClick}
     >
       {props.children}
-    </button>
+    </S.Button>
+  )
+}
+
+interface MainButtonsListProps {
+  activeButton: MainButtonType;
+  onClick?: Function
+}
+
+export function MainButtonsList(props: MainButtonsListProps) {
+  const handleClick = (active: MainButtonType) => {
+    props.onClick?.(active)
+  }
+
+  return (
+    <ListBox>
+      {mainButtonsOptions.map(entry => {
+        return (
+          <Option
+            key={entry.type}
+            isSelected={props.activeButton === entry.type}
+            onClick={handleClick.bind(this, entry.type)}
+          >
+            {<entry.svgIcon/>}
+          </Option>
+        )
+      })}
+    </ListBox>
   )
 }
 
@@ -87,7 +145,7 @@ interface FontStyleListProps {
   onClick?: Function
 }
 
-export function FontStyleList (props: FontStyleListProps) {
+export function FontStyleList(props: FontStyleListProps) {
   const handleClick = (fontFamily: FontFamily) => {
     props.onClick?.(fontFamily)
   }
@@ -99,12 +157,10 @@ export function FontStyleList (props: FontStyleListProps) {
           <Option
             key={entry.title}
             isSelected={props.activeFontFamily === entry.family}
+            inGroup={true}
             onClick={handleClick.bind(this, entry.family)}
           >
-            <div className="sm">
-              <div>{<entry.svgIcon />}</div>
-              {entry.title}
-            </div>
+            {<entry.svgIcon />}
           </Option>
         )
       })}
@@ -112,30 +168,133 @@ export function FontStyleList (props: FontStyleListProps) {
   )
 }
 
-interface ContentStyleProps {
-  activeContentStyle: ContentStyle
+interface FontSizeListProps {
+  currentSize: FontSize
   onClick?: Function
 }
 
-export function ContentList (props: ContentStyleProps) {
-  const handleClick = (contentStyle: ContentStyle) => {
-    props.onClick?.(contentStyle)
+export function FontSizeList(props: FontSizeListProps) {
+  enum ActionType {
+    Inc,
+    Dec
+  }
+
+  const updateSize = (action: ActionType) => {
+    const newSize = action === ActionType.Dec ? props.currentSize - 10 : props.currentSize + 10
+    if (newSize >= FontSize.MIN_VALUE && newSize <= FontSize.MAX_VALUE) {
+      props.onClick?.(newSize)
+      return
+    }
+    return props.onClick?.(props.currentSize)
   }
 
   return (
     <ListBox>
-      {contentStyleOptions.map(entry => {
-        return (
-          <Option
-            key={entry.title}
-            isSelected={props.activeContentStyle === entry.contentStyle}
-            ariaLabel={entry.title}
-            onClick={handleClick.bind(this, entry.contentStyle)}
-          >
-            <div>{<entry.svgIcon />}</div>
-          </Option>
-        )
-      })}
+      <Option
+        inGroup={true}
+        isSelected={false}
+        onClick={() => updateSize(ActionType.Dec)}
+      >
+        <MinusSVG />
+      </Option>
+      <S.CurrentState className='group' disabled={true}>
+        <FontSizeSVG />
+        <span>{props.currentSize}% </span>
+      </S.CurrentState>
+      <Option
+        inGroup={true}
+        isSelected={false}
+        onClick={() => updateSize(ActionType.Inc)}
+      >
+        <PlusSVG />
+      </Option>
+    </ListBox>
+  )
+}
+
+export enum Playback {
+  Rewind,
+  Play,
+  Pause,
+  Stop,
+  Forward
+}
+
+interface PlaybackListProps {
+  isPlaying: boolean
+  onClick?: Function
+}
+
+export function PlaybackList(props: PlaybackListProps) {
+  return (
+    <ListBox>
+      <Option
+        inGroup={true}
+        isSelected={false}
+        onClick={() => { props.onClick?.(Playback.Rewind) }}
+      >
+        <RewindSVG />
+      </Option>
+      <Option
+        inGroup={true}
+        isSelected={false}        
+        onClick={() => { props.onClick?.(props.isPlaying ? Playback.Stop : Playback.Play) }}
+      >
+        <div>
+          {props.isPlaying ? <StopSVG /> : <PlaySVG />}
+        </div>
+      </Option>
+      <Option
+        inGroup={true}
+        isSelected={false}
+        onClick={() => { props.onClick?.(Playback.Forward) }}
+      >
+        <ForwardSVG />
+      </Option>
+    </ListBox>
+  )
+}
+
+interface PlaybackSpeedListProps {
+  speed: PlaybackSpeed
+  onClick?: Function
+}
+
+export function PlaybackSpeedList(props: PlaybackSpeedListProps) {
+  enum ActionType {
+    Inc,
+    Dec
+  }
+  
+  const updateSpeed = (action: ActionType) => {
+    const newSpeed = action === ActionType.Dec ? props.speed - 10 : props.speed + 10
+    if (newSpeed >= PlaybackSpeed.MIN_VALUE && newSpeed <= PlaybackSpeed.MAX_VALUE) {
+      props.onClick?.(newSpeed)
+      return
+    }
+    return props.onClick?.(props.speed)
+  }
+
+  return (
+    <ListBox>
+      <Option
+        inGroup={true}
+        isSelected={false}
+        onClick={() => updateSpeed(ActionType.Dec)}
+      >
+        <MinusSVG />
+      </Option>
+      <S.CurrentState className='group' disabled={true}>
+        <SpeedSVG />
+        {props.speed}%
+      </S.CurrentState>
+      <Option
+        inGroup={true}
+        isSelected={false}
+        onClick={() => updateSpeed(ActionType.Inc)}
+      >
+        <PlusSVG />
+      </Option>
     </ListBox>
   )
 }

@@ -6,6 +6,8 @@
 // These IDs are hardcoded in extractor.rs
 const showOriginalLinkId = 'c93e2206-2f31-4ddc-9828-2bb8e8ed940e'
 const readTimeDivId = 'da24e4ef-db57-4b9f-9fa5-548924fc9c32'
+const metaDataDivId = '3bafd2b4-a87d-4471-8134-7a9cca092000'
+const contentDivId = '7c08a417-bf02-4241-a55e-ad5b8dc88f69'
 
 const $ = (id) => {
     return document.getElementById(id)
@@ -20,6 +22,8 @@ const initShowOriginalLink = () => {
     link.addEventListener('click', (e) => {
         window.speedreader.showOriginalPage()
     })
+
+    link.style.display = 'none'
 }
 
 const calculateReadtime = () => {
@@ -39,6 +43,15 @@ const defaultSpeedreaderData = {
     showOriginalLinkText: 'View original',
     averageWordsPerMinute: 265,
     minutesText: 'min. read',
+}
+
+const extractText = () => {
+    return {
+        title: document.title,
+        author: $(metaDataDivId).querySelector('.author').textContent,
+        desciption: $(metaDataDivId).querySelector('.subhead').textContent,
+        content: $(contentDivId).innerText.replace(/\n|\r +/g, ' ')
+    }
 }
 
 const main = () => {

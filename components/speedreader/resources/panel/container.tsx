@@ -5,65 +5,68 @@
 
 import * as React from 'react'
 
-import { panelDataHandler, SiteSettings, Theme, FontSize, ContentStyle, FontFamily } from './api/browser'
-import MainPanel from './components/main-panel'
+import { dataHandler, SiteSettings, TtsSettings, Theme, FontSize, FontFamily, PlaybackSpeed, eventsHandler } from './api/browser'
+import Toolbar from './components/toolbar'
 
-function Container () {
+function Container() {
   const [siteSettings, setSiteSettings] = React.useState<SiteSettings | undefined>()
+  const [ttsSettings, setTtsSettings] = React.useState<TtsSettings | undefined>()
 
   React.useEffect(() => {
-    const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        panelDataHandler.getSiteSettings().then(res => setSiteSettings(res.siteSettings))
-      }
-    }
-
-    document.addEventListener('visibilitychange', onVisibilityChange)
-    panelDataHandler.getSiteSettings().then(res => setSiteSettings(res.siteSettings))
-
-    return () => {
-      document.removeEventListener('visibilitychange', onVisibilityChange)
-    }
+    dataHandler.getSiteSettings().then(res => setSiteSettings(res.siteSettings))
+    dataHandler.getTtsSettings().then(res => setTtsSettings(res.ttsSettings))
+    eventsHandler.onSiteSettingsChanged.addListener((settings: SiteSettings) => {
+      setSiteSettings(settings)
+    })
   }, [])
 
-  if (!siteSettings) {
+  if (!siteSettings || !ttsSettings) {
     return null
   }
 
   const handleThemeChange = (theme: Theme) => {
-    setSiteSettings({ ...siteSettings, theme })
-    panelDataHandler.setTheme(theme)
+    const settings = { ...siteSettings, theme }
+    dataHandler.setSiteSettings(settings)
   }
 
   const handleFontSizeChange = (fontSize: FontSize) => {
-    setSiteSettings({ ...siteSettings, fontSize })
-    panelDataHandler.setFontSize(fontSize)
-  }
-
-  const handleContentStyleChange = (contentStyle: ContentStyle) => {
-    setSiteSettings({ ...siteSettings, contentStyle })
-    panelDataHandler.setContentStyle(contentStyle)
+    const settings = { ...siteSettings, fontSize }
+    dataHandler.setSiteSettings(settings)
   }
 
   const handleFontFamilyChange = (fontFamily: FontFamily) => {
-    setSiteSettings({ ...siteSettings, fontFamily })
-    panelDataHandler.setFontFamily(fontFamily)
+    const settings = { ...siteSettings, fontFamily }
+    dataHandler.setSiteSettings(settings)
   }
 
-  const handleToggleChange = (isOn: boolean) => {
-    panelDataHandler.setEnabled(isOn)
-    panelDataHandler.getSiteSettings().then(res => setSiteSettings(res.siteSettings))
+  const handleToggleChange = (isEnabled: boolean) => {
+    const settings = { ...siteSettings, isEnabled }
+    dataHandler.setSiteSettings(settings)
+  }
+
+  const handleTtsVoiceChange = (voice: string) => {
+    const settings = { ...ttsSettings, voice }
+    setTtsSettings(settings)
+    dataHandler.setTtsSettings(settings)
+  }
+
+  const handleTtsSpeedChange = (speed: PlaybackSpeed) => {
+    const settings = { ...ttsSettings, speed }
+    setTtsSettings(settings)
+    dataHandler.setTtsSettings(settings)
   }
 
   return (
-   <MainPanel
+    <Toolbar
       siteSettings={siteSettings}
+      ttsSettings={ttsSettings}
       onThemeChange={handleThemeChange}
       onFontSizeChange={handleFontSizeChange}
-      onContentStyleChange={handleContentStyleChange}
       onFontFamilyChange={handleFontFamilyChange}
       onToggleChange={handleToggleChange}
-   />
+      onTtsVoiceChange={handleTtsVoiceChange}
+      onTtsSpeedChange={handleTtsSpeedChange}
+    />
   )
 }
 

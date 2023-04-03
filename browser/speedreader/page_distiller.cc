@@ -62,17 +62,22 @@ void PageDistiller::StartDistill(DistillContentCallback callback) {
     return std::move(callback).Run(false, {});
   }
 
-  constexpr const char16_t kGetDocumentSource[] =
-      uR"js( document.documentElement.outerHTML )js";
-
-  constexpr const char16_t kGetBodySource[] =
-      uR"js( document.body.outerHTML )js";
-
-  web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
-      (state_ != State::kDistilled) ? kGetDocumentSource : kGetBodySource,
-      base::BindOnce(&PageDistiller::OnGetOuterHTML, weak_factory_.GetWeakPtr(),
-                     std::move(callback)),
-      ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  if (state_ == State::kDistilled) {
+    constexpr const char16_t kScript[] = uR"js( extractText() )js";
+    web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+        kScript,
+        base::BindOnce(&PageDistiller::OnGetText,
+                       weak_factory_.GetWeakPtr(), std::move(callback)),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  } else {
+    constexpr const char16_t kScript[] =
+        uR"js( document.documentElement.outerHTML )js";
+    web_contents_->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
+        kScript,
+        base::BindOnce(&PageDistiller::OnGetOuterHTML,
+                       weak_factory_.GetWeakPtr(), std::move(callback)),
+        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+  }
 }
 
 void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
@@ -99,6 +104,16 @@ void PageDistiller::OnGetOuterHTML(DistillContentCallback callback,
         base::BindOnce(&PageDistiller::OnPageDistilled,
                        weak_factory_.GetWeakPtr(), std::move(callback)));
   }
+}
+
+void PageDistiller::OnGetText(DistillContentCallback callback,
+                              base::Value result) {
+  if (!web_contents_ || !result.is_dict() ||
+      !result.GetDict().FindString("content")) {
+    return std::move(callback).Run(false, {});
+  }
+  std::move(callback).Run(true,
+                          std::move(*result.GetDict().FindString("content")));
 }
 
 void PageDistiller::OnPageDistilled(DistillContentCallback callback,
@@ -134,7 +149,6 @@ void PageDistiller::ExtractText(DistillContentCallback callback,
     return std::move(callback).Run(false, {});
   }
 
-  re2::RE2::GlobalReplace(&html_content, "<[^>]*>", " ");
   std::move(callback).Run(true, html_content);
 }
 

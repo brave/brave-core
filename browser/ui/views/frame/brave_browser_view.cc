@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -34,6 +35,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/speedreader/reader_mode_panel_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
@@ -48,6 +50,7 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
+#include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -373,24 +376,24 @@ void BraveBrowserView::SetStarredState(bool is_starred) {
   }
 }
 
-void BraveBrowserView::ShowSpeedreaderWebUIBubble(Browser* browser) {
-  if (!speedreader_webui_bubble_manager_) {
-    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
-
-    speedreader_webui_bubble_manager_ =
-        std::make_unique<WebUIBubbleManagerT<SpeedreaderPanelUI>>(
-            browser_view->GetLocationBarView(), GetProfile(),
-            GURL(base::StringPiece(kSpeedreaderPanelURL)),
-            IDS_SPEEDREADER_BRAND_LABEL);
+void BraveBrowserView::ShowReaderModeToolbar(Browser* browser) {
+  if (!reader_mode_panel_view_) {
+    reader_mode_panel_view_ =
+        std::make_unique<ReaderModePanelView>(GetProfile());
+    contents_web_view()->parent()->AddChildView(reader_mode_panel_view_.get());
+    static_cast<BraveContentsLayoutManager*>(GetContentsLayoutManager())
+        ->set_reader_mode_panel(reader_mode_panel_view_.get());
+  } else {
+    reader_mode_panel_view_->SetVisible(true);
   }
 
-  speedreader_webui_bubble_manager_->ShowBubble();
+  Layout();
 }
 
-void BraveBrowserView::HideSpeedreaderWebUIBubble() {
-  if (speedreader_webui_bubble_manager_ &&
-      speedreader_webui_bubble_manager_->GetBubbleWidget()) {
-    speedreader_webui_bubble_manager_->CloseBubble();
+void BraveBrowserView::HideReaderModeToolbar() {
+  if (reader_mode_panel_view_) {
+    reader_mode_panel_view_->SetVisible(false);
+    Layout();
   }
 }
 

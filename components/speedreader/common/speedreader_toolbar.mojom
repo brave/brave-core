@@ -1,0 +1,105 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
+module speedreader.mojom;
+
+interface ToolbarFactory {
+  CreateInterfaces(pending_receiver<ToolbarDataHandler> toolbar_data_handler,
+                   pending_remote<ToolbarEventsHandler> toolbar_events_handler);
+};
+
+interface ToolbarDataHandler {
+  GetSiteSettings() => (SiteSettings site_settings);
+  SetSiteSettings(SiteSettings site_settings);
+
+  GetTtsSettings() => (TtsSettings tts_settings);
+  SetTtsSettings(TtsSettings tts_settings);
+
+  ViewOriginal();
+
+  Rewind();
+  Play();
+  Pause();
+  Stop();
+  Forward();  
+};
+
+interface ToolbarEventsHandler {
+  OnSiteSettingsChanged(SiteSettings site_settings);
+  OnTtsSettingsChanged(TtsSettings tts_settings);
+
+  OnReadingStateChanged(ReadingState state);
+};
+
+struct SiteSettings {
+  Theme theme;
+  FontSize fontSize;
+  FontFamily fontFamily;
+  string host;
+  bool is_enabled;
+};
+
+struct TtsSettings {
+  string voice;
+  PlaybackSpeed speed = PlaybackSpeed.k100;
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum Theme {
+  kNone = 0,  // User doesn't select anything.
+  kLight = 1,
+  kSepia = 2,
+  kDark = 3,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+// Font size in percents.
+enum FontSize {
+  k50 = 50,
+  k60 = 60,
+  k70 = 70,
+  k80 = 80,
+  k90 = 90,
+  k100 = 100,
+  k110 = 110,
+  k120 = 120,
+  k130 = 130,
+  k140 = 140,
+  k150 = 150,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum FontFamily {
+  kSans = 0,
+  kSerif = 1,
+  kMono = 2,
+  kDyslexic = 3,
+};
+
+// Enum is used in prefs. Be careful when changing or extending.
+enum PlaybackSpeed {
+  k50 = 50,
+  k60 = 60,
+  k70 = 70,
+  k80 = 80,
+  k90 = 90,
+  k100 = 100,
+  k110 = 110,
+  k120 = 120,
+  k130 = 130,
+  k140 = 140,
+  k150 = 150,
+  k160 = 160,
+  k170 = 170,
+  k180 = 180,
+  k190 = 190,
+  k200 = 200,
+};
+
+enum ReadingState {
+  kStopped = 1,
+  kPaused = 2,
+  kPlaying = 3,
+};

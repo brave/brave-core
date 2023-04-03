@@ -5,43 +5,51 @@
 import styled from 'styled-components'
 
 export const Box = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 6px;
+  display: flex;
+  height: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  gap: 8px;
 
   .chip {
-    --border-color: transparent;
+    display: grid;
+    grid-template-columns: 1fr;
 
-    margin: 0 auto;
-    width: auto;
-    height: 48px;
-    background: transparent;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    position: relative;
-    padding: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 100px;
+    border: 1px solid var(--color-border);
     cursor: pointer;
-  }
-
-  i {
-    position: absolute;
-    right: 6px;
-    bottom: 4px;
-  }
-
-  .chip.is-active {
-    --border-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .icon-box {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border-radius: 8px;
+    padding: 0;
     overflow: hidden;
   }
 
-  .is-light { background: #F6F6F9; }
-  .is-dark { background: #17171F; }
-  .is-sepia { background: #E9E0CA; }
+  .icon-box {
+    grid-area: 1 / 1 / 2 / 2; 
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+    border: none;
+  }
+
+  .mark {
+    grid-area: 1 / 1 / 2 / 2; 
+    width: 16px;
+    height: 16px;
+    align-self: center;
+    justify-self: center;
+    color: #5F5CF1;
+  }
+
+  .is-light { background-color: #FFFFFF; }
+  .is-dark { background-color: #000000; }
+  .is-sepia { background-color: #F2EBD9; }
 `

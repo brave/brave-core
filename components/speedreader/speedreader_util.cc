@@ -68,10 +68,6 @@ bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url) {
   return enabled;
 }
 
-bool IsSpeedreaderPanelV2Enabled() {
-  return base::FeatureList::IsEnabled(speedreader::kSpeedreaderPanelV2);
-}
-
 void DistillPage(const GURL& url,
                  std::string body,
                  SpeedreaderService* speedreader_service,
@@ -111,8 +107,7 @@ void DistillPage(const GURL& url,
   auto rewriter = rewriter_service->MakeRewriter(
       url, speedreader_service->GetThemeName(),
       speedreader_service->GetFontFamilyName(),
-      speedreader_service->GetFontSizeName(),
-      speedreader_service->GetContentStyleName());
+      speedreader_service->GetFontSizeName(), "");
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},

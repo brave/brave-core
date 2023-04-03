@@ -49,17 +49,32 @@ void BraveContentsLayoutManager::Layout(views::View* contents_container) {
   const gfx::Rect bounds(sidebar_x, 0, proposed_sidebar_width, contents_height);
   sidebar_container_view_->SetBoundsRect(host_->GetMirroredRect(bounds));
 
+  if (reader_mode_panel_view_ && reader_mode_panel_view_->GetVisible()) {
+    contents_height -= 40;
+  }
   gfx::Size container_size(contents_width, contents_height);
   gfx::Rect new_devtools_bounds;
   gfx::Rect new_contents_bounds;
+  gfx::Rect reader_mode_panel_bounds;
 
   ApplyDevToolsContentsResizingStrategy(
       strategy_, container_size, &new_devtools_bounds, &new_contents_bounds);
 
   new_devtools_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
   new_contents_bounds.Offset(sidebar_on_left_ ? proposed_sidebar_width : 0, 0);
+
+  if (reader_mode_panel_view_ && reader_mode_panel_view_->GetVisible()) {
+    reader_mode_panel_bounds.SetRect(new_contents_bounds.x(), 0,
+                                     new_contents_bounds.width(), 40);
+    new_contents_bounds.set_y(reader_mode_panel_bounds.height());
+  }
   // DevTools cares about the specific position, so we have to compensate RTL
   // layout here.
   devtools_view_->SetBoundsRect(host_->GetMirroredRect(new_devtools_bounds));
   contents_view_->SetBoundsRect(host_->GetMirroredRect(new_contents_bounds));
+
+  if (reader_mode_panel_view_) {
+    reader_mode_panel_view_->SetBoundsRect(
+        host_->GetMirroredRect(reader_mode_panel_bounds));
+  }
 }

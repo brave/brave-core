@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
   <if expr="enable_speedreader">
-    <message name="IDS_SPEEDREADER_BRAND_LABEL" desc="Used in places to show brand title">Brave Speedreader</message>
-    <message name="IDS_SPEEDREADER_BRAND_LABEL_2" desc="Used in places to show brand title"> Speedreader</message>
-    <message name="IDS_SPEEDREADER_ALWAYS_LOAD_LABEL" desc="Used for a checkbox label">Always load speedreader mode for <ph name="HOST_NAME">$1</ph></message>
-    <message name="IDS_SPEEDREADER_THEME_LABEL" desc="Title for changing current page's theme">Theme</message>
-    <message name="IDS_SPEEDREADER_FONT_STYLE_LABEL" desc="Title for changing current page's font style">Font style</message>
-    <message name="IDS_SPEEDREADER_CONTENT_STYLE_LABEL" desc="Title for changing current page's content related properties">Content</message>
-    <message name="IDS_SPEEDREADER_TURN_OFF_DESC" desc="A long form description when speedreader is turned off">
-    Toggle reader mode just for this website. To turn off Speedreader for your entire browser profile, visit <ph name="LINK_BEFORE">$1</ph>Settings.<ph name="LINK_AFTER">$2</ph>
-    </message>
-    <message name="IDS_TOOLTIP_TURN_ON_SPEEDREADER" desc="Tooltip on the turned off speedreader toggle.">Turn ON Speedreader</message>
-    <message name="IDS_TOOLTIP_TURN_OFF_SPEEDREADER" desc="Tooltip on the turned on speedreader toggle.">Turn OFF Speedreader</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_SITE_LABEL" desc="Used for a checkbox label">Always display in reader mode for this site</message>
+    <message name="IDS_READER_MODE_ALWAYS_LOAD_FOR_ALL_SITES_LABEL" desc="Used for a checkbox label">Always display in reader mode for all sites</message>
+    <message name="IDS_READER_MODE_NOTE_LABEL" desc="Used for note label">Not all sites provide reader mode capabilities.</message>
+
+    <message name="IDS_READER_MODE_CAPTION" desc="Used for toolbar label">Reader mode</message>
+    <message name="IDS_READER_MODE_CLOSE" desc="Used for close button in toolbar">Close</message>
   </if>
 </grit-part>

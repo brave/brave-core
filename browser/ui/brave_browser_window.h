@@ -42,8 +42,8 @@ class BraveBrowserWindow : public BrowserWindow {
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
       bool is_enabled);
-  virtual void ShowSpeedreaderWebUIBubble(Browser* browser) {}
-  virtual void HideSpeedreaderWebUIBubble() {}
+  virtual void ShowReaderModeToolbar(Browser* browser) {}
+  virtual void HideReaderModeToolbar() {}
 #endif
 
 #if defined(TOOLKIT_VIEWS)

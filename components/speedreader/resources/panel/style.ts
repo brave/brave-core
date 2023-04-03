@@ -4,10 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
-export const PanelWrapper = styled.div`
-  width: 320px;
-  min-height: 150px;
-  position: relative;
-  overflow-y: auto;
+export const ToolbarWrapper = styled.div`
+  width: 100%;
+  height: 40px;
   display: flex;
+  background: var(--color-panel-background);
+  color: var(--color-button-text);
+  font-family: ${(p) => p.theme.fontFamily.heading};
+  border-bottom: 1px solid var(--color-border);
+
+  --color-panel-background: var(--color-toolbar);
+  --color-button-text: var(--color-tab-foreground);
+  --color-border: var(--color-frame-active);
 `

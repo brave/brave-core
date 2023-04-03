@@ -57,7 +57,15 @@ class SpeedreaderRewriterTestBase : public ::testing::Test {
 
   void CheckContent(const std::string& expected_content,
                     const std::string& filename) {
-    EXPECT_EQ(GetFileContent(filename), expected_content) << expected_content;
+    const auto check = GetFileContent(filename) == expected_content;
+    EXPECT_TRUE(check) << expected_content;
+#if DCHECK_IS_ON()
+    if (!check) {
+      const auto out_path =
+          current_process_dir_.AppendASCII(filename).AddExtensionASCII("actual");
+      base::WriteFile(out_path, expected_content);
+    }
+#endif
   }
 
   const base::FilePath& test_data_dir() const { return test_data_dir_; }

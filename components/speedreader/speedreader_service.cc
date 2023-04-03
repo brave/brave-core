@@ -10,9 +10,8 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/strings/string_util.h"
 #include "brave/components/speedreader/common/features.h"
-#include "brave/components/speedreader/common/speedreader_panel.mojom-shared.h"
+#include "brave/components/speedreader/common/speedreader_toolbar.mojom.h"
 #include "brave/components/speedreader/speedreader_pref_names.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -21,6 +20,11 @@
 namespace speedreader {
 
 namespace {
+
+using mojom::FontFamily;
+using mojom::FontSize;
+using mojom::PlaybackSpeed;
+using mojom::Theme;
 
 // Note: append-only array! Never remove any existing values, as this array
 // is used to bucket a UMA histogram, and removing values breaks that.
@@ -51,8 +55,9 @@ constexpr char kSpeedreaderEnabledUMAHistogramName[] =
 void StoreTogglesHistogram(uint64_t toggles) {
   int bucket = 0;
   for (const auto& bucket_upper_bound : kSpeedReaderToggleBuckets) {
-    if (toggles > bucket_upper_bound)
+    if (toggles > bucket_upper_bound) {
       bucket = bucket + 1;
+    }
   }
 
   UMA_HISTOGRAM_EXACT_LINEAR(kSpeedreaderToggleUMAHistogramName, bucket, 5);
@@ -105,8 +110,17 @@ void SpeedreaderService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                 static_cast<int>(FontSize::k100));
   registry->RegisterIntegerPref(kSpeedreaderPrefFontFamily,
                                 static_cast<int>(FontFamily::kSans));
-  registry->RegisterIntegerPref(kSpeedreaderPrefContentStyle,
-                                static_cast<int>(ContentStyle::kDefault));
+  registry->RegisterStringPref(kSpeedreaderPrefTtsVoice, "");
+  registry->RegisterIntegerPref(kSpeedreaderPrefTtsSpeed,
+                                static_cast<int>(PlaybackSpeed::k100));
+}
+
+void SpeedreaderService::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void SpeedreaderService::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 void SpeedreaderService::ToggleSpeedreader() {
@@ -149,16 +163,56 @@ void SpeedreaderService::IncrementPromptCount() {
   prefs_->SetInteger(kSpeedreaderPrefPromptCount, count + 1);
 }
 
-void SpeedreaderService::SetTheme(Theme theme) {
-  prefs_->SetInteger(kSpeedreaderPrefTheme, static_cast<int>(theme));
+void SpeedreaderService::SetSiteSettings(
+    const mojom::SiteSettings& site_settings) {
+  prefs_->SetInteger(kSpeedreaderPrefTheme,
+                     static_cast<int>(site_settings.theme));
+  prefs_->SetInteger(kSpeedreaderPrefFontSize,
+                     static_cast<int>(site_settings.fontSize));
+  prefs_->SetInteger(kSpeedreaderPrefFontFamily,
+                     static_cast<int>(site_settings.fontFamily));
+
+  for (auto& o : observers_) {
+    o.OnSiteSettingsChanged(site_settings);
+  }
 }
 
-Theme SpeedreaderService::GetTheme() const {
-  return static_cast<Theme>(prefs_->GetInteger(kSpeedreaderPrefTheme));
+mojom::SiteSettings SpeedreaderService::GetSiteSettings() const {
+  mojom::SiteSettings settings;
+
+  settings.theme =
+      static_cast<mojom::Theme>(prefs_->GetInteger(kSpeedreaderPrefTheme));
+  settings.fontSize =
+      static_cast<FontSize>(prefs_->GetInteger(kSpeedreaderPrefFontSize));
+  settings.fontFamily =
+      static_cast<FontFamily>(prefs_->GetInteger(kSpeedreaderPrefFontFamily));
+
+  return settings;
+}
+
+void SpeedreaderService::SetTtsSettings(
+    const mojom::TtsSettings& tts_settings) {
+  prefs_->SetString(kSpeedreaderPrefTtsVoice, tts_settings.voice);
+  prefs_->SetInteger(kSpeedreaderPrefTtsSpeed,
+                     static_cast<int>(tts_settings.speed));
+  for (auto& o : observers_) {
+    o.OnTtsSettingsChanged(tts_settings);
+  }
+}
+
+mojom::TtsSettings SpeedreaderService::GetTtsSettings() const {
+  mojom::TtsSettings settings;
+
+  settings.voice = prefs_->GetString(kSpeedreaderPrefTtsVoice);
+  settings.speed =
+      static_cast<PlaybackSpeed>(prefs_->GetInteger(kSpeedreaderPrefTtsSpeed));
+
+  return settings;
 }
 
 std::string SpeedreaderService::GetThemeName() const {
-  switch (GetTheme()) {
+  const auto settings = GetSiteSettings();
+  switch (settings.theme) {
     default:
       return {};
     case Theme::kNone:
@@ -172,29 +226,12 @@ std::string SpeedreaderService::GetThemeName() const {
   }
 }
 
-void SpeedreaderService::SetFontSize(FontSize size) {
-  prefs_->SetInteger(kSpeedreaderPrefFontSize, static_cast<int>(size));
-}
-
-FontSize SpeedreaderService::GetFontSize() const {
-  return static_cast<FontSize>(prefs_->GetInteger(kSpeedreaderPrefFontSize));
-}
-
 std::string SpeedreaderService::GetFontSizeName() const {
-  return std::to_string(static_cast<int>(GetFontSize()));
-}
-
-void SpeedreaderService::SetFontFamily(FontFamily font) {
-  prefs_->SetInteger(kSpeedreaderPrefFontFamily, static_cast<int>(font));
-}
-
-FontFamily SpeedreaderService::GetFontFamily() const {
-  return static_cast<FontFamily>(
-      prefs_->GetInteger(kSpeedreaderPrefFontFamily));
+  return std::to_string(static_cast<int>(GetSiteSettings().fontSize));
 }
 
 std::string SpeedreaderService::GetFontFamilyName() const {
-  switch (GetFontFamily()) {
+  switch (GetSiteSettings().fontFamily) {
     case FontFamily::kSans:
       return "sans";
     case FontFamily::kSerif:
@@ -203,24 +240,6 @@ std::string SpeedreaderService::GetFontFamilyName() const {
       return "mono";
     case FontFamily::kDyslexic:
       return "dyslexic";
-  }
-}
-
-void SpeedreaderService::SetContentStyle(ContentStyle style) {
-  prefs_->SetInteger(kSpeedreaderPrefContentStyle, static_cast<int>(style));
-}
-
-ContentStyle SpeedreaderService::GetContentStyle() const {
-  return static_cast<ContentStyle>(
-      prefs_->GetInteger(kSpeedreaderPrefContentStyle));
-}
-
-std::string SpeedreaderService::GetContentStyleName() const {
-  switch (GetContentStyle()) {
-    case ContentStyle::kDefault:
-      return base::EmptyString();
-    case ContentStyle::kTextOnly:
-      return "text-only";
   }
 }
 

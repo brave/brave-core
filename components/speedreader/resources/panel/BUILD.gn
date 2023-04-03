@@ -1,16 +1,16 @@
 import("//brave/components/common/typescript.gni")
 
-transpile_web_ui("brave_speedreader_panel_ui") {
+transpile_web_ui("brave_speedreader_toolbar_ui") {
   entry_points = [ [
-        "speedreader_panel",
-        rebase_path("speedreader_panel.tsx"),
+        "speedreader_toolbar",
+        rebase_path("speedreader_toolbar.tsx"),
       ] ]
-  resource_name = "brave_speedreader_panel"
+  resource_name = "brave_speedreader_toolbar"
   deps = [ "//brave/components/speedreader/common:mojom_js" ]
 }
 
 pack_web_resources("generated_resources") {
-  resource_name = "brave_speedreader_panel"
+  resource_name = "brave_speedreader_toolbar"
   output_dir = "$root_gen_dir/brave/components/speedreader/resources/panel"
-  deps = [ ":brave_speedreader_panel_ui" ]
+  deps = [ ":brave_speedreader_toolbar_ui" ]
 }

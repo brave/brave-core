@@ -83,8 +83,6 @@ void SetEnabledForSite(HostContentSettingsMap* map,
 // Checks content settings if Speedreader is disabled for the URL
 bool IsEnabledForSite(HostContentSettingsMap* map, const GURL& url);
 
-bool IsSpeedreaderPanelV2Enabled();
-
 using DistillationResultCallback =
     base::OnceCallback<void(DistillationResult result,
                             std::string original_data,

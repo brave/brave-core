@@ -31,6 +31,8 @@ static_library("speedreader") {
     "speedreader_url_loader.h",
     "speedreader_util.cc",
     "speedreader_util.h",
+    "tts_player.cc",
+    "tts_player.h"
   ]
 
   deps = [
