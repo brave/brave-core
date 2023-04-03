@@ -353,7 +353,7 @@
   "dependencies": {
     "@brave/leo": "github:brave/leo#fa7ffcd446e6ef23dd8ab7b549861d4668ca46a8",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
-    "@brave/wallet-standard-brave": "~0.0.6",
+    "@brave/wallet-standard-brave": "~0.0.9",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
