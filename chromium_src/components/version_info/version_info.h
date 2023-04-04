@@ -11,7 +11,7 @@
 #define GetChannelString GetChannelString_ChromiumImpl
 #define GetVersionNumber GetVersionNumber_Unused
 
-#include "src/components/version_info/version_info.h"
+#include "src/components/version_info/version_info.h"  // IWYU pragma: export
 #undef GetChannelString
 #undef GetVersionNumber
 

@@ -13,7 +13,7 @@
   GetSyncablePrefMetadata_ChromiumImpl(const std::string& pref_name) const; \
   absl::optional<sync_preferences::SyncablePrefMetadata> GetSyncablePrefMetadata
 
-#include "src/chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"
+#include "src/chrome/browser/sync/prefs/chrome_syncable_prefs_database.h"  // IWYU pragma: export
 #undef GetSyncablePrefMetadata
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PREFS_CHROME_SYNCABLE_PREFS_DATABASE_H_
