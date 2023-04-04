@@ -6,15 +6,17 @@
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
 import './brave_adblock_subpage.js';
-import { PolymerElement } from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import '//resources/cr_elements/md_select.css.js';
-import { DefaultBraveShieldsBrowserProxyImpl } from './default_brave_shields_browser_proxy.js';
-import {Router, RouteObserverMixin} from '../router.js';
-import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
+
+import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 
 import {loadTimeData} from '../i18n_setup.js';
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
-import {PrefsMixin} from '../prefs/prefs_mixin.js';
+import {RouteObserverMixin, RouteObserverMixin, Router, Router} from '../router.js';
+
+import {DefaultBraveShieldsBrowserProxyImpl, DefaultBraveShieldsBrowserProxyImpl} from './default_brave_shields_browser_proxy.js';
 import {getTemplate} from './default_brave_shields_page.html.js'
 
 const BraveShieldsPageBase = WebUiListenerMixin(I18nMixin(PrefsMixin(RouteObserverMixin(PolymerElement))))

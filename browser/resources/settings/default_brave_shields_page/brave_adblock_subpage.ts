@@ -5,16 +5,18 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
-import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import {BaseMixin} from '../base_mixin.js';
-import {PrefsMixin} from '../prefs/prefs_mixin.js';
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/icons.html.js';
 import './components/brave_adblock_subscribe_dropdown.js';
 import './components/brave_adblock_editor.js';
-import { BraveAdblockBrowserProxyImpl } from './brave_adblock_browser_proxy.js'
+
+import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
+import {BaseMixin} from '../base_mixin.js';
+
+import {BraveAdblockBrowserProxyImpl} from './brave_adblock_browser_proxy.js'
 import {getTemplate} from './brave_adblock_subpage.html.js'
 
 const AdBlockSubpageBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
