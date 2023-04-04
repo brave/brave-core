@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-PT">
+<translation id="3478449063771497234">As notificações estão desativadas</translation>
+<translation id="7466579932043491502">As Recompensas Brave podem não funcionar enquanto as notificações estão desativadas.</translation>
+<translation id="4259212006412783790">ATIVAR</translation>
+<translation id="6112331814131703370">Bloquear avisos 'Mudar para a aplicação'</translation>
 <translation id="4744921452903670666">Diga-nos o que pensa.</translation>
 <translation id="2524310205387880526">Classifique o Brave</translation>
 <translation id="4104400246019119780">Obrigado.</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Chegaram as Recompensas de Anúncios de <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194">Recompensas de <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/>BAT</translation>
 <translation id="1649629664206601032">Tem <ph name="TOKEN"/> dias para reivindicar</translation>
-<translation id="2323069945529668668">Uh oh!</translation>
-<translation id="7510166204621526816">O servidor de «Recompensas Brave» não está a responder. Nós iremos corrigir o erro o mais rapidamente possível.</translation>
 <translation id="683765328936486920">no YouTube</translation>
 <translation id="8969049974285901797">no Twitch</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>s insuficientes</translation>
@@ -611,7 +613,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="5050890334032852465">Guardar lista de observação da conta</translation>
 <translation id="7755766175599167100">Procurar tokens</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Continuar para Ramp</translation>
+<translation id="3956169227169516344">Selecionar método de compra</translation>
 <translation id="8488282162676695335">Wallet Brave</translation>
 <translation id="3784455785234192852">Bloquear</translation>
 <translation id="8796429300536029044">Detalhe de NFT</translation>
@@ -625,6 +627,10 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="414639769490080648">O número de minutos a aguardar até a Carteira Brave ser automaticamente bloqueada</translation>
 <translation id="4993345308607970390">Repor Carteira Brave</translation>
 <translation id="4322846864135539519">Tem a certeza de que pretende repor as Recompensas Brave? Ao repor a carteira, irá perder todos os dados da conta (incluindo todos os fundos associados), se não existir uma cópia de segurança da mesma. Introduza "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="6915083716464390008">Selecione uma das opções seguintes</translation>
+<translation id="7667423728712601865">Compre criptomoedas com Visa ou Mastercard.</translation>
+<translation id="3101839349578102016">Compra instantânea com a sua conta bancária. Taxas mais baixas.</translation>
+<translation id="7269640984027668973">Comprar com <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Limpar as informações de transações e nonces</translation>
 <translation id="5693968582510626466">Limpar transações pode ser útil para programadores ou quando limpa os estados num servidor local</translation>
 <translation id="5421107279168565467">Tem a certeza de que pretende repor as informações de transações e nonces? Esta opção é mais utilizada por programadores com um servidor de teste local. Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
@@ -799,7 +805,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="3506416339268164412">O endereço de receção é o endereço de contrato de um token</translation>
 <translation id="3494964159182650590">Resumo de Recompensas</translation>
 <translation id="590733288489975971">Rewards do Ads</translation>
-<translation id="207268487070188114">Gratificação esporádica</translation>
+<translation id="2613359062756190460">Contribuições Únicas</translation>
 <translation id="7577100371127227294">Contribuições Mensais</translation>
 <translation id="7091980679045978090">Lucros estimados</translation>
 <translation id="1346059596910821859">Gratificação</translation>

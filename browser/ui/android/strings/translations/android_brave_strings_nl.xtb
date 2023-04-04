@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="3478449063771497234">Meldingen zijn uitgeschakeld</translation>
+<translation id="7466579932043491502">Brave Rewards kunnen mogelijk niet werken als meldingen zijn uitgeschakeld.</translation>
+<translation id="4259212006412783790">INSCHAKELEN</translation>
+<translation id="6112331814131703370">Blokkeer "Naar app overschakelen"-meldingen</translation>
 <translation id="4744921452903670666">Geef ons uw mening!</translation>
 <translation id="2524310205387880526">Beoordeel Brave</translation>
 <translation id="4104400246019119780">Bedankt!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Uw advertentiebeloningen voor <ph name="MONTH_VALUE"/> zijn er!</translation>
 <translation id="2716238748894345194">Beloningen van <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">U hebt nog <ph name="TOKEN"/> dagen om te claimen</translation>
-<translation id="2323069945529668668">Oh jee!</translation>
-<translation id="7510166204621526816">De server van het Brave Beloningssysteem reageert niet. We zullen dit zo snel mogelijk oplossen.</translation>
 <translation id="683765328936486920">op Youtube</translation>
 <translation id="8969049974285901797">op Twitch</translation>
 <translation id="3101693828171454453">niet genoeg <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5050890334032852465">Sla je account-opvolglijst op.</translation>
 <translation id="7755766175599167100">Tokens zoeken</translation>
 <translation id="3835223348537121988">Saldo:</translation>
-<translation id="6888491517683356528">Doorgaan naar Ramp</translation>
+<translation id="3956169227169516344">Betaalmethode selecteren</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Vergrendelen</translation>
 <translation id="8796429300536029044">NFT-details</translation>
@@ -625,6 +627,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="414639769490080648">Het aantal minuten dat je moet wachten voordat de Brave-wallet automatisch wordt vergrendeld</translation>
 <translation id="4993345308607970390">Brave-wallet opnieuw instellen</translation>
 <translation id="4322846864135539519">Weet u zeker dat u uw Brave-beloningen opnieuw wilt instellen? Als u geen back-up van uw wallet hebt, gaan alle accountgegevens verloren (inclusief het eventuele saldo) wanneer u uw wallet opnieuw instelt. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
+<translation id="6915083716464390008">Selecteer een van de volgende opties</translation>
+<translation id="7667423728712601865">Koop crypto met Visa of Mastercard.</translation>
+<translation id="3101839349578102016">Direct kopen met uw bankrekening. Lagere kosten.</translation>
+<translation id="7269640984027668973">Kopen met <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Transactie wissen en nonce-info</translation>
 <translation id="5693968582510626466">Transacties wissen kan nuttig zijn voor ontwikkelaars of wanneer een lokale server wordt opgeschoond</translation>
 <translation id="5421107279168565467">Weet u zeker dat u uw transactie en nonce-informatie opnieuw wilt instellen? Deze optie wordt voornamelijk gebruikt door ontwikkelaars die een lokale testserver uitvoeren. Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
@@ -799,7 +805,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="3506416339268164412">Het ontvangende adres is een contractadres van een token</translation>
 <translation id="3494964159182650590">Overzicht van de beloningen</translation>
 <translation id="590733288489975971">Beloningen uit advertenties</translation>
-<translation id="207268487070188114">Eenmalige fooi</translation>
+<translation id="2613359062756190460">Eenmalige tips</translation>
 <translation id="7577100371127227294">Maandelijke Tips</translation>
 <translation id="7091980679045978090">Geschatte verdiensten</translation>
 <translation id="1346059596910821859">Fooi</translation>

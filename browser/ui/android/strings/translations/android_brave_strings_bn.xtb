@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
+<translation id="3478449063771497234">বিজ্ঞপ্তি নিষ্ক্রিয় করা হয়েছে</translation>
+<translation id="7466579932043491502">বিজ্ঞপ্তিগুলি নিষ্ক্রিয় করা থাকলে Brave পুরস্কারগুলি কাজ নাও করতে পারে।</translation>
+<translation id="4259212006412783790">চালু করুন</translation>
+<translation id="6112331814131703370">'আপে সুইচ করুন' ব্লক করুন</translation>
 <translation id="4744921452903670666">আপনি কী ভাবছেন আমাদের জানান!</translation>
 <translation id="2524310205387880526">ব্রেভ-এর মূল্যায়ন করুন</translation>
 <translation id="4104400246019119780">ধন্যবাদ!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">আপনার <ph name="MONTH_VALUE"/> বিজ্ঞাপন পুরস্কার এখানে!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> -এর পুরস্কার: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">আপনার কাছে ক্লেম করার জন্য <ph name="TOKEN"/> দিন বাকি আছে</translation>
-<translation id="2323069945529668668">ওহহো!</translation>
-<translation id="7510166204621526816">Brave পুরস্কারের সার্ভারটি কাজ করছে না। আমরা যত তাড়াতাড়ি সম্ভব এটির সমাধান করব।</translation>
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
 <translation id="3101693828171454453">পর্যাপ্ত <ph name="TOKEN"/> নেই</translation>
@@ -610,7 +612,7 @@
 <translation id="5050890334032852465">অ্যাকাউন্ট ওয়াচলিস্ট সংরক্ষণ করুন</translation>
 <translation id="7755766175599167100">সার্চ টোকেনগুলি</translation>
 <translation id="3835223348537121988">ব্যালেন্স:</translation>
-<translation id="6888491517683356528">র‌্যাম্পে চালিয়ে যান</translation>
+<translation id="3956169227169516344">কেনার পদ্ধতি নির্বাচন করুন</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
 <translation id="3784455785234192852">লক</translation>
 <translation id="8796429300536029044">NFT-এর বিশদ বিবরণ</translation>
@@ -624,6 +626,10 @@
 <translation id="414639769490080648">Brave ওয়ালেট স্বয়ং স্বয়ংক্রিয়ভাবে লক না হওয়া অবধি অপেক্ষারত মিনিটের সংখ্যা</translation>
 <translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
 <translation id="4322846864135539519">আপনি কি সত্যিই আপনার Brave পুরস্কার রিসেট করতে চান? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="6915083716464390008">নিম্নলিখিত বিকল্পগুলির মধ্যে থেকে একটি নির্বাচন করুন</translation>
+<translation id="7667423728712601865">Visa বা Mastercard দিয়ে ক্রিপ্টো কিনুন।</translation>
+<translation id="3101839349578102016">আপনার ব্যাঙ্ক একাউন্ট দিয়ে তাৎক্ষণিক কিনুন। কম ফি।</translation>
+<translation id="7269640984027668973"><ph name="RAMP_PROVIDER"/> এর মাধ্যমে কিনুন</translation>
 <translation id="4862812525895306758">লেনদেন এবং অপ্রত্যাশিত তথ্য পরিষ্কার করুন</translation>
 <translation id="5693968582510626466">লেনদেনগুলো সাফ করা ডেভেলপারদের জন্য বা একটি স্থানীয় সার্ভারে অবস্থা সাফ করার জন্য উপকারী হতে পারে</translation>
 <translation id="5421107279168565467">আপনি কি আপনার ওয়ালেটের সব লেনদেন এবং বর্তমান তথ্য রিসেট করার বিষয়ে নিশ্চিত? এই বিকল্পটি বেশিরভাগ ক্ষেত্রে একটি স্থানীয় টেস্ট সার্ভার চালনাকারী ডেভেলপাররা ব্যবহার করেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
@@ -798,7 +804,7 @@
 <translation id="3506416339268164412">প্রাপ্তির ঠিকানাটি একটি টোকেনের চুক্তির ঠিকানা</translation>
 <translation id="3494964159182650590">রিওয়ার্ডসের সংক্ষিপ্তসার</translation>
 <translation id="590733288489975971">বিজ্ঞাপন থেকে পুরস্কার</translation>
-<translation id="207268487070188114">এককালীন টিপ</translation>
+<translation id="2613359062756190460">একবারের দান/পরামর্শ</translation>
 <translation id="7577100371127227294">পুনরাবৃত্তি হওয়া দান</translation>
 <translation id="7091980679045978090">আনুমানিক উপার্জন</translation>
 <translation id="1346059596910821859">দান</translation>

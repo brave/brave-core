@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">Afișează Recompensele Brave</translation>
 <translation id="5585019845078534178">Carduri</translation>
 <translation id="3870475560794762985">Afișează Imagini sponsorizate</translation>
-<translation id="8466529005131466476">Puteți câștiga tokenuri accesând site-uri sponsorizate.</translation>
-<translation id="3955742714798578476">Câștigați tokenuri accesând imagini sponsorizate.</translation>
-<translation id="7822618650711767369">Imaginile sponsorizate susțin Brave. Cu Recompensele Brave, aveți posibilitatea de a câștiga o parte din venituri din imagini sponsorizate, precum și să susțineți creatorii de conținut!</translation>
-<translation id="5579480493856401823">Dezactivând site-urile sponsorizate, veți câștiga mai puține tokenuri și veți diminua susținerea oferită creatorilor de conținut în fiecare lună.</translation>
+<translation id="2414654907269324670">Câștigați BAT accesând imagini sponsorizate.</translation>
+<translation id="4942016616604700968">Activează recompense</translation>
+<translation id="5684562942023496754">Puteți câștiga dacă vizualizați imagini sponsorizate.</translation>
+<translation id="8934374643857605034">În calitate de utilizator de recompense Brave, câștigați BAT vizualizând imagini sponsorizate.</translation>
+<translation id="5236449703984229754">Puteți câștiga BAT pentru vizualizarea imaginilor sponsorizate atunci când activați anunțurile Brave. Atunci când anunțurile Brave sunt dezactivate, activarea imaginilor sponsorizate sprijină în continuare misiunea Brave.</translation>
+<translation id="1570714748649804013">În calitate de utilizator de recompense Brave, câștigați BAT pentru imaginile sponsorizate pe care le vedeți. Dezactivarea imaginilor sponsorizate va reduce suma pe care o câștigați.</translation>
+<translation id="8998727244653964783">Puteți câștiga BAT pentru vizualizarea imaginilor sponsorizate atunci când conectați un cont de custode la recompense Brave. Între timp, contribuiți la susținerea creatorilor cu imagini sponsorizate.</translation>
+<translation id="5512383650263136662">Puteți câștiga BAT pentru vizualizarea imaginilor sponsorizate cu recompense Brave. Nu sunteți utilizator de recompense? Activarea imaginilor sponsorizate sprijină în continuare misiunea Brave.</translation>
 <translation id="2875302873837723333">site-uri de top</translation>
 <translation id="8173998484743827990">Statistici Brave</translation>
 <translation id="383680190590774040">ceas</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 secunde</translation>
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="2807328214759298515">Până la</translation>
-<translation id="9031738692126722094">Activează bacșișuri la nivel de conținut pe aceste site-uri</translation>
+<translation id="7483857210736407752">Afișați butoanele pentru recompensă pe site-uri</translation>
 <translation id="7583327070390027131">Data următoarelor plăți lunare</translation>
 <translation id="6231182869178328516">Tocmai am dat un bacșiș lui <ph name="NAME"/> folosind Brave Browser. Vezi despre ce e vorba la https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Iubesc faptul că <ph name="HASHTAG"/>Brave îmi oferă posibilitatea să sprijin creatorii! Tocmai am oferit <ph name="NAME"/> o contribuție de <ph name="HASHTAG2"/>BAT. Dacă se autentifică pe https://creators.brave.com înainte de <ph name="DATE"/>, tokenurile BAT îi aparțin!</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">Nu există niciun istoric de reclame Brave</translation>
 <translation id="5345727496083327478">Nu veți mai primi reclame din această categorie</translation>
 <translation id="2631006050119455616">S-a salvat</translation>
-<translation id="3819257035322786455">Backup</translation>
 <translation id="6976444672879155794">Contribuție automată [[processor]]</translation>
 <translation id="8804164990146287819">Politica de Confidențialitate</translation>
 <translation id="7262285991915892790">Trageți iconița BAT pe</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">Token-urile [[currency]] neutilizate până la data expirării vor fi returnate automat în Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Data Expirării Grantului</translation>
 <translation id="1389143276807887637">importă</translation>
-<translation id="3810973564298564668">Gestionează</translation>
-<translation id="6302422639282249274">Administrați recompensele Brave</translation>
 <translation id="211044356803193224">Plăți lunare</translation>
 <translation id="2487641031722095938">Este ziua dvs. norocoasă!</translation>
 <translation id="6255773350565723852">Grantul token-ului dumneavoastră trebuie să sosească.</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">Ștergeți din salvate</translation>
 <translation id="5530851178552343773">Ați alocat [[reservedAmount]] [[currency]] pentru creatori care nu s-au înregistrat încă pentru a primi contribuții. Browserul dvs. va încerca în continuare să contribuie până când aceștia sunt verificați sau până când trec 90 de zile.</translation>
 <translation id="5939518447894949180">Resetează</translation>
+<translation id="3349204812119681938">Resetați recompensele Brave</translation>
 <translation id="5669281110673664811">Ștergeți lista cu excluderi</translation>
 <translation id="1797334173232638045">Site-urile dvs. fixate au fost mutate la</translation>
-<translation id="542042553430131913">Dacă recompensele Brave nu sunt confirmate, soldul BAT este stocat în fișierele locale de pe dispozitivul dvs.</translation>
-<translation id="2142973554991645476">Dacă doriți să vă securizați BAT în cazul unei reinstalări de la zero a browserului sau al unei reformatări a dispozitivului și vreți să beneficiați de alte beneficii, precum alimentarea sau retragerea BAT, vă recomandăm <ph name="LINK_BEGIN"/>să efectuați o confirmare<ph name="LINK_END"/>.</translation>
 <translation id="5317144262906129592">Puteți susține acest creator de conținut trimițându-i cadouri bănești. Este o modalitate de a-i mulțumi pentru conținutul grozav creat.</translation>
 <translation id="3074127054582480056">Atenție</translation>
 <translation id="3659457123782988823">Sigur doriți să vă resetați recompensele Brave?</translation>
 <translation id="1666001796278936721">Resetând, profilul dvs. curent de Recompense Brave va fi șters și va trebui să începeți din nou cu un profil de Recompense Brave nou. Înainte de continua, <ph name="LINK_BEGIN"/>aflați mai multe<ph name="LINK_END"/> despre resetare, pentru a vă asigura că ați înțeles toate implicațiile acestei acțiuni.</translation>
-<translation id="94095197509579227">Notă: În acest moment, aveți câștiguri lunare estimate de <ph name="BAT_AMOUNT"/> pe care le veți pierde dacă resetați acum.</translation>
 <translation id="4806029412510565611">Înțeleg că profilul meu actual de Recompense Brave și datele referitoare la Recompensele Brave vor fi șterse de pe dispozitivul meu și confirm că am citit <ph name="LINK_BEGIN"/>articolul explicativ despre resetare<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Granturi Token Revendicate</translation>
 <translation id="3494964159182650590">Rezumat</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">Vizualizați detalii</translation>
 <translation id="4206899127409458763">Crearea profilului de recompense Brave</translation>
 <translation id="1988679729106502285">NOTĂ:</translation>
-<translation id="942863887222585572">Sunteți conectat(ă) la <ph name="USER_PROVIDER"/>, însă creatorul este conectat la <ph name="CREATOR_PROVIDER"/>, ceea ce înseamnă că nu poate primi contribuția dvs. Pentru moment, toate contribuțiile inițiate de dvs. vor române în așteptare și se va încerca retrimiterea automată timp de 90 de zile.</translation>
 <translation id="5530734056858418442">Acest creator nu este încă înregistrat. Orice contribuție pe care o efectuați va rămâne în așteptare și se va reîncerca automat trimiterea timp de 90 de zile.</translation>
 <translation id="3197752845651180812">Contribuții în așteptare</translation>
 <translation id="6964891561514920613">Arată toate contribuțiile în așteptare</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">Creator neconfirmat</translation>
 <translation id="6020176662032623904">Creator confirmat</translation>
 <translation id="215037911651623564">Reîmprospătați starea de confirmare a creatorului</translation>
-<translation id="8946576491316456643">Pentru moment, orice contribuție pe care o inițiați va rămâne în așteptare și se va încerca retrimiterea automată timp de 90 de zile. <ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">Deocamdată, orice recompensă pe care o efectuați va rămâne în așteptare și se va reîncerca automat trimiterea timp de 90 de zile.</translation>
 <translation id="7826318737761918938">Acest creator nu este înregistrat încă</translation>
 <translation id="3573568055713372419">Sunteți conectat(ă) la <ph name="USER_PROVIDER"/>, însă creatorul este conectat la <ph name="CREATOR_PROVIDER"/>, ceea ce înseamnă că nu poate primi contribuția dvs.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> pe<ph name="PLATFORM"/></translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">Cumpărați</translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
+<translation id="3488255243387417752">Vindeți</translation>
+<translation id="5223034545851554347">Nu aveți destul<ph name="TOKEN_SYMBOL"/> în acest cont.</translation>
 <translation id="9113988219764868805">Trimiteți token</translation>
 <translation id="4254256922305105713">Trimiteți NFT</translation>
 <translation id="3453833142586986467">Selectați token</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">tranzacții</translation>
 <translation id="4591079278963448049">Contul de token asociat nu există încă. O sumă mică de SOL va fi cheltuită pentru a-l crea și finanța.</translation>
+<translation id="1426320910664514906">Limită gas</translation>
+<translation id="1229774280326250926">Gaz Premium</translation>
+<translation id="148169246131967347">Plafon taxă gaz</translation>
 <translation id="523862956770478816">Permisiuni site</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> conturi conectate</translation>
 <translation id="4804818685124855865">Deconectează-te</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">Nu este o adresă ETH validă</translation>
 <translation id="2832270987629018596">Nu este o adresă SOL validă</translation>
 <translation id="882486206986535424">Nu este o adresă validă</translation>
-<translation id="6825399159373612149">Domeniul <ph name="DOMAIN_NAME"/> nu este înregistrat</translation>
+<translation id="8684908590733515816">Domeniul nu are o adresă asociată <ph name="COIN_TYPE_SYMBOL"/></translation>
 <translation id="8971278306757462297">Adresa destinatară este propria dvs. adresă</translation>
 <translation id="3506416339268164412">Adresa destinatară este o adresă din contractul pentru un token.</translation>
+<translation id="6370376419663123629">Adresa nu pare corectă</translation>
+<translation id="3767148796886402380">Verificați adresa dvs. pentru a vă asigura că este cea corectă (de exemplu, literă mică sau mare).</translation>
+<translation id="2585599787090762065">Cum pot să rezolv această problemă?</translation>
+<translation id="5517732667776806421">Informații lipsă privind suma de verificare</translation>
 <translation id="2975056993833847787">Această adresă nu poate fi confirmată (lipsește suma de verificare). Continuați?</translation>
 <translation id="6320252966164556855">Adresa nu a promovat confirmarea (sumă de verificare nevalidă). Încercați din nou, înlocuind literele mici cu litere mari.</translation>
 <translation id="4667144295226514387">Limită gas lipsă</translation>
 <translation id="2021522108838444624">Suma trebuie să fie mai mare decât 0</translation>
 <translation id="8464365289405373974">Adresa destinatarului este solicitată</translation>
 <translation id="4884792073752467460">Adresă destinatar nevalidă</translation>
+<translation id="8585995109882455949">Cum pot găsi adresa corectă?</translation>
+<translation id="8395402412470376435">Brave validează și previne ca utilizatorii să trimită fonduri la o adresă greșită din cauza folosirii incorecte a literelor mari. Acesta este un proces de „sumă de verificare” pentru a verifica dacă este o adresă Ethereum validă.</translation>
+<translation id="4583433813614292221">1. Accesați</translation>
+<translation id="5393164213211430081">2. Copiați și introduceți adresa ETH</translation>
+<translation id="2378355054306959991">Aveți nevoie de mai mult ajutor?</translation>
 <translation id="862585889767884824">din</translation>
 <translation id="9106265941552476098">Respingeți tranzacțiile <ph name="TRANSACTION_LENGTH"/></translation>
 <translation id="1118876217803190221">Sold insuficient</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">Standard token</translation>
 <translation id="9033453977881595182">ID token</translation>
 <translation id="6332387008245531841">Adresă contract</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">Locația sau adresa imaginii</translation>
 <translation id="2962388922926051374">Eroare la solicitarea metodei 'eth_chainId' pe rețeaua <ph name="URL"/></translation>
 <translation id="8325036459845654666">Această rețea este adăugată deja.</translation>
 <translation id="554350381160981853">Semnarea datelor tipizate este permisă doar pe Trezor Model One cu Firmware 1.10.5 sau ulterior</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">Nu este o adresă FIL validă</translation>
 <translation id="3898731124813934210">Cumpărați cu Wyre</translation>
 <translation id="5522073372365069684">Cumpărați cu Ramp</translation>
+<translation id="6153197326949684688">Vindeți folosind <ph name="OFFRAMP_PROVIDER"/></translation>
+<translation id="6097502401711916278">Suma minimă trebuie să fie <ph name="FIAT_AMOUNT"/> sau mai mare.</translation>
 <translation id="7902920577183739843">Cumpărați cu Sardine</translation>
 <translation id="6534275647567011533">Cumpărați cu Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Cumpărați criptomonede utilizând un card Visa sau Mastercard.</translation>
+<translation id="3648994606506382289">Cel mai simplu, rapid și ieftin mod de a cumpăra cripto este prin card și prin transferuri bancare.</translation>
 <translation id="3101839349578102016">Cumpărați instant cu contul dvs. bancar. Taxe mai mici.</translation>
 <translation id="8528916244724490964">Toate rețelele</translation>
 <translation id="4038403584813842767">Sold ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">Încărcător BPF</translation>
 <translation id="2334098351242742927">Program Ed25519</translation>
 <translation id="8780753288764281797">Program Secp256k1</translation>
-<translation id="5275550100743015683">De la adresa:</translation>
-<translation id="2678433693746214764">La adresa:</translation>
-<translation id="4576396475962922672">Cont nou</translation>
+<translation id="6421371987002247943">Program de tokenuri</translation>
+<translation id="8642855779894264066">Programul de tokenuri asociate</translation>
+<translation id="3585645354490191700">Programul de metadate</translation>
+<translation id="1971875492220112280">Programul SysvarRent</translation>
 <translation id="4719005063558335704">Conturi:</translation>
 <translation id="4337554812324118382">Date:</translation>
 <translation id="569870799832027680">ID program:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">Omiteți Preflight:</translation>
 <translation id="3568017348462868931">Selectați moneda</translation>
 <translation id="4420924466038521900">Căutați monede</translation>
-<translation id="8060029310790625334">Centru de ajutor</translation>
+<translation id="4412698727486357573">Centrul de ajutor</translation>
 <translation id="2095142195578664632">Aveți nevoie de ajutor?</translation>
 <translation id="3253669416991680932">Portofelul hardware nu acceptă această operațiune.</translation>
 <translation id="7457027586454688423">Introduceți parola Portofelului Brave</translation>
@@ -1430,8 +1448,6 @@
 <translation id="1026825928738055872">Sigur doriți să excludeți „<ph name="ACCOUNT_NAME"/>”?</translation>
 <translation id="3910551537328657217">Solicitați funcția</translation>
 <translation id="7657322905916621147">Expresia de recuperare trebuie să aibă 12, 15, 18, 21 sau 24 de cuvinte</translation>
-<translation id="5307206077701819797">Nu s-a găsit niciun NFT în portofel. Puteți adăuga NFT-uri dând clic pe butonul „+ Active vizibile” din partea de jos a filei „Portofoliu”</translation>
-<translation id="3528540388456395658">Nu s-a găsit nicio căutare sau filtru NFT asociat</translation>
 <translation id="5026874946691314267">Nu mai afișați acest mesaj din nou</translation>
 <translation id="434502623875309667">Rezoluția adresei necesită solicitări de rețea offchain. Continuați?</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">Conectați portofelul</translation>
 <translation id="4029551149873989025">Comutați rețeaua</translation>
 <translation id="7561262633951061138">Cea mai bună</translation>
+<translation id="8060029310790625334">Centru de ajutor</translation>
 <translation id="3143110700666266545">Această aplicație folosește următoarele API-uri terțe:</translation>
 <translation id="163536108506359457">Brave Swap utilizează <ph name="AGGREGATOR"/> ca agregator DEX pentru rețelele <ph name="NETWORKS"/> acceptate. <ph name="AGGREGATOR"/> va procesa adresa portofelului <ph name="NETWORK"/> și adresa IP pentru a îndeplini o tranzacție (inclusiv pentru a obține cotații). <ph name="AGGREGATOR"/> va utiliza aceste date DOAR în scopul procesării tranzacțiilor.</translation>
 <translation id="1847885264294023691">Faceți clic aici pentru Politica de confidențialitate <ph name="AGGREGATOR"/> .</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">Este necesară o valoare de precizie în zecimale de token</translation>
 <translation id="3797613444743816037">Adresa emiterii</translation>
 <translation id="7951915459354237451">Limita taxei este stabilită la un nivel mai mic decât taxa de bază. Este posibil ca tranzacția dvs. să dureze mult timp sau să eșueze.</translation>
+<translation id="2227702748249086756">Nu se poate obține estimarea taxelor</translation>
+<translation id="5361710044667743492">De ce nu sunt disponibile?</translation>
+<translation id="3668838456083358569">Unele dintre datele NFT sunt stocate pe un server centralizat, cum ar fi AWS, Google Cloud etc. În acest caz, nu este disponibil pentru a fixa datele NFT în rețeaua IPFS.</translation>
+<translation id="1293258969121701010">Rulând IPFS pe computerul dvs. puteți să:</translation>
+<translation id="4568942135611119076">Asigurați că datele NFT rămân online și că nu pot fi modificate.</translation>
+<translation id="4915883034746438977">Recuperează conținutul utilizând identificatorul de conținut (CID) din date incorecte.</translation>
+<translation id="1373647012698032676">Participați ca dovadă de autenticitate și faceți ca rețeaua IPFS să fie puternică și în stare bună.</translation>
+<translation id="1806204385270226865">Păstrați NFT-urile mele mereu online</translation>
+<translation id="4323376551843624309">Activați fixarea NFT</translation>
+<translation id="6501331923135442324">Un pas mare pentru a deveni parte a web3</translation>
+<translation id="5361073938927187534">Rulați nodul IPFS și păstrați-vă NFT-urile mereu online</translation>
+<translation id="1060267371223703324">Verificați ce NFT-uri ale mele pot fi fixate</translation>
+<translation id="2641083452974145848">Acum puteți să rulați IPFS și să faceți parte din web 3. Datele NFT vor rămâne online pentru totdeauna și nu vor putea fi modificate.</translation>
+<translation id="4460927368826360904">Rulați nodul IPFS. Fișierul este preluat în nodul IPFS local.</translation>
+<translation id="2260350263892668490"><ph name="PINNED"/> din <ph name="PINNABLE"/> NFT-uri au fost fixate pe IPFS.</translation>
+<translation id="1474962961180773583"><ph name="PINNABLE"/> din <ph name="TOTAL"/> sunt disponibile.</translation>
+<translation id="6852656829524945421">Nu se poate fixa</translation>
+<translation id="7698019251444927442">Rulați nodul IPFS</translation>
+<translation id="5584313306739463968">Nodul IPFS local nu rulează</translation>
+<translation id="7527548209942671618">Fixat pe nodul IPFS local</translation>
+<translation id="5659058832308365026">Datele NFT sunt fixate pe nodul IPFS local</translation>
+<translation id="4919133452617704550">Nu poate fi fixat pe nodul IPFS local</translation>
+<translation id="3225624966527491351">Importați NFT</translation>
+<translation id="9085765419770918643">Nu există încă NFT-uri aici.</translation>
+<translation id="8445532667841598737">Sunteți gata să adăugați ceva? Faceți clic pe butonul de mai jos pentru a importa.</translation>
+<translation id="9136462955850040542">Compatibil cu NFT-uri pe Solana (SPL) și Ethereum (ERC-721).</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>
@@ -1582,6 +1625,8 @@ other {# surse}
 <translation id="6531019308847917584">Blocați amprentarea</translation>
 <translation id="1899608006846124237">Blocați agresiv amprentarea</translation>
 <translation id="8034285923190068220">Permite amprentarea</translation>
+<translation id="7638541189782135885">Nu actualizați conexiunile HTTP</translation>
+<translation id="2570787596946026998">Conectați-vă numai cu HTTPS</translation>
 <translation id="1992750560347846445">Raportați site-ul</translation>
 <translation id="2387532482048804818">Spuneți-ne dacă site-ul n-a funcționat corect cu scuturile active.</translation>
 <translation id="3795015906457257780">Vizualizați acest site fără protecțiile de confidențialitate Brave.</translation>
@@ -1660,8 +1705,16 @@ other {# surse}
 <translation id="888284761945060750">Serviciul DNS securizat este dezactivat din cauza politicii organizației dvs. Dacă utilizați VPN-ul Brave fără serviciul DNS securizat puteți dezvălui furnizorului dvs. de internet sau organizației dvs. numele site-urilor pe care le vizitați.</translation>
 <translation id="6593224083874259773">Brave VPN pe Windows</translation>
 <translation id="3153983908111684619">Setarea e blocată de BraveVPN cât tim acesta e conectat</translation>
-<translation id="6507543978646831931">Windows are o funcție denumită Smart Multi-Homed Name Resolution care poate expune informații despre locația dvs. și site-urile pe care le accesați. Acum , că ați activat Brave VPN, am modificat setările de DNS din browser pentru a vă proteja de această expunere. Setările vor rămâne valabile și blocate cât timp VPN este conectat. <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">Windows are o funcție denumită Smart Multi-Homed Name Resolution care poate dezvălui informații despre locația dvs. și site-urile pe care le accesați.
+
+Brave are un serviciu de asistență care vă protejează de această dezvăluire prin filtrarea modului în care sunt efectuate interogările DNS pe conexiunea dvs. VPN.
+
+Cu toate acestea, am observat că acest serviciu de asistență nu funcționează și nu dorim să vă lăsăm neprotejat. Am modificat setările DNS din browser pentru a vă proteja împotriva acestei dezvăluiri. Setările vor rămâne în vigoare și vor fi blocate cât timp VPN-ul este conectat.
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Nu mai afișa acest avertisment.</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="9061845622728745852">Fus orar:</translation>
+<translation id="8295393906499561642">Sesiune expirată</translation>
+<translation id="3312623558576021182">Conectați-vă la <ph name="BRAVE_ACCOUNT_BEGIN"/>contul Brave<ph name="BRAVE_ACCOUNT_END"/> pentru a reîmprospăta sesiunea VPN.</translation>
 </translationbundle>

@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hr">
+<translation id="3478449063771497234">Obavijesti su onemogućene</translation>
+<translation id="7466579932043491502">Značajka Nagrade Brave možda ne bude radila dok su obavijesti onemogućene.</translation>
+<translation id="4259212006412783790">UKLJUČI</translation>
+<translation id="6112331814131703370">Blokiraj obavijesti „Prebaci se na aplikaciju”</translation>
 <translation id="4744921452903670666">Recite nam svoje mišljenje!</translation>
 <translation id="2524310205387880526">Ocijenite preglednik Brave</translation>
 <translation id="4104400246019119780">Hvala!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Stigle su vaše Nagrade za oglase za <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Nagrade: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Preostalo je još <ph name="TOKEN"/> dana za potraživanje</translation>
-<translation id="2323069945529668668">Joj, ne!</translation>
-<translation id="7510166204621526816">Poslužitelj za uslugu Nagrade Brave ne reagira. Trudimo se to popraviti što prije.</translation>
 <translation id="683765328936486920">na usluzi YouTube</translation>
 <translation id="8969049974285901797">na usluzi Twitch</translation>
 <translation id="3101693828171454453">nema dovoljno <ph name="TOKEN"/></translation>
@@ -613,7 +615,7 @@ Račun
 <translation id="5050890334032852465">Spremi popis za gledanje računa</translation>
 <translation id="7755766175599167100">Pretraži tokene</translation>
 <translation id="3835223348537121988">Stanje:</translation>
-<translation id="6888491517683356528">Nastavi na uslugu Ramp</translation>
+<translation id="3956169227169516344">Odaberi način kupnje</translation>
 <translation id="8488282162676695335">Novčanik Brave</translation>
 <translation id="3784455785234192852">Zaključaj</translation>
 <translation id="8796429300536029044">Pojedinost o NFT-u</translation>
@@ -627,6 +629,10 @@ Račun
 <translation id="414639769490080648">Broj minuta čekanja dok se novčanik preglednika Brave automatski ne zaključa</translation>
 <translation id="4993345308607970390">Ponovno postavi Novčanik Brave</translation>
 <translation id="4322846864135539519">Jeste li sigurni da želite ponovno postaviti nagrade u pregledniku Brave? Ako vaš novčanik nije sigurnosno kopiran, ponovno postavljanje uzrokovat će gubitak svih podataka o računu (uključujući sva povezana sredstva). Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrdu.</translation>
+<translation id="6915083716464390008">Odaberi jednu od sljedećih mogućnosti</translation>
+<translation id="7667423728712601865">Kupite kriptovalute karticom Visa ili Mastercard.</translation>
+<translation id="3101839349578102016">Obavljajte trenutne kupnje svojim bankovnim računom. Niže naknade.</translation>
+<translation id="7269640984027668973">Kupi pomoću <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Očisti informacije o transakcijama i broju nonce</translation>
 <translation id="5693968582510626466">Uklanjanje transakcija može biti korisno za razvojne inženjere ili pri uklanjanju sadržaja na lokalnom poslužitelju</translation>
 <translation id="5421107279168565467">Sigurno želite ponovno postaviti sve informacije o transakciji i broju nonce? Tu mogućnost upotrebljavaju uglavnom razvojni inženjeri koji upravljaju lokalnim testnim poslužiteljem. Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrdu.</translation>
@@ -801,7 +807,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="3506416339268164412">Adresa primatelja ugovorna je adresa tokena</translation>
 <translation id="3494964159182650590">Sažetak o nagradama</translation>
 <translation id="590733288489975971">Nagrade od značajke Ads</translation>
-<translation id="207268487070188114">Jednokratna napojnica</translation>
+<translation id="2613359062756190460">Jednokratne napojnice</translation>
 <translation id="7577100371127227294">Mjesečne napojnice</translation>
 <translation id="7091980679045978090">Procijenjena zarada</translation>
 <translation id="1346059596910821859">Napojnica</translation>

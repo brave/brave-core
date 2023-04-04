@@ -10,12 +10,10 @@
 <translation id="8522292744959221145">Per comprovar si les teves contrasenyes estan protegides contra violacions de les dades i contra altres problemes de seguretat, <ph name="BEGIN_LINK"/>inicia la sessió a Brave<ph name="END_LINK"/>.</translation>
 <translation id="8541922081612557424">Quant a Brave</translation>
 <translation id="1203500561924088507">T'agraïm la instal·lació. Has de reiniciar el navegador abans d'utilitzar <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="8905049883018921395">Quan aquesta opció està activada, Brave allibera memòria de les pestanyes inactives. Així, les pestanyes actives i altres aplicacions disposen de més recursos de l'ordinador i es manté l'agilitat de Brave. Les pestanyes inactives s'activen de nou automàticament quan hi tornes. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="4658574652223735641">Estalvi de memòria ha fet que Brave sigui més ràpid</translation>
 <translation id="4798342026247191171">Configura el teu perfil de Brave nou</translation>
 <translation id="113959764510199339">Brave està provant de mostrar les contrasenyes.</translation>
 <translation id="8132634101975074716">Teniu la sessió iniciada a Brave.</translation>
-<translation id="4168469784091952813">Pots treure el màxim profit de Brave</translation>
 <translation id="5147525139567260139">Comparteix una pestanya de Brave</translation>
 <translation id="1530633922026945685">Brave necessita permís per accedir a la càmera i poder crear un mapa 3D del teu entorn</translation>
 <translation id="4449148723378534338">Revisa els controls principals de privadesa i seguretat a Brave</translation>
@@ -104,16 +102,17 @@
 <translation id="691208314680168371">El teu historial de navegació, que és un registre dels llocs web que has visitat amb Brave en aquest dispositiu.</translation>
 <translation id="1384923383737428730">Hi ha programari nociu a l'ordinador. Brave el pot suprimir, restaurar la configuració i desactivar les extensions perquè el navegador torni a funcionar amb normalitat.</translation>
 <translation id="1073077513148817424">Ja s'ha iniciat la sessió amb un altre compte. Per continuar amb la teva navegació per separat, Brave et pot crear un perfil propi.</translation>
+<translation id="4250277591581952830">Per obtenir actualitzacions de Brave en un futur, necessitaràs macOS 10.15 o una versió posterior. Aquest ordinador utilitza macOS 10.13.</translation>
 <translation id="7029305463989165490">Per enviar un número del dispositiu <ph name="ORIGIN"/> al teu telèfon Android, inicia la sessió a Brave en tots dos dispositius.</translation>
 <translation id="4304059894777924102">Brave no pot comprovar les teves contrasenyes. Comprova la connexió a Internet.</translation>
 <translation id="2100587595569959771">Més informació sobre la personalització d'anuncis a Brave</translation>
 <translation id="1807774211756215222">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
-<translation id="7453070689008684791">Brave accedirà a Drive per fer suggeriments a la barra d'adreces</translation>
 <translation id="2106568569080763501">Brave us permet fer clic en un número de telèfon al web i trucar-hi amb Skype!</translation>
 <translation id="2401189691232800402">Sistema Chrome OS</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/>: Brave</translation>
 <translation id="3744202345691150878">Obtén ajuda per a Chrome OS</translation>
 <translation id="6009720635797285369">Obtén el contingut del teu navegador Brave del compte <ph name="ACCOUNT_EMAIL"/></translation>
+<translation id="5111297589157398321">Per obtenir actualitzacions de Brave en un futur, necessitaràs macOS 10.15 o una versió posterior. Aquest ordinador utilitza macOS 10.14.</translation>
 <translation id="6315734375101223238">Personalitza i controla Brave. Cal la teva intervenció. Fes clic per obtenir més informació.</translation>
 <translation id="7130675370997202556">Feu clic al vostre nom per obrir Brave i començar a navegar.</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> ja té la sessió iniciada en aquest perfil de Brave. Per continuar amb la teva navegació per separat, Brave et pot crear un perfil propi.</translation>
@@ -182,7 +181,7 @@
 <translation id="232381795826373334">Obre els fitxers PDF a Brave</translation>
 <translation id="5381032481466106256">Si aquesta opció està activada, també se't tancarà la sessió de Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Hi ha una actualització de Brave disponible}=1{Hi ha una actualització de Brave disponible}other{Fa # dies que hi ha una actualització de Brave disponible}}</translation>
-<translation id="4378573854226202617">Brave requereix Windows 10 o una versió posterior.</translation>
+<translation id="4378573854226202617">Brave requereix Windows 7 o una versió posterior.</translation>
 <translation id="5646769069113654257">Reinicia Brave ara</translation>
 <translation id="2335583906071111058">Mostra Brave en aquest idioma</translation>
 <translation id="7207456302801184289">Us donem la benvinguda a Brave</translation>
@@ -202,6 +201,7 @@
 <translation id="3693188491491843187">Fes que Brave sigui més ràpid</translation>
 <translation id="608006075545470555">Afegeix un perfil de treball a aquest navegador</translation>
 <translation id="5849446944780602366">Personalitza i controla Brave. Hi ha una actualització disponible.</translation>
+<translation id="5505258595603236622">Quan aquesta opció està activada, Brave estalvia bateria limitant l'activitat en segon pla i els efectes visuals, com ara el desplaçament suau i els fotogrames per segon dels vídeos.</translation>
 <translation id="7433698744896946664">Permet que l'extensió mostri sol·licituds d'accés a la barra d'eines de Brave</translation>
 <translation id="492209281555538239">Brave desarà aquesta contrasenya al Compte de Brave. No caldrà que la recordis.</translation>
 <translation id="4168372721886011198">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós.</translation>
@@ -261,6 +261,7 @@
 <translation id="126871877963043118">Quan les proves estan activades, el mesurament d'anuncis permet als llocs web que visites sol·licitar informació de Brave que els ajudi a mesurar el rendiment dels anuncis. El mesurament d'anuncis restringeix el seguiment entre llocs web transferint la quantitat mínima possible d'informació entre llocs web.</translation>
 <translation id="4392161457256085190">Després, un lloc web que visitis pot demanar els teus interessos a Brave per personalitzar els anuncis que veus. Brave pot compartir un màxim de 3 interessos.</translation>
 <translation id="6418340404893954563">Les contrasenyes poc segures són fàcils d'endevinar. Deixa que Brave <ph name="BEGIN_LINK"/>creï i recordi contrasenyes segures en nom teu<ph name="END_LINK"/>.</translation>
+<translation id="7164968566146897003">Quan aquesta opció està activada, Brave allibera memòria de les pestanyes inactives. Així, les pestanyes actives i altres aplicacions disposen de més recursos de l'ordinador i es manté l'agilitat de Brave. Les pestanyes inactives s'activen de nou automàticament quan hi tornes.</translation>
 <translation id="196626648343945705">Brave està inactiu</translation>
 <translation id="3453763134178591239">Condicions de Chrome OS</translation>
 <translation id="3335606533094650083">Per visitar aquest lloc web, Brave necessita permís per accedir al micròfon</translation>
@@ -321,6 +322,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="8622246347342688645">Brave no pot comprovar les teves contrasenyes perquè no tens la sessió iniciada</translation>
 <translation id="96347285368592620">Brave està provant de copiar les contrasenyes.</translation>
 <translation id="89367911614620585">Brave ha bloquejat aquest fitxer perquè pot ser perillós.</translation>
+<translation id="5196445203969439095">Treu més profit de Brave</translation>
 <translation id="3360368475735266712">Inicia la sessió per sincronitzar i personalitzar Brave en tots els teus dispositius</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> abans utilitzava Brave</translation>
 <translation id="3098618823450433881">Per accedir al teu contingut del navegador Brave des de tots els teus dispositius, inicia la sessió i, després, activa la sincronització</translation>
@@ -331,9 +333,7 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="2097604701283463988">Brave no està actualitzat</translation>
 <translation id="8550334526674375523">Aquest perfil de treball és completament independent del teu perfil personal.</translation>
 <translation id="2452889775041290116">Els teus pares han desactivat Permisos per a llocs web, aplicacions i extensions en relació amb Brave. No es permet afegir aquesta <ph name="EXTENSION_TYPE_PARAMETER"/>.</translation>
-<translation id="8502436661255886343">Per obtenir actualitzacions de Brave en un futur, necessitaràs macOS 10.13 o una versió posterior. Aquest ordinador utilitza macOS 10.12.</translation>
 <translation id="227028348235968071">Brave pot comprovar les teves contrasenyes quan inicies la sessió amb el Compte de Brave</translation>
-<translation id="4226455268610449503">Quan aquesta opció està activada, Brave estalvia bateria limitant l'activitat en segon pla i els efectes visuals, com ara el desplaçament suau i els fotogrames per segon dels vídeos. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Els autors de Brave. Tots els drets reservats.</translation>
 <translation id="7890337656251106515"><ph name="BEGIN_BOLD"/>Com utilitzem aquestes dades<ph name="END_BOLD"/>: els llocs web poden emmagatzemar informació a Brave sobre els teus interessos. Per exemple, si visites un lloc web per comprar sabatilles per a una marató, és possible que el lloc web defineixi que t'interessa córrer maratons. Més endavant, si visites un altre lloc web per inscriure't a una cursa, aquest altre lloc web et pot mostrar un anunci de sabatilles de curses basant-se en els teus interessos.</translation>
 <translation id="3052349005266761501">S'està iniciant Brave...</translation>
@@ -361,13 +361,15 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="2444257125841652328">L'administrador del sistema ha configurat Brave perquè obri un navegador alternatiu per accedir a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="7902365066753170041">Reinicia per actualitzar &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="296137235951584143">Personalitza Brave</translation>
 <translation id="7977787072794666032">Pot ser que Brave no funcioni correctament perquè ja no és compatible amb Windows XP ni Windows Vista</translation>
 <translation id="8180288330711585962">Certificats gestionats per Brave</translation>
-<translation id="1611678871603620428">Per obtenir actualitzacions de Brave en un futur, necessitaràs macOS 10.13 o una versió posterior. Aquest ordinador utilitza OS X 10.11.</translation>
 <translation id="4484434718272972655">Qui està utilitzant Brave?</translation>
 <translation id="7173394303099002355">Obtén la seguretat més efectiva de Brave</translation>
 <translation id="5775101967851558962">Esborra sempre les dades dels llocs web del dispositiu quan tanquis Brave</translation>
 <translation id="8992261409816268381">Els autors de Brave</translation>
+<translation id="137466361146087520">Google Chrome Beta</translation>
+<translation id="7535429826459677826">Google Chrome Dev</translation>
 <translation id="479793348545936567">Si voleu utilitzar aquest compte només una vegada, podeu utilitzar el mode convidat al navegador Brave. Si voleu afegir un compte per a algú altre, <ph name="LINK_BEGIN"/>afegiu un nou perfil<ph name="LINK_END"/> al vostre <ph name="DEVICE_TYPE"/>.
 
 Els permisos que ja jeu donat als llocs web i a les aplicacions poden aplicar-se a aquest compte. Podeu gestionar les cadenes de sincronització de Brave a <ph name="SETTINGS_LINK_BEGIN"/>Configuració<ph name="SETTINGS_LINK_END"/>.</translation>
@@ -385,6 +387,6 @@ Els permisos que ja heu donat als llocs web i a les aplicacions poden aplicar-se
 <translation id="3829358914761176693">{COUNT,plural, =0{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització}=1{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització. La finestra d'incògnit no es tornarà a obrir.}other{L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'administrador necessita que reiniciïs Brave per aplicar una actualització}=1{L'administrador necessita que reiniciïs Brave per aplicar una actualització. La finestra d'incògnit no es tornarà a obrir.}other{L'administrador necessita que reiniciïs Brave per aplicar una actualització. Les # finestres d'incògnit no es tornaran a obrir.}}</translation>
 <translation id="2176087127109773485">Pots gestionar les teves cadenes de sincronització de Brave en què hagis iniciat sessió. Les cadenes de sincronització de Brave s'utilitzen per al navegador de Brave, Play Store, Gmail, etc. Si vols afegir un compte per una altra persona, com ara un familiar, afegeix un perfil nou al teu <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Més informació<ph name="LINK_END"/></translation>
-<translation id="137466361146087520">Google Chrome Beta</translation>
-<translation id="7535429826459677826">Google Chrome Dev</translation>
+<translation id="79269250264141507">Quan escrius a la barra d'adreces o al quadre de cerca, Brave envia el que escrius al motor de cerca predeterminat per obtenir millors suggeriments. Aquesta opció està desactivada en el mode d'incògnit.</translation>
+<translation id="3739288578188828252">Quan escrius a la barra d'adreces o al quadre de cerca, Brave envia el que escrius a Google Drive per a obtenir suggeriments d'articles. Aquesta opció està desactivada en el mode d'incògnit.</translation>
 </translationbundle>

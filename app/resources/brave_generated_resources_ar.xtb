@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">مكافآت Brave</translation>
 <translation id="7561196759112975576">دائماً</translation>
 <translation id="7961015016161918242">مطلقًا</translation>
+<translation id="7973394300052703468">نافذة خاصة &amp; جديدة</translation>
 <translation id="4615489450165434530">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8097438084542431276">نسخ الرابط النظيف</translation>
 <translation id="4678672101289648246">فقط على صفحة علامة التبويب الجديدة</translation>
+<translation id="6516243500644829484">نافذة &amp; جديدة للتصفح المتخفي</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="7630214457764713113">نسخ الرابط الكامل</translation>
 <translation id="8294286161128352783">فقط على صفحة علامة التبويب الجديدة</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
 <translation id="3229091547987707389">استيراد دليل ومشاركته</translation>
+<translation id="474217410105706308">تجاهل علامة التبويب</translation>
 <translation id="2804710924397009224">إخفاء أيقونة مكافآت Brave</translation>
 <translation id="5029193871181468990">إخفاء أيقونة Brave Rewards</translation>
 <translation id="2808103541110899519">إخفاء أيقونة محفظة Brave</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">أهم المواقع</translation>
 <translation id="7859704718976024901">تاريخ التصفح</translation>
 <translation id="8820817407110198400">إشارات</translation>
-<translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
 <translation id="2245286910966863912">إظهار زر أخبار Brave في شريط العناوين</translation>
 <translation id="383007806262310953">عرض شريط الإشارات</translation>
 <translation id="4054323497808446566">شريط الإشارات مرئي في جميع الصفحات</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
 <translation id="6531019308847917584">حجب مسح البصمة</translation>
 <translation id="5533533363827555308">صارم، قد يفصل المواقع</translation>
+<translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
+<translation id="3357319404342882895">صارم</translation>
 <translation id="8823559166155093873">حجب ملفات تعريف الارتباط</translation>
 <translation id="5770288601196774623">فقط عبر الموقع</translation>
 <translation id="3587482841069643663">الكل</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">إنشاء عوامل تصفية مخصصة</translation>
 <translation id="4618274268052410139">أضف عوامل تصفية مخصصة قمت بإنشائها، واحدة لكل سطر ، في الحقل أدناه. تأكد من استخدام بنية عامل تصفية<ph name="BEGIN_LINK"/>Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">إضافة</translation>
-<translation id="571950783952070673">قائمة URL</translation>
+<translation id="3075903430639801825">عنوان القائمة</translation>
 <translation id="9204006549413740506">آخر تحديث</translation>
 <translation id="6745592621698551453">التحديث الآن</translation>
 <translation id="5334844597069022743">عرض المصدر</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">اعرض المواقع التي لم يتم التحقق منها في القائمة</translation>
 <translation id="5510618543889994434">السماح بالمساهمات لمقاطع الفيديو</translation>
 <translation id="924777189963477634">من خلال تشغيل المساهمة التلقائية، فإنك توافق على <ph name="BEGIN_LINK_TOS"/>شروط الخدمة <ph name="END_LINK_TOS"/> و <ph name="BEGIN_LINK_PP"/> سياسة الخصوصية <ph name="END_LINK_PP"/></translation>
-<translation id="5733490796524078528">أزرار النصائح</translation>
+<translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
+<translation id="7483857210736407752">عرض أزرار التلميح على المواقع</translation>
 <translation id="3905400818082450708">ريديت</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">جيت هاب</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">اسأل عندما يريد أحد المواقع الوصول إلى واجهة برمجة تطبيقات موفر Solana</translation>
 <translation id="2777102601740875941">حظر المواقع من الوصول إلى واجهة برمجة تطبيقات موفر Solana</translation>
 <translation id="4206299587103092719">تسجيل الدخول إلى Google</translation>
-<translation id="7458736153596040880">اسأل عندما يريد أحد المواقع استخدام تسجيل الدخول القديم إلى Google</translation>
-<translation id="459266451581663214">حظر المواقع من استخدام تسجيل الدخول القديم إلى Google</translation>
-<translation id="8098954941070626949">السماح للمواقع باستخدام تسجيل الدخول القديم إلى Google</translation>
+<translation id="9110294136812584522">يمكن أن تطلب المواقع استخدام ميزة "تسجيل الدخول القديم إلى Google عبر ملفات تعريف الارتباط التابعة للجهات الخارجية</translation>
+<translation id="2903783737778379345">عدم السماح بتسجيل الدخول القديم إلى Google عبر ملفات تعريف الارتباط التابعة للجهات الخارجية</translation>
+<translation id="2570833232754279153">لا يُسمح باستخدام ملفات تعريف الارتباط التابعة للجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
+<translation id="6880817299303842099">يُسمح باستخدام ملفات تعريف الارتباط التابعة للجهات الخارجية لتسجيل الدخول القديم إلى Google</translation>
 <translation id="6414370348346025511">الحماية القياسية قيد التشغيل.</translation>
 <translation id="5565355416171743213">البدء باستخدام المزامنة</translation>
 <translation id="4332558599726753990">تهيئة المزامنة</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">شبكات المحفظة</translation>
 <translation id="5975930666279943472">امسح تداولات المحفظة ومعلومات الرقم الخاص</translation>
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
+<translation id="4440478655766953083">تثبيت الرموز المميزة غير قابلة للاستبدال تلقائيًا</translation>
+<translation id="464460032678285850">قد يتم تثبيت الرموز المميزة غير قابلة للاستبدال (NFT) التي تتم إضافتها إلى Brave Wallet تلقائيًا في عقدة IPFS المحلية.
+ ملاحظة: قد يتم بدء تشغيل البرنامج الخفي IPFS لأغراض التثبيت بحيث تشارك العقدة المحلية البيانات المخزنة مؤقتًا والرموز المميزة غير قابلة للاستبدال (NFT) المثبتة على شبكة IPFS.</translation>
 <translation id="4993345308607970390">إعادة تعيين محفظة Brave</translation>
 <translation id="9216386092464743272">هل أنت متأكد من أنك تريد إعادة ضبط جميع تداولات محفظتك ومعلومات الرقم السري؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
 <translation id="6369495274982305511">هل أنت متأكد أنك تريد إعادة ضبط محفظتك؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>

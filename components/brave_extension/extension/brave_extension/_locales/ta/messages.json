@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "மேலும் அறிக",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave இல் சேர்",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave இலிருந்து அகற்று",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Chrome இல் சேர்",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Chrome இலிருந்து அகற்று",
+    "description": "Message for removing an extension from Chrome"
   }
 }

@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr-CA">
+<translation id="3478449063771497234">Les notifications sont désactivées</translation>
+<translation id="7466579932043491502">Les Récompenses Brave peuvent ne pas fonctionner pendant que les notifications sont désactivées.</translation>
+<translation id="4259212006412783790">ACTIVER</translation>
+<translation id="6112331814131703370">Bloquer les avis « Passer à l'app »</translation>
 <translation id="4744921452903670666">Dites-nous ce que vous pensez!</translation>
 <translation id="2524310205387880526">Évaluer Brave</translation>
 <translation id="4104400246019119780">Merci!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Vos récompenses publicitaires gagnées en <ph name="MONTH_VALUE"/> sont disponibles!</translation>
 <translation id="2716238748894345194">Récompenses gagnées en <ph name="MONTH_VALUE"/> : <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Il vous reste <ph name="TOKEN"/> jours pour les réclamer</translation>
-<translation id="2323069945529668668">Euh oh !</translation>
-<translation id="7510166204621526816">Le serveur Brave Rewards ne répond pas. Nous ferons notre possible pour le régler au plus vite.</translation>
 <translation id="683765328936486920">sur YouTube</translation>
 <translation id="8969049974285901797">sur Twitch</translation>
 <translation id="3101693828171454453">pas assez de <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="5050890334032852465">Enregistrer la liste de suivi du compte</translation>
 <translation id="7755766175599167100">Jetons de recherche</translation>
 <translation id="3835223348537121988">Solde :</translation>
-<translation id="6888491517683356528">Continuer avec Ramp</translation>
+<translation id="3956169227169516344">Sélectionner une méthode d'achat</translation>
 <translation id="8488282162676695335">Portefeuille Brave</translation>
 <translation id="3784455785234192852">Verrouiller</translation>
 <translation id="8796429300536029044">Détails du NFT</translation>
@@ -625,6 +627,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="414639769490080648">Le nombre de minutes à attendre avant que le portefeuille Brave soit automatiquement verrouillé</translation>
 <translation id="4993345308607970390">Réinitialiser le portefeuille Brave</translation>
 <translation id="4322846864135539519">Voulez-vous vraiment réinitialiser vos récompenses Brave? Si votre portefeuille n'est pas sauvegardé, vous perdrez toutes les données de votre compte (y compris tous les fonds associés). Tapez "<ph name="CONFIRMATION_PHRASE"/>" pour confirmer.</translation>
+<translation id="6915083716464390008">Sélectionnez l'une des options suivantes</translation>
+<translation id="7667423728712601865">Achetez des cryptos avec une carte Visa ou Mastercard.</translation>
+<translation id="3101839349578102016">Achat instantané avec votre compte bancaire. Frais réduits.</translation>
+<translation id="7269640984027668973">Acheter avec <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Effacer les renseignements relatifs aux transactions et aux nonces</translation>
 <translation id="5693968582510626466">Supprimer les transactions peut être utile pour les développeurs ou lors de la suppression de l'état sur un serveur local</translation>
 <translation id="5421107279168565467">Voulez-vous vraiment réinitialiser tous les renseignements relatifs aux transactions et aux nonces de votre portefeuille? Cette option est principalement utilisée par les développeurs exécutant un serveur test local. Saisissez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
@@ -799,7 +805,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="3506416339268164412">L'adresse de réception est l'adresse d'un contrat de jeton.</translation>
 <translation id="3494964159182650590">Résumé des récompenses</translation>
 <translation id="590733288489975971">Rewards d'Ads</translation>
-<translation id="207268487070188114">Pourboire unique</translation>
+<translation id="2613359062756190460">Pourboires ponctuels</translation>
 <translation id="7577100371127227294">Pourboires mensuels</translation>
 <translation id="7091980679045978090">Revenus estimés</translation>
 <translation id="1346059596910821859">Pourboire</translation>

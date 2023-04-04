@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
+<translation id="3478449063771497234">Benachrichtigungen sind deaktiviert</translation>
+<translation id="7466579932043491502">Brave Rewards funktioniert möglicherweise nicht, wenn Benachrichtigungen deaktiviert sind.</translation>
+<translation id="4259212006412783790">AKTIVIEREN</translation>
+<translation id="6112331814131703370">Hinweise zum Wechseln zur App blockieren</translation>
 <translation id="4744921452903670666">Sagen Sie uns, was Sie denken!</translation>
 <translation id="2524310205387880526">Brave bewerten</translation>
 <translation id="4104400246019119780">Danke!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Ihre Belohnungen für Anzeigen im <ph name="MONTH_VALUE"/> sind da!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/>-Belohnungen: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Sie haben noch <ph name="TOKEN"/> Tage Zeit, dies in Anspruch zu nehmen.</translation>
-<translation id="2323069945529668668">Hoppla!</translation>
-<translation id="7510166204621526816">Der Brave-Rewards-Server antwortet nicht. Wir werden dieses Problem schnellstmöglich beheben.</translation>
 <translation id="683765328936486920">auf YouTube</translation>
 <translation id="8969049974285901797">auf Twitch</translation>
 <translation id="3101693828171454453">nicht genügend <ph name="TOKEN"/></translation>
@@ -611,7 +613,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5050890334032852465">Konto-Überwachungsliste speichern</translation>
 <translation id="7755766175599167100">Token suchen</translation>
 <translation id="3835223348537121988">Guthaben:</translation>
-<translation id="6888491517683356528">Weiter zu Ramp</translation>
+<translation id="3956169227169516344">Kaufmethode wählen</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Sperren</translation>
 <translation id="8796429300536029044">NFT-Detail</translation>
@@ -625,6 +627,10 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="414639769490080648">Die Anzahl der Minuten, die gewartet werden soll, bis die Brave Wallet automatisch gesperrt wird</translation>
 <translation id="4993345308607970390">Brave Wallet zurücksetzen</translation>
 <translation id="4322846864135539519">Möchten Sie Ihre Brave-Belohnungen wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
+<translation id="6915083716464390008">Wählen Sie eine der folgenden Optionen aus</translation>
+<translation id="7667423728712601865">Kryptowährung mit Visa oder Mastercard kaufen.</translation>
+<translation id="3101839349578102016">Sofortkauf mit Ihrem Bankkonto. Niedrigere Gebühren.</translation>
+<translation id="7269640984027668973">Kaufen mit <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Transaktion löschen &amp; Nonce-Info</translation>
 <translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
 <translation id="5421107279168565467">Möchten Sie die Transaktions- und Nonce-Informationen wirklich zurücksetzen? Diese Option wird hauptsächlich von Entwicklern verwendet, die einen lokalen Testserver betreiben. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>
@@ -799,7 +805,7 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="3506416339268164412">Die Empfangsadresse ist die Vertragsadresse eines Tokens</translation>
 <translation id="3494964159182650590">Belohnungs-Übersicht</translation>
 <translation id="590733288489975971">Belohnungen aus Ads</translation>
-<translation id="207268487070188114">Einmaliges Trinkgeld</translation>
+<translation id="2613359062756190460">Einmalige Trinkgelder</translation>
 <translation id="7577100371127227294">Monatliche Trinkgelder</translation>
 <translation id="7091980679045978090">Geschätzter Verdienst</translation>
 <translation id="1346059596910821859">Spenden</translation>

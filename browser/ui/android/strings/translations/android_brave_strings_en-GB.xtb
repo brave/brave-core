@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
+<translation id="3478449063771497234">Notifications are disabled</translation>
+<translation id="7466579932043491502">Brave Rewards may not work while notifications are disabled.</translation>
+<translation id="4259212006412783790">TURN ON</translation>
+<translation id="6112331814131703370">Block 'Switch to App' notices</translation>
 <translation id="4744921452903670666">Tell us what you think!</translation>
 <translation id="2524310205387880526">Rate Brave</translation>
 <translation id="4104400246019119780">Thanks!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Your <ph name="MONTH_VALUE"/> Ads Rewards are here!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Rewards: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">You have <ph name="TOKEN"/> days left to claim</translation>
-<translation id="2323069945529668668">Uh oh!</translation>
-<translation id="7510166204621526816">The Brave Rewards server is not responding. We will fix this as soon as possible.</translation>
 <translation id="683765328936486920">on YouTube</translation>
 <translation id="8969049974285901797">on Twitch</translation>
 <translation id="3101693828171454453">not enough <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Are you sure you want to do this?</translation>
 <translation id="5050890334032852465">Save account watchlist</translation>
 <translation id="7755766175599167100">Search tokens</translation>
 <translation id="3835223348537121988">Balance:</translation>
-<translation id="6888491517683356528">Continue to Ramp</translation>
+<translation id="3956169227169516344">Select purchase method</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="8796429300536029044">NFT Detail</translation>
@@ -625,6 +627,10 @@ Are you sure you want to do this?</translation>
 <translation id="414639769490080648">The number of minutes to wait until the Brave Wallet is automatically locked</translation>
 <translation id="4993345308607970390">Reset Brave Wallet</translation>
 <translation id="4322846864135539519">Are you sure you want to reset your Brave Rewards? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
+<translation id="6915083716464390008">Select one of the following options</translation>
+<translation id="7667423728712601865">Buy crypto with Visa or Mastercard.</translation>
+<translation id="3101839349578102016">Instant buy with your bank account. Lower fees.</translation>
+<translation id="7269640984027668973">Buy with <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Clear transaction &amp; nonce info</translation>
 <translation id="5693968582510626466">Clearing transactions may be useful for developers or when clearing state on a local server</translation>
 <translation id="5421107279168565467">Are you sure you want to reset transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE"/>" to confirm.</translation>
@@ -799,7 +805,7 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="3506416339268164412">The receiving address is a token's contract address</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>
 <translation id="590733288489975971">Rewards from Ads</translation>
-<translation id="207268487070188114">One-time tip</translation>
+<translation id="2613359062756190460">One-Time Tips</translation>
 <translation id="7577100371127227294">Monthly Tips</translation>
 <translation id="7091980679045978090">Estimated earnings</translation>
 <translation id="1346059596910821859">Tip</translation>
