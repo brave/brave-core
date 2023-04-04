@@ -27,8 +27,7 @@ BraveNTPCustomBackgroundServiceFactory::GetInstance() {
   return base::Singleton<BraveNTPCustomBackgroundServiceFactory>::get();
 }
 
-BraveNTPCustomBackgroundServiceFactory::
-    BraveNTPCustomBackgroundServiceFactory()
+BraveNTPCustomBackgroundServiceFactory::BraveNTPCustomBackgroundServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveNTPCustomBackgroundService",
           BrowserContextDependencyManager::GetInstance()) {}
@@ -39,8 +38,9 @@ BraveNTPCustomBackgroundServiceFactory::
 KeyedService* BraveNTPCustomBackgroundServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
   // Custom NTP background is only used in normal profile.
-  if (!brave::IsRegularProfile(context))
+  if (!brave::IsRegularProfile(context)) {
     return nullptr;
+  }
 
   return new ntp_background_images::BraveNTPCustomBackgroundService(
       std::make_unique<BraveNTPCustomBackgroundServiceDelegate>(

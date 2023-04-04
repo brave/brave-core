@@ -96,14 +96,14 @@ GURL BraveNTPCustomBackgroundServiceDelegate::GetCustomBackgroundImageURL()
   return CustomBackgroundFileManager::Converter(name).To<GURL>();
 }
 
-bool BraveNTPCustomBackgroundServiceDelegate::IsColorBackgroundEnabled()
-    const {
+bool BraveNTPCustomBackgroundServiceDelegate::IsColorBackgroundEnabled() const {
   return NTPBackgroundPrefs(profile_->GetPrefs()).IsColorType();
 }
 
 std::string BraveNTPCustomBackgroundServiceDelegate::GetColor() const {
-  if (!IsColorBackgroundEnabled())
+  if (!IsColorBackgroundEnabled()) {
     return {};
+  }
 
   const auto selected_value =
       NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
@@ -118,12 +118,14 @@ bool BraveNTPCustomBackgroundServiceDelegate::ShouldUseRandomValue() const {
 bool BraveNTPCustomBackgroundServiceDelegate::HasPreferredBraveBackground()
     const {
   const auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
-  if (!pref.IsBraveType() || pref.ShouldUseRandomValue())
+  if (!pref.IsBraveType() || pref.ShouldUseRandomValue()) {
     return false;
+  }
 
   auto selected_value = pref.GetSelectedValue();
-  if (auto* selected_url = absl::get_if<GURL>(&selected_value))
+  if (auto* selected_url = absl::get_if<GURL>(&selected_value)) {
     return selected_url->is_valid();
+  }
 
   return false;
 }
