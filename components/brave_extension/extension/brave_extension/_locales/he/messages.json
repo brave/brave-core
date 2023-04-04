@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "למדו עוד",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "‏הוסף ל-‏Brave‏",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "‏הסר מ-Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "‏הוספה ל-Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "‏הסרה מ-Chrome",
+    "description": "Message for removing an extension from Chrome"
   }
 }

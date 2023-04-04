@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">نشان دادن «پاداش‌های Brave»</translation>
 <translation id="5585019845078534178">کارت‌ها</translation>
 <translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
-<translation id="8466529005131466476">می‌توانید با بازدید از سایت‌های تحت حمایت، درآمد کسب کنید.</translation>
-<translation id="3955742714798578476">با دیدن تصاویر تحت حمایت در حال دریافت درآمد هستید.</translation>
-<translation id="7822618650711767369">تصاویر تحت حمایت مالی Brave را پشتیبانی می‌کنند. شما می‌توانید به وسیله Brave Reward بخشی از درآمد حاصل از عکس‌های تحت حمایت را دریافت و همچنین از پدیدآورندگان محتوا حمایت کنید!</translation>
-<translation id="5579480493856401823">خاموش کردن سایت‌های تحت حمایت مالی از تعداد توکن‌های دریافتی شما و حمایت‌هایی که هر ماه به پدیدآورندگان محتوا داده می‌شود می‌کاهد.</translation>
+<translation id="2414654907269324670">شما برای تصاویر دارای حامی مالی BAT دریافت می‌کنید.</translation>
+<translation id="4942016616604700968">فعال کردن پاداش‌ها</translation>
+<translation id="5684562942023496754">می‌توانید با دیدن تصاویر دارای حامی مالی درآمد کسب کنید.</translation>
+<translation id="8934374643857605034">به‌عنوان یک کاربر «پاداش‌های Brave»، می‌توانید برای دیدن تصاویر دارای حامی مالی، BAT کسب کنید.</translation>
+<translation id="5236449703984229754">با فعال کردن «آگهی‌های Brave»، می‌توانید برای دیدن تصاویر دارای حامی مالی، BAT کسب کنید. وقتی«آگهی‌های Brave» خاموش است، روشن کردن «تصاویر دارای حامی مالی» همچنان از مأموریت Brave پشتیبانی می‌کند.</translation>
+<translation id="1570714748649804013">به عنوان یک کاربر «هدایای Brave»، برای «تصاویر دارای حامی مالی» که می‌بینید، BAT دریافت می‎‌کنید. غیرفعال کردن «تصاویر دارای حامی مالی» میزان درآمد شما را کاهش می‌دهد.</translation>
+<translation id="8998727244653964783">وقتی یک حساب نگهبانی را به «هدایای Brave» متصل می‌کنید، می‌توانید برای دیدن «تصاویر دارای حامی مالی»، BAT کسب کنید. در ضمن، شما با دیدن «تصاویر دارای حامی مالی» در حمایت از سازندگان نقش ایفا می‌کنید.</translation>
+<translation id="5512383650263136662">می‌توانید از طریق «هدایای Brave» برای دیدن «تصاویر دارای حامی مالی» BAT کسب کنید. کاربر «هدایا» نیستید؟ روشن کردن «تصاویر دارای حامی مالی» همچنان از مأموریت Brave پشتیبانی می‌کند.</translation>
 <translation id="2875302873837723333">سایت‌های برتر</translation>
 <translation id="8173998484743827990">آمار Brave</translation>
 <translation id="383680190590774040">ساعت</translation>
@@ -81,7 +85,7 @@
 <translation id="9024104284526126630">می‌توانید در Brave تماس خصوصی شروع کنید.</translation>
 <translation id="4903286433687221248">در Brave Talk، با دوستان و همکارانتان تماس‌های نامحدود داشته باشید.</translation>
 <translation id="7115051913071512405">آن را امتحان کنید</translation>
-<translation id="370665806235115550">در حال بارکردن…</translation>
+<translation id="370665806235115550">در حال بارگیری…</translation>
 <translation id="4634933166298842522">مدیریت اشتراک ها</translation>
 <translation id="4108314971463891922">دنبال کردن</translation>
 <translation id="3861486700625780712">لغو دنبال کردن</translation>
@@ -178,7 +182,7 @@
 <translation id="4229016885653790965">متأسفیم! آگهی ها هنوز در منطقه شما دردسترس نیستند.</translation>
 <translation id="2539279826042558064">هم‌اکنون «پاداش‌های Brave» و «آگهی‌ها» در دستگاه شما موجود نیست.</translation>
 <translation id="5736977383725358876">تعداد دفعات دریافت اعلان آگهی</translation>
-<translation id="7701040980221191251">هیچ کدام</translation>
+<translation id="7701040980221191251">هیچکدام</translation>
 <translation id="767929144984201135">حداکثر 1 آگهی در هر ساعت</translation>
 <translation id="3122281951051829161">حداکثر 2 آگهی در هر ساعت</translation>
 <translation id="3431180326971210034">حداکثر 3 آگهی در هر ساعت</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">۸ ثانیه</translation>
 <translation id="8610523985422563960">۱ دقیقه</translation>
 <translation id="2807328214759298515">حداکثر تا</translation>
-<translation id="9031738692126722094">فعال کردن نکات در سطح محتوا در این سایت‌ها</translation>
+<translation id="7483857210736407752">نمایش دکمه «انعام» در سایت‌ها</translation>
 <translation id="7583327070390027131">تاریخ انعام‌های ماهانه بعدی</translation>
 <translation id="6231182869178328516">به‌تازگی با استفاده از مرورگر Brave، به <ph name="NAME"/> انعام دادم. این مورد را در https://brave.com/tips بررسی کنید.</translation>
 <translation id="5916536234616514390">عاشق این هستم که <ph name="HASHTAG"/>Brave اجازه می‌دهد از پدیدآورندگان پشتیبانی کنم! همین الان با BAT به <ph name="NAME"/> با <ph name="HASHTAG2"/> انعام دادم. اگر تا <ph name="DATE"/> در  https://creators.brave.com تأیید کند، BAT به او تعلق می‌گیرد!</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">در حال حاضر تاریخچه تبلیغات Brave وجود ندارد</translation>
 <translation id="5345727496083327478">دیگر تبلیغاتی از این دسته‌بندی دریافت نخواهید کرد</translation>
 <translation id="2631006050119455616">ذخیره شد</translation>
-<translation id="3819257035322786455">پشتیبان‌گیری</translation>
 <translation id="6976444672879155794">کمک خودکار از [[processor]]</translation>
 <translation id="8804164990146287819">خط‌مشی حریم‌خصوصی</translation>
 <translation id="7262285991915892790">نماد BAT را به اینجا بکشید:</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">[[currency]] استفاده‌نشده تا تاریخ انقضا، به‌طور خودکار به Brave User Growth Pool بازگردانده می‌شود.</translation>
 <translation id="279567716178902927">تاریخ انقضای امتیاز</translation>
 <translation id="1389143276807887637">وارد کردن</translation>
-<translation id="3810973564298564668">مدیریت</translation>
-<translation id="6302422639282249274">مدیریت جوایز بریو</translation>
 <translation id="211044356803193224">انعام‌های ماهانه!</translation>
 <translation id="2487641031722095938">امروز خوش‌شانس هستید!</translation>
 <translation id="6255773350565723852">امتیاز توکن شما در راه است.</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">حذف از موارد ذخیره شده</translation>
 <translation id="5530851178552343773">[[reservedAmount]] [[currency]] برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت نام نکرده‌اند، درنظر گرفته‌اید. مرورگر تلاش می‌کند تا زمانی که آنها ثبت‌نام کنند یا تا 90 روز به کمک ادامه دهد.</translation>
 <translation id="5939518447894949180">بازنشانی</translation>
+<translation id="3349204812119681938">جوایز مرورگر بریو را از ابتدا شروع کن.</translation>
 <translation id="5669281110673664811">پاک کردن فهرست موارد مستثنی</translation>
 <translation id="1797334173232638045">سایت‌های پین‌شده شما به اینجا منتقل شدند</translation>
-<translation id="542042553430131913">اگر پاداش‌های Brave شما تأیید نشده باشد، موجودی توکن شما در فایل‌های محلی دستگاهتان ذخیره می‌شود.</translation>
-<translation id="2142973554991645476">اگر می‌خواهید در صورت نیاز به نصب مجدد مرورگر یا قالب‌بندی مجدد دستگاهتان، توکن خود را ایمن کنید و می‌خواهید از مزایای دیگری مانند افزودن یا برداشتن توکن خود بهره‌مند شوید، توصیه می‌کنیم <ph name="LINK_BEGIN"/>تأیید<ph name="LINK_END"/> کنید.</translation>
 <translation id="5317144262906129592">با ارسال انعام می‌توانید از پدیدآورنده محتوا حمایت کنید. با این کار می‌توانید از آن‌ها بابت خلق چنین محتوای خوبی قدردانی کنید.</translation>
 <translation id="3074127054582480056">توجه</translation>
 <translation id="3659457123782988823">مطمئن هستید می‌خواهید پاداش‌های Brave خود را بازنشانی کنید؟</translation>
 <translation id="1666001796278936721">پس از بازنشانی، پروفایل Brave Rewards فعلی شما حذف می‌شود و شما دوباره با یک نمایه Brave Rewards کاملاً جدید شروع خواهید کرد. قبل از هرگونه اقدامی به‌منظور امنیت بیشتر، درباره بازنشانی <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
-<translation id="94095197509579227">توجه: شما هم‌اکنون <ph name="BAT_AMOUNT"/> دریافتی تخمین‌زده شده در این ماه دارید که در صورت بازنشانی، آن را از دست می‌دهید.</translation>
 <translation id="4806029412510565611">متوجهم که نمایه Brave Rewards فعلی و داده‌های Brave Rewards من از روی دستگاهم حذف خواهد شد و <ph name="LINK_BEGIN"/>مقاله پشتیبانی درباره بازنشانی<ph name="LINK_END"/> را خوانده‌ام.</translation>
 <translation id="4914597931214386232">امتیازهای توکن مطالبه شد</translation>
 <translation id="3494964159182650590">خلاصه پاداش‌ها</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">مشاهده جزئیات</translation>
 <translation id="4206899127409458763">ایجاد نمایه پاداش‌های Brave شما</translation>
 <translation id="1988679729106502285">توجه:</translation>
-<translation id="942863887222585572">شما به <ph name="USER_PROVIDER"/>متصل هستید، اما این پدید‌آورنده به <ph name="CREATOR_PROVIDER"/>متصل است. یعنی اینکه انعام شما به دست این پدید‌آورنده نخواهد رسید. در حال حاضر تمامی انعام‌های شما به حالت معلق درمی‌آیند و 90 روز دیگر به‌صورت خودکار مجدداً فرستاده می‌شوند.</translation>
 <translation id="5530734056858418442">این پدیدآورنده هنوز ثبت‌نام نکرده است. هر انعامی که شما بدهید به حالت معوق باقی می‌ماند و به‌طور خودکار به‌مدت 90 روز تلاش مجدد انجام خواهد شد.</translation>
 <translation id="3197752845651180812">مشارکت‌های معلق</translation>
 <translation id="6964891561514920613">مشاهده همه مشارکت‌های معلق</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">پدیدآورنده تأییدنشده</translation>
 <translation id="6020176662032623904">پدیدآورنده تأییدشده</translation>
 <translation id="215037911651623564">تازه‌سازی وضعیت اعتبارسنجی پدید‌آورنده</translation>
-<translation id="8946576491316456643">در حال حاضر تمامی انعام‌های شما به حالت معلق درمی‌آیند و 90 روز دیگر به‌صورت خودکار مجدداً فرستاده می‌شوند. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">در حال حاضر، هر انعامی که می‌دهید در حالت معلق باقی می‌ماند و به‌طور خودکار 90 روزبعد دوباره امتحان می‌شود.</translation>
 <translation id="7826318737761918938">این ایجادکننده هنوز ثبت‌نام نکرده است.</translation>
 <translation id="3573568055713372419">شما به <ph name="USER_PROVIDER"/>متصل شدید، اما این پدیدآورنده به <ph name="CREATOR_PROVIDER"/>متصل است. یعنی اینکه انعام شما به دست این پدید‌آورنده نخواهد رسید.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> در <ph name="PLATFORM"/></translation>
@@ -847,7 +845,7 @@
 <translation id="6366007539108097840">3 ماه</translation>
 <translation id="6977728312178289892">1 سال</translation>
 <translation id="6598532182053592167">افزودن سکه</translation>
-<translation id="1848737374354350807">صورت حساب</translation>
+<translation id="1848737374354350807">صورت‌حساب</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> در <ph name="NETWORK"/></translation>
 <translation id="629730747756840877">حساب</translation>
 <translation id="3959969108528118741">مالک</translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">خرید</translation>
 <translation id="1483493594462132177">ارسال</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="3488255243387417752">فروختن</translation>
+<translation id="5223034545851554347">شما به مقدار کافی <ph name="TOKEN_SYMBOL"/> در این حساب ندارید.</translation>
 <translation id="9113988219764868805">ارسال توکن</translation>
 <translation id="4254256922305105713">ارسال NFT</translation>
 <translation id="3453833142586986467">انتخاب توکن</translation>
@@ -1000,7 +1000,7 @@
 <translation id="2416098547200943834">توجه: کلید خصوصی در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه می‌شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="7657130382217527063">توجه: کلید خصوصی باید در قالب یک JSON با رمزنگاری هگز که شامل اطلاعات کلید خصوصی و پروتکل است ارائه شود. <ph name="LINK_START"/>بیشتر بدانید<ph name="LINK_END"/>.</translation>
 <translation id="42126664696688958">گرفتن خروجی</translation>
-<translation id="1366855498335432549">سپرده‌گذاری</translation>
+<translation id="1366855498335432549">واریز</translation>
 <translation id="2902856457593699108">نمایش کلید</translation>
 <translation id="8033497299373164724">مخفی کردن کلید</translation>
 <translation id="2702143907607790516">نام حساب به‌روزرسانی نشد، لطفاً دوباره امتحان کنید.</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">اول</translation>
 <translation id="4709524402122994378">معاملات</translation>
 <translation id="4591079278963448049">حساب توکن مربوطه هنوز وجود ندارد. مقدار اندکی SOL برای ایجاد و تهیه وجه آن هزینه خواهد شد.</translation>
+<translation id="1426320910664514906">محدوده گاز</translation>
+<translation id="1229774280326250926">مبلغ گاز</translation>
+<translation id="148169246131967347">سقف هزینه گاز</translation>
 <translation id="523862956770478816">مجوزهای سایت</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> حساب متصل شد</translation>
 <translation id="4804818685124855865">قطع اتصال</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">آدرس ETH معتبری نیست</translation>
 <translation id="2832270987629018596">نشانی SOL معتبر نیست</translation>
 <translation id="882486206986535424">آدرس معتبری نیست</translation>
-<translation id="6825399159373612149">دامنه <ph name="DOMAIN_NAME"/> ثبت نشده است</translation>
+<translation id="8684908590733515816">دامنه دارای آدرس <ph name="COIN_TYPE_SYMBOL"/> متصل نیست</translation>
 <translation id="8971278306757462297">نشانی دریافت، نشانی خودتان است</translation>
 <translation id="3506416339268164412">نشانی دریافت، نشانی قرارداد یک توکن است</translation>
+<translation id="6370376419663123629">آدرس به نظر صحیح نیست</translation>
+<translation id="3767148796886402380">آدرس خود را بررسی کنید تا مطمئن شوید درست است (به‌عنوان مثال حروف کوچک یا بزرگ).</translation>
+<translation id="2585599787090762065">چطور می‌توانم آن را حل کنم؟</translation>
+<translation id="5517732667776806421">فاقد اطلاعات جمع‌‌آزما</translation>
 <translation id="2975056993833847787">این آدرس را نمی‌توان تأیید کرد (فاقد چک‌سام). ادامه می‌دهید؟</translation>
 <translation id="6320252966164556855">آدرس تأیید نشد (چک‌سام نامعتبر). لطفاً دوباره امتحان کنید، حروف کوچک را با حروف بزرگ جایگزین کنید.</translation>
 <translation id="4667144295226514387">محدودیت گاز وجود ندارد</translation>
 <translation id="2021522108838444624">مقدار باید بیشتر از 0 باشد</translation>
 <translation id="8464365289405373974">ارائه آدرس الزامی است</translation>
 <translation id="4884792073752467460">آدرس گیرنده نامعتبر است</translation>
+<translation id="8585995109882455949">چطور می‌توانم آدرس درست را پیدا کنم؟</translation>
+<translation id="8395402412470376435">Brave کاربران را اعتبارسنجی می‌کند و از ارسال وجوه به آدرس اشتباه به دلیل حروف بزرگ نادرست جلوگیری می‌کند. این یک فرایند «جمع‌آزما» برای تأیید معتبر بودن یک آدرس اتریوم است.</translation>
+<translation id="4583433813614292221">1. مشاهده کنید</translation>
+<translation id="5393164213211430081">2. آدرس ETH را کپی و وارد کنید</translation>
+<translation id="2378355054306959991">به کمک بیشتری نیاز دارید؟</translation>
 <translation id="862585889767884824">به</translation>
 <translation id="9106265941552476098">رد کردن <ph name="TRANSACTION_LENGTH"/>تراکنش</translation>
 <translation id="1118876217803190221">موجودی کافی نیست.</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">توکن استاندارد</translation>
 <translation id="9033453977881595182">شناسه توکن</translation>
 <translation id="6332387008245531841">آدرس قرارداد</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">مکان یا آدرس تصویر</translation>
 <translation id="2962388922926051374">درخواست مربوط به روش «eth_chainId» در <ph name="URL"/> انجام نشد</translation>
 <translation id="8325036459845654666">این شبکه قبلاً افزوده شده است.</translation>
 <translation id="554350381160981853">امضای داده‌های تایپ‌شده فقط در Trezor Model One با سیستم عامل 1.10.5 یا بالاتر پشتیبانی می‌شود</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">آدرس FIL معتبر نیست</translation>
 <translation id="3898731124813934210">خرید با Wyre</translation>
 <translation id="5522073372365069684">خرید با Ramp</translation>
+<translation id="6153197326949684688">فروش با <ph name="OFFRAMP_PROVIDER"/></translation>
+<translation id="6097502401711916278">حداقل مبلغ باید <ph name="FIAT_AMOUNT"/> یا بیشتر باشد.</translation>
 <translation id="7902920577183739843">با Sardine خرید کنید</translation>
 <translation id="6534275647567011533">خرید با Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">با Visa یا Mastercard رمزارز بخرید.</translation>
+<translation id="3648994606506382289">ساده‌ترین، سریع‌ترین و ارزان‌ترین راه برای خرید رمزارز با کارت و حواله بانکی.</translation>
 <translation id="3101839349578102016">خرید فوری با حساب بانکی خود هزینه های کمتر</translation>
 <translation id="8528916244724490964">تمام شبکه‌ها</translation>
 <translation id="4038403584813842767">تعادل ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">بارکننده BPF</translation>
 <translation id="2334098351242742927">برنامه Ed25519</translation>
 <translation id="8780753288764281797">برنامه Secp256k1</translation>
-<translation id="5275550100743015683">از نشانی:</translation>
-<translation id="2678433693746214764">به نشانی:</translation>
-<translation id="4576396475962922672">حساب جدید:</translation>
+<translation id="6421371987002247943">برنامه توکن</translation>
+<translation id="8642855779894264066">برنامه توکن مرتبط</translation>
+<translation id="3585645354490191700">برنامه MetaData</translation>
+<translation id="1971875492220112280">برنامه SysvarRent</translation>
 <translation id="4719005063558335704">حساب:</translation>
 <translation id="4337554812324118382">تاریخ:</translation>
 <translation id="569870799832027680">شناسه برنامه:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">رد کردن پیش از پرواز:</translation>
 <translation id="3568017348462868931">واحد پول را انتخاب کنید</translation>
 <translation id="4420924466038521900">جستجوی ارزها</translation>
-<translation id="8060029310790625334">مرکز راهنمایی</translation>
+<translation id="4412698727486357573">مرکز راهنمایی</translation>
 <translation id="2095142195578664632">به راهنمایی نیاز دارید؟ نگاه کنید به</translation>
 <translation id="3253669416991680932">این کیف پول سخت‌افزاری از این عملیات پشتیبانی نمی‌کند.</translation>
 <translation id="7457027586454688423">رمز Brave Wallet خود را وارد کنید</translation>
@@ -1424,14 +1442,12 @@
 <translation id="1763942310723636241">جزئیات توکن</translation>
 <translation id="2938264474197978104">مخفی کردن <ph name="SYMBOL"/></translation>
 <translation id="3614009429760094268">توکن مخفی شود؟</translation>
-<translation id="6779155810671793329">آدرس قرارداد رمزیاب</translation>
+<translation id="6779155810671793329">آدرس قرارداد توکن</translation>
 <translation id="871123550184744265">اعشار توکن</translation>
 <translation id="4038384774641714579">بعداً می‌توانید با کلیک روی دکمه «دارایی‌های آشکار +» که در پایین زبانه «پرتفوی» قرار دارد، این دارایی را دوباره نمایان کنید.</translation>
 <translation id="1026825928738055872">مطمئنید که می‌خواهید «<ph name="ACCOUNT_NAME"/>» را حذف کنید؟</translation>
 <translation id="3910551537328657217">مشخصه درخواست</translation>
 <translation id="7657322905916621147">اندازه عبارت بازیابی باید 12، 15، 18، 21 یا 24 کلمه باشد</translation>
-<translation id="5307206077701819797">هیچ NFT ای در کیف پول شما یافت نشد. شما می‌توانید با کلیک روی دکمه «+ دارایی‌های آشکار» ‏که در پایین زبانه «پرتفوی» قرار دارد، به NFT های خود بیافزایید.</translation>
-<translation id="3528540388456395658">هیچ گونه جستجوی منطبقی با NFT ها یا فیلتر یافت نشد</translation>
 <translation id="5026874946691314267">این مورد دیگر نشان داده نشود</translation>
 <translation id="434502623875309667">تفکیک نشانی به درخواست شبکه برون زنجیره‌ای نیاز دارد. ادامه می‌دهید؟</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">متصل کردن کیف پول</translation>
 <translation id="4029551149873989025">عوض کردن شبکه</translation>
 <translation id="7561262633951061138">بهترین</translation>
+<translation id="8060029310790625334">مرکز راهنمایی</translation>
 <translation id="3143110700666266545">این برنامه از APIهای شخص ثالث زیر استفاده می‌کند:</translation>
 <translation id="163536108506359457">Brave Swap از <ph name="AGGREGATOR"/> به‌عنوان گردآورنده DEX برای شبکه‌های <ph name="NETWORKS"/> پشتیبانی‌شده استفاده می‌کند. <ph name="AGGREGATOR"/>آدرس کیف پول و آدرس IP <ph name="NETWORK"/> را پردازش می‌کند تا یک تراکنش (از جمله دریافت مظنه) را تکمیل کند. <ph name="AGGREGATOR"/> از این داده «فقط» به منظور پردازش تراکنش‌ها استفاده خواهد کرد.</translation>
 <translation id="1847885264294023691">برای اطلاع از <ph name="AGGREGATOR"/> خط مشی حریم خصوصی،‌ اینجا کلیک کنید.</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">ارقام اعشاری عدد دقیق الزامی است</translation>
 <translation id="3797613444743816037">آدرس منبع</translation>
 <translation id="7951915459354237451">محدوده مبلغ، کمتر از مبلغ پایه تنظم شده است. تراکنش شما ممکن است زمان بیشتری طول بکشد یا ناموفق باشد.</translation>
+<translation id="2227702748249086756">امکان واکشی تخمین هزینه وجود ندارد.</translation>
+<translation id="5361710044667743492">چرا موجود نیست؟</translation>
+<translation id="3668838456083358569">برخی از داده‌های NFT در سرور متمرکز مانند AWS‏، Google Cloud و غیره ذخیره می‌شوند. در این حالت، پین کردن داده‌های NFT شما به شبکه IPFS ممکن نیست.</translation>
+<translation id="1293258969121701010">با اجرای IPFS در رایانه خود می‌توانید:</translation>
+<translation id="4568942135611119076">اطمینان حاصل کنید که داده‌های NFT شما آنلاین باقی می‌مانند و نمی‌توان آن‌ها را دستکاری کرد.</translation>
+<translation id="4915883034746438977">با استفاده از شناسه محتوا (CID) از یک داده نادرست، محتوا را بگیرید.</translation>
+<translation id="1373647012698032676">در اثبات اصالت شرکت کنید و شبکه IPFS را غنی و سالم کنید.</translation>
+<translation id="1806204385270226865">NFTهای من را همیشه آنلاین نگه دارید</translation>
+<translation id="4323376551843624309">پین کردن NFT را فعال کنید</translation>
+<translation id="6501331923135442324">گامی بزرگ برای تبدیل شدن به بخشی از وب 3</translation>
+<translation id="5361073938927187534">گره IPFS را اجرا کنید و NFTهای خود را همیشه آنلاین نگه دارید</translation>
+<translation id="1060267371223703324">بررسی کنید که کدام NFTهای من را می‌توان پین کرد</translation>
+<translation id="2641083452974145848">اکنون می‌توانید IPFS خود را اجرا کنید و بخشی از وب 3 باشید. داده‌های NFT شما برای همیشه آنلاین می‌مانند و نمی‌توان آنها را دستکاری کرد.</translation>
+<translation id="4460927368826360904">شما در حال اجرای گره IPFS را هستید. فایل در حال واکشی به گره IPFS محلی است.</translation>
+<translation id="2260350263892668490"><ph name="PINNED"/> NFT از مجموع <ph name="PINNABLE"/> NFT با موفقیت به IPFS پین شده است.</translation>
+<translation id="1474962961180773583"><ph name="PINNABLE"/> مورد از <ph name="TOTAL"/> مورد در دسترس است!</translation>
+<translation id="6852656829524945421">پین کردن امکان‌پذیر نیست.</translation>
+<translation id="7698019251444927442">شما در حال اجرای گره IPFS هستید</translation>
+<translation id="5584313306739463968">گره محلی IPFS در حال اجرا نیست</translation>
+<translation id="7527548209942671618">به گره IPFS محلی شما پین شده است</translation>
+<translation id="5659058832308365026">داده‌های NFT به گره IPFS محلی شما پین می‌شوند</translation>
+<translation id="4919133452617704550">نمی‌توان به گره IPFS محلی شما پین کرد</translation>
+<translation id="3225624966527491351">وارد کردن NFT</translation>
+<translation id="9085765419770918643">هنوز هیچ NFTای در اینجا نیست.</translation>
+<translation id="8445532667841598737">برای اضافه کردن مقداری NFT آماده هستید؟ برای وارد کردن کافی است روی دکمه زیر کلیک کنید.</translation>
+<translation id="9136462955850040542">سازگار با NFTها در سولانا (SPL) و اتریوم (ERC-721).</translation>
 <translation id="3155170474926428993">راه‌انداز تور</translation>
 <translation id="3745016858329272300">اطلاعات عمومی</translation>
 <translation id="4045404575593562245">رویدادهای کنترل Tor</translation>
@@ -1582,6 +1625,8 @@
 <translation id="6531019308847917584">مسدود کردن تشخیص اثر انگشت</translation>
 <translation id="1899608006846124237">مسدود کردن فعالانه تشخیص اثرانگشت</translation>
 <translation id="8034285923190068220">اجازه به اثر انگشت</translation>
+<translation id="7638541189782135885">اتصال‌های HTTP را ارتقا ندهید</translation>
+<translation id="2570787596946026998">صرفاً با HTTPS متصل شوید</translation>
 <translation id="1992750560347846445">گزارش سایت</translation>
 <translation id="2387532482048804818">اگر سایت با سپرهای روشن به‌درستی کار نکرد به ما اطلاع دهید.</translation>
 <translation id="3795015906457257780">بدون محافظت‌های حریم خصوصی Brave در حال مشاهده این سایت هستید.</translation>
@@ -1660,8 +1705,16 @@
 <translation id="888284761945060750">خط‌مشی‌های سازمانتان DNS ایمن را غیرفعال کرده است. استفاده از Brave VPN بدون DNS ایمن، ممکن است باعث افشای نام سایت‌هایی که بازدید می‌کنید برای سازمان یا ارائه‌دهنده سرویس اینترنت شود.</translation>
 <translation id="6593224083874259773">Brave VPN در Windows</translation>
 <translation id="3153983908111684619">هنگام اتصال، تنظیمات توسط BraveVPN قفل می‌شود</translation>
-<translation id="6507543978646831931">Windows قابلیتی موسوم به Smart Multi-Homed Name Resolution دارد که می‌تواند اطلاعات مربوط به موقعیت مکانی شما و سایت‌هایی را که بازدید می‌کنید در معرض دید قرار دهد. اکنون که Brave VPN را فعال کرده‌اید، تنظیمات DNS را در مرورگر تغییر داده‌ایم تا از شما در برابر آشکار شدن این اطلاعات محافظت کنیم. تا زمانی که VPN متصل است، تنظیمات به همین حالت و قفل باقی می‌ماند.<ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">ویندوز قابلیتی به نام Smart Multi-Homed Name Resolution دارد که می‌تواند اطلاعات مربوط به موقعیت مکانی شما و سایت‌هایی را که بازدید می‌کنید آشکار کند.
+
+Brave یک سرویس کمکی دارد که با فیلتر کردن روشی که درخواست‌های DNS در اتصال VPN شما ایجاد می‌شود، از شما در برابر این آشکارشدگی محافظت می‌کند.
+
+با این حال، متوجه شدیم که این سرویس کمکی در حال اجرا نیست - و نمی‌خواهیم شما را بدون محافظت رها کنیم. ما تنظیمات DNS را در مرورگر تغییر داده‌ایم تا در برابر این آشکارشدگی ایمن باشیم. تا زمانی که VPN متصل است، تنظیمات به قوت خود باقی بمانند و قفل باشند.
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">دیگر درباره این مورد به من هشدار داده نشود.</translation>
 <translation id="2740531572673183784">تأیید</translation>
 <translation id="9061845622728745852">منطقه زمانی</translation>
+<translation id="8295393906499561642">جلسه منقضی شد</translation>
+<translation id="3312623558576021182">لطفاً برای تازه‌سازی جلسه VPN خود وارد <ph name="BRAVE_ACCOUNT_BEGIN"/>حساب Brave<ph name="BRAVE_ACCOUNT_END"/> خود شوید.</translation>
 </translationbundle>

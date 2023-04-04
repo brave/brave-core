@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave 奖励</translation>
 <translation id="7561196759112975576">始终</translation>
 <translation id="7961015016161918242">一律不</translation>
+<translation id="7973394300052703468">打开新的无痕窗口(&amp;I)</translation>
 <translation id="4615489450165434530">报告损坏的网站</translation>
 <translation id="8097438084542431276">拷贝清除链接</translation>
 <translation id="4678672101289648246">只在新标签页</translation>
+<translation id="6516243500644829484">打开新的无痕窗口(&amp;I)</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="7630214457764713113">复制干净的链接</translation>
 <translation id="8294286161128352783">只在新标签页</translation>
@@ -80,6 +82,7 @@
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
 <translation id="3229091547987707389">导入并分享目录</translation>
+<translation id="474217410105706308">将此标签页静音</translation>
 <translation id="2804710924397009224">隐藏 Brave 奖励图标</translation>
 <translation id="5029193871181468990">隐藏 Brave 奖励图标</translation>
 <translation id="2808103541110899519">隐藏 Brave 的钱包图标</translation>
@@ -258,7 +261,6 @@
 <translation id="2858138569776157458">热门网站</translation>
 <translation id="7859704718976024901">浏览记录</translation>
 <translation id="8820817407110198400">书签栏</translation>
-<translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="2245286910966863912">在地址栏显示 Brave 新闻按钮</translation>
 <translation id="383007806262310953">显示书签栏</translation>
 <translation id="4054323497808446566">所有页面均可见书签栏</translation>
@@ -304,6 +306,8 @@
 <translation id="4824468494729001999">拦截脚本</translation>
 <translation id="6531019308847917584">阻止指纹识别</translation>
 <translation id="5533533363827555308">严格，可能会破坏网站</translation>
+<translation id="3570081523466826008">升级连接为 HTTPS</translation>
+<translation id="3357319404342882895">严格</translation>
 <translation id="8823559166155093873">阻止 cookies</translation>
 <translation id="5770288601196774623">仅限跨站点</translation>
 <translation id="3587482841069643663">全部</translation>
@@ -318,7 +322,7 @@
 <translation id="8580328754808744073">创建自定义过滤器</translation>
 <translation id="4618274268052410139">在下面的字段中添加您创建的自定义过滤器，每行一个。请务必使用<ph name="BEGIN_LINK"/> Adblock 过滤器语法<ph name="END_LINK"/>。</translation>
 <translation id="7791543448312431591">添加</translation>
-<translation id="571950783952070673">列单 URL</translation>
+<translation id="3075903430639801825">列表标题</translation>
 <translation id="9204006549413740506">上次更新时间</translation>
 <translation id="6745592621698551453">立即更新</translation>
 <translation id="5334844597069022743">查看源</translation>
@@ -349,7 +353,8 @@
 <translation id="6248554379744796526">显示列表中未经验证的站点</translation>
 <translation id="5510618543889994434">允许打赏视频</translation>
 <translation id="924777189963477634">开启自动打赏即表示您同意<ph name="BEGIN_LINK_TOS"/>服务条款<ph name="END_LINK_TOS"/>和<ph name="BEGIN_LINK_PP"/>隐私政策<ph name="END_LINK_PP"/>。</translation>
-<translation id="5733490796524078528">打赏按钮</translation>
+<translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
+<translation id="7483857210736407752">在网站上显示提示按钮</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -381,9 +386,10 @@
 <translation id="4539536028173362640">网站希望访问以太坊提供商的 API 时询问我</translation>
 <translation id="2777102601740875941">阻止网站访问 Solana 提供商的 API</translation>
 <translation id="4206299587103092719">Google 登录</translation>
-<translation id="7458736153596040880">网站想要使用传统 Google 登录时询问</translation>
-<translation id="459266451581663214">阻止网站使用传统 Google 登录</translation>
-<translation id="8098954941070626949">允许网站使用传统 Google 登录</translation>
+<translation id="9110294136812584522">网站可以要求通过第三方 cookie 使用传统的谷歌登录</translation>
+<translation id="2903783737778379345">不允许通过第三方 cookie 登录传统谷歌</translation>
+<translation id="2570833232754279153">不允许使用第三方 cookie 登录旧版谷歌</translation>
+<translation id="6880817299303842099">允许使用第三方 cookie 登录旧版谷歌</translation>
 <translation id="6414370348346025511">标准保护已启用。</translation>
 <translation id="5565355416171743213">开始使用同步</translation>
 <translation id="4332558599726753990">同步设置</translation>
@@ -507,6 +513,9 @@
 <translation id="856371974127598760">钱包网络</translation>
 <translation id="5975930666279943472">清除钱包交易和随机数信息</translation>
 <translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
+<translation id="4440478655766953083">自动固定 NFT</translation>
+<translation id="464460032678285850">添加到 Brave 钱包的 NFT 可能会自动固定到本地 IPFS 节点。
+   注意：IPFS 守护进程可能是为了固定目的而启动的，因此您的本地节点将共享缓存的数据和固定的 NFT 到 IPFS 网络。</translation>
 <translation id="4993345308607970390">重置 Brave 钱包</translation>
 <translation id="9216386092464743272">您确定要重置所有的钱包交易和随机数信息吗？这个选项主要由运行本地测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”进行确认。</translation>
 <translation id="6369495274982305511">确定要重置钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括所有关联的资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>

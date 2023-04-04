@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7561196759112975576">Завжди</translation>
 <translation id="7961015016161918242">Ніколи</translation>
+<translation id="7973394300052703468">Нове &amp;Приватне вікно</translation>
 <translation id="4615489450165434530">Повідомити про зламаний сайт</translation>
 <translation id="8097438084542431276">Скопіювати очищене посилання</translation>
 <translation id="4678672101289648246">Лише на сторінці нової вкладки</translation>
+<translation id="6516243500644829484">Нове приватне вікно</translation>
 <translation id="1209739344687072997">Звіт про пошкоджений сайт</translation>
 <translation id="7630214457764713113">Скопіювати очищене посилання</translation>
 <translation id="8294286161128352783">Лише на сторінці нової вкладки</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
 <translation id="3229091547987707389">Імпорт і поширення каталогу</translation>
+<translation id="474217410105706308">Вимкнути звук на вкладці</translation>
 <translation id="2804710924397009224">Приховати іконку нагород Brave</translation>
 <translation id="5029193871181468990">Приховати іконку нагород Brave</translation>
 <translation id="2808103541110899519">Приховати значок гаманця Brave</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">Популярні сайти</translation>
 <translation id="7859704718976024901">Історія перегляду</translation>
 <translation id="8820817407110198400">Закладки</translation>
-<translation id="6333347122924254968">Показувати значок Brave Rewards в адресному рядку</translation>
 <translation id="2245286910966863912">Відображати кнопку Brave News в адресному рядку</translation>
 <translation id="383007806262310953">Показати панель закладок</translation>
 <translation id="4054323497808446566">Панель закладок відображається на всіх сторінках</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">Блокувати скрипти</translation>
 <translation id="6531019308847917584">Блокувати цифрові сліди</translation>
 <translation id="5533533363827555308">Суворо, сайти можуть не працювати</translation>
+<translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
+<translation id="3357319404342882895">Обов’‎язково</translation>
 <translation id="8823559166155093873">Блокувати файли cookie</translation>
 <translation id="5770288601196774623">Лише між сайтами</translation>
 <translation id="3587482841069643663">Все</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">Створення користувацьких фільтрів</translation>
 <translation id="4618274268052410139">Додавайте створені вами користувацькі фільтри в розташованому нижче полі по одному в рядку. Обов’язково користуйтеся <ph name="BEGIN_LINK"/>синтаксисом фільтрів Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">Додати</translation>
-<translation id="571950783952070673">URL-адреса списку</translation>
+<translation id="3075903430639801825">Назва списку</translation>
 <translation id="9204006549413740506">Дата останнього оновлення</translation>
 <translation id="6745592621698551453">Оновити зараз</translation>
 <translation id="5334844597069022743">Переглянути джерело</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">Показувати в списку не перевірені сайти</translation>
 <translation id="5510618543889994434">Дозволити внески у відео</translation>
 <translation id="924777189963477634">Увімкнувши автоматичні внески, ви погоджуєтеся з <ph name="BEGIN_LINK_TOS"/>Умовами використання<ph name="END_LINK_TOS"/> й <ph name="BEGIN_LINK_PP"/>Політикою конфіденційності<ph name="END_LINK_PP"/>.</translation>
-<translation id="5733490796524078528">Кнопки підказок</translation>
+<translation id="6333347122924254968">Показувати значок Brave Rewards в адресному рядку</translation>
+<translation id="7483857210736407752">Показувати кнопки чайових на сайтах</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">Запитувати, якщо сайт хоче отримати доступ до API постачальника Solana</translation>
 <translation id="2777102601740875941">Блокування доступу для сайтів до API постачальника Solana</translation>
 <translation id="4206299587103092719">Вхід в обліковий запис Google</translation>
-<translation id="7458736153596040880">Запитувати, коли сайт хоче використовувати застарілу систему входу в обліковий запис Google</translation>
-<translation id="459266451581663214">Заборонити сайтам використовувати застарілу систему входу в обліковий запис Google</translation>
-<translation id="8098954941070626949">Дозволити сайтам використовувати застарілу систему входу в обліковий запис Google</translation>
+<translation id="9110294136812584522">Сайти можуть запитувати дозвіл на використання застарілої системи входу в обліковий запис Google за допомогою сторонніх файлів cookie</translation>
+<translation id="2903783737778379345">Заборонити використовувати застарілу систему входу в обліковий запис Google за допомогою сторонніх файлів cookie</translation>
+<translation id="2570833232754279153">Заборонено використовувати сторонні файли cookie для застарілої системи входу в обліковий запис Google</translation>
+<translation id="6880817299303842099">Дозволено використовувати сторонні файли cookie для застарілої системи входу в обліковий запис Google</translation>
 <translation id="6414370348346025511">Стандартний захист увімкнено.</translation>
 <translation id="5565355416171743213">Почати використовувати синхронізацію</translation>
 <translation id="4332558599726753990">Налаштування синхронізації</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">Мережі гаманця</translation>
 <translation id="5975930666279943472">Очистити інформацію про транзакції гаманця та нонс</translation>
 <translation id="5693968582510626466">Очищення транзакцій може бути корисним для розробників або під час очищення стану на локальному сервері</translation>
+<translation id="4440478655766953083">Автоматично прикріпляти NFT</translation>
+<translation id="464460032678285850">NFT, додані до гаманця Brave, можуть бути автоматично прикріплені до локального IPFS-вузла.
+    Примітка: програму-агент IPFS може бути запущено для прикріплення, щоб ваш локальний вузол ділився кешованими даними та прикріпленими NFT з IPFS-мережею.</translation>
 <translation id="4993345308607970390">Скинути гаманець Brave</translation>
 <translation id="9216386092464743272">Ви впевнені, що хочете скинути всю інформацію про транзакції та нонс свого гаманця? Цей параметр здебільшого використовується розробниками, які працюють на локальному тестовому сервері. Уведіть «<ph name="CONFIRMATION_PHRASE"/>» для підтвердження.</translation>
 <translation id="6369495274982305511">Ви дійсно хочете скинути свій гаманець? Якщо ваш гаманець не має резервної копії, скидання призведе до втрати усіх даних облікового запису (зокрема всіх пов’язаних коштів). Уведіть <ph name="CONFIRMATION_PHRASE"/> для підтвердження.</translation>
