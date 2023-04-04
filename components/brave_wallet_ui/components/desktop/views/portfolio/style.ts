@@ -236,13 +236,12 @@ export const FilterTokenRow = styled.div`
   gap: 14px;
 `
 
-export const NftDetails = styled.iframe<{ visible?: boolean }>`
+export const NftMultimedia = styled.iframe<{ visible?: boolean }>`
   width: 100%;
-  min-height: ${p => p.visible ? '440px' : '0px'};
-  height: ${p => p.visible ? 'auto' : '0px'};
+  min-height: ${p => p.visible ? '500px' : '0px'};
   border: none;
   visibility: ${p => p.visible ? 'visible' : 'hidden'};
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   margin-top: 16px;
 `
 

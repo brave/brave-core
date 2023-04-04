@@ -37,7 +37,6 @@ import {
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
   braveNftDisplayOrigin,
-  IframeSize,
   UpdateNftPinningStatus
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
@@ -83,7 +82,7 @@ import {
   DetailText,
   InfoColumn,
   NetworkDescription,
-  NftDetails,
+  NftMultimedia,
   PercentBubble,
   PercentText,
   PriceRow,
@@ -109,6 +108,7 @@ import {
   extractIpfsUrl
 } from '../../../../common/async/lib'
 import { ScrollableColumn } from '../../../shared/style'
+import { NftDetails } from '../../../../nft/components/nft-details/nft-details'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -128,7 +128,6 @@ export const PortfolioAsset = (props: Props) => {
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
-  const [iframeHeight, setIframeHeight] = React.useState<string>('0px')
 
   // routing
   const history = useHistory()
@@ -542,11 +541,6 @@ export const PortfolioAsset = (props: Props) => {
       const { payload } = message as ToggleNftModal
       setshowNftModal(payload)
     }
-
-    if (message.command === NftUiCommand.IframeSize) {
-      const { payload } = message as IframeSize
-      setIframeHeight(payload.height + 10 + 'px')
-    }
   }, [])
 
   const onSelectBuy = React.useCallback(() => {
@@ -842,16 +836,28 @@ export const PortfolioAsset = (props: Props) => {
           />
         }
 
-        <NftDetails
-          onLoad={onNftDetailsLoad}
-          visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
-          ref={nftDetailsRef}
-          sandbox="allow-scripts allow-popups allow-same-origin"
-          allow="clipboard-write"
-          src='chrome-untrusted://nft-display'
-          allowFullScreen
-          style={{ height: iframeHeight }}
-        />
+        {!nftMetadataError &&
+          <NftMultimedia
+            onLoad={onNftDetailsLoad}
+            visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
+            ref={nftDetailsRef}
+            sandbox="allow-scripts allow-popups allow-same-origin"
+            allow="clipboard-write"
+            src='chrome-untrusted://nft-display'
+            allowFullScreen
+          />
+        }
+
+        {isNftAsset && selectedAsset &&
+          <NftDetails
+            selectedAsset={selectedAsset}
+            nftMetadata={nftMetadata}
+            nftMetadataError={nftMetadataError}
+            tokenNetwork={selectedAssetsNetwork}
+            nftPinningStatus={currentNftPinningStatus}
+            imageIpfsUrl={ipfsImageUrl}
+          />
+        }
 
         {showNftModal && nftMetadata?.imageURL &&
           <NftModal

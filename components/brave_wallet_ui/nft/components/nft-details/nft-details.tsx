@@ -49,8 +49,6 @@ import {
   Subdivider,
   ProjectDetailName
 } from './nft-details-styles'
-import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
-import { MultimediaWrapper } from '../nft-content/nft-content-styles'
 import { CreateNetworkIcon } from '../../../components/shared'
 import { Row } from '../../../components/shared/style'
 import CopyTooltip from '../../../components/shared/copy-tooltip/copy-tooltip'
@@ -67,9 +65,14 @@ interface Props {
   imageIpfsUrl?: string
 }
 
-export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError,
-                             tokenNetwork, nftPinningStatus,
-                             imageIpfsUrl }: Props) => {
+export const NftDetails = ({
+  selectedAsset,
+  nftMetadata,
+  nftMetadataError,
+  tokenNetwork,
+  nftPinningStatus,
+  imageIpfsUrl
+}: Props) => {
   // custom hooks
   const onClickViewOnBlockExplorer = useExplorer(tokenNetwork || new BraveWallet.NetworkInfo())
 
@@ -103,9 +106,6 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError,
         : <>
           {nftMetadata &&
             <>
-              <MultimediaWrapper>
-                <NftMultimedia nftMetadata={nftMetadata} />
-              </MultimediaWrapper>
               <DetailColumn>
                 {selectedAsset.isErc721 &&
                   <NftStandard>
@@ -217,9 +217,10 @@ export const NftDetails = ({ selectedAsset, nftMetadata, nftMetadataError,
                     </DetailSectionRow>
                   </>
                 }
-                {selectedAsset && nftPinningStatus?.code &&
+                {selectedAsset && nftPinningStatus?.code && nftPinningStatus.code !== BraveWallet.TokenPinStatusCode.STATUS_NOT_PINNED &&
                   <DetailSectionRow>
                     <DetailSectionColumn>
+                      <Row marginBottom={16} />
                       <NftPinningStatus pinningStatusCode={nftPinningStatus.code} />
                     </DetailSectionColumn>
                   </DetailSectionRow>
