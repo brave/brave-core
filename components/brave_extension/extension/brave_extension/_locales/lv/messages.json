@@ -206,5 +206,21 @@
   "learnMore": {
     "message": "Uzzināt vairāk",
     "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Pievienot pārlūkam Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Noņemt no pārlūka Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Pievienot Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Noņemt no pārlūka Chrome",
+    "description": "Message for removing an extension from Chrome"
   }
 }

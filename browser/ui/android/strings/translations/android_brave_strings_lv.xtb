@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lv">
+<translation id="3478449063771497234">Paziņojumi ir atspējoti</translation>
+<translation id="7466579932043491502">Kamēr ir atspējoti paziņojumi, Brave balvas var nedarboties.</translation>
+<translation id="4259212006412783790">IESLĒGT</translation>
+<translation id="6112331814131703370">Bloķēt paziņojumus 'Pārslēgties uz lietotni'</translation>
 <translation id="4744921452903670666">Pastāstiet mums savas domas!</translation>
 <translation id="2524310205387880526">Novērtēt Brave</translation>
 <translation id="4104400246019119780">Paldies!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Jūsu <ph name="MONTH_VALUE"/> reklāmu atlīdzības ir šeit!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Atlīdzības: <ph name="TOKEN"/>BAT</translation>
 <translation id="1649629664206601032">Jums ir <ph name="TOKEN"/>dienas, lai saņemtu</translation>
-<translation id="2323069945529668668">Ak vai!</translation>
-<translation id="7510166204621526816">Brave balvu serveris nereaģē. Mēs to salabosim, cik vien drīz iespējams.</translation>
 <translation id="683765328936486920">vietnē YouTube</translation>
 <translation id="8969049974285901797">vietnē Twitch</translation>
 <translation id="3101693828171454453">Nepietiek <ph name="TOKEN"/></translation>
@@ -611,7 +613,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5050890334032852465">Saglabāt konta skatīšanās sarakstu</translation>
 <translation id="7755766175599167100">Meklēt žetonus</translation>
 <translation id="3835223348537121988">Bilance:</translation>
-<translation id="6888491517683356528">Turpināt uz Ramp</translation>
+<translation id="3956169227169516344">Atlasīt pirkuma metodi</translation>
 <translation id="8488282162676695335">Brave maks</translation>
 <translation id="3784455785234192852">Bloķēt</translation>
 <translation id="8796429300536029044">NFT dati</translation>
@@ -625,6 +627,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="414639769490080648">Minūšu skaits, kas jāgaida, līdz Brave maks tiek automātiski bloķēts.</translation>
 <translation id="4993345308607970390">Atiestatīt Brave maku</translation>
 <translation id="4322846864135539519">Vai tiešām vēlaties atiestatīt Brave Rewards? Ja jūsu maciņš nav dublēts, atiestatot jūs zaudēsiet visus konta datus (tostarp visus saistītos līdzekļus). Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
+<translation id="6915083716464390008">Atlasīt vienu no pieejamajām opcijām</translation>
+<translation id="7667423728712601865">Pirkt kripto ar Visa vai Mastercard.</translation>
+<translation id="3101839349578102016">Tūlītēja pirkšana ar savu bankas kontu. Zemākas maksas.</translation>
+<translation id="7269640984027668973">Pirkt ar <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Notīrīt darījumu un aktuālo informāciju</translation>
 <translation id="5693968582510626466">Darījumu notīrīšana var būt noderīga izstrādātājiem vai, lai notīrītu vietējā servera statusu</translation>
 <translation id="5421107279168565467">Vai tiešām vēlaties atiestatīt darījumu un aktuālo informāciju? Šo opciju galvenokārt izmanto izstrādātāji, kas pārvalda vietējo testa serveri. Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
@@ -799,7 +805,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="3506416339268164412">Saņēmēja adrese ir marķiera līguma adrese</translation>
 <translation id="3494964159182650590">Balvu kopsavilkums</translation>
 <translation id="590733288489975971">Peļņa no reklāmām</translation>
-<translation id="207268487070188114">Vienreizēja dzeramnauda</translation>
+<translation id="2613359062756190460">Vienreizējās dzeramnaudas</translation>
 <translation id="7577100371127227294">Ikmēneša dzeramnauda</translation>
 <translation id="7091980679045978090">Paredzamie ieņēmumi</translation>
 <translation id="1346059596910821859">Dzeramnauda</translation>

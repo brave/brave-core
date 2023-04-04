@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">Kuva Brave Rewards</translation>
 <translation id="5585019845078534178">Kaardid</translation>
 <translation id="3870475560794762985">Kuva esiletõstetavad pildid</translation>
-<translation id="8466529005131466476">Sponsitud veebisaitide vaatamise eest on võimalik raha teenida.</translation>
-<translation id="3955742714798578476">Teenite sponsitud piltide vaatamise eest raha.</translation>
-<translation id="7822618650711767369">Sponsitud pildid toetavad Brave'i. Brave'i Preemiate abil saate teenida osa sponsitud piltide tulust ja toetada ka sisuloojaid.</translation>
-<translation id="5579480493856401823">Sponsitud veebisaitide väljalülitamine vähendab kuus teenitavate tokenite arvu ja sisuloojatele antavat toetust.</translation>
+<translation id="2414654907269324670">Teenite sponsitud piltide eest BAT-i.</translation>
+<translation id="4942016616604700968">Luba preemiad</translation>
+<translation id="5684562942023496754">Sponsitud piltide vaatamise eest on võimalik teenida.</translation>
+<translation id="8934374643857605034">Brave’i auhindade kasutajana on teil sponsitud piltide vaatamise eest võimalik teenida BAT-i.</translation>
+<translation id="5236449703984229754">Kui lubate Brave’i reklaamid, on teil sponsitud piltide vaatamise eest võimalik teenida BAT-i. Kui Brave’i reklaamid on välja lülitatud, toetab sponsitud piltide sisselülitamine ikkagi Brave’i missiooni.</translation>
+<translation id="1570714748649804013">Brave’i auhindade kasutajana teenite vaadatud sponsitud piltide eest BAT-i. Sponsitud piltide keelamine vähendab teenitavat summat.</translation>
+<translation id="8998727244653964783">Kui ühendate hallatava konto Brave’i auhindadega, on teil sponsitud piltide vaatamise eest võimalik teenida BAT-i. Samal ajal aitate sponsitud piltidega loojaid toetada.</translation>
+<translation id="5512383650263136662">Brave’i auhindadega on teil sponsitud piltide vaatamise eest võimalik teenida BAT-i. Kas te ei ole auhindade kasutaja? Sponsitud piltide sisselülitamine toetab ikkagi Brave’i missiooni.</translation>
 <translation id="2875302873837723333">popid saidid</translation>
 <translation id="8173998484743827990">Brave'i statistika</translation>
 <translation id="383680190590774040">kell</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 sekundit</translation>
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="2807328214759298515">Kuni</translation>
-<translation id="9031738692126722094">Luba nendel lehtedel sisu tasemel nõuanded</translation>
+<translation id="7483857210736407752">Kuva saitidel preemianupud</translation>
 <translation id="7583327070390027131">Igakuiste preemiate järgmine kuupäev</translation>
 <translation id="6231182869178328516">Premeerisin Brave Browseriga just kasutajat <ph name="NAME"/>. Uuri selle kohta lehelt https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Nii tore, et <ph name="HASHTAG"/>Brave laseb loojaid toetada! Andsin just praegu kasutajale <ph name="NAME"/> <ph name="HASHTAG2"/>BAT-i. Kui ta kinnitab veebisaidil https://creators.brave.com enne <ph name="DATE"/>, kuulub BAT talle.</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">Brave’i i reklaamide ajalugu praegu pole</translation>
 <translation id="5345727496083327478">Te ei saa enam sellest kategooriast reklaame</translation>
 <translation id="2631006050119455616">Salvestatud</translation>
-<translation id="3819257035322786455">Varunda</translation>
 <translation id="6976444672879155794">Automaatse panustamise [[processor]]</translation>
 <translation id="8804164990146287819">privaatsuspoliitika</translation>
 <translation id="7262285991915892790">Lohistage BAT logo järgmisesse kohta:</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">Aegumiskuupäevaks kasutamata jäänud valuuta [[currency]] tagastatakse automaatselt Brave User Growth Pooli.</translation>
 <translation id="279567716178902927">Võimaluse aegumiskuupäev</translation>
 <translation id="1389143276807887637">impordi</translation>
-<translation id="3810973564298564668">Halda</translation>
-<translation id="6302422639282249274">Halda Brave Rewardsi</translation>
 <translation id="211044356803193224">Igakuised preemiad</translation>
 <translation id="2487641031722095938">Täna on teie õnnepäev!</translation>
 <translation id="6255773350565723852">Sinu tokenitoetus on teel.</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">Eemalda salvestatute hulgast</translation>
 <translation id="5530851178552343773">Olete määranud [[reservedAmount]] [[currency]] loojatele, kes pole veel registreerunud sissemaksete saajaks. Teie brauser üritab panustada, kuni nad kinnitavad või kuni 90 päeva möödumiseni.</translation>
 <translation id="5939518447894949180">Lähtesta</translation>
+<translation id="3349204812119681938">Taasta Brave Rewards</translation>
 <translation id="5669281110673664811">Tühjenda välistusloend</translation>
 <translation id="1797334173232638045">Teie märgistatud saidid on liigutatud kohta</translation>
-<translation id="542042553430131913">Kui teie Brave'i Preemiad ei ole kinnitatud, salvestatakse teie BAT-i saldo kohalike failidena teie seadmes.</translation>
-<translation id="2142973554991645476">Kui soovite oma BAT-i turvata brauseri puhta installi või seadme ümbervormindamise puhuks ja soovite kasutada muid eeliseid, näiteks BAT-i lisamist või väljavõtmist, soovitame selle <ph name="LINK_BEGIN"/>kinnitada<ph name="LINK_END"/>.</translation>
 <translation id="5317144262906129592">Võite toetada seda sisuloojat preemia saatmisega. Nii saate teda suurepärase sisu loomise eest tänada.</translation>
 <translation id="3074127054582480056">Tähelepanu</translation>
 <translation id="3659457123782988823">Kas olete kindel, et soovite oma Brave'i Preemiad lähtestada?</translation>
 <translation id="1666001796278936721">Lähtestamisega kustutatakse teie praegune Brave'i Preemiate profiil ja te alustate algusest täiesti uue Brave'i Preemiate profiiliga. Et kindel olla, lugege enne jätkamist <ph name="LINK_BEGIN"/>lähtestamisest lähemalt<ph name="LINK_END"/>.</translation>
-<translation id="94095197509579227">Märkus. Praegu on teil sellel kuul teenitud <ph name="BAT_AMOUNT"/>, mis läheb kaduma, kui praegu lähtestate.</translation>
 <translation id="4806029412510565611">Ma saan aru, et minu praegune Brave'i Preemiate profiil ja Brave'i Preemiate andmed kustutatakse minu seadmest, ja olen lugenud <ph name="LINK_BEGIN"/>lähtestamist käsitlevat tugiteabe artiklit<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Kasutatud tokenivõimalused</translation>
 <translation id="3494964159182650590">Preemiate kokkuvõte</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">Vaata andmeid</translation>
 <translation id="4206899127409458763">Brave'i Preemiate profiili loomine</translation>
 <translation id="1988679729106502285">MÄRKUS.</translation>
-<translation id="942863887222585572">Olete ühendatud teenusepakkujaga <ph name="USER_PROVIDER"/>, kuid see looja on ühendatud teenusepakkujaga <ph name="CREATOR_PROVIDER"/>. See tähendab, et teie preemia ei jõua selle loojani. Praegu jäävad kõik saadetud preemiad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="5530734056858418442">See looja ei ole veel registreerunud. Kõik saadetud preemiad jäävad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="3197752845651180812">Ootel annetused</translation>
 <translation id="6964891561514920613">Näita kõiki ootel annetusi</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">Kinnitamata looja</translation>
 <translation id="6020176662032623904">Kinnitatud looja</translation>
 <translation id="215037911651623564">Värskenda looja kinnitamisolekut</translation>
-<translation id="8946576491316456643">Praegu jäävad kõik saadetud preemiad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">Praegu jäävad kõik saadetud preemiad ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata.</translation>
 <translation id="7826318737761918938">See looja ei ole veel registreerunud.</translation>
 <translation id="3573568055713372419">Olete ühendatud teenusepakkujaga <ph name="USER_PROVIDER"/>, kuid see looja on ühendatud teenusepakkujaga <ph name="CREATOR_PROVIDER"/>. See tähendab, et teie preemia ei jõua selle loojani.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> platvormil <ph name="PLATFORM"/></translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">Osta</translation>
 <translation id="1483493594462132177">Saada</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="3488255243387417752">Müü</translation>
+<translation id="5223034545851554347">Teil pole sellel kontol piisavalt <ph name="TOKEN_SYMBOL"/>-i.</translation>
 <translation id="9113988219764868805">Saada token</translation>
 <translation id="4254256922305105713">Saada NFT</translation>
 <translation id="3453833142586986467">Valige token</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">esimene</translation>
 <translation id="4709524402122994378">tehingud</translation>
 <translation id="4591079278963448049">Seotud tokenikontot ei ole veel olemas. Selle loomiseks ja rahastamiseks kulub veidi SOL-e.</translation>
+<translation id="1426320910664514906">Gaasi ülemmäär</translation>
+<translation id="1229774280326250926">Premium-gaas</translation>
+<translation id="148169246131967347">Gaasi hinna lagi</translation>
 <translation id="523862956770478816">Veebisaidi õigused</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> kontot on ühendatud</translation>
 <translation id="4804818685124855865">Katkesta ühendus</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">Ei ole kehtiv ETH-i aadress</translation>
 <translation id="2832270987629018596">Ei ole kehtiv SOL-i aadress</translation>
 <translation id="882486206986535424">Ei ole kehtiv aadress</translation>
-<translation id="6825399159373612149">Domeen <ph name="DOMAIN_NAME"/> pole registreeritud</translation>
+<translation id="8684908590733515816">Domeenil pole seotud <ph name="COIN_TYPE_SYMBOL"/>-aadressi</translation>
 <translation id="8971278306757462297">Vastuvõtja aadress on teie enda aadress</translation>
 <translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
+<translation id="6370376419663123629">Aadress ei tundu olevat õige</translation>
+<translation id="3767148796886402380">Kontrollige, kas teie aadress on õige (nt kas suur- või väiketähed on õigesti kirjutatud).</translation>
+<translation id="2585599787090762065">Kuidas seda lahendada?</translation>
+<translation id="5517732667776806421">Kontrollsumma teave puudub</translation>
 <translation id="2975056993833847787">Seda aadressi ei saa kinnitada (puuduv kontrollsumma). Kas jätkata?</translation>
 <translation id="6320252966164556855">Aadress ei läbinud kinnitamist (vigane kontrollsumma). Proovige uuesti ja asendage väiketähed suurtähtedega.</translation>
 <translation id="4667144295226514387">Gaasilimiit puudub</translation>
 <translation id="2021522108838444624">Summa peab olema suurem kui 0</translation>
 <translation id="8464365289405373974">Sihtaadress on nõutav</translation>
 <translation id="4884792073752467460">Kehtetu saaja aadress</translation>
+<translation id="8585995109882455949">Kuidas ma leian õige aadressi?</translation>
+<translation id="8395402412470376435">Brave vaatab aadressid üle ja takistab kasutajatel vahendite saatmist valele aadressile, näiteks valesti kirjutamise tõttu. See on kontrollsumma protsess, mis kontrollib, kas tegemist on kehtiva Ethereumi aadressiga.</translation>
+<translation id="4583433813614292221">1. Külastage</translation>
+<translation id="5393164213211430081">2. Kopeerige ja sisestage ETH aadress</translation>
+<translation id="2378355054306959991">Kas vajate veel abi?</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Lükka tagasi <ph name="TRANSACTION_LENGTH"/> tehingut.</translation>
 <translation id="1118876217803190221">Ebapiisav saldo</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">Tokeni standard</translation>
 <translation id="9033453977881595182">Tokeni ID</translation>
 <translation id="6332387008245531841">Lepinguaadress</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">Pildi asukoht või aadress</translation>
 <translation id="2962388922926051374">Meetodi „eth_chainId“ päring veebilehel <ph name="URL"/> nurjus</translation>
 <translation id="8325036459845654666">See võrk on juba lisatud.</translation>
 <translation id="554350381160981853">Tüübiga andmete allkirjastamist toetatakse ainult seadmes Trezor Model One, mille püsivara versioon on 1.10.5 või uuem.</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">Ei ole kehtiv FIL-i aadress</translation>
 <translation id="3898731124813934210">Osta Wyre kaudu</translation>
 <translation id="5522073372365069684">Osta Rampi kaudu</translation>
+<translation id="6153197326949684688">Müüge pakkujaga <ph name="OFFRAMP_PROVIDER"/></translation>
+<translation id="6097502401711916278">Miinimumsumma peab olema vähemalt <ph name="FIAT_AMOUNT"/>.</translation>
 <translation id="7902920577183739843">Osta Sardine'i kaudu</translation>
 <translation id="6534275647567011533">Osta Transaki kaudu</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Krüpto ostmine Visa või Mastercardi abil.</translation>
+<translation id="3648994606506382289">Kiirem, lihtsaim ja odavaim viis krüpto ostmiseks kaardi ja pangaülekannetega.</translation>
 <translation id="3101839349578102016">Kohene ost teie pangakonto kaudu. Madalamad tasud.</translation>
 <translation id="8528916244724490964">Kõik võrgud</translation>
 <translation id="4038403584813842767">Saldo ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">BPF-laadur</translation>
 <translation id="2334098351242742927">Ed25519 programm</translation>
 <translation id="8780753288764281797">Secp256k1 programm</translation>
-<translation id="5275550100743015683">Saatja aadress:</translation>
-<translation id="2678433693746214764">Saaja aadress:</translation>
-<translation id="4576396475962922672">Uus konto:</translation>
+<translation id="6421371987002247943">Tokeniprogramm</translation>
+<translation id="8642855779894264066">Seotud tokeniprogramm</translation>
+<translation id="3585645354490191700">Metaandmete programm</translation>
+<translation id="1971875492220112280">SysvarRenti programm</translation>
 <translation id="4719005063558335704">Kontod:</translation>
 <translation id="4337554812324118382">Andmed:</translation>
 <translation id="569870799832027680">Programmi ID:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">Jäta eelpäring vahele:</translation>
 <translation id="3568017348462868931">Valige valuuta</translation>
 <translation id="4420924466038521900">Otsi valuutasid</translation>
-<translation id="8060029310790625334">Abikeskus</translation>
+<translation id="4412698727486357573">Abikeskus</translation>
 <translation id="2095142195578664632">Vajate abi? Vaadake</translation>
 <translation id="3253669416991680932">See riistvararahakott ei toeta seda toimingut.</translation>
 <translation id="7457027586454688423">Sisestage oma Brave'i rahakoti parool</translation>
@@ -1430,8 +1448,6 @@
 <translation id="1026825928738055872">Kas soovite kindlasti eemaldada konto <ph name="ACCOUNT_NAME"/>?</translation>
 <translation id="3910551537328657217">Taotle funktsiooni</translation>
 <translation id="7657322905916621147">Taastefraas peab olema 12, 15, 18, 21 või 24 sõna pikkune</translation>
-<translation id="5307206077701819797">Teie rahakotist ei leitud NFT-sid. Saate NFT-d lisada, kui klõpsate vahelehe „Portfell“ allservas asuval nupul „+ Nähtavad varad“.</translation>
-<translation id="3528540388456395658">Otsingule või filtrile vastavaid NFT-sid ei leitud</translation>
 <translation id="5026874946691314267">Ära seda enam näita</translation>
 <translation id="434502623875309667">Aadressiteisenduseks on vaja ahelaväliseid võrgupäringuid. Kas jätkata?</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">Ühenda rahakott</translation>
 <translation id="4029551149873989025">Vaheta võrku</translation>
 <translation id="7561262633951061138">Parim</translation>
+<translation id="8060029310790625334">Abikeskus</translation>
 <translation id="3143110700666266545">See rakendus kasutab järgmisi kolmanda tootja API-sid:</translation>
 <translation id="163536108506359457">Brave’i vahetus kasutab agregaatorit <ph name="AGGREGATOR"/> DEX-i agregaatorina toetatud<ph name="NETWORKS"/> võrkude jaoks. <ph name="AGGREGATOR"/> töötleb tehingu sooritamiseks (sh hinnapakkumiste saamiseks) <ph name="NETWORK"/> rahakoti aadressi ja IP-aadressi. <ph name="AGGREGATOR"/> kasutab neid andmeid AINULT tehingute töötlemise eesmärgil.</translation>
 <translation id="1847885264294023691">Klõpsake siin, et näha agregaatori <ph name="AGGREGATOR"/> privaatsuspoliitikat.</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">Tokeni täpsed kümnendkohad on nõutavad</translation>
 <translation id="3797613444743816037">Mündi aadress</translation>
 <translation id="7951915459354237451">Tasu limiit on määratud madalamaks kui põhitasu. Teie tehingu sooritamine võib võtta kaua aega või tehing võib nurjuda.</translation>
+<translation id="2227702748249086756">Tasuhinnanguid ei saa tuua</translation>
+<translation id="5361710044667743492">Miks pole saadaval?</translation>
+<translation id="3668838456083358569">Osasid NFT andmeid talletatakse keskserverites, nagu AWS, Google Cloud jne. Sellistel juhtudel ei saa teie NFT andmeid IPFS-võrku kinnitada.</translation>
+<translation id="1293258969121701010">IPFS-i käitamisega oma arvutis saate teha järgmist.</translation>
+<translation id="4568942135611119076">Veenduda, et teie NFT andmed püsivad võrgus ja neid ei saa võltsida.</translation>
+<translation id="4915883034746438977">Saada ebaõigetest andmetest sisu identifikaatoriga (CID) sisu tagasi.</translation>
+<translation id="1373647012698032676">Esitada ehtsuse tõendeid ning muuta IPFS-i võrgustik rikkalikuks ja terveks.</translation>
+<translation id="1806204385270226865">Hoia mu NFT-d alati võrgus</translation>
+<translation id="4323376551843624309">Luba NFT kinnitamine</translation>
+<translation id="6501331923135442324">Suur samm edasi Web3 osaks saamisel</translation>
+<translation id="5361073938927187534">Käitage IPFS-i sõlme ja hoidke oma NFT-d alati võrgus</translation>
+<translation id="1060267371223703324">Kontrollige, milliseid NFT-sid saab kinnitada</translation>
+<translation id="2641083452974145848">Nüüd saate käitada oma IPFS-i ja olla osa Web3-st. Teie NFT andmed on alati võrgus ja neid ei saa võltsida.</translation>
+<translation id="4460927368826360904">Käitate IPFS-i sõlme. Faili tuuakse kohalikku IPFS-i sõlme.</translation>
+<translation id="2260350263892668490"><ph name="PINNED"/> NFT-d<ph name="PINNABLE"/>-st on edukalt IPFS-i kinnitatud.</translation>
+<translation id="1474962961180773583"><ph name="PINNABLE"/> <ph name="TOTAL"/>-st on saadaval!</translation>
+<translation id="6852656829524945421">Ei saa kinnitada</translation>
+<translation id="7698019251444927442">Käitate IPFS-i sõlme</translation>
+<translation id="5584313306739463968">Kohalik IPFS-i sõlm ei tööta</translation>
+<translation id="7527548209942671618">Kinnitatud teie kohalikule IPFS-i sõlmele</translation>
+<translation id="5659058832308365026">NFT andmeid kinnitatakse teie kohalikule IPFS-i sõlmele</translation>
+<translation id="4919133452617704550">Ei saa teie kohalikule IPFS-i sõlmele kinnitada</translation>
+<translation id="3225624966527491351">Impordi NFT</translation>
+<translation id="9085765419770918643">Siin pole veel NFT-sid.</translation>
+<translation id="8445532667841598737">Kas olete valmis mõned lisama? Klõpsake importimiseks allolevat nuppu.</translation>
+<translation id="9136462955850040542">Ühildub NFT-dega Solanas (SPL) ja Ethereumis (ERC-721).</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>
@@ -1581,6 +1624,8 @@
 <translation id="6531019308847917584">Blokeeri seadmetuvastus</translation>
 <translation id="1899608006846124237">Blokeeri seadmetuvastus agressiivselt</translation>
 <translation id="8034285923190068220">Luba sõrmejäljelugemine</translation>
+<translation id="7638541189782135885">Ärge uuendage HTTP-ühendusi</translation>
+<translation id="2570787596946026998">Ühendage ainult HTTPS-iga</translation>
 <translation id="1992750560347846445">Veebisaidist teatamine</translation>
 <translation id="2387532482048804818">Rääkige meile, kui veebisait ei tööta kaitse kasutamisel õigesti.</translation>
 <translation id="3795015906457257780">Vaatate seda saiti ilma Brave'i privaatsuskaitseteta.</translation>
@@ -1659,8 +1704,16 @@
 <translation id="888284761945060750">Turvaline DNS on teie organisatsiooni poliitikate kohaselt keelatud. Brave'i VPN-i kasutamine ilma turvalise DNS-ita võib avaldada internetiteenuse pakkujale või organisatsioonile veebisaitide nimed, mida külastate.</translation>
 <translation id="6593224083874259773">Brave’i VPN Windowsis</translation>
 <translation id="3153983908111684619">Kui Brave’i VPN on ühendatud, lukustab see selle seade.</translation>
-<translation id="6507543978646831931">Windowsil on funktsioon nimega Smart Multi-Homed Name Resolution, mis saab avaldada teavet teie asukoha ja külastatavate saitide kohta. Kui lubate Brave’i VPN-i, muudetakse brauseris DNS-seadeid, et vältida teie teabe avaldamist. Seade jääb jõusse ja lukustatuks, kuni VPN on ühendatud. <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">Windowsil on funktsioon nimega Smart Multi-Homed Name Resolution, mis saab avaldada teavet teie asukoha ja külastatavate saitide kohta.
+
+Brave’il on abiteenus, mis kaitseb teid teabe avaldamise eest, filtreerides viisi, kuidas teie VPN-i ühenduses tehakse DNS-päringuid.
+
+Kuid me märkasime, et see abiteenus ei tööta ja me soovime, et te oleksite ikkagi kaitstud. Muutsime brauseris DNS-seadeid, et vältida teie teabe avaldamist Seaded jäävad jõusse ja lukustatuks, kuni VPN on ühendatud.
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ära hoiata mind enam selle eest.</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="9061845622728745852">Ajavöönd:</translation>
+<translation id="8295393906499561642">Seanss on aegunud</translation>
+<translation id="3312623558576021182">VPN-seansi värskendamiseks logige sisse oma <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave’i kontole<ph name="BRAVE_ACCOUNT_END"/>.</translation>
 </translationbundle>

@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
+<translation id="3478449063771497234">تم تعطيل الإشعارات</translation>
+<translation id="7466579932043491502">قد لا تعمل Brave Rewards أثناء تعطيل الإشعارات.</translation>
+<translation id="4259212006412783790">تشغيل</translation>
+<translation id="6112331814131703370">حظر إشعارات "التبديل إلى التطبيق"</translation>
 <translation id="4744921452903670666">أخبرنا ما رأيك!</translation>
 <translation id="2524310205387880526">تقييم Brave</translation>
 <translation id="4104400246019119780">شكرًا!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">مكافآت إعلانات <ph name="MONTH_VALUE"/> الخاصة بك هنا!</translation>
 <translation id="2716238748894345194">مكافآت <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">بقي لديك <ph name="TOKEN"/> يوم على المطالبة</translation>
-<translation id="2323069945529668668">آه!</translation>
-<translation id="7510166204621526816">خادم مكافآت Brave لا يستجيب. سوف نصلح هذا في أقرب وقت ممكن.</translation>
 <translation id="683765328936486920">على يوتيوب</translation>
 <translation id="8969049974285901797">على تويتش</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>s غير كافية</translation>
@@ -607,7 +609,7 @@
 <translation id="5050890334032852465">حفظ قائمة مراقبة الحساب</translation>
 <translation id="7755766175599167100">البحث عن الرموز المميزة</translation>
 <translation id="3835223348537121988">الرصيد:</translation>
-<translation id="6888491517683356528">متابعة إلى Ramp</translation>
+<translation id="3956169227169516344">تحديد طريقة الشراء</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
 <translation id="3784455785234192852">القفل بإحكام</translation>
 <translation id="8796429300536029044">تفاصيل الرمز المميز غير القابل للاستبدال (NFT)</translation>
@@ -621,6 +623,10 @@
 <translation id="414639769490080648">عدد دقائق الانتظار حتى يتم قفل Brave Wallet تلقائيًا</translation>
 <translation id="4993345308607970390">إعادة تعيين محفظة Brave</translation>
 <translation id="4322846864135539519">هل أنت متأكد من أنك تريد إعادة تعيين مكافآت Brave Rewards؟ إذا لم يتم نسخ محفظتك احتياطيًا، فستؤدي إعادة التعيين إلى فقد جميع بيانات الحساب (بما في ذلك أي أموال مرتبطة). اكتب "<ph name="CONFIRMATION_PHRASE"/>" للتأكيد.</translation>
+<translation id="6915083716464390008">حدد أحد الخيارات التالية</translation>
+<translation id="7667423728712601865">شراء العملات المشفرة باستخدام Visa أو Mastercard.</translation>
+<translation id="3101839349578102016">شراء فوري عن طريق حسابك المصرفي. رسوم أقل.</translation>
+<translation id="7269640984027668973">الشراء باستخدام <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">محو المعاملة &amp; معلومات الرقم الخاص</translation>
 <translation id="5693968582510626466">قد يكون مسح التداولات مفيدًا للمطورين أو عند مسح الحالة على خادم محلي</translation>
 <translation id="5421107279168565467">هل أنت متأكد من أنك تريد إعادة تعيين المعاملة ومعلومات الرقم الخاص؟ يستخدم هذا الخيار في الغالب من قبل المطورين الذين يقومون بتشغيل خادم اختبار محلي. اكتب "<ph name="CONFIRMATION_PHRASE"/> " للتأكيد.</translation>
@@ -795,7 +801,7 @@
 <translation id="3506416339268164412">عنوان الاستلام هو عنوان عقد العملة الرمزية</translation>
 <translation id="3494964159182650590">ملخص المكافآت</translation>
 <translation id="590733288489975971">مكافآت من الإعلانات</translation>
-<translation id="207268487070188114">إكرامية لمرة وحيدة</translation>
+<translation id="2613359062756190460">تلميحات لمرة واحدة</translation>
 <translation id="7577100371127227294">المكافآت الشهرية</translation>
 <translation id="7091980679045978090">الأرباح المُقدَّرة</translation>
 <translation id="1346059596910821859">مكافأة</translation>

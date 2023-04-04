@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
 <translation id="7961015016161918242">ಎಂದಿಗೂ ಇಲ್ಲ</translation>
+<translation id="7973394300052703468">ಹೊಸ &amp;ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="4615489450165434530">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="8097438084542431276">ಕ್ಲೀನ್ ಲಿಂಕ್ ಅನ್ನು ನಕಲು ಮಾಡಿ</translation>
 <translation id="4678672101289648246">ಹೊಸ ಟ್ಯಾಬ್‌ ಪುಟದಲ್ಲಿ ಮಾತ್ರ</translation>
+<translation id="6516243500644829484">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
 <translation id="1209739344687072997">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="7630214457764713113">ಕ್ಲೀನ್ ಲಿಂಕ್ ಅನ್ನು ನಕಲು ಮಾಡಿ</translation>
 <translation id="8294286161128352783">ಹೊಸ ಟ್ಯಾಬ್‌ ಪುಟದಲ್ಲಿ ಮಾತ್ರ</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">Tor ಮೂಲಕ ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3425600262621021599">Tor ಮೂಲಕ Brave ಖಾಸಗಿ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
 <translation id="3229091547987707389">ಡೈರೆಕ್ಟರಿ ಆಮದು ಮಾಡಿ ಮತ್ತು ಹಂಚಿಕೊಳ್ಳಿ</translation>
+<translation id="474217410105706308">ಟ್ಯಾಬ್ ಮ್ಯೂಟ್ ಮಾಡಿ</translation>
 <translation id="2804710924397009224">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ ಐಕಾನ್‌ ಅನ್ನು ಹೈಡ್‌ ಮಾಡಿ</translation>
 <translation id="5029193871181468990">Brave ರಿವಾರ್ಡ್ಸ್ ಐಕಾನ್ ಅನ್ನು ಮರೆಮಾಡಿ</translation>
 <translation id="2808103541110899519">Brave ವ್ಯಾಲೆಟ್ ಐಕಾನ್ ಮರೆ ಮಾಡಿ</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">ಟಾಪ್ ಸೈಟ್</translation>
 <translation id="7859704718976024901">ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸ</translation>
 <translation id="8820817407110198400">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು</translation>
-<translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
 <translation id="2245286910966863912">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ನ್ಯೂಸ್ ಬಟನ್ ತೋರಿಸಿ</translation>
 <translation id="383007806262310953">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸಿ</translation>
 <translation id="4054323497808446566">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಬಾರ್‌ ಎಲ್ಲ ಪುಟಗಳಲ್ಲಿ ಕಾಣಿಸುತ್ತದೆ</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">ನಿರ್ಬಂಧಿತ ಲಿಪಿಗಳು</translation>
 <translation id="6531019308847917584">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್‌ ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="5533533363827555308">ಕಟ್ಟುನಿಟ್ಟಾದ, ಸೈಟ್‌ಗಳನ್ನು ವಿಂಗಡಿಸಬಹುದು</translation>
+<translation id="3570081523466826008">HTTPS ಗೆ ಸಂಪರ್ಕಗಳನ್ನು ಮೇಲ್ದರ್ಜೆಗೇರಿಸಿ</translation>
+<translation id="3357319404342882895">ಸ್ಟ್ರಿಕ್ಟ್</translation>
 <translation id="8823559166155093873">ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="5770288601196774623">ಕ್ರಾಸ್-ಸೈಟ್ ಮಾತ್ರ</translation>
 <translation id="3587482841069643663">ಎಲ್ಲ</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ರಚಿಸಿ</translation>
 <translation id="4618274268052410139">ಕೆಳಗಿನ ಕ್ಷೇತ್ರದಲ್ಲಿ, ಪ್ರತಿ ಸಾಲಿಗೆ ಒಂದರಂತೆ, ನೀವು ರಚಿಸಿದ ಕಸ್ಟಮ್ ಫಿಲ್ಟರ್‌ಗಳನ್ನು ಸೇರಿಸಿ. <ph name="BEGIN_LINK"/>ಜಾಹೀರಾತು ನಿರ್ಬಂಧ ಫಿಲ್ಟರ್ ಸಿಂಟಾಕ್ಸ್<ph name="END_LINK"/> ಬಳಸುವುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</translation>
 <translation id="7791543448312431591">ಸೇರಿಸು</translation>
-<translation id="571950783952070673">URL ಪಟ್ಟಿಮಾಡಿ</translation>
+<translation id="3075903430639801825">ಪಟ್ಟಿ ಶೀರ್ಷಿಕೆ</translation>
 <translation id="9204006549413740506">ಕೊನೆಯದಾಗಿ ಅಪ್‌ಡೇಟ್ ಮಾಡಿರುವುದು</translation>
 <translation id="6745592621698551453">ಈಗ ಅಪ್‌ಡೇಟ್‌ ಮಾಡು</translation>
 <translation id="5334844597069022743">ಮೂಲ ವೀಕ್ಷಿಸಿ</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">ಪಟ್ಟಿಯಲ್ಲಿ ಪರಿಶೀಲಿಸದ ಸೈಟ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="5510618543889994434">ವೀಡಿಯೊಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡಲು ಅನುಮತಿಸಿ</translation>
 <translation id="924777189963477634">ಸ್ವಯಂ-ಕೊಡುಗೆಯನ್ನು ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK_TOS"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK_TOS"/> and <ph name="BEGIN_LINK_PP"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK_PP"/>.ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
-<translation id="5733490796524078528">ಸಲಹೆ ಬಟನ್‌ಗಳು</translation>
+<translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
+<translation id="7483857210736407752">ಸೈಟ್‌ಗಳಲ್ಲಿ ಟಿಪ್ ಬಟನ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="3905400818082450708">ರೆಡ್ಡಿಟ್</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">Solana ಪ್ರೊವೈಡರ್ API ಅನ್ನು ಪ್ರವೇಶಿಸಲು ಸೈಟ್ ಬಯಸಿದಾಗ ಕೇಳಿ</translation>
 <translation id="2777102601740875941">Solana ಪೂರೈಕೆದಾರ API ಅನ್ನು ಪ್ರವೇಶಿಸದಂತೆ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="4206299587103092719">Google ಸೈನ್-ಇನ್</translation>
-<translation id="7458736153596040880">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಅನ್ನು ಯಾವಾಗ ಸೈಟ್ ಬಳಸಲು ಬಯಸುತ್ತದೆ ಎಂದು ಕೇಳಿ</translation>
-<translation id="459266451581663214">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಬಳಕೆ ಮಾಡುವುದರಿಂದ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="8098954941070626949">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಬಳಕೆ ಮಾಡಲು ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿಸಿ</translation>
+<translation id="9110294136812584522">ತೃತೀಯ-ಪಕ್ಷದ ಕುಕೀಗಳ ಮೂಲಕ ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್ ಬಳಸುವಂತೆ ಸೈಟ್‌ಗಳು ಕೇಳಬಹುದು</translation>
+<translation id="2903783737778379345">ತೃತೀಯ-ಪಕ್ಷದ ಕುಕೀಗಳ ಮೂಲಕ ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್‌ಗೆ ಅನುಮತಿಸಬೇಡಿ</translation>
+<translation id="2570833232754279153">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್‌ಗೆ ತೃತೀಯ- ಪಕ್ಷದ ಕುಕೀಗಳನ್ನು ಬಳಸಲು ಅನುಮತಿಸಲಾಗಿಲ್ಲ</translation>
+<translation id="6880817299303842099">ಸಾಂಪ್ರದಾಯಿಕ Google ಸೈನ್-ಇನ್‌ಗೆ ತೃತೀಯ- ಪಕ್ಷದ ಕುಕೀಗಳನ್ನು ಬಳಸಲು ಅನುಮತಿಸಲಾಗಿದೆ</translation>
 <translation id="6414370348346025511">ಪ್ರಮಾಣಿತ ರಕ್ಷಣೆ ಆನ್ ಆಗಿದೆ.</translation>
 <translation id="5565355416171743213">ಸಿಂಕ್ ಬಳಸಲು ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="4332558599726753990">ಸಿಂಕ್ ಸೆಟಪ್</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="5975930666279943472">ವ್ಯಾಲೆಟ್ ವಹಿವಾಟು ಮತ್ತು ನೋನ್ಸ್ ಮಾಹಿತಿಯನ್ನು ತೆರವು ಮಾಡಿ</translation>
 <translation id="5693968582510626466">ವಹಿವಾಟುಗಳನ್ನು ತೆರವುಗೊಳಿಸುವುದು ಡೆವಲಪರ್‌ಗಳಿಗೆ ಅಥವಾ ಸ್ಥಳೀಯ ಸರ್ವರ್‌ನಲ್ಲಿ ಸ್ಥಿತಿಯನ್ನು ತೆರವುಗೊಳಿಸುವಾಗ ಉಪಯುಕ್ತವಾಗಿರಬಹುದು</translation>
+<translation id="4440478655766953083">NFT ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪಿನ್ ಮಾಡಿ</translation>
+<translation id="464460032678285850">Brave ವ್ಯಾಲೆಟ್‌ಗೆ ಸೇರಿಸಲಾದ NFT ಗಳನ್ನು ಸ್ಥಳೀಯ IPFS ನೋಡ್‌ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪಿನ್ ಮಾಡಬಹುದು.
+    ಗಮನಿಸಿ: ಪಿನ್ ಮಾಡುವಿಕೆ ಉದ್ದೇಶಗಳಿಗಾಗಿ IPFS ಡೇಮನ್ ಅನ್ನು ಆರಂಭಿಸಬಹುದು ಇದರಿಂದ ನಿಮ್ಮ ಸ್ಥಳೀಯ ನೋಡ್ ಕ್ಯಾಶ್ ಮಾಡಲಾದ ಡೇಟಾ ಮತ್ತು ಪಿನ್ ಮಾಡಲಾದ NFT ಗಳನ್ನು IPFS ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಹಂಚಿಕೊಳ್ಳುತ್ತದೆ.</translation>
 <translation id="4993345308607970390">Brave ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
 <translation id="9216386092464743272">ನಿಮ್ಮ ಎಲ್ಲಾ ವ್ಯಾಲೆಟ್ ವಹಿವಾಟನ್ನು ಮತ್ತು ನೋನ್ಸ್ ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಈ ಆಯ್ಕೆಯನ್ನು ಬಹುಪಾಲು ಸ್ಥಳೀಯ ಟೆಸ್ಟ್ ಸರ್ವರ್ ಅನ್ನು ರನ್ ಮಾಡುತ್ತಿರುವ ಡೆವಲಪರ್‌ಗಳು ಬಳಸುತ್ತಾರೆ. ದೃಢಪಡಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಅನ್ನು ಟೈಪ್ ಮಾಡಿ.</translation>
 <translation id="6369495274982305511">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡದೇ ಇದ್ದರೆ, ಮರುಹೊಂದಿಸುವುದರಿಂದ ನೀವು ಎಲ್ಲಾ ಖಾತೆ ಡೇಟಾ ಕಳೆದುಕೊಳ್ಳುವುದಕ್ಕೆ ಕಾರಣವಾಗುತ್ತದೆ (ಯಾವುದೇ ಸಂಬಂಧಿಸಿದ ಫಂಡ್‌ಗಳನ್ನು ಒಳಗೊಂಡಂತೆ). ದೃಢಪಡಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಟೈಪ್ ಮಾಡಿ.</translation>

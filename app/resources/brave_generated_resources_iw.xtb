@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7561196759112975576">תמיד</translation>
 <translation id="7961015016161918242">אף פעם</translation>
+<translation id="7973394300052703468">חלון &amp;נסתר חדש</translation>
 <translation id="4615489450165434530">דווח/י על אתר לא תקין</translation>
 <translation id="8097438084542431276">העתקת קישור נקי</translation>
 <translation id="4678672101289648246">בדף הכרטיסייה החדשה בלבד</translation>
+<translation id="6516243500644829484">חלון 'גלישה בסתר' חדש</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="7630214457764713113">העתק קישור נקי</translation>
 <translation id="8294286161128352783">בדף הכרטיסייה החדשה בלבד</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3229091547987707389">ייבוא ושתף ספרייה</translation>
+<translation id="474217410105706308">השתק כרטיסייה</translation>
 <translation id="2804710924397009224">הסתר את סמלון Brave Rewards</translation>
 <translation id="5029193871181468990">הסתרת סמל Brave Rewards</translation>
 <translation id="2808103541110899519">הסתרת האייקון של Brave Wallet</translation>
@@ -258,7 +261,6 @@
 <translation id="2858138569776157458">אתרים נבחרים</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="8820817407110198400">סרגל הסימניות</translation>
-<translation id="6333347122924254968">הצגו את סמליל תגמולי Brave בשורת הכתובת</translation>
 <translation id="2245286910966863912">הצג את הלחצן Brave News בבשורת הכתובות</translation>
 <translation id="383007806262310953">הצג את סרגל הסימניות</translation>
 <translation id="4054323497808446566">סרגל הסימניות נראה בכל הדפים</translation>
@@ -304,6 +306,8 @@
 <translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="6531019308847917584">חסימת טביעות אצבע</translation>
 <translation id="5533533363827555308">מחמיר, עלול לשבש פעולה תקינה של אתרים</translation>
+<translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
+<translation id="3357319404342882895">חמור</translation>
 <translation id="8823559166155093873">חסימת קובצי עוגיות</translation>
 <translation id="5770288601196774623">מרובה-אתרים בלבד</translation>
 <translation id="3587482841069643663">הכל</translation>
@@ -318,7 +322,7 @@
 <translation id="8580328754808744073">יצירת מסננים מותאמים אישית.</translation>
 <translation id="4618274268052410139">באפשרותך להוסיף מסננים מותאמים אישית שיצרת בעצמך, אחד בכל שורה, בשדה למטה. יש להקפיד להשתמש<ph name="BEGIN_LINK"/>בתחביר של מסנן Adblock<ph name="END_LINK"/>.</translation>
 <translation id="7791543448312431591">הוסף</translation>
-<translation id="571950783952070673">רשימת כתובות אינטרנט</translation>
+<translation id="3075903430639801825">כותרת הרשימה</translation>
 <translation id="9204006549413740506">עדכון אחרון</translation>
 <translation id="6745592621698551453">עדכן כעת</translation>
 <translation id="5334844597069022743">הצג מקור</translation>
@@ -349,7 +353,8 @@
 <translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
 <translation id="5510618543889994434">אפשר תרומות לסרטונים</translation>
 <translation id="924777189963477634">על ידי הפעלת Auto-Contribute הינכם מסכימים <ph name="BEGIN_LINK_TOS"/>לתנאי השירות<ph name="END_LINK_TOS"/> <ph name="BEGIN_LINK_PP"/>ומדיניות הפרטיות<ph name="END_LINK_PP"/>.</translation>
-<translation id="5733490796524078528">לחצני טיפים</translation>
+<translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
+<translation id="7483857210736407752">הצג כפתורי טיפ באתרים</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -381,9 +386,10 @@
 <translation id="4539536028173362640">שאל אותי כאשר אתר מבקש גישה אל API של ספק Solana</translation>
 <translation id="2777102601740875941">חסום אתרים מגישה אל API של ספק Solana</translation>
 <translation id="4206299587103092719">כניסה ב-Google</translation>
-<translation id="7458736153596040880">לשאול כאשר אתר רוצה להשתמש בכניסה ל-Google מהדור הקודם</translation>
-<translation id="459266451581663214">למנוע מאתרים להשתמש בכניסה ל-Google מהדור הקודם</translation>
-<translation id="8098954941070626949">אפשר לאתרים להשתמש בכניסה ל-Google מהדור הקודם</translation>
+<translation id="9110294136812584522">אתרים יכולים לבקש להשתמש בכניסה מדור קודם של Google באמצעות קובצי Cookie של צד שלישי</translation>
+<translation id="2903783737778379345">אל תאפשר כניסה של Google מדור קודם באמצעות קובצי Cookie של צד שלישי</translation>
+<translation id="2570833232754279153">אסור להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
+<translation id="6880817299303842099">מותר להשתמש בקובצי Cookie של צד שלישי לצורך כניסה מדור קודם של Google</translation>
 <translation id="6414370348346025511">ההגנה הסטנדרטית מופעלת.</translation>
 <translation id="5565355416171743213">התחל להשתמש בסנכרון</translation>
 <translation id="4332558599726753990">הגדרות סנכרון</translation>
@@ -507,6 +513,8 @@
 <translation id="856371974127598760">Wallet Networks</translation>
 <translation id="5975930666279943472">נקו מידע על עסקאות בארנק ומידע על חוסר</translation>
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
+<translation id="4440478655766953083">הצמד NFTs באופן אוטומטי</translation>
+<translation id="464460032678285850">NFTs שנוספו לארנק Brave עשויים להיות מוצמדים אוטומטית לצומת IPFS המקומי. הערה: ייתכן שהדמון IPFS יופעל למטרות ההצמדה כך שהצומת המקומי שלך ישתף נתונים מאוחסנים במטמון ו-NFT מוצמדים לרשת IPFS.</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
 <translation id="9216386092464743272">האם אתם בטוחים שברצונכם לאפס את כל עסקאות הארנק שלכם ומידע על חוסר? אפשרות זו משמשת בעיקר מפתחים המפעילים שרת בדיקה מקומי. הקלידו "<ph name="CONFIRMATION_PHRASE"/>לאישור.</translation>
 <translation id="6369495274982305511">בטוח שברצונך לאפס את הארנק שלך? אם אין גיבוי לארנק שלך, האיפוס יגרום לך לאבד את כל נתוני החשבון (כולל את כל הכספים המשויכים). הקלד " <ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>

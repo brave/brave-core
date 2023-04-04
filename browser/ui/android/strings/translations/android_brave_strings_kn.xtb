@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
+<translation id="3478449063771497234">ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗುತ್ತದೆ</translation>
+<translation id="7466579932043491502">ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿರುವಾಗ Brave ರಿವಾರ್ಡ್ಸ್ ಕಾರ್ಯನಿರ್ವಹಿಸದಿರಬಹುದು.</translation>
+<translation id="4259212006412783790">ಆನ್ ಮಾಡಿ</translation>
+<translation id="6112331814131703370">'ಆ್ಯಪ್‌ಗೆ ಬದಲಾಯಿಸಿ' ಸೂಚನೆಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="4744921452903670666">ನೀವೇನು ಭಾವಿಸುತ್ತೀರೆಂದು ನಮಗೆ ತಿಳಿಸಿ!</translation>
 <translation id="2524310205387880526">Brave ರೇಟ್ ಮಾಡಿ</translation>
 <translation id="4104400246019119780">ಧನ್ಯವಾದಗಳು!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">ನಿಮ್ಮ <ph name="MONTH_VALUE"/> ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ಸ್ ಇಲ್ಲಿವೆ!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> ರಿವಾರ್ಡ್ಸ್: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">ಕ್ಲೇಮ್ ಮಾಡಲು ನಿಮ್ಮ ಬಳಿ <ph name="TOKEN"/> ದಿನಗಳು ಬಾಕಿ ಇವೆ</translation>
-<translation id="2323069945529668668">ಓಹೋ!</translation>
-<translation id="7510166204621526816">Brave Rewards ಸರ್ವರ್ ಪ್ರತಿಕ್ರಿಯೆ ನೀಡುತ್ತಿಲ್ಲ. ನಾವು ಈ ಸಮಸ್ಯೆಯನ್ನು ಆದಷ್ಟು ಬೇಗ ಸರಿಪಡಿಸುತ್ತೇವೆ.</translation>
 <translation id="683765328936486920">ಯೂಟ್ಯೂಬ್‌ನಲ್ಲಿ</translation>
 <translation id="8969049974285901797">ಟ್ವಿಚ್‌ ಮೇಲೆ</translation>
 <translation id="3101693828171454453">ಸಾಕಷ್ಟು <ph name="TOKEN"/>ಗಳಿಲ್ಲ</translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">ಖಾತೆ ವೀಕ್ಷಣೆಪಟ್ಟಿ ಉಳಿಸಿ</translation>
 <translation id="7755766175599167100">ಟೋಕನ್‌ಗಳನ್ನು ಹುಡುಕಿ</translation>
 <translation id="3835223348537121988">ಬ್ಯಾಲೆನ್ಸ್:</translation>
-<translation id="6888491517683356528">ರಾಂಪ್‌ಗೆ ಮುಂದುವರಿಯಿರಿ</translation>
+<translation id="3956169227169516344">ಖರೀದಿ ವಿಧಾನ ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="8488282162676695335">Brave ವ್ಯಾಲೆಟ್</translation>
 <translation id="3784455785234192852">ಲಾಕ್ ಮಾಡಿ</translation>
 <translation id="8796429300536029044">NFT ವಿವರ</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">Brave ವ್ಯಾಲೆಟ್ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಲಾಕ್ ಆಗುವ ತನಕ ಕಾಯಬೇಕಾದ ನಿಮಿಷಗಳ ಸಂಖ್ಯೆ</translation>
 <translation id="4993345308607970390">Brave ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
 <translation id="4322846864135539519">ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡದೇ ಇದ್ದರೆ, ಮರುಹೊಂದಿಸುವುದರಿಂದ ನೀವು ಎಲ್ಲಾ ಖಾತೆ ಡೇಟಾ ಕಳೆದುಕೊಳ್ಳುವುದಕ್ಕೆ ಕಾರಣವಾಗುತ್ತದೆ (ಯಾವುದೇ ಸಂಬಂಧಿಸಿದ ಫಂಡ್‌ಗಳನ್ನು ಒಳಗೊಂಡಂತೆ). ದೃಢಪಡಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಎಂದು ಟೈಪ್ ಮಾಡಿ.</translation>
+<translation id="6915083716464390008">ಮುಂದಿನ ಆಯ್ಕೆಗಳಲ್ಲಿ ಒಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
+<translation id="7667423728712601865">Visa ಅಥವಾ Mastercard ಮೂಲಕ ಕ್ರಿಪ್ಟೋ ಖರೀದಿಸಿ.</translation>
+<translation id="3101839349578102016">ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆಯೊಂದಿಗೆ ತ್ವರಿತ ಖರೀದಿ. ಕಡಿಮೆ ಶುಲ್ಕಗಳು.</translation>
+<translation id="7269640984027668973"><ph name="RAMP_PROVIDER"/> ಮೂಲಕ ಖರೀದಿಸಿ</translation>
 <translation id="4862812525895306758">ವಹಿವಾಟು ಮತ್ತು ನೋನ್ಸ್‌ ಮಾಹಿತಿಯನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="5693968582510626466">ವಹಿವಾಟುಗಳನ್ನು ತೆರವುಗೊಳಿಸುವುದು ಡೆವಲಪರ್‌ಗಳಿಗೆ ಅಥವಾ ಸ್ಥಳೀಯ ಸರ್ವರ್‌ನಲ್ಲಿ ಸ್ಥಿತಿಯನ್ನು ತೆರವುಗೊಳಿಸುವಾಗ ಉಪಯುಕ್ತವಾಗಿರಬಹುದು</translation>
 <translation id="5421107279168565467">ವಹಿವಾಟನ್ನು ಮತ್ತು ನೋನ್ಸ್ ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಈ ಆಯ್ಕೆಯನ್ನು ಸ್ಥಳೀಯ ಟೆಸ್ಟ್ ಸರ್ವರ್ ಅನ್ನು ರನ್ ಮಾಡುತ್ತಿರುವ ಡೆವಲಪರ್‌ಗಳು ಹೆಚ್ಚಿನದಾಗಿ ಬಳಸುತ್ತಾರೆ. ದೃಢೀಕರಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಟೈಪ್ ಮಾಡಿ.</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸವು ಟೋಕನ್‌ನ ಸಂಪರ್ಕ ವಿಳಾಸವಾಗಿದೆ</translation>
 <translation id="3494964159182650590">ಪುರಸ್ಕಾರಗಳ ಸಾರಾಂಶ</translation>
 <translation id="590733288489975971">ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು</translation>
-<translation id="207268487070188114">ಒಂದು-ಬಾರಿಯ ಟಿಪ್</translation>
+<translation id="2613359062756190460">ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು</translation>
 <translation id="7577100371127227294">ಮಾಸಿಕ ಸಲಹೆಗಳು</translation>
 <translation id="7091980679045978090">ಅಂದಾಜು ಮಾಡಲಾದ ಗಳಿಕೆಗಳು</translation>
 <translation id="1346059596910821859">ಸಲಹೆ</translation>
