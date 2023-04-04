@@ -185,7 +185,10 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
-  UpdateCommandEnabled(IDC_TOGGLE_WINDOW_TITLE, true);
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE, true);
+
+  UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
+                       !browser_->profile()->IsOffTheRecord());
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -348,8 +351,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_TOGGLE_VERTICAL_TABS:
       brave::ToggleVerticalTabStrip(browser_);
       break;
-    case IDC_TOGGLE_WINDOW_TITLE:
+    case IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE:
       brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
+      break;
+    case IDC_CONFIGURE_BRAVE_NEWS:
+      brave::ShowBraveNewsConfigure(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

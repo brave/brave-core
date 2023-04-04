@@ -7,6 +7,7 @@
 
 #include "base/strings/strcat.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
@@ -39,11 +40,18 @@ void ShowSync(Browser* browser) {
   ShowSingletonTabOverwritingNTP(browser, &params);
 }
 
+void ShowBraveNewsConfigure(Browser* browser) {
+  NavigateParams params(GetSingletonTabNavigateParams(
+      browser, GURL("brave://newtab/?openSettings=BraveNews")));
+  ShowSingletonTabOverwritingNTP(browser, &params);
+}
+
 void ShowWebcompatReporter(Browser* browser) {
   content::WebContents* web_contents =
       browser->tab_strip_model()->GetActiveWebContents();
-  if (!web_contents)
+  if (!web_contents) {
     return;
+  }
 
   OpenWebcompatReporterDialog(web_contents);
 }
