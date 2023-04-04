@@ -107,22 +107,22 @@ AIChatTabHelper::AIChatTabHelper(content::WebContents* web_contents)
 
 AIChatTabHelper::~AIChatTabHelper() = default;
 
-std::string AIChatTabHelper::GetConversationHistoryAsString() {
-  std::string history_text;
-
-  for (const ConversationTurn& history : chat_history_) {
-    history_text = base::StrCat({history_text,
-                                 history.character_type == CharacterType::HUMAN
-                                     ? ai_chat::kHumanPrompt
-                                     : ai_chat::kAIPrompt,
-                                 history.text, "\n"});
-  }
-
-  return history_text;
-}
-
 const std::vector<ConversationTurn>& AIChatTabHelper::GetConversationHistory() {
   return chat_history_;
+}
+
+const std::string& AIChatTabHelper::GetConversationHistoryString() {
+  std::vector<std::string> turn_strings;
+  for (const ConversationTurn& turn : chat_history_) {
+    turn_strings.push_back((turn.character_type == CharacterType::HUMAN
+                                ? ai_chat::kHumanPrompt
+                                : ai_chat::kAIPrompt) +
+                           turn.text);
+  }
+
+  history_text_ = base::JoinString(turn_strings, "\n");
+
+  return history_text_;
 }
 
 void AIChatTabHelper::AddToConversationHistory(const ConversationTurn& turn) {
@@ -239,6 +239,7 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
 void AIChatTabHelper::CleanUp() {
   chat_history_.clear();
   article_summary_.clear();
+  SetRequestInProgress(false);
 
   for (auto& obs : observers_) {
     obs.OnHistoryUpdate();
@@ -250,7 +251,7 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
   AddToConversationHistory(turn);
 
   std::string prompt_with_history =
-      base::StrCat({GetConversationHistoryAsString(), ai_chat::kAIPrompt});
+      base::StrCat({GetConversationHistoryString(), ai_chat::kAIPrompt});
 
   DCHECK(ai_chat_api_);
 

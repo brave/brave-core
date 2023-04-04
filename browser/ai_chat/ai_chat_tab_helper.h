@@ -54,9 +54,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   explicit AIChatTabHelper(content::WebContents* web_contents);
 
+  const std::string& GetConversationHistoryString();
   void OnSnapshotFinished(const ui::AXTreeUpdate& result);
   void DistillViaAlgorithm(const ui::AXTree& tree);
-  std::string GetConversationHistoryAsString();
   void SetArticleSummaryString(const std::string& text);
   void CleanUp();
   void OnAPIResponse(bool contains_summary,
@@ -74,6 +74,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // TODO(nullhook): Abstract the data model
   std::vector<ai_chat::mojom::ConversationTurn> chat_history_;
+  std::string history_text_;
   std::string article_summary_;
   bool is_request_in_progress_;
 

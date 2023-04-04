@@ -5,17 +5,15 @@
 
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/browser_finder.h"
 
 namespace ai_chat {
 
+#if !defined(TOOLKIT_VIEWS)
 Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
-  auto* browser_window =
-      BrowserWindow::FindBrowserWindowWithWebContents(web_contents);
-  auto* browser_view = static_cast<BrowserView*>(browser_window);
-  CHECK(browser_view);
-  return browser_view->browser();
+  NOTIMPLEMENTED();
+  return nullptr;
 }
+#endif
+
 }  // namespace ai_chat

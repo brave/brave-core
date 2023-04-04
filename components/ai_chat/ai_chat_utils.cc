@@ -9,6 +9,7 @@
 #include "brave/components/ai_chat/features.h"
 
 namespace ai_chat {
+
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);
 }

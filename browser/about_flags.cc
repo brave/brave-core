@@ -41,6 +41,10 @@
 #include "net/base/features.h"
 #include "third_party/blink/public/common/features.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/components/ai_chat/features.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/components/brave_vpn/common/features.h"
 #endif

@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "brave/browser/ai_chat/buildflags.h"
 #include "brave/browser/ai_chat/constants.h"
 #include "brave/components/constants/brave_services_key.h"
@@ -41,7 +42,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 }
 
 GURL GetURLWithPath(const std::string& host, const std::string& path) {
-  return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
+  return GURL(base::StrCat({url::kHttpsScheme, "://", host})).Resolve(path);
 }
 
 std::string CreateJSONRequestBody(base::ValueView node) {
