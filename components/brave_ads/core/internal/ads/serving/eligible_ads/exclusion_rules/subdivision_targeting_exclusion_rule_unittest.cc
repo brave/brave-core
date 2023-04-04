@@ -44,7 +44,7 @@ class BatAdsSubdivisionTargetingExclusionRuleTest
     subdivision_targeting_ =
         std::make_unique<geographic::SubdivisionTargeting>();
     exclusion_rule_ = std::make_unique<SubdivisionTargetingExclusionRule>(
-        subdivision_targeting_.get());
+        *subdivision_targeting_);
   }
 
   static std::string GetCountryParam() { return GetParam().country; }

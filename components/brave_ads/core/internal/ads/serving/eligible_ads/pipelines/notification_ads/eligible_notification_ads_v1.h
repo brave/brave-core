@@ -32,8 +32,8 @@ namespace notification_ads {
 
 class EligibleAdsV1 final : public EligibleAdsBase {
  public:
-  EligibleAdsV1(geographic::SubdivisionTargeting* subdivision_targeting,
-                resource::AntiTargeting* anti_targeting);
+  EligibleAdsV1(const geographic::SubdivisionTargeting& subdivision_targeting,
+                const resource::AntiTargeting& anti_targeting_resource);
   ~EligibleAdsV1() override;
 
   void GetForUserModel(

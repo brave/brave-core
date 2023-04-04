@@ -23,8 +23,8 @@ namespace new_tab_page_ads {
 class ExclusionRules final : public ExclusionRulesBase {
  public:
   ExclusionRules(const AdEventList& ad_events,
-                 geographic::SubdivisionTargeting* subdivision_targeting,
-                 resource::AntiTargeting* anti_targeting_resource,
+                 const geographic::SubdivisionTargeting& subdivision_targeting,
+                 const resource::AntiTargeting& anti_targeting_resource,
                  const BrowsingHistoryList& browsing_history);
 };
 

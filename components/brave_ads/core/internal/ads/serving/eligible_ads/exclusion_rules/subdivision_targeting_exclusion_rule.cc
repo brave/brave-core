@@ -7,7 +7,6 @@
 
 #include <vector>
 
-#include "base/check.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
@@ -46,10 +45,8 @@ bool DoesAdTargetSubdivision(const CreativeAdInfo& creative_ad) {
 }  // namespace
 
 SubdivisionTargetingExclusionRule::SubdivisionTargetingExclusionRule(
-    geographic::SubdivisionTargeting* subdivision_targeting)
-    : subdivision_targeting_(subdivision_targeting) {
-  DCHECK(subdivision_targeting_);
-}
+    const geographic::SubdivisionTargeting& subdivision_targeting)
+    : subdivision_targeting_(subdivision_targeting) {}
 
 SubdivisionTargetingExclusionRule::~SubdivisionTargetingExclusionRule() =
     default;
