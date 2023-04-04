@@ -30,11 +30,11 @@ TEST_F(BatAdsPipelineUtilTest, ParsePipelineValueTest) {
       ReadFileFromTestPathToString(kValidSpamClassificationPipeline);
   ASSERT_TRUE(json);
 
-  base::Value value = base::test::ParseJson(*json);
+  base::Value::Dict dict = base::test::ParseJsonDict(*json);
 
   // Act
   const absl::optional<pipeline::PipelineInfo> pipeline =
-      pipeline::ParsePipelineValue(std::move(value));
+      pipeline::ParsePipelineValue(std::move(dict));
 
   // Assert
   EXPECT_TRUE(pipeline);

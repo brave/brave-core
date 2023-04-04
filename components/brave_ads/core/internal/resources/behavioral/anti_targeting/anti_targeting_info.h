@@ -8,15 +8,13 @@
 
 #include <cstdint>
 #include <map>
-#include <memory>
 #include <set>
 #include <string>
 
-class GURL;
+#include "base/types/expected.h"
+#include "base/values.h"
 
-namespace base {
-class Value;
-}  // namespace base
+class GURL;
 
 namespace brave_ads::resource {
 
@@ -25,15 +23,17 @@ using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
 
 struct AntiTargetingInfo final {
   AntiTargetingInfo();
+
   AntiTargetingInfo(const AntiTargetingInfo&) = delete;
   AntiTargetingInfo& operator=(const AntiTargetingInfo&) = delete;
-  AntiTargetingInfo(AntiTargetingInfo&& other) noexcept;
-  AntiTargetingInfo& operator=(AntiTargetingInfo&& other) noexcept;
+
+  AntiTargetingInfo(AntiTargetingInfo&&) noexcept;
+  AntiTargetingInfo& operator=(AntiTargetingInfo&&) noexcept;
+
   ~AntiTargetingInfo();
 
-  static std::unique_ptr<AntiTargetingInfo> CreateFromValue(
-      base::Value resource_value,
-      std::string* error_message);
+  static base::expected<AntiTargetingInfo, std::string> CreateFromValue(
+      base::Value::Dict dict);
 
   uint16_t version = 0;
   AntiTargetingMap sites;

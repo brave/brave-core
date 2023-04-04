@@ -19,14 +19,11 @@ namespace {
 constexpr char kResourceId[] = "wtpwsrqtjxmfdwaymauprezkunxprysm";
 }  // namespace
 
-TextEmbedding::TextEmbedding()
-    : embedding_processing_(
-          std::make_unique<ml::pipeline::EmbeddingProcessing>()) {}
-
+TextEmbedding::TextEmbedding() = default;
 TextEmbedding::~TextEmbedding() = default;
 
 bool TextEmbedding::IsInitialized() const {
-  return embedding_processing_ && embedding_processing_->IsInitialized();
+  return embedding_processing_.IsInitialized();
 }
 
 void TextEmbedding::Load() {
@@ -37,28 +34,23 @@ void TextEmbedding::Load() {
 }
 
 void TextEmbedding::OnLoadAndParseResource(
-    ParsingResultPtr<ml::pipeline::EmbeddingProcessing> result) {
-  if (!result) {
-    BLOG(1, "Failed to load " << kResourceId << " text embedding resource");
-    return;
-  }
-  BLOG(1, "Successfully loaded " << kResourceId << " text embedding resource");
-
-  if (!result->resource) {
-    BLOG(1, result->error_message);
+    ParsingErrorOr<ml::pipeline::EmbeddingProcessing> result) {
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     BLOG(1,
          "Failed to initialize " << kResourceId << " text embedding resource");
     return;
   }
+  BLOG(1, "Successfully loaded " << kResourceId << " text embedding resource");
 
-  embedding_processing_ = std::move(result->resource);
+  embedding_processing_ = std::move(result).value();
 
   BLOG(1, "Successfully initialized " << kResourceId
                                       << " text embedding resource");
 }
 
-ml::pipeline::EmbeddingProcessing* TextEmbedding::Get() const {
-  return embedding_processing_.get();
+const ml::pipeline::EmbeddingProcessing* TextEmbedding::Get() const {
+  return &embedding_processing_;
 }
 
 }  // namespace brave_ads::resource

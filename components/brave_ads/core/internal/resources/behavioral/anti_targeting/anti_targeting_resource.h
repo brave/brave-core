@@ -6,13 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_ANTI_TARGETING_ANTI_TARGETING_RESOURCE_H_
 
-#include <memory>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_info.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
+#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
 namespace brave_ads::resource {
 
@@ -32,10 +31,10 @@ class AntiTargeting final : public AdsClientNotifierObserver {
 
   void Load();
 
-  const AntiTargetingInfo& get() const { return *anti_targeting_; }
+  const AntiTargetingInfo& get() const { return anti_targeting_; }
 
  private:
-  void OnLoadAndParseResource(ParsingResultPtr<AntiTargetingInfo> result);
+  void OnLoadAndParseResource(ParsingErrorOr<AntiTargetingInfo> result);
 
   // AdsClientNotifierObserver:
   void OnNotifyLocaleDidChange(const std::string& locale) override;
@@ -43,7 +42,7 @@ class AntiTargeting final : public AdsClientNotifierObserver {
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<AntiTargetingInfo> anti_targeting_;
+  AntiTargetingInfo anti_targeting_;
 
   base::WeakPtrFactory<AntiTargeting> weak_factory_{this};
 };
