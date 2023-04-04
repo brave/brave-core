@@ -861,7 +861,6 @@ provideStrings({
   braveWalletNftPinningBenefitOne: 'Contribute to the network\'s speed and availability',
   braveWalletNftPinningBenefitTwo: 'Increase the security of your NFTs',
   braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
-  braveWalletNftPinningRunNodeButton: 'Get started with IPFS',
   braveWalletNftPinningBackButton: 'Back',
   braveWalletNftPinningCloseButton: 'Close',
   braveWalletNftPinningHeading: 'The safest way to host NFTs',

@@ -857,7 +857,6 @@
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Contribute to the network's speed and availability</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Increase the security of your NFTs</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Get started with IPFS</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON" desc="Enable NFt pinning button text">Get started with IPFS</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">The safest way to host NFTs</message>
