@@ -512,7 +512,6 @@ BatchDLEQProof::verify_and_unblind(std::vector<Token> tokens,
       tokens.size() != signed_tokens.size()) {
     return base::unexpected(
         "Tokens, blinded tokens and signed tokens must have the same length");
-    return unblinded_tokens;
   }
 
   std::vector<C_Token*> raw_tokens;
@@ -539,12 +538,10 @@ BatchDLEQProof::verify_and_unblind(std::vector<Token> tokens,
     return base::unexpected(
         "Raw tokens, raw blinded tokens and raw signed tokens "
         "must have the same length");
-    return unblinded_tokens;
   }
 
   if (!public_key.raw.get()) {
     return base::unexpected("Could not verify DLEQ proof");
-    return unblinded_tokens;
   }
 
   int result = batch_dleq_proof_invalid_or_unblind(
