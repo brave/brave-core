@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_util.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_value_util.h"
 
 #include <utility>
 
@@ -18,7 +18,7 @@ constexpr char kValueKey[] = "value";
 
 }  // namespace
 
-base::Value::List ToValue(const DiagnosticMap& diagnostics) {
+base::Value::List DiagnosticsToValue(const DiagnosticMap& diagnostics) {
   base::Value::List list;
 
   for (const auto& [entry_type, entry] : diagnostics) {

@@ -14,10 +14,9 @@
 
 namespace brave_ads {
 
-void SetLastUnIdleTimeDiagnosticEntry() {
+void SetLastUnIdleTimeDiagnosticEntry(const base::Time last_unidle_at) {
   auto last_unidle_time_diagnostic_entry =
-      std::make_unique<LastUnIdleTimeDiagnosticEntry>();
-  last_unidle_time_diagnostic_entry->SetLastUnIdleTime(base::Time::Now());
+      std::make_unique<LastUnIdleTimeDiagnosticEntry>(last_unidle_at);
 
   DiagnosticManager::GetInstance()->SetEntry(
       std::move(last_unidle_time_diagnostic_entry));

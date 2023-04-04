@@ -20,10 +20,8 @@ TEST_F(BatAdsLastUnIdleTimeDiagnosticEntryTest, LastUnIdleTime) {
   AdvanceClockTo(
       TimeFromString("Mon, 8 July 1996 12:34:56", /*is_local*/ true));
 
-  LastUnIdleTimeDiagnosticEntry diagnostic_entry;
-
   // Act
-  diagnostic_entry.SetLastUnIdleTime(Now());
+  LastUnIdleTimeDiagnosticEntry diagnostic_entry(Now());
 
   // Assert
   EXPECT_EQ(DiagnosticEntryType::kLastUnIdleTime, diagnostic_entry.GetType());
