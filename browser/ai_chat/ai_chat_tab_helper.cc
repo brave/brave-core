@@ -24,12 +24,12 @@ using ai_chat::mojom::ConversationTurn;
 using ai_chat::mojom::ConversationTurnVisibility;
 
 namespace {
-static const ax::mojom::Role kContentRoles[]{
+static const ax::mojom::Role kContentRoles[] = {
     ax::mojom::Role::kHeading,
     ax::mojom::Role::kParagraph,
 };
 
-static const ax::mojom::Role kRolesToSkip[]{
+static const ax::mojom::Role kRolesToSkip[] = {
     ax::mojom::Role::kAudio,
     ax::mojom::Role::kBanner,
     ax::mojom::Role::kButton,
@@ -84,7 +84,7 @@ void AddTextNodesToVector(const ui::AXNode* node,
 
   if (node_data.role == ax::mojom::Role::kStaticText) {
     if (node_data.HasStringAttribute(ax::mojom::StringAttribute::kName)) {
-      strings->emplace_back(
+      strings->push_back(
           node_data.GetString16Attribute(ax::mojom::StringAttribute::kName));
     }
     return;
@@ -110,7 +110,7 @@ AIChatTabHelper::~AIChatTabHelper() = default;
 std::string AIChatTabHelper::GetConversationHistoryAsString() {
   std::string history_text;
 
-  for (ConversationTurn history : chat_history_) {
+  for (const ConversationTurn& history : chat_history_) {
     history_text = base::StrCat({history_text,
                                  history.character_type == CharacterType::HUMAN
                                      ? ai_chat::kHumanPrompt
@@ -139,6 +139,11 @@ void AIChatTabHelper::SetArticleSummaryString(const std::string& text) {
 
 void AIChatTabHelper::AddObserver(Observer* observer) {
   observers_.AddObserver(observer);
+
+  for (auto& obs : observers_) {
+    obs.OnHistoryUpdate();
+    obs.OnAPIRequestInProgress(IsRequestInProgress());
+  }
 }
 
 void AIChatTabHelper::RemoveObserver(Observer* observer) {
@@ -161,10 +166,14 @@ void AIChatTabHelper::RequestSummary() {
   content::RenderFrameHost* rfh =
       content::RenderFrameHost::FromAXTreeID(tree_id);
 
+  // TODO(@nullhook): Add a timeout and test this on real pages
   rfh->GetMainFrame()->RequestAXTreeSnapshot(
       base::BindOnce(&AIChatTabHelper::OnSnapshotFinished,
                      base::Unretained(this)),
-      ui::AXMode::kWebContents, false, 5000, {});
+      ui::AXMode::kWebContents,
+      /* exclude_offscreen= */ false,
+      /* max_nodes= */ 5000,
+      /* timeout= */ {});
 }
 
 void AIChatTabHelper::OnSnapshotFinished(const ui::AXTreeUpdate& snapshot) {
@@ -237,7 +246,7 @@ void AIChatTabHelper::CleanUp() {
 }
 
 void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
-    ConversationTurn turn) {
+    const ConversationTurn& turn) {
   AddToConversationHistory(turn);
 
   std::string prompt_with_history =
@@ -257,10 +266,6 @@ void AIChatTabHelper::MakeAPIRequestWithConversationHistoryUpdate(
       std::move(prompt_with_history));
 
   SetRequestInProgress(true);
-
-  for (auto& obs : observers_) {
-    obs.OnAPIRequestInProgress(IsRequestInProgress());
-  }
 }
 
 void AIChatTabHelper::OnAPIResponse(bool contains_summary,
@@ -281,6 +286,10 @@ void AIChatTabHelper::OnAPIResponse(bool contains_summary,
   AddToConversationHistory(turn);
 
   SetRequestInProgress(false);
+}
+
+void AIChatTabHelper::SetRequestInProgress(bool in_progress) {
+  is_request_in_progress_ = in_progress;
 
   for (auto& obs : observers_) {
     obs.OnAPIRequestInProgress(IsRequestInProgress());

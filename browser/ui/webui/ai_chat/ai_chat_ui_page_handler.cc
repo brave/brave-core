@@ -87,17 +87,21 @@ void AIChatUIPageHandler::MarkAgreementAccepted() {
 }
 
 void AIChatUIPageHandler::OnHistoryUpdate() {
-  page_.get()->OnConversationHistoryUpdate();
-  page_.get()->OnAPIRequestInProgress(
-      active_chat_tab_helper_->IsRequestInProgress());
+  if (page_.is_bound()) {
+    page_->OnConversationHistoryUpdate();
+  }
 }
 
 void AIChatUIPageHandler::OnAPIRequestInProgress(bool in_progress) {
-  page_.get()->OnAPIRequestInProgress(in_progress);
+  if (page_.is_bound()) {
+    page_->OnAPIRequestInProgress(in_progress);
+  }
 }
 
 void AIChatUIPageHandler::OnRequestSummaryFailed() {
-  page_.get()->OnContentSummarizationFailed();
+  if (page_.is_bound()) {
+    page_->OnContentSummarizationFailed();
+  }
 }
 
 void AIChatUIPageHandler::OnTabStripModelChanged(
@@ -114,8 +118,6 @@ void AIChatUIPageHandler::OnTabStripModelChanged(
       active_chat_tab_helper_ =
           AIChatTabHelper::FromWebContents(selection.new_contents);
       chat_tab_helper_observation_.Observe(active_chat_tab_helper_);
-
-      OnHistoryUpdate();
     }
   }
 }

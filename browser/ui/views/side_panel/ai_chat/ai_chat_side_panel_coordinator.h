@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_CHAT_UI_CHAT_UI_SIDE_PANEL_COORDINATOR_H_
-#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_CHAT_UI_CHAT_UI_SIDE_PANEL_COORDINATOR_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_COORDINATOR_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_COORDINATOR_H_
 
 #include <memory>
 
@@ -18,15 +18,15 @@ class AIChatUI;
 class Browser;
 class SidePanelRegistry;
 
-class ChatUISidePanelCoordinator
-    : public BrowserUserData<ChatUISidePanelCoordinator>,
+class AIChatSidePanelCoordinator
+    : public BrowserUserData<AIChatSidePanelCoordinator>,
       public views::ViewObserver {
  public:
-  explicit ChatUISidePanelCoordinator(Browser* browser);
-  ChatUISidePanelCoordinator(const ChatUISidePanelCoordinator&) = delete;
-  ChatUISidePanelCoordinator& operator=(const ChatUISidePanelCoordinator&) =
+  explicit AIChatSidePanelCoordinator(Browser* browser);
+  AIChatSidePanelCoordinator(const AIChatSidePanelCoordinator&) = delete;
+  AIChatSidePanelCoordinator& operator=(const AIChatSidePanelCoordinator&) =
       delete;
-  ~ChatUISidePanelCoordinator() override;
+  ~AIChatSidePanelCoordinator() override;
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
 
@@ -34,7 +34,7 @@ class ChatUISidePanelCoordinator
   void OnViewIsDeleting(views::View* view) override;
 
  private:
-  friend class BrowserUserData<ChatUISidePanelCoordinator>;
+  friend class BrowserUserData<AIChatSidePanelCoordinator>;
 
   void DestroyWebContentsIfNeeded();
 
@@ -48,4 +48,4 @@ class ChatUISidePanelCoordinator
   BROWSER_USER_DATA_KEY_DECL();
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_CHAT_UI_CHAT_UI_SIDE_PANEL_COORDINATOR_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_COORDINATOR_H_

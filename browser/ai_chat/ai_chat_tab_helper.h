@@ -22,10 +22,6 @@ class AXTree;
 
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper> {
-  using OnArticleSummaryCallback =
-      base::OnceCallback<void(const std::u16string& summary,
-                              bool is_from_cache)>;
-
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -43,13 +39,17 @@ class AIChatTabHelper : public content::WebContentsObserver,
   const std::vector<ai_chat::mojom::ConversationTurn>& GetConversationHistory();
   void AddToConversationHistory(const ai_chat::mojom::ConversationTurn& turn);
   void MakeAPIRequestWithConversationHistoryUpdate(
-      ai_chat::mojom::ConversationTurn turn);
+      const ai_chat::mojom::ConversationTurn& turn);
   bool IsRequestInProgress() { return is_request_in_progress_; }
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
   void RequestSummary();
 
  private:
+  using OnArticleSummaryCallback =
+      base::OnceCallback<void(const std::u16string& summary,
+                              bool is_from_cache)>;
+
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
   explicit AIChatTabHelper(content::WebContents* web_contents);
@@ -62,9 +62,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void OnAPIResponse(bool contains_summary,
                      const std::string& assistant_input,
                      bool success);
-  void SetRequestInProgress(bool in_progress) {
-    is_request_in_progress_ = in_progress;
-  }
+  void SetRequestInProgress(bool in_progress);
 
   // content::WebContentsObserver:
   void PrimaryPageChanged(content::Page& page) override;

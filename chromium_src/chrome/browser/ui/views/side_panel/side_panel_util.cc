@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "chrome/browser/ui/views/side_panel/side_panel_util.h"
-#include "brave/browser/ui/views/side_panel/chat_ui/chat_ui_side_panel_coordinator.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_coordinator.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/ai_chat/ai_chat_utils.h"
 #include "brave/components/playlist/common/features.h"
@@ -26,7 +26,7 @@ void SidePanelUtil::PopulateGlobalEntries(Browser* browser,
   }
 
   if (ai_chat::IsAIChatEnabled()) {
-    ChatUISidePanelCoordinator::GetOrCreateForBrowser(browser)
+    AIChatSidePanelCoordinator::GetOrCreateForBrowser(browser)
         ->CreateAndRegisterEntry(global_registry);
   }
 }

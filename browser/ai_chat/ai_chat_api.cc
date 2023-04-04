@@ -70,7 +70,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   stop_sequences.Append("\n\nHuman:");
 
   dict.Set("prompt", prompt);
-  dict.Set("max_tokens_to_sample", 200);
+  dict.Set("max_tokens_to_sample", 400);
   dict.Set("temperature", 0.7);
   dict.Set("top_k", -1);  // disabled
   dict.Set("top_p", 0.999);
@@ -81,7 +81,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
   base::flat_map<std::string, std::string> headers;
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
 
-  VLOG(1) << __func__ << " Prompt: " << prompt << "\n";
+  DVLOG(1) << __func__ << " Prompt: " << prompt << "\n";
 
   api_request_helper_.Request("POST",
                               GetURLWithPath(BUILDFLAG(BRAVE_AI_CHAT_ENDPOINT),
@@ -89,7 +89,7 @@ void AIChatAPI::QueryPrompt(ResponseCallback callback,
                               CreateJSONRequestBody(dict), "application/json",
                               true, std::move(internal_callback), headers);
 
-  VLOG(1) << __func__ << " API Request sent\n";
+  DVLOG(1) << __func__ << " API Request sent\n";
 }
 
 void AIChatAPI::OnGetResponse(ResponseCallback callback,
@@ -97,8 +97,8 @@ void AIChatAPI::OnGetResponse(ResponseCallback callback,
   const bool success = result.response_code() == 200;
 
   if (!success) {
-    VLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
-            << result.response_code() << ")";
+    DVLOG(1) << __func__ << " Response from API was not HTTP 200 (Received "
+             << result.response_code() << ")";
     return;
   }
 
@@ -106,13 +106,11 @@ void AIChatAPI::OnGetResponse(ResponseCallback callback,
   const base::Value::Dict* dict = result.value_body().GetIfDict();
 
   if (!dict) {
-    VLOG(1) << __func__ << " Result dict not found\n";
+    DVLOG(1) << __func__ << " Result dict not found\n";
     return;
   }
 
-  const std::string* completion = dict->FindString("completion");
-
-  if (completion) {
+  if (const std::string* completion = dict->FindString("completion")) {
     response = *completion;
   }
 
