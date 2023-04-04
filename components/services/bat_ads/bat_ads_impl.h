@@ -88,20 +88,23 @@ class BatAdsImpl : public mojom::BatAds {
                   GetHistoryCallback callback) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  void ToggleAdThumbUp(base::Value::Dict value,
-                       ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(base::Value::Dict value,
-                         ToggleAdThumbUpCallback callback) override;
-  void ToggleAdOptIn(const std::string& category,
-                     int opt_action_type,
-                     ToggleAdOptInCallback callback) override;
-  void ToggleAdOptOut(const std::string& category,
-                      int opt_action_type,
-                      ToggleAdOptOutCallback callback) override;
-  void ToggleSavedAd(base::Value::Dict value,
-                     ToggleSavedAdCallback callback) override;
-  void ToggleFlaggedAd(base::Value::Dict value,
-                       ToggleFlaggedAdCallback callback) override;
+  void ToggleLikeAd(base::Value::Dict value,
+                    ToggleLikeAdCallback callback) override;
+  void ToggleDislikeAd(base::Value::Dict value,
+                       ToggleLikeAdCallback callback) override;
+  void ToggleMarkToReceiveAdsForCategory(
+      const std::string& category,
+      int opt_action_type,
+      ToggleMarkToReceiveAdsForCategoryCallback callback) override;
+  void ToggleMarkToNoLongerReceiveAdsForCategory(
+      const std::string& category,
+      int opt_action_type,
+      ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) override;
+  void ToggleSaveAd(base::Value::Dict value,
+                    ToggleSaveAdCallback callback) override;
+  void ToggleMarkAdAsInappropriate(
+      base::Value::Dict value,
+      ToggleMarkAdAsInappropriateCallback callback) override;
 
  private:
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;

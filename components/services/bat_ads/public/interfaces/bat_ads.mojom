@@ -153,12 +153,10 @@ interface BatAds {
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  // Account
   OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 
   GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? statement);
 
-  // Ads
   MaybeServeInlineContentAd(string dimensions) =>
       (string dimensions, mojo_base.mojom.DictionaryValue? value);
   TriggerInlineContentAdEvent(
@@ -190,21 +188,23 @@ interface BatAds {
   PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>
       (bool success);
 
-  // History
   GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
       (mojo_base.mojom.ListValue value);
   RemoveAllHistory() => (bool success);
 
-  ToggleAdThumbUp(mojo_base.mojom.DictionaryValue value) =>
+  ToggleLikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-  ToggleAdThumbDown(mojo_base.mojom.DictionaryValue value) =>
+  ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-  ToggleAdOptIn(string category, int32 action) =>
+
+  ToggleMarkToReceiveAdsForCategory(string category, int32 action) =>
       (string category, int32 action);
-  ToggleAdOptOut(string category, int32 action) =>
+  ToggleMarkToNoLongerReceiveAdsForCategory(string category, int32 action) =>
       (string category, int32 action);
-  ToggleSavedAd(mojo_base.mojom.DictionaryValue value) =>
+
+  ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
-  ToggleFlaggedAd(mojo_base.mojom.DictionaryValue value) =>
+
+  ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>
       (mojo_base.mojom.DictionaryValue value);
 };

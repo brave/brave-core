@@ -110,7 +110,7 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
 
 TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -122,7 +122,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {
 
 TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent-child", CategoryContentOptActionType::kNone);
 
   // Act
@@ -134,7 +134,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentChildSegment) {
 
 TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -146,7 +146,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentSegment) {
 
 TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -159,7 +159,7 @@ TEST_F(BatAdsSegmentUtilTest, ShouldNotFilterNonMatchingParentSegment) {
 TEST_F(BatAdsSegmentUtilTest,
        ShouldFilterAgainstParentForMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act
@@ -172,7 +172,7 @@ TEST_F(BatAdsSegmentUtilTest,
 TEST_F(BatAdsSegmentUtilTest,
        ShouldNotFilterAgainstParentForNonMatchingParentSegmentWithChild) {
   // Arrange
-  ClientStateManager::GetInstance()->ToggleAdOptOut(
+  ClientStateManager::GetInstance()->ToggleMarkToNoLongerReceiveAdsForCategory(
       "parent", CategoryContentOptActionType::kNone);
 
   // Act

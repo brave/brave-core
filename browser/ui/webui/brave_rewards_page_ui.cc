@@ -1265,7 +1265,7 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleAdThumbUp(
+  ads_service_->ToggleLikeAd(
       dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbUp,
                                     weak_factory_.GetWeakPtr()));
 }
@@ -1293,7 +1293,7 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleAdThumbDown(
+  ads_service_->ToggleDislikeAd(
       dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleAdThumbDown,
                                     weak_factory_.GetWeakPtr()));
 }
@@ -1317,7 +1317,7 @@ void RewardsDOMHandler::ToggleAdOptIn(const base::Value::List& args) {
 
   const std::string category = args[0].GetString();
   const int action = args[1].GetInt();
-  ads_service_->ToggleAdOptIn(
+  ads_service_->ToggleMarkToReceiveAdsForCategory(
       category, action,
       base::BindOnce(&RewardsDOMHandler::OnToggleAdOptIn,
                      weak_factory_.GetWeakPtr()));
@@ -1346,7 +1346,7 @@ void RewardsDOMHandler::ToggleAdOptOut(const base::Value::List& args) {
 
   const std::string category = args[0].GetString();
   const int action = args[1].GetInt();
-  ads_service_->ToggleAdOptOut(
+  ads_service_->ToggleMarkToNoLongerReceiveAdsForCategory(
       category, action,
       base::BindOnce(&RewardsDOMHandler::OnToggleAdOptOut,
                      weak_factory_.GetWeakPtr()));
@@ -1379,9 +1379,9 @@ void RewardsDOMHandler::ToggleSavedAd(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleSavedAd(
-      dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
-                                    weak_factory_.GetWeakPtr()));
+  ads_service_->ToggleSaveAd(dict->Clone(),
+                             base::BindOnce(&RewardsDOMHandler::OnToggleSavedAd,
+                                            weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnToggleSavedAd(base::Value::Dict dict) {
@@ -1407,7 +1407,7 @@ void RewardsDOMHandler::ToggleFlaggedAd(const base::Value::List& args) {
 
   AllowJavascript();
 
-  ads_service_->ToggleFlaggedAd(
+  ads_service_->ToggleMarkAdAsInappropriate(
       dict->Clone(), base::BindOnce(&RewardsDOMHandler::OnToggleFlaggedAd,
                                     weak_factory_.GetWeakPtr()));
 }

@@ -293,7 +293,7 @@ TEST_F(BatAdsHistoryManagerTest, SaveAd) {
       HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);
 
   // Act
-  HistoryManager::GetInstance()->ToggleSavedAd(history_item.ad_content);
+  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_save_ad_);
@@ -310,7 +310,7 @@ TEST_F(BatAdsHistoryManagerTest, UnsaveAd) {
   history_item.ad_content.is_saved = true;
 
   // Act
-  HistoryManager::GetInstance()->ToggleSavedAd(history_item.ad_content);
+  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
 
   // Assert
   EXPECT_FALSE(did_save_ad_);

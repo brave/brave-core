@@ -192,7 +192,7 @@ ClientStateManager::GetPurchaseIntentSignalHistory() const {
   return client_->purchase_intent_signal_history;
 }
 
-AdContentLikeActionType ClientStateManager::ToggleAdThumbUp(
+AdContentLikeActionType ClientStateManager::ToggleLikeAd(
     const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
@@ -216,7 +216,7 @@ AdContentLikeActionType ClientStateManager::ToggleAdThumbUp(
   return like_action_type;
 }
 
-AdContentLikeActionType ClientStateManager::ToggleAdThumbDown(
+AdContentLikeActionType ClientStateManager::ToggleDislikeAd(
     const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
@@ -267,7 +267,8 @@ ClientStateManager::GetAdContentLikeActionTypeForAdvertiser(
   return iter->ad_content.like_action_type;
 }
 
-CategoryContentOptActionType ClientStateManager::ToggleAdOptIn(
+CategoryContentOptActionType
+ClientStateManager::ToggleMarkToReceiveAdsForCategory(
     const std::string& category,
     const CategoryContentOptActionType opt_action_type) {
   DCHECK(is_initialized_);
@@ -292,7 +293,8 @@ CategoryContentOptActionType ClientStateManager::ToggleAdOptIn(
   return toggled_opt_action_type;
 }
 
-CategoryContentOptActionType ClientStateManager::ToggleAdOptOut(
+CategoryContentOptActionType
+ClientStateManager::ToggleMarkToNoLongerReceiveAdsForCategory(
     const std::string& category,
     const CategoryContentOptActionType opt_action_type) {
   DCHECK(is_initialized_);
@@ -342,7 +344,7 @@ ClientStateManager::GetCategoryContentOptActionTypeForSegment(
   return iter->category_content.opt_action_type;
 }
 
-bool ClientStateManager::ToggleSavedAd(const AdContentInfo& ad_content) {
+bool ClientStateManager::ToggleSaveAd(const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
   const bool is_saved = !ad_content.is_saved;
@@ -372,7 +374,8 @@ bool ClientStateManager::ToggleSavedAd(const AdContentInfo& ad_content) {
   return is_saved;
 }
 
-bool ClientStateManager::ToggleFlaggedAd(const AdContentInfo& ad_content) {
+bool ClientStateManager::ToggleMarkAdAsInappropriate(
+    const AdContentInfo& ad_content) {
   DCHECK(is_initialized_);
 
   const bool is_flagged = !ad_content.is_flagged;

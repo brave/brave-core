@@ -301,36 +301,35 @@ void AdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   DiagnosticManager::GetInstance()->GetDiagnostics(std::move(callback));
 }
 
-AdContentLikeActionType AdsImpl::ToggleAdThumbUp(base::Value::Dict value) {
+AdContentLikeActionType AdsImpl::ToggleLikeAd(base::Value::Dict value) {
   return HistoryManager::GetInstance()->LikeAd(AdContentFromValue(value));
 }
 
-AdContentLikeActionType AdsImpl::ToggleAdThumbDown(base::Value::Dict value) {
+AdContentLikeActionType AdsImpl::ToggleDislikeAd(base::Value::Dict value) {
   return HistoryManager::GetInstance()->DislikeAd(AdContentFromValue(value));
 }
 
-CategoryContentOptActionType AdsImpl::ToggleAdOptIn(
+CategoryContentOptActionType AdsImpl::ToggleMarkToReceiveAdsForCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) {
   return HistoryManager::GetInstance()->MarkToReceiveAdsForCategory(
       category, action_type);
 }
 
-CategoryContentOptActionType AdsImpl::ToggleAdOptOut(
+CategoryContentOptActionType AdsImpl::ToggleMarkToNoLongerReceiveAdsForCategory(
     const std::string& category,
     const CategoryContentOptActionType& action_type) {
   return HistoryManager::GetInstance()->MarkToNoLongerReceiveAdsForCategory(
       category, action_type);
 }
 
-bool AdsImpl::ToggleFlaggedAd(base::Value::Dict value) {
+bool AdsImpl::ToggleMarkAdAsInappropriate(base::Value::Dict value) {
   return HistoryManager::GetInstance()->ToggleMarkAdAsInappropriate(
       AdContentFromValue(value));
 }
 
-bool AdsImpl::ToggleSavedAd(base::Value::Dict value) {
-  return HistoryManager::GetInstance()->ToggleSavedAd(
-      AdContentFromValue(value));
+bool AdsImpl::ToggleSaveAd(base::Value::Dict value) {
+  return HistoryManager::GetInstance()->ToggleSaveAd(AdContentFromValue(value));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -197,42 +197,45 @@ class AdsService : public KeyedService {
   // Called to like an advertiser. This is a toggle, so calling it again returns
   // the setting to the neutral state. The callback takes one argument -
   // |base::Value::Dict| containing the current state.
-  virtual void ToggleAdThumbUp(base::Value::Dict value,
-                               ToggleAdThumbUpCallback callback) = 0;
+  virtual void ToggleLikeAd(base::Value::Dict value,
+                            ToggleLikeAdCallback callback) = 0;
 
   // Called to dislike an advertiser. This is a toggle, so calling it again
   // returns the setting to the neutral state. The callback takes one argument -
   // |base::Value::Dict| containing the current state.
-  virtual void ToggleAdThumbDown(base::Value::Dict value,
-                                 ToggleAdThumbDownCallback callback) = 0;
+  virtual void ToggleDislikeAd(base::Value::Dict value,
+                               ToggleDislikeAdCallback callback) = 0;
 
   // Called to no longer receive ads for the specified category. This is a
   // toggle, so calling it again returns the setting to the neutral state. The
   // callback takes two arguments - |std::string| containing the category. |int|
   // containing the action.
-  virtual void ToggleAdOptIn(const std::string& category,
-                             int action,
-                             ToggleAdOptInCallback callback) = 0;
+  virtual void ToggleMarkToReceiveAdsForCategory(
+      const std::string& category,
+      int action,
+      ToggleMarkToReceiveAdsForCategoryCallback callback) = 0;
 
   // Called to receive ads for the specified category. This is a toggle, so
   // calling it again returns the setting to the neutral state. The callback
   // takes two arguments - |std::string| containing the category. |int|
   // containing the action.
-  virtual void ToggleAdOptOut(const std::string& category,
-                              int action,
-                              ToggleAdOptOutCallback callback) = 0;
+  virtual void ToggleMarkToNoLongerReceiveAdsForCategory(
+      const std::string& category,
+      int action,
+      ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) = 0;
 
   // Called to save an ad for later viewing. This is a toggle, so calling it
   // again removes the ad from the saved list. The callback takes one argument -
   // |base::Value::Dict| containing the current state.
-  virtual void ToggleSavedAd(base::Value::Dict value,
-                             ToggleSavedAdCallback callback) = 0;
+  virtual void ToggleSaveAd(base::Value::Dict value,
+                            ToggleSaveAdCallback callback) = 0;
 
   // Called to mark an ad as inappropriate. This is a toggle, so calling it
   // again unmarks the ad. The callback takes one argument - |base::Value::Dict|
   // containing the current state.
-  virtual void ToggleFlaggedAd(base::Value::Dict value,
-                               ToggleFlaggedAdCallback callback) = 0;
+  virtual void ToggleMarkAdAsInappropriate(
+      base::Value::Dict value,
+      ToggleMarkAdAsInappropriateCallback callback) = 0;
 
   // Invoked when the page for |tab_id| has loaded and the content is available
   // for analysis. |redirect_chain| containing a list of redirect URLs that

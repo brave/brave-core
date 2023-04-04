@@ -721,7 +721,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
   ad_content.type = brave_ads::AdType::kNotificationAd;
-  ads->ToggleAdThumbUp(brave_ads::AdContentToValue(ad_content));
+  ads->ToggleLikeAd(brave_ads::AdContentToValue(ad_content));
 }
 
 - (void)toggleThumbsDownForAd:(NSString*)creativeInstanceId
@@ -733,7 +733,7 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   ad_content.creative_instance_id = base::SysNSStringToUTF8(creativeInstanceId);
   ad_content.advertiser_id = base::SysNSStringToUTF8(advertiserId);
   ad_content.type = brave_ads::AdType::kNotificationAd;
-  ads->ToggleAdThumbDown(brave_ads::AdContentToValue(ad_content));
+  ads->ToggleDislikeAd(brave_ads::AdContentToValue(ad_content));
 }
 
 #pragma mark - Configuration
