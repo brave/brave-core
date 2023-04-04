@@ -33,9 +33,8 @@ struct NFTMetadata: Codable, Equatable {
     self.description = description
   }
 
-  func httpfyIpfsUrl(ipfsApi: IpfsAPI?) -> NFTMetadata {
-    guard let ipfsApi,
-          let imageURLString,
+  func httpfyIpfsUrl(ipfsApi: IpfsAPI) -> NFTMetadata {
+    guard let imageURLString,
           imageURLString.hasPrefix("ipfs://"),
           let url = URL(string: imageURLString) else {
       return NFTMetadata(imageURLString: self.imageURLString, name: self.name, description: self.description)
@@ -51,7 +50,7 @@ struct NFTMetadata: Codable, Equatable {
 
 class NFTDetailStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
   let nft: BraveWallet.BlockchainToken
   @Published var isLoading: Bool = false
   @Published var nftMetadata: NFTMetadata?
@@ -59,7 +58,7 @@ class NFTDetailStore: ObservableObject {
 
   init(
     rpcService: BraveWalletJsonRpcService,
-    ipfsApi: IpfsAPI?,
+    ipfsApi: IpfsAPI,
     nft: BraveWallet.BlockchainToken,
     nftMetadata: NFTMetadata?
   ) {

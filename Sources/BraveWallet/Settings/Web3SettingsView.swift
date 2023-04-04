@@ -14,8 +14,6 @@ public struct Web3SettingsView: View {
   var networkStore: NetworkStore?
   var keyringStore: KeyringStore?
   
-  private let ipfsAPI: IpfsAPI?
-  
   @State private var isShowingResetWalletAlert = false
   @State private var isShowingResetTransactionAlert = false
   /// If we are showing the modal so the user can enter their password to enable unlock via biometrics.
@@ -25,33 +23,31 @@ public struct Web3SettingsView: View {
   public init(
     settingsStore: SettingsStore? = nil,
     networkStore: NetworkStore? = nil,
-    keyringStore: KeyringStore? = nil,
-    ipfsAPI: IpfsAPI? = nil
+    keyringStore: KeyringStore? = nil
   ) {
     self.settingsStore = settingsStore
     self.networkStore = networkStore
     self.keyringStore = keyringStore
-    self.ipfsAPI = ipfsAPI
   }
   
   public var body: some View {
     List {
-      if let settingsStore = settingsStore, let networkStore = networkStore, let keyringStore = keyringStore, keyringStore.isDefaultKeyringCreated {
-        WalletSettingsView(
-          settingsStore: settingsStore,
-          networkStore: networkStore,
-          keyringStore: keyringStore,
-          isShowingResetWalletAlert: $isShowingResetWalletAlert,
-          isShowingResetTransactionAlert: $isShowingResetTransactionAlert,
-          isShowingBiometricsPasswordEntry: $isShowingBiometricsPasswordEntry
-        )
-      }
-      if let ipfsAPI { // means users come from the browser not the wallet
+      if let settingsStore = settingsStore {
+        if let networkStore = networkStore, let keyringStore = keyringStore, keyringStore.isDefaultKeyringCreated {
+          WalletSettingsView(
+            settingsStore: settingsStore,
+            networkStore: networkStore,
+            keyringStore: keyringStore,
+            isShowingResetWalletAlert: $isShowingResetWalletAlert,
+            isShowingResetTransactionAlert: $isShowingResetTransactionAlert,
+            isShowingBiometricsPasswordEntry: $isShowingBiometricsPasswordEntry
+          )
+        }
         Section(
           header: Text(Strings.Wallet.ipfsSettingsHeader),
           footer: Text(Strings.Wallet.ipfsSettingsFooter)
         ) {
-          NavigationLink(destination: IPFSCustomGatewayView(ipfsAPI: ipfsAPI)) {
+          NavigationLink(destination: IPFSCustomGatewayView(ipfsAPI: settingsStore.ipfsApi)) {
             VStack(alignment: .leading, spacing: 4) {
               Text(Strings.Wallet.nftGatewayTitle)
                 .foregroundColor(Color(.braveLabel))
@@ -111,7 +107,7 @@ public struct Web3SettingsView: View {
         }
     )
     .onAppear {
-      if let urlString = ipfsAPI?.nftIpfsGateway?.absoluteString, urlString != ipfsNFTGatewayURL {
+      if let urlString = settingsStore?.ipfsApi.nftIpfsGateway?.absoluteString, urlString != ipfsNFTGatewayURL {
         ipfsNFTGatewayURL = urlString
       }
       settingsStore?.setup()

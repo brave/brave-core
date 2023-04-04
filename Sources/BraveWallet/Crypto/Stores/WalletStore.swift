@@ -30,7 +30,7 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.keyringStore = .init(keyringService: keyringService, walletService: walletService, rpcService: rpcService)
     self.setUp(
@@ -57,7 +57,7 @@ public class WalletStore {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.cancellable = self.keyringStore.$defaultKeyring
       .map(\.isKeyringCreated)

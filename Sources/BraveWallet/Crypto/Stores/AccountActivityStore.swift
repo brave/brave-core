@@ -32,7 +32,7 @@ class AccountActivityStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
   /// Cache for storing `BlockchainToken`s that are not in user assets or our token registry.
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [String: BraveWallet.BlockchainToken] = [:]
@@ -47,7 +47,7 @@ class AccountActivityStore: ObservableObject {
     txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.account = account
     self.observeAccountUpdates = observeAccountUpdates

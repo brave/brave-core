@@ -744,8 +744,7 @@ class SettingsViewController: TableViewController {
               let web3SettingsView = Web3SettingsView(
                 settingsStore: settingsStore,
                 networkStore: cryptoStore?.networkStore,
-                keyringStore: keyringStore,
-                ipfsAPI: ipfsAPI
+                keyringStore: keyringStore
               ).environment(\.openURL, .init(handler: { [weak self] url in
                 guard let self = self else { return .discarded }
                 (self.presentingViewController ?? self).dismiss(animated: true) { [self] in

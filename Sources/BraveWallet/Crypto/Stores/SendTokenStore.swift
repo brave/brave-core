@@ -134,7 +134,7 @@ public class SendTokenStore: ObservableObject {
   private var sendAmountUpdatedTimer: Timer?
   private var prefilledToken: BraveWallet.BlockchainToken?
   private var metadataCache: [String: NFTMetadata] = [:]
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -145,7 +145,7 @@ public class SendTokenStore: ObservableObject {
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
     prefilledToken: BraveWallet.BlockchainToken?,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService

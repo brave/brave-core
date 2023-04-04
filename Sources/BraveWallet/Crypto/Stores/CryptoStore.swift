@@ -90,7 +90,7 @@ public class CryptoStore: ObservableObject {
   private let txService: BraveWalletTxService
   private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private let solTxManagerProxy: BraveWalletSolanaTxManagerProxy
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
   
   public init(
     keyringService: BraveWalletKeyringService,
@@ -102,7 +102,7 @@ public class CryptoStore: ObservableObject {
     txService: BraveWalletTxService,
     ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     solTxManagerProxy: BraveWalletSolanaTxManagerProxy,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService
@@ -278,7 +278,8 @@ public class CryptoStore: ObservableObject {
     keyringService: keyringService,
     walletService: walletService,
     rpcService: rpcService,
-    txService: txService
+    txService: txService,
+    ipfsApi: ipfsApi
   )
   
   private var nftDetailStore: NFTDetailStore?

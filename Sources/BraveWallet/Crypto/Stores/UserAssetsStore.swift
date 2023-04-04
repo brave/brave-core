@@ -29,7 +29,7 @@ public class AssetStore: ObservableObject, Equatable {
 
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
   private(set) var isCustomToken: Bool
 
   init(
@@ -37,7 +37,7 @@ public class AssetStore: ObservableObject, Equatable {
     rpcService: BraveWalletJsonRpcService,
     network: BraveWallet.NetworkInfo,
     token: BraveWallet.BlockchainToken,
-    ipfsApi: IpfsAPI?,
+    ipfsApi: IpfsAPI,
     isCustomToken: Bool,
     isVisible: Bool
   ) {
@@ -68,7 +68,7 @@ public class UserAssetsStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   private let keyringService: BraveWalletKeyringService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private var timer: Timer?
 
@@ -78,7 +78,7 @@ public class UserAssetsStore: ObservableObject {
     rpcService: BraveWalletJsonRpcService,
     keyringService: BraveWalletKeyringService,
     assetRatioService: BraveWalletAssetRatioService,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.walletService = walletService
     self.blockchainRegistry = blockchainRegistry
