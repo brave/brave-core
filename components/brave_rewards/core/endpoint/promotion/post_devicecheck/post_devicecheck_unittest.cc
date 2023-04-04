@@ -31,17 +31,17 @@ class PostDevicecheckTest : public testing::Test {
 };
 
 TEST_F(PostDevicecheckTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
               "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
             })";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
   devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -49,18 +49,20 @@ TEST_F(PostDevicecheckTest, ServerOK) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(nonce, "c4645786-052f-402f-8593-56af2f7a21ce");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostDevicecheckTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -68,18 +70,20 @@ TEST_F(PostDevicecheckTest, ServerError400) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostDevicecheckTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 401;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 401;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -87,18 +91,20 @@ TEST_F(PostDevicecheckTest, ServerError401) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostDevicecheckTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   devicecheck_.Request(
       "ff50981d-47de-4210-848d-995e186901a1",
@@ -106,6 +112,8 @@ TEST_F(PostDevicecheckTest, ServerErrorRandom) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(nonce, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

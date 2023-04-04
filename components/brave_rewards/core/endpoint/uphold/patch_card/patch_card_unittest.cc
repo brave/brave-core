@@ -31,13 +31,13 @@ class PatchCardTest : public testing::Test {
 };
 
 TEST_F(PatchCardTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
              "CreatedByApplicationId": "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
              "address": {
                "wire": "XXXXXXXXXX"
@@ -87,50 +87,56 @@ TEST_F(PatchCardTest, ServerOK) {
                }
              ]
             })";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
   card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                 "4c2b665ca060d912fec5c735c734859a06118cc8",
                 base::BindOnce([](mojom::Result result) {
                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                 }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PatchCardTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 401;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 401;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                 "4c2b665ca060d912fec5c735c734859a06118cc8",
                 base::BindOnce([](mojom::Result result) {
                   EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
                 }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PatchCardTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   card_.Request("193a77cf-02e8-4e10-8127-8a1b5a8bfece",
                 "4c2b665ca060d912fec5c735c734859a06118cc8",
                 base::BindOnce([](mojom::Result result) {
                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                 }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace uphold

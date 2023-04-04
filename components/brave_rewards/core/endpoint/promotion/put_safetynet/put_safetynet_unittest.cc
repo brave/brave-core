@@ -31,71 +31,79 @@ class PutSafetynetTest : public testing::Test {
 };
 
 TEST_F(PutSafetynetTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
                        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                      }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PutSafetynetTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
                        EXPECT_EQ(result, mojom::Result::CAPTCHA_FAILED);
                      }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PutSafetynetTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 401;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 401;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
                        EXPECT_EQ(result, mojom::Result::CAPTCHA_FAILED);
                      }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PutSafetynetTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   safetynet_.Request("sdfsdf32d323d23d", "dfasdfasdpflsadfplf2r23re2",
                      base::BindOnce([](mojom::Result result) {
                        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                      }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

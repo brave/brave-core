@@ -61,77 +61,85 @@ class PostSuggestionsClaimTest : public testing::Test {
 };
 
 TEST_F(PostSuggestionsClaimTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"(
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"(
               {"drainId": "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b"}
             )";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
   claim_.Request(redeem_,
                  base::BindOnce([](mojom::Result result, std::string drain_id) {
                    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
                    EXPECT_EQ(drain_id, "1af0bf71-c81c-4b18-9188-a0d3c4a1b53b");
                  }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerNeedsRetry) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   claim_.Request(redeem_,
                  base::BindOnce([](mojom::Result result, std::string drain_id) {
                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                    EXPECT_EQ(drain_id, "");
                  }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   claim_.Request(redeem_,
                  base::BindOnce([](mojom::Result result, std::string drain_id) {
                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                    EXPECT_EQ(drain_id, "");
                  }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostSuggestionsClaimTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   claim_.Request(redeem_,
                  base::BindOnce([](mojom::Result result, std::string drain_id) {
                    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
                    EXPECT_EQ(drain_id, "");
                  }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

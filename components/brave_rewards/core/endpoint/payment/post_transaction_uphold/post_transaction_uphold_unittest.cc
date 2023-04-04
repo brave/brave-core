@@ -31,15 +31,15 @@ class PostTransactionUpholdTest : public testing::Test {
 };
 
 TEST_F(PostTransactionUpholdTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 201;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 201;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -48,18 +48,20 @@ TEST_F(PostTransactionUpholdTest, ServerOK) {
   order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_OK);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -68,18 +70,20 @@ TEST_F(PostTransactionUpholdTest, ServerError400) {
   order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 404;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 404;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -88,18 +92,20 @@ TEST_F(PostTransactionUpholdTest, ServerError404) {
   order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::NOT_FOUND);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError409) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 409;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 409;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -108,18 +114,20 @@ TEST_F(PostTransactionUpholdTest, ServerError409) {
   order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionUpholdTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -128,18 +136,20 @@ TEST_F(PostTransactionUpholdTest, ServerError500) {
   order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::SKUTransaction transaction;
   transaction.order_id = "f2e6494e-fb21-44d1-90e9-b5408799acd8";
@@ -148,6 +158,8 @@ TEST_F(PostTransactionUpholdTest, ServerErrorRandom) {
   order_.Request(transaction, [](const mojom::Result result) {
     EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
   });
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace payment

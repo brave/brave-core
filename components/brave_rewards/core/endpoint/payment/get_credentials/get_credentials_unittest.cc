@@ -31,13 +31,13 @@ class GetCredentialsTest : public testing::Test {
 };
 
 TEST_F(GetCredentialsTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
              "id": "9c9aed7f-b349-452e-80a8-95faf2b1600d",
              "orderId": "f2e6494e-fb21-44d1-90e9-b5408799acd8",
              "issuerId": "138bf9ca-69fe-4540-9ac4-bc65baddc4a0",
@@ -49,8 +49,8 @@ TEST_F(GetCredentialsTest, ServerOK) {
              "batchProof": "zx0cdJhaB/OdYcUtnyXdi+lsoniN2KNgFU",
              "publicKey": "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I="
             })";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
   creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -66,18 +66,20 @@ TEST_F(GetCredentialsTest, ServerOK) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_TRUE(expected_batch.Equals(*batch));
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCredentialsTest, ServerError202) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 202;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 202;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -85,18 +87,20 @@ TEST_F(GetCredentialsTest, ServerError202) {
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
         EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCredentialsTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -104,18 +108,20 @@ TEST_F(GetCredentialsTest, ServerError400) {
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
         EXPECT_EQ(result, mojom::Result::RETRY);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCredentialsTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 404;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 404;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -123,18 +129,20 @@ TEST_F(GetCredentialsTest, ServerError404) {
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
         EXPECT_EQ(result, mojom::Result::RETRY);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCredentialsTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -142,18 +150,20 @@ TEST_F(GetCredentialsTest, ServerError500) {
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
         EXPECT_EQ(result, mojom::Result::RETRY);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCredentialsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   creds_.Request(
       "pl2okf23-f2f02kf2fm2-msdkfsodkfds",
@@ -161,6 +171,8 @@ TEST_F(GetCredentialsTest, ServerErrorRandom) {
       base::BindOnce([](mojom::Result result, mojom::CredsBatchPtr batch) {
         EXPECT_EQ(result, mojom::Result::RETRY);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace payment

@@ -68,8 +68,9 @@ class PostConnect : public TestWithParam<PostConnectParamType> {
 TEST_P(PostConnect, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([&](mojom::UrlRequestPtr, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = status_code;
         response->body = body;
@@ -79,6 +80,8 @@ TEST_P(PostConnect, Paths) {
   RequestFor<PostConnectMock>(&mock_ledger_impl_)
       .Send(base::BindLambdaForTesting(
           [&](Result&& result) { EXPECT_EQ(result, expected_result); }));
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

@@ -33,8 +33,9 @@ class GetCapabilitiesTest : public testing::Test {
 };
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -67,11 +68,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKSufficientReceivesAndSends) {
         EXPECT_EQ(capabilities.can_receive, true);
         EXPECT_EQ(capabilities.can_send, true);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -106,11 +110,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives1) {
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, true);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -143,11 +150,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceives2) {
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, true);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -182,11 +192,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends1) {
         EXPECT_EQ(capabilities.can_receive, true);
         EXPECT_EQ(capabilities.can_send, false);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -219,11 +232,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientSends2) {
         EXPECT_EQ(capabilities.can_receive, true);
         EXPECT_EQ(capabilities.can_send, false);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -260,11 +276,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends1) {
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, false);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_OK;
         response->body = R"(
@@ -297,11 +316,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns200OKInsufficientReceivesAndSends2) {
         EXPECT_EQ(capabilities.can_receive, false);
         EXPECT_EQ(capabilities.can_send, false);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_UNAUTHORIZED;
         std::move(callback).Run(std::move(response));
@@ -314,11 +336,14 @@ TEST_F(GetCapabilitiesTest, ServerReturns401Unauthorized) {
         EXPECT_EQ(capabilities.can_receive, absl::nullopt);
         EXPECT_EQ(capabilities.can_send, absl::nullopt);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = net::HTTP_INTERNAL_SERVER_ERROR;
         std::move(callback).Run(std::move(response));
@@ -331,6 +356,8 @@ TEST_F(GetCapabilitiesTest, ServerReturnsUnexpectedHTTPStatus) {
         EXPECT_EQ(capabilities.can_receive, absl::nullopt);
         EXPECT_EQ(capabilities.can_send, absl::nullopt);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace uphold

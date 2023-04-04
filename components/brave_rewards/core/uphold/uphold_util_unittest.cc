@@ -28,11 +28,7 @@ using ::testing::_;
 namespace ledger {
 namespace uphold {
 
-class UpholdUtilTest : public testing::Test {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+class UpholdUtilTest : public testing::Test {};
 
 TEST_F(UpholdUtilTest, GetClientId) {
   // production
@@ -115,6 +111,9 @@ TEST_F(UpholdUtilTest, GetActivityUrl) {
 }
 
 TEST_F(UpholdUtilTest, GetWallet) {
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+
   // no wallet
   ON_CALL(*mock_ledger_impl_.mock_client(),
           GetStringState(state::kWalletUphold, _))
