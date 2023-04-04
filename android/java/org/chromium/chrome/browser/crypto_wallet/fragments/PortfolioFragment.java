@@ -276,7 +276,7 @@ public class PortfolioFragment
         assert getActivity() != null;
 
         TextView editVisibleAssets = view.findViewById(R.id.edit_visible_assets);
-        editVisibleAssets.setOnClickListener(v -> { onEditVisibleAssetsClick(); });
+        editVisibleAssets.setOnClickListener(v -> { showEditVisibleDialog(); });
 
         RadioGroup radioGroup = view.findViewById(R.id.portfolio_duration_radio_group);
         mPreviousCheckedRadioId = radioGroup.getCheckedRadioButtonId();
@@ -440,31 +440,16 @@ public class PortfolioFragment
                 getFragmentManager(), ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
-    private void onEditVisibleAssetsClick() {
-        NetworkInfo selectedNetwork = mNetworkInfo;
-        if (selectedNetwork == null) {
+    private void showEditVisibleDialog() {
+        if (mNetworkInfo == null) {
             return;
         }
-        // TODO(pav): Remove this workaround once all network option is supported by
-        // EditVisibleAssetsBottomSheetDialogFragment. This workaround is to show default network
-        // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
-        // selected. Check also NftGridFragment#onEditVisibleAssetsClick().
-        if (selectedNetwork.chainId.equals(
-                    NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
-            LiveDataUtil.observeOnce(
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    defaultNetwork -> { showEditVisibleAssetsDialog(defaultNetwork); });
-            return;
-        }
-        showEditVisibleAssetsDialog(selectedNetwork);
-    }
 
-    private void showEditVisibleAssetsDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);
 
-        bottomSheetDialogFragment.setSelectedNetwork(selectedNetwork);
+        bottomSheetDialogFragment.setSelectedNetwork(mNetworkInfo);
         bottomSheetDialogFragment.setDismissListener(
                 new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                     @Override
