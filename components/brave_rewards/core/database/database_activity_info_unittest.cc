@@ -16,7 +16,6 @@
 // npm run test -- brave_unit_tests --filter=DatabaseActivityInfoTest.*
 
 using ::testing::_;
-using ::testing::Return;
 
 namespace ledger {
 namespace database {

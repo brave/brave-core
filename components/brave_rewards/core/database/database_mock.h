@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_DATABASE_DATABASE_MOCK_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -25,8 +26,8 @@ class MockDatabase : public Database {
                void(const std::string& contribution_id,
                     GetContributionInfoCallback callback));
 
-  MOCK_METHOD2(GetReservedUnblindedTokens,
-               void(const std::string& redeem_id,
+  MOCK_METHOD2(GetSpendableUnblindedTokensByBatchTypes,
+               void(const std::vector<mojom::CredsBatchType>& batch_types,
                     GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(SavePromotion,

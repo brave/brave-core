@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "base/types/always_false.h"
 #include "brave/components/brave_rewards/core/api/api.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
@@ -63,6 +62,7 @@ LedgerImpl::LedgerImpl(
 
 LedgerImpl::~LedgerImpl() = default;
 
+// mojom::Ledger implementation begin (in the order of appearance in Mojom)
 void LedgerImpl::Initialize(bool execute_create_script,
                             InitializeCallback callback) {
   if (ready_state_ != ReadyState::kUninitialized) {
@@ -794,6 +794,41 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
     std::move(callback).Run(std::move(rewards_wallet));
   });
 }
+// mojom::Ledger implementation end
+
+// mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
+std::string LedgerImpl::URIEncode(const std::string& value) {
+  std::string encoded_value;
+  ledger_client_->URIEncode(value, &encoded_value);
+  return encoded_value;
+}
+
+std::string LedgerImpl::GetLegacyWallet() {
+  std::string wallet;
+  ledger_client_->GetLegacyWallet(&wallet);
+  return wallet;
+}
+
+mojom::ClientInfoPtr LedgerImpl::GetClientInfo() {
+  auto info = mojom::ClientInfo::New();
+  ledger_client_->GetClientInfo(&info);
+  return info;
+}
+
+absl::optional<std::string> LedgerImpl::EncryptString(
+    const std::string& value) {
+  absl::optional<std::string> result;
+  ledger_client_->EncryptString(value, &result);
+  return result;
+}
+
+absl::optional<std::string> LedgerImpl::DecryptString(
+    const std::string& value) {
+  absl::optional<std::string> result;
+  ledger_client_->DecryptString(value, &result);
+  return result;
+}
+// mojom::LedgerClient helpers end
 
 mojom::LedgerClient* LedgerImpl::client() {
   return ledger_client_.get();
@@ -847,84 +882,6 @@ uphold::Uphold* LedgerImpl::uphold() {
   return uphold_.get();
 }
 
-template <typename LoadURLCallback>
-void LedgerImpl::LoadURLImpl(mojom::UrlRequestPtr request,
-                             LoadURLCallback callback) {
-  DCHECK(request);
-  if (IsShuttingDown()) {
-    BLOG(1, request->url + " will not be executed as we are shutting down");
-    return;
-  }
-
-  if (!request->skip_log) {
-    BLOG(5, UrlRequestToString(request->url, request->headers, request->content,
-                               request->content_type, request->method));
-  }
-
-  if constexpr (std::is_same_v<LoadURLCallback, LegacyLoadURLCallback>) {
-    ledger_client_->LoadURL(
-        std::move(request),
-        base::BindOnce(
-            [](LegacyLoadURLCallback callback, mojom::UrlResponsePtr response) {
-              callback(std::move(response));
-            },
-            std::move(callback)));
-  } else if constexpr (std::is_same_v<LoadURLCallback,  // NOLINT
-                                      ledger::LoadURLCallback>) {
-    ledger_client_->LoadURL(std::move(request), std::move(callback));
-  } else {
-    static_assert(base::AlwaysFalse<LoadURLCallback>,
-                  "LoadURLCallback must be either "
-                  "ledger::LegacyLoadURLCallback, or "
-                  "ledger::LoadURLCallback!");
-  }
-}
-
-void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
-                         LegacyLoadURLCallback callback) {
-  LoadURLImpl(std::move(request), std::move(callback));
-}
-
-void LedgerImpl::LoadURL(mojom::UrlRequestPtr request,
-                         LoadURLCallback callback) {
-  LoadURLImpl(std::move(request), std::move(callback));
-}
-
-template <typename RunDBTransactionCallback>
-void LedgerImpl::RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
-                                      RunDBTransactionCallback callback) {
-  if constexpr (std::is_same_v<  // NOLINT
-                    RunDBTransactionCallback, LegacyRunDBTransactionCallback>) {
-    ledger_client_->RunDBTransaction(
-        std::move(transaction), base::BindOnce(
-                                    [](LegacyRunDBTransactionCallback callback,
-                                       mojom::DBCommandResponsePtr response) {
-                                      callback(std::move(response));
-                                    },
-                                    std::move(callback)));
-  } else if constexpr (std::is_same_v<  // NOLINT
-                           RunDBTransactionCallback,
-                           ledger::RunDBTransactionCallback>) {
-    ledger_client_->RunDBTransaction(std::move(transaction),
-                                     std::move(callback));
-  } else {
-    static_assert(base::AlwaysFalse<RunDBTransactionCallback>,
-                  "RunDBTransactionCallback must be either "
-                  "ledger::LegacyRunDBTransactionCallback, or "
-                  "ledger::RunDBTransactionCallback!");
-  }
-}
-
-void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                  LegacyRunDBTransactionCallback callback) {
-  RunDBTransactionImpl(std::move(transaction), std::move(callback));
-}
-
-void LedgerImpl::RunDBTransaction(mojom::DBTransactionPtr transaction,
-                                  RunDBTransactionCallback callback) {
-  RunDBTransactionImpl(std::move(transaction), std::move(callback));
-}
-
 bool LedgerImpl::IsShuttingDown() const {
   return ready_state_ == ReadyState::kShuttingDown;
 }
@@ -970,6 +927,7 @@ void LedgerImpl::OnStateInitialized(LegacyResultCallback callback,
 
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "Failed to initialize state");
+    callback(result);
     return;
   }
 

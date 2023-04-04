@@ -6,8 +6,6 @@
 import("//mojo/public/tools/bindings/mojom.gni")
 
 mojom("interfaces") {
-  support_lazy_serialization = true
-
   sources = [ "ledger_factory.mojom" ]
 
   public_deps = [ "//mojo/public/mojom/base" ]
