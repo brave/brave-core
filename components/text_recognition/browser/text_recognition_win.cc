@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
@@ -43,7 +44,6 @@ namespace text_recognition {
 
 bool GetTextFromImage(const std::string& language_code,
                       const SkBitmap& image,
-                      scoped_refptr<base::SingleThreadTaskRunner> reply_runner,
                       base::OnceCallback<void(const std::vector<std::string>&)>
                           callback_run_on_ui_thread) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -126,19 +126,14 @@ bool GetTextFromImage(const std::string& language_code,
       std::move(ocr_engine), std::move(bitmap_factory));
   auto* recognizer_ptr = recognizer.get();
   recognizer_ptr->Detect(
-      image,
-      base::BindOnce(
-          [](std::unique_ptr<TextRecognizerWin> recognizer,
-             base::OnceCallback<void(const std::vector<std::string>&)>
-                 callback_run_on_ui_thread,
-             scoped_refptr<base::SingleThreadTaskRunner> reply_runner,
-             const std::vector<std::string>& result) {
-            reply_runner->PostTask(
-                FROM_HERE,
-                base::BindOnce(std::move(callback_run_on_ui_thread), result));
-          },
-          std::move(recognizer), std::move(callback_run_on_ui_thread),
-          std::move(reply_runner)));
+      image, base::BindOnce(
+                 [](std::unique_ptr<TextRecognizerWin> recognizer,
+                    base::OnceCallback<void(const std::vector<std::string>&)>
+                        callback_run_on_ui_thread,
+                    const std::vector<std::string>& result) {
+                   std::move(callback_run_on_ui_thread).Run(result);
+                 },
+                 std::move(recognizer), std::move(callback_run_on_ui_thread)));
 
   return true;
 }
@@ -178,17 +173,6 @@ std::vector<std::string> GetAvailableRecognizerLanguages() {
     return {};
   }
 
-  WCHAR name[128]{};
-  ULONG nameLen = std::size(name);
-  ULONG langs = 0;
-
-  std::string default_language_code;
-  if (GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &langs,
-                                  reinterpret_cast<PZZWSTR>(&name), &nameLen)) {
-    default_language_code =
-        brave_l10n::GetISOLanguageCode(base::WideToUTF8(name));
-  }
-
   std::vector<std::string> language_codes;
   for (uint32_t i = 0; i < lang_count; ++i) {
     ComPtr<ILanguage> lang;
@@ -205,17 +189,25 @@ std::vector<std::string> GetAvailableRecognizerLanguages() {
 
     const auto code =
         brave_l10n::GetISOLanguageCode(ScopedHString(text).GetAsUTF8());
-    if (base::ranges::find(language_codes, code) != language_codes.end()) {
+    if (base::Contains(language_codes, code)) {
       continue;
     }
 
     language_codes.push_back(code);
   }
 
-  // Try to locate default language at 0.
-  const auto iter = base::ranges::find(language_codes, default_language_code);
-  if (iter != language_codes.begin() && iter != language_codes.end()) {
-    std::iter_swap(language_codes.begin(), iter);
+  WCHAR name[127]{};
+  ULONG nameLen = std::size(name);
+  ULONG langs = -1;
+  if (GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &langs,
+                                  reinterpret_cast<PZZWSTR>(&name), &nameLen)) {
+    std::string default_language_code =
+        brave_l10n::GetISOLanguageCode(base::WideToUTF8(name));
+    // Try to locate default language at 0.
+    const auto iter = base::ranges::find(language_codes, default_language_code);
+    if (iter != language_codes.begin() && iter != language_codes.end()) {
+      std::iter_swap(language_codes.begin(), iter);
+    }
   }
 
   return language_codes;

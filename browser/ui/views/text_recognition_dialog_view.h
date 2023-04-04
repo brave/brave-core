@@ -12,8 +12,10 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/task/single_thread_task_runner.h"
 #include "base/timer/timer.h"
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -71,6 +73,7 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
 #if BUILDFLAG(IS_WIN)
   // Only used on Windows to show selectable target language list.
   raw_ptr<views::Combobox> combobox_ = nullptr;
+  scoped_refptr<base::SingleThreadTaskRunner> com_task_runner_;
 #endif
 
   // When result is fetched very quickly, dialog seems flickers with

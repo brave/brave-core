@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/bind_post_task.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -20,8 +21,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/combobox_model.h"
@@ -130,13 +129,14 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
                              gfx::Insets::TLBR(0, 0, 10, 0));
 
 #if BUILDFLAG(IS_WIN)
-  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
-      ->PostTaskAndReplyWithResult(
-          FROM_HERE,
-          base::BindOnce(&text_recognition::GetAvailableRecognizerLanguages),
-          base::BindOnce(
-              &TextRecognitionDialogView::OnGetAvailableRecognizerLanguages,
-              weak_factory_.GetWeakPtr()));
+  com_task_runner_ =
+      base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()});
+  com_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&text_recognition::GetAvailableRecognizerLanguages),
+      base::BindOnce(
+          &TextRecognitionDialogView::OnGetAvailableRecognizerLanguages,
+          weak_factory_.GetWeakPtr()));
 #endif
 
   StartExtractingText();
@@ -181,16 +181,14 @@ void TextRecognitionDialogView::StartExtractingText(
     combobox_->SetEnabled(false);
   }
 
-  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
-      ->PostTaskAndReplyWithResult(
-          FROM_HERE,
-          base::BindOnce(
-              &text_recognition::GetTextFromImage, language_code, image_,
-              content::GetUIThreadTaskRunner({}),
-              base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
-                             weak_factory_.GetWeakPtr())),
-          base::BindOnce(&TextRecognitionDialogView::TextRecognizationSupported,
-                         weak_factory_.GetWeakPtr()));
+  com_task_runner_->PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(&text_recognition::GetTextFromImage, language_code, image_,
+                     base::BindPostTaskToCurrentDefault(base::BindOnce(
+                         &TextRecognitionDialogView::OnGetTextFromImage,
+                         weak_factory_.GetWeakPtr()))),
+      base::BindOnce(&TextRecognitionDialogView::TextRecognizationSupported,
+                     weak_factory_.GetWeakPtr()));
 #endif
 }
 

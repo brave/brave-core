@@ -11,8 +11,6 @@
 
 #include "base/component_export.h"
 #include "base/functional/callback_forward.h"
-#include "base/memory/scoped_refptr.h"
-#include "base/task/single_thread_task_runner.h"
 #include "build/build_config.h"
 
 class SkBitmap;
@@ -35,7 +33,6 @@ std::vector<std::string> GetAvailableRecognizerLanguages();
 COMPONENT_EXPORT(TEXT_RECOGNITION_BROWSER)
 bool GetTextFromImage(const std::string& lang_code,
                       const SkBitmap& image,
-                      scoped_refptr<base::SingleThreadTaskRunner> reply_runner,
                       base::OnceCallback<void(const std::vector<std::string>&)>
                           callback_run_on_ui_thread);
 #endif
