@@ -668,7 +668,7 @@ class KeyringServiceUnitTest : public testing::Test {
   bool SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     bool result;
     base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(chain_id, coin,
+    json_rpc_service_->SetNetwork(chain_id, coin, absl::nullopt,
                                   base::BindLambdaForTesting([&](bool success) {
                                     result = success;
                                     run_loop.Quit();

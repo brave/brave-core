@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/scoped_observation.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -16,32 +17,28 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using testing::_;
 
 namespace brave_wallet {
 
 namespace {
 
-class TrackerObserver : public SolanaBlockTracker::Observer {
+class MockTrackerObserver : public SolanaBlockTracker::Observer {
  public:
-  void OnLatestBlockhashUpdated(const std::string& latest_blockhash,
-                                uint64_t last_valid_block_height) override {
-    latest_blockhash_ = latest_blockhash;
-    last_valid_block_height_ = last_valid_block_height;
-    ++latest_blockhash_updated_fired_;
+  explicit MockTrackerObserver(SolanaBlockTracker* tracker) {
+    observation_.Observe(tracker);
   }
 
-  size_t latest_blockhash_updated_fired() const {
-    return latest_blockhash_updated_fired_;
-  }
-  std::string latest_blockhash() const { return latest_blockhash_; }
-  uint64_t last_valid_block_height() const { return last_valid_block_height_; }
+  MOCK_METHOD3(OnLatestBlockhashUpdated,
+               void(const std::string&, const std::string&, uint64_t));
 
  private:
-  size_t latest_blockhash_updated_fired_ = 0;
-  std::string latest_blockhash_;
-  uint64_t last_valid_block_height_ = 0;
+  base::ScopedObservation<SolanaBlockTracker, SolanaBlockTracker::Observer>
+      observation_{this};
 };
 
 }  // namespace
@@ -70,17 +67,23 @@ class SolanaBlockTrackerUnitTest : public testing::Test {
            std::to_string(response_last_valid_block_height_) + "}}}";
   }
 
-  void TestGetLatestBlockhash(bool try_cached_value,
+  void TestGetLatestBlockhash(const base::Location& location,
+                              const std::string& chain_id,
+                              bool try_cached_value,
                               const std::string& expected_latest_blockhash,
                               uint64_t expected_last_valid_block_height,
                               mojom::SolanaProviderError expected_error,
                               const std::string& expected_error_message) {
+    SCOPED_TRACE(testing::Message() << location.ToString());
     base::RunLoop run_loop;
     tracker_->GetLatestBlockhash(
+        chain_id,
         base::BindLambdaForTesting([&](const std::string& latest_blockhash,
                                        uint64_t last_valid_block_height,
                                        mojom::SolanaProviderError error,
                                        const std::string& error_message) {
+          EXPECT_EQ(error_message, expected_error_message);
+          ASSERT_EQ(error, expected_error);
           EXPECT_EQ(latest_blockhash, expected_latest_blockhash);
           EXPECT_EQ(last_valid_block_height, expected_last_valid_block_height);
           EXPECT_EQ(error, expected_error);
@@ -112,34 +115,36 @@ TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhash) {
       }));
   response_blockhash_ = "hash1";
   response_last_valid_block_height_ = 3090;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kSolanaMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kSolanaTestnet, base::Seconds(2));
+  EXPECT_CALL(observer,
+              OnLatestBlockhashUpdated(mojom::kSolanaMainnet, "hash1", 3090u))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnLatestBlockhashUpdated(mojom::kSolanaTestnet, "hash1", 3090u))
+      .Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_blockhash(), "hash1");
-  EXPECT_EQ(observer.last_valid_block_height(), 3090u);
-  EXPECT_EQ(observer.latest_blockhash_updated_fired(), 1u);
-  EXPECT_EQ(tracker_->latest_blockhash(), "hash1");
-  EXPECT_EQ(tracker_->last_valid_block_height(), 3090u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   response_blockhash_ = "hash2";
   response_last_valid_block_height_ = 3290;
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kSolanaMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kSolanaTestnet, base::Seconds(2));
+  EXPECT_CALL(observer,
+              OnLatestBlockhashUpdated(mojom::kSolanaMainnet, "hash2", 3290u))
+      .Times(1);
+  EXPECT_CALL(observer,
+              OnLatestBlockhashUpdated(mojom::kSolanaTestnet, "hash2", 3290u))
+      .Times(1);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_blockhash(), "hash2");
-  EXPECT_EQ(observer.last_valid_block_height(), 3290u);
-  EXPECT_EQ(observer.latest_blockhash_updated_fired(), 2u);
-  EXPECT_EQ(tracker_->latest_blockhash(), "hash2");
-  EXPECT_EQ(tracker_->last_valid_block_height(), 3290u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
   // Still response_blockhash_ hash2, shouldn't fire updated event.
+  EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_blockhash(), "hash2");
-  EXPECT_EQ(observer.last_valid_block_height(), 3290u);
-  EXPECT_EQ(observer.latest_blockhash_updated_fired(), 2u);
-  EXPECT_EQ(tracker_->latest_blockhash(), "hash2");
-  EXPECT_EQ(tracker_->last_valid_block_height(), 3290u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashInvalidResponseJSON) {
@@ -152,16 +157,13 @@ TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashInvalidResponseJSON) {
 
   response_blockhash_ = "hash3";
   response_last_valid_block_height_ = 3290;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kSolanaMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kSolanaTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_blockhash(), "");
-  EXPECT_EQ(observer.last_valid_block_height(), 0u);
-  EXPECT_EQ(observer.latest_blockhash_updated_fired(), 0u);
-  EXPECT_EQ(tracker_->latest_blockhash(), "");
-  EXPECT_EQ(tracker_->last_valid_block_height(), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashInternalError) {
@@ -181,16 +183,13 @@ TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashInternalError) {
 
   response_blockhash_ = "hash3";
   response_last_valid_block_height_ = 3290;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kSolanaMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kSolanaTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_blockhash(), "");
-  EXPECT_EQ(observer.last_valid_block_height(), 0u);
-  EXPECT_EQ(observer.latest_blockhash_updated_fired(), 0u);
-  EXPECT_EQ(tracker_->latest_blockhash(), "");
-  EXPECT_EQ(tracker_->last_valid_block_height(), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashRequestTimeout) {
@@ -203,72 +202,90 @@ TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashRequestTimeout) {
 
   response_blockhash_ = "hash3";
   response_last_valid_block_height_ = 3290;
-  TrackerObserver observer;
-  tracker_->AddObserver(&observer);
+  MockTrackerObserver observer(tracker_.get());
 
-  tracker_->Start(base::Seconds(5));
+  tracker_->Start(mojom::kSolanaMainnet, base::Seconds(5));
+  tracker_->Start(mojom::kSolanaTestnet, base::Seconds(2));
+  EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
   task_environment_.FastForwardBy(base::Seconds(5));
-  EXPECT_EQ(observer.latest_blockhash(), "");
-  EXPECT_EQ(observer.last_valid_block_height(), 0u);
-  EXPECT_EQ(observer.latest_blockhash_updated_fired(), 0u);
-  EXPECT_EQ(tracker_->latest_blockhash(), "");
-  EXPECT_EQ(tracker_->last_valid_block_height(), 0u);
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
 TEST_F(SolanaBlockTrackerUnitTest, GetLatestBlockhashWithoutStartTracker) {
-  ASSERT_FALSE(tracker_->IsRunning());
+  MockTrackerObserver observer(tracker_.get());
+  for (const std::string& chain_id :
+       {mojom::kSolanaMainnet, mojom::kSolanaTestnet}) {
+    SCOPED_TRACE(chain_id);
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(),
+                                          GetResponseString());
+        }));
 
-  url_loader_factory_.SetInterceptor(
-      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        url_loader_factory_.ClearResponses();
-        url_loader_factory_.AddResponse(request.url.spec(),
-                                        GetResponseString());
-      }));
+    ASSERT_FALSE(tracker_->IsRunning(chain_id));
 
-  response_blockhash_ = "hash1";
-  response_last_valid_block_height_ = 3090;
-  TestGetLatestBlockhash(false, "hash1", 3090,
-                         mojom::SolanaProviderError::kSuccess, "");
+    response_blockhash_ = "hash1";
+    response_last_valid_block_height_ = 3090;
+    EXPECT_CALL(observer, OnLatestBlockhashUpdated(chain_id, "hash1", 3090u))
+        .Times(1);
+    TestGetLatestBlockhash(FROM_HERE, chain_id, false, "hash1", 3090,
+                           mojom::SolanaProviderError::kSuccess, "");
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-  // Cached value would be used if it's not expired yet.
-  response_blockhash_ = "hash2";
-  response_last_valid_block_height_ = 3290;
-  TestGetLatestBlockhash(true, "hash1", 3090,
-                         mojom::SolanaProviderError::kSuccess, "");
-  TestGetLatestBlockhash(false, "hash2", 3290,
-                         mojom::SolanaProviderError::kSuccess, "");
+    // Cached value would be used if it's not expired yet.
+    response_blockhash_ = "hash2";
+    response_last_valid_block_height_ = 3290;
+    EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
+    TestGetLatestBlockhash(FROM_HERE, chain_id, true, "hash1", 3090,
+                           mojom::SolanaProviderError::kSuccess, "");
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-  // Cached value would expire after kBlockTrackerDefaultTimeInSeconds.
-  response_blockhash_ = "hash3";
-  response_last_valid_block_height_ = 3490;
-  task_environment_.FastForwardBy(
-      base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-  TestGetLatestBlockhash(true, "hash3", 3490,
-                         mojom::SolanaProviderError::kSuccess, "");
-  TestGetLatestBlockhash(false, "hash3", 3490,
-                         mojom::SolanaProviderError::kSuccess, "");
+    EXPECT_CALL(observer, OnLatestBlockhashUpdated(chain_id, "hash2", 3290u))
+        .Times(1);
+    TestGetLatestBlockhash(FROM_HERE, chain_id, false, "hash2", 3290,
+                           mojom::SolanaProviderError::kSuccess, "");
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 
-  // Callback should be called when JSON-RPC failed, cached blockhash won't be
-  // updated and can continue to be used until expired.
-  url_loader_factory_.SetInterceptor(
-      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-        url_loader_factory_.ClearResponses();
-        url_loader_factory_.AddResponse(request.url.spec(), "",
-                                        net::HTTP_REQUEST_TIMEOUT);
-      }));
-  TestGetLatestBlockhash(false, "", 0,
-                         mojom::SolanaProviderError::kInternalError,
-                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-  TestGetLatestBlockhash(true, "hash3", 3490,
-                         mojom::SolanaProviderError::kSuccess, "");
-  task_environment_.FastForwardBy(
-      base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-  TestGetLatestBlockhash(false, "", 0,
-                         mojom::SolanaProviderError::kInternalError,
-                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
-  TestGetLatestBlockhash(true, "", 0,
-                         mojom::SolanaProviderError::kInternalError,
-                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    // Cached value would expire after kBlockTrackerDefaultTimeInSeconds.
+    response_blockhash_ = "hash3";
+    response_last_valid_block_height_ = 3490;
+    task_environment_.FastForwardBy(
+        base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+    EXPECT_CALL(observer, OnLatestBlockhashUpdated(chain_id, "hash3", 3490u))
+        .Times(1);
+    TestGetLatestBlockhash(FROM_HERE, chain_id, true, "hash3", 3490,
+                           mojom::SolanaProviderError::kSuccess, "");
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+    EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
+    TestGetLatestBlockhash(FROM_HERE, chain_id, true, "hash3", 3490,
+                           mojom::SolanaProviderError::kSuccess, "");
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+
+    // Callback should be called when JSON-RPC failed, cached blockhash won't be
+    // updated and can continue to be used until expired.
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(), "",
+                                          net::HTTP_REQUEST_TIMEOUT);
+        }));
+    EXPECT_CALL(observer, OnLatestBlockhashUpdated(_, _, _)).Times(0);
+    TestGetLatestBlockhash(FROM_HERE, chain_id, false, "", 0,
+                           mojom::SolanaProviderError::kInternalError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    TestGetLatestBlockhash(FROM_HERE, chain_id, true, "hash3", 3490,
+                           mojom::SolanaProviderError::kSuccess, "");
+    task_environment_.FastForwardBy(
+        base::Seconds(kBlockTrackerDefaultTimeInSeconds));
+    TestGetLatestBlockhash(FROM_HERE, chain_id, false, "", 0,
+                           mojom::SolanaProviderError::kInternalError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    TestGetLatestBlockhash(FROM_HERE, chain_id, true, "", 0,
+                           mojom::SolanaProviderError::kInternalError,
+                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
+  }
 }
 
 }  // namespace brave_wallet

@@ -617,8 +617,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
             [&](bool success,
                 const absl::optional<std::string>& error_message) {
               *success_out = success;
-              if (error_message)
+              if (error_message) {
                 *error_message_out = *error_message;
+              }
               run_loop.Quit();
             }),
         result, info, error);
@@ -631,8 +632,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
     std::vector<mojom::SignMessageRequestPtr> requests_out;
     service_->GetPendingSignMessageRequests(base::BindLambdaForTesting(
         [&](std::vector<mojom::SignMessageRequestPtr> requests) {
-          for (const auto& request : requests)
+          for (const auto& request : requests) {
             requests_out.push_back(request.Clone());
+          }
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -671,8 +673,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
             for (size_t i = 0; i < addresses.size(); ++i) {
               *valid_addresses =
                   (keyring_info->account_infos[i]->address == addresses[i]);
-              if (!*valid_addresses)
+              if (!*valid_addresses) {
                 break;
+              }
             }
           }
           run_loop.Quit();
@@ -721,8 +724,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     EXPECT_EQ(requests[0]->token, expected_token);
 
     if (run_switch_network) {
-      json_rpc_service_->SetNetwork(mojom::kGoerliChainId,
-                                    mojom::CoinType::ETH);
+      json_rpc_service_->SetNetwork(mojom::kGoerliChainId, mojom::CoinType::ETH,
+                                    absl::nullopt);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
           approve, {suggested_token->contract_address});
@@ -739,8 +742,9 @@ class BraveWalletServiceUnitTest : public testing::Test {
     std::vector<mojom::AddSuggestTokenRequestPtr> requests_out;
     service_->GetPendingAddSuggestTokenRequests(base::BindLambdaForTesting(
         [&](std::vector<mojom::AddSuggestTokenRequestPtr> requests) {
-          for (const auto& request : requests)
+          for (const auto& request : requests) {
             requests_out.push_back(request.Clone());
+          }
           run_loop.Quit();
         }));
     run_loop.Run();
@@ -1409,8 +1413,9 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
     base::Value::List* list = update->FindList(kEthereumPrefKey);
     list->EraseIf([&](const base::Value& v) {
       auto* chain_id_value = v.GetDict().FindString("chainId");
-      if (!chain_id_value)
+      if (!chain_id_value) {
         return false;
+      }
       return *chain_id_value == "0x5566";
     });
   }
@@ -1780,8 +1785,9 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetsAddPreloadingNetworks) {
     std::vector<mojom::BlockchainTokenPtr> tokens;
     GetUserAssets(chain->chain_id, mojom::CoinType::ETH, &tokens);
 
-    if (chain->chain_id == mojom::kMainnetChainId)
+    if (chain->chain_id == mojom::kMainnetChainId) {
       native_asset->visible = false;
+    }
 
     if (chain->chain_id == mojom::kFantomMainnetChainId) {
       EXPECT_EQ(tokens.size(), 2u);
@@ -2204,7 +2210,8 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
                                         mojom::kGoerliChainId};
   for (const std::string& chain_id : chain_ids) {
-    json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH);
+    json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH,
+                                  absl::nullopt);
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",

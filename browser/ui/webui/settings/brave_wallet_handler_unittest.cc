@@ -357,7 +357,8 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), true);
 
-    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH),
+    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
+                                              absl::nullopt),
               "chain_id2");
   }
   {
@@ -371,7 +372,8 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), false);
 
-    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH),
+    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs(), CoinType::ETH,
+                                              absl::nullopt),
               "chain_id2");
   }
 }

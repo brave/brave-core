@@ -66,6 +66,7 @@
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -141,10 +142,7 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
  public:
   TestEventsListener() = default;
 
-  void ChainChangedEvent(const std::string& chain_id) override {
-    chain_id_ = chain_id;
-    chain_changed_fired_ = true;
-  }
+  MOCK_METHOD1(ChainChangedEvent, void(const std::string&));
 
   void AccountsChangedEvent(const std::vector<std::string>& accounts) override {
     lowercase_accounts_.resize(accounts.size());
@@ -160,11 +158,6 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
     last_message_ = std::move(result);
   }
 
-  bool ChainChangedFired() const {
-    base::RunLoop().RunUntilIdle();
-    return chain_changed_fired_;
-  }
-
   bool AccountsChangedFired() const {
     base::RunLoop().RunUntilIdle();
     return accounts_changed_fired_;
@@ -173,11 +166,6 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
   bool MessageEventFired() const {
     base::RunLoop().RunUntilIdle();
     return message_event_fired_;
-  }
-
-  std::string GetChainId() const {
-    base::RunLoop().RunUntilIdle();
-    return chain_id_;
   }
 
   base::Value GetLastMessage() const {
@@ -195,21 +183,16 @@ class TestEventsListener : public brave_wallet::mojom::EventsListener {
   }
 
   void Reset() {
-    chain_id_.clear();
     lowercase_accounts_.clear();
-    chain_changed_fired_ = false;
     accounts_changed_fired_ = false;
     message_event_fired_ = false;
-    EXPECT_FALSE(ChainChangedFired());
     EXPECT_FALSE(AccountsChangedFired());
     EXPECT_FALSE(MessageEventFired());
   }
 
-  bool chain_changed_fired_ = false;
   bool accounts_changed_fired_ = false;
   bool message_event_fired_ = false;
   std::vector<std::string> lowercase_accounts_;
-  std::string chain_id_;
   base::Value last_message_;
 
  private:
@@ -241,7 +224,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
         JsonRpcServiceFactory::GetServiceForContext(browser_context());
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
-    SetNetwork("0x1");
+    SetNetwork(mojom::kMainnetChainId, absl::nullopt);
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser_context());
     asset_ratio_service_ =
@@ -277,10 +260,11 @@ class EthereumProviderImplUnitTest : public testing::Test {
         }));
   }
 
-  void SetNetwork(const std::string& chain_id) {
+  void SetNetwork(const std::string& chain_id,
+                  const absl::optional<::url::Origin>& origin) {
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(
-        chain_id, mojom::CoinType::ETH,
+        chain_id, mojom::CoinType::ETH, origin,
         base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
@@ -756,11 +740,12 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return result;
   }
 
-  mojom::TransactionInfoPtr GetTransactionInfo(const std::string& meta_id) {
+  mojom::TransactionInfoPtr GetTransactionInfo(const std::string& chain_id,
+                                               const std::string& meta_id) {
     mojom::TransactionInfoPtr transaction_info;
     base::RunLoop run_loop;
     tx_service()->GetTransactionInfo(
-        mojom::CoinType::ETH, meta_id,
+        mojom::CoinType::ETH, chain_id, meta_id,
         base::BindLambdaForTesting([&](mojom::TransactionInfoPtr v) {
           transaction_info = std::move(v);
           run_loop.Quit();
@@ -769,11 +754,12 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return transaction_info;
   }
 
-  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo() {
+  std::vector<mojom::TransactionInfoPtr> GetAllTransactionInfo(
+      const std::string& chain_id) {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service()->GetAllTransactionInfo(
-        mojom::CoinType::ETH, from(),
+        mojom::CoinType::ETH, chain_id, from(),
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -783,13 +769,14 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return transaction_infos;
   }
 
-  bool ApproveTransaction(const std::string& tx_meta_id,
+  bool ApproveTransaction(const std::string& chain_id,
+                          const std::string& tx_meta_id,
                           mojom::ProviderError* error_out,
                           std::string* error_message_out) {
     bool success;
     base::RunLoop run_loop;
     tx_service()->ApproveTransaction(
-        mojom::CoinType::ETH, tx_meta_id,
+        mojom::CoinType::ETH, chain_id, tx_meta_id,
         base::BindLambdaForTesting([&](bool v,
                                        mojom::ProviderErrorUnionPtr error,
                                        const std::string& error_message) {
@@ -1136,14 +1123,18 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
             callback_called = true;
           }));
   base::RunLoop().RunUntilIdle();
-  std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
+  const auto& chain_id =
+      json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin());
+  std::vector<mojom::TransactionInfoPtr> infos =
+      GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
+  EXPECT_EQ(infos[0]->chain_id, chain_id);
 
-  EXPECT_EQ(*GetTransactionInfo(infos[0]->id), *infos[0]);
-  EXPECT_TRUE(GetTransactionInfo("unknown_id").is_null());
+  EXPECT_EQ(*GetTransactionInfo(chain_id, infos[0]->id), *infos[0]);
+  EXPECT_TRUE(GetTransactionInfo(chain_id, "unknown_id").is_null());
 
   // Set an interceptor and just fake a common repsonse for
   // eth_getTransactionCount and eth_sendRawTransaction
@@ -1152,13 +1143,14 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApproveTransaction) {
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
 
-  EXPECT_TRUE(ApproveTransaction(infos[0]->id, &error, &error_message));
+  EXPECT_TRUE(
+      ApproveTransaction(chain_id, infos[0]->id, &error, &error_message));
   base::RunLoop().RunUntilIdle();
 
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(callback_called);
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
@@ -1283,11 +1275,15 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
             callback_called = true;
           }));
   browser_task_environment_.RunUntilIdle();
-  std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
+  const auto& chain_id =
+      json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin());
+  std::vector<mojom::TransactionInfoPtr> infos =
+      GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Unapproved);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
+  EXPECT_EQ(infos[0]->chain_id, chain_id);
 
   // Set an interceptor and just fake a common repsonse for
   // eth_getTransactionCount and eth_sendRawTransaction
@@ -1296,17 +1292,19 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559Transaction) {
   mojom::ProviderError error = mojom::ProviderError::kUnknown;
   std::string error_message;
 
-  EXPECT_TRUE(ApproveTransaction(infos[0]->id, &error, &error_message));
+  EXPECT_TRUE(
+      ApproveTransaction(chain_id, infos[0]->id, &error, &error_message));
   base::RunLoop().RunUntilIdle();
 
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
   EXPECT_TRUE(error_message.empty());
   EXPECT_TRUE(callback_called);
-  infos = GetAllTransactionInfo();
+  infos = GetAllTransactionInfo(chain_id);
   ASSERT_EQ(infos.size(), 1UL);
   EXPECT_TRUE(base::EqualsCaseInsensitiveASCII(infos[0]->from_address, from()));
   EXPECT_EQ(infos[0]->tx_status, mojom::TransactionStatus::Submitted);
   EXPECT_EQ(infos[0]->tx_hash, tx_hash);
+  EXPECT_EQ(infos[0]->chain_id, chain_id);
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
@@ -1315,7 +1313,7 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
   AddAccount();
   GURL url("https://brave.com");
   Navigate(url);
-  SetNetwork("0xaa36a7");
+  SetNetwork(mojom::kSepoliaChainId, GetOrigin());
   // Wait for EthTxStateManager::ChainChangedEvent to be called.
   browser_task_environment_.RunUntilIdle();
 
@@ -1368,13 +1366,14 @@ TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
             EXPECT_TRUE(error_message.empty());
           }));
   browser_task_environment_.RunUntilIdle();
-  std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
+  std::vector<mojom::TransactionInfoPtr> infos =
+      GetAllTransactionInfo(mojom::kSepoliaChainId);
   ASSERT_EQ(infos.size(), 2UL);
   ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
   EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->chain_id,
-            "0xaa36a7");
+            mojom::kSepoliaChainId);
   EXPECT_EQ(infos[1]->tx_data_union->get_eth_tx_data_1559()->chain_id,
-            "0xaa36a7");
+            mojom::kSepoliaChainId);
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddAndApprove1559TransactionError) {
@@ -1776,7 +1775,8 @@ TEST_F(EthereumProviderImplUnitTest, RecoverAddress) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, SignTypedMessage) {
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x1");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, absl::nullopt),
+            "0x1");
   CreateWallet();
   AddAccount();
   std::string signature;
@@ -2002,16 +2002,31 @@ TEST_F(EthereumProviderImplUnitTest, SignMessageRequestQueue) {
 }
 
 TEST_F(EthereumProviderImplUnitTest, ChainChangedEvent) {
-  EXPECT_FALSE(observer_->ChainChangedFired());
-  SetNetwork(mojom::kGoerliChainId);
-  EXPECT_TRUE(observer_->ChainChangedFired());
-  EXPECT_EQ(mojom::kGoerliChainId, observer_->GetChainId());
+  GURL url("https://brave.com");
+  Navigate(url);
+
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kGoerliChainId)).Times(1);
+  SetNetwork(mojom::kGoerliChainId, absl::nullopt);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 
   // Works a second time
-  observer_->Reset();
-  SetNetwork(mojom::kMainnetChainId);
-  EXPECT_TRUE(observer_->ChainChangedFired());
-  EXPECT_EQ(mojom::kMainnetChainId, observer_->GetChainId());
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kMainnetChainId)).Times(1);
+  SetNetwork(mojom::kMainnetChainId, absl::nullopt);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
+
+  EXPECT_CALL(*observer_, ChainChangedEvent(mojom::kSepoliaChainId)).Times(1);
+  SetNetwork(mojom::kSepoliaChainId, GetOrigin());
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
+
+  // SetNetwork for other origin will be ignored.
+  EXPECT_CALL(*observer_, ChainChangedEvent(testing::_)).Times(0);
+  SetNetwork(mojom::kLocalhostChainId,
+             url::Origin::Create(GURL("https://a.com")));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(observer_.get()));
 }
 
 TEST_F(EthereumProviderImplUnitTest, AccountsChangedEvent) {
@@ -2124,7 +2139,10 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
   response = CommonRequestOrSendAsync(request_payload.value());
-  EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning());
+
+  const auto& chain_id =
+      json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin());
+  EXPECT_TRUE(provider_->eth_block_tracker_.IsRunning(chain_id));
 
   // The second unsubscribe should stop the block tracker
   request_payload_json = base::StringPrintf(R"({"id":1,"jsonrpc:": "2.0",
@@ -2135,7 +2153,7 @@ TEST_F(EthereumProviderImplUnitTest, EthSubscribe) {
       request_payload_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                 base::JSONParserOptions::JSON_PARSE_RFC);
   response = CommonRequestOrSendAsync(request_payload.value());
-  EXPECT_FALSE(provider_->eth_block_tracker_.IsRunning());
+  EXPECT_FALSE(provider_->eth_block_tracker_.IsRunning(chain_id));
 }
 
 TEST_F(EthereumProviderImplUnitTest, EthSubscribeLogs) {
@@ -2496,7 +2514,8 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0xaa36a7");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin()),
+            "0xaa36a7");
 
   // one request per origin
   base::RunLoop run_loop;
@@ -2517,7 +2536,8 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
   json_rpc_service()->NotifySwitchChainRequestProcessed(true, GetOrigin());
   run_loop.Run();
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x1");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin()),
+            "0x1");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
@@ -2552,7 +2572,8 @@ TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   run_loop.Run();
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x5");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH, GetOrigin()),
+            "0x5");
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddSuggestToken) {

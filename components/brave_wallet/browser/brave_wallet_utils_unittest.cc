@@ -1118,16 +1118,113 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
       GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
 }
 
-TEST(BraveWalletUtilsUnitTest, GetCurrentChainId) {
+TEST(BraveWalletUtilsUnitTest, CoinTypeToKeyringId) {
+  auto id = CoinTypeToKeyringId(mojom::CoinType::ETH, absl::nullopt);
+  EXPECT_EQ(id, mojom::kDefaultKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::ETH, "not_used");
+  EXPECT_EQ(id, mojom::kDefaultKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::SOL, absl::nullopt);
+  EXPECT_EQ(id, mojom::kSolanaKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::SOL, "not_used");
+  EXPECT_EQ(id, mojom::kSolanaKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::FIL, absl::nullopt);
+  EXPECT_EQ(id, mojom::kFilecoinKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::FIL, mojom::kFilecoinMainnet);
+  EXPECT_EQ(id, mojom::kFilecoinKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::FIL, mojom::kFilecoinTestnet);
+  EXPECT_EQ(id, mojom::kFilecoinTestnetKeyringId);
+  id = CoinTypeToKeyringId(mojom::CoinType::FIL, mojom::kLocalhostChainId);
+  EXPECT_EQ(id, mojom::kFilecoinTestnetKeyringId);
+
+  EXPECT_DCHECK_DEATH(
+      CoinTypeToKeyringId(static_cast<mojom::CoinType>(2016), absl::nullopt));
+  EXPECT_DCHECK_DEATH(
+      CoinTypeToKeyringId(static_cast<mojom::CoinType>(2016), "not_used"));
+  EXPECT_DCHECK_DEATH(
+      CoinTypeToKeyringId(mojom::CoinType::FIL, "not_supported"));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetAndSetCurrentChainId) {
   sync_preferences::TestingPrefServiceSyncable prefs;
   RegisterProfilePrefs(prefs.registry());
-  // default value
-  EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::ETH),
-            mojom::kMainnetChainId);
-  EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::SOL),
-            mojom::kSolanaMainnet);
-  EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::FIL),
-            mojom::kFilecoinMainnet);
+  const base::flat_map<mojom::CoinType, std::string> default_chain_ids = {
+      {mojom::CoinType::ETH, mojom::kMainnetChainId},
+      {mojom::CoinType::SOL, mojom::kSolanaMainnet},
+      {mojom::CoinType::FIL, mojom::kFilecoinMainnet}};
+  const base::flat_map<mojom::CoinType, std::string> new_default_chain_ids = {
+      {mojom::CoinType::ETH, mojom::kGoerliChainId},
+      {mojom::CoinType::SOL, mojom::kSolanaTestnet},
+      {mojom::CoinType::FIL, mojom::kFilecoinTestnet}};
+  for (const auto coin_type :
+       {mojom::CoinType::ETH, mojom::CoinType::SOL, mojom::CoinType::FIL}) {
+    // default value
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              default_chain_ids.at(coin_type));
+
+    // fallback to default
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
+                                url::Origin::Create(GURL("https://a.com"))),
+              default_chain_ids.at(coin_type));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, url::Origin()),
+              default_chain_ids.at(coin_type));
+    EXPECT_EQ(
+        GetCurrentChainId(&prefs, coin_type,
+                          url::Origin::Create(GURL("file:///etc/passwd"))),
+        default_chain_ids.at(coin_type));
+
+    // unknown chain_id
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type,
+                                   url::Origin::Create(GURL("https://a.com")),
+                                   "0x5566"));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
+                                url::Origin::Create(GURL("https://a.com"))),
+              default_chain_ids.at(coin_type));
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type, absl::nullopt, "0x5566"));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              default_chain_ids.at(coin_type));
+
+    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type,
+                                  url::Origin::Create(GURL("https://a.com")),
+                                  mojom::kLocalhostChainId));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
+                                url::Origin::Create(GURL("https://a.com"))),
+              mojom::kLocalhostChainId);
+    // other origin still use default
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
+                                url::Origin::Create(GURL("https://b.com"))),
+              default_chain_ids.at(coin_type));
+
+    // opaque cannot change the default
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type, url::Origin(),
+                                   mojom::kLocalhostChainId));
+    EXPECT_FALSE(SetCurrentChainId(&prefs, coin_type,
+                                   url::Origin::Create(GURL("about:blank")),
+                                   mojom::kLocalhostChainId));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              default_chain_ids.at(coin_type));
+
+    // now we change the default
+    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type, absl::nullopt,
+                                  new_default_chain_ids.at(coin_type)));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              new_default_chain_ids.at(coin_type));
+    // should not affect per origin pref
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type,
+                                url::Origin::Create(GURL("https://a.com"))),
+              mojom::kLocalhostChainId);
+
+    // non http/https scheme will change the default
+    EXPECT_TRUE(SetCurrentChainId(
+        &prefs, coin_type, url::Origin::Create(GURL("file:///etc/passwd")),
+        default_chain_ids.at(coin_type)));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              default_chain_ids.at(coin_type));
+    EXPECT_TRUE(SetCurrentChainId(&prefs, coin_type,
+                                  url::Origin::Create(GURL("chrome://wallet")),
+                                  new_default_chain_ids.at(coin_type)));
+    EXPECT_EQ(GetCurrentChainId(&prefs, coin_type, absl::nullopt),
+              new_default_chain_ids.at(coin_type));
+  }
 }
 
 TEST(BraveWalletUtilsUnitTest, eTLDPlusOne) {
