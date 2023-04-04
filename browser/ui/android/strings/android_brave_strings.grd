@@ -3915,6 +3915,24 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">
       Address Lookup Table Index:
     </message>
+    <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION" desc="Remember file playback position title for playlist settings">
+      Remember file playback position
+    </message>
+    <message name="IDS_REMEMBER_FILE_PLAYBACK_POSITION_SUMMARY" desc="Remember file playback position summary for playlist settings">
+      For individual files, resume playing from the point of last pause
+    </message>
+    <message name="IDS_REMEMBER_LIST_PLAYBACK_POSITION" desc="Remember list playback position title for playlist settings">
+      Remember list playback position
+    </message>
+    <message name="IDS_REMEMBER_LIST_PLAYBACK_POSITION_SUMMARY" desc="Remember list playback position summary for playlist settings">
+      For a playlist, resume playing from the point of last pause
+    </message>
+    <message name="IDS_CONTINUOUS_LISTENING" desc="Continuous Listening for playlist settings">
+      Continuous Listening
+    </message>
+    <message name="IDS_CONTINUOUS_LISTENING_SUMMARY" desc="Continuous Listening summary for playlist settings">
+      Automatically plays the next items in your playlist
+    </message>
   </messages>
   </release>
 </grit>
