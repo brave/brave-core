@@ -3,7 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+extern crate env_logger;
 extern crate feed_rs;
+
 use feed_rs::parser;
 use lazy_static::lazy_static;
 use regex::Regex;
@@ -28,6 +30,49 @@ mod ffi {
     extern "Rust" {
         fn parse_feed_bytes(source: &[u8], output: &mut FeedData) -> bool;
     }
+}
+
+// Note: This function isn't unlikely to be perfect, but it does guarantee that
+// there will be no HTML tags in the output (as it strips both '<' and '>' from
+// from the output).
+fn strip_html(subject: &str) -> String {
+    let mut output = String::with_capacity(subject.len());
+    let mut depth_tag = 0;
+    let mut depth_comment = 0;
+
+    for (i, c) in subject.chars().enumerate() {
+        if c == '<' {
+            let is_comment = subject.chars().skip(i).take(4).collect::<String>() == "<!--";
+            if is_comment {
+                depth_comment += 1;
+            } else if depth_comment == 0 {
+                depth_tag += 1;
+            }
+            continue;
+        }
+
+        if c == '>' {
+            if depth_comment > 0 {
+                let is_comment = i > 2 && subject.chars().skip(i - 2).take(3).collect();
+                if is_comment {
+                    // If this was the close for a comment, reduce our comment depth.
+                    depth_comment -= 1
+                }
+            } else if depth_tag > 0 {
+                // Only reduce our tag depth if we aren't in a comment
+                depth_tag -= 1;
+            }
+            continue;
+        }
+
+        if depth_comment != 0 || depth_tag != 0 {
+            continue;
+        }
+
+        output.push(c);
+    }
+
+    output
 }
 
 fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
@@ -111,14 +156,14 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
         }
         let feed_item = ffi::FeedItem {
             id: feed_item_data.id,
-            title: voca_rs::strip::strip_tags(
+            title: strip_html(
                 &(if feed_item_data.title.is_some() {
                     feed_item_data.title.unwrap().content
                 } else {
                     summary.clone()
                 }),
             ),
-            description: voca_rs::strip::strip_tags(&summary),
+            description: strip_html(&summary),
             image_url,
             destination_url: feed_item_data.links[0].href.clone(),
             published_timestamp: feed_item_data.published.map_or(0, |date| date.timestamp()),
