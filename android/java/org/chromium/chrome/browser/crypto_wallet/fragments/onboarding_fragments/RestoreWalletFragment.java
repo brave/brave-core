@@ -170,7 +170,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
 
-                        // Even though we have an error, we still let to proceed
+                        // Even though we have an error, we allow to continue with password login
                         if (!TextUtils.isEmpty(errString)) {
                             android.widget.Toast
                                     .makeText(getActivity(), errString,
