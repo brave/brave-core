@@ -8,12 +8,14 @@
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
 import 'chrome://resources/cr_elements/cr_input/cr_input.js';
-import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
-import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js';
-import { PrefsMixin } from '../prefs/prefs_mixin.js';
 import '../settings_shared.css.js';
-import { BraveTorBrowserProxyImpl } from './brave_tor_browser_proxy.js'
+
+import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
+import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js';
+import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+
 import {getTemplate} from './brave_tor_bridges_dialog.html.js'
+import {BraveTorBrowserProxyImpl} from './brave_tor_browser_proxy.js'
 
 const RequestBridgesDialogBase = I18nMixin(PrefsMixin(PolymerElement))
 
