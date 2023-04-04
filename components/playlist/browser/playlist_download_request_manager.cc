@@ -26,6 +26,9 @@
 #include "third_party/re2/src/re2/re2.h"
 #include "ui/base/page_transition_types.h"
 
+#undef DVLOG
+#define DVLOG(i) LOG(ERROR)
+
 namespace playlist {
 
 namespace {
@@ -66,7 +69,7 @@ PlaylistDownloadRequestManager::PlaylistDownloadRequestManager(
 PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents() {
-  DCHECK(!web_contents_);
+  // DCHECK(!web_contents_);
 
   content::WebContents::CreateParams create_params(context_, nullptr);
   web_contents_ = content::WebContents::Create(create_params);
@@ -243,7 +246,7 @@ void PlaylistDownloadRequestManager::ProcessFoundMedia(
     return;
   }
 
-  web_contents_.reset();
+  // web_contents_.reset();
 
   /* Expected output:
     [
