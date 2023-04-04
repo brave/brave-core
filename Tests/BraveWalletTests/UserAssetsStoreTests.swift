@@ -62,7 +62,7 @@ class UserAssetsStoreTests: XCTestCase {
       rpcService: rpcService,
       keyringService: keyringService,
       assetRatioService: assetRatioService,
-      ipfsApi: nil
+      ipfsApi: TestIpfsAPI()
     )
     
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")
@@ -114,7 +114,7 @@ class UserAssetsStoreTests: XCTestCase {
       rpcService: rpcService,
       keyringService: keyringService,
       assetRatioService: assetRatioService,
-      ipfsApi: nil
+      ipfsApi: TestIpfsAPI()
     )
     
     let assetStoresException = expectation(description: "userAssetsStore-assetStores")

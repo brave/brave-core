@@ -278,7 +278,7 @@ extension BraveWalletJsonRpcService {
   }
   
   /// Returns a nullable NFT metadata
-  @MainActor func fetchNFTMetadata(for token: BraveWallet.BlockchainToken, ipfsApi: IpfsAPI?) async -> NFTMetadata? {
+  @MainActor func fetchNFTMetadata(for token: BraveWallet.BlockchainToken, ipfsApi: IpfsAPI) async -> NFTMetadata? {
     var metaDataString = ""
     if token.isErc721 {
       let (_, metaData, result, errMsg) = await self.erc721Metadata(token.contractAddress, tokenId: token.tokenId, chainId: token.chainId)
@@ -302,7 +302,7 @@ extension BraveWalletJsonRpcService {
   }
   
   /// Returns a map of Token.id with its NFT metadata
-  @MainActor func fetchNFTMetadata(tokens: [BraveWallet.BlockchainToken], ipfsApi: IpfsAPI?) async -> [String: NFTMetadata] {
+  @MainActor func fetchNFTMetadata(tokens: [BraveWallet.BlockchainToken], ipfsApi: IpfsAPI) async -> [String: NFTMetadata] {
     await withTaskGroup(of: [String: NFTMetadata].self) {  @MainActor [weak self] group -> [String: NFTMetadata] in
       guard let self = self else { return [:] }
       for token in tokens {

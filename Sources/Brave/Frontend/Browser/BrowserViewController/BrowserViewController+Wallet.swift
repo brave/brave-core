@@ -16,7 +16,7 @@ import Growth
 
 extension WalletStore {
   /// Creates a WalletStore based on whether or not the user is in Private Mode
-  static func from(ipfsApi: IpfsAPI?, privateMode: Bool) -> WalletStore? {
+  static func from(ipfsApi: IpfsAPI, privateMode: Bool) -> WalletStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
@@ -47,7 +47,7 @@ extension WalletStore {
 
 extension CryptoStore {
   /// Creates a CryptoStore based on whether or not the user is in Private Mode
-  static func from(ipfsApi: IpfsAPI?, privateMode: Bool) -> CryptoStore? {
+  static func from(ipfsApi: IpfsAPI, privateMode: Bool) -> CryptoStore? {
     guard
       let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
       let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
@@ -201,7 +201,7 @@ extension Tab: BraveWalletProviderDelegate {
             completion(.internal, nil)
             return
           }
-        case .fil:
+        case .fil, .btc:
           // not supported
           fallthrough
         @unknown default:
@@ -210,7 +210,7 @@ extension Tab: BraveWalletProviderDelegate {
         }
       }
       
-      guard WalletStore.from(ipfsApi: nil, privateMode: isPrivate) != nil else {
+      guard !isPrivate else {
         completion(.internal, nil)
         return
       }

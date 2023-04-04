@@ -122,7 +122,7 @@ public class PortfolioStore: ObservableObject {
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
-  private let ipfsApi: IpfsAPI?
+  private let ipfsApi: IpfsAPI
 
   public init(
     keyringService: BraveWalletKeyringService,
@@ -130,7 +130,7 @@ public class PortfolioStore: ObservableObject {
     walletService: BraveWalletBraveWalletService,
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    ipfsApi: IpfsAPI?
+    ipfsApi: IpfsAPI
   ) {
     self.keyringService = keyringService
     self.rpcService = rpcService

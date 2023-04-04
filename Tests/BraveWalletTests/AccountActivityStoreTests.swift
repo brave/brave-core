@@ -45,7 +45,7 @@ class AccountActivityStoreTests: XCTestCase {
     mockLamportBalance: UInt64 = 0,
     mockSplTokenBalances: [String: String] = [:], // [tokenMintAddress: balance]
     selectedNetwork: BraveWallet.NetworkInfo
-  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy) {
+  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy, IpfsAPI) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._keyringInfo = { _, completion in
@@ -122,8 +122,10 @@ class AccountActivityStoreTests: XCTestCase {
     
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = { $1(0, .success, "") }
+    
+    let ipfsApi = TestIpfsAPI()
 
-    return (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy)
+    return (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi)
   }
   
   func testUpdateEthereumAccount() {
@@ -139,7 +141,7 @@ class AccountActivityStoreTests: XCTestCase {
     
     let mockERC721Metadata: NFTMetadata = .init(imageURLString: "mock.image.url", name: "mock nft name", description: "mock nft description")
     
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy) = setupServices(
+    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
@@ -156,7 +158,7 @@ class AccountActivityStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: nil
+      ipfsApi: ipfsApi
     )
     
     let userVisibleAssetsException = expectation(description: "accountActivityStore-assetStores")
@@ -238,7 +240,7 @@ class AccountActivityStoreTests: XCTestCase {
     
     let mockSolMetadata: NFTMetadata = .init(imageURLString: "sol.mock.image.url", name: "sol mock nft name", description: "sol mock nft description")
     
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy) = setupServices(
+    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
       selectedNetwork: .mockMainnet
@@ -254,7 +256,7 @@ class AccountActivityStoreTests: XCTestCase {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
-      ipfsApi: nil
+      ipfsApi: ipfsApi
     )
     
     let userVisibleAssetsExpectation = expectation(description: "accountActivityStore-assetStores")
