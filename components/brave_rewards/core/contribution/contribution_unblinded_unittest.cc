@@ -14,6 +14,7 @@
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
 using ::testing::_;
+using ::testing::MockFunction;
 
 namespace {
 const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
@@ -30,10 +31,10 @@ class UnblindedTest : public ::testing::Test {
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(*mock_ledger_impl_.mock_database(),
-          GetSpendableUnblindedTokensByBatchTypes(_, _))
-      .WillByDefault([](const std::vector<mojom::CredsBatchType>&,
-                        database::GetUnblindedTokenListCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+              GetSpendableUnblindedTokensByBatchTypes(_, _))
+      .Times(1)
+      .WillOnce([](const std::vector<mojom::CredsBatchType>&, auto callback) {
         std::vector<mojom::UnblindedTokenPtr> tokens;
 
         auto token = mojom::UnblindedToken::New();
@@ -46,10 +47,10 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         callback(std::move(tokens));
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_database(),
-          GetContributionInfo(contribution_id, _))
-      .WillByDefault([](const std::string& id,
-                        database::GetContributionInfoCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+              GetContributionInfo(contribution_id, _))
+      .Times(1)
+      .WillOnce([](const std::string& id, auto callback) {
         auto info = mojom::ContributionInfo::New();
         info->contribution_id = contribution_id;
         info->amount = 5.0;
@@ -60,10 +61,10 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         callback(std::move(info));
       });
 
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call(mojom::Result::NOT_ENOUGH_FUNDS)).Times(1);
   unblinded_.Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                   [](mojom::Result result) {
-                     ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
-                   });
+                   callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }

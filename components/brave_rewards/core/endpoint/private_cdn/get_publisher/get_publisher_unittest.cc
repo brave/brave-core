@@ -17,6 +17,7 @@
 // npm run test -- brave_unit_tests --filter=GetPublisherTest.*
 
 using ::testing::_;
+using ::testing::MockFunction;
 
 namespace ledger::endpoint::private_cdn {
 
@@ -49,14 +50,16 @@ TEST_F(GetPublisherTest, ServerError404) {
         std::move(callback).Run(std::move(response));
       });
 
-  get_publisher.Request(
-      "brave.com", "ce55",
-      [](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
+  MockFunction<GetPublisherCallback> callback;
+  EXPECT_CALL(callback, Call)
+      .Times(1)
+      .WillOnce([](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         ASSERT_TRUE(info);
         EXPECT_EQ(info->publisher_key, "brave.com");
         EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
       });
+  get_publisher.Request("brave.com", "ce55", callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
@@ -79,15 +82,17 @@ TEST_F(GetPublisherTest, UpholdVerified) {
         std::move(callback).Run(std::move(response));
       });
 
-  get_publisher.Request(
-      "brave.com", "ce55",
-      [](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
+  MockFunction<GetPublisherCallback> callback;
+  EXPECT_CALL(callback, Call)
+      .Times(1)
+      .WillOnce([](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         ASSERT_TRUE(info);
         EXPECT_EQ(info->publisher_key, "brave.com");
         EXPECT_EQ(info->status, mojom::PublisherStatus::UPHOLD_VERIFIED);
         EXPECT_EQ(info->address, "abcd");
       });
+  get_publisher.Request("brave.com", "ce55", callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
@@ -110,15 +115,17 @@ TEST_F(GetPublisherTest, EmptyWalletAddress) {
         std::move(callback).Run(std::move(response));
       });
 
-  get_publisher.Request(
-      "brave.com", "ce55",
-      [](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
+  MockFunction<GetPublisherCallback> callback;
+  EXPECT_CALL(callback, Call)
+      .Times(1)
+      .WillOnce([](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         ASSERT_TRUE(info);
         EXPECT_EQ(info->publisher_key, "brave.com");
         EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
         EXPECT_EQ(info->address, "");
       });
+  get_publisher.Request("brave.com", "ce55", callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }

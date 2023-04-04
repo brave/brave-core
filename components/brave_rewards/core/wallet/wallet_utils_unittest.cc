@@ -76,13 +76,18 @@ class TransitionWalletCreate
 TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletUphold, _))
-      .WillByDefault([wallet_already_exists](const std::string&,
-                                             auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+              GetStringState(state::kWalletUphold, _))
+      .Times(1)
+      .WillOnce([&](const std::string&, auto callback) {
         std::move(callback).Run(wallet_already_exists
                                     ? FakeEncryption::Base64EncryptString("{}")
                                     : "");
+      });
+
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   const auto wallet =
@@ -101,6 +106,8 @@ TEST_P(TransitionWalletCreate, Paths) {
     EXPECT_TRUE(wallet->token.empty());
     EXPECT_TRUE(wallet->address.empty());
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off
@@ -157,6 +164,11 @@ class TransitionWalletTransition
 TEST_P(TransitionWalletTransition, Paths) {
   const auto& [ignore, from_wallet, to, expected] = GetParam();
 
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
+
   const auto to_wallet =
       TransitionWallet(&mock_ledger_impl_, std::move(*from_wallet), to);
   EXPECT_EQ(static_cast<bool>(to_wallet), expected);
@@ -181,6 +193,8 @@ TEST_P(TransitionWalletTransition, Paths) {
       EXPECT_TRUE(to_wallet->address.empty());
     }
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

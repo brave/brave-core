@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "base/containers/flat_map.h"
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/endpoints/post_connect/post_connect.h"
@@ -75,17 +75,22 @@ TEST_P(ConnectExternalWalletTest, Paths) {
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
   ON_CALL(*mock_ledger_impl_.mock_client(), GetStringState("wallets.test", _))
-      .WillByDefault([test_wallet = std::move(test_wallet)](const std::string&,
-                                                            auto callback) {
-        std::move(callback).Run(std::move(test_wallet));
+      .WillByDefault([&](const std::string&, auto callback) {
+        std::move(callback).Run(test_wallet);
       });
 
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
+
+  base::MockCallback<ConnectExternalWalletCallback> callback;
+  EXPECT_CALL(callback, Run(expected_result)).Times(1);
+
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
-      .Run(query_parameters,
-           base::BindLambdaForTesting([expected_result = expected_result](
-                                          ConnectExternalWalletResult result) {
-             EXPECT_EQ(result, expected_result);
-           }));
+      .Run(query_parameters, callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

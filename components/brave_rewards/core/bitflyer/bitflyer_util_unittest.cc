@@ -29,11 +29,7 @@ using ::testing::_;
 namespace ledger {
 namespace bitflyer {
 
-class BitflyerUtilTest : public testing::Test {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+class BitflyerUtilTest : public testing::Test {};
 
 TEST_F(BitflyerUtilTest, GetClientId) {
   // production
@@ -121,18 +117,23 @@ TEST_F(BitflyerUtilTest, GetActivityUrl) {
 }
 
 TEST_F(BitflyerUtilTest, GetWallet) {
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+
   // no wallet
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletBitflyer, _))
-      .WillByDefault([](const std::string&, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+              GetStringState(state::kWalletBitflyer, _))
+      .Times(1)
+      .WillOnce([](const std::string&, auto callback) {
         std::move(callback).Run("");
       });
   auto result = mock_ledger_impl_.bitflyer()->GetWallet();
   ASSERT_TRUE(!result);
 
-  ON_CALL(*mock_ledger_impl_.mock_client(),
-          GetStringState(state::kWalletBitflyer, _))
-      .WillByDefault([](const std::string&, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+              GetStringState(state::kWalletBitflyer, _))
+      .Times(1)
+      .WillOnce([](const std::string&, auto callback) {
         std::string wallet = FakeEncryption::Base64EncryptString(R"({
           "account_url": "https://bitflyer.com/ex/Home?login=1",
           "address": "2323dff2ba-d0d1-4dfw-8e56-a2605bcaf4af",
@@ -154,6 +155,8 @@ TEST_F(BitflyerUtilTest, GetWallet) {
   ASSERT_EQ(result->user_name, "test");
   ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
   ASSERT_EQ(result->status, mojom::WalletStatus::kConnected);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(BitflyerUtilTest, GenerateRandomHexString) {

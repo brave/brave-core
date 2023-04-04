@@ -16,6 +16,7 @@
 // npm run test -- brave_unit_tests --filter=DatabaseBalanceReportTest.*
 
 using ::testing::_;
+using ::testing::MockFunction;
 
 namespace ledger {
 namespace database {
@@ -28,8 +29,9 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
@@ -51,17 +53,17 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
   info->recurring_donation = 1.0;
   info->one_time_donation = 1.0;
 
-  balance_report_.InsertOrUpdate(std::move(info), [](const mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  balance_report_.InsertOrUpdate(std::move(info), callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
@@ -75,18 +77,17 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  balance_report_.GetAllRecords(
-      [](std::vector<mojom::BalanceReportInfoPtr>) {});
+  MockFunction<GetBalanceReportListCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  balance_report_.GetAllRecords(callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 2u);
         ASSERT_EQ(transaction->commands[1]->type, mojom::DBCommand::Type::READ);
@@ -101,18 +102,18 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
+  MockFunction<GetBalanceReportCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
   balance_report_.GetRecord(mojom::ActivityMonth::MAY, 2020,
-                            [](mojom::Result, mojom::BalanceReportInfoPtr) {});
+                            callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type,
@@ -124,7 +125,9 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  balance_report_.DeleteAllRecords([](mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  balance_report_.DeleteAllRecords(callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }

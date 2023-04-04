@@ -85,8 +85,9 @@ class PromotionTest : public testing::Test {
 
 TEST_F(PromotionTest, DISABLED_LegacyPromotionIsNotOverwritten) {
   bool inserted = false;
-  ON_CALL(*mock_ledger_impl_.mock_database(), GetAllPromotions(_))
-      .WillByDefault([&inserted](ledger::GetAllPromotionsCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(), GetAllPromotions(_))
+      .Times(2)
+      .WillRepeatedly([&inserted](ledger::GetAllPromotionsCallback callback) {
         auto promotion = mojom::Promotion::New();
         base::flat_map<std::string, mojom::PromotionPtr> map;
         if (inserted) {
@@ -105,8 +106,10 @@ TEST_F(PromotionTest, DISABLED_LegacyPromotionIsNotOverwritten) {
   EXPECT_CALL(*mock_ledger_impl_.mock_database(), SavePromotion(_, _)).Times(1);
 
   promotion_.Fetch(base::DoNothing());
+  task_environment_.RunUntilIdle();
   inserted = true;
   promotion_.Fetch(base::DoNothing());
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

@@ -19,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
 using ::testing::_;
+using ::testing::MockFunction;
 
 namespace ledger {
 namespace database {
@@ -83,7 +84,9 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  database_prefix_list_.Reset(CreateReader(100'001), [](mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  database_prefix_list_.Reset(CreateReader(100'001), callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
