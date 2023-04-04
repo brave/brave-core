@@ -48,6 +48,12 @@ void CommanderProvider::Start(const AutocompleteInput& input,
   client_->GetCommanderDelegate()->UpdateText();
 }
 
+void CommanderProvider::Stop(bool clear_cached_results,
+                             bool due_to_user_inactivity) {
+  last_input_.clear();
+  AutocompleteProvider::Stop(clear_cached_results, due_to_user_inactivity);
+}
+
 void CommanderProvider::OnCommanderUpdated() {
   auto* delegate = client_->GetCommanderDelegate();
   matches_.clear();
