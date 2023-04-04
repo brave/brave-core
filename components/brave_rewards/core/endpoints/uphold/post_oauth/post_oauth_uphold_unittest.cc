@@ -45,22 +45,21 @@ class PostOAuthUphold : public TestWithParam<PostOAuthUpholdParamType> {
 TEST_P(PostOAuthUphold, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = status_code;
-            response->body = std::move(body);
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = status_code;
+        response->body = body;
+        std::move(callback).Run(std::move(response));
+      });
 
   RequestFor<endpoints::PostOAuthUphold>(
       &mock_ledger_impl_, "bb50f9d4782fb86a4302ef18179033abb17c257f")
       .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
-            EXPECT_EQ(result, expected_result);
-          }));
+          [&](Result&& result) { EXPECT_EQ(result, expected_result); }));
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

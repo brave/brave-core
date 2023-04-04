@@ -168,8 +168,9 @@ TEST_P(GetWalletTest, Paths) {
   const auto& expected_custodian = std::get<3>(params);
   const auto expected_linked = std::get<4>(params);
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([&](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         std::move(callback).Run(
             mojom::UrlResponse::New(rewards_services_get_wallet_response));
       });
@@ -180,6 +181,8 @@ TEST_P(GetWalletTest, Paths) {
         EXPECT_EQ(custodian, expected_custodian);
         EXPECT_EQ(linked, expected_linked);
       });
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

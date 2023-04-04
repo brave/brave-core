@@ -28,8 +28,9 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
@@ -58,10 +59,8 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
@@ -83,10 +82,8 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 2u);
         ASSERT_EQ(transaction->commands[1]->type, mojom::DBCommand::Type::READ);
@@ -109,10 +106,8 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type,

@@ -31,13 +31,13 @@ class GetMeTest : public testing::Test {
 };
 
 TEST_F(GetMeTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
              "address": {
                "city": "Anytown",
                "line1": "123 Main Street",
@@ -125,10 +125,8 @@ TEST_F(GetMeTest, ServerOK) {
              ],
              "tier": "other"
             })";
-            std::move(callback).Run(std::move(response));
-          });
-
-  ::ledger::uphold::User expected_user;
+        std::move(callback).Run(std::move(response));
+      });
 
   me_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
               base::BindOnce(
@@ -139,44 +137,48 @@ TEST_F(GetMeTest, ServerOK) {
                               "b34060c9-5ca3-4bdb-bc32-1f826ecea36e");
                     EXPECT_EQ(user.bat_not_allowed, false);
                   }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetMeTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 401;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 401;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  ::ledger::uphold::User expected_user;
   me_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       base::BindOnce([](mojom::Result result, const ::ledger::uphold::User&) {
         EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  ::ledger::uphold::User expected_user;
   me_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       base::BindOnce([](mojom::Result result, const ::ledger::uphold::User&) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace uphold

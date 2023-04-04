@@ -37,8 +37,9 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
 }
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
@@ -60,7 +61,7 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
   info->reconcile_stamp = 0;
   info->visits = 1;
 
-  activity_.InsertOrUpdate(std::move(info), [](const mojom::Result) {});
+  activity_.InsertOrUpdate(std::move(info), [](mojom::Result) {});
 
   task_environment_.RunUntilIdle();
 }
@@ -77,10 +78,8 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
@@ -109,10 +108,8 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
@@ -152,16 +149,15 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), GetUint64State(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), GetUint64State(_, _))
+      .Times(1)
+      .WillOnce([](const std::string&, auto callback) {
         std::move(callback).Run(1597744617);
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);

@@ -75,17 +75,22 @@ TEST_P(ConnectExternalWalletTest, Paths) {
       std::to_string(static_cast<int>(wallet_status)) + "}");
 
   ON_CALL(*mock_ledger_impl_.mock_client(), GetStringState("wallets.test", _))
-      .WillByDefault([test_wallet = std::move(test_wallet)](const std::string&,
-                                                            auto callback) {
-        std::move(callback).Run(std::move(test_wallet));
+      .WillByDefault([&](const std::string&, auto callback) {
+        std::move(callback).Run(test_wallet);
+      });
+
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
       });
 
   ConnectTestWallet(&mock_ledger_impl_, post_connect_result)
       .Run(query_parameters,
-           base::BindLambdaForTesting([expected_result = expected_result](
-                                          ConnectExternalWalletResult result) {
+           base::BindLambdaForTesting([&](ConnectExternalWalletResult result) {
              EXPECT_EQ(result, expected_result);
            }));
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

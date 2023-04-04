@@ -30,13 +30,13 @@ class GeminiPostBalanceTest : public testing::Test {
 };
 
 TEST_F(GeminiPostBalanceTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = net::HTTP_OK;
-            response->url = request->url;
-            response->body = R"([
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = net::HTTP_OK;
+        response->url = request->url;
+        response->body = R"([
               {
                   "type": "exchange",
                   "currency": "BTC",
@@ -66,8 +66,8 @@ TEST_F(GeminiPostBalanceTest, ServerOK) {
                   "availableForWithdrawal": "93677.40"
               }
             ])";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
   balance_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -75,18 +75,20 @@ TEST_F(GeminiPostBalanceTest, ServerOK) {
         EXPECT_EQ(result, mojom::Result::LEDGER_OK);
         EXPECT_EQ(available, 5000.0);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = net::HTTP_UNAUTHORIZED;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = net::HTTP_UNAUTHORIZED;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   balance_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -94,18 +96,20 @@ TEST_F(GeminiPostBalanceTest, ServerError401) {
         EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError403) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = net::HTTP_FORBIDDEN;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = net::HTTP_FORBIDDEN;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   balance_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -113,18 +117,20 @@ TEST_F(GeminiPostBalanceTest, ServerError403) {
         EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiPostBalanceTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = net::HTTP_NOT_FOUND;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = net::HTTP_NOT_FOUND;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   balance_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -132,18 +138,20 @@ TEST_F(GeminiPostBalanceTest, ServerError404) {
         EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(available, 0.0);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 418;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 418;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   balance_.Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
@@ -151,6 +159,8 @@ TEST_F(GeminiPostBalanceTest, ServerErrorRandom) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(available, 0.0);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace gemini

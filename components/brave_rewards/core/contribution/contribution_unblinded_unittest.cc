@@ -30,10 +30,11 @@ class UnblindedTest : public ::testing::Test {
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(*mock_ledger_impl_.mock_database(),
-          GetSpendableUnblindedTokensByBatchTypes(_, _))
-      .WillByDefault([](const std::vector<mojom::CredsBatchType>&,
-                        database::GetUnblindedTokenListCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+              GetSpendableUnblindedTokensByBatchTypes(_, _))
+      .Times(1)
+      .WillOnce([](const std::vector<mojom::CredsBatchType>&,
+                   database::GetUnblindedTokenListCallback callback) {
         std::vector<mojom::UnblindedTokenPtr> tokens;
 
         auto token = mojom::UnblindedToken::New();
@@ -46,10 +47,11 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
         callback(std::move(tokens));
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_database(),
-          GetContributionInfo(contribution_id, _))
-      .WillByDefault([](const std::string& id,
-                        database::GetContributionInfoCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+              GetContributionInfo(contribution_id, _))
+      .Times(1)
+      .WillOnce([](const std::string& id,
+                   database::GetContributionInfoCallback callback) {
         auto info = mojom::ContributionInfo::New();
         info->contribution_id = contribution_id;
         info->amount = 5.0;
@@ -112,8 +114,6 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
                                                         publisher_list);
     EXPECT_STREQ(publisher_key.c_str(), entry.publisher_key);
   }
-
-  task_environment_.RunUntilIdle();
 }
 
 }  // namespace contribution

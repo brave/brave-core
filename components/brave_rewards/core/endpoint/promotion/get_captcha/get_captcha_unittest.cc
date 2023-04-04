@@ -31,9 +31,9 @@ class GetCaptchaTest : public testing::Test {
 };
 
 TEST_F(GetCaptchaTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([](mojom::UrlRequestPtr request,
-                        LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
         auto response = mojom::UrlResponse::New();
         response->status_code = 200;
         response->url = request->url;
@@ -49,36 +49,40 @@ TEST_F(GetCaptchaTest, ServerOK) {
                   "data:image/jpeg;base64,YVdwaGFYTnFaR1p2YVdGemFtWnZjMkZwYW"
                   "1admMybGhaR3BtYjJsa2MycG1idz09");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCaptchaTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
       base::BindOnce([](mojom::Result result, const std::string& image) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCaptchaTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 404;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 404;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
@@ -86,18 +90,20 @@ TEST_F(GetCaptchaTest, ServerError404) {
         EXPECT_EQ(result, mojom::Result::NOT_FOUND);
         EXPECT_EQ(image, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCaptchaTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
@@ -105,18 +111,20 @@ TEST_F(GetCaptchaTest, ServerError500) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(image, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCaptchaTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, LoadURLCallback callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   captcha_.Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
@@ -124,6 +132,8 @@ TEST_F(GetCaptchaTest, ServerErrorRandom) {
         EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
         EXPECT_EQ(image, "");
       }));
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion
