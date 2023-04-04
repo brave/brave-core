@@ -22,3 +22,17 @@ source_set("browser_tests") {
     "//testing/gtest",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "ranker_unittest.cc" ]
+  deps = [
+    "//base",
+    "//brave/components/commander/browser",
+    "//chrome/browser/ui",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+  ]
+}

@@ -12,6 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/browser/ui/commander/ranker.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "chrome/browser/ui/commander/command_source.h"
@@ -71,6 +72,8 @@ class CommanderService : public CommanderFrontendDelegate, public KeyedService {
   // subsequent step (in the window example, this would be a list of all
   // available windows).
   CommandItem::CompositeCommandProvider composite_command_provider_;
+
+  Ranker ranker_;
 
   base::ObserverList<Observer> observers_;
   base::WeakPtrFactory<CommanderService> weak_ptr_factory_{this};

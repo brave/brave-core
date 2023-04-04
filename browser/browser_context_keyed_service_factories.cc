@@ -26,9 +26,11 @@
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
+#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -115,6 +117,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #if !BUILDFLAG(IS_ANDROID)
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
     commands::AcceleratorServiceFactory::GetInstance();
+  }
+  if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
+    commander::CommanderServiceFactory::GetInstance();
   }
 #endif
 

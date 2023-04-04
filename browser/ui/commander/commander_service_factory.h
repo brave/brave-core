@@ -28,9 +28,11 @@ class CommanderServiceFactory : public ProfileKeyedServiceFactory {
   ~CommanderServiceFactory() override;
   friend struct base::DefaultSingletonTraits<CommanderServiceFactory>;
 
-  // BrowserContextKeyedServiceFactory:
+  // ProfileKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 };
 
 }  // namespace commander
