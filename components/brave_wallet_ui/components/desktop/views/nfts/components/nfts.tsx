@@ -33,7 +33,6 @@ import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-gr
 
 // styles
 import {
-  StyledWrapper,
   FilterTokenRow,
   IpfsButton,
   IpfsIcon,
@@ -113,7 +112,7 @@ export const Nfts = (props: Props) => {
   }, [filteredNfts])
 
   return (
-    <StyledWrapper>
+    <>
       <FilterTokenRow>
         <SearchBar
           placeholder={getLocale('braveWalletSearchText')}
@@ -150,6 +149,6 @@ export const Nfts = (props: Props) => {
           onHideForm={toggleShowAddNftModal}
         />
       }
-    </StyledWrapper>
+    </>
   )
 }
