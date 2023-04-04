@@ -183,6 +183,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
+
+  UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
+  UpdateCommandEnabled(IDC_TOGGLE_WINDOW_TITLE, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -344,9 +347,6 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_VERTICAL_TABS:
       brave::ToggleVerticalTabStrip(browser_);
-      break;
-    case IDC_TOGGLE_VERTICAL_TABS_FLOATING:
-      brave::ToggleVerticalTabStripFloatingMode(browser_);
       break;
     case IDC_TOGGLE_WINDOW_TITLE:
       brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
