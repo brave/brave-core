@@ -77,6 +77,6 @@ export const LoadIconWrapper = styled.div`
 `
 export const MarketDataIframe = styled.iframe`
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 172px);
   border: none;
 `
