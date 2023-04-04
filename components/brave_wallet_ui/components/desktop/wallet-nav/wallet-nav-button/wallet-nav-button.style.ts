@@ -16,19 +16,17 @@ export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   padding: 16px;
   outline: none;
   border: none;
+  background: none;
   background-color: ${(p) => p.isSelected
     ? 'var(--nav-button-background-hover)'
-    : 'var(--nav-button-background)'};
+    : 'none'};
   border-radius: 6px;
   margin-bottom: 8px;
-  color: ${(p) => p.isSelected
-    ? 'var(--nav-button-color-hover)'
-    : 'var(--nav-button-color)'};
+  color: var(--nav-button-color);
   font-weight: 600;
   font-size: 16px;
   font-family: 'Poppins';
   &:hover {
-    color: var(--nav-button-color-hover);
     background-color: var(--nav-button-background-hover);
   }
   &:last-child {
