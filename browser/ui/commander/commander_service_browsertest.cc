@@ -17,6 +17,7 @@
 #include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/components/commander/common/constants.h"
 #include "brave/components/commander/common/features.h"
+#include "brave/components/commands/common/features.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,7 +31,8 @@
 class CommanderServiceBrowserTest : public InProcessBrowserTest {
  public:
   CommanderServiceBrowserTest() {
-    features_.InitAndEnableFeature(features::kBraveCommander);
+    features_.InitWithFeatures(
+        {features::kBraveCommander, commands::features::kBraveCommands}, {});
   }
 
   ~CommanderServiceBrowserTest() override = default;
