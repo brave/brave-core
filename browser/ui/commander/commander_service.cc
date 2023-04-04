@@ -23,6 +23,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/browser/ui/commander/brave_simple_command_source.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
@@ -35,7 +36,6 @@
 #include "chrome/browser/ui/commander/commander.h"
 #include "chrome/browser/ui/commander/commander_view_model.h"
 #include "chrome/browser/ui/commander/open_url_command_source.h"
-#include "chrome/browser/ui/commander/simple_command_source.h"
 #include "chrome/browser/ui/commander/tab_command_source.h"
 #include "chrome/browser/ui/commander/window_command_source.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -51,8 +51,7 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 }  // namespace
 
 CommanderService::CommanderService(Profile* profile) : profile_(profile) {
-  command_sources_.push_back(std::make_unique<SimpleCommandSource>());
-  command_sources_.push_back(std::make_unique<OpenURLCommandSource>());
+  command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
   command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
   command_sources_.push_back(std::make_unique<WindowCommandSource>());
   command_sources_.push_back(std::make_unique<TabCommandSource>());

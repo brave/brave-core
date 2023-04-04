@@ -12,6 +12,7 @@
 #include "base/feature_list.h"
 #include "base/strings/string_piece.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #include "chrome/app/chrome_command_ids.h"
 
@@ -30,13 +31,15 @@ COMMAND_IDS
 }  // namespace
 
 base::span<const int> GetCommands() {
-  DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
+  DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands) ||
+         commander::CommanderEnabled())
       << "This should only be used when |kBraveCommands| is enabled.";
   return kCommandIds;
 }
 
 base::StringPiece GetCommandName(int command_id) {
-  DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands))
+  DCHECK(base::FeatureList::IsEnabled(features::kBraveCommands) ||
+         commander::CommanderEnabled())
       << "This should only be used when |kBraveCommands| is enabled.";
   auto it = kCommandInfos.find(command_id);
   CHECK(it != kCommandInfos.end())
