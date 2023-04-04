@@ -194,6 +194,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(
       IDC_CONFIGURE_SHORTCUTS,
       base::FeatureList::IsEnabled(commands::features::kBraveCommands));
+
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_TALK, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -364,6 +366,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_CONFIGURE_SHORTCUTS:
       brave::ShowShortcutsPage(browser_);
+      break;
+    case IDC_SHOW_BRAVE_TALK:
+      brave::ShowBraveTalk(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
