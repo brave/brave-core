@@ -117,12 +117,32 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     size_t max_body_size /* = -1u */,
     ResponseConversionCallback conversion_callback) {
-  auto iter = url_loaders_.insert(
-      url_loaders_.begin(),
-      CreateLoader(method, url, payload, payload_content_type,
-                   auto_retry_on_network_change,
-                   true /* allow_http_error_result*/, headers));
-  if (max_body_size == -1u) {
+  return Request(method, url, payload, payload_content_type,
+                 std::move(callback),
+                 APIRequestHelper::RequestOptions(auto_retry_on_network_change,
+                                                  max_body_size, absl::nullopt),
+                 headers, std::move(conversion_callback));
+}
+
+APIRequestHelper::Ticket APIRequestHelper::Request(
+    const std::string& method,
+    const GURL& url,
+    const std::string& payload,
+    const std::string& payload_content_type,
+    ResultCallback callback,
+    const APIRequestHelper::RequestOptions& request_options,
+    const base::flat_map<std::string, std::string>& headers,
+    ResponseConversionCallback conversion_callback) {
+  auto loader = CreateLoader(method, url, payload, payload_content_type,
+                             request_options.auto_retry_on_network_change,
+                             true /* allow_http_error_result*/, headers);
+
+  if (request_options.timeout) {
+    loader->SetTimeoutDuration(request_options.timeout.value());
+  }
+
+  auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
+  if (request_options.max_body_size == -1u) {
     iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory_.get(),
         base::BindOnce(&APIRequestHelper::OnResponse,
@@ -134,7 +154,7 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
         base::BindOnce(&APIRequestHelper::OnResponse,
                        weak_ptr_factory_.GetWeakPtr(), iter,
                        std::move(callback), std::move(conversion_callback)),
-        max_body_size);
+        request_options.max_body_size);
   }
 
   return iter;
@@ -192,6 +212,7 @@ std::unique_ptr<network::SimpleURLLoader> APIRequestHelper::CreateLoader(
   if (!payload.empty()) {
     url_loader->AttachStringForUpload(payload, payload_content_type);
   }
+  url_loader->SetTimeoutDuration(base::Seconds(30));
   url_loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,
       auto_retry_on_network_change

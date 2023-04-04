@@ -392,6 +392,13 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
     return;
   }
 
+  if (cids.empty()) {
+    AddPinResult result;
+    result.recursive = recursive;
+    std::move(callback).Run(result);
+    return;
+  }
+
   GURL gurl = server_endpoint_.Resolve(kAddPinPath);
   for (const auto& cid : cids) {
     gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
@@ -405,9 +412,11 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
 
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
+      "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
                      cids.size(), recursive, iter, std::move(callback)),
+      api_request_helper::APIRequestHelper::RequestOptions(false, -1u,
+                                                           base::Minutes(2)),
       GetHeaders(gurl));
 }
 

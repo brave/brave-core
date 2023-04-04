@@ -247,7 +247,7 @@ void BraveWalletAutoPinService::PostRetry(std::unique_ptr<IntentData> data) {
       FROM_HERE,
       base::BindOnce(&BraveWalletAutoPinService::AddOrExecute,
                      weak_ptr_factory_.GetWeakPtr(), std::move(data)),
-      base::Minutes(1 * multiply));
+      base::Minutes(2 * multiply));
 }
 
 void BraveWalletAutoPinService::CheckQueue() {

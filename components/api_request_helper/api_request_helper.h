@@ -14,6 +14,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/time/time.h"
 #include "base/values.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -77,6 +78,12 @@ class APIRequestHelper {
  public:
   using Ticket = std::list<std::unique_ptr<network::SimpleURLLoader>>::iterator;
 
+  struct RequestOptions {
+    bool auto_retry_on_network_change = false;
+    size_t max_body_size = -1u;
+    absl::optional<base::TimeDelta> timeout;
+  };
+
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -102,6 +109,15 @@ class APIRequestHelper {
       ResultCallback callback,
       const base::flat_map<std::string, std::string>& headers = {},
       size_t max_body_size = -1u,
+      ResponseConversionCallback conversion_callback = base::NullCallback());
+  Ticket Request(
+      const std::string& method,
+      const GURL& url,
+      const std::string& payload,
+      const std::string& payload_content_type,
+      ResultCallback callback,
+      const RequestOptions& request_options,
+      const base::flat_map<std::string, std::string>& headers = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
 
   using DownloadCallback = base::OnceCallback<void(
