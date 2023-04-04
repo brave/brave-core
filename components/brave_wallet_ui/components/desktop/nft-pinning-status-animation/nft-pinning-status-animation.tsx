@@ -26,7 +26,7 @@ export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Pr
   return (
     <StyledWrapper
       size={
-        status === STATUS_PINNING_IN_PROGRESS || status === STATUS_PINNED
+        status === OverallPinningStatus.PINNING_IN_PROGRESS || status === OverallPinningStatus.PINNING_FINISHED
           ? '30px'
           : size || '14px'
       }
