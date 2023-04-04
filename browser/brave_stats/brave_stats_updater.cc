@@ -322,7 +322,7 @@ void BraveStatsUpdater::QueueServerPing() {
   stats_preconditions_barrier_ = base::BarrierClosure(
       num_closures,
       base::BindOnce(&BraveStatsUpdater::StartServerPingStartupTimer,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
   if (!referrals_initialized) {
     pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     pref_change_registrar_->Init(pref_service_);
@@ -338,9 +338,9 @@ void BraveStatsUpdater::QueueServerPing() {
 }
 
 void BraveStatsUpdater::DetectUncertainFuture() {
-  auto callback = base::BindOnce(&BraveStatsUpdater::OnDetectUncertainFuture,
-                                 base::Unretained(this));
-  brave_rpill::DetectUncertainFuture(base::BindOnce(std::move(callback)));
+  brave_rpill::DetectUncertainFuture(
+      base::BindOnce(&BraveStatsUpdater::OnDetectUncertainFuture,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveStatsUpdater::OnReferralInitialization() {
