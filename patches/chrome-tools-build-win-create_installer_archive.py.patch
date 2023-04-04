@@ -1,43 +1,8 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index ba75899c40db87a3ddb138912855cb6e1bbca45d..9e5867e51719fc311bc7787f18d2875bea5f1e72 100755
+index ba75899c40db87a3ddb138912855cb6e1bbca45d..33593d635c90f167d830f6258d2dada56874cd0d 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -42,6 +42,8 @@ SETUP_PATCH_FILE_PREFIX = "setup_patch"
- TEMP_ARCHIVE_DIR = "temp_installer_archive"
- VERSION_FILE = "VERSION"
- 
-+from create_installer_archive_helper import SignAndCopyPreSignedBinaries, \
-+  BraveCopyAllFilesToStagingDir, CheckDeltaUpdatePrecondition
- 
- g_archive_inputs = []
- 
-@@ -127,6 +129,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
-   if enable_hidpi == '1':
-     CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir,
-                                  verbose)
-+  BraveCopyAllFilesToStagingDir(config, staging_dir, g_archive_inputs)
- 
-   if include_snapshotblob == '1':
-     CopySectionFilesToStagingDir(config, 'SNAPSHOTBLOB', staging_dir, build_dir,
-@@ -198,7 +201,7 @@ def GetPrevVersion(build_dir, temp_dir, last_chrome_installer, output_name):
-                                    output_name + ARCHIVE_SUFFIX)
-   cmd = [lzma_exec,
-          'x',
--         '-o"%s"' % temp_dir,
-+         '-o%s' % temp_dir,
-          prev_archive_file,
-          'Chrome-bin/*/chrome.dll',]
-   RunSystemCommand(cmd, options.verbose)
-@@ -565,6 +568,8 @@ def main(options):
-   if prev_version:
-     version_numbers = prev_version.split('.')
-     prev_build_number = version_numbers[2] + '.' + version_numbers[3]
-+  CheckDeltaUpdatePrecondition(options.last_chrome_installer, prev_version, current_version)
-+  SignAndCopyPreSignedBinaries(options.skip_signing, options.output_dir, staging_dir, current_version)
- 
-   # Name of the archive file built (for example - chrome.7z or
-   # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-@@ -638,6 +643,7 @@ def _ParseOptions():
+@@ -638,6 +638,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)
@@ -45,3 +10,11 @@ index ba75899c40db87a3ddb138912855cb6e1bbca45d..9e5867e51719fc311bc7787f18d2875b
  
    options, _ = parser.parse_args()
    if not options.build_dir:
+@@ -666,6 +667,7 @@ def _ParseOptions():
+ 
+   return options
+ 
++from import_inline import inline_file_from_src; inline_file_from_src("brave/chromium_src/chrome/tools/build/win/create_installer_archive.py", globals(), locals())
+ 
+ if '__main__' == __name__:
+   options = _ParseOptions()
