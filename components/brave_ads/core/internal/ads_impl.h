@@ -144,16 +144,16 @@ class AdsImpl final : public Ads,
                              base::Time to_time) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  AdContentLikeActionType ToggleAdThumbUp(base::Value::Dict value) override;
-  AdContentLikeActionType ToggleAdThumbDown(base::Value::Dict value) override;
-  CategoryContentOptActionType ToggleAdOptIn(
+  AdContentLikeActionType ToggleLikeAd(base::Value::Dict value) override;
+  AdContentLikeActionType ToggleDislikeAd(base::Value::Dict value) override;
+  CategoryContentOptActionType ToggleMarkToReceiveAdsForCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
-  CategoryContentOptActionType ToggleAdOptOut(
+  CategoryContentOptActionType ToggleMarkToNoLongerReceiveAdsForCategory(
       const std::string& category,
       const CategoryContentOptActionType& action_type) override;
-  bool ToggleSavedAd(base::Value::Dict value) override;
-  bool ToggleFlaggedAd(base::Value::Dict value) override;
+  bool ToggleSaveAd(base::Value::Dict value) override;
+  bool ToggleMarkAdAsInappropriate(base::Value::Dict value) override;
 
  private:
   void CreateOrOpenDatabase(InitializeCallback callback);

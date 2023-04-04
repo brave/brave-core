@@ -1507,47 +1507,53 @@ void AdsServiceImpl::GetHistory(const base::Time from_time,
   }
 }
 
-void AdsServiceImpl::ToggleAdThumbUp(base::Value::Dict value,
-                                     ToggleAdThumbUpCallback callback) {
+void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
+                                  ToggleLikeAdCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdThumbUp(std::move(value), std::move(callback));
+    bat_ads_->ToggleLikeAd(std::move(value), std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleAdThumbDown(base::Value::Dict value,
-                                       ToggleAdThumbDownCallback callback) {
+void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
+                                     ToggleDislikeAdCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdThumbDown(std::move(value), std::move(callback));
+    bat_ads_->ToggleDislikeAd(std::move(value), std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleAdOptIn(const std::string& category,
-                                   const int action,
-                                   ToggleAdOptInCallback callback) {
+void AdsServiceImpl::ToggleMarkToReceiveAdsForCategory(
+    const std::string& category,
+    const int action,
+    ToggleMarkToReceiveAdsForCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdOptIn(category, action, std::move(callback));
+    bat_ads_->ToggleMarkToReceiveAdsForCategory(category, action,
+                                                std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleAdOptOut(const std::string& category,
-                                    const int action,
-                                    ToggleAdOptOutCallback callback) {
+void AdsServiceImpl::ToggleMarkToNoLongerReceiveAdsForCategory(
+    const std::string& category,
+    const int action,
+    ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdOptOut(category, action, std::move(callback));
+    bat_ads_->ToggleMarkToNoLongerReceiveAdsForCategory(category, action,
+                                                        std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleSavedAd(base::Value::Dict value,
-                                   ToggleSavedAdCallback callback) {
+void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
+                                  ToggleSaveAdCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleSavedAd(std::move(value), std::move(callback));
+    bat_ads_->ToggleSaveAd(std::move(value), std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
-                                     ToggleFlaggedAdCallback callback) {
+void AdsServiceImpl::ToggleMarkAdAsInappropriate(
+    base::Value::Dict value,
+    ToggleMarkAdAsInappropriateCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleFlaggedAd(std::move(value), std::move(callback));
+    bat_ads_->ToggleMarkAdAsInappropriate(std::move(value),
+                                          std::move(callback));
   }
 }
 

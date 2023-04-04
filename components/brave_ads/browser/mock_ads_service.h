@@ -87,17 +87,20 @@ class MockAdsService : public AdsService {
 
   MOCK_METHOD3(GetHistory, void(base::Time, base::Time, GetHistoryCallback));
 
-  MOCK_METHOD2(ToggleAdThumbUp,
-               void(base::Value::Dict, ToggleAdThumbUpCallback));
-  MOCK_METHOD2(ToggleAdThumbDown,
-               void(base::Value::Dict, ToggleAdThumbDownCallback));
-  MOCK_METHOD3(ToggleAdOptIn,
-               void(const std::string&, int, ToggleAdOptInCallback));
-  MOCK_METHOD3(ToggleAdOptOut,
-               void(const std::string&, int, ToggleAdOptOutCallback));
-  MOCK_METHOD2(ToggleSavedAd, void(base::Value::Dict, ToggleSavedAdCallback));
-  MOCK_METHOD2(ToggleFlaggedAd,
-               void(base::Value::Dict, ToggleFlaggedAdCallback));
+  MOCK_METHOD2(ToggleLikeAd, void(base::Value::Dict, ToggleLikeAdCallback));
+  MOCK_METHOD2(ToggleDislikeAd,
+               void(base::Value::Dict, ToggleDislikeAdCallback));
+  MOCK_METHOD3(ToggleMarkToReceiveAdsForCategory,
+               void(const std::string&,
+                    int,
+                    ToggleMarkToReceiveAdsForCategoryCallback));
+  MOCK_METHOD3(ToggleMarkToNoLongerReceiveAdsForCategory,
+               void(const std::string&,
+                    int,
+                    ToggleMarkToNoLongerReceiveAdsForCategoryCallback));
+  MOCK_METHOD2(ToggleSaveAd, void(base::Value::Dict, ToggleSaveAdCallback));
+  MOCK_METHOD2(ToggleMarkAdAsInappropriate,
+               void(base::Value::Dict, ToggleMarkAdAsInappropriateCallback));
 
   MOCK_METHOD3(NotifyTabTextContentDidChange,
                void(int32_t tab_id,

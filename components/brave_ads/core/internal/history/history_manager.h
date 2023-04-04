@@ -77,7 +77,7 @@ class HistoryManager final {
 
   bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content) const;
 
-  bool ToggleSavedAd(const AdContentInfo& ad_content) const;
+  bool ToggleSaveAd(const AdContentInfo& ad_content) const;
 
  private:
   void NotifyHistoryDidChange() const;

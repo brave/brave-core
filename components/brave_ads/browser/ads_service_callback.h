@@ -30,13 +30,15 @@ using PurgeOrphanedAdEventsForTypeCallback =
 
 using GetHistoryCallback = base::OnceCallback<void(base::Value::List)>;
 
-using ToggleAdThumbUpCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleAdThumbDownCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleAdOptInCallback = base::OnceCallback<void(const std::string&, int)>;
-using ToggleAdOptOutCallback =
+using ToggleLikeAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleDislikeAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleMarkToReceiveAdsForCategoryCallback =
     base::OnceCallback<void(const std::string&, int)>;
-using ToggleSavedAdCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleFlaggedAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleMarkToNoLongerReceiveAdsForCategoryCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using ToggleSaveAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleMarkAdAsInappropriateCallback =
+    base::OnceCallback<void(base::Value::Dict)>;
 
 }  // namespace brave_ads
 

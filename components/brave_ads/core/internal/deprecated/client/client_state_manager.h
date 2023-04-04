@@ -60,23 +60,23 @@ class ClientStateManager final {
   const targeting::PurchaseIntentSignalHistoryMap&
   GetPurchaseIntentSignalHistory() const;
 
-  AdContentLikeActionType ToggleAdThumbUp(const AdContentInfo& ad_content);
-  AdContentLikeActionType ToggleAdThumbDown(const AdContentInfo& ad_content);
+  AdContentLikeActionType ToggleLikeAd(const AdContentInfo& ad_content);
+  AdContentLikeActionType ToggleDislikeAd(const AdContentInfo& ad_content);
   AdContentLikeActionType GetAdContentLikeActionTypeForAdvertiser(
       const std::string& advertiser_id);
 
-  CategoryContentOptActionType ToggleAdOptIn(
+  CategoryContentOptActionType ToggleMarkToReceiveAdsForCategory(
       const std::string& category,
       CategoryContentOptActionType action_type);
-  CategoryContentOptActionType ToggleAdOptOut(
+  CategoryContentOptActionType ToggleMarkToNoLongerReceiveAdsForCategory(
       const std::string& category,
       CategoryContentOptActionType action_type);
   CategoryContentOptActionType GetCategoryContentOptActionTypeForSegment(
       const std::string& segment);
 
-  bool ToggleSavedAd(const AdContentInfo& ad_content);
+  bool ToggleSaveAd(const AdContentInfo& ad_content);
 
-  bool ToggleFlaggedAd(const AdContentInfo& ad_content);
+  bool ToggleMarkAdAsInappropriate(const AdContentInfo& ad_content);
 
   void UpdateSeenAd(const AdInfo& ad);
   const std::map<std::string, bool>& GetSeenAdsForType(const AdType& type);

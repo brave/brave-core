@@ -125,7 +125,7 @@ TEST_F(BatAdsUserReactionsTest, SaveAd) {
   const HistoryItemInfo history_item = AddHistoryItem();
 
   // Act
-  HistoryManager::GetInstance()->ToggleSavedAd(history_item.ad_content);
+  HistoryManager::GetInstance()->ToggleSaveAd(history_item.ad_content);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);

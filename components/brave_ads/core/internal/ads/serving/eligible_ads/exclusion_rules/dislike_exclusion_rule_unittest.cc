@@ -40,7 +40,7 @@ TEST_F(BatAdsDislikeExclusionRuleTest, DoNotAllowAd) {
   AdContentInfo ad_content;
   ad_content.advertiser_id = kAdvertiserId;
   ad_content.like_action_type = AdContentLikeActionType::kNeutral;
-  ClientStateManager::GetInstance()->ToggleAdThumbDown(ad_content);
+  ClientStateManager::GetInstance()->ToggleDislikeAd(ad_content);
 
   // Act
   DislikeExclusionRule exclusion_rule;

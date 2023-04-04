@@ -190,49 +190,52 @@ void BatAdsImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   ads_->GetDiagnostics(std::move(callback));
 }
 
-void BatAdsImpl::ToggleAdThumbUp(base::Value::Dict value,
-                                 ToggleAdThumbUpCallback callback) {
+void BatAdsImpl::ToggleLikeAd(base::Value::Dict value,
+                              ToggleLikeAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.like_action_type = ads_->ToggleAdThumbUp(std::move(value));
+  ad_content.like_action_type = ads_->ToggleLikeAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleAdThumbDown(base::Value::Dict value,
-                                   ToggleAdThumbDownCallback callback) {
+void BatAdsImpl::ToggleDislikeAd(base::Value::Dict value,
+                                 ToggleDislikeAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.like_action_type = ads_->ToggleAdThumbDown(std::move(value));
+  ad_content.like_action_type = ads_->ToggleDislikeAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleAdOptIn(const std::string& category,
-                               const int opt_action_type,
-                               ToggleAdOptInCallback callback) {
+void BatAdsImpl::ToggleMarkToReceiveAdsForCategory(
+    const std::string& category,
+    const int opt_action_type,
+    ToggleMarkToReceiveAdsForCategoryCallback callback) {
   const brave_ads::CategoryContentOptActionType toggled_opt_action_type =
-      ads_->ToggleAdOptIn(category,
-                          ToCategoryContentOptActionType(opt_action_type));
+      ads_->ToggleMarkToReceiveAdsForCategory(
+          category, ToCategoryContentOptActionType(opt_action_type));
   std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
 }
 
-void BatAdsImpl::ToggleAdOptOut(const std::string& category,
-                                const int opt_action_type,
-                                ToggleAdOptOutCallback callback) {
+void BatAdsImpl::ToggleMarkToNoLongerReceiveAdsForCategory(
+    const std::string& category,
+    const int opt_action_type,
+    ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) {
   const brave_ads::CategoryContentOptActionType toggled_opt_action_type =
-      ads_->ToggleAdOptOut(category,
-                           ToCategoryContentOptActionType(opt_action_type));
+      ads_->ToggleMarkToNoLongerReceiveAdsForCategory(
+          category, ToCategoryContentOptActionType(opt_action_type));
   std::move(callback).Run(category, static_cast<int>(toggled_opt_action_type));
 }
 
-void BatAdsImpl::ToggleSavedAd(base::Value::Dict value,
-                               ToggleSavedAdCallback callback) {
+void BatAdsImpl::ToggleSaveAd(base::Value::Dict value,
+                              ToggleSaveAdCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.is_saved = ads_->ToggleSavedAd(std::move(value));
+  ad_content.is_saved = ads_->ToggleSaveAd(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
-void BatAdsImpl::ToggleFlaggedAd(base::Value::Dict value,
-                                 ToggleFlaggedAdCallback callback) {
+void BatAdsImpl::ToggleMarkAdAsInappropriate(
+    base::Value::Dict value,
+    ToggleMarkAdAsInappropriateCallback callback) {
   brave_ads::AdContentInfo ad_content = brave_ads::AdContentFromValue(value);
-  ad_content.is_flagged = ads_->ToggleFlaggedAd(std::move(value));
+  ad_content.is_flagged = ads_->ToggleMarkAdAsInappropriate(std::move(value));
   std::move(callback).Run(AdContentToValue(ad_content));
 }
 
