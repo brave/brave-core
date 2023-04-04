@@ -1,10 +1,10 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_H_
-#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_H_
+#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -20,9 +20,6 @@ class GURL;
 
 namespace ntp_background_images {
 
-// TODO(sko) Rename this to NTPCustomBackgroundService. It's dealing with
-// not only images but also colors.
-// https://github.com/brave/brave-browser/issues/24926
 class BraveNTPCustomBackgroundService : public KeyedService {
  public:
   class Delegate {
@@ -63,4 +60,4 @@ class BraveNTPCustomBackgroundService : public KeyedService {
 
 }  // namespace ntp_background_images
 
-#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_H_
