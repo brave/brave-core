@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -48,6 +48,8 @@ TEST_F(WalletTest, GetWallet) {
   wallet = wallet_.GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
   EXPECT_TRUE(corrupted);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(WalletTest, CreateWallet) {
@@ -67,6 +69,11 @@ TEST_F(WalletTest, CreateWallet) {
         std::move(callback).Run(wallet_state);
       });
 
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
+
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
       .Times(2)
       .WillRepeatedly([](mojom::UrlRequestPtr request, auto callback) {
@@ -80,17 +87,12 @@ TEST_F(WalletTest, CreateWallet) {
         std::move(callback).Run(std::move(response));
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
-        std::move(callback).Run(db_error_response->Clone());
-      });
+  base::MockCallback<CreateRewardsWalletCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::CreateRewardsWalletResult::kSuccess))
+      .Times(2);
 
   // Create a wallet when there is no current wallet information.
-  wallet_.CreateWalletIfNecessary(
-      absl::nullopt,
-      base::BindLambdaForTesting([](mojom::CreateRewardsWalletResult result) {
-        EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
-      }));
+  wallet_.CreateWalletIfNecessary(absl::nullopt, callback.Get());
 
   task_environment_.RunUntilIdle();
 
@@ -101,11 +103,7 @@ TEST_F(WalletTest, CreateWallet) {
 
   // Create a wallet when there is corrupted wallet information.
   wallet_state = "BAD-DATA";
-  wallet_.CreateWalletIfNecessary(
-      absl::nullopt,
-      base::BindLambdaForTesting([](mojom::CreateRewardsWalletResult result) {
-        EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
-      }));
+  wallet_.CreateWalletIfNecessary(absl::nullopt, callback.Get());
 
   task_environment_.RunUntilIdle();
 

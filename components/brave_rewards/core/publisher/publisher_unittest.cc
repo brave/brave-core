@@ -67,6 +67,11 @@ class PublisherTest : public testing::Test {
                 std::move(callback).Run();
               }
             });
+
+    ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+        .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
+          std::move(callback).Run(db_error_response->Clone());
+        });
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -82,6 +87,8 @@ TEST_F(PublisherTest, CalcScoreConsts5) {
 
   ASSERT_EQ(a_, 14500);
   ASSERT_EQ(b_, -14000);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, CalcScoreConsts8) {
@@ -89,6 +96,8 @@ TEST_F(PublisherTest, CalcScoreConsts8) {
 
   ASSERT_EQ(a_, 14200);
   ASSERT_EQ(b_, -13400);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, CalcScoreConsts60) {
@@ -96,6 +105,8 @@ TEST_F(PublisherTest, CalcScoreConsts60) {
 
   ASSERT_EQ(a_, 9000);
   ASSERT_EQ(b_, -3000);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, concaveScore) {
@@ -125,6 +136,8 @@ TEST_F(PublisherTest, concaveScore) {
   EXPECT_NEAR(publisher_.concaveScore(10000), 10.7089, 0.001f);
   EXPECT_NEAR(publisher_.concaveScore(150000), 40.9918, 0.001f);
   EXPECT_NEAR(publisher_.concaveScore(500000), 74.7025, 0.001f);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, synopsisNormalizerInternal) {
@@ -147,10 +160,13 @@ TEST_F(PublisherTest, synopsisNormalizerInternal) {
   new_list4.erase(new_list4.begin() + 6);
   std::vector<mojom::PublisherInfoPtr> new_list5;
   publisher_.synopsisNormalizerInternal(&new_list5, &new_list4, 0);
+
   for (const auto& element : new_list5) {
     ASSERT_GE((int32_t)element->percent, 0);
     ASSERT_LE((int32_t)element->percent, 100);
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, GetShareURL) {

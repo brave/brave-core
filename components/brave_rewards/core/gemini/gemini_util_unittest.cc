@@ -27,11 +27,7 @@ using ::testing::_;
 namespace ledger {
 namespace gemini {
 
-class GeminiUtilTest : public testing::Test {
- protected:
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-};
+class GeminiUtilTest : public testing::Test {};
 
 TEST_F(GeminiUtilTest, GetClientId) {
   // production
@@ -121,6 +117,9 @@ TEST_F(GeminiUtilTest, GetActivityUrl) {
 }
 
 TEST_F(GeminiUtilTest, GetWallet) {
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+
   // no wallet
   ON_CALL(*mock_ledger_impl_.mock_client(),
           GetStringState(state::kWalletGemini, _))
@@ -153,6 +152,8 @@ TEST_F(GeminiUtilTest, GetWallet) {
   ASSERT_EQ(result->user_name, "test");
   ASSERT_EQ(result->token, "4c80232r219c30cdf112208890a32c7e00");
   ASSERT_EQ(result->status, mojom::WalletStatus::kConnected);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GeminiUtilTest, GenerateRandomHexString) {

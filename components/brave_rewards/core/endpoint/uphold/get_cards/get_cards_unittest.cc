@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_cards/get_cards.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -32,13 +33,13 @@ class GetCardsTest : public testing::Test {
 };
 
 TEST_F(GetCardsTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"([
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"([
              {
                "CreatedByApplicationId": null,
                "address": {
@@ -89,24 +90,27 @@ TEST_F(GetCardsTest, ServerOK) {
                ]
              }
             ])";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
-  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                base::BindOnce([](mojom::Result result, std::string&& id) {
-                  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-                  EXPECT_EQ(id, "3ed3b2c4-a715-4c01-b302-fa2681a971ea");
-                }));
+  base::MockCallback<GetCardsCallback> callback;
+  EXPECT_CALL(callback,
+              Run(mojom::Result::LEDGER_OK,
+                  std::string("3ed3b2c4-a715-4c01-b302-fa2681a971ea")))
+      .Times(1);
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCardsTest, CardNotFound) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"([
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"([
              {
                "CreatedByApplicationId": null,
                "address": {
@@ -157,50 +161,53 @@ TEST_F(GetCardsTest, CardNotFound) {
                ]
              }
             ])";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
-  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                base::BindOnce([](mojom::Result result, std::string&& id) {
-                  EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                  EXPECT_EQ(id, "");
-                }));
+  base::MockCallback<GetCardsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, std::string()))
+      .Times(1);
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCardsTest, ServerError401) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 401;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 401;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                base::BindOnce([](mojom::Result result, std::string&& id) {
-                  EXPECT_EQ(result, mojom::Result::EXPIRED_TOKEN);
-                  EXPECT_EQ(id, "");
-                }));
+  base::MockCallback<GetCardsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::EXPIRED_TOKEN, std::string()))
+      .Times(1);
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetCardsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8",
-                base::BindOnce([](mojom::Result result, std::string&& id) {
-                  EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                  EXPECT_EQ(id, "");
-                }));
+  base::MockCallback<GetCardsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, std::string()))
+      .Times(1);
+  card_.Request("4c2b665ca060d912fec5c735c734859a06118cc8", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace uphold

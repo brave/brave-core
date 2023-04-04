@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_credentials/post_credentials.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -31,108 +32,118 @@ class PostCredentialsTest : public testing::Test {
 };
 
 TEST_F(PostCredentialsTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
+  base::MockCallback<PostCredentialsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_OK)).Times(1);
   creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                 std::move(blinded), base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-                 }));
+                 std::move(blinded), callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostCredentialsTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
+  base::MockCallback<PostCredentialsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR)).Times(1);
   creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                 std::move(blinded), base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                 }));
+                 std::move(blinded), callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostCredentialsTest, ServerError409) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 409;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 409;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
+  base::MockCallback<PostCredentialsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR)).Times(1);
   creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                 std::move(blinded), base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                 }));
+                 std::move(blinded), callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostCredentialsTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
+  base::MockCallback<PostCredentialsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR)).Times(1);
   creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                 std::move(blinded), base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                 }));
+                 std::move(blinded), callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostCredentialsTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   base::Value::List blinded;
   blinded.Append(base::Value("asfeq4gerg34gl3g34lg34g"));
 
+  base::MockCallback<PostCredentialsCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR)).Times(1);
   creds_.Request("pl2okf23-f2f02kf2fm2-msdkfsodkfds",
                  "ff50981d-47de-4210-848d-995e186901a1", "single-use",
-                 std::move(blinded), base::BindOnce([](mojom::Result result) {
-                   EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-                 }));
+                 std::move(blinded), callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace payment

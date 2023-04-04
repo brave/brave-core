@@ -19,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=*GetWalletTest*
 
 using ::testing::_;
+using ::testing::MockFunction;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;
@@ -168,18 +169,20 @@ TEST_P(GetWalletTest, Paths) {
   const auto& expected_custodian = std::get<3>(params);
   const auto expected_linked = std::get<4>(params);
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault([&](mojom::UrlRequestPtr, LoadURLCallback callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         std::move(callback).Run(
             mojom::UrlResponse::New(rewards_services_get_wallet_response));
       });
 
-  get_wallet_.Request(
-      [&](mojom::Result result, const std::string& custodian, bool linked) {
-        EXPECT_EQ(result, expected_result);
-        EXPECT_EQ(custodian, expected_custodian);
-        EXPECT_EQ(linked, expected_linked);
-      });
+  MockFunction<GetWalletCallback> callback;
+  EXPECT_CALL(callback,
+              Call(expected_result, expected_custodian, expected_linked))
+      .Times(1);
+  get_wallet_.Request(callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoints/get_parameters/get_parameters.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -48,27 +48,29 @@ class GetParameters : public TestWithParam<GetParametersParamType> {
 TEST_P(GetParameters, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = status_code;
-            response->body = std::move(body);
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = status_code;
+        response->body = body;
+        std::move(callback).Run(std::move(response));
+      });
 
-  RequestFor<endpoints::GetParameters>(&mock_ledger_impl_)
-      .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
-            if (result.has_value()) {
-              EXPECT_TRUE(expected_result->has_value());
-              EXPECT_EQ(*result.value(), *expected_result->value());
-            } else {
-              EXPECT_FALSE(expected_result->has_value());
-              EXPECT_EQ(result.error(), expected_result->error());
-            }
-          }));
+  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
+  EXPECT_CALL(callback, Run).Times(1).WillOnce([&](Result&& result) {
+    if (result.has_value()) {
+      EXPECT_TRUE(expected_result->has_value());
+      EXPECT_EQ(*result.value(), *expected_result->value());
+    } else {
+      EXPECT_FALSE(expected_result->has_value());
+      EXPECT_EQ(result.error(), expected_result->error());
+    }
+  });
+
+  RequestFor<endpoints::GetParameters>(&mock_ledger_impl_).Send(callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

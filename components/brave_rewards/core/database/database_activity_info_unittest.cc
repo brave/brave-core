@@ -16,6 +16,7 @@
 // npm run test -- brave_unit_tests --filter=DatabaseActivityInfoTest.*
 
 using ::testing::_;
+using ::testing::MockFunction;
 
 namespace ledger {
 namespace database {
@@ -31,14 +32,17 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  activity_.InsertOrUpdate(nullptr, [](mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  activity_.InsertOrUpdate(nullptr, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
@@ -60,7 +64,9 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
   info->reconcile_stamp = 0;
   info->visits = 1;
 
-  activity_.InsertOrUpdate(std::move(info), [](const mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  activity_.InsertOrUpdate(std::move(info), callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
@@ -69,18 +75,17 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  activity_.GetRecordsList(0, 0, nullptr,
-                           [](std::vector<mojom::PublisherInfoPtr>) {});
+  MockFunction<GetActivityInfoListCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  activity_.GetRecordsList(0, 0, nullptr, callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
@@ -101,18 +106,18 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
+  MockFunction<GetActivityInfoListCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
   activity_.GetRecordsList(0, 0, mojom::ActivityInfoFilter::New(),
-                           [](std::vector<mojom::PublisherInfoPtr>) {});
+                           callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::READ);
@@ -136,8 +141,9 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
   auto filter = mojom::ActivityInfoFilter::New();
   filter->id = "publisher_key";
 
-  activity_.GetRecordsList(0, 0, std::move(filter),
-                           [](std::vector<mojom::PublisherInfoPtr>) {});
+  MockFunction<GetActivityInfoListCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  activity_.GetRecordsList(0, 0, std::move(filter), callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
@@ -146,22 +152,23 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
   EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
       .Times(0);
 
-  activity_.DeleteRecord("", [](mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  activity_.DeleteRecord("", callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .Times(1);
-
-  ON_CALL(*mock_ledger_impl_.mock_client(), GetUint64State(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), GetUint64State(_, _))
+      .Times(1)
+      .WillOnce([](const std::string&, auto callback) {
         std::move(callback).Run(1597744617);
       });
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
-      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .Times(1)
+      .WillOnce([](mojom::DBTransactionPtr transaction, auto callback) {
         ASSERT_TRUE(transaction);
         ASSERT_EQ(transaction->commands.size(), 1u);
         ASSERT_EQ(transaction->commands[0]->type, mojom::DBCommand::Type::RUN);
@@ -173,7 +180,9 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
         std::move(callback).Run(db_error_response->Clone());
       });
 
-  activity_.DeleteRecord("publisher_key", [](mojom::Result) {});
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call).Times(1);
+  activity_.DeleteRecord("publisher_key", callback.AsStdFunction());
 
   task_environment_.RunUntilIdle();
 }

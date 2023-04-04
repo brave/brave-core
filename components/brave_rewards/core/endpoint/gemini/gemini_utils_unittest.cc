@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace gemini {
 
-class GeminiUtilsTest : public BATLedgerTest {};
+class GeminiUtilsTest : public testing::Test {};
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlDevelopment) {
   ledger::_environment = mojom::Environment::DEVELOPMENT;

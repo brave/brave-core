@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
@@ -18,6 +19,7 @@
 // npm run test -- brave_unit_tests --filter=GetAvailableTest.*
 
 using ::testing::_;
+using ::testing::IsEmpty;
 
 namespace ledger {
 namespace endpoint {
@@ -31,13 +33,13 @@ class GetAvailableTest : public testing::Test {
 };
 
 TEST_F(GetAvailableTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
              "promotions": [
                {
                  "id": "83b3b77b-e7c3-455b-adda-e476fa0656d2",
@@ -56,14 +58,14 @@ TEST_F(GetAvailableTest, ServerOK) {
                }
              ]
             })";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
-  available_.Request(
-      "macos",
-      base::BindOnce([](mojom::Result result,
-                        std::vector<mojom::PromotionPtr> list,
-                        const std::vector<std::string>& corrupted_promotions) {
+  base::MockCallback<GetAvailableCallback> callback;
+  EXPECT_CALL(callback, Run)
+      .Times(1)
+      .WillOnce([](mojom::Result result, std::vector<mojom::PromotionPtr> list,
+                   const std::vector<std::string>& corrupted_promotions) {
         mojom::Promotion expected_promotion;
         expected_promotion.id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
         expected_promotion.created_at = 1591628685;
@@ -80,123 +82,112 @@ TEST_F(GetAvailableTest, ServerOK) {
         EXPECT_TRUE(corrupted_promotions.empty());
         EXPECT_EQ(list.size(), 1ul);
         EXPECT_TRUE(expected_promotion.Equals(*list[0]));
-      }));
+      });
+  available_.Request("macos", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetAvailableTest, ServerError400) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 400;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  available_.Request(
-      "macos",
-      base::BindOnce([](const mojom::Result result,
-                        std::vector<mojom::PromotionPtr> list,
-                        const std::vector<std::string>& corrupted_promotions) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-        EXPECT_TRUE(list.empty());
-        EXPECT_TRUE(corrupted_promotions.empty());
-      }));
+  base::MockCallback<GetAvailableCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsEmpty(), IsEmpty()))
+      .Times(1);
+  available_.Request("macos", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetAvailableTest, ServerError404) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 404;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 404;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  available_.Request(
-      "macos",
-      base::BindOnce([](mojom::Result result,
-                        std::vector<mojom::PromotionPtr> list,
-                        const std::vector<std::string>& corrupted_promotions) {
-        EXPECT_EQ(result, mojom::Result::NOT_FOUND);
-        EXPECT_TRUE(list.empty());
-        EXPECT_TRUE(corrupted_promotions.empty());
-      }));
+  base::MockCallback<GetAvailableCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::NOT_FOUND, IsEmpty(), IsEmpty()))
+      .Times(1);
+  available_.Request("macos", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetAvailableTest, ServerError500) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 500;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  available_.Request(
-      "macos",
-      base::BindOnce([](mojom::Result result,
-                        std::vector<mojom::PromotionPtr> list,
-                        const std::vector<std::string>& corrupted_promotions) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-        EXPECT_TRUE(list.empty());
-        EXPECT_TRUE(corrupted_promotions.empty());
-      }));
+  base::MockCallback<GetAvailableCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsEmpty(), IsEmpty()))
+      .Times(1);
+  available_.Request("macos", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetAvailableTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
-  available_.Request(
-      "macos",
-      base::BindOnce([](mojom::Result result,
-                        std::vector<mojom::PromotionPtr> list,
-                        const std::vector<std::string>& corrupted_promotions) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-        EXPECT_TRUE(list.empty());
-        EXPECT_TRUE(corrupted_promotions.empty());
-      }));
+  base::MockCallback<GetAvailableCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, IsEmpty(), IsEmpty()))
+      .Times(1);
+  available_.Request("macos", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(GetAvailableTest, ServerWrongResponse) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
              "promotions": [
                 {
                   "foo": 0
                 }
               ]
             })";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
-  available_.Request(
-      "macos",
-      base::BindOnce([](mojom::Result result,
-                        std::vector<mojom::PromotionPtr> list,
-                        const std::vector<std::string>& corrupted_promotions) {
-        EXPECT_EQ(result, mojom::Result::CORRUPTED_DATA);
-        EXPECT_TRUE(list.empty());
-        EXPECT_TRUE(corrupted_promotions.empty());
-      }));
+  base::MockCallback<GetAvailableCallback> callback;
+  EXPECT_CALL(callback,
+              Run(mojom::Result::CORRUPTED_DATA, IsEmpty(), IsEmpty()))
+      .Times(1);
+  available_.Request("macos", callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace promotion

@@ -7,7 +7,7 @@
 #include <tuple>
 #include <utility>
 
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
@@ -46,21 +46,22 @@ class GetRecipientIDGemini
 TEST_P(GetRecipientIDGemini, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, LoadURLCallback callback) mutable {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = status_code;
-            response->body = std::move(body);
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = status_code;
+        response->body = body;
+        std::move(callback).Run(std::move(response));
+      });
+
+  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
+  EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::GetRecipientIDGemini>(&mock_ledger_impl_, "token")
-      .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
-            EXPECT_EQ(result, expected_result);
-          }));
+      .Send(callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

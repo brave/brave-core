@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/bitflyer/post_oauth/post_oauth_bitflyer.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
@@ -32,13 +33,13 @@ class BitflyerPostOauthTest : public testing::Test {
 };
 
 TEST_F(BitflyerPostOauthTest, ServerOK) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 200;
-            response->url = request->url;
-            response->body = R"({
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = R"({
              "access_token": "mock_access_token",
              "refresh_token": "mock_refresh_token",
              "expires_in": 259002,
@@ -48,42 +49,39 @@ TEST_F(BitflyerPostOauthTest, ServerOK) {
              "linking_info": "mock_linking_info",
              "deposit_id": "339dc5ff-1167-4d69-8dd8-aa77ccb12d74"
             })";
-            std::move(callback).Run(std::move(response));
-          });
+        std::move(callback).Run(std::move(response));
+      });
 
+  base::MockCallback<PostOauthCallback> callback;
+  EXPECT_CALL(callback,
+              Run(mojom::Result::LEDGER_OK, std::string("mock_access_token"),
+                  std::string("339dc5ff-1167-4d69-8dd8-aa77ccb12d74"),
+                  std::string("mock_linking_info")))
+      .Times(1);
   oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
-      base::BindOnce([](mojom::Result result, std::string&& token,
-                        std::string&& address, std::string&& linking_info) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-        EXPECT_EQ(token, "mock_access_token");
-        EXPECT_EQ(address, "339dc5ff-1167-4d69-8dd8-aa77ccb12d74");
-        EXPECT_EQ(linking_info, "mock_linking_info");
-      }));
+      "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890", callback.Get());
 
   task_environment_.RunUntilIdle();
 }
 
 TEST_F(BitflyerPostOauthTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .WillByDefault(
-          [](mojom::UrlRequestPtr request, LoadURLCallback callback) {
-            auto response = mojom::UrlResponse::New();
-            response->status_code = 453;
-            response->url = request->url;
-            response->body = "";
-            std::move(callback).Run(std::move(response));
-          });
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
+  base::MockCallback<PostOauthCallback> callback;
+  EXPECT_CALL(callback, Run(mojom::Result::LEDGER_ERROR, std::string(), _, _))
+      .Times(1);
   oauth_.Request(
       "46553A9E3D57D70F960EA26D95183D8CBB026283D92CBC7C54665408DA7DF398",
-      "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890",
-      base::BindOnce([](mojom::Result result, std::string&& token,
-                        std::string&& address, std::string&& linking_info) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-        EXPECT_EQ(token, "");
-      }));
+      "4c2b665ca060d912fec5c735c734859a06118cc8", "1234567890", callback.Get());
 
   task_environment_.RunUntilIdle();
 }
