@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_confirmation_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code.h"
@@ -55,7 +55,7 @@ void RedeemOptedOutConfirmation::CreateConfirmation(
   BLOG(1, "CreateConfirmation");
   BLOG(2, "POST /v3/confirmation/{transactionId}");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateOptedOutConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));

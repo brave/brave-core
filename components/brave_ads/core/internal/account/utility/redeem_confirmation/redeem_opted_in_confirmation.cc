@@ -19,7 +19,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_confirmation_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/fetch_payment_token_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -80,8 +80,9 @@ void RedeemOptedInConfirmation::CreateConfirmation(
   BLOG(1, "CreateConfirmation");
   BLOG(2, "POST /v3/confirmation/{transactionId}/{credential}");
 
-  CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(confirmation);
   mojom::UrlRequestInfoPtr url_request = url_request_builder.Build();
+
   BLOG(6, UrlRequestToString(url_request));
   BLOG(7, UrlRequestHeadersToString(url_request));
 
@@ -99,10 +100,10 @@ void RedeemOptedInConfirmation::OnCreateConfirmation(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  ConfirmationInfo new_confirmation = confirmation;
-  new_confirmation.was_created = true;
+  ConfirmationInfo mutable_confirmation = confirmation;
+  mutable_confirmation.was_created = true;
 
-  FetchPaymentToken(new_confirmation);
+  FetchPaymentToken(mutable_confirmation);
 }
 
 void RedeemOptedInConfirmation::FetchPaymentToken(
@@ -132,10 +133,10 @@ void RedeemOptedInConfirmation::OnFetchPaymentToken(
   if (url_response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(1, "Confirmation not found");
 
-    ConfirmationInfo new_confirmation = confirmation;
-    new_confirmation.was_created = false;
+    ConfirmationInfo mutable_confirmation = confirmation;
+    mutable_confirmation.was_created = false;
 
-    return FailedToRedeemConfirmation(new_confirmation,
+    return FailedToRedeemConfirmation(mutable_confirmation,
                                       /*should_retry*/ true,
                                       /*should_backoff*/ false);
   }
