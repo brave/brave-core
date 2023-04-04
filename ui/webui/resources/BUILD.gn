@@ -153,15 +153,16 @@ leo_icons = [
   "check-normal.svg",
   "plus-add.svg",
   "carat-down.svg",
-  "arrow-down.svg",
+  "money-bag-coins.svg",
   "send.svg",
-  "swap-vertical.svg",
+  "currency-exchange.svg",
   "activity.svg",
   "grid04.svg",
   "discover.svg",
   "user-circle.svg",
   "coins.svg",
   "more-horizontal.svg",
+  "coins-alt1.svg",
 ]
 
 generate_grd("icons_grdp") {
