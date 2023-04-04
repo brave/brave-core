@@ -101,8 +101,8 @@ class Database {
   void SaveContributionInfo(mojom::ContributionInfoPtr info,
                             ledger::LegacyResultCallback callback);
 
-  void GetContributionInfo(const std::string& contribution_id,
-                           GetContributionInfoCallback callback);
+  virtual void GetContributionInfo(const std::string& contribution_id,
+                                   GetContributionInfoCallback callback);
 
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
@@ -385,7 +385,7 @@ class Database {
   void GetReservedUnblindedTokens(const std::string& redeem_id,
                                   GetUnblindedTokenListCallback callback);
 
-  void GetSpendableUnblindedTokensByBatchTypes(
+  virtual void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<mojom::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 

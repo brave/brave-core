@@ -28,7 +28,7 @@ class PromotionTransfer;
 class Promotion {
  public:
   explicit Promotion(LedgerImpl* ledger);
-  virtual ~Promotion();
+  ~Promotion();
 
   void Initialize();
 
@@ -44,7 +44,7 @@ class Promotion {
 
   void Refresh(const bool retry_after_error);
 
-  virtual void TransferTokens(ledger::PostSuggestionsClaimCallback callback);
+  void TransferTokens(ledger::PostSuggestionsClaimCallback callback);
 
  private:
   void OnFetch(ledger::FetchPromotionsCallback callback,

@@ -13,28 +13,27 @@
 #include <utility>
 
 #include "base/containers/flat_map.h"
+#include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/logging/logging.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
-
-namespace braveledger_media {
-class Media;
-}
 
 namespace ledger {
-
 inline mojom::Environment _environment = mojom::Environment::PRODUCTION;
 inline bool is_debug = false;
 inline bool is_testing = false;
 inline int state_migration_target_version_for_testing = -1;
 inline int reconcile_interval = 0;  // minutes
 inline int retry_interval = 0;      // seconds
+}  // namespace ledger
 
+namespace braveledger_media {
+class Media;
+}
+
+namespace ledger {
 namespace promotion {
 class Promotion;
 }
@@ -83,7 +82,7 @@ class LedgerImpl : public mojom::Ledger {
 
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
-  // mojom::Ledger implementation begin
+  // mojom::Ledger implementation begin (in the order of appearance in Mojom)
   void Initialize(bool execute_create_script,
                   InitializeCallback callback) override;
 
@@ -304,60 +303,37 @@ class LedgerImpl : public mojom::Ledger {
   void GetEventLogs(GetEventLogsCallback callback) override;
 
   void GetRewardsWallet(GetRewardsWalletCallback callback) override;
-
   // mojom::Ledger implementation end
 
-  mojom::LedgerClient* client();
-
-  state::State* state();
-
-  virtual promotion::Promotion* promotion();
-
-  publisher::Publisher* publisher();
-
-  braveledger_media::Media* media();
-
-  contribution::Contribution* contribution();
-
-  wallet::Wallet* wallet();
-
-  report::Report* report();
-
-  api::API* api();
-
-  virtual database::Database* database();
-
-  bitflyer::Bitflyer* bitflyer();
-
-  gemini::Gemini* gemini();
-
-  uphold::Uphold* uphold();
-
-  // mojom::LedgerClient async helpers begin
+  // mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
   template <typename LoadURLCallback>
-  void LoadURLImpl(mojom::UrlRequestPtr request, LoadURLCallback callback);
+  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) {
+    DCHECK(request);
+    if (IsShuttingDown()) {
+      BLOG(1, request->url + " will not be executed as we are shutting down");
+      return;
+    }
 
-  void LoadURL(mojom::UrlRequestPtr request, LegacyLoadURLCallback callback);
+    if (!request->skip_log) {
+      BLOG(5,
+           UrlRequestToString(request->url, request->headers, request->content,
+                              request->content_type, request->method));
+    }
 
-  void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback);
-
-  template <typename RunDBTransactionCallback>
-  void RunDBTransactionImpl(mojom::DBTransactionPtr transaction,
-                            RunDBTransactionCallback callback);
-
-  void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                        LegacyRunDBTransactionCallback callback);
-
-  void RunDBTransaction(mojom::DBTransactionPtr transaction,
-                        RunDBTransactionCallback callback);
-  // mojom::LedgerClient async helpers end
-
-  // mojom::LedgerClient sync helpers begin
-  std::string URIEncode(const std::string& value) {
-    std::string encoded_value;
-    ledger_client_->URIEncode(value, &encoded_value);
-    return encoded_value;
+    if constexpr (std::is_same_v<LoadURLCallback, ledger::LoadURLCallback>) {
+      ledger_client_->LoadURL(std::move(request), std::move(callback));
+    } else {
+      ledger_client_->LoadURL(std::move(request),
+                              base::BindOnce(
+                                  [](LegacyLoadURLCallback callback,
+                                     mojom::UrlResponsePtr response) {
+                                    callback(std::move(response));
+                                  },
+                                  std::move(callback)));
+    }
   }
+
+  std::string URIEncode(const std::string& value);
 
   template <typename T>
   T GetState(const std::string& name) {
@@ -432,30 +408,59 @@ class LedgerImpl : public mojom::Ledger {
     return value;
   }
 
-  std::string GetLegacyWallet() {
-    std::string wallet;
-    ledger_client_->GetLegacyWallet(&wallet);
-    return wallet;
+  std::string GetLegacyWallet();
+
+  mojom::ClientInfoPtr GetClientInfo();
+
+  template <typename RunDBTransactionCallback>
+  void RunDBTransaction(mojom::DBTransactionPtr transaction,
+                        RunDBTransactionCallback callback) {
+    if constexpr (std::is_same_v<RunDBTransactionCallback,
+                                 ledger::RunDBTransactionCallback>) {
+      ledger_client_->RunDBTransaction(std::move(transaction),
+                                       std::move(callback));
+    } else {
+      ledger_client_->RunDBTransaction(
+          std::move(transaction),
+          base::BindOnce(
+              [](LegacyRunDBTransactionCallback callback,
+                 mojom::DBCommandResponsePtr response) {
+                callback(std::move(response));
+              },
+              std::move(callback)));
+    }
   }
 
-  mojom::ClientInfoPtr GetClientInfo() {
-    auto info = mojom::ClientInfo::New();
-    ledger_client_->GetClientInfo(&info);
-    return info;
-  }
+  absl::optional<std::string> EncryptString(const std::string& value);
 
-  absl::optional<std::string> EncryptString(const std::string& value) {
-    absl::optional<std::string> result;
-    ledger_client_->EncryptString(value, &result);
-    return result;
-  }
+  absl::optional<std::string> DecryptString(const std::string& value);
+  // mojom::LedgerClient helpers end
 
-  absl::optional<std::string> DecryptString(const std::string& value) {
-    absl::optional<std::string> result;
-    ledger_client_->DecryptString(value, &result);
-    return result;
-  }
-  // mojom::LedgerClient sync helpers end
+  mojom::LedgerClient* client();
+
+  state::State* state();
+
+  virtual promotion::Promotion* promotion();
+
+  publisher::Publisher* publisher();
+
+  braveledger_media::Media* media();
+
+  contribution::Contribution* contribution();
+
+  wallet::Wallet* wallet();
+
+  report::Report* report();
+
+  api::API* api();
+
+  virtual database::Database* database();
+
+  bitflyer::Bitflyer* bitflyer();
+
+  gemini::Gemini* gemini();
+
+  uphold::Uphold* uphold();
 
   bool IsShuttingDown() const;
 
