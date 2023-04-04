@@ -201,6 +201,8 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                             keyringService.notifyWalletBackupComplete();
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
                                     && Utils.isBiometricAvailable(getContext())) {
+                                // Clear previously set bio-metric credentials
+                                KeystoreHelper.resetBiometric();
                                 enableBiometricLogin(retypePasswordInput);
                             } else {
                                 onNextPage.gotoNextPage(true);
