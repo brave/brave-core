@@ -88,6 +88,8 @@ using ParseFeedCallback = base::OnceCallback<void(absl::optional<FeedData>)>;
 void ParseFeedDataOffMainThread(const GURL& feed_url,
                                 std::string body_content,
                                 ParseFeedCallback callback) {
+  // TODO(sko) Maybe we should have a thread traits so that app can be shutdown
+  // while the worker threads are still working.
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(
@@ -110,6 +112,20 @@ void ParseFeedDataOffMainThread(const GURL& feed_url,
 }
 
 }  // namespace
+
+DirectFeedController::FindFeedRequest::FindFeedRequest(
+    const GURL& possible_feed_or_site_url,
+    mojom::BraveNewsController::FindFeedsCallback callback)
+    : possible_feed_or_site_url(possible_feed_or_site_url),
+      callback(std::move(callback)) {}
+
+DirectFeedController::FindFeedRequest::FindFeedRequest(
+    DirectFeedController::FindFeedRequest&&) = default;
+DirectFeedController::FindFeedRequest&
+DirectFeedController::FindFeedRequest::operator=(
+    DirectFeedController::FindFeedRequest&&) = default;
+
+DirectFeedController::FindFeedRequest::~FindFeedRequest() = default;
 
 DirectFeedController::DirectFeedController(
     PrefService* prefs,
@@ -172,6 +188,31 @@ std::vector<mojom::PublisherPtr> DirectFeedController::ParseDirectFeedsPref() {
 void DirectFeedController::FindFeeds(
     const GURL& possible_feed_or_site_url,
     mojom::BraveNewsController::FindFeedsCallback callback) {
+  CHECK(possible_feed_or_site_url.is_valid() &&
+        !possible_feed_or_site_url.is_empty());
+
+  if (ongoing_requests_.count(possible_feed_or_site_url)) {
+    DVLOG(2) << "Accumulated: " << possible_feed_or_site_url.spec();
+    ongoing_requests_[possible_feed_or_site_url].push_back(
+        {possible_feed_or_site_url, std::move(callback)});
+    return;
+  }
+
+  if (ongoing_requests_.size() >= kMaxOngoingRequests) {
+    DVLOG(2) << "Queued: " << possible_feed_or_site_url.spec();
+    pending_requests_.push({possible_feed_or_site_url, std::move(callback)});
+    return;
+  }
+
+  DVLOG(2) << "Kick off: " << possible_feed_or_site_url.spec();
+  ongoing_requests_[possible_feed_or_site_url].push_back(
+      {possible_feed_or_site_url, std::move(callback)});
+  FindFeedsImpl(possible_feed_or_site_url);
+}
+
+void DirectFeedController::FindFeedsImpl(
+    const GURL& possible_feed_or_site_url) {
+  DVLOG(2) << __FUNCTION__ << " " << possible_feed_or_site_url.spec();
   // Download and check headers. If it's an html document, then parse for rss
   // items
   auto request = std::make_unique<network::ResourceRequest>();
@@ -296,9 +337,50 @@ void DirectFeedController::FindFeeds(
                     base::Unretained(direct_feed_controller),
                     std::move(callback)));
           },
-          base::Unretained(this), iter, std::move(callback),
+          base::Unretained(this), iter,
+          base::BindOnce(&DirectFeedController::OnFindFeedsImplResponse,
+                         weak_ptr_factory_.GetWeakPtr(),
+                         possible_feed_or_site_url),
           possible_feed_or_site_url),
       5 * 1024 * 1024);
+}
+
+void DirectFeedController::OnFindFeedsImplResponse(
+    const GURL& feed_url,
+    std::vector<mojom::FeedSearchResultItemPtr> results) {
+  if (ongoing_requests_.count(feed_url)) {
+    if (ongoing_requests_[feed_url].size() == 1u) {
+      std::move(ongoing_requests_[feed_url].front().callback)
+          .Run(std::move(results));
+    } else {
+      // We need to do deep-copy
+      for (auto& request : ongoing_requests_[feed_url]) {
+        std::vector<mojom::FeedSearchResultItemPtr> clone;
+        base::ranges::transform(results, std::back_inserter(clone),
+                                &mojom::FeedSearchResultItemPtr::Clone);
+        std::move(request.callback).Run(std::move(clone));
+      }
+    }
+
+    ongoing_requests_.erase(feed_url);
+  }
+
+  DVLOG(2) << ongoing_requests_.size();
+
+  if (ongoing_requests_.size() >= kMaxOngoingRequests ||
+      pending_requests_.empty()) {
+    return;
+  }
+
+  auto request = std::move(pending_requests_.front());
+  pending_requests_.pop();
+
+  auto target_url = request.possible_feed_or_site_url;
+  auto& requests = ongoing_requests_[target_url];
+  requests.push_back(std::move(request));
+  if (requests.size() == 1) {
+    FindFeedsImpl(target_url);
+  }
 }
 
 void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
