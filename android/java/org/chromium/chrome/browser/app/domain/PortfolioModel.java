@@ -79,9 +79,9 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mBraveWalletService = braveWalletService;
         mAssetRatioService = assetRatioService;
         mSharedData = sharedData;
-        _mNftModels = new MutableLiveData<>(Collections.emptyList());
+        _mNftModels = new MutableLiveData<>();
         mNftModels = _mNftModels;
-        _mIsDiscoveringUserAssets = new MutableLiveData<>(false);
+        _mIsDiscoveringUserAssets = new MutableLiveData<>();
         mIsDiscoveringUserAssets = _mIsDiscoveringUserAssets;
         addServiceObservers();
     }
@@ -146,7 +146,6 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
         synchronized (mLock) {
-            clear();
             if (mJsonRpcService == null) {
                 return;
             }
@@ -187,11 +186,6 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     @Override
     public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {
         _mIsDiscoveringUserAssets.postValue(false);
-    }
-
-    // Clear state
-    public void clear() {
-        _mNftModels.postValue(Collections.emptyList());
     }
 
     private void addServiceObservers() {

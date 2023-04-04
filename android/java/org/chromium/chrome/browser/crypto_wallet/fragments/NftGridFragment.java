@@ -133,7 +133,6 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
                     if (isDiscoveringUserAssets) {
                         mPbAssetDiscovery.setVisibility(View.VISIBLE);
                     } else {
-                        mPbAssetDiscovery.setVisibility(View.GONE);
                         updateNftGrid();
                     }
                 });
@@ -207,6 +206,8 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         // Show empty screen layout if no NFTs have been added.
         boolean emptyList = walletListItemModelList.isEmpty();
         mAddNftsContainer.setVisibility(emptyList ? View.VISIBLE : View.GONE);
+
+        mPbAssetDiscovery.setVisibility(View.GONE);
     }
 
     private void clearAssets() {

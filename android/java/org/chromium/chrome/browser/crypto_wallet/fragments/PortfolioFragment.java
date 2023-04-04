@@ -179,14 +179,6 @@ public class PortfolioFragment
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mPortfolioModel != null) {
-            mPortfolioModel.clear();
-        }
-    }
-
     private void setUpObservers() {
         mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(
                 getViewLifecycleOwner(),
