@@ -275,8 +275,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   MockUrlResponses(ads_client_mock_, GetInvalidIssuersUrlResponses());
 
   account_->Process();
@@ -293,8 +291,6 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const URLResponseMap url_responses = {{// Get issuers request
                                          "/v3/issuers/",
                                          {{net::HTTP_OK, R"(
@@ -319,8 +315,6 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const URLResponseMap url_responses = {{// Get issuers request
                                          "/v3/issuers/",
                                          {{net::HTTP_OK, "INVALID"}}}};
@@ -340,8 +334,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/"

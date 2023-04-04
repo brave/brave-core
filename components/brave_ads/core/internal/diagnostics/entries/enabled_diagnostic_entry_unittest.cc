@@ -15,9 +15,8 @@ namespace brave_ads {
 
 class BatAdsEnabledDiagnosticEntryTest : public UnitTestBase {};
 
-TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
+TEST_F(BatAdsEnabledDiagnosticEntryTest, IsEnabled) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   // Act
   const EnabledDiagnosticEntry diagnostic_entry;
@@ -28,7 +27,7 @@ TEST_F(BatAdsEnabledDiagnosticEntryTest, Enabled) {
   EXPECT_EQ("true", diagnostic_entry.GetValue());
 }
 
-TEST_F(BatAdsEnabledDiagnosticEntryTest, Disabled) {
+TEST_F(BatAdsEnabledDiagnosticEntryTest, IsDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 

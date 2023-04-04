@@ -52,7 +52,6 @@ TEST_F(BatAdsNotificationAdUtilTest, DoNotServeIfUserIsActive) {
 
 TEST_F(BatAdsNotificationAdUtilTest, ShouldServe) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   // Act
 
