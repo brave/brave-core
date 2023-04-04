@@ -26,6 +26,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/controls/scroll_view.h"
 
 namespace {
 
@@ -141,6 +143,16 @@ IN_PROC_BROWSER_TEST_F(TextRecognitionBrowserTest, TextRecognitionTest) {
   TextRecognitionDialogView* text_recognition_dialog =
       static_cast<TextRecognitionDialogView*>(
           dialog_tracker->active_dialog()->widget_delegate());
+
+  // Early check - extracting could be done very quickly.
+  if (text_recognition_dialog->scroll_view_) {
+    const auto text = static_cast<views::Label*>(
+                          text_recognition_dialog->scroll_view_->contents())
+                          ->GetText();
+    if (text == u"brave") {
+      return;
+    }
+  }
 
   // OnGetTextFromImage() verifies extracted text from test image.
   text_recognition_dialog->on_get_text_callback_for_test_ = base::BindOnce(
