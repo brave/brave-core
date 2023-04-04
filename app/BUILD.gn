@@ -16,6 +16,10 @@ action("generate_command_metadata") {
     "//chrome/app/chrome_command_ids.h",
     "//brave/app/brave_command_ids.h",
   ]
+  cc_template = "command_utils.cc.template"
+
+  sources = command_files + [ cc_template ]
+
   script = "generate_command_metadata.py"
 
   output_cc = "$target_gen_dir/command_utils.cc"
@@ -25,7 +29,7 @@ action("generate_command_metadata") {
            "--output_cc",
            rebase_path(output_cc),
            "--template_cc",
-           rebase_path("command_utils.cc.template"),
+           rebase_path(cc_template),
          ]
 }
 
