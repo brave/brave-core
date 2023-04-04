@@ -329,6 +329,14 @@ RasOperationResult CreateEntry(const std::wstring& entry_name,
                                const std::wstring& hostname,
                                const std::wstring& username,
                                const std::wstring& password) {
+  // `RasSetEntryProperties` can have problems if fields are empty.
+  // Specifically, it will crash if `hostname` is NULL. Entry name
+  // is already validated.
+  if (hostname.empty()) {
+    VLOG(2) << __func__ << " Can't create entry with empty `hostname`";
+    return GetRasErrorResult("`hostname` is empty");
+  }
+
   auto connection_result = CheckConnection(entry_name);
   if (connection_result == CheckConnectionResult::CONNECTING ||
       connection_result == CheckConnectionResult::CONNECTED) {
