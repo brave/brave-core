@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_util.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -189,6 +190,10 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandEnabled(IDC_CONFIGURE_BRAVE_NEWS,
                        !browser_->profile()->IsOffTheRecord());
+
+  UpdateCommandEnabled(
+      IDC_CONFIGURE_SHORTCUTS,
+      base::FeatureList::IsEnabled(commands::features::kBraveCommands));
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -356,6 +361,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_CONFIGURE_BRAVE_NEWS:
       brave::ShowBraveNewsConfigure(browser_);
+      break;
+    case IDC_CONFIGURE_SHORTCUTS:
+      brave::ShowShortcutsPage(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

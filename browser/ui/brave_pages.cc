@@ -11,6 +11,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/common/webui_url_constants.h"
@@ -43,6 +44,12 @@ void ShowSync(Browser* browser) {
 void ShowBraveNewsConfigure(Browser* browser) {
   NavigateParams params(GetSingletonTabNavigateParams(
       browser, GURL("brave://newtab/?openSettings=BraveNews")));
+  ShowSingletonTabOverwritingNTP(browser, &params);
+}
+
+void ShowShortcutsPage(Browser* browser) {
+  NavigateParams params(GetSingletonTabNavigateParams(
+      browser, GURL(base::StrCat({"brave://", kCommandsHost}))));
   ShowSingletonTabOverwritingNTP(browser, &params);
 }
 

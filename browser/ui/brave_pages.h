@@ -25,6 +25,7 @@ void ShowExtensionSettings(Browser* browser);
 void ShowWalletSettings(Browser* browser);
 void ShowSync(Browser* browser);
 void ShowBraveNewsConfigure(Browser* browser);
+void ShowShortcutsPage(Browser* browser);
 
 }  // namespace brave
 
