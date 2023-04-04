@@ -51,7 +51,9 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"foo-bar3"}, {}, {"foo-bar1", "foo-bar2"}, {}),
+      targeting::BuildUserModel({"foo-bar3"}, /*latent_interest_segments*/ {},
+                                {"foo-bar1", "foo-bar2"},
+                                /*text_embedding_html_events*/ {}),
       "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -77,7 +79,11 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test, GetAdsForNoSegments) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}, {}), "200x100",
+      targeting::BuildUserModel(/*interest_segments*/ {},
+                                /*latent_interest_segments*/ {},
+                                /*purchase_intent_segments*/ {},
+                                /*text_embedding_html_events*/ {}),
+      "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -92,8 +98,10 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
-                                {"intent-foo", "intent-bar"}, {}),
+      targeting::BuildUserModel({"interest-foo", "interest-bar"},
+                                /*latent_interest_segments*/ {},
+                                {"intent-foo", "intent-bar"},
+                                /*text_embedding_html_events*/ {}),
       "?x?",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
@@ -108,8 +116,10 @@ TEST_F(BatAdsEligibleInlineContentAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"interest-foo", "interest-bar"}, {},
-                                {"intent-foo", "intent-bar"}, {}),
+      targeting::BuildUserModel({"interest-foo", "interest-bar"},
+                                /*latent_interest_segments*/ {},
+                                {"intent-foo", "intent-bar"},
+                                /*text_embedding_html_events*/ {}),
       "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {

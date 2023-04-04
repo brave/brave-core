@@ -60,7 +60,9 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
+      targeting::BuildUserModel(
+          /*latent_interest_segments*/ {}, /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {}, {text_embedding_event}),
       base::BindOnce(
           [](const CreativeNotificationAdInfo& creative_ad_1,
              const bool had_opportunity,
@@ -90,7 +92,10 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredEmbeddings) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}, {}),
+      targeting::BuildUserModel(/*latent_interest_segments*/ {},
+                                /*latent_interest_segments*/ {},
+                                /*purchase_intent_segments*/ {},
+                                /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -119,7 +124,10 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test,
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
+      targeting::BuildUserModel(/*latent_interest_segments*/ {},
+                                /*latent_interest_segments*/ {},
+                                /*purchase_intent_segments*/ {},
+                                {text_embedding_event}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -135,7 +143,10 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({}, {}, {}, {text_embedding_event}),
+      targeting::BuildUserModel(/*latent_interest_segments*/ {},
+                                /*latent_interest_segments*/ {},
+                                /*purchase_intent_segments*/ {},
+                                {text_embedding_event}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
