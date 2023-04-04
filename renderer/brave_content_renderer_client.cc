@@ -130,7 +130,8 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-    new playlist::PlaylistRenderFrameObserver(render_frame);
+    new playlist::PlaylistRenderFrameObserver(render_frame,
+                                              ISOLATED_WORLD_ID_BRAVE_INTERNAL);
   }
 #endif
 }

@@ -322,6 +322,25 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
     obs.OnPlaylistStatusChanged({playlist_event, playlist_id});
 }
 
+void PlaylistService::NotifyMediaFilesUpdated(
+    const GURL& url,
+    std::vector<mojom::PlaylistItemPtr> items) {
+  if (items.empty()) {
+    return;
+  }
+
+  DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
+           << " were updated: count =>" << items.size();
+
+  for (auto& service_observer : service_observers_) {
+    std::vector<mojom::PlaylistItemPtr> cloned_items;
+    base::ranges::transform(
+        items, std::back_inserter(cloned_items),
+        [](const auto& item_ptr) { return item_ptr->Clone(); });
+    service_observer->OnMediaFilesUpdated(url, std::move(cloned_items));
+  }
+}
+
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
   const auto& items = prefs_->GetDict(kPlaylistItemsPref);
   const base::Value::Dict* playlist_info = items.FindDict(id);
@@ -356,6 +375,10 @@ void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
     blink::web_pref::WebPreferences* web_prefs) {
   download_request_manager_->ConfigureWebPrefsForBackgroundWebContents(
       web_contents, web_prefs);
+}
+
+base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
 }
 
 void PlaylistService::GetAllPlaylists(GetAllPlaylistsCallback callback) {
@@ -905,6 +928,21 @@ mojo::PendingRemote<mojom::PlaylistService> PlaylistService::MakeRemote() {
 void PlaylistService::AddObserver(
     mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) {
   service_observers_.Add(std::move(observer));
+}
+
+void PlaylistService::OnMediaUpdatedFromContents(
+    content::WebContents* contents) {
+  if (download_request_manager_->background_contents() != contents) {
+    return;
+  }
+
+  // Try getting media files that are added dynamically after we've tried.
+  PlaylistDownloadRequestManager::Request request;
+  request.url_or_contents = contents->GetWeakPtr();
+  request.callback =
+      base::BindOnce(&PlaylistService::NotifyMediaFilesUpdated,
+                     weak_factory_.GetWeakPtr(), contents->GetVisibleURL());
+  download_request_manager_->GetMediaFilesFromPage(std::move(request));
 }
 
 void PlaylistService::AddObserverForTest(PlaylistServiceObserver* observer) {

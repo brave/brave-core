@@ -6,14 +6,19 @@
 #include "brave/components/playlist/browser/playlist_download_request_manager.h"
 
 #include "base/ranges/algorithm.h"
+#include "base/test/bind.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/schemeful_site.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -23,6 +28,45 @@
 #else
 #include "chrome/test/base/in_process_browser_test.h"
 #endif
+
+namespace playlist {
+namespace {
+
+class MockObserver : public mojom::PlaylistServiceObserver {
+ public:
+  MockObserver() = default;
+  ~MockObserver() override = default;
+
+  mojo::PendingRemote<mojom::PlaylistServiceObserver> GetRemote() {
+    return observer_receiver_.BindNewPipeAndPassRemote();
+  }
+
+  // mojom::PlaylistServiceObserver:
+  MOCK_METHOD(void,
+              OnEvent,
+              (mojom::PlaylistEvent event, const std::string& playlist_id),
+              (override));
+
+  MOCK_METHOD(void,
+              OnMediaFileDownloadProgressed,
+              (const std::string& id,
+               int64_t total_bytes,
+               int64_t received_bytes,
+               int8_t percent_complete,
+               const std::string& time_remaining),
+              (override));
+
+  MOCK_METHOD(void,
+              OnMediaFilesUpdated,
+              (const GURL& page_url, std::vector<mojom::PlaylistItemPtr> items),
+              (override));
+
+ private:
+  mojo::Receiver<mojom::PlaylistServiceObserver> observer_receiver_{this};
+};
+
+}  // namespace
+}  // namespace playlist
 
 class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
  public:
@@ -36,7 +80,9 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   PlaylistDownloadRequestManagerBrowserTest() {
     playlist::PlaylistDownloadRequestManager::SetPlaylistJavaScriptWorldId(
         ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+    scoped_feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
+
   ~PlaylistDownloadRequestManagerBrowserTest() override = default;
 
   auto* https_server() { return https_server_.get(); }
@@ -53,32 +99,50 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     return item;
   }
 
+  GURL LoadHTML(const std::string& html, GURL url = GURL()) {
+    const auto* test_info =
+        testing::UnitTest::GetInstance()->current_test_info();
+    VLOG(2) << __FUNCTION__ << test_info->name() << ": " << __func__;
+
+    // Start server: ASSER_TRUE() has its own return type internally, thus
+    // encloses with lambda.
+    ([&]() {
+      if (https_server()->Started()) {
+        ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
+      }
+      https_server()->RegisterRequestHandler(
+          base::BindRepeating(&PlaylistDownloadRequestManagerBrowserTest::Serve,
+                              base::Unretained(this), html));
+      ASSERT_TRUE(https_server()->Start());
+    })();
+
+    // Load given |html| contents: ASSER_TRUE() has its own return type
+    // internally, thus encloesg with lambda.
+    GURL destination_url = url;
+    ([&]() {
+      auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
+      if (destination_url.is_valid()) {
+        destination_url = https_server()->GetURL(destination_url.host(),
+                                                 destination_url.path());
+      } else {
+        destination_url = https_server()->GetURL("/test");
+      }
+      ASSERT_TRUE(content::NavigateToURL(active_web_contents, destination_url));
+    })();
+
+    return destination_url;
+  }
+
   void LoadHTMLAndCheckResult(const std::string& html,
                               const std::vector<ExpectedData>& items,
                               const GURL& url = GURL()) {
     const auto* test_info =
         testing::UnitTest::GetInstance()->current_test_info();
-    VLOG(2) << test_info->name() << ": " << __func__;
+    VLOG(2) << __FUNCTION__ << test_info->name() << ": " << __func__;
 
-    if (https_server()->Started())
-      ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
-    https_server()->RegisterRequestHandler(
-        base::BindRepeating(&PlaylistDownloadRequestManagerBrowserTest::Serve,
-                            base::Unretained(this), html));
-    ASSERT_TRUE(https_server()->Start());
+    auto destination_url = LoadHTML(html, url);
 
-    // Load given |html| contents.
     auto* active_web_contents = chrome_test_utils::GetActiveWebContents(this);
-
-    GURL destination_url = url;
-    if (destination_url.is_valid()) {
-      destination_url = https_server()->GetURL(destination_url.host(),
-                                               destination_url.path());
-    } else {
-      destination_url = https_server()->GetURL("/test");
-    }
-    ASSERT_TRUE(content::NavigateToURL(active_web_contents, destination_url));
-
     // Run script and find media files
     ASSERT_FALSE(component_manager_->GetMediaDetectorScript({}).empty());
     playlist::PlaylistDownloadRequestManager::Request request;
@@ -105,13 +169,14 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     https_server_ = std::make_unique<net::EmbeddedTestServer>(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS);
 
-    component_manager_ =
-        std::make_unique<playlist::MediaDetectorComponentManager>(nullptr);
-    component_manager_->SetUseLocalScriptForTesting();
+    auto* playlist_service =
+        playlist::PlaylistServiceFactory::GetForBrowserContext(
+            browser()->profile());
+    ASSERT_TRUE(playlist_service);
 
-    request_manager_ =
-        std::make_unique<playlist::PlaylistDownloadRequestManager>(
-            chrome_test_utils::GetProfile(this), component_manager_.get());
+    request_manager_ = playlist_service->download_request_manager_.get();
+    component_manager_ = request_manager_->media_detector_component_manager();
+    component_manager_->SetUseLocalScriptForTesting();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -130,8 +195,8 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
   }
 
   void TearDownOnMainThread() override {
-    request_manager_.reset();
-    component_manager_.reset();
+    request_manager_ = nullptr;
+    component_manager_ = nullptr;
 
     if (https_server()->Started())
       ASSERT_TRUE(https_server()->ShutdownAndWaitUntilComplete());
@@ -191,8 +256,10 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     run_loop_->Quit();
   }
 
-  std::unique_ptr<playlist::MediaDetectorComponentManager> component_manager_;
-  std::unique_ptr<playlist::PlaylistDownloadRequestManager> request_manager_;
+  base::test::ScopedFeatureList scoped_feature_list_;
+
+  raw_ptr<playlist::MediaDetectorComponentManager> component_manager_;
+  raw_ptr<playlist::PlaylistDownloadRequestManager> request_manager_;
 
   std::unique_ptr<base::RunLoop> run_loop_;
 
@@ -370,4 +437,55 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
            .media_source = "/test1.mp4",
            .duration = ""},
       });
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
+                       DynamicallyAddedMedia) {
+  testing::NiceMock<playlist::MockObserver> observer;
+  auto* playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          browser()->profile());
+  ASSERT_TRUE(playlist_service);
+  playlist_service->AddObserver(observer.GetRemote());
+
+  const auto& url = LoadHTML(
+      R"html(
+        <html>
+        <meta property="og:image" content="/img.jpg">
+        <body>
+          <video>
+          </video>
+        </body>
+        <script>
+          // Attach video tag after a few seconds.
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+              let videoElement = document.createElement('video');
+              videoElement.src = 'test1.mp4';
+              document.body.appendChild(videoElement);
+            }, 5000);
+          });
+        </script>
+        </html>
+      )html",
+      GURL("https://youtube.com")  // For now, detecting dynamically added media
+                                   // files is done only for Background web
+                                   // contents. So we should pretend to be
+                                   // Youtube.
+  );
+
+  // At the first execution, we don't get any media files.
+  // And after that, we should find dynamically added media files and
+  // notify observers.
+  using testing::_;
+  base::RunLoop run_loop;
+  ON_CALL(observer, OnMediaFilesUpdated(_, _)).WillByDefault([&]() {
+    run_loop.Quit();
+  });
+  EXPECT_CALL(observer, OnMediaFilesUpdated(url, _));
+  playlist_service->FindMediaFilesFromActiveTab(base::BindLambdaForTesting(
+      [](const GURL& url, std::vector<playlist::mojom::PlaylistItemPtr> items) {
+        EXPECT_TRUE(items.empty());
+      }));
+  run_loop.Run();
 }
