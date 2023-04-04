@@ -7,10 +7,10 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // constants
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // utils
-import { useNftPin } from '../../../common/hooks/nft-pin'
+import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../common/locale'
 
 // selectors
@@ -21,7 +21,7 @@ import { PageSelectors } from '../../../page/selectors'
 import { Row } from '../../shared/style'
 import { NftPinningStatusAnimation } from '../nft-pinning-status-animation/nft-pinning-status-animation'
 
-export type BannerStatus = 'start' | 'uploading' | 'success'
+export type BannerStatus = 'start' | 'uploading' | 'success' | 'hidden'
 
 interface Props {
   onDismiss: () => void
@@ -47,12 +47,12 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
     if (!isAutoPinEnabled) return 'start'
 
     switch (status) {
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
+      case OverallPinningStatus.PINNING_FINISHED:
         return 'success'
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
+      case OverallPinningStatus.PINNING_IN_PROGRESS:
         return 'uploading'
       default:
-        return 'start'
+        return 'hidden'
     }
   }, [status, pinnableNftsCount, isAutoPinEnabled])
 
