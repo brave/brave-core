@@ -9,8 +9,11 @@
 #include <windows.graphics.imaging.h>
 #include <windows.media.ocr.h>
 #include <wrl/client.h>
+
+#include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "services/shape_detection/public/mojom/textdetection.mojom.h"
 
@@ -30,15 +33,16 @@ class TextRecognizerWin {
 
   ~TextRecognizerWin();
 
-  void Detect(const SkBitmap& bitmap,
-              shape_detection::mojom::TextDetection::DetectCallback callback);
+  void Detect(
+      const SkBitmap& bitmap,
+      base::OnceCallback<void(const std::vector<std::string>&)> callback);
 
  private:
   Microsoft::WRL::ComPtr<ABI::Windows::Media::Ocr::IOcrEngine> ocr_engine_;
   Microsoft::WRL::ComPtr<
       ABI::Windows::Graphics::Imaging::ISoftwareBitmapStatics>
       bitmap_factory_;
-  shape_detection::mojom::TextDetection::DetectCallback
+  base::OnceCallback<void(const std::vector<std::string>&)>
       recognize_text_callback_;
 
   HRESULT BeginDetect(const SkBitmap& bitmap);

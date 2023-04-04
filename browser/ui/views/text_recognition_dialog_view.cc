@@ -20,6 +20,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "components/constrained_window/constrained_window_views.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "ui/base/clipboard/scoped_clipboard_writer.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -129,13 +130,13 @@ TextRecognitionDialogView::TextRecognitionDialogView(const SkBitmap& image)
                              gfx::Insets::TLBR(0, 0, 10, 0));
 
 #if BUILDFLAG(IS_WIN)
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&text_recognition::GetAvailableRecognizerLanguages),
-      base::BindOnce(
-          &TextRecognitionDialogView::OnGetAvailableRecognizerLanguages,
-          weak_factory_.GetWeakPtr()));
+  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(&text_recognition::GetAvailableRecognizerLanguages),
+          base::BindOnce(
+              &TextRecognitionDialogView::OnGetAvailableRecognizerLanguages,
+              weak_factory_.GetWeakPtr()));
 #endif
 
   StartExtractingText();
@@ -145,6 +146,8 @@ TextRecognitionDialogView::~TextRecognitionDialogView() = default;
 
 void TextRecognitionDialogView::StartExtractingText(
     const std::string& language_code) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   result_ = absl::nullopt;
   show_result_timer_.Reset();
 
@@ -178,21 +181,23 @@ void TextRecognitionDialogView::StartExtractingText(
     combobox_->SetEnabled(false);
   }
 
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-      base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
-  task_runner->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &text_recognition::GetTextFromImage, language_code, image_,
-          base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
-                         weak_factory_.GetWeakPtr())));
+  base::ThreadPool::CreateCOMSTATaskRunner({base::MayBlock()})
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(
+              &text_recognition::GetTextFromImage, language_code, image_,
+              content::GetUIThreadTaskRunner({}),
+              base::BindOnce(&TextRecognitionDialogView::OnGetTextFromImage,
+                             weak_factory_.GetWeakPtr())),
+          base::BindOnce(&TextRecognitionDialogView::TextRecognizationSupported,
+                         weak_factory_.GetWeakPtr()));
 #endif
 }
 
 void TextRecognitionDialogView::OnGetTextFromImage(
     const std::vector<std::string>& text) {
-  CHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   if (show_result_timer_.IsRunning()) {
     result_ = text;
     return;
@@ -215,6 +220,8 @@ void TextRecognitionDialogView::OnGetTextFromImage(
 
 void TextRecognitionDialogView::UpdateContents(
     const std::vector<std::string>& text) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
   CHECK(!show_result_timer_.IsRunning())
       << "Update when timer is fired or stopped.";
 
@@ -263,7 +270,7 @@ void TextRecognitionDialogView::OnShowResultTimerFired() {
 #if BUILDFLAG(IS_WIN)
 void TextRecognitionDialogView::OnGetAvailableRecognizerLanguages(
     const std::vector<std::string>& languages) {
-  CHECK(content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Add combobox for selecting languages with fetched available languages.
   auto* spacer =
@@ -287,6 +294,15 @@ bool TextRecognitionDialogView::OnLanguageOptionchanged(size_t index) {
   StartExtractingText(
       base::UTF16ToUTF8(combobox_->GetModel()->GetItemAt(index)));
   return false;
+}
+
+void TextRecognitionDialogView::TextRecognizationSupported(bool supported) {
+  // If supported, we can get result via OnGetTextFromImage().
+  if (supported) {
+    return;
+  }
+
+  OnGetTextFromImage({});
 }
 #endif
 

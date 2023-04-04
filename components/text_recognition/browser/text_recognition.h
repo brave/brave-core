@@ -11,6 +11,8 @@
 
 #include "base/component_export.h"
 #include "base/functional/callback_forward.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/task/single_thread_task_runner.h"
 #include "build/build_config.h"
 
 class SkBitmap;
@@ -29,9 +31,11 @@ std::vector<std::string> GetAvailableRecognizerLanguages();
 
 // Recognized text is delivered by running |callback_run_on_ui_thread| on UI
 // thread. On failure, |callback| runs with empty set.
+// Return false when text recognization is not supported.
 COMPONENT_EXPORT(TEXT_RECOGNITION_BROWSER)
-void GetTextFromImage(const std::string& lang_code,
+bool GetTextFromImage(const std::string& lang_code,
                       const SkBitmap& image,
+                      scoped_refptr<base::SingleThreadTaskRunner> reply_runner,
                       base::OnceCallback<void(const std::vector<std::string>&)>
                           callback_run_on_ui_thread);
 #endif

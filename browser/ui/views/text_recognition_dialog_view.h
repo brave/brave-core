@@ -13,6 +13,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "base/timer/timer.h"
 #include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -51,6 +52,7 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   void OnGetAvailableRecognizerLanguages(
       const std::vector<std::string>& languages);
   bool OnLanguageOptionchanged(size_t index);
+  void TextRecognizationSupported(bool supported);
 #endif
 
   // Show |text| in this dialog and copy it to clipboard.
@@ -63,6 +65,8 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
   raw_ptr<views::View> header_container_ = nullptr;
   SkBitmap image_;
   absl::optional<std::vector<std::string>> result_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
 #if BUILDFLAG(IS_WIN)
   // Only used on Windows to show selectable target language list.

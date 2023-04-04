@@ -10,12 +10,11 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/post_async_results.h"
 #include "base/win/scoped_hstring.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "services/shape_detection/detection_utils_win.h"
 #include "services/shape_detection/public/mojom/textdetection.mojom.h"
 
@@ -46,11 +45,10 @@ TextRecognizerWin::~TextRecognizerWin() = default;
 
 void TextRecognizerWin::Detect(
     const SkBitmap& bitmap,
-    shape_detection::mojom::TextDetection::DetectCallback callback) {
+    base::OnceCallback<void(const std::vector<std::string>&)> callback) {
   if (FAILED(BeginDetect(bitmap))) {
     // No detection taking place; run |callback| with an empty array of results.
-    std::move(callback).Run(
-        std::vector<shape_detection::mojom::TextDetectionResultPtr>());
+    std::move(callback).Run({});
     return;
   }
   // Hold on the callback until AsyncOperation completes.
@@ -129,8 +127,12 @@ TextRecognizerWin::BuildTextDetectionResult(ComPtr<IOcrResult> ocr_result) {
 // completes because RecognizeAsync does not hold a reference.
 void TextRecognizerWin::OnTextDetected(ComPtr<ISoftwareBitmap> /* win_bitmap */,
                                        ComPtr<IOcrResult> ocr_result) {
-  std::move(recognize_text_callback_)
-      .Run(BuildTextDetectionResult(std::move(ocr_result)));
+  std::vector<std::string> detected_string;
+  for (const auto& re : BuildTextDetectionResult(std::move(ocr_result))) {
+    detected_string.push_back(re->raw_value);
+  }
+
+  std::move(recognize_text_callback_).Run(detected_string);
 }
 
 }  // namespace text_recognition

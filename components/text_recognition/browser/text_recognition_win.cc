@@ -10,22 +10,21 @@
 #include <windows.graphics.imaging.h>
 #include <windows.media.ocr.h>
 #include <wrl/client.h>
+
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/threading/scoped_blocking_call.h"
 #include "base/win/core_winrt_util.h"
 #include "base/win/scoped_hstring.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/text_recognition/browser/text_recognizer_win.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
-#include "services/shape_detection/detection_utils_win.h"
-#include "services/shape_detection/public/mojom/textdetection.mojom.h"
 
 using ABI::Windows::Foundation::Collections::IVectorView;
 using ABI::Windows::Globalization::ILanguage;
@@ -42,28 +41,18 @@ using Microsoft::WRL::ComPtr;
 // Referred shape_detection::TextDetectionImplWin.
 namespace text_recognition {
 
-namespace {
-
-void RunOnUIThread(
-    base::OnceCallback<void(const std::vector<std::string>&)> callback,
-    const std::vector<std::string>& result = {}) {
-  content::GetUIThreadTaskRunner({})->PostTask(
-      FROM_HERE, base::BindOnce(std::move(callback), result));
-}
-
-}  // namespace
-
-void GetTextFromImage(const std::string& language_code,
+bool GetTextFromImage(const std::string& language_code,
                       const SkBitmap& image,
+                      scoped_refptr<base::SingleThreadTaskRunner> reply_runner,
                       base::OnceCallback<void(const std::vector<std::string>&)>
                           callback_run_on_ui_thread) {
-  CHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI));
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
 
   // Loads functions dynamically at runtime to prevent library dependencies.
   if (!base::win::ResolveCoreWinRTDelayload()) {
     VLOG(2) << "Failed loading functions from combase.dll";
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
+    return false;
   }
 
   ComPtr<IOcrEngineStatics> engine_factory;
@@ -73,8 +62,7 @@ void GetTextFromImage(const std::string& language_code,
   if (FAILED(hr)) {
     VLOG(2) << "IOcrEngineStatics factory failed: "
             << logging::SystemErrorCodeToString(hr);
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
+    return false;
   }
 
   ComPtr<ILanguageFactory> language_factory;
@@ -84,8 +72,7 @@ void GetTextFromImage(const std::string& language_code,
   if (FAILED(hr)) {
     VLOG(2) << "ILanguage factory failed: "
             << logging::SystemErrorCodeToString(hr);
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
+    return false;
   }
 
   ComPtr<IOcrEngine> ocr_engine;
@@ -94,14 +81,13 @@ void GetTextFromImage(const std::string& language_code,
     if (FAILED(hr)) {
       VLOG(2) << "Create engine failed from language: "
               << logging::SystemErrorCodeToString(hr);
-      RunOnUIThread(std::move(callback_run_on_ui_thread));
-      return;
+      return false;
     }
   } else {
     ScopedHString language_hstring = ScopedHString::Create(language_code);
     if (!language_hstring.is_valid()) {
-      RunOnUIThread(std::move(callback_run_on_ui_thread));
-      return;
+      VLOG(2) << "Got invalid language code";
+      return false;
     }
 
     ComPtr<ILanguage> language;
@@ -109,23 +95,20 @@ void GetTextFromImage(const std::string& language_code,
     if (FAILED(hr)) {
       VLOG(2) << "Create language failed: "
               << logging::SystemErrorCodeToString(hr);
-      RunOnUIThread(std::move(callback_run_on_ui_thread));
-      return;
+      return false;
     }
 
     boolean is_supported = false;
     hr = engine_factory->IsLanguageSupported(language.Get(), &is_supported);
     if (FAILED(hr) || !is_supported) {
-      RunOnUIThread(std::move(callback_run_on_ui_thread));
-      return;
+      return false;
     }
 
     hr = engine_factory->TryCreateFromLanguage(language.Get(), &ocr_engine);
     if (FAILED(hr)) {
       VLOG(2) << "Create engine failed from language: "
               << logging::SystemErrorCodeToString(hr);
-      RunOnUIThread(std::move(callback_run_on_ui_thread));
-      return;
+      return false;
     }
   }
 
@@ -136,31 +119,34 @@ void GetTextFromImage(const std::string& language_code,
   if (FAILED(hr)) {
     VLOG(2) << "ISoftwareBitmapStatics factory failed: "
             << logging::SystemErrorCodeToString(hr);
-    RunOnUIThread(std::move(callback_run_on_ui_thread));
-    return;
+    return false;
   }
 
   auto recognizer = std::make_unique<TextRecognizerWin>(
       std::move(ocr_engine), std::move(bitmap_factory));
   auto* recognizer_ptr = recognizer.get();
   recognizer_ptr->Detect(
-      image, base::BindOnce(
-                 [](std::unique_ptr<TextRecognizerWin> recognizer,
-                    base::OnceCallback<void(const std::vector<std::string>&)>
-                        callback_run_on_ui_thread,
-                    std::vector<shape_detection::mojom::TextDetectionResultPtr>
-                        result) {
-                   std::vector<std::string> detected_string;
-                   for (const auto& re : result) {
-                     detected_string.push_back(re->raw_value);
-                   }
-                   RunOnUIThread(std::move(callback_run_on_ui_thread),
-                                 detected_string);
-                 },
-                 std::move(recognizer), std::move(callback_run_on_ui_thread)));
+      image,
+      base::BindOnce(
+          [](std::unique_ptr<TextRecognizerWin> recognizer,
+             base::OnceCallback<void(const std::vector<std::string>&)>
+                 callback_run_on_ui_thread,
+             scoped_refptr<base::SingleThreadTaskRunner> reply_runner,
+             const std::vector<std::string>& result) {
+            reply_runner->PostTask(
+                FROM_HERE,
+                base::BindOnce(std::move(callback_run_on_ui_thread), result));
+          },
+          std::move(recognizer), std::move(callback_run_on_ui_thread),
+          std::move(reply_runner)));
+
+  return true;
 }
 
 std::vector<std::string> GetAvailableRecognizerLanguages() {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+
   // Loads functions dynamically at runtime to prevent library dependencies.
   if (!base::win::ResolveCoreWinRTDelayload()) {
     VLOG(2) << "Failed loading functions from combase.dll";
@@ -195,13 +181,15 @@ std::vector<std::string> GetAvailableRecognizerLanguages() {
   WCHAR name[128]{};
   ULONG nameLen = std::size(name);
   ULONG langs = 0;
-  GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &langs,
-                              reinterpret_cast<PZZWSTR>(&name), &nameLen);
-  const std::string default_language =
-      brave_l10n::GetISOLanguageCode(base::WideToUTF8(std::wstring(name)));
 
-  // Locate default language at 0.
-  std::vector<std::string> language_codes = {default_language};
+  std::string default_language_code;
+  if (GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &langs,
+                                  reinterpret_cast<PZZWSTR>(&name), &nameLen)) {
+    default_language_code =
+        brave_l10n::GetISOLanguageCode(base::WideToUTF8(name));
+  }
+
+  std::vector<std::string> language_codes;
   for (uint32_t i = 0; i < lang_count; ++i) {
     ComPtr<ILanguage> lang;
     hr = available_languages->GetAt(i, &lang);
@@ -222,6 +210,12 @@ std::vector<std::string> GetAvailableRecognizerLanguages() {
     }
 
     language_codes.push_back(code);
+  }
+
+  // Try to locate default language at 0.
+  const auto iter = base::ranges::find(language_codes, default_language_code);
+  if (iter != language_codes.begin() && iter != language_codes.end()) {
+    std::iter_swap(language_codes.begin(), iter);
   }
 
   return language_codes;
