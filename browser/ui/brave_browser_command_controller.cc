@@ -77,15 +77,13 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 BraveBrowserCommandController::~BraveBrowserCommandController() = default;
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.SupportsCommand(id)
-      : BrowserCommandController::SupportsCommand(id);
+  return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
+                             : BrowserCommandController::SupportsCommand(id);
 }
 
 bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.IsCommandEnabled(id)
-      : BrowserCommandController::IsCommandEnabled(id);
+  return IsBraveCommands(id) ? brave_command_updater_.IsCommandEnabled(id)
+                             : BrowserCommandController::IsCommandEnabled(id);
 }
 
 bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
@@ -99,14 +97,16 @@ bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
 }
 
 void BraveBrowserCommandController::AddCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.AddCommandObserver(id, observer)
       : BrowserCommandController::AddCommandObserver(id, observer);
 }
 
 void BraveBrowserCommandController::RemoveCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.RemoveCommandObserver(id, observer)
       : BrowserCommandController::RemoveCommandObserver(id, observer);
@@ -120,8 +120,8 @@ void BraveBrowserCommandController::RemoveCommandObserver(
 
 bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
   return IsBraveCommands(id)
-      ? brave_command_updater_.UpdateCommandEnabled(id, state)
-      : BrowserCommandController::UpdateCommandEnabled(id, state);
+             ? brave_command_updater_.UpdateCommandEnabled(id, state)
+             : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
@@ -138,8 +138,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     if (brave_wallet::IsAllowed(browser_->profile()->GetPrefs())) {
       UpdateCommandForBraveWallet();
     }
-    if (syncer::IsSyncAllowedByFlag())
+    if (syncer::IsSyncAllowedByFlag()) {
       UpdateCommandForBraveSync();
+    }
   }
   UpdateCommandForWebcompatReporter();
 #if BUILDFLAG(ENABLE_TOR)
@@ -253,27 +254,31 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     int id,
     WindowOpenDisposition disposition,
     base::TimeTicks time_stamp) {
-  if (!SupportsCommand(id) || !IsCommandEnabled(id))
+  if (!SupportsCommand(id) || !IsCommandEnabled(id)) {
     return false;
+  }
 
-  if (browser_->tab_strip_model()->active_index() == TabStripModel::kNoTab)
+  if (browser_->tab_strip_model()->active_index() == TabStripModel::kNoTab) {
     return true;
+  }
 
   DCHECK(IsCommandEnabled(id)) << "Invalid/disabled command " << id;
 
   switch (id) {
     case IDC_NEW_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!browser_->profile()->IsTor())
+      if (!browser_->profile()->IsTor()) {
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
+      }
       NewEmptyWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_NEW_INCOGNITO_WINDOW:
       // Use chromium's action for non-Tor profiles.
-      if (!browser_->profile()->IsTor())
+      if (!browser_->profile()->IsTor()) {
         return BrowserCommandController::ExecuteCommandWithDisposition(
             id, disposition, time_stamp);
+      }
       NewIncognitoWindow(browser_->profile()->GetOriginalProfile());
       break;
     case IDC_SHOW_BRAVE_REWARDS:
@@ -336,6 +341,15 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_TAB_MUTE:
       brave::ToggleActiveTabAudioMute(browser_);
+      break;
+    case IDC_TOGGLE_VERTICAL_TABS:
+      brave::ToggleVerticalTabStrip(browser_);
+      break;
+    case IDC_TOGGLE_VERTICAL_TABS_FLOATING:
+      brave::ToggleVerticalTabStripFloatingMode(browser_);
+      break;
+    case IDC_TOGGLE_WINDOW_TITLE:
+      brave::ToggleWindowTitleVisibilityForVerticalTabs(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
