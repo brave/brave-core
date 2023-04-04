@@ -32,6 +32,8 @@ EligibleAdsV1::EligibleAdsV1(
     resource::AntiTargeting* anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
+EligibleAdsV1::~EligibleAdsV1() = default;
+
 void EligibleAdsV1::GetForUserModel(
     targeting::UserModelInfo user_model,
     GetEligibleAdsCallback<CreativeNewTabPageAdList> callback) {
@@ -40,8 +42,9 @@ void EligibleAdsV1::GetForUserModel(
   const database::table::AdEvents database_table;
   database_table.GetForType(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&EligibleAdsV1::OnGetForUserModel, base::Unretained(this),
-                     std::move(user_model), std::move(callback)));
+      base::BindOnce(&EligibleAdsV1::OnGetForUserModel,
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     std::move(callback)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,7 +69,7 @@ void EligibleAdsV1::GetBrowsingHistory(
   AdsClientHelper::GetInstance()->GetBrowsingHistory(
       features::GetBrowsingHistoryMaxCount(),
       features::GetBrowsingHistoryDaysAgo(),
-      base::BindOnce(&EligibleAdsV1::GetEligibleAds, base::Unretained(this),
+      base::BindOnce(&EligibleAdsV1::GetEligibleAds, weak_factory_.GetWeakPtr(),
                      std::move(user_model), ad_events, std::move(callback)));
 }
 
@@ -99,8 +102,8 @@ void EligibleAdsV1::GetForChildSegments(
   database_table.GetForSegments(
       segments,
       base::BindOnce(&EligibleAdsV1::OnGetForChildSegments,
-                     base::Unretained(this), std::move(user_model), ad_events,
-                     browsing_history, std::move(callback)));
+                     weak_factory_.GetWeakPtr(), std::move(user_model),
+                     ad_events, browsing_history, std::move(callback)));
 }
 
 void EligibleAdsV1::OnGetForChildSegments(
@@ -150,7 +153,7 @@ void EligibleAdsV1::GetForParentSegments(
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
       segments, base::BindOnce(&EligibleAdsV1::OnGetForParentSegments,
-                               base::Unretained(this), ad_events,
+                               weak_factory_.GetWeakPtr(), ad_events,
                                browsing_history, std::move(callback)));
 }
 
@@ -189,9 +192,9 @@ void EligibleAdsV1::GetForUntargeted(
 
   const database::table::CreativeNewTabPageAds database_table;
   database_table.GetForSegments(
-      {kUntargeted},
-      base::BindOnce(&EligibleAdsV1::OnGetForUntargeted, base::Unretained(this),
-                     ad_events, browsing_history, std::move(callback)));
+      {kUntargeted}, base::BindOnce(&EligibleAdsV1::OnGetForUntargeted,
+                                    weak_factory_.GetWeakPtr(), ad_events,
+                                    browsing_history, std::move(callback)));
 }
 
 void EligibleAdsV1::OnGetForUntargeted(

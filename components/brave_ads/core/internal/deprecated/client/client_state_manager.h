@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/ad_content_action_types.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/category_content_action_types.h"
@@ -112,6 +113,8 @@ class ClientStateManager final {
   bool is_mutated_ = false;
 
   bool is_initialized_ = false;
+
+  base::WeakPtrFactory<ClientStateManager> weak_factory_{this};
 };
 
 }  // namespace brave_ads

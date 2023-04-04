@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
@@ -68,6 +69,8 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
 
   mutable absl::optional<std::string> auto_detected_subdivision_code_;
   mutable absl::optional<std::string> subdivision_code_;
+
+  base::WeakPtrFactory<SubdivisionTargeting> weak_factory_{this};
 };
 
 }  // namespace brave_ads::geographic

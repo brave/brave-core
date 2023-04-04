@@ -94,7 +94,7 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue() {
   event_handler_->FireEvent(std::move(ad_mojom),
                             mojom::SearchResultAdEventType::kViewed,
                             base::BindOnce(&SearchResultAd::OnFireAdViewedEvent,
-                                           base::Unretained(this)));
+                                           weak_factory_.GetWeakPtr()));
 }
 
 void SearchResultAd::OnFireAdViewedEvent(

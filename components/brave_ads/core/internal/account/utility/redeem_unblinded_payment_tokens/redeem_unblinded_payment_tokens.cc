@@ -121,7 +121,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
   user_data_builder.Build(
       base::BindOnce(&RedeemUnblindedPaymentTokens::
                          OnRedeemUnblindedPaymentTokensUserDataBuilt,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokensUserDataBuilt(
@@ -138,7 +138,7 @@ void RedeemUnblindedPaymentTokens::OnRedeemUnblindedPaymentTokensUserDataBuilt(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemUnblindedPaymentTokens::OnRedeem,
-                     base::Unretained(this), unblinded_payment_tokens));
+                     weak_factory_.GetWeakPtr(), unblinded_payment_tokens));
 }
 
 void RedeemUnblindedPaymentTokens::OnRedeem(
@@ -203,7 +203,7 @@ void RedeemUnblindedPaymentTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
       base::BindOnce(&RedeemUnblindedPaymentTokens::OnRetry,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry redeeming unblinded payment tokens "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));

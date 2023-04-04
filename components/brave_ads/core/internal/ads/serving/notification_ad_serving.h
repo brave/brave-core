@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_observer.h"
@@ -93,6 +94,8 @@ class Serving final : public AdsClientNotifierObserver {
   Timer timer_;
 
   std::unique_ptr<EligibleAdsBase> eligible_ads_;
+
+  base::WeakPtrFactory<Serving> weak_factory_{this};
 };
 
 }  // namespace notification_ads

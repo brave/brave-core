@@ -66,8 +66,8 @@ void DatabaseManager::CreateOrOpen(ResultCallback callback) {
 
   AdsClientHelper::GetInstance()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&DatabaseManager::OnCreateOrOpen, base::Unretained(this),
-                     std::move(callback)));
+      base::BindOnce(&DatabaseManager::OnCreateOrOpen,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void DatabaseManager::OnCreateOrOpen(ResultCallback callback,
@@ -110,7 +110,7 @@ void DatabaseManager::MaybeMigrate(const int from_version,
 
   database::MigrateFromVersion(
       from_version,
-      base::BindOnce(&DatabaseManager::OnMigrate, base::Unretained(this),
+      base::BindOnce(&DatabaseManager::OnMigrate, weak_factory_.GetWeakPtr(),
                      from_version, std::move(callback)));
 }
 

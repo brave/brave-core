@@ -34,7 +34,7 @@ void TextClassification::Load() {
   LoadAndParseResource(
       kResourceId, targeting::features::GetTextClassificationResourceVersion(),
       base::BindOnce(&TextClassification::OnLoadAndParseResource,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void TextClassification::OnLoadAndParseResource(

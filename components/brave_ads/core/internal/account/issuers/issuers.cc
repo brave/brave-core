@@ -67,7 +67,7 @@ void Issuers::Fetch() {
 
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
-      base::BindOnce(&Issuers::OnFetch, base::Unretained(this)));
+      base::BindOnce(&Issuers::OnFetch, weak_factory_.GetWeakPtr()));
 }
 
 void Issuers::OnFetch(const mojom::UrlResponseInfo& url_response) {
@@ -121,7 +121,7 @@ void Issuers::FetchAfterDelay() {
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, GetFetchDelay(),
-      base::BindOnce(&Issuers::Fetch, base::Unretained(this)));
+      base::BindOnce(&Issuers::Fetch, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Fetch issuers " << FriendlyDateAndTime(fetch_at,
                                                   /*use_sentence_style*/ true));
@@ -132,7 +132,7 @@ void Issuers::RetryAfterDelay() {
 
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&Issuers::OnRetry, base::Unretained(this)));
+      base::BindOnce(&Issuers::OnRetry, weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching issuers "
               << FriendlyDateAndTime(retry_at, /*use_sentence_style*/ true));

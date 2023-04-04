@@ -36,7 +36,7 @@ bool AntiTargeting::IsInitialized() const {
 void AntiTargeting::Load() {
   LoadAndParseResource(kResourceId, features::GetAntiTargetingResourceVersion(),
                        base::BindOnce(&AntiTargeting::OnLoadAndParseResource,
-                                      weak_ptr_factory_.GetWeakPtr()));
+                                      weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

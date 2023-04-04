@@ -11,6 +11,7 @@
 
 #include "base/containers/circular_deque.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/search_result_ads/search_result_ad_event_handler_observer.h"
@@ -61,6 +62,8 @@ class SearchResultAd final : public search_result_ads::EventHandlerObserver {
 
   const raw_ptr<Account> account_ = nullptr;    // NOT OWNED
   const raw_ptr<Transfer> transfer_ = nullptr;  // NOT OWNED
+
+  base::WeakPtrFactory<SearchResultAd> weak_factory_{this};
 };
 
 }  // namespace brave_ads

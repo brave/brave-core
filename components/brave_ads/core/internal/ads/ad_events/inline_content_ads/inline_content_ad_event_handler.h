@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
@@ -68,6 +69,8 @@ class EventHandler final : public EventHandlerObserver {
       mojom::InlineContentAdEventType event_type) const;
 
   base::ObserverList<EventHandlerObserver> observers_;
+
+  base::WeakPtrFactory<EventHandler> weak_factory_{this};
 };
 
 }  // namespace inline_content_ads

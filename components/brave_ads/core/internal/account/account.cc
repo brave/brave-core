@@ -141,10 +141,11 @@ void Account::Deposit(const std::string& creative_instance_id,
     return;
   }
 
-  deposit->GetValue(creative_instance_id,
-                    base::BindOnce(&Account::OnGetDepositValue,
-                                   base::Unretained(this), creative_instance_id,
-                                   ad_type, segment, confirmation_type));
+  deposit->GetValue(
+      creative_instance_id,
+      base::BindOnce(&Account::OnGetDepositValue, weak_factory_.GetWeakPtr(),
+                     creative_instance_id, ad_type, segment,
+                     confirmation_type));
 }
 
 // static
@@ -188,7 +189,7 @@ void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const double value) const {
   transactions::Add(
       creative_instance_id, segment, value, ad_type, confirmation_type,
-      base::BindOnce(&Account::OnDepositProcessed, base::Unretained(this),
+      base::BindOnce(&Account::OnDepositProcessed, weak_factory_.GetWeakPtr(),
                      creative_instance_id, ad_type, confirmation_type));
 }
 
@@ -260,7 +261,7 @@ void Account::WalletDidChange(const WalletInfo& wallet) const {
   NotifyWalletDidChange(wallet);
 
   ResetRewards(
-      base::BindOnce(&Account::OnRewardsReset, base::Unretained(this)));
+      base::BindOnce(&Account::OnRewardsReset, weak_factory_.GetWeakPtr()));
 }
 
 void Account::OnRewardsReset(const bool success) const {

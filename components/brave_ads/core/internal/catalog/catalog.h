@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CATALOG_CATALOG_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_observer.h"
@@ -54,6 +55,8 @@ class Catalog final : public DatabaseManagerObserver {
 
   Timer timer_;
   BackoffTimer retry_timer_;
+
+  base::WeakPtrFactory<Catalog> weak_factory_{this};
 };
 
 }  // namespace brave_ads

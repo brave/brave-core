@@ -59,7 +59,6 @@
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_reactions/user_reactions.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
-#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -338,8 +337,8 @@ bool AdsImpl::ToggleSavedAd(base::Value::Dict value) {
 
 void AdsImpl::CreateOrOpenDatabase(InitializeCallback callback) {
   DatabaseManager::GetInstance()->CreateOrOpen(
-      base::BindOnce(&AdsImpl::OnCreateOrOpenDatabase, base::Unretained(this),
-                     std::move(callback)));
+      base::BindOnce(&AdsImpl::OnCreateOrOpenDatabase,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
@@ -350,7 +349,7 @@ void AdsImpl::OnCreateOrOpenDatabase(InitializeCallback callback,
   }
 
   PurgeExpiredAdEvents(base::BindOnce(&AdsImpl::OnPurgeExpiredAdEvents,
-                                      base::Unretained(this),
+                                      weak_factory_.GetWeakPtr(),
                                       std::move(callback)));
 }
 
@@ -362,8 +361,8 @@ void AdsImpl::OnPurgeExpiredAdEvents(InitializeCallback callback,
 
   PurgeOrphanedAdEvents(
       mojom::AdType::kNewTabPageAd,
-      base::BindOnce(&AdsImpl::OnPurgeOrphanedAdEvents, base::Unretained(this),
-                     std::move(callback)));
+      base::BindOnce(&AdsImpl::OnPurgeOrphanedAdEvents,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
@@ -375,7 +374,7 @@ void AdsImpl::OnPurgeOrphanedAdEvents(InitializeCallback callback,
   RebuildAdEventHistoryFromDatabase();
 
   conversions::Migrate(base::BindOnce(&AdsImpl::OnMigrateConversions,
-                                      base::Unretained(this),
+                                      weak_factory_.GetWeakPtr(),
                                       std::move(callback)));
 }
 
@@ -386,7 +385,8 @@ void AdsImpl::OnMigrateConversions(InitializeCallback callback,
   }
 
   rewards::Migrate(base::BindOnce(&AdsImpl::OnMigrateRewards,
-                                  base::Unretained(this), std::move(callback)));
+                                  weak_factory_.GetWeakPtr(),
+                                  std::move(callback)));
 }
 
 void AdsImpl::OnMigrateRewards(InitializeCallback callback,
@@ -396,7 +396,8 @@ void AdsImpl::OnMigrateRewards(InitializeCallback callback,
   }
 
   client::Migrate(base::BindOnce(&AdsImpl::OnMigrateClientState,
-                                 base::Unretained(this), std::move(callback)));
+                                 weak_factory_.GetWeakPtr(),
+                                 std::move(callback)));
 }
 
 void AdsImpl::OnMigrateClientState(InitializeCallback callback,
@@ -406,7 +407,7 @@ void AdsImpl::OnMigrateClientState(InitializeCallback callback,
   }
 
   ClientStateManager::GetInstance()->Initialize(
-      base::BindOnce(&AdsImpl::OnLoadClientState, base::Unretained(this),
+      base::BindOnce(&AdsImpl::OnLoadClientState, weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 
@@ -417,7 +418,7 @@ void AdsImpl::OnLoadClientState(InitializeCallback callback,
   }
 
   confirmations::Migrate(base::BindOnce(&AdsImpl::OnMigrateConfirmationState,
-                                        base::Unretained(this),
+                                        weak_factory_.GetWeakPtr(),
                                         std::move(callback)));
 }
 
@@ -429,8 +430,8 @@ void AdsImpl::OnMigrateConfirmationState(InitializeCallback callback,
 
   ConfirmationStateManager::GetInstance()->Initialize(
       account_->GetWallet(),
-      base::BindOnce(&AdsImpl::OnLoadConfirmationState, base::Unretained(this),
-                     std::move(callback)));
+      base::BindOnce(&AdsImpl::OnLoadConfirmationState,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void AdsImpl::OnLoadConfirmationState(InitializeCallback callback,
@@ -440,7 +441,7 @@ void AdsImpl::OnLoadConfirmationState(InitializeCallback callback,
   }
 
   notifications::Migrate(base::BindOnce(&AdsImpl::OnMigrateNotificationState,
-                                        base::Unretained(this),
+                                        weak_factory_.GetWeakPtr(),
                                         std::move(callback)));
 }
 

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
@@ -124,6 +125,8 @@ class Conversions final : public AdsClientNotifierObserver,
   std::unique_ptr<resource::Conversions> resource_;
 
   Timer timer_;
+
+  base::WeakPtrFactory<Conversions> weak_factory_{this};
 };
 
 }  // namespace brave_ads

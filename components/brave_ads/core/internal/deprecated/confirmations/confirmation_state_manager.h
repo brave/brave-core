@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
@@ -90,6 +91,8 @@ class ConfirmationStateManager final {
 
   std::unique_ptr<privacy::UnblindedTokens> unblinded_tokens_;
   std::unique_ptr<privacy::UnblindedPaymentTokens> unblinded_payment_tokens_;
+
+  base::WeakPtrFactory<ConfirmationStateManager> weak_factory_{this};
 };
 
 }  // namespace brave_ads

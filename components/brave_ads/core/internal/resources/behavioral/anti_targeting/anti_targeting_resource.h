@@ -45,7 +45,7 @@ class AntiTargeting final : public AdsClientNotifierObserver {
 
   std::unique_ptr<AntiTargetingInfo> anti_targeting_;
 
-  base::WeakPtrFactory<AntiTargeting> weak_ptr_factory_{this};
+  base::WeakPtrFactory<AntiTargeting> weak_factory_{this};
 };
 
 }  // namespace brave_ads::resource

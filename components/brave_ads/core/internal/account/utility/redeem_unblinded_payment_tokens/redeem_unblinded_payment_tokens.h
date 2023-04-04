@@ -8,6 +8,7 @@
 
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
@@ -65,6 +66,8 @@ class RedeemUnblindedPaymentTokens final {
 
   Timer timer_;
   BackoffTimer retry_timer_;
+
+  base::WeakPtrFactory<RedeemUnblindedPaymentTokens> weak_factory_{this};
 };
 
 }  // namespace brave_ads

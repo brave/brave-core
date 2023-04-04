@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-shared.h"
@@ -85,6 +86,8 @@ class EventHandler final : public EventHandlerObserver {
       FireAdEventHandlerCallback callback) const;
 
   base::ObserverList<EventHandlerObserver> observers_;
+
+  base::WeakPtrFactory<EventHandler> weak_factory_{this};
 };
 
 }  // namespace search_result_ads

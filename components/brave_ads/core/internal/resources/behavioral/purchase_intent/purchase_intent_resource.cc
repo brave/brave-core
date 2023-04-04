@@ -32,7 +32,7 @@ void PurchaseIntent::Load() {
   LoadAndParseResource(kResourceId,
                        targeting::features::GetPurchaseIntentResourceVersion(),
                        base::BindOnce(&PurchaseIntent::OnLoadAndParseResource,
-                                      weak_ptr_factory_.GetWeakPtr()));
+                                      weak_factory_.GetWeakPtr()));
 }
 
 void PurchaseIntent::OnLoadAndParseResource(

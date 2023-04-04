@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <vector>
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
@@ -69,6 +70,8 @@ class Transfer final : public TabManagerObserver {
   Timer timer_;
 
   AdInfo last_clicked_ad_;
+
+  base::WeakPtrFactory<Transfer> weak_factory_{this};
 };
 
 }  // namespace brave_ads

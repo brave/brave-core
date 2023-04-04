@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_callback.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
@@ -148,6 +149,8 @@ class Account final : public AdsClientNotifierObserver,
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<Wallet> wallet_;
+
+  base::WeakPtrFactory<Account> weak_factory_{this};
 };
 
 }  // namespace brave_ads

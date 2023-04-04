@@ -156,7 +156,7 @@ void EventHandler::FireViewedEvent(mojom::SearchResultAdInfoPtr ad_mojom,
   database::table::Deposits deposits_database_table;
   deposits_database_table.Save(
       deposit,
-      base::BindOnce(&EventHandler::OnSaveDeposits, base::Unretained(this),
+      base::BindOnce(&EventHandler::OnSaveDeposits, weak_factory_.GetWeakPtr(),
                      std::move(ad_mojom), std::move(callback)));
 }
 
@@ -184,8 +184,8 @@ void EventHandler::OnSaveDeposits(mojom::SearchResultAdInfoPtr ad_mojom,
   database::table::Conversions conversion_database_table;
   conversion_database_table.Save(
       conversions,
-      base::BindOnce(&EventHandler::OnSaveConversions, base::Unretained(this),
-                     ad, std::move(callback)));
+      base::BindOnce(&EventHandler::OnSaveConversions,
+                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
 }
 
 void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
@@ -203,7 +203,7 @@ void EventHandler::OnSaveConversions(const SearchResultAdInfo& ad,
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
       base::BindOnce(&EventHandler::OnGetAdEventsForViewedSearchResultAd,
-                     base::Unretained(this), ad, std::move(callback)));
+                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
 }
 
 void EventHandler::OnGetAdEventsForViewedSearchResultAd(
@@ -242,7 +242,7 @@ void EventHandler::FireClickedEvent(const SearchResultAdInfo& ad,
   database_table.GetForType(
       mojom::AdType::kSearchResultAd,
       base::BindOnce(&EventHandler::OnGetAdEventsForClickedSearchResultAd,
-                     base::Unretained(this), ad, std::move(callback)));
+                     weak_factory_.GetWeakPtr(), ad, std::move(callback)));
 }
 
 void EventHandler::OnGetAdEventsForClickedSearchResultAd(

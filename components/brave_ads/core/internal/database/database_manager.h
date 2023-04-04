@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_DATABASE_DATABASE_MANAGER_H_
 
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_ads/core/ads_client_callback.h"
 #include "brave/components/brave_ads/core/internal/database/database_manager_observer.h"
@@ -49,6 +50,8 @@ class DatabaseManager final {
   void NotifyDatabaseIsReady() const;
 
   base::ObserverList<DatabaseManagerObserver> observers_;
+
+  base::WeakPtrFactory<DatabaseManager> weak_factory_{this};
 };
 
 }  // namespace brave_ads

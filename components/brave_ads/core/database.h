@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/memory_pressure_listener.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/export.h"
@@ -65,6 +66,8 @@ class ADS_EXPORT Database final {
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+
+  base::WeakPtrFactory<Database> weak_factory_{this};
 };
 
 }  // namespace brave_ads

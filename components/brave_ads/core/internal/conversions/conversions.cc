@@ -247,7 +247,7 @@ void Conversions::MaybeConvert(
 void Conversions::Process() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::OnGetUnprocessedConversions, base::Unretained(this)));
+      &Conversions::OnGetUnprocessedConversions, weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -279,7 +279,7 @@ void Conversions::CheckRedirectChain(
 
   const database::table::AdEvents ad_events_database_table;
   ad_events_database_table.GetAll(
-      base::BindOnce(&Conversions::OnGetAllAdEvents, base::Unretained(this),
+      base::BindOnce(&Conversions::OnGetAllAdEvents, weak_factory_.GetWeakPtr(),
                      redirect_chain, html, conversion_id_patterns));
 }
 
@@ -295,10 +295,10 @@ void Conversions::OnGetAllAdEvents(
   }
 
   const database::table::Conversions conversions_database_table;
-  conversions_database_table.GetAll(
-      base::BindOnce(&Conversions::OnGetAllConversions, base::Unretained(this),
-                     std::move(redirect_chain), std::move(html),
-                     std::move(conversion_id_patterns), ad_events));
+  conversions_database_table.GetAll(base::BindOnce(
+      &Conversions::OnGetAllConversions, weak_factory_.GetWeakPtr(),
+      std::move(redirect_chain), std::move(html),
+      std::move(conversion_id_patterns), ad_events));
 }
 
 void Conversions::OnGetAllConversions(
@@ -408,7 +408,7 @@ void Conversions::AddItemToQueue(
   database::table::ConversionQueue database_table;
   database_table.Save({conversion_queue_item},
                       base::BindOnce(&Conversions::OnSaveConversionQueue,
-                                     base::Unretained(this)));
+                                     weak_factory_.GetWeakPtr()));
 }
 
 void Conversions::OnSaveConversionQueue(const bool success) {
@@ -470,7 +470,7 @@ void Conversions::ConvertedQueueItem(
 void Conversions::ProcessQueue() {
   const database::table::ConversionQueue database_table;
   database_table.GetUnprocessed(base::BindOnce(
-      &Conversions::OnGetConversionQueue, base::Unretained(this)));
+      &Conversions::OnGetConversionQueue, weak_factory_.GetWeakPtr()));
 }
 
 void Conversions::OnGetConversionQueue(
@@ -498,7 +498,7 @@ void Conversions::RemoveInvalidQueueItem(
   database_table.Delete(
       conversion_queue_item,
       base::BindOnce(&Conversions::OnRemoveInvalidQueueItem,
-                     base::Unretained(this), conversion_queue_item));
+                     weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
 void Conversions::OnRemoveInvalidQueueItem(
@@ -519,7 +519,7 @@ void Conversions::MarkQueueItemAsProcessed(
   database_table.Update(
       conversion_queue_item,
       base::BindOnce(&Conversions::OnMarkQueueItemAsProcessed,
-                     base::Unretained(this), conversion_queue_item));
+                     weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
 void Conversions::OnMarkQueueItemAsProcessed(

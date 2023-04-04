@@ -137,7 +137,7 @@ void RefillUnblindedTokens::RequestSignedTokens() {
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RefillUnblindedTokens::OnRequestSignedTokens,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void RefillUnblindedTokens::OnRequestSignedTokens(
@@ -188,7 +188,7 @@ void RefillUnblindedTokens::GetSignedTokens() {
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RefillUnblindedTokens::OnGetSignedTokens,
-                     base::Unretained(this)));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void RefillUnblindedTokens::OnGetSignedTokens(
@@ -380,7 +380,8 @@ void RefillUnblindedTokens::OnFailedToRefillUnblindedTokens(
 void RefillUnblindedTokens::Retry() {
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
-      base::BindOnce(&RefillUnblindedTokens::OnRetry, base::Unretained(this)));
+      base::BindOnce(&RefillUnblindedTokens::OnRetry,
+                     weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry refilling unblinded tokens " << FriendlyDateAndTime(retry_at));
 
