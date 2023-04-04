@@ -20,7 +20,6 @@
 // npm run test -- brave_unit_tests --filter=*ConnectExternalWalletTest*
 
 using ::testing::_;
-using ::testing::Return;
 using ::testing::TestParamInfo;
 using ::testing::TestWithParam;
 using ::testing::Values;

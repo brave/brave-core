@@ -1462,7 +1462,7 @@ void RewardsServiceImpl::GetBooleanState(const std::string& name,
 }
 
 void RewardsServiceImpl::SetIntegerState(const std::string& name,
-                                         int value,
+                                         int32_t value,
                                          SetIntegerStateCallback callback) {
   profile_->GetPrefs()->SetInteger(GetPrefPath(name), value);
   std::move(callback).Run();

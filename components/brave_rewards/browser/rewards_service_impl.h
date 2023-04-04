@@ -475,7 +475,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetBooleanState(const std::string& name,
                        GetBooleanStateCallback callback) override;
   void SetIntegerState(const std::string& name,
-                       int value,
+                       int32_t value,
                        SetIntegerStateCallback callback) override;
   void GetIntegerState(const std::string& name,
                        GetIntegerStateCallback callback) override;

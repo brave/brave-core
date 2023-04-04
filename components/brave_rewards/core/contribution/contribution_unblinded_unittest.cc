@@ -14,7 +14,6 @@
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
 
 namespace {
 const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
@@ -24,48 +23,45 @@ namespace ledger {
 namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
-  void SetUp() override {
-    ON_CALL(*mock_ledger_impl_.mock_database(),
-            GetContributionInfo(contribution_id, _))
-        .WillByDefault(
-            Invoke([](const std::string& id,
-                      database::GetContributionInfoCallback callback) {
-              auto info = mojom::ContributionInfo::New();
-              info->contribution_id = contribution_id;
-              info->amount = 5.0;
-              info->type = mojom::RewardsType::ONE_TIME_TIP;
-              info->step = mojom::ContributionStep::STEP_NO;
-              info->retry_count = 0;
-
-              callback(std::move(info));
-            }));
-  }
-
  protected:
   base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
   Unblinded unblinded_{&mock_ledger_impl_};
 };
 
-TEST_F(UnblindedTest, DISABLED_NotEnoughFunds) {
-  ON_CALL(*mock_ledger_impl_.mock_database(), GetReservedUnblindedTokens(_, _))
-      .WillByDefault(
-          Invoke([](const std::string&,
-                    database::GetUnblindedTokenListCallback callback) {
-            std::vector<mojom::UnblindedTokenPtr> list;
+TEST_F(UnblindedTest, NotEnoughFunds) {
+  ON_CALL(*mock_ledger_impl_.mock_database(),
+          GetSpendableUnblindedTokensByBatchTypes(_, _))
+      .WillByDefault([](const std::vector<mojom::CredsBatchType>&,
+                        database::GetUnblindedTokenListCallback callback) {
+        std::vector<mojom::UnblindedTokenPtr> tokens;
 
-            auto info = mojom::UnblindedToken::New();
-            info->id = 1;
-            info->token_value = "asdfasdfasdfsad=";
-            info->value = 2;
-            info->expires_at = 1574133178;
-            list.push_back(info->Clone());
+        auto token = mojom::UnblindedToken::New();
+        token->id = 1;
+        token->token_value = "asdfasdfasdfsad=";
+        token->value = 2;
+        token->expires_at = 1574133178;
+        tokens.push_back(std::move(token));
 
-            callback(std::move(list));
-          }));
+        callback(std::move(tokens));
+      });
+
+  ON_CALL(*mock_ledger_impl_.mock_database(),
+          GetContributionInfo(contribution_id, _))
+      .WillByDefault([](const std::string& id,
+                        database::GetContributionInfoCallback callback) {
+        auto info = mojom::ContributionInfo::New();
+        info->contribution_id = contribution_id;
+        info->amount = 5.0;
+        info->type = mojom::RewardsType::ONE_TIME_TIP;
+        info->step = mojom::ContributionStep::STEP_NO;
+        info->retry_count = 0;
+
+        callback(std::move(info));
+      });
 
   unblinded_.Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                   [](const mojom::Result result) {
+                   [](mojom::Result result) {
                      ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
                    });
 
