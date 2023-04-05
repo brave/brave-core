@@ -11,7 +11,6 @@
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_interface.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
 
 namespace brave_ads {

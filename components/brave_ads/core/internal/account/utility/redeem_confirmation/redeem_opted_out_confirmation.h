@@ -6,11 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REDEEM_OPTED_OUT_CONFIRMATION_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REDEEM_OPTED_OUT_CONFIRMATION_H_
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_interface.h"
 
 namespace brave_ads {
 
@@ -18,7 +16,7 @@ struct ConfirmationInfo;
 
 // Self-destructs after calling |SuccessfullyRedeemedConfirmation| or
 // |FailedToRedeemConfirmation|.
-class RedeemOptedOutConfirmation final : public RedeemConfirmationInterface {
+class RedeemOptedOutConfirmation final {
  public:
   RedeemOptedOutConfirmation(const RedeemOptedOutConfirmation& other) = delete;
   RedeemOptedOutConfirmation& operator=(
@@ -29,16 +27,19 @@ class RedeemOptedOutConfirmation final : public RedeemConfirmationInterface {
   RedeemOptedOutConfirmation& operator=(
       RedeemOptedOutConfirmation&& other) noexcept = delete;
 
-  ~RedeemOptedOutConfirmation() override;
+  ~RedeemOptedOutConfirmation();
 
-  static RedeemOptedOutConfirmation* Create();
-
-  void SetDelegate(base::WeakPtr<RedeemConfirmationDelegate> delegate) override;
-
-  void Redeem(const ConfirmationInfo& confirmation) override;
+  static void CreateAndRedeem(
+      base::WeakPtr<RedeemConfirmationDelegate> delegate,
+      const ConfirmationInfo& confirmation);
 
  private:
-  RedeemOptedOutConfirmation();
+  explicit RedeemOptedOutConfirmation(
+      base::WeakPtr<RedeemConfirmationDelegate> delegate);
+
+  void Destroy();
+
+  void Redeem(const ConfirmationInfo& confirmation);
 
   void CreateConfirmation(const ConfirmationInfo& confirmation);
   void OnCreateConfirmation(const ConfirmationInfo& confirmation,
@@ -50,8 +51,6 @@ class RedeemOptedOutConfirmation final : public RedeemConfirmationInterface {
                                   bool should_backoff);
 
   base::WeakPtr<RedeemConfirmationDelegate> delegate_;
-
-  base::WeakPtrFactory<RedeemOptedOutConfirmation> weak_factory_{this};
 };
 
 }  // namespace brave_ads

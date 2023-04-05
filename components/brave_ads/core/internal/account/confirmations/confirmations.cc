@@ -203,15 +203,8 @@ void Confirmations::OnRecreateOptedInDynamicUserDataAndRedeem(
 void Confirmations::Redeem(const ConfirmationInfo& confirmation) {
   DCHECK(IsValid(confirmation));
 
-  // Self-destructs.
-  RedeemConfirmationInterface* redeem_confirmation =
-      RedeemConfirmationFactory::Build();
-
-  redeem_confirmation->SetDelegate(weak_factory_.GetWeakPtr());
-
-  // The below call to |Redeem| deletes |redeem_confirmation| after failing to
-  // or successfully redeeming the confirmation.
-  redeem_confirmation->Redeem(confirmation);
+  RedeemConfirmationFactory::BuildAndRedeemConfirmation(
+      weak_factory_.GetWeakPtr(), confirmation);
 }
 
 void Confirmations::OnDidRedeemOptedInConfirmation(

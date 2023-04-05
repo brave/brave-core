@@ -37,19 +37,27 @@
 
 namespace brave_ads {
 
-RedeemOptedInConfirmation::RedeemOptedInConfirmation() = default;
-
 RedeemOptedInConfirmation::~RedeemOptedInConfirmation() = default;
 
 // static
-RedeemOptedInConfirmation* RedeemOptedInConfirmation::Create() {
-  return new RedeemOptedInConfirmation();
+void RedeemOptedInConfirmation::CreateAndRedeem(
+    base::WeakPtr<RedeemConfirmationDelegate> delegate,
+    const ConfirmationInfo& confirmation) {
+  auto* redeem_confirmation =
+      new RedeemOptedInConfirmation(std::move(delegate));
+  redeem_confirmation->Redeem(confirmation);
 }
 
-void RedeemOptedInConfirmation::SetDelegate(
+///////////////////////////////////////////////////////////////////////////////
+
+RedeemOptedInConfirmation::RedeemOptedInConfirmation(
     base::WeakPtr<RedeemConfirmationDelegate> delegate) {
   DCHECK(delegate);
   delegate_ = std::move(delegate);
+}
+
+void RedeemOptedInConfirmation::Destroy() {
+  delete this;
 }
 
 void RedeemOptedInConfirmation::Redeem(const ConfirmationInfo& confirmation) {
@@ -73,8 +81,6 @@ void RedeemOptedInConfirmation::Redeem(const ConfirmationInfo& confirmation) {
   FetchPaymentToken(confirmation);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void RedeemOptedInConfirmation::CreateConfirmation(
     const ConfirmationInfo& confirmation) {
   BLOG(1, "CreateConfirmation");
@@ -89,7 +95,7 @@ void RedeemOptedInConfirmation::CreateConfirmation(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemOptedInConfirmation::OnCreateConfirmation,
-                     weak_factory_.GetWeakPtr(), confirmation));
+                     base::Unretained(this), confirmation));
 }
 
 void RedeemOptedInConfirmation::OnCreateConfirmation(
@@ -119,7 +125,7 @@ void RedeemOptedInConfirmation::FetchPaymentToken(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemOptedInConfirmation::OnFetchPaymentToken,
-                     weak_factory_.GetWeakPtr(), confirmation));
+                     base::Unretained(this), confirmation));
 }
 
 void RedeemOptedInConfirmation::OnFetchPaymentToken(
@@ -327,7 +333,7 @@ void RedeemOptedInConfirmation::SuccessfullyRedeemedConfirmation(
                                               unblinded_payment_token);
   }
 
-  delete this;
+  Destroy();
 }
 
 void RedeemOptedInConfirmation::FailedToRedeemConfirmation(
@@ -345,7 +351,7 @@ void RedeemOptedInConfirmation::FailedToRedeemConfirmation(
                                             should_backoff);
   }
 
-  delete this;
+  Destroy();
 }
 
 }  // namespace brave_ads

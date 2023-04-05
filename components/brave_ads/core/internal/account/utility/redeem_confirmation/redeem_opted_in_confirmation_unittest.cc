@@ -32,14 +32,6 @@ class BatAdsRedeemOptedInConfirmationTest : public UnitTestBase {
     AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
   }
 
-  RedeemOptedInConfirmation* CreateConfirmation() {
-    RedeemOptedInConfirmation* redeem_confirmation =
-        RedeemOptedInConfirmation::Create();
-    redeem_confirmation->SetDelegate(
-        confirmation_delegate_weak_factory_.GetWeakPtr());
-    return redeem_confirmation;
-  }
-
   std::unique_ptr<RedeemConfirmationDelegateMock>
       redeem_confirmation_delegate_mock_ =
           std::make_unique<NiceMock<RedeemConfirmationDelegateMock>>();
@@ -112,10 +104,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
               OnFailedToRedeemConfirmation(_, _, _))
       .Times(0);
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -140,10 +130,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -194,10 +182,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
               OnFailedToRedeemConfirmation(_, _, _))
       .Times(0);
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -243,10 +229,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -295,10 +279,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -347,10 +329,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -399,10 +379,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -456,10 +434,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -530,10 +506,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -605,10 +579,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -673,10 +645,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -747,10 +717,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -822,10 +790,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -896,10 +862,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ true,
                                            /*should_backoff*/ true));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -970,10 +934,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -1045,10 +1007,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -1117,10 +1077,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -1189,10 +1147,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }
@@ -1264,10 +1220,8 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
                                            /*should_retry*/ false,
                                            /*should_backoff*/ false));
 
-  // Self-destructs.
-  RedeemOptedInConfirmation* redeem_confirmation = CreateConfirmation();
-  // Calls to |Redeem| delete |redeem_confirmation|.
-  redeem_confirmation->Redeem(*confirmation);
+  RedeemOptedInConfirmation::CreateAndRedeem(
+      confirmation_delegate_weak_factory_.GetWeakPtr(), *confirmation);
 
   // Assert
 }

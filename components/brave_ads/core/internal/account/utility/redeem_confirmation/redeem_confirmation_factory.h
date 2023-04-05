@@ -6,13 +6,18 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REDEEM_CONFIRMATION_FACTORY_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_REDEEM_CONFIRMATION_FACTORY_H_
 
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_interface.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
 
 namespace brave_ads {
 
+struct ConfirmationInfo;
+
 class RedeemConfirmationFactory final {
  public:
-  static RedeemConfirmationInterface* Build();
+  static void BuildAndRedeemConfirmation(
+      base::WeakPtr<RedeemConfirmationDelegate> delegate,
+      const ConfirmationInfo& confirmation);
 };
 
 }  // namespace brave_ads

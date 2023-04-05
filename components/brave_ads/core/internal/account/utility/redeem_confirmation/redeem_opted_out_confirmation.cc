@@ -23,19 +23,27 @@
 
 namespace brave_ads {
 
-RedeemOptedOutConfirmation::RedeemOptedOutConfirmation() = default;
-
 RedeemOptedOutConfirmation::~RedeemOptedOutConfirmation() = default;
 
 // static
-RedeemOptedOutConfirmation* RedeemOptedOutConfirmation::Create() {
-  return new RedeemOptedOutConfirmation();
+void RedeemOptedOutConfirmation::CreateAndRedeem(
+    base::WeakPtr<RedeemConfirmationDelegate> delegate,
+    const ConfirmationInfo& confirmation) {
+  auto* redeem_confirmation =
+      new RedeemOptedOutConfirmation(std::move(delegate));
+  redeem_confirmation->Redeem(confirmation);
 }
 
-void RedeemOptedOutConfirmation::SetDelegate(
+///////////////////////////////////////////////////////////////////////////////
+
+RedeemOptedOutConfirmation::RedeemOptedOutConfirmation(
     base::WeakPtr<RedeemConfirmationDelegate> delegate) {
   DCHECK(delegate);
   delegate_ = std::move(delegate);
+}
+
+void RedeemOptedOutConfirmation::Destroy() {
+  delete this;
 }
 
 void RedeemOptedOutConfirmation::Redeem(const ConfirmationInfo& confirmation) {
@@ -47,8 +55,6 @@ void RedeemOptedOutConfirmation::Redeem(const ConfirmationInfo& confirmation) {
 
   CreateConfirmation(confirmation);
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void RedeemOptedOutConfirmation::CreateConfirmation(
     const ConfirmationInfo& confirmation) {
@@ -63,7 +69,7 @@ void RedeemOptedOutConfirmation::CreateConfirmation(
   AdsClientHelper::GetInstance()->UrlRequest(
       std::move(url_request),
       base::BindOnce(&RedeemOptedOutConfirmation::OnCreateConfirmation,
-                     weak_factory_.GetWeakPtr(), confirmation));
+                     base::Unretained(this), confirmation));
 }
 
 void RedeemOptedOutConfirmation::OnCreateConfirmation(
@@ -98,7 +104,7 @@ void RedeemOptedOutConfirmation::SuccessfullyRedeemedConfirmation(
     delegate_->OnDidRedeemOptedOutConfirmation(confirmation);
   }
 
-  delete this;
+  Destroy();
 }
 
 void RedeemOptedOutConfirmation::FailedToRedeemConfirmation(
@@ -116,7 +122,7 @@ void RedeemOptedOutConfirmation::FailedToRedeemConfirmation(
                                             should_backoff);
   }
 
-  delete this;
+  Destroy();
 }
 
 }  // namespace brave_ads

@@ -144,7 +144,6 @@ source_set("internal") {
     "account/utility/redeem_confirmation/redeem_confirmation_delegate.h",
     "account/utility/redeem_confirmation/redeem_confirmation_factory.cc",
     "account/utility/redeem_confirmation/redeem_confirmation_factory.h",
-    "account/utility/redeem_confirmation/redeem_confirmation_interface.h",
     "account/utility/redeem_confirmation/redeem_opted_in_confirmation.cc",
     "account/utility/redeem_confirmation/redeem_opted_in_confirmation.h",
     "account/utility/redeem_confirmation/redeem_opted_out_confirmation.cc",

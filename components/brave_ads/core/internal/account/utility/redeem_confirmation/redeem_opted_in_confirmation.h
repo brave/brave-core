@@ -9,7 +9,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_interface.h"
 
 namespace brave_ads {
 
@@ -21,7 +20,7 @@ struct ConfirmationInfo;
 
 // Self-destructs after calling |SuccessfullyRedeemedConfirmation| or
 // |FailedToRedeemConfirmation|.
-class RedeemOptedInConfirmation final : public RedeemConfirmationInterface {
+class RedeemOptedInConfirmation final {
  public:
   RedeemOptedInConfirmation(const RedeemOptedInConfirmation& other) = delete;
   RedeemOptedInConfirmation& operator=(const RedeemOptedInConfirmation& other) =
@@ -32,16 +31,19 @@ class RedeemOptedInConfirmation final : public RedeemConfirmationInterface {
   RedeemOptedInConfirmation& operator=(
       RedeemOptedInConfirmation&& other) noexcept = delete;
 
-  ~RedeemOptedInConfirmation() override;
+  ~RedeemOptedInConfirmation();
 
-  static RedeemOptedInConfirmation* Create();
-
-  void SetDelegate(base::WeakPtr<RedeemConfirmationDelegate> delegate) override;
-
-  void Redeem(const ConfirmationInfo& confirmation) override;
+  static void CreateAndRedeem(
+      base::WeakPtr<RedeemConfirmationDelegate> delegate,
+      const ConfirmationInfo& confirmation);
 
  private:
-  RedeemOptedInConfirmation();
+  explicit RedeemOptedInConfirmation(
+      base::WeakPtr<RedeemConfirmationDelegate> delegate);
+
+  void Destroy();
+
+  void Redeem(const ConfirmationInfo& confirmation);
 
   void CreateConfirmation(const ConfirmationInfo& confirmation);
   void OnCreateConfirmation(const ConfirmationInfo& confirmation,
@@ -59,8 +61,6 @@ class RedeemOptedInConfirmation final : public RedeemConfirmationInterface {
                                   bool should_backoff);
 
   base::WeakPtr<RedeemConfirmationDelegate> delegate_;
-
-  base::WeakPtrFactory<RedeemOptedInConfirmation> weak_factory_{this};
 };
 
 }  // namespace brave_ads
