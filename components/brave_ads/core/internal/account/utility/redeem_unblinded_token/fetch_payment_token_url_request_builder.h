@@ -8,7 +8,7 @@
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/server/url/url_request_builder_interface.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/url_request_builder_interface.h"
 
 class GURL;
 

@@ -1,4 +1,4 @@
-# Server Hosts
+# URL Hosts
 
 URL host names can be classified into anonymous and non-anonymous types based on
 their level of anonymity.

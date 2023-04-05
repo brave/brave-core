@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/server/url/hosts/anonymous_server_host.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/hosts/static_url_host.h"
 
 #include <ostream>
 
@@ -15,12 +15,12 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kProductionHost[] = "https://anonymous.ads.brave.com";
-constexpr char kStagingHost[] = "https://anonymous.ads.bravesoftware.com";
+constexpr char kProductionHost[] = "https://static.ads.brave.com";
+constexpr char kStagingHost[] = "https://static.ads.bravesoftware.com";
 
 }  // namespace
 
-std::string AnonymousServerHost::Get() const {
+std::string StaticUrlHost::Get() const {
   const EnvironmentType environment_type =
       FlagManager::GetInstance()->GetEnvironmentType();
 

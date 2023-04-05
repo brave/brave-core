@@ -4,40 +4,41 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
 
-class BatAdsNonAnonymousServerHostTest : public UnitTestBase {};
+class BatAdsAnonymousUrlHostTest : public UnitTestBase {};
 
-TEST_F(BatAdsNonAnonymousServerHostTest, GetProductionHost) {
+TEST_F(BatAdsAnonymousUrlHostTest, GetProductionUrlHost) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kProduction);
 
   // Act
-  const std::string host = server::GetNonAnonymousHost();
+  const std::string url_host = GetAnonymousUrlHost();
 
   // Assert
-  const std::string expected_host = "https://mywallet.ads.brave.com";
-  EXPECT_EQ(expected_host, host);
+  const std::string expected_url_host = "https://anonymous.ads.brave.com";
+  EXPECT_EQ(expected_url_host, url_host);
 }
 
-TEST_F(BatAdsNonAnonymousServerHostTest, GetStagingHost) {
+TEST_F(BatAdsAnonymousUrlHostTest, GetStagingUrlHost) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
 
   // Act
-  const std::string host = server::GetNonAnonymousHost();
+  const std::string url_host = GetAnonymousUrlHost();
 
   // Assert
-  const std::string expected_host = "https://mywallet.ads.bravesoftware.com";
-  EXPECT_EQ(expected_host, host);
+  const std::string expected_url_host =
+      "https://anonymous.ads.bravesoftware.com";
+  EXPECT_EQ(expected_url_host, url_host);
 }
 
 }  // namespace brave_ads

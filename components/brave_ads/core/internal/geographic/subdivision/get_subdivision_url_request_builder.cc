@@ -9,7 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
+#include "brave/components/brave_ads/core/internal/common/url/request_builder/host/url_host_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads::geographic {
@@ -18,7 +18,7 @@ namespace {
 
 GURL BuildUrl() {
   const std::string spec =
-      base::StringPrintf("%s/v1/getstate", server::GetGeoHost().c_str());
+      base::StringPrintf("%s/v1/getstate", GetGeoUrlHost().c_str());
   return GURL(spec);
 }
 
