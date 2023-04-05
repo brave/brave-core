@@ -16,6 +16,10 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+namespace network {
+class SimpleURLLoader;
+}  // namespace network
+
 namespace ui {
 class AXTree;
 }  // namespace ui
@@ -53,6 +57,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   using OnArticleSummaryCallback =
       base::OnceCallback<void(const std::u16string& summary,
                               bool is_from_cache)>;
+  using SimpleURLLoaderList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   friend class content::WebContentsUserData<AIChatTabHelper>;
 
@@ -72,6 +77,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void WebContentsDestroyed() override;
 
   std::unique_ptr<AIChatAPI> ai_chat_api_ = nullptr;
+  SimpleURLLoaderList url_loaders_;
 
   base::ObserverList<Observer> observers_;
 

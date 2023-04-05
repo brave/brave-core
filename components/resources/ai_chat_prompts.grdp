@@ -23,4 +23,9 @@ Here is the user's question:
 &lt;/question&gt;
 
 How do you respond to the user's question? Put your response in &lt;response&gt;&lt;/response&gt; tags.</message>
+
+  <message name="IDS_AI_CHAT_SUMMARIZE_VIDEO_PROMPT" translateable="false" desc="Default prompt for summarization of a video">
+    I am a user watching a video. The following is XML describing the video's transcript. Each text element has a start attribute defining a chunk of the transcript starting time in seconds and a dur attribute describing the duration in seconds for that chunk the text covers. Provide a concise bullet list of the most interesting points of the video along with a small summary of each point and its time in seconds in the video.
+    <ph name="TEXT">$1</ph>
+  </message>
 </grit-part>
