@@ -5,7 +5,7 @@
 
 import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton } from '../../../shared/style'
+import { WalletButton, Text } from '../../../shared/style'
 
 export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   display: flex;
@@ -32,9 +32,18 @@ export const StyledButton = styled(WalletButton) <{ isSelected?: boolean }>`
   &:last-child {
     margin-bottom: 0px;
   }
+  transition-duration: inherit;
 `
 
 export const ButtonIcon = styled(Icon)`
   --leo-icon-size: 24px;
   color: var(--nav-button-color);
+  margin-right: var(--icon-margin-right);
+  transition-duration: inherit;
+`
+
+export const ButtonText = styled(Text)`
+  color: var(--nav-button-color);
+  display: var(--display-text);
+  transition-duration: inherit;
 `

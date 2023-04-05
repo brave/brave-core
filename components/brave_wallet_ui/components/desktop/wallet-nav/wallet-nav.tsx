@@ -48,12 +48,12 @@ export const WalletNav = (props: Props) => {
     <Wrapper>
       <Section showBorder={true}>
         {NavOptions.map((option) =>
-          <WalletNavButton isSwap={isSwap} option={option} key={option.id} />
+          <WalletNavButton option={option} key={option.id} />
         )}
       </Section>
       <Section>
         {BuySendSwapDepositOptions.map((option) =>
-          <WalletNavButton isSwap={isSwap} option={option} key={option.id} />
+          <WalletNavButton option={option} key={option.id} />
         )}
       </Section>
     </Wrapper>
