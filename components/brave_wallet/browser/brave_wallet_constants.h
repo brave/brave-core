@@ -1137,8 +1137,6 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO},
     {"braveWalletNftPinningPinNftsButton",
      IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON},
-    {"braveWalletNftPinningRunNodeButton",
-     IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON},
     {"braveWalletNftPinningBackButton",
      IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON},
     {"braveWalletNftPinningCloseButton",
