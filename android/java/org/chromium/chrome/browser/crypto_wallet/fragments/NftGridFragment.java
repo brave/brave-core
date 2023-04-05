@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -71,6 +72,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     private WalletNftAdapter mWalletNftAdapter;
     private ProgressBar mPbAssetDiscovery;
     private ViewGroup mAddNftsContainer;
+    private Button mBtnChangeNetwork;
 
     public static NftGridFragment newInstance() {
         return new NftGridFragment();
@@ -100,6 +102,14 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         View view = inflater.inflate(R.layout.fragment_nft_grid, container, false);
         mPbAssetDiscovery = view.findViewById(R.id.frag_nft_grid_pb_asset_discovery);
         mAddNftsContainer = view.findViewById(R.id.add_nfts_container);
+        mBtnChangeNetwork = view.findViewById(R.id.fragment_nft_grid_btn_change_networks);
+        mBtnChangeNetwork.setOnClickListener(v -> { openNetworkSelection(); });
+        mBtnChangeNetwork.setOnLongClickListener(v -> {
+            if (mNetworkInfo != null) {
+                Toast.makeText(requireContext(), mNetworkInfo.chainName, Toast.LENGTH_SHORT).show();
+            }
+            return true;
+        });
         setUpObservers();
         return view;
     }
@@ -165,6 +175,15 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         TextView editVisibleNft = view.findViewById(R.id.edit_visible_nfts);
         mRvNft = view.findViewById(R.id.rv_nft);
         editVisibleNft.setOnClickListener(v -> { onEditVisibleAssetsClick(); });
+    }
+
+    private void openNetworkSelection() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openNetworkSelection(NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "Network selection cannot be opened.", e);
+        }
     }
 
     private void setPositiveButtonAccountCreation(NetworkInfo networkInfo) {
