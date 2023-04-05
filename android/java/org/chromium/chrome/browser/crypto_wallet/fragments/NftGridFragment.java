@@ -98,7 +98,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nft_grid, container, false);
-        mPbAssetDiscovery = view.findViewById(R.id.frag_port_pb_asset_discovery);
+        mPbAssetDiscovery = view.findViewById(R.id.frag_nft_grid_pb_asset_discovery);
         mAddNftsContainer = view.findViewById(R.id.add_nfts_container);
         setUpObservers();
         return view;
