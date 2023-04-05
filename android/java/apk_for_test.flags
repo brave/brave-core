@@ -686,3 +686,19 @@
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedRootUiCoordinator {
     public <init>(...);
 }
+
+-keep class org.chromium.chrome.browser.incognito.reauth.TabSwitcherIncognitoReauthCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.incognito.reauth.FullScreenIncognitoReauthCoordinator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.incognito.reauth.BravePrivateTabReauthCoordinatorBase {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.incognito.reauth.IncognitoReauthCoordinatorBase {
+    *** mIncognitoReauthView;
+}

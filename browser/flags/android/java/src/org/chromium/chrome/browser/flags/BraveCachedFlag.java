@@ -16,6 +16,7 @@ public class BraveCachedFlag extends CachedFlag {
     static {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(ChromeFeatureList.START_SURFACE_ANDROID, false);
+        sFlags.put(ChromeFeatureList.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
     }
 
     private final boolean mDefaultValue;
@@ -33,6 +34,10 @@ public class BraveCachedFlag extends CachedFlag {
 
     @Override
     public boolean isEnabled() {
-        return CachedFeatureFlags.isEnabled(mFeatureName, mDefaultValue);
+        if (sFlags.containsKey(mFeatureName)) {
+            return CachedFeatureFlags.isEnabled(mFeatureName, mDefaultValue);
+        }
+
+        return super.isEnabled();
     }
 }

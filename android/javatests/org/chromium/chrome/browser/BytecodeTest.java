@@ -319,6 +319,14 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/tabbed_mode/BraveTabbedRootUiCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
     }
 
     @Test
@@ -957,6 +965,9 @@ public class BytecodeTest {
                 fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mLogoModel"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/logo/LogoMediator", "mShouldShowLogo"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase",
+                "mIncognitoReauthView"));
     }
 
     @Test
@@ -1034,6 +1045,12 @@ public class BytecodeTest {
         Assert.assertTrue(
                 checkSuperName("org/chromium/chrome/browser/tracing/settings/DeveloperSettings",
                         "org/chromium/chrome/browser/settings/BravePreferenceFragment"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/incognito/reauth/TabSwitcherIncognitoReauthCoordinator",
+                "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
+        Assert.assertTrue(checkSuperName(
+                "org/chromium/chrome/browser/incognito/reauth/FullScreenIncognitoReauthCoordinator",
+                "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
     }
 
     private boolean classExists(String className) {
