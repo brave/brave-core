@@ -78,7 +78,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private final boolean mNftsOnly;
     private NetworkInfo mSelectedNetwork;
     private DismissListener mDismissListener;
-    private Boolean mIsAssetsListChanged;
+    private boolean mIsAssetsListChanged;
     private static final String TAG = "EditVisibleAssetsBottomSheetDialogFragment";
     private WalletModel mWalletModel;
     private KeyringServiceObserverImpl mKeyringServiceObserver;
@@ -86,7 +86,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private List<NetworkInfo> mCryptoNetworks;
 
     public interface DismissListener {
-        void onDismiss(Boolean isAssetsListChanged);
+        void onDismiss(boolean isAssetsListChanged);
     }
 
     public static EditVisibleAssetsBottomSheetDialogFragment newInstance(

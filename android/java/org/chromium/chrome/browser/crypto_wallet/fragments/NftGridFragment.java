@@ -333,7 +333,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         bottomSheetDialogFragment.setDismissListener(
                 new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                     @Override
-                    public void onDismiss(Boolean isAssetsListChanged) {
+                    public void onDismiss(boolean isAssetsListChanged) {
                         if (isAssetsListChanged != null && isAssetsListChanged) {
                             updateNftGrid();
                         }

@@ -473,8 +473,8 @@ public class PortfolioFragment
         bottomSheetDialogFragment.setDismissListener(
                 new EditVisibleAssetsBottomSheetDialogFragment.DismissListener() {
                     @Override
-                    public void onDismiss(Boolean isAssetsListChanged) {
-                        if (isAssetsListChanged != null && isAssetsListChanged) {
+                    public void onDismiss(boolean isAssetsListChanged) {
+                        if (isAssetsListChanged) {
                             updatePortfolioGetPendingTx();
                         }
                     }
