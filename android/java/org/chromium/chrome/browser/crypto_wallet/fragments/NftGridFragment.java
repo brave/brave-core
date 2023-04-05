@@ -33,6 +33,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.domain.NetworkSelectorModel;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.app.helpers.Api33AndPlusBackPressHelper;
