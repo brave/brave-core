@@ -386,7 +386,7 @@ def RunConfigurations(configurations: List[RunnerConfig],
   if common_options.local_run:
     for benchmark in benchmarks:
       logs.append(benchmark.name + ' : file://' + os.path.join(
-          common_options.working_directory, benchmark.name, 'results.html'))
+          common_options.working_directory, 'artifacts', benchmark.name, 'results.html'))
 
   if logs != []:
     logging.info('Logs:')

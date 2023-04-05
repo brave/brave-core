@@ -30,7 +30,7 @@ def main():
   parser = argparse.ArgumentParser()
   perf_test_runner.CommonOptions.add_common_parser_args(parser)
   parser.add_argument('--targets',
-                      required=True,
+                      required=False,
                       type=str,
                       help='Tags/binaries to test')
   parser.add_argument('--config', required=True, type=str)
@@ -47,8 +47,6 @@ def main():
   log_format = '%(asctime)s: %(message)s'
   logging.basicConfig(level=log_level, format=log_format)
 
-  targets = args.targets.split(',')
-
   json_config = perf_test_utils.LoadJsonConfig(args.config)
   config = perf_config.PerfConfig(json_config)
 
@@ -60,6 +58,7 @@ def main():
   common_options.local_run = args.local_run
 
   if not args.compare:
+    targets = args.targets.split(',')
     if len(config.runners) != 1:
       raise RuntimeError('Only one configuration should be specified.')
 
@@ -70,6 +69,7 @@ def main():
         configurations, config.benchmarks, common_options) else 1
   else:
     common_options.local_run = True
+    common_options.do_report = False
     return 0 if perf_test_runner.RunConfigurations(
         config.runners, config.benchmarks, common_options) else 1
 
