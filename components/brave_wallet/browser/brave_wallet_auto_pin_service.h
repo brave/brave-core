@@ -96,7 +96,7 @@ class BraveWalletAutoPinService
   void UnpinToken(const std::unique_ptr<IntentData>& data);
 
   void OnTaskFinished(bool result, mojom::PinErrorPtr error);
-  void OnValidateTaskFinished(bool result, mojom::PinErrorPtr error);
+  void OnValidateTaskFinished(mojom::TokenValidationResult result);
 
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceTokenObserver>
       token_observer_{this};

@@ -281,13 +281,15 @@ void BraveWalletAutoPinService::OnTaskFinished(bool result,
 }
 
 void BraveWalletAutoPinService::OnValidateTaskFinished(
-    bool result,
-    mojom::PinErrorPtr error) {
-  if (!result) {
-    AddOrExecute(std::make_unique<IntentData>(current_->token, Operation::kAdd,
-                                              current_->service));
+    mojom::TokenValidationResult result) {
+  if (result == mojom::TokenValidationResult::kValidationError) {
+    PostRetry(std::move(current_));
   }
-  current_.reset();
+  auto current = std::move(current_);
+  if (result == mojom::TokenValidationResult::kValidationFailed) {
+    AddOrExecute(std::make_unique<IntentData>(current->token, Operation::kAdd,
+                                              current->service));
+  }
   CheckQueue();
 }
 

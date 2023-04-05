@@ -179,7 +179,6 @@ class MockIpfsService : public IpfsService {
   ~MockIpfsService() override = default;
 
   MOCK_METHOD1(AddObserver, void(ipfs::IpfsServiceObserver* observer));
-  MOCK_METHOD0(IsDaemonLaunched, bool());
 };
 
 class MockContentTypeChecker : public ContentTypeChecker {
@@ -262,8 +261,8 @@ TEST_F(BraveWalletPinServiceTest, AddSolPin) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kSolMonkey1Path, prefix);
-              EXPECT_EQ("bafy1", cids.at(0));
-              EXPECT_EQ("bafy2", cids.at(1));
+              EXPECT_EQ("ipfs://bafy1", cids.at(0));
+              EXPECT_EQ("ipfs://bafy2/1.png", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -288,14 +287,14 @@ TEST_F(BraveWalletPinServiceTest, AddSolPin) {
             .FindDictByDottedPath(kSolMonkey1Path);
 
     base::Value::List expected_cids;
-    expected_cids.Append("bafy1");
-    expected_cids.Append("bafy2");
+    expected_cids.Append("ipfs://bafy1");
+    expected_cids.Append("ipfs://bafy2/1.png");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
               *(token_record->FindString("status")));
     EXPECT_EQ(nullptr, token_record->FindDict("error"));
-    EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
+    EXPECT_EQ(expected_cids, *(token_record->FindList("urls")));
     EXPECT_EQ(base::Time::FromTimeT(123u),
               base::ValueToTime(token_record->Find("validate_timestamp")));
   }
@@ -368,9 +367,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kMonkey1Path, prefix);
-              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
-                        cids.at(0));
-              EXPECT_EQ("bafy1", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413",
+                  cids.at(0));
+              EXPECT_EQ("ipfs://bafy1", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -395,14 +395,15 @@ TEST_F(BraveWalletPinServiceTest, AddPin) {
             .FindDictByDottedPath(kMonkey1Path);
 
     base::Value::List expected_cids;
-    expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    expected_cids.Append("bafy1");
+    expected_cids.Append(
+        "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413");
+    expected_cids.Append("ipfs://bafy1");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
               *(token_record->FindString("status")));
     EXPECT_EQ(nullptr, token_record->FindDict("error"));
-    EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
+    EXPECT_EQ(expected_cids, *(token_record->FindList("urls")));
     EXPECT_EQ(base::Time::FromTimeT(123u),
               base::ValueToTime(token_record->Find("validate_timestamp")));
   }
@@ -477,9 +478,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin_GatewayUrl) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kMonkey5Path, prefix);
-              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
-                        cids.at(0));
-              EXPECT_EQ("bafy3", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888",
+                  cids.at(0));
+              EXPECT_EQ("ipfs://bafy3", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -504,14 +506,15 @@ TEST_F(BraveWalletPinServiceTest, AddPin_GatewayUrl) {
             .FindDictByDottedPath(kMonkey5Path);
 
     base::Value::List expected_cids;
-    expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    expected_cids.Append("bafy3");
+    expected_cids.Append(
+        "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2888");
+    expected_cids.Append("ipfs://bafy3");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
               *(token_record->FindString("status")));
     EXPECT_EQ(nullptr, token_record->FindDict("error"));
-    EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
+    EXPECT_EQ(expected_cids, *(token_record->FindList("urls")));
     EXPECT_EQ(base::Time::FromTimeT(123u),
               base::ValueToTime(token_record->Find("validate_timestamp")));
   }
@@ -585,9 +588,10 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kMonkey1Path, prefix);
-              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
-                        cids.at(0));
-              EXPECT_EQ("bafy1", cids.at(1));
+              EXPECT_EQ(
+                  "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413",
+                  cids.at(0));
+              EXPECT_EQ("ipfs://bafy1", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -612,14 +616,15 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
             .FindDictByDottedPath(kMonkey1Path);
 
     base::Value::List expected_cids;
-    expected_cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    expected_cids.Append("bafy1");
+    expected_cids.Append(
+        "ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/2413");
+    expected_cids.Append("ipfs://bafy1");
 
     EXPECT_EQ(BraveWalletPinService::StatusToString(
                   mojom::TokenPinStatusCode::STATUS_PINNED),
               *(token_record->FindString("status")));
     EXPECT_EQ(nullptr, token_record->FindDict("error"));
-    EXPECT_EQ(expected_cids, *(token_record->FindList("cids")));
+    EXPECT_EQ(expected_cids, *(token_record->FindList("urls")));
     EXPECT_EQ(base::Time::FromTimeT(123u),
               base::ValueToTime(token_record->Find("validate_timestamp")));
   }
@@ -649,9 +654,9 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kMonkey1Path, prefix);
-              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+              EXPECT_EQ("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
                         cids.at(0));
-              EXPECT_EQ("bafy2", cids.at(1));
+              EXPECT_EQ("ipfs://bafy2", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -702,9 +707,9 @@ TEST_F(BraveWalletPinServiceTest, AddPin_ContentVerification) {
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::AddPinCallback callback) {
               EXPECT_EQ(kMonkey3Path, prefix);
-              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+              EXPECT_EQ("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
                         cids.at(0));
-              EXPECT_EQ("bafy3", cids.at(1));
+              EXPECT_EQ("ipfs://bafy3", cids.at(1));
               std::move(callback).Run(true);
             }));
 
@@ -775,8 +780,8 @@ TEST_F(BraveWalletPinServiceTest, RemoveSolPin) {
     item.Set("status", "pinned");
     item.Set("validation_timestamp", "123");
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
 
     update_dict.SetByDottedPath(kSolMonkey1Path, std::move(item));
   }
@@ -842,8 +847,8 @@ TEST_F(BraveWalletPinServiceTest, RemovePin) {
     item.Set("status", "pinned");
     item.Set("validation_timestamp", "123");
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("bafy1");
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://bafy1");
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
@@ -909,9 +914,9 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
     item.Set("status", "pinned");
     item.Set("validate_timestamp", base::TimeToValue(base::Time::Now()));
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
-    item.Set("cids", std::move(cids));
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("urls", std::move(cids));
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
@@ -926,22 +931,23 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
         .WillByDefault(::testing::Invoke(
             [](const std::string& prefix, const std::vector<std::string>& cids,
                ipfs::ValidatePinsCallback callback) {
-              EXPECT_EQ("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
+              EXPECT_EQ("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq",
                         cids.at(0));
-              EXPECT_EQ("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg",
+              EXPECT_EQ("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg",
                         cids.at(1));
               EXPECT_EQ(kMonkey1Path, prefix);
               std::move(callback).Run(true);
             }));
 
-    absl::optional<bool> validate_status;
+    absl::optional<mojom::TokenValidationResult> validate_status;
     service()->Validate(
         std::move(token), absl::nullopt,
         base::BindLambdaForTesting(
-            [&validate_status](bool status, mojom::PinErrorPtr error) {
+            [&validate_status](mojom::TokenValidationResult status) {
               validate_status = status;
             }));
-    EXPECT_TRUE(validate_status.value());
+    EXPECT_EQ(mojom::TokenValidationResult::kValidationPassed,
+              validate_status.value());
 
     const base::Value::Dict* token_record =
         GetPrefs()
@@ -962,15 +968,16 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
               std::move(callback).Run(absl::nullopt);
             }));
 
-    absl::optional<bool> validate_status;
+    absl::optional<mojom::TokenValidationResult> validate_status;
     service()->Validate(
         std::move(token), absl::nullopt,
         base::BindLambdaForTesting(
-            [&validate_status](bool status, mojom::PinErrorPtr error) {
+            [&validate_status](mojom::TokenValidationResult status) {
               validate_status = status;
             }));
 
-    EXPECT_FALSE(validate_status.value());
+    EXPECT_EQ(mojom::TokenValidationResult::kValidationError,
+              validate_status.value());
 
     const base::Value::Dict* token_record =
         GetPrefs()
@@ -991,15 +998,16 @@ TEST_F(BraveWalletPinServiceTest, ValidatePin) {
               std::move(callback).Run(false);
             }));
 
-    absl::optional<bool> validate_status;
+    absl::optional<mojom::TokenValidationResult> validate_status;
     service()->Validate(
         std::move(token), absl::nullopt,
         base::BindLambdaForTesting(
-            [&validate_status](bool status, mojom::PinErrorPtr error) {
+            [&validate_status](mojom::TokenValidationResult status) {
               validate_status = status;
             }));
 
-    EXPECT_TRUE(validate_status.value());
+    EXPECT_EQ(mojom::TokenValidationResult::kValidationFailed,
+              validate_status.value());
 
     const base::Value::Dict* token_record =
         GetPrefs()
@@ -1020,9 +1028,9 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
     item.Set("validate_timestamp",
              base::TimeToValue(base::Time::FromTimeT(123u)));
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
-    item.Set("cids", std::move(cids));
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("urls", std::move(cids));
 
     update_dict.SetByDottedPath(kSolMonkey1Path, std::move(item));
   }
@@ -1036,9 +1044,9 @@ TEST_F(BraveWalletPinServiceTest, GetTokenStatus) {
     item.Set("validate_timestamp",
              base::TimeToValue(base::Time::FromTimeT(123u)));
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
-    item.Set("cids", std::move(cids));
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("urls", std::move(cids));
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
@@ -1113,9 +1121,9 @@ TEST_F(BraveWalletPinServiceTest, GetLastValidateTime) {
     item.Set("validate_timestamp",
              base::TimeToValue(base::Time::FromTimeT(123u)));
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
-    item.Set("cids", std::move(cids));
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("urls", std::move(cids));
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
@@ -1277,9 +1285,9 @@ TEST_F(BraveWalletPinServiceTest, Reset) {
     item.Set("validate_timestamp",
              base::TimeToValue(base::Time::FromTimeT(123u)));
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
-    item.Set("cids", std::move(cids));
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("urls", std::move(cids));
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
@@ -1306,9 +1314,9 @@ TEST_F(BraveWalletPinServiceTest, Reset_Failed) {
     item.Set("validate_timestamp",
              base::TimeToValue(base::Time::FromTimeT(123u)));
     base::Value::List cids;
-    cids.Append("QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
-    cids.Append("Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
-    item.Set("cids", std::move(cids));
+    cids.Append("ipfs://QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq");
+    cids.Append("ipfs://Qmcyc7tm9sZB9JnvLgejPTwdzjjNjDMiRWCUvaZAfp6cUg");
+    item.Set("urls", std::move(cids));
 
     update_dict.SetByDottedPath(kMonkey1Path, std::move(item));
   }
