@@ -347,7 +347,8 @@ interface PageHandlerFactory {
                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
                     pending_receiver<WalletPinService> brave_wallet_pin_service,
                     pending_receiver<WalletAutoPinService>
-                        brave_wallet_auto_pin_service);
+                        brave_wallet_auto_pin_service,
+                    pending_receiver<IpfsService> brave_wallet_ipfs_service);
 };
 
 // Lifetime option in sync with CreatePermissionLifetimeOptions()
@@ -886,6 +887,11 @@ interface SwapService {
   // Obtains whether the given Solana token mint should have fees for Jupiter
   // swaps.
   HasJupiterFeesForTokenMint(string mint) => (bool result);
+};
+
+interface IpfsService {
+  TranslateToNFTGatewayURL(string url) => (string? translated_url);
+  ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
 };
 
 interface JsonRpcServiceObserver {

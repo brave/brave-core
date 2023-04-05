@@ -104,6 +104,10 @@ import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
 import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
+import {
+  areSupportedForPinning,
+  extractIpfsUrl
+} from '../../../../common/async/lib'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -384,12 +388,28 @@ export const PortfolioAsset = (props: Props) => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
   }, [fullTokenList, selectedAsset?.symbol])
 
+  const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
+  const [nftPinnable, setNftPinnable] = React.useState<boolean>()
+
+  React.useEffect(() => {
+    let ignore = false
+    if (nftMetadata?.imageURL) {
+      areSupportedForPinning([nftMetadata?.imageURL]).then(
+        (v) => {if (!ignore) setNftPinnable(v)})
+      extractIpfsUrl(nftMetadata?.imageURL).then(
+        (v) => {if (!ignore) setIpfsImageUrl(v)})
+    }
+    return () => {
+      ignore = true
+    }
+  }, [nftMetadata])
+
   const currentNftPinningStatus = React.useMemo(() => {
-    if (isNftAsset && selectedAsset) {
+    if (isNftAsset && selectedAsset && nftPinnable) {
       return getNftPinningStatus(selectedAsset)
     }
     return undefined
-  }, [isNftAsset, selectedAsset])
+  }, [nftPinnable, isNftAsset, selectedAsset])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
@@ -592,7 +612,10 @@ export const PortfolioAsset = (props: Props) => {
     if (nftPinningStatus && selectedAsset && nftDetailsRef?.current) {
       const command: UpdateNftPinningStatus = {
         command: NftUiCommand.UpdateNftPinningStatus,
-        payload: currentNftPinningStatus
+        payload: {
+          status: currentNftPinningStatus,
+          url: ipfsImageUrl
+        }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
@@ -606,7 +629,9 @@ export const PortfolioAsset = (props: Props) => {
         updated
       }))
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus, currentNftPinningStatus])
+  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata,
+      networkList, nftMetadataError, nftPinningStatus,
+      currentNftPinningStatus, ipfsImageUrl])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
