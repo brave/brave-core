@@ -38,10 +38,6 @@ std::unique_ptr<EmbeddingProcessing> EmbeddingProcessing::CreateFromValue(
   return embedding_processing;
 }
 
-bool EmbeddingProcessing::IsInitialized() const {
-  return is_initialized_;
-}
-
 bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
   const base::Value::Dict* const value = resource_value.GetIfDict();
   if (!value) {

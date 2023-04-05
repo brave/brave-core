@@ -29,10 +29,6 @@ AntiTargeting::~AntiTargeting() {
   AdsClientHelper::RemoveObserver(this);
 }
 
-bool AntiTargeting::IsInitialized() const {
-  return is_initialized_;
-}
-
 void AntiTargeting::Load() {
   LoadAndParseResource(kResourceId, features::GetAntiTargetingResourceVersion(),
                        base::BindOnce(&AntiTargeting::OnLoadAndParseResource,

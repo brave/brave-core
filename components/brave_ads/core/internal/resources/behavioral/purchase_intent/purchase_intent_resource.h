@@ -31,7 +31,7 @@ class PurchaseIntent final {
 
   ~PurchaseIntent();
 
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   void Load();
 

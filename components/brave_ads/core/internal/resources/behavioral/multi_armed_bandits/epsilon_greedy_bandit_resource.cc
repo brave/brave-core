@@ -24,10 +24,6 @@ EpsilonGreedyBandit::~EpsilonGreedyBandit() {
   catalog_->RemoveObserver(this);
 }
 
-bool EpsilonGreedyBandit::IsInitialized() const {
-  return is_initialized_;
-}
-
 void EpsilonGreedyBandit::LoadFromCatalog(const CatalogInfo& catalog) {
   const SegmentList segments = GetSegments(catalog);
   const SegmentList parent_segments = GetParentSegments(segments);

@@ -38,10 +38,6 @@ TextProcessing::TextProcessing() = default;
 
 TextProcessing::~TextProcessing() = default;
 
-bool TextProcessing::IsInitialized() const {
-  return is_initialized_;
-}
-
 TextProcessing::TextProcessing(TransformationVector transformations,
                                model::Linear linear_model)
     : is_initialized_(true) {

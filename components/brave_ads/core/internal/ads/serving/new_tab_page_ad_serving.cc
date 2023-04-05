@@ -97,10 +97,6 @@ void Serving::OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
   ServeAd(ad, std::move(callback));
 }
 
-bool Serving::IsSupported() const {
-  return static_cast<bool>(eligible_ads_);
-}
-
 void Serving::ServeAd(const NewTabPageAdInfo& ad,
                       MaybeServeNewTabPageAdCallback callback) {
   if (!ad.IsValid()) {

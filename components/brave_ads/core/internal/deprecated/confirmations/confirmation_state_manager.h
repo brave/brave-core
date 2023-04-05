@@ -42,7 +42,7 @@ class ConfirmationStateManager final {
   static bool HasInstance();
 
   void Initialize(const WalletInfo& wallet, InitializeCallback callback);
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   void Save();
 

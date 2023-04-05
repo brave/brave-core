@@ -27,7 +27,7 @@ class Conversions final {
 
   ~Conversions();
 
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   void Load();
 
