@@ -16,6 +16,19 @@ interface ConversationListProps {
 }
 
 function ConversationList (props: ConversationListProps) {
+  // Scroll the last conversation item in to view when entries are added.
+  React.useEffect(() => {
+    if (!props.list.length) {
+      return
+    }
+    requestAnimationFrame(() => {
+      document.querySelector(`[data-conversation-entry-id="${props.list.length - 1}"]`)?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end'
+      })
+    })
+  }, [props.list.length])
+
   return (
     <div className={styles.list}>
       {props.list.map((turn, id) => {
@@ -25,7 +38,7 @@ function ConversationList (props: ConversationListProps) {
         })
 
         return (
-          <div key={id} className={turnClass}>
+          <div key={id} data-conversation-entry-id={id} className={turnClass}>
             <p>
               {turn.text}
             </p>
