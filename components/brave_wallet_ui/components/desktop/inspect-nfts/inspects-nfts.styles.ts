@@ -125,6 +125,7 @@ export const SubDivider = styled.div`
   width: 100%;
   height: 1px;
   background-color: rgba(233, 233, 244, 0.3);
+  margin-top: 13px;
 `
 
 export const PinnedNftIllustration = styled.img`

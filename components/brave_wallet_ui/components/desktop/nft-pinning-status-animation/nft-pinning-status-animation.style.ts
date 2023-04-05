@@ -4,8 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
-import IpfsIcon from '../../../assets/svg-icons/nft-ipfs/ipfs.svg'
-import IpfsSuccessIcon from '../../../assets/svg-icons/nft-ipfs/ipfs-success.svg'
+import IpfsIcon from '../../../assets/svg-icons/nft-ipfs/ipfs-small.svg'
+import IpfsUploadingIcon from '../../../assets/svg-icons/nft-ipfs/ipfs-uploading.svg'
 
 export const StyledWrapper = styled.div<{ size: string }>`
   display: flex;
@@ -15,28 +15,27 @@ export const StyledWrapper = styled.div<{ size: string }>`
   height: ${p => p.size};
 `
 
-export const GifWrapper = styled.div<{ size?: string }>`
+export const GifWrapper = styled.div`
   display: flex;
   position: relative;
   align-items: center;
   justify-content: center;
-  width: ${p => p.size};
-  height: ${p => p.size};
+  width: 30px;
+  height: 30px;
 `
 
 export const StatusGif = styled.img`
   width: 100%;
   height: 100%;
-  z-index: 0;
-  mix-blend-mode: multiply; /* make gif background blend with parent background */
+  z-index: 1;
 `
 
 const BannerLeftIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 14px;
+  height: 14px;
   background-color: ${(p) => p.theme.palette.white};
 `
 
@@ -49,11 +48,13 @@ export const Ipfs = styled(BannerLeftIcon)<{ size?: string }>`
 `
 
 export const IpfsUploading = styled(BannerLeftIcon)`
-  background-image: url(${IpfsSuccessIcon});
+  background-image: url(${IpfsUploadingIcon});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
   background-color: transparent;
-  z-index: 0;
   position: absolute;
+  width: 23px;
+  height: 23px;
+  z-index: 2;
 `

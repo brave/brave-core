@@ -109,7 +109,6 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
           <BenefitsList>
             <li>{getLocale('braveWalletNftPinningBenefitOne')}</li>
             <li>{getLocale('braveWalletNftPinningBenefitTwo')}</li>
-            <li>{getLocale('braveWalletNftPinningBenefitThree')}</li>
           </BenefitsList>
         </Column>
         <Row gap='16px' alignItems='center' justifyContent='center'>
