@@ -15,9 +15,11 @@ namespace brave_ads {
 
 namespace {
 
+constexpr int kCompatibleServingVersion = 3;
+
 bool DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  // Always respect cap if notification ads serving version is not 3
-  if (notification_ads::features::GetServingVersion() != 3) {
+  if (notification_ads::features::GetServingVersion() !=
+      kCompatibleServingVersion) {
     return true;
   }
 

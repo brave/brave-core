@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/creative_instance_exclusion_rule.h"
 
 #include <utility>
 
@@ -27,20 +27,23 @@ bool DoesRespectCap(const AdEventList& ad_events,
 
 }  // namespace
 
-PerHourExclusionRule::PerHourExclusionRule(AdEventList ad_events)
+CreativeInstanceExclusionRule::CreativeInstanceExclusionRule(
+    AdEventList ad_events)
     : ad_events_(std::move(ad_events)) {}
 
-PerHourExclusionRule::~PerHourExclusionRule() = default;
+CreativeInstanceExclusionRule::~CreativeInstanceExclusionRule() = default;
 
-std::string PerHourExclusionRule::GetUuid(
+std::string CreativeInstanceExclusionRule::GetUuid(
     const CreativeAdInfo& creative_ad) const {
   return creative_ad.creative_instance_id;
 }
 
-bool PerHourExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
+bool CreativeInstanceExclusionRule::ShouldExclude(
+    const CreativeAdInfo& creative_ad) {
   if (!DoesRespectCap(ad_events_, creative_ad)) {
     last_message_ = base::StringPrintf(
-        "creativeInstanceId %s has exceeded the perHour frequency cap",
+        "creativeInstanceId %s has exceeded the creative instance frequency "
+        "cap",
         creative_ad.creative_instance_id.c_str());
 
     return true;
@@ -49,7 +52,7 @@ bool PerHourExclusionRule::ShouldExclude(const CreativeAdInfo& creative_ad) {
   return false;
 }
 
-const std::string& PerHourExclusionRule::GetLastMessage() const {
+const std::string& CreativeInstanceExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
