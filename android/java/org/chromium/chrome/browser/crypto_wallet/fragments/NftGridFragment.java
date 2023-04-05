@@ -251,28 +251,20 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
 
     @Override
     public void onAssetClick(BlockchainToken asset) {
-        NetworkInfo selectedNetwork = null;
-        if (mWalletModel != null) {
-            selectedNetwork =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
-        }
+        NetworkInfo selectedNetwork = mNetworkInfo;
         if (selectedNetwork == null) {
             return;
         }
 
-        if (asset.isErc721 || asset.isNft) {
-            PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
-                    nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
-            if (selectedNft == null) {
-                return;
-            }
-
-            Intent intent = NftDetailActivity.getIntent(
-                    getContext(), selectedNetwork.chainId, asset, selectedNft);
-            startActivity(intent);
-        } else {
-            Utils.openAssetDetailsActivity(getActivity(), selectedNetwork.chainId, asset);
+        PortfolioModel.NftDataModel selectedNft = JavaUtils.find(mNftDataModels,
+                nftDataModel -> AssetUtils.Filters.isSameNFT(asset, nftDataModel.token));
+        if (selectedNft == null) {
+            return;
         }
+
+        Intent intent = NftDetailActivity.getIntent(
+                getContext(), selectedNetwork.chainId, asset, selectedNft);
+        startActivity(intent);
     }
 
     private void updateNftGrid() {
