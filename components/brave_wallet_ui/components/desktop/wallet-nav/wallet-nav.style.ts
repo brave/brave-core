@@ -6,6 +6,8 @@
 import styled from 'styled-components'
 
 export const Wrapper = styled.div`
+  --display-text: none;
+  --icon-margin-right: 0px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +21,11 @@ export const Wrapper = styled.div`
   overflow: visible;
   z-index: 10;
   padding: 0px 8px;
+  transition-duration: 0.1s;
+  &:hover {
+    --display-text: flex;
+    --icon-margin-right: 16px;
+  }
 `
 
 export const Section = styled.div<{ showBorder?: boolean }>`
@@ -26,7 +33,9 @@ export const Section = styled.div<{ showBorder?: boolean }>`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
   padding: 8px 0px;
+  transition-duration: inherit;
   border-bottom: ${(p) => p.showBorder
     ? `1px solid var(--nav-border)`
     : 'none'};

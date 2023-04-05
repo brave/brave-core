@@ -12,22 +12,15 @@ import { getLocale } from '../../../../../common/locale'
 // Types
 import { NavOption } from '../../../../constants/types'
 
-// Components
-import { NavTooltip } from '../../../shared/nav-tooltip/nav-tooltip'
-
 // Styled Components
-import { StyledButton, ButtonIcon } from './wallet-nav-button.style'
+import { StyledButton, ButtonIcon, ButtonText } from './wallet-nav-button.style'
 
 export interface Props {
   option: NavOption
-  isSwap?: boolean
 }
 
 export const WalletNavButton = (props: Props) => {
-  const { option, isSwap } = props
-
-  // State
-  const [active, setActive] = React.useState(false)
+  const { option } = props
 
   // Routing
   const history = useHistory()
@@ -38,29 +31,18 @@ export const WalletNavButton = (props: Props) => {
     history.push(option.route)
   }, [option.route])
 
-  const showTip = React.useCallback(() => {
-    setActive(true)
-  }, [])
-
-  const hideTip = React.useCallback(() => {
-    setActive(false)
-  }, [])
-
   return (
     <StyledButton
-      onMouseEnter={showTip}
-      onMouseLeave={hideTip}
       onClick={onClick}
       isSelected={walletLocation.includes(option.route)}
     >
       <ButtonIcon name={option.icon} />
-      <NavTooltip
-        text={getLocale(option.name)}
-        orientation='right'
-        distance={60}
-        showTip={active}
-        isSwap={isSwap}
-      />
+      <ButtonText
+        textSize='14px'
+        isBold={true}
+      >
+        {getLocale(option.name)}
+      </ButtonText>
     </StyledButton>
   )
 }
