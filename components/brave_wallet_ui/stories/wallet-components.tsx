@@ -208,9 +208,22 @@ _NftDetails.story = {
 
 export const _NftPinningStatus = () => {
   return (
-    <NftPinningStatus
-      pinningStatusCode={1}
-    />
+    <div style={{ display: 'grid', gap: 10 }}>
+      {/* uploading */}
+      <NftPinningStatus
+        pinningStatusCode={3}
+      />
+
+      {/* success */}
+      <NftPinningStatus
+        pinningStatusCode={2}
+      />
+
+      {/* failed */}
+      <NftPinningStatus
+        pinningStatusCode={4}
+      />
+    </div>
   )
 }
 
