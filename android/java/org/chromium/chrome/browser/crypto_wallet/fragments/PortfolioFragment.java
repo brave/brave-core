@@ -61,6 +61,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.TransactionUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
@@ -393,8 +394,8 @@ public class PortfolioFragment
 
         Activity activity = getActivity();
         if (!(activity instanceof BraveWalletActivity)) return;
-        mPortfolioModel.fetchNonNftAssets(
-                selectedNetwork, (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
+        mPortfolioModel.fetchAssetsByType(TokenUtils.TokenType.NON_NFTS, selectedNetwork,
+                (BraveWalletBaseActivity) activity, (portfolioHelper) -> {
                     if (!AndroidUtils.canUpdateFragmentUi(this)) return;
                     mPortfolioHelper = portfolioHelper;
 

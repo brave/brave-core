@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.mojo.bindings.Callbacks;
@@ -142,7 +143,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         mBraveWalletService.discoverAssetsOnAllSupportedChains();
     }
 
-    public void fetchNonNftAssets(NetworkInfo selectedNetwork,
+    public void fetchAssetsByType(TokenUtils.TokenType type, NetworkInfo selectedNetwork,
             BraveWalletBaseActivity braveWalletBaseActivity,
             Callbacks.Callback1<PortfolioHelper> callback) {
         synchronized (mLock) {
@@ -165,7 +166,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                                         mAllNetworkInfos, accountInfos);
                                         mPortfolioHelper.setSelectedNetworks(
                                                 NetworkUtils.nonTestNetwork(mAllNetworkInfos));
-                                        mPortfolioHelper.fetchNonNftAssetsAndDetails(callback);
+                                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                                     });
                         } else {
                             mKeyringService.getKeyringInfo(
@@ -176,7 +177,7 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                                                         mAllNetworkInfos, keyringInfo.accountInfos);
                                         mPortfolioHelper.setSelectedNetworks(
                                                 Arrays.asList(selectedNetwork));
-                                        mPortfolioHelper.fetchNonNftAssetsAndDetails(callback);
+                                        mPortfolioHelper.fetchAssetsAndDetails(type, callback);
                                     });
                         }
                     });
