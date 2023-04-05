@@ -452,18 +452,18 @@ public class PortfolioFragment
         // TODO(pav): Remove this workaround once all network option is supported by
         // EditVisibleAssetsBottomSheetDialogFragment. This workaround is to show default network
         // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
-        // selected
+        // selected. Check also NftGridFragment#onEditVisibleAssetsClick().
         if (selectedNetwork.chainId.equals(
                     NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
-                    defaultNetwork -> { showEditVisibleDialog(defaultNetwork); });
+                    defaultNetwork -> { showEditVisibleAssetsDialog(defaultNetwork); });
             return;
         }
-        showEditVisibleDialog(selectedNetwork);
+        showEditVisibleAssetsDialog(selectedNetwork);
     }
 
-    private void showEditVisibleDialog(NetworkInfo selectedNetwork) {
+    private void showEditVisibleAssetsDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, false);

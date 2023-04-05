@@ -194,7 +194,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     /**
-     * Create a network model to handle either default or local state (onscreen e.g. {@link
+     * Create a network selector model to handle either default or local state (onscreen e.g. {@link
      * org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment}). Local network
      * selection can be used by many views so make sure to use the same key which acts as a contract
      * between the view and the selection activity.

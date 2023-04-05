@@ -303,14 +303,26 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
     }
 
     private void onEditVisibleAssetsClick() {
-        NetworkInfo selectedNetwork = null;
-        if (mWalletModel != null) {
-            selectedNetwork =
-                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork.getValue();
-        }
+        NetworkInfo selectedNetwork = mNetworkInfo;
         if (selectedNetwork == null) {
             return;
         }
+
+        // TODO(simone): Remove this workaround once all network option is supported by
+        // EditVisibleAssetsBottomSheetDialogFragment. This workaround is to show default network
+        // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
+        // selected. Check also PortfolioFragment#onEditVisibleAssetsClick().
+        if (selectedNetwork.chainId.equals(
+                NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
+            LiveDataUtil.observeOnce(
+                    mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
+                    defaultNetwork -> { showEditVisibleAssetsDialog(defaultNetwork); });
+        } else {
+            showEditVisibleAssetsDialog(selectedNetwork);
+        }
+    }
+
+    private void showEditVisibleAssetsDialog(NetworkInfo selectedNetwork) {
         EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                 EditVisibleAssetsBottomSheetDialogFragment.newInstance(
                         WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST, true);
