@@ -118,9 +118,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
         if (!isEnabled()) return;
         if (mTab == null || mTab.getWebContents() == null) return;
 
-        if (mIsDismissed
-                || !(BraveSpeedReaderUtils.tabSupportsDistillation(mTab)
-                        || BraveSpeedReaderUtils.tabWantsDistill(mTab))) {
+        if (mIsDismissed || !BraveSpeedReaderUtils.tabSupportsDistillation(mTab)) {
             return;
         }
 
@@ -153,7 +151,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
                                         resources.getString(R.string.speedreader_message_button))
                                 .with(MessageBannerProperties.ON_PRIMARY_ACTION,
                                         () -> {
-                                            toggleSpeedreaderMode();
+                                            enableSpeedreaderMode();
                                             return PrimaryActionClickBehavior.DISMISS_IMMEDIATELY;
                                         })
                                 .with(MessageBannerProperties.ON_DISMISSED,
@@ -174,14 +172,19 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
         }
     }
 
-    public void toggleSpeedreaderMode() {
+    public void enableSpeedreaderMode() {
+        if (mTab == null || mTab.getWebContents() == null) return;
         WebContents webContents = mTab.getWebContents();
-        if (webContents == null) return;
 
         GURL url = webContents.getLastCommittedUrl();
 
-        BraveSpeedReaderUtils.toggleEnabledForWebContent(
-                webContents, !BraveSpeedReaderUtils.isEnabledForWebContent(webContents));
+        // Enable on tab
+        BraveSpeedReaderUtils.toggleEnabledForWebContent(webContents, true);
+
+        // Enable from original page
+        if (BraveSpeedReaderUtils.tabSupportsDistillation(mTab)) {
+            mTab.reload();
+        }
     }
 
     /** @return Whether speedreader is enabled. */
