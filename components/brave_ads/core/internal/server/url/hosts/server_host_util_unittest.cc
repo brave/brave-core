@@ -67,4 +67,17 @@ TEST_F(BatAdsServerHostUtilTest, GetAnonymousHost) {
   EXPECT_EQ(expected_host, host);
 }
 
+TEST_F(BatAdsServerHostUtilTest, GetAnonymousSearchHost) {
+  // Arrange
+  FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
+      EnvironmentType::kProduction);
+
+  // Act
+  const std::string host = server::GetAnonymousSearchHost();
+
+  // Assert
+  const std::string expected_host = "https://search.anonymous.ads.brave.com";
+  EXPECT_EQ(expected_host, host);
+}
+
 }  // namespace brave_ads

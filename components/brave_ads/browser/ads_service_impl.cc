@@ -1785,6 +1785,9 @@ void AdsServiceImpl::GetBrowsingHistory(const int max_count,
 
 void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
                                 UrlRequestCallback callback) {
+  DCHECK(url_request);
+  DCHECK(url_request->url.is_valid());
+
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = url_request->url;
   resource_request->method = URLMethodToRequestType(url_request->method);

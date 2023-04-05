@@ -41,4 +41,8 @@ std::string GetAnonymousHost() {
   return GetHost(ServerHostType::kAnonymous);
 }
 
+std::string GetAnonymousSearchHost() {
+  return GetHost(ServerHostType::kAnonymousSearch);
+}
+
 }  // namespace brave_ads::server

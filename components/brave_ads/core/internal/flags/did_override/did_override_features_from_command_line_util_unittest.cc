@@ -14,6 +14,7 @@
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/account_features.h"
 #include "brave/components/brave_ads/core/internal/ads/inline_content_ad_features.h"
@@ -48,7 +49,6 @@ struct ParamInfo final {
   bool expected_did_override_from_command_line;
 } const kTestCases[] = {
     {/*command_line_switch*/ {kFooBarSwitch, {}},
-
      /*expected_did_override_from_command_line*/ false},
     {/*command_line_switch*/ {::switches::kEnableFeatures, "FooBar"},
      /*expected_did_override_from_command_line*/ false},
@@ -71,6 +71,10 @@ struct ParamInfo final {
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
                               features::kEligibleAds.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {
+         ::switches::kEnableFeatures,
+         features::kShouldTriggerSearchResultAdEvents.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {::switches::kEnableFeatures,
                               inline_content_ads::features::kFeature.name},
@@ -142,6 +146,10 @@ struct ParamInfo final {
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
                               features::kEligibleAds.name},
+     /*expected_did_override_from_command_line*/ true},
+    {/*command_line_switch*/ {
+         variations::switches::kForceFieldTrialParams,
+         features::kShouldTriggerSearchResultAdEvents.name},
      /*expected_did_override_from_command_line*/ true},
     {/*command_line_switch*/ {variations::switches::kForceFieldTrialParams,
                               inline_content_ads::features::kFeature.name},

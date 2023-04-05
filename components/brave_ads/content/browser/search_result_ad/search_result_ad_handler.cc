@@ -41,7 +41,7 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     const bool should_trigger_viewed_event) {
   if (!ads_service || !ads_service->IsEnabled() ||
       !base::FeatureList::IsEnabled(
-          features::kSupportBraveSearchResultAdConfirmationEvents) ||
+          features::kShouldTriggerSearchResultAdEvents) ||
       !brave_search::IsAllowedHost(url)) {
     return {};
   }

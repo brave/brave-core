@@ -73,7 +73,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
     feature_list_.InitAndEnableFeature(
-        features::kSupportBraveSearchResultAdConfirmationEvents);
+        features::kShouldTriggerSearchResultAdEvents);
   }
 
   void SetUpOnMainThread() override {

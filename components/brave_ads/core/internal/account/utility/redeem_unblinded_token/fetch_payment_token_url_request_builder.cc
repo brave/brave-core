@@ -12,7 +12,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/redeem_unblinded_token_util.h"
+#include "brave/components/brave_ads/core/internal/server/url/hosts/server_host_util.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -36,10 +36,14 @@ mojom::UrlRequestInfoPtr FetchPaymentTokenUrlRequestBuilder::Build() {
 ///////////////////////////////////////////////////////////////////////////////
 
 GURL FetchPaymentTokenUrlRequestBuilder::BuildUrl() const {
+  const std::string host = confirmation_.ad_type == AdType::kSearchResultAd
+                               ? server::GetAnonymousSearchHost()
+                               : server::GetAnonymousHost();
+
   const std::string spec =
-      base::StringPrintf("%s/v3/confirmation/%s/paymentToken",
-                         GetAnonymousHost(confirmation_.ad_type).c_str(),
+      base::StringPrintf("%s/v3/confirmation/%s/paymentToken", host.c_str(),
                          confirmation_.transaction_id.c_str());
+
   return GURL(spec);
 }
 

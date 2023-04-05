@@ -8,6 +8,7 @@
 #include <ostream>
 
 #include "base/notreached.h"
+#include "brave/components/brave_ads/core/internal/server/url/hosts/anonymous_search_server_host.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/anonymous_server_host.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/geo_server_host.h"
 #include "brave/components/brave_ads/core/internal/server/url/hosts/non_anonymous_server_host.h"
@@ -32,6 +33,10 @@ std::unique_ptr<ServerHostInterface> ServerHostsFactory::Build(
 
     case ServerHostType::kAnonymous: {
       return std::make_unique<AnonymousServerHost>();
+    }
+
+    case ServerHostType::kAnonymousSearch: {
+      return std::make_unique<AnonymousSearchServerHost>();
     }
   }
 

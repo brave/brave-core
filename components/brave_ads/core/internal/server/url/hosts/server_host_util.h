@@ -24,6 +24,10 @@ std::string GetNonAnonymousHost();
 // the request to a wallet in any other way
 std::string GetAnonymousHost();
 
+// Use for search requests that must not include the wallet ID or allow Brave
+// to link the request to a wallet in any other way
+std::string GetAnonymousSearchHost();
+
 }  // namespace brave_ads::server
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_SERVER_URL_HOSTS_SERVER_HOST_UTIL_H_
