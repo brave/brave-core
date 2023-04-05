@@ -5,13 +5,11 @@
 
 :root {
   /* Light Variables */
-  --nav-background: var(--color-legacy-background2);
-  --nav-border: var(--color-legacy-divider1);
-  --nav-button-color: var(--color-legacy-text2);
-  --nav-button-background: var(--color-legacy-background2);
-  --nav-button-color-hover: var(--color-legacy-text1);
+  --nav-background: var(--leo-color-white);
+  --nav-border: var(--leo-color-divider-subtle);
+  --nav-button-color: var(--leo-color-icon-default);
   --nav-button-background-hover:
-  var(--leo-color-container-interactive-background);
+  var(--leo-color-light-container-highlight);
   /* #1E2029 is not in the old design system */
   --nav-tool-tip-background: #1e2029;
 }
@@ -19,13 +17,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     /* Dark Variables */
-    --nav-background: var(--color-legacy-background2);
-    --nav-border: var(--color-legacy-divider1);
-    --nav-button-color: var(--color-legacy-text2);
-    --nav-button-background: var(--color-legacy-background2);
-    --nav-button-color-hover: var(--color-legacy-text1);
+    --nav-background: var(--leo-color-black);
+    --nav-border: var(--leo-color-divider-subtle);
+    --nav-button-color: var(--leo-color-icon-default);
     --nav-button-background-hover:
-    var(--leo-color-container-interactive-background);
+    var(--leo-color-dark-gray-20);
     /* #17171F is not in the old design system */
     --nav-tool-tip-background: #17171f;
   }
@@ -33,26 +29,22 @@
 
 html[data-theme='light'] {
   /* Light Variables */
-  --nav-background: var(--color-legacy-background2);
-  --nav-border: var(--color-legacy-divider1);
-  --nav-button-color: var(--color-legacy-text2);
-  --nav-button-background: var(--color-legacy-background2);
-  --nav-button-color-hover: var(--color-legacy-text1);
+  --nav-background: var(--leo-color-white);
+  --nav-border: var(--leo-color-divider-subtle);
+  --nav-button-color: var(--leo-color-icon-default);
   --nav-button-background-hover:
-  var(--leo-color-container-interactive-background);
+  var(--leo-color-light-container-highlight);
   /* #1E2029 is not in the old design system */
   --nav-tool-tip-background: #1e2029;
 }
 
 html[data-theme='dark'] {
   /* Dark Variables */
-  --nav-background: var(--color-legacy-background2);
-  --nav-border: var(--color-legacy-divider1);
-  --nav-button-color: var(--color-legacy-text2);
-  --nav-button-background: var(--color-legacy-background2);
-  --nav-button-color-hover: var(--color-legacy-text1);
+  --nav-background: var(--leo-color-black);
+  --nav-border: var(--leo-color-divider-subtle);
+  --nav-button-color: var(--leo-color-icon-default);
   --nav-button-background-hover:
-  var(--leo-color-container-interactive-background);
+  var(--leo-color-dark-gray-20);
   /* #17171F is not in the old design system */
   --nav-tool-tip-background: #17171f;
 }
