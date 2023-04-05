@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-extern crate env_logger;
 extern crate feed_rs;
 
 use feed_rs::parser;
@@ -33,7 +32,7 @@ mod ffi {
     }
 }
 
-// Note: This function isn't unlikely to be perfect, but it does guarantee that
+// Note: This function isn't likely to be perfect, but it does guarantee that
 // there will be no HTML tags in the output (as it strips both '<' and '>' from
 // from the output).
 fn strip_html(subject: &str) -> String {
@@ -91,11 +90,8 @@ fn parse_feed_bytes(source: &[u8], output: &mut ffi::FeedData) -> bool {
     }
     // Parsing was successful, convert to FeedData
     let feed = feed_result.unwrap();
-    output.title = if let Some(title) = feed.title {
-        voca_rs::strip::strip_tags(&title.content)
-    } else {
-        String::new()
-    };
+    output.title =
+        if let Some(title) = feed.title { strip_html(&title.content) } else { String::new() };
     for feed_item_data in feed.entries {
         // Check we can make a valid entry
         if feed_item_data.links.is_empty()

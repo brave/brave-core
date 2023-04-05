@@ -20,12 +20,10 @@ rust_cxx("rust-rs") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [
-    "rust_strip_html_unittest.cc"
-  ]
+  sources = [ "rust_strip_html_unittest.cc" ]
 
   deps = [
     ":rust-rs",
-    "//testing/gtest"
+    "//testing/gtest",
   ]
 }
