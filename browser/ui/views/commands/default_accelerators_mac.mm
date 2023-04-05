@@ -28,14 +28,18 @@ namespace commands {
 namespace {
 
 bool CanConvertToAcceleratorMapping(int command_id) {
-  if (!command_id) {
-    return command_id;
+  if (command_id == 0) {
+    return false;
   }
 
   return base::Contains(commands::GetCommands(), command_id);
 }
 
 bool CanConvertToAcceleratorMapping(NSMenuItem* item) {
+  if (item.hasSubmenu) {
+    return false;
+  }
+
   if (auto command_id = static_cast<int>(item.tag);
       !CanConvertToAcceleratorMapping(command_id)) {
     return false;
