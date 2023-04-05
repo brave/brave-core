@@ -42,6 +42,9 @@ class GeneralBrowserUsage;
 
 namespace brave_stats {
 
+extern const char kP3AMonthlyPingHistogramName[];
+extern const char kP3ADailyPingHistogramName[];
+
 class BraveStatsUpdaterParams;
 
 class BraveStatsUpdater {
@@ -66,6 +69,7 @@ class BraveStatsUpdater {
   void SetUsageServerForTesting(const std::string& usage_server);
 
  private:
+  void RecordP3APing();
   GURL BuildStatsEndpoint(const std::string& path);
   void OnThresholdLoaderComplete(scoped_refptr<net::HttpResponseHeaders>);
   // Invoked from SimpleURLLoader after download is complete.

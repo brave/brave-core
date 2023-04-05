@@ -69,6 +69,8 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   // Added 10/2022
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
 #endif
+
+  brave_wallet::RegisterLocalStatePrefsForMigration(registry);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

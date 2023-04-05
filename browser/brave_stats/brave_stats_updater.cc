@@ -10,6 +10,7 @@
 
 #include "base/barrier_closure.h"
 #include "base/command_line.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/buildflags.h"
@@ -40,6 +41,9 @@
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 namespace brave_stats {
+
+const char kP3AMonthlyPingHistogramName[] = "Brave.Core.UsageMonthly";
+const char kP3ADailyPingHistogramName[] = "Brave.Core.UsageDaily";
 
 namespace {
 
@@ -89,6 +93,7 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
         "Not implemented."
     })");
 }
+
 }  // anonymous namespace
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
@@ -126,6 +131,10 @@ void BraveStatsUpdater::Start() {
   server_ping_periodic_timer_->Start(
       FROM_HERE, base::Seconds(kUpdateServerPeriodicPingFrequencySeconds), this,
       &BraveStatsUpdater::OnServerPingTimerFired);
+
+  // Record ping for P3A.
+  UMA_HISTOGRAM_BOOLEAN(kP3AMonthlyPingHistogramName, true);
+  UMA_HISTOGRAM_BOOLEAN(kP3ADailyPingHistogramName, true);
 }
 
 void BraveStatsUpdater::Stop() {
