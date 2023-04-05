@@ -16,6 +16,7 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 
 #define DEFAULT_PHONE_BOOK NULL
@@ -325,10 +326,12 @@ RasOperationResult RemoveEntry(const std::wstring& entry_name) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
-RasOperationResult CreateEntry(const std::wstring& entry_name,
-                               const std::wstring& hostname,
-                               const std::wstring& username,
-                               const std::wstring& password) {
+RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
+  const auto entry_name = base::UTF8ToWide(info.connection_name());
+  const auto hostname = base::UTF8ToWide(info.hostname());
+  const auto username = base::UTF8ToWide(info.username());
+  const auto password = base::UTF8ToWide(info.password());
+
   // `RasSetEntryProperties` can have problems if fields are empty.
   // Specifically, it will crash if `hostname` is NULL. Entry name
   // is already validated.
