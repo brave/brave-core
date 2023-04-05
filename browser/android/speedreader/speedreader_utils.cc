@@ -40,7 +40,7 @@ static void JNI_BraveSpeedReaderUtils_ToggleEnabledForWebContent(
   tab_helper->MaybeToggleEnabledForSite(enabled);
 }
 
-static jboolean JNI_BraveSpeedReaderUtils_IsTabDistilled(
+static jboolean JNI_BraveSpeedReaderUtils_TabStateIsDistilled(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& tab) {
   TabAndroid* tab_android = TabAndroid::GetNativeTab(env, tab);

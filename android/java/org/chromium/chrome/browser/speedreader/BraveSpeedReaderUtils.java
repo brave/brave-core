@@ -20,8 +20,8 @@ public class BraveSpeedReaderUtils {
         BraveSpeedReaderUtilsJni.get().toggleEnabledForWebContent(webContents, enabled);
     }
 
-    public static boolean isTabDistilled(Tab tab) {
-        return BraveSpeedReaderUtilsJni.get().isTabDistilled(tab);
+    public static boolean tabStateIsDistilled(Tab tab) {
+        return BraveSpeedReaderUtilsJni.get().tabStateIsDistilled(tab);
     }
 
     public static boolean tabSupportsDistillation(Tab tab) {
@@ -36,7 +36,7 @@ public class BraveSpeedReaderUtils {
     interface Natives {
         boolean isEnabledForWebContent(WebContents webContents);
         void toggleEnabledForWebContent(WebContents webContents, boolean enabled);
-        boolean isTabDistilled(Tab tab);
+        boolean tabStateIsDistilled(Tab tab);
         boolean tabSupportsDistillation(Tab tab);
         boolean tabWantsDistill(Tab tab);
     }
