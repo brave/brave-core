@@ -343,6 +343,7 @@ Config.prototype.buildArgs = function () {
       args.enable_dsyms = false
     }
   }
+  args.clang_use_default_sample_profile = false
 
   if (this.shouldSign()) {
     if (process.platform === 'darwin') {
