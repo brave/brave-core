@@ -144,15 +144,6 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
        {"0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether", "usdt.png",
         true, false, false, false, "USDT", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0xc944e90c64b2c07662a292be6244bdf05cda44a7", "The Graph",
-        "graphToken.png", true, false, false, false, "GRT", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0x0000000000085d4780b73119b644ae5ecd22b376", "TrueUSD", "tusd.png",
-        true, false, false, false, "TUSD", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
-       {"0x3845badAde8e6dFF049820680d1F14bD3903a5d0", "The Sandbox", "sand.png",
-        true, false, false, false, "SAND", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", "Uniswap", "uni.png",
         true, false, false, false, "UNI", 18, true, "", "",
         mojom::kMainnetChainId, mojom::CoinType::ETH},
@@ -161,10 +152,7 @@ const std::vector<mojom::BlockchainToken>& GetSardineBuyTokens() {
         mojom::kMainnetChainId, mojom::CoinType::ETH},
        {"0xe41d2489571d322189246dafa5ebde1f4699f498", "Ox", "zrx.png", true,
         false, false, false, "ZRX", 18, true, "", "", mojom::kMainnetChainId,
-        mojom::CoinType::ETH},
-       {"0xbb0e17ef65f82ab018d8edd776e8dd940327b28b", "Axie Infinity",
-        "axs.png", true, false, false, false, "AXS", 18, true, "", "",
-        mojom::kMainnetChainId, mojom::CoinType::ETH}});
+        mojom::CoinType::ETH}});
   return *tokens;
 }
 
