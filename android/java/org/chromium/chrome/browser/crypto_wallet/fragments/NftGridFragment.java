@@ -313,7 +313,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         // assets in EditVisibleAssetsBottomSheetDialogFragment when "All Networks" option is
         // selected. Check also PortfolioFragment#onEditVisibleAssetsClick().
         if (selectedNetwork.chainId.equals(
-                NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
+                    NetworkUtils.getAllNetworkOption(getContext()).chainId)) {
             LiveDataUtil.observeOnce(
                     mWalletModel.getCryptoModel().getNetworkModel().mDefaultNetwork,
                     defaultNetwork -> { showEditVisibleAssetsDialog(defaultNetwork); });
