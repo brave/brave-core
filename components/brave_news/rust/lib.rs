@@ -28,6 +28,7 @@ mod ffi {
     }
 
     extern "Rust" {
+        fn strip_html(subject: &str) -> String;
         fn parse_feed_bytes(source: &[u8], output: &mut FeedData) -> bool;
     }
 }
@@ -53,7 +54,8 @@ fn strip_html(subject: &str) -> String {
 
         if c == '>' {
             if depth_comment > 0 {
-                let is_comment = i > 2 && subject.chars().skip(i - 2).take(3).collect();
+                let is_comment =
+                    i > 2 && subject.chars().skip(i - 2).take(3).collect::<String>() == "-->";
                 if is_comment {
                     // If this was the close for a comment, reduce our comment depth.
                     depth_comment -= 1
