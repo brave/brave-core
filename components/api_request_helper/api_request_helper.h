@@ -73,16 +73,16 @@ class APIRequestResult {
   GURL final_url_;
 };
 
+struct APIRequestOptions {
+  bool auto_retry_on_network_change = false;
+  size_t max_body_size = -1u;
+  absl::optional<base::TimeDelta> timeout;
+};
+
 // Anyone is welcome to use APIRequestHelper to reduce boilerplate
 class APIRequestHelper {
  public:
   using Ticket = std::list<std::unique_ptr<network::SimpleURLLoader>>::iterator;
-
-  struct RequestOptions {
-    bool auto_retry_on_network_change = false;
-    size_t max_body_size = -1u;
-    absl::optional<base::TimeDelta> timeout;
-  };
 
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
@@ -116,7 +116,7 @@ class APIRequestHelper {
       const std::string& payload,
       const std::string& payload_content_type,
       ResultCallback callback,
-      const RequestOptions& request_options,
+      const APIRequestOptions& request_options,
       const base::flat_map<std::string, std::string>& headers = {},
       ResponseConversionCallback conversion_callback = base::NullCallback());
 

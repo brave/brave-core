@@ -415,8 +415,7 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
       "POST", gurl, std::string(), std::string(),
       base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
                      cids.size(), recursive, iter, std::move(callback)),
-      api_request_helper::APIRequestHelper::RequestOptions(false, -1u,
-                                                           base::Minutes(2)),
+      api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)},
       GetHeaders(gurl));
 }
 

@@ -119,8 +119,8 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     ResponseConversionCallback conversion_callback) {
   return Request(method, url, payload, payload_content_type,
                  std::move(callback),
-                 APIRequestHelper::RequestOptions(auto_retry_on_network_change,
-                                                  max_body_size, absl::nullopt),
+                 APIRequestOptions(auto_retry_on_network_change, max_body_size,
+                                   absl::nullopt),
                  headers, std::move(conversion_callback));
 }
 
@@ -130,7 +130,7 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const std::string& payload,
     const std::string& payload_content_type,
     ResultCallback callback,
-    const APIRequestHelper::RequestOptions& request_options,
+    const APIRequestOptions& request_options,
     const base::flat_map<std::string, std::string>& headers,
     ResponseConversionCallback conversion_callback) {
   auto loader = CreateLoader(method, url, payload, payload_content_type,
@@ -212,7 +212,6 @@ std::unique_ptr<network::SimpleURLLoader> APIRequestHelper::CreateLoader(
   if (!payload.empty()) {
     url_loader->AttachStringForUpload(payload, payload_content_type);
   }
-  url_loader->SetTimeoutDuration(base::Seconds(30));
   url_loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,
       auto_retry_on_network_change

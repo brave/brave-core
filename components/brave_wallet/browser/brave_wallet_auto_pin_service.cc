@@ -283,7 +283,8 @@ void BraveWalletAutoPinService::CheckQueue() {
 void BraveWalletAutoPinService::OnTaskFinished(bool result,
                                                mojom::PinErrorPtr error) {
   CHECK(current_);
-  if (!result && ShouldRetryOnError(error)) {
+  if (!result &&
+      (current_->operation != Operation::kAdd || ShouldRetryOnError(error))) {
     PostRetry(std::move(current_));
   }
   current_.reset();
