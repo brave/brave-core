@@ -355,7 +355,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
             std::vector<mojom::SignaturePubkeyPairPtr>()),
         base::BindLambdaForTesting([&](mojom::SolanaProviderError error,
                                        const std::string& error_message,
-                                       const std::vector<uint8_t>& result) {
+                                       const std::vector<uint8_t>& result,
+                                       mojom::SolanaMessageVersion version) {
           EXPECT_EQ(error, expected_error);
           EXPECT_EQ(error_message, expected_error_message);
           result_out = std::move(result);
@@ -394,7 +395,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
         base::BindLambdaForTesting(
             [&](mojom::SolanaProviderError error,
                 const std::string& error_message,
-                const std::vector<std::vector<uint8_t>>& result) {
+                const std::vector<std::vector<uint8_t>>& result,
+                const std::vector<mojom::SolanaMessageVersion>& versions) {
               EXPECT_EQ(error, expected_error);
               EXPECT_EQ(error_message, expected_error_message);
               result_out = std::move(result);
@@ -868,14 +870,16 @@ TEST_F(SolanaProviderImplUnitTest, GetDeserializedMessage) {
   const std::string address = GetAddressByIndex(0);
   EXPECT_FALSE(provider_->GetDeserializedMessage("", address));
 
-  SolanaInstruction instruction(mojom::kSolanaSystemProgramId,
-                                {SolanaAccountMeta(address, true, true),
-                                 SolanaAccountMeta(address, false, true)},
-                                {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
-  SolanaMessage msg("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, address,
-                    {instruction});
-
-  auto serialized_msg = msg.Serialize(nullptr);
+  SolanaInstruction instruction(
+      mojom::kSolanaSystemProgramId,
+      {SolanaAccountMeta(address, absl::nullopt, true, true),
+       SolanaAccountMeta(address, absl::nullopt, false, true)},
+      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+  auto msg = SolanaMessage::CreateLegacyMessage(
+      "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, address,
+      {instruction});
+  ASSERT_TRUE(msg);
+  auto serialized_msg = msg->Serialize(nullptr);
   ASSERT_TRUE(serialized_msg);
 
   auto deserialized_msg =
@@ -942,12 +946,14 @@ TEST_F(SolanaProviderImplUnitTest, SignTransactionAPIs_Hardware) {
 
   SolanaInstruction instruction(
       mojom::kSolanaSystemProgramId,
-      {SolanaAccountMeta(kHardwareAccountAddr, true, true),
-       SolanaAccountMeta(kHardwareAccountAddr, false, true)},
+      {SolanaAccountMeta(kHardwareAccountAddr, absl::nullopt, true, true),
+       SolanaAccountMeta(kHardwareAccountAddr, absl::nullopt, false, true)},
       {});
-  SolanaMessage msg("9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0,
-                    kHardwareAccountAddr, {instruction});
-  auto serialized_msg = msg.Serialize(nullptr);
+  auto msg = SolanaMessage::CreateLegacyMessage(
+      "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, kHardwareAccountAddr,
+      {instruction});
+  ASSERT_TRUE(msg);
+  auto serialized_msg = msg->Serialize(nullptr);
   ASSERT_TRUE(serialized_msg);
   auto encoded_serialized_msg = Base58Encode(*serialized_msg);
 

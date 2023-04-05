@@ -1,7 +1,7 @@
-/* copyright (c) 2022 the brave authors. all rights reserved.
- * this source code form is subject to the terms of the mozilla public
- * license, v. 2.0. if a copy of the mpl was not distributed with this file,
- * you can obtain one at http://mozilla.org/mpl/2.0/. */
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TRANSACTION_H_
@@ -53,10 +53,17 @@ class SolanaTransaction {
   };
 
   explicit SolanaTransaction(SolanaMessage&& message);
-  SolanaTransaction(const std::string& recent_blockhash,
-                    uint64_t last_valid_block_height,
-                    const std::string& fee_payer,
-                    std::vector<SolanaInstruction>&& instructions);
+
+  SolanaTransaction(
+      mojom::SolanaMessageVersion version,
+      const std::string& recent_blockhash,
+      uint64_t last_valid_block_height,
+      const std::string& fee_payer,
+      const SolanaMessageHeader& message_header,
+      std::vector<SolanaAddress>&& static_account_keys,
+      std::vector<SolanaInstruction>&& instructions,
+      std::vector<SolanaMessageAddressTableLookup>&& addr_table_lookups);
+
   SolanaTransaction(SolanaMessage&& message,
                     const std::vector<uint8_t>& raw_signatures);
   SolanaTransaction(SolanaMessage&& message,

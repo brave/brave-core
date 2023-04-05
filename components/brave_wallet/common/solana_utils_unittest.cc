@@ -189,4 +189,26 @@ TEST(SolanaUtilsUnitTest, Uint8ArrayDecode) {
   }
 }
 
+TEST(SolanaUtilsUnitTest, CompactArrayDecode) {
+  std::vector<uint8_t> bytes = {0, 1, 2, 5, 4, 6, 7, 8};
+  size_t start_index = 2;
+  auto ret_bytes = CompactArrayDecode(bytes, &start_index);
+  ASSERT_TRUE(ret_bytes);
+  EXPECT_EQ(*ret_bytes, std::vector<uint8_t>({5, 4}));
+  EXPECT_EQ(start_index, 5u);
+
+  // Test out-of-bound, array length is 6 but only two bytes {7, 8} left.
+  EXPECT_FALSE(CompactArrayDecode(bytes, &start_index));
+}
+
+TEST(SolanaUtilsUnitTest, GetUint8FromStringDict) {
+  base::Value::Dict dict;
+  dict.Set("valid", base::NumberToString(UINT8_MAX));
+  dict.Set("too_big", base::NumberToString(UINT8_MAX + 1));
+  dict.Set("not_a_number", "HELLO");
+  EXPECT_EQ(GetUint8FromStringDict(dict, "valid").value(), UINT8_MAX);
+  EXPECT_FALSE(GetUint8FromStringDict(dict, "too_big"));
+  EXPECT_FALSE(GetUint8FromStringDict(dict, "not_a_number"));
+}
+
 }  // namespace brave_wallet

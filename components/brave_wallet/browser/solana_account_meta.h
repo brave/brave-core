@@ -1,7 +1,7 @@
-/* copyright (c) 2022 the brave authors. all rights reserved.
- * this source code form is subject to the terms of the mozilla public
- * license, v. 2.0. if a copy of the mpl was not distributed with this file,
- * you can obtain one at http://mozilla.org/mpl/2.0/. */
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_ACCOUNT_META_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_ACCOUNT_META_H_
@@ -17,6 +17,7 @@ namespace brave_wallet {
 
 struct SolanaAccountMeta {
   SolanaAccountMeta(const std::string& pubkey,
+                    absl::optional<uint8_t> address_table_lookup_index,
                     bool is_signer,
                     bool is_writable);
   ~SolanaAccountMeta();
@@ -34,6 +35,7 @@ struct SolanaAccountMeta {
       const base::Value::Dict& value);
 
   std::string pubkey;
+  absl::optional<uint8_t> address_table_lookup_index;
   bool is_signer;
   bool is_writable;
 };

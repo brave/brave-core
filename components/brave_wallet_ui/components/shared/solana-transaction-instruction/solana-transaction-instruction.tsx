@@ -84,11 +84,15 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
               {getLocale('braveWalletSolanaAccounts')}
             </CodeSectionTitle>
 
-            {accountMetas.map(({ pubkey }, i) => {
+            {accountMetas.map(({ pubkey, addrTableLookupIndex }, i) => {
               // other account metas
               return (
                 <InstructionParamBox key={`${pubkey}-${i}`}>
-                  <AddressParamValue accounts={accounts} pubkey={pubkey} />
+                  <AddressParamValue
+                    accounts={accounts}
+                    pubkey={pubkey}
+                    lookupTableIndex={addrTableLookupIndex?.val}
+                  />
                 </InstructionParamBox>
               )
             })}
@@ -134,7 +138,8 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
           <>
             <Divider />
 
-            {accountParams.map(({ localizedName, name, value }) => {
+            {accountParams.map((
+              { localizedName, name, value }, i) => {
               // signers param
               if (name === BraveWallet.SIGNERS) {
                 if (!value) {
@@ -166,13 +171,19 @@ export const SolanaTransactionInstruction: React.FC<Props> = ({
               return (
                 <InstructionParamBox key={name}>
                   <var>{localizedName}</var>
-                  <AddressParamValue accounts={accounts} pubkey={value} />
+                  <AddressParamValue
+                    accounts={accounts}
+                    pubkey={value}
+                    lookupTableIndex={
+                      accountMetas[i].addrTableLookupIndex?.val
+                    }
+                  />
                 </InstructionParamBox>
               )
             })}
           </>
         )}
-        
+
         {params.length > 0 && (
           <>
             <Divider />
@@ -205,13 +216,15 @@ export default SolanaTransactionInstruction
 
 const AddressParamValue = ({
   accounts,
-  pubkey
+  pubkey,
+  lookupTableIndex
 }: {
   accounts: Array<{
     address: string
     name: string
   }>
   pubkey: string
+  lookupTableIndex?: number
 }) => {
   // memos
   const formattedValue = React.useMemo(() => {
@@ -220,14 +233,34 @@ const AddressParamValue = ({
 
   // render
   return (
-    <CopyTooltip
-      key={pubkey}
-      text={pubkey}
-      tooltipText={formattedValue === pubkey ? undefined : pubkey}
-      isAddress
-      position='left'
-    >
-      <AddressText>{formattedValue}</AddressText>
-    </CopyTooltip>
+    <>
+      {lookupTableIndex !== undefined &&
+        <AddressText isBold={true}>
+          {getLocale('braveWalletSolanaAddressLookupTableAccount')}
+        </AddressText>
+      }
+      <CopyTooltip
+        key={pubkey}
+        text={pubkey}
+        tooltipText={
+          formattedValue === pubkey
+            ? undefined
+            : pubkey
+        }
+        isAddress
+        position='left'
+      >
+        <AddressText>{formattedValue}</AddressText>
+      </CopyTooltip>
+      {
+        lookupTableIndex !== undefined &&
+        <>
+          <AddressText isBold={true}>
+            {getLocale('braveWalletSolanaAddressLookupTableIndex')}
+          </AddressText>
+          <AddressText>{lookupTableIndex}</AddressText>
+        </>
+      }
+    </>
   )
 }

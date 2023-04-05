@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/span.h"
+#include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
@@ -40,6 +41,16 @@ bool IsBase58EncodedSolanaPubkey(const std::string& key);
 bool Uint8ArrayDecode(const std::string& str,
                       std::vector<uint8_t>* ret,
                       size_t len);
+
+absl::optional<uint8_t> GetUint8FromStringDict(const base::Value::Dict& dict,
+                                               const std::string& key);
+
+// A compact-array is serialized as the array length, followed by each array
+// item. bytes_index will be increased by the bytes read (consumed) in this
+// function.
+absl::optional<std::vector<uint8_t>> CompactArrayDecode(
+    const std::vector<uint8_t>& bytes,
+    size_t* bytes_index);
 
 }  // namespace brave_wallet
 

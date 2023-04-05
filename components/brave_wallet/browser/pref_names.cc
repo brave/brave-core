@@ -66,6 +66,8 @@ const char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
 const char kBraveWalletTransactionsChainIdMigrated[] =
     "brave.wallet.transactions.chain_id_migrated";
+const char kBraveWalletSolanaTransactionsV0SupportMigrated[] =
+    "brave.wallet.solana_transactions.v0_support_migrated";
 
 // DEPRECATED
 const char kShowWalletTestNetworksDeprecated[] =

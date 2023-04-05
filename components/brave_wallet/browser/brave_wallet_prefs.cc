@@ -187,6 +187,10 @@ void RegisterProfilePrefsForMigration(
   // Added 03/2023
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
                                 false);
+
+  // Added 04/2023
+  registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {

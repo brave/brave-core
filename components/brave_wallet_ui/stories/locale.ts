@@ -783,6 +783,8 @@ provideStrings({
   braveWalletSolanaMaxRetries: 'Max Retries:',
   braveWalletSolanaPreflightCommitment: 'Preflight Commitment:',
   braveWalletSolanaSkipPreflight: 'Skip Preflight:',
+  braveWalletSolanaAddressLookupTableAccount: 'Address Lookup Table Account:',
+  braveWalletSolanaAddressLookupTableIndex: 'Address Lookup Table Index:',
 
   // Help Center
   braveWalletHelpCenter: 'Help center',

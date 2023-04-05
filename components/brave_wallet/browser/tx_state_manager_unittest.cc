@@ -10,6 +10,7 @@
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
+#include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -24,6 +25,9 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using base::test::ParseJson;
+using base::test::ParseJsonDict;
 
 namespace brave_wallet {
 
@@ -82,6 +86,7 @@ class TxStateManagerUnitTest : public testing::Test {
  protected:
   void SetUp() override {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
     json_rpc_service_ =
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, &prefs_);
     // The only different between each coin type's tx state manager in these
@@ -382,6 +387,197 @@ TEST_F(TxStateManagerUnitTest, Observer) {
   EXPECT_FALSE(observer.NewUnapprovedTxFired());
   EXPECT_TRUE(observer.TxStatusChangedFired());
   observer.Reset();
+}
+
+TEST_F(TxStateManagerUnitTest,
+       MigrateSolanaTransactionsForV0TransactionsSupport) {
+  ASSERT_FALSE(
+      prefs_.GetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated));
+  base::Value txs_value = ParseJson(R"(
+    {
+      "solana": {
+        "devnet": {
+          "tx_id1": {
+            "tx": {
+              "message": {
+                "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+                "instructions": [
+                  {
+                    "accounts": [],
+                    "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
+                    "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+                  }
+                ],
+                "last_valid_block_height": "0",
+                "recent_blockhash":
+                    "GZH3GWCMxU9aZbai9L8pA3aTWsBVaCwYxiWfhtnMhUbb"
+              }
+            }
+          }
+        },
+        "mainnet": {
+          "tx_id2": {
+            "tx": {
+              "message": {
+                "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+                "instructions": [
+                  {
+                    "accounts": [
+                      {
+                        "is_signer": true,
+                        "is_writable": true,
+                        "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
+                      },
+                      {
+                        "is_signer": true,
+                        "is_writable": true,
+                        "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
+                      }
+                    ],
+                    "data": "AgAAAGQAAAAAAAAA",
+                    "decoded_data": {
+                      "account_params": [
+                        {
+                          "localized_name": "From Account",
+                          "name": "from_account"
+                        },
+                        {
+                          "localized_name": "To Account",
+                          "name": "to_account"
+                        }
+                      ],
+                      "params": [
+                        {
+                          "localized_name": "Lamports",
+                          "name": "lamports",
+                          "type": 2,
+                          "value": "100"
+                        }
+                      ],
+                      "sys_ins_type": "2"
+                    },
+                    "program_id": "11111111111111111111111111111111"
+                  }
+                ],
+                "last_valid_block_height": "0",
+                "recent_blockhash":
+                    "AARGss1frfvBSKqYXLHuv3i4kzbQrHhabubcF2KFTE2S"
+              }
+            }
+          },
+          "tx_id3": {
+            "tx": {
+              "message": {
+                "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+                "instructions": [
+                  {
+                    "accounts": [],
+                    "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
+                    "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+                  }
+                ],
+                "last_valid_block_height": "0",
+                "recent_blockhash":
+                    "GZH3GWCMxU9aZbai9L8pA3aTWsBVaCwYxiWfhtnMhUbb"
+              }
+            }
+          }
+        }
+      }
+    })");
+
+  prefs_.Set(kBraveWalletTransactions, txs_value);
+  TxStateManager::MigrateSolanaTransactionsForV0TransactionsSupport(&prefs_);
+  base::Value::Dict msg1 = ParseJsonDict(R"({
+      "version": 0,
+      "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+      "message_header": {
+        "num_readonly_signed_accounts": "0",
+        "num_readonly_unsigned_accounts": "1",
+        "num_required_signatures": "1"
+      },
+      "static_account_keys": [
+        "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+        "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+      ],
+      "address_table_lookups": [],
+      "instructions": [
+        {
+          "accounts": [],
+          "data": "SGVsbG8sIGZyb20gdGhlIFNvbGFuYSBXYWxsZXQgQWRhcHRlciBleGFtcGxlIGFwcCE=",
+          "program_id": "MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"
+        }
+      ],
+      "last_valid_block_height": "0",
+      "recent_blockhash": "GZH3GWCMxU9aZbai9L8pA3aTWsBVaCwYxiWfhtnMhUbb"
+  })");
+  base::Value::Dict msg2 = ParseJsonDict(R"({
+      "version": 0,
+      "fee_payer": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+      "message_header": {
+        "num_readonly_signed_accounts": "0",
+        "num_readonly_unsigned_accounts": "1",
+        "num_required_signatures": "1"
+      },
+      "static_account_keys": [
+        "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw",
+        "11111111111111111111111111111111"
+      ],
+      "address_table_lookups": [],
+      "instructions": [
+        {
+          "accounts": [
+            {
+              "is_signer": true,
+              "is_writable": true,
+              "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
+            },
+            {
+              "is_signer": true,
+              "is_writable": true,
+              "pubkey": "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw"
+            }
+          ],
+          "data": "AgAAAGQAAAAAAAAA",
+          "decoded_data": {
+            "account_params": [
+              {
+                "localized_name": "From Account",
+                "name": "from_account"
+              },
+              {
+                "localized_name": "To Account",
+                "name": "to_account"
+              }
+            ],
+            "params": [
+              {
+                "localized_name": "Lamports",
+                "name": "lamports",
+                "type": 2,
+                "value": "100"
+              }
+            ],
+            "sys_ins_type": "2"
+          },
+          "program_id": "11111111111111111111111111111111"
+        }
+      ],
+      "last_valid_block_height": "0",
+      "recent_blockhash": "AARGss1frfvBSKqYXLHuv3i4kzbQrHhabubcF2KFTE2S"
+  })");
+  EXPECT_EQ(*prefs_.GetDict(kBraveWalletTransactions)
+                 .FindDictByDottedPath("solana.devnet.tx_id1.tx.message"),
+            msg1);
+  EXPECT_EQ(*prefs_.GetDict(kBraveWalletTransactions)
+                 .FindDictByDottedPath("solana.mainnet.tx_id2.tx.message"),
+            msg2);
+  EXPECT_EQ(*prefs_.GetDict(kBraveWalletTransactions)
+                 .FindDictByDottedPath("solana.mainnet.tx_id3.tx.message"),
+            msg1);
+
+  EXPECT_TRUE(
+      prefs_.GetBoolean(kBraveWalletSolanaTransactionsV0SupportMigrated));
 }
 
 }  // namespace brave_wallet
