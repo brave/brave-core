@@ -4,4 +4,8 @@
     Write a concise summary and always respond in bullet points:
     <ph name="TEXT">$1</ph>
   </message>
+  <message name="IDS_AI_CHAT_SUMMARIZE_VIDEO_PROMPT" translateable="false" desc="Default prompt for summarization of a video">
+    The following is XML describing a video's transcript. Each text element defines its starting timestamp and the duration of time the text covers. Write a concise summary of the video in bullet form.
+    <ph name="TEXT">$1</ph>
+  </message>
 </grit-part>
