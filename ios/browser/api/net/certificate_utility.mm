@@ -13,8 +13,10 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#import "base/mac/foundation_util.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
+#import "base/notreached.h"
 #include "base/strings/sys_string_conversions.h"
 
 #include "net/base/host_port_pair.h"
@@ -142,15 +144,21 @@ namespace {
     }
 
     std::vector<base::ScopedCFTypeRef<SecCertificateRef>> intermediates;
-    for (CFIndex i = 1; i < cert_count; ++i) {
-      intermediates.emplace_back(SecTrustGetCertificateAtIndex(trust, i),
-                                 base::scoped_policy::RETAIN);
-    }
 
+    base::ScopedCFTypeRef<CFArrayRef> certificateChain(
+        SecTrustCopyCertificateChain(trust));
+    for (CFIndex i = 1; i < cert_count; i++) {
+      SecCertificateRef secCertificate =
+          base::mac::CFCastStrict<SecCertificateRef>(
+              CFArrayGetValueAtIndex(certificateChain, i));
+      intermediates.emplace_back(secCertificate, base::scoped_policy::RETAIN);
+    }
+    SecCertificateRef secCertificate =
+        base::mac::CFCastStrict<SecCertificateRef>(
+            CFArrayGetValueAtIndex(certificateChain, 0));
     return net::x509_util::CreateX509CertificateFromSecCertificate(
-        /*root_cert=*/base::ScopedCFTypeRef<SecCertificateRef>(
-            SecTrustGetCertificateAtIndex(trust, 0),
-            base::scoped_policy::RETAIN),
+        base::ScopedCFTypeRef<SecCertificateRef>(secCertificate,
+                                                 base::scoped_policy::RETAIN),
         intermediates);
   };
 
