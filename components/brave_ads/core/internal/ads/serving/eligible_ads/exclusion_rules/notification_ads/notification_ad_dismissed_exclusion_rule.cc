@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/dismissed_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_dismissed_exclusion_rule.h"
 
 #include <iterator>
 #include <utility>
@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 
-namespace brave_ads {
+namespace brave_ads::notification_ads {
 
 namespace {
 
@@ -91,4 +91,4 @@ const std::string& DismissedExclusionRule::GetLastMessage() const {
   return last_message_;
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::notification_ads

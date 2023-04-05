@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/embedding_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_embedding_exclusion_rule.h"
 
 #include <vector>
 
@@ -13,7 +13,7 @@
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-namespace brave_ads {
+namespace brave_ads::notification_ads {
 
 namespace {
 constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
@@ -144,4 +144,4 @@ TEST_F(EmbeddingExclusionRuleTest, AllowIfEmbeddingV3) {
   EXPECT_FALSE(should_exclude);
 }
 
-}  // namespace brave_ads
+}  // namespace brave_ads::notification_ads

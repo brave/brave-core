@@ -6,8 +6,11 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/notification_ads/eligible_notification_ads_v3.h"
 
 #include <memory>
+#include <vector>
 
 #include "base/functional/bind.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -76,7 +79,7 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAds) {
           creative_ad_1));
 }
 
-TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredEmbeddings) {
+TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredTextEmbeddings) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
@@ -107,6 +110,17 @@ TEST_F(BatAdsEligibleNotificationAdsV3Test, GetAdsForNoStoredEmbeddings) {
 TEST_F(BatAdsEligibleNotificationAdsV3Test,
        GetAdsForCreativeWithoutEmbeddingProperty) {
   // Arrange
+  std::vector<base::test::FeatureRefAndParams> enabled_features;
+  base::FieldTrialParams params;
+  params["version"] = "3";
+  enabled_features.emplace_back(notification_ads::features::kServing, params);
+
+  const std::vector<base::test::FeatureRef> disabled_features;
+
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
+                                                    disabled_features);
+
   CreativeNotificationAdList creative_ads;
 
   const CreativeNotificationAdInfo creative_ad_1 =

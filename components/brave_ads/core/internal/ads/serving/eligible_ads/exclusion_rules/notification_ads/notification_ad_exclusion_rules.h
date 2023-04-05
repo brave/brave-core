@@ -20,11 +20,12 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class DismissedExclusionRule;
 class CreativeInstanceExclusionRule;
-class EmbeddingExclusionRule;
 
 namespace notification_ads {
+
+class DismissedExclusionRule;
+class EmbeddingExclusionRule;
 
 class ExclusionRules final : public ExclusionRulesBase {
  public:

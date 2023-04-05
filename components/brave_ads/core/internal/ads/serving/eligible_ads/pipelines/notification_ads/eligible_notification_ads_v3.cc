@@ -9,6 +9,7 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/predict_ad_embeddings.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/eligible_ads_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
@@ -106,8 +107,12 @@ void EligibleAdsV3::OnGetEligibleAds(
   }
 
   absl::optional<CreativeNotificationAdInfo> creative_ad;
-  creative_ad = MaybePredictAdUsingEmbeddings<CreativeNotificationAdInfo>(
-      user_model, eligible_creative_ads);
+  if (!user_model.text_embedding_html_events.empty()) {
+    creative_ad = MaybePredictAdUsingEmbeddings<CreativeNotificationAdInfo>(
+        user_model, eligible_creative_ads);
+  } else {
+    creative_ad = PredictAd(user_model, ad_events, eligible_creative_ads);
+  }
 
   if (!creative_ad) {
     BLOG(1, "No eligible ads out of " << creative_ads.size() << " ads");
@@ -128,12 +133,9 @@ CreativeNotificationAdList EligibleAdsV3::FilterCreativeAds(
     return {};
   }
 
-  CreativeNotificationAdList filtered_creative_ads;
-
   ExclusionRules exclusion_rules(ad_events, subdivision_targeting_,
                                  anti_targeting_resource_, browsing_history);
-  return ApplyExclusionRules(filtered_creative_ads, last_served_ad_,
-                             &exclusion_rules);
+  return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 
 }  // namespace brave_ads::notification_ads
