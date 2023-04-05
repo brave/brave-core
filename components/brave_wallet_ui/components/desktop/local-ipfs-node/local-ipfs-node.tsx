@@ -105,7 +105,6 @@ export const LocalIpfsNodeScreen = (props: Props) => {
             <BenefitsList>
               <li>{getLocale('braveWalletNftPinningBenefitOne')}</li>
               <li>{getLocale('braveWalletNftPinningBenefitTwo')}</li>
-              <li>{getLocale('braveWalletNftPinningBenefitThree')}</li>
             </BenefitsList>
           </RightWrapper>
         </Section>

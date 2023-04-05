@@ -13,8 +13,10 @@ import { useNftPin } from '../../../common/hooks/nft-pin'
 
 // styles
 import { GifWrapper, Ipfs, IpfsUploading, StatusGif, StyledWrapper } from './nft-pinning-status-animation.style'
-import UploadingGif from '../../../assets/svg-icons/nft-ipfs/uploading.gif'
-import SuccessGif from '../../../assets/svg-icons/nft-ipfs/success.gif'
+import UploadingDarkGif from '../../../assets/svg-icons/nft-ipfs/uploading-dark.gif'
+import UploadingLightGif from '../../../assets/svg-icons/nft-ipfs/uploading-light.gif'
+import SuccessDarkGif from '../../../assets/svg-icons/nft-ipfs/success-dark.gif'
+import SuccessLightGif from '../../../assets/svg-icons/nft-ipfs/success-light.gif'
 
 interface Props {
   size: string | undefined
@@ -27,18 +29,36 @@ export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Pr
   const { pinnableNftsCount } = useNftPin()
 
   return (
-    <StyledWrapper size={size || '30px'}>
-      {(!isAutopinEnabled || pinnableNftsCount === 0) ? (
+    <StyledWrapper
+      size={
+        status === STATUS_PINNING_IN_PROGRESS || status === STATUS_PINNED
+          ? '30px'
+          : size || '14px'
+      }
+    >
+      {!isAutopinEnabled || pinnableNftsCount === 0 ? (
         <Ipfs size={size} />
       ) : status === STATUS_PINNING_IN_PROGRESS ? (
         <GifWrapper>
-          <StatusGif src={UploadingGif} />
+          <StatusGif
+            src={
+              window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? UploadingDarkGif
+                : UploadingLightGif
+            }
+          />
           <IpfsUploading />
         </GifWrapper>
       ) : (
         status === STATUS_PINNED && (
           <GifWrapper>
-            <StatusGif src={SuccessGif} />
+            <StatusGif
+              src={
+                window.matchMedia('(prefers-color-scheme: dark)').matches
+                  ? SuccessDarkGif
+                  : SuccessLightGif
+              }
+            />
           </GifWrapper>
         )
       )}

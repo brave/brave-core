@@ -65,17 +65,14 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
     <StyledWrapper status={bannerStatus}>
       <Row gap='12px' justifyContent='flex-start'>
         <NftPinningStatusAnimation
-          size='30px'
+          size='14px'
           status={status}
           isAutopinEnabled={isAutoPinEnabled}
         />
         <Text status={bannerStatus}>
           {bannerStatus === 'start' ? (
             <>
-              {getLocale('braveWalletNftPinningBannerStart')}&nbsp;
-              <LearnMore onClick={onLearnMore}>
-                {getLocale('braveWalletNftPinningBannerLearnMore')}
-              </LearnMore>
+              {getLocale('braveWalletNftPinningBannerStart')}
             </>
           ) : bannerStatus === 'success' ? (
             `${getLocale('braveWalletNftPinningBannerSuccess')
@@ -84,9 +81,14 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
             `${getLocale('braveWalletNftPinningBannerUploading')}`
           )}
         </Text>
+        {bannerStatus === 'start' &&
+          <LearnMore onClick={onLearnMore}>
+            {getLocale('braveWalletNftPinningBannerLearnMore')}
+          </LearnMore>
+        }
       </Row>
-      {(bannerStatus === 'start' || bannerStatus === 'success') && (
-        <CloseButton onClick={onDismiss} status={bannerStatus} />
+      {(bannerStatus === 'success') && (
+        <CloseButton onClick={onDismiss} />
       )}
     </StyledWrapper>
   )
