@@ -133,6 +133,7 @@ var package = Package(
         "BraveShared",
         "BraveUI",
         "DesignSystem",
+        "Favicon",
         "Strings",
         "PanModal",
         "SDWebImage",
