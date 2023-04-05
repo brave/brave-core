@@ -23,7 +23,14 @@ import { useTransactionParser } from './transaction-parser'
 import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
-import { useSafeWalletSelector, useUnsafeWalletSelector } from './use-safe-selector'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from './use-safe-selector'
+import {
+  useGetDefaultNetworksQuery,
+  useGetSelectedChainQuery
+} from '../slices/api.slice'
 
 // Constants
 import { BraveWallet } from '../../constants/types'
@@ -39,9 +46,6 @@ export const usePendingTransactions = () => {
   const dispatch = useDispatch()
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
-  const selectedNetwork = useUnsafeWalletSelector(
-    WalletSelectors.selectedNetwork
-  )
   const transactionInfo = useUnsafeWalletSelector(
     WalletSelectors.selectedPendingTransaction
   )
@@ -56,12 +60,14 @@ export const usePendingTransactions = () => {
   const pendingTransactions = useUnsafeWalletSelector(
     WalletSelectors.pendingTransactions
   )
-  const defaultNetworks = useUnsafeWalletSelector(
-    WalletSelectors.defaultNetworks
-  )
   const hasFeeEstimatesError = useSafeWalletSelector(
     WalletSelectors.hasFeeEstimatesError
   )
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
+
 
   const transactionGasEstimates = transactionInfo?.txDataUnion.ethTxData1559?.gasEstimation
 

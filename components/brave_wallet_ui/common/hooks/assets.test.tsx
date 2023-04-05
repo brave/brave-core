@@ -9,11 +9,7 @@ import { TextEncoder, TextDecoder } from 'util'
 global.TextDecoder = TextDecoder
 global.TextEncoder = TextEncoder
 import { renderHook } from '@testing-library/react-hooks'
-import {
-  mockAccount,
-  mockAssetPrices,
-  mockNetwork
-} from '../constants/mocks'
+import { mockAccount, mockAssetPrices } from '../constants/mocks'
 import useAssets from './assets'
 import { WalletAccountType } from '../../constants/types'
 import * as MockedLib from '../async/__mocks__/lib'
@@ -55,8 +51,8 @@ const renderHookOptionsWithCustomStore = (store: any) => ({
 })
 
 describe('useAssets hook', () => {
-  it('Selected account has balances, should return expectedResult', () => {
-    const { result } = renderHook(
+  it('should return panel user assets by value & network', async () => {
+    const { result, waitForNextUpdate } = renderHook(
       () => useAssets(),
       renderHookOptionsWithCustomStore(
         createMockStore({
@@ -65,13 +61,14 @@ describe('useAssets hook', () => {
             userVisibleTokensInfo: mockVisibleList,
             selectedAccount: mockAccounts[0],
             accounts: mockAccounts,
-            transactionSpotPrices: mockAssetPrices,
-            selectedNetwork: mockNetwork,
-            networkList: [mockNetwork]
+            transactionSpotPrices: mockAssetPrices
           }
         })
       )
     )
+
+    await waitForNextUpdate()
+
     expect(result.current.panelUserAssetList).toEqual(mockVisibleList)
   })
 
@@ -85,9 +82,7 @@ describe('useAssets hook', () => {
             userVisibleTokensInfo: [],
             selectedAccount: mockAccounts[0],
             accounts: mockAccounts,
-            transactionSpotPrices: mockAssetPrices,
-            selectedNetwork: mockNetwork,
-            networkList: [mockNetwork]
+            transactionSpotPrices: mockAssetPrices
           }
         })
       )

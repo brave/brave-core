@@ -12,14 +12,12 @@ import {
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { getNetworkInfo, getTokensNetwork } from '../../../utils/network-utils'
 import { generateQRCode } from '../../../utils/qr-code-utils'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 // types
 import {
   BraveWallet,
-  SupportedTestNetworks,
   UserAssetInfoType,
   WalletAccountType,
   WalletState
@@ -35,6 +33,10 @@ import { AllNetworksOption } from '../../../options/network-filter-options'
 import { useCopyToClipboard } from '../../../common/hooks/use-copy-to-clipboard'
 import { usePrevNetwork } from '../../../common/hooks'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
+import {
+  useGetMainnetsQuery,
+  useGetNetworkQuery
+} from '../../../common/slices/api.slice'
 
 // style
 import { Column, CopyButton, HorizontalSpace, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -77,7 +79,6 @@ export const DepositFundsScreen = () => {
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -94,21 +95,18 @@ export const DepositFundsScreen = () => {
   >(undefined)
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
 
+  // queries
+  const { data: mainnetsList = [] } = useGetMainnetsQuery()
+  const { data: selectedAssetNetwork } = useGetNetworkQuery(selectedAsset, {
+    skip: !selectedAsset
+  })
+
   // memos
   const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
 
-  const mainnetsList: BraveWallet.NetworkInfo[] = React.useMemo(() =>
-    networkList.filter(net => {
-      // skip testnet & localhost chains
-      return !SupportedTestNetworks.includes(net.chainId)
-    }),
-    [networkList]
-  )
-
-  const mainnetNetworkAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
-    return mainnetsList
-      .map(net => makeNetworkAsset(net))
-  }, [networkList])
+  const mainnetNetworkAssetsList = React.useMemo(() => {
+    return (mainnetsList || []).map(makeNetworkAsset)
+  }, [mainnetsList])
 
   const fullAssetsList: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     // separate BAT from other tokens in the list so they can be placed higher in the list
@@ -123,12 +121,6 @@ export const DepositFundsScreen = () => {
 
     return assets.map(asset => ({ asset, assetBalance: '1' }))
   }, [selectedNetworkFilter.chainId, fullAssetsList])
-
-  const selectedAssetNetwork: BraveWallet.NetworkInfo | undefined = React.useMemo(() => {
-    return selectedAsset
-      ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, mainnetsList)
-      : undefined
-  }, [selectedAsset, mainnetsList])
 
   const accountsForSelectedAssetNetwork: WalletAccountType[] = React.useMemo(() => {
     return selectedAssetNetwork
@@ -258,12 +250,6 @@ export const DepositFundsScreen = () => {
     }
   }, [selectedAccount?.address])
 
-  React.useEffect(() => {
-    // unselect asset if  AllNetworksOption is not selected
-    if (selectedNetworkFilter.chainId !== AllNetworksOption.chainId) {
-      setSelectedAsset(undefined)
-    }
-  }, [selectedNetworkFilter])
 
   // sync default selected account with selected asset
   React.useEffect(() => {
@@ -316,7 +302,7 @@ export const DepositFundsScreen = () => {
             {fullTokenList.length
               ? <TokenLists
                 enableScroll
-                maxListHeight='38vh'
+                maxListHeight={'38vh'}
                 userAssetList={assetsForFilteredNetwork}
                 networks={mainnetsList}
                 hideAddButton
@@ -330,26 +316,25 @@ export const DepositFundsScreen = () => {
                     isSelected={checkIsDepositAssetSelected(asset)}
                     key={getAssetIdKey(asset)}
                     token={asset}
-                    tokenNetwork={getTokensNetwork(mainnetsList, asset)}
                     onClick={setSelectedAsset}
                     ref={(ref) => handleScrollIntoView(asset, ref)} />}
               />
               : <Column>
                 <LoadingIcon
                   opacity={1}
-                  size='100px'
-                  color='interactive05'
+                  size={'100px'}
+                  color={'interactive05'}
                 />
               </Column>
             }
 
-            <VerticalSpace space='12px' />
+            <VerticalSpace space={'12px'} />
 
           </SelectAssetWrapper>
 
           <NextButtonRow>
             <NavButton
-              buttonType='primary'
+              buttonType={'primary'}
               text={
                 selectedAsset
                   ? getLocale('braveWalletButtonContinue')
@@ -391,7 +376,7 @@ export const DepositFundsScreen = () => {
               </Column>
 
               <Row>
-                <HorizontalSpace space='63%' />
+                <HorizontalSpace space={'63%'} />
                 <SelectAccountItem
                   selectedNetwork={selectedAssetNetwork}
                   account={selectedAccount}
@@ -400,7 +385,7 @@ export const DepositFundsScreen = () => {
                   hideAddress
                   showSwitchAccountsIcon
                 />
-                <HorizontalSpace space='45%' />
+                <HorizontalSpace space={'45%'} />
               </Row>
 
               <Row>
@@ -414,15 +399,13 @@ export const DepositFundsScreen = () => {
                 <Row gap={'12px'}>
                   <AddressText>{selectedAccount?.address}</AddressText>
                   <CopyButton
-                    iconColor='interactive05'
+                    iconColor={'interactive05'}
                     onKeyPress={onCopyKeyPress}
                     onClick={copyAddressToClipboard}
                   />
                 </Row>
 
-                {isCopied &&
-                  <CopiedToClipboardConfirmation />
-                }
+                {isCopied && <CopiedToClipboardConfirmation />}
               </Column>
 
             </Column>

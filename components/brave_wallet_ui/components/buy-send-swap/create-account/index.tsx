@@ -6,12 +6,21 @@
 import * as React from 'react'
 
 // Redux
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { WalletActions } from '../../../common/actions'
 import { PanelActions } from '../../../panel/actions'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
+import {
+  useGetSelectedChainQuery,
+  useSetNetworkMutation
+} from '../../../common/slices/api.slice'
 
 // Types
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // Components
 import { NavButton } from '../../extension'
@@ -28,6 +37,7 @@ import {
   ButtonRow
 } from './style'
 
+
 export interface Props {
   isPanel?: boolean
   network?: BraveWallet.NetworkInfo
@@ -42,14 +52,13 @@ export const CreateAccountTab = ({
   onCancel
 }: Props) => {
   // redux
-  const {
-    networkList,
-    selectedNetwork,
-    accounts,
-    isWalletLocked
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
-
   const dispatch = useDispatch()
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const isWalletLocked = useSafeWalletSelector(WalletSelectors.isWalletLocked)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const [setNetwork] = useSetNetworkMutation()
 
   // state
   const [showUnlock, setShowUnlock] = React.useState<boolean>(false)
@@ -66,15 +75,21 @@ export const CreateAccountTab = ({
   }, [accounts, accountNetwork])
 
   // methods
-  const onCancelCreateAccount = React.useCallback(() => {
+  const onCancelCreateAccount = React.useCallback(async () => {
     if (onCancel) {
       return onCancel()
     }
-    dispatch(WalletActions.selectNetwork(prevNetwork ?? networkList[0]))
+    if (prevNetwork) {
+      await setNetwork({
+        chainId: prevNetwork.chainId,
+        coin: prevNetwork.coin
+      })
+    }
+
     if (isPanel) {
       dispatch(PanelActions.navigateTo('main'))
     }
-  }, [onCancel, prevNetwork, networkList, isPanel])
+  }, [onCancel, prevNetwork, isPanel, setNetwork])
 
   const onCreateAccount = React.useCallback(() => {
     // unlock needed to create accounts

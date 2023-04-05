@@ -35,21 +35,20 @@ import { reduceAddress } from '../../../../utils/reduce-address'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import Amount from '../../../../utils/amount'
+import {
+  useGetNetworksQuery,
+  useGetSelectedChainQuery
+} from '../../../../common/slices/api.slice'
 
 interface Props {
   account: WalletAccountType
   isSelected: boolean
   onSelectAccount: () => void
 }
-
 export const SelectAccountItem = (props: Props) => {
   const { account, isSelected, onSelectAccount } = props
 
   // Wallet Selectors
-  const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
-  const selectedNetwork = useUnsafeWalletSelector(
-    WalletSelectors.selectedNetwork
-  )
   const userVisibleTokensInfo = useUnsafeWalletSelector(
     WalletSelectors.userVisibleTokensInfo
   )
@@ -59,6 +58,10 @@ export const SelectAccountItem = (props: Props) => {
   const defaultFiatCurrency = useSafeWalletSelector(
     WalletSelectors.defaultFiatCurrency
   )
+
+  // Queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: networks = [] } = useGetNetworksQuery()
 
   // Memos
   const orb = React.useMemo(() => {

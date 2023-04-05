@@ -23,7 +23,6 @@ import {
   ParsedTransaction,
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
-import { getTokensNetwork } from '../../../../utils/network-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import useExplorer from '../../../../common/hooks/explorer'
 import {
@@ -42,6 +41,7 @@ import {
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import { stripERC20TokenImageURL } from '../../../../utils/string-utils'
+
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
@@ -69,6 +69,10 @@ import {
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
 import { useNftPin } from '../../../../common/hooks/nft-pin'
+import {
+  useGetNetworkQuery,
+  useGetSelectedChainQuery
+} from '../../../../common/slices/api.slice'
 
 // Styled Components
 import {
@@ -139,11 +143,9 @@ export const PortfolioAsset = (props: Props) => {
 
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
   const selectedPortfolioTimeline = useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
   const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
@@ -162,6 +164,15 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
   const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+
+  // queries
+  const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset, {
+    skip: !selectedAsset
+  })
+  const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
+    skip: !!assetsNetwork
+  })
+  const selectedAssetsNetwork = assetsNetwork || selectedNetwork
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -192,36 +203,42 @@ export const PortfolioAsset = (props: Props) => {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    const allAssets = userVisibleTokensInfo.map((asset) => ({
-      asset: asset,
-      assetBalance: fullAssetBalance(asset)
-    }) as UserAssetInfoType)
+    const allAssets = userVisibleTokensInfo.map(
+      (asset) =>
+        ({
+          asset: asset,
+          assetBalance: fullAssetBalance(asset)
+        } as UserAssetInfoType)
+    )
     // By default we dont show any testnetwork assets
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return allAssets.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
+      return allAssets.filter(
+        (asset) => !SupportedTestNetworks.includes(asset.asset.chainId)
+      )
     }
     // If chainId is Localhost we also do a check for coinType to return
     // the correct asset
     if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
-      return allAssets.filter((asset) =>
-        asset.asset.chainId === selectedNetworkFilter.chainId &&
-        asset.asset.coin === selectedNetworkFilter.coin
+      return allAssets.filter(
+        (asset) =>
+          asset.asset.chainId === selectedNetworkFilter.chainId &&
+          asset.asset.coin === selectedNetworkFilter.coin
       )
     }
     // Filter by all other assets by chainId's
-    return allAssets.filter((asset) => asset.asset.chainId === selectedNetworkFilter.chainId)
-  }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
+    return allAssets.filter(
+      (asset) => asset.asset.chainId === selectedNetworkFilter.chainId
+    )
+  }, [
+    userVisibleTokensInfo,
+    selectedNetworkFilter.chainId,
+    selectedNetworkFilter.coin,
+    fullAssetBalance
+  ])
 
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
   const [hoverPrice, setHoverPrice] = React.useState<string>()
-
-  const selectedAssetsNetwork = React.useMemo(() => {
-    if (!selectedAsset) {
-      return selectedNetwork
-    }
-    return getTokensNetwork(networkList, selectedAsset)
-  }, [selectedNetwork, selectedAsset, networkList])
 
   // more custom hooks
   const parseTransaction = useTransactionParser(selectedAssetsNetwork)
@@ -586,11 +603,10 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (selectedAsset && networkList && nftDetailsRef?.current) {
-      const tokenNetwork = getTokensNetwork(networkList, selectedAsset)
+    if (selectedAsset && selectedAssetsNetwork && nftDetailsRef?.current) {
       const command: UpdateTokenNetworkMessage = {
         command: NftUiCommand.UpdateTokenNetwork,
-        payload: tokenNetwork
+        payload: selectedAssetsNetwork
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
@@ -629,17 +645,31 @@ export const PortfolioAsset = (props: Props) => {
     }
 
     // check if selectedAsset has an icon
-    if (selectedAsset && nftMetadata?.imageURL && stripERC20TokenImageURL(selectedAsset.logo) === '') {
+    if (
+      selectedAsset &&
+      nftMetadata?.imageURL &&
+      stripERC20TokenImageURL(selectedAsset.logo) === ''
+    ) {
       // update asset logo
       const updated = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
-      dispatch(WalletActions.updateUserAsset({
-        existing: selectedAsset,
-        updated
-      }))
+      dispatch(
+        WalletActions.updateUserAsset({
+          existing: selectedAsset,
+          updated
+        })
+      )
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata,
-      networkList, nftMetadataError,
-      currentNftPinningStatus, ipfsImageUrl])
+  }, [
+    currentNftPinningStatus,
+    ipfsImageUrl,
+    nftDetailsRef,
+    nftIframeLoaded,
+    nftMetadata,
+    nftMetadataError,
+    nftPinningStatus,
+    selectedAsset,
+    selectedAssetsNetwork
+  ])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
@@ -873,7 +903,6 @@ export const PortfolioAsset = (props: Props) => {
             selectedAsset={selectedAsset}
             selectedAssetTransactions={selectedAssetTransactions}
             onClickAddAccount={onClickAddAccount}
-            networkList={networkList}
           />
           : <>
             <SubDivider />

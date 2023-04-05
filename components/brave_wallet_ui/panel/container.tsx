@@ -49,7 +49,7 @@ import {
 
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
-import { getCoinFromTxDataUnion, getNetworkInfo } from '../utils/network-utils'
+import { getCoinFromTxDataUnion } from '../utils/network-utils'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useHasAccount, usePrevNetwork, useBalanceUpdater } from '../common/hooks'
 import { findTransactionAccount, isSolanaTransaction } from '../utils/tx-utils'
@@ -62,6 +62,10 @@ import { TransactionStatus } from '../components/extension/post-confirmation'
 import { useSafePanelSelector, useSafeWalletSelector, useUnsafePanelSelector, useUnsafeWalletSelector } from '../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
+import {
+  useGetNetworkQuery,
+  useGetSelectedChainQuery
+} from '../common/slices/api.slice'
 
 // Allow BigInts to be stringified
 (BigInt.prototype as any).toJSON = function () {
@@ -81,11 +85,8 @@ function Container () {
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
-  const defaultNetworks = useUnsafeWalletSelector(WalletSelectors.defaultNetworks)
   const favoriteApps = useUnsafeWalletSelector(WalletSelectors.favoriteApps)
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const selectedPendingTransaction = useUnsafeWalletSelector(WalletSelectors.selectedPendingTransaction)
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
@@ -105,6 +106,19 @@ function Container () {
   const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(PanelSelectors.connectingAccounts)
   const selectedTransaction = useUnsafePanelSelector(PanelSelectors.selectedTransaction)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: switchChainRequestNetwork } = useGetNetworkQuery(
+    {
+      chainId: switchChainRequest.chainId,
+      // Passed ETH here since AllowAddChangeNetworkPanel
+      // is only used for EVM networks
+      // and switchChainRequest doesn't return coinType.
+      coin: BraveWallet.CoinType.ETH
+    },
+    { skip: !switchChainRequest.chainId }
+  )
 
   // TODO(petemill): If initial data or UI takes a noticeable amount of time to arrive
   // consider rendering a "loading" indicator when `hasInitialized === false`, and
@@ -462,7 +476,7 @@ function Container () {
     )
   }
 
-  if (selectedPanel === 'switchEthereumChain') {
+  if (selectedPanel === 'switchEthereumChain' && switchChainRequestNetwork) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
@@ -471,9 +485,7 @@ function Container () {
             onApproveAddNetwork={onApproveAddNetwork}
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
-            // Passed BraveWallet.CoinType.ETH here since AllowAddChangeNetworkPanel
-            // is only used for EVM networks and switchChainRequest doesn't return cointType.
-            networkPayload={getNetworkInfo(switchChainRequest.chainId, BraveWallet.CoinType.ETH, networkList)}
+            networkPayload={switchChainRequestNetwork}
             panelType='change'
           />
         </LongWrapper>
@@ -491,7 +503,6 @@ function Container () {
             onCancel={onCancelSigning}
             onSign={onSignData}
             selectedNetwork={selectedNetwork}
-            defaultNetworks={defaultNetworks}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />

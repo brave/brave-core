@@ -41,6 +41,10 @@ import { LedgerError } from '../../../../../common/hardware/ledgerjs/ledger-mess
 
 // hooks
 import { useLib } from '../../../../../common/hooks'
+import {
+  useGetDefaultNetworksQuery,
+  useGetSelectedChainQuery
+} from '../../../../../common/slices/api.slice'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
@@ -78,9 +82,11 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
 
   // redux
   const dispatch = useDispatch()
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
-  const defaultNetworks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultNetworks)
   const savedAccounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: defaultNetworks } = useGetDefaultNetworksQuery()
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
@@ -224,7 +230,12 @@ export const HardwareWalletConnect = ({ onSuccess, selectedAccountType }: Props)
   }, [savedAccounts])
 
   const selectedAccountTypesDefaultNetwork = React.useMemo(() => {
-    return defaultNetworks.find((network: BraveWallet.NetworkInfo) => network.coin === selectedAccountType.coin) ?? selectedNetwork
+    return (
+      defaultNetworks?.find(
+        (network: BraveWallet.NetworkInfo) =>
+          network.coin === selectedAccountType.coin
+      ) ?? selectedNetwork
+    )
   }, [defaultNetworks, selectedAccountType, selectedNetwork])
 
   // render

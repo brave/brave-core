@@ -19,7 +19,6 @@ import { assetWatchListItemHeight } from '../../asset-watchlist-item/style'
 
 interface VirtualizedTokensListProps {
   tokenList: BraveWallet.BlockchainToken[]
-  networkList: BraveWallet.NetworkInfo[]
   isCustomToken: (token: BraveWallet.BlockchainToken) => boolean
   onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
   isAssetSelected: (token: BraveWallet.BlockchainToken) => boolean
@@ -42,7 +41,6 @@ const ListItem = (props: ListItemProps) => {
   const {
     data,
     style,
-    networkList,
     index,
     isCustomToken,
     isAssetSelected,
@@ -63,7 +61,6 @@ const ListItem = (props: ListItemProps) => {
         ref={handleSetSize}
         isCustom={isCustomToken(data)}
         token={data}
-        networkList={networkList}
         onRemoveAsset={onRemoveAsset}
         isSelected={isAssetSelected(data)}
         onSelectAsset={onCheckWatchlistItem}
@@ -75,7 +72,6 @@ const ListItem = (props: ListItemProps) => {
 export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) => {
   const {
     tokenList,
-    networkList,
     isCustomToken,
     isAssetSelected,
     onCheckWatchlistItem,
@@ -114,7 +110,6 @@ export const VirtualizedVisibleAssetsList = (props: VirtualizedTokensListProps) 
         <ListItem
           data={data[index]}
           isCustomToken={isCustomToken}
-          networkList={networkList}
           onRemoveAsset={onRemoveAsset}
           isAssetSelected={isAssetSelected}
           onCheckWatchlistItem={onCheckWatchlistItem}

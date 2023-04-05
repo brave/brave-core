@@ -15,22 +15,31 @@ import { NftIcon, NftIconProps } from './nft-icon'
 // styles
 import { NetworkIconWrapper } from '../../../page/screens/send/components/token-list-item/token-list-item.style'
 import { IconWrapper } from './nft-icon-styles'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 interface Props extends NftIconProps {
   size?: string | number
-  tokensNetwork: BraveWallet.NetworkInfo
+  chainId?: string
+  coinType?: BraveWallet.CoinType
   disabled?: boolean
 }
 
 export const NftIconWithNetworkIcon = (props: Props) => {
-  const { tokensNetwork, disabled } = props
+  const { chainId, coinType, disabled } = props
+
+  const { data: network } = useGetNetworkQuery(
+    coinType !== undefined && chainId !== undefined
+      ? { chainId: chainId, coin: coinType }
+      : undefined,
+    { skip: coinType !== undefined && chainId !== undefined }
+  )
 
   return (
     <>
       <NftIcon {...props} />
       <IconWrapper disabled={disabled}>
         <NetworkIconWrapper>
-          <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+          <CreateNetworkIcon network={network} marginRight={0} />
         </NetworkIconWrapper>
       </IconWrapper>
     </>

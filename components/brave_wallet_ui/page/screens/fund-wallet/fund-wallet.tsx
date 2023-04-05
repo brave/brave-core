@@ -11,7 +11,6 @@ import {
 
 // utils
 import { getLocale } from '../../../../common/locale'
-import { getTokensNetwork } from '../../../utils/network-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 
 // types
@@ -31,6 +30,7 @@ import { SelectBuyOption } from '../../../components/buy-send-swap/select-buy-op
 import { usePrevNetwork } from '../../../common/hooks/previous-network'
 import { useMultiChainBuyAssets } from '../../../common/hooks/use-multi-chain-buy-assets'
 import { useScrollIntoView } from '../../../common/hooks/use-scroll-into-view'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // style
 import { Column, Flex, LoadingIcon, Row, VerticalSpace } from '../../../components/shared/style'
@@ -66,7 +66,14 @@ export const FundWalletScreen = () => {
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
-  const networkListInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+
+  // queries
+  const { data: selectedNetworkFromFilter = AllNetworksOption } =
+    useGetNetworkQuery(selectedNetworkFilter, {
+      skip:
+        !selectedNetworkFilter ||
+        selectedNetworkFilter.chainId === AllNetworksOption.chainId
+    })
 
   // custom hooks
   const { prevNetwork } = usePrevNetwork()
@@ -92,9 +99,10 @@ export const FundWalletScreen = () => {
   const [selectedCurrency, setSelectedCurrency] = React.useState<string>(defaultCurrencies.fiat || 'usd')
   const [selectedAccount, setSelectedAccount] = React.useState<WalletAccountType | undefined>()
 
-  // memos
-  const isNextStepEnabled = React.useMemo(() => !!selectedAsset, [selectedAsset])
-  const selectedNetwork = selectedAssetNetwork || [...networkListInfo, AllNetworksOption].find(network => network.chainId === selectedNetworkFilter.chainId && network.coin === selectedNetworkFilter.coin) || AllNetworksOption
+  // memos & computed
+  const isNextStepEnabled = !!selectedAsset
+
+  const selectedNetwork = selectedAssetNetwork || selectedNetworkFromFilter
 
   const assetsForFilteredNetwork: UserAssetInfoType[] = React.useMemo(() => {
     const assets = selectedNetworkFilter.chainId === AllNetworksOption.chainId
@@ -112,9 +120,8 @@ export const FundWalletScreen = () => {
       : []
   }, [selectedAssetNetwork, accounts])
 
-  const needsAccount: boolean = React.useMemo(() => {
-    return !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
-  }, [selectedAsset, accountsForSelectedAssetNetwork.length])
+  const needsAccount: boolean =
+    !!selectedAsset && accountsForSelectedAssetNetwork.length < 1
 
   const accountListSearchResults: WalletAccountType[] = React.useMemo(() => {
     if (accountSearchText === '') {
@@ -197,7 +204,6 @@ export const FundWalletScreen = () => {
       isSelected={checkIsBuyAssetSelected(asset)}
       key={getAssetIdKey(asset)}
       token={asset}
-      tokenNetwork={getTokensNetwork(buyAssetNetworks, asset)}
       onClick={setSelectedAsset}
       ref={(ref) => handleScrollIntoView(asset, ref)}
     />,

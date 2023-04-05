@@ -11,11 +11,6 @@ import { BraveWallet } from '../../../../../../constants/types'
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
-import { getTokensNetwork } from '../../../../../../utils/network-utils'
-
-// selectors
-import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../../common/selectors'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -46,9 +41,6 @@ export const NFTGridViewItem = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
-
-  // redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -92,7 +84,8 @@ export const NFTGridViewItem = (props: Props) => {
           <NftIconWithNetworkIcon
             icon={remoteImage}
             responsive={true}
-            tokensNetwork={getTokensNetwork(networkList, token)}
+            chainId={token?.chainId}
+            coinType={token?.coin}
           />
         </IconWrapper>
         <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
