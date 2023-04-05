@@ -553,23 +553,19 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
-  void OnGetRewardsWalletForP3A(ledger::mojom::RewardsWalletPtr wallet);
-
   bool Connected() const;
   void ConnectionClosed();
 
   void RecordBackendP3AStats();
 
+  void OnRecordBackendP3AExternalWallet(GetExternalWalletResult result);
   void OnRecordBackendP3AStatsRecurring(
       std::vector<ledger::mojom::PublisherInfoPtr> list);
-
   void OnRecordBackendP3AStatsContributions(
-      const uint32_t recurring_donation_size,
+      const size_t recurring_tip_count,
       std::vector<ledger::mojom::ContributionInfoPtr> list);
 
-  void OnRecordBackendP3AStatsAC(
-      const int auto_contributions,
-      bool ac_enabled);
+  void OnRecordBackendP3AStatsAC(bool ac_enabled);
 
   void OnGetBalanceReport(GetBalanceReportCallback callback,
                           const ledger::mojom::Result result,
@@ -641,6 +637,8 @@ class RewardsServiceImpl : public RewardsService,
   int ledger_state_target_version_for_testing_ = -1;
   bool resetting_rewards_ = false;
   int persist_log_level_ = 0;
+  base::RepeatingTimer p3a_daily_timer_;
+  base::OneShotTimer p3a_tip_report_timer_;
 
   GetTestResponseCallback test_response_callback_;
 

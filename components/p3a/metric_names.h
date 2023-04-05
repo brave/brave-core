@@ -44,7 +44,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.P3A.SentAnswersCount",
     "Brave.Rewards.AdsEnabledDuration",
     "Brave.Rewards.AdsState.2",
-    "Brave.Rewards.AutoContributionsState.2",
+    "Brave.Rewards.AutoContributionsState.3",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.InlineTipTrigger",
     "Brave.Rewards.TipsState.2",
@@ -179,6 +179,7 @@ constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.UsageMonthly",
     "Brave.P3A.TestSlowMetric",
+    "Brave.Rewards.TipsSent",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount",
     "Brave.Wallet.UsageMonthly"
@@ -198,6 +199,7 @@ constexpr inline auto kEphemeralHistograms =
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Rewards.EnabledSource",
     "Brave.Rewards.InlineTipTrigger",
+    "Brave.Rewards.TipsSent",
     "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
