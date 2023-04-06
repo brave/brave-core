@@ -24,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class TokenUtils {
     /**
@@ -124,8 +123,9 @@ public class TokenUtils {
      * @param blockchainRegistry to get tokens from core
      * @param callback to get array of tokens
      */
-    public static void getAllTokens(BlockchainRegistry blockchainRegistry,
-            List<NetworkInfo> networkInfos, Callbacks.Callback1<BlockchainToken[]> callback) {
+    public static void getAllTokensFiltered(BlockchainRegistry blockchainRegistry,
+            List<NetworkInfo> networkInfos, TokenType tokenType,
+            Callbacks.Callback1<BlockchainToken[]> callback) {
         AsyncUtils.MultiResponseHandler allNetworkTokenCollector =
                 new AsyncUtils.MultiResponseHandler(networkInfos.size());
         ArrayList<AsyncUtils.GetNetworkAllTokensContext> allTokenContexts = new ArrayList<>();
@@ -139,7 +139,10 @@ public class TokenUtils {
         }
         allNetworkTokenCollector.setWhenAllCompletedAction(() -> {
             callback.call(allTokenContexts.stream()
-                                  .flatMap(context -> Arrays.stream(context.tokens))
+                                  .map(context
+                                          -> filterTokens(context.networkInfo, context.tokens,
+                                                  tokenType, false))
+                                  .flatMap(tokens -> Arrays.stream(tokens))
                                   .toArray(BlockchainToken[] ::new));
         });
     }

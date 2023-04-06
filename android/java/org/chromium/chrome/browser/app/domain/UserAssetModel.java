@@ -58,11 +58,10 @@ public class UserAssetModel {
                         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
                             if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
                                 mBraveWalletService.getAllUserAssets(userAssets -> {
-                                    TokenUtils.getAllTokens(mBlockchainRegistry, mCryptoNetworks,
-                                            //                                            nftsOnly ?
-                                            //                                            TokenUtils.TokenType.NFTS
-                                            //                                                    :
-                                            //                                                    TokenUtils.TokenType.NON_NFTS,
+                                    TokenUtils.getAllTokensFiltered(mBlockchainRegistry,
+                                            mCryptoNetworks,
+                                            nftsOnly ? TokenUtils.TokenType.NFTS
+                                                     : TokenUtils.TokenType.NON_NFTS,
                                             tokens -> {
                                                 AssetUtils.updateMissingLogoWithNetworkIcon(
                                                         userAssets);
