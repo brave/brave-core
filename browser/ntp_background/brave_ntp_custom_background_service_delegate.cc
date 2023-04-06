@@ -1,9 +1,9 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ntp_background/ntp_custom_background_images_service_delegate.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_delegate.h"
 
 #include <utility>
 
@@ -22,8 +22,8 @@
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
-NTPCustomBackgroundImagesServiceDelegate::
-    NTPCustomBackgroundImagesServiceDelegate(Profile* profile)
+BraveNTPCustomBackgroundServiceDelegate::
+    BraveNTPCustomBackgroundServiceDelegate(Profile* profile)
     : profile_(profile),
       file_manager_(std::make_unique<CustomBackgroundFileManager>(profile_)) {
   if (ShouldMigrateCustomImagePref()) {
@@ -33,16 +33,16 @@ NTPCustomBackgroundImagesServiceDelegate::
   }
 }
 
-NTPCustomBackgroundImagesServiceDelegate::
-    ~NTPCustomBackgroundImagesServiceDelegate() = default;
+BraveNTPCustomBackgroundServiceDelegate::
+    ~BraveNTPCustomBackgroundServiceDelegate() = default;
 
-bool NTPCustomBackgroundImagesServiceDelegate::ShouldMigrateCustomImagePref()
+bool BraveNTPCustomBackgroundServiceDelegate::ShouldMigrateCustomImagePref()
     const {
   auto prefs = NTPBackgroundPrefs(profile_->GetPrefs());
   return prefs.IsCustomImageType() && prefs.GetCustomImageList().empty();
 }
 
-void NTPCustomBackgroundImagesServiceDelegate::MigrateCustomImage(
+void BraveNTPCustomBackgroundServiceDelegate::MigrateCustomImage(
     base::OnceCallback<void(bool)> callback) {
   auto prefs = NTPBackgroundPrefs(profile_->GetPrefs());
   file_manager_->MoveImage(
@@ -70,7 +70,7 @@ void NTPCustomBackgroundImagesServiceDelegate::MigrateCustomImage(
           .Then(std::move(callback)));
 }
 
-bool NTPCustomBackgroundImagesServiceDelegate::IsCustomImageBackgroundEnabled()
+bool BraveNTPCustomBackgroundServiceDelegate::IsCustomImageBackgroundEnabled()
     const {
   if (profile_->GetPrefs()->IsManagedPreference(
           prefs::kNtpCustomBackgroundDict)) {
@@ -81,13 +81,13 @@ bool NTPCustomBackgroundImagesServiceDelegate::IsCustomImageBackgroundEnabled()
 }
 
 base::FilePath
-NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageLocalFilePath(
+BraveNTPCustomBackgroundServiceDelegate::GetCustomBackgroundImageLocalFilePath(
     const GURL& url) const {
   return CustomBackgroundFileManager::Converter(url, file_manager_.get())
       .To<base::FilePath>();
 }
 
-GURL NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageURL()
+GURL BraveNTPCustomBackgroundServiceDelegate::GetCustomBackgroundImageURL()
     const {
   DCHECK(IsCustomImageBackgroundEnabled());
 
@@ -96,14 +96,14 @@ GURL NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageURL()
   return CustomBackgroundFileManager::Converter(name).To<GURL>();
 }
 
-bool NTPCustomBackgroundImagesServiceDelegate::IsColorBackgroundEnabled()
-    const {
+bool BraveNTPCustomBackgroundServiceDelegate::IsColorBackgroundEnabled() const {
   return NTPBackgroundPrefs(profile_->GetPrefs()).IsColorType();
 }
 
-std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() const {
-  if (!IsColorBackgroundEnabled())
+std::string BraveNTPCustomBackgroundServiceDelegate::GetColor() const {
+  if (!IsColorBackgroundEnabled()) {
     return {};
+  }
 
   const auto selected_value =
       NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
@@ -111,25 +111,27 @@ std::string NTPCustomBackgroundImagesServiceDelegate::GetColor() const {
   return absl::get<std::string>(selected_value);
 }
 
-bool NTPCustomBackgroundImagesServiceDelegate::ShouldUseRandomValue() const {
+bool BraveNTPCustomBackgroundServiceDelegate::ShouldUseRandomValue() const {
   return NTPBackgroundPrefs(profile_->GetPrefs()).ShouldUseRandomValue();
 }
 
-bool NTPCustomBackgroundImagesServiceDelegate::HasPreferredBraveBackground()
+bool BraveNTPCustomBackgroundServiceDelegate::HasPreferredBraveBackground()
     const {
   const auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
-  if (!pref.IsBraveType() || pref.ShouldUseRandomValue())
+  if (!pref.IsBraveType() || pref.ShouldUseRandomValue()) {
     return false;
+  }
 
   auto selected_value = pref.GetSelectedValue();
-  if (auto* selected_url = absl::get_if<GURL>(&selected_value))
+  if (auto* selected_url = absl::get_if<GURL>(&selected_value)) {
     return selected_url->is_valid();
+  }
 
   return false;
 }
 
 base::Value::Dict
-NTPCustomBackgroundImagesServiceDelegate::GetPreferredBraveBackground() const {
+BraveNTPCustomBackgroundServiceDelegate::GetPreferredBraveBackground() const {
   DCHECK(HasPreferredBraveBackground());
 
   auto pref = NTPBackgroundPrefs(profile_->GetPrefs());

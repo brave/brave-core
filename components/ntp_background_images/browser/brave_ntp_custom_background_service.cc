@@ -1,9 +1,9 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 
 #include <string>
 #include <utility>
@@ -15,21 +15,21 @@
 
 namespace ntp_background_images {
 
-NTPCustomBackgroundImagesService::NTPCustomBackgroundImagesService(
+BraveNTPCustomBackgroundService::BraveNTPCustomBackgroundService(
     std::unique_ptr<Delegate> delegate)
     : delegate_(std::move(delegate)) {
   DCHECK(delegate_);
 }
 
-NTPCustomBackgroundImagesService::~NTPCustomBackgroundImagesService() = default;
+BraveNTPCustomBackgroundService::~BraveNTPCustomBackgroundService() = default;
 
-bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
+bool BraveNTPCustomBackgroundService::ShouldShowCustomBackground() const {
   return delegate_->IsCustomImageBackgroundEnabled() ||
          delegate_->IsColorBackgroundEnabled() ||
          delegate_->HasPreferredBraveBackground();
 }
 
-base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
+base::Value::Dict BraveNTPCustomBackgroundService::GetBackground() const {
   DCHECK(ShouldShowCustomBackground());
 
   if (delegate_->HasPreferredBraveBackground()) {
@@ -60,12 +60,12 @@ base::Value::Dict NTPCustomBackgroundImagesService::GetBackground() const {
   return data;
 }
 
-base::FilePath NTPCustomBackgroundImagesService::GetImageFilePath(
+base::FilePath BraveNTPCustomBackgroundService::GetImageFilePath(
     const GURL& url) {
   return delegate_->GetCustomBackgroundImageLocalFilePath(url);
 }
 
-void NTPCustomBackgroundImagesService::Shutdown() {
+void BraveNTPCustomBackgroundService::Shutdown() {
   delegate_.reset();
 }
 

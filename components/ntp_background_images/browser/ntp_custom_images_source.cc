@@ -14,7 +14,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -32,7 +32,7 @@ std::string ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPCustomImagesSource::NTPCustomImagesSource(
-    NTPCustomBackgroundImagesService* service)
+    BraveNTPCustomBackgroundService* service)
     : service_(service), weak_factory_(this) {
   DCHECK(service_);
 }

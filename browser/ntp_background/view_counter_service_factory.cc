@@ -29,7 +29,7 @@
 #include "content/public/browser/url_data_source.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-#include "brave/browser/ntp_background/ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #endif
 
 namespace ntp_background_images {
@@ -51,7 +51,7 @@ ViewCounterServiceFactory::ViewCounterServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_ads::AdsServiceFactory::GetInstance());
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  DependsOn(NTPCustomBackgroundImagesServiceFactory::GetInstance());
+  DependsOn(BraveNTPCustomBackgroundServiceFactory::GetInstance());
 #endif
 }
 
@@ -79,7 +79,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     return new ViewCounterService(
         service,
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-        NTPCustomBackgroundImagesServiceFactory::GetForContext(profile),
+        BraveNTPCustomBackgroundServiceFactory::GetForContext(profile),
 #else
         nullptr,
 #endif
