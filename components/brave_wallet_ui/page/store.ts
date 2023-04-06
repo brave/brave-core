@@ -43,6 +43,7 @@ proxy.addKeyringServiceObserver(store)
 proxy.addTxServiceObserver(store)
 proxy.addBraveWalletServiceObserver(store)
 proxy.addBraveWalletPinServiceObserver(store)
+proxy.addBraveWalletAutoPinServiceObserver(store)
 
 export const walletPageApiProxy = proxy
 

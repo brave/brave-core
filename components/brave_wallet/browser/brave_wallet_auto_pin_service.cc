@@ -59,10 +59,14 @@ void BraveWalletAutoPinService::Reset() {
 }
 
 void BraveWalletAutoPinService::OnAutoPinStatusChanged() {
-  if (IsAutoPinEnabled()) {
+  auto enabled = IsAutoPinEnabled();
+  if (enabled) {
     Restore();
   } else {
     queue_.clear();
+  }
+  for (const auto& observer : observers_) {
+    observer->OnAutoPinStatusChanged(enabled);
   }
 }
 
@@ -328,6 +332,11 @@ bool BraveWalletAutoPinService::IsAutoPinEnabled() {
 void BraveWalletAutoPinService::IsAutoPinEnabled(
     IsAutoPinEnabledCallback callback) {
   std::move(callback).Run(IsAutoPinEnabled());
+}
+
+void BraveWalletAutoPinService::AddObserver(
+    ::mojo::PendingRemote<mojom::WalletAutoPinServiceObserver> observer) {
+  observers_.Add(std::move(observer));
 }
 
 }  // namespace brave_wallet
