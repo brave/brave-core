@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class TokenUtils {
     /**
@@ -118,6 +119,31 @@ public class TokenUtils {
                 });
     }
 
+    /**
+     * Get tokens of all networks in the <code>networkInfos<code/> list.
+     * @param blockchainRegistry to get tokens from core
+     * @param callback to get array of tokens
+     */
+    public static void getAllTokens(BlockchainRegistry blockchainRegistry,
+            List<NetworkInfo> networkInfos, Callbacks.Callback1<BlockchainToken[]> callback) {
+        AsyncUtils.MultiResponseHandler allNetworkTokenCollector =
+                new AsyncUtils.MultiResponseHandler(networkInfos.size());
+        ArrayList<AsyncUtils.GetNetworkAllTokensContext> allTokenContexts = new ArrayList<>();
+
+        for (NetworkInfo networkInfo : networkInfos) {
+            AsyncUtils.GetNetworkAllTokensContext context =
+                    new AsyncUtils.GetNetworkAllTokensContext(
+                            allNetworkTokenCollector.singleResponseComplete, networkInfo);
+            blockchainRegistry.getAllTokens(networkInfo.chainId, networkInfo.coin, context);
+            allTokenContexts.add(context);
+        }
+        allNetworkTokenCollector.setWhenAllCompletedAction(() -> {
+            callback.call(allTokenContexts.stream()
+                                  .flatMap(context -> Arrays.stream(context.tokens))
+                                  .toArray(BlockchainToken[] ::new));
+        });
+    }
+
     /*
      * Wrapper for BlockchainRegistry.getAllTokens with Goerli contract address modifications.
      */
@@ -135,7 +161,7 @@ public class TokenUtils {
         getAllTokens(blockchainRegistry, selectedNetwork.chainId, coinType, tokens -> {
             braveWalletService.getUserAssets(selectedNetwork.chainId, coinType, userTokens -> {
                 BlockchainToken[] filteredTokens = filterTokens(selectedNetwork,
-                        concatenateTwoArrays(tokens, userTokens), tokenType, false);
+                        distinctiveConcatenatedArrays(tokens, userTokens), tokenType, false);
                 callback.call(filteredTokens);
             });
         });
@@ -187,7 +213,14 @@ public class TokenUtils {
         });
     }
 
-    private static BlockchainToken[] concatenateTwoArrays(
+    /**
+     * Concatenate arrays, add only elements of arraySecond that are not present in the arrayFirst
+     * @param arrayFirst first array to be added in the result
+     * @param arraySecond second array, only distinctive elements are added in result by comparing
+     *         with the items of arrayFirst
+     * @return concatenated array
+     */
+    public static BlockchainToken[] distinctiveConcatenatedArrays(
             BlockchainToken[] arrayFirst, BlockchainToken[] arraySecond) {
         List<BlockchainToken> both = new ArrayList<>();
 
