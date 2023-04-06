@@ -1,7 +1,7 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 
@@ -11,7 +11,7 @@
 #include "base/metrics/histogram_functions.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
-#include "brave/components/p3a/brave_p3a_utils.h"
+#include "brave/components/p3a/utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -148,8 +148,8 @@ int DomainCountRelativeToGlobalSetting(PrefService* profile_prefs,
 
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
                                 PrefService* local_state) {
-  ::brave::RecordValueIfGreater<ShieldsIconUsage>(
-      usage, kUsageStatusHistogramName, kUsagePrefName, local_state);
+  p3a::RecordValueIfGreater<ShieldsIconUsage>(usage, kUsageStatusHistogramName,
+                                              kUsagePrefName, local_state);
 }
 
 void RecordShieldsAdsSetting(ControlType setting) {

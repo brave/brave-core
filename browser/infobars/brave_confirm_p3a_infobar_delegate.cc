@@ -29,9 +29,9 @@ void BraveConfirmP3AInfoBarDelegate::Create(
   // - P3A is disabled
   // - notice has already been acknowledged
   if (local_state) {
-    if (!local_state->GetBoolean(brave::kP3AEnabled) ||
-        local_state->GetBoolean(brave::kP3ANoticeAcknowledged)) {
-      local_state->SetBoolean(brave::kP3ANoticeAcknowledged, true);
+    if (!local_state->GetBoolean(p3a::kP3AEnabled) ||
+        local_state->GetBoolean(p3a::kP3ANoticeAcknowledged)) {
+      local_state->SetBoolean(p3a::kP3ANoticeAcknowledged, true);
       return;
     }
   }
@@ -64,7 +64,7 @@ bool BraveConfirmP3AInfoBarDelegate::ShouldExpire(
 void BraveConfirmP3AInfoBarDelegate::InfoBarDismissed() {
   // Mark notice as acknowledged when infobar is dismissed
   if (local_state_) {
-    local_state_->SetBoolean(brave::kP3ANoticeAcknowledged, true);
+    local_state_->SetBoolean(p3a::kP3ANoticeAcknowledged, true);
   }
 }
 
@@ -98,7 +98,7 @@ GURL BraveConfirmP3AInfoBarDelegate::GetLinkURL() const {
 bool BraveConfirmP3AInfoBarDelegate::Accept() {
   // Mark notice as acknowledged when infobar is dismissed
   if (local_state_) {
-    local_state_->SetBoolean(brave::kP3ANoticeAcknowledged, true);
+    local_state_->SetBoolean(p3a::kP3ANoticeAcknowledged, true);
   }
   return true;
 }
@@ -107,7 +107,7 @@ bool BraveConfirmP3AInfoBarDelegate::Cancel() {
   // OK button is "Disable"
   // Clicking should disable P3A
   if (local_state_) {
-    local_state_->SetBoolean(brave::kP3AEnabled, false);
+    local_state_->SetBoolean(p3a::kP3AEnabled, false);
   }
   return true;
 }

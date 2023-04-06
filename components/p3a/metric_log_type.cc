@@ -7,7 +7,7 @@
 
 #include "base/notreached.h"
 
-namespace brave {
+namespace p3a {
 
 namespace {
 constexpr char kSlowStr[] = "slow";
@@ -27,4 +27,4 @@ const char* MetricLogTypeToString(MetricLogType log_type) {
   NOTREACHED();
 }
 
-}  // namespace brave
+}  // namespace p3a

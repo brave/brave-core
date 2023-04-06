@@ -1,9 +1,9 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/brave_p2a_protocols.h"
+#include "brave/components/p3a/p2a_protocols.h"
 
 #include <math.h>
 
@@ -17,14 +17,14 @@ namespace {
 const double kEpsilon = 2.1;
 }  // namespace
 
-namespace brave {
+namespace p3a {
 
 DirectEncodingProtocol::DirectEncodingProtocol() = default;
 
 DirectEncodingProtocol::~DirectEncodingProtocol() = default;
 
-uint64_t DirectEncodingProtocol::Perturb(
-    uint16_t bucket_count, uint64_t value) {
+uint64_t DirectEncodingProtocol::Perturb(uint16_t bucket_count,
+                                         uint64_t value) {
   DCHECK_GT(bucket_count, 1);
 
   uint64_t perturbed_value = value;
@@ -32,7 +32,7 @@ uint64_t DirectEncodingProtocol::Perturb(
 
   // Return true value with probability
   if (base::RandDouble() < probability) {
-      return perturbed_value;
+    return perturbed_value;
   }
 
   // Generate set of non-truthful options by removing the true bucket from the
@@ -48,4 +48,4 @@ uint64_t DirectEncodingProtocol::Perturb(
   return perturbed_value;
 }
 
-}  // namespace brave
+}  // namespace p3a

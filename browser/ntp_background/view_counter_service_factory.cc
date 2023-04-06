@@ -6,6 +6,7 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
@@ -76,6 +77,13 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
 
+    std::unique_ptr<NTPP3AHelperImpl> ntp_p3a_helper;
+    if (g_brave_browser_process->p3a_service() != nullptr) {
+      ntp_p3a_helper = std::make_unique<NTPP3AHelperImpl>(
+          g_browser_process->local_state(),
+          g_brave_browser_process->p3a_service(), ads_service);
+    }
+
     return new ViewCounterService(
         service,
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -84,10 +92,7 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
         nullptr,
 #endif
         ads_service, profile->GetPrefs(), g_browser_process->local_state(),
-        std::make_unique<NTPP3AHelperImpl>(
-            g_browser_process->local_state(),
-            g_brave_browser_process->brave_p3a_service(), ads_service),
-        is_supported_locale);
+        std::move(ntp_p3a_helper), is_supported_locale);
   }
 
   return nullptr;

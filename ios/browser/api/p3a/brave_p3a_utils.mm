@@ -33,20 +33,20 @@
 }
 
 - (bool)isP3AEnabled {
-  return _localState->GetBoolean(brave::kP3AEnabled);
+  return _localState->GetBoolean(p3a::kP3AEnabled);
 }
 
 - (void)setIsP3AEnabled:(bool)isP3AEnabled {
-  _localState->SetBoolean(brave::kP3AEnabled, isP3AEnabled);
+  _localState->SetBoolean(p3a::kP3AEnabled, isP3AEnabled);
   _localState->CommitPendingWrite();
 }
 
 - (bool)isNoticeAcknowledged {
-  return _localState->GetBoolean(brave::kP3ANoticeAcknowledged);
+  return _localState->GetBoolean(p3a::kP3ANoticeAcknowledged);
 }
 
 - (void)setIsNoticeAcknowledged:(bool)isNoticeAcknowledged {
-  _localState->SetBoolean(brave::kP3ANoticeAcknowledged, isNoticeAcknowledged);
+  _localState->SetBoolean(p3a::kP3ANoticeAcknowledged, isNoticeAcknowledged);
   _localState->CommitPendingWrite();
 }
 

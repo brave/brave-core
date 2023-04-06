@@ -1,17 +1,17 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_UTILS_H_
-#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_UTILS_H_
+#ifndef BRAVE_COMPONENTS_P3A_UTILS_H_
+#define BRAVE_COMPONENTS_P3A_UTILS_H_
 
 #include "base/metrics/histogram_functions.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave {
+namespace p3a {
 
-template<class Enumeration>
+template <class Enumeration>
 void RecordValueIfGreater(Enumeration value,
                           const char* hist_name,
                           const char* pref_name,
@@ -29,6 +29,6 @@ void RecordValueIfGreater(Enumeration value,
   }
 }
 
-}  // namespace brave
+}  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_UTILS_H_
+#endif  // BRAVE_COMPONENTS_P3A_UTILS_H_

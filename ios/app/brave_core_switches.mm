@@ -7,7 +7,7 @@
 
 #include "base/base_switches.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/p3a/brave_p3a_switches.h"
+#include "brave/components/p3a/switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
 
@@ -24,21 +24,29 @@ const BraveCoreSwitchKey BraveCoreSwitchKeySyncURL =
 // There is no exposed switch for rewards
 const BraveCoreSwitchKey BraveCoreSwitchKeyRewardsFlags = @"rewards";
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadIntervalSeconds =
-    base::SysUTF8ToNSString(brave::switches::kP3AUploadIntervalSeconds);
+    base::SysUTF8ToNSString(p3a::switches::kP3AUploadIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ADoNotRandomizeUploadInterval =
-    base::SysUTF8ToNSString(brave::switches::kP3ADoNotRandomizeUploadInterval);
+    base::SysUTF8ToNSString(p3a::switches::kP3ADoNotRandomizeUploadInterval);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ATypicalRotationIntervalSeconds =
-    base::SysUTF8ToNSString(
-        brave::switches::kP3ATypicalRotationIntervalSeconds);
+    base::SysUTF8ToNSString(p3a::switches::kP3ATypicalRotationIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AExpressRotationIntervalSeconds =
-    base::SysUTF8ToNSString(
-        brave::switches::kP3AExpressRotationIntervalSeconds);
+    base::SysUTF8ToNSString(p3a::switches::kP3AExpressRotationIntervalSeconds);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3ASlowRotationIntervalSeconds =
-    base::SysUTF8ToNSString(brave::switches::kP3ASlowRotationIntervalSeconds);
-const BraveCoreSwitchKey BraveCoreSwitchKeyP3AUploadServerURL =
-    base::SysUTF8ToNSString(brave::switches::kP3AUploadServerUrl);
+    base::SysUTF8ToNSString(p3a::switches::kP3ASlowRotationIntervalSeconds);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AJsonUploadServerURL =
+    base::SysUTF8ToNSString(p3a::switches::kP3AJsonUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ACreativeUploadServerURL =
+    base::SysUTF8ToNSString(p3a::switches::kP3ACreativeUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP2AJsonUploadServerURL =
+    base::SysUTF8ToNSString(p3a::switches::kP2AJsonUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AConstellationUploadServerURL =
+    base::SysUTF8ToNSString(p3a::switches::kP3AConstellationUploadUrl);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3ADisableStarAttestation =
+    base::SysUTF8ToNSString(p3a::switches::kP3ADisableStarAttestation);
+const BraveCoreSwitchKey BraveCoreSwitchKeyP3AStarRandomnessHost =
+    base::SysUTF8ToNSString(p3a::switches::kP3AStarRandomnessHost);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =
-    base::SysUTF8ToNSString(brave::switches::kP3AIgnoreServerErrors);
+    base::SysUTF8ToNSString(p3a::switches::kP3AIgnoreServerErrors);
 
 @implementation BraveCoreSwitch
 - (instancetype)initWithKey:(BraveCoreSwitchKey)key {

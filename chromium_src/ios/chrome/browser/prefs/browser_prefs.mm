@@ -8,8 +8,8 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
-#include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/ios/browser/brave_stats/brave_stats_prefs.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 
@@ -32,7 +32,7 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_wallet::RegisterLocalStatePrefs(registry);
   decentralized_dns::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  brave::BraveP3AService::RegisterPrefs(registry, false);
+  p3a::P3AService::RegisterPrefs(registry, false);
 #endif
 }
 

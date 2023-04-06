@@ -10,7 +10,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/importer/importer_constants.h"
-#include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/ui/browser.h"
@@ -20,10 +20,6 @@
 #include "chrome/grit/chromium_strings.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-#include "brave/components/p3a/pref_names.h"
-#endif
 
 namespace {
 
@@ -177,8 +173,6 @@ void WelcomeDOMHandler::SetLocalStateBooleanEnabled(
   local_state->SetBoolean(path, enabled);
 }
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
 void WelcomeDOMHandler::SetP3AEnabled(const base::Value::List& args) {
-  SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
+  SetLocalStateBooleanEnabled(p3a::kP3AEnabled, args);
 }
-#endif

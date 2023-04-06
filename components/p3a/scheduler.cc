@@ -1,13 +1,14 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/p3a/brave_p3a_scheduler.h"
+#include "brave/components/p3a/scheduler.h"
 
 #include "base/rand_util.h"
+#include "brave/vendor/brave_base/random.h"
 
-namespace brave {
+namespace p3a {
 
 namespace {
 
@@ -40,27 +41,39 @@ base::TimeDelta BackOffUploadInterval(base::TimeDelta interval) {
   return interval;
 }
 
+base::TimeDelta GetRandomizedUploadInterval(
+    base::TimeDelta average_upload_interval) {
+  const auto delta = base::Seconds(
+      brave_base::random::Geometric(average_upload_interval.InSecondsF()));
+  return delta;
+}
+
 }  // namespace
 
-BraveP3AScheduler::BraveP3AScheduler(
-    const base::RepeatingClosure& upload_callback,
-    const base::RepeatingCallback<base::TimeDelta(void)>& get_interval_callback)
+Scheduler::Scheduler(const base::RepeatingClosure& upload_callback,
+                     bool randomize_upload_interval,
+                     base::TimeDelta average_upload_interval)
     : metrics::MetricsScheduler(upload_callback,
                                 false /* fast_startup_for_testing */),
-      get_interval_callback_(get_interval_callback),
       initial_backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)),
-      backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)) {}
+      backoff_interval_(base::Seconds(kInitialBackoffIntervalSeconds)),
+      randomize_upload_interval_(randomize_upload_interval),
+      average_upload_interval_(average_upload_interval) {}
 
-BraveP3AScheduler::~BraveP3AScheduler() = default;
+Scheduler::~Scheduler() = default;
 
-void BraveP3AScheduler::UploadFinished(bool ok) {
+void Scheduler::UploadFinished(bool ok) {
   if (!ok) {
     TaskDone(backoff_interval_);
     backoff_interval_ = BackOffUploadInterval(backoff_interval_);
   } else {
     backoff_interval_ = initial_backoff_interval_;
-    TaskDone(get_interval_callback_.Run());
+    if (randomize_upload_interval_) {
+      TaskDone(GetRandomizedUploadInterval(average_upload_interval_));
+    } else {
+      TaskDone(average_upload_interval_);
+    }
   }
 }
 
-}  // namespace brave
+}  // namespace p3a

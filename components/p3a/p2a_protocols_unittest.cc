@@ -1,9 +1,9 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/p3a/brave_p2a_protocols.h"
+#include "brave/components/p3a/p2a_protocols.h"
 
 #include <stdint.h>
 
@@ -17,7 +17,7 @@ namespace {
 const size_t kTrials = 1000;
 }  // namespace
 
-namespace brave {
+namespace p3a {
 
 TEST(P2AProtocolsTest, PerturbationTest) {
   // Arrange
@@ -28,8 +28,8 @@ TEST(P2AProtocolsTest, PerturbationTest) {
   size_t true_value_count = 0;
 
   for (size_t i = 0; i < kTrials; i++) {
-    if (kTrueValue == DirectEncodingProtocol::Perturb(
-        kBucketCount, kTrueValue)) {
+    if (kTrueValue ==
+        DirectEncodingProtocol::Perturb(kBucketCount, kTrueValue)) {
       true_value_count++;
     }
   }
@@ -41,4 +41,4 @@ TEST(P2AProtocolsTest, PerturbationTest) {
   EXPECT_TRUE(true_value_count < kTrials);
 }
 
-}  // namespace brave
+}  // namespace p3a

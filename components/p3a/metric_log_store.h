@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
-#define BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
+#ifndef BRAVE_COMPONENTS_P3A_METRIC_LOG_STORE_H_
+#define BRAVE_COMPONENTS_P3A_METRIC_LOG_STORE_H_
 
 #include <string>
 
@@ -19,32 +19,36 @@
 class PrefService;
 class PrefRegistrySimple;
 
-namespace brave {
+namespace p3a {
 
 // Stores all given values in memory and persists in prefs on the fly.
 // All logs (not only unsent are persistent), and all logs could be loaded
 // using |LoadPersistedUnsentLogs()|. We should fix this at some point since
 // for now persisted entries never expire.
-class BraveP3ALogStore : public metrics::LogStore {
+class MetricLogStore : public metrics::LogStore {
  public:
   class Delegate {
    public:
     // Prepares a string representaion of an entry.
-    virtual std::string Serialize(base::StringPiece histogram_name,
-                                  uint64_t value,
-                                  MetricLogType log_type,
-                                  const std::string& upload_type) = 0;
+    virtual std::string SerializeLog(base::StringPiece histogram_name,
+                                     uint64_t value,
+                                     MetricLogType log_type,
+                                     bool is_constellation,
+                                     const std::string& upload_type) = 0;
     // Returns false if the metric is obsolete and should be cleaned up.
-    virtual bool IsActualMetric(base::StringPiece histogram_name) const = 0;
-    virtual bool IsEphemeralMetric(base::StringPiece histogram_name) const = 0;
+    virtual bool IsActualMetric(const std::string& histogram_name) const = 0;
+    virtual bool IsEphemeralMetric(const std::string& histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 
-  BraveP3ALogStore(Delegate* delegate,
-                   PrefService* local_state,
-                   MetricLogType type);
+  MetricLogStore(Delegate* delegate,
+                 PrefService* local_state,
+                 bool is_constellation,
+                 MetricLogType type);
+  ~MetricLogStore() override;
 
-  ~BraveP3ALogStore() override;
+  MetricLogStore(const MetricLogStore&) = delete;
+  MetricLogStore& operator=(const MetricLogStore&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -54,12 +58,12 @@ class BraveP3ALogStore : public metrics::LogStore {
   // Marks all saved values as unsent.
   void ResetUploadStamps();
 
-  const std::string& staged_log_key() const;
   // metrics::LogStore:
   bool has_unsent_logs() const override;
   bool has_staged_log() const override;
   const std::string& staged_log() const override;
   std::string staged_log_type() const;
+  const std::string& staged_log_key() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
   absl::optional<uint64_t> staged_log_user_id() const override;
@@ -91,6 +95,8 @@ class BraveP3ALogStore : public metrics::LogStore {
     base::Time sent_timestamp;  // At the moment only for debugging purposes.
   };
 
+  const char* GetPrefName() const;
+
   Delegate* const delegate_ = nullptr;  // Weak.
   PrefService* const local_state_ = nullptr;
 
@@ -106,8 +112,10 @@ class BraveP3ALogStore : public metrics::LogStore {
   // Not used for now.
   std::string staged_log_hash_;
   std::string staged_log_signature_;
+
+  bool is_constellation_;
 };
 
-}  // namespace brave
+}  // namespace p3a
 
-#endif  // BRAVE_COMPONENTS_P3A_BRAVE_P3A_LOG_STORE_H_
+#endif  // BRAVE_COMPONENTS_P3A_METRIC_LOG_STORE_H_

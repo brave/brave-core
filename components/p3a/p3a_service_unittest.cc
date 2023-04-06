@@ -1,11 +1,12 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/components/p3a/p3a_service.h"
 
 #include <set>
+#include <utility>
 #include <vector>
 
 #include "base/command_line.h"
@@ -15,9 +16,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/time/time.h"
-#include "brave/components/p3a/brave_p3a_switches.h"
+#include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/metric_names.h"
+#include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/p3a/switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -25,15 +28,19 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-namespace brave {
+namespace p3a {
 
 namespace {
 
-constexpr size_t kUploadIntervalSeconds = 120;
+constexpr size_t kUploadIntervalSeconds = 60;
 constexpr char kP2APrefix[] = "Brave.P2A";
 constexpr char kTestCreativeMetric1[] = "creativeInstanceId.abc.views";
 constexpr char kTestCreativeMetric2[] = "creativeInstanceId.abc.clicks";
 constexpr char kTestExampleMetric[] = "Brave.Core.TestMetric";
+
+constexpr char kTestP3AJsonHost[] = "https://p3a-json.brave.com";
+constexpr char kTestP2AJsonHost[] = "https://p2a-json.brave.com";
+constexpr char kTestP3ACreativeHost[] = "https://p3a-creative.brave.com";
 
 }  // namespace
 
@@ -52,22 +59,30 @@ class P3AServiceTest : public testing::Test {
       task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
     }
 
-    BraveP3AService::RegisterPrefs(local_state_.registry(), true);
+    P3AService::RegisterPrefs(local_state_.registry(), true);
 
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
 
-          EXPECT_EQ(request.method, net::HttpRequestHeaders::kPostMethod);
+          if (request.method != net::HttpRequestHeaders::kPostMethod) {
+            return;
+          }
 
           StoreJsonMetricInMap(request, request.url);
           url_loader_factory_.AddResponse(request.url.spec(), "{}");
         }));
+
+    config_.p3a_json_upload_url = GURL(kTestP3AJsonHost);
+    config_.p2a_json_upload_url = GURL(kTestP2AJsonHost);
+    config_.p3a_creative_upload_url = GURL(kTestP3ACreativeHost);
   }
 
   void SetUpP3AService() {
-    p3a_service_ = scoped_refptr(
-        new BraveP3AService(&local_state_, "release", "2049-01-01"));
+    p3a_service_ = scoped_refptr(new P3AService(
+        &local_state_, "release", "2049-01-01", P3AConfig(config_)));
+
+    p3a_service_->DisableStarAttestationForTesting();
     p3a_service_->Init(shared_url_loader_factory_);
     task_environment_.RunUntilIdle();
   }
@@ -105,7 +120,9 @@ class P3AServiceTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
-  scoped_refptr<BraveP3AService> p3a_service_;
+
+  P3AConfig config_;
+  scoped_refptr<P3AService> p3a_service_;
   TestingPrefServiceSimple local_state_;
 
   std::set<std::string> p3a_json_sent_metrics_;
@@ -128,14 +145,14 @@ class P3AServiceTest : public testing::Test {
     std::string metric_name = *parsed_log.FindStringKey("metric_name");
 
     std::set<std::string>* metrics_set;
-    if (url == GURL("https://p3a-json.brave.com/")) {
+    if (url == GURL(kTestP3AJsonHost)) {
       metrics_set = &p3a_json_sent_metrics_;
-    } else if (url == GURL("https://p2a-json.brave.com/")) {
+    } else if (url == GURL(kTestP2AJsonHost)) {
       metrics_set = &p2a_json_sent_metrics_;
-    } else if (url == GURL("https://p3a-creative.brave.com/")) {
+    } else if (url == GURL(kTestP3ACreativeHost)) {
       metrics_set = &p3a_creative_sent_metrics_;
     } else {
-      FAIL();
+      return;
     }
 
     ASSERT_EQ(metrics_set->find(metric_name), metrics_set->end());
@@ -244,8 +261,7 @@ TEST_F(P3AServiceTest, UpdateLogsAndSendExpress) {
 
 TEST_F(P3AServiceTest, UpdateLogsAndSendSlow) {
   // Increase upload interval to reduce test time (less tasks to execute)
-  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "6000");
+  config_.average_upload_interval = base::Seconds(6000);
   SetUpP3AService();
 
   std::vector<std::string> test_histograms(
@@ -299,8 +315,12 @@ TEST_F(P3AServiceTest, MetricSentCallback) {
   std::vector<std::string> sent_histograms;
 
   base::CallbackListSubscription sub =
-      p3a_service_->RegisterMetricSentCallback(base::BindLambdaForTesting(
-          [&sent_histograms](const std::string& histogram_name) {
+      p3a_service_->RegisterMetricCycledCallback(base::BindLambdaForTesting(
+          [&sent_histograms](const std::string& histogram_name,
+                             bool is_constellation) {
+            if (is_constellation) {
+              return;
+            }
             sent_histograms.push_back(histogram_name);
           }));
 
@@ -344,7 +364,7 @@ TEST_F(P3AServiceTest, ShouldNotSendIfDisabled) {
 TEST_F(P3AServiceTest, EphemeralMetricOnlySentOnce) {
   // Increase upload interval to reduce test time (less tasks to execute)
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
-  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "6000");
+  cmdline->AppendSwitchASCII(switches::kP3AUploadIntervalSeconds, "13000");
   SetUpP3AService();
 
   std::string test_histogram = std::string(*p3a::kEphemeralHistograms.begin());
@@ -360,11 +380,11 @@ TEST_F(P3AServiceTest, EphemeralMetricOnlySentOnce) {
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 
   ResetInterceptorStores();
-  task_environment_.FastForwardBy(base::Days(70));
+  task_environment_.FastForwardBy(base::Days(15));
 
   EXPECT_EQ(p3a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p2a_json_sent_metrics_.size(), 0U);
   EXPECT_EQ(p3a_creative_sent_metrics_.size(), 0U);
 }
 
-}  // namespace brave
+}  // namespace p3a

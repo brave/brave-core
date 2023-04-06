@@ -13,11 +13,23 @@
 #include "base/values.h"
 #include "brave/components/p3a/metric_log_type.h"
 
-namespace brave {
+class PrefService;
 
-struct MessageMetainfo {
+namespace p3a {
+
+constexpr const char* kP3AMessageConstellationKeyValueSeparator = "|";
+constexpr const char* kP3AMessageConstellationLayerSeparator = ";";
+
+class MessageMetainfo {
+ public:
   MessageMetainfo();
   ~MessageMetainfo();
+
+  void Init(PrefService* local_state,
+            std::string brave_channel,
+            std::string week_of_install);
+
+  void Update();
 
   std::string platform;
   std::string version;
@@ -26,6 +38,15 @@ struct MessageMetainfo {
   base::Time date_of_survey;
   int woi;  // Week of install. Remove this occasionally and extract from above.
   std::string country_code;
+
+ private:
+  // Used to report major/minor version numbers to reduce amount of
+  // Constellation tags
+  void InitVersion();
+
+  // Ensures that country represent the big enough cohort that will not
+  // let anybody identify the sender.
+  void MaybeStripCountry();
 };
 
 base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
@@ -34,10 +55,10 @@ base::Value::Dict GenerateP3AMessageDict(base::StringPiece metric_name,
                                          const MessageMetainfo& meta,
                                          const std::string& upload_type);
 
-// Ensures that country code represents a big enough cohort that
-// no one can identify the sender.
-void MaybeStripCountry(MessageMetainfo* meta);
+std::string GenerateP3AConstellationMessage(base::StringPiece metric_name,
+                                            uint64_t metric_value,
+                                            const MessageMetainfo& meta);
 
-}  // namespace brave
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_

@@ -24,8 +24,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveP3AService;
-class HistogramsBraveizer;
 class BraveFarblingService;
 }  // namespace brave
 
@@ -63,6 +61,11 @@ class MenuMetrics;
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
+
+namespace p3a {
+class HistogramsBraveizer;
+class P3AService;
+}  // namespace p3a
 
 namespace tor {
 class BraveTorClientUpdater;
@@ -118,7 +121,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
-  brave::BraveP3AService* brave_p3a_service() override;
+  p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
   brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
@@ -187,8 +190,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
-  scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
-  scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
+  scoped_refptr<p3a::P3AService> p3a_service_;
+  scoped_refptr<p3a::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
   std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
