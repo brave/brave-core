@@ -25,7 +25,6 @@ public final class Domain: NSManagedObject, CRUD {
   @NSManaged public var shield_fpProtection: NSNumber?
   @NSManaged public var shield_safeBrowsing: NSNumber?
 
-  @NSManaged public var historyItems: NSSet?
   @NSManaged public var bookmarks: NSSet?
 
   @NSManaged public var wallet_permittedAccounts: String?

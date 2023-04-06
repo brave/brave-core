@@ -20,7 +20,7 @@ var package = Package(
     .library(name: "DesignSystem", targets: ["DesignSystem"]),
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
     .library(name: "Data", targets: ["Data"]),
-    .library(name: "Storage", targets: ["Storage", "sqlcipher"]),
+    .library(name: "Storage", targets: ["Storage"]),
     .library(name: "BrowserIntentsModels", targets: ["BrowserIntentsModels"]),
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
@@ -113,10 +113,9 @@ var package = Package(
     .target(name: "DesignSystem"),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
-    .binaryTarget(name: "sqlcipher", path: "ThirdParty/sqlcipher/sqlcipher.xcframework"),
     .target(
       name: "Storage",
-      dependencies: ["Shared", "sqlcipher", "SDWebImage"],
+      dependencies: ["Shared", "SDWebImage"],
       cSettings: [.define("SQLITE_HAS_CODEC")],
       plugins: ["LoggerPlugin"]
     ),

@@ -66,7 +66,6 @@ class DomainTests: CoreDataTestCase {
     XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
 
     XCTAssertEqual(domain.bookmarks?.count, 0)
-    XCTAssertEqual(domain.historyItems?.count, 0)
     XCTAssertEqual(domain.url, url.domainURL.absoluteString)
   }
 

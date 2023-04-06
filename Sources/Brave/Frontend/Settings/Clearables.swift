@@ -115,7 +115,7 @@ class HistoryClearable: Clearable {
   }
 }
 
-// Clear all stored passwords. This will clear SQLite storage and the system shared credential storage.
+// Clear all stored passwords. This will clear the system shared credential storage.
 class PasswordsClearable: Clearable {
   let profile: Profile
   init(profile: Profile) {
@@ -128,7 +128,6 @@ class PasswordsClearable: Clearable {
 
   func clear() async throws {
     // Clear our storage
-    try await profile.logins.removeAll()
     let storage = URLCredentialStorage.shared
     let credentials = storage.allCredentials
     for (space, credentials) in credentials {
