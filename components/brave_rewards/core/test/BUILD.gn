@@ -108,7 +108,6 @@ source_set("test") {
 
   deps = [
     "//base/test:test_support",
-    "//brave/components/brave_rewards/common/mojom:interfaces",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core:publishers_proto",
     "//brave/third_party/challenge_bypass_ristretto_ffi",

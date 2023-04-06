@@ -30,14 +30,6 @@
 
 using std::placeholders::_1;
 
-namespace {
-
-bool testing() {
-  return ledger::is_testing;
-}
-
-}  // namespace
-
 namespace ledger {
 
 LedgerImpl::LedgerImpl(
@@ -76,22 +68,22 @@ void LedgerImpl::Initialize(bool execute_create_script,
 }
 
 void LedgerImpl::SetEnvironment(mojom::Environment environment) {
-  DCHECK(IsUninitialized() || testing());
+  DCHECK(IsUninitialized() || ledger::is_testing);
   ledger::_environment = environment;
 }
 
 void LedgerImpl::SetDebug(bool debug) {
-  DCHECK(IsUninitialized() || testing());
+  DCHECK(IsUninitialized() || ledger::is_testing);
   ledger::is_debug = debug;
 }
 
 void LedgerImpl::SetReconcileInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || testing());
+  DCHECK(IsUninitialized() || ledger::is_testing);
   ledger::reconcile_interval = interval;
 }
 
 void LedgerImpl::SetRetryInterval(int32_t interval) {
-  DCHECK(IsUninitialized() || testing());
+  DCHECK(IsUninitialized() || ledger::is_testing);
   ledger::retry_interval = interval;
 }
 

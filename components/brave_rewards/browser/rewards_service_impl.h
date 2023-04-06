@@ -366,7 +366,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void Reset();
 
-  void OnCreateLedger();
+  void OnLedgerCreated();
 
   void OnLedgerStateLoaded(LoadLedgerStateCallback callback,
                            std::pair<std::string, base::Value> data);
@@ -400,7 +400,7 @@ class RewardsServiceImpl : public RewardsService,
                              const bool exclude,
                              const ledger::mojom::Result result);
 
-  void OnInitialize(ledger::mojom::Result result);
+  void OnLedgerInitialized(ledger::mojom::Result result);
 
   void OnClaimPromotion(ClaimPromotionCallback callback,
                         const ledger::mojom::Result result,

@@ -469,17 +469,18 @@ void RewardsServiceImpl::StartLedgerProcessIfNecessary() {
   ledger_factory_->CreateLedger(
       ledger_.BindNewEndpointAndPassReceiver(),
       receiver_.BindNewEndpointAndPassRemote(),
-      base::BindOnce(&RewardsServiceImpl::OnCreateLedger, AsWeakPtr()));
+      base::BindOnce(&RewardsServiceImpl::OnLedgerCreated, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnCreateLedger() {
+void RewardsServiceImpl::OnLedgerCreated() {
   SetEnvironment(GetDefaultServerEnvironment());
   SetDebug(false);
   HandleFlags(RewardsFlags::ForCurrentProcess());
   PrepareLedgerEnvForTesting();
 
   ledger_->Initialize(
-      false, base::BindOnce(&RewardsServiceImpl::OnInitialize, AsWeakPtr()));
+      false,
+      base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 
 void RewardsServiceImpl::CreateRewardsWallet(
@@ -840,7 +841,7 @@ void RewardsServiceImpl::Shutdown() {
   RewardsService::Shutdown();
 }
 
-void RewardsServiceImpl::OnInitialize(ledger::mojom::Result result) {
+void RewardsServiceImpl::OnLedgerInitialized(ledger::mojom::Result result) {
   if (result == ledger::mojom::Result::LEDGER_OK) {
     StartNotificationTimers();
   }
