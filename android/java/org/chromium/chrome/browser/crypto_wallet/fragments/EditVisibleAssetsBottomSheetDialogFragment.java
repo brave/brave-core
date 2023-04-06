@@ -248,6 +248,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         Button saveAssets = view.findViewById(R.id.saveAssets);
         TextView addCustomAsset = view.findViewById(R.id.add_custom_asset);
+        addCustomAsset.setText(
+                mNftsOnly ? R.string.wallet_add_nft : R.string.wallet_add_custom_asset);
         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
             saveAssets.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -330,35 +332,26 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         dialog.setContentView(R.layout.brave_wallet_add_custom_asset);
         dialog.show();
 
-        TextView advancedTitle = dialog.findViewById(R.id.advanced_title);
-        CheckBox isNft = dialog.findViewById(R.id.nft_check);
+        TextView title = dialog.findViewById(R.id.add_asset_dialog_title);
+        title.setText(mNftsOnly ? R.string.wallet_add_nft : R.string.wallet_add_custom_asset);
+
         if (mSelectedNetwork.coin == CoinType.ETH) {
             LinearLayout advancedSection = dialog.findViewById(R.id.advanced_section);
-            advancedTitle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (advancedSection.getVisibility() == View.GONE)
-                        advancedSection.setVisibility(View.VISIBLE);
-                    else
-                        advancedSection.setVisibility(View.GONE);
-                }
-            });
+            if (mNftsOnly) {
+                advancedSection.setVisibility(View.VISIBLE);
+            } else {
+                advancedSection.setVisibility(View.GONE);
+            }
         } else {
-            advancedTitle.setVisibility(View.GONE);
-            dialog.findViewById(R.id.advanced_section_separator).setVisibility(View.GONE);
             if (mSelectedNetwork.coin == CoinType.SOL) {
-                isNft.setVisibility(View.VISIBLE);
-                isNft.setOnClickListener(v -> {
-                    boolean isNftChecked = isNft.isChecked();
-                    dialog.findViewById(R.id.token_decimals_title)
-                            .setVisibility(isNftChecked ? View.GONE : View.VISIBLE);
-                    dialog.findViewById(R.id.token_decimals)
-                            .setVisibility(isNftChecked ? View.GONE : View.VISIBLE);
-                    ((TextView) dialog.findViewById(R.id.token_contract_address_title))
-                            .setText(getString(isNftChecked
-                                            ? R.string.wallet_add_custom_asset_token_address
-                                            : R.string.wallet_add_custom_asset_token_contract_address));
-                });
+                dialog.findViewById(R.id.token_decimals_title)
+                        .setVisibility(mNftsOnly ? View.GONE : View.VISIBLE);
+                dialog.findViewById(R.id.token_decimals)
+                        .setVisibility(mNftsOnly ? View.GONE : View.VISIBLE);
+                ((TextView) dialog.findViewById(R.id.token_contract_address_title))
+                        .setText(getString(mNftsOnly
+                                        ? R.string.wallet_add_custom_asset_token_address
+                                        : R.string.wallet_add_custom_asset_token_contract_address));
             }
         }
 
@@ -403,11 +396,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     token.decimals = Integer.valueOf(tokenDecimalsEdit.getText().toString());
                 } catch (NumberFormatException exc) {
                 }
-                if (mSelectedNetwork.coin == CoinType.SOL) {
-                    token.isNft = isNft.isChecked();
-                    if (token.isNft) {
-                        token.decimals = 0;
-                    }
+                if (mSelectedNetwork.coin == CoinType.SOL && mNftsOnly) {
+                    token.decimals = 0;
                 }
                 token.visible = true;
 

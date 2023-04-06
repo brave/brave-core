@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/add_asset_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -14,7 +14,6 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:textColor="@color/wallet_text_color"
-        android:text="@string/wallet_add_custom_asset"
         android:textSize="18sp" />
 
     <View
@@ -103,28 +102,6 @@
         android:textSize="14sp"
         tools:ignore="LabelFor, Autofill" />
 
-    <TextView
-        android:id="@+id/advanced_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:drawableEndCompat="@drawable/arrow_down"
-        android:textColor="@color/wallet_text_color"
-        android:text="@string/wallet_add_custom_asset_advanced"
-        android:textSize="18sp" />
-
-    <View
-        android:id="@+id/advanced_section_separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:background="@color/wallet_text_color"
-        android:layout_marginBottom="8dp"/>
-
     <LinearLayout
         android:id="@+id/advanced_section"
         android:layout_width="match_parent"
@@ -153,14 +130,6 @@
             android:textSize="14sp"
             tools:ignore="LabelFor, Autofill" />
     </LinearLayout>
-
-    <CheckBox
-       android:id="@+id/nft_check"
-       android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       android:layout_marginStart="24dp"
-       android:text="@string/wallet_add_solana_nft_checkbox"
-       android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"
