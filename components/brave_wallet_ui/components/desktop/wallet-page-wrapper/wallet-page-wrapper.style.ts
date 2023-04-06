@@ -6,24 +6,22 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
+const minCardHeight = 595
+
 export const Wrapper = styled.div<{ noPadding?: boolean }>`
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: ${leo.color.container.highlight};
   overflow: hidden;
+  overflow-y: auto;
   z-index: 10;
   padding: ${(p) => p.noPadding ? '0px' : '100px 0px'};
-  @media (prefers-color-scheme: dark) {
-    /* #17171F does not exist in design system */
-    background-color: #17171F;
-  }
 `
 
 export const LayoutCardWrapper = styled.div<{
@@ -55,7 +53,7 @@ export const ContainerCard = styled.div<
   align-items: center;
   padding: 20px;
   width: 100%;
-  min-height: 500px;
+  min-height: ${minCardHeight}px;
   max-height: calc(100vh - 132px);
   overflow-y: ${(p) => p.cardOverflow ?? 'hidden'};
   position: relative;
@@ -64,12 +62,25 @@ export const ContainerCard = styled.div<
   }
 `
 
-export const BackgroundWrapper = styled.div`
+export const StaticBackground = styled.div`
   position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-color: ${leo.color.container.highlight};
+  @media (prefers-color-scheme: dark) {
+    /* #17171F does not exist in design system */
+    background-color: #17171F;
+  }
+`
+
+export const BackgroundGradientWrapper = styled.div`
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
   opacity: 0.5;
   background-color: ${(p) => p.theme.color.background01};
 `
@@ -120,4 +131,13 @@ export const BackgroundGradientBottomLayer = styled.div`
   @media (prefers-color-scheme: dark) {
     background: #141C38;
   }
+`
+
+export const BlockForHeight = styled.div`
+  top: 100px;
+  width: 1px;
+  height: calc(${minCardHeight}px + 30px);
+  display: flex;
+  position: absolute;
+  left: 0px;
 `

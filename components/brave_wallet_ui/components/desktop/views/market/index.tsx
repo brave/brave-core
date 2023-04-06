@@ -18,7 +18,7 @@ import { BraveWallet, WalletRoutes, WalletState } from '../../../../constants/ty
 import { WalletActions } from '../../../../common/actions'
 
 // Styled Components
-import { LoadIcon, LoadIconWrapper, MarketDataIframe, StyledWrapper } from './style'
+import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
 
 // Utils
 import { WalletPageActions } from '../../../../page/actions'
@@ -155,7 +155,7 @@ export const MarketView = () => {
   }, [])
 
   return (
-    <StyledWrapper>
+    <>
       {isLoadingCoinMarketData
         ? <LoadIconWrapper>
           <LoadIcon />
@@ -167,6 +167,6 @@ export const MarketView = () => {
           sandbox="allow-scripts allow-same-origin"
         />
       }
-    </StyledWrapper>
+    </>
   )
 }
