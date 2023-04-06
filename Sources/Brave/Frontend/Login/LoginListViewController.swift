@@ -6,6 +6,7 @@
 import UIKit
 import Shared
 import BraveShared
+import BraveUI
 import Storage
 import Data
 import BraveCore
@@ -23,6 +24,7 @@ class LoginListViewController: LoginAuthViewController {
 
   private struct Constants {
     static let saveLoginsRowIdentifier = "saveLoginsRowIdentifier"
+    static let tableRowHeight: CGFloat = 58
   }
 
   weak var settingsDelegate: SettingsDelegate?
@@ -120,8 +122,10 @@ class LoginListViewController: LoginAuthViewController {
       $0.allowsSelectionDuringEditing = true
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.saveLoginsRowIdentifier)
-      $0.register(TwoLineTableViewCell.self)
+      $0.register(LoginListTableViewCell.self)
       $0.sectionHeaderTopPadding = 0
+      $0.rowHeight = UITableView.automaticDimension
+      $0.estimatedRowHeight = Constants.tableRowHeight
     }
 
     searchController.do {
@@ -150,10 +154,6 @@ extension LoginListViewController {
     return dataSource.fetchNumberOfRowsInSection(section: section)
   }
 
-  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return UITableView.automaticDimension
-  }
-
   override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     // Save Login Toggle
     if section == 0, !dataSource.isCredentialsBeingSearched {
@@ -180,34 +180,29 @@ extension LoginListViewController {
       return cell
     }
     
-    func createCredentialFormCell(passwordForm: PasswordForm?) -> TwoLineTableViewCell {
+    func createCredentialFormCell(passwordForm: PasswordForm?) -> LoginListTableViewCell {
       guard let loginInfo = passwordForm else {
-        return TwoLineTableViewCell()
+        return LoginListTableViewCell()
       }
       
-      let cell = tableView.dequeueReusableCell(for: indexPath) as TwoLineTableViewCell
-
+      let cell = tableView.dequeueReusableCell(for: indexPath) as LoginListTableViewCell
+      
       cell.do {
+        $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
+        $0.setLines(loginInfo.displayURLString, detailText: loginInfo.usernameValue)
         $0.selectionStyle = .none
-        $0.accessoryType = .disclosureIndicator
+         $0.accessoryType = .disclosureIndicator
+      }
 
-        $0.setLines(
-          loginInfo.displayURLString,
-          detailText: loginInfo.usernameValue)
-        $0.imageView?.contentMode = .scaleAspectFit
-        $0.imageView?.image = Favicon.defaultImage
-        $0.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
-        $0.imageView?.layer.borderWidth = BraveUX.faviconBorderWidth
-        $0.imageView?.layer.cornerRadius = 6
-        $0.imageView?.layer.cornerCurve = .continuous
-        $0.imageView?.layer.masksToBounds = true
-
+      cell.imageIconView.do {
+        $0.contentMode = .scaleAspectFit
+        $0.layer.borderColor = BraveUX.faviconBorderColor.cgColor
+        $0.layer.borderWidth = BraveUX.faviconBorderWidth
+        $0.layer.cornerRadius = 6
+        $0.layer.cornerCurve = .continuous
+        $0.layer.masksToBounds = true
         if let signOnRealmURL = URL(string: loginInfo.signOnRealm) {
-          $0.imageView?.loadFavicon(for: signOnRealmURL,
-                                    monogramFallbackCharacter: signOnRealmURL.baseDomain?.first)
-        } else {
-          $0.imageView?.clearMonogramFavicon()
-          $0.imageView?.image = Favicon.defaultImage
+          $0.loadFavicon(for: signOnRealmURL)
         }
       }
       
@@ -402,5 +397,70 @@ extension LoginListViewController: UISearchControllerDelegate {
     dataSource.isCredentialsBeingSearched = false
 
     tableView.reloadData()
+  }
+}
+
+private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
+    
+  struct UX {
+    static let labelOffset = 11.0
+    static let imageSize = 32.0
+  }
+    
+  let imageIconView = UIImageView().then {
+    $0.contentMode = .scaleAspectFit
+    $0.tintColor = .braveLabel
+  }
+    
+  let labelStackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.alignment = .leading
+    $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+  }
+  
+  let titleLabel = UILabel().then {
+    $0.textColor = .braveLabel
+    $0.font = .preferredFont(forTextStyle: .footnote)
+  }
+  
+  let descriptionLabel = UILabel().then {
+    $0.textColor = .secondaryBraveLabel
+    $0.font = .preferredFont(forTextStyle: .subheadline)
+  }
+  
+  override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+    super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+    contentView.backgroundColor = UIColor { $0.userInterfaceStyle == .dark ? .black : .white }
+    
+    contentView.addSubview(imageIconView)
+    contentView.addSubview(labelStackView)
+
+    labelStackView.addArrangedSubview(titleLabel)
+    labelStackView.setCustomSpacing(3.0, after: titleLabel)
+    labelStackView.addArrangedSubview(descriptionLabel)
+
+    imageIconView.snp.makeConstraints {
+      $0.leading.equalToSuperview().inset(TwoLineCellUX.borderViewMargin)
+      $0.centerY.equalToSuperview()
+      $0.size.equalTo(UX.imageSize)
+    }
+    
+    labelStackView.snp.makeConstraints {
+      $0.leading.equalTo(imageIconView.snp.trailing).offset(TwoLineCellUX.borderViewMargin)
+      $0.trailing.equalToSuperview().offset(-UX.labelOffset)
+      $0.top.equalToSuperview().offset(UX.labelOffset)
+      $0.bottom.equalToSuperview().offset(-UX.labelOffset)
+    }
+  }
+    
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  func setLines(_ text: String?, detailText: String?) {
+    titleLabel.text = text
+    descriptionLabel.text = detailText
   }
 }
