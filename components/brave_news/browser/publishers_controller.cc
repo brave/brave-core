@@ -272,7 +272,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         }
       },
       base::Unretained(this));
-  api_request_helper_->Request("GET", sources_url, "", "", true,
+  api_request_helper_->Request("GET", sources_url, "", "", true, false,
                                std::move(onRequest),
                                brave::private_cdn_headers);
 }

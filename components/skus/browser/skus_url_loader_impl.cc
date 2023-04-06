@@ -83,7 +83,7 @@ void SkusUrlLoaderImpl::Request(
     const base::flat_map<std::string, std::string>& headers,
     size_t max_body_size /* = -1u */) {
   api_request_helper_->Request(method, url, payload, payload_content_type,
-                               auto_retry_on_network_change,
+                               auto_retry_on_network_change, false,
                                std::move(callback), headers, max_body_size);
 }
 

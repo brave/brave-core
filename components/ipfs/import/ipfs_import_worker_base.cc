@@ -196,7 +196,7 @@ void IpfsImportWorkerBase::CreateBraveDirectory() {
   url_loader_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
   url_loader_->Request(
-      "POST", url, std::string(), std::string(), false,
+      "POST", url, std::string(), std::string(), false, false,
       base::BindOnce(&IpfsImportWorkerBase::OnImportDirectoryCreated,
                      base::Unretained(this), directory),
       {{net::HttpRequestHeaders::kOrigin,
@@ -226,7 +226,7 @@ void IpfsImportWorkerBase::CopyFilesToBraveDirectory() {
 
   url_loader_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-  url_loader_->Request("POST", url, std::string(), std::string(), false,
+  url_loader_->Request("POST", url, std::string(), std::string(), false, false,
                        base::BindOnce(&IpfsImportWorkerBase::OnImportFilesMoved,
                                       base::Unretained(this)),
                        {{net::HttpRequestHeaders::kOrigin,
@@ -257,7 +257,7 @@ void IpfsImportWorkerBase::PublishContent() {
 
   url_loader_ = std::make_unique<api_request_helper::APIRequestHelper>(
       GetIpfsNetworkTrafficAnnotationTag(), url_loader_factory_);
-  url_loader_->Request("POST", url, std::string(), std::string(), false,
+  url_loader_->Request("POST", url, std::string(), std::string(), false, false,
                        base::BindOnce(&IpfsImportWorkerBase::OnContentPublished,
                                       base::Unretained(this)),
                        {{net::HttpRequestHeaders::kOrigin,

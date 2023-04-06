@@ -803,10 +803,10 @@ void SnsResolverTask::RequestInternal(
     const std::string& json_payload,
     RequestIntermediateCallback callback,
     ResponseConversionCallback conversion_callback) {
-  api_request_helper_->Request("POST", network_url_, json_payload,
-                               "application/json", false, std::move(callback),
-                               MakeCommonJsonRpcHeaders(json_payload), -1u,
-                               std::move(conversion_callback));
+  api_request_helper_->Request(
+      "POST", network_url_, json_payload, "application/json", false, false,
+      std::move(callback), MakeCommonJsonRpcHeaders(json_payload), -1u,
+      std::move(conversion_callback));
 }
 
 }  // namespace brave_wallet

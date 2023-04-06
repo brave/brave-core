@@ -75,6 +75,7 @@ class APIRequestResult {
 
 struct APIRequestOptions {
   bool auto_retry_on_network_change = false;
+  bool enable_cache = false;
   size_t max_body_size = -1u;
   absl::optional<base::TimeDelta> timeout;
 };
@@ -106,6 +107,7 @@ class APIRequestHelper {
       const std::string& payload,
       const std::string& payload_content_type,
       bool auto_retry_on_network_change,
+      bool enable_cache,
       ResultCallback callback,
       const base::flat_map<std::string, std::string>& headers = {},
       size_t max_body_size = -1u,
@@ -127,6 +129,7 @@ class APIRequestHelper {
                   const std::string& payload,
                   const std::string& payload_content_type,
                   bool auto_retry_on_network_change,
+                  bool enable_cache,
                   const base::FilePath& path,
                   DownloadCallback callback,
                   const base::flat_map<std::string, std::string>& headers = {});
@@ -143,6 +146,7 @@ class APIRequestHelper {
       const std::string& payload,
       const std::string& payload_content_type,
       bool auto_retry_on_network_change,
+      bool enable_cache,
       bool allow_http_error_result,
       const base::flat_map<std::string, std::string>& headers);
 

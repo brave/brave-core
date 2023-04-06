@@ -245,7 +245,7 @@ void BraveVpnAPIRequest::OAuthRequest(
     URLRequestCallback callback,
     const base::flat_map<std::string, std::string>& headers) {
   api_request_helper_.Request(method, url, post_data, "application/json", true,
-                              std::move(callback), headers);
+                              false, std::move(callback), headers);
 }
 
 void BraveVpnAPIRequest::OnGetResponse(

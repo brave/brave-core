@@ -59,7 +59,7 @@ void WaybackMachineURLFetcher::Fetch(const GURL& url) {
   const GURL wayback_fetch_url(std::string(kWaybackQueryURL) + url.spec());
   api_request_helper_->Request(
       "GET", FixupWaybackQueryURL(wayback_fetch_url), std::string(),
-      "application/json", true,
+      "application/json", true, false,
       base::BindOnce(&WaybackMachineURLFetcher::OnWaybackURLFetched,
                      base::Unretained(this), url),
       {}, kMaxBodySize);

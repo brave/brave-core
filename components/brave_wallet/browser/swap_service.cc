@@ -297,7 +297,7 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       "GET",
       GetPriceQuoteURL(std::move(swap_params),
                        json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback));
+      "", "", true, false, std::move(internal_callback));
 }
 
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
@@ -340,7 +340,7 @@ void SwapService::GetTransactionPayload(
       GetTransactionPayloadURL(
           std::move(swap_params),
           json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback));
+      "", "", true, false, std::move(internal_callback));
 }
 
 void SwapService::OnGetTransactionPayload(
@@ -388,7 +388,7 @@ void SwapService::GetJupiterQuote(mojom::JupiterQuoteParamsPtr params,
       "GET",
       GetJupiterQuoteURL(std::move(params),
                          json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
-      "", "", true, std::move(internal_callback), request_headers, -1u,
+      "", "", true, false, std::move(internal_callback), request_headers, -1u,
       std::move(conversion_callback));
 }
 
@@ -439,7 +439,8 @@ void SwapService::GetJupiterSwapTransactions(
       "POST",
       GetJupiterSwapTransactionsURL(
           json_rpc_service_->GetChainId(mojom::CoinType::SOL)),
-      *encoded_params, "application/json", true, std::move(internal_callback));
+      *encoded_params, "application/json", true, false,
+      std::move(internal_callback));
 }
 
 void SwapService::OnGetJupiterSwapTransactions(
