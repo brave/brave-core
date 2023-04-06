@@ -10,6 +10,7 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -53,8 +54,8 @@ public class NetworkSelectorActivity
     private NetworkSelectorModel mNetworkSelectorModel;
 
     // should only be called if the wallet is setup and unlocked
-    public static Intent createIntent() {
-        return createIntent(DEFAULT_WALLET_NETWORK, null);
+    public static Intent createIntent(Context context) {
+        return createIntent(context, DEFAULT_WALLET_NETWORK, null);
     }
 
     /**
@@ -69,8 +70,8 @@ public class NetworkSelectorActivity
      * @return Intent object to open NetworkSelectorActivity in given mode
      * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
      */
-    public static Intent createIntent(NetworkSelectorModel.Mode mode, String key) {
-        Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
+    public static Intent createIntent(Context context, NetworkSelectorModel.Mode mode, String key) {
+        Intent braveNetworkSelectionIntent = new Intent(context, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // Either in global or local network selection mode
         braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_MODE, mode);
