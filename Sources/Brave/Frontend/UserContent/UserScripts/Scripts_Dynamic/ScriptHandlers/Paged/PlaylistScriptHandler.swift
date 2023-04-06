@@ -100,6 +100,11 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       return
     }
     
+    // If this URL is blocked from Playlist support, do nothing
+    if url?.isPlaylistBlockedSiteURL == true {
+      return
+    }
+    
     if ReadyState.from(message: message) != nil {
       return
     }
@@ -216,6 +221,12 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
     if gestureRecognizer.state == .began,
       let webView = tab?.webView,
       Preferences.Playlist.enableLongPressAddToPlaylist.value {
+      
+      // If this URL is blocked from Playlist support, do nothing
+      if url?.isPlaylistBlockedSiteURL == true {
+        return
+      }
+      
       let touchPoint = gestureRecognizer.location(in: webView)
 
       webView.evaluateSafeJavaScript(functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",

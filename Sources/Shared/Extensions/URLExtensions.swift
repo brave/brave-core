@@ -434,6 +434,11 @@ extension URL {
 
     return siteList.contains(where: urlHost.contains)
   }
+  
+  public var isPlaylistBlockedSiteURL: Bool {
+    let urlHost = self.host ?? self.hostSLD
+    return urlHost == "talk.brave.com"
+  }
 
   public func uniquePathForFilename(_ filename: String) throws -> URL {
     let basePath = self.appendingPathComponent(filename)
