@@ -352,8 +352,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     Task(priority: .low) {
-      // Attempt to clean up pending file uploads in the background
-      await self.cleanUpWebKitPendingFileUploads()
+      await self.cleanUpLargeTemporaryDirectory()
     }
     
     return shouldPerformAdditionalDelegateHandling
@@ -446,31 +445,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     return sceneInfo
   }
   
-  private nonisolated func cleanUpWebKitPendingFileUploads() async {
-    // When a user uploads a file through a web page, WebKit will copy said file to the `/tmp` directory in
-    // the app sandbox. If the user does not close the tab they used to upload (thus destroying the WKWebView)
-    // before the app terminates, then WebKit no longer cleans up the file and it remains on disk until
-    // the OS decides to purge /tmp directories to recover disk space. This function will attempt to remove
-    // known temporary folders that WebKit creates to clean up any files that may be lingering there due to
-    // this WebKit bug.
+  /// Dumps the temporary directory if the total size of the directory exceeds a size threshold (in bytes)
+  private nonisolated func cleanUpLargeTemporaryDirectory(thresholdInBytes: Int = 100_000_000) async {
     let fileManager = FileManager.default
     let tmp = fileManager.temporaryDirectory
-    let knownFolders: Set<String> = ["WKWebFileUpload", "WKFileUploadPanel", "WKVideoUpload"]
     guard let enumerator = fileManager.enumerator(
       at: tmp,
-      includingPropertiesForKeys: [.isDirectoryKey, .nameKey],
-      options: [.skipsHiddenFiles, .skipsSubdirectoryDescendants]
+      includingPropertiesForKeys: [.isRegularFileKey, .totalFileAllocatedSizeKey, .totalFileSizeKey]
     ) else { return }
+    var totalSize: Int = 0
     while let fileURL = enumerator.nextObject() as? URL {
-      guard
-        let values = try? fileURL.resourceValues(forKeys: [.isDirectoryKey, .nameKey]),
-        let isDirectory = values.isDirectory,
-        let name = values.name,
-        isDirectory,
-        knownFolders.contains(where: name.hasPrefix) else {
+      guard let values = try? fileURL.resourceValues(forKeys: [.isRegularFileKey, .totalFileAllocatedSizeKey, .totalFileSizeKey]),
+            let isRegularFile = values.isRegularFile,
+            isRegularFile else {
         continue
       }
-      try? fileManager.removeItem(at: fileURL)
+      totalSize += values.totalFileAllocatedSize ?? values.totalFileSize ?? 0
+      if totalSize > thresholdInBytes {
+        // Drop the tmp directory entirely and re-create it after
+        do {
+          try fileManager.removeItem(at: tmp)
+          try fileManager.createDirectory(at: tmp, withIntermediateDirectories: false)
+        } catch {
+          log.warning("Failed to delete & re-create tmp directory which exceeds size limit: \(error.localizedDescription)")
+        }
+        return
+      }
     }
   }
 }
