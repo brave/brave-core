@@ -103,6 +103,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             WalletCoinAdapter.AdapterType type, boolean nftsOnly) {
         mType = type;
         mNftsOnly = nftsOnly;
+        isEditVisibleAssetType = mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST;
     }
 
     // TODO (Wengling): add an interface for getting services that can be shared between activity
@@ -261,18 +262,23 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         addCustomAsset.setText(
                 mNftsOnly ? R.string.wallet_add_nft : R.string.wallet_add_custom_asset);
         if (mType == WalletCoinAdapter.AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-            saveAssets.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View clickView) {
-                    dismiss();
-                }
-            });
-            addCustomAsset.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View clickView) {
-                    showAddAssetDialog();
-                }
-            });
+            // TODO(pav): Revert this after adding network selector in add custom asset
+            if (NetworkUtils.isAllNetwork(mSelectedNetwork)) {
+                AndroidUtils.gone(addCustomAsset);
+            } else {
+                saveAssets.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View clickView) {
+                        dismiss();
+                    }
+                });
+                addCustomAsset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View clickView) {
+                        showAddAssetDialog();
+                    }
+                });
+            }
         } else {
             saveAssets.setVisibility(View.GONE);
             addCustomAsset.setVisibility(View.GONE);
@@ -509,8 +515,15 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
         for (int i = 0; i < tokens.size(); i++) {
             BlockchainToken token = tokens.get(i);
+
+            NetworkInfo assetNetwork = NetworkUtils.findNetwork(mCryptoNetworks, token.chainId);
+            String subtitle = !isEditVisibleAssetType || assetNetwork == null
+                    ? token.symbol
+                    : getString(R.string.brave_wallet_portfolio_asset_network_description,
+                            token.symbol, assetNetwork.chainName);
+
             WalletListItemModel itemModel = new WalletListItemModel(
-                    Utils.getCoinIcon(token.coin), token.name, token.symbol, token.tokenId, "", "");
+                    Utils.getCoinIcon(token.coin), token.name, subtitle, token.tokenId, "", "");
             itemModel.setBlockchainToken(token);
             itemModel.setAssetNetwork(NetworkUtils.findNetwork(mCryptoNetworks, token.chainId));
             itemModel.setBrowserResourcePath(tokensPath);
@@ -531,7 +544,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if (walletCoinAdapter != null) {
-                    walletCoinAdapter.filter(query);
+                    walletCoinAdapter.filter(query, !isEditVisibleAssetType);
                 }
 
                 return true;
@@ -540,7 +553,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (walletCoinAdapter != null) {
-                    walletCoinAdapter.filter(newText);
+                    walletCoinAdapter.filter(newText, !isEditVisibleAssetType);
                 }
 
                 return true;
