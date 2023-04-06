@@ -8,6 +8,7 @@
 
 #include <cstddef>
 #include <iterator>
+#include <limits>
 #include <vector>
 
 #include "base/check_op.h"
