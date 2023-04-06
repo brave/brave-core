@@ -31,6 +31,7 @@ var package = Package(
     .library(name: "Growth", targets: ["Growth"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
     .library(name: "CodableHelpers", targets: ["CodableHelpers"]),
+    .library(name: "GRDWireGuardKit", targets: ["GRDWireGuardKit"]),
     .plugin(name: "IntentBuilderPlugin", targets: ["IntentBuilderPlugin"]),
     .plugin(name: "LoggerPlugin", targets: ["LoggerPlugin"])
   ],
@@ -51,7 +52,7 @@ var package = Package(
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(url: "https://github.com/mkrd/Swift-BigInt", from: "2.0.0"),
-    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.7.2"),
+    .package(url: "https://github.com/GuardianFirewall/GuardianConnect", exact: "1.8.0-dev-15"),
     .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.6.0"),
     .package(name: "Static", path: "ThirdParty/Static"),
   ],
@@ -113,6 +114,7 @@ var package = Package(
     .target(name: "DesignSystem"),
     .binaryTarget(name: "BraveCore", path: "node_modules/brave-core-ios/BraveCore.xcframework"),
     .binaryTarget(name: "MaterialComponents", path: "node_modules/brave-core-ios/MaterialComponents.xcframework"),
+    .binaryTarget(name: "GRDWireGuardKit", path: "ThirdParty/GRDWireGuardKit/GRDWireGuardKit.xcframework"),
     .target(
       name: "Storage",
       dependencies: ["Shared", "SDWebImage"],
