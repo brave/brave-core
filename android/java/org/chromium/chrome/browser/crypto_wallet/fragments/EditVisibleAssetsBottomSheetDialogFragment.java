@@ -79,7 +79,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
     private NetworkInfo mSelectedNetwork;
     private DismissListener mDismissListener;
     private boolean mIsAssetsListChanged;
-    private static final String TAG = "EditVisibleAssetsBottomSheetDialogFragment";
+    private static final String TAG = "EditVisibleAssetsFrag";
     private WalletModel mWalletModel;
     private KeyringServiceObserverImpl mKeyringServiceObserver;
     private OnEditVisibleItemClickListener mOnEditVisibleItemClickListener;
@@ -174,7 +174,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             transaction.add(this, tag);
             transaction.commitAllowingStateLoss();
         } catch (IllegalStateException e) {
-            Log.e("EditVisibleAssetsBottomSheetDialogFragment", e.getMessage());
+            Log.e(TAG, "Error when showing EditVisibleAssetsBottomSheetDialogFragment.", e);
         }
     }
 
@@ -188,8 +188,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreateDialog " + e);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "Error during dialog creation.", e);
         }
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
