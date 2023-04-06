@@ -128,6 +128,11 @@ public enum NavigationPath: Equatable {
       bvc.navigationHelper.openWallet()
     case .scanQRCode:
       bvc.scanQRCode()
+    case .braveNews:
+      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
+      bvc.popToBVC()
+      guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
+      newTabPageController.scrollToBraveNews()
     @unknown default:
       assertionFailure()
       break

@@ -78,6 +78,7 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>LockScreenFavoriteConfigurationIntent</string>
+		<string>LockScreenShortcutConfigurationIntent</string>
 		<string>OpenBookmarkWebsiteIntent</string>
 		<string>OpenHistoryWebsiteIntent</string>
 		<string>OpenWebsiteIntent</string>
