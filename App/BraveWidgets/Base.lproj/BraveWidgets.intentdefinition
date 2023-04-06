@@ -168,6 +168,16 @@
 					<key>INEnumValueName</key>
 					<string>scanQRCode</string>
 				</dict>
+				<dict>
+					<key>INEnumValueDisplayName</key>
+					<string>Brave News</string>
+					<key>INEnumValueDisplayNameID</key>
+					<string>XCyA8c</string>
+					<key>INEnumValueIndex</key>
+					<integer>10</integer>
+					<key>INEnumValueName</key>
+					<string>braveNews</string>
+				</dict>
 			</array>
 		</dict>
 	</array>
@@ -176,11 +186,11 @@
 	<key>INIntentDefinitionNamespace</key>
 	<string>88xZPY</string>
 	<key>INIntentDefinitionSystemVersion</key>
-	<string>21G83</string>
+	<string>22D49</string>
 	<key>INIntentDefinitionToolsBuildVersion</key>
-	<string>14A5294g</string>
+	<string>14C18</string>
 	<key>INIntentDefinitionToolsVersion</key>
-	<string>14.0</string>
+	<string>14.2</string>
 	<key>INIntents</key>
 	<array>
 		<dict>

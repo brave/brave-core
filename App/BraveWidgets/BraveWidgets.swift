@@ -11,6 +11,8 @@ struct BraveWidgets: WidgetBundle {
   var body: some Widget {
     ShortcutsWidget()
     FavoritesWidget()
+    TopNewsWidget()
+    TopNewsListWidget()
     SingleStatWidget()
     StatsWidget()
     LockScreenShortcutWidget()
