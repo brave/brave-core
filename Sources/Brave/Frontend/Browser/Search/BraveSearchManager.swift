@@ -177,7 +177,7 @@ class BraveSearchManager: NSObject {
     guard var components = URLComponents(string: fallbackProviderURLString) else { return }
 
     var queryItems: [URLQueryItem] = [
-      .init(name: "q", value: query.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed))
+      .init(name: "q", value: query)
     ]
 
     if let language = backupQuery.language {
