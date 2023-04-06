@@ -191,7 +191,8 @@ class EthereumProviderImpl final
 
   // mojom::JsonRpcServiceObserver
   void ChainChangedEvent(const std::string& chain_id,
-                         mojom::CoinType coin) override;
+                         mojom::CoinType coin,
+                         const absl::optional<url::Origin>& origin) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
   void OnIsEip1559Changed(const std::string& chain_id,

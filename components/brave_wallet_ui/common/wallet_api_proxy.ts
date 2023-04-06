@@ -32,8 +32,10 @@ export class WalletApiProxy {
 
   addJsonRpcServiceObserver (store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
-      chainChangedEvent: function (chainId, coin) {
-        store.dispatch(WalletActions.chainChangedEvent({ chainId, coin }))
+      chainChangedEvent: function (chainId, coin, origin) {
+        store.dispatch(
+          WalletActions.chainChangedEvent({
+            chainId, coin, origin: !!origin ? origin : undefined}))
       },
       onAddEthereumChainRequestCompleted: function (chainId, error) {
         // TODO: Handle this event.

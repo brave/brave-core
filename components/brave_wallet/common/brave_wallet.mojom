@@ -905,7 +905,7 @@ interface IpfsService {
 
 interface JsonRpcServiceObserver {
   // Fired when the selected network changes
-  ChainChangedEvent(string chain_id, CoinType coin);
+  ChainChangedEvent(string chain_id, CoinType coin, url.mojom.Origin? origin);
 
   // Fired when a wallet_addEthereumChain request is completed
   OnAddEthereumChainRequestCompleted(string chain_id, string error);

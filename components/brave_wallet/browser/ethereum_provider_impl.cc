@@ -1555,9 +1555,15 @@ void EthereumProviderImpl::Init(
   }
 }
 
-void EthereumProviderImpl::ChainChangedEvent(const std::string& chain_id,
-                                             mojom::CoinType coin) {
+void EthereumProviderImpl::ChainChangedEvent(
+    const std::string& chain_id,
+    mojom::CoinType coin,
+    const absl::optional<url::Origin>& origin) {
   if (!events_listener_.is_bound() || coin != mojom::CoinType::ETH) {
+    return;
+  }
+
+  if (origin.has_value() && *origin != delegate_->GetOrigin()) {
     return;
   }
 

@@ -562,7 +562,7 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id,
   }
 
   if (!silent) {
-    FireNetworkChanged(coin, origin);
+    FireNetworkChanged(coin, chain_id, origin);
   }
   if (coin == mojom::CoinType::ETH) {
     MaybeUpdateIsEip1559(chain_id);
@@ -647,9 +647,10 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
 
 void JsonRpcService::FireNetworkChanged(
     mojom::CoinType coin,
+    const std::string& chain_id,
     const absl::optional<url::Origin>& origin) {
   for (const auto& observer : observers_) {
-    observer->ChainChangedEvent(GetChainId(coin, origin), coin);
+    observer->ChainChangedEvent(chain_id, coin, origin);
   }
 }
 

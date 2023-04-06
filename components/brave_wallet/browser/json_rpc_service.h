@@ -483,6 +483,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
  private:
   void FireNetworkChanged(mojom::CoinType coin,
+                          const std::string& chain_id,
                           const absl::optional<url::Origin>& origin);
   void FirePendingRequestCompleted(const std::string& chain_id,
                                    const std::string& error);

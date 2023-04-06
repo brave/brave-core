@@ -5,6 +5,7 @@
 
 import {
   BraveWallet,
+  Origin,
   SerializableOrigin,
   SerializableTransactionInfo,
   SlippagePresetObjectType,
@@ -19,6 +20,7 @@ export type UnlockWalletPayloadType = {
 export type ChainChangedEventPayloadType = {
   chainId: string
   coin: BraveWallet.CoinType
+  origin?: Origin
 }
 
 export type SelectedAccountChangedPayloadType = {
