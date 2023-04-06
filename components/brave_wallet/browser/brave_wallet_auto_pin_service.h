@@ -49,6 +49,8 @@ class BraveWalletAutoPinService
 
   void SetAutoPinEnabled(bool enabled) override;
   void IsAutoPinEnabled(IsAutoPinEnabledCallback callback) override;
+  void AddObserver(::mojo::PendingRemote<mojom::WalletAutoPinServiceObserver>
+                       observer) override;
 
   // BraveWalletServiceTokenObserver
   void OnTokenAdded(mojom::BlockchainTokenPtr token) override;
@@ -110,6 +112,7 @@ class BraveWalletAutoPinService
   std::deque<std::unique_ptr<IntentData>> queue_;
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+  mojo::RemoteSet<mojom::WalletAutoPinServiceObserver> observers_;
 
   base::WeakPtrFactory<BraveWalletAutoPinService> weak_ptr_factory_{this};
 };
