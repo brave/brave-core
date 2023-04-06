@@ -1,10 +1,10 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_URL_REQUEST_BUILDER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_URL_REQUEST_BUILDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_URL_REQUEST_BUILDERS_CREATE_OPTED_OUT_CONFIRMATION_URL_REQUEST_BUILDER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_URL_REQUEST_BUILDERS_CREATE_OPTED_OUT_CONFIRMATION_URL_REQUEST_BUILDER_H_
 
 #include <string>
 
@@ -16,10 +16,11 @@ class GURL;
 
 namespace brave_ads {
 
-class CreateConfirmationUrlRequestBuilder final
+class CreateOptedOutConfirmationUrlRequestBuilder final
     : public UrlRequestBuilderInterface {
  public:
-  explicit CreateConfirmationUrlRequestBuilder(ConfirmationInfo confirmation);
+  explicit CreateOptedOutConfirmationUrlRequestBuilder(
+      ConfirmationInfo confirmation);
 
   mojom::UrlRequestInfoPtr Build() override;
 
@@ -33,4 +34,4 @@ class CreateConfirmationUrlRequestBuilder final
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_UNBLINDED_TOKEN_CREATE_CONFIRMATION_URL_REQUEST_BUILDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_UTILITY_REDEEM_CONFIRMATION_URL_REQUEST_BUILDERS_CREATE_OPTED_OUT_CONFIRMATION_URL_REQUEST_BUILDER_H_

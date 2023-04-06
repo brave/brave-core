@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/issuers_permission_rule.h"
 
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -18,11 +16,7 @@ class BatAdsIssuersPermissionRuleTest : public UnitTestBase {};
 
 TEST_F(BatAdsIssuersPermissionRuleTest, Issuers) {
   // Arrange
-  const IssuersInfo issuers = BuildIssuers(
-      7'200'000, {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0}},
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0}});
-
-  SetIssuers(issuers);
+  BuildAndSetIssuers();
 
   // Act
   IssuersPermissionRule permission_rule;

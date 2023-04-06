@@ -1,9 +1,9 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/account/utility/redeem_unblinded_token/create_confirmation_url_request_builder.h"
+#include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/url_request_builders/create_opted_in_confirmation_url_request_builder.h"
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -29,11 +29,13 @@ constexpr char kExpectedUrl[] =
     "psYXNPdVlMNW13QThDVTJhRk1sSnJ0M0REZ0N3PT0ifQ==";
 constexpr char kExpectedContent[] =
     R"({"blindedPaymentTokens":["Ev5JE4/9TZI/5TqyN9JWfJ1To0HBwQw2rWeAPcdjX3Q="],"creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","publicKey":"RJ2i/o/pZkrH+i0aGEMY1G9FXtd7Q7gfRi3YdNRnDDk=","transactionId":"8b742869-6e4a-490c-ac31-31b49130098a","type":"view"})";
+
 }  // namespace
 
-class BatAdsCreateConfirmationUrlRequestBuilderTest : public UnitTestBase {};
+class BatAdsCreateOptedInConfirmationUrlRequestBuilderTest
+    : public UnitTestBase {};
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
+TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountry) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
@@ -45,7 +47,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -61,7 +63,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
+TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountry) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
@@ -75,7 +77,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -91,7 +93,8 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest, BuildUrlForOtherCountry) {
+TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
+       BuildUrlForOtherCountry) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
       EnvironmentType::kStaging);
@@ -104,7 +107,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest, BuildUrlForOtherCountry) {
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -120,7 +123,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest, BuildUrlForOtherCountry) {
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
+TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForLargeAnonmityCountryAndNonReleaseBuildChannel) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
@@ -132,7 +135,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -148,7 +151,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
+TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForAnonymousCountryAndNonReleaseBuildChannel) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
@@ -162,7 +165,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();
@@ -178,7 +181,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
   EXPECT_EQ(url_request, expected_url_request);
 }
 
-TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
+TEST_F(BatAdsCreateOptedInConfirmationUrlRequestBuilderTest,
        BuildUrlForOtherCountryAndNonReleaseBuildChannel) {
   // Arrange
   FlagManager::GetInstance()->SetEnvironmentTypeForTesting(
@@ -192,7 +195,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
-  CreateConfirmationUrlRequestBuilder url_request_builder(*confirmation);
+  CreateOptedInConfirmationUrlRequestBuilder url_request_builder(*confirmation);
 
   // Act
   mojom::UrlRequestInfoPtr const url_request = url_request_builder.Build();

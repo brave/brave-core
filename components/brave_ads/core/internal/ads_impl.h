@@ -168,7 +168,7 @@ class AdsImpl final : public Ads,
   void OnLoadConfirmationState(InitializeCallback callback, bool success);
   void OnMigrateNotificationState(InitializeCallback callback, bool success);
 
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   void Start();
 

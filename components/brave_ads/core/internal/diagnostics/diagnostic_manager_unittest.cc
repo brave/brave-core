@@ -27,8 +27,6 @@ TEST_F(BatAdsDiagnosticManagerTest, DiagnosticManager) {
   AdvanceClockTo(
       TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local*/ true));
 
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   SysInfo().device_id =
       "21b4677de1a9b4a197ab671a1481d3fcb24f826a4358a05aafbaee5a9a51b57e";
 

@@ -24,10 +24,6 @@ PurchaseIntent::PurchaseIntent()
 
 PurchaseIntent::~PurchaseIntent() = default;
 
-bool PurchaseIntent::IsInitialized() const {
-  return is_initialized_;
-}
-
 void PurchaseIntent::Load() {
   LoadAndParseResource(kResourceId,
                        targeting::features::GetPurchaseIntentResourceVersion(),

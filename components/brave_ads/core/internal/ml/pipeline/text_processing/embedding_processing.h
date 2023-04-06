@@ -26,7 +26,7 @@ class EmbeddingProcessing final {
       base::Value resource_value,
       std::string* error_message);
 
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   bool SetEmbeddingPipeline(base::Value resource_value);
 

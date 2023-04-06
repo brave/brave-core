@@ -70,7 +70,7 @@ class Serving final : public AdsClientNotifierObserver {
 
   void OnAdsPerHourPrefChanged();
 
-  bool IsSupported() const;
+  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
 
   void MaybeServeAdAtNextRegularInterval();
   void RetryServingAdAtNextInterval();

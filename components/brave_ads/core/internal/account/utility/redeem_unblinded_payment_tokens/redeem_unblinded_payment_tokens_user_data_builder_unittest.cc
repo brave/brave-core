@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/sys_info.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

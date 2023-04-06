@@ -31,93 +31,13 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_unit_tests --filter=BatAds*
+// npm run test -- brave_unit_tests --filter=BatAds
 
 namespace brave_ads {
 
 using ::testing::_;
 using ::testing::NiceMock;
 using ::testing::Return;
-
-namespace {
-
-URLResponseMap GetValidIssuersURLResponseMap() {
-  URLResponseMap url_responses = {{// Get issuers request
-                                   "/v3/issuers/",
-                                   {{net::HTTP_OK, R"(
-        {
-          "ping": 7200000,
-          "issuers": [
-            {
-              "name": "confirmations",
-              "publicKeys": [
-                {
-                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-                  "associatedValue": ""
-                }
-              ]
-            },
-            {
-              "name": "payments",
-              "publicKeys": [
-                {
-                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
-                  "associatedValue": "0.0"
-                },
-                {
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
-                  "associatedValue": "0.1"
-                }
-              ]
-            }
-          ]
-        }
-        )"}}}};
-  return url_responses;
-}
-
-IssuersInfo BuildValidIssuers() {
-  IssuersInfo issuers = BuildIssuers(
-      /*ping*/ 7'200'000,
-      /*confirmation_public_keys*/
-      {{"JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=", 0.0},
-       {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
-      /*payments_public_keys*/
-      {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
-       {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-       {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
-       {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1},
-       {"ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=", 0.1},
-       {"JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=", 0.1},
-       {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
-  return issuers;
-}
-
-}  // namespace
 
 class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
  protected:
@@ -134,6 +54,10 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
     account_->RemoveObserver(this);
 
     UnitTestBase::TearDown();
+  }
+
+  void OnWalletWasCreated(const WalletInfo& /*wallet*/) override {
+    wallet_was_created_ = true;
   }
 
   void OnWalletDidUpdate(const WalletInfo& /*wallet*/) override {
@@ -165,6 +89,7 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   std::unique_ptr<privacy::TokenGeneratorMock> token_generator_mock_;
   std::unique_ptr<Account> account_;
 
+  bool wallet_was_created_ = false;
   bool wallet_did_update_ = false;
   bool wallet_did_change_ = false;
   bool invalid_wallet_ = false;
@@ -184,21 +109,50 @@ TEST_F(BatAdsAccountTest, SetWallet) {
                       GetWalletRecoverySeedForTesting());
 
   // Assert
+  EXPECT_TRUE(wallet_was_created_);
   EXPECT_TRUE(wallet_did_update_);
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
 }
 
-TEST_F(BatAdsAccountTest, SetInvalidWallet) {
+TEST_F(BatAdsAccountTest, SetWalletWithEmptyPaymentId) {
   // Arrange
-  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+
+  // Act
+  account_->SetWallet(/*payment_id*/ {}, GetWalletRecoverySeedForTesting());
+
+  // Assert
+  EXPECT_FALSE(wallet_was_created_);
+  EXPECT_FALSE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_change_);
+  EXPECT_TRUE(invalid_wallet_);
+}
+
+TEST_F(BatAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
+  // Arrange
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
   account_->SetWallet(GetWalletPaymentIdForTesting(),
                       GetInvalidWalletRecoverySeedForTesting());
 
   // Assert
+  EXPECT_FALSE(wallet_was_created_);
+  EXPECT_FALSE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_change_);
+  EXPECT_TRUE(invalid_wallet_);
+}
+
+TEST_F(BatAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
+  // Arrange
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+
+  // Act
+  account_->SetWallet(GetWalletPaymentIdForTesting(), /*recovery_seed*/ "");
+
+  // Assert
+  EXPECT_FALSE(wallet_was_created_);
   EXPECT_FALSE(wallet_did_update_);
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_TRUE(invalid_wallet_);
@@ -214,6 +168,7 @@ TEST_F(BatAdsAccountTest, ChangeWallet) {
                       GetWalletRecoverySeedForTesting());
 
   // Assert
+  EXPECT_TRUE(wallet_was_created_);
   EXPECT_TRUE(wallet_did_update_);
   EXPECT_TRUE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
@@ -238,33 +193,56 @@ TEST_F(BatAdsAccountTest, GetWallet) {
   EXPECT_EQ(expected_wallet, wallet);
 }
 
-TEST_F(BatAdsAccountTest, GetIssuersOnSetWallet) {
+TEST_F(BatAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   // Arrange
   privacy::SetUnblindedTokens(50);
-  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
   account_->SetWallet(GetWalletPaymentIdForTesting(),
                       GetWalletRecoverySeedForTesting());
 
   // Assert
+  EXPECT_TRUE(wallet_was_created_);
   EXPECT_TRUE(wallet_did_update_);
   EXPECT_FALSE(wallet_did_change_);
   EXPECT_FALSE(invalid_wallet_);
 
   const absl::optional<IssuersInfo> issuers = GetIssuers();
   ASSERT_TRUE(issuers);
-  const IssuersInfo expected_issuers = BuildValidIssuers();
-  EXPECT_EQ(expected_issuers, *issuers);
+
+  EXPECT_EQ(BuildIssuers(), *issuers);
+}
+
+TEST_F(BatAdsAccountTest,
+       DoNotGetIssuersWhenWalletIsCreatedIfIssuersAlreadyExist) {
+  // Arrange
+  privacy::SetUnblindedTokens(50);
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
+
+  BuildAndSetIssuers();
+
+  // Act
+  account_->SetWallet(GetWalletPaymentIdForTesting(),
+                      GetWalletRecoverySeedForTesting());
+
+  // Assert
+  EXPECT_TRUE(wallet_was_created_);
+  EXPECT_TRUE(wallet_did_update_);
+  EXPECT_FALSE(wallet_did_change_);
+  EXPECT_FALSE(invalid_wallet_);
+
+  const absl::optional<IssuersInfo> issuers = GetIssuers();
+  ASSERT_TRUE(issuers);
+
+  EXPECT_EQ(BuildIssuers(), *issuers);
 }
 
 TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   account_->Process();
 
@@ -273,7 +251,7 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
   ASSERT_TRUE(issuers);
 
   // Assert
-  const IssuersInfo expected_issuers = BuildValidIssuers();
+  const IssuersInfo expected_issuers = BuildIssuers();
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
@@ -281,8 +259,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const URLResponseMap url_responses = GetValidIssuersURLResponseMap();
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   account_->Process();
 
@@ -298,88 +275,7 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
 TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
-  const URLResponseMap url_responses = {{// Get issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, R"(
-        {
-          "ping": 7200000,
-          "issuers": [
-            {
-              "name": "confirmations",
-              "publicKeys": [
-                {
-                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "6Orbju/jPQQGldu/MVyBi2wXKz8ynHIcdsbCWc9gGHQ=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "ECEKAGeRCNmAWimTs7fo0tTMcg8Kcmoy8w+ccOSYXT8=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "xp9WArE+RkSt579RCm6EhdmcW4RfS71kZHMgXpwgZyI=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "AE7e4Rh38yFmnyLyPYcyWKT//zLOsEEX+WdLZqvJxH0=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "HjID7G6LRrcRu5ezW0nLZtEARIBnjpaQFKTHChBuJm8=",
-                  "associatedValue": ""
-                }
-              ]
-            },
-            {
-              "name": "payments",
-              "publicKeys": [
-                {
-                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
-                  "associatedValue": "0.0"
-                },
-                {
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "JlOezORiqLkFkvapoNRGWcMH3/g09/7M2UPEwMjRpFE=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=",
-                  "associatedValue": "0.1"
-                },
-                {
-                  "publicKey": "+iyhYDv7W6cuFAD1tzsJIEQKEStTX9B/Tt62tqt+tG0=",
-                  "associatedValue": "0.1"
-                }
-              ]
-            }
-          ]
-        }
-        )"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponses(ads_client_mock_, GetInvalidIssuersUrlResponses());
 
   account_->Process();
 
@@ -395,8 +291,6 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const URLResponseMap url_responses = {{// Get issuers request
                                          "/v3/issuers/",
                                          {{net::HTTP_OK, R"(
@@ -421,8 +315,6 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
 
 TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const URLResponseMap url_responses = {{// Get issuers request
                                          "/v3/issuers/",
                                          {{net::HTTP_OK, "INVALID"}}}};
@@ -442,8 +334,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
 
 TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
-
   const URLResponseMap url_responses = {
       {// Create confirmation request
        "/v3/confirmation/8b742869-6e4a-490c-ac31-31b49130098a/"
@@ -694,6 +584,17 @@ TEST_F(BatAdsAccountTest, GetStatement) {
 
     EXPECT_EQ(expected_statement, statement);
   }));
+
+  // Assert
+}
+
+TEST_F(BatAdsAccountTest, DoNotGetStatementIfAdsAreDisabled) {
+  // Arrange
+  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
+
+  // Act
+  Account::GetStatement(base::BindOnce(
+      [](mojom::StatementInfoPtr statement) { EXPECT_FALSE(statement); }));
 
   // Assert
 }

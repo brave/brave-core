@@ -39,42 +39,7 @@ class BatAdsIssuersTest : public UnitTestBase {
 
 TEST_F(BatAdsIssuersTest, FetchIssuers) {
   // Arrange
-  const URLResponseMap url_responses = {{// Issuers request
-                                         "/v3/issuers/",
-                                         {{net::HTTP_OK, R"(
-        {
-          "ping": 7200000,
-          "issuers": [
-            {
-              "name": "confirmations",
-              "publicKeys": [
-                {
-                  "publicKey": "JsvJluEN35bJBgJWTdW/8dAgPrrTM1I1pXga+o7cllo=",
-                  "associatedValue": ""
-                },
-                {
-                  "publicKey": "crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=",
-                  "associatedValue": ""
-                }
-              ]
-            },
-            {
-              "name": "payments",
-              "publicKeys": [
-                {
-                  "publicKey": "JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=",
-                  "associatedValue": "0.0"
-                },
-                {
-                  "publicKey": "bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=",
-                  "associatedValue": "0.1"
-                }
-              ]
-            }
-          ]
-        }
-        )"}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
+  MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   const IssuersInfo expected_issuers =
       BuildIssuers(7'200'000,
@@ -98,7 +63,7 @@ TEST_F(BatAdsIssuersTest, FetchIssuersInvalidJsonResponse) {
   // Arrange
   const URLResponseMap url_responses = {{// Issuers request
                                          "/v3/issuers/",
-                                         {{net::HTTP_OK, "FOOBAR"}}}};
+                                         {{net::HTTP_OK, "INVALID"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(*issuers_delegate_mock_, OnDidFetchIssuers(_)).Times(0);

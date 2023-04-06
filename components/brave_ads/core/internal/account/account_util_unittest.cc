@@ -25,7 +25,6 @@ class BatAdsAccountUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsAccountUtilTest, ShouldRewardUser) {
   // Arrange
-  AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
   // Act
   const bool should_reward_user = ShouldRewardUser();

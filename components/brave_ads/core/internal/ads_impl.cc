@@ -143,10 +143,6 @@ AdsImpl::~AdsImpl() {
   transfer_->RemoveObserver(this);
 }
 
-bool AdsImpl::IsInitialized() const {
-  return is_initialized_;
-}
-
 void AdsImpl::Initialize(InitializeCallback callback) {
   BLOG(1, "Initializing ads");
 

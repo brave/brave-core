@@ -31,7 +31,6 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/multi_armed_bandits/epsilon_greedy_bandit_processor.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_util.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
 

@@ -176,10 +176,6 @@ void ConfirmationStateManager::Initialize(const WalletInfo& wallet,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-bool ConfirmationStateManager::IsInitialized() const {
-  return is_initialized_;
-}
-
 void ConfirmationStateManager::OnLoaded(InitializeCallback callback,
                                         const bool success,
                                         const std::string& json) {

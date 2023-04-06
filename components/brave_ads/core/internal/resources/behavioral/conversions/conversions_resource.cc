@@ -24,10 +24,6 @@ Conversions::Conversions()
 
 Conversions::~Conversions() = default;
 
-bool Conversions::IsInitialized() const {
-  return is_initialized_;
-}
-
 void Conversions::Load() {
   LoadAndParseResource(kResourceId, features::GetConversionsResourceVersion(),
                        base::BindOnce(&Conversions::OnLoadAndParseResource,

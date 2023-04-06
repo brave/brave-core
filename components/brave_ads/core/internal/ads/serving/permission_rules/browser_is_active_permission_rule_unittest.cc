@@ -9,7 +9,6 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rule_features.h"
-#include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 

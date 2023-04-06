@@ -140,10 +140,6 @@ void Serving::OnGetForUserModel(
   ServeAd(ad);
 }
 
-bool Serving::IsSupported() const {
-  return static_cast<bool>(eligible_ads_);
-}
-
 void Serving::MaybeServeAdAtNextRegularInterval() {
   if (!ShouldServeAdsAtRegularIntervals()) {
     return;

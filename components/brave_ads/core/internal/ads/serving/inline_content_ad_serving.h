@@ -62,7 +62,7 @@ class Serving final {
                          bool had_opportunity,
                          const CreativeInlineContentAdList& creative_ads);
 
-  bool IsSupported() const;
+  bool IsSupported() const { return static_cast<bool>(eligible_ads_); }
 
   void ServeAd(const InlineContentAdInfo& ad,
                MaybeServeInlineContentAdCallback callback);

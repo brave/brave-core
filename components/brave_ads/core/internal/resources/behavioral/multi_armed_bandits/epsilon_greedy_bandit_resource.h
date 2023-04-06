@@ -28,7 +28,7 @@ class EpsilonGreedyBandit final : public CatalogObserver {
 
   ~EpsilonGreedyBandit() override;
 
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   void LoadFromCatalog(const CatalogInfo& catalog);
 

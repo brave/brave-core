@@ -39,7 +39,7 @@ class TextProcessing final {
 
   ~TextProcessing();
 
-  bool IsInitialized() const;
+  bool IsInitialized() const { return is_initialized_; }
 
   void SetPipeline(PipelineInfo info);
   bool SetPipeline(base::Value resource_value);
