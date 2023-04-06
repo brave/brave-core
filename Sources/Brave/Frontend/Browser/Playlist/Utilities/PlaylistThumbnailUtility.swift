@@ -135,9 +135,17 @@ public class PlaylistThumbnailRenderer {
 
   private func loadFavIconThumbnail(url: URL, completion: @escaping (UIImage?) -> Void) {
     favIconGenerator?.cancel()
+    if let favicon = FaviconFetcher.getIconFromCache(for: url) {
+      SDImageCache.shared.store(favicon.image, forKey: url.absoluteString, completion: nil)
+      completion(favicon.image)
+      return
+    }
+    
     favIconGenerator = Task { @MainActor in
       do {
-        completion(try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing).image)
+        let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
+        await SDImageCache.shared.store(favicon.image, forKey: url.absoluteString)
+        completion(favicon.image)
       } catch {
         completion(nil)
       }

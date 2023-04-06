@@ -38,6 +38,10 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
             let title = fav.title
             
             group.addTask {
+              if let favicon = FaviconFetcher.getIconFromCache(for: url) {
+                return IndexedWidgetFavorite(index: index, favorite: .init(url: url, title: title, favicon: favicon))
+              }
+              
               let favicon = try? await FaviconFetcher.loadIcon(url: url, kind: .largeIcon, persistent: true)
               return IndexedWidgetFavorite(index: index, favorite: .init(url: url, title: title, favicon: favicon))
             }

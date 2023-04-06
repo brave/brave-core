@@ -57,9 +57,18 @@ class FaviconScriptHandler: NSObject, TabContentScript {
           Logger.module.debug("Fetched Favicon for page: \(url.absoluteString)")
         }
         
+        // If the icon is too small, we don't want to cache it.
+        // It's better to show monogram or bundled icons.
+        if icon.size.width < CGFloat(FaviconLoader.Sizes.desiredMedium.rawValue) ||
+           icon.size.height < CGFloat(FaviconLoader.Sizes.desiredMedium.rawValue) {
+          return
+        }
+        
         Task { @MainActor in
           let favicon = await Favicon.renderImage(icon, backgroundColor: .clear, shouldScale: true)
-          FaviconFetcher.updateCache(favicon, for: url, persistent: !isPrivate)  // We can only cache favicons for non-private tabs
+
+          // We can only cache favicons for non-private tabs
+          FaviconFetcher.updateCache(favicon, for: url, persistent: !isPrivate)
           
           guard let tab = tab else { return }
           tab.favicon = favicon
