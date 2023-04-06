@@ -233,9 +233,9 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
         VLOG(2) << __func__ << " : " << name << ", " << type;
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
           VLOG(2) << __func__ << " : Disconnect... " << entry_name;
-          dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
+          dw_ret = RasHangUp(lp_ras_conn[i].hrasconn);
           if (dw_ret != ERROR_SUCCESS) {
-            caller = "RasHangUpA()";
+            caller = "RasHangUp()";
           }
           break;
         }
@@ -351,6 +351,30 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
     return GetRasErrorResult("`hostname` is empty");
   }
 
+  // Simple validation on the entry name.
+  DWORD dw_ret = RasValidateEntryName(DEFAULT_PHONE_BOOK, entry_name.c_str());
+  switch (dw_ret) {
+    // New or existing is the happy path.
+    // `RasSetEntryProperties` will add new entry or update an existing entry.
+    case ERROR_SUCCESS:
+      VLOG(2) << __func__ << " Entry name is valid";
+      break;
+    case ERROR_ALREADY_EXISTS:
+      VLOG(2) << __func__
+              << " The entry name already exists in the specified phonebook.";
+      break;
+    // Possible error conditions.
+    case ERROR_INVALID_NAME:
+      VLOG(2) << __func__ << " Entry name: `" << entry_name.c_str()
+              << "` is invalid";
+      return GetRasErrorResult(
+          "The format of the specified entry name is invalid.");
+    default:
+      VLOG(2) << __func__ << " RasValidateEntryName failed: Error=\""
+              << GetRasErrorMessage(dw_ret) << "\" (" << dw_ret << ")";
+      break;
+  }
+
   auto connection_result = CheckConnection(entry_name);
   if (connection_result == CheckConnectionResult::CONNECTING ||
       connection_result == CheckConnectionResult::CONNECTED) {
@@ -388,8 +412,8 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   // this maps to "Type of sign-in info" => "User name and password"
   entry.dwCustomAuthKey = 26;
 
-  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(),
-                                       &entry, entry.dwSize, NULL, NULL);
+  dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(), &entry,
+                                 entry.dwSize, NULL, NULL);
   if (dw_ret != ERROR_SUCCESS) {
     return GetRasErrorResult(GetRasErrorMessage(dw_ret),
                              "RasSetEntryProperties()");
