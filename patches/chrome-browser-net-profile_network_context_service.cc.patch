@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/net/profile_network_context_service.cc b/chrome/browser/net/profile_network_context_service.cc
+index db593e5f07ea8b203cf59b17c8fbe6bf5a5acc49..edf59826fee45a55151fb819491adc5958064b81 100644
+--- a/chrome/browser/net/profile_network_context_service.cc
++++ b/chrome/browser/net/profile_network_context_service.cc
+@@ -492,6 +492,7 @@ network::mojom::CTPolicyPtr ProfileNetworkContextService::GetCTPolicy() {
+   std::vector<std::string> excluded_legacy_spkis(
+       TranslateStringArray(ct_excluded_legacy_spkis));
+ 
++  BRAVE_PROFILE_NETWORK_CONTEXT_SERVICE_GET_CT_POLICY
+   return network::mojom::CTPolicy::New(std::move(required), std::move(excluded),
+                                        std::move(excluded_spkis),
+                                        std::move(excluded_legacy_spkis));
