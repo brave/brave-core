@@ -56,10 +56,7 @@ import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -324,7 +321,7 @@ public class PortfolioFragment
     }
 
     private void openNetworkSelection() {
-        Intent intent = NetworkSelectorActivity.createIntent(
+        Intent intent = NetworkSelectorActivity.createIntent( getContext(),
                 NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, PortfolioFragment.TAG);
         startActivity(intent);
     }
