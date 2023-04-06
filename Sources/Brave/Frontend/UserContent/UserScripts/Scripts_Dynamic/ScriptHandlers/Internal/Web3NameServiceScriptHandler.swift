@@ -6,12 +6,24 @@ import Foundation
 import Shared
 import WebKit
 import os.log
+import BraveWallet
 
 protocol Web3NameServiceScriptHandlerDelegate: AnyObject {
-  func web3NameServiceDecisionHandler(_ proceed: Bool, originalURL: URL, visitType: VisitType)
+  func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL, visitType: VisitType)
 }
 
 class Web3NameServiceScriptHandler: TabContentScript {
+  
+  // The `rawValue`s MUST match `Web3Domain.html`
+  enum ParamKey: String {
+    case buttonType = "button_type"
+    case serviceId = "service_id"
+  }
+  enum ParamValue: String {
+    case proceed
+    case disable
+  }
+  
   weak var delegate: Web3NameServiceScriptHandlerDelegate?
   var originalURL: URL?
   var visitType: VisitType = .unknown
@@ -34,10 +46,14 @@ class Web3NameServiceScriptHandler: TabContentScript {
       return
     }
     
-    if params["type"] == "SNSDisable" {
-      delegate?.web3NameServiceDecisionHandler(false, originalURL: originalURL, visitType: visitType)
-    } else if params["type"] == "SNSProceed" {
-      delegate?.web3NameServiceDecisionHandler(true, originalURL: originalURL, visitType: visitType)
+    if params[ParamKey.buttonType.rawValue] == ParamValue.disable.rawValue,
+       let serviceId = params[ParamKey.serviceId.rawValue],
+       let service = Web3Service(rawValue: serviceId) {
+      delegate?.web3NameServiceDecisionHandler(false, web3Service: service, originalURL: originalURL, visitType: visitType)
+    } else if params[ParamKey.buttonType.rawValue] == ParamValue.proceed.rawValue,
+              let serviceId = params[ParamKey.serviceId.rawValue],
+              let service = Web3Service(rawValue: serviceId) {
+      delegate?.web3NameServiceDecisionHandler(true, web3Service: service, originalURL: originalURL, visitType: visitType)
     } else {
       assertionFailure("Invalid message: \(message.body)")
     }

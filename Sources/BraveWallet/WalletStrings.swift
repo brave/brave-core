@@ -3802,6 +3802,28 @@ extension Strings {
       value: "[Learn more](%@) about IPFS gateway privacy considerations.",
       comment: "The description for the options to allow to resolve IPFS scheme urls. '%@' will be replaced with a url to explain more about IPFS gateway privacy."
     )
+    public static let web3DomainInterstitialPageTAndU = NSLocalizedString(
+      "wallet.web3DomainInterstitialPageTAndU",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "terms of use",
+      comment: "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain."
+    )
+    public static let web3DomainInterstitialPagePrivacyPolicy = NSLocalizedString(
+      "wallet.web3DomainInterstitialPagePrivacyPolicy",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "privacy policy",
+      comment: "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain."
+    )
+    public static let web3DomainInterstitialPageButtonDisable = NSLocalizedString(
+      "wallet.web3DomainInterstitialPageButtonDisable",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Disable",
+      comment: "Title on the button that users can click to disable Brave to resolve the ENS/SNS domain they entered."
+    )
+    // SNS
     public static let snsDomainInterstitialPageTitle = NSLocalizedString(
       "wallet.snsDomainInterstitialPageTitle",
       tableName: "BraveWallet",
@@ -3816,33 +3838,56 @@ extension Strings {
       value: "Brave will be using Syndica to resolve .sol domain names. Brave hides your IP address. If you enable this, Syndica will see that someone is trying to visit these .sol domains but nothing else. See Syndica's <a href=%@>%@</a> and <a href=%@>%@</a>.",
       comment: "Description displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. The first '%@' will be replaced with a link to Syndica's terms of use page. The second '%@' will be replaced with the value of 'snsDomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Syndica's privacy policy page. The last '%@' will be replaced with the value of 'snsDomainInterstitialPagePrivacyPolicy'."
     )
-    public static let snsDomainInterstitialPageTAndU = NSLocalizedString(
-      "wallet.snsDomainInterstitialPageTAndU",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "terms of use",
-      comment: "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the 'terms of use' webpage of the server that Brave uses to resolve SNS domain."
-    )
-    public static let snsDomainInterstitialPagePrivacyPolicy = NSLocalizedString(
-      "wallet.snsDomainInterstitialPagePrivacyPolicy",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "privacy policy",
-      comment: "Hyper link copy displayed as part of 'snsDomainInterstitialPageDescription'. It will redirect user to the privay policy webpage of the server that Brave uses to resolve SNS domain."
-    )
-    public static let snsDomainInterstitialPageButtonDisable = NSLocalizedString(
-      "wallet.snsDomainInterstitialPageButtonDisable",
-      tableName: "BraveWallet",
-      bundle: .module,
-      value: "Disable",
-      comment: "Title on the button that users can click to disable Brave to resolve the SNS domain or IPFS scheme url they entered."
-    )
     public static let snsDomainInterstitialPageButtonProceed = NSLocalizedString(
       "wallet.snsDomainInterstitialPageButtonProceed",
       tableName: "BraveWallet",
       bundle: .module,
       value: "Proceed using Syndica server",
       comment: "Title on the button that users can click to enable Brave to resolve the SNS domain they entered."
+    )
+    // ENS
+    public static let ensDomainInterstitialPageTitle = NSLocalizedString(
+      "wallet.ensDomainInterstitialPageTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enable support of Ethereum Name Service (ENS) in Brave?",
+      comment: "Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one."
+    )
+    public static let ensDomainInterstitialPageDescription = NSLocalizedString(
+      "wallet.ensDomainInterstitialPageDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Brave will be using Infura to resolve .eth domain names that are on Ethereum Name Service (ENS). Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these .eth domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+      comment: "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
+    )
+    public static let ensDomainInterstitialPageButtonProceed = NSLocalizedString(
+      "wallet.ensDomainInterstitialPageButtonProceed",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Proceed using Infura server",
+      comment: "Title on the button that users can click to enable Brave to resolve the ENS domain they entered."
+    )
+    // ENS offchain
+    public static let ensOffchainDomainInterstitialPageTitle = NSLocalizedString(
+      "wallet.ensOffchainDomainInterstitialPageTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Enable support of Ethereum Name Service (ENS) offchain lookup in Brave?",
+      comment: "Title displayed when users chose Brave to ask them if they want the ENS Offchain domain to be resolved every time they enter one."
+    )
+    public static let ensOffchainDomainInterstitialPageDescription = NSLocalizedString(
+      "wallet.ensOffchainDomainInterstitialPageDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This .eth domain name is stored offchain and will be resolved by a third party gateway. If you enable ENS offchain lookup, the third party gateway will see that you're trying to visit the .eth domain. <a href=%@>%@</a>.",
+      comment: "Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Brave Wallet's offchain lookup privacy considerations. The second '%@' will be replaced with the value of 'ensOffchainDomainInterstitialLearnMore'."
+    )
+    public static let ensOffchainDomainInterstitialPageButtonProceed = NSLocalizedString(
+      "wallet.ensOffchainDomainInterstitialPageButtonProceed",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Proceed with offchain lookup",
+      comment: "Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered."
     )
   }
 }

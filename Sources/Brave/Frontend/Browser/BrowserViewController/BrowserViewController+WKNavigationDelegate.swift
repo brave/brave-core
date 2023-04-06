@@ -126,7 +126,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
   @MainActor
   public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences) async -> (WKNavigationActionPolicy, WKWebpagePreferences) {
-    guard let url = navigationAction.request.url else {
+    guard var url = navigationAction.request.url else {
       return (.cancel, preferences)
     }
 
@@ -197,6 +197,31 @@ extension BrowserViewController: WKNavigationDelegate {
         handleIPFSSchemeURL(url, visitType: .link)
       }
       return (.cancel, preferences)
+    }
+    
+    // handles Decentralized DNS
+    if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: url),
+       navigationAction.targetFrame?.isMainFrame == true {
+      topToolbar.locationView.loading = true
+      let result = await decentralizedDNSHelper.lookup(domain: url.schemelessAbsoluteDisplayString)
+      topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+      guard !Task.isCancelled else { // user pressed stop, or typed new url
+        return (.cancel, preferences)
+      }
+      switch result {
+      case let .loadInterstitial(service):
+        showWeb3ServiceInterstitialPage(service: service, originalURL: url, visitType: .link)
+        return (.cancel, preferences)
+      case let .load(resolvedURL):
+        if resolvedURL.isIPFSScheme {
+          handleIPFSSchemeURL(resolvedURL, visitType: .link)
+          return (.cancel, preferences)
+        } else { // non-ipfs, treat as normal url / link tapped
+          url = resolvedURL
+        }
+      case .none:
+        break
+      }
     }
 
     let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing

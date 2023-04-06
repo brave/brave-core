@@ -9,23 +9,51 @@ import BraveShared
 import BraveCore
 
 extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
-  func web3NameServiceDecisionHandler(_ proceed: Bool, originalURL: URL, visitType: VisitType) {
+  /// Returns a `DecentralizedDNSHelper` for the given mode if supported and not in private mode.
+  func decentralizedDNSHelperFor(url: URL?) -> DecentralizedDNSHelper? {
     let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    guard let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) else {
+    guard !isPrivateMode,
+          let url,
+          DecentralizedDNSHelper.isSupported(domain: url.domainURL.schemelessAbsoluteDisplayString),
+          let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) else { return nil }
+    return DecentralizedDNSHelper(
+      rpcService: rpcService,
+      ipfsApi: braveCore.ipfsAPI,
+      isPrivateMode: isPrivateMode
+    )
+  }
+
+  func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL, visitType: VisitType) {
+    let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
+    guard let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode),
+          let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: originalURL) else {
       finishEditingAndSubmit(originalURL, visitType: visitType)
       return
     }
-    if proceed {
-      Task { @MainActor in
-        rpcService.setSnsResolveMethod(.enabled)
-        if let host = originalURL.host, let resolvedUrl = await resolveSNSHost(host, rpcService: rpcService) {
-          // resolved url
-          finishEditingAndSubmit(resolvedUrl, visitType: visitType)
-        }
+    Task { @MainActor in
+      switch web3Service {
+      case .solana:
+        rpcService.setSnsResolveMethod(proceed ? .enabled : .disabled)
+      case .ethereum:
+        rpcService.setEnsResolveMethod(proceed ? .enabled : .disabled)
+      case .ethereumOffchain:
+        rpcService.setEnsOffchainLookupResolveMethod(proceed ? .enabled : .disabled)
       }
-    } else {
-      rpcService.setSnsResolveMethod(.disabled)
-      finishEditingAndSubmit(originalURL, visitType: visitType)
+      let result = await decentralizedDNSHelper.lookup(domain: originalURL.host ?? originalURL.absoluteString)
+      switch result {
+      case let .load(resolvedURL):
+        if resolvedURL.isIPFSScheme {
+          handleIPFSSchemeURL(resolvedURL, visitType: visitType)
+        } else {
+          finishEditingAndSubmit(resolvedURL, visitType: visitType)
+        }
+      case let .loadInterstitial(service):
+        // ENS interstitial -> ENS Offchain interstitial possible
+        showWeb3ServiceInterstitialPage(service: service, originalURL: originalURL, visitType: visitType)
+      case .none:
+        // failed to resolve domain or disabled
+        finishEditingAndSubmit(originalURL, visitType: visitType)
+      }
     }
   }
 }
