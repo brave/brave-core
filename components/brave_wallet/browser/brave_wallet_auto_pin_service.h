@@ -77,9 +77,6 @@ class BraveWalletAutoPinService
 
   void OnAutoPinStatusChanged();
 
-  void PostPinToken(BlockchainTokenPtr token);
-  void PostUnpinToken(BlockchainTokenPtr token);
-
   // Iterates through user tokens and manages their pin statuses.
   void Restore();
   void OnTokenListResolved(std::vector<BlockchainTokenPtr>);
@@ -108,6 +105,7 @@ class BraveWalletAutoPinService
   raw_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<BraveWalletPinService> brave_wallet_pin_service_;
 
+  std::set<BlockchainTokenPtr> tokens_;
   std::unique_ptr<IntentData> current_;
   std::deque<std::unique_ptr<IntentData>> queue_;
 
