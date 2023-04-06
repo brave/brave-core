@@ -65,6 +65,9 @@ public class BraveVPN {
 
     helper.dummyDataForDebugging = !AppConstants.buildChannel.isPublic
     helper.tunnelLocalizedDescription = connectionName
+    helper.grdTunnelProviderManagerLocalizedDescription = connectionName
+    helper.tunnelProviderBundleIdentifier = AppInfo.baseBundleIdentifier + ".BraveWireGuard"
+    helper.appGroupIdentifier = AppInfo.sharedContainerIdentifier
 
     if case .notPurchased = vpnState {
       // Unlikely if user has never bought the vpn, we clear vpn config here for safety.
@@ -276,9 +279,11 @@ public class BraveVPN {
       }
     } else {
       // New user or no credentials and have to remake them.
-      helper.configureFirstTimeUserPostCredential(nil) { success, error in
+      helper.configureFirstTimeUser(for: .wireGuard, postCredential: nil) { success, error in
         if let error = error {
           logAndStoreError("configureFirstTimeUserPostCredential \(error)")
+        } else {
+          helper.ikev2VPNManager.removeFromPreferences()
         }
         
         reconnectPending = false
@@ -348,8 +353,8 @@ public class BraveVPN {
   }
   
   public static func populateRegionDataIfNecessary () {
-    serverManager.getRegionsWithCompletion { regions in
-      self.regions = regions
+    serverManager.regions { regions, _ in
+      self.regions = regions ?? []
     }
   }
   
