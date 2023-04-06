@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check_op.h"
+#include "base/numerics/ranges.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_util.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/choose/ad_predictor_info.h"
@@ -195,8 +196,11 @@ std::vector<int> ComputeVoteRegistry(
       DCHECK_LT(index, vote_registry.size());
       vote_registry[index]++;
 
-      iter =
-          base::ranges::find(std::next(iter), similarity_scores.cend(), *iter);
+      iter = base::ranges::find_if(
+          std::next(iter), similarity_scores.cend(), [iter](auto x) {
+            return base::IsApproximatelyEqual(
+                *iter, x, std::numeric_limits<float>::epsilon());
+          });
     }
   }
 
