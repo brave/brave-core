@@ -321,7 +321,7 @@ public class PortfolioFragment
     }
 
     private void openNetworkSelection() {
-        Intent intent = NetworkSelectorActivity.createIntent( getContext(),
+        Intent intent = NetworkSelectorActivity.createIntent(getContext(),
                 NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, PortfolioFragment.TAG);
         startActivity(intent);
     }
