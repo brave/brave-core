@@ -40,9 +40,20 @@ fn strip_html(subject: &str) -> String {
     let mut depth_tag = 0;
     let mut depth_comment = 0;
 
-    for (i, c) in subject.chars().enumerate() {
+    // We want to know the last 3 characters so we can see if they were --> for
+    // closing a comment.
+    let last_chars_size = 3;
+    let mut last_chars = String::with_capacity(last_chars_size);
+    let mut iterator = subject.chars();
+
+    while let Some(c) = iterator.next() {
+        last_chars.push(c);
+        if last_chars.len() > last_chars_size {
+            last_chars = last_chars.chars().skip(1).collect();
+        }
+
         if c == '<' {
-            let is_comment = subject.chars().skip(i).take(4).collect::<String>() == "<!--";
+            let is_comment = iterator.clone().take(3).collect::<String>() == "!--";
             if is_comment {
                 depth_comment += 1;
             } else if depth_comment == 0 {
@@ -53,9 +64,7 @@ fn strip_html(subject: &str) -> String {
 
         if c == '>' {
             if depth_comment > 0 {
-                let is_comment =
-                    i > 2 && subject.chars().skip(i - 2).take(3).collect::<String>() == "-->";
-                if is_comment {
+                if last_chars == "-->" {
                     // If this was the close for a comment, reduce our comment depth.
                     depth_comment -= 1
                 }
