@@ -91,7 +91,7 @@ export const localeStrings = {
   rewardsBrowserCannotReceiveAds: 'Oops! Your browser cannot receive Brave Private Ads.',
   rewardsBrowserNeedsUpdateToSeeAds: 'Your browser needs to be updated to continue seeing ads.',
   adsNotSupportedRegion: 'Sorry! Ads are not yet available in your region.',
-  connectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
+  connectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
   connectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available at this time. However, you\'ll still be automatically supporting creators by using Rewards.',
   learnMore: 'Learn more',
 

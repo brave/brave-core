@@ -11,7 +11,7 @@ export const localeStrings = {
   rewardsClaimTokens: 'Claim Tokens',
   rewardsConnectAccount: 'Connect account',
   rewardsConnectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.',
-  rewardsConnectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
+  rewardsConnectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
   rewardsContinue: 'Continue',
   rewardsEarning: 'Earning',
   rewardsEarningInfoText: 'The tokens you earn this month will begin processing on $1.',
