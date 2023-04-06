@@ -319,7 +319,7 @@ class NewTabPage extends React.Component<Props, State> {
   startRewards = () => {
     const { rewardsState } = this.props.newTabData
     if (!rewardsState.rewardsEnabled ||
-      rewardsState.externalWallet?.status === mojom.WalletStatus.kConnected) {
+      rewardsState.externalWallet?.status === mojom.WalletStatus.kNotConnected) {
       chrome.braveRewards.openRewardsPanel()
     } else {
       chrome.braveRewards.enableAds()
