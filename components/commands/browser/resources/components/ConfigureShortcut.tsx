@@ -8,6 +8,7 @@ import Keys from './Keys'
 import { keysToString, stringToKeys } from '../utils/accelerator'
 import { color, effect, font, radius, spacing } from '@brave/leo/tokens/css'
 import Button from '@brave/leo/react/button'
+import Alert from '@brave/leo/react/alert'
 import { useCommands } from '../commands'
 
 const Dialog = styled.dialog`
@@ -64,9 +65,7 @@ const HintText = styled.div`
   font: ${font.desktop.primary.default.regular};
 `
 
-// TODO(fallaciousreasoning): Use the Leo Alert component instead of the div
-// once this PR lands https://github.com/brave/leo/pull/241
-const InUseAlert = styled('div')`
+const InUseAlert = styled(Alert)`
   margin: ${spacing[24]};
 `
 
