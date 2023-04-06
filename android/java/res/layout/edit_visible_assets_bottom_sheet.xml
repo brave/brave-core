@@ -39,7 +39,6 @@
             style="@style/BraveWalletButtonHollow"
             android:layout_width="0dp"
             android:background="@drawable/rounded_holo_button"
-            android:drawableEnd="@drawable/ic_arrow_down_circular_day_night"
             android:minHeight="0dp"
             android:paddingVertical="2dp"
             app:autoSizeTextType="uniform"
