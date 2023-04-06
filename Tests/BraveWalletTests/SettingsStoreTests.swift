@@ -43,6 +43,8 @@ class SettingsStoreTests: XCTestCase {
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) } // default is USD
     
     let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._ensResolveMethod = { $0(.ask) }
+    rpcService._setEnsResolveMethod = { _ in }
     rpcService._ensOffchainLookupResolveMethod = { $0(.ask) }
     rpcService._setEnsOffchainLookupResolveMethod = { _ in }
     rpcService._snsResolveMethod = { $0(.ask) }
@@ -60,6 +62,7 @@ class SettingsStoreTests: XCTestCase {
     let (keyringService, walletService, rpcService, txService, ipfsApi) = setupServices()
     keyringService._autoLockMinutes = { $0(1) }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.cad.code) }
+    rpcService._ensResolveMethod = { $0(.disabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.disabled) }
     rpcService._snsResolveMethod = { $0(.disabled) }
 
@@ -87,6 +90,15 @@ class SettingsStoreTests: XCTestCase {
       .sink { currencyCode in
         defer { currencyCodeExpectation.fulfill() }
         XCTAssertEqual(currencyCode, CurrencyCode.cad)
+      }
+      .store(in: &cancellables)
+    
+    let ensResolveMethodExpectation = expectation(description: "setup-ensResolveMethod")
+    sut.$ensResolveMethod
+      .dropFirst()
+      .sink { ensResolveMethod in
+        defer { ensResolveMethodExpectation.fulfill() }
+        XCTAssertEqual(ensResolveMethod, .disabled)
       }
       .store(in: &cancellables)
     

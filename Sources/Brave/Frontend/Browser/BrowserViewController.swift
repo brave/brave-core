@@ -259,6 +259,9 @@ public class BrowserViewController: UIViewController {
   weak var walletStore: WalletStore?
   
   var lastEnteredURLVisitType: VisitType = .unknown
+  
+  var processAddressBarTask: Task<(), Never>?
+  var topToolbarDidPressReloadTask: Task<(), Never>?
 
   public init(
     profile: Profile,
@@ -1607,10 +1610,12 @@ public class BrowserViewController: UIViewController {
     tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
   }
 
-  func showSNSDomainInterstitialPage(originalURL: URL, visitType: VisitType) {
+  func showWeb3ServiceInterstitialPage(service: Web3Service, originalURL: URL, visitType: VisitType = .unknown) {
     topToolbar.leaveOverlayMode()
-    
-    guard let tab = tabManager.selectedTab, let encodedURL = originalURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics), let internalUrl = URL(string: "\(InternalURL.baseUrl)/\(SNSDomainHandler.path)?url=\(encodedURL)") else {
+
+    guard let tab = tabManager.selectedTab,
+          let encodedURL = originalURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
+          let internalUrl = URL(string: "\(InternalURL.baseUrl)/\(Web3DomainHandler.path)?\(Web3NameServiceScriptHandler.ParamKey.serviceId.rawValue)=\(service.rawValue)&url=\(encodedURL)") else {
       return
     }
     let scriptHandler = tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName) as? Web3NameServiceScriptHandler

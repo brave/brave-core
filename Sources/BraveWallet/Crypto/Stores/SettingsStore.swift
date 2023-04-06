@@ -35,6 +35,14 @@ public class SettingsStore: ObservableObject {
     }
   }
   
+  /// The current ENS Resolve Method preference (Ask / Enabled / Disabled)
+  @Published var ensResolveMethod: BraveWallet.ResolveMethod = .ask {
+    didSet {
+      guard oldValue != ensResolveMethod else { return }
+      rpcService.setEnsResolveMethod(ensResolveMethod)
+    }
+  }
+  
   /// The current ENS Offchain Resolve Method preference (Ask / Enabled / Disabled)
   @Published var ensOffchainResolveMethod: BraveWallet.ResolveMethod = .ask {
     didSet {
@@ -84,8 +92,9 @@ public class SettingsStore: ObservableObject {
       let autoLockMinutes = await keyringService.autoLockMinutes()
       self.autoLockInterval = .init(value: autoLockMinutes)
 
-      self.ensOffchainResolveMethod = await rpcService.ensOffchainLookupResolveMethod()
       self.snsResolveMethod = await rpcService.snsResolveMethod()
+      self.ensResolveMethod = await rpcService.ensResolveMethod()
+      self.ensOffchainResolveMethod = await rpcService.ensOffchainLookupResolveMethod()
     }
   }
 

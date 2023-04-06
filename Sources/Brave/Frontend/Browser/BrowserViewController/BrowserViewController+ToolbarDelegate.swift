@@ -107,29 +107,28 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
-    let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    
     if let url = topToolbar.currentURL {
       if url.isIPFSScheme {
         if !handleIPFSSchemeURL(url, visitType: .unknown) {
           tabManager.selectedTab?.reload()
         }
-      } else if !isPrivateMode, url.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension, let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) {
-        Task { @MainActor in
-          let currentStatus = await rpcService.snsResolveMethod()
-          switch currentStatus {
-          case .ask:
-            // show name service interstitial page
-            showSNSDomainInterstitialPage(originalURL: url, visitType: .unknown)
-          case .enabled:
-            if let resolvedURL = await resolveSNSHost(url.schemelessAbsoluteDisplayString, rpcService: rpcService) {
+      } else if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: topToolbar.currentURL) {
+        topToolbarDidPressReloadTask?.cancel()
+        topToolbarDidPressReloadTask = Task { @MainActor in
+          topToolbar.locationView.loading = true
+          let result = await decentralizedDNSHelper.lookup(domain: url.schemelessAbsoluteDisplayString)
+          topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+          guard !Task.isCancelled else { return } // user pressed stop, or typed new url
+          switch result {
+          case let .loadInterstitial(service):
+            showWeb3ServiceInterstitialPage(service: service, originalURL: url)
+          case let .load(resolvedURL):
+            if resolvedURL.isIPFSScheme {
+              handleIPFSSchemeURL(resolvedURL, visitType: .unknown)
+            } else {
               tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
-              return
             }
-            tabManager.selectedTab?.loadRequest(URLRequest(url: url))
-          case .disabled:
-            tabManager.selectedTab?.reload()
-          @unknown default:
+          case .none:
             tabManager.selectedTab?.reload()
           }
         }
@@ -143,6 +142,9 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressStop(_ topToolbar: TopToolbarView) {
     tabManager.selectedTab?.stop()
+    processAddressBarTask?.cancel()
+    topToolbarDidPressReloadTask?.cancel()
+    topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
   }
 
   func topToolbarDidLongPressReloadButton(_ topToolbar: TopToolbarView, from button: UIButton) {
@@ -246,7 +248,8 @@ extension BrowserViewController: TopToolbarDelegate {
   }
 
   func processAddressBar(text: String, visitType: VisitType, isBraveSearchPromotion: Bool = false) {
-    Task { @MainActor in
+    processAddressBarTask?.cancel()
+    processAddressBarTask = Task { @MainActor in
       if !isBraveSearchPromotion, await submitValidURL(text, visitType: visitType) {
         return
       } else {
@@ -258,12 +261,6 @@ extension BrowserViewController: TopToolbarDelegate {
         }
       }
     }
-  }
-  
-  @MainActor func resolveSNSHost(_ host: String, rpcService: BraveWalletJsonRpcService) async -> URL? {
-    let (url, status, _) = await rpcService.snsResolveHost(host)
-    guard let url = url, status == .success else { return nil }
-    return url
   }
   
   @discardableResult
@@ -307,24 +304,26 @@ extension BrowserViewController: TopToolbarDelegate {
       // Do not allow users to enter URLs with the following schemes.
       // Instead, submit them to the search engine like Chrome-iOS does.
       if !["file"].contains(fixupURL.scheme) {
-        // check text is SNS domain
-        let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-        if !isPrivateMode, fixupURL.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension, let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) {
-          let currentStatus = await rpcService.snsResolveMethod()
-          switch currentStatus {
-          case .ask:
-            // show name service interstitial page
-            showSNSDomainInterstitialPage(originalURL: fixupURL, visitType: visitType)
+        // check text is decentralized DNS supported domain
+        if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: fixupURL) {
+          topToolbar.leaveOverlayMode()
+          updateToolbarCurrentURL(fixupURL)
+          topToolbar.locationView.loading = true
+          let result = await decentralizedDNSHelper.lookup(domain: fixupURL.schemelessAbsoluteDisplayString)
+          topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
+          guard !Task.isCancelled else { return true } // user pressed stop, or typed new url
+          switch result {
+          case let .loadInterstitial(service):
+            showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL, visitType: visitType)
             return true
-          case .enabled:
-            if let resolvedURL = await resolveSNSHost(text, rpcService: rpcService) {
-              // resolved url
+          case let .load(resolvedURL):
+            if resolvedURL.isIPFSScheme {
+              return handleIPFSSchemeURL(resolvedURL, visitType: visitType)
+            } else {
               finishEditingAndSubmit(resolvedURL, visitType: visitType)
               return true
             }
-          case .disabled:
-            break
-          @unknown default:
+          case .none:
             break
           }
         }

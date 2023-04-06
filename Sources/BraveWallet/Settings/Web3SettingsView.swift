@@ -300,7 +300,9 @@ struct WalletSettingsView_Previews: PreviewProvider {
 
 /*
  Section containing the follow preferences:
- - SNS Resolve (Ask/Enabled/Disabled)
+ - Allow SNS Resolve (Ask/Enabled/Disabled)
+ - Allow ENS Resolve (Ask/Enabled/Disabled)
+ - Allow ENS Offchain Resolve (Ask/Enabled/Disabled)
  */
 private struct Web3DomainSettingsView: View {
 
@@ -312,9 +314,24 @@ private struct Web3DomainSettingsView: View {
     Section(header: Text(Strings.Wallet.web3DomainOptionsHeader)) {
       Group {
         snsResolveMethodPreference
+        ensResolveMethodPreference
         ensOffchainResolveMethodPreference
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+    }
+  }
+  
+  @ViewBuilder private var ensResolveMethodPreference: some View {
+    Picker(selection: $settingsStore.ensResolveMethod) {
+      ForEach(BraveWallet.ResolveMethod.allCases) { option in
+        Text(option.name)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .tag(option)
+      }
+    } label: {
+      Text(Strings.Wallet.ensResolveMethodTitle)
+        .foregroundColor(Color(.braveLabel))
+        .padding(.vertical, 4)
     }
   }
   

@@ -29,7 +29,7 @@ public class IPFSSchemeHandler: InternalSchemeResponse {
       "interstitial_ipfs_title": Strings.Wallet.web3IPFSInterstitialIPFSTitle,
       "interstitial_ipfs_privacy": String.localizedStringWithFormat(Strings.Wallet.web3IPFSInterstitialIPFSPrivacy, WalletConstants.ipfsLearnMoreLink.absoluteString, Strings.learnMore.lowercased().capitalizeFirstLetter),
       "interstitial_ipfs_public_gateway": Strings.Wallet.web3IPFSInterstitialIPFSPublicGateway,
-      "button_disable": Strings.Wallet.snsDomainInterstitialPageButtonDisable,
+      "button_disable": Strings.Wallet.web3DomainInterstitialPageButtonDisable,
       "button_procced": Strings.Wallet.web3IPFSInterstitialProceedButton,
       "message_handler": Web3IPFSScriptHandler.messageHandlerName,
     ]
