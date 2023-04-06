@@ -14,6 +14,7 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
@@ -75,7 +76,8 @@ absl::optional<std::string> SetCredentials(LPCTSTR entry_name,
   DWORD dw_ret =
       RasSetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials, FALSE);
   if (dw_ret != ERROR_SUCCESS) {
-    return internal::GetRasErrorMessage(dw_ret);
+    return base::StrCat(
+        {"RasSetCredential() - ", internal::GetRasErrorMessage(dw_ret)});
   }
 
   return absl::nullopt;
@@ -132,10 +134,12 @@ internal::RasOperationResult GetRasSuccessResult() {
   return result;
 }
 
-internal::RasOperationResult GetRasErrorResult(const std::string& error) {
+internal::RasOperationResult GetRasErrorResult(const std::string& error,
+                                               const std::string& caller = {}) {
   internal::RasOperationResult result;
   result.success = false;
-  result.error_description = error;
+  result.error_description =
+      caller.empty() ? error : base::StrCat({caller, " - ", error});
   return result;
 }
 
@@ -216,6 +220,7 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
 
     // Call RasEnumConnections to enumerate active connections
     dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+    std::string caller = "RasEnumConnection()";
 
     // If successful, print the names of the active connections.
     if (ERROR_SUCCESS == dw_ret) {
@@ -229,6 +234,9 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
           VLOG(2) << __func__ << " : Disconnect... " << entry_name;
           dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
+          if (dw_ret != ERROR_SUCCESS) {
+            caller = "RasHangUpA()";
+          }
           break;
         }
       }
@@ -237,7 +245,7 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
     if (dw_ret == ERROR_SUCCESS)
       return GetRasSuccessResult();
 
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret), caller);
   }
 
   // There was either a problem with RAS or there are no connections to
@@ -285,7 +293,7 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
   DWORD dw_ret =
       RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
   if (dw_ret != ERROR_SUCCESS) {
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasGetCredentials()");
   }
   wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
   wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1, credentials.szPassword);
@@ -303,12 +311,15 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
   }
 
   if (dw_ret != ERROR_SUCCESS) {
-    auto result = GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    auto result = GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasDial()");
 
     // To clear state.
     VLOG(2) << __func__ << ": RasDial() failed. Try RasHangUp() to clear state";
-    if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS)
-      result.error_description = GetRasErrorMessage(dw_ret);
+    if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS) {
+      result.error_description =
+          base::StrCat({result.error_description, ", ", "RasHangUp() - ",
+                        GetRasErrorMessage(dw_ret)});
+    }
 
     return result;
   }
@@ -319,7 +330,7 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
 RasOperationResult RemoveEntry(const std::wstring& entry_name) {
   DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name.c_str());
   if (dw_ret != ERROR_SUCCESS) {
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasDeleteEntry()");
   }
 
   return GetRasSuccessResult();
@@ -349,6 +360,9 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
     return GetRasSuccessResult();
   }
 
+  VLOG(2) << __func__ << " Create Entry(" << entry_name << ") with "
+          << hostname;
+
   RASENTRY entry;
   ZeroMemory(&entry, sizeof(RASENTRY));
   // For descriptions of each field (including valid values) see:
@@ -377,7 +391,8 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(),
                                        &entry, entry.dwSize, NULL, NULL);
   if (dw_ret != ERROR_SUCCESS) {
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret),
+                             "RasSetEntryProperties()");
   }
 
   if (const auto error = SetCredentials(entry_name.c_str(), username.c_str(),
