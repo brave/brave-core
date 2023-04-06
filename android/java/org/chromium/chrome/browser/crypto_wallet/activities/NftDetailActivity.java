@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
@@ -240,18 +241,20 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     }
 
     private void loadNftImage(String imageUrl) {
-        ImageLoader.downloadImage(imageUrl, this, false, mNftImageView, new ImageLoader.Callback() {
-            @Override
-            public boolean onLoadFailed() {
-                setNftImageAsNotAvailable();
-                return false;
-            }
-            @Override
-            public boolean onResourceReady(Drawable resource, Target<Drawable> target) {
-                target.onResourceReady(resource, new DrawableCrossFadeTransition(250, true));
-                return true;
-            }
-        });
+        ImageLoader.downloadImage(
+                imageUrl, Glide.with(this), false, mNftImageView, new ImageLoader.Callback() {
+                    @Override
+                    public boolean onLoadFailed() {
+                        setNftImageAsNotAvailable();
+                        return false;
+                    }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Target<Drawable> target) {
+                        target.onResourceReady(
+                                resource, new DrawableCrossFadeTransition(250, true));
+                        return true;
+                    }
+                });
     }
 
     private void setNftImageAsNotAvailable() {

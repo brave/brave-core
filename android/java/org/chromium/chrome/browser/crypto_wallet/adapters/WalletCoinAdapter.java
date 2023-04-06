@@ -24,6 +24,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
@@ -209,7 +211,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 if (walletListItemModel.hasNftImageLink()
                         && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
                     String url = nftDataModel.nftMetadata.mImageUrl;
-                    ImageLoader.downloadImage(url, context, false, holder.iconImg, null);
+                    ImageLoader.downloadImage(
+                            url, Glide.with(context), false, holder.iconImg, null);
                 } else {
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                             walletListItemModel.getBlockchainToken().contractAddress,
