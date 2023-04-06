@@ -38,6 +38,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       "/interstitial-style/NetworkError.css": "text/css",
       "/interstitial-style/CertificateError.css": "text/css",
       "/interstitial-style/SNSDomain.css": "text/css",
+      "/interstitial-style/IPFSPreference.css": "text/css",
       "/interstitial-icon/Generic.svg": "image/svg+xml",
       "/interstitial-icon/Cloud.svg": "image/svg+xml",
       "/interstitial-icon/Clock.svg": "image/svg+xml",
@@ -46,6 +47,8 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       "/interstitial-icon/Warning.svg": "image/svg+xml",
       "/interstitial-icon/DarkWarning.svg": "image/svg+xml",
       "/interstitial-icon/Carret.png": "image/png",
+      "/interstitial-icon/BraveIPFS.svg": "image/svg+xml",
+      "/interstitial-icon/IPFSBackground.svg": "image/svg+xml",
 
       // readermode
       "/\(InternalURL.Path.readermode.rawValue)/styles/Reader.css": "text/css",
