@@ -60,6 +60,7 @@ public class ErrorPageHandler: InternalSchemeResponse {
   private let errorHandlers: [InterstitialPageHandler] = [
     CertificateErrorPageHandler(),
     NetworkErrorPageHandler(),
+    IPFSErrorPageHandler(),
     GenericErrorPageHandler(),
   ]
 

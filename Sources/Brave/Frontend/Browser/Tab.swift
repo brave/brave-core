@@ -47,6 +47,7 @@ protocol TabDelegate {
   func showWalletNotification(_ tab: Tab, origin: URLOrigin)
   func updateURLBarWalletButton()
   func isTabVisible(_ tab: Tab) -> Bool
+  func reloadIPFSSchemeUrl(_ url: URL)
 }
 
 @objc
@@ -621,7 +622,11 @@ class Tab: NSObject {
 
     // If the current page is an error page, and the reload button is tapped, load the original URL
     if let url = webView?.url, let internalUrl = InternalURL(url), let page = internalUrl.originalURLFromErrorPage {
-      webView?.replaceLocation(with: page)
+      if page.isIPFSScheme {
+        tabDelegate?.reloadIPFSSchemeUrl(page)
+      } else {
+        webView?.replaceLocation(with: page)
+      }
       return
     }
 

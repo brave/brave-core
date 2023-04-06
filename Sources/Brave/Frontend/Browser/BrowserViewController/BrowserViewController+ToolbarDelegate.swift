@@ -108,24 +108,33 @@ extension BrowserViewController: TopToolbarDelegate {
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
     let isPrivateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
-    if !isPrivateMode, let url = topToolbar.currentURL, url.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension, let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) {
-      Task { @MainActor in
-        let currentStatus = await rpcService.snsResolveMethod()
-        switch currentStatus {
-        case .ask:
-          // show name service interstitial page
-          showSNSDomainInterstitialPage(originalURL: url, visitType: .unknown)
-        case .enabled:
-          if let resolvedURL = await resolveSNSHost(url.schemelessAbsoluteDisplayString, rpcService: rpcService) {
-            tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
-            return
-          }
-          tabManager.selectedTab?.loadRequest(URLRequest(url: url))
-        case .disabled:
-          tabManager.selectedTab?.reload()
-        @unknown default:
+    
+    if let url = topToolbar.currentURL {
+      if url.isIPFSScheme {
+        if !handleIPFSSchemeURL(url, visitType: .unknown) {
           tabManager.selectedTab?.reload()
         }
+      } else if !isPrivateMode, url.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension, let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) {
+        Task { @MainActor in
+          let currentStatus = await rpcService.snsResolveMethod()
+          switch currentStatus {
+          case .ask:
+            // show name service interstitial page
+            showSNSDomainInterstitialPage(originalURL: url, visitType: .unknown)
+          case .enabled:
+            if let resolvedURL = await resolveSNSHost(url.schemelessAbsoluteDisplayString, rpcService: rpcService) {
+              tabManager.selectedTab?.loadRequest(URLRequest(url: resolvedURL))
+              return
+            }
+            tabManager.selectedTab?.loadRequest(URLRequest(url: url))
+          case .disabled:
+            tabManager.selectedTab?.reload()
+          @unknown default:
+            tabManager.selectedTab?.reload()
+          }
+        }
+      } else {
+        tabManager.selectedTab?.reload()
       }
     } else {
       tabManager.selectedTab?.reload()
@@ -257,8 +266,44 @@ extension BrowserViewController: TopToolbarDelegate {
     return url
   }
   
+  @discardableResult
+  func handleIPFSSchemeURL(_ url: URL, visitType: VisitType) -> Bool {
+    guard !PrivateBrowsingManager.shared.isPrivateBrowsing else {
+      topToolbar.leaveOverlayMode()
+      if let errorPageHelper = tabManager.selectedTab?.getContentScript(name: ErrorPageHelper.scriptName) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
+        errorPageHelper.loadPage(IPFSErrorPageHandler.privateModeError, forUrl: url, inWebView: webView)
+      }
+      return true
+    }
+    
+    guard let ipfsPref = Preferences.Wallet.Web3IPFSOption(rawValue: Preferences.Wallet.resolveIPFSResources.value) else {
+      return false
+    }
+    
+    switch ipfsPref {
+    case .ask:
+      showIPFSInterstitialPage(originalURL: url, visitType: visitType)
+      return true
+    case .enabled:
+      if let resolvedUrl = braveCore.ipfsAPI.resolveGatewayUrl(for: url) {
+        finishEditingAndSubmit(resolvedUrl, visitType: visitType)
+        return true
+      }
+    case .disabled:
+      topToolbar.leaveOverlayMode()
+      if let errorPageHelper = tabManager.selectedTab?.getContentScript(name: ErrorPageHelper.scriptName) as? ErrorPageHelper, let webView = tabManager.selectedTab?.webView {
+        errorPageHelper.loadPage(IPFSErrorPageHandler.privateModeError, forUrl: url, inWebView: webView)
+      }
+      return true
+    }
+    
+    return false
+  }
+  
   @MainActor func submitValidURL(_ text: String, visitType: VisitType) async -> Bool {
-    if let fixupURL = URIFixup.getURL(text) {
+    if let url = URL(string: text), url.isIPFSScheme {
+      return handleIPFSSchemeURL(url, visitType: visitType)
+    } else if let fixupURL = URIFixup.getURL(text) {
       // Do not allow users to enter URLs with the following schemes.
       // Instead, submit them to the search engine like Chrome-iOS does.
       if !["file"].contains(fixupURL.scheme) {

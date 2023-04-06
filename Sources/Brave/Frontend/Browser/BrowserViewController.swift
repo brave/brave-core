@@ -1593,6 +1593,19 @@ public class BrowserViewController: UIViewController {
       updateWebViewPageZoom(tab: tab)
     }
   }
+  
+  func showIPFSInterstitialPage(originalURL: URL, visitType: VisitType) {
+    topToolbar.leaveOverlayMode()
+
+    guard let tab = tabManager.selectedTab, let encodedURL = originalURL.absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics), let internalUrl = URL(string: "\(InternalURL.baseUrl)/\(IPFSSchemeHandler.path)?url=\(encodedURL)") else {
+      return
+    }
+    let scriptHandler = tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler
+    scriptHandler?.originalURL = originalURL
+    scriptHandler?.visitType = visitType
+
+    tab.webView?.load(PrivilegedRequest(url: internalUrl) as URLRequest)
+  }
 
   func showSNSDomainInterstitialPage(originalURL: URL, visitType: VisitType) {
     topToolbar.leaveOverlayMode()
@@ -2485,6 +2498,7 @@ extension BrowserViewController: TabDelegate {
       CosmeticFiltersScriptHandler(tab: tab),
       FaviconScriptHandler(tab: tab),
       Web3NameServiceScriptHandler(tab: tab),
+      Web3IPFSScriptHandler(tab: tab),
       
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
@@ -2523,6 +2537,7 @@ extension BrowserViewController: TabDelegate {
     (tab.getContentScript(name: PlaylistScriptHandler.scriptName) as? PlaylistScriptHandler)?.delegate = self
     (tab.getContentScript(name: PlaylistFolderSharingScriptHandler.scriptName) as? PlaylistFolderSharingScriptHandler)?.delegate = self
     (tab.getContentScript(name: Web3NameServiceScriptHandler.scriptName) as? Web3NameServiceScriptHandler)?.delegate = self
+    (tab.getContentScript(name: Web3IPFSScriptHandler.scriptName) as? Web3IPFSScriptHandler)?.delegate = self
   }
 
   func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2663,6 +2678,10 @@ extension BrowserViewController: TabDelegate {
     } else {
       topToolbar.updateWalletButtonState(.inactive)
     }
+  }
+  
+  func reloadIPFSSchemeUrl(_ url: URL) {
+    handleIPFSSchemeURL(url, visitType: .unknown)
   }
 
   @MainActor

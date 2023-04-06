@@ -20,12 +20,14 @@ struct IPFSCustomGatewayView: View {
   }
   
   private let ipfsAPI: IpfsAPI
+  private let isForNFT: Bool
   @State private var url: String = "https://"
   @State private var setButtonStatus: SetButtonStatus = .disabled
   @State private var isPresentingWrongGatewayAlert: Bool = false
   
-  init(ipfsAPI: IpfsAPI) {
+  init(ipfsAPI: IpfsAPI, isForNFT: Bool = false) {
     self.ipfsAPI = ipfsAPI
+    self.isForNFT = isForNFT
   }
   
   var body: some View {
@@ -49,7 +51,8 @@ struct IPFSCustomGatewayView: View {
               let textEntered = newValue.withSecureUrlScheme
               self.url = textEntered
               
-              if let enteredURL = URL(string: textEntered), enteredURL != ipfsAPI.nftIpfsGateway {
+              let oldValue = isForNFT ? ipfsAPI.nftIpfsGateway : ipfsAPI.ipfsGateway
+              if let enteredURL = URL(string: textEntered), enteredURL != oldValue {
                 setButtonStatus = .enabled
               } else {
                 setButtonStatus = .disabled
@@ -62,7 +65,7 @@ struct IPFSCustomGatewayView: View {
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle(Strings.Wallet.nftGatewayTitle)
+    .navigationTitle(isForNFT ? Strings.Wallet.customizeIPFSNFTPublicGatewayNavTitle : Strings.Wallet.customizeIPFSPublicGatewayNavTitle)
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
       trailing: Button(action: {
@@ -88,7 +91,7 @@ struct IPFSCustomGatewayView: View {
       // SwiftUI bug, has to wait a bit (#7044: bug only exists
       // in iOS 15. Will revisit once iOS 15 support is removed)
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        if let url = ipfsAPI.nftIpfsGateway?.absoluteString {
+        if let url = isForNFT ? ipfsAPI.nftIpfsGateway?.absoluteString : ipfsAPI.ipfsGateway?.absoluteString {
           self.url = url
         }
       }
@@ -110,7 +113,11 @@ struct IPFSCustomGatewayView: View {
       do {
         let (data, _) = try await URLSession.shared.data(from: testURL)
         if String(data: data, encoding: .utf8) == IPFSCustomGatewayView.ipfsTestContent {
-          ipfsAPI.nftIpfsGateway = enteredURL
+          if isForNFT {
+            ipfsAPI.nftIpfsGateway = enteredURL
+          } else {
+            ipfsAPI.ipfsGateway = enteredURL
+          }
           setButtonStatus = .disabled
         } else {
           isPresentingWrongGatewayAlert = true

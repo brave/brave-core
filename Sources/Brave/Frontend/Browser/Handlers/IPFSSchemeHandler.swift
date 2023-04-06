@@ -6,20 +6,15 @@
 import Foundation
 import WebKit
 import Shared
+import BraveWallet
 
-public class SNSDomainHandler: InternalSchemeResponse {
-  public static let path = "web3/sns"
-  
-  /// The term of use page of Syndica server to resolve SNS domain
-  let snsThirdPartyTermsofUseLink: URL = URL(string: "https://syndica.io/terms-and-conditions/")!
-  
-  /// The privacy policy page of Syndica server to resolve SNS domain
-  let snsThirdPartyPrivacyPolicyLink: URL = URL(string: "https://syndica.io/privacy-policy/")!
+public class IPFSSchemeHandler: InternalSchemeResponse {
+  public static let path = "web3/ipfs"
   
   public func response(forRequest request: URLRequest) -> (URLResponse, Data)? {
     guard let url = request.url else { return nil }
     let response = InternalSchemeHandler.response(forUrl: url)
-    guard let path = Bundle.module.path(forResource: "SNSDomain", ofType: "html")
+    guard let path = Bundle.module.path(forResource: "IPFSPreference", ofType: "html")
     else {
       return nil
     }
@@ -31,11 +26,12 @@ public class SNSDomainHandler: InternalSchemeResponse {
     
     let variables = [
       "page_title": request.url?.displayURL?.absoluteDisplayString ?? "",
-      "error_title": Strings.Wallet.snsDomainInterstitialPageTitle,
-      "error_description": String.localizedStringWithFormat(Strings.Wallet.snsDomainInterstitialPageDescription, snsThirdPartyTermsofUseLink.absoluteString, Strings.Wallet.snsDomainInterstitialPageTAndU, snsThirdPartyPrivacyPolicyLink.absoluteString, Strings.Wallet.snsDomainInterstitialPagePrivacyPolicy),
+      "interstitial_ipfs_title": Strings.Wallet.web3IPFSInterstitialIPFSTitle,
+      "interstitial_ipfs_privacy": String.localizedStringWithFormat(Strings.Wallet.web3IPFSInterstitialIPFSPrivacy, WalletConstants.ipfsLearnMoreLink.absoluteString, Strings.learnMore.lowercased().capitalizeFirstLetter),
+      "interstitial_ipfs_public_gateway": Strings.Wallet.web3IPFSInterstitialIPFSPublicGateway,
       "button_disable": Strings.Wallet.snsDomainInterstitialPageButtonDisable,
-      "button_procced": Strings.Wallet.snsDomainInterstitialPageButtonProceed,
-      "message_handler": Web3NameServiceScriptHandler.messageHandlerName,
+      "button_procced": Strings.Wallet.web3IPFSInterstitialProceedButton,
+      "message_handler": Web3IPFSScriptHandler.messageHandlerName,
     ]
     
     variables.forEach { (arg, value) in

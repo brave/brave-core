@@ -63,6 +63,29 @@ extension Preferences {
         return
       }
     }
+    
+    public enum Web3IPFSOption: Int, Identifiable, CaseIterable {
+      case ask
+      case enabled
+      case disabled
+      
+      public var id: Int {
+        rawValue
+      }
+      
+      public var name: String {
+        switch self {
+        case .ask:
+          return Strings.Wallet.web3DomainOptionAsk
+        case .enabled:
+          return Strings.Wallet.web3DomainOptionEnabled
+        case .disabled:
+          return Strings.Wallet.web3DomainOptionDisabled
+        }
+      }
+    }
+    
+    public static let resolveIPFSResources = Option<Int>(key: "web3.resolve-ipfs-resources", default: Web3IPFSOption.ask.rawValue)
   }
 }
 
