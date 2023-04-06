@@ -10,7 +10,7 @@ cxx = "1.0"
 feed-rs = { git = "https://github.com/feed-rs/feed-rs", rev = "f88f21a65f997499962aacb2f746a82382547160" }
 log = "0.4.14"
 lazy_static = "1.4.0"
-regex = "1.7.3"
+regex = "1.5.5"
 
 [lib]
 name = "brave_news_cxx"
