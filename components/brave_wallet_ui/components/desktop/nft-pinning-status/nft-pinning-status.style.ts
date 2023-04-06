@@ -4,11 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+
+// types
+import { BraveWallet } from '../../../constants/types'
+
+// Shared styles
+import { WalletButton } from '../../shared/style'
+
+// Assets
 import Upload from '../../../assets/svg-icons/nft-ipfs/upload.svg'
 import Check from '../../../assets/svg-icons/nft-ipfs/check.svg'
 import Close from '../../../assets/svg-icons/close.svg'
-import { WalletButton } from '../../shared/style'
-import { BraveWallet } from '../../../constants/types'
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -22,9 +29,9 @@ export const StyledWrapper = styled.div`
 export const ContentWrapper = styled.div<{
   pinningStatus: BraveWallet.TokenPinStatusCode
 }>`
-  --success-background: rgba(213, 245, 218, 1);
-  --uploading-background: #fffcf0;
-  --failed-background: #fff0f2;
+  --success-background: ${leo.color.systemfeedback.successBackground};
+  --uploading-background: ${leo.color.systemfeedback.warningBackground};
+  --failed-background: ${leo.color.systemfeedback.errorBackground};
 
   @media (prefers-color-scheme: dark) {
     --failed-background: rgba(227, 36, 68, 0.2);
@@ -41,7 +48,7 @@ export const ContentWrapper = styled.div<{
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.palette.text02};
+  color: ${(p) => p.theme.color.text02};
   background-color: ${(p) =>
     (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS) ||
     (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING)
@@ -103,11 +110,7 @@ export const Text = styled.span`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: #C2C4CF;
-  @media (prefers-color-scheme: dark) {
-    color: #495057
-  }
-  
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const ReasonsTooltipWrapper = styled.div`
