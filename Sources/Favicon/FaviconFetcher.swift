@@ -159,33 +159,32 @@ public class FaviconFetcher {
     // Do not cache non-persistent icons to disk
     if persistent {
       do {
-        let data = try JSONEncoder().encode(favicon)
         let cachedURL = cacheURL(for: url)
-        SDImageCache.shared.memoryCache.setObject(data, forKey: cachedURL.absoluteString, cost: UInt(data.count))
-        SDImageCache.shared.diskCache.setData(data, forKey: cachedURL.absoluteString)
+        SDImageCache.shared.memoryCache.setObject(favicon, forKey: cachedURL.absoluteString)
+        SDImageCache.shared.diskCache.setData(try JSONEncoder().encode(favicon), forKey: cachedURL.absoluteString)
       } catch {
         Logger.module.error("Error Caching Favicon: \(error)")
       }
     } else {
       // Cache non-persistent icons to memory only
-      do {
-        let data = try JSONEncoder().encode(favicon)
-        SDImageCache.shared.memoryCache.setObject(data, forKey: cacheURL(for: url).absoluteString, cost: UInt(data.count))
-      } catch {
-        Logger.module.error("Error Caching Favicon: \(error)")
-      }
+      SDImageCache.shared.memoryCache.setObject(favicon, forKey: cacheURL(for: url).absoluteString)
     }
   }
 
   private static func getFromCache(for url: URL) -> Favicon? {
     let cachedURL = cacheURL(for: url)
-    guard let data = SDImageCache.shared.memoryCache.object(forKey: cachedURL.absoluteString) as? Data ??
-                     SDImageCache.shared.diskCache.data(forKey: cachedURL.absoluteString) else {
+    if let favicon = SDImageCache.shared.memoryCache.object(forKey: cachedURL.absoluteString) as? Favicon {
+      return favicon
+    }
+    
+    guard let data = SDImageCache.shared.diskCache.data(forKey: cachedURL.absoluteString) else {
       return nil
     }
 
     do {
-      return try JSONDecoder().decode(Favicon.self, from: data)
+      let favicon = try JSONDecoder().decode(Favicon.self, from: data)
+      SDImageCache.shared.memoryCache.setObject(favicon, forKey: cachedURL.absoluteString)
+      return favicon
     } catch {
       Logger.module.error("Error Decoding Favicon: \(error)")
     }
