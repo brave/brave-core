@@ -18,11 +18,6 @@ class LoginsScriptHandler: TabContentScript {
 
   private var snackBar: SnackBar?
 
-  // Used while handling authentication challenge
-  var logins: BrowserLogins {
-    return profile.logins
-  }
-
   required init(tab: Tab, profile: Profile, passwordAPI: BravePasswordAPI) {
     self.tab = tab
     self.profile = profile
@@ -81,107 +76,6 @@ class LoginsScriptHandler: TabContentScript {
         }
       }
     }
-  }
-
-  func setCredentials(_ login: LoginData) {
-    if login.password.isEmpty {
-      Logger.module.debug("Empty password")
-      return
-    }
-
-    Task { @MainActor in
-      let logins = try await profile.logins.getLoginsForProtectionSpace(
-        login.protectionSpace,
-        withUsername: login.username
-      )
-      Logger.module.debug("Found \(logins.count) logins.")
-      for saved in logins {
-        if let saved = saved {
-          if saved.password == login.password {
-            try await self.profile.logins.addUseOfLoginByGUID(saved.guid)
-            return
-          }
-          
-          self.promptUpdateFromLogin(login: saved, toLogin: login)
-          return
-        }
-      }
-      self.promptSave(login)
-    }
-  }
-
-  fileprivate func promptSave(_ login: LoginData) {
-    do {
-      try login.validate()
-    } catch {
-      return
-    }
-    
-    let promptMessage: String
-    if let username = login.username {
-      promptMessage = String(format: Strings.saveLoginUsernamePrompt, username, login.hostname)
-    } else {
-      promptMessage = String(format: Strings.saveLoginPrompt, login.hostname)
-    }
-
-    if let existingPrompt = self.snackBar {
-      tab?.removeSnackbar(existingPrompt)
-    }
-
-    snackBar = TimerSnackBar(text: promptMessage, img: UIImage(named: "shields-menu-icon", in: .module, compatibleWith: nil)!)
-    let dontSave = SnackButton(title: Strings.loginsHelperDontSaveButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.dontSaveButton") { bar in
-      self.tab?.removeSnackbar(bar)
-      self.snackBar = nil
-      return
-    }
-    let save = SnackButton(title: Strings.loginsHelperSaveLoginButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.saveLoginButton") { bar in
-      self.tab?.removeSnackbar(bar)
-      self.snackBar = nil
-      Task { @MainActor in
-        try await self.profile.logins.addLogin(login)
-      }
-    }
-    snackBar?.addButton(dontSave)
-    snackBar?.addButton(save)
-    tab?.addSnackbar(snackBar!)
-  }
-
-  private func promptUpdateFromLogin(login old: LoginData, toLogin new: LoginData) {
-    do {
-      try new.validate()
-    } catch {
-      return
-    }
-    
-    let guid = old.guid
-
-    let formatted: String
-    if let username = new.username {
-      formatted = String(format: Strings.updateLoginUsernamePrompt, username, new.hostname)
-    } else {
-      formatted = String(format: Strings.updateLoginPrompt, new.hostname)
-    }
-
-    if let existingPrompt = self.snackBar {
-      tab?.removeSnackbar(existingPrompt)
-    }
-
-    snackBar = TimerSnackBar(text: formatted, img: UIImage(named: "key", in: .module, compatibleWith: nil)!)
-    let dontSave = SnackButton(title: Strings.loginsHelperDontUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.donttUpdateButton") { bar in
-      self.tab?.removeSnackbar(bar)
-      self.snackBar = nil
-      return
-    }
-    let update = SnackButton(title: Strings.loginsHelperUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.updateButton") { bar in
-      self.tab?.removeSnackbar(bar)
-      self.snackBar = nil
-      Task { @MainActor in
-        try await self.profile.logins.updateLoginByGUID(guid, new: new, significant: new.isSignificantlyDifferentFrom(old))
-      }
-    }
-    snackBar?.addButton(dontSave)
-    snackBar?.addButton(update)
-    tab?.addSnackbar(snackBar!)
   }
 
   private func updateORSaveCredentials(for url: URL, script: [String: Any]) {

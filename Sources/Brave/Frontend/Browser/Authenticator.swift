@@ -4,19 +4,39 @@
 
 import Foundation
 import Shared
-import Storage
 import UIKit
 import os.log
+import BraveShared
 
 class Authenticator {
-  fileprivate static let maxAuthenticationAttempts = 3
+  
+  class LoginData {
+    var guid: String
+    var credentials: URLCredential
+    let protectionSpace: URLProtectionSpace
+      
+    init(credentials: URLCredential, protectionSpace: URLProtectionSpace) {
+      self.guid = Bytes.generateGUID()
+      self.credentials = credentials
+      self.protectionSpace = protectionSpace
+    }
+    
+  }
+
+  class LoginDataError: Error {
+    let description: String
+    init(description: String) {
+      self.description = description
+    }
+  }
+  
+  private static let maxAuthenticationAttempts = 3
 
   static func handleAuthRequest(
     _ viewController: UIViewController,
     credential: URLCredential?,
     protectionSpace: URLProtectionSpace,
-    previousFailureCount: Int,
-    loginsHelper: LoginsScriptHandler?
+    previousFailureCount: Int
   ) async throws -> LoginData {
     var credential = credential
     // If there have already been too many login attempts, we'll just fail.
@@ -28,7 +48,7 @@ class Authenticator {
     if let proposed = credential {
       if !(proposed.user?.isEmpty ?? true) {
         if previousFailureCount == 0 {
-          return Login.createWithCredential(credential!, protectionSpace: protectionSpace)
+          return LoginData(credentials: proposed, protectionSpace: protectionSpace)
         }
       } else {
         credential = nil
@@ -37,73 +57,14 @@ class Authenticator {
 
     // If we have some credentials, we'll show a prompt with them.
     if let credential = credential {
-      return try await promptForUsernamePassword(viewController, credentials: credential, protectionSpace: protectionSpace, loginsHelper: loginsHelper)
-    }
-
-    // Otherwise, try to look them up and show the prompt.
-    if let loginsHelper = loginsHelper {
-      let credentials = await findMatchingCredentialsForChallenge(protectionSpace, fromLoginsProvider: loginsHelper.logins)
-      return try await self.promptForUsernamePassword(viewController, credentials: credentials, protectionSpace: protectionSpace, loginsHelper: loginsHelper)
+      return try await promptForUsernamePassword(viewController, credentials: credential, protectionSpace: protectionSpace)
     }
 
     // No credentials, so show an empty prompt.
-    return try await self.promptForUsernamePassword(viewController, credentials: nil, protectionSpace: protectionSpace, loginsHelper: nil)
+    return try await self.promptForUsernamePassword(viewController, credentials: nil, protectionSpace: protectionSpace)
   }
 
-  static func findMatchingCredentialsForChallenge(_ protectionSpace: URLProtectionSpace, fromLoginsProvider loginsProvider: BrowserLogins) async -> URLCredential? {
-    guard let cursor = try? await loginsProvider.getLoginsForProtectionSpace(protectionSpace),
-          cursor.count >= 1 else {
-      return nil
-    }
-    
-    let logins = cursor.asArray()
-    var credentials: URLCredential?
-    
-    // It is possible that we might have duplicate entries since we match against host and scheme://host.
-    // This is a side effect of https://bugzilla.mozilla.org/show_bug.cgi?id=1238103.
-    if logins.count > 1 {
-      credentials =
-      (logins.first(where: { login in
-        (login.protectionSpace.`protocol` == protectionSpace.`protocol`) && !login.hasMalformedHostname
-      }))?.credentials
-      
-      let malformedGUIDs: [GUID] = logins.compactMap { login in
-        if login.hasMalformedHostname {
-          return login.guid
-        }
-        return nil
-      }
-      
-      do {
-        try await loginsProvider.removeLoginsWithGUIDs(malformedGUIDs)
-        Logger.module.debug("Removed malformed logins.")
-      } catch {
-        Logger.module.error("Failed to remove malformed logins.")
-      }
-    }
-    
-    // Found a single entry but the schemes don't match. This is a result of a schemeless entry that we
-    // saved in a previous iteration of the app so we need to migrate it. We only care about the
-    // the username/password so we can rewrite the scheme to be correct.
-    else if logins.count == 1 && logins[0].protectionSpace.`protocol` != protectionSpace.`protocol` {
-      let login = logins[0]
-      credentials = login.credentials
-      let new = Login(credential: login.credentials, protectionSpace: protectionSpace)
-      do {
-        try await loginsProvider.updateLoginByGUID(login.guid, new: new, significant: true)
-        return credentials
-      } catch { }
-    }
-    
-    // Found a single entry that matches the scheme and host - good to go.
-    else {
-      credentials = logins[0].credentials
-    }
-    
-    return credentials
-  }
-
-  @MainActor fileprivate static func promptForUsernamePassword(_ viewController: UIViewController, credentials: URLCredential?, protectionSpace: URLProtectionSpace, loginsHelper: LoginsScriptHandler?) async throws -> LoginData {
+  @MainActor private static func promptForUsernamePassword(_ viewController: UIViewController, credentials: URLCredential?, protectionSpace: URLProtectionSpace) async throws -> LoginData {
     if protectionSpace.host.isEmpty {
       print("Unable to show a password prompt without a hostname")
       throw LoginDataError(description: "Unable to show a password prompt without a hostname")
@@ -122,42 +83,37 @@ class Authenticator {
       }
       
       // Add a button to log in.
-      let action = UIAlertAction(
-        title: Strings.authPromptAlertLogInButtonTitle,
-        style: .default
-      ) { (action) -> Void in
+      let action = UIAlertAction(title: Strings.authPromptAlertLogInButtonTitle, style: .default) { _ in
         guard let user = alert.textFields?[0].text, let pass = alert.textFields?[1].text else {
           continuation.resume(throwing: LoginDataError(description: "Username and Password required"))
           return
         }
         
-        let login = Login.createWithCredential(URLCredential(user: user, password: pass, persistence: .forSession), protectionSpace: protectionSpace)
-        continuation.resume(returning: login)
-        loginsHelper?.setCredentials(login)
+        let loginData = LoginData(credentials: URLCredential(user: user, password: pass, persistence: .forSession), protectionSpace: protectionSpace)
+        continuation.resume(returning: loginData)
       }
       alert.addAction(action, accessibilityIdentifier: "authenticationAlert.loginRequired")
       
       // Add a cancel button.
-      let cancel = UIAlertAction(title: Strings.authPromptAlertCancelButtonTitle, style: .cancel) { (action) -> Void in
+      let cancel = UIAlertAction(title: Strings.authPromptAlertCancelButtonTitle, style: .cancel) { _ in
         continuation.resume(throwing: LoginDataError(description: "Save password cancelled"))
       }
       alert.addAction(cancel, accessibilityIdentifier: "authenticationAlert.cancel")
       
       // Add a username textfield.
-      alert.addTextField { (textfield) -> Void in
+      alert.addTextField { textfield in
         textfield.placeholder = Strings.authPromptAlertUsernamePlaceholderText
         textfield.text = credentials?.user
       }
       
       // Add a password textfield.
-      alert.addTextField { (textfield) -> Void in
+      alert.addTextField { textfield in
         textfield.placeholder = Strings.authPromptAlertPasswordPlaceholderText
         textfield.isSecureTextEntry = true
         textfield.text = credentials?.password
       }
       
-      viewController.present(alert, animated: true) { () -> Void in }
+      viewController.present(alert, animated: true)
     }
   }
-
 }

@@ -543,7 +543,7 @@ extension BrowserViewController: WKNavigationDelegate {
         return (.cancelAuthenticationChallenge, nil)
       }
     }
-
+    
     // URLAuthenticationChallenge isn't Sendable atm
     let protectionSpace = challenge.protectionSpace
     let credential = challenge.proposedCredential
@@ -559,15 +559,13 @@ extension BrowserViewController: WKNavigationDelegate {
       
       // The challenge may come from a background tab, so ensure it's the one visible.
       tabManager.selectTab(tab)
-      
-      let loginsHelper = tab.getContentScript(name: LoginsScriptHandler.scriptName) as? LoginsScriptHandler
+
       do {
         let credentials = try await Authenticator.handleAuthRequest(
           self,
           credential: credential,
           protectionSpace: protectionSpace,
-          previousFailureCount: previousFailureCount,
-          loginsHelper: loginsHelper
+          previousFailureCount: previousFailureCount
         )
         return (.useCredential, credentials.credentials)
       } catch {

@@ -8,17 +8,22 @@ import Shared
 import Storage
 import XCTest
 
+class MockFiles: FileAccessor {
+  init() {
+    let docPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0]
+    super.init(rootPath: (docPath as NSString).appendingPathComponent("testing"))
+  }
+}
+
 open class MockProfile: Profile {
 
   // Read/Writeable properties for mocking
   public var files: FileAccessor
-  public var logins: BrowserLogins
 
   fileprivate let name: String = "mockaccount"
 
   init() {
     files = MockFiles()
-    logins = MockLogins(files: files)
   }
 
   public func localName() -> String {

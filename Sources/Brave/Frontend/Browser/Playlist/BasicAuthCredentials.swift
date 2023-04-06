@@ -12,34 +12,6 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
   init(for domains: [String]) {
     self.domains = domains
   }
-  
-  @MainActor
-  private func loginsForChallenge(protectionSpace: URLProtectionSpace) async -> URLCredential? {
-    guard let profile = UIApplication.shared.keyWindow?.windowScene?.browserViewController?.profile else {
-      return nil
-    }
-    
-    do {
-      let cursor = try await profile.logins.getLoginsForProtectionSpace(protectionSpace)
-      guard cursor.count >= 1 else {
-        return nil
-      }
-      
-      let logins = cursor.asArray()
-      
-      if logins.count > 1 {
-        return (logins.first(where: { login in
-          (login.protectionSpace.protocol == protectionSpace.protocol) && !login.hasMalformedHostname
-        }))?.credentials
-      } else if logins.count == 1, logins.first?.protectionSpace.protocol != protectionSpace.protocol {
-        return logins.first?.credentials
-      }
-      
-      return logins.first?.credentials
-    } catch {
-      return nil
-    }
-  }
 
   func urlSession(
     _ session: URLSession,
@@ -68,13 +40,9 @@ class BasicAuthCredentialsManager: NSObject, URLSessionDataDelegate {
       return (.useCredential, proposedCredential)
     }
 
-    // Lookup the credentials
-    // If there is no profile or the challenge is not an auth challenge, reject the challenge
-    guard let credential = await loginsForChallenge(protectionSpace: challenge.protectionSpace) else {
-      return (.rejectProtectionSpace, nil)
-    }
-      
-    return (.useCredential, credential)
+
+    // No proposed credential - reject challenge
+    return (.rejectProtectionSpace, nil)
   }
 
   func urlSession(

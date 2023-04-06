@@ -47,7 +47,6 @@ class BraveSearchManager: NSObject {
   }
 
   private var cancellables: Set<AnyCancellable> = []
-  private static var cachedCredentials: URLCredential?
     
   static let validDomains = ["search.brave.com", "search.brave.software",
                              "search.bravesoftware.com", "safesearch.brave.com",
@@ -254,38 +253,6 @@ class BraveSearchManager: NSObject {
 // The BraveSearch feature can be hidden behind an authentication system.
 // This code helps passing all auth info to the requests we make.
 extension BraveSearchManager: URLSessionDataDelegate {
-
-  @MainActor
-  private func findLoginsForProtectionSpace(
-    profile: Profile,
-    protectionSpace: URLProtectionSpace
-  ) async -> URLCredential? {
-    do {
-      let cursor = try await profile.logins.getLoginsForProtectionSpace(protectionSpace)
-      guard cursor.count >= 1 else {
-        return nil
-      }
-      
-      let logins = cursor.asArray()
-      var credentials: URLCredential?
-      
-      if logins.count > 1 {
-        credentials =
-        (logins.first(where: { login in
-          (login.protectionSpace.`protocol` == protectionSpace.`protocol`) && !login.hasMalformedHostname
-        }))?.credentials
-      } else if logins.count == 1, logins.first?.protectionSpace.`protocol` != protectionSpace.`protocol` {
-        credentials = logins.first?.credentials
-      } else {
-        credentials = logins.first?.credentials
-      }
-      
-      return credentials
-    } catch {
-      return nil
-    }
-  }
-
   func urlSession(
     _ session: URLSession,
     didReceive challenge: URLAuthenticationChallenge
@@ -307,27 +274,14 @@ extension BraveSearchManager: URLSessionDataDelegate {
       return (.rejectProtectionSpace, nil)
     }
 
-    if let credentials = BraveSearchManager.cachedCredentials {
-      return (.useCredential, credentials)
-    }
-
     if let proposedCredential = challenge.proposedCredential,
       !(proposedCredential.user?.isEmpty ?? true),
       challenge.previousFailureCount == 0 {
       return (.useCredential, proposedCredential)
     }
 
-    // Lookup the credentials
-    // If there is no profile or the challenge is not an auth challenge, reject the challenge
-    guard let credential = await findLoginsForProtectionSpace(
-      profile: profile,
-      protectionSpace: challenge.protectionSpace
-    ) else {
-      return (.rejectProtectionSpace, nil)
-    }
-    
-    BraveSearchManager.cachedCredentials = credential
-    return (.useCredential, credential)
+    // No proposed credential - reject challenge
+    return (.rejectProtectionSpace, nil)
   }
 
   func urlSession(
