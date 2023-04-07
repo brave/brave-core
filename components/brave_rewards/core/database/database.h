@@ -48,8 +48,7 @@ class Database {
   explicit Database(LedgerImpl* ledger);
   virtual ~Database();
 
-  void Initialize(bool execute_create_script,
-                  ledger::LegacyResultCallback callback);
+  void Initialize(ledger::LegacyResultCallback callback);
 
   void Close(ledger::LegacyResultCallback callback);
 

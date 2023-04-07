@@ -35,7 +35,7 @@ class MockLedgerImpl : private AddMockLedgerClient, public LedgerImpl {
 
   database::MockDatabase* mock_database();
 
-  MOCK_METHOD2(InitializeDatabase, void(bool, LegacyResultCallback));
+  MOCK_METHOD1(InitializeDatabase, void(LegacyResultCallback));
 
   MOCK_METHOD0(database, database::Database*());
 
