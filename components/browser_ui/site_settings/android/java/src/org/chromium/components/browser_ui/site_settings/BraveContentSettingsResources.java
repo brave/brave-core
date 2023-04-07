@@ -29,6 +29,11 @@ public class BraveContentSettingsResources extends ContentSettingsResources {
                         R.string.autoplay_title, ContentSettingValues.ALLOW,
                         ContentSettingValues.BLOCK,
                         R.string.website_settings_category_autoplay_allowed, 0);
+            case ContentSettingsType.BRAVE_GOOGLE_SIGN_IN:
+                return new ResourceItem(R.drawable.ic_person_24dp, R.string.google_sign_in_title,
+                        ContentSettingValues.ASK, ContentSettingValues.BLOCK,
+                        R.string.website_settings_category_google_sign_in_ask,
+                        R.string.website_settings_category_google_sign_in_block);
         }
 
         return (ResourceItem) BraveReflectionUtil.InvokeMethod(ContentSettingsResources.class, null,

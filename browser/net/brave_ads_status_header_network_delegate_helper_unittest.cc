@@ -10,7 +10,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "chrome/test/base/testing_profile.h"

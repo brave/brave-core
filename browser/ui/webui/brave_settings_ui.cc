@@ -36,6 +36,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 #include "extensions/buildflags/buildflags.h"
+#include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 #include "brave/browser/ui/webui/settings/pin_shortcut_handler.h"
@@ -54,6 +55,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
 #endif
 
@@ -77,6 +79,10 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   web_ui->AddMessageHandler(
       std::make_unique<BraveTorSnowflakeExtensionHandler>());
+  if (base::FeatureList::IsEnabled(kExtensionsManifestV2)) {
+    web_ui->AddMessageHandler(
+        std::make_unique<BraveExtensionsManifestV2Handler>());
+  }
 #endif
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
   web_ui->AddMessageHandler(std::make_unique<PinShortcutHandler>());
@@ -118,6 +124,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
           brave_wallet::features::kNativeBraveWalletFeature));
   html_source->AddBoolean("isBraveWalletAllowed",
                           brave_wallet::IsAllowedForContext(profile));
+  html_source->AddBoolean("isForgetFirstPartyStorageFeatureEnabled",
+                          base::FeatureList::IsEnabled(
+                              net::features::kBraveForgetFirstPartyStorage));
   html_source->AddBoolean("isBraveRewardsSupported",
                           brave_rewards::IsSupportedForProfile(profile));
 
@@ -129,6 +138,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           ShouldExposeElementsForTesting());
 
   html_source->AddBoolean("enable_extensions", BUILDFLAG(ENABLE_EXTENSIONS));
+
+  html_source->AddBoolean("extensionsManifestV2Feature",
+                          base::FeatureList::IsEnabled(kExtensionsManifestV2));
 }
 
 // static

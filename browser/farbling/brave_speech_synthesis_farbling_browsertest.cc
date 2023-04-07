@@ -83,11 +83,6 @@ class BraveSpeechSynthesisFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(web_contents());
-  }
-
  private:
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
@@ -104,17 +99,18 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   // Farbling level: off
   // The voices list should be the real voices list.
   AllowFingerprinting(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   std::string off_voices_b =
       EvalJs(web_contents(), kTitleScript).ExtractString();
   ASSERT_NE("failed", off_voices_b);
 
   // On platforms without any voices, the rest of this test is invalid.
-  if (off_voices_b == "")
+  if (off_voices_b == "") {
     return;
+  }
 
   AllowFingerprinting(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   std::string off_voices_z =
       EvalJs(web_contents(), kTitleScript).ExtractString();
   ASSERT_NE("failed", off_voices_z);
@@ -124,11 +120,11 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   // Farbling level: default
   // The voices list is farbled per domain.
   SetFingerprintingDefault(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   std::string default_voices_b =
       EvalJs(web_contents(), kTitleScript).ExtractString();
   SetFingerprintingDefault(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   std::string default_voices_z =
       EvalJs(web_contents(), kTitleScript).ExtractString();
   // The farbled voices list should be different from the unfarbled voices
@@ -142,11 +138,11 @@ IN_PROC_BROWSER_TEST_F(BraveSpeechSynthesisFarblingBrowserTest, FarbleVoices) {
   // Farbling level: maximum
   // The voices list is empty.
   BlockFingerprinting(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   auto max_voices_b = EvalJs(web_contents(), kTitleScript);
   EXPECT_EQ("", max_voices_b);
   BlockFingerprinting(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   auto max_voices_z = EvalJs(web_contents(), kTitleScript);
   EXPECT_EQ("", max_voices_z);
 }

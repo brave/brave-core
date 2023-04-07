@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sw">
+<translation id="3478449063771497234">Taarifa zimelemazwa</translation>
+<translation id="7466579932043491502">Zawadi za Brave zinaweza kutofanya kazi wakati taarifa zimelemazwa.</translation>
+<translation id="4259212006412783790">WASHA</translation>
+<translation id="6112331814131703370">Zuia Notisi za 'Badilisha Utumie Programu'</translation>
 <translation id="4744921452903670666">Tuambie unachofikiri!</translation>
 <translation id="2524310205387880526">Kadiria Brave</translation>
 <translation id="4104400246019119780">Asante!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Zawadi zako za Matangazo za <ph name="MONTH_VALUE"/> zimefika!</translation>
 <translation id="2716238748894345194">Zawadi za <ph name="MONTH_VALUE"/>: BAT <ph name="TOKEN"/></translation>
 <translation id="1649629664206601032">Umesalia na siku <ph name="TOKEN"/>ili kudai</translation>
-<translation id="2323069945529668668">Ah oh!</translation>
-<translation id="7510166204621526816">Seva ya Zawadi za Brave haitoi majibu. Tutaishughulikia haraka iwezekanavyo.</translation>
 <translation id="683765328936486920">kwenye YouTube</translation>
 <translation id="8969049974285901797">kwenye Twitch</translation>
 <translation id="3101693828171454453">haitoshi <ph name="TOKEN"/>s</translation>
@@ -611,7 +613,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="5050890334032852465">Hifadhi orodha kaguzi ya akaunti</translation>
 <translation id="7755766175599167100">Tafuta tokeni</translation>
 <translation id="3835223348537121988">Salio:</translation>
-<translation id="6888491517683356528">Nenda kwenye Ramp</translation>
+<translation id="3956169227169516344">Teua Njia ya Ununuzi</translation>
 <translation id="8488282162676695335">Pochi ya Brave</translation>
 <translation id="3784455785234192852">Kufunga</translation>
 <translation id="8796429300536029044">Maelezo ya NFT</translation>
@@ -625,6 +627,10 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="414639769490080648">Idadi ya dakika za kusubiri hadi Brave Wallet ifungwe kiotomatiki</translation>
 <translation id="4993345308607970390">Weka Pochi ya Brave Upya</translation>
 <translation id="4322846864135539519">Una uhakika kwamba unataka kuweka Zawadi zako za Brave upya? Ikiwa nakala ya pochi yako haijahifadhiwa, kuweka upya kutafanya upoteze data yote ya akaunti (ikiwa ni pamoja na fedha zozote zinazohusika). Charaza "<ph name="CONFIRMATION_PHRASE"/>" ili uthibitishe.</translation>
+<translation id="6915083716464390008">Chagua moja kati ya machaguo yanayofuata</translation>
+<translation id="7667423728712601865">Nunua crypto kwa Visa au Mastercard.</translation>
+<translation id="3101839349578102016">Ununuzi wa papo hapo kwa akaunti yako ya benki. Ada za chini.</translation>
+<translation id="7269640984027668973">Nunua kwa <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Futa maelezo ya muamala na nonsi</translation>
 <translation id="5693968582510626466">Kufuta miamala kunaweza kuwa muhimu kwa wasanidi au wakati wa kusafisha hali kwenye seva ya ndani</translation>
 <translation id="5421107279168565467">Una uhakika kwamba unataka kuweka upya maelezo ya muamala na nonsi? Chaguo hili mara nyingi hutumiwa na wasanidi wanaoendesha seva ya ndani ya jaribio. Charaza "<ph name="CONFIRMATION_PHRASE"/>" ili kuthibitisha.</translation>
@@ -799,7 +805,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="3506416339268164412">Anwani ya kupokea ni anwani ya mkataba wa vocha ya zawadi.</translation>
 <translation id="3494964159182650590">Muhtasari wa Zawadi</translation>
 <translation id="590733288489975971">Zawadi kutoka kwenye Matangazo</translation>
-<translation id="207268487070188114">Bahshishi ya Wakati Mmoja</translation>
+<translation id="2613359062756190460">Michango ya Mara Moja</translation>
 <translation id="7577100371127227294">Zawadi za Kila Mwezi</translation>
 <translation id="7091980679045978090">Mapato yanayokadiriwa</translation>
 <translation id="1346059596910821859">Mchango</translation>

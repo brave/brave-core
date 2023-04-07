@@ -55,6 +55,7 @@ generate_grd("build_grd") {
     "images/permissions_banner_dark.svg",
     "images/safe_browsing_banner.svg",
     "images/safe_browsing_banner_dark.svg",
+    "images/warning_triangle.svg",
   ]
   input_files_base_dir = rebase_path(".", "//")
 
@@ -77,5 +78,5 @@ preprocess_if_expr("preprocess") {
   out_folder =
       "$root_gen_dir/chrome/browser/resources/settings/$preprocess_folder"
 
-  in_files = brave_settings_local_files
+  in_files = brave_settings_local_ts_files + brave_settings_local_html_files
 }

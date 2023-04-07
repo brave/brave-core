@@ -10,15 +10,6 @@ export interface StyleProps {
   alignment: 'right' | 'left'
 }
 
-export const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: 100%;
-  margin-bottom: 24px;
-`
-
 export const TopRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -77,6 +68,7 @@ export const LoadIconWrapper = styled.div`
 `
 export const MarketDataIframe = styled.iframe`
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  min-height: calc(100vh - 172px);
   border: none;
 `

@@ -122,9 +122,7 @@ std::vector<mojom::BlockchainTokenPtr> BlockchainRegistry::GetBuyTokens(
 
   for (const auto& provider : provider_set) {
     const std::vector<mojom::BlockchainToken>* buy_tokens = nullptr;
-    if (provider == mojom::OnRampProvider::kWyre) {
-      buy_tokens = &GetWyreBuyTokens();
-    } else if (provider == mojom::OnRampProvider::kRamp) {
+    if (provider == mojom::OnRampProvider::kRamp) {
       buy_tokens = &GetRampBuyTokens();
     } else if (provider == mojom::OnRampProvider::kSardine) {
       buy_tokens = &GetSardineBuyTokens();

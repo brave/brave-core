@@ -177,10 +177,12 @@ interface SolanaProvider {
   // Transaction with signature in wire format.
   SignTransaction(SolanaSignTransactionParam param)
     => (SolanaProviderError error, string error_message,
-        array<uint8> serialized_tx);
+        array<uint8> serialized_tx,
+        SolanaMessageVersion version);
   SignAllTransactions(array<SolanaSignTransactionParam> params)
     => (SolanaProviderError error, string error_message,
-        array<array<uint8>> serialized_txs);
+        array<array<uint8>> serialized_txs,
+        array<SolanaMessageVersion> versions);
   // It takes a base58 encoded serialized Message and return an object
   // containing both base58 encoded public key and signature as
   // { publicKey: <base58 encoded string>,
@@ -265,6 +267,17 @@ interface BraveWalletPinServiceObserver {
   OnLocalNodeStatusChanged(bool running);
 };
 
+enum TokenValidationResult {
+  // All is ok
+  kValidationPassed,
+  // Token should be repinned
+  kValidationFailed,
+  // Should retry validation later
+  kValidationError,
+  // Token is unsupported
+  kValidationIgnored
+};
+
 // Low-level interface for token pinning.
 // String service argument is used to select on which pinning
 // service operation should be performed.
@@ -283,8 +296,7 @@ interface WalletPinService {
   GetTokenStatus(BlockchainToken token) => (TokenPinOverview? status,
                                             PinError? error);
   // Checks whether token is pinned correctly.
-  Validate(BlockchainToken token, string? service) => (bool result,
-                                                       PinError? error);
+  Validate(BlockchainToken token, string? service) => (TokenValidationResult result);
   // Returns whether IPFS localnode is currently running.
   IsLocalNodeRunning() => (bool result);
 
@@ -337,7 +349,16 @@ interface PageHandlerFactory {
                     pending_receiver<BraveWalletP3A> brave_wallet_p3a,
                     pending_receiver<WalletPinService> brave_wallet_pin_service,
                     pending_receiver<WalletAutoPinService>
-                        brave_wallet_auto_pin_service);
+                        brave_wallet_auto_pin_service,
+                    pending_receiver<IpfsService> brave_wallet_ipfs_service);
+};
+
+// Lifetime option in sync with CreatePermissionLifetimeOptions()
+enum PermissionLifetimeOption {
+  kPageClosed = 0,
+  k24Hours = 1,
+  k7Days = 2,
+  kForever = 3
 };
 
 // Browser-side handler for requests from WebUI page.
@@ -348,7 +369,7 @@ interface PanelHandler {
   // Notify the backend that the dialog should be closed.
   CloseUI();
 
-  ConnectToSite(array<string> accounts);
+  ConnectToSite(array<string> accounts, PermissionLifetimeOption option);
   CancelConnectToSite();
   SetCloseOnDeactivate(bool close);
   Focus();
@@ -605,6 +626,7 @@ struct BlockchainToken {
   string logo;
   bool is_erc20;
   bool is_erc721;
+  bool is_erc1155;
   bool is_nft;
   string symbol;
   int32 decimals;
@@ -652,10 +674,9 @@ interface KeyringServiceObserver {
 };
 
 enum OnRampProvider {
-  kWyre = 0,
-  kRamp = 1,
-  kSardine = 2,
-  kTransak = 3
+  kRamp = 0,
+  kSardine = 1,
+  kTransak = 2
 };
 
 enum OffRampProvider {
@@ -663,6 +684,8 @@ enum OffRampProvider {
 };
 
 // List of tokens and coins that are supported.
+// is_nft property in the returned registry tokens is not reliable, the value is based
+// on the value of is_erc721 only and doesn't consider Solana NFTs and ERC1155 NFTs.
 interface BlockchainRegistry {
   // Obtains token information by an address lookup.
   GetTokenByAddress(string chain_id, CoinType coin, string address) => (BlockchainToken? token);
@@ -833,6 +856,9 @@ interface AssetRatioService {
 
   // Obtain token info via contract address through etherscan API.
   // This is only for Ethereum mainnet.
+  // Note: The is_nft property of the token is not reliable because
+  // the value is based on the value of is_erc721 only and doesn't
+  // consider Solana NFTs and ERC1155 NFTs.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
 
   // Obtain list of top currencies and their market data
@@ -863,6 +889,11 @@ interface SwapService {
   // Obtains whether the given Solana token mint should have fees for Jupiter
   // swaps.
   HasJupiterFeesForTokenMint(string mint) => (bool result);
+};
+
+interface IpfsService {
+  TranslateToNFTGatewayURL(string url) => (string? translated_url);
+  ExtractIPFSUrlFromGatewayLikeUrl(string url) => (string? ipfs_url);
 };
 
 interface JsonRpcServiceObserver {
@@ -936,6 +967,8 @@ const string kCeloMainnetChainId = "0xa4ec";
 const string kOptimismMainnetChainId = "0xa";
 const string kAuroraMainnetChainId = "0x4e454152";
 const string kArbitrumMainnetChainId = "0xa4b1";
+const string kFilecoinEthereumMainnetChainId = "0x13a";  // Filecoin eth mainnet
+const string kFilecoinEthereumTestnetChainId = "0x4cb2f";  // Filecoin eth calibration
 const string kSolanaMainnet = "0x65";
 const string kSolanaTestnet = "0x66";
 const string kSolanaDevnet = "0x67";
@@ -1107,6 +1140,7 @@ interface JsonRpcService {
 
   // Unstoppable Domains lookups
   UnstoppableDomainsGetWalletAddr(string domain, BlockchainToken? token) => (string address, ProviderError error, string error_message);
+  UnstoppableDomainsResolveDns(string domain) => (url.mojom.Url? url, ProviderError error, string error_message);
 
   // Used for making requests to the currently selected EVM compatible node for
   // coin ETH and other nodes with corresponding coin types
@@ -1140,7 +1174,7 @@ interface JsonRpcService {
       (string amount, uint8 decimals, string uiAmountString,
        SolanaProviderError error, string error_message);
   // Returns the metadata json associated with the NFT account address
-  GetSolTokenMetadata(string token_mint_address) => (string response, SolanaProviderError error, string error_message);
+  GetSolTokenMetadata(string chain_id, string token_mint_address) => (string token_url, string response, SolanaProviderError error, string error_message);
 };
 
 enum TransactionStatus {
@@ -1348,6 +1382,9 @@ interface BraveWalletServiceObserver {
 
   // Fired when a discovered asset query completes
   OnDiscoverAssetsCompleted(array<BlockchainToken> discovered_assets);
+
+  // Fired when wallet service is being reset
+  OnResetWallet();
 };
 
 interface BraveWalletServiceTokenObserver {
@@ -1539,14 +1576,19 @@ interface BraveWalletService {
 
   DiscoverAssetsOnAllSupportedChains();
 
+  GetNftDiscoveryEnabled() => (bool enabled);
+
+  // Calling this setter should be approved by privacy review.
+  SetNftDiscoveryEnabled(bool enabled);
+
   // Resets the keyring and the related preferences
   Reset();
 };
 
 // For reporting wallet related P3A metrics.
 interface BraveWalletP3A {
-  // Called when the ethereum provider type is evaluated after page load.
-  ReportEthereumProvider(EthereumProviderType provider_type);
+  // Called when the wallet provider type is evaluated after page load.
+  ReportJSProvider(JSProviderType provider_type, CoinType coin_type, bool use_native_wallet_enabled, bool allow_provider_overwrite);
 
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
@@ -1564,7 +1606,7 @@ enum OnboardingAction {
   RestoredWallet = 2
 };
 
-enum EthereumProviderType {
+enum JSProviderType {
   None = 0,
   ThirdParty = 1,
   Native = 2
@@ -1584,8 +1626,15 @@ struct EncryptionKeyRequest {
   string? message;
 };
 
+struct OptionalUint8 {
+  uint8 val;
+};
+
 struct SolanaAccountMeta {
+  // Account's address or lookup table address.
   string pubkey;
+  // Index of the account address in the address lookup table.
+  OptionalUint8? addr_table_lookup_index;
   bool is_signer;
   bool is_writable;
 };
@@ -1685,6 +1734,23 @@ struct SolanaInstruction {
   DecodedSolanaInstructionData? decoded_data;
 };
 
+enum SolanaMessageVersion {
+  kLegacy = 0,
+  kV0 = 1,
+};
+
+struct SolanaMessageAddressTableLookup {
+  string account_key;
+  array<uint8> write_indexes;
+  array<uint8> read_indexes;
+};
+
+struct SolanaMessageHeader {
+  uint8 num_required_signatures;
+  uint8 num_readonly_signed_accounts;
+  uint8 num_readonly_unsigned_accounts;
+};
+
 struct SolanaTxData {
   string recent_blockhash;
   uint64 last_valid_block_height;
@@ -1695,6 +1761,11 @@ struct SolanaTxData {
   uint64 amount;
   TransactionType tx_type;
   array<SolanaInstruction> instructions;
+
+  SolanaMessageVersion version;
+  SolanaMessageHeader message_header;
+  array<string> static_account_keys;
+  array<SolanaMessageAddressTableLookup> address_table_lookups;
 
   // Currently it might be specified by solana.signAndSendTransaction provider
   // API as the options to be passed to sendTransaction RPC call.

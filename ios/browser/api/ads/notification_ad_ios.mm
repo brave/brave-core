@@ -6,7 +6,7 @@
 #import "notification_ad_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "bat/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/notification_ad_info.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -26,7 +26,8 @@
 
 @implementation NotificationAdIOS
 
-- (instancetype)initWithNotificationInfo:(const ads::NotificationAdInfo&)info {
+- (instancetype)initWithNotificationInfo:
+    (const brave_ads::NotificationAdInfo&)info {
   if ((self = [super init])) {
     self.placementID = base::SysUTF8ToNSString(info.placement_id);
     self.creativeInstanceID =

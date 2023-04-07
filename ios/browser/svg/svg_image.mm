@@ -1,3 +1,8 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #import "brave/ios/browser/svg/svg_image.h"
 
 #include "third_party/skia/include/core/SkBitmap.h"
@@ -43,9 +48,10 @@ SkMatrix ComputeScaleMatrix(std::size_t image_width,
                             std::size_t image_height,
                             std::size_t bounds_width,
                             std::size_t bounds_height) {
-  return SkMatrix::RectToRect(SkRect::MakeIWH(image_width, image_height),
-                              SkRect::MakeIWH(bounds_width, bounds_height),
-                              SkMatrix::kCenter_ScaleToFit);
+  return SkMatrix::RectToRect(
+      SkRect::MakeIWH(image_width, image_height),
+      SkRect::MakeIWH(bounds_width, bounds_height),
+      SkMatrix::kCenter_ScaleToFit);  // fPreserveAspectRatio
 }
 
 SkBitmap MakeFromData(const NSData* data,
@@ -72,16 +78,32 @@ SkBitmap MakeFromData(const NSData* data,
 
   SkSize size =
       root_svg_element->intrinsicSize(SkSVGLengthContext(SkSize::Make(0, 0)));
-  document->setContainerSize(
-      SkSize::Make(SkIntToScalar(width), SkIntToScalar(height)));
 
-  std::unique_ptr<SkCanvas> canvas = CreateCanvas(width, height);
+  if (!size.isEmpty()) {
+    document->setContainerSize(size);
+  } else {
+    const SkRect* viewBox = root_svg_element->getViewBox().getMaybeNull();
+    if (viewBox) {
+      size = SkSize::Make(viewBox->width(), viewBox->height());
+      document->setContainerSize(size);
+    } else {
+      size = SkSize::Make(SkIntToScalar(width), SkIntToScalar(height));
+      document->setContainerSize(size);
+    }
+  }
+
+  // Same as:
+  // sk_sp<SkSurface> surface = SkSurface::MakeRasterN32Premul(width, height);
+  // surface->getCanvas();
+  std::unique_ptr<SkCanvas> canvas = CreateCanvas(size.width(), size.height());
   if (!canvas) {
     return SkBitmap();
   }
 
-  canvas->concat(
-      ComputeScaleMatrix(size.width(), size.height(), width, height));
+  // Used if scaling the SVG:
+  // canvas->concat(ComputeScaleMatrix(size.width(), size.height(), width,
+  // height));
+
   document->render(canvas.get());
   return BitmapFromCanvas(canvas.get());
 }

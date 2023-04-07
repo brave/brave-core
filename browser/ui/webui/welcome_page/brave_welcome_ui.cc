@@ -27,6 +27,7 @@
 #include "chrome/browser/ui/webui/settings/privacy_sandbox_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/grit/chromium_strings.h"
 #include "components/country_codes/country_codes.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -39,6 +40,7 @@
 namespace {
 
 constexpr webui::LocalizedString kLocalizedStrings[] = {
+    {"headerText", IDS_WELCOME_HEADER},
     {"braveWelcomeTitle", IDS_BRAVE_WELCOME_TITLE},
     {"braveWelcomeDesc", IDS_BRAVE_WELCOME_DESC},
     {"braveWelcomeImportSettingsTitle",

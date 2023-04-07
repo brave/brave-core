@@ -14,18 +14,21 @@ ANDROID_ONLY_PATHS = []
 DESKTOP_ONLY_PATHS = []
 
 
-def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
+def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
+                    additional_paths):
     # Exclude these specific paths from needing a README.chromium file.
     prune_paths.update([
         # Formerly external Brave code which has moved to brave-core
         # (i.e these are already covered by the Brave Browser license notice).
-        os.path.join('brave', 'vendor', 'bat-native-ads'),
-        os.path.join('brave', 'vendor', 'bat-native-ledger'),
+        os.path.join('brave', 'third_party', 'challenge_bypass_ristretto_ffi'),
         os.path.join('brave', 'vendor', 'brave-ios'),
         os.path.join('brave', 'vendor', 'brave_base'),
 
-        # Brave overrides to third-party code, also covered by main notice.
+        # No third-party code directly under android_deps. It's all under
+        # android_deps/libs instead and it's special-cased further down.
         os.path.join('brave', 'third_party', 'android_deps'),
+
+        # Brave overrides to third-party code, also covered by main notice.
         os.path.join('brave', 'third_party', 'blink'),
         os.path.join('brave', 'third_party', 'libaddressinput'),
         os.path.join('brave', 'patches', 'third_party'),
@@ -56,12 +59,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         os.path.join('brave', 'vendor', 'brave-extension'): {
             "Name": "Brave Only Extension",
             "URL": "https://github.com/brave/brave-extension",
-            "License": "MPL-2.0",
-        },
-        os.path.join('brave', 'vendor', 'challenge_bypass_ristretto_ffi'): {
-            "Name": "challenge-bypass-ristretto-ffi",
-            "URL":
-                "https://github.com/brave-intl/challenge-bypass-ristretto-ffi",
             "License": "MPL-2.0",
         },
         os.path.join('brave', 'vendor', 'web-discovery-project'): {
@@ -147,6 +144,15 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
         os.path.join('brave', 'components', 'brave_new_tab_ui', 'data'),
         os.path.join('brave', 'components', 'filecoin'),
     ]
+
+    # Add all Android libraries since they're not directly contained
+    # within a third_party directory.
+    android_libs = os.path.join('brave', 'third_party', 'android_deps', 'libs')
+    for _, dirs, _ in os.walk(os.path.join(root, android_libs)):
+        for dirpath in dirs:
+            dirname = os.path.basename(dirpath)
+            additional_list += [os.path.join(android_libs, dirname)]
+
     additional_paths = tuple(additional_list)
 
     return (prune_dirs, additional_paths)

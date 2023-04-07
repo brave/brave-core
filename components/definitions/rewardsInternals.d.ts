@@ -9,7 +9,9 @@ declare namespace RewardsInternals {
   }
 
   export interface State {
-    balance: Balance
+    balance: import(
+      'gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js'
+    ).Balance
     info: {
       isKeyInfoSeedValid: boolean
       walletPaymentId: string
@@ -45,11 +47,6 @@ declare namespace RewardsInternals {
     contributedAmount: number
   }
 
-  export interface Balance {
-    total: number
-    wallets: Record<string, number>
-  }
-
   export interface Promotion {
     amount: number
     promotionId: string
@@ -62,7 +59,7 @@ declare namespace RewardsInternals {
     version: number
   }
 
-  type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 
@@ -90,5 +87,5 @@ declare namespace RewardsInternals {
     diagnosticId: string
   }
 
-  type Environment = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').Environment
+  type Environment = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').Environment
 }

@@ -15,7 +15,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
-#include "bat/ledger/ledger.h"
+#include "brave/components/brave_rewards/core/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 
 namespace bat_ledger {
@@ -49,8 +49,6 @@ class BatLedgerImpl :
       GetPublisherMinVisitsCallback callback) override;
   void GetPublisherAllowNonVerified(
       GetPublisherAllowNonVerifiedCallback callback) override;
-  void GetPublisherAllowVideos(
-      GetPublisherAllowVideosCallback callback) override;
   void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) override;
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
@@ -86,7 +84,6 @@ class BatLedgerImpl :
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
   void SetPublisherMinVisits(int visits) override;
   void SetPublisherAllowNonVerified(bool allow) override;
-  void SetPublisherAllowVideos(bool allow) override;
   void SetAutoContributionAmount(double amount) override;
   void SetAutoContributeEnabled(bool enabled) override;
 
@@ -121,9 +118,10 @@ class BatLedgerImpl :
 
   void StartContributionsForTesting() override;
 
-  void SetMonthlyContribution(const std::string& publisher_id,
-                              double amount,
-                              SetMonthlyContributionCallback callback) override;
+  void SendContribution(const std::string& publisher_id,
+                        double amount,
+                        bool set_monthly,
+                        SendContributionCallback callback) override;
 
   void SaveRecurringTip(ledger::mojom::RecurringTipPtr info,
                         SaveRecurringTipCallback callback) override;

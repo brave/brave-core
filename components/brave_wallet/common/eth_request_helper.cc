@@ -70,7 +70,9 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(
   auto tx_data = brave_wallet::mojom::TxData::New();
 
   *from_out = tx->from;
-  tx_data->to = tx->to;
+  if (tx->to) {
+    tx_data->to = *tx->to;
+  }
   if (tx->gas)
     tx_data->gas_limit = *tx->gas;
   if (tx->gas_price)
@@ -633,10 +635,10 @@ bool ParseWalletWatchAssetParams(const std::string& json,
     }
   }
 
-  *token = mojom::BlockchainToken::New(eth_addr.ToChecksumAddress(),
-                                       *symbol /* name */, logo, true, false,
-                                       false, *symbol, decimals, true, "", "",
-                                       base::ToLowerASCII(chain_id), coin);
+  *token = mojom::BlockchainToken::New(
+      eth_addr.ToChecksumAddress(), *symbol /* name */, logo, true, false,
+      false, false, *symbol, decimals, true, "", "",
+      base::ToLowerASCII(chain_id), coin);
   return true;
 }
 

@@ -9,7 +9,6 @@ import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD
 import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.ADD_NETWORK_FRAGMENT_ARG_CHAIN_ID;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -342,7 +341,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getCryptoModel().getNetworkModel().refreshNetworks();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "refreshNetworksFinishFragment " + e);
         }
         getActivity().finish();

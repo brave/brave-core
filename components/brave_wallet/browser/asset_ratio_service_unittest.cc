@@ -154,16 +154,6 @@ class AssetRatioServiceUnitTest : public testing::Test {
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
 };
 
-TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Wyre) {
-  TestGetBuyUrlV1(
-      mojom::OnRampProvider::kWyre, mojom::kMainnetChainId, "0xdeadbeef",
-      "USDC", "99.99", "USD",
-      "https://pay.sendwyre.com/"
-      "?dest=ethereum%3A0xdeadbeef&sourceCurrency=USD&destCurrency=USDC&amount="
-      "99.99&accountId=AC_MGNVBGHPA9T&paymentMethod=debit-card",
-      absl::nullopt);
-}
-
 TEST_F(AssetRatioServiceUnitTest, GetBuyUrlV1Ramp) {
   TestGetBuyUrlV1(mojom::OnRampProvider::kRamp, mojom::kMainnetChainId,
                   "0xdeadbeef", "USDC", "55000000", "USD",
@@ -205,7 +195,8 @@ TEST_F(AssetRatioServiceUnitTest, GetSellUrl) {
                  "0xdeadbeef", "ETH_BAT", "250", "USD",
                  "https://buy.ramp.network/"
                  "?userAddress=0xdeadbeef&enabledFlows=ONRAMP%2COFFRAMP"
-                 "&defaultFlow=OFFRAMP&offrampAsset=ETH_BAT&fiatValue=250"
+                 "&defaultFlow=OFFRAMP&swapAsset=ETH_BAT&offrampAsset=ETH_BAT"
+                 "&swapAmount=250"
                  "&fiatCurrency=USD&hostApiKey="
                  "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf",
                  absl::nullopt);
@@ -470,11 +461,11 @@ TEST_F(AssetRatioServiceUnitTest, GetTokenInfo) {
       "lastUpdated": "2021-12-09T22:02:23.187Z"
     }
   )");
-  GetTokenInfo(
-      "0xdac17f958d2ee523a2206206994597c13d831ec7",
-      mojom::BlockchainToken::New(
-          "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
-          false, false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH));
+  GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7",
+               mojom::BlockchainToken::New(
+                   "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD",
+                   "", true, false, false, false, "USDT", 6, true, "", "",
+                   "0x1", mojom::CoinType::ETH));
 
   SetInterceptor("unexpected response");
   GetTokenInfo("0xdac17f958d2ee523a2206206994597c13d831ec7", nullptr);

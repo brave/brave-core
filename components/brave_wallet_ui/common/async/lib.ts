@@ -27,13 +27,16 @@ import {
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { getFilecoinKeyringIdFromNetwork, getNetworkInfo, getNetworksByCoinType } from '../../utils/network-utils'
+import {
+  getFilecoinKeyringIdFromNetwork,
+  getNetworksByCoinType
+} from '../../utils/network-utils'
 import { getTokenParam, getFlattenedAccountBalances } from '../../utils/api-utils'
 import Amount from '../../utils/amount'
 import { sortTransactionByDate } from '../../utils/tx-utils'
-import { addLogoToToken, getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
+import { getBatTokensFromList, getNativeTokensFromList, getUniqueAssets } from '../../utils/asset-utils'
 import { loadTimeData } from '../../../common/loadTimeData'
-import { walletApi } from '../slices/api.slice'
+import { getVisibleNetworksList } from '../slices/api.slice'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
@@ -48,6 +51,7 @@ import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_
 import { deserializeOrigin, makeSerializableTransaction } from '../../utils/model-serialization-utils'
 import { WalletPageActions } from '../../page/actions'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
+import { IPFS_PROTOCOL, isIpfs, stripERC20TokenImageURL } from '../../utils/string-utils'
 
 export const getERC20Allowance = (
   contractAddress: string,
@@ -300,17 +304,20 @@ export const getAllBuyAssets = async (): Promise<{
   )
 
   // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const rampAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(rampAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
-  const sardineAssetOptions: BraveWallet.BlockchainToken[] = sardineAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const sardineAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(sardineAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
-  const transakAssetOptions: BraveWallet.BlockchainToken[] = transakAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const transakAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(transakAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
   // separate native assets from tokens
   const {
@@ -376,9 +383,10 @@ export const getAllSellAssets = async (): Promise<{
   )
 
   // add token logos
-  const rampAssetOptions: BraveWallet.BlockchainToken[] = rampAssetsPromises
-    .flatMap(p => p.tokens)
-    .map(addLogoToToken)
+  const rampAssetOptions: BraveWallet.BlockchainToken[] =
+    await Promise.all(rampAssetsPromises
+      .flatMap(p => p.tokens)
+      .map(await addLogoToToken))
 
   // separate native assets from tokens
   const {
@@ -439,8 +447,9 @@ export async function hasJupiterFeesForMint (mint: string): Promise<boolean> {
 
 export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo) {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { braveWalletService } = getAPIProxy()
-    const { wallet: { networkList } } = getState()
+    const api = getAPIProxy()
+    const { braveWalletService } = api
+    const networkList = await getVisibleNetworksList(api)
 
     async function inner (network: BraveWallet.NetworkInfo) {
       // Creates a network's Native Asset if not returned
@@ -449,6 +458,7 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
         decimals: network.decimals,
         isErc20: false,
         isErc721: false,
+        isErc1155: false,
         isNft: false,
         logo: network.iconUrls[0] ?? '',
         name: network.symbolName,
@@ -474,6 +484,7 @@ export function refreshVisibleTokenInfo (targetNetwork?: BraveWallet.NetworkInfo
     const visibleAssets = targetNetwork
       ? await inner(targetNetwork)
       : await Promise.all(networkList.map(async (item) => await inner(item)))
+
     const userVisibleTokensInfo = visibleAssets.flat(1)
     await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
     const nfts = userVisibleTokensInfo.filter((asset) => asset.isErc721 || asset.isNft)
@@ -529,8 +540,13 @@ function reportActiveWalletsToP3A (accounts: WalletAccountType[],
 
 export function refreshBalances () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { jsonRpcService } = getAPIProxy()
-    const { wallet: { accounts, userVisibleTokensInfo, networkList } } = getState()
+    const api = getAPIProxy()
+    const { jsonRpcService } = api
+    const {
+      wallet: { accounts, userVisibleTokensInfo }
+    } = getState()
+
+    const networkList = await getVisibleNetworksList(api)
 
     const emptyBalance = {
       balance: '0x0',
@@ -658,8 +674,18 @@ export function refreshBalances () {
 
 export function refreshPrices () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { assetRatioService } = getAPIProxy()
-    const { wallet: { accounts, selectedPortfolioTimeline, userVisibleTokensInfo, defaultCurrencies, networkList } } = getState()
+    const api = getAPIProxy()
+    const { assetRatioService } = api
+    const {
+      wallet: {
+        accounts,
+        selectedPortfolioTimeline,
+        userVisibleTokensInfo,
+        defaultCurrencies
+      }
+    } = getState()
+    const networkList = await getVisibleNetworksList(api)
+
     const defaultFiatCurrency = defaultCurrencies.fiat.toLowerCase()
 
     // Return if userVisibleTokensInfo is empty
@@ -814,74 +840,6 @@ export function refreshTransactionHistory (address?: string) {
   }
 }
 
-export function refreshFullNetworkList () {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const apiProxy = getAPIProxy()
-    const { jsonRpcService } = apiProxy
-    const { wallet: { isFilecoinEnabled, isSolanaEnabled } } = getState()
-
-    // Get All Networks
-    const filteredSupportedCoinTypes = SupportedCoinTypes.filter((coin) => {
-      // MULTICHAIN: While we are still in development for FIL and SOL,
-      // we will not use their networks unless enabled by brave://flags
-      return (
-        (coin === BraveWallet.CoinType.FIL && isFilecoinEnabled) ||
-        (coin === BraveWallet.CoinType.SOL && isSolanaEnabled) ||
-        coin === BraveWallet.CoinType.ETH
-      )
-    })
-
-    const networks = (await Promise.all(
-      filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-        const { networks } = await jsonRpcService.getAllNetworks(coin)
-        const { chainIds: hiddenChains } = await jsonRpcService.getHiddenNetworks(coin)
-        return networks.filter((n) => !hiddenChains.includes(n.chainId))
-      })
-    )).flat(1)
-
-    dispatch(WalletActions.setAllNetworks(networks))
-
-    const hiddenNetworks = (await Promise.all(
-      filteredSupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-        const { networks } = await jsonRpcService.getAllNetworks(coin)
-        const { chainIds: hiddenChains } = await jsonRpcService.getHiddenNetworks(coin)
-        return networks.filter((n) => hiddenChains.includes(n.chainId))
-      })
-    )).flat(1)
-
-    dispatch(WalletActions.setAllHiddenNetworks(hiddenNetworks))
-  }
-}
-
-export function refreshNetworkInfo () {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    // Get All Networks and set to state first
-    await dispatch(refreshFullNetworkList())
-
-    const apiProxy = getAPIProxy()
-    const { jsonRpcService } = apiProxy
-    const { wallet: { networkList } } = getState()
-
-    // Get default network for each coinType
-    const defaultNetworks = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
-      const coinsChainId = await jsonRpcService.getChainId(coin)
-      const network = getNetworkInfo(coinsChainId.chainId, coin, networkList)
-      return network
-    }))
-    dispatch(WalletActions.setDefaultNetworks(defaultNetworks))
-
-    // Get current selected networks info
-    const selectedCoin = await dispatch(
-      walletApi.endpoints.getSelectedCoin.initiate(undefined)
-    ).unwrap()
-    const chainId = await jsonRpcService.getChainId(selectedCoin)
-
-    const currentNetwork = getNetworkInfo(chainId.chainId, selectedCoin, networkList)
-    dispatch(WalletActions.setNetwork(currentNetwork))
-    return currentNetwork
-  }
-}
-
 export function refreshKeyringInfo () {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
@@ -907,9 +865,8 @@ export function refreshKeyringInfo () {
     const filteredDefaultAccounts = defaultAccounts.filter((account) => Object.keys(account).length !== 0)
     dispatch(WalletActions.setDefaultAccounts(filteredDefaultAccounts))
 
-    const selectedCoin = await dispatch(
-      walletApi.endpoints.getSelectedCoin.initiate(undefined)
-    ).unwrap()
+    const { coin: selectedCoin } =
+      await apiProxy.braveWalletService.getSelectedCoin()
 
     let selectedAccount = { address: null } as { address: string | null }
 
@@ -1105,7 +1062,7 @@ export async function getNFTMetadata (token: BraveWallet.BlockchainToken) {
   if (token.coin === BraveWallet.CoinType.ETH) {
     return await jsonRpcService.getERC721Metadata(token.contractAddress, token.tokenId, token.chainId)
   } else if (token.coin === BraveWallet.CoinType.SOL) {
-    return await jsonRpcService.getSolTokenMetadata(token.contractAddress)
+    return await jsonRpcService.getSolTokenMetadata(token.chainId, token.contractAddress)
   }
 
   return undefined
@@ -1119,22 +1076,82 @@ export async function isTokenPinningSupported (token: BraveWallet.BlockchainToke
 
 export function refreshPortfolioFilterOptions () {
   return async (dispatch: Dispatch, getState: () => State) => {
-    const { wallet: { accounts, networkList, selectedAccountFilter, selectedNetworkFilter } } = getState()
+    const { accounts, selectedAccountFilter, selectedNetworkFilter } =
+      getState().wallet
+
+    const networkList = await getVisibleNetworksList(getAPIProxy())
 
     if (
-      !networkList.some(network => network.chainId === selectedNetworkFilter.chainId) &&
-      selectedNetworkFilter.chainId !== AllNetworksOption.chainId
+      selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
+      !networkList.some(
+        (network) => network.chainId === selectedNetworkFilter.chainId
+      )
     ) {
       dispatch(WalletActions.setSelectedNetworkFilter(AllNetworksOptionDefault))
-      window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION)
+      window.localStorage.removeItem(
+        LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION
+      )
     }
 
     if (
-      !accounts.some(account => account.id === selectedAccountFilter) &&
-      selectedAccountFilter !== AllAccountsOption.id
+      selectedAccountFilter !== AllAccountsOption.id &&
+      !accounts.some(account => account.id === selectedAccountFilter)
     ) {
       dispatch(WalletActions.setSelectedAccountFilterItem(AllAccountsOption.id))
       window.localStorage.removeItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ACCOUNT_FILTER_OPTION)
+    }
+  }
+}
+
+// Checks whether set of urls have ipfs:// scheme or are gateway-like urls
+export const areSupportedForPinning = async (urls: string[]) => {
+  const results =
+    await Promise.all(
+      urls.flatMap((v) => extractIpfsUrl(stripERC20TokenImageURL(v))))
+  return results.every(result => result?.startsWith(IPFS_PROTOCOL))
+}
+
+// Extracts ipfs:// url from gateway-like url
+export const extractIpfsUrl = async (url: string | undefined) => {
+  const { braveWalletIpfsService } = getAPIProxy()
+  const trimmedUrl = url ? url.trim() : ''
+   if (isIpfs(trimmedUrl)) {
+    return trimmedUrl
+  }
+  return (await braveWalletIpfsService
+    .extractIPFSUrlFromGatewayLikeUrl(trimmedUrl))?.ipfsUrl || undefined
+}
+
+// Translates ipfs:// url or gateway-like url to the NFT gateway url
+export const translateToNftGateway = async (url: string | undefined) => {
+  const { braveWalletIpfsService } = getAPIProxy()
+  const trimmedUrl = url ? url.trim() : ''
+  const testUrl =
+    isIpfs(trimmedUrl) ? trimmedUrl : await extractIpfsUrl(trimmedUrl)
+  return (await braveWalletIpfsService
+    .translateToNFTGatewayURL(testUrl || '')).translatedUrl || trimmedUrl
+}
+
+export const addLogoToToken = async (token: BraveWallet.BlockchainToken) => {
+  const newLogo = token.logo?.startsWith('ipfs://')
+    ? (await translateToNftGateway(token.logo))
+    : token.logo?.startsWith('data:image/')
+      ? token.logo
+      : `chrome://erc-token-images/${token.logo}`
+
+  if (token.logo === newLogo) {
+    // nothing to change
+    return token
+  }
+
+  try {
+    token.logo = newLogo
+    return token
+  } catch {
+    // the token object was immutable, return a new token object
+    return {
+      ...token,
+      logo: newLogo
     }
   }
 }

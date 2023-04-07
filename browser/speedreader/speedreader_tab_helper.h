@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
 #define BRAVE_BROWSER_SPEEDREADER_SPEEDREADER_TAB_HELPER_H_
@@ -10,10 +10,12 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/speedreader/page_distiller.h"
 #include "brave/components/speedreader/common/speedreader.mojom.h"
 #include "brave/components/speedreader/common/speedreader_panel.mojom.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
 #include "brave/components/speedreader/speedreader_util.h"
+#include "components/dom_distiller/content/browser/distillable_page_utils.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -41,8 +43,10 @@ class SpeedreaderBubbleView;
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper>,
+      public PageDistiller,
       public SpeedreaderThrottleDelegate,
-      public mojom::SpeedreaderHost {
+      public mojom::SpeedreaderHost,
+      public dom_distiller::DistillabilityObserver {
  public:
   ~SpeedreaderTabHelper() override;
 
@@ -56,6 +60,8 @@ class SpeedreaderTabHelper
       content::RenderFrameHost* rfh);
 
   static void MaybeCreateForWebContents(content::WebContents* contents);
+
+  static PageDistiller* GetPageDistiller(content::WebContents* contents);
 
   base::WeakPtr<SpeedreaderTabHelper> GetWeakPtr();
 
@@ -75,8 +81,8 @@ class SpeedreaderTabHelper
   // the setting. Triggers page reload on toggle.
   void MaybeToggleEnabledForSite(bool on);
 
-  // Reload the page and mark the next request to run through Speedreader,
-  // without turning it on. This mimics the standard reader mode.
+  // Get the current page's content and run it through Speedreader, without
+  // turning it on. This mimics the standard reader mode.
   void SingleShotSpeedreader();
 
   // returns nullptr if no bubble currently shown
@@ -160,10 +166,17 @@ class SpeedreaderTabHelper
 
   // SpeedreaderThrottleDelegate:
   bool IsPageDistillationAllowed() override;
-  void OnDistillComplete() override;
+  bool IsPageContentPresent() override;
+  std::string TakePageContent() override;
+  void OnDistillComplete(DistillationResult result) override;
+
+  // dom_distiller::DistillabilityObserver:
+  void OnResult(const dom_distiller::DistillabilityResult& result) override;
 
   void SetDocumentAttribute(const std::string& attribute,
                             const std::string& value);
+
+  void OnGetDocumentSource(bool success, std::string html);
 
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
 
@@ -171,6 +184,7 @@ class SpeedreaderTabHelper
 
   bool single_shot_next_request_ =
       false;  // run speedreader once on next page load
+  std::string single_show_content_;
 
   bool show_original_page_ = false;   // next request should not be distilled
   bool original_page_shown_ = false;  // true if reload was performed using the

@@ -5,18 +5,17 @@
 
 #include "brave/components/ipfs/ipfs_service.h"
 
+#include <set>
 #include <utility>
 
-#include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
-#include "base/process/launch.h"
-#include "base/process/process.h"
 #include "base/rand_util.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
+#include "brave/base/process/process_launcher.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ipfs/ipfs_constants.h"
@@ -53,6 +52,7 @@
 
 namespace {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+
 // Works similarly to base::AutoReset but checks for access from the wrong
 // thread as well as ensuring that the previous value of the re-entrancy guard
 // variable was false.
@@ -305,15 +305,25 @@ void IpfsService::OnDnsConfigChanged(absl::optional<std::string> dns_server) {
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 // static
-bool IpfsService::WaitUntilExecutionFinished(base::Process process) {
-  bool exited = false;
-  int exit_code = 0;
-  base::ScopedAllowBaseSyncPrimitives allow_wait_for_process;
-  exited = process.WaitForExitWithTimeout(base::Seconds(10), &exit_code);
-  if (!exited)
-    process.Terminate(0, true);
-  return exited && !exit_code;
+absl::optional<std::string> IpfsService::WaitUntilExecutionFinished(
+    base::FilePath data_path,
+    base::CommandLine command_line) {
+  base::LaunchOptions options;
+#if BUILDFLAG(IS_WIN)
+  options.environment[L"IPFS_PATH"] = data_path.value();
+#else
+  options.environment["IPFS_PATH"] = data_path.value();
+#endif
+
+#if BUILDFLAG(IS_LINUX)
+  options.kill_on_parent_death = true;
+#endif
+#if BUILDFLAG(IS_WIN)
+  options.start_hidden = true;
+#endif
+  return brave::ProcessLauncher::ReadAppOutput(command_line, options, 10);
 }
+
 void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
   auto executable_path = GetIpfsExecutablePath();
   if (IsDaemonLaunched() || executable_path.empty()) {
@@ -325,7 +335,13 @@ void IpfsService::RotateKey(const std::string& oldkey, BoolCallback callback) {
   cmdline.AppendArg("key");
   cmdline.AppendArg("rotate");
   cmdline.AppendArg("--oldkey=" + oldkey);
-  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+  ExecuteNodeCommand(
+      cmdline, GetDataPath(),
+      base::BindOnce(
+          [](BoolCallback callback, absl::optional<std::string> result) {
+            std::move(callback).Run(result.has_value());
+          },
+          std::move(callback)));
 }
 
 void IpfsService::ExportKey(const std::string& key,
@@ -340,37 +356,24 @@ void IpfsService::ExportKey(const std::string& key,
   cmdline.AppendArg("export");
   cmdline.AppendArg("-o=" + target_path.MaybeAsASCII());
   cmdline.AppendArg(key);
-  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+  ExecuteNodeCommand(
+      cmdline, GetDataPath(),
+      base::BindOnce(
+          [](BoolCallback callback, absl::optional<std::string> result) {
+            std::move(callback).Run(result.has_value());
+          },
+          std::move(callback)));
 }
+
 void IpfsService::ExecuteNodeCommand(const base::CommandLine& command_line,
                                      const base::FilePath& data,
-                                     BoolCallback callback) {
-  base::LaunchOptions options;
-#if BUILDFLAG(IS_WIN)
-  options.environment[L"IPFS_PATH"] = data.value();
-#else
-  options.environment["IPFS_PATH"] = data.value();
-#endif
-
-#if BUILDFLAG(IS_LINUX)
-  options.kill_on_parent_death = true;
-#endif
-#if BUILDFLAG(IS_WIN)
-  options.start_hidden = true;
-#endif
-  base::Process process = base::LaunchProcess(command_line, options);
-  if (!process.IsValid()) {
-    if (callback)
-      std::move(callback).Run(false);
-    return;
-  }
-
+                                     NodeCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN,
        base::TaskPriority::BEST_EFFORT},
-      base::BindOnce(&IpfsService::WaitUntilExecutionFinished,
-                     std::move(process)),
+      base::BindOnce(&IpfsService::WaitUntilExecutionFinished, GetDataPath(),
+                     command_line),
       std::move(callback));
 }
 
@@ -389,6 +392,13 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
     return;
   }
 
+  if (cids.empty()) {
+    AddPinResult result;
+    result.recursive = recursive;
+    std::move(callback).Run(result);
+    return;
+  }
+
   GURL gurl = server_endpoint_.Resolve(kAddPinPath);
   for (const auto& cid : cids) {
     gurl = net::AppendQueryParameter(gurl, kArgQueryParam, cid);
@@ -402,9 +412,10 @@ void IpfsService::AddPin(const std::vector<std::string>& cids,
       requests_list_.insert(requests_list_.begin(), std::move(url_loader));
 
   iter->get()->Request(
-      "POST", gurl, std::string(), std::string(), false,
-      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this), iter,
-                     std::move(callback)),
+      "POST", gurl, std::string(), std::string(),
+      base::BindOnce(&IpfsService::OnPinAddResult, base::Unretained(this),
+                     cids.size(), recursive, iter, std::move(callback)),
+      api_request_helper::APIRequestOptions{.timeout = base::Minutes(2)},
       GetHeaders(gurl));
 }
 
@@ -430,6 +441,72 @@ void IpfsService::RemovePin(const std::vector<std::string>& cids,
       base::BindOnce(&IpfsService::OnPinRemoveResult, base::Unretained(this),
                      iter, std::move(callback)),
       GetHeaders(gurl));
+}
+
+void IpfsService::RemovePinCli(std::set<std::string> cids,
+                               BoolCallback callback) {
+  if (cids.empty()) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  base::FilePath path = GetIpfsExecutablePath();
+  if (path.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  auto cid = *(cids.begin());
+
+  if (!IsValidCID(cid)) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  base::CommandLine cmdline(path);
+  cmdline.AppendArg("pin");
+  cmdline.AppendArg("rm");
+  cmdline.AppendArg("-r=true");
+
+  cmdline.AppendArg(cid);
+  ExecuteNodeCommand(
+      cmdline, GetDataPath(),
+      base::BindOnce(&IpfsService::OnRemovePinCli, weak_factory_.GetWeakPtr(),
+                     std::move(callback), std::move(cids)));
+}
+
+void IpfsService::LsPinCli(NodeCallback callback) {
+  base::FilePath path = GetIpfsExecutablePath();
+  if (path.empty()) {
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  base::CommandLine cmdline(path);
+  cmdline.AppendArg("pin");
+  cmdline.AppendArg("ls");
+  cmdline.AppendArg("--type=recursive");
+  cmdline.AppendArg("--quiet=true");
+
+  ExecuteNodeCommand(cmdline, GetDataPath(), std::move(callback));
+}
+
+void IpfsService::OnRemovePinCli(BoolCallback callback,
+                                 std::set<std::string> cids,
+                                 absl::optional<std::string> result) {
+  DCHECK(!cids.empty());
+  if (!result || cids.empty()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  cids.erase(cids.begin());
+
+  if (cids.empty()) {
+    std::move(callback).Run(true);
+  } else {
+    RemovePinCli(cids, std::move(callback));
+  }
 }
 
 void IpfsService::GetPins(const absl::optional<std::vector<std::string>>& cids,
@@ -1006,6 +1083,8 @@ void IpfsService::OnGetPinsResult(
 }
 
 void IpfsService::OnPinAddResult(
+    size_t cids_count_in_request,
+    bool recursive,
     APIRequestList::iterator iter,
     AddPinCallback callback,
     api_request_helper::APIRequestResult response) {
@@ -1025,6 +1104,14 @@ void IpfsService::OnPinAddResult(
     std::move(callback).Run(absl::nullopt);
     return;
   }
+
+  if (parse_result->pins.size() != cids_count_in_request) {
+    VLOG(1) << "Not all CIDs were added";
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+
+  parse_result->recursive = recursive;
 
   std::move(callback).Run(std::move(parse_result));
 }

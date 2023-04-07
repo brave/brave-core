@@ -9,7 +9,6 @@ package org.chromium.chrome.browser.notifications;
 
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -56,7 +55,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                     BRAVE_ONBOARDING_NOTIFICATION_TAG, getNotificationUrl(),
                     braveActivity.getString(R.string.brave_ui_brave_rewards),
                     braveActivity.getString(R.string.this_is_your_first_ad));
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showOnboardingDialog " + e);
         }
     }
@@ -112,7 +111,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
                 }
                 braveActivity.hideRewardsOnboardingIcon();
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onReceive " + e);
 
             if (action != null && action.equals(DEEP_LINK)) {

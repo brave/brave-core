@@ -4,16 +4,16 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 
-interface StyleProps {
-  isLonger: boolean
-}
-
-export const PanelWrapper = styled.div<StyleProps>`
+export const PanelWrapper = styled.div<{
+  isLonger?: boolean
+  width?: number
+  height?: number
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 320px;
-  height: ${(p) => p.isLonger ? '540px' : '400px'};
+  width: ${(p) => p.width ? p.width : 320}px;
+  height: ${(p) => p.height ? p.height : p.isLonger ? 540 : 400}px;
 `
 
 export const WelcomePanelWrapper = styled.div`

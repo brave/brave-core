@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "ledger.mojom.objc.h"
+#import "ledger_types.mojom.objc.h"
 
 @class BraveLedgerObserver, PromotionSolution, RewardsNotification;
 
@@ -278,8 +279,6 @@ OBJC_EXPORT
 @property(nonatomic, assign) int minimumNumberOfVisits;
 /// Whether or not to allow auto contributions to unverified publishers
 @property(nonatomic, assign) BOOL allowUnverifiedPublishers;
-/// Whether or not to allow auto contributions to videos
-@property(nonatomic, assign) BOOL allowVideoContributions;
 /// The auto-contribute amount
 @property(nonatomic, assign) double contributionAmount;
 /// Whether or not the user will automatically contribute

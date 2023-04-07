@@ -10,7 +10,7 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -19,9 +19,9 @@ using GetDiagnosticsCallback =
     base::OnceCallback<void(absl::optional<base::Value::List>)>;
 
 using GetStatementOfAccountsCallback =
-    base::OnceCallback<void(ads::mojom::StatementInfoPtr)>;
+    base::OnceCallback<void(mojom::StatementInfoPtr)>;
 
-using MaybeServeInlineContentAdCallback =
+using MaybeServeInlineContentAdAsDictCallback =
     base::OnceCallback<void(const std::string&,
                             absl::optional<base::Value::Dict>)>;
 
@@ -30,13 +30,15 @@ using PurgeOrphanedAdEventsForTypeCallback =
 
 using GetHistoryCallback = base::OnceCallback<void(base::Value::List)>;
 
-using ToggleAdThumbUpCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleAdThumbDownCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleAdOptInCallback = base::OnceCallback<void(const std::string&, int)>;
-using ToggleAdOptOutCallback =
+using ToggleLikeAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleDislikeAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleMarkToReceiveAdsForCategoryCallback =
     base::OnceCallback<void(const std::string&, int)>;
-using ToggleSavedAdCallback = base::OnceCallback<void(base::Value::Dict)>;
-using ToggleFlaggedAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleMarkToNoLongerReceiveAdsForCategoryCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using ToggleSaveAdCallback = base::OnceCallback<void(base::Value::Dict)>;
+using ToggleMarkAdAsInappropriateCallback =
+    base::OnceCallback<void(base::Value::Dict)>;
 
 }  // namespace brave_ads
 

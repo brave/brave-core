@@ -11,10 +11,10 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
+#include "base/types/pass_key.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
-
 namespace views {
 class ScrollView;
 }
@@ -22,6 +22,7 @@ class ScrollView;
 class BraveNewTabButton;
 class BrowserView;
 class TabStripScrollContainer;
+class VerticalTabStripScrollContentsView;
 
 // Wraps TabStripRegion and show it vertically.
 class VerticalTabStripRegionView : public views::View,
@@ -50,8 +51,10 @@ class VerticalTabStripRegionView : public views::View,
 
   State state() const { return state_; }
 
-  const TabStrip* tab_strip() const { return region_view_->tab_strip_; }
-  TabStrip* tab_strip() { return region_view_->tab_strip_; }
+  const TabStrip* tab_strip() const {
+    return original_region_view_->tab_strip_;
+  }
+  TabStrip* tab_strip() { return original_region_view_->tab_strip_; }
 
   const Browser* browser() const { return browser_; }
 
@@ -69,6 +72,12 @@ class VerticalTabStripRegionView : public views::View,
 
   TabSearchBubbleHost* GetTabSearchBubbleHost();
 
+  int GetScrollViewViewportHeight() const;
+
+  void set_layout_dirty(base::PassKey<VerticalTabStripScrollContentsView>) {
+    layout_dirty_ = true;
+  }
+
   // views::View:
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
@@ -77,6 +86,7 @@ class VerticalTabStripRegionView : public views::View,
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+  void PreferredSizeChanged() override;
 
   // TabStripModelObserver:
   void OnTabStripModelChanged(
@@ -102,7 +112,7 @@ class VerticalTabStripRegionView : public views::View,
 
   void ScheduleFloatingModeTimer();
 
-  gfx::Size GetPreferredSizeForState(State state) const;
+  gfx::Size GetPreferredSizeForState(State state, bool include_border) const;
   int GetPreferredWidthForState(State state, bool include_border) const;
 
   // Returns valid object only when the related flag is enabled.
@@ -115,7 +125,7 @@ class VerticalTabStripRegionView : public views::View,
   raw_ptr<Browser> browser_ = nullptr;
 
   raw_ptr<views::View> original_parent_of_region_view_ = nullptr;
-  raw_ptr<TabStripRegionView> region_view_ = nullptr;
+  raw_ptr<TabStripRegionView> original_region_view_ = nullptr;
 
   // Contains TabStripRegion.
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
@@ -134,6 +144,9 @@ class VerticalTabStripRegionView : public views::View,
   base::OneShotTimer mouse_enter_timer_;
 
   bool mouse_events_for_test_ = false;
+
+  bool layout_dirty_ = false;
+  gfx::Size last_size_;
 
   base::WeakPtrFactory<VerticalTabStripRegionView> weak_factory_{this};
 };

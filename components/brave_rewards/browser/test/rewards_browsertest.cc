@@ -11,8 +11,6 @@
 #include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
@@ -24,6 +22,8 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -145,9 +145,9 @@ class RewardsBrowserTest : public InProcessBrowserTest {
   double FetchBalance() {
     double total = -1.0;
     base::RunLoop run_loop;
-    rewards_service_->FetchBalance(base::BindLambdaForTesting(
-        [&](ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
-          total = balance ? balance->total : -1.0;
+    rewards_service_->FetchBalance(
+        base::BindLambdaForTesting([&](ledger::FetchBalanceResult result) {
+          total = result.has_value() ? result.value()->total : -1.0;
           run_loop.Quit();
         }));
     run_loop.Run();

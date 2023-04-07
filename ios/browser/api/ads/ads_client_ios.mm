@@ -5,7 +5,7 @@
 
 #import "ads_client_ios.h"
 #import "ads_client_bridge.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -17,6 +17,19 @@ AdsClientIOS::AdsClientIOS(id<AdsClientBridge> bridge) : bridge_(bridge) {}
 
 AdsClientIOS::~AdsClientIOS() {
   bridge_ = nil;
+}
+
+void AdsClientIOS::AddObserver(brave_ads::AdsClientNotifierObserver* observer) {
+  [bridge_ addObserver:observer];
+}
+
+void AdsClientIOS::RemoveObserver(
+    brave_ads::AdsClientNotifierObserver* observer) {
+  [bridge_ removeObserver:observer];
+}
+
+void AdsClientIOS::BindPendingObservers() {
+  [bridge_ bindPendingObservers];
 }
 
 bool AdsClientIOS::IsNetworkConnectionAvailable() const {
@@ -35,7 +48,7 @@ bool AdsClientIOS::CanShowNotificationAdsWhileBrowserIsBackgrounded() const {
   return [bridge_ canShowNotificationAdsWhileBrowserIsBackgrounded];
 }
 
-void AdsClientIOS::ShowNotificationAd(const ads::NotificationAdInfo& ad) {
+void AdsClientIOS::ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) {
   [bridge_ showNotificationAd:ad];
 }
 
@@ -67,33 +80,34 @@ void AdsClientIOS::ResetAdEventHistoryForId(const std::string& id) const {
   [bridge_ resetAdEventHistoryForId:id];
 }
 
-void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
-                              ads::UrlRequestCallback callback) {
+void AdsClientIOS::UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
+                              brave_ads::UrlRequestCallback callback) {
   [bridge_ UrlRequest:std::move(url_request) callback:std::move(callback)];
 }
 
 void AdsClientIOS::Save(const std::string& name,
                         const std::string& value,
-                        ads::SaveCallback callback) {
+                        brave_ads::SaveCallback callback) {
   [bridge_ save:name value:value callback:std::move(callback)];
 }
 
 void AdsClientIOS::LoadFileResource(const std::string& id,
                                     const int version,
-                                    ads::LoadFileCallback callback) {
+                                    brave_ads::LoadFileCallback callback) {
   [bridge_ loadFileResource:id version:version callback:std::move(callback)];
 }
 
 void AdsClientIOS::GetBrowsingHistory(
     const int max_count,
     const int days_ago,
-    ads::GetBrowsingHistoryCallback callback) {
+    brave_ads::GetBrowsingHistoryCallback callback) {
   [bridge_ getBrowsingHistory:max_count
                       forDays:days_ago
                      callback:std::move(callback)];
 }
 
-void AdsClientIOS::Load(const std::string& name, ads::LoadCallback callback) {
+void AdsClientIOS::Load(const std::string& name,
+                        brave_ads::LoadCallback callback) {
   [bridge_ load:name callback:std::move(callback)];
 }
 
@@ -107,7 +121,7 @@ void AdsClientIOS::ClearScheduledCaptcha() {
 
 void AdsClientIOS::GetScheduledCaptcha(
     const std::string& payment_id,
-    ads::GetScheduledCaptchaCallback callback) {
+    brave_ads::GetScheduledCaptchaCallback callback) {
   [bridge_ getScheduledCaptcha:payment_id callback:std::move(callback)];
 }
 
@@ -125,8 +139,8 @@ void AdsClientIOS::Log(const char* file,
 }
 
 void AdsClientIOS::RunDBTransaction(
-    ads::mojom::DBTransactionInfoPtr transaction,
-    ads::RunDBTransactionCallback callback) {
+    brave_ads::mojom::DBTransactionInfoPtr transaction,
+    brave_ads::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction)
                    callback:std::move(callback)];
 }
@@ -227,7 +241,7 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
   [bridge_ recordP2AEvent:name value:std::move(value)];
 }
 
-void AdsClientIOS::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
-  [bridge_ logTrainingInstance:std::move(training_instance)];
+void AdsClientIOS::AddTrainingSample(
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
+  [bridge_ addTrainingSample:std::move(training_sample)];
 }

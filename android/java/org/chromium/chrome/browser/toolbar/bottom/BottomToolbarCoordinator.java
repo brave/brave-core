@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar.bottom;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
@@ -32,6 +31,7 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.feature_engagement.TrackerFactory;
 import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
@@ -180,7 +180,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
         ChromeActivity activity = null;
         try {
             activity = BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "initializeWithNative " + e);
         }
         // Do not change bottom bar if StartSurface Single Pane is enabled and HomePage is not
@@ -253,7 +253,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 if (HomepageManager.isHomepageEnabled()) {
                     try {
                         BraveActivity.getBraveActivity().setComesFromNewTab(true);
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "HomeButton click " + e);
                     }
                     mOriginalHomeButtonRunnable.run();
@@ -277,8 +277,10 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
         if (mScrollingBottomView != null && activity != null) {
             Supplier<CompositorViewHolder> cvh = activity.getCompositorViewHolderSupplier();
-            mScrollingBottomView.setSwipeDetector(
-                    cvh.get().getLayoutManager().getToolbarSwipeHandler());
+            LayoutManagerImpl layoutManager = cvh.get().getLayoutManager();
+            if (layoutManager != null) {
+                mScrollingBottomView.setSwipeDetector(layoutManager.getToolbarSwipeHandler());
+            }
         }
     }
 
@@ -291,7 +293,7 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
                 ChromeActivity activity = BraveActivity.getBraveActivity();
                 mTabSwitcherModeCoordinator.showToolbarOnTop(
                         !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(activity));
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "setBottomToolbarVisible " + e);
                 mTabSwitcherModeCoordinator.showToolbarOnTop(
                         !isVisible, TabUiFeatureUtilities.isGridTabSwitcherEnabled(mContext));

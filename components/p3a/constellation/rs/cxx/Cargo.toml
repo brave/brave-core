@@ -1,0 +1,12 @@
+[package]
+name = "constellation-cxx"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+star-constellation = "0.2.0"
+cxx = "1.0"
+
+[lib]
+name = "constellation_cxx"
+crate-type = ["rlib"]

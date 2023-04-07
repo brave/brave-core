@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_P3A_METRIC_LOG_TYPE_H_
 #define BRAVE_COMPONENTS_P3A_METRIC_LOG_TYPE_H_
 
-namespace brave {
+namespace p3a {
 
 constexpr char kCreativeMetricPrefix[] = "creativeInstanceId.";
 
@@ -24,6 +24,6 @@ constexpr MetricLogType kAllMetricLogTypes[] = {
 
 const char* MetricLogTypeToString(MetricLogType log_type);
 
-}  // namespace brave
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_METRIC_LOG_TYPE_H_

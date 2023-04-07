@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/command_line.h"
 #include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -12,7 +13,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/time/time.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/webui/speedreader/speedreader_panel_data_handler_impl.h"
@@ -37,6 +40,7 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/keep_alive_registry/keep_alive_types.h"
 #include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/network_session_configurator/common/network_switches.h"
@@ -54,6 +58,8 @@
 const char kTestHost[] = "a.test";
 const char kTestPageSimple[] = "/simple.html";
 const char kTestPageReadable[] = "/articles/guardian.html";
+const char kTestPageReadableOnUnreadablePath[] =
+    "/speedreader/rewriter/pages/news_pages/abcnews.com/distilled.html";
 const char kTestPageRedirect[] = "/articles/redirect_me.html";
 const char kTestXml[] = "/article/rss.xml";
 
@@ -121,6 +127,13 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
         browser()->profile());
   }
 
+  void NonBlockingDelay(const base::TimeDelta& delay) {
+    base::RunLoop run_loop(base::RunLoop::Type::kNestableTasksAllowed);
+    base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitWhenIdleClosure(), delay);
+    run_loop.Run();
+  }
+
   PageActionIconView* GetReaderButton() {
     return BrowserView::GetBrowserViewForBrowser(browser())
         ->toolbar_button_provider()
@@ -130,6 +143,13 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   void ClickReaderButton() {
     browser()->command_controller()->ExecuteCommand(
         IDC_SPEEDREADER_ICON_ONCLICK);
+    if (tab_helper()->PageDistillState() ==
+        speedreader::DistillState::kReaderModePending) {
+      while (tab_helper()->PageDistillState() !=
+             speedreader::DistillState::kReaderMode) {
+        NonBlockingDelay(base::Milliseconds(10));
+      }
+    }
     content::WaitForLoadStop(ActiveWebContents());
   }
 
@@ -218,6 +238,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   ToggleSpeedreader();
 
   content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+  console_observer.SetFilter(base::BindLambdaForTesting(
+      [](const content::WebContentsConsoleObserver::Message& message) {
+        return message.log_level != blink::mojom::ConsoleMessageLevel::kVerbose;
+      }));
   NavigateToPageSynchronously(kTestPageReadable,
                               WindowOpenDisposition::CURRENT_TAB);
 
@@ -308,6 +332,39 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ClickingOnReaderButton) {
   EXPECT_FALSE(speedreader_service()->IsEnabled());
 }
 
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, OnDemandReader) {
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
+
+  NavigateToPageSynchronously(kTestPageReadable);
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
+            tab_helper()->PageDistillState());
+  // Change content on the page.
+  constexpr const char kChangeContent[] =
+      R"js(
+        document.querySelector('meta[property="og:title"]').content =
+            'Title was changed by javascript'
+      )js";
+  EXPECT_TRUE(content::ExecJs(ActiveWebContents(), kChangeContent,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS));
+  ClickReaderButton();
+
+  EXPECT_EQ(speedreader::DistillState::kReaderMode,
+            tab_helper()->PageDistillState());
+
+  // Check title on the distilled page.
+  constexpr const char kCheckContent[] =
+      R"js(
+        !!document.getElementById('brave_speedreader_style') &&
+        (document.title === 'Title was changed by javascript')
+      )js";
+  EXPECT_TRUE(content::EvalJs(ActiveWebContents(), kCheckContent,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+                  .ExtractBool());
+}
+
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, EnableDisableSpeedreader) {
   EXPECT_FALSE(speedreader_service()->IsEnabled());
   NavigateToPageSynchronously(kTestPageReadable);
@@ -393,9 +450,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ReloadContent) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
-  const std::u16string title = u"\u0022\"script shouldn't fail\"\u0022";
-  speedreader::test::SetShowOriginalLinkTitle(&title);
-
   ToggleSpeedreader();
   NavigateToPageSynchronously(kTestPageReadable);
   auto* web_contents = ActiveWebContents();
@@ -419,7 +473,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
     })();
   )js";
 
-  EXPECT_EQ(base::UTF16ToUTF8(title),
+  EXPECT_EQ("View original",
             content::EvalJs(web_contents, kClickLinkAndGetTitle,
                             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                             ISOLATED_WORLD_ID_BRAVE_INTERNAL)
@@ -436,8 +490,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPage) {
   content::WaitForLoadStop(web_contents);
   EXPECT_EQ(speedreader::DistillState::kSpeedreaderMode,
             tab_helper->PageDistillState());
-
-  speedreader::test::SetShowOriginalLinkTitle(nullptr);
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ShowOriginalPageOnUnreadable) {
@@ -587,4 +639,49 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserPanelV2Test, NoCrash) {
 
   NavigateToPageSynchronously(kTestPageReadable);
   ClickReaderButton();
+}
+
+class SpeedReaderWithDistillationServiceBrowserTest
+    : public SpeedReaderBrowserTest {
+ public:
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    SpeedReaderBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kEnableDistillabilityService);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderWithDistillationServiceBrowserTest,
+                       OnDemandReader) {
+  EXPECT_FALSE(speedreader_service()->IsEnabled());
+
+  struct MockObserver : speedreader::PageDistiller::Observer {
+    MOCK_METHOD(void,
+                OnPageDistillStateChanged,
+                (speedreader::PageDistiller::State),
+                (override));
+  };
+
+  testing::NiceMock<MockObserver> observer;
+  tab_helper()->AddObserver(&observer);
+
+  base::RunLoop run_loop;
+  ON_CALL(observer, OnPageDistillStateChanged(
+                        speedreader::PageDistiller::State::kDistillable))
+      .WillByDefault(
+          testing::InvokeWithoutArgs(&run_loop, &base::RunLoop::Quit));
+
+  NavigateToPageSynchronously(kTestPageReadableOnUnreadablePath,
+                              WindowOpenDisposition::CURRENT_TAB);
+  run_loop.Run();
+  tab_helper()->RemoveObserver(&observer);
+
+  EXPECT_TRUE(GetReaderButton()->GetVisible());
+
+  EXPECT_EQ(speedreader::DistillState::kPageProbablyReadable,
+            tab_helper()->PageDistillState());
+
+  ClickReaderButton();
+
+  EXPECT_EQ(speedreader::DistillState::kReaderMode,
+            tab_helper()->PageDistillState());
 }

@@ -9,12 +9,101 @@
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
+#include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 #include "chrome/browser/ui/views/tabs/tab_close_button.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "ui/compositor/layer.h"
+#include "ui/compositor/paint_recorder.h"
+#include "ui/gfx/favicon_size.h"
+#include "ui/gfx/skia_paint_util.h"
+
+namespace {
+
+#define FILL_SHADOW_LAYER_FOR_DEBUG 0
+
+class ShadowLayer : public ui::Layer, public ui::LayerDelegate {
+ public:
+  static constexpr int kBlurRadius = 4;
+
+  static const gfx::ShadowValues& GetShadowValues() {
+    static const base::NoDestructor<gfx::ShadowValues> shadow(([]() {
+#if FILL_SHADOW_LAYER_FOR_DEBUG
+      constexpr SkColor kShadowColor = SkColorSetA(SK_ColorCYAN, 0.07 * 255);
+#else
+      constexpr SkColor kShadowColor = SkColorSetA(SK_ColorBLACK, 0.07 * 255);
+#endif
+
+      // Shadow matches `box-shadow: 0 1px 4px rgba(0, 0, 0, .0.07)`
+      constexpr gfx::ShadowValue kShadow{
+          /* offset= */ {0, 1},
+          kBlurRadius * 2 /* correction value used in shadow_value.cc */,
+          kShadowColor};
+      return gfx::ShadowValues{kShadow};
+    })());
+
+    return *shadow;
+  }
+
+  static gfx::Insets GetBlurRegionInsets() {
+    return gfx::ShadowValue::GetBlurRegion(ShadowLayer::GetShadowValues());
+  }
+
+  static gfx::Rect GetShadowLayerBounds(const gfx::Rect& anchor_bounds) {
+    // Enlarge shadow layer bigger than the |anchor_bounds| so that we can
+    // draw the full range of blur.
+    gfx::Rect shadow_layer_bounds = anchor_bounds;
+    shadow_layer_bounds.Inset(-GetBlurRegionInsets());
+    return shadow_layer_bounds;
+  }
+
+  explicit ShadowLayer(Tab* tab) : tab_(tab) {
+    CHECK(tab);
+    set_delegate(this);
+  }
+  ~ShadowLayer() override = default;
+
+  // LayerDelegate:
+  void OnPaintLayer(const ui::PaintContext& context) override {
+    ui::PaintRecorder recorder(context, size());
+    // Clear out the canvas so that transparency can be applied properly.
+#if FILL_SHADOW_LAYER_FOR_DEBUG
+    recorder.canvas()->DrawColor(gfx::kPlaceholderColor);
+#else
+    recorder.canvas()->DrawColor(SK_ColorTRANSPARENT);
+#endif
+
+    cc::PaintFlags flags;
+    flags.setStyle(cc::PaintFlags::kFill_Style);
+    flags.setAntiAlias(true);
+    flags.setColor(SK_ColorTRANSPARENT);
+    flags.setLooper(gfx::CreateShadowDrawLooper(GetShadowValues()));
+
+    // The looper will draw around the area. So we should inset the layer
+    // bounds.
+    gfx::Rect shadow_bounds(size());
+    shadow_bounds.Inset(GetBlurRegionInsets());
+    const int kCornerRadius =
+        (tab_->data().pinned ? tabs::kPinnedTabBorderRadius
+                             : tabs::kUnpinnedTabBorderRadius);
+    recorder.canvas()->DrawRoundRect(shadow_bounds, kCornerRadius, flags);
+  }
+
+  void OnDeviceScaleFactorChanged(float old_device_scale_factor,
+                                  float new_device_scale_factor) override {}
+
+ private:
+  raw_ptr<Tab> tab_;
+};
+
+}  // namespace
+
+BraveTab::BraveTab(TabSlotController* controller) : Tab(controller) {}
 
 BraveTab::~BraveTab() = default;
 
@@ -45,10 +134,14 @@ int BraveTab::GetWidthOfLargestSelectableRegion() const {
 
 void BraveTab::ActiveStateChanged() {
   Tab::ActiveStateChanged();
-  // This should be called whenever acitve state changes
+  // This should be called whenever active state changes
   // see comment on UpdateEnabledForMuteToggle();
   // https://github.com/brave/brave-browser/issues/23476/
   alert_indicator_button_->UpdateEnabledForMuteToggle();
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    UpdateShadowForActiveTab();
+  }
 }
 
 absl::optional<SkColor> BraveTab::GetGroupColor() const {
@@ -71,10 +164,16 @@ void BraveTab::UpdateIconVisibility() {
       showing_icon_ = !showing_alert_indicator_;
       showing_close_button_ = false;
     } else {
-      const bool is_active = IsActive();
       center_icon_ = true;
-      showing_icon_ = !is_active && !showing_alert_indicator_;
-      showing_close_button_ = is_active;
+
+      const bool is_active = IsActive();
+      const bool can_enter_floating_mode =
+          tabs::utils::IsFloatingVerticalTabsEnabled(
+              controller()->GetBrowser());
+      // When floating mode enabled, we don't show close button as the tab strip
+      // will be expanded as soon as mouse hovers onto the tab.
+      showing_close_button_ = !can_enter_floating_mode && is_active;
+      showing_icon_ = !showing_close_button_;
     }
   }
 }
@@ -88,6 +187,73 @@ void BraveTab::Layout() {
       close_button_->SetButtonPadding({});
     }
   }
+}
+
+void BraveTab::ReorderChildLayers(ui::Layer* parent_layer) {
+  Tab::ReorderChildLayers(parent_layer);
+
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs)) {
+    return;
+  }
+
+  if (!layer() || layer()->parent() != parent_layer || !shadow_layer_) {
+    return;
+  }
+
+  if (shadow_layer_->parent() != layer()->parent()) {
+    if (shadow_layer_->parent()) {
+      shadow_layer_->parent()->Remove(shadow_layer_.get());
+    }
+    layer()->parent()->Add(shadow_layer_.get());
+  }
+
+  DCHECK_EQ(shadow_layer_->parent(), layer()->parent());
+  layer()->parent()->StackBelow(shadow_layer_.get(), layer());
+}
+
+void BraveTab::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+  Tab::OnBoundsChanged(previous_bounds);
+
+  if (shadow_layer_ && shadow_layer_->parent()) {
+    LayoutShadowLayer();
+  }
+}
+
+void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
+                                           int visual_width) const {
+  if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
+      !tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
+    return;
+  }
+
+  if (!ShouldRenderAsNormalTab()) {
+    // In case it's pinned tab, use the same calculation with the upstream.
+    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
+    return;
+  }
+
+  auto* browser_view =
+      BrowserView::GetBrowserViewForBrowser(controller_->GetBrowser());
+  if (!browser_view) {
+    Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
+    return;
+  }
+
+  auto* widget_delegate_view = static_cast<BraveBrowserView*>(browser_view)
+                                   ->vertical_tab_strip_widget_delegate_view();
+  CHECK(widget_delegate_view);
+  auto* region_view = widget_delegate_view->vertical_tab_strip_region_view();
+  CHECK(region_view);
+
+  if (region_view->state() == VerticalTabStripRegionView::State::kFloating) {
+    // In case we're in floating mode, set the same left padding with the one
+    // we use for the collapsed state, so that the favicon doesn't moves left
+    // and right.
+    bounds->set_x((tabs::kVerticalTabMinWidth - gfx::kFaviconSize) / 2);
+  }
+
+  // For else cases(non-pinned tabs), we don't do anything just like upstream.
 }
 
 bool BraveTab::ShouldRenderAsNormalTab() const {
@@ -105,4 +271,46 @@ bool BraveTab::IsAtMinWidthForVerticalTabStrip() const {
 
   return tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser()) &&
          width() <= tabs::kVerticalTabMinWidth;
+}
+
+void BraveTab::UpdateShadowForActiveTab() {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs));
+  if (IsActive() &&
+      tabs::utils::ShouldShowVerticalTabs(controller()->GetBrowser())) {
+    shadow_layer_ = CreateShadowLayer();
+    AddLayerToBelowThis();
+    LayoutShadowLayer();
+  } else if (shadow_layer_) {
+    if (layer()) {
+      layer()->parent()->Remove(shadow_layer_.get());
+    }
+    shadow_layer_.reset();
+    if (layer()) {
+      DestroyLayer();
+    }
+  }
+}
+
+std::unique_ptr<ui::Layer> BraveTab::CreateShadowLayer() {
+  auto layer = std::make_unique<ShadowLayer>(this);
+  layer->SetFillsBoundsOpaquely(false);
+  return layer;
+}
+
+void BraveTab::LayoutShadowLayer() {
+  CHECK(shadow_layer_);
+  CHECK(shadow_layer_->parent());
+  CHECK(layer());
+  DCHECK_EQ(layer()->parent(), shadow_layer_->parent());
+  shadow_layer_->SetBounds(
+      ShadowLayer::GetShadowLayerBounds(layer()->bounds()));
+}
+
+void BraveTab::AddLayerToBelowThis() {
+  if (!layer()) {
+    SetPaintToLayer();
+    layer()->SetFillsBoundsOpaquely(false);
+  }
+
+  ReorderChildLayers(layer()->parent());
 }

@@ -25,11 +25,11 @@
 #include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "bat/ledger/ledger.h"
-#include "bat/ledger/ledger_client.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_client.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "build/build_config.h"
@@ -172,8 +172,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherMinVisits(GetPublisherMinVisitsCallback callback) override;
   void GetPublisherAllowNonVerified(
       GetPublisherAllowNonVerifiedCallback callback) override;
-  void GetPublisherAllowVideos(
-      GetPublisherAllowVideosCallback callback) override;
   void RestorePublishers() override;
   void GetBalanceReport(
       const uint32_t month,
@@ -226,9 +224,10 @@ class RewardsServiceImpl : public RewardsService,
                         double amount,
                         OnTipCallback callback) override;
 
-  void SetMonthlyContribution(const std::string& publisher_id,
-                              double amount,
-                              base::OnceCallback<void(bool)> callback) override;
+  void SendContribution(const std::string& publisher_id,
+                        double amount,
+                        bool set_monthly,
+                        base::OnceCallback<void(bool)> callback) override;
 
   const RewardsNotificationService::RewardsNotificationsMap&
     GetAllNotifications() override;
@@ -380,8 +379,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRecurringTip(const ledger::mojom::Result result);
 
-  void OnMonthlyContributionSet(base::OnceCallback<void(bool)> callback,
-                                bool success);
+  void OnContributionSent(bool set_monthly,
+                          base::OnceCallback<void(bool)> callback,
+                          bool success);
 
   void OnURLLoaderComplete(SimpleURLLoaderList::iterator url_loader_it,
                            ledger::client::LoadURLCallback callback,
@@ -434,7 +434,6 @@ class RewardsServiceImpl : public RewardsService,
                ledger::client::LoadURLCallback callback) override;
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
-  void SetPublisherAllowVideos(bool allow) const override;
   void OnPanelPublisherInfo(const ledger::mojom::Result result,
                             ledger::mojom::PublisherInfoPtr info,
                             uint64_t window_id) override;
@@ -635,7 +634,6 @@ class RewardsServiceImpl : public RewardsService,
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   uint32_t next_timer_id_;
-  int32_t country_id_ = 0;
   bool reset_states_;
   bool ledger_for_testing_ = false;
   int ledger_state_target_version_for_testing_ = -1;

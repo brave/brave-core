@@ -184,13 +184,15 @@ void SolanaProviderImpl::SignTransaction(
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                            std::vector<uint8_t>());
+                            std::vector<uint8_t>(),
+                            mojom::SolanaMessageVersion::kLegacy);
     return;
   }
   if (!IsAccountConnected(*account)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
-                            std::vector<uint8_t>());
+                            std::vector<uint8_t>(),
+                            mojom::SolanaMessageVersion::kLegacy);
     return;
   }
   auto msg_pair =
@@ -198,7 +200,8 @@ void SolanaProviderImpl::SignTransaction(
   if (!msg_pair) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                            std::vector<uint8_t>());
+                            std::vector<uint8_t>(),
+                            mojom::SolanaMessageVersion::kLegacy);
     return;
   }
 
@@ -227,7 +230,8 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
     const absl::optional<std::string>& error) {
   if (error && !error->empty()) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError, *error,
-                            std::vector<uint8_t>());
+                            std::vector<uint8_t>(),
+                            mojom::SolanaMessageVersion::kLegacy);
     return;
   }
 
@@ -235,7 +239,7 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
-        std::vector<uint8_t>());
+        std::vector<uint8_t>(), mojom::SolanaMessageVersion::kLegacy);
     return;
   }
 
@@ -250,11 +254,13 @@ void SolanaProviderImpl::OnSignTransactionRequestProcessed(
   if (!signed_tx || signed_tx->empty()) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                            std::vector<uint8_t>());
+                            std::vector<uint8_t>(),
+                            mojom::SolanaMessageVersion::kLegacy);
     return;
   }
 
-  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", *signed_tx);
+  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", *signed_tx,
+                          tx->message()->version());
 }
 
 void SolanaProviderImpl::SignAllTransactions(
@@ -265,13 +271,15 @@ void SolanaProviderImpl::SignAllTransactions(
   if (!account) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                            std::vector<std::vector<uint8_t>>());
+                            std::vector<std::vector<uint8_t>>(),
+                            std::vector<mojom::SolanaMessageVersion>());
     return;
   }
   if (!IsAccountConnected(*account)) {
     std::move(callback).Run(mojom::SolanaProviderError::kUnauthorized,
                             l10n_util::GetStringUTF8(IDS_WALLET_NOT_AUTHED),
-                            std::vector<std::vector<uint8_t>>());
+                            std::vector<std::vector<uint8_t>>(),
+                            std::vector<mojom::SolanaMessageVersion>());
     return;
   }
 
@@ -285,7 +293,8 @@ void SolanaProviderImpl::SignAllTransactions(
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-          std::vector<std::vector<uint8_t>>());
+          std::vector<std::vector<uint8_t>>(),
+          std::vector<mojom::SolanaMessageVersion>());
       return;
     }
 
@@ -320,7 +329,8 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
     const absl::optional<std::string>& error) {
   if (error && !error->empty()) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError, *error,
-                            std::vector<std::vector<uint8_t>>());
+                            std::vector<std::vector<uint8_t>>(),
+                            std::vector<mojom::SolanaMessageVersion>());
     return;
   }
 
@@ -328,7 +338,8 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
     std::move(callback).Run(
         mojom::SolanaProviderError::kUserRejectedRequest,
         l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST),
-        std::vector<std::vector<uint8_t>>());
+        std::vector<std::vector<uint8_t>>(),
+        std::vector<mojom::SolanaMessageVersion>());
     return;
   }
 
@@ -338,11 +349,13 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
       (!signatures || signatures->size() != txs.size())) {
     std::move(callback).Run(mojom::SolanaProviderError::kInternalError,
                             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-                            std::vector<std::vector<uint8_t>>());
+                            std::vector<std::vector<uint8_t>>(),
+                            std::vector<mojom::SolanaMessageVersion>());
     return;
   }
 
   std::vector<std::vector<uint8_t>> signed_txs;
+  std::vector<mojom::SolanaMessageVersion> versions;
   for (size_t i = 0; i < txs.size(); ++i) {
     absl::optional<std::vector<uint8_t>> signed_tx;
     if (!is_hardware_account) {
@@ -356,14 +369,17 @@ void SolanaProviderImpl::OnSignAllTransactionsRequestProcessed(
       std::move(callback).Run(
           mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
-          std::vector<std::vector<uint8_t>>());
+          std::vector<std::vector<uint8_t>>(),
+          std::vector<mojom::SolanaMessageVersion>());
       return;
     }
 
+    versions.push_back(txs[i]->message()->version());
     signed_txs.push_back(std::move(*signed_tx));
   }
 
-  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", signed_txs);
+  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", signed_txs,
+                          versions);
 }
 
 void SolanaProviderImpl::SignAndSendTransaction(
@@ -401,8 +417,8 @@ void SolanaProviderImpl::SignAndSendTransaction(
       SolanaTransaction::SendOptions::FromValue(std::move(send_options)));
 
   tx_service_->AddUnapprovedTransaction(
-      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()),
-      tx.message()->fee_payer(), delegate_->GetOrigin(), absl::nullopt,
+      mojom::TxDataUnion::NewSolanaTxData(tx.ToSolanaTxData()), *account,
+      delegate_->GetOrigin(), absl::nullopt,
       base::BindOnce(&SolanaProviderImpl::OnAddUnapprovedTransaction,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -730,7 +746,8 @@ void SolanaProviderImpl::OnRequestSignTransaction(
     RequestCallback callback,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    const std::vector<uint8_t>& serialized_tx) {
+    const std::vector<uint8_t>& serialized_tx,
+    mojom::SolanaMessageVersion version) {
   base::Value::Dict result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     auto tx = SolanaTransaction::FromSignedTransactionBytes(serialized_tx);
@@ -745,7 +762,8 @@ void SolanaProviderImpl::OnRequestSignAllTransactions(
     RequestCallback callback,
     mojom::SolanaProviderError error,
     const std::string& error_message,
-    const std::vector<std::vector<uint8_t>>& serialized_txs) {
+    const std::vector<std::vector<uint8_t>>& serialized_txs,
+    const std::vector<mojom::SolanaMessageVersion>& versions) {
   base::Value::Dict result;
   if (error == mojom::SolanaProviderError::kSuccess) {
     base::Value::List signatures;

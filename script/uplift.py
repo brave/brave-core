@@ -430,61 +430,57 @@ def submit_pr(channel, top_level_base, remote_base,
               local_branch, issues_fixed):
     global config
 
-    try:
-        milestone_number = get_milestone_for_branch(remote_base)
-        if milestone_number is None:
-            print('milestone for "' + remote_base + '" was not found!')
-            return 0
+    milestone_number = get_milestone_for_branch(remote_base)
+    if milestone_number is None:
+        raise Exception('milestone for "' + remote_base + '" was not found!')
 
-        print('(' + channel + ') creating pull request')
-        pr_title = config.title or ''
-        pr_dst = remote_base
-        if is_nightly(channel):
-            pr_dst = 'master'
+    print('(' + channel + ') creating pull request')
+    pr_title = config.title or ''
+    pr_dst = remote_base
+    if is_nightly(channel):
+        pr_dst = 'master'
 
-        # add uplift specific details (if needed)
-        if is_nightly(channel) or local_branch.startswith(top_level_base):
-            pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
-        else:
-            pr_title += ' (uplift to ' + remote_base + ')'
-            pr_body = 'Uplift of #' + str(config.master_pr_number) + '\n'
+    # add uplift specific details (if needed)
+    if is_nightly(channel) or local_branch.startswith(top_level_base):
+        pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
+    else:
+        pr_title += ' (uplift to ' + remote_base + ')'
+        pr_body = 'Uplift of #' + str(config.master_pr_number) + '\n'
 
-            if len(issues_fixed) > 0:
-                for fixed in issues_fixed:
-                    pr_body += (fixed[0] + '\n')
+        if len(issues_fixed) > 0:
+            for fixed in issues_fixed:
+                pr_body += (fixed[0] + '\n')
 
-            pr_body += '\nPre-approval checklist: \n'
-            pr_body += '- [ ] You have tested your change on Nightly. \n'
-            pr_body += '- [ ] This contains text which needs to be translated. \n'
-            pr_body += '    - [ ] There are more than 7 days before the release. \n'
-            pr_body += '    - [ ] I\'ve notified folks in #l10n on Slack that translations are needed. \n'
-            pr_body += '- [ ] The PR milestones match the branch they are landing to. \n\n'
+        pr_body += '\nPre-approval checklist: \n'
+        pr_body += '- [ ] You have tested your change on Nightly. \n'
+        pr_body += '- [ ] This contains text which needs to be translated. \n'
+        pr_body += '    - [ ] There are more than 7 days before the release. \n'
+        pr_body += '    - [ ] I\'ve notified folks in #l10n on Slack that translations are needed. \n'
+        pr_body += '- [ ] The PR milestones match the branch they are landing to. \n\n'
 
-            pr_body += '\nPre-merge checklist: \n'
-            pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
-                       'pass or are not related to your PR. \n\n'
+        pr_body += '\nPre-merge checklist: \n'
+        pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
+                    'pass or are not related to your PR. \n\n'
 
-            pr_body += 'Post-merge checklist: \n'
-            pr_body += '- [ ] The associated issue milestone is set to the smallest version ' \
-                       'that the changes is landed on.'
+        pr_body += 'Post-merge checklist: \n'
+        pr_body += '- [ ] The associated issue milestone is set to the smallest version ' \
+                    'that the changes is landed on.'
 
-        number = create_pull_request(config.github_token, BRAVE_CORE_REPO, pr_title, pr_body,
-                                     branch_src=local_branch, branch_dst=pr_dst,
-                                     open_in_browser=True, verbose=config.is_verbose, dryrun=config.is_dryrun)
+    number = create_pull_request(config.github_token, BRAVE_CORE_REPO, pr_title, pr_body,
+                                    branch_src=local_branch, branch_dst=pr_dst,
+                                    open_in_browser=True, verbose=config.is_verbose, dryrun=config.is_dryrun)
 
-        # store the original PR number so that it can be referenced in uplifts
-        if is_nightly(channel) or local_branch.startswith(top_level_base):
-            config.master_pr_number = number
+    # store the original PR number so that it can be referenced in uplifts
+    if is_nightly(channel) or local_branch.startswith(top_level_base):
+        config.master_pr_number = number
 
-        # assign milestone / reviewer(s) / owner(s)
-        add_reviewers_to_pull_request(config.github_token, BRAVE_CORE_REPO, number,
-                                      team_reviewers=config.team_reviewers,
-                                      verbose=config.is_verbose, dryrun=config.is_dryrun)
-        set_issue_details(config.github_token, BRAVE_CORE_REPO, number, milestone_number,
-                          config.parsed_owners, config.labels,
-                          verbose=config.is_verbose, dryrun=config.is_dryrun)
-    except Exception as e:
-        print('[ERROR] unhandled error occurred:', str(e))
+    # assign milestone / reviewer(s) / owner(s)
+    add_reviewers_to_pull_request(config.github_token, BRAVE_CORE_REPO, number,
+                                    team_reviewers=config.team_reviewers,
+                                    verbose=config.is_verbose, dryrun=config.is_dryrun)
+    set_issue_details(config.github_token, BRAVE_CORE_REPO, number, milestone_number,
+                        config.parsed_owners, config.labels,
+                        verbose=config.is_verbose, dryrun=config.is_dryrun)
     return 0
 
 

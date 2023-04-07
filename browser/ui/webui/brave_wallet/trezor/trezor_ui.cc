@@ -22,8 +22,8 @@ namespace trezor {
 
 UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
-  auto* untrusted_source =
-      content::WebUIDataSource::Create(kUntrustedTrezorURL);
+  auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedTrezorURL);
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_TREZOR_BRIDGE_HTML);
   untrusted_source->AddResourcePaths(
       base::make_span(kTrezorBridgeGenerated, kTrezorBridgeGeneratedSize));
@@ -44,8 +44,6 @@ UntrustedTrezorUI::UntrustedTrezorUI(content::WebUI* web_ui)
   untrusted_source->UseStringsJs();
   untrusted_source->AddString("braveWalletTrezorBridgeUrl",
                               kUntrustedTrezorURL);
-  auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
 
 UntrustedTrezorUI::~UntrustedTrezorUI() = default;

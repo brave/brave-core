@@ -5,18 +5,6 @@
 
 import styled from 'styled-components'
 
-export const WalletWidgetStandIn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 285px;
-  min-width: 285px;
-  @media screen and (max-width: 800px) {
-    margin-bottom: 40px;
-  }
-`
-
 export const SimplePageWrapper = styled.div`
   display: flex;
   flex-direction: column;

@@ -2,7 +2,7 @@
   "configurations": [{
     "dashboard-bot-name": "test-agent",
     "browser-type": "brave",
-    "profile": "brave-typical-v1.46.52",
+    "profile": "brave-typical-v1.50.26",
     "extra-browser-args": [],
     "extra-benchmark-args": [],
     "save-artifacts": true,

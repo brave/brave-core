@@ -22,7 +22,7 @@
   }                                                                       \
   /* Store patterns information to determine if Shields are disabled. */  \
   if (auto* setting_with_brave_metadata =                                 \
-          cookie_setting_with_brave_metadata()) {                         \
+          GetCurrentCookieSettingWithBraveMetadata()) {                   \
     setting_with_brave_metadata->primary_pattern_matches_all_hosts =      \
         info.primary_pattern.MatchesAllHosts();                           \
     setting_with_brave_metadata->secondary_pattern_matches_all_hosts =    \

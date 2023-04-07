@@ -14,6 +14,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -41,8 +42,9 @@
 SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
+  auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kWalletPageHost);
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
 
   for (const auto& str : brave_wallet::kLocalizedStrings) {
@@ -51,7 +53,6 @@ SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
     source->AddString(str.name, l10n_str);
   }
 
-  auto* profile = Profile::FromWebUI(web_ui);
   webui::SetupWebUIDataSource(
       source,
       base::make_span(kBraveWalletSwapPageGenerated,
@@ -77,7 +78,6 @@ SwapPageUI::SwapPageUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
-  content::WebUIDataSource::Add(profile, source);
 
   brave_wallet::AddBlockchainTokenImageSource(profile);
 }
@@ -120,7 +120,9 @@ void SwapPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
         brave_wallet_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver) {
+        brave_wallet_auto_pin_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+        ipfs_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -146,6 +148,8 @@ void SwapPageUI::CreatePageHandler(
       profile, std::move(solana_tx_manager_proxy_receiver));
   brave_wallet::TxServiceFactory::BindFilTxManagerProxyForContext(
       profile, std::move(filecoin_tx_manager_proxy_receiver));
+  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
+      profile, std::move(ipfs_service_receiver));
   brave_wallet::BraveWalletService* wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
   wallet_service->Bind(std::move(brave_wallet_service_receiver));

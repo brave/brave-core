@@ -14,6 +14,10 @@ IpfsBaseJob::IpfsBaseJob() = default;
 
 IpfsBaseJob::~IpfsBaseJob() = default;
 
+void IpfsBaseJob::Cancel() {
+  is_canceled_ = true;
+}
+
 IpfsBasePinService::IpfsBasePinService(IpfsService* ipfs_service)
     : ipfs_service_(ipfs_service) {
   ipfs_service_->AddObserver(this);
@@ -25,14 +29,24 @@ IpfsBasePinService::~IpfsBasePinService() = default;
 
 void IpfsBasePinService::OnIpfsShutdown() {
   daemon_ready_ = false;
+  if (current_job_) {
+    current_job_->Cancel();
+    current_job_.reset();
+  }
 }
 
-void IpfsBasePinService::OnGetConnectedPeers(
+void IpfsBasePinService::OnGetConnectedPeersResult(
+    size_t attempt,
     bool success,
     const std::vector<std::string>& peers) {
+  if (daemon_ready_) {
+    return;
+  }
   if (success) {
     daemon_ready_ = true;
     DoNextJob();
+  } else {
+    PostGetConnectedPeers(attempt++);
   }
 }
 
@@ -75,13 +89,41 @@ void IpfsBasePinService::MaybeStartDaemon() {
     return;
   }
 
-  ipfs_service_->StartDaemonAndLaunch(base::BindOnce(
-      &IpfsBasePinService::OnDaemonStarted, weak_ptr_factory_.GetWeakPtr()));
+  ipfs_service_->StartDaemonAndLaunch(
+      base::BindOnce(&IpfsBasePinService::PostGetConnectedPeers,
+                     weak_ptr_factory_.GetWeakPtr(), 1));
 }
 
-void IpfsBasePinService::OnDaemonStarted() {
+void IpfsBasePinService::PostGetConnectedPeers(size_t attempt) {
+  if (daemon_ready_) {
+    return;
+  }
+
+  if (!ipfs_service_->IsDaemonLaunched()) {
+    return;
+  }
+
+  if (jobs_.empty()) {
+    return;
+  }
+
+  if (attempt > 5) {
+    return;
+  }
+
   // Ensure that daemon service is fully initialized
-  ipfs_service_->GetConnectedPeers(base::NullCallback(), 2);
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&IpfsBasePinService::GetConnectedPeers,
+                     weak_ptr_factory_.GetWeakPtr(), attempt),
+      base::Seconds(30 * attempt));
+}
+
+void IpfsBasePinService::GetConnectedPeers(size_t attempt) {
+  ipfs_service_->GetConnectedPeers(
+      base::BindOnce(&IpfsBasePinService::OnGetConnectedPeersResult,
+                     weak_ptr_factory_.GetWeakPtr(), attempt),
+      absl::nullopt);
 }
 
 }  // namespace ipfs

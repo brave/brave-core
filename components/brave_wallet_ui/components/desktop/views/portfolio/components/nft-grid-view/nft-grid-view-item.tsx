@@ -9,13 +9,8 @@ import * as React from 'react'
 import { BraveWallet } from '../../../../../../constants/types'
 
 // Utils
-import { stripERC20TokenImageURL, addIpfsGateway } from '../../../../../../utils/string-utils'
+import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
 import Amount from '../../../../../../utils/amount'
-import { getTokensNetwork } from '../../../../../../utils/network-utils'
-
-// selectors
-import { useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../../common/selectors'
 
 // components
 import { NftIconWithNetworkIcon } from '../../../../../shared/nft-icon/nft-icon-with-network-icon'
@@ -32,6 +27,8 @@ import {
   DIVForClickableArea,
   NFTSymbol
 } from './style'
+import { translateToNftGateway } from '../../../../../../common/async/lib'
+
 
 interface Props {
   token: BraveWallet.BlockchainToken
@@ -44,9 +41,6 @@ export const NFTGridViewItem = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
-
-  // redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -63,10 +57,15 @@ export const NFTGridViewItem = (props: Props) => {
     setShowMore(false)
   }, [])
 
-  // memos
-  const remoteImage = React.useMemo(() => {
+  const [remoteImage, setRemoteImage] = React.useState<string>()
+  React.useEffect(() => {
+    let ignore = false
     const tokenImageURL = stripERC20TokenImageURL(token.logo)
-    return addIpfsGateway(tokenImageURL)
+    translateToNftGateway(tokenImageURL).then(
+      (v) => {if (!ignore) setRemoteImage(v)})
+    return () => {
+      ignore = true
+    }
   }, [token.logo])
 
   return (
@@ -85,11 +84,12 @@ export const NFTGridViewItem = (props: Props) => {
           <NftIconWithNetworkIcon
             icon={remoteImage}
             responsive={true}
-            tokensNetwork={getTokensNetwork(networkList, token)}
+            chainId={token?.chainId}
+            coinType={token?.coin}
           />
         </IconWrapper>
         <NFTText>{token.name} {token.tokenId ? '#' + new Amount(token.tokenId).toNumber() : ''}</NFTText>
-        <NFTSymbol>{token.symbol}</NFTSymbol>
+        {token.symbol !== '' && <NFTSymbol>{token.symbol}</NFTSymbol>}
       </NFTWrapper>
       {showEditModal &&
         <AddOrEditNftModal

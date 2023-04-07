@@ -13,10 +13,8 @@ source_set("browser_tests") {
 
   deps = [
     "//chrome/browser",
-    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
-    "//components/prefs",
     "//content/test:test_support",
   ]
 }

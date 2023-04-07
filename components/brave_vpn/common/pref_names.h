@@ -10,7 +10,8 @@
 
 namespace brave_vpn {
 namespace prefs {
-
+constexpr char kManagedBraveVPNDisabled[] =
+    "brave.brave_vpn.disabled_by_policy";
 constexpr char kBraveVPNLocalStateMigrated[] = "brave.brave_vpn.migrated";
 constexpr char kBraveVPNRootPref[] = "brave.brave_vpn";
 constexpr char kBraveVPNShowButton[] = "brave.brave_vpn.show_button";
@@ -28,6 +29,10 @@ constexpr char kBraveVPNEnvironment[] = "brave.brave_vpn.env";
 // Dict that has subscriber credential its expiration date.
 constexpr char kBraveVPNSubscriberCredential[] =
     "brave.brave_vpn.subscriber_credential";
+
+// Time that session expired occurs.
+constexpr char kBraveVPNSessionExpiredDate[] =
+    "brave.brave_vpn.session_expired_date";
 
 #if BUILDFLAG(IS_ANDROID)
 extern const char kBraveVPNPurchaseTokenAndroid[];

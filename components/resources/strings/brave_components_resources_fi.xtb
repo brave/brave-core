@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">Näytä Brave-palkinnot</translation>
 <translation id="5585019845078534178">Kortit</translation>
 <translation id="3870475560794762985">Näytä maksetut kuvat</translation>
-<translation id="8466529005131466476">Voit ansaita katselemalla sponsoroituja sivustoja.</translation>
-<translation id="3955742714798578476">Ansaitset katselemalla sponsoroituja kuvia.</translation>
-<translation id="7822618650711767369">Sponsoroidut kuvat tukevat Bravea. Brave-palkintojen kautta ansaitset osan sponsoroitujen kuvien tuotoista ja voit tukea lisäksi sisällöntuottajia!</translation>
-<translation id="5579480493856401823">Sponsoroitujen sivustojen poistaminen käytöstä vähentää ansaittavien tokenien määrää sekä joka kuukausi sisällöntuottajille annettua tukea.</translation>
+<translation id="2414654907269324670">Ansaitset BATeja sponsoroiduilla kuvilla.</translation>
+<translation id="4942016616604700968">Salli palkinnot</translation>
+<translation id="5684562942023496754">Voit ansaita katselemalla sponsoroituja kuvia.</translation>
+<translation id="8934374643857605034">Brave-palkintojen käyttäjänä voit ansaita BATeja katsomalla sponsoroituja kuvia.</translation>
+<translation id="5236449703984229754">Voit ansaita BATeja katsomalla sponsoroituja kuvia, kun otat Brave-mainokset käyttöön. Kun Brave-mainokset on poistettu käytöstä, sponsoroitujen kuvien käyttöönotto tukee edelleen Braven tehtävää.</translation>
+<translation id="1570714748649804013">Brave-palkintojen käyttäjänä ansaitset BATeja katsomistasi sponsoroiduista kuvista. Jos poistat sponsoroidut kuvat käytöstä, ansiot pienenevät.</translation>
+<translation id="8998727244653964783">Voit ansaita BATeja katsomalla sponsoroituja kuvia, kun yhdistät säilytystilin Brave-palkintoihin. Sillä välin autat luojien tukemista sponsoroitujen kuvien kautta.</translation>
+<translation id="5512383650263136662">Voit ansaita BATeja katsomalla sponsoroituja kuvia Brave-palkintojen kautta. Etkö ole palkintojen käyttäjä? Sponsoroitujen kuvien käyttöönotto tukee edelleen Braven tehtävää.</translation>
 <translation id="2875302873837723333">kärkisivustot</translation>
 <translation id="8173998484743827990">Brave-tilastot</translation>
 <translation id="383680190590774040">kello</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 sekuntia</translation>
 <translation id="8610523985422563960">1 minuutti</translation>
 <translation id="2807328214759298515">Jopa</translation>
-<translation id="9031738692126722094">Salli sisältötason tipit näillä sivustoilla</translation>
+<translation id="7483857210736407752">Näytä tippipainikkeet sivustoilla</translation>
 <translation id="7583327070390027131">Seuraava kuukausittaisten tippien päivämäärä</translation>
 <translation id="6231182869178328516">Annoin juuri tipin henkilölle <ph name="NAME"/> Brave-selaimen kautta. Voit tutustua siihen osoitteessa https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Hienoa, että <ph name="HASHTAG"/>Braven avulla voin tukea sisällöntuottajia! Annoin juuri tipin henkilölle <ph name="NAME"/> käyttäen kohdetta <ph name="HASHTAG2"/>BAT. Jos hän vahvistaa osoitteessa https://creators.brave.com ennen <ph name="DATE"/>, BAT on hänen!</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">Brave Ads -historiaa ei ole tällä hetkellä</translation>
 <translation id="5345727496083327478">Et enää saa mainoksia tästä kategoriasta</translation>
 <translation id="2631006050119455616">Tallennettu</translation>
-<translation id="3819257035322786455">Varmuuskopiointi</translation>
 <translation id="6976444672879155794">Avusta automaattisesti [[processor]]</translation>
 <translation id="8804164990146287819">Tietosuojakäytäntö</translation>
 <translation id="7262285991915892790">Siirrä BAT-kuvake kohteeseen</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">Voimassaolon päättymiseen mennessä käyttämättä jääneet [[currency]] palautetaan automaattisesti Brave -käyttäjäkasvuvarantoihin.</translation>
 <translation id="279567716178902927">Lahjoituksen umpeutumispäivä</translation>
 <translation id="1389143276807887637">tuo</translation>
-<translation id="3810973564298564668">Hallinnoi</translation>
-<translation id="6302422639282249274">Hallitse Brave Rewards -ohjelmaa</translation>
 <translation id="211044356803193224">Kuukausittaiset vihjeet</translation>
 <translation id="2487641031722095938">On onnenpäiväsi!</translation>
 <translation id="6255773350565723852">Tunnuslahjoituksesi on matkalla.</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">Poista tallennetuista</translation>
 <translation id="5530851178552343773">Olet osoittanut [[reservedAmount]] [[currency]] tekijöille, jotka eivät ole vielä rekisteröityneet kannatusmaksujen vastaanottajiksi. Selaimesi jatkaa kannatusmaksuyritysten tekemistä siihen asti, kunnes tekijät ovat vahvistaneet ne tai että 90 vuorokautta on kulunut.</translation>
 <translation id="5939518447894949180">Tyhjennä</translation>
+<translation id="3349204812119681938">Nollaa Brave Rewards</translation>
 <translation id="5669281110673664811">Tyhjennä pois rajattujen luettelo</translation>
 <translation id="1797334173232638045">Kiinnitetyt sivustosi on siirretty</translation>
-<translation id="542042553430131913">Jos Brave-palkintojasi ei ole vahvistettu, BAT-saldoasi säilytetään laitteesi paikallisissa tiedostoissa.</translation>
-<translation id="2142973554991645476">Jos haluat turvata BATisi siinä tapauksessa, että sinun täytyy tehdä puhdas selaimen uudelleenasennus tai alustaa laitteesi uudelleen, ja haluaisit nauttia muista eduista, kuten BATiesi lisäämisestä tai nostamisesta, suosittelemme <ph name="LINK_BEGIN"/>vahvistusta<ph name="LINK_END"/>.</translation>
 <translation id="5317144262906129592">Voit tukea tätä sisällöntuottajaa lähettämällä tipin. Se on tapa kiittää häntä hienon sisällön luomisesta.</translation>
 <translation id="3074127054582480056">Huomio</translation>
 <translation id="3659457123782988823">Haluatko varmasti nollata Brave-palkintosi?</translation>
 <translation id="1666001796278936721">Kun nollaat sen, nykyinen Brave-palkintoprofiilisi poistetaan, ja sinä aloitat uudelleen aivan uudella Brave-palkintoprofiililla. Ennen kuin aloitat, <ph name="LINK_BEGIN"/>lue lisää<ph name="LINK_END"/> nollauksesta varmuuden vuoksi.</translation>
-<translation id="94095197509579227">Huomaa: Sinulla on tällä hetkellä <ph name="BAT_AMOUNT"/> arvioituja tuloja tässä kuussa, jotka menetetään, jos nollaat nyt.</translation>
 <translation id="4806029412510565611">Ymmärrän, että nykyinen Brave-palkintoprofiilini ja Brave-palintotiedot poistetaan laitteestani, ja olen lukenut <ph name="LINK_BEGIN"/>nollausta koskevan tukiartikkelin<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Lunastetut tunnuslahjoitukset</translation>
 <translation id="3494964159182650590">Palkkioiden yhteenveto</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">Katso yksityiskohdat</translation>
 <translation id="4206899127409458763">Brave-palkintoprofiilisi luominen</translation>
 <translation id="1988679729106502285">HUOMIO:</translation>
-<translation id="942863887222585572">Olet yhdistetty tarjoajaan <ph name="USER_PROVIDER"/>, mutta tämä luoja on yhdistetty tarjoajaan <ph name="CREATOR_PROVIDER"/>. Tämä tarkoittaa sitä, että tippisi ei saavuta tätä luojaa. Toistaiseksi kaikki antamasi tipit jäävät odottavaan tilaan, ja ne yrittävät uudelleen 90 päivän ajan.</translation>
 <translation id="5530734056858418442">Tämä luoja ei ole vielä rekisteröitynyt. Kaikki antamasi tipit jäävät odottamaan. Niiden lähettämistä yritetään automaattisesti uudelleen 90 päivän ajan.</translation>
 <translation id="3197752845651180812">Odottavat lahjoitukset</translation>
 <translation id="6964891561514920613">Näytä kaikki odottavat lahjoitukset</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">Vahvistamaton luoja</translation>
 <translation id="6020176662032623904">Vahvistettu luoja</translation>
 <translation id="215037911651623564">Päivitä luojan vahvistuksen tila</translation>
-<translation id="8946576491316456643">Kaikki antamasi tipit pysyvät käsittelyssä, ja niitä yritetään automaattisesti uudelleen 90 päivän ajan. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">Kaikki antamasi tipit jäävät odottamaan toistaiseksi. Niiden lähettämistä yritetään automaattisesti uudelleen 90 päivän ajan.</translation>
 <translation id="7826318737761918938">Tämä luoja ei ole vielä rekisteröitynyt.</translation>
 <translation id="3573568055713372419">Olet yhdistetty tarjoajaan <ph name="USER_PROVIDER"/>, mutta tämä luoja on yhdistetty tarjoajaan <ph name="CREATOR_PROVIDER"/>. Tämä tarkoittaa sitä, että tippisi ei saavuta tätä luojaa.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> – <ph name="PLATFORM"/></translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">Osta</translation>
 <translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="3488255243387417752">Myy</translation>
+<translation id="5223034545851554347">Sinulla ei ole tarpeeksi <ph name="TOKEN_SYMBOL"/> tällä tilillä.</translation>
 <translation id="9113988219764868805">Lähetä tokeni</translation>
 <translation id="4254256922305105713">Lähetä NFT</translation>
 <translation id="3453833142586986467">Valitse tokeni</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">ensimmäinen</translation>
 <translation id="4709524402122994378">tapahtumat</translation>
 <translation id="4591079278963448049">Liittyvää token-tiliä ei vielä ole olemassa. Pieni määrä SOLia käytetään sen luomiseen ja rahoittamiseen.</translation>
+<translation id="1426320910664514906">Gas-raja</translation>
+<translation id="1229774280326250926">Gas-maksun premium</translation>
+<translation id="148169246131967347">Gas-maksun maksukatto</translation>
 <translation id="523862956770478816">Sivuston käyttöoikeudet</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> liitettyä tiliä</translation>
 <translation id="4804818685124855865">Katkaise yhteys</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">Virheellinen ETH-osoite</translation>
 <translation id="2832270987629018596">Virheellinen SOL-osoite</translation>
 <translation id="882486206986535424">Virheellinen osoite</translation>
-<translation id="6825399159373612149">Verkkotunnusta <ph name="DOMAIN_NAME"/> ei ole rekisteröity</translation>
+<translation id="8684908590733515816">Verkkotunnuksella ei ole linkitettyä <ph name="COIN_TYPE_SYMBOL"/>-osoitetta</translation>
 <translation id="8971278306757462297">Vastaanotto-osoite on oma osoitteesi</translation>
 <translation id="3506416339268164412">Vastaanotto-osoite on tokenin sopimusosoite</translation>
+<translation id="6370376419663123629">Osoite ei näytä oikealta</translation>
+<translation id="3767148796886402380">Tarkista osoitteesi varmistaaksesi, että se on oikea osoite (esim. kirjaimet pienillä tai isoilla kirjaimilla).</translation>
+<translation id="2585599787090762065">Miten voin ratkaista sen?</translation>
+<translation id="5517732667776806421">Tarkistussummatiedot puuttuvat</translation>
 <translation id="2975056993833847787">Tätä osoitetta ei voida vahvistaa (tarkistussumma puuttuu). Jatketaanko?</translation>
 <translation id="6320252966164556855">Osoitteen vahvistusta ei läpäisty (virheellinen tarkistussumma). Vaihda pienet kirjaimet isoihin ja yritä uudelleen.</translation>
 <translation id="4667144295226514387">Polttoaineraja puuttuu</translation>
 <translation id="2021522108838444624">Summan tulee olla yli 0</translation>
 <translation id="8464365289405373974">Vastaanottajan osoite on pakollinen</translation>
 <translation id="4884792073752467460">Virheellinen vastaanottajan osoite</translation>
+<translation id="8585995109882455949">Miten voin löytää oikean osoitteen?</translation>
+<translation id="8395402412470376435">Brave vahvistaa ja estää käyttäjiä lähettämästä rahaa väärään osoitteeseen virheellisen isojen kirjainten käytön takia. Tämä on "tarkistussumma"-prosessi, jolla vahvistetaan, että se on kelvollinen Ethereum-osoite.</translation>
+<translation id="4583433813614292221">1. Käy</translation>
+<translation id="5393164213211430081">2. Kopioi ja anna ETH-osoite</translation>
+<translation id="2378355054306959991">Tarvitsetko lisää apua?</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">Hylkää <ph name="TRANSACTION_LENGTH"/> maksutapahtumaa</translation>
 <translation id="1118876217803190221">Riittämätön saldo</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">Tokenistandardi</translation>
 <translation id="9033453977881595182">Tokenin tunnus</translation>
 <translation id="6332387008245531841">Sopimusosoite</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">Kuvan sijainti tai osoite</translation>
 <translation id="2962388922926051374">Pyyntö menetelmälle 'eth_chainId' kohteessa <ph name="URL"/> epäonnistui</translation>
 <translation id="8325036459845654666">Tämä verkko on jo lisätty.</translation>
 <translation id="554350381160981853">Kirjoitettujen tietojen allekirjoittaminen on tuettu vain Trezor Model One -lompakossa, jossa on laiteohjelmisto 1.10.5 tai uudempi</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">Virheellinen FIL-osoite</translation>
 <translation id="3898731124813934210">Osta Wyren kautta</translation>
 <translation id="5522073372365069684">Osta Rampin kautta</translation>
+<translation id="6153197326949684688">Myy palveluntarjoajan <ph name="OFFRAMP_PROVIDER"/> kautta</translation>
+<translation id="6097502401711916278">Vähimmäismäärän on oltava <ph name="FIAT_AMOUNT"/> tai enemmän.</translation>
 <translation id="7902920577183739843">Osta Sardinen kautta</translation>
 <translation id="6534275647567011533">Osta Transakin kautta</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Osta kryptovaluuttaa Visalla tai Mastercardilla.</translation>
+<translation id="3648994606506382289">Helpoin, nopein ja halvin tapa ostaa kryptoa kortilla ja pankkisiirroilla.</translation>
 <translation id="3101839349578102016">Osta heti pankkitililläsi. Pienemmät maksut.</translation>
 <translation id="8528916244724490964">Kaikki verkot</translation>
 <translation id="4038403584813842767">Saldo ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">BPF-latausohjelma</translation>
 <translation id="2334098351242742927">Ed25519-ohjelma</translation>
 <translation id="8780753288764281797">Secp256k1-ohjelma</translation>
-<translation id="5275550100743015683">Osoitteesta:</translation>
-<translation id="2678433693746214764">Osoitteeseen:</translation>
-<translation id="4576396475962922672">Uusi tili:</translation>
+<translation id="6421371987002247943">Tokeniohjelma</translation>
+<translation id="8642855779894264066">Liittyvä tokeniohjelma</translation>
+<translation id="3585645354490191700">MetaData-ohjelma</translation>
+<translation id="1971875492220112280">SysvarRent-ohjelma</translation>
 <translation id="4719005063558335704">Tilit:</translation>
 <translation id="4337554812324118382">Tiedot:</translation>
 <translation id="569870799832027680">Ohjelmatunnus:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">Ohita esitesti:</translation>
 <translation id="3568017348462868931">Valitse valuutta</translation>
 <translation id="4420924466038521900">Hae valuuttoja</translation>
-<translation id="8060029310790625334">Ohjekeskus</translation>
+<translation id="4412698727486357573">Ohjekeskus</translation>
 <translation id="2095142195578664632">Kaipaatko apua? Avaa</translation>
 <translation id="3253669416991680932">Tämä laitelompakko ei tue tätä toimintoa.</translation>
 <translation id="7457027586454688423">Anna Brave-lompakkosi salasanasi</translation>
@@ -1430,8 +1448,6 @@
 <translation id="1026825928738055872">Haluatko varmasti poistaa kohteen <ph name="ACCOUNT_NAME"/>?</translation>
 <translation id="3910551537328657217">Pyydä toimintoa</translation>
 <translation id="7657322905916621147">Palautuslauseen on oltava 12, 15, 18, 21 tai 24 sanaa pitkä</translation>
-<translation id="5307206077701819797">Lompakossasi ei ole NFT:itä. Voit lisätä NFT:n napsauttamalla + Näkyvät varat -painiketta Portfolio-välilehden alaosassa.</translation>
-<translation id="3528540388456395658">Hakua tai suodatinta vastaavia NFT:itä ei löytynyt</translation>
 <translation id="5026874946691314267">Älä näytä tätä enää</translation>
 <translation id="434502623875309667">Osoitteen ratkaisu vaatii ketjun ulkopuolisia verkkopyyntöjä. Jatketaanko?</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">Yhdistä lompakko</translation>
 <translation id="4029551149873989025">Vaihda verkkoa</translation>
 <translation id="7561262633951061138">Paras</translation>
+<translation id="8060029310790625334">Ohjekeskus</translation>
 <translation id="3143110700666266545">Tämä sovellus käyttää seuraavia kolmannen osapuolen sovellusrajapintoja:</translation>
 <translation id="163536108506359457">Brave-vaihto käyttää <ph name="AGGREGATOR"/> DEX-aggregaattorina tuetuille <ph name="NETWORKS"/>-verkoille. <ph name="AGGREGATOR"/> käsittelee <ph name="NETWORK"/>-lompakon osoitteen ja IP-osoitteen suorittaakseen tapahtuman (mukaan lukien tarjousten saaminen). <ph name="AGGREGATOR"/> käyttää näitä tietoja VAIN maksutapahtumien käsittelyä varten.</translation>
 <translation id="1847885264294023691">Napsauta tästä <ph name="AGGREGATOR"/> tietosuojakäytäntöön.</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">Tokenin tarkkuuden desimaalien arvo on pakollinen</translation>
 <translation id="3797613444743816037">Minttauksen osoite</translation>
 <translation id="7951915459354237451">Maksuraja on määritetty alemmaksi kuin perusmaksu. Maksutapahtumasi voi kestää kauan tai epäonnistua.</translation>
+<translation id="2227702748249086756">Maksuarvioita ei voi noutaa</translation>
+<translation id="5361710044667743492">Miksi ei ole saatavilla?</translation>
+<translation id="3668838456083358569">Jotkut NFT-tiedot on tallennettu keskitetylle palvelimelle, kuten AWS, Google Cloud, jne. Tässä tapauksessa ei voida kiinnittää NFT-tietojasi IPFS-verkkoon.</translation>
+<translation id="1293258969121701010">Kun käytät IPFS:ää tietokoneellasi voit:</translation>
+<translation id="4568942135611119076">Varmistaa, että NFT-tietosi pysyvät verkossa, eikä niihin voi kajota.</translation>
+<translation id="4915883034746438977">Saada sisältöä takaisin käyttämällä sisällön tunnistetta(CID) virheellisistä tiedoista.</translation>
+<translation id="1373647012698032676">Osallistua aitouden todistamiseen ja tehdä IPFS-verkosta rikkaan ja terveen.</translation>
+<translation id="1806204385270226865">Pidä NFT:ni aina verkossa</translation>
+<translation id="4323376551843624309">Ota NFT:eiden kiinnitys käyttöön</translation>
+<translation id="6501331923135442324">Iso askel kohti web3:n osaksi tulemista</translation>
+<translation id="5361073938927187534">Suorita IPFS-solmua ja pidä NFT:si aina verkossa</translation>
+<translation id="1060267371223703324">Tarkista, mitkä NFT:ni voi kiinnittää</translation>
+<translation id="2641083452974145848">Voit nyt käyttää IPFS:ää ja olla osa web3:a. NFT-tietosi pysyvät verkossa aina, eikä niihin voi kajota.</translation>
+<translation id="4460927368826360904">Suoritat IPFS-solmua. Tiedostoa noudetaan paikalliseen IPFS-solmuun.</translation>
+<translation id="2260350263892668490"><ph name="PINNED"/> / <ph name="PINNABLE"/> NFT:tä on onnistuneesti kiinnitetty IPFS:ään.</translation>
+<translation id="1474962961180773583"><ph name="PINNABLE"/> / <ph name="TOTAL"/> on saatavilla!</translation>
+<translation id="6852656829524945421">Ei voi kiinnittää</translation>
+<translation id="7698019251444927442">Suoritat IPFS-solmua</translation>
+<translation id="5584313306739463968">Paikallista IPFS-solmua ei suoriteta</translation>
+<translation id="7527548209942671618">Kiinnitetty paikalliseen IPFS-solmuusi</translation>
+<translation id="5659058832308365026">NFT-tietoja kiinnitetään paikalliseen IPFS-solmuusi</translation>
+<translation id="4919133452617704550">Ei voi olla kiinnitetty paikalliseen IPFS-solmuusi</translation>
+<translation id="3225624966527491351">Tuo NFT</translation>
+<translation id="9085765419770918643">Täällä ei vielä ole NFT:itä.</translation>
+<translation id="8445532667841598737">Oletko valmis lisäämään joitakin? Tuo napsauttamalla alla olevaa painiketta.</translation>
+<translation id="9136462955850040542">Yhteensopiva NFT:eiden kanssa Solanassa (SPL) ja Ethereumissa (ERC-721).</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1582,6 +1625,8 @@
 <translation id="6531019308847917584">Estä sormenjälkitunnistus</translation>
 <translation id="1899608006846124237">Estä sormenjälkitunnistus agressiivisesti</translation>
 <translation id="8034285923190068220">Salli tunnisteet</translation>
+<translation id="7638541189782135885">Älä päivitä HTTP-yhteyksiä</translation>
+<translation id="2570787596946026998">Yhdistä vain HTTPS:llä</translation>
 <translation id="1992750560347846445">Raportoi sivusto</translation>
 <translation id="2387532482048804818">Kerro, jos sivusto ei toiminut oikein suojausten ollessa käytössä.</translation>
 <translation id="3795015906457257780">Tarkastelet tätä sivustoa ilman Braven yksityisyyssuojausta.</translation>
@@ -1660,8 +1705,16 @@
 <translation id="888284761945060750">Suojatut DNS-asetukset on poistettu käytöstä organisaatiosi käytäntöjen vuoksi. Brave VPN:n käyttäminen ilman suojattuja DNS-asetuksia voi paljastaa Internet-palveluntarjoajallesi tai organisaatiollesi niiden sivustojen nimet, joilla olet vieraillut.</translation>
 <translation id="6593224083874259773">Brave VPN Windowsissa</translation>
 <translation id="3153983908111684619">Brave VPN lukitsee asetuksen, kun se on yhteydessä verkkoon</translation>
-<translation id="6507543978646831931">Windowsissa on ominaisuus nimeltä Smart Multi-Homed Name Resolution, joka voi paljastaa tietoja sijainnistasi ja sivustoista, joissa olet vieraillut. Nyt kun olet ottanut Brave VPN:n käyttöön, olemme muuttaneet selaimen DNS-asetuksia suojellaksemme tietojen luottamuksellisuutta. Asetukset pysyvät voimassa ja lukittuina, kun VPN on kytkettynä päälle. <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">Windowsissa on ominaisuus nimeltä Smart Multi-Homed Name Resolution, joka voi paljastaa tietoja sijainnistasi ja sivustoista, joissa vierailet.
+
+Bravella on apupalvelu, joka suojaa tietojen luottamuksellisuutta suodattamalla sen tavan, jolla DNS-kyselyt tehdään VPN-yhteydessäsi.
+
+Huomasimme kuitenkin, että tämä apupalvelu ei ole käynnissä - emmekä halua jättää sinua suojatta. Olemme muuttaneet selaimen DNS-asetuksia suojellaksemme tietojen luottamuksellisuutta. Asetukset pysyvät voimassa ja lukittuina, kun VPN on kytketty päälle.
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Älä enää varoita minua tästä.</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="9061845622728745852">Aikavyöhyke:</translation>
+<translation id="8295393906499561642">Istunto vanhentunut</translation>
+<translation id="3312623558576021182">Kirjaudu sisään tilillesi <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave-tili<ph name="BRAVE_ACCOUNT_END"/>, jotta voit päivittää VPN-istuntosi.</translation>
 </translationbundle>

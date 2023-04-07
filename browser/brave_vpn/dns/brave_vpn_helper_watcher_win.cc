@@ -47,7 +47,7 @@ void WaitForEvent(HANDLE event,
 
 ServiceWatcher::ServiceWatcher()
     : task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 ServiceWatcher::~ServiceWatcher() = default;
 

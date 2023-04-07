@@ -6,14 +6,18 @@
 import * as React from 'react'
 
 // utils
-import { getNetworkInfo } from '../../utils/network-utils'
 import {
+  filterTokensByNetworks,
   getRampAssetSymbol,
   isSelectedAssetInAssetOptions
 } from '../../utils/asset-utils'
 
 // types
-import { BraveWallet, BuyOption, SupportedOnRampNetworks, SupportedTestNetworks } from '../../constants/types'
+import {
+  BraveWallet,
+  BuyOption,
+  SupportedTestNetworks
+} from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 import { PageSelectors } from '../../page/selectors'
 
@@ -23,15 +27,21 @@ import { BuyOptions } from '../../options/buy-with-options'
 // hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
-import { useUnsafePageSelector, useUnsafeWalletSelector } from './use-safe-selector'
+import {
+  useUnsafePageSelector,
+  useUnsafeWalletSelector
+} from './use-safe-selector'
+import {
+  useGetNetworkQuery,
+  useGetOnRampNetworksQuery,
+  useGetSelectedChainQuery
+} from '../slices/api.slice'
+
 
 export const useMultiChainBuyAssets = () => {
   // redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
-  const hiddenNetworkList = useUnsafeWalletSelector(WalletSelectors.hiddenNetworkList)
   const selectedCurrency = useUnsafeWalletSelector(WalletSelectors.selectedCurrency)
   const reduxSelectedAsset = useUnsafePageSelector(PageSelectors.selectedAsset)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
 
   // custom hooks
   const isMounted = useIsMounted()
@@ -54,17 +64,17 @@ export const useMultiChainBuyAssets = () => {
     allAssetOptions: []
   })
 
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: buyAssetNetworks = [] } = useGetOnRampNetworksQuery()
+  const { data: selectedAssetNetwork } = useGetNetworkQuery(
+    selectedAsset
+      ? { chainId: selectedAsset.chainId, coin: selectedAsset.coin }
+      : undefined,
+    { skip: !selectedAsset }
+  )
+
   // memos
-  const buyAssetNetworks = React.useMemo((): BraveWallet.NetworkInfo[] => {
-    return [...networkList, ...hiddenNetworkList].filter(n =>
-      SupportedOnRampNetworks.includes(n.chainId)
-    )
-  }, [networkList, hiddenNetworkList])
-
-  const selectedAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
-    return selectedAsset ? getNetworkInfo(selectedAsset.chainId, selectedAsset.coin, buyAssetNetworks) : undefined
-  }, [selectedAsset, buyAssetNetworks])
-
   const selectedAssetBuyOptions: BuyOption[] = React.useMemo(() => {
     const { rampAssetOptions, sardineAssetOptions, transakAssetOptions } = options
     const onRampAssetMap = {
@@ -101,10 +111,15 @@ export const useMultiChainBuyAssets = () => {
     getAllBuyAssets()
       .then(result => {
         if (isMounted && result) {
-          setOptions(result)
+          setOptions({
+            rampAssetOptions: filterTokensByNetworks(result.rampAssetOptions, buyAssetNetworks),
+            sardineAssetOptions: filterTokensByNetworks(result.sardineAssetOptions, buyAssetNetworks),
+            transakAssetOptions: filterTokensByNetworks(result.transakAssetOptions, buyAssetNetworks),
+            allAssetOptions: filterTokensByNetworks(result.allAssetOptions, buyAssetNetworks)
+          })
         }
       })
-  }, [getAllBuyAssets, isMounted])
+  }, [getAllBuyAssets, buyAssetNetworks, isMounted])
 
   const openBuyAssetLink = React.useCallback(({ buyOption, depositAddress }: {
     buyOption: BraveWallet.OnRampProvider

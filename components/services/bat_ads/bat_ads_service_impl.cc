@@ -8,10 +8,11 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ads/build_channel.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
-#include "bat/ads/sys_info.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/build_channel.h"
+#include "brave/components/brave_ads/core/sys_info.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
 namespace bat_ads {
 
@@ -22,28 +23,31 @@ BatAdsServiceImpl::BatAdsServiceImpl(
 BatAdsServiceImpl::~BatAdsServiceImpl() = default;
 
 void BatAdsServiceImpl::Create(
-    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> bat_ads_client,
     mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
+    mojo::PendingReceiver<mojom::BatAdsClientNotifier> bat_ads_client_notifier,
     CreateCallback callback) {
+  DCHECK(bat_ads.is_valid());
   associated_receivers_.Add(
-      std::make_unique<BatAdsImpl>(std::move(client_info)), std::move(bat_ads));
+      std::make_unique<BatAdsImpl>(std::move(bat_ads_client),
+                                   std::move(bat_ads_client_notifier)),
+      std::move(bat_ads));
 
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetSysInfo(ads::mojom::SysInfoPtr sys_info,
+void BatAdsServiceImpl::SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
                                    SetSysInfoCallback callback) {
-  ads::SysInfo().device_id = sys_info->device_id;
-  ads::SysInfo().is_uncertain_future = sys_info->is_uncertain_future;
+  brave_ads::SysInfo().device_id = sys_info->device_id;
 
   std::move(callback).Run();
 }
 
 void BatAdsServiceImpl::SetBuildChannel(
-    ads::mojom::BuildChannelInfoPtr build_channel,
+    brave_ads::mojom::BuildChannelInfoPtr build_channel,
     SetBuildChannelCallback callback) {
-  ads::BuildChannel().is_release = build_channel->is_release;
-  ads::BuildChannel().name = build_channel->name;
+  brave_ads::BuildChannel().is_release = build_channel->is_release;
+  brave_ads::BuildChannel().name = build_channel->name;
 
   std::move(callback).Run();
 }

@@ -12,6 +12,7 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -41,6 +42,9 @@ class GeneralBrowserUsage;
 
 namespace brave_stats {
 
+extern const char kP3AMonthlyPingHistogramName[];
+extern const char kP3ADailyPingHistogramName[];
+
 class BraveStatsUpdaterParams;
 
 class BraveStatsUpdater {
@@ -65,6 +69,7 @@ class BraveStatsUpdater {
   void SetUsageServerForTesting(const std::string& usage_server);
 
  private:
+  void RecordP3APing();
   GURL BuildStatsEndpoint(const std::string& path);
   void OnThresholdLoaderComplete(scoped_refptr<net::HttpResponseHeaders>);
   // Invoked from SimpleURLLoader after download is complete.
@@ -111,6 +116,7 @@ class BraveStatsUpdater {
   scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
 
   std::unique_ptr<misc_metrics::GeneralBrowserUsage> general_browser_usage_p3a_;
+  base::WeakPtrFactory<BraveStatsUpdater> weak_ptr_factory_{this};
 };
 
 // Registers the preferences used by BraveStatsUpdater

@@ -5,46 +5,80 @@
 
 import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
+import("//testing/test.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "BRAVE_P3A_ENABLED=$brave_p3a_enabled" ]
+  flags = [
+    "BRAVE_P3A_ENABLED=$brave_p3a_enabled",
+    "P3A_JSON_UPLOAD_URL=\"$p3a_json_upload_url\"",
+    "P3A_CREATIVE_UPLOAD_URL=\"$p3a_creative_upload_url\"",
+    "P2A_JSON_UPLOAD_URL=\"$p2a_json_upload_url\"",
+    "P3A_CONSTELLATION_UPLOAD_URL=\"$p3a_constellation_upload_url\"",
+    "STAR_RANDOMNESS_HOST=\"$star_randomness_host\"",
+  ]
 }
 
 static_library("p3a") {
   sources = [
-    "brave_p2a_protocols.cc",
-    "brave_p2a_protocols.h",
-    "brave_p3a_log_store.cc",
-    "brave_p3a_log_store.h",
-    "brave_p3a_scheduler.cc",
-    "brave_p3a_scheduler.h",
-    "brave_p3a_service.cc",
-    "brave_p3a_service.h",
-    "brave_p3a_switches.h",
-    "brave_p3a_uploader.cc",
-    "brave_p3a_uploader.h",
-    "brave_p3a_utils.h",
+    "constellation_helper.cc",
+    "constellation_helper.h",
+    "constellation_log_store.cc",
+    "constellation_log_store.h",
+    "features.cc",
+    "features.h",
     "histograms_braveizer.cc",
     "histograms_braveizer.h",
+    "message_manager.cc",
+    "message_manager.h",
+    "metric_log_store.cc",
+    "metric_log_store.h",
     "metric_log_type.cc",
     "metric_log_type.h",
     "metric_names.h",
+    "network_annotations.cc",
+    "network_annotations.h",
+    "nitro_utils/attestation.cc",
+    "nitro_utils/attestation.h",
+    "nitro_utils/cose.cc",
+    "nitro_utils/cose.h",
+    "p2a_protocols.cc",
+    "p2a_protocols.h",
+    "p3a_config.cc",
+    "p3a_config.h",
     "p3a_message.cc",
     "p3a_message.h",
+    "p3a_service.cc",
+    "p3a_service.h",
     "pref_names.cc",
     "pref_names.h",
+    "rotation_scheduler.cc",
+    "rotation_scheduler.h",
+    "scheduler.cc",
+    "scheduler.h",
+    "star_randomness_meta.cc",
+    "star_randomness_meta.h",
+    "star_randomness_points.cc",
+    "star_randomness_points.h",
+    "switches.h",
+    "uploader.cc",
+    "uploader.h",
+    "utils.h",
   ]
 
   deps = [
+    "constellation/rs/cxx",
     "//base",
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
     "//brave/components/p3a_utils",
     "//brave/components/version_info",
     "//brave/vendor/brave_base",
+    "//components/cbor",
     "//components/metrics",
     "//components/prefs",
+    "//net",
+    "//services/network:network_service",
     "//services/network/public/cpp",
     "//url",
   ]
@@ -62,13 +96,25 @@ static_library("p3a") {
 source_set("unit_tests") {
   testonly = true
   sources = [
-    "brave_p2a_protocols_unittest.cc",
-    "brave_p3a_service_unittest.cc",
+    "constellation_helper_unittest.cc",
+    "constellation_log_store_unittest.cc",
+    "message_manager_unittest.cc",
+    "metric_log_store_unittest.cc",
     "metric_names_unittest.cc",
+    "nitro_utils/cose_unittest.cc",
+    "p2a_protocols_unittest.cc",
+    "p3a_service_unittest.cc",
+    "rotation_scheduler_unittest.cc",
+    "scheduler_unittest.cc",
+    "star_randomness_test_util.cc",
+    "star_randomness_test_util.h",
   ]
   deps = [
+    "constellation/rs/cxx",
     "//base/test:test_support",
     "//brave/components/p3a",
+    "//brave/components/p3a:buildflags",
+    "//components/cbor",
     "//components/prefs:test_support",
     "//net:net",
     "//services/network:test_support",

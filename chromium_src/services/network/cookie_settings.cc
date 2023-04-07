@@ -27,7 +27,7 @@
   }                                                                           \
   /* Store patterns information to determine if Shields are disabled. */      \
   if (auto* setting_with_brave_metadata =                                     \
-          cookie_setting_with_brave_metadata()) {                             \
+          GetCurrentCookieSettingWithBraveMetadata()) {                       \
     setting_with_brave_metadata->primary_pattern_matches_all_hosts =          \
         match->primary_pattern.MatchesAllHosts();                             \
     setting_with_brave_metadata->secondary_pattern_matches_all_hosts =        \
@@ -51,9 +51,8 @@ bool CookieSettings::IsEphemeralCookieAccessible(
   // enabled, Brave doesn't care about whether access is being requested for a
   // specific cookie or not, so we simply return |true| if that's the case.
   // See https://crrev.com/c/2895004 for the upstream change that required this.
-  if (IsEphemeralCookieAccessAllowed(
-          url, site_for_cookies, top_frame_origin, overrides,
-          CookieSettingsBase::QueryReason::kCookies)) {
+  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
+                                     overrides)) {
     return true;
   }
 
@@ -67,9 +66,8 @@ CookieSettings::IsEphemeralPrivacyModeEnabled(
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
     net::CookieSettingOverrides overrides) const {
-  if (IsEphemeralCookieAccessAllowed(
-          url, site_for_cookies, top_frame_origin, overrides,
-          CookieSettingsBase::QueryReason::kCookies)) {
+  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies, top_frame_origin,
+                                     overrides)) {
     return net::NetworkDelegate::PrivacySetting::kStateAllowed;
   }
 
@@ -89,9 +87,8 @@ bool CookieSettings::AnnotateAndMoveUserBlockedEphemeralCookies(
   if (top_frame_origin)
     top_frame_origin_opt = *top_frame_origin;
 
-  if (IsEphemeralCookieAccessAllowed(
-          url, site_for_cookies, top_frame_origin_opt, overrides,
-          CookieSettingsBase::QueryReason::kCookies)) {
+  if (IsEphemeralCookieAccessAllowed(url, site_for_cookies,
+                                     top_frame_origin_opt, overrides)) {
     return true;
   }
 

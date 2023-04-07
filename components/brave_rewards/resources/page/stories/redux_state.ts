@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { defaultState } from '../reducers/default_state'
+import { optional } from '../../shared/lib/optional'
 
 export const reduxState: Rewards.ApplicationState = {
   rewardsData: {
@@ -16,7 +17,6 @@ export const reduxState: Rewards.ApplicationState = {
     contributionMinVisits: 1,
     contributionMonthly: 5,
     contributionNonVerified: true,
-    contributionVideos: true,
     reconcileStamp: 0,
     ui: {
       modalConnect: false,
@@ -186,10 +186,7 @@ export const reduxState: Rewards.ApplicationState = {
     }],
     excludedList: [],
     externalWalletProviderList: ['uphold'],
-    balance: {
-      total: 0,
-      wallets: {}
-    },
+    balance: optional<number>(),
     monthlyReport: {
       month: -1,
       year: -1

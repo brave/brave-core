@@ -19,6 +19,20 @@ component("browser") {
     "//skia",
   ]
 
+  if (is_win) {
+    sources += [
+      "text_recognition_win.cc",
+      "text_recognizer_win.cc",
+      "text_recognizer_win.h",
+    ]
+
+    deps += [
+      "//brave/components/l10n/common",
+      "//services/shape_detection:lib",
+      "//services/shape_detection/public/mojom",
+    ]
+  }
+
   if (is_mac) {
     sources += [ "text_recognition.mm" ]
 

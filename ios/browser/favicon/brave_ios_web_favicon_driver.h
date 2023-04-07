@@ -36,7 +36,8 @@ class BraveIOSWebFaviconDriver
 
   ~BraveIOSWebFaviconDriver() override;
 
-  void SetMaximumFaviconImageSize(std::size_t max_image_size);
+  void SetMaximumFaviconImageSize(std::size_t max_image_width,
+                                  std::size_t max_image_height);
 
   // FaviconDriver implementation.
   gfx::Image GetFavicon() const override;
@@ -86,7 +87,8 @@ class BraveIOSWebFaviconDriver
 
   // Image Fetcher used to fetch favicon.
   brave::ImageDownloader image_fetcher_;
-  std::size_t max_image_size_;
+  std::size_t max_image_width_;
+  std::size_t max_image_height_;
 
   // The WebState this instance is observing. Will be null after
   // WebStateDestroyed has been called.

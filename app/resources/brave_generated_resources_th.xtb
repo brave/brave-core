@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7561196759112975576">เสมอ</translation>
 <translation id="7961015016161918242">ไม่ต้องเลย</translation>
+<translation id="7973394300052703468">&amp;หน้าต่างส่วนตัวใหม่</translation>
 <translation id="4615489450165434530">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="8097438084542431276">คัดลอกคลีนลิงก์</translation>
 <translation id="4678672101289648246">บนหน้าแท็บใหม่เท่านั้น</translation>
+<translation id="6516243500644829484">&amp;หน้าต่างส่วนตัวใหม่</translation>
 <translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
 <translation id="7630214457764713113">คัดลอกลิงก์เท่านั้น</translation>
 <translation id="8294286161128352783">บนหน้าแท็บใหม่เท่านั้น</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
 <translation id="3229091547987707389">นำเข้าและแชร์ไดเรกทอรี</translation>
+<translation id="474217410105706308">ปิดเสียงแท็บ</translation>
 <translation id="2804710924397009224">ซ่อนไอคอน Brave Rewards</translation>
 <translation id="5029193871181468990">ซ่อนไอคอน Brave Rewards</translation>
 <translation id="2808103541110899519">ซ่อนไอคอน Brave Wallet</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">เว็บไซต์อันดับสูงสุด</translation>
 <translation id="7859704718976024901">ประวัติการเรียกดู</translation>
 <translation id="8820817407110198400">บุ๊กมาร์ก</translation>
-<translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="2245286910966863912">แสดงปุ่ม Brave News ในแถบที่อยู่</translation>
 <translation id="383007806262310953">แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="4054323497808446566">แถบบุ๊กมาร์กจะแสดงให้เห็นบนทุกหน้า</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">บล็อกสคริปต์</translation>
 <translation id="6531019308847917584">บล็อกการพิมพ์ลายนิ้วมือ</translation>
 <translation id="5533533363827555308">เข้มงวด อาจทำเว็บเสียหาย</translation>
+<translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
+<translation id="3357319404342882895">เข้มงวด</translation>
 <translation id="8823559166155093873">บล็อกคุกกี้</translation>
 <translation id="5770288601196774623">เฉพาะข้ามเว็บเท่านั้น</translation>
 <translation id="3587482841069643663">ทั้งหมด</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">สร้างตัวกรองแบบกำหนดเอง</translation>
 <translation id="4618274268052410139">เพิ่มตัวกรองแบบกำหนดเองที่คุณสร้าง บรรทัดละหนึ่งรายการ ในช่องด้านล่าง และตรวจสอบให้มั่นใจว่าได้ใช้ <ph name="BEGIN_LINK"/>รูปแบบ syntax สำหรับตัวกรอง Adblock<ph name="END_LINK"/></translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
-<translation id="571950783952070673">ลงรายการ URL</translation>
+<translation id="3075903430639801825">ชื่อรายการ</translation>
 <translation id="9204006549413740506">อัปเดตล่าสุด</translation>
 <translation id="6745592621698551453">อัปเดตเลย</translation>
 <translation id="5334844597069022743">ดูแหล่งที่มา</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">แสดงไซต์ที่ไม่ได้ยืนยันในรายการ</translation>
 <translation id="5510618543889994434">อนุญาตการสนับสนุนสำหรับวิดีโอ</translation>
 <translation id="924777189963477634">การเปิดการสนับสนุนอัตโนมัติจะถือว่าคุณยอมรับ<ph name="BEGIN_LINK_TOS"/>ข้อตกลงการใช้บริการ<ph name="END_LINK_TOS"/>และ<ph name="BEGIN_LINK_PP"/>นโยบายความเป็นส่วนตัว<ph name="END_LINK_PP"/></translation>
-<translation id="5733490796524078528">ปุ่มทิป</translation>
+<translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
+<translation id="7483857210736407752">แสดงปุ่มทิปในเว็บไซต์</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">ถามเมื่อเว็บไซต์ต้องการเข้าถึง API ของผู้ให้บริการ Solana</translation>
 <translation id="2777102601740875941">บล็อกเว็บไซต์ไม่ให้เข้าถึง API ของผู้ให้บริการ Solana</translation>
 <translation id="4206299587103092719">การลงชื่อเข้าใช้ด้วย Google</translation>
-<translation id="7458736153596040880">ถามเมื่อเว็บไซต์ต้องการใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
-<translation id="459266451581663214">บล็อกไม่ให้เว็บไซต์ใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
-<translation id="8098954941070626949">อนุญาตให้เว็บไซต์ใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
+<translation id="9110294136812584522">เว็บไซต์สามารถขอใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่าผ่านคุกกี้ของบุคคลที่สาม</translation>
+<translation id="2903783737778379345">ไม่อนุญาตให้ใช้การลงชื่อเข้าใช้ด้วย Google แบบเก่าผ่านคุกกี้ของบุคคลที่สาม</translation>
+<translation id="2570833232754279153">ไม่อนุญาตการใช้คุกกี้ของบุคคลที่สามสำหรับการลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
+<translation id="6880817299303842099">อนุญาตการใช้คุกกี้ของบุคคลที่สามสำหรับการลงชื่อเข้าใช้ด้วย Google แบบเก่า</translation>
 <translation id="6414370348346025511">การป้องกันมาตรฐานเปิดทำงาน</translation>
 <translation id="5565355416171743213">เริ่มใช้การซิงค์</translation>
 <translation id="4332558599726753990">ตั้งค่าการซิงค์</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">เครือข่ายกระเป๋าเงิน</translation>
 <translation id="5975930666279943472">ล้าข้อมูลธุรกรรมในกระเป๋าเงินและข้อมูล Nonce</translation>
 <translation id="5693968582510626466">การล้างข้อมูลธุรกรรมอาจเป็นประโยชน์ต่อนักพัฒนาหรือเป็นประโยชน์เมื่อล้างสถานะบนเซิร์ฟเวอร์ภายใน</translation>
+<translation id="4440478655766953083">ตรึง NFT โดยอัตโนมัติ</translation>
+<translation id="464460032678285850">NFT ที่เพิ่มเข้าไปใน Brave Wallet อาจถูกตรึงกับโหนด IPFS เฉพาะที่โดยอัตโนมัติ
+    หมายเหตุ: IPFS daemon อาจเริ่มทำงานเพื่อการตรึง ดังนั้น โหนดเฉพาะที่ของคุณจะแชร์ข้อมูลแคชและ NFT ที่ตรึงอยู่กับเครือข่าย IPFS</translation>
 <translation id="4993345308607970390">รีเซ็ตกระเป๋าเงิน Brave</translation>
 <translation id="9216386092464743272">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินและข้อมูล Nonce ซึ่งตัวเลือกนี้ส่วนใหญ่จะใช้โดยนักพัฒนาที่รันเซิร์ฟเวอร์ทดสอบในเครื่อง กรุณาพิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
 <translation id="6369495274982305511">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตกระเป๋าเงินของคุณ หากไม่ได้สำรองกระเป๋าเงินของคุณไว้ จะทำให้คุณสูญเสียข้อมูลบัญชีทั้งหมด (รวมถึงเงินที่เกี่ยวข้อง) พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>

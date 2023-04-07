@@ -178,13 +178,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& chain_id,
       GetERC20TokenBalancesCallback callback) override;
 
-  using UnstoppableDomainsResolveDnsCallback =
-      base::OnceCallback<void(const GURL& url,
-                              mojom::ProviderError error,
-                              const std::string& error_message)>;
   void UnstoppableDomainsResolveDns(
       const std::string& domain,
-      UnstoppableDomainsResolveDnsCallback callback);
+      UnstoppableDomainsResolveDnsCallback callback) override;
 
   void UnstoppableDomainsGetWalletAddr(
       const std::string& domain,
@@ -372,6 +368,25 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                             const std::string& chain_id,
                             GetSupportsInterfaceCallback callback);
 
+  using GetEthNftStandardCallback =
+      base::OnceCallback<void(const absl::optional<std::string>& standard,
+                              mojom::ProviderError error,
+                              const std::string& error_message)>;
+  void GetEthNftStandard(const std::string& contract_address,
+                         const std::string& chain_id,
+                         const std::vector<std::string>& interfaces,
+                         GetEthNftStandardCallback callback,
+                         size_t index = 0);
+
+  void OnGetEthNftStandard(const std::string& contract_address,
+                           const std::string& chain_id,
+                           const std::vector<std::string>& interfaces,
+                           size_t index,
+                           GetEthNftStandardCallback callback,
+                           bool is_supported,
+                           mojom::ProviderError error,
+                           const std::string& error_message);
+
   using SwitchEthereumChainRequestCallback =
       base::OnceCallback<void(mojom::ProviderError error,
                               const std::string& error_message)>;
@@ -393,7 +408,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& token_mint_address,
       const std::string& chain_id,
       GetSPLTokenAccountBalanceCallback callback) override;
-  void GetSolTokenMetadata(const std::string& token_mint_address,
+  void GetSolTokenMetadata(const std::string& chain_id,
+                           const std::string& token_mint_address,
                            GetSolTokenMetadataCallback callback) override;
   using SendSolanaTransactionCallback =
       base::OnceCallback<void(const std::string& tx_hash,
@@ -420,6 +436,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(absl::optional<SolanaAccountInfo> account_info,
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
+  void GetSolanaAccountInfo(const std::string& pubkey,
+                            const std::string& chain_id,
+                            GetSolanaAccountInfoCallback callback);
   void GetSolanaAccountInfo(const std::string& pubkey,
                             GetSolanaAccountInfoCallback callback);
   using GetSolanaFeeForMessageCallback =
@@ -615,7 +634,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   unstoppable_domains::MultichainCalls<unstoppable_domains::WalletAddressKey,
                                        std::string>
       ud_get_eth_addr_calls_;
-  unstoppable_domains::MultichainCalls<std::string, GURL> ud_resolve_dns_calls_;
+  unstoppable_domains::MultichainCalls<std::string, absl::optional<GURL>>
+      ud_resolve_dns_calls_;
 
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 

@@ -6,6 +6,7 @@
 #include "components/content_settings/core/common/cookie_settings_base.h"
 
 #include "base/auto_reset.h"
+#include "base/compiler_specific.h"
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
 #include "base/types/optional_util.h"
@@ -15,6 +16,7 @@
 #include "net/base/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "third_party/abseil-cpp/absl/base/attributes.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -25,6 +27,10 @@ namespace {
 
 constexpr char kWp[] = "https://[*.]wp.com/*";
 constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
+
+// The thread local brave metadata pointer.
+ABSL_CONST_INIT thread_local CookieSettingWithBraveMetadata*
+    current_cookie_settings_with_brave_metadata = nullptr;
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
@@ -54,10 +60,9 @@ bool BraveIsAllowedThirdParty(const GURL& url,
 
 bool IsFirstPartyAccessAllowed(const GURL& first_party_url,
                                const CookieSettingsBase* const cookie_settings,
-                               net::CookieSettingOverrides overrides,
-                               CookieSettingsBase::QueryReason query_reason) {
+                               net::CookieSettingOverrides overrides) {
   ContentSetting setting = cookie_settings->GetCookieSetting(
-      first_party_url, first_party_url, overrides, nullptr, query_reason);
+      first_party_url, first_party_url, overrides, nullptr);
   return cookie_settings->IsAllowed(setting);
 }
 
@@ -107,8 +112,7 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
   if (base::FeatureList::IsEnabled(
           net::features::kBraveFirstPartyEphemeralStorage)) {
     first_party_setting = GetCookieSettingWithBraveMetadata(
-        first_party_url, first_party_url, overrides,
-        CookieSettingsBase::QueryReason::kCookies);
+        first_party_url, first_party_url, overrides);
     if (IsSessionOnlyExplicit(*first_party_setting)) {
       return true;
     }
@@ -119,14 +123,11 @@ bool CookieSettingsBase::ShouldUseEphemeralStorage(
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES))
     return false;
 
-  bool allow_3p = IsCookieAccessAllowedImpl(
-      url, site_for_cookies, top_frame_origin, overrides,
-      CookieSettingsBase::QueryReason::kCookies);
-  bool allow_1p = first_party_setting
-                      ? IsAllowed(first_party_setting->setting)
-                      : IsFirstPartyAccessAllowed(
-                            first_party_url, this, overrides,
-                            CookieSettingsBase::QueryReason::kCookies);
+  bool allow_3p = IsCookieAccessAllowedImpl(url, site_for_cookies,
+                                            top_frame_origin, overrides);
+  bool allow_1p = first_party_setting ? IsAllowed(first_party_setting->setting)
+                                      : IsFirstPartyAccessAllowed(
+                                            first_party_url, this, overrides);
 
   // only use ephemeral storage for block 3p
   return allow_1p && !allow_3p;
@@ -136,36 +137,32 @@ bool CookieSettingsBase::IsEphemeralCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides,
-    CookieSettingsBase::QueryReason query_reason) const {
+    net::CookieSettingOverrides overrides) const {
   if (ShouldUseEphemeralStorage(url, site_for_cookies, overrides,
                                 top_frame_origin)) {
     return true;
   }
 
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides,
-                                   CookieSettingsBase::QueryReason::kCookies);
+                                   overrides);
 }
 
 bool CookieSettingsBase::IsFullCookieAccessAllowed(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides,
-    QueryReason query_reason) const {
+    net::CookieSettingOverrides overrides) const {
   return IsCookieAccessAllowedImpl(url, site_for_cookies, top_frame_origin,
-                                   overrides, query_reason);
+                                   overrides);
 }
 
 bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     const GURL& url,
     const net::SiteForCookies& site_for_cookies,
     const absl::optional<url::Origin>& top_frame_origin,
-    net::CookieSettingOverrides overrides,
-    CookieSettingsBase::QueryReason query_reason) const {
-  bool allow = IsChromiumFullCookieAccessAllowed(
-      url, site_for_cookies, top_frame_origin, overrides, query_reason);
+    net::CookieSettingOverrides overrides) const {
+  bool allow = IsChromiumFullCookieAccessAllowed(url, site_for_cookies,
+                                                 top_frame_origin, overrides);
 
   const bool is_1p_ephemeral_feature_enabled = base::FeatureList::IsEnabled(
       net::features::kBraveFirstPartyEphemeralStorage);
@@ -196,7 +193,7 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     // Get CookieSetting for the main frame and get matched patterns if any.
     CookieSettingWithBraveMetadata setting_with_brave_metadata =
         GetCookieSettingWithBraveMetadata(first_party_url, first_party_url,
-                                          overrides, query_reason);
+                                          overrides);
 
     // Ephemeral mode for the main frame can be enabled only via explicit rule.
     if (IsSessionOnlyExplicit(setting_with_brave_metadata)) {
@@ -223,8 +220,7 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
     return true;
   }
 
-  if (!IsFirstPartyAccessAllowed(first_party_url, this, overrides,
-                                 query_reason)) {
+  if (!IsFirstPartyAccessAllowed(first_party_url, this, overrides)) {
     return false;
   }
 
@@ -235,7 +231,7 @@ bool CookieSettingsBase::IsCookieAccessAllowedImpl(
   // the main frame.
   if (is_1p_ephemeral_feature_enabled &&
       main_frame_mode == MainFrameMode::kShieldsDown &&
-      IsCookieSessionOnly(url, query_reason)) {
+      IsCookieSessionOnly(url)) {
     return true;
   }
 
@@ -263,16 +259,26 @@ CookieSettingWithBraveMetadata
 CookieSettingsBase::GetCookieSettingWithBraveMetadata(
     const GURL& url,
     const GURL& first_party_url,
-    net::CookieSettingOverrides overrides,
-    CookieSettingsBase::QueryReason query_reason) const {
+    net::CookieSettingOverrides overrides) const {
   CookieSettingWithBraveMetadata setting_brave_metadata;
-  cookie_setting_with_brave_metadata_.Set(&setting_brave_metadata);
+  const base::AutoReset<CookieSettingWithBraveMetadata*> resetter(
+      &current_cookie_settings_with_brave_metadata, &setting_brave_metadata);
   // GetCookieSetting fills metadata structure implicitly (implemented in
   // GetCookieSettingInternal), the setting value is set explicitly here.
   setting_brave_metadata.setting =
-      GetCookieSetting(url, first_party_url, overrides, nullptr, query_reason);
-  cookie_setting_with_brave_metadata_.Set(nullptr);
+      GetCookieSetting(url, first_party_url, overrides, nullptr);
   return setting_brave_metadata;
+}
+
+CookieSettingWithBraveMetadata*
+CookieSettingsBase::GetCurrentCookieSettingWithBraveMetadata() {
+  // Workaround false-positive MSAN use-of-uninitialized-value on
+  // thread_local storage for loaded libraries:
+  // https://github.com/google/sanitizers/issues/1265
+  MSAN_UNPOISON(&current_cookie_settings_with_brave_metadata,
+                sizeof(CookieSettingWithBraveMetadata*));
+
+  return current_cookie_settings_with_brave_metadata;
 }
 
 }  // namespace content_settings

@@ -34,8 +34,6 @@
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
-#include "bat/ledger/global_constants.h"
-#include "bat/ledger/public/ledger_database.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
@@ -51,6 +49,8 @@
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/ledger_database.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_bridge.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -243,7 +243,7 @@ bool IsAdsOrAutoContributeEnabled(Profile* profile) {
   DCHECK(profile);
   auto* prefs = profile->GetPrefs();
   return prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
-         prefs->GetBoolean(ads::prefs::kEnabled);
+         prefs->GetBoolean(brave_ads::prefs::kEnabled);
 }
 
 std::string GetPrefPath(const std::string& name) {
@@ -369,7 +369,7 @@ void RewardsServiceImpl::Init(
   InitPrefChangeRegistrar();
   p3a::RecordAdsEnabledDuration(
       profile_->GetPrefs(),
-      profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+      profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -379,7 +379,7 @@ void RewardsServiceImpl::InitPrefChangeRegistrar() {
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
   profile_pref_change_registrar_.Add(
-      ads::prefs::kEnabled,
+      brave_ads::prefs::kEnabled,
       base::BindRepeating(&RewardsServiceImpl::OnPreferenceChanged,
                           base::Unretained(this)));
 }
@@ -395,7 +395,8 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
     }
   }
 
-  if (key == prefs::kAutoContributeEnabled || key == ads::prefs::kEnabled) {
+  if (key == prefs::kAutoContributeEnabled ||
+      key == brave_ads::prefs::kEnabled) {
     if (IsAdsOrAutoContributeEnabled(profile_)) {
       RecordBackendP3AStats();
     } else {
@@ -403,14 +404,15 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
     }
     p3a::RecordAdsEnabledDuration(
         profile_->GetPrefs(),
-        profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
   }
 
-  if (key == ads::prefs::kEnabled) {
+  if (key == brave_ads::prefs::kEnabled) {
     p3a::UpdateAdsStateOnPreferenceChange(profile_->GetPrefs(),
-                                          ads::prefs::kEnabled);
+                                          brave_ads::prefs::kEnabled);
 
-    bool ads_enabled = profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
+    bool ads_enabled =
+        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
 
 #if BUILDFLAG(ENABLE_GREASELION)
     if (greaselion_service_) {
@@ -428,7 +430,7 @@ void RewardsServiceImpl::CheckPreferences() {
   auto* prefs = profile_->GetPrefs();
 
   if (prefs->GetBoolean(prefs::kAutoContributeEnabled) ||
-      prefs->GetBoolean(ads::prefs::kEnabled)) {
+      prefs->GetBoolean(brave_ads::prefs::kEnabled)) {
     // If the user has enabled Ads or AC, but the "enabled" pref is missing, set
     // the "enabled" pref to true.
     if (!prefs->GetUserPrefValue(prefs::kEnabled)) {
@@ -547,15 +549,14 @@ void RewardsServiceImpl::CreateRewardsWallet(
       if (!prefs->GetBoolean(prefs::kEnabled)) {
         prefs->SetBoolean(prefs::kEnabled, true);
         prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
-        prefs->SetBoolean(ads::prefs::kEnabled, true);
+        prefs->SetBoolean(brave_ads::prefs::kEnabled, true);
 
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
         // balance, as this could result in unintentional BAT transfers.
         auto on_balance = [](base::WeakPtr<RewardsServiceImpl> self,
-                             ledger::mojom::Result result,
-                             ledger::mojom::BalancePtr balance) {
-          if (self && balance && balance->total == 0) {
+                             FetchBalanceResult result) {
+          if (self && result.has_value() && result.value()->total == 0) {
             self->SetAutoContributeEnabled(true);
           }
         };
@@ -624,21 +625,10 @@ void RewardsServiceImpl::GetUserType(
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  auto* prefs = profile_->GetPrefs();
-  std::string country = prefs->GetString(prefs::kDeclaredGeo);
-  if (!country.empty()) {
-    return country;
-  }
-
-  int32_t country_id = country_id_;
-  if (!country_id) {
-    country_id = country_codes::GetCountryIDFromPrefs(prefs);
-  }
-  if (country_id < 0) {
-    return "";
-  }
-  return {base::ToUpperASCII(static_cast<char>(country_id >> 8)),
-          base::ToUpperASCII(static_cast<char>(0xFF & country_id))};
+  std::string declared_geo =
+      profile_->GetPrefs()->GetString(prefs::kDeclaredGeo);
+  return !declared_geo.empty() ? declared_geo
+                               : country_codes::GetCurrentCountryCode();
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
@@ -1390,7 +1380,8 @@ void RewardsServiceImpl::EnableGreaselion() {
       greaselion::AUTO_CONTRIBUTION,
       profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled));
   greaselion_service_->SetFeatureEnabled(
-      greaselion::ADS, profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled));
+      greaselion::ADS,
+      profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled));
 
   const bool show_buttons =
       profile_->GetPrefs()->GetBoolean(prefs::kInlineTipButtonsEnabled);
@@ -1666,23 +1657,6 @@ void RewardsServiceImpl::SetPublisherAllowNonVerified(bool allow) const {
   bat_ledger_->SetPublisherAllowNonVerified(allow);
 }
 
-void RewardsServiceImpl::GetPublisherAllowVideos(
-    GetPublisherAllowVideosCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), false);
-  }
-
-  bat_ledger_->GetPublisherAllowVideos(std::move(callback));
-}
-
-void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->SetPublisherAllowVideos(allow);
-}
-
 void RewardsServiceImpl::SetAutoContributionAmount(const double amount) const {
   if (!Connected()) {
     return;
@@ -1895,25 +1869,29 @@ void RewardsServiceImpl::SaveRecurringTip(const std::string& publisher_key,
                                       AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::SetMonthlyContribution(
+void RewardsServiceImpl::SendContribution(
     const std::string& publisher_key,
     double amount,
+    bool set_monthly,
     base::OnceCallback<void(bool)> callback) {
   if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback), false);
   }
 
-  bat_ledger_->SetMonthlyContribution(
-      publisher_key, amount,
-      base::BindOnce(&RewardsServiceImpl::OnMonthlyContributionSet, AsWeakPtr(),
-                     std::move(callback)));
+  bat_ledger_->SendContribution(
+      publisher_key, amount, set_monthly,
+      base::BindOnce(&RewardsServiceImpl::OnContributionSent, AsWeakPtr(),
+                     set_monthly, std::move(callback)));
 }
 
-void RewardsServiceImpl::OnMonthlyContributionSet(
+void RewardsServiceImpl::OnContributionSent(
+    bool set_monthly,
     base::OnceCallback<void(bool)> callback,
     bool success) {
-  for (auto& observer : observers_) {
-    observer.OnRecurringTipSaved(this, success);
+  if (set_monthly) {
+    for (auto& observer : observers_) {
+      observer.OnRecurringTipSaved(this, success);
+    }
   }
   std::move(callback).Run(success);
 }
@@ -2193,10 +2171,6 @@ void RewardsServiceImpl::HandleFlags(const RewardsFlags& flags) {
   // instead.
   if (flags.persist_logs) {
     persist_log_level_ = kDiagnosticLogMaxVerboseLevel;
-  }
-
-  if (flags.country_id) {
-    country_id_ = *flags.country_id;
   }
 }
 
@@ -2506,8 +2480,9 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
   if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         ledger::mojom::Result::LEDGER_ERROR, nullptr);
+    return DeferCallback(
+        FROM_HERE, std::move(callback),
+        base::unexpected(ledger::mojom::FetchBalanceError::kUnexpected));
   }
 
   bat_ledger_->FetchBalance(std::move(callback));

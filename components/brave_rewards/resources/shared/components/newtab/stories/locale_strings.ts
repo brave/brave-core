@@ -3,6 +3,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 export const localeStrings = {
+  rewardsAboutRewards: 'Using Brave Rewards helps support content creators, and lets you earn BAT.',
   rewardsAdGrantAmount: '$1 Rewards: $2',
   rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
   rewardsBraveRewards: 'Brave Rewards',

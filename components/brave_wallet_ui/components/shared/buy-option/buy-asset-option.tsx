@@ -11,6 +11,7 @@ import { BraveWallet } from '../../../constants/types'
 // utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
+import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
 
 // components
 import { IconsWrapper, MediumAssetIcon, NetworkIconWrapper } from '../style'
@@ -29,11 +30,11 @@ import {
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 import { getTokenParam } from '../../../utils/api-utils'
 import { LoadIcon } from './buy-option-item-styles'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 interface Props {
   onClick?: (token: BraveWallet.BlockchainToken) => void
   token: BraveWallet.BlockchainToken
-  tokenNetwork: BraveWallet.NetworkInfo
   isSelected?: boolean
   isPanel?: boolean
   /** Set this to a currency-code to fetch & display the token's price */
@@ -45,7 +46,6 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(MediumAssetIcon, { size: 'b
 export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
   onClick,
   token,
-  tokenNetwork,
   isSelected,
   isPanel,
   selectedCurrency
@@ -53,6 +53,10 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
   // state
   const [price, setPrice] = React.useState('')
   const [isFetchingPrice, setIsFetchingPrice] = React.useState(!!selectedCurrency)
+
+  // queries
+  const { data: tokenNetwork } = useGetNetworkQuery(token, { skip: !token })
+
   // custom hooks
   const { assetRatioService } = useApiProxy()
 
@@ -112,7 +116,9 @@ export const BuyAssetOptionItem = React.forwardRef<HTMLButtonElement, Props>(({
       <NameAndIcon>
         <IconsWrapper marginRight='14px'>
           <AssetIconWithPlaceholder asset={token} network={tokenNetwork} />
-          {tokenNetwork && token.contractAddress !== '' && !isPanel &&
+          {
+            tokenNetwork &&
+            !isPanel && checkIfTokenNeedsNetworkIcon(tokenNetwork, token.contractAddress) &&
             <NetworkIconWrapper>
               <CreateNetworkIcon network={tokenNetwork} marginRight={0} />
             </NetworkIconWrapper>

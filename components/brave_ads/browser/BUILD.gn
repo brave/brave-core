@@ -31,6 +31,7 @@ source_set("browser") {
     "//base",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/common",
+    "//brave/components/brave_ads/core",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/l10n/common",
@@ -45,7 +46,7 @@ source_set("browser") {
     "//url",
   ]
 
-  public_deps = [ "//brave/vendor/bat-native-ads" ]
+  public_deps = [ "//brave/components/brave_ads/common/interfaces" ]
 
   # TODO(https://github.com/brave/brave-browser/issues/24163)
   check_includes = false
@@ -67,7 +68,6 @@ source_set("browser") {
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/common",
-    "//brave/components/rpill/common",
     "//chrome/browser/notifications",
     "//chrome/browser/profiles:profile",
     "//components/history/core/browser",
@@ -82,7 +82,6 @@ source_set("browser") {
 
   public_deps += [
     "//brave/components/services/bat_ads/public/interfaces",
-    "//brave/vendor/bat-native-ledger",
     "//services/network/public/mojom",
   ]
 }

@@ -10,6 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/api/asset_ratio.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -171,210 +172,62 @@ bool ParseAssetPriceHistory(const base::Value& json_value,
 mojom::BlockchainTokenPtr ParseTokenInfo(const base::Value& json_value,
                                          const std::string& chain_id,
                                          mojom::CoinType coin) {
-  // {
-  //   "payload": {
-  //     "status": "1",
-  //     "message": "OK",
-  //     "result": [
-  //       {
-  //         "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-  //         "tokenName": "Tether USD",
-  //         "symbol": "USDT",
-  //         "divisor": "6",
-  //         "tokenType": "ERC20",
-  //         "totalSupply": "39828710009874796",
-  //         "blueCheckmark": "true",
-  //         "description": "Tether gives you the joint benefits of open...",
-  //         "website": "https://tether.to/",
-  //         "email": "support@tether.to",
-  //         "blog": "https://tether.to/category/announcements/",
-  //         "reddit": "",
-  //         "slack": "",
-  //         "facebook": "",
-  //         "twitter": "https://twitter.com/Tether_to",
-  //         "bitcointalk": "",
-  //         "github": "",
-  //         "telegram": "",
-  //         "wechat": "",
-  //         "linkedin": "",
-  //         "discord": "",
-  //         "whitepaper": "https://path/to/TetherWhitePaper.pdf",
-  //         "tokenPriceUSD": "1.000000000000000000"
-  //       }
-  //     ]
-  //   },
-  //   "lastUpdated": "2021-12-09T22:02:23.187Z"
-  // }
-
-  if (!json_value.is_dict()) {
-    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is not a dict";
+  auto token_info = api::asset_ratio::TokenInfo::FromValue(json_value);
+  if (!token_info) {
+    LOG(ERROR) << "Invalid response, could not parse JSON. ";
     return nullptr;
   }
 
-  const auto& response_dict = json_value.GetDict();
-  const auto* result = response_dict.FindListByDottedPath("payload.result");
-  if (!result)
+  if (token_info->payload.result.size() != 1) {
     return nullptr;
+  }
+  const api::asset_ratio::TokenInfoResult& result =
+      token_info->payload.result.front();
 
-  if (result->size() != 1)
-    return nullptr;
-  const auto* token = (*result)[0].GetIfDict();
-  if (!token)
-    return nullptr;
-
-  const std::string* contract_address = token->FindString("contractAddress");
-  if (!contract_address)
-    return nullptr;
-  const auto eth_addr = EthAddress::FromHex(*contract_address);
-  if (eth_addr.IsEmpty())
-    return nullptr;
-
-  const std::string* name = token->FindString("tokenName");
-  if (!name || name->empty())
-    return nullptr;
-
-  const std::string* symbol = token->FindString("symbol");
-  if (!symbol || symbol->empty())
-    return nullptr;
-
-  const std::string* decimals_string = token->FindString("divisor");
   int decimals = 0;
-  if (!decimals_string || !base::StringToInt(*decimals_string, &decimals))
+  const auto eth_addr = EthAddress::FromHex(result.contract_address);
+  if (!base::StringToInt(result.divisor, &decimals) ||
+      result.token_name.empty() || result.symbol.empty() ||
+      eth_addr.IsEmpty()) {
     return nullptr;
-
-  const std::string* token_type = token->FindString("tokenType");
-  if (!token_type)
-    return nullptr;
-
-  bool is_erc20 = base::EqualsCaseInsensitiveASCII(*token_type, "ERC20");
-  bool is_erc721 = base::EqualsCaseInsensitiveASCII(*token_type, "ERC721");
-  if (!is_erc20 && !is_erc721)  // unsupported token
-    return nullptr;
+  }
 
   return mojom::BlockchainToken::New(
-      eth_addr.ToChecksumAddress(), *name, "" /* logo */, is_erc20, is_erc721,
-      is_erc721 /* is_nft */, *symbol, decimals, true, "", "", chain_id, coin);
+      eth_addr.ToChecksumAddress(), result.token_name, "" /* logo */,
+      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC20 /* is_erc20 */,
+      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_erc721 */,
+      result.token_type ==
+          api::asset_ratio::TOKEN_TYPE_ERC1155 /* is_erc1155 */,
+      result.token_type == api::asset_ratio::TOKEN_TYPE_ERC721 /* is_nft */,
+      result.symbol, decimals, true /* visible */, "" /* token_id */,
+      "" /* coingecko_id */, chain_id, coin);
 }
 
-bool ParseCoinMarkets(const base::Value& json_value,
-                      std::vector<mojom::CoinMarketPtr>* values) {
-  DCHECK(values);
-  // {
-  //   "payload": [
-  //     {
-  //       "id": "bitcoin",
-  //       "symbol": "btc",
-  //       "name": "Bitcoin",
-  //       "image":
-  //       "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
-  //       "market_cap": 727960800075,
-  //       "market_cap_rank": 1,
-  //       "current_price": 38357,
-  //       "price_change_24h": -1229.64683216549,
-  //       "price_change_percentage_24h": -3.10625,
-  //       "total_volume": 17160995925
-  //     },
-  //     {
-  //       "id": "ethereum",
-  //       "symbol": "eth",
-  //       "name": "Ethereum",
-  //       "image":
-  //       "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-  //       "market_cap": 304535808667,
-  //       "market_cap_rank": 2,
-  //       "current_price": 2539.82,
-  //       "price_change_24h": -136.841895278459,
-  //       "price_change_percentage_24h": -5.11242,
-  //       "total_volume": 9583014937
-  //     }
-  //   ],
-  //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
-  // }
+absl::optional<std::vector<mojom::CoinMarketPtr>> ParseCoinMarkets(
+    const base::Value& json_value) {
+  auto coin_market_data = api::asset_ratio::CoinMarket::FromValue(json_value);
 
-  if (!json_value.is_dict()) {
-    return false;
+  if (!coin_market_data) {
+    return absl::nullopt;
   }
 
-  auto* payload = json_value.GetDict().FindList("payload");
-  if (!payload) {
-    return false;
-  }
-
-  for (const auto& coin_market_list_it : *payload) {
-    if (!coin_market_list_it.is_dict()) {
-      return false;
-    }
+  std::vector<mojom::CoinMarketPtr> values;
+  for (const auto& payload : coin_market_data->payload) {
     auto coin_market = mojom::CoinMarket::New();
-    auto* id = coin_market_list_it.FindStringKey("id");
-    if (!id) {
-      return false;
-    }
-    coin_market->id = *id;
-
-    auto* symbol = coin_market_list_it.FindStringKey("symbol");
-    if (!symbol) {
-      return false;
-    }
-    coin_market->symbol = *symbol;
-
-    auto* name = coin_market_list_it.FindStringKey("name");
-    if (!name) {
-      return false;
-    }
-    coin_market->name = *name;
-
-    auto* image = coin_market_list_it.FindStringKey("image");
-    if (!image) {
-      return false;
-    }
-    coin_market->image = *image;
-
-    absl::optional<double> market_cap =
-        coin_market_list_it.FindDoubleKey("market_cap");
-    if (!market_cap) {
-      return false;
-    }
-    coin_market->market_cap = *market_cap;
-
-    absl::optional<uint32_t> market_cap_rank =
-        coin_market_list_it.FindIntKey("market_cap_rank");
-    if (!market_cap_rank) {
-      return false;
-    }
-    coin_market->market_cap_rank = *market_cap_rank;
-
-    absl::optional<double> current_price =
-        coin_market_list_it.FindDoubleKey("current_price");
-    if (!current_price) {
-      return false;
-    }
-    coin_market->current_price = *current_price;
-
-    absl::optional<double> price_change_24h =
-        coin_market_list_it.FindDoubleKey("price_change_24h");
-    if (!price_change_24h) {
-      return false;
-    }
-    coin_market->price_change_24h = *price_change_24h;
-
-    absl::optional<double> price_change_percentage_24h =
-        coin_market_list_it.FindDoubleKey("price_change_percentage_24h");
-    if (!price_change_percentage_24h) {
-      return false;
-    }
-    coin_market->price_change_percentage_24h = *price_change_percentage_24h;
-
-    absl::optional<double> total_volume =
-        coin_market_list_it.FindDoubleKey("total_volume");
-    if (!total_volume) {
-      return false;
-    }
-    coin_market->total_volume = *total_volume;
-
-    values->push_back(std::move(coin_market));
+    coin_market->id = payload.id;
+    coin_market->symbol = payload.symbol;
+    coin_market->name = payload.name;
+    coin_market->image = payload.image;
+    coin_market->market_cap = payload.market_cap;
+    coin_market->market_cap_rank = payload.market_cap_rank;
+    coin_market->current_price = payload.current_price;
+    coin_market->price_change_24h = payload.price_change_24h;
+    coin_market->price_change_percentage_24h =
+        payload.price_change_percentage_24h;
+    coin_market->total_volume = payload.total_volume;
+    values.push_back(std::move(coin_market));
   }
-
-  return true;
+  return values;
 }
 
 }  // namespace brave_wallet

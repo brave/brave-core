@@ -34,6 +34,10 @@ export const buildExplorerUrl = (
     network.chainId === BraveWallet.FILECOIN_TESTNET ||
     network.chainId === BraveWallet.FILECOIN_MAINNET
 
+  const isFileCoinEvmNet =
+    network.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID ||
+    network.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
+
   const isSolanaMainNet = network.chainId === BraveWallet.SOLANA_MAINNET
 
   const isSolanaDevOrTestNet =
@@ -42,6 +46,10 @@ export const buildExplorerUrl = (
 
   if (isFileCoinNet) {
     return `${explorerURL}?cid=${value}`
+  }
+
+  if (isFileCoinEvmNet) {
+    return `${explorerURL}/${value}`
   }
 
   if (isSolanaMainNet && type === 'token') {

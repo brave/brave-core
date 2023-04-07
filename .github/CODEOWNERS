@@ -21,7 +21,6 @@ browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
 browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
 components/brave_rewards/ @brave/rewards-client
 components/services/bat_ledger/ @brave/rewards-client
-vendor/bat-native-ledger/ @brave/rewards-client
 
 # Ads
 browser/brave_ads/**/*.cc @brave/ads-client
@@ -37,15 +36,12 @@ components/brave_ads/**/*.mm @brave/ads-client
 components/services/bat_ads/**/*.cc @brave/ads-client
 components/services/bat_ads/**/*.h @brave/ads-client
 components/services/bat_ads/**/*.mm @brave/ads-client
-vendor/bat-native-ads/**/*.cc @brave/ads-client
-vendor/bat-native-ads/**/*.h @brave/ads-client
-vendor/bat-native-ads/**/*.mm @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.cc @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.h @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/privacy/**/*.mm @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.cc @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.h @brave/ads-client
-vendor/bat-native-ads/src/bat/ads/internal/security/**/*.mm @brave/ads-client
+brave/components/brave_ads/core/internal/privacy/**/*.cc @brave/ads-client
+brave/components/brave_ads/core/internal/privacy/**/*.h @brave/ads-client
+brave/components/brave_ads/core/internal/privacy/**/*.mm @brave/ads-client
+brave/components/brave_ads/core/internal/security/**/*.cc @brave/ads-client
+brave/components/brave_ads/core/internal/security/**/*.h @brave/ads-client
+brave/components/brave_ads/core/internal/security/**/*.mm @brave/ads-client
 
 # Network
 browser/net/ @iefremov

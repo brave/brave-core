@@ -23,7 +23,9 @@ enum class Channel;
 namespace brave_vpn {
 
 std::string GetBraveVPNEntryName(version_info::Channel channel);
-bool IsBraveVPNEnabled();
+bool IsBraveVPNEnabled(PrefService* prefs);
+bool IsBraveVPNFeatureEnabled();
+bool IsBraveVPNDisabledByPolicy(PrefService* prefs);
 std::string GetBraveVPNPaymentsEnv(const std::string& env);
 std::string GetManageUrl(const std::string& env);
 void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs);
@@ -32,6 +34,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterAndroidProfilePrefs(PrefRegistrySimple* registry);
 bool HasValidSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
+bool HasValidSkusCredential(PrefService* local_prefs);
+std::string GetSkusCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

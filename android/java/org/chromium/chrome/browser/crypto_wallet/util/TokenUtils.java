@@ -1,7 +1,7 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.crypto_wallet.util;
 
@@ -26,10 +26,34 @@ import java.util.List;
 import java.util.Locale;
 
 public class TokenUtils {
-    public enum TokenType { ERC20, ERC721, SOL, ALL }
-    ;
+    /**
+     * Type of token used for filtering an array of {@code BlockchainToken}.
+     * See {@link #filterTokens(NetworkInfo, BlockchainToken[], TokenUtils.TokenType, boolean)}.
+     */
+    public enum TokenType {
+        // Filter out all tokens that are not NFTs.
+        // Note: native assets won't be included when using this token type.
+        NFTS,
 
-    /* Filter tokens by type and add native token.
+        // Filter out all tokens that don't belong to ERC20 standard.
+        ERC20,
+
+        // Filter out all tokens that don't belong to ERC721 standard.
+        ERC721,
+
+        // Filter out all tokens that are not solana coins.
+        SOL,
+
+        // Filter out all tokens that are NFTs.
+        // Note: a custom asset may or may not be an NFT.
+        NON_NFTS,
+
+        // Don't apply any filter, the list will include all tokens.
+        ALL
+    }
+
+    /**
+     * Filter tokens by type and add native token (when needed).
      *
      * BlockchainRegistry.getAllTokens does not return the chain's native token;
      * BraveWalletService.getUserAssets contains the native asset on init, but:
@@ -51,6 +75,9 @@ public class TokenUtils {
         Utils.removeIf(arrayTokens, t -> {
             boolean typeFilter;
             switch (tokenType) {
+                case NFTS:
+                    typeFilter = !t.isErc721 && !t.isNft;
+                    break;
                 case ERC20:
                     typeFilter = !t.isErc20;
                     break;
@@ -59,6 +86,9 @@ public class TokenUtils {
                     break;
                 case SOL:
                     typeFilter = t.coin != CoinType.SOL;
+                    break;
+                case NON_NFTS:
+                    typeFilter = t.isErc721 || t.isNft;
                     break;
                 case ALL:
                     typeFilter = false;
@@ -69,7 +99,11 @@ public class TokenUtils {
             return typeFilter || isSameToken(t, nativeAsset) || (keepVisibleOnly && !t.visible);
         });
 
-        arrayTokens.add(0, nativeAsset);
+        // The native assets are not added
+        // when filtering only NFTs.
+        if (tokenType != TokenType.NFTS) {
+            arrayTokens.add(0, nativeAsset);
+        }
         return arrayTokens.toArray(new BlockchainToken[0]);
     }
 
@@ -124,10 +158,16 @@ public class TokenUtils {
             NetworkInfo selectedNetwork, TokenType tokenType, int[] rampProviders,
             Callbacks.Callback1<BlockchainToken[]> callback) {
         blockchainRegistry.getProvidersBuyTokens(rampProviders, selectedNetwork.chainId, tokens -> {
-            BlockchainToken[] filteredTokens =
-                    filterTokens(selectedNetwork, tokens, tokenType, false);
-            Arrays.sort(filteredTokens, blockchainTokenComparatorPerGasOrBatType);
-            callback.call(filteredTokens);
+            // blockchainRegistry.getProvidersBuyTokens returns a full list of tokens that are
+            // allowed to buy by given rampProviders. We just need to check on native assets logo
+            // and fill them if they are empty.
+            for (BlockchainToken tokenFromAll : tokens) {
+                if (tokenFromAll.logo.isEmpty()) {
+                    tokenFromAll.logo = Utils.getNetworkIconName(tokenFromAll.chainId);
+                }
+            }
+            Arrays.sort(tokens, blockchainTokenComparatorPerGasOrBatType);
+            callback.call(removeDuplicates(tokens));
         });
     }
 
@@ -219,4 +259,31 @@ public class TokenUtils {
         else
             return token1.symbol.compareTo(token2.symbol);
     };
+
+    // Returns an array of available assets <b>per ramp provider</b> and removes duplicates with the
+    // same contract address using case insensitive contractAddress comparison.
+    // The `getProvidersBuyTokens` API can return a merged list containing the available assets
+    // <b>per ramp provider</b>. It's not unusual to have the same asset multiple times with the
+    // same contract address all upper case from a ramp provider and all lower case from another
+    // one. Thus it's important to compare the contract addresses ignoring case.
+    private static BlockchainToken[] removeDuplicates(BlockchainToken[] tokens) {
+        List<BlockchainToken> result = new ArrayList<>();
+        for (BlockchainToken item : tokens) {
+            String contractAddress = item.contractAddress;
+            boolean duplicate = false;
+            for (BlockchainToken itemResult : result) {
+                // IMPORTANT: use `equalsIgnoreCase` to detect two contract addresses with different
+                // capitalization.
+                if (contractAddress.equalsIgnoreCase(itemResult.contractAddress)) {
+                    duplicate = true;
+                    break;
+                }
+            }
+            // Do not add duplicated item.
+            if (!duplicate) {
+                result.add(item);
+            }
+        }
+        return result.toArray(new BlockchainToken[0]);
+    }
 }

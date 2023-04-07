@@ -13,7 +13,7 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
+static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
@@ -21,10 +21,10 @@ static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
       brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
           profile);
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
-static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
+static jlong JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& profile_android) {
   auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
@@ -33,7 +33,7 @@ static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletP3A(
                      ->GetBraveWalletP3A()
                      ->MakeRemote();
 
-  return static_cast<jint>(pending.PassPipe().release().value());
+  return static_cast<jlong>(pending.PassPipe().release().value());
 }
 
 }  // namespace android

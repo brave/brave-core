@@ -9,12 +9,12 @@
 #include <string>
 #include <vector>
 
-#include "base/memory/weak_ptr.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/embedded_test_server/http_request.h"
+#include "services/network/public/mojom/clear_data_filter.mojom.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "url/gurl.h"
 
@@ -36,7 +36,7 @@ class EphemeralStorageBrowserTest : public InProcessBrowserTest {
     ValuesFromFrame iframe_2;
   };
 
-  class HttpRequestMonitor : public base::SupportsWeakPtr<HttpRequestMonitor> {
+  class HttpRequestMonitor {
    public:
     HttpRequestMonitor();
     ~HttpRequestMonitor();

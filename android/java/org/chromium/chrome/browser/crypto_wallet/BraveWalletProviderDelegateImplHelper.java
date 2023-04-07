@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet;
 
-import android.content.ActivityNotFoundException;
-
 import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
@@ -26,7 +24,7 @@ public class BraveWalletProviderDelegateImplHelper {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletPanel(false);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showPanel " + e);
         }
     }
@@ -36,7 +34,7 @@ public class BraveWalletProviderDelegateImplHelper {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showWalletOnboarding();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showWalletOnboarding " + e);
         }
     }
@@ -46,7 +44,7 @@ public class BraveWalletProviderDelegateImplHelper {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.walletInteractionDetected(webContents);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "walletInteractionDetected " + e);
         }
     }
@@ -61,7 +59,7 @@ public class BraveWalletProviderDelegateImplHelper {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.showAccountCreation(keyringId);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "ShowAccountCreation " + e);
         }
     }

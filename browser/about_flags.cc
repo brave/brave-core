@@ -7,6 +7,7 @@
 
 #include <initializer_list>
 
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
@@ -30,6 +31,7 @@
 #include "brave/components/skus/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/ui_features.h"
 #include "components/content_settings/core/common/features.h"
 #include "components/flags_ui/feature_entry.h"
 #include "components/flags_ui/feature_entry_macros.h"
@@ -59,6 +61,10 @@
 #include "brave/browser/android/safe_browsing/features.h"
 #else
 #include "brave/components/commands/common/features.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/sandbox/win/src/module_file_name_interception.h"
 #endif
 
 #define EXPAND_FEATURE_ENTRIES(...) __VA_ARGS__,
@@ -109,6 +115,17 @@
           kOsDesktop | kOsAndroid,                                         \
           FEATURE_VALUE_TYPE(speedreader::kSpeedreaderFeature),            \
       }))
+
+#define BRAVE_MODULE_FILENAME_PATCH                                           \
+  IF_BUILDFLAG(IS_WIN,                                                        \
+               EXPAND_FEATURE_ENTRIES({                                       \
+                   "brave-module-filename-patch",                             \
+                   "Enable Module Filename patch",                            \
+                   "Enables patching of executable's name from brave.exe to " \
+                   "chrome.exe in sandboxed processes.",                      \
+                   kOsWin,                                                    \
+                   FEATURE_VALUE_TYPE(sandbox::kModuleFileNamePatch),         \
+               }))
 
 #define BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                               \
   IF_BUILDFLAG(                                                            \
@@ -254,15 +271,24 @@
                                  kCryptoWalletsForNewInstallsFeature),      \
       }))
 
-#define PLAYLIST_FEATURE_ENTRIES                                      \
-  IF_BUILDFLAG(ENABLE_PLAYLIST,                                       \
-               EXPAND_FEATURE_ENTRIES({                               \
-                   kPlaylistFeatureInternalName,                      \
-                   "Playlist",                                        \
-                   "Enables Playlist",                                \
-                   kOsMac | kOsWin | kOsLinux | kOsAndroid,           \
-                   FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
-               }))
+#define PLAYLIST_FEATURE_ENTRIES                                       \
+  IF_BUILDFLAG(                                                        \
+      ENABLE_PLAYLIST,                                                 \
+      EXPAND_FEATURE_ENTRIES(                                          \
+          {                                                            \
+              kPlaylistFeatureInternalName,                            \
+              "Playlist",                                              \
+              "Enables Playlist",                                      \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              FEATURE_VALUE_TYPE(playlist::features::kPlaylist),       \
+          },                                                           \
+          {                                                            \
+              kPlaylistFakeUAFeatureInternalName,                      \
+              "PlaylistFakeUA",                                        \
+              "Use fake UA for playlist",                              \
+              kOsMac | kOsWin | kOsLinux | kOsAndroid,                 \
+              FEATURE_VALUE_TYPE(playlist::features::kPlaylistFakeUA), \
+          }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
@@ -331,10 +357,14 @@
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_SHARED_PINNED_TABS                                        \
-  {"brave-shared-pinned-tabs", "Shared pinned tab",                     \
-   "Pinned tabs are shared across windows", kOsWin | kOsMac | kOsLinux, \
-   FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs)},
+#define BRAVE_SHARED_PINNED_TABS                                  \
+  EXPAND_FEATURE_ENTRIES({                                        \
+      "brave-shared-pinned-tabs",                                 \
+      "Shared pinned tab",                                        \
+      "Pinned tabs are shared across windows",                    \
+      kOsWin | kOsMac | kOsLinux,                                 \
+      FEATURE_VALUE_TYPE(tabs::features::kBraveSharedPinnedTabs), \
+  })
 #else
 #define BRAVE_SHARED_PINNED_TABS
 #endif
@@ -546,6 +576,14 @@
           FEATURE_VALUE_TYPE(net::features::kBraveFirstPartyEphemeralStorage), \
       },                                                                       \
       {                                                                        \
+          "brave-forget-first-party-storage",                                  \
+          "Enable First Party Storage Cleanup support",                        \
+          "Add cookie blocking mode which allows Brave to cleanup first "      \
+          "party storage (Cookies, DOM Storage) on website close",             \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(net::features::kBraveForgetFirstPartyStorage),    \
+      },                                                                       \
+      {                                                                        \
           "brave-rewards-vbat-notice",                                         \
           "Enable Brave Rewards VBAT notices",                                 \
           "Enables notices in the Brave Rewards UI about VBAT deadlines.",     \
@@ -692,6 +730,14 @@
           FEATURE_VALUE_TYPE(brave_sync::features::kBraveSyncSendAllHistory),  \
       },                                                                       \
       {                                                                        \
+          "brave-copy-clean-link-by-default",                                  \
+          "Override default copy hotkey with copy clean link",                 \
+          "Sanitize url before copying, replaces default ctrl+c hotkey for "   \
+          "url ",                                                              \
+          kOsWin | kOsLinux | kOsMac,                                          \
+          FEATURE_VALUE_TYPE(features::kBraveCopyCleanLinkByDefault),          \
+      },                                                                       \
+      {                                                                        \
           "https-by-default",                                                  \
           "Use HTTPS by Default",                                              \
           "Attempt to connect to all websites using HTTPS before falling "     \
@@ -708,6 +754,7 @@
   BRAVE_VPN_DNS_FEATURE_ENTRIES                                                \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
+  BRAVE_MODULE_FILENAME_PATCH                                                  \
   BRAVE_FEDERATED_FEATURE_ENTRIES                                              \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \

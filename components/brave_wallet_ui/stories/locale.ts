@@ -118,6 +118,7 @@ provideStrings({
   braveWalletSendHalf: 'HALF',
   braveWalletSendMax: 'MAX',
   braveWalletReviewOrder: 'Review order',
+  braveWalletReviewSend: 'Review send',
   braveWalletNoAvailableTokens: 'No available tokens',
   braveWalletSearchTokens: 'Search token by name',
   braveWalletSearchNFTs: 'Search NFT by name, id',
@@ -148,6 +149,8 @@ provideStrings({
   braveWalletLearnMoreAboutBraveWallet: 'Learn more about Brave Wallet',
   braveWalletImportExistingWallet: 'Import existing wallet',
   braveWalletWelcomeRestoreButton: 'Restore',
+  braveWalletConnectHardwareWallet: 'Connect hardware wallet',
+  braveWalletWelcomeDividerText: 'Or',
 
   // Onboarding - Disclosures
   braveWalletDisclosuresTitle: 'Legal stuff',
@@ -426,24 +429,19 @@ provideStrings({
   // Buy
   braveWalletBuyTitle: 'Test faucet',
   braveWalletBuyDescription: 'Get Ether from a faucet for $1',
-  braveWalletBuyWyreButton: 'Continue to Wyre',
   braveWalletBuyFaucetButton: 'Get Ether',
   braveWalletBuyContinueButton: 'Select purchase method',
   braveWalletBuySelectAsset: 'Select an asset',
   braveWalletBuyRampNetworkName: 'Ramp.Network',
-  braveWalletBuyWyreName: 'Wyre',
   braveWalletBuySardineName: 'Sardine',
   braveWalletBuyTransakName: 'Transak',
   braveWalletBuyRampDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
-  braveWalletBuyWyreDescription: 'Buy with CC/Debit or ACH. Competitive Rates.',
   braveWalletBuySardineDescription: 'Easiest, fastest and cheapest way to buy crypto with card and bank transfers.',
   braveWalletBuyTransakDescription: 'Instant buy with your bank account. Lower fees.',
-  braveWalletBuyWithWyre: 'Buy with Wyre',
   braveWalletBuyWithRamp: 'Buy with Ramp',
   braveWalletBuyWithSardine: 'Buy with Sardine',
   braveWalletBuyWithTransak: 'Buy with Transak',
   braveWalletSellWithProvider: 'Sell with $1',
-  braveWalletSellMinimumAmount: 'The minimum amount must be $1 or more.',
 
   // Fund Wallet Screen
   braveWalletFundWalletTitle: 'To finish your $1 purchase, select one of our partners',
@@ -548,10 +546,23 @@ provideStrings({
   braveWalletTransactionDetailBoxBytes: 'BYTES',
 
   // Connect With Site Panel
-  braveWalletConnectWithSiteTitle: 'Select accounts(s)',
-  braveWalletConnectWithSiteDescription: 'View the addressess of your permitted accounts (required)',
   braveWalletConnectWithSiteNext: 'Next',
-  braveWalletConnectWithSiteHeaderTitle: 'Connect with Brave Wallet',
+  braveWalletConnectWallet: 'Connect wallet',
+  braveWalletConnectWithSite: 'or connect with:',
+  braveWalletConnectPermittedLabel: 'This app will be able to:',
+  braveWalletConnectNotPermittedLabel: 'It will not be able to:',
+  braveWalletConnectPermissionBalanceAndActivity: 'Check wallet balance and activity',
+  braveWalletConnectPermissionRequestApproval: 'Request approval for transactions and signatures',
+  braveWalletConnectPermissionAddress: 'View your permitted wallet address',
+  braveWalletConnectPermissionMoveFunds: 'Move funds without your permission',
+  braveWalletConnectTrustWarning: 'Make sure you trust this site.',
+
+  // Permission Duration
+  braveWalletPermissionDuration: 'Permission duration',
+  braveWalletPermissionUntilClose: 'Until I close this site',
+  braveWalletPermissionOneDay: 'For 24 hours',
+  braveWalletPermissionOneWeek: 'For 1 week',
+  braveWalletPermissionForever: 'Forever',
 
   // Import from Legacy Wallet
   braveWalletCryptoWalletsDetected: 'Existing crypto wallets detected',
@@ -680,7 +691,6 @@ provideStrings({
   braveWalletNFTDetailTokenID: 'Token ID',
   braveWalletNFTDetailContractAddress: 'Contract address',
   braveWalletNFTDetailDescription: 'Description',
-  braveWalletNFTDetailCid: 'CID',
   braveWalletNFTDetailImageAddress: 'Image location or address',
 
   // Sweepstakes
@@ -694,7 +704,7 @@ provideStrings({
   braveWalletMarketDataAssetsColumn: 'Assets',
   braveWalletMarketDataPriceColumn: 'Price',
   braveWalletMarketData24HrColumn: '24Hr',
-  braveWalletMarketDataMarketCapColumn: 'Mkt. Cap',
+  braveWalletMarketDataMarketCapColumn: 'Cap',
   braveWalletMarketDataVolumeColumn: 'Volume',
   braveWalletMarketDataBuyDepositColumn: 'Buy/Deposit',
 
@@ -773,6 +783,8 @@ provideStrings({
   braveWalletSolanaMaxRetries: 'Max Retries:',
   braveWalletSolanaPreflightCommitment: 'Preflight Commitment:',
   braveWalletSolanaSkipPreflight: 'Skip Preflight:',
+  braveWalletSolanaAddressLookupTableAccount: 'Address Lookup Table Account:',
+  braveWalletSolanaAddressLookupTableIndex: 'Address Lookup Table Index:',
 
   // Help Center
   braveWalletHelpCenter: 'Help center',
@@ -847,27 +859,31 @@ provideStrings({
   // NFT Pinning
   braveWalletNftPinningWhyNotAvailable: 'Why not available?',
   braveWalletNftPinningTooltip: 'Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.',
-  braveWalletNftPinningBenefitsHeading: 'By running IPFS on your computer you can:',
-  braveWalletNftPinningBenefitOne: 'Ensure your NFT data stays online and it cannot be tempered with.',
-  braveWalletNftPinningBenefitTwo: 'Get content back using content identifier(CID) from an incorrect data.',
-  braveWalletNftPinningBenefitThree: 'Participate proof of authenticity and make IPFS network rich and healthy.',
-  braveWalletNftPinningPinNftsButton: 'Keep my NFTs always online',
-  braveWalletNftPinningRunNodeButton: 'Enable NFT pinning',
+  braveWalletNftPinningBenefitsHeading: 'But IPFS needs individual participants to function. Run IPFS on your computer to:',
+  braveWalletNftPinningBenefitOne: 'Contribute to the network\'s speed and availability',
+  braveWalletNftPinningBenefitTwo: 'Increase the security of your NFTs',
+  braveWalletNftPinningPinNftsButton: 'Get started with IPFS',
   braveWalletNftPinningBackButton: 'Back',
   braveWalletNftPinningCloseButton: 'Close',
-  braveWalletNftPinningHeading: 'A big step toward becoming part of web3',
-  braveWalletNftPinningRunNodeHeading: 'Run IPFS node and keep your NFTs always online',
-  braveWalletNftPinningRunNodeDescription: 'Today\'s centralized internet model doesn\'t work in space. On today\’s internet, every time you click something, that data has to be retrieved from a centralized server. If you are on the moon, there will be a delay with every click, as content is retrieved from earth. Using IPFS, content is retrieved from wherever is closest. If someone else nearby on the moon has already retrieved that data, your data can be retrieved by you or them on the moon. So is your NFT data.',
-  braveWalletNftPinningCheckNftsButton: 'Check which NFTs of mine can be pinned',
-  braveWalletNftPinningBannerStart: 'Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever and cannot be tampered with.',
+  braveWalletNftPinningHeading: 'The safest way to host NFTs',
+  braveWalletNftPinningRunNodeHeading: 'Run an IPFS node to keep your NFTs online forever',
+  braveWalletNftPinningRunNodeDescription: 'IPFS is a super-secure alternative to traditional Web hosting. Instead of relying on a single host, IPFS enables thousands of individuals (who run “nodes”) to work together to store content. And as long as one person has a copy, a file can never disappear. “Pinning” your NFTs to IPFS—and running your own IPFS node—is the best way to secure your NFTs.',
+  braveWalletNftPinningCheckNftsButton: 'See which of my NFTs are eligible',
+  braveWalletNftPinningBannerStart: 'Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever.',
   braveWalletNftPinningBannerUploading: 'You\’re running IPFS node. File is being uploaded to IPFS.',
-  braveWalletNftPinningBannerSuccess: '$1 out of $2 NFTs have been successfully pinned to IPFS.',
+  braveWalletNftPinningBannerSuccess: '$1 NFTs have been successfully pinned to IPFS.',
   braveWalletNftPinningBannerLearnMore: 'Learn more',
   braveWalletNftPinningInspectHeading: '$1 out of $2 are available!',
   braveWalletNftPinningUnableToPin: 'Unable to pin',
   braveWalletNftPinningNodeRunningStatus: 'You\’re running IPFS node',
   braveWalletNftPinningNodeNotRunningStatus: 'Local IPFS node is not running',
-  braveWalletNftPinningStatusPinned: 'NFT data is being pinned to your local IPFS node',
-  braveWalletNftPinningStatusPinning: 'Cannot be pinned to your local IPFS node',
-  braveWalletNftPinningStatusPinningFailed: 'Pinned to your local IPFS node'
+  braveWalletNftPinningStatusPinned: 'Pinned to your local IPFS node.',
+  braveWalletNftPinningStatusPinning: 'NFT data is being pinned to your local IPFS node.',
+  braveWalletNftPinningStatusPinningFailed: 'Cannot be pinned to your local IPFS node.',
+  braveWalletNftPinningErrorTooltipHeading: 'Most common reasons:',
+  braveWalletNftPinningErrorTooltipReasonOne: 'NFT has non-IPFS metadata url problems',
+  braveWalletNftPinningErrorTooltipReasonTwo: 'Internal IPFS node problems',
+  braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
+  braveWalletImportNftModalTitle: 'Import NFT',
+  braveWalletEditNftModalTitle: 'Edit NFT'
 })

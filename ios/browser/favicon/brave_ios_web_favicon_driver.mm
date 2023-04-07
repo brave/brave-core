@@ -25,8 +25,10 @@
 namespace brave_favicon {
 
 void BraveIOSWebFaviconDriver::SetMaximumFaviconImageSize(
-    std::size_t max_image_size) {
-  max_image_size_ = max_image_size;
+    std::size_t max_image_width,
+    std::size_t max_image_height) {
+  max_image_width_ = max_image_width;
+  max_image_height_ = max_image_height;
 }
 
 // FaviconDriver implementation.
@@ -51,7 +53,8 @@ int BraveIOSWebFaviconDriver::DownloadImage(const GURL& url,
                                             int max_image_size,
                                             ImageDownloadCallback callback) {
   return image_fetcher_.DownloadImage(
-      url, max_image_size_ > 0 ? max_image_size_ : max_image_size,
+      url, max_image_width_ > 0 ? max_image_width_ : max_image_size,
+      max_image_height_ > 0 ? max_image_height_ : max_image_size,
       std::move(callback));
 }
 
@@ -96,7 +99,8 @@ BraveIOSWebFaviconDriver::BraveIOSWebFaviconDriver(
     favicon::CoreFaviconService* favicon_service)
     : FaviconDriverImpl(favicon_service),
       image_fetcher_(web_state->GetBrowserState()->GetSharedURLLoaderFactory()),
-      max_image_size_(0),
+      max_image_width_(0),
+      max_image_height_(0),
       web_state_(web_state) {
   web_state_->AddObserver(this);
 }

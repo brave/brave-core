@@ -16,7 +16,7 @@ export const StyledWrapper = styled.div`
   top: 0;
   bottom: 0;
   position: fixed;
-  z-index: 10;
+  z-index: 100;
   background: rgba(33, 37, 41, 0.32);
   backdrop-filter: blur(16px);
 `

@@ -38,6 +38,26 @@ constexpr char kEthereum[] = "ethereum";
 constexpr char kEmit[] = "emit";
 constexpr char kIsBraveWallet[] = "isBraveWallet";
 constexpr char kEthereumProviderScript[] = "ethereum_provider.js";
+constexpr char kEthereumProxyHandlerScript[] = R"((function() {
+  const handler = {
+    get: (target, property, receiver) => {
+      const value = target[property];
+      if (typeof value === 'function' &&
+          (property === 'request' || property === 'isConnected' ||
+           property === 'enable' || property === 'sendAsync' ||
+           property === 'send')) {
+        return new Proxy(value, {
+          apply: (targetFunc, thisArg, args) => {
+            return targetFunc.call(target, ...args);
+          }
+        });
+      }
+      return value;
+    }
+  };
+  return handler;
+})())";
+constexpr char kEthereumProxyScript[] = "ethereum_proxy.js";
 constexpr char kIsMetaMask[] = "isMetaMask";
 constexpr char kMetaMask[] = "_metamask";
 constexpr char kIsUnlocked[] = "isUnlocked";
@@ -177,18 +197,37 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
     return;
   }
   v8::Local<v8::Value> provider_value = provider.ToV8();
+  v8::Local<v8::Object> provider_object =
+      provider_value->ToObject(context).ToLocalChecked();
+
+  // Create a proxy to the actual JSEthereumProvider object which will be
+  // exposed via window.ethereum.
+  // This proxy uses a handler which would call things directly on the actual
+  // JSEthereumProvider object so dApps which creates and uses their own proxy
+  // of window.ethereum to access our provider won't throw a "Illegal
+  // invocation: Function must be called on an object of type
+  // JSEthereumProvider" error.
+  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
+  v8::Local<v8::Proxy> ethereum_proxy;
+  auto ethereum_proxy_handler_val = ExecuteScript(
+      web_frame, kEthereumProxyHandlerScript, kEthereumProxyScript);
+  v8::Local<v8::Object> ethereum_proxy_handler_obj =
+      ethereum_proxy_handler_val.ToLocalChecked()
+          ->ToObject(context)
+          .ToLocalChecked();
+  if (!v8::Proxy::New(context, provider_object, ethereum_proxy_handler_obj)
+           .ToLocal(&ethereum_proxy)) {
+    return;
+  }
 
   if (!allow_overwrite_window_ethereum_provider) {
-    SetProviderNonWritable(context, global, provider_value,
+    SetProviderNonWritable(context, global, ethereum_proxy,
                            gin::StringToV8(isolate, kEthereum), true);
   } else {
     global
-        ->Set(context, gin::StringToSymbol(isolate, kEthereum), provider_value)
+        ->Set(context, gin::StringToSymbol(isolate, kEthereum), ethereum_proxy)
         .Check();
   }
-
-  v8::Local<v8::Object> provider_object =
-      provider_value->ToObject(context).ToLocalChecked();
 
   // Non-function properties are readonly guaranteed by gin::Wrappable
   // send should be writable because of
@@ -225,7 +264,6 @@ void JSEthereumProvider::Install(bool allow_overwrite_window_ethereum_provider,
   SetOwnPropertyWritable(context, metamask_obj,
                          gin::StringToV8(isolate, kIsUnlocked), false);
 
-  blink::WebLocalFrame* web_frame = render_frame->GetWebFrame();
   ExecuteScript(web_frame,
                 LoadDataResource(
                     IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS),
@@ -271,6 +309,8 @@ v8::Local<v8::Value> JSEthereumProvider::GetSelectedAddress(
 
 gin::ObjectTemplateBuilder JSEthereumProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
+  // Note: When adding a new method, you would need to update the list in
+  // kEthereumProxyHandlerScript too otherwise the function call would fail.
   return gin::Wrappable<JSEthereumProvider>::GetObjectTemplateBuilder(isolate)
       .SetProperty(kIsBraveWallet, &JSEthereumProvider::GetIsBraveWallet)
       .SetProperty(kIsMetaMask, &JSEthereumProvider::GetIsMetaMask)

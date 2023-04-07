@@ -17,15 +17,15 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/test/bind.h"
-#include "bat/ledger/buildflags.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/core/buildflags.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
+#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_paths.h"
@@ -194,12 +194,9 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
   EXPECT_EQ(
       profile_->GetPrefs()->GetInteger("brave.rewards.ac.min_visits"),
       5);
-  EXPECT_EQ(profile_->GetPrefs()->GetBoolean(
-      "brave.rewards.ac.allow_non_verified"),
-          false);
-  EXPECT_EQ(profile_->GetPrefs()->GetBoolean(
-      "brave.rewards.ac.allow_video_contributions"),
-          false);
+  EXPECT_EQ(
+      profile_->GetPrefs()->GetBoolean("brave.rewards.ac.allow_non_verified"),
+      false);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.a"),
       14500.0);
   EXPECT_EQ(profile_->GetPrefs()->GetDouble("brave.rewards.ac.score.b"),
@@ -1380,12 +1377,12 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
 
   if (wallet_status == ledger::mojom::WalletStatus::kConnected) {
     ASSERT_TRUE(profile_->GetPrefs()->HasPrefPath(
-        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
     ASSERT_TRUE(profile_->GetPrefs()->GetBoolean(
-        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
   } else {
     ASSERT_FALSE(profile_->GetPrefs()->HasPrefPath(
-        ads::prefs::kShouldMigrateVerifiedRewardsUser));
+        brave_ads::prefs::kShouldMigrateVerifiedRewardsUser));
   }
 }
 

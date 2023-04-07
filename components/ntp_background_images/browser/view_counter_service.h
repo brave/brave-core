@@ -38,7 +38,7 @@ class WeeklyStorage;
 
 namespace ntp_background_images {
 
-class NTPCustomBackgroundImagesService;
+class BraveNTPCustomBackgroundService;
 class NTPP3AHelper;
 
 struct NTPBackgroundImagesData;
@@ -49,7 +49,7 @@ class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
  public:
   ViewCounterService(NTPBackgroundImagesService* service,
-                     NTPCustomBackgroundImagesService* custom_service,
+                     BraveNTPCustomBackgroundService* custom_service,
                      brave_ads::AdsService* ads_service,
                      PrefService* prefs,
                      PrefService* local_state,
@@ -167,7 +167,7 @@ class ViewCounterService : public KeyedService,
   ViewCounterModel model_;
 
   // Can be null if custom background is not supported.
-  raw_ptr<NTPCustomBackgroundImagesService> custom_bi_service_ = nullptr;
+  raw_ptr<BraveNTPCustomBackgroundService> custom_bi_service_ = nullptr;
 
   // If P3A is enabled, these will track number of tabs created
   // and the ratio of those which are branded images.

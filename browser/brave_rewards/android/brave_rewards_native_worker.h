@@ -17,12 +17,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
-#include "bat/ledger/mojom_structs.h"
-#include "bat/ledger/public/interfaces/ledger_types.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace brave_rewards {
 class RewardsService;
@@ -265,10 +264,10 @@ class BraveRewardsNativeWorker
 
   void OnGetUserType(const ledger::mojom::UserType user_type);
 
-  void OnBalance(const ledger::mojom::Result result,
-                 ledger::mojom::BalancePtr balance);
+  void OnBalance(base::expected<ledger::mojom::BalancePtr,
+                                ledger::mojom::FetchBalanceError> result);
 
-  void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
+  void OnGetAdsAccountStatement(brave_ads::mojom::StatementInfoPtr statement);
 
   JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
   raw_ptr<brave_rewards::RewardsService> brave_rewards_service_ = nullptr;

@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hi">
+<translation id="3478449063771497234">नोटिफ़िकेशन अक्षम किए गए हैं</translation>
+<translation id="7466579932043491502">हो सकता है कि Brave रिवॉर्ड उस समय काम न करें, जब सूचनाओं को अक्षम किया गया हो।</translation>
+<translation id="4259212006412783790">चालू करें</translation>
+<translation id="6112331814131703370">'ऐप में स्विच करें' सूचनाओं को अवरुद्ध करें</translation>
 <translation id="4744921452903670666">हमें बताएँ कि आप क्या सोचते हैं!</translation>
 <translation id="2524310205387880526">Brave का मूल्यांकन करें</translation>
 <translation id="4104400246019119780">धन्यवाद!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">यह रहे आपके <ph name="MONTH_VALUE"/> के विज्ञापन रिवॉर्ड!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> के रिवॉर्ड : <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">आपके पास क्लेम करने के लिए <ph name="TOKEN"/> दिन बचे हैं</translation>
-<translation id="2323069945529668668">उह ओह!</translation>
-<translation id="7510166204621526816">ब्रेव इनाम सर्वर जवाब नहीं दे रहा है. हम इसे जल्द से जल्द ठीक करने का प्रयास करेंगे.</translation>
 <translation id="683765328936486920">YouTube पर</translation>
 <translation id="8969049974285901797">ट्विच पर</translation>
 <translation id="3101693828171454453">पर्याप्त <ph name="TOKEN"/>s नहीं है</translation>
@@ -610,7 +612,7 @@
 <translation id="5050890334032852465">अकाउंट वॉचलिस्ट सेव करें</translation>
 <translation id="7755766175599167100">टोकन सर्च करें</translation>
 <translation id="3835223348537121988">बैलेंस</translation>
-<translation id="6888491517683356528">Ramp पर जाएँ</translation>
+<translation id="3956169227169516344">खरीदारी का तरीका चुनें</translation>
 <translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="3784455785234192852">लॉक करें</translation>
 <translation id="8796429300536029044">NFT की जानकारी</translation>
@@ -624,6 +626,10 @@
 <translation id="414639769490080648">Brave Wallet को अपने आप लॉक होने तक इंतज़ार करने के लिए मिनटों की संख्या</translation>
 <translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
 <translation id="4322846864135539519">क्या आप Brave रिवॉर्ड को वाकई रीसेट करना चाहते हैं. अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का सारा डेटा (इससे जुड़े सभी फ़ंड के साथ) मिट जाएगा. कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="6915083716464390008">आगे दिए गए विकल्प में से किसी एक को चुनें</translation>
+<translation id="7667423728712601865">Visa या Mastercard के ज़रिए क्रिप्टो खरीदें.</translation>
+<translation id="3101839349578102016">आपके बैंक अकाउंट से तुरंत खरीदारी. कम शुल्क में.</translation>
+<translation id="7269640984027668973"><ph name="RAMP_PROVIDER"/> के साथ खरीदें</translation>
 <translation id="4862812525895306758">लेन-देन और नॉन्स की जानकारी मिटाएँ</translation>
 <translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
 <translation id="5421107279168565467">क्या आप वाकई लेन-देन और नॉन्स की जानकारी को मिटाना चाहते हैं? इस विकल्प का इस्तेमाल आमतौर पर लोकल टेस्ट सर्वर चलाने वाले डेवलपर करते हैं. कन्फ़र्म करने के लिए  "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
@@ -798,7 +804,7 @@
 <translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
 <translation id="3494964159182650590">रिवॉर्ड के बारे में जानकारी</translation>
 <translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
-<translation id="207268487070188114">1- टाइम टिप</translation>
+<translation id="2613359062756190460">1- टाइम टिप्स</translation>
 <translation id="7577100371127227294">मासिक टिप्स</translation>
 <translation id="7091980679045978090">अनुमानित कमाई</translation>
 <translation id="1346059596910821859">टिप</translation>

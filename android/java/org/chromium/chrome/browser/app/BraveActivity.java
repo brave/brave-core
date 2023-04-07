@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.app;
 
 import static org.chromium.chrome.browser.app.domain.NetworkSelectorModel.Mode.DEFAULT_WALLET_NETWORK;
+import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_KEY;
 import static org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity.NETWORK_SELECTOR_MODE;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -13,11 +14,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,11 +30,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.billingclient.api.Purchase;
+import com.brave.playlist.util.ConstantUtils;
+import com.brave.playlist.util.PlaylistPreferenceUtils;
+import com.brave.playlist.util.PlaylistUtils;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.wireguard.android.backend.GoBackend;
 import com.wireguard.android.backend.Tunnel;
@@ -53,6 +58,7 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
@@ -113,6 +119,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
+import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -122,6 +129,7 @@ import org.chromium.chrome.browser.informers.BraveSyncAccountDeletedInformer;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
+import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController.RationaleDelegate;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
@@ -130,6 +138,10 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
 import org.chromium.chrome.browser.onboarding.v2.HighlightView;
+import org.chromium.chrome.browser.playlist.PlaylistHostActivity;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment;
+import org.chromium.chrome.browser.playlist.PlaylistWarningDialogFragment.PlaylistWarningDialogListener;
+import org.chromium.chrome.browser.playlist.settings.BravePlaylistPreferences;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -163,6 +175,7 @@ import org.chromium.chrome.browser.tab.TabSelectionType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveDbUtil;
@@ -226,6 +239,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final int DAYS_5 = 5;
     private static final int DAYS_12 = 12;
 
+    public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
+
     /**
      * Settings for sending local notification reminders.
      */
@@ -263,6 +278,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private NewTabPageManager mNewTabPageManager;
     private NotificationPermissionController mNotificationPermissionController;
     private BraveNewsController mBraveNewsController;
+
+    /**
+     * Serves as a general exception for failed attempts to get BraveActivity.
+     */
+    public static class BraveActivityNotFoundException extends Exception {
+        public BraveActivityNotFoundException(String message) {
+            super(message);
+        }
+    }
 
     public BraveActivity() {}
 
@@ -347,6 +371,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
             openBraveWallet(false, false, false);
+        } else if (id == R.id.brave_playlist_id) {
+            if (SharedPreferencesManager.getInstance().readBoolean(
+                        PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, true)) {
+                PlaylistUtils.openPlaylistMenuOnboardingActivity(BraveActivity.this);
+                SharedPreferencesManager.getInstance().writeBoolean(
+                        PlaylistPreferenceUtils.SHOULD_SHOW_PLAYLIST_ONBOARDING, false);
+            } else {
+                openPlaylistActivity(BraveActivity.this, ConstantUtils.ALL_PLAYLIST);
+            }
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -792,6 +825,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         PostTask.postTask(
                 TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> { BraveStatsUtil.removeShareStatsFile(); });
+        int appOpenCountForWidgetPromo = SharedPreferencesManager.getInstance().readInt(
+                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO);
+        if (appOpenCountForWidgetPromo < APP_OPEN_COUNT_FOR_WIDGET_PROMO) {
+            SharedPreferencesManager.getInstance().writeInt(
+                    BravePreferenceKeys.BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO,
+                    appOpenCountForWidgetPromo + 1);
+        }
     }
 
     @Override
@@ -844,7 +884,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
@@ -1138,10 +1177,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void maybeShowNotificationPermissionRetionale() {
+        Supplier<RationaleDelegate> rationaleUIDelegateSupplier = ()
+                -> new NotificationPermissionRationaleDialogController(
+                        this, getModalDialogManager());
         NotificationPermissionController mNotificationPermissionController =
-                new NotificationPermissionController(getWindowAndroid(),
-                        new NotificationPermissionRationaleDialogController(
-                                this, getModalDialogManager()));
+                new NotificationPermissionController(
+                        getWindowAndroid(), rationaleUIDelegateSupplier);
         NotificationPermissionController.attach(
                 getWindowAndroid(), mNotificationPermissionController);
         mNotificationPermissionController.requestPermissionIfNeeded(false /* contextual */);
@@ -1152,11 +1193,33 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         RetentionNotificationUtil.scheduleDormantUsersNotifications(this);
     }
 
+    public void openPlaylistActivity(Context context, String playlistId) {
+        Intent playlistActivityIntent = new Intent(context, PlaylistHostActivity.class);
+        playlistActivityIntent.putExtra(ConstantUtils.PLAYLIST_ID, playlistId);
+        playlistActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.startActivity(playlistActivityIntent);
+    }
+
+    public void showPlaylistWarningDialog(
+            PlaylistWarningDialogListener playlistWarningDialogListener) {
+        PlaylistWarningDialogFragment playlistWarningDialogFragment =
+                new PlaylistWarningDialogFragment();
+        playlistWarningDialogFragment.setCancelable(false);
+        playlistWarningDialogFragment.setPlaylistWarningDialogListener(
+                playlistWarningDialogListener);
+        playlistWarningDialogFragment.show(
+                getSupportFragmentManager(), "PlaylistWarningDialogFragment");
+    }
+
     private void showVpnCalloutDialog() {
-        BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
-                new BraveVpnCalloutDialogFragment();
-        braveVpnCalloutDialogFragment.show(
-                getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+        try {
+            BraveVpnCalloutDialogFragment braveVpnCalloutDialogFragment =
+                    new BraveVpnCalloutDialogFragment();
+            braveVpnCalloutDialogFragment.show(
+                    getSupportFragmentManager(), "BraveVpnCalloutDialogFragment");
+        } catch (IllegalStateException e) {
+            Log.e("showVpnCalloutDialog", e.getMessage());
+        }
     }
 
     private void showLinkVpnSubscriptionDialog() {
@@ -1207,6 +1270,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    public void openBravePlaylistSettings() {
+        SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
+        settingsLauncher.launchSettingsActivity(this, BravePlaylistPreferences.class);
+    }
+
     private void openBraveNewsSettings() {
         SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS_V2)) {
@@ -1241,15 +1309,28 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     // should only be called if the wallet is setup and unlocked
     public void openNetworkSelection() {
-        openNetworkSelection(DEFAULT_WALLET_NETWORK);
+        openNetworkSelection(DEFAULT_WALLET_NETWORK, null);
     }
 
-    // should only be called if the wallet is setup and unlocked
-    public void openNetworkSelection(NetworkSelectorModel.Mode mode) {
+    /**
+     * Open the network selector activity with key as an identifier to show the previously selected
+     * local network (if available otherwise All Networks as default) on {@link
+     * NetworkSelectorActivity}.
+     * @param mode Whether to open network selection for default/global network mode or
+     *          in local network selection mode i.e.
+     *          View <=> NetworkSelection state only with All Networks option.
+     * @param key as identifier to bind local state of NetworkSelection with the view. If null then
+     *         use global/default network selection mode.
+     * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
+     */
+    public void openNetworkSelection(NetworkSelectorModel.Mode mode, String key) {
         Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
         braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         // Either in global or local network selection mode
         braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_MODE, mode);
+        // To bind selection between the caller and NetworkSelection Activity for local state of
+        // network selection
+        braveNetworkSelectionIntent.putExtra(NETWORK_SELECTOR_KEY, key);
         startActivity(braveNetworkSelectionIntent);
     }
 
@@ -1648,25 +1729,32 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
-    static public ChromeTabbedActivity getChromeTabbedActivity() {
+    private static Activity getActivityOfType(Class<?> classOfActivity) {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof ChromeTabbedActivity)) continue;
+            if (!classOfActivity.isInstance(ref)) continue;
 
-            return (ChromeTabbedActivity)ref;
+            return ref;
         }
 
         return null;
     }
 
-    @NonNull
-    static public BraveActivity getBraveActivity() throws ActivityNotFoundException {
-        for (Activity ref : ApplicationStatus.getRunningActivities()) {
-            if (!(ref instanceof BraveActivity)) continue;
+    static public ChromeTabbedActivity getChromeTabbedActivity() {
+        return (ChromeTabbedActivity) getActivityOfType(ChromeTabbedActivity.class);
+    }
 
-            return (BraveActivity)ref;
+    static public CustomTabActivity getCustomTabActivity() {
+        return (CustomTabActivity) getActivityOfType(CustomTabActivity.class);
+    }
+
+    @NonNull
+    static public BraveActivity getBraveActivity() throws BraveActivityNotFoundException {
+        BraveActivity activity = (BraveActivity) getActivityOfType(BraveActivity.class);
+        if (activity != null) {
+            return activity;
         }
 
-        throw new ActivityNotFoundException("BraveActivity Not Found");
+        throw new BraveActivityNotFoundException("BraveActivity Not Found");
     }
 
     @Override
@@ -1974,5 +2062,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             }
             executeInitSafeBrowsing(BraveSafeBrowsingApiHandler.SAFE_BROWSING_INIT_INTERVAL_MS);
         }, delay);
+    }
+
+    public void updateBottomSheetPosition(int orientation) {
+        if (BottomToolbarConfiguration.isBottomToolbarEnabled()) {
+            // Ensure the bottom sheet's container is adjusted to the height of the bottom toolbar.
+            ViewGroup sheetContainer = findViewById(R.id.sheet_container);
+            assert sheetContainer != null;
+
+            if (sheetContainer != null) {
+                CoordinatorLayout.LayoutParams params =
+                        (CoordinatorLayout.LayoutParams) sheetContainer.getLayoutParams();
+                params.bottomMargin = orientation == Configuration.ORIENTATION_LANDSCAPE
+                        ? 0
+                        : getResources().getDimensionPixelSize(R.dimen.bottom_controls_height);
+                sheetContainer.setLayoutParams(params);
+            }
+        }
     }
 }

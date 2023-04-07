@@ -36,10 +36,6 @@ absl::optional<int> ReadInt(const std::string& value, F fn) {
   return {};
 }
 
-absl::optional<int> ReadInt(const std::string& value) {
-  return ReadInt(value, [](int v) { return true; });
-}
-
 absl::optional<int> ReadPositiveInt(const std::string& value) {
   return ReadInt(value, [](int v) { return v > 0; });
 }
@@ -77,8 +73,6 @@ RewardsFlags Parse(const std::string& input) {
       flags.retry_interval = ReadPositiveInt(value);
     } else if (name == "persist-logs") {
       flags.persist_logs = ReadBoolFlag(value);
-    } else if (name == "countryid") {
-      flags.country_id = ReadInt(value);
     }
   }
 

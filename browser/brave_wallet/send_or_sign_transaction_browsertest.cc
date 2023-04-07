@@ -273,7 +273,8 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
     std::string expected_address = "undefined";
     if (granted) {
       permissions::BraveWalletPermissionContext::AcceptOrCancel(
-          std::vector<std::string>{from()}, web_contents());
+          std::vector<std::string>{from()},
+          mojom::PermissionLifetimeOption::kForever, web_contents());
       expected_address = from();
     } else {
       permissions::BraveWalletPermissionContext::Cancel(web_contents());
@@ -354,8 +355,9 @@ class SendOrSignTransactionBrowserTest : public InProcessBrowserTest {
                         const std::string& test_method,
                         const std::string& data = "",
                         bool skip_restore = false) {
-    if (!skip_restore)
+    if (!skip_restore) {
       RestoreWallet();
+    }
     bool sign_only = expected_signed_tx.has_value();
     GURL url = https_server_for_files()->GetURL(
         "a.com", "/send_or_sign_transaction.html");
@@ -888,6 +890,20 @@ IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, IsConnected) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_TRUE(WaitForLoadStop(web_contents()));
   EXPECT_TRUE(EvalJs(web_contents(), "getIsConnected()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(SendOrSignTransactionBrowserTest, CallViaProxy) {
+  RestoreWallet();
+  GURL url = https_server_for_files()->GetURL("a.com",
+                                              "/send_or_sign_transaction.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_TRUE(WaitForLoadStop(web_contents()));
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsConnectedViaProxy()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractBool());
+  EXPECT_TRUE(EvalJs(web_contents(), "getIsBraveWalletViaProxy()",
                      content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
                   .ExtractBool());
 }

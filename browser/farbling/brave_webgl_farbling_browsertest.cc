@@ -85,11 +85,6 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
   std::vector<int64_t> SplitStringAsInts(std::string raw_values) {
     std::vector<int64_t> results;
     for (const auto& cur : base::SplitStringPiece(
@@ -119,31 +114,31 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameterWebGL) {
   std::string domain = "a.com";
   GURL url = embedded_test_server()->GetURL(domain, "/getParameter.html");
-  const std::string kExpectedRandomString = "UKlSpUqV,TJEix48e";
+  const std::string kExpectedRandomString = "USRQv2Ep,t9e2jwYU";
   // Farbling level: maximum
   // WebGL getParameter of restricted values: pseudo-random data with no
   // relation to original data
   BlockFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
             kExpectedRandomString);
   // second time, same as the first (tests that results are consistent for the
   // lifetime of a session, and that the PRNG properly resets itself at the
   // beginning of each calculation)
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
             kExpectedRandomString);
 
   // Farbling level: balanced (default)
   // WebGL getParameter of restricted values: original data
   SetFingerprintingDefault(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string actual = EvalJs(contents(), kTitleScript).ExtractString();
 
   // Farbling level: off
   // WebGL getParameter of restricted values: original data
   AllowFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   // Since this value depends on the underlying hardware, we just test that the
   // results for "off" are the same as the results for "balanced", and that
   // they're different than the results for "maximum".
@@ -165,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
     // Farbling level: off
     // Get the actual WebGL2 parameter values.
     AllowFingerprinting(domain);
-    NavigateToURLUntilLoadStop(url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     std::vector<int64_t> real_values =
         SplitStringAsInts(EvalJs(contents(), kTitleScript).ExtractString());
     ASSERT_EQ(real_values.size(), 12UL);
@@ -174,7 +169,7 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest,
     // WebGL2 parameter values will be farbled based on session+domain keys,
     // so we get the farbled values and look at the differences.
     SetFingerprintingDefault(domain);
-    NavigateToURLUntilLoadStop(url);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     std::vector<int64_t> farbled_values =
         SplitStringAsInts(EvalJs(contents(), kTitleScript).ExtractString());
     ASSERT_EQ(farbled_values.size(), 12UL);
@@ -190,21 +185,21 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetSupportedExtensions) {
   // Farbling level: maximum
   // WebGL getSupportedExtensions returns abbreviated list
   BlockFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
             kSupportedExtensionsMax);
 
   // Farbling level: off
   // WebGL getSupportedExtensions is real
   AllowFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string actual = EvalJs(contents(), kTitleScript).ExtractString();
   EXPECT_NE(actual, kSupportedExtensionsMax);
 
   // Farbling level: balanced (default)
   // WebGL getSupportedExtensions is real
   SetFingerprintingDefault(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
 }
 
@@ -215,20 +210,20 @@ IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, GetExtension) {
   // Farbling level: maximum
   // WebGL getExtension returns null for most names
   BlockFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(),
             kExpectedExtensionListMax);
 
   // Farbling level: off
   // WebGL getExtension returns real objects
   AllowFingerprinting(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string actual = EvalJs(contents(), kTitleScript).ExtractString();
   EXPECT_NE(actual, kExpectedExtensionListMax);
 
   // Farbling level: balanced (default)
   // WebGL getExtension returns real objects
   SetFingerprintingDefault(domain);
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(EvalJs(contents(), kTitleScript).ExtractString(), actual);
 }

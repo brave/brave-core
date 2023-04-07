@@ -8,7 +8,6 @@
 package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -158,7 +157,7 @@ public class BraveWalletPanel implements DialogInterface {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveWalletPanel Constructor " + e);
         }
         setUpViews();
@@ -198,7 +197,7 @@ public class BraveWalletPanel implements DialogInterface {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.openBraveConnectedSitesSettings();
                 dismiss();
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "handleMenuItemClick action_connected_sites " + e);
             }
         } else if (item.getItemId() == R.id.action_settings) {
@@ -206,7 +205,7 @@ public class BraveWalletPanel implements DialogInterface {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.openBraveWalletSettings();
                 dismiss();
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "handleMenuItemClick action_settings " + e);
             }
         } else if (item.getItemId() == R.id.action_view_on_block_explorer) {
@@ -214,7 +213,7 @@ public class BraveWalletPanel implements DialogInterface {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.viewOnBlockExplorer(mSelectedAccount.address, mSelectedAccount.coin);
                 dismiss();
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "handleMenuItemClick action_view_on_block_explorer " + e);
             }
         }
@@ -320,7 +319,7 @@ public class BraveWalletPanel implements DialogInterface {
                         activity.getActivityTab().getWebContents(), selectedAccount.address,
                         isConnected -> { isConnectedState(isConnected); });
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "isSolanaConnected " + e);
         }
     }
@@ -398,7 +397,7 @@ public class BraveWalletPanel implements DialogInterface {
             try {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.openBraveWallet(false, false, false);
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "setUpViews ExpandWalletImage click " + e);
             }
         });
@@ -426,7 +425,7 @@ public class BraveWalletPanel implements DialogInterface {
             try {
                 BraveActivity activity = BraveActivity.getBraveActivity();
                 activity.startActivity(new Intent(activity, AccountSelectorActivity.class));
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "setUpViews AccountChangeAnchor click " + e);
             }
         });
@@ -446,7 +445,7 @@ public class BraveWalletPanel implements DialogInterface {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openBraveWalletDAppsActivity(
                     BraveWalletDAppsActivity.ActivityType.CONNECT_ACCOUNT);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "ConnectedAccountClick click " + e);
         }
     };

@@ -5,16 +5,22 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 
+#include <algorithm>
+#include <iterator>
 #include <map>
 #include <utility>
 #include <vector>
 
+#include "base/containers/contains.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -31,8 +37,10 @@
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/wallet_button.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
@@ -45,6 +53,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/accelerators/accelerator.h"
+#include "ui/base/accelerators/accelerator_manager.h"
 #include "ui/events/event_observer.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/event_monitor.h"
@@ -71,6 +80,13 @@
 
 namespace {
 absl::optional<bool> g_download_confirm_return_allow_for_testing;
+
+bool IsUnsupported(int command_id, Browser* browser) {
+  return chrome::IsRunningInForcedAppMode() &&
+         !chrome::IsCommandAllowedInAppMode(command_id,
+                                            browser->is_type_popup());
+}
+
 }  // namespace
 
 // static
@@ -404,7 +420,7 @@ speedreader::SpeedreaderBubbleView* BraveBrowserView::ShowSpeedreaderBubble(
 }
 
 bool BraveBrowserView::HasSelectedURL() const {
-  if (!GetLocationBarView()) {
+  if (!GetLocationBarView() || !GetLocationBarView()->HasFocus()) {
     return false;
   }
   auto* brave_omnibox_view =
@@ -434,15 +450,46 @@ views::View* BraveBrowserView::GetWalletButtonAnchorView() {
       ->GetAsAnchorView();
 }
 
-std::map<int, std::vector<ui::Accelerator>>
-BraveBrowserView::GetAcceleratedCommands() {
-  // In future, it will be possible to customize this map so users can configure
-  // their own keyboard shortcuts.
-  std::map<int, std::vector<ui::Accelerator>> result;
-  for (const auto& [accelerator, command] : accelerator_table_) {
-    result[command].push_back(accelerator);
+void BraveBrowserView::OnAcceleratorsChanged(
+    const commands::Accelerators& changed) {
+  DCHECK(base::FeatureList::IsEnabled(commands::features::kBraveCommands));
+
+  auto* focus_manager = GetFocusManager();
+  DCHECK(focus_manager);
+
+  for (const auto& [command_id, accelerators] : changed) {
+    if (IsUnsupported(command_id, browser())) {
+      continue;
+    }
+
+    std::vector<ui::Accelerator> old_accelerators;
+    for (const auto& [accelerator, accelerator_command] : accelerator_table_) {
+      if (accelerator_command != command_id) {
+        continue;
+      }
+      old_accelerators.push_back(accelerator);
+    }
+
+    // Register current accelerators
+    for (const auto& accelerator : accelerators) {
+      if (focus_manager->IsAcceleratorRegistered(accelerator)) {
+        focus_manager->UnregisterAccelerator(accelerator, this);
+      }
+
+      focus_manager->RegisterAccelerator(
+          accelerator, ui::AcceleratorManager::kNormalPriority, this);
+      accelerator_table_[accelerator] = command_id;
+    }
+
+    // Unregister removed accelerators
+    for (const auto& old_accelerator : old_accelerators) {
+      if (base::Contains(accelerators, old_accelerator)) {
+        continue;
+      }
+      focus_manager->UnregisterAccelerator(old_accelerator, this);
+      accelerator_table_.erase(old_accelerator);
+    }
   }
-  return result;
 }
 
 void BraveBrowserView::CreateWalletBubble() {
@@ -479,6 +526,17 @@ void BraveBrowserView::AddedToWidget() {
 
     GetBrowserViewLayout()->set_vertical_tab_strip_host(
         vertical_tab_strip_host_view_.get());
+  }
+}
+
+void BraveBrowserView::LoadAccelerators() {
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    auto* accelerator_service =
+        commands::AcceleratorServiceFactory::GetForContext(
+            browser()->profile());
+    accelerators_observation_.Observe(accelerator_service);
+  } else {
+    BrowserView::LoadAccelerators();
   }
 }
 

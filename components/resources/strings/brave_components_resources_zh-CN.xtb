@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">显示 Brave 奖励</translation>
 <translation id="5585019845078534178">卡</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
-<translation id="8466529005131466476">您可以通过查看赞助网站来赚取收益。</translation>
-<translation id="3955742714798578476">您在通过查看赞助网站赚取收益。</translation>
-<translation id="7822618650711767369">赞助图片支持 Brave。使用 Brave Rewards，您可以从赞助图片赚取部分收入，从而可以支持内容创作者！</translation>
-<translation id="5579480493856401823">关闭赞助网站将减少您每月赚取的代币数量和对内容创作者的支持。</translation>
+<translation id="2414654907269324670">您将获得 BAT 赞助图片。</translation>
+<translation id="4942016616604700968">启用奖励</translation>
+<translation id="5684562942023496754">您可以通过观看赞助图片来赚取收益。</translation>
+<translation id="8934374643857605034">作为 Brave 奖励用户，您可以通过查看赞助图片获得 BAT。</translation>
+<translation id="5236449703984229754">当您启用 Brave 广告时，看到赞助图片可以获得 BAT。当 Brave 广告关闭时，打开赞助图片仍然支持 Brave 的任务。</translation>
+<translation id="1570714748649804013">作为 Brave 奖励用户，您看到的赞助图像将获得 BAT。禁用赞助图片将减少您的收入。</translation>
+<translation id="8998727244653964783">当您将托管帐户连接到 Brave 奖励时，您可以通过查看赞助图像获得 BAT。与此同时，您也在通过赞助图片支持创作者。</translation>
+<translation id="5512383650263136662">您可以通过 Brave 奖励查看赞助图片来赚取 BAT。不是奖励用户？打开赞助图片仍然可以支持 Brave 的任务。</translation>
 <translation id="2875302873837723333">热门网站</translation>
 <translation id="8173998484743827990">Brave 统计数据</translation>
 <translation id="383680190590774040">时钟</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 秒</translation>
 <translation id="8610523985422563960">1 分钟</translation>
 <translation id="2807328214759298515">高达</translation>
-<translation id="9031738692126722094">在这些站点上启用内容级提示</translation>
+<translation id="7483857210736407752">在网站上显示提示按钮</translation>
 <translation id="7583327070390027131">下个月打赏日期</translation>
 <translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="5916536234616514390">让我很开心的是 <ph name="HASHTAG"/>Brave 让我可以支持创作者！刚刚用 <ph name="HASHTAG2"/>BAT 给 <ph name="NAME"/> 发送了消费。如果对方在 <ph name="DATE"/>前在 https://creators.brave.com 进行验证，那么 BAT 就是他们的！</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">当前没有 Brave 广告历史记录</translation>
 <translation id="5345727496083327478">您将不会收到此类广告</translation>
 <translation id="2631006050119455616">已保存</translation>
-<translation id="3819257035322786455">备份</translation>
 <translation id="6976444672879155794">自动打赏 [[processor]]</translation>
 <translation id="8804164990146287819">隐私政策</translation>
 <translation id="7262285991915892790">将 BAT 图标拖到</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">过期日期前未使用的 [[currency]] 会自动被退回 Brave User Growth Pool。</translation>
 <translation id="279567716178902927">补助过期日期</translation>
 <translation id="1389143276807887637">导入</translation>
-<translation id="3810973564298564668">管理</translation>
-<translation id="6302422639282249274">管理 Brave 奖励</translation>
 <translation id="211044356803193224">每月打赏！</translation>
 <translation id="2487641031722095938">今天是您的幸运日！</translation>
 <translation id="6255773350565723852">您即将收到代币补助。</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">从已保存项中移除</translation>
 <translation id="5530851178552343773">您已为尚未注册接收赏金的创作者指定了 [[reservedAmount]] [[currency]] 的赏金。您的浏览器会继续尝试打赏，直到他们通过验证或直到 90 天已过。</translation>
 <translation id="5939518447894949180">重置</translation>
+<translation id="3349204812119681938">重设 Brave 奖励</translation>
 <translation id="5669281110673664811">清除排除列表</translation>
 <translation id="1797334173232638045">您的固定网站已移至</translation>
-<translation id="542042553430131913">如果未验证 Brave 奖励，则您的 BAT 余额会存储在设备上的本地文件中。</translation>
-<translation id="2142973554991645476">如果想在需要彻底重新安装浏览器或重新格式化您的设备时保护您的 BAT，并希望享受其他优势（例如添加或撤回您的 BAT），我们建议<ph name="LINK_BEGIN"/>验证<ph name="LINK_END"/>。</translation>
 <translation id="5317144262906129592">您可以通过打赏的方式来支持此内容创建者。这是感谢他们制作精彩内容的一种方式。</translation>
 <translation id="3074127054582480056">精力</translation>
 <translation id="3659457123782988823">确定要重置您的 Brave 奖励吗？</translation>
 <translation id="1666001796278936721">通过重置，您当前的 Brave 奖励档案将被删除，您将重新开始一个全新的 Brave 奖励档案。在继续之前，以防万一，<ph name="LINK_BEGIN"/>请了解个更多<ph name="LINK_END"/>关于重置的信息。</translation>
-<translation id="94095197509579227">注意：当前，您本月的预估收入为<ph name="BAT_AMOUNT"/>，如果您现在重置，将失去这些收入。</translation>
 <translation id="4806029412510565611">我知道我目前的 Brava 奖励档案和 Brave 奖励数据将从我的设备上删除，我已阅读<ph name="LINK_BEGIN"/>关于重置的支持文档<ph name="LINK_END"/>。</translation>
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">查看详情</translation>
 <translation id="4206899127409458763">创建 Brave 奖励档案</translation>
 <translation id="1988679729106502285">注：</translation>
-<translation id="942863887222585572">您已连接至<ph name="USER_PROVIDER"/>，但这个创作者已连接至<ph name="CREATOR_PROVIDER"/>。这意味着该创作者无法收到您的建议。您目前提出的任何建议都将保持等待状态，并在 90 天内自动重试。</translation>
 <translation id="5530734056858418442">此创作者尚未注册。您打赏的赏金会保留，并将在 90 天内自动重试。</translation>
 <translation id="3197752845651180812">待处理的捐款</translation>
 <translation id="6964891561514920613">显示所有待处理的捐款</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">未验证的创建者</translation>
 <translation id="6020176662032623904">已验证的创建者</translation>
 <translation id="215037911651623564">刷新创作者验证状态</translation>
-<translation id="8946576491316456643">目前，您赚取的任何奖励都将保持等待状态，并在 90 天内自动重试。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">目前，您提出的任何建议都将保持等待状态，并在 90 天内自动重试。</translation>
 <translation id="7826318737761918938">此创作者尚未注册。</translation>
 <translation id="3573568055713372419">您已连接至<ph name="USER_PROVIDER"/>，但该创作者已连接至<ph name="CREATOR_PROVIDER"/>。这意味着该创作者无法收到您的建议。</translation>
 <translation id="6633436087937398390"><ph name="PLATFORM"/>上的<ph name="NAME"/></translation>
@@ -857,6 +855,8 @@ other {# 个广告/小时}
 <translation id="223536150967420869">购买</translation>
 <translation id="1483493594462132177">发送</translation>
 <translation id="538450413584738399">交换</translation>
+<translation id="3488255243387417752">卖出</translation>
+<translation id="5223034545851554347">您这个帐户里的<ph name="TOKEN_SYMBOL"/>余额不足。</translation>
 <translation id="9113988219764868805">发送代币</translation>
 <translation id="4254256922305105713">发送 NFT</translation>
 <translation id="3453833142586986467">选择代币</translation>
@@ -1074,6 +1074,9 @@ other {# 个广告/小时}
 <translation id="793994607260936590">第一笔</translation>
 <translation id="4709524402122994378">交易</translation>
 <translation id="4591079278963448049">尚未与代币账户建立任何关联。您需使用小额 SOL 建立账户并存入资金。</translation>
+<translation id="1426320910664514906">Gas Limit</translation>
+<translation id="1229774280326250926">Gas 优先费用</translation>
+<translation id="148169246131967347">Gas 费用上限</translation>
 <translation id="523862956770478816">站点权限</translation>
 <translation id="1575262454612599115">连接了 <ph name="NUMBER_OF_ACCOUNTS"/> 个账户</translation>
 <translation id="4804818685124855865">断开连接</translation>
@@ -1150,15 +1153,24 @@ other {# 个广告/小时}
 <translation id="749944179568745958">不是有效的 ETH 地址</translation>
 <translation id="2832270987629018596">SOL 地址无效</translation>
 <translation id="882486206986535424">不是有效的地址</translation>
-<translation id="6825399159373612149">域名 <ph name="DOMAIN_NAME"/> 未注册</translation>
+<translation id="8684908590733515816">域没有已连接的<ph name="COIN_TYPE_SYMBOL"/>地址</translation>
 <translation id="8971278306757462297">接收地址是您自己的地址</translation>
 <translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
+<translation id="6370376419663123629">地址似乎有误</translation>
+<translation id="3767148796886402380">检查您的地址，确保地址是正确的（例如小写或大写字母）。</translation>
+<translation id="2585599787090762065">该如何解决？</translation>
+<translation id="5517732667776806421">缺少校验和信息</translation>
 <translation id="2975056993833847787">无法验证此地址（缺少校验和）。要继续吗？</translation>
 <translation id="6320252966164556855">地址未通过验证 (总和检查码无效)，请将小写字母改成大写再试一次。</translation>
 <translation id="4667144295226514387">缺少 GAS 限额</translation>
 <translation id="2021522108838444624">金额必须大于 0</translation>
 <translation id="8464365289405373974">收款人地址为必填项</translation>
 <translation id="4884792073752467460">无效的收件人地址</translation>
+<translation id="8585995109882455949">该如何找到正确的地址？</translation>
+<translation id="8395402412470376435">Brave 验证并防止用户由于大写不正确而将资金发送到错误的地址。这是一个“检查和”过程，用于验证它是一个有效的 ETH 地址。</translation>
+<translation id="4583433813614292221">1. 访问</translation>
+<translation id="5393164213211430081">2. 复制并输入 ETH 地址</translation>
+<translation id="2378355054306959991">需要更多帮助？</translation>
 <translation id="862585889767884824">/</translation>
 <translation id="9106265941552476098">拒绝 <ph name="TRANSACTION_LENGTH"/> 交易</translation>
 <translation id="1118876217803190221">余额不足</translation>
@@ -1197,6 +1209,8 @@ other {# 个广告/小时}
 <translation id="1904295039023858291">代币标准</translation>
 <translation id="9033453977881595182">代币 ID</translation>
 <translation id="6332387008245531841">合约地址</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">图像位置或地址</translation>
 <translation id="2962388922926051374">在 <ph name="URL"/> 上请求方法“eth_chainId”失败</translation>
 <translation id="8325036459845654666">已添加此网络。</translation>
 <translation id="554350381160981853">对输入的数据进行签名只能在使用 1.10.5 及以上固件版本的 Trezor Model One 上进行</translation>
@@ -1214,6 +1228,8 @@ other {# 个广告/小时}
 <translation id="6423985584914773314">此 FIL 地址无效</translation>
 <translation id="3898731124813934210">用 Wyre 购买</translation>
 <translation id="5522073372365069684">用 Ramp 购买</translation>
+<translation id="6153197326949684688">以<ph name="OFFRAMP_PROVIDER"/>出售</translation>
+<translation id="6097502401711916278">最低金额必须是 <ph name="FIAT_AMOUNT"/> 或更多。</translation>
 <translation id="7902920577183739843">用 Sardine 购买</translation>
 <translation id="6534275647567011533">用 Transak 购买</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@ other {# 个广告/小时}
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">用 Visa 或 Mastercard 购买加密货币。</translation>
+<translation id="3648994606506382289">通过银行卡和银行转账购买加密货币最简单、最快和最便宜的方式。</translation>
 <translation id="3101839349578102016">通过您的银行账户进行即时购买。费用较低。</translation>
 <translation id="8528916244724490964">所有网络</translation>
 <translation id="4038403584813842767">余额↑</translation>
@@ -1268,9 +1285,10 @@ other {# 个广告/小时}
 <translation id="3538368258493053874">BPF 加载程序</translation>
 <translation id="2334098351242742927">Ed25519 程序</translation>
 <translation id="8780753288764281797">Secp256k1 程序</translation>
-<translation id="5275550100743015683">来源地址：</translation>
-<translation id="2678433693746214764">目的地地址：</translation>
-<translation id="4576396475962922672">新账户</translation>
+<translation id="6421371987002247943">代币计划</translation>
+<translation id="8642855779894264066">关联代币程序</translation>
+<translation id="3585645354490191700">元数据程序</translation>
+<translation id="1971875492220112280">SysvarRent 程序</translation>
 <translation id="4719005063558335704">帐户</translation>
 <translation id="4337554812324118382">数据：</translation>
 <translation id="569870799832027680">程序 ID：</translation>
@@ -1318,7 +1336,7 @@ other {# 个广告/小时}
 <translation id="5100124500279922001">跳过预检：</translation>
 <translation id="3568017348462868931">选择货币</translation>
 <translation id="4420924466038521900">搜索货币</translation>
-<translation id="8060029310790625334">帮助中心</translation>
+<translation id="4412698727486357573">帮助中心</translation>
 <translation id="2095142195578664632">需要帮忙？请查阅</translation>
 <translation id="3253669416991680932">这个硬件钱包不支持这项操作。</translation>
 <translation id="7457027586454688423">输入您的 Brave Wallet 密码</translation>
@@ -1430,8 +1448,6 @@ other {# 个广告/小时}
 <translation id="1026825928738055872">是否确定要移除“<ph name="ACCOUNT_NAME"/>”？</translation>
 <translation id="3910551537328657217">请求功能</translation>
 <translation id="7657322905916621147">助记词的长度必须为 12、15、18、21 或 24 个字</translation>
-<translation id="5307206077701819797">在您的钱包中未找到 NFT。您可以通过点击“投资组合”选项卡底部的“+可见资产”按钮添加 NFT</translation>
-<translation id="3528540388456395658">未找到与搜索词或过滤条件相符的 NFT</translation>
 <translation id="5026874946691314267">别再给我看这个了</translation>
 <translation id="434502623875309667">地址解析需要链下网络请求。要继续吗？</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@ other {# 个广告/小时}
 <translation id="6065708195277841442">连接钱包</translation>
 <translation id="4029551149873989025">切換網路</translation>
 <translation id="7561262633951061138">最佳</translation>
+<translation id="8060029310790625334">帮助中心</translation>
 <translation id="3143110700666266545">此应用程序使用以下第三方 API：</translation>
 <translation id="163536108506359457">Brave 兑换使用<ph name="AGGREGATOR"/>作为支持<ph name="NETWORKS"/> 网络的 DEX 聚合器。<ph name="AGGREGATOR"/>将处理<ph name="NETWORK"/> 钱包地址和 IP 地址以完成交易（包括获得报价）。<ph name="AGGREGATOR"/>只会将这些数据用于处理交易。</translation>
 <translation id="1847885264294023691">点击此处<ph name="AGGREGATOR"/>查看隐私政策。</translation>
@@ -1490,6 +1507,32 @@ other {# 个广告/小时}
 <translation id="4636925020451566238">代币小数点的精度值为必填项</translation>
 <translation id="3797613444743816037">Mint 地址</translation>
 <translation id="7951915459354237451">费用限额低于基本费用。您的交易可能需要花费很长时间或失败。</translation>
+<translation id="2227702748249086756">无法获取费用估算</translation>
+<translation id="5361710044667743492">为什么不可用？</translation>
+<translation id="3668838456083358569">部分 NFT 数据存储在 AWS、谷歌 Cloud 等集中式服务器上。在这种情况下，无法将 NFT 数据固定到 IPFS 网络。</translation>
+<translation id="1293258969121701010">通过在您的计算机上运行 IPFS，您可以:</translation>
+<translation id="4568942135611119076">确保您的 NFT 数据保持在线，并且不能被篡改。</translation>
+<translation id="4915883034746438977">使用内容标识符(CID)从不正确的数据中获取内容。</translation>
+<translation id="1373647012698032676">参与真实性证明，使 IPFS 网络丰富健康。</translation>
+<translation id="1806204385270226865">保持我的 NFT 始终在线</translation>
+<translation id="4323376551843624309">启用 NFT 固定</translation>
+<translation id="6501331923135442324">这是迈向 web3 的一大步</translation>
+<translation id="5361073938927187534">运行 IPFS 节点并保持 NFT 始终在线</translation>
+<translation id="1060267371223703324">检查我的哪些 NFT 可以固定</translation>
+<translation id="2641083452974145848">现在您可以运行您的 IPFS 并成为 web 3 的一部分。您的 NFT 数据将永远在线，无法被篡改。</translation>
+<translation id="4460927368826360904">您正在运行 IPFS 节点。文件正在读取到本地 IPFS 节点。</translation>
+<translation id="2260350263892668490"><ph name="PINNABLE"/> NFT 中的<ph name="PINNED"/>已成功固定到 IPFS。</translation>
+<translation id="1474962961180773583"><ph name="TOTAL"/>中的<ph name="PINNABLE"/>可用了！</translation>
+<translation id="6852656829524945421">无法固定</translation>
+<translation id="7698019251444927442">您正在运行 IPFS 节点</translation>
+<translation id="5584313306739463968">本地 IPFS 节点未运行</translation>
+<translation id="7527548209942671618">固定到本地 IPFS 节点</translation>
+<translation id="5659058832308365026">NFT 数据被固定到本地 IPFS 节点</translation>
+<translation id="4919133452617704550">无法固定到本地 IPFS 节点</translation>
+<translation id="3225624966527491351">导入 NFT</translation>
+<translation id="9085765419770918643">这里还没有 NFT。</translation>
+<translation id="8445532667841598737">准备好添加内容了吗？只需点击下面的按钮即可导入。</translation>
+<translation id="9136462955850040542">兼容 Solana (SPL)和 Ethereum (ERC-721)上的 NFT。</translation>
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="3745016858329272300">基本信息</translation>
 <translation id="4045404575593562245">Tor 控制活动</translation>
@@ -1582,6 +1625,8 @@ other {# 个来源}
 <translation id="6531019308847917584">阻止指纹识别</translation>
 <translation id="1899608006846124237">积极阻止指纹识别</translation>
 <translation id="8034285923190068220">允许指纹识别</translation>
+<translation id="7638541189782135885">不要升级 HTTP 连接</translation>
+<translation id="2570787596946026998">只连接 HTTPS</translation>
 <translation id="1992750560347846445">报告站点</translation>
 <translation id="2387532482048804818">如果此站点在启用 Shields 后无法正常工作，请告诉我们。</translation>
 <translation id="3795015906457257780">您正在没有 Brave 隐私保护的情况下浏览本网站。</translation>
@@ -1660,8 +1705,16 @@ other {# 个来源}
 <translation id="888284761945060750">安全 DNS 已根据您所在组织的政策被禁用。在没有安全 DNS 的情况下使用 Brave VPN 可能会将您访问的站点的名称泄露给您的 Internet 服务提供商或组织。</translation>
 <translation id="6593224083874259773">Windows 上的 Brave VPN</translation>
 <translation id="3153983908111684619">连接 BraveVPN 时，该设置被锁定</translation>
-<translation id="6507543978646831931">Windows 有一个叫做智能多家名称解析的功能，它会暴露您的位置和您访问的网站信息。现在您已经启用了 Brave VPN，为了防止这种暴露，我们已经更改了浏览器中的 DNS 设置。当 VPN 连接时，设置将保持有效和锁定。<ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">Windows 有一个叫做智能多家名称解析的功能，它可以暴露您的位置和您访问的网站的信息。
+
+Brave 有一个帮助服务，通过过滤在 VPN 连接上进行 DNS 查询的方式来保护您免受这种暴露。
+
+但是，我们注意到这个助手服务没有运行——我们不想让您不受保护。我们已经更改了浏览器中的 DNS 设置，以防止这种暴露。当 VPN 连接时，设置将保持有效并锁定。
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">不要再警告我了这个风险。</translation>
 <translation id="2740531572673183784">确定</translation>
 <translation id="9061845622728745852">时区：</translation>
+<translation id="8295393906499561642">会话已过期</translation>
+<translation id="3312623558576021182">请登录您的<ph name="BRAVE_ACCOUNT_BEGIN"/> Brave 帐号<ph name="BRAVE_ACCOUNT_END"/>刷新您的 VPN 会话。</translation>
 </translationbundle>

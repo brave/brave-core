@@ -4,8 +4,6 @@
 
 -keep class org.chromium.chrome.browser.BraveSyncInformers { *; }
 
--keep class org.chromium.chrome.browser.preferences.BravePreferenceKeyChecker { *; }
-
 # Add methods for invocation below
 -keep class org.chromium.chrome.browser.ChromeTabbedActivity {
     *** hideOverview(...);
@@ -47,3 +45,7 @@
 -keep class org.chromium.chrome.browser.tab.TabHelpers {
     *** initTabHelpers(...);
 }
+
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+

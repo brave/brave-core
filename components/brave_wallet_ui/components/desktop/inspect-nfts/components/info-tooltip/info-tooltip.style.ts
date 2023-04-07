@@ -13,15 +13,14 @@ export const StyledWrapper = styled.div`
   z-index: 3;
   background-color: #1e2029;
   width: 238px;
-  height: 125px;
   border-radius: 6px;
-  top: 32px;
+  top: 25px;
   right: -76px;
 `
 
 export const TooltipContent = styled.div`
   position: relative;
-  padding: 8px 16px 16px;
+  padding: 24px;
   width: 100%;
   height: 100%;
 `
@@ -29,7 +28,7 @@ export const TooltipContent = styled.div`
 export const TooltipText = styled.p`
   font-family: 'Poppins';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 400;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;

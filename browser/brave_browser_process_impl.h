@@ -24,8 +24,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveP3AService;
-class HistogramsBraveizer;
 class BraveFarblingService;
 }  // namespace brave
 
@@ -64,6 +62,11 @@ namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
 
+namespace p3a {
+class HistogramsBraveizer;
+class P3AService;
+}  // namespace p3a
+
 namespace tor {
 class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
@@ -78,7 +81,7 @@ class SpeedreaderRewriterService;
 }
 
 namespace brave_ads {
-class BraveStatsUpdaterHelper;
+class BraveStatsHelper;
 class ResourceComponent;
 }  // namespace brave_ads
 
@@ -118,9 +121,10 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::BraveIpfsClientUpdater* ipfs_client_updater() override;
 #endif
-  brave::BraveP3AService* brave_p3a_service() override;
+  p3a::P3AService* p3a_service() override;
   brave::BraveReferralsService* brave_referrals_service() override;
   brave_stats::BraveStatsUpdater* brave_stats_updater() override;
+  brave_ads::BraveStatsHelper* ads_brave_stats_helper() override;
   ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() override;
   brave_ads::ResourceComponent* resource_component() override;
@@ -139,6 +143,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   void Init() override;
 #if !BUILDFLAG(IS_ANDROID)
   void StartTearDown() override;
+  void PostDestroyThreads() override;
 #endif
 
   void CreateProfileManager();
@@ -150,7 +155,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   void UpdateBraveDarkMode();
   void OnBraveDarkModeChanged();
 
-  void InitBraveStatsUpdaterHelper();
+  void InitBraveStatsHelper();
 
   brave_component_updater::BraveComponent::Delegate*
   brave_component_updater_delegate();
@@ -185,8 +190,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #if BUILDFLAG(ENABLE_IPFS)
   std::unique_ptr<ipfs::BraveIpfsClientUpdater> ipfs_client_updater_;
 #endif
-  scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
-  scoped_refptr<brave::HistogramsBraveizer> histogram_braveizer_;
+  scoped_refptr<p3a::P3AService> p3a_service_;
+  scoped_refptr<p3a::HistogramsBraveizer> histogram_braveizer_;
   std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;
   std::unique_ptr<brave_ads::ResourceComponent> resource_component_;
@@ -203,8 +208,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   std::unique_ptr<brave::BraveFarblingService> brave_farbling_service_;
   std::unique_ptr<misc_metrics::MenuMetrics> menu_metrics_;
-  std::unique_ptr<brave_ads::BraveStatsUpdaterHelper>
-      brave_stats_updater_helper_;
+  std::unique_ptr<brave_ads::BraveStatsHelper> brave_stats_helper_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 };

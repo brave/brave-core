@@ -30,6 +30,10 @@ extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 extern const char kBraveWalletUserAssetsAddPreloadingNetworksMigrated[];
 // Added 10/2022 to set is_nft = true for existing ERC721 tokens.
 extern const char kBraveWalletUserAssetsAddIsNFTMigrated[];
+// Added 03/2023 to add networks hidden by default
+extern const char kBraveWalletDefaultHiddenNetworksVersion[];
+// Added 03/2023 to set is_erc1155 = false for all existing tokens.
+extern const char kBraveWalletUserAssetsAddIsERC1155Migrated[];
 // Added 10/2022 to replace ETH selected network with mainnet if selected
 // network is one of the Ethereum testnets deprecated on 10/5/2022.
 extern const char kBraveWalletDeprecateEthereumTestNetworksMigrated[];
@@ -45,12 +49,15 @@ extern const char kBraveWalletP3AUsedSecondDay[];
 
 extern const char kBraveWalletP3AActiveWalletDict[];
 extern const char kBraveWalletKeyringEncryptionKeysMigrated[];
+extern const char kBraveWalletNftDiscoveryEnabled[];
 extern const char kBraveWalletLastDiscoveredAssetsAt[];
 
 extern const char kBraveWalletLastTransactionSentTimeDict[];
 // Added 02/2023 to migrate transactions to contain the
 // chain_id for each one.
 extern const char kBraveWalletTransactionsChainIdMigrated[];
+// Added 04/2023 to migrate solana transactions for v0 transaction support.
+extern const char kBraveWalletSolanaTransactionsV0SupportMigrated[];
 
 // DEPRECATED
 extern const char kShowWalletTestNetworksDeprecated[];
@@ -62,6 +69,8 @@ extern const char kBraveWalletCurrentChainId[];
 extern const char kBraveWalletUserAssetsDeprecated[];
 extern const char
     kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated[];
+extern const char
+    kBraveWalletUserAssetsAddPreloadingNetworksMigratedDeprecated2[];
 extern const char kPinnedNFTAssets[];
 extern const char kAutoPinEnabled[];
 

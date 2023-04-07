@@ -23,9 +23,6 @@ class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
   ~SpeedreaderRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
-  void DidStartNavigation(
-      const GURL& url,
-      absl::optional<blink::WebNavigationType> navigation_type) override;
   void DidClearWindowObject() override;
 
  private:
@@ -33,7 +30,6 @@ class SpeedreaderRenderFrameObserver : public content::RenderFrameObserver {
   void OnDestruct() override;
 
   int32_t isolated_world_id_;
-  bool is_speedreadable_url_ = false;
   base::WeakPtrFactory<SpeedreaderRenderFrameObserver> weak_ptr_factory_{this};
 };
 

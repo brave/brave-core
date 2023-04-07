@@ -6,10 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SITE_SETTINGS_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SITE_SETTINGS_HANDLER_H_
 
-#define usage_host_ \
-  usage_host_;      \
+#define SiteSettingsHandlerBaseTest \
+  SiteSettingsHandlerBaseTest;      \
   friend class BraveSiteSettingsHandler
 #include "src/chrome/browser/ui/webui/settings/site_settings_handler.h"  // IWYU pragma: export
-#undef usage_host_
+#undef SiteSettingsHandlerBaseTest
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SETTINGS_SITE_SETTINGS_HANDLER_H_

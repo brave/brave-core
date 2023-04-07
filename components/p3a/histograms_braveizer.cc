@@ -11,7 +11,7 @@
 #include "base/metrics/statistics_recorder.h"
 #include "brave/components/p3a_utils/bucket.h"
 
-namespace brave {
+namespace p3a {
 
 namespace {
 
@@ -30,8 +30,8 @@ constexpr const char* kBravezationHistograms[] = {
 }  // namespace
 
 // static
-scoped_refptr<brave::HistogramsBraveizer> HistogramsBraveizer::Create() {
-  auto histogram_braveizer = base::MakeRefCounted<brave::HistogramsBraveizer>();
+scoped_refptr<p3a::HistogramsBraveizer> HistogramsBraveizer::Create() {
+  auto histogram_braveizer = base::MakeRefCounted<p3a::HistogramsBraveizer>();
   histogram_braveizer->InitCallbacks();
   return histogram_braveizer;
 }
@@ -133,4 +133,4 @@ void HistogramsBraveizer::DoHistogramBravetization(
   }
 }
 
-}  // namespace brave
+}  // namespace p3a

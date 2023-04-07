@@ -5,7 +5,9 @@
 
 declare namespace RewardsExtension {
   interface State {
-    balance: Balance
+    balance: import(
+      '../brave_rewards/resources/shared/lib/optional'
+    ).Optional<number>
     currentNotification?: string | number
     enabledAC: boolean
     notifications: Record<string, Notification>
@@ -175,9 +177,7 @@ declare namespace RewardsExtension {
 
   export type TipDialogEntryPoint = 'one-time' | 'set-monthly' | 'clear-monthly'
 
-  export type Balance = number | undefined
-
-  type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 

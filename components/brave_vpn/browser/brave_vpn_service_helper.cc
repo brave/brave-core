@@ -106,6 +106,14 @@ bool IsValidCredentialSummary(const base::Value& summary) {
   return active && remaining_credential_count > 0;
 }
 
+bool IsValidCredentialSummaryButNeedActivation(const base::Value& summary) {
+  DCHECK(summary.is_dict());
+  const bool active = summary.GetDict().FindBool("active").value_or(false);
+  const int remaining_credential_count =
+      summary.GetDict().FindInt("remaining_credential_count").value_or(0);
+  return !active && remaining_credential_count > 0;
+}
+
 bool HasSubscriberCredential(PrefService* local_prefs) {
   const base::Value::Dict& sub_cred_dict =
       local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
@@ -141,6 +149,30 @@ void SetSubscriberCredential(PrefService* local_prefs,
 
 void ClearSubscriberCredential(PrefService* local_prefs) {
   local_prefs->ClearPref(prefs::kBraveVPNSubscriberCredential);
+}
+
+void SetSkusCredential(PrefService* local_prefs,
+                       const std::string& skus_credential,
+                       const base::Time& expiration_time) {
+  base::Value::Dict cred_dict;
+  cred_dict.Set(kSkusCredentialKey, skus_credential);
+  cred_dict.Set(kSubscriberCredentialExpirationKey,
+                base::TimeToValue(expiration_time));
+  local_prefs->SetDict(prefs::kBraveVPNSubscriberCredential,
+                       std::move(cred_dict));
+}
+
+base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs) {
+  CHECK(HasValidSkusCredential(local_prefs));
+
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  CHECK(expiration_time_value);
+  return *base::ValueToTime(expiration_time_value);
 }
 
 }  // namespace brave_vpn

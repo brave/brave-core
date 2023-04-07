@@ -4,17 +4,21 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
 import { useSelector } from 'react-redux'
+import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
 // types
 import {
   SupportedTestNetworks,
   WalletState
 } from '../../../../constants/types'
+import { AllNetworksOption } from '../../../../options/network-filter-options'
+
+// hooks
 
 // components
 import { Nfts } from './components/nfts'
-import { AllNetworksOption } from '../../../../options/network-filter-options'
 
 interface Props {
   onToggleShowIpfsBanner: () => void
@@ -22,9 +26,11 @@ interface Props {
 
 export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
   // redux
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
+
+  // queries
+  const { data: networks = [] } = useGetVisibleNetworksQuery()
 
   // memos
   const nonFungibleTokens = React.useMemo(() => {
@@ -45,7 +51,7 @@ export const NftView = ({ onToggleShowIpfsBanner }: Props) => {
 
   return (
     <Nfts
-      networks={networkList}
+      networks={networks}
       nftList={nonFungibleTokens}
       onToggleShowIpfsBanner={onToggleShowIpfsBanner}
     />

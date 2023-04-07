@@ -18,7 +18,7 @@ import {
   SerializableSwitchChainRequest
 } from '../../constants/types'
 import {
-  AccountPayloadType,
+  ConnectWithSitePayloadType,
   AddSuggestTokenProcessedPayload,
   CancelConnectHardwareWalletPayload,
   ShowConnectToSitePayload,
@@ -184,7 +184,7 @@ handler.on(PanelActions.navigateToMain.type, async (store: Store) => {
   apiProxy.panelHandler.showUI()
 })
 
-handler.on(PanelActions.cancelConnectToSite.type, async (store: Store, payload: AccountPayloadType) => {
+handler.on(PanelActions.cancelConnectToSite.type, async () => {
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.cancelConnectToSite()
   apiProxy.panelHandler.closeUI()
@@ -289,11 +289,9 @@ handler.on(PanelActions.approveHardwareTransaction.type, async (store: Store, tx
   await store.dispatch(PanelActions.navigateToMain())
 })
 
-handler.on(PanelActions.connectToSite.type, async (store: Store, payload: AccountPayloadType) => {
+handler.on(PanelActions.connectToSite.type, async (store: Store, payload: ConnectWithSitePayloadType) => {
   const apiProxy = getWalletPanelApiProxy()
-  let accounts: string[] = []
-  payload.selectedAccounts.forEach((account) => { accounts.push(account.address) })
-  apiProxy.panelHandler.connectToSite(accounts)
+  apiProxy.panelHandler.connectToSite([payload.addressToConnect], payload.duration)
   apiProxy.panelHandler.closeUI()
 })
 

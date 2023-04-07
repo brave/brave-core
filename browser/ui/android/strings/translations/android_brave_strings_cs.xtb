@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
+<translation id="3478449063771497234">Oznámení jsou zakázána.</translation>
+<translation id="7466579932043491502">Když jsou oznámení zakázána, odměny Brave nemusí fungovat.</translation>
+<translation id="4259212006412783790">ZAPNOUT</translation>
+<translation id="6112331814131703370">Oznámení bloku „Přepnout na aplikaci</translation>
 <translation id="4744921452903670666">Řekněte nám, co si myslíte!</translation>
 <translation id="2524310205387880526">Ohodnotit Brave</translation>
 <translation id="4104400246019119780">Děkujeme!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Vaše <ph name="MONTH_VALUE"/> reklamní odměny jsou zde!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> odměny: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Na využití máte ještě <ph name="TOKEN"/> dny/dní</translation>
-<translation id="2323069945529668668">Jejda!</translation>
-<translation id="7510166204621526816">Server Brave Rewards neodpovídá. Opravíme to co nejdříve.</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
 <translation id="3101693828171454453">nedostatek <ph name="TOKEN"/>ů</translation>
@@ -611,7 +613,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5050890334032852465">Uložit seznam sledování účtu</translation>
 <translation id="7755766175599167100">Hledat tokeny</translation>
 <translation id="3835223348537121988">Zůstatek:</translation>
-<translation id="6888491517683356528">Pokračovat na Ramp</translation>
+<translation id="3956169227169516344">Zvolit způsob nákupu</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="3784455785234192852">Uzamknout</translation>
 <translation id="8796429300536029044">Detail NFT</translation>
@@ -625,6 +627,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="414639769490080648">Počet minut, po kterých se peněženka Brave automaticky uzamkne.</translation>
 <translation id="4993345308607970390">Resetovat peněženku Brave</translation>
 <translation id="4322846864135539519">Určitě chcete resetovat odměny Brave? Pokud vaše peněženka není zálohovaná, resetování způsobí ztrátu všech údajů o účtu (včetně všech souvisejících prostředků). Pro potvrzení zadejte "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="6915083716464390008">Vyberte jednu z následujících možností</translation>
+<translation id="7667423728712601865">Nakupujte kryptoměny prostřednictvím karet Visa nebo Mastercard.</translation>
+<translation id="3101839349578102016">Okamžitý nákup s vaším bankovním účtem. Nižší poplatky.</translation>
+<translation id="7269640984027668973">Koupit za <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Vymazat údaje o transakcích a nonce</translation>
 <translation id="5693968582510626466">Vymazání transakcí může být užitečné pro vývojáře nebo když mažete stav na místním serveru</translation>
 <translation id="5421107279168565467">Určitě chcete vymazat všechny údaje o transakcích a nonce v peněžence? Tuto možnost většinou používají vývojáři provozující místní testovací server. Pro potvrzení napište „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
@@ -799,7 +805,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="3506416339268164412">Příjmová adresa je smluvní adresa tokenu</translation>
 <translation id="3494964159182650590">Přehled odměn</translation>
 <translation id="590733288489975971">Odměny z reklam</translation>
-<translation id="207268487070188114">Jednorázová spropitné</translation>
+<translation id="2613359062756190460">Jednorázové příspěvky</translation>
 <translation id="7577100371127227294">Měsíční spropitné</translation>
 <translation id="7091980679045978090">Odhadovaný výnos</translation>
 <translation id="1346059596910821859">Příspěvek</translation>

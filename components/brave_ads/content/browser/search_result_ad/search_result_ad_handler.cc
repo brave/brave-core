@@ -12,10 +12,10 @@
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
-#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_converting_util.h"
-#include "brave/components/brave_ads/core/browser/search_result_ad/search_result_ad_util.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/search_result_ad/search_result_ad_converting_util.h"
+#include "brave/components/brave_ads/core/search_result_ad/search_result_ad_util.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -41,7 +41,7 @@ SearchResultAdHandler::MaybeCreateSearchResultAdHandler(
     const bool should_trigger_viewed_event) {
   if (!ads_service || !ads_service->IsEnabled() ||
       !base::FeatureList::IsEnabled(
-          features::kSupportBraveSearchResultAdConfirmationEvents) ||
+          features::kShouldTriggerSearchResultAdEvents) ||
       !brave_search::IsAllowedHost(url)) {
     return {};
   }
@@ -92,13 +92,13 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdClickedEvent(
     return;
   }
 
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
+  const mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kClicked);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kClicked);
 }
 
 void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
@@ -108,8 +108,7 @@ void SearchResultAdHandler::OnRetrieveSearchResultAdEntities(
   DCHECK(ads_service_);
 
   if (!ads_service_->IsEnabled() || !web_page) {
-    std::move(callback).Run({});
-    return;
+    return std::move(callback).Run({});
   }
 
   search_result_ads_ =
@@ -136,16 +135,16 @@ void SearchResultAdHandler::MaybeTriggerSearchResultAdViewedEvent(
     return;
   }
 
-  const ads::mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
+  const mojom::SearchResultAdInfoPtr& search_result_ad = iter->second;
   if (!search_result_ad) {
     return;
   }
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kServed);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kServed);
 
   ads_service_->TriggerSearchResultAdEvent(
-      search_result_ad->Clone(), ads::mojom::SearchResultAdEventType::kViewed);
+      search_result_ad->Clone(), mojom::SearchResultAdEventType::kViewed);
 }
 
 }  // namespace brave_ads

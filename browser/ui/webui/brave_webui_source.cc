@@ -306,6 +306,7 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "braveTalkPromptAction", IDS_BRAVE_TALK_PROMPT_ACTION },
 
         // Rewards widget
+        { "rewardsAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
         { "rewardsAdGrantAmount", IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT },
         { "rewardsAdGrantTitle", IDS_REWARDS_WIDGET_AD_GRANT_TITLE },
         { "rewardsBraveRewards", IDS_REWARDS_WIDGET_BRAVE_REWARDS },
@@ -406,7 +407,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "contributionMinVisits",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS },
         { "contributionOther",  IDS_BRAVE_REWARDS_LOCAL_CONTR_OTHER },
         { "contributionShowNonVerified",  IDS_BRAVE_REWARDS_LOCAL_CONTR_SHOW_NON_VERIFIED },        // NOLINT
-        { "contributionVideos",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS },
         { "contributionVisit1",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1 },
         { "contributionVisit5",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_5 },
         { "contributionVisit10",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_10 },
@@ -613,7 +613,6 @@ void CustomizeWebUIHTMLSource(content::WebUI* web_ui,
         { "settings", IDS_BRAVE_UI_SETTINGS },
         { "site", IDS_BRAVE_UI_SITE },
         { "tipOnLike", IDS_BRAVE_UI_TIP_ON_LIKE },
-        { "tokenGrantClaimed", IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED },
         { "tokenGrantReceived", IDS_BRAVE_UI_TOKEN_GRANT_RECEIVED },
         { "token", IDS_BRAVE_UI_TOKEN },
         { "tokens", IDS_BRAVE_UI_TOKENS },
@@ -947,7 +946,8 @@ content::WebUIDataSource* CreateWebUIDataSource(
     size_t resource_map_size,
     int html_resource_id,
     bool disable_trusted_types_csp) {
-  content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
+  content::WebUIDataSource* source =
+      content::WebUIDataSource::CreateAndAdd(Profile::FromWebUI(web_ui), name);
   // Some parts of Brave's UI pages are not yet migrated to work without doing
   // assignments of strings directly into |innerHTML| elements (i.e. see usage
   // of |dangerouslySetInnerHTML| in .tsx files). This will break Brave due to
@@ -987,7 +987,6 @@ content::WebUIDataSource* CreateAndAddWebUIDataSource(
   content::WebUIDataSource* data_source =
       CreateWebUIDataSource(web_ui, name, resource_map, resource_map_size,
                             html_resource_id, disable_trusted_types_csp);
-  content::WebUIDataSource::Add(Profile::FromWebUI(web_ui), data_source);
   return data_source;
 }
 

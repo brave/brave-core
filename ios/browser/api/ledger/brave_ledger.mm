@@ -20,19 +20,20 @@
 #include "base/values.h"
 #include "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
+#include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_database.h"
+#include "brave/components/brave_rewards/core/option_keys.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave/ios/browser/api/ledger/brave_ledger_observer.h"
 #import "brave/ios/browser/api/ledger/ledger.mojom.objc+private.h"
 #import "brave/ios/browser/api/ledger/ledger_client_bridge.h"
 #import "brave/ios/browser/api/ledger/ledger_client_ios.h"
+#import "brave/ios/browser/api/ledger/ledger_types.mojom.objc+private.h"
 #import "brave/ios/browser/api/ledger/legacy_database/data_controller.h"
 #import "brave/ios/browser/api/ledger/legacy_database/legacy_ledger_database.h"
 #import "brave/ios/browser/api/ledger/promotion_solution.h"
 #import "brave/ios/browser/api/ledger/rewards_notification.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/global_constants.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/ledger.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/option_keys.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/ledger_database.h"
 #include "components/os_crypt/os_crypt.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
@@ -83,7 +84,8 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 static const auto kOneDay =
     base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
-/// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
+/// Ledger Prefs, keys will be defined in
+/// `brave/components/brave_rewards/core/option_keys.h`
 const std::map<std::string, bool> kBoolOptions = {
     {ledger::option::kIsBitflyerRegion, false}};
 const std::map<std::string, int> kIntegerOptions = {};
@@ -532,11 +534,12 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 - (void)fetchBalance:(void (^)(LedgerBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
   ledger->FetchBalance(base::BindOnce(
-      ^(ledger::mojom::Result result, ledger::mojom::BalancePtr balance) {
+      ^(base::expected<ledger::mojom::BalancePtr,
+                       ledger::mojom::FetchBalanceError> result) {
         const auto strongSelf = weakSelf;
-        if (result == ledger::mojom::Result::LEDGER_OK && balance) {
-          strongSelf.balance =
-              [[LedgerBalance alloc] initWithBalancePtr:std::move(balance)];
+        if (result.has_value()) {
+          strongSelf.balance = [[LedgerBalance alloc]
+              initWithBalancePtr:std::move(result.value())];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
           for (BraveLedgerObserver* observer in [self.observers copy]) {
@@ -1220,15 +1223,9 @@ BATLedgerBridge(int,
                             GetPublisherAllowNonVerified,
                             SetPublisherAllowNonVerified)
 
-                BATLedgerBridge(BOOL,
-                                allowVideoContributions,
-                                setAllowVideoContributions,
-                                GetPublisherAllowVideos,
-                                SetPublisherAllowVideos)
-
-                    BATLedgerReadonlyBridge(double,
-                                            contributionAmount,
-                                            GetAutoContributionAmount)
+                BATLedgerReadonlyBridge(double,
+                                        contributionAmount,
+                                        GetAutoContributionAmount)
 
     - (void)setContributionAmount : (double)contributionAmount {
   ledger->SetAutoContributionAmount(contributionAmount);

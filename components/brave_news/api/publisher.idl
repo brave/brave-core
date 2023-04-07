@@ -1,0 +1,55 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Schema types used by brave today feed.
+
+[generate_error_messages, none_as_absent_optional]
+namespace feed {
+
+  // A dictionary with locale data
+  dictionary Locale {
+    // The locale string
+    DOMString locale;
+
+    // A list of channels
+    DOMString[] channels;
+
+    // The rank of the locale
+    long? rank;
+  };
+
+  // A dictionary with fields representing a publisher.
+  dictionary Publisher {
+    // If the publisher is enabled. Brave today defaults it to true.
+    boolean? enabled;
+
+    // the publishers name.
+    DOMString publisher_name;
+
+    // The category the publisher belongs to.
+    DOMString category;
+
+    // News publisher site url.
+    DOMString site_url;
+
+    // News publisher feed url.
+    DOMString feed_url;
+
+    // The favicon url for the publisher.
+    DOMString? favicon_url;
+
+    // The cover image url for the publisher.
+    DOMString? cover_url;
+
+    // Hex colour code for the background
+    DOMString? background_color;
+
+    // The publisher's id.
+    DOMString publisher_id;
+
+    // A list of locales.
+    Locale[]? locales;
+  };
+};

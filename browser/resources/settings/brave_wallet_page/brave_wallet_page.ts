@@ -43,10 +43,31 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       },
 
       isNetworkEditor_: {
+        type: Number,
+        value: false,
+      },
+
+      shouldShowClearNftButton_: {
         type: Boolean,
         value: false,
       },
+
+      shouldEnableClearNftButton_: {
+        type: Boolean,
+        value: false,
+      },
+
+      pinnedNftCount_: {
+        type: Number,
+        value: 0,
+      },
     }
+  }
+
+  static get observers(){
+    return [
+      'onShowOptionChanged_(prefs.brave.wallet.auto_pin_enabled.value)'
+    ]
   }
 
   browserProxy_ = BraveWalletBrowserProxyImpl.getInstance()
@@ -138,6 +159,16 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.currency_list_.every((x) => x.name = x.value);
   }
 
+  private onShowOptionChanged_() {
+    this.shouldShowClearNftButton_ =
+        !this.getPref('brave.wallet.auto_pin_enabled').value;
+
+    this.browserProxy_.getPinnedNftCount().then(val => {
+      this.pinnedNftCount_ = val
+      this.shouldEnableClearNftButton_ = this.pinnedNftCount_ > 0
+    })
+  }
+
   onBraveWalletEnabledChange_() {
     this.browserProxy_.setBraveWalletEnabled(this.$.braveWalletEnabled.checked);
   }
@@ -145,6 +176,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
   isNetworkEditorRoute() {
     const router = Router.getInstance();
     return (router.getCurrentRoute() == router.getRoutes().BRAVE_WALLET_NETWORKS);
+  }
+
+  getPinnedNftCount() {
+    return this.pinnedNftCount_;
   }
 
   /** @protected */
@@ -179,6 +214,22 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
       return
     this.browserProxy_.resetTransactionInfo()
     window.alert(this.i18n('walletResetTransactionInfoConfirmed'))
+  }
+
+  onClearPinnedNftTapped_() {
+    if (this.pinnedNftCount_ == 0) {
+      return
+    }
+    var message = this.i18n('walletClearPinnedNftConfirmation')
+    if (window.prompt(message) !== this.i18n('walletResetConfirmationPhrase'))
+      return
+    this.browserProxy_.clearPinnedNft().then(val => {
+      this.onShowOptionChanged_()
+    })
+  }
+
+  onNftDiscoveryEnabledChange_() {
+    this.browserProxy_.setNftDiscoveryEnabled(this.$.enableNftDiscovery.checked)
   }
 }
 

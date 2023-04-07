@@ -64,11 +64,7 @@ BraveVPNOSConnectionAPIWin::~BraveVPNOSConnectionAPIWin() {
 void BraveVPNOSConnectionAPIWin::CreateVPNConnectionImpl(
     const BraveVPNConnectionInfo& info) {
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&CreateEntry, base::UTF8ToWide(info.connection_name()),
-                     base::UTF8ToWide(info.hostname()),
-                     base::UTF8ToWide(info.username()),
-                     base::UTF8ToWide(info.password())),
+      FROM_HERE, {base::MayBlock()}, base::BindOnce(&CreateEntry, info),
       base::BindOnce(&BraveVPNOSConnectionAPIWin::OnCreated,
                      weak_factory_.GetWeakPtr(), info.connection_name()));
 }

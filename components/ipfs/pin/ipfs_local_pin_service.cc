@@ -6,59 +6,159 @@
 #include "brave/components/ipfs/pin/ipfs_local_pin_service.h"
 
 #include <memory>
+#include <set>
 #include <string>
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "base/functional/callback.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace ipfs {
 
+bool PinData::operator==(const PinData& d) const {
+  return this->cid == d.cid && this->pinning_mode == d.pinning_mode;
+}
+
 namespace {
 const char kRecursiveMode[] = "recursive";
+const char kDirectMode[] = "direct";
+
+std::string GetPrefNameFromPinningMode(PinningMode mode) {
+  switch (mode) {
+    case DIRECT:
+      return kDirectMode;
+    case RECURSIVE:
+      return kRecursiveMode;
+  }
+  NOTREACHED();
+  return kRecursiveMode;
+}
+
 }  // namespace
+
+// Splits ipfs:// url to a list of PinData items
+absl::optional<std::vector<PinData>> IpfsLocalPinService::ExtractPinData(
+    const std::string& ipfs_url) {
+  auto gurl = GURL(ipfs_url);
+  if (!gurl.SchemeIs(ipfs::kIPFSScheme)) {
+    return absl::nullopt;
+  }
+  // This will just remove ipfs:// scheme
+  auto path = gurl.path();
+  std::vector<std::string> slit =
+      base::SplitString(path, "/", base::WhitespaceHandling::KEEP_WHITESPACE,
+                        base::SplitResult::SPLIT_WANT_NONEMPTY);
+  if (slit.empty()) {
+    return absl::nullopt;
+  }
+  std::vector<PinData> result;
+  std::string builder = "/ipfs";
+  for (const auto& part : slit) {
+    builder += "/";
+    builder += part;
+    result.push_back(PinData{builder, PinningMode::DIRECT});
+  }
+  result[result.size() - 1].pinning_mode = PinningMode::RECURSIVE;
+  return result;
+}
+
+absl::optional<std::vector<ipfs::PinData>>
+IpfsLocalPinService::ExtractMergedPinData(
+    const std::vector<std::string>& ipfs_urls) {
+  std::vector<ipfs::PinData> result;
+  for (const auto& ipfs_url : ipfs_urls) {
+    auto pins_data_for_url = ExtractPinData(ipfs_url);
+    if (!pins_data_for_url) {
+      return absl::nullopt;
+    }
+    for (const auto& item : pins_data_for_url.value()) {
+      if (!base::Contains(result, item)) {
+        result.push_back(item);
+      }
+    }
+  }
+  return result;
+}
 
 AddLocalPinJob::AddLocalPinJob(PrefService* prefs_service,
                                IpfsService* ipfs_service,
                                const std::string& key,
-                               const std::vector<std::string>& cids,
+                               const std::vector<PinData>& pins_data,
                                AddPinCallback callback)
     : prefs_service_(prefs_service),
       ipfs_service_(ipfs_service),
       key_(key),
-      cids_(cids),
+      pins_data_(pins_data),
       callback_(std::move(callback)) {}
 
 AddLocalPinJob::~AddLocalPinJob() = default;
 
 void AddLocalPinJob::Start() {
-  ipfs_service_->AddPin(cids_, true,
-                        base::BindOnce(&AddLocalPinJob::OnAddPinResult,
-                                       weak_ptr_factory_.GetWeakPtr()));
+  auto callback = base::BarrierCallback<absl::optional<AddPinResult>>(
+      2, base::BindOnce(&AddLocalPinJob::OnAddPinResult,
+                        weak_ptr_factory_.GetWeakPtr()));
+
+  std::vector<std::string> recursive_cids;
+  std::vector<std::string> direct_cids;
+
+  for (const auto& pin_data : pins_data_) {
+    if (pin_data.pinning_mode == PinningMode::RECURSIVE) {
+      recursive_cids.push_back(pin_data.cid);
+    } else {
+      direct_cids.push_back(pin_data.cid);
+    }
+  }
+
+  ipfs_service_->AddPin(
+      recursive_cids, true,
+      base::BindOnce(&AddLocalPinJob::Accumulate,
+                     weak_ptr_factory_.GetWeakPtr(), callback));
+  ipfs_service_->AddPin(
+      direct_cids, false,
+      base::BindOnce(&AddLocalPinJob::Accumulate,
+                     weak_ptr_factory_.GetWeakPtr(), callback));
 }
 
-void AddLocalPinJob::OnAddPinResult(absl::optional<AddPinResult> result) {
+void AddLocalPinJob::Accumulate(
+    base::OnceCallback<void(absl::optional<AddPinResult>)> callback,
+    absl::optional<AddPinResult> result) {
   if (!result) {
+    pinning_failed_ = true;
+  }
+
+  std::move(callback).Run(std::move(result));
+}
+
+void AddLocalPinJob::OnAddPinResult(
+    std::vector<absl::optional<AddPinResult>> result) {
+  if (is_canceled_) {
     std::move(callback_).Run(false);
     return;
   }
 
-  for (const auto& cid : cids_) {
-    if (!base::Contains(result->pins, cid)) {
-      std::move(callback_).Run(false);
-      return;
-    }
+  if (pinning_failed_) {
+    std::move(callback_).Run(false);
+    return;
   }
 
   {
     ScopedDictPrefUpdate update(prefs_service_, kIPFSPinnedCids);
     base::Value::Dict& update_dict = update.Get();
 
-    for (const auto& cid : cids_) {
-      base::Value::List* list = update_dict.EnsureList(cid);
-      list->EraseValue(base::Value(key_));
-      list->Append(base::Value(key_));
+    for (const auto& add_pin_result : result) {
+      auto* mode_dict = update_dict.EnsureDict(GetPrefNameFromPinningMode(
+          add_pin_result->recursive ? PinningMode::RECURSIVE
+                                    : PinningMode::DIRECT));
+      for (const auto& cid : add_pin_result->pins) {
+        base::Value::List* list = mode_dict->EnsureList(cid);
+        list->EraseValue(base::Value(key_));
+        list->Append(base::Value(key_));
+      }
     }
   }
   std::move(callback_).Run(true);
@@ -76,20 +176,29 @@ RemoveLocalPinJob::~RemoveLocalPinJob() = default;
 void RemoveLocalPinJob::Start() {
   {
     ScopedDictPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-    base::Value::Dict& update_dict = update.Get();
+    base::Value::Dict& pinning_modes_dict = update.Get();
+    // Iterate over pinning modes
+    for (const auto pair : pinning_modes_dict) {
+      auto* cids_dict = pair.second.GetIfDict();
+      if (!cids_dict) {
+        NOTREACHED() << "Corrupted prefs structure.";
+        continue;
+      }
 
-    std::vector<std::string> remove_list;
-    for (auto pair : update_dict) {
-      base::Value::List* list = pair.second.GetIfList();
-      if (list) {
-        list->EraseValue(base::Value(key_));
-        if (list->empty()) {
-          remove_list.push_back(pair.first);
+      std::vector<std::string> remove_list;
+      // Iterate over CIDs
+      for (const auto cid : *cids_dict) {
+        base::Value::List* list = cid.second.GetIfList();
+        if (list) {
+          list->EraseValue(base::Value(key_));
+          if (list->empty()) {
+            remove_list.push_back(cid.first);
+          }
         }
       }
-    }
-    for (const auto& cid : remove_list) {
-      update_dict.Remove(cid);
+      for (const auto& cid : remove_list) {
+        cids_dict->Remove(cid);
+      }
     }
   }
   std::move(callback_).Run(true);
@@ -98,49 +207,40 @@ void RemoveLocalPinJob::Start() {
 VerifyLocalPinJob::VerifyLocalPinJob(PrefService* prefs_service,
                                      IpfsService* ipfs_service,
                                      const std::string& key,
-                                     const std::vector<std::string>& cids,
+                                     const std::vector<PinData>& pins_data,
                                      ValidatePinsCallback callback)
     : prefs_service_(prefs_service),
       ipfs_service_(ipfs_service),
       key_(key),
-      cids_(cids),
+      pins_data_(pins_data),
       callback_(std::move(callback)) {}
 
 VerifyLocalPinJob::~VerifyLocalPinJob() = default;
 
 void VerifyLocalPinJob::Start() {
-  ipfs_service_->GetPins(absl::nullopt, kRecursiveMode, true,
+  std::vector<std::string> cids;
+  for (const auto& pin_data : pins_data_) {
+    cids.push_back(pin_data.cid);
+  }
+
+  ipfs_service_->GetPins(cids, "all", true,
                          base::BindOnce(&VerifyLocalPinJob::OnGetPinsResult,
                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
 void VerifyLocalPinJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
-  if (!result) {
+  if (is_canceled_) {
     std::move(callback_).Run(absl::nullopt);
     return;
   }
-  ScopedDictPrefUpdate update(prefs_service_, kIPFSPinnedCids);
-  base::Value::Dict& update_dict = update.Get();
 
-  bool verification_passed = true;
-  for (const auto& cid : cids_) {
-    base::Value::List* list = update_dict.FindList(cid);
-    if (!list) {
-      verification_passed = false;
-    } else {
-      if (result->find(cid) != result->end()) {
-        list->EraseValue(base::Value(key_));
-        list->Append(base::Value(key_));
-      } else {
-        verification_passed = false;
-        list->EraseValue(base::Value(key_));
-      }
-      if (list->empty()) {
-        update_dict.Remove(cid);
-      }
-    }
+  if (!result) {
+    std::move(callback_).Run(false);
+    return;
   }
-  std::move(callback_).Run(verification_passed);
+
+  // TODO(cypt4): Check exact pinning modes for each cid.
+  std::move(callback_).Run(result->size() == pins_data_.size());
 }
 
 GcJob::GcJob(PrefService* prefs_service,
@@ -153,22 +253,55 @@ GcJob::GcJob(PrefService* prefs_service,
 GcJob::~GcJob() = default;
 
 void GcJob::Start() {
-  ipfs_service_->GetPins(
-      absl::nullopt, kRecursiveMode, true,
+  auto callback = base::BarrierCallback<absl::optional<GetPinsResult>>(
+      2,
       base::BindOnce(&GcJob::OnGetPinsResult, weak_ptr_factory_.GetWeakPtr()));
+  ipfs_service_->GetPins(
+      absl::nullopt, GetPrefNameFromPinningMode(PinningMode::RECURSIVE), true,
+      base::BindOnce(&GcJob::Accumulate, weak_ptr_factory_.GetWeakPtr(),
+                     callback));
+  ipfs_service_->GetPins(
+      absl::nullopt, GetPrefNameFromPinningMode(PinningMode::DIRECT), true,
+      base::BindOnce(&GcJob::Accumulate, weak_ptr_factory_.GetWeakPtr(),
+                     callback));
 }
 
-void GcJob::OnGetPinsResult(absl::optional<GetPinsResult> result) {
+void GcJob::Accumulate(
+    base::OnceCallback<void(absl::optional<GetPinsResult>)> callback,
+    absl::optional<GetPinsResult> result) {
   if (!result) {
+    gc_job_failed_ = true;
+  }
+
+  std::move(callback).Run(std::move(result));
+}
+
+void GcJob::OnGetPinsResult(std::vector<absl::optional<GetPinsResult>> result) {
+  if (is_canceled_) {
     std::move(callback_).Run(false);
     return;
   }
+
+  if (gc_job_failed_) {
+    std::move(callback_).Run(false);
+    return;
+  }
+
   std::vector<std::string> cids_to_delete;
-  const base::Value::Dict& dict = prefs_service_->GetDict(kIPFSPinnedCids);
-  for (const auto& pair : result.value()) {
-    const base::Value::List* list = dict.FindList(pair.first);
-    if (!list || list->empty()) {
-      cids_to_delete.push_back(pair.first);
+  const base::Value::Dict& pinning_modes_dict =
+      prefs_service_->GetDict(kIPFSPinnedCids);
+  // Check both recursive and direct mode dictionaries. If there is no CID in
+  // both, then unpin.
+  for (const auto& it : result) {
+    for (const auto& cid : it.value()) {
+      if (!pinning_modes_dict.FindListByDottedPath(
+              base::StrCat({GetPrefNameFromPinningMode(PinningMode::RECURSIVE),
+                            ".", cid.first})) &&
+          !pinning_modes_dict.FindListByDottedPath(
+              base::StrCat({GetPrefNameFromPinningMode(PinningMode::DIRECT),
+                            ".", cid.first}))) {
+        cids_to_delete.push_back(cid.first);
+      }
     }
   }
 
@@ -191,6 +324,43 @@ IpfsLocalPinService::IpfsLocalPinService(PrefService* prefs_service,
   ipfs_base_pin_service_ = std::make_unique<IpfsBasePinService>(ipfs_service_);
 }
 
+void IpfsLocalPinService::Reset(base::OnceCallback<void(bool)> callback) {
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  ipfs_service_->LsPinCli(base::BindOnce(&IpfsLocalPinService::OnLsPinCliResult,
+                                         weak_ptr_factory_.GetWeakPtr(),
+                                         std::move(callback)));
+}
+
+void IpfsLocalPinService::OnLsPinCliResult(
+    base::OnceCallback<void(bool)> callback,
+    absl::optional<std::string> result) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+  std::vector<std::string> values = base::SplitString(
+      result.value(), "\n\r", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (values.empty()) {
+    OnRemovePinCliResult(std::move(callback), true);
+    return;
+  }
+  ipfs_service_->RemovePinCli(
+      std::set(values.begin(), values.end()),
+      base::BindOnce(&IpfsLocalPinService::OnRemovePinCliResult,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void IpfsLocalPinService::OnRemovePinCliResult(
+    base::OnceCallback<void(bool)> callback,
+    bool result) {
+  if (!result) {
+    std::move(callback).Run(false);
+    return;
+  }
+  prefs_service_->ClearPref(kIPFSPinnedCids);
+  std::move(callback).Run(true);
+}
+
 void IpfsLocalPinService::ScheduleGcTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
       FROM_HERE,
@@ -209,10 +379,16 @@ void IpfsLocalPinService::SetIpfsBasePinServiceForTesting(
 IpfsLocalPinService::~IpfsLocalPinService() = default;
 
 void IpfsLocalPinService::AddPins(const std::string& key,
-                                  const std::vector<std::string>& cids,
+                                  const std::vector<std::string>& ipfs_urls,
                                   AddPinCallback callback) {
+  auto pins_data = ExtractMergedPinData(ipfs_urls);
+  if (!pins_data) {
+    NOTREACHED();
+    std::move(callback).Run(false);
+    return;
+  }
   ipfs_base_pin_service_->AddJob(std::make_unique<AddLocalPinJob>(
-      prefs_service_, ipfs_service_, key, cids,
+      prefs_service_, ipfs_service_, key, pins_data.value(),
       base::BindOnce(&IpfsLocalPinService::OnAddJobFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
@@ -225,11 +401,18 @@ void IpfsLocalPinService::RemovePins(const std::string& key,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }
 
-void IpfsLocalPinService::ValidatePins(const std::string& key,
-                                       const std::vector<std::string>& cids,
-                                       ValidatePinsCallback callback) {
+void IpfsLocalPinService::ValidatePins(
+    const std::string& key,
+    const std::vector<std::string>& ipfs_urls,
+    ValidatePinsCallback callback) {
+  auto pins_data = ExtractMergedPinData(ipfs_urls);
+  if (!pins_data) {
+    NOTREACHED();
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
   ipfs_base_pin_service_->AddJob(std::make_unique<VerifyLocalPinJob>(
-      prefs_service_, ipfs_service_, key, cids,
+      prefs_service_, ipfs_service_, key, pins_data.value(),
       base::BindOnce(&IpfsLocalPinService::OnValidateJobFinished,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
 }

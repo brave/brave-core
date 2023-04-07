@@ -30,6 +30,7 @@ provideStrings({
   braveShieldsTrackersAndAdsBlockedAgg: 'Aggressively block trackers & ads',
   braveShieldsTrackersAndAdsAllowAll: 'Allow all trackers & ads',
   braveShieldsCrossCookiesBlocked: 'Block cross-site cookies',
+  braveShieldsForgetFirstPartyCookies: 'Forget first-party cookies',
   braveShieldsCookiesBlockAll: 'Block all cookies',
   braveShieldsCookiesAllowedAll: 'Allow all cookies',
   braveShieldsFingerprintingBlocked: 'Fingerprinting blocked',
@@ -40,5 +41,8 @@ provideStrings({
   braveShieldsReportSiteDesc: 'Tell us if the site wasn\'t working properly with Shields up.',
   braveShieldsDownDesc: 'You are viewing this site without Brave\'s privacy protection',
   braveShieldsBlockedScriptsLabel: 'Blocked scripts',
-  braveShieldsManaged: 'Settings managed by organization'
+  braveShieldsManaged: 'Settings managed by organization',
+  braveShieldsAllowScriptOnce: 'Allow',
+  braveShieldsAllowScriptsAll: 'Allow all',
+  braveShieldsBlockScriptsAll: 'Block all',
 })

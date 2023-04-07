@@ -129,22 +129,6 @@ const mojom::NetworkInfo* GetBscMainnet() {
   return network_info.get();
 }
 
-const mojom::NetworkInfo* GetCeloMainnet() {
-  static base::NoDestructor<mojom::NetworkInfo> network_info(
-      {brave_wallet::mojom::kCeloMainnetChainId,
-       "Celo Mainnet",
-       {"https://explorer.celo.org"},
-       {},
-       0,
-       {GURL("https://forno.celo.org")},
-       "CELO",
-       "CELO",
-       18,
-       brave_wallet::mojom::CoinType::ETH,
-       false});
-  return network_info.get();
-}
-
 const mojom::NetworkInfo* GetAvalancheMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {brave_wallet::mojom::kAvalancheMainnetChainId,
@@ -152,7 +136,7 @@ const mojom::NetworkInfo* GetAvalancheMainnet() {
        {"https://snowtrace.io"},
        {},
        0,
-       {GURL("https://api.avax.network/ext/bc/C/rpc")},
+       {},
        "AVAX",
        "Avalanche",
        18,
@@ -257,6 +241,38 @@ const mojom::NetworkInfo* GetEthLocalhost() {
   return network_info.get();
 }
 
+const mojom::NetworkInfo* GetFilecoinEthereumMainnet() {
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {brave_wallet::mojom::kFilecoinEthereumMainnetChainId,
+       "Filecoin EVM Mainnet",
+       {"https://filfox.info/en/message"},
+       {},
+       0,
+       {GURL("https://api.node.glif.io/rpc/v1")},
+       "FIL",
+       "Filecoin",
+       18,
+       brave_wallet::mojom::CoinType::ETH,
+       true});
+  return network_info.get();
+}
+
+const mojom::NetworkInfo* GetFilecoinEthereumTestnet() {
+  static base::NoDestructor<mojom::NetworkInfo> network_info(
+      {brave_wallet::mojom::kFilecoinEthereumTestnetChainId,
+       "Filecoin EVM Testnet",
+       {"https://calibration.filfox.info/en/message"},
+       {},
+       0,
+       {GURL("https://api.calibration.node.glif.io/rpc/v1")},
+       "FIL",
+       "Filecoin",
+       18,
+       brave_wallet::mojom::CoinType::ETH,
+       true});
+  return network_info.get();
+}
+
 // Precompiled networks available in native wallet.
 const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>> networks({
@@ -265,13 +281,14 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownEthNetworks() {
       GetAuroraMainnet(),
       GetPolygonMainnet(),
       GetBscMainnet(),
-      GetCeloMainnet(),
       GetAvalancheMainnet(),
       GetFantomOperaMainnet(),
       GetOptimismMainnet(),
       GetGoerliTestNetwork(),
       GetSepoliaTestNetwork(),
       GetEthLocalhost(),
+      GetFilecoinEthereumMainnet(),
+      GetFilecoinEthereumTestnet()
       // clang-format on
   });
   return *networks.get();
@@ -423,6 +440,7 @@ const base::flat_set<std::string> kInfuraChains = {
     brave_wallet::mojom::kPolygonMainnetChainId,
     brave_wallet::mojom::kOptimismMainnetChainId,
     brave_wallet::mojom::kAuroraMainnetChainId,
+    brave_wallet::mojom::kAvalancheMainnetChainId,
     brave_wallet::mojom::kSepoliaChainId,
     brave_wallet::mojom::kGoerliChainId};
 
@@ -1323,6 +1341,7 @@ void AddCustomNetwork(PrefService* prefs, const mojom::NetworkInfo& chain) {
   native_asset.Set("symbol", chain.symbol);
   native_asset.Set("is_erc20", false);
   native_asset.Set("is_erc721", false);
+  native_asset.Set("is_erc1155", false);
   native_asset.Set("is_nft", false);
   native_asset.Set("decimals", chain.decimals);
   native_asset.Set("visible", true);

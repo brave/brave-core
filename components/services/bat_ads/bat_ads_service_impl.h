@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 
-#include "bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -30,14 +30,16 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
   ~BatAdsServiceImpl() override;
 
   // BatAdsService:
-  void Create(mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+  void Create(mojo::PendingAssociatedRemote<mojom::BatAdsClient> bat_ads_client,
               mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
+              mojo::PendingReceiver<mojom::BatAdsClientNotifier>
+                  bat_ads_client_notifier,
               CreateCallback callback) override;
 
-  void SetSysInfo(ads::mojom::SysInfoPtr sys_info,
+  void SetSysInfo(brave_ads::mojom::SysInfoPtr sys_info,
                   SetSysInfoCallback callback) override;
 
-  void SetBuildChannel(ads::mojom::BuildChannelInfoPtr build_channel,
+  void SetBuildChannel(brave_ads::mojom::BuildChannelInfoPtr build_channel,
                        SetBuildChannelCallback callback) override;
 
  private:

@@ -86,7 +86,7 @@ export const NetworkItemButton = styled(WalletButton)`
   border: none;
   margin: 0px;
   padding: 8px 8px 8px 12px;
-  height: 40px;
+  min-height: 40px;
   box-sizing: border-box;
   border-radius: 6px;
   &:hover {
@@ -99,6 +99,7 @@ export const LeftSide = styled.div`
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+  max-width: 90%;
 `
 
 export const SelectorLeftSide = styled(LeftSide)`

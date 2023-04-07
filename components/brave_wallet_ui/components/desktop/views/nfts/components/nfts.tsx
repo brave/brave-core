@@ -33,7 +33,6 @@ import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-gr
 
 // styles
 import {
-  StyledWrapper,
   FilterTokenRow,
   IpfsButton,
   IpfsIcon,
@@ -41,6 +40,7 @@ import {
   AddIcon,
   AddButton
 } from './nfts.styles'
+import { ScrollableColumn } from '../../../../shared/style'
 import { AddOrEditNftModal } from '../../../popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import { NftsEmptyState } from './nfts-empty-state/nfts-empty-state'
 
@@ -74,7 +74,7 @@ export const Nfts = (props: Props) => {
   }, [])
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
+    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
     // reset nft metadata
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
   }, [dispatch])
@@ -112,7 +112,7 @@ export const Nfts = (props: Props) => {
   }, [filteredNfts])
 
   return (
-    <StyledWrapper>
+    <>
       <FilterTokenRow>
         <SearchBar
           placeholder={getLocale('braveWalletSearchText')}
@@ -131,15 +131,17 @@ export const Nfts = (props: Props) => {
       </FilterTokenRow>
       {sortedNfts.length === 0
         ? <NftsEmptyState onImportNft={toggleShowAddNftModal} />
-        : <NftGrid>
-          {sortedNfts.map(nft => (
-            <NFTGridViewItem
-              key={`${nft.tokenId}-${nft.contractAddress}`}
-              token={nft}
-              onSelectAsset={() => onSelectAsset(nft)}
-            />
-          ))}
-        </NftGrid>
+        : <ScrollableColumn>
+          <NftGrid>
+            {sortedNfts.map(nft => (
+              <NFTGridViewItem
+                key={`${nft.tokenId}-${nft.contractAddress}`}
+                token={nft}
+                onSelectAsset={() => onSelectAsset(nft)}
+              />
+            ))}
+          </NftGrid>
+        </ScrollableColumn>
       }
       {showAddNftModal &&
         <AddOrEditNftModal
@@ -147,6 +149,6 @@ export const Nfts = (props: Props) => {
           onHideForm={toggleShowAddNftModal}
         />
       }
-    </StyledWrapper>
+    </>
   )
 }

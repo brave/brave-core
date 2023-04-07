@@ -7,10 +7,10 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // constants
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // utils
-import { useNftPin } from '../../../common/hooks/nft-pin'
+import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
 import { getLocale } from '../../../../common/locale'
 
 // selectors
@@ -21,7 +21,7 @@ import { PageSelectors } from '../../../page/selectors'
 import { Row } from '../../shared/style'
 import { NftPinningStatusAnimation } from '../nft-pinning-status-animation/nft-pinning-status-animation'
 
-export type BannerStatus = 'start' | 'uploading' | 'success'
+export type BannerStatus = 'start' | 'uploading' | 'success' | 'hidden'
 
 interface Props {
   onDismiss: () => void
@@ -44,15 +44,15 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
 
   // memos
   const bannerStatus: BannerStatus = React.useMemo(() => {
-    if (!isAutoPinEnabled || pinnableNftsCount === 0) return 'start'
+    if (!isAutoPinEnabled) return 'start'
 
     switch (status) {
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
+      case OverallPinningStatus.PINNING_FINISHED:
         return 'success'
-      case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
+      case OverallPinningStatus.PINNING_IN_PROGRESS:
         return 'uploading'
       default:
-        return 'success'
+        return 'hidden'
     }
   }, [status, pinnableNftsCount, isAutoPinEnabled])
 
@@ -65,29 +65,30 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
     <StyledWrapper status={bannerStatus}>
       <Row gap='12px' justifyContent='flex-start'>
         <NftPinningStatusAnimation
-          size='30px'
+          size='14px'
           status={status}
           isAutopinEnabled={isAutoPinEnabled}
         />
         <Text status={bannerStatus}>
           {bannerStatus === 'start' ? (
             <>
-              {getLocale('braveWalletNftPinningBannerStart')}&nbsp;
-              <LearnMore onClick={onLearnMore}>
-                {getLocale('braveWalletNftPinningBannerLearnMore')}
-              </LearnMore>
+              {getLocale('braveWalletNftPinningBannerStart')}
             </>
           ) : bannerStatus === 'success' ? (
             `${getLocale('braveWalletNftPinningBannerSuccess')
-              .replace('$1', `${pinnedNftsCount}`)
-              .replace('$2', `${pinnableNftsCount}`)}`
+              .replace('$1', `${pinnedNftsCount}`)}`
           ) : (
             `${getLocale('braveWalletNftPinningBannerUploading')}`
           )}
         </Text>
+        {bannerStatus === 'start' &&
+          <LearnMore onClick={onLearnMore}>
+            {getLocale('braveWalletNftPinningBannerLearnMore')}
+          </LearnMore>
+        }
       </Row>
-      {(bannerStatus === 'start' || bannerStatus === 'success') && (
-        <CloseButton onClick={onDismiss} status={bannerStatus} />
+      {(bannerStatus === 'success') && (
+        <CloseButton onClick={onDismiss} />
       )}
     </StyledWrapper>
   )

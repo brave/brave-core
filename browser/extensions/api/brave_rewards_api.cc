@@ -13,19 +13,20 @@
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/version.h"
-#include "bat/ads/supported_subdivisions.h"
 #include "brave/browser/brave_adaptive_captcha/brave_adaptive_captcha_service_factory.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/supported_subdivisions.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"
@@ -963,7 +964,7 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
 
   if (params->key == "adsEnabled") {
     ads_service->SetEnabled(params->value == "true" &&
-                            ads_service->IsSupportedLocale());
+                            brave_ads::IsSupportedRegion());
   }
 
   return RespondNow(NoArguments());
@@ -1207,44 +1208,17 @@ ExtensionFunction::ResponseAction BraveRewardsFetchBalanceFunction::Run() {
     return RespondNow(Error("Rewards service is not available"));
   }
 
-  rewards_service->GetExternalWallet(base::BindOnce(
-      &BraveRewardsFetchBalanceFunction::OnGetExternalWallet, this));
+  rewards_service->FetchBalance(
+      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnFetchBalance, this));
 
   return RespondLater();
 }
 
-void BraveRewardsFetchBalanceFunction::OnGetExternalWallet(
-    base::expected<ledger::mojom::ExternalWalletPtr,
-                   ledger::mojom::GetExternalWalletError> result) {
-  std::string connected_wallet_type;
-  if (auto wallet = std::move(result).value_or(nullptr);
-      wallet && wallet->status == ledger::mojom::WalletStatus::kConnected) {
-    connected_wallet_type = std::move(wallet->type);
-  }
-
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-      RewardsServiceFactory::GetForProfile(profile);
-  if (!rewards_service) {
-    return Release();
-  }
-
-  rewards_service->FetchBalance(
-      base::BindOnce(&BraveRewardsFetchBalanceFunction::OnFetchBalance, this,
-                     std::move(connected_wallet_type)));
-}
-
 void BraveRewardsFetchBalanceFunction::OnFetchBalance(
-    const std::string& connected_wallet_type,
-    ledger::mojom::Result,
-    ledger::mojom::BalancePtr balance) {
-  if (!balance || !balance->wallets.contains("blinded") ||
-      (!connected_wallet_type.empty() &&
-       !balance->wallets.contains(connected_wallet_type))) {
-    return Respond(NoArguments());
-  }
-
-  Respond(WithArguments(balance->total));
+    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>
+        result) {
+  const auto balance = std::move(result).value_or(nullptr);
+  Respond(balance ? WithArguments(balance->total) : NoArguments());
 }
 
 BraveRewardsGetExternalWalletProvidersFunction::
@@ -1345,7 +1319,7 @@ BraveRewardsGetAdsAccountStatementFunction::Run() {
 }
 
 void BraveRewardsGetAdsAccountStatementFunction::OnGetAdsAccountStatement(
-    ads::mojom::StatementInfoPtr statement) {
+    brave_ads::mojom::StatementInfoPtr statement) {
   if (!statement) {
     Respond(WithArguments(false));
   } else {
@@ -1373,8 +1347,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsSupportedFunction::Run() {
     return RespondNow(WithArguments(false));
   }
 
-  const bool supported = ads_service->IsSupportedLocale();
-  return RespondNow(WithArguments(supported));
+  return RespondNow(WithArguments(brave_ads::IsSupportedRegion()));
 }
 
 BraveRewardsGetAdsDataFunction::~BraveRewardsGetAdsDataFunction() = default;
@@ -1393,7 +1366,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
     ads_data.Set("shouldAllowAdsSubdivisionTargeting", false);
     ads_data.Set("adsUIEnabled", false);
   } else {
-    ads_data.Set("adsIsSupported", ads_service->IsSupportedLocale());
+    ads_data.Set("adsIsSupported", brave_ads::IsSupportedRegion());
     ads_data.Set("adsEnabled", ads_service->IsEnabled());
     ads_data.Set(
         "adsPerHour",
@@ -1408,7 +1381,7 @@ ExtensionFunction::ResponseAction BraveRewardsGetAdsDataFunction::Run() {
   }
 
   base::Value::List subdivisions;
-  const auto subdivision_infos = ads::GetSupportedSubdivisions();
+  const auto subdivision_infos = brave_ads::GetSupportedSubdivisions();
   for (const auto& info : subdivision_infos) {
     base::Value::Dict subdivision;
     subdivision.Set("value", info.first);

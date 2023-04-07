@@ -73,6 +73,15 @@ class UntrustedPlaylistUIConfig : public content::WebUIConfig {
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 };
 
+class UntrustedPlaylistPlayerUIConfig : public content::WebUIConfig {
+ public:
+  UntrustedPlaylistPlayerUIConfig();
+  ~UntrustedPlaylistPlayerUIConfig() override = default;
+
+  std::unique_ptr<content::WebUIController> CreateWebUIController(
+      content::WebUI* web_ui) override;
+};
+
 }  // namespace playlist
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_PLAYLIST_UI_H_

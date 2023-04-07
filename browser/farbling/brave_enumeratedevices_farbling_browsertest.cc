@@ -121,11 +121,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
@@ -139,7 +134,7 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   // Farbling level: off
   // get real navigator.mediaDevices.enumerateDevices array
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   std::string real_value =
       ExecScriptGetStr(kEnumerateDevicesScript, contents());
   ASSERT_NE(real_value, "");
@@ -148,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   // navigator.mediaDevices.enumerateDevices array is shuffled
   // pseudo-randomly based on domain+session key
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   std::string balanced_value =
       ExecScriptGetStr(kEnumerateDevicesScript, contents());
   EXPECT_NE(balanced_value, real_value);
@@ -156,7 +151,7 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   // Farbling level: maximum
   // same as farbling level: balanced
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   std::string maximum_value =
       ExecScriptGetStr(kEnumerateDevicesScript, contents());
   EXPECT_EQ(balanced_value, maximum_value);

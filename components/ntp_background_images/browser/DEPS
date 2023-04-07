@@ -1,5 +1,4 @@
 include_rules = [
-  "+bat/ads",
   "+content/public/browser",
   "+content/public/common",
   "+third_party/skia",

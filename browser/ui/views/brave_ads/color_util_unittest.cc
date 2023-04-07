@@ -10,12 +10,16 @@
 
 // npm run test -- brave_unit_tests --filter=ColorUtilTest.*
 
+namespace brave_ads {
+
 TEST(ColorUtilTest, CheckRgbStringToSkColor) {
   SkColor color;
-  EXPECT_TRUE(brave_ads::RgbStringToSkColor("42fe4c", &color));
+  EXPECT_TRUE(RgbStringToSkColor("42fe4c", &color));
   EXPECT_EQ(SkColorSetRGB(0x42, 0xfe, 0x4c), color);
 
-  EXPECT_FALSE(brave_ads::RgbStringToSkColor("", &color));
-  EXPECT_FALSE(brave_ads::RgbStringToSkColor("42fe4", &color));
-  EXPECT_FALSE(brave_ads::RgbStringToSkColor("h2fe4c", &color));
+  EXPECT_FALSE(RgbStringToSkColor("", &color));
+  EXPECT_FALSE(RgbStringToSkColor("42fe4", &color));
+  EXPECT_FALSE(RgbStringToSkColor("h2fe4c", &color));
 }
+
+}  // namespace brave_ads

@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
 <translation id="7561196759112975576">ሁልጊዜ</translation>
 <translation id="7961015016161918242">በፍጹም</translation>
+<translation id="7973394300052703468">አዲስ ማን&amp;ነትን የማያሳውቅ መስኮት</translation>
 <translation id="4615489450165434530">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="8097438084542431276">ንጹህ አገናኝ ቅዳ</translation>
 <translation id="4678672101289648246">በአዲሱ የትር ገጽ ላይ ብቻ</translation>
+<translation id="6516243500644829484">አዲስ ማን&amp;ነትን የማያሳውቅ መስኮት</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="7630214457764713113">ንጹህ አገናኝ ቅዳ</translation>
 <translation id="8294286161128352783">በአዲሱ የትር ገጽ ላይ ብቻ</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
 <translation id="3229091547987707389">ማውጫ አስመጣ እና አጋራ</translation>
+<translation id="474217410105706308">ትር ላይ ድምጸ-ከል አድርግ</translation>
 <translation id="2804710924397009224">የ Brave ሽልማቶችን አዶ ደብቅ</translation>
 <translation id="5029193871181468990">የBrave Rewards አዶን ደብቅ</translation>
 <translation id="2808103541110899519">የ Brave ዋሌት አርማን ደብቅ</translation>
@@ -262,7 +265,6 @@
 <translation id="2858138569776157458">ከፍተኛ ጣቢያዎች</translation>
 <translation id="7859704718976024901">የፍለጋ ታሪክ</translation>
 <translation id="8820817407110198400">ዕልባቶች</translation>
-<translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="2245286910966863912">የ Brave ዜናዎች አዝራርን በአድራሻ አሞሌ ላይ አሳይ</translation>
 <translation id="383007806262310953">የዕልባቶች አሞሌን አሳይ</translation>
 <translation id="4054323497808446566">የዕልባቶች አሞሌ በሁሉም ገጾች ላይ ይታያል</translation>
@@ -308,6 +310,8 @@
 <translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
 <translation id="6531019308847917584">የጣት አሻራዎችን አግድ</translation>
 <translation id="5533533363827555308">ጥብቅ ፣ ጣቢያዎችን ሊሰብር ይችላል</translation>
+<translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳዳግ</translation>
+<translation id="3357319404342882895">ጥብቅ</translation>
 <translation id="8823559166155093873">ኩኪዎችን አግድ</translation>
 <translation id="5770288601196774623">ጣቢያ-ብቻ</translation>
 <translation id="3587482841069643663">ሁሉም</translation>
@@ -322,7 +326,7 @@
 <translation id="8580328754808744073">ብጁ ማጣሪያዎችን ፍጠር</translation>
 <translation id="4618274268052410139">ከዚህ በታች ባለው መስክ ውስጥ የፈጠሯቸውን ብጁ ማጣሪያዎችን በመስመር አንድ ያክሉ። <ph name="BEGIN_LINK"/>የAdblock ማጣሪያ አገባብ <ph name="END_LINK"/>ን መጠቀምዎን ያረጋግጡ።</translation>
 <translation id="7791543448312431591">አክል</translation>
-<translation id="571950783952070673">የዝርዝር ዩአርኤል</translation>
+<translation id="3075903430639801825">ርዕስ ይዘርዝሩ</translation>
 <translation id="9204006549413740506">መጨረሻ የተሻሻለው</translation>
 <translation id="6745592621698551453">አሁን አዘምን</translation>
 <translation id="5334844597069022743">የእይታ ምንጭ</translation>
@@ -353,7 +357,8 @@
 <translation id="6248554379744796526">በዝርዝሩ ውስጥ ያልተረጋገጡ ድረ ገጾችን አሳይ</translation>
 <translation id="5510618543889994434">ለቪድዮዎች አስተዋፅዖችን ይፍቀዱ</translation>
 <translation id="924777189963477634">በራስ-አስተዋጽዖን በማብራት በሚከተለው <ph name="BEGIN_LINK_TOS"/>የኣገልግሎት ውሎች<ph name="END_LINK_TOS"/> እና <ph name="BEGIN_LINK_PP"/>የግላዊነት ፖሊሲ<ph name="END_LINK_PP"/>ተስማምተዋል።</translation>
-<translation id="5733490796524078528">የጥቆማ አዝራሮች</translation>
+<translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
+<translation id="7483857210736407752">ጣቢያዎች ላይ የጠቃሚ ምክር አዝራሮችን አሳይ</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">ትዊተር</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -385,9 +390,10 @@
 <translation id="4539536028173362640">አንድ ጣቢያ የ Solana አቅራቢ APIን መድረስ ሲፈልግ ጠይቅ</translation>
 <translation id="2777102601740875941">ጣቢያዎች የ Solana አቅራቢ ኤፒአይ እንዳይደርሱ አግድ</translation>
 <translation id="4206299587103092719">Google መግቢያ</translation>
-<translation id="7458736153596040880">አንድ ጣቢያ የቆየ Google መግቢያን መጠቀም ሲፈልግ ጠይቅ</translation>
-<translation id="459266451581663214">ጣቢያዎች የቆየ Google መግቢያን እንዳይጠቀሙ አግድ</translation>
-<translation id="8098954941070626949">ጣቢያዎች የቆየ Google መግቢያን እንዲጠቀሙ ፍቀድ</translation>
+<translation id="9110294136812584522">ጣቢያዎች በሶስተኛ ወገን ኩኪዎች በኩል የሌጋሲ Google መግቢያን ለመጠቀም ሊጠይቁ ይችላሉ</translation>
+<translation id="2903783737778379345">የሌጋሲ Google መግቢያን በሶስተኛ ወገን ኩኪዎች በኩል አይፍቀዱ</translation>
+<translation id="2570833232754279153">ለሌጋሲ Google መግቢያ የሶስተኛ ወገን ኩኪዎችን መጠቀም አይፈቀድም</translation>
+<translation id="6880817299303842099">ለሌጋሲ Google መግቢያ የሶስተኛ ወገን ኩኪዎችን መጠቀም ይፈቀዳል</translation>
 <translation id="6414370348346025511">መደበኛ ጥበቃ በርቷል።</translation>
 <translation id="5565355416171743213">ማመሳሰል መጠቀም ይጀምሩ</translation>
 <translation id="4332558599726753990">ማዋቀርን አመሳስል</translation>
@@ -508,6 +514,9 @@
 <translation id="856371974127598760">የኪስ ቦርሳ አውታረ መረቦች</translation>
 <translation id="5975930666279943472">የኪስ ቦርሳ ግብይት እና የአንድ ጊዜ መረጃ ያጽዱ</translation>
 <translation id="5693968582510626466">ግብይቶችን ማጽዳት ለገንቢዎች ጠቃሚ ሊሆን ይችላል ወይም ሁኔታን በአካባቢያዊ ሰርቨር ላይ ሲያጸዱ</translation>
+<translation id="4440478655766953083">በራስ ሰር NFTsን አያይዝ</translation>
+<translation id="464460032678285850">ወደ Brave Wallet የታከሉ NFTs ወደ አካባቢያዊ የIPFS ኖድ በራስ ሰር ሊያያዙ ይችላሉ።
+    ማስታወሻ፦ IPFS daemon የእርስዎ አካባቢያዊ ኖድ ካችድ ውሂብን እንዲያጋራ እና NFTs ወደ IPFS አውታረመረብ እንዲያያይዝ፣ ለማያያዝ ሂደቶች ሊጀምር ይችላል።</translation>
 <translation id="4993345308607970390">የ Brave ን ዋሌት እንደገና ያስጀምሩ</translation>
 <translation id="9216386092464743272">እርግጠኛ ነዎት ሁሉንም የኪስ ቦርሳ ግብይትዎን እና ምንም መረጃ እንደገና ማስጀመር ይፈልጋሉ? ይህ አማራጭ በአብዛኛው የሚጠቀመው የአካባቢያዊ የሙከራ አገልጋይ በሚያሄዱ ገንቢዎች ነው። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ብለው ይተይቡ።</translation>
 <translation id="6369495274982305511">እርግጠኛ ነዎት ዋሌትዎን ዳግም ማስጀመር ይፈልጋሉ? የዋሌትዎ ምትኬ ካልተቀመጠ፣ ዳግም ማስጀመር ሁሉንም የመለያ ውሂቦች (ማንኛውም ተዛማጅ ገንዘቦችን ጨምሮ) እንዲያጡ ያደርግዎታል። ለማረጋገጥ "<ph name="CONFIRMATION_PHRASE"/>" ይጻፉ።</translation>

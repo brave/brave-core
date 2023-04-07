@@ -25,9 +25,7 @@ import {
   braveWalletPanelOrigin,
   CommandMessage,
   DisplayMode,
-  IframeSize,
   NftUiCommand,
-  sendMessageToWalletUi,
   UpdateLoadingMessage,
   UpdateNFtMetadataErrorMessage,
   UpdateNFtMetadataMessage,
@@ -50,6 +48,7 @@ const App = () => {
   const [tokenNetwork, setTokenNetwork] = React.useState<BraveWallet.NetworkInfo>()
   const [imageUrl, setImageUrl] = React.useState<string>()
   const [nftPinningStatus, setNftPinningStatus] = React.useState<PinningStatusType>()
+  const [imageIpfsUrl, setImageIpfsUrl] = React.useState<string>()
 
   // handle postMessage from wallet ui by setting component state
   // each message has a payload parameter containing the event data
@@ -107,7 +106,8 @@ const App = () => {
         case NftUiCommand.UpdateNftPinningStatus:
           {
             const { payload } = message as UpdateNftPinningStatus
-            setNftPinningStatus(payload)
+            setNftPinningStatus(payload.status)
+            setImageIpfsUrl(payload.url || '')
             break
           }
       }
@@ -119,18 +119,6 @@ const App = () => {
     window.addEventListener('message', onMessageEventListener)
     return () => window.removeEventListener('message', onMessageEventListener)
   }, [])
-
-  React.useEffect(() => {
-    if (!loadingNftMetadata && nftMetadata && selectedAsset && tokenNetwork) {
-      const width = document.body.scrollWidth
-      const height = document.body.scrollHeight
-      const message: IframeSize = {
-        command: NftUiCommand.IframeSize,
-        payload: { width, height }
-      }
-      sendMessageToWalletUi(parent, message)
-    }
-  }, [nftMetadata, selectedAsset, tokenNetwork, loadingNftMetadata])
 
   return (
     <BrowserRouter>
@@ -147,6 +135,7 @@ const App = () => {
         displayMode={displayMode}
         nftMetadataError={nftMetadataError}
         nftPinningStatus={nftPinningStatus}
+        imageIpfsUrl={imageIpfsUrl}
       />
     </BraveCoreThemeProvider>
     </BrowserRouter>

@@ -1,0 +1,200 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Schema types used by brave wallet asset ratio service.
+namespace asset_ratio {
+
+  enum TokenType {
+    ERC20,
+    ERC721,
+    ERC1155
+  };
+
+  // A token info result dictionary. The whole dictionary looks like:
+  //
+  // {
+  //   "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  //   "tokenName": "Tether USD",
+  //   "symbol": "USDT",
+  //   "divisor": "6",
+  //   "tokenType": "ERC20",
+  //   "totalSupply": "39828710009874796",
+  //   "blueCheckmark": "true",
+  //   "description": "Tether gives you the joint benefits of open...",
+  //   "website": "https://tether.to/",
+  //   "email": "support@tether.to",
+  //   "blog": "https://tether.to/category/announcements/",
+  //   "reddit": "",
+  //   "slack": "",
+  //   "facebook": "",
+  //   "twitter": "https://twitter.com/Tether_to",
+  //   "bitcointalk": "",
+  //   "github": "",
+  //   "telegram": "",
+  //   "wechat": "",
+  //   "linkedin": "",
+  //   "discord": "",
+  //   "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+  //   "tokenPriceUSD": "1.000000000000000000"
+  // }
+  //
+  dictionary TokenInfoResult {
+    // e.g. "0xdac17f958d2ee523a2206206994597c13d831ec7"
+    DOMString contractAddress;
+
+    // e.g. Tether USD
+    DOMString tokenName;
+
+    // e.g. "USDT"
+    DOMString symbol;
+
+    // e.g. "6"
+    DOMString divisor;
+
+    // An enumeration of toke type strings.
+    TokenType tokenType;
+  };
+
+  // A token info payload dictionary. Looks like:
+  //
+  //   "payload": {
+  //     "status": "1",
+  //     "message": "OK",
+  //     "result": []
+  //
+  dictionary TokenInfoPayload {
+    // A list with result records.
+    TokenInfoResult[] result;
+  };
+
+
+  // A token info dictionary. Looks like this:
+  // {
+  //   "payload": {
+  //     "status": "1",
+  //     "message": "OK",
+  //     "result": [
+  //       {
+  //         "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+  //         "tokenName": "Tether USD",
+  //         "symbol": "USDT",
+  //         "divisor": "6",
+  //         "tokenType": "ERC20",
+  //         "totalSupply": "39828710009874796",
+  //         "blueCheckmark": "true",
+  //         "description": "Tether gives you the joint benefits of open...",
+  //         "website": "https://tether.to/",
+  //         "email": "support@tether.to",
+  //         "blog": "https://tether.to/category/announcements/",
+  //         "reddit": "",
+  //         "slack": "",
+  //         "facebook": "",
+  //         "twitter": "https://twitter.com/Tether_to",
+  //         "bitcointalk": "",
+  //         "github": "",
+  //         "telegram": "",
+  //         "wechat": "",
+  //         "linkedin": "",
+  //         "discord": "",
+  //         "whitepaper": "https://path/to/TetherWhitePaper.pdf",
+  //         "tokenPriceUSD": "1.000000000000000000"
+  //       }
+  //     ]
+  //   },
+  //   "lastUpdated": "2021-12-09T22:02:23.187Z"
+  // }
+  dictionary TokenInfo {
+    // A list with result records.
+    TokenInfoPayload payload;
+  };
+
+  // A CoinMarket payload record. Sample looks like:
+  //
+  // {
+  //   "id": "bitcoin",
+  //   "symbol": "btc",
+  //   "name": "Bitcoin",
+  //   "image":
+  //   "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //   "market_cap": 727960800075,
+  //   "market_cap_rank": 1,
+  //   "current_price": 38357,
+  //   "price_change_24h": -1229.64683216549,
+  //   "price_change_percentage_24h": -3.10625,
+  //   "total_volume": 17160995925
+  // }
+  //
+  dictionary CoinMarketPayload {
+    // e.g. "bitcoin"
+    DOMString id;
+
+    // e.g. "btc"
+    DOMString symbol;
+
+    // e.g. "Bitcoin"
+    DOMString name;
+
+    // An url for the coin image.
+    DOMString image;
+
+    // e.g. 727960800075
+    double market_cap;
+
+    // e.g. 1
+    long market_cap_rank;
+
+    // e.g 38357
+    double current_price;
+
+    // e.g. -1229.64683216549
+    double price_change_24h;
+
+    // e.g. -3.10625
+    double price_change_percentage_24h;
+
+    // e.g. 17160995925
+    double total_volume;
+  };
+
+  // A dictionary provide with coin market information. Looks like:
+  //
+  // {
+  //   "payload": [
+  //     {
+  //       "id": "bitcoin",
+  //       "symbol": "btc",
+  //       "name": "Bitcoin",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //       "market_cap": 727960800075,
+  //       "market_cap_rank": 1,
+  //       "current_price": 38357,
+  //       "price_change_24h": -1229.64683216549,
+  //       "price_change_percentage_24h": -3.10625,
+  //       "total_volume": 17160995925
+  //     },
+  //     {
+  //       "id": "ethereum",
+  //       "symbol": "eth",
+  //       "name": "Ethereum",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+  //       "market_cap": 304535808667,
+  //       "market_cap_rank": 2,
+  //       "current_price": 2539.82,
+  //       "price_change_24h": -136.841895278459,
+  //       "price_change_percentage_24h": -5.11242,
+  //       "total_volume": 9583014937
+  //     }
+  //   ],
+  //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
+  // }
+  //
+  dictionary CoinMarket {
+    // A payload list.
+    CoinMarketPayload[] payload;
+  };
+
+};

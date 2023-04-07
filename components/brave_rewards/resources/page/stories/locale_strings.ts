@@ -65,7 +65,6 @@ export const localeStrings = {
   contributionVisit5: '5 visits',
   contributionVisit10: '10 visits',
   contributionShowNonVerified: 'Show non-verified sites in list',
-  contributionVideos: 'Allow contributions for videos',
 
   adsSubdivisionTargetingDisabled: 'Disabled',
   adsSubdivisionTargetingDisable: 'Disable',

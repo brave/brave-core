@@ -17,10 +17,10 @@
 class PrefRegistrySimple;
 class PrefService;
 
-namespace brave {
-class BraveP3AService;
+namespace p3a {
+class P3AService;
 enum class MetricLogType;
-}  // namespace brave
+}  // namespace p3a
 
 namespace brave_ads {
 class AdsService;
@@ -31,7 +31,7 @@ namespace ntp_background_images {
 class NTPP3AHelperImpl : public NTPP3AHelper {
  public:
   NTPP3AHelperImpl(PrefService* local_state,
-                   brave::BraveP3AService* p3a_service,
+                   p3a::P3AService* p3a_service,
                    brave_ads::AdsService* ads_service);
   ~NTPP3AHelperImpl() override;
 
@@ -44,9 +44,11 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
 
   void SetLastTabURL(const GURL& url) override;
 
-  void OnP3ARotation(brave::MetricLogType log_type);
-
-  void OnP3AMetricSent(const std::string& histogram_name);
+  // See BraveP3AService::RegisterDynamicMetric and
+  // BraveP3AService::RegisterMetricCycledCallback header comments for more
+  // info.
+  void OnP3ARotation(p3a::MetricLogType log_type, bool is_star);
+  void OnP3AMetricCycled(const std::string& histogram_name, bool is_star);
 
  private:
   std::string BuildHistogramName(const std::string& creative_instance_id,
@@ -61,7 +63,7 @@ class NTPP3AHelperImpl : public NTPP3AHelper {
                          const std::string& expected_hostname);
 
   raw_ptr<PrefService> local_state_;
-  raw_ptr<brave::BraveP3AService> p3a_service_;
+  raw_ptr<p3a::P3AService> p3a_service_;
   raw_ptr<const brave_ads::AdsService> ads_service_;
 
   absl::optional<std::string> last_tab_hostname_;

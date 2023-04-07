@@ -165,6 +165,11 @@ const Config = function () {
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
+  this.p3aJsonUploadUrl = getNPMConfig(['p3a_json_upload_url']) || ''
+  this.p3aCreativeUploadUrl = getNPMConfig(['p3a_creative_upload_url']) || ''
+  this.p2aJsonUploadUrl = getNPMConfig(['p2a_json_upload_url']) || ''
+  this.p3aConstellationUploadUrl = getNPMConfig(['p3a_constellation_upload_url']) || ''
+  this.starRandomnessHost = getNPMConfig(['star_randomness_host']) || ''
   this.ignore_compile_failure = false
   this.enable_hangout_services_extension = true
   this.enable_pseudolocales = false
@@ -318,6 +323,11 @@ Config.prototype.buildArgs = function () {
     rewards_grant_prod_endpoint: this.rewardsGrantProdEndpoint,
     brave_stats_api_key: this.braveStatsApiKey,
     brave_stats_updater_url: this.braveStatsUpdaterUrl,
+    p3a_json_upload_url: this.p3aJsonUploadUrl,
+    p3a_creative_upload_url: this.p3aCreativeUploadUrl,
+    p2a_json_upload_url: this.p2aJsonUploadUrl,
+    p3a_constellation_upload_url: this.p3aConstellationUploadUrl,
+    star_randomness_host: this.starRandomnessHost,
     enable_hangout_services_extension: this.enable_hangout_services_extension,
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     enable_pseudolocales: this.enable_pseudolocales,
@@ -335,13 +345,11 @@ Config.prototype.buildArgs = function () {
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
 
-    if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build) {
-      // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
-      // by default, which slows down link phase, but also disables relocatable compilation
-      // on MacOS (aka 'zero goma cachehits' style).
-      //
-      // Don't create dSYMs in non-public Release builds.
-      // See //build/config/apple/symbols.gni for additional details.
+    if (process.platform === 'darwin' && args.is_official_build) {
+      // Don't create dSYMs in non-true Release builds. dSYMs should be disabled
+      // in order to have relocatable compilation so Goma can share the cache
+      // across multiple build directories. Enabled dSYMs enforce absolute
+      // paths, which makes Goma cache unusable.
       args.enable_dsyms = false
     }
   }
@@ -520,7 +528,6 @@ Config.prototype.buildArgs = function () {
     if (this.targetEnvironment) {
       args.target_environment = this.targetEnvironment
     }
-    args.enable_dsyms = true
     args.enable_stripping = !this.isComponentBuild()
     // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
@@ -961,16 +968,25 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'brave', 'vendor', 'requests'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'build'))
     env = this.addPythonPathToEnv(env, path.join(this.srcDir, 'third_party', 'depot_tools'))
-    env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
     env.PYTHONUNBUFFERED = '1'
     env.TARGET_ARCH = this.gypTargetArch // for brave scripts
-    env.GYP_MSVS_VERSION = env.GYP_MSVS_VERSION || '2017' // enable 2017
 
     // Fix `gclient runhooks` - broken since depot_tools a7b20b34f85432b5958963b75edcedfef9cf01fd
     env.GSUTIL_ENABLE_LUCI_AUTH = '0'
 
     if (this.channel != "") {
       env.BRAVE_CHANNEL = this.channel
+    }
+
+    if (process.platform === 'win32' || (this.targetOS && this.targetOS === 'win')) {
+      if (!this.gomaServerHost || !this.gomaServerHost.endsWith('.brave.com')) {
+        env.DEPOT_TOOLS_WIN_TOOLCHAIN = '0'
+      } else {
+        // Use hermetic toolchain only internally.
+        env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
+        env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
+        env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = 'https://brave-build-deps-public.s3.brave.com/windows-hermetic-toolchain/'
+      }
     }
 
     if (this.getCachePath()) {

@@ -12,8 +12,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_piece_forward.h"
 #include "base/strings/string_util.h"
-#include "bat/ledger/buildflags.h"
 #include "brave/components/brave_rewards/common/url_constants.h"
+#include "brave/components/brave_rewards/core/buildflags.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 

@@ -16,8 +16,8 @@
 #include "base/types/expected.h"
 #include "base/version.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
@@ -43,7 +43,6 @@ using GetAutoContributePropertiesCallback =
 using GetPublisherMinVisitTimeCallback = base::OnceCallback<void(int)>;
 using GetPublisherMinVisitsCallback = base::OnceCallback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::OnceCallback<void(bool)>;
-using GetPublisherAllowVideosCallback = base::OnceCallback<void(bool)>;
 using GetAutoContributeEnabledCallback = base::OnceCallback<void(bool)>;
 using GetReconcileStampCallback = base::OnceCallback<void(uint64_t)>;
 using GetPendingContributionsTotalCallback = base::OnceCallback<void(double)>;
@@ -67,18 +66,18 @@ using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::vector<ledger::mojom::PendingContributionInfoPtr> list)>;
-using FetchBalanceCallback =
-    base::OnceCallback<void(const ledger::mojom::Result,
-                            ledger::mojom::BalancePtr)>;
+using ConnectExternalWalletResult =
+    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
+using ConnectExternalWalletCallback =
+    base::OnceCallback<void(ConnectExternalWalletResult)>;
+using FetchBalanceResult =
+    base::expected<ledger::mojom::BalancePtr, ledger::mojom::FetchBalanceError>;
+using FetchBalanceCallback = base::OnceCallback<void(FetchBalanceResult)>;
 using GetExternalWalletResult =
     base::expected<ledger::mojom::ExternalWalletPtr,
                    ledger::mojom::GetExternalWalletError>;
 using GetExternalWalletCallback =
     base::OnceCallback<void(GetExternalWalletResult)>;
-using ConnectExternalWalletResult =
-    base::expected<void, ledger::mojom::ConnectExternalWalletError>;
-using ConnectExternalWalletCallback =
-    base::OnceCallback<void(ConnectExternalWalletResult)>;
 using ClaimPromotionCallback =
     base::OnceCallback<void(const ledger::mojom::Result,
                             const std::string&,
@@ -210,9 +209,6 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherAllowNonVerified(
       GetPublisherAllowNonVerifiedCallback callback) = 0;
   virtual void SetPublisherAllowNonVerified(bool allow) const = 0;
-  virtual void GetPublisherAllowVideos(
-      GetPublisherAllowVideosCallback callback) = 0;
-  virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetAutoContributionAmount(double amount) const = 0;
   virtual void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) = 0;
@@ -244,10 +240,10 @@ class RewardsService : public KeyedService {
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
 
-  virtual void SetMonthlyContribution(
-      const std::string& publisher_id,
-      double amount,
-      base::OnceCallback<void(bool)> callback) = 0;
+  virtual void SendContribution(const std::string& publisher_id,
+                                double amount,
+                                bool set_monthly,
+                                base::OnceCallback<void(bool)> callback) = 0;
 
   virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTips(GetOneTimeTipsCallback callback) = 0;

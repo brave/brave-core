@@ -1,0 +1,50 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+:root {
+  /* Light Variables */
+  --nav-background: var(--leo-color-white);
+  --nav-border: var(--leo-color-divider-subtle);
+  --nav-button-color: var(--leo-color-icon-default);
+  --nav-button-background-hover:
+  var(--leo-color-light-container-highlight);
+  /* #1E2029 is not in the old design system */
+  --nav-tool-tip-background: #1e2029;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Variables */
+    --nav-background: var(--leo-color-black);
+    --nav-border: var(--leo-color-divider-subtle);
+    --nav-button-color: var(--leo-color-icon-default);
+    --nav-button-background-hover:
+    var(--leo-color-dark-gray-20);
+    /* #17171F is not in the old design system */
+    --nav-tool-tip-background: #17171f;
+  }
+}
+
+html[data-theme='light'] {
+  /* Light Variables */
+  --nav-background: var(--leo-color-white);
+  --nav-border: var(--leo-color-divider-subtle);
+  --nav-button-color: var(--leo-color-icon-default);
+  --nav-button-background-hover:
+  var(--leo-color-light-container-highlight);
+  /* #1E2029 is not in the old design system */
+  --nav-tool-tip-background: #1e2029;
+}
+
+html[data-theme='dark'] {
+  /* Dark Variables */
+  --nav-background: var(--leo-color-black);
+  --nav-border: var(--leo-color-divider-subtle);
+  --nav-button-color: var(--leo-color-icon-default);
+  --nav-button-background-hover:
+  var(--leo-color-dark-gray-20);
+  /* #17171F is not in the old design system */
+  --nav-tool-tip-background: #17171f;
+}

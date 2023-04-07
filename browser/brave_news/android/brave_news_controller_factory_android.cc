@@ -12,7 +12,7 @@
 
 namespace chrome {
 namespace android {
-static jint JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
+static jlong JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
     JNIEnv* env) {
   auto* profile = ProfileManager::GetActiveUserProfile();
   auto pending =
@@ -20,7 +20,7 @@ static jint JNI_BraveNewsControllerFactory_GetInterfaceToBraveNewsController(
           profile);
   auto passPipe = pending.PassPipe();
 
-  return static_cast<jint>(passPipe.release().value());
+  return static_cast<jlong>(passPipe.release().value());
 }
 
 }  // namespace android

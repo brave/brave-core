@@ -39,6 +39,7 @@
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 #include "brave/browser/brave_vpn/vpn_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_vpn_button.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
@@ -202,14 +203,18 @@ void BraveToolbarView::Init() {
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled(profile)) {
+  if (brave_vpn::IsAllowedForContext(profile)) {
+    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
+                                *GetIndexOf(GetAppMenuButton()) - 1);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
                             base::Unretained(this)));
-    brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
-                                *GetIndexOf(GetAppMenuButton()) - 1);
-    brave_vpn_->SetVisible(show_brave_vpn_button_.GetValue());
+    hide_brave_vpn_button_by_policy_.Init(
+        brave_vpn::prefs::kManagedBraveVPNDisabled, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::OnVPNButtonVisibilityChanged,
+                            base::Unretained(this)));
+    brave_vpn_->SetVisible(IsBraveVPNButtonVisible());
   }
 #endif
 
@@ -217,9 +222,13 @@ void BraveToolbarView::Init() {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
+bool BraveToolbarView::IsBraveVPNButtonVisible() const {
+  return show_brave_vpn_button_.GetValue() &&
+         !hide_brave_vpn_button_by_policy_.GetValue();
+}
 void BraveToolbarView::OnVPNButtonVisibilityChanged() {
   DCHECK(brave_vpn_);
-  brave_vpn_->SetVisible(show_brave_vpn_button_.GetValue());
+  brave_vpn_->SetVisible(IsBraveVPNButtonVisible());
 }
 #endif
 
@@ -313,10 +322,8 @@ void BraveToolbarView::UpdateHorizontalPadding() {
   }
 }
 
-void BraveToolbarView::ShowBookmarkBubble(
-    const GURL& url,
-    bool already_bookmarked,
-    bookmarks::BookmarkBubbleObserver* observer) {
+void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
+                                          bool already_bookmarked) {
   // Show BookmarkBubble attached to Brave's bookmark button
   // or the location bar if there is no bookmark button
   // (i.e. in non-normal display mode).
@@ -328,8 +335,8 @@ void BraveToolbarView::ShowBookmarkBubble(
   delegate =
       std::make_unique<BookmarkBubbleSignInDelegate>(browser()->profile());
   BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
-                                 observer, std::move(delegate),
-                                 browser_->profile(), url, already_bookmarked);
+                                 std::move(delegate), browser_->profile(), url,
+                                 already_bookmarked);
 }
 
 void BraveToolbarView::ViewHierarchyChanged(

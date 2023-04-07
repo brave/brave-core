@@ -22,6 +22,7 @@ const createDist = require('../lib/createDist')
 const test = require('../lib/test')
 const gnCheck = require('../lib/gnCheck')
 const pylint = require('../lib/pylint')
+const perfTests = require('../lib/perfTests')
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -315,6 +316,11 @@ program
   .command('run_fuzzer <suite>')
   .allowUnknownOption(true)
   .action(runFuzzer.bind(null, parsedArgs.unknown))
+
+  program
+  .command('run_perf_tests <perf_config> <targets>')
+  .allowUnknownOption(true)
+  .action(perfTests.runPerfTests.bind(null, parsedArgs.unknown))
 
 program
   .parse(process.argv)

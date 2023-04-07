@@ -18,11 +18,11 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
-#include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_throttle_delegate.h"
+#include "brave/components/speedreader/speedreader_util.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace speedreader {
@@ -96,7 +96,8 @@ SpeedReaderURLLoader::SpeedReaderURLLoader(
       delegate_(delegate),
       response_url_(response_url),
       rewriter_service_(rewriter_service),
-      speedreader_service_(speedreader_service) {}
+      speedreader_service_(speedreader_service),
+      distillation_result_(DistillationResult::kNone) {}
 
 SpeedReaderURLLoader::~SpeedReaderURLLoader() = default;
 
@@ -135,47 +136,29 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   bytes_remaining_in_buffer_ = body.size();
 
   if (bytes_remaining_in_buffer_ > 0) {
-    // Offload heavy distilling to another thread.
-    base::ThreadPool::PostTaskAndReplyWithResult(
-        FROM_HERE, {base::TaskPriority::USER_BLOCKING, base::MayBlock()},
+    speedreader::DistillPage(
+        response_url_, std::move(body), speedreader_service_, rewriter_service_,
         base::BindOnce(
-            [](const GURL& response_url, std::string data,
-               std::unique_ptr<Rewriter> rewriter,
-               const std::string& stylesheet) -> auto{
-              SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
-              int written = rewriter->Write(data.c_str(), data.length());
-              // Error occurred
-              if (written != 0) {
-                return data;
-              }
-
-              rewriter->End();
-              const std::string& transformed = rewriter->GetOutput();
-
-              // TODO(brave-browser/issues/10372): would be better to pass
-              // explicit signal back from rewriter to indicate if content was
-              // found
-              if (transformed.length() < 1024) {
-                return data;
-              }
-              MaybeSaveDistilledDataForDebug(response_url, data, stylesheet,
-                                             transformed);
-              return stylesheet + transformed;
-            },
-            response_url_, std::move(body),
-            rewriter_service_->MakeRewriter(
-                response_url_, speedreader_service_->GetThemeName(),
-                speedreader_service_->GetFontFamilyName(),
-                speedreader_service_->GetFontSizeName(),
-                speedreader_service_->GetContentStyleName()),
-            rewriter_service_->GetContentStylesheet()),
-        base::BindOnce(
-            [](base::WeakPtr<SpeedReaderURLLoader> self, std::string result) {
+            [](base::WeakPtr<SpeedReaderURLLoader> self, const GURL& url,
+               const std::string& stylesheet,
+               speedreader::DistillationResult result,
+               std::string original_data, std::string transformed) {
               if (self) {
-                self->BodySnifferURLLoader::CompleteLoading(std::move(result));
+                self->distillation_result_ = result;
+
+                if (result == speedreader::DistillationResult::kSuccess) {
+                  MaybeSaveDistilledDataForDebug(url, original_data, stylesheet,
+                                                 transformed);
+                  self->BodySnifferURLLoader::CompleteLoading(
+                      stylesheet + std::move(transformed));
+                } else {
+                  self->BodySnifferURLLoader::CompleteLoading(
+                      std::move(original_data));
+                }
               }
             },
-            weak_factory_.GetWeakPtr()));
+            weak_factory_.GetWeakPtr(), response_url_,
+            rewriter_service_->GetContentStylesheet()));
     return;
   }
   BodySnifferURLLoader::CompleteLoading(std::move(body));
@@ -186,7 +169,7 @@ void SpeedReaderURLLoader::OnCompleteSending() {
   // indicating distill success, distill fail, load from cache.
   // |complete_status_| has an |exists_in_cache| field.
   if (delegate_)
-    delegate_->OnDistillComplete();
+    delegate_->OnDistillComplete(distillation_result_);
 }
 
 }  // namespace speedreader

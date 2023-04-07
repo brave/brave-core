@@ -1,12 +1,34 @@
 import("//brave/build/config.gni")
+import("//build/util/process_version.gni")
 
-source_set("version_info") {
-  # these are only for version_info.cc and should not be exposed as public configs
-  configs += [ "//brave/build:version" ]
-  defines = [ "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
-
+static_library("version_info") {
   sources = [
     "version_info.cc",
     "version_info.h",
   ]
+
+  public_deps = [ ":generate_version_info" ]
+}
+
+process_version("generate_version") {
+  template_file = "version.version"
+  extra_args = [
+    "-e",
+    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
+  ]
+  output = "$root_out_dir/version"
+  process_only = true
+}
+
+# This target exposes version values as constexpr chars, rather than as compile
+# time defines.
+process_version("generate_version_info") {
+  template_file = "version_info_values.h.version"
+  extra_args = [
+    "-e",
+    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
+    "-e",
+    "BRAVE_CHROMIUM_VERSION=\"$chrome_version_string\"",
+  ]
+  output = "$target_gen_dir/version_info_values.h"
 }

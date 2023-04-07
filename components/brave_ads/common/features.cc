@@ -22,8 +22,8 @@ BASE_FEATURE(kAllowedToFallbackToCustomNotificationAds,
              "AllowedToFallbackToCustomAdNotifications",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-BASE_FEATURE(kSupportBraveSearchResultAdConfirmationEvents,
-             "SupportBraveSearchResultAdConfirmationEvents",
+BASE_FEATURE(kShouldTriggerSearchResultAdEvents,
+             "ShouldTriggerSearchResultAdEvents",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 namespace {

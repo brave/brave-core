@@ -6,7 +6,7 @@
 #include <string>
 
 #include "base/test/bind.h"
-#include "brave/browser/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
@@ -114,10 +114,8 @@ RewardsBrowserTestContextHelper::OpenSiteBanner(
   return banner;
 }
 
-void RewardsBrowserTestContextHelper::VisitPublisher(
-    const GURL& url,
-    const bool verified,
-    const bool last_add) {
+void RewardsBrowserTestContextHelper::VisitPublisher(const GURL& url,
+                                                     bool verified) {
   const std::string publisher = url.host();
   ui_test_utils::NavigateToURLWithDisposition(
       browser_,

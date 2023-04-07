@@ -4,11 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
+// Types
 import { BraveWallet } from '../../../../constants/types'
+
+// Utils
+import { getLocale } from '../../../../../common/locale'
+
+// Components
 import { PopupModal } from '../..'
 import { AddNftForm } from '../../../shared/add-custom-token-form/add-nft-form'
-import { StyledWrapper } from './add-edit-nft-modal.style'
 
+// Styles
+import { StyledWrapper } from './add-edit-nft-modal.style'
 interface Props {
   nftToken?: BraveWallet.BlockchainToken
   onClose: () => void
@@ -21,7 +28,7 @@ export const AddOrEditNftModal = ({ nftToken, onClose, onHideForm, onTokenFound 
 
   return (
     <PopupModal
-      title={nftToken ? 'Import NFT' : 'Edit NFT'}
+      title={nftToken ? getLocale('braveWalletEditNftModalTitle') : getLocale('braveWalletImportNftModalTitle')}
       onClose={onClose}
       width='584px'
       showDivider={true}

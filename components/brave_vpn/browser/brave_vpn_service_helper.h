@@ -29,7 +29,10 @@ mojom::RegionPtr GetRegionPtrWithNameFromRegionList(
 std::vector<mojom::Region> ParseRegionList(
     const base::Value::List& region_list);
 base::Value::Dict GetValueFromRegion(const mojom::Region& region);
+
+// False if subscription is expired.
 bool IsValidCredentialSummary(const base::Value& summary);
+bool IsValidCredentialSummaryButNeedActivation(const base::Value& summary);
 bool HasSubscriberCredential(PrefService* local_prefs);
 std::string GetSubscriberCredential(PrefService* local_prefs);
 absl::optional<base::Time> GetExpirationTime(PrefService* local_prefs);
@@ -37,6 +40,10 @@ void SetSubscriberCredential(PrefService* local_prefs,
                              const std::string& subscriber_credential,
                              const base::Time& expiration_time);
 void ClearSubscriberCredential(PrefService* local_prefs);
+void SetSkusCredential(PrefService* local_prefs,
+                       const std::string& skus_credential,
+                       const base::Time& expiration_time);
+base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

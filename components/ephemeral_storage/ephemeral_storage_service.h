@@ -6,12 +6,18 @@
 #ifndef BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_H_
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_H_
 
+#include <map>
+#include <memory>
+
 #include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 class HostContentSettingsMap;
 
@@ -24,15 +30,15 @@ namespace ephemeral_storage {
 
 // Service to enable or disable first party ephemeral storage from external
 // actors.
-class EphemeralStorageService
-    : public KeyedService,
-      public base::SupportsWeakPtr<EphemeralStorageService> {
+class EphemeralStorageService : public KeyedService {
  public:
   EphemeralStorageService(content::BrowserContext* context,
                           HostContentSettingsMap* host_content_settings_map);
   ~EphemeralStorageService() override;
 
   void Shutdown() override;
+
+  base::WeakPtr<EphemeralStorageService> GetWeakPtr();
 
   // Performs storage check (cookies, localStorage) and callbacks `true` if
   // nothing is stored in all of these storages.
@@ -47,16 +53,31 @@ class EphemeralStorageService
   void Enable1PESForUrlIfPossible(const GURL& url,
                                   base::OnceCallback<void(bool)> on_ready);
 
+  void FirstPartyStorageAreaInUse(const url::Origin& origin);
+  void FirstPartyStorageAreaNotInUse(const url::Origin& origin);
+
  private:
   void OnCanEnable1PESForUrl(const GURL& url,
                              base::OnceCallback<void(bool)> on_ready,
                              bool can_enable_1pes);
   bool IsDefaultCookieSetting(const GURL& url) const;
 
+  // If a website was closed, but not yet cleaned-up because of storage lifetime
+  // keepalive, we store the origin into a pref to perform a cleanup on browser
+  // startup. It's impossible to do a cleanup on shutdown, because the process
+  // is asynchronous and cannot block the browser shutdown.
+  void CleanupFirstPartyStorageAreasOnStartup();
+  void CleanupFirstPartyStorageAreaByTimer(const url::Origin& origin);
+  void CleanupFirstPartyStorageArea(const url::Origin& origin);
+
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   // These patterns are removed on service Shutdown.
   base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
+
+  base::TimeDelta first_party_storage_areas_keep_alive_;
+  std::map<url::Origin, std::unique_ptr<base::OneShotTimer>>
+      first_party_storage_areas_to_cleanup_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };

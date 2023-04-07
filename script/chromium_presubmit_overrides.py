@@ -11,6 +11,7 @@ import inspect
 import os
 import re
 import sys
+import traceback
 
 import override_utils
 import import_inline
@@ -46,9 +47,8 @@ def noop_check(*_, **__):
 
 
 # Replaces existing PRESUBMIT check. Can be used with globals() scope or a class
-# scope (such as input_api.canned_checks). Doesn't fail if the Check is not
-# found, only prints a warning message."""
-def override_check(scope, name=None):
+# scope (such as input_api.canned_checks).
+def override_check(scope, name=None, should_exist=True):
     def decorator(new_func):
         is_dict_scope = isinstance(scope, dict)
         check_name = name or new_func.__name__
@@ -58,8 +58,12 @@ def override_check(scope, name=None):
             original_check = getattr(scope, check_name, None)
 
         if not callable(original_check):
-            print(f'WARNING: {check_name} check to override not found.\n'
-                  'Please update presubmit overrides!')
+            message = (f'{check_name} check to override not found. '
+                       'Please update presubmit overrides.')
+            if should_exist:
+                traceback.print_stack()
+                raise RuntimeError(f'ERROR: {message}')
+            print(f'WARNING: {message}')
 
             return noop_check
 
@@ -68,9 +72,11 @@ def override_check(scope, name=None):
     return decorator
 
 
-# Override canned checks (depot_tools/presubmit_canned_checks.py).
+# Override canned checks (depot_tools/presubmit_canned_checks.py). These checks
+# can be updated with depot_tools (separate from the Chromium revision), so we
+# only print a warning instead of failing the presubmits to not break builds.
 def override_canned_checks(canned_checks):
-    apply_generic_check_overrides(canned_checks, CANNED_CHECKS_KEY)
+    apply_generic_check_overrides(canned_checks, CANNED_CHECKS_KEY, False)
 
     # Changes from upstream:
     # 1. Run pylint only on *changed* files instead of getting *all* files
@@ -78,7 +84,7 @@ def override_canned_checks(canned_checks):
     #    unmodified files, but it's very resource intensive, moreover for
     #    our setup it covers all files from vendor and other directories
     #    which we should ignore.
-    @override_check(canned_checks)
+    @override_check(canned_checks, should_exist=False)
     def GetPylint(original_check, input_api, output_api, **kwargs):
         def _FetchAllFiles(_, input_api, files_to_check, files_to_skip):
             src_filter = lambda f: input_api.FilterSourceFile(
@@ -103,9 +109,10 @@ def modify_input_api(input_api):
 
 
 # Disables checks or forces presubmit errors for checks listed in the config.
-def apply_generic_check_overrides(scope, config_key):
+def apply_generic_check_overrides(scope, config_key, should_exist):
     for disabled_check in config['disabled_checks'][config_key]:
-        override_check(scope, name=disabled_check)(noop_check)
+        override_check(scope, name=disabled_check,
+                       should_exist=should_exist)(noop_check)
 
     def force_presubmit_error_wrapper(original_check, input_api, output_api,
                                       **kwargs):
@@ -116,8 +123,8 @@ def apply_generic_check_overrides(scope, config_key):
 
     for force_error_check in config['checks_to_force_presubmit_errors'][
             config_key]:
-        override_check(scope,
-                       name=force_error_check)(force_presubmit_error_wrapper)
+        override_check(scope, name=force_error_check,
+                       should_exist=should_exist)(force_presubmit_error_wrapper)
 
 
 # Wraps input_api.change.AffectedFiles method to manually filter files available
@@ -214,7 +221,7 @@ def inline_presubmit_from_src(filename, _globals, _locals):
     _globals[pre_check_name] = PreRunChecks
 
     import_inline.inline_file_from_src(filename, _globals, _locals)
-    apply_generic_check_overrides(_globals, filename)
+    apply_generic_check_overrides(_globals, filename, True)
 
     def PostRunChecks(input_api, _output_api):
         state.PostRunChecks(input_api)

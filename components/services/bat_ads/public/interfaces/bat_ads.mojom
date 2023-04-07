@@ -4,8 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 module bat_ads.mojom;
 
+import "brave/components/brave_ads/common/interfaces/ads.mojom";
 import "brave/components/brave_federated/public/interfaces/brave_federated.mojom";
-import "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom";
 import "mojo/public/mojom/base/big_string.mojom";
 import "mojo/public/mojom/base/file.mojom";
 import "mojo/public/mojom/base/time.mojom";
@@ -14,11 +14,48 @@ import "url/mojom/url.mojom";
 
 interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
-         pending_associated_receiver<BatAds> bat_ads) => ();
+         pending_associated_receiver<BatAds> bat_ads,
+         pending_receiver<BatAdsClientNotifier>
+             bat_ads_client_notifier) => ();
 
-  SetSysInfo(ads.mojom.SysInfo sys_info) => ();
+  SetSysInfo(brave_ads.mojom.SysInfo sys_info) => ();
 
-  SetBuildChannel(ads.mojom.BuildChannelInfo build_channel) => ();
+  SetBuildChannel(brave_ads.mojom.BuildChannelInfo build_channel) => ();
+};
+
+interface BatAdsClientNotifier {
+  // See AdsClientNotifier for documentation.
+
+  NotifyLocaleDidChange(string locale);
+
+  NotifyPrefDidChange(string path);
+
+  NotifyDidUpdateResourceComponent(string id);
+
+  NotifyTabHtmlContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                string html);
+  NotifyTabTextContentDidChange(int32 tab_id,
+                                array<url.mojom.Url> redirect_chain,
+                                string text);
+  NotifyTabDidStartPlayingMedia(int32 tab_id);
+  NotifyTabDidStopPlayingMedia(int32 tab_id);
+  NotifyTabDidChange(int32 tab_id,
+                     array<url.mojom.Url> redirect_chain,
+                     bool is_visible,
+                     bool is_incognito);
+  NotifyDidCloseTab(int32 tab_id);
+
+  NotifyUserGestureEventTriggered(int32 page_transition_type);
+
+  NotifyUserDidBecomeIdle();
+  NotifyUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time,
+                            bool screen_was_locked);
+
+  NotifyBrowserDidEnterForeground();
+  NotifyBrowserDidEnterBackground();
+  NotifyBrowserDidBecomeActive();
+  NotifyBrowserDidResignActive();
 };
 
 interface BatAdsClient {
@@ -41,14 +78,20 @@ interface BatAdsClient {
 
   UpdateAdRewards();
 
-  RecordAdEventForId(string id, string ad_type, string confirmation_type, mojo_base.mojom.Time time);
+  RecordAdEventForId(string id,
+                     string ad_type,
+                     string confirmation_type,
+                     mojo_base.mojom.Time time);
   [Sync]
-  GetAdEventHistory(string ad_type, string confirmation_type) => (array<mojo_base.mojom.Time> ad_events);
+  GetAdEventHistory(string ad_type, string confirmation_type) =>
+      (array<mojo_base.mojom.Time> ad_events);
   ResetAdEventHistoryForId(string id);
 
-  GetBrowsingHistory(int32 max_count, int32 days_ago) => (array<url.mojom.Url> history);
+  GetBrowsingHistory(int32 max_count, int32 days_ago) =>
+      (array<url.mojom.Url> history);
 
-  UrlRequest(ads.mojom.UrlRequestInfo request) => (ads.mojom.UrlResponseInfo response);
+  UrlRequest(brave_ads.mojom.UrlRequestInfo request) =>
+      (brave_ads.mojom.UrlResponseInfo response);
 
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
@@ -60,11 +103,13 @@ interface BatAdsClient {
   ShowScheduledCaptchaNotification(string payment_id, string captcha_id);
   ClearScheduledCaptcha();
 
-  RunDBTransaction(ads.mojom.DBTransactionInfo transaction) => (ads.mojom.DBCommandResponseInfo response);
+  RunDBTransaction(brave_ads.mojom.DBTransactionInfo transaction) =>
+      (brave_ads.mojom.DBCommandResponseInfo response);
 
   RecordP2AEvent(string name, mojo_base.mojom.ListValue value);
 
-  LogTrainingInstance(array<brave_federated.mojom.CovariateInfo> training_instance);
+  AddTrainingSample(array<brave_federated.mojom.CovariateInfo>
+                          training_sample);
 
   [Sync]
   GetBooleanPref(string path) => (bool value);
@@ -108,62 +153,58 @@ interface BatAds {
 
   GetDiagnostics() => (mojo_base.mojom.ListValue? value);
 
-  OnLocaleDidChange(string locale);
-
-  OnPrefDidChange(string path);
-
-  OnDidUpdateResourceComponent(string id);
-
-  // User Interaction
-  OnUserDidBecomeIdle();
-  OnUserDidBecomeActive(mojo_base.mojom.TimeDelta idle_time, bool screen_was_locked);
-
-  TriggerUserGestureEvent(int32 page_transition_type);
-
-  // Browser
-  OnBrowserDidEnterForeground();
-  OnBrowserDidEnterBackground();
-
-  // Tabs
-  OnTabDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, bool is_active, bool is_browser_active, bool is_incognito);
-
-  OnTabHtmlContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string html);
-  OnTabTextContentDidChange(int32 tab_id, array<url.mojom.Url> redirect_chain, string text);
-
-  OnTabDidStartPlayingMedia(int32 tab_id);
-  OnTabDidStopPlayingMedia(int32 tab_id);
-
-  OnDidCloseTab(int32 tab_id);
-
-  // Account
   OnRewardsWalletDidChange(string payment_id, string recovery_seed);
 
-  GetStatementOfAccounts() => (ads.mojom.StatementInfo? statement);
+  GetStatementOfAccounts() => (brave_ads.mojom.StatementInfo? statement);
 
-  // Ads
-  MaybeServeInlineContentAd(string dimensions) => (string dimensions, mojo_base.mojom.DictionaryValue? value);
-  TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
+  MaybeServeInlineContentAd(string dimensions) =>
+      (string dimensions, mojo_base.mojom.DictionaryValue? value);
+  TriggerInlineContentAdEvent(
+      string placement_id,
+      string creative_instance_id,
+      brave_ads.mojom.InlineContentAdEventType event_type);
 
   MaybeServeNewTabPageAd() => (mojo_base.mojom.DictionaryValue? value);
-  TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
+  TriggerNewTabPageAdEvent(
+      string placement_id,
+      string creative_instance_id,
+      brave_ads.mojom.NewTabPageAdEventType event_type);
 
-  MaybeGetNotificationAd(string placement_id) => (mojo_base.mojom.DictionaryValue? value);
-  TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
+  MaybeGetNotificationAd(string placement_id) =>
+      (mojo_base.mojom.DictionaryValue? value);
+  TriggerNotificationAdEvent(
+      string placement_id,
+      brave_ads.mojom.NotificationAdEventType event_type);
 
-  TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
+  TriggerPromotedContentAdEvent(
+      string placement_id,
+      string creative_instance_id,
+      brave_ads.mojom.PromotedContentAdEventType event_type);
 
-  TriggerSearchResultAdEvent(ads.mojom.SearchResultAdInfo ad_mojom, ads.mojom.SearchResultAdEventType event_type);
+  TriggerSearchResultAdEvent(
+      brave_ads.mojom.SearchResultAdInfo ad_mojom,
+      brave_ads.mojom.SearchResultAdEventType event_type);
 
-  PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
+  PurgeOrphanedAdEventsForType(brave_ads.mojom.AdType ad_type) =>
+      (bool success);
 
-  // History
-  GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.ListValue value);
+  GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
+      (mojo_base.mojom.ListValue value);
   RemoveAllHistory() => (bool success);
 
-  ToggleAdThumbUp(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
-  ToggleAdThumbDown(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
-  ToggleAdOptIn(string category, int32 action) => (string category, int32 action);
-  ToggleAdOptOut(string category, int32 action) => (string category, int32 action);
-  ToggleSavedAd(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
-  ToggleFlaggedAd(mojo_base.mojom.DictionaryValue value) => (mojo_base.mojom.DictionaryValue value);
+  ToggleLikeAd(mojo_base.mojom.DictionaryValue value) =>
+      (mojo_base.mojom.DictionaryValue value);
+  ToggleDislikeAd(mojo_base.mojom.DictionaryValue value) =>
+      (mojo_base.mojom.DictionaryValue value);
+
+  ToggleMarkToReceiveAdsForCategory(string category, int32 action) =>
+      (string category, int32 action);
+  ToggleMarkToNoLongerReceiveAdsForCategory(string category, int32 action) =>
+      (string category, int32 action);
+
+  ToggleSaveAd(mojo_base.mojom.DictionaryValue value) =>
+      (mojo_base.mojom.DictionaryValue value);
+
+  ToggleMarkAdAsInappropriate(mojo_base.mojom.DictionaryValue value) =>
+      (mojo_base.mojom.DictionaryValue value);
 };

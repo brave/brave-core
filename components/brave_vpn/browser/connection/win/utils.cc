@@ -14,11 +14,11 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/path_service.h"
+#include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
-
-#define DEFAULT_PHONE_BOOK NULL
 
 namespace brave_vpn {
 
@@ -59,7 +59,8 @@ std::string GetSystemError(DWORD error) {
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetcredentialsa
-absl::optional<std::string> SetCredentials(LPCTSTR entry_name,
+absl::optional<std::string> SetCredentials(LPCTSTR phone_book_path,
+                                           LPCTSTR entry_name,
                                            LPCTSTR username,
                                            LPCTSTR password) {
   RASCREDENTIALS credentials;
@@ -72,9 +73,10 @@ absl::optional<std::string> SetCredentials(LPCTSTR entry_name,
   wcscpy_s(credentials.szPassword, PWLEN + 1, password);
 
   DWORD dw_ret =
-      RasSetCredentials(DEFAULT_PHONE_BOOK, entry_name, &credentials, FALSE);
+      RasSetCredentials(phone_book_path, entry_name, &credentials, FALSE);
   if (dw_ret != ERROR_SUCCESS) {
-    return internal::GetRasErrorMessage(dw_ret);
+    return base::StrCat(
+        {"RasSetCredential() - ", internal::GetRasErrorMessage(dw_ret)});
   }
 
   return absl::nullopt;
@@ -131,10 +133,12 @@ internal::RasOperationResult GetRasSuccessResult() {
   return result;
 }
 
-internal::RasOperationResult GetRasErrorResult(const std::string& error) {
+internal::RasOperationResult GetRasErrorResult(const std::string& error,
+                                               const std::string& caller = {}) {
   internal::RasOperationResult result;
   result.success = false;
-  result.error_description = error;
+  result.error_description =
+      caller.empty() ? error : base::StrCat({caller, " - ", error});
   return result;
 }
 
@@ -175,7 +179,7 @@ std::wstring GetPhonebookPath(const std::wstring& entry_name,
     return path;
   }
 
-  *error = "failed to get phonebook path from ALLUSERSPROFILE";
+  *error = "failed to get phonebook path from ALLUSERSPROFILE and APPDATA";
   VLOG(2) << __func__
           << " : did not find phone book file. This is required to add the VPN "
              "entry.";
@@ -215,6 +219,7 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
 
     // Call RasEnumConnections to enumerate active connections
     dw_ret = RasEnumConnections(lp_ras_conn, &dw_cb, &dw_connections);
+    std::string caller = "RasEnumConnection()";
 
     // If successful, print the names of the active connections.
     if (ERROR_SUCCESS == dw_ret) {
@@ -227,7 +232,10 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
         VLOG(2) << __func__ << " : " << name << ", " << type;
         if (name.compare(entry_name) == 0 && type.compare(L"VPN") == 0) {
           VLOG(2) << __func__ << " : Disconnect... " << entry_name;
-          dw_ret = RasHangUpA(lp_ras_conn[i].hrasconn);
+          dw_ret = RasHangUp(lp_ras_conn[i].hrasconn);
+          if (dw_ret != ERROR_SUCCESS) {
+            caller = "RasHangUp()";
+          }
           break;
         }
       }
@@ -236,7 +244,7 @@ RasOperationResult DisconnectEntry(const std::wstring& entry_name) {
     if (dw_ret == ERROR_SUCCESS)
       return GetRasSuccessResult();
 
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret), caller);
   }
 
   // There was either a problem with RAS or there are no connections to
@@ -262,6 +270,14 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
     return GetRasSuccessResult();
   }
 
+  std::string error_get_phone_book_path;
+  const std::wstring phone_book_path =
+      GetPhonebookPath(entry_name, &error_get_phone_book_path);
+  if (phone_book_path.empty()) {
+    return GetRasErrorResult(error_get_phone_book_path,
+                             "GetPhonebookPath() from ConnectEntry()");
+  }
+
   LPRASDIALPARAMS lp_ras_dial_params = NULL;
   DWORD cb = sizeof(RASDIALPARAMS);
 
@@ -281,17 +297,17 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
   ZeroMemory(&credentials, sizeof(RASCREDENTIALS));
   credentials.dwSize = sizeof(RASCREDENTIALS);
   credentials.dwMask = RASCM_UserName | RASCM_Password;
-  DWORD dw_ret =
-      RasGetCredentials(DEFAULT_PHONE_BOOK, entry_name.c_str(), &credentials);
+  DWORD dw_ret = RasGetCredentials(phone_book_path.c_str(), entry_name.c_str(),
+                                   &credentials);
   if (dw_ret != ERROR_SUCCESS) {
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasGetCredentials()");
   }
   wcscpy_s(lp_ras_dial_params->szUserName, UNLEN + 1, credentials.szUserName);
   wcscpy_s(lp_ras_dial_params->szPassword, PWLEN + 1, credentials.szPassword);
 
   VLOG(2) << __func__ << " : Connecting to " << entry_name;
   HRASCONN h_ras_conn = NULL;
-  dw_ret = RasDial(NULL, DEFAULT_PHONE_BOOK, lp_ras_dial_params, 0, NULL,
+  dw_ret = RasDial(NULL, phone_book_path.c_str(), lp_ras_dial_params, 0, NULL,
                    &h_ras_conn);
 
   if (dw_ret == ERROR_DIAL_ALREADY_IN_PROGRESS) {
@@ -302,12 +318,15 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
   }
 
   if (dw_ret != ERROR_SUCCESS) {
-    auto result = GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    auto result = GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasDial()");
 
     // To clear state.
     VLOG(2) << __func__ << ": RasDial() failed. Try RasHangUp() to clear state";
-    if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS)
-      result.error_description = GetRasErrorMessage(dw_ret);
+    if (dw_ret = RasHangUp(h_ras_conn); dw_ret != ERROR_SUCCESS) {
+      result.error_description =
+          base::StrCat({result.error_description, ", ", "RasHangUp() - ",
+                        GetRasErrorMessage(dw_ret)});
+    }
 
     return result;
   }
@@ -316,19 +335,45 @@ RasOperationResult ConnectEntry(const std::wstring& entry_name) {
 }
 
 RasOperationResult RemoveEntry(const std::wstring& entry_name) {
-  DWORD dw_ret = RasDeleteEntry(DEFAULT_PHONE_BOOK, entry_name.c_str());
+  std::string error_get_phone_book_path;
+  const std::wstring phone_book_path =
+      GetPhonebookPath(entry_name, &error_get_phone_book_path);
+  if (phone_book_path.empty()) {
+    return GetRasErrorResult(error_get_phone_book_path,
+                             "GetPhonebookPath() from RemoveEntry()");
+  }
+
+  DWORD dw_ret = RasDeleteEntry(phone_book_path.c_str(), entry_name.c_str());
   if (dw_ret != ERROR_SUCCESS) {
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret), "RasDeleteEntry()");
   }
 
   return GetRasSuccessResult();
 }
 
 // https://docs.microsoft.com/en-us/windows/win32/api/ras/nf-ras-rassetentrypropertiesa
-RasOperationResult CreateEntry(const std::wstring& entry_name,
-                               const std::wstring& hostname,
-                               const std::wstring& username,
-                               const std::wstring& password) {
+RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
+  const auto entry_name = base::UTF8ToWide(info.connection_name());
+  const auto hostname = base::UTF8ToWide(info.hostname());
+  const auto username = base::UTF8ToWide(info.username());
+  const auto password = base::UTF8ToWide(info.password());
+
+  // `RasSetEntryProperties` can have problems if fields are empty.
+  // Specifically, it will crash if `hostname` is NULL. Entry name
+  // is already validated.
+  if (hostname.empty()) {
+    VLOG(2) << __func__ << " Can't create entry with empty `hostname`";
+    return GetRasErrorResult("`hostname` is empty");
+  }
+
+  std::string error_get_phone_book_path;
+  const std::wstring phone_book_path =
+      GetPhonebookPath(entry_name, &error_get_phone_book_path);
+  if (phone_book_path.empty()) {
+    return GetRasErrorResult(error_get_phone_book_path,
+                             "GetPhonebookPath() from CreateEntry()");
+  }
+
   auto connection_result = CheckConnection(entry_name);
   if (connection_result == CheckConnectionResult::CONNECTING ||
       connection_result == CheckConnectionResult::CONNECTED) {
@@ -337,6 +382,9 @@ RasOperationResult CreateEntry(const std::wstring& entry_name,
                "connecting or connected state";
     return GetRasSuccessResult();
   }
+
+  VLOG(2) << __func__ << " Create Entry(" << entry_name << ") with "
+          << hostname;
 
   RASENTRY entry;
   ZeroMemory(&entry, sizeof(RASENTRY));
@@ -363,14 +411,17 @@ RasOperationResult CreateEntry(const std::wstring& entry_name,
   // this maps to "Type of sign-in info" => "User name and password"
   entry.dwCustomAuthKey = 26;
 
-  DWORD dw_ret = RasSetEntryProperties(DEFAULT_PHONE_BOOK, entry_name.c_str(),
-                                       &entry, entry.dwSize, NULL, NULL);
+  DWORD dw_ret =
+      RasSetEntryProperties(phone_book_path.c_str(), entry_name.c_str(), &entry,
+                            entry.dwSize, NULL, NULL);
   if (dw_ret != ERROR_SUCCESS) {
-    return GetRasErrorResult(GetRasErrorMessage(dw_ret));
+    return GetRasErrorResult(GetRasErrorMessage(dw_ret),
+                             "RasSetEntryProperties()");
   }
 
-  if (const auto error = SetCredentials(entry_name.c_str(), username.c_str(),
-                                        password.c_str())) {
+  if (const auto error =
+          SetCredentials(phone_book_path.c_str(), entry_name.c_str(),
+                         username.c_str(), password.c_str())) {
     return GetRasErrorResult(*error);
   }
 
@@ -407,19 +458,13 @@ RasOperationResult CreateEntry(const std::wstring& entry_name,
   constexpr wchar_t kNumCustomPolicy[] = L"1";
   constexpr wchar_t kCustomIPSecPolicies[] =
       L"030000000400000002000000050000000200000000000000";
-  std::string error;
-  std::wstring phone_book_path = GetPhonebookPath(entry_name, &error);
-  if (phone_book_path.empty()) {
-    return GetRasErrorResult("GetPhonebookPath() failed.");
-  }
-
   // https://docs.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-writeprivateprofilestringw
   BOOL wrote_entry =
       WritePrivateProfileString(entry_name.c_str(), L"NumCustomPolicy",
                                 kNumCustomPolicy, phone_book_path.c_str());
   if (!wrote_entry) {
     return GetRasErrorResult(
-        "ERROR: failed to write \"NumCustomPolicy\" field to `rasphone.pbk`");
+        "failed to write \"NumCustomPolicy\" field to `rasphone.pbk`");
   }
 
   wrote_entry =
@@ -427,8 +472,7 @@ RasOperationResult CreateEntry(const std::wstring& entry_name,
                                 kCustomIPSecPolicies, phone_book_path.c_str());
   if (!wrote_entry) {
     return GetRasErrorResult(
-        "ERROR: failed to write \"CustomIPSecPolicies\" field to "
-        "`rasphone.pbk`");
+        "failed to write \"CustomIPSecPolicies\" field to `rasphone.pbk`");
   }
 
   return GetRasSuccessResult();

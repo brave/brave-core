@@ -34,11 +34,12 @@ source_set("ledger") {
 
   deps = [
     ":ledger_mojom_wrappers",
+    ":ledger_types_mojom_wrappers",
     "//base",
     "//brave/components/brave_rewards/common",
+    "//brave/components/brave_rewards/core",
     "//brave/ios/browser/api/common",
     "//brave/ios/browser/api/ledger/legacy_database",
-    "//brave/vendor/bat-native-ledger",
     "//components/os_crypt",
     "//net:net",
     "//url",
@@ -53,6 +54,15 @@ source_set("ledger") {
 
 ios_objc_mojom_wrappers("ledger_mojom_wrappers") {
   mojom_target =
-      "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
-  sources = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom" ]
+      "//brave/components/brave_rewards/common/mojom:ledger_interfaces"
+  sources = [ "//brave/components/brave_rewards/common/mojom/ledger.mojom" ]
+}
+
+ios_objc_mojom_wrappers("ledger_types_mojom_wrappers") {
+  mojom_target = "//brave/components/brave_rewards/common/mojom:ledger_types"
+
+  # ledger_types.mojom shares the same namespace/module as ledger.mojom
+  generate_namespace = false
+  sources =
+      [ "//brave/components/brave_rewards/common/mojom/ledger_types.mojom" ]
 }

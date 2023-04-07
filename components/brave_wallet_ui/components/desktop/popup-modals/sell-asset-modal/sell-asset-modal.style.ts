@@ -67,7 +67,6 @@ export const AmountInput = styled.input`
   line-height: 48px;
   text-align: left;
   width: 100%;
-  padding-left: 16px;
   outline: none;
   background-image: none;
   box-shadow: none;

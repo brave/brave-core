@@ -277,7 +277,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
 
       <!-- Extensions -->
       <message name="IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt which was not vetted by Brave. Asks the user if they want to install a particular extension or app.">
-        Brave does not review extensions for security and safety. Only install this extension if you trust the developer.
+        Brave does not review extensions for security and safety. Install this extension only if you trust the developer.
       </message>
 
       <!-- Tor -->
@@ -645,6 +645,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_ADS_NOTIFICATION_AD_ACCESSIBLE_NAME" desc="Text to be spoken when a notification ad is shown">
         Brave Notification Ad
       </message>
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE" desc="The notification title to show when an external wallet is connected">
+        &#x1F389; You're now earning for Brave Ads!
+      </message>
+      <message name="IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY" desc="The notification body to show when an external wallet is connected">
+        For example, you earn whenever a notification like this appears on your screen. You don't need to click to earn.
+      </message>
 
       <!-- Brave Search -->
       <message name="IDS_SETTINGS_WEB_DISCOVERY_LABEL" desc="Description that shows settings for toggle Web Discovery">
@@ -789,6 +795,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK" desc="Text of the link to show original page">
           View original
         </message>
+        <message name="IDS_SPEEDREADER_MINUTES_TEXT" desc="Text of the read time element">
+          min. read
+        </message>
       </if>
 
       <!-- Stats -->
@@ -895,6 +904,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute tab} other {Unmute tabs}}
         </message>
+        <message name="IDS_TAB_CXMENU_NEWTABTORIGHT_VERTICAL_TABS" desc="The label of the 'New Tab below' Tab context menu item for vertical tabs.">
+          New tab below
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
+          Close tabs below
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
@@ -914,6 +929,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         </message>
         <message name="IDS_TAB_CXMENU_SOUND_UNMUTE_TAB" desc="The label of the tab context menu item for unmuting one or more tabs. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
           {NUM_TABS, plural, =1 {Unmute Tab} other {Unmute Tabs}}
+        </message>
+        <message name="IDS_TAB_CXMENU_NEWTABTORIGHT_VERTICAL_TABS" desc="The label of the 'New Tab below' Tab context menu item for vertical tabs.">
+          New Tab Below
+        </message>
+        <message name="IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS" desc="The label of the 'Close Tabs below' Tab context menu item for vertical tabs.">
+          Close Tabs Below
         </message>
       </if>
 

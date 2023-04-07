@@ -4,9 +4,9 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module bat_ledger.mojom;
 
-import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
-import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
-import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger_database.mojom";
+import "brave/components/brave_rewards/common/mojom/ledger_types.mojom";
 import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
@@ -38,7 +38,6 @@ interface BatLedger {
   GetPublisherMinVisitTime() => (int32 min_visit_time);
   GetPublisherMinVisits() => (int32 min_visits);
   GetPublisherAllowNonVerified() => (bool allowed);
-  GetPublisherAllowVideos() => (bool allowed);
   GetAutoContributeEnabled() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
@@ -64,7 +63,6 @@ interface BatLedger {
   SetPublisherMinVisitTime(int32 duration_in_seconds);
   SetPublisherMinVisits(int32 visits);
   SetPublisherAllowNonVerified(bool allow);
-  SetPublisherAllowVideos(bool allow);
   SetAutoContributionAmount(double amount);
   SetAutoContributeEnabled(bool enabled);
 
@@ -88,9 +86,11 @@ interface BatLedger {
   // DEPRECATED
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
 
-  SetMonthlyContribution(string publisher_id, double amount) => (bool success);
+  SendContribution(string publisher_id, double amount, bool set_monthly) =>
+        (bool success);
 
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
+
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
@@ -130,7 +130,7 @@ interface BatLedger {
 
   GetPendingContributionsTotal() => (double amount);
 
-  FetchBalance() => (ledger.mojom.Result result, ledger.mojom.Balance? balance);
+  FetchBalance() => (ledger.mojom.FetchBalanceResult result);
 
   GetExternalWallet(string wallet_type) => (ledger.mojom.GetExternalWalletResult result);
 

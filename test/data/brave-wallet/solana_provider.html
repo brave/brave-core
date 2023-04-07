@@ -56,8 +56,13 @@
       })
   }
 
-  function solanaSignAndSendTransaction(serializedTx, sendOptions, pubkeyString, signature) {
-    let tx = solanaWeb3.Transaction.from(serializedTx)
+  function solanaSignAndSendTransaction(v0, serializedTx, sendOptions, pubkeyString, signature) {
+    let tx
+    if (v0) {
+      tx = solanaWeb3.VersionedTransaction.deserialize(serializedTx)
+    } else {
+      tx = solanaWeb3.Transaction.from(serializedTx)
+    }
     if (pubkeyString) {
       const pubkey = new solanaWeb3.PublicKey(pubkeyString)
       tx.addSignature(pubkey, signature)
@@ -72,8 +77,13 @@
       })
   }
 
-  function solanaSignTransaction(serializedTx, pubkeyString, signature) {
-    let tx = solanaWeb3.Transaction.from(serializedTx)
+  function solanaSignTransaction(v0, serializedTx, pubkeyString, signature) {
+    let tx
+    if (v0) {
+      tx = solanaWeb3.VersionedTransaction.deserialize(serializedTx)
+    } else {
+      tx = solanaWeb3.Transaction.from(serializedTx)
+    }
     if (pubkeyString) {
       const pubkey = new solanaWeb3.PublicKey(pubkeyString)
       tx.addSignature(pubkey, signature)
@@ -88,8 +98,13 @@
       })
     }
 
-  function solanaSignAllTransactions(serializedTx, expectedSignTx, pubkeyString, signature) {
-    let tx = solanaWeb3.Transaction.from(serializedTx)
+  function solanaSignAllTransactions(v0, serializedTx, expectedSignTx, pubkeyString, signature) {
+    let tx
+    if (v0) {
+      tx = solanaWeb3.VersionedTransaction.deserialize(serializedTx)
+    } else {
+      tx = solanaWeb3.Transaction.from(serializedTx)
+    }
     if (pubkeyString) {
       const pubkey = new solanaWeb3.PublicKey(pubkeyString)
       tx.addSignature(pubkey, signature)
@@ -162,6 +177,24 @@
   function getAccountChangedResult() {
     window.domAutomationController.send(accountChangedResult)
     accountChangedResult = ''
+  }
+
+  function getIsBraveWalletViaProxy() {
+    proxy1 = new Proxy(window.solana, {})
+    proxy2 = new Proxy(window.braveSolana, {})
+    window.domAutomationController.send(
+        proxy1.isBraveWallet && proxy2.isBraveWallet)
+  }
+
+  async function solanaDisconnectViaProxy() {
+    proxy1 = new Proxy(window.solana, {})
+    proxy2 = new Proxy(window.braveSolana, {})
+    const result1 = await proxy1.disconnect()
+    const result2 = await proxy2.disconnect()
+    if (result1 === undefined && result2 === undefined)
+      window.domAutomationController.send(true)
+    else
+      window.domAutomationController.send(false)
   }
 
 </script>

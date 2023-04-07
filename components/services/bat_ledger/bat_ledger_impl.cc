@@ -83,11 +83,6 @@ void BatLedgerImpl::GetPublisherAllowNonVerified(
   std::move(callback).Run(ledger_->GetPublisherAllowNonVerified());
 }
 
-void BatLedgerImpl::GetPublisherAllowVideos(
-    GetPublisherAllowVideosCallback callback) {
-  std::move(callback).Run(ledger_->GetPublisherAllowVideos());
-}
-
 void BatLedgerImpl::GetAutoContributeEnabled(
     GetAutoContributeEnabledCallback callback) {
   std::move(callback).Run(ledger_->GetAutoContributeEnabled());
@@ -172,10 +167,6 @@ void BatLedgerImpl::SetPublisherMinVisits(int visits) {
 
 void BatLedgerImpl::SetPublisherAllowNonVerified(bool allow) {
   ledger_->SetPublisherAllowNonVerified(allow);
-}
-
-void BatLedgerImpl::SetPublisherAllowVideos(bool allow) {
-  ledger_->SetPublisherAllowVideos(allow);
 }
 
 void BatLedgerImpl::SetAutoContributionAmount(double amount) {
@@ -303,11 +294,12 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
       std::bind(BatLedgerImpl::OnGetRewardsInternalsInfo, holder, _1));
 }
 
-void BatLedgerImpl::SetMonthlyContribution(
-    const std::string& publisher_id,
-    double amount,
-    SetMonthlyContributionCallback callback) {
-  ledger_->SetMonthlyContribution(publisher_id, amount, std::move(callback));
+void BatLedgerImpl::SendContribution(const std::string& publisher_id,
+                                     double amount,
+                                     bool set_monthly,
+                                     SendContributionCallback callback) {
+  ledger_->SendContribution(publisher_id, amount, set_monthly,
+                            std::move(callback));
 }
 
 // static

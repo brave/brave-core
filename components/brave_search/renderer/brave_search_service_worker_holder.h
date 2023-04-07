@@ -6,12 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_
 
-#include <memory>
-#include <vector>
-
 #include "base/memory/raw_ptr.h"
-#include "base/threading/thread_local.h"
-#include "content/public/renderer/worker_thread.h"
 #include "v8/include/v8.h"
 
 class GURL;
@@ -23,16 +18,14 @@ class ThreadSafeBrowserInterfaceBrokerProxy;
 
 namespace brave_search {
 
-class BraveSearchFallbackJSHandler;
-
-class BraveSearchServiceWorkerHolder : public content::WorkerThread::Observer {
+class BraveSearchServiceWorkerHolder {
  public:
   BraveSearchServiceWorkerHolder();
   BraveSearchServiceWorkerHolder(const BraveSearchServiceWorkerHolder&) =
       delete;
   BraveSearchServiceWorkerHolder& operator=(
       const BraveSearchServiceWorkerHolder&) = delete;
-  ~BraveSearchServiceWorkerHolder() override;
+  ~BraveSearchServiceWorkerHolder();
 
   void SetBrowserInterfaceBrokerProxy(
       blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
@@ -49,14 +42,6 @@ class BraveSearchServiceWorkerHolder : public content::WorkerThread::Observer {
       const GURL& script_url);
 
  private:
-  // WorkerThread::Observer:
-  void WillStopCurrentWorkerThread() override;
-
-  // Implement thread safety by storing each BraveSearchFallbackJSHandler
-  // in TLS. The vector is called from worker threads.
-  base::ThreadLocalPointer<
-      std::vector<std::unique_ptr<BraveSearchFallbackJSHandler>>>
-      js_handlers_tls_;
   raw_ptr<blink::ThreadSafeBrowserInterfaceBrokerProxy> broker_ =
       nullptr;  // not owned
 };

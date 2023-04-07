@@ -22,6 +22,10 @@ class IpfsBaseJob {
   IpfsBaseJob();
   virtual ~IpfsBaseJob();
   virtual void Start() = 0;
+  virtual void Cancel();
+
+ protected:
+  bool is_canceled_ = false;
 };
 
 // Manages a queue of IpfsService-related tasks.
@@ -33,20 +37,25 @@ class IpfsBasePinService : public IpfsServiceObserver {
 
   virtual void AddJob(std::unique_ptr<IpfsBaseJob> job);
   void OnJobDone(bool result);
+  void OnGetConnectedPeersResult(size_t attempt,
+                                 bool succes,
+                                 const std::vector<std::string>& peers);
 
   void OnIpfsShutdown() override;
-  void OnGetConnectedPeers(bool succes,
-                           const std::vector<std::string>& peers) override;
 
  protected:
   // For testing
   IpfsBasePinService();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsBasePinServiceTest, OnGetConnectedPeers);
+  FRIEND_TEST_ALL_PREFIXES(IpfsBasePinServiceTest, OnIpfsShutdown);
+
   bool IsDaemonReady();
   void MaybeStartDaemon();
-  void OnDaemonStarted();
   void DoNextJob();
+  void PostGetConnectedPeers(size_t attempt);
+  void GetConnectedPeers(size_t attempt);
 
   bool daemon_ready_ = false;
   raw_ptr<IpfsService> ipfs_service_;

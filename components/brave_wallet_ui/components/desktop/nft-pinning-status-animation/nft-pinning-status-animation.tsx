@@ -5,40 +5,55 @@
 
 import * as React from 'react'
 
-// types
-import { BraveWallet } from '../../../constants/types'
-
-// hooks
-import { useNftPin } from '../../../common/hooks/nft-pin'
+import { OverallPinningStatus, useNftPin } from '../../../common/hooks/nft-pin'
 
 // styles
 import { GifWrapper, Ipfs, IpfsUploading, StatusGif, StyledWrapper } from './nft-pinning-status-animation.style'
-import UploadingGif from '../../../assets/svg-icons/nft-ipfs/uploading.gif'
-import SuccessGif from '../../../assets/svg-icons/nft-ipfs/success.gif'
+import UploadingDarkGif from '../../../assets/svg-icons/nft-ipfs/uploading-dark.gif'
+import UploadingLightGif from '../../../assets/svg-icons/nft-ipfs/uploading-light.gif'
+import SuccessDarkGif from '../../../assets/svg-icons/nft-ipfs/success-dark.gif'
+import SuccessLightGif from '../../../assets/svg-icons/nft-ipfs/success-light.gif'
 
 interface Props {
   size: string | undefined
-  status: BraveWallet.TokenPinStatusCode
+  status: OverallPinningStatus
   isAutopinEnabled: boolean
 }
 
 export const NftPinningStatusAnimation = ({ size, status, isAutopinEnabled }: Props) => {
-  const { STATUS_PINNING_IN_PROGRESS, STATUS_PINNED } = BraveWallet.TokenPinStatusCode
   const { pinnableNftsCount } = useNftPin()
 
   return (
-    <StyledWrapper size={size || '30px'}>
-      {(!isAutopinEnabled || pinnableNftsCount === 0) ? (
+    <StyledWrapper
+      size={
+        status === OverallPinningStatus.PINNING_IN_PROGRESS || status === OverallPinningStatus.PINNING_FINISHED
+          ? '30px'
+          : size || '14px'
+      }
+    >
+      {!isAutopinEnabled || pinnableNftsCount === 0 ? (
         <Ipfs size={size} />
-      ) : status === STATUS_PINNING_IN_PROGRESS ? (
+      ) : status === OverallPinningStatus.PINNING_IN_PROGRESS ? (
         <GifWrapper>
-          <StatusGif src={UploadingGif} />
+          <StatusGif
+            src={
+              window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? UploadingDarkGif
+                : UploadingLightGif
+            }
+          />
           <IpfsUploading />
         </GifWrapper>
       ) : (
-        status === STATUS_PINNED && (
+        status === OverallPinningStatus.PINNING_FINISHED && (
           <GifWrapper>
-            <StatusGif src={SuccessGif} />
+            <StatusGif
+              src={
+                window.matchMedia('(prefers-color-scheme: dark)').matches
+                  ? SuccessDarkGif
+                  : SuccessLightGif
+              }
+            />
           </GifWrapper>
         )
       )}

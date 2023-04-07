@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Editable;
@@ -73,7 +72,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation btnAdd click " + e);
         }
 

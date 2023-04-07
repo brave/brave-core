@@ -6,18 +6,26 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_TEXT_RECOGNITION_DIALOG_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_TEXT_RECOGNITION_DIALOG_VIEW_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
+#include "base/task/single_thread_task_runner.h"
+#include "base/timer/timer.h"
+#include "build/build_config.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/window/dialog_delegate.h"
 
 class SkBitmap;
 
 namespace views {
+class Combobox;
 class Label;
 class ScrollView;
 }  // namespace views
@@ -32,20 +40,49 @@ class TextRecognitionDialogView : public views::DialogDelegateView {
       delete;
   ~TextRecognitionDialogView() override;
 
-  void StartExtractingText(const SkBitmap& image);
+  // If |language_code| is empty, system default profile language
+  // is used for detecting text from image. Only used on Windows.
+  void StartExtractingText(const std::string& language_code = {});
+  void set_image(const SkBitmap& image) { image_ = image; }
 
  private:
   FRIEND_TEST_ALL_PREFIXES(TextRecognitionBrowserTest, TextRecognitionTest);
 
   void OnGetTextFromImage(const std::vector<std::string>& text);
 
+#if BUILDFLAG(IS_WIN)
+  void OnGetAvailableRecognizerLanguages(
+      const std::vector<std::string>& languages);
+  bool OnLanguageOptionchanged(size_t index);
+  void TextRecognizationSupported(bool supported);
+#endif
+
   // Show |text| in this dialog and copy it to clipboard.
   void UpdateContents(const std::vector<std::string>& text);
   void AdjustWidgetSize();
+  void OnShowResultTimerFired();
 
   raw_ptr<views::Label> header_label_ = nullptr;
   raw_ptr<views::ScrollView> scroll_view_ = nullptr;
+  raw_ptr<views::View> header_container_ = nullptr;
+  SkBitmap image_;
+  absl::optional<std::vector<std::string>> result_;
 
+  SEQUENCE_CHECKER(sequence_checker_);
+
+#if BUILDFLAG(IS_WIN)
+  // Only used on Windows to show selectable target language list.
+  raw_ptr<views::Combobox> combobox_ = nullptr;
+  scoped_refptr<base::SingleThreadTaskRunner> com_task_runner_;
+#endif
+
+  // When result is fetched very quickly, dialog seems flickers with
+  // header sentence changing.
+  // To avoid that flicking, give a little delay between state changing.
+  // If this is fired before receiving result, result is displayed
+  // when it's arrived. If result is arrived before firing, result is shown
+  // when fired.
+  base::RetainingOneShotTimer show_result_timer_;
   base::OnceCallback<void(const std::vector<std::string>&)>
       on_get_text_callback_for_test_;
   base::WeakPtrFactory<TextRecognitionDialogView> weak_factory_{this};

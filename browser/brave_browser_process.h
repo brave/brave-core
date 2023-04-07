@@ -21,7 +21,6 @@
 
 namespace brave {
 class BraveReferralsService;
-class BraveP3AService;
 class BraveFarblingService;
 class URLSanitizerComponentInstaller;
 }  // namespace brave
@@ -67,6 +66,10 @@ namespace ntp_background_images {
 class NTPBackgroundImagesService;
 }  // namespace ntp_background_images
 
+namespace p3a {
+class P3AService;
+}  // namespace p3a
+
 namespace tor {
 class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
@@ -81,6 +84,7 @@ class SpeedreaderRewriterService;
 }
 
 namespace brave_ads {
+class BraveStatsHelper;
 class ResourceComponent;
 }
 
@@ -111,9 +115,10 @@ class BraveBrowserProcess {
 #if BUILDFLAG(ENABLE_IPFS)
   virtual ipfs::BraveIpfsClientUpdater* ipfs_client_updater() = 0;
 #endif
-  virtual brave::BraveP3AService* brave_p3a_service() = 0;
+  virtual p3a::P3AService* p3a_service() = 0;
   virtual brave::BraveReferralsService* brave_referrals_service() = 0;
   virtual brave_stats::BraveStatsUpdater* brave_stats_updater() = 0;
+  virtual brave_ads::BraveStatsHelper* ads_brave_stats_helper() = 0;
   virtual ntp_background_images::NTPBackgroundImagesService*
   ntp_background_images_service() = 0;
 #if BUILDFLAG(ENABLE_SPEEDREADER)

@@ -248,8 +248,6 @@
 <translation id="2377929997600454162">Narito na ang iyong Mga Ad Reward para sa <ph name="MONTH_VALUE"/>!</translation>
 <translation id="2716238748894345194">Mga Reward para sa <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Mayroon kang natitirang <ph name="TOKEN"/> na araw para i-claim</translation>
-<translation id="2323069945529668668">Naku!</translation>
-<translation id="7510166204621526816">Hindi tumutugon ang server ng Brave Rewards. Aayusin namin ito sa lalong madaling panahon.</translation>
 <translation id="683765328936486920">sa YouTube</translation>
 <translation id="8969049974285901797">sa Twitch</translation>
 <translation id="3101693828171454453">hindi sapat na <ph name="TOKEN"/></translation>
@@ -611,7 +609,6 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="5050890334032852465">I-save ang watchlist ng account</translation>
 <translation id="7755766175599167100">Mga token ng paghahanap</translation>
 <translation id="3835223348537121988">Balanse:</translation>
-<translation id="6888491517683356528">Magpatuloy sa Ramp</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="8796429300536029044">Detalye ng NFT</translation>
@@ -625,6 +622,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="414639769490080648">Ang bilang ng minutong hihintayin hanggang awtomatikong ma-lock ang Brave Wallet</translation>
 <translation id="4993345308607970390">I-reset ang Brave Wallet</translation>
 <translation id="4322846864135539519">Sigurado ka bang gusto mong i-reset ang iyong wallet? Kung hindi naka-back up ang iyong Brave Wallet, mawawala ang lahat ng data ng iyong account kapag nag-reset (kabilang ang anumang nauugnay na pondo). I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
+<translation id="7667423728712601865">Bumili ng crypto gamit ang Visa o Mastercard.</translation>
+<translation id="3101839349578102016">Instant na bumili gamit ang iyong bank account. Mas mabababang fee.</translation>
 <translation id="4862812525895306758">I-clear ang transaksyon &amp; impormasyon ng nonce</translation>
 <translation id="5693968582510626466">Ang pag-clear sa mga transaksyon ay maaaring makatutulong sa mga developer o kapag nag-ayos ng katayuan sa isang local server</translation>
 <translation id="5421107279168565467">Sigurado ka bang gusto mong i-reset ang transaksyon at impormasyon ng nonce? Ang option na ito ay kadalasang ginagamit ng mga developer na nagpapatakbo ng local test server. I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
@@ -799,7 +798,7 @@ Kung hindi mo tatanggapin ang kahilingang ito, hindi kokonekta ulit ang VPN at h
 <translation id="3506416339268164412">Ang address ng tatanggap ay contract address ng token</translation>
 <translation id="3494964159182650590">Buod ng Mga Pabuya</translation>
 <translation id="590733288489975971">Mga Reward mula sa Ads</translation>
-<translation id="207268487070188114">Isang Beses na Tip</translation>
+<translation id="2613359062756190460">Isang Beses na Pagbibigay ng Mga Tip</translation>
 <translation id="7577100371127227294">Mga Buwanang Tip</translation>
 <translation id="7091980679045978090">Mga tinatantyang kita</translation>
 <translation id="1346059596910821859">Tip</translation>

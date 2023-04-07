@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/permissions/permission_context_base.h"
 #include "components/permissions/permission_request_id.h"
 #include "components/permissions/request_type.h"
@@ -58,9 +59,10 @@ class BraveWalletPermissionContext : public PermissionContextBase {
           void(const std::vector<blink::mojom::PermissionStatus>&)> callback);
   static bool HasRequestsInProgress(content::RenderFrameHost* rfh,
                                     permissions::RequestType request_type);
-
-  static void AcceptOrCancel(const std::vector<std::string>& accounts,
-                             content::WebContents* web_contents);
+  static void AcceptOrCancel(
+      const std::vector<std::string>& accounts,
+      brave_wallet::mojom::PermissionLifetimeOption option,
+      content::WebContents* web_contents);
   static void Cancel(content::WebContents* web_contents);
 
   static void GetAllowedAccounts(

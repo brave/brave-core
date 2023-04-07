@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { BraveWallet } from '../../constants/types'
+import { BraveWallet, WalletAccountType } from '../../constants/types'
 
 // Utils
 import Amount from '../../utils/amount'
@@ -15,14 +15,16 @@ import { useUnsafeWalletSelector } from './use-safe-selector'
 export default function usePreset (
   {
     asset,
-    onSetAmount
+    onSetAmount,
+    account
   }: {
     onSetAmount?: (value: string) => void
     asset?: BraveWallet.BlockchainToken
+    account?: WalletAccountType
   }
 ) {
   // redux
-  const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
+  const selectedAccount = account ?? useUnsafeWalletSelector(WalletSelectors.selectedAccount)
 
   return (percent: number) => {
     if (!asset) {

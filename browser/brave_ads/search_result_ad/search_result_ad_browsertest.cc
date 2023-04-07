@@ -10,11 +10,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/browser/brave_ads/search_result_ad/search_result_ad_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/mock_ads_service.h"
 #include "brave/components/brave_ads/common/features.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -73,7 +73,7 @@ class SearchResultAdTest : public InProcessBrowserTest {
  public:
   SearchResultAdTest() {
     feature_list_.InitAndEnableFeature(
-        features::kSupportBraveSearchResultAdConfirmationEvents);
+        features::kShouldTriggerSearchResultAdEvents);
   }
 
   void SetUpOnMainThread() override {
@@ -210,7 +210,7 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
   }
 
   bool CheckSampleSearchAdMetadata(
-      const ads::mojom::SearchResultAdInfoPtr& search_result_ad,
+      const mojom::SearchResultAdInfoPtr& search_result_ad,
       size_t ad_index) {
     EXPECT_TRUE(search_result_ad);
 
@@ -260,30 +260,27 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
       const GURL& url) {
     auto run_loop1 = std::make_unique<base::RunLoop>();
     auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(*ads_service(),
-                TriggerSearchResultAdEvent(
-                    _, ads::mojom::SearchResultAdEventType::kServed))
+    EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(
+                                    _, mojom::SearchResultAdEventType::kServed))
         .Times(2);
-    EXPECT_CALL(*ads_service(),
-                TriggerSearchResultAdEvent(
-                    _, ads::mojom::SearchResultAdEventType::kViewed))
+    EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(
+                                    _, mojom::SearchResultAdEventType::kViewed))
         .Times(2)
-        .WillRepeatedly(
-            [this, &run_loop1, &run_loop2](
-                ads::mojom::SearchResultAdInfoPtr ad_mojom,
-                const ads::mojom::SearchResultAdEventType event_type) {
-              const bool is_search_result_ad_1 =
-                  CheckSampleSearchAdMetadata(ad_mojom, 1);
-              const bool is_search_result_ad_2 =
-                  CheckSampleSearchAdMetadata(ad_mojom, 2);
-              EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
+        .WillRepeatedly([this, &run_loop1, &run_loop2](
+                            mojom::SearchResultAdInfoPtr ad_mojom,
+                            const mojom::SearchResultAdEventType event_type) {
+          const bool is_search_result_ad_1 =
+              CheckSampleSearchAdMetadata(ad_mojom, 1);
+          const bool is_search_result_ad_2 =
+              CheckSampleSearchAdMetadata(ad_mojom, 2);
+          EXPECT_TRUE(is_search_result_ad_1 || is_search_result_ad_2);
 
-              if (is_search_result_ad_1) {
-                run_loop1->Quit();
-              } else if (is_search_result_ad_2) {
-                run_loop2->Quit();
-              }
-            });
+          if (is_search_result_ad_1) {
+            run_loop1->Quit();
+          } else if (is_search_result_ad_2) {
+            run_loop2->Quit();
+          }
+        });
 
     EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
@@ -308,13 +305,13 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest,
 
   base::RunLoop run_loop;
   EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _))
-      .WillOnce([this, &run_loop](
-                    ads::mojom::SearchResultAdInfoPtr ad_mojom,
-                    const ads::mojom::SearchResultAdEventType event_type) {
-        EXPECT_EQ(event_type, ads::mojom::SearchResultAdEventType::kClicked);
-        CheckSampleSearchAdMetadata(ad_mojom, 1);
-        run_loop.Quit();
-      });
+      .WillOnce(
+          [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
+                            const mojom::SearchResultAdEventType event_type) {
+            EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
+            CheckSampleSearchAdMetadata(ad_mojom, 1);
+            run_loop.Quit();
+          });
 
   EXPECT_TRUE(content::ExecJs(web_contents,
                               "document.getElementById('ad_link_1').click();"));
@@ -331,13 +328,13 @@ IN_PROC_BROWSER_TEST_F(SampleSearchResultAdTest, SearchResultAdOpenedInNewTab) {
   EXPECT_CALL(*ads_service(), IsEnabled()).WillRepeatedly(Return(true));
   base::RunLoop run_loop;
   EXPECT_CALL(*ads_service(), TriggerSearchResultAdEvent(_, _))
-      .WillOnce([this, &run_loop](
-                    ads::mojom::SearchResultAdInfoPtr ad_mojom,
-                    const ads::mojom::SearchResultAdEventType event_type) {
-        EXPECT_EQ(event_type, ads::mojom::SearchResultAdEventType::kClicked);
-        CheckSampleSearchAdMetadata(ad_mojom, 2);
-        run_loop.Quit();
-      });
+      .WillOnce(
+          [this, &run_loop](mojom::SearchResultAdInfoPtr ad_mojom,
+                            const mojom::SearchResultAdEventType event_type) {
+            EXPECT_EQ(event_type, mojom::SearchResultAdEventType::kClicked);
+            CheckSampleSearchAdMetadata(ad_mojom, 2);
+            run_loop.Quit();
+          });
 
   EXPECT_TRUE(content::ExecJs(web_contents,
                               "document.getElementById('ad_link_2').click();"));

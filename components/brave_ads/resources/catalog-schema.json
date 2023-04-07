@@ -1,0 +1,403 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "ping",
+    "campaigns",
+    "catalogId"
+  ],
+  "properties": {
+    "version": {
+      "type": "number"
+    },
+    "ping": {
+      "type": "number"
+    },
+    "catalogId": {
+      "type": "string"
+    },
+    "campaigns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "priority",
+          "ptr",
+          "campaignId",
+          "advertiserId",
+          "startAt",
+          "endAt",
+          "dailyCap",
+          "geoTargets",
+          "dayParts",
+          "creativeSets"
+        ],
+        "properties": {
+          "campaignId": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "number"
+          },
+          "ptr": {
+            "type": "number"
+          },
+          "advertiserId": {
+            "type": "string"
+          },
+          "startAt": {
+            "type": "string"
+          },
+          "endAt": {
+            "type": "string"
+          },
+          "dailyCap": {
+            "type": "number"
+          },
+          "dayParts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "dow",
+                "startMinute",
+                "endMinute"
+              ],
+              "properties": {
+                "dow": {
+                  "type": "string"
+                },
+                "startMinute": {
+                  "type": "number"
+                },
+                "endMinute": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "geoTargets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "code",
+                "name"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "creativeSets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "creativeSetId",
+                "perDay",
+                "totalMax",
+                "segments",
+                "creatives",
+                "oses",
+                "channels",
+                "perMonth",
+                "perWeek",
+                "value"
+              ],
+              "properties": {
+                "creativeSetId": {
+                  "type": "string"
+                },
+                "perDay": {
+                  "type": "number"
+                },
+                "totalMax": {
+                  "type": "number"
+                },
+                "perMonth": {
+                  "type": "number"
+                },
+                "perWeek": {
+                  "type": "number"
+                },
+                "splitTestGroup": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "conversions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "urlPattern",
+                      "type",
+                      "observationWindow"
+                    ],
+                    "properties": {
+                      "urlPattern": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "observationWindow": {
+                        "type": "number"
+                      },
+                      "conversionPublicKey": {
+                        "type": "string"
+                      },
+                      "extractExternalId": {
+                        "type": "boolean"
+                      }
+                    }
+                  }
+                },
+                "segments": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "code",
+                      "name"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "parentCode": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "oses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "code",
+                      "name"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "channels": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "creatives": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "creativeInstanceId",
+                      "type",
+                      "payload"
+                    ],
+                    "properties": {
+                      "creativeInstanceId": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                          "code",
+                          "name",
+                          "platform",
+                          "version"
+                        ],
+                        "properties": {
+                          "code": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "platform": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "type": "number"
+                          }
+                        }
+                      },
+                      "payload": {
+                        "type": "object",
+                        "oneOf": [
+                          {
+                            "properties": {
+                              "targetUrl": {
+                                "type": "string"
+                              },
+                              "body": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "properties": {
+                              "creativeUrl": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "targetUrl": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "properties": {
+                              "logo": {
+                                "type": "object",
+                                "required": [
+                                  "imageUrl",
+                                  "alt",
+                                  "companyName",
+                                  "destinationUrl"
+                                ],
+                                "properties": {
+                                  "imageUrl": {
+                                    "type": "string"
+                                  },
+                                  "alt": {
+                                    "type": "string"
+                                  },
+                                  "companyName": {
+                                    "type": "string"
+                                  },
+                                  "destinationUrl": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "wallpapers": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                  "required": [
+                                    "imageUrl",
+                                    "focalPoint"
+                                  ],
+                                  "type": "object",
+                                  "properties": {
+                                    "imageUrl": {
+                                      "type": "string"
+                                    },
+                                    "focalPoint": {
+                                      "type": "object",
+                                      "properties": {
+                                        "x": {
+                                          "type": "number"
+                                        },
+                                        "y": {
+                                          "type": "number"
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "properties": {
+                              "domain": {
+                                "type": "string"
+                              },
+                              "feed": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "category": {
+                                "type": "string"
+                              },
+                              "ogImages": {
+                                "type": "boolean"
+                              },
+                              "contentType": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "description": {
+                                "type": "string"
+                              },
+                              "imageUrl": {
+                                "type": "string"
+                              },
+                              "dimensions": {
+                                "type": "string"
+                              },
+                              "targetUrl": {
+                                "type": "string"
+                              },
+                              "ctaText": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

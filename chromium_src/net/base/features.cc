@@ -63,5 +63,20 @@ BASE_FEATURE(kBraveHttpsByDefault,
              "HttpsByDefault",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Add "Forget by default" cookie blocking mode which cleanups storage after a
+// website is closed.
+BASE_FEATURE(kBraveForgetFirstPartyStorage,
+             "BraveForgetFirstPartyStorage",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+const base::FeatureParam<int>
+    kBraveForgetFirstPartyStorageKeepAliveTimeInSeconds = {
+        &kBraveForgetFirstPartyStorage,
+        "BraveForgetFirstPartyStorageKeepAliveTimeInSeconds", 30};
+
+const base::FeatureParam<bool> kBraveForgetFirstPartyStorageByDefault = {
+    &kBraveForgetFirstPartyStorage, "BraveForgetFirstPartyStorageByDefault",
+    false};
+
 }  // namespace features
 }  // namespace net

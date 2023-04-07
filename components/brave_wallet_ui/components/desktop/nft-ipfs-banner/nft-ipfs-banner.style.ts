@@ -10,27 +10,29 @@ import BannerBackground from '../../../assets/svg-icons/nft-ipfs/banner-backgrou
 
 import { BannerStatus } from './nft-ipfs-banner'
 
-const getSuccessBackground = () => {
-  return window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? '#CBF1D2'
-    : '#EEFBF0'
-}
-
 export const StyledWrapper = styled.div<{ status: BannerStatus }>`
   display: flex;
   flex-direction: row;
   align-items: center;
   width: 100%;
   justify-content: flex-start;
+  --success-background: #E8F9EB;
+  --uploading-background: #F0F7FC;
+  @media (prefers-color-scheme: dark) {
+      --success-background: #15371B;
+      --uploading-background: #063256;
+  }
   background: ${(p) =>
     p.status === 'start'
-      ? `url(${BannerBackground}) right 80px center/contain no-repeat, linear-gradient(110.74deg, #242464 -10.97%, #000027 173.98%)`
+      ? `url(${BannerBackground}) right 80px center/contain no-repeat, #1A1C3B`
       : p.status === 'uploading'
-      ? '#F0F7FC'
-      : getSuccessBackground()};
+      ? 'var(--uploading-background)'
+      : 'var(--success-background)'};
   border-radius: 8px;
-  padding: 10px 25px;
   border-width: 0;
+  height: 67px;
+  padding-left: 18px;
+  padding-right: 18px;
 `
 
 export const Text = styled.p<{ status: BannerStatus }>`
@@ -40,7 +42,11 @@ export const Text = styled.p<{ status: BannerStatus }>`
   font-size: 14px;
   line-height: 20px;
   align-items: center;
-  color: ${(p) => (p.status === 'start' ? p.theme.palette.white : '#1D1F25')};
+  --text-color: #1D1F25;
+  @media (prefers-color-scheme: dark) {
+    --text-color: #ECEFF2;
+  }
+  color: ${(p) => p.status === 'start' ? p.theme.palette.white : 'var(--text-color)'};
   padding: 0;
   margin: 0;
   max-width: 70%;
@@ -57,24 +63,27 @@ export const LearnMore = styled(WalletButton)`
   cursor: pointer;
   font-family: 'Poppins';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 14px;
   line-height: 20px;
-  color: ${(p) => p.theme.palette.white};
+  color: #AAA8F7; /* Leo theme value: Dark/Text/Interactive */
   outline: none;
   border: none;
   background: transparent;
+  margin-left: auto;
 `
 
-export const CloseButton = styled(WalletButton)<{ status: BannerStatus }>`
+export const CloseButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   width: 20px;
   height: 20px;
-  background-color: ${(p) =>
-    p.status === 'success' ? '#6B7084' : p.theme.palette.white};
+  background-color: #6B7084;
+  @media (prefers-color-scheme: dark) {
+    background-color: #8C90A1; /* Leo theme value: Icon/Default */
+  }
   -webkit-mask-image: url(${CloseIcon});
   mask-image: url(${CloseIcon});
   outline: none;

@@ -8,14 +8,15 @@ import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 
 // Utils
-import { getTokensNetwork } from '../../../utils/network-utils'
 import { isDataURL } from '../../../utils/string-utils'
 import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { withPlaceholderIcon } from '../../shared'
 import { Checkbox } from 'brave-ui'
+import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 // Styled Components
 import {
@@ -29,7 +30,6 @@ import {
   NameAndSymbol,
   AssetSymbol
 } from './style'
-import { NftIcon } from '../../shared/nft-icon/nft-icon'
 
 export interface Props {
   onSelectAsset: (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => void
@@ -37,7 +37,6 @@ export interface Props {
   isCustom: boolean
   isSelected: boolean
   token: BraveWallet.BlockchainToken
-  networkList: BraveWallet.NetworkInfo[]
 }
 
 const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
@@ -47,10 +46,13 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
       onRemoveAsset,
       isCustom,
       token,
-      isSelected,
-      networkList
+      isSelected
     } = props
 
+    // queries
+    const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
+
+    // callbacks
     const onCheck = React.useCallback((key: string, selected: boolean) => {
       onSelectAsset(key, selected, token, isCustom)
     }, [onSelectAsset, token, isCustom])
@@ -66,13 +68,6 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     const AssetIconWithPlaceholder = React.useMemo(() => {
       return withPlaceholderIcon(token.isErc721 && !isDataURL(token.logo) ? NftIcon : AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
     }, [token])
-
-    const tokensNetwork = React.useMemo(() => {
-      if (!token) {
-        return
-      }
-      return getTokensNetwork(networkList, token)
-    }, [token, networkList])
 
     const networkDescription = React.useMemo(() => {
       return getLocale('braveWalletPortfolioAssetNetworkDescription')

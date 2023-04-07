@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lt">
+<translation id="3478449063771497234">Pranešimai išjungti</translation>
+<translation id="7466579932043491502">Esant išjungtiems pranešimams „Brave Rewards“ gali būti nepasiekiami.</translation>
+<translation id="4259212006412783790">ĮJUNGTI</translation>
+<translation id="6112331814131703370">Neberodyti pranešimo „Atidaryti programėlę“</translation>
 <translation id="4744921452903670666">Parašykite, ką galvojate!</translation>
 <translation id="2524310205387880526">Įvertinti „Brave“</translation>
 <translation id="4104400246019119780">Ačiū!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Jūsų <ph name="MONTH_VALUE"/> atlygis už reklamą jau čia!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> atlygis: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Jums liko <ph name="TOKEN"/> dienų pareikalauti</translation>
-<translation id="2323069945529668668">Oi!</translation>
-<translation id="7510166204621526816">„Brave Rewards“ serveris neatsako. Išspręsime tai kuo greičiau.</translation>
 <translation id="683765328936486920">per „YouTube“</translation>
 <translation id="8969049974285901797">per „Twitch“</translation>
 <translation id="3101693828171454453">nepakanka <ph name="TOKEN"/>s</translation>
@@ -616,7 +618,7 @@ pasiūlymų gavimą). <ph name="DEX_PROVIDER"/> šiuos duomenis naudos TIK sando
 <translation id="5050890334032852465">Įrašyti sąskaitos stebėjimo sąrašą</translation>
 <translation id="7755766175599167100">Ieškoti žetonų</translation>
 <translation id="3835223348537121988">Likutis:</translation>
-<translation id="6888491517683356528">Tęsti su „Ramp“</translation>
+<translation id="3956169227169516344">Pasirinkti pirkimo būdą</translation>
 <translation id="8488282162676695335">„Brave“ piniginė</translation>
 <translation id="3784455785234192852">Užrakinti</translation>
 <translation id="8796429300536029044">NFT informacija</translation>
@@ -630,6 +632,10 @@ pasiūlymų gavimą). <ph name="DEX_PROVIDER"/> šiuos duomenis naudos TIK sando
 <translation id="414639769490080648">Skaičius minučių, kiek reikia palaukti, kol automatiškai užrakinama „Brave“ piniginė</translation>
 <translation id="4993345308607970390">Atkurti „Brave“ piniginę</translation>
 <translation id="4322846864135539519">Ar tikrai norite atkurti savo „Brave“ atlygį? Jei neturite savo piniginės atsarginės kopijos, atkurdami prarasite visus sąskaitos duomenis (įskaitant susijusias lėšas). Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="6915083716464390008">Pasirinkite vieną iš pateiktų variantų</translation>
+<translation id="7667423728712601865">Įsigykite kriptovaliutų, naudodami „Visa“ arba „Mastercard“.</translation>
+<translation id="3101839349578102016">Greitas pirkimas naudojantis banko sąskaita. Mažesni mokesčiai.</translation>
+<translation id="7269640984027668973">Pirkti naudojant <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Išvalyti operacijų ir operacijų numerių informaciją</translation>
 <translation id="5693968582510626466">Operacijų išvalymas gali būti naudingas kūrėjams arba norint išvalyti būseną vietiniame serveryje</translation>
 <translation id="5421107279168565467">Ar tikrai norite iš naujo nustatyti operacijų ir operacijų numerių informaciją? Šią parinktį dažniausiai naudoja kūrėjai, turintys vietinį testavimo serverį. Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
@@ -804,7 +810,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="3506416339268164412">Gavimo adresas yra žetono sutarties adresas</translation>
 <translation id="3494964159182650590">Atlygio suvestinė</translation>
 <translation id="590733288489975971">Atlygis už reklamą</translation>
-<translation id="207268487070188114">Vienkartiniai arbatpinigiai</translation>
+<translation id="2613359062756190460">Vienkartiniai arbatpinigiai</translation>
 <translation id="7577100371127227294">Mėnesiniai arbatpinigiai</translation>
 <translation id="7091980679045978090">Numatomas uždarbis</translation>
 <translation id="1346059596910821859">Arbatpinigiai</translation>

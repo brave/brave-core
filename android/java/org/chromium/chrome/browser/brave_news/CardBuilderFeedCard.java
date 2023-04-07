@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.brave_news;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -422,7 +421,7 @@ public class CardBuilderFeedCard {
                                         });
                                     }
                                 });
-                            } catch (ActivityNotFoundException e) {
+                            } catch (BraveActivity.BraveActivityNotFoundException e) {
                                 Log.e(TAG, "createCard DISPLAY_AD " + e);
                             }
                         });
@@ -731,7 +730,7 @@ public class CardBuilderFeedCard {
                     Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
                     mPosition);
             TabUtils.openUrlInSameTab(myUrl);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "openUrlInSameTabAndSavePosition " + e);
         }
     }

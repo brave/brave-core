@@ -7,7 +7,6 @@
 
 package org.chromium.chrome.browser.vpn.fragments;
 
-import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +46,7 @@ public class LinkVpnSubscriptionDialogFragment
             try {
                 BraveActivity braveActivity = BraveActivity.getBraveActivity();
                 braveActivity.openNewOrSelectExistingTab(BraveVpnUtils.getBraveAccountUrl());
-            } catch (ActivityNotFoundException e) {
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
                 Log.e(TAG, "onClick btn_done " + e);
             }
         }

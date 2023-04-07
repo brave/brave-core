@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import static org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletDAppsActivity.ActivityType.GET_ENCRYPTION_PUBLIC_KEY_REQUEST;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -112,7 +111,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
                 }
             });
 
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
 
@@ -256,7 +255,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.getWalletModel().getDappsModel().clearDappsState();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "onDestroy " + e);
         }
 

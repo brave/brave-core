@@ -91,6 +91,11 @@ void AddChromeLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x4C, 0x54, 0xD2)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0xDA, 0xDC, 0xE8)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0xE1, 0xE2, 0xF6)};
+
+  // Used for download button progress ring color.
+  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x42, 0x3E, 0xEE)};
+  mixer[kColorDownloadToolbarButtonRingBackground] = {
+      SkColorSetARGB(0x0F, 0x1D, 0x1F, 0x25)};
 }
 
 void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
@@ -128,6 +133,9 @@ void AddChromeDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[ui::kColorToggleButtonThumbOn] = {SkColorSetRGB(0x44, 0x36, 0xE1)};
   mixer[ui::kColorToggleButtonTrackOff] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[ui::kColorToggleButtonTrackOn] = {SkColorSetRGB(0x76, 0x79, 0xB1)};
+  mixer[kColorDownloadToolbarButtonActive] = {SkColorSetRGB(0x87, 0x84, 0xF4)};
+  mixer[kColorDownloadToolbarButtonRingBackground] = {
+      SkColorSetARGB(0x33, 0x16, 0x17, 0x1D)};
 }
 
 }  // namespace
@@ -274,6 +282,11 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorWebDiscoveryInfoBarNoThanks] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
   mixer[kColorWebDiscoveryInfoBarClose] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
 
+  // Color for download button when all completed and button needs user
+  // interaction.
+  mixer[kColorBraveDownloadToolbarButtonActive] = {
+      SkColorSetRGB(0x5F, 0x5C, 0xF1)};
+
   // Colors for HelpBubble. IDs are defined in
   // chrome/browser/ui/color/chrome_color_id.h
   mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
@@ -369,6 +382,9 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(0xBF, 0xEC, 0xEF, 0xF2)};
   mixer[kColorWebDiscoveryInfoBarClose] = {
       SkColorSetARGB(0xBF, 0x8C, 0x90, 0xA1)};
+
+  mixer[kColorBraveDownloadToolbarButtonActive] = {
+      SkColorSetRGB(0x87, 0x84, 0xF4)};
 
   // Colors for HelpBubble. IDs are defined in
   // chrome/browser/ui/color/chrome_color_id.h

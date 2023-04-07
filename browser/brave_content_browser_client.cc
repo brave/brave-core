@@ -197,8 +197,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_private_new_tab_ui/common/brave_private_new_tab.mojom.h"
-#include "brave/components/brave_rewards/common/brave_rewards_panel.mojom.h"
 #include "brave/components/brave_rewards/common/features.h"
+#include "brave/components/brave_rewards/common/mojom/brave_rewards_panel.mojom.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
@@ -218,15 +218,19 @@ namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
                                      content::BrowserContext* browser_context) {
-  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url,
+                                                          browser_context)) {
     return true;
+  }
 
   return false;
 }
 
 bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
-  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url,
+                                                          browser_context)) {
     return true;
+  }
 
   return false;
 }
@@ -273,25 +277,29 @@ void MaybeBindEthereumProvider(
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
 
-  if (!json_rpc_service)
+  if (!json_rpc_service) {
     return;
+  }
 
   auto* tx_service = brave_wallet::TxServiceFactory::GetServiceForContext(
       frame_host->GetBrowserContext());
-  if (!tx_service)
+  if (!tx_service) {
     return;
+  }
 
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
-  if (!keyring_service)
+  if (!keyring_service) {
     return;
+  }
 
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
-  if (!brave_wallet_service)
+  if (!brave_wallet_service) {
     return;
+  }
 
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
@@ -312,19 +320,22 @@ void MaybeBindSolanaProvider(
   auto* keyring_service =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
-  if (!keyring_service)
+  if (!keyring_service) {
     return;
+  }
 
   auto* brave_wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
           frame_host->GetBrowserContext());
-  if (!brave_wallet_service)
+  if (!brave_wallet_service) {
     return;
+  }
 
   auto* tx_service = brave_wallet::TxServiceFactory::GetServiceForContext(
       frame_host->GetBrowserContext());
-  if (!tx_service)
+  if (!tx_service) {
     return;
+  }
 
   content::WebContents* web_contents =
       content::WebContents::FromRenderFrameHost(frame_host);
@@ -341,8 +352,9 @@ void BindBraveSearchFallbackHost(
     mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
   content::RenderProcessHost* render_process_host =
       content::RenderProcessHost::FromID(process_id);
-  if (!render_process_host)
+  if (!render_process_host) {
     return;
+  }
 
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   mojo::MakeSelfOwnedReceiver(
@@ -474,7 +486,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
     content::WebUIBrowserInterfaceBrokerRegistry& registry) {
   ChromeContentBrowserClient::RegisterWebUIInterfaceBrokers(registry);
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !BUILDFLAG(IS_ANDROID)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     registry.ForWebUI<VPNPanelUI>()
         .Add<brave_vpn::mojom::PanelHandlerFactory>();
   }
@@ -489,7 +501,8 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
   if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
-    registry.ForWebUI<commands::CommandsUI>().Add<CommandsService>();
+    registry.ForWebUI<commands::CommandsUI>()
+        .Add<commands::mojom::CommandsService>();
   }
 #endif
 }
@@ -508,14 +521,17 @@ uint8_t BraveContentBrowserClient::WorkerGetBraveFarblingLevel(
       HostContentSettingsMapFactory::GetForProfile(browser_context);
   const bool shields_up =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
-  if (!shields_up)
+  if (!shields_up) {
     return BraveFarblingLevel::OFF;
+  }
   auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
       host_content_settings_map, url);
-  if (fingerprinting_type == ControlType::BLOCK)
+  if (fingerprinting_type == ControlType::BLOCK) {
     return BraveFarblingLevel::MAXIMUM;
-  if (fingerprinting_type == ControlType::ALLOW)
+  }
+  if (fingerprinting_type == ControlType::ALLOW) {
     return BraveFarblingLevel::OFF;
+  }
   return BraveFarblingLevel::BALANCED;
 }
 
@@ -754,8 +770,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               speedreader_service, settings_map, tab_helper->GetWeakPtr(),
               request.url, check_disabled_sites,
               base::SingleThreadTaskRunner::GetCurrentDefault());
-      if (throttle)
+      if (throttle) {
         result.push_back(std::move(throttle));
+      }
     }
 #endif  // ENABLE_SPEEDREADER
 
@@ -869,8 +886,9 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
     content::BrowserContext* browser_context,
     const GURL& url) {
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (!profile)
+  if (!profile) {
     return url;
+  }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   return ChromeContentBrowserClientExtensionsPart::GetEffectiveURL(profile,
@@ -944,8 +962,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #if !BUILDFLAG(IS_ANDROID)
   std::unique_ptr<content::NavigationThrottle> ntp_shows_navigation_throttle =
       NewTabShowsNavigationThrottle::MaybeCreateThrottleFor(handle);
-  if (ntp_shows_navigation_throttle)
+  if (ntp_shows_navigation_throttle) {
     throttles.push_back(std::move(ntp_shows_navigation_throttle));
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -960,8 +979,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   std::unique_ptr<content::NavigationThrottle> tor_navigation_throttle =
       tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle,
                                                          context->IsTor());
-  if (tor_navigation_throttle)
+  if (tor_navigation_throttle) {
     throttles.push_back(std::move(tor_navigation_throttle));
+  }
   std::unique_ptr<tor::OnionLocationNavigationThrottleDelegate>
       onion_location_navigation_throttle_delegate =
           std::make_unique<tor::OnionLocationNavigationThrottleDelegate>();
@@ -971,8 +991,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               handle, TorProfileServiceFactory::IsTorDisabled(),
               std::move(onion_location_navigation_throttle_delegate),
               context->IsTor());
-  if (onion_location_navigation_throttle)
+  if (onion_location_navigation_throttle) {
     throttles.push_back(std::move(onion_location_navigation_throttle));
+  }
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS)
@@ -984,8 +1005,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           handle, ipfs::IpfsServiceFactory::GetForContext(context),
           user_prefs::UserPrefs::Get(context),
           g_browser_process->GetApplicationLocale());
-  if (ipfs_navigation_throttle)
+  if (ipfs_navigation_throttle) {
     throttles.push_back(std::move(ipfs_navigation_throttle));
+  }
 #endif
 
   std::unique_ptr<content::NavigationThrottle>
@@ -993,8 +1015,9 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           decentralized_dns::DecentralizedDnsNavigationThrottle::
               MaybeCreateThrottleFor(handle, g_browser_process->local_state(),
                                      g_browser_process->GetApplicationLocale());
-  if (decentralized_dns_navigation_throttle)
+  if (decentralized_dns_navigation_throttle) {
     throttles.push_back(std::move(decentralized_dns_navigation_throttle));
+  }
 
   if (std::unique_ptr<
           content::NavigationThrottle> domain_block_navigation_throttle =
@@ -1005,15 +1028,17 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
               EphemeralStorageServiceFactory::GetForContext(context),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(context)),
-              g_browser_process->GetApplicationLocale()))
+              g_browser_process->GetApplicationLocale())) {
     throttles.push_back(std::move(domain_block_navigation_throttle));
+  }
 
   // Debounce
   if (auto debounce_throttle =
           debounce::DebounceNavigationThrottle::MaybeCreateThrottleFor(
-              handle,
-              debounce::DebounceServiceFactory::GetForBrowserContext(context)))
+              handle, debounce::DebounceServiceFactory::GetForBrowserContext(
+                          context))) {
     throttles.push_back(std::move(debounce_throttle));
+  }
 
   return throttles;
 }

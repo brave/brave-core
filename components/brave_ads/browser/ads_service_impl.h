@@ -19,13 +19,13 @@
 #include "base/task/cancelable_task_tracker.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom-forward.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
@@ -35,15 +35,9 @@
 #include "ui/base/idle/idle.h"
 
 class GURL;
-
 class NotificationDisplayService;
 class PrefService;
 class Profile;
-
-namespace ads {
-class Database;
-struct NewTabPageAdInfo;
-}  // namespace ads
 
 namespace base {
 class OneShotTimer;
@@ -65,7 +59,9 @@ class SimpleURLLoader;
 namespace brave_ads {
 
 class AdsTooltipsDelegate;
+class Database;
 class DeviceId;
+struct NewTabPageAdInfo;
 
 class AdsServiceImpl : public AdsService,
                        public bat_ads::mojom::BatAdsClient,
@@ -102,8 +98,6 @@ class AdsServiceImpl : public AdsService,
   void OnMigrateConfirmationState(bool success);
   void GetDeviceId();
   void OnGetDeviceId(std::string device_id);
-  void DetectUncertainFuture();
-  void OnDetectUncertainFuture(bool is_uncertain_future);
 
   bool UserHasOptedIn() const;
 
@@ -194,9 +188,7 @@ class AdsServiceImpl : public AdsService,
                     bool is_dry_run = false);
 
   void DisableAdsIfUpgradingFromPreBraveAdsBuild();
-  void DisableAdsForUnsupportedCountryCodes(
-      const std::string& country_code,
-      const std::vector<std::string>& country_codes);
+  void DisableAdsIfUnsupportedRegion();
   void MigratePrefsVersion1To2();
   void MigratePrefsVersion2To3();
   void MigratePrefsVersion3To4();
@@ -213,8 +205,6 @@ class AdsServiceImpl : public AdsService,
   void Shutdown() override;
 
   // AdsService:
-  bool IsSupportedLocale() const override;
-
   bool IsEnabled() const override;
   void SetEnabled(bool is_enabled) override;
 
@@ -242,36 +232,17 @@ class AdsServiceImpl : public AdsService,
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnTabHtmlContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(const SessionID& tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnTabDidStartPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidStopPlayingMedia(const SessionID& tab_id) override;
-  void OnTabDidChange(const SessionID& tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active) override;
-  void OnDidCloseTab(const SessionID& tab_id) override;
-
   void GetStatementOfAccounts(GetStatementOfAccountsCallback callback) override;
 
   void MaybeServeInlineContentAd(
       const std::string& dimensions,
-      MaybeServeInlineContentAdCallback callback) override;
+      MaybeServeInlineContentAdAsDictCallback callback) override;
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::InlineContentAdEventType event_type) override;
+      mojom::InlineContentAdEventType event_type) override;
 
-  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
+  absl::optional<NewTabPageAdInfo> GetPrefetchedNewTabPageAdForDisplay()
       override;
   void PrefetchNewTabPageAd() override;
   void OnFailedToPrefetchNewTabPageAd(
@@ -280,39 +251,59 @@ class AdsServiceImpl : public AdsService,
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::NewTabPageAdEventType event_type) override;
+      mojom::NewTabPageAdEventType event_type) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::PromotedContentAdEventType event_type) override;
+      mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      ads::mojom::SearchResultAdEventType event_type) override;
+      mojom::SearchResultAdInfoPtr ad_mojom,
+      mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType ad_type,
+      mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetHistory(base::Time from_time,
                   base::Time to_time,
                   GetHistoryCallback callback) override;
 
-  void ToggleAdThumbUp(base::Value::Dict value,
-                       ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(base::Value::Dict value,
-                         ToggleAdThumbDownCallback callback) override;
-  void ToggleAdOptIn(const std::string& category,
-                     int action,
-                     ToggleAdOptInCallback callback) override;
-  void ToggleAdOptOut(const std::string& category,
-                      int action,
-                      ToggleAdOptOutCallback callback) override;
-  void ToggleSavedAd(base::Value::Dict value,
-                     ToggleSavedAdCallback callback) override;
-  void ToggleFlaggedAd(base::Value::Dict value,
-                       ToggleFlaggedAdCallback callback) override;
+  void ToggleLikeAd(base::Value::Dict value,
+                    ToggleLikeAdCallback callback) override;
+  void ToggleDislikeAd(base::Value::Dict value,
+                       ToggleDislikeAdCallback callback) override;
+  void ToggleMarkToReceiveAdsForCategory(
+      const std::string& category,
+      int action,
+      ToggleMarkToReceiveAdsForCategoryCallback callback) override;
+  void ToggleMarkToNoLongerReceiveAdsForCategory(
+      const std::string& category,
+      int action,
+      ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) override;
+  void ToggleSaveAd(base::Value::Dict value,
+                    ToggleSaveAdCallback callback) override;
+  void ToggleMarkAdAsInappropriate(
+      base::Value::Dict value,
+      ToggleMarkAdAsInappropriateCallback callback) override;
+
+  void NotifyTabTextContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& text) override;
+  void NotifyTabHtmlContentDidChange(int32_t tab_id,
+                                     const std::vector<GURL>& redirect_chain,
+                                     const std::string& html) override;
+  void NotifyTabDidStartPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidStopPlayingMedia(int32_t tab_id) override;
+  void NotifyTabDidChange(int32_t tab_id,
+                          const std::vector<GURL>& redirect_chain,
+                          bool is_visible,
+                          bool is_incognito) override;
+  void NotifyDidCloseTab(int32_t tab_id) override;
+  void NotifyUserGestureEventTriggered(int32_t page_transition_type) override;
+  void NotifyBrowserDidBecomeActive() override;
+  void NotifyBrowserDidResignActive() override;
 
   // bat_ads::mojom::BatAdsClient:
   void IsNetworkConnectionAvailable(
@@ -346,7 +337,7 @@ class AdsServiceImpl : public AdsService,
 
   // TODO(https://github.com/brave/brave-browser/issues/14676) Decouple URL
   // request business logic.
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+  void UrlRequest(mojom::UrlRequestInfoPtr url_request,
                   UrlRequestCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/26194) Decouple
@@ -370,7 +361,7 @@ class AdsServiceImpl : public AdsService,
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
+  void RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                         RunDBTransactionCallback callback) override;
 
   // TODO(https://github.com/brave/brave-browser/issues/14666) Decouple P2A
@@ -378,8 +369,8 @@ class AdsServiceImpl : public AdsService,
   void RecordP2AEvent(const std::string& name,
                       base::Value::List value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
-                               training_instance) override;
+  void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
+                             training_sample) override;
 
   void GetBooleanPref(const std::string& path,
                       GetBooleanPrefCallback callback) override;
@@ -441,9 +432,9 @@ class AdsServiceImpl : public AdsService,
 
   base::OneShotTimer restart_bat_ads_service_timer_;
 
-  ads::mojom::SysInfo sys_info_;
+  mojom::SysInfo sys_info_;
 
-  std::unique_ptr<ads::Database> database_;
+  std::unique_ptr<Database> database_;
 
   base::RepeatingTimer idle_state_timer_;
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;
@@ -452,7 +443,8 @@ class AdsServiceImpl : public AdsService,
   std::map<std::string, std::unique_ptr<base::OneShotTimer>>
       notification_ad_timers_;
 
-  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_;
+  absl::optional<NewTabPageAdInfo> prefetched_new_tab_page_ad_;
+  bool is_prefetching_new_tab_page_ad_ = false;
 
   std::string retry_opening_new_tab_for_ad_with_placement_id_;
 
@@ -486,6 +478,7 @@ class AdsServiceImpl : public AdsService,
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient> bat_ads_client_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
+  mojo::Remote<bat_ads::mojom::BatAdsClientNotifier> bat_ads_client_notifier_;
 };
 
 }  // namespace brave_ads

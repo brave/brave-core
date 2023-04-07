@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
+<translation id="3478449063771497234">Bildirimler devre dışı bırakıldı</translation>
+<translation id="7466579932043491502">Bildirimler devre dışıyken Brave Ödülleri çalışmayabilir.</translation>
+<translation id="4259212006412783790">AÇ</translation>
+<translation id="6112331814131703370">"Uygulamaya Git" Bildirimlerini engelle</translation>
 <translation id="4744921452903670666">Bize ne düşündüğünü söyle!</translation>
 <translation id="2524310205387880526">Brave'i Puanlayın</translation>
 <translation id="4104400246019119780">Teşekkürler!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162"><ph name="MONTH_VALUE"/> Reklam Ödülleriniz burada!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> Ödülleri: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Almak için <ph name="TOKEN"/> gününüz kaldı</translation>
-<translation id="2323069945529668668">Uh oh!</translation>
-<translation id="7510166204621526816">Brave Rewards sunucusu yanıt vermiyor. Bunu mümkün olan en kısa sürede düzelteceğiz.</translation>
 <translation id="683765328936486920">YouTube'da</translation>
 <translation id="8969049974285901797">Twitch'te</translation>
 <translation id="3101693828171454453">yetersiz <ph name="TOKEN"/></translation>
@@ -612,7 +614,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5050890334032852465">Hesap izleme listesini kaydet</translation>
 <translation id="7755766175599167100">Belirteçler ara</translation>
 <translation id="3835223348537121988">Bakiye:</translation>
-<translation id="6888491517683356528">Ramp'e devam et</translation>
+<translation id="3956169227169516344">Satın Alma Yöntemini Seç</translation>
 <translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="3784455785234192852">Kilit</translation>
 <translation id="8796429300536029044">NFT Ayrıntıları</translation>
@@ -626,6 +628,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="414639769490080648">Brave Cüzdan'ın otomatik olarak kilitlenmesi için beklenilmesi gereken dakika</translation>
 <translation id="4993345308607970390">Brave Cüzdanı'nı Sıfırla</translation>
 <translation id="4322846864135539519">Brave Ödüllerinizi sıfırlamak istediğinize emin misiniz? Cüzdanınız yedeklenmediyse sıfırlamak (tüm ilişkili paralar da dahil olmak üzere) tüm hesap verilerinizi kaybetmenize sebep olabilir. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın.</translation>
+<translation id="6915083716464390008">Aşağıdaki seçeneklerden birini seçin</translation>
+<translation id="7667423728712601865">Visa veya Mastercard ile kripto satın alın.</translation>
+<translation id="3101839349578102016">Banka hesabınızla anında satın alın. Daha düşük ücretler.</translation>
+<translation id="7269640984027668973"><ph name="RAMP_PROVIDER"/> ile satın al</translation>
 <translation id="4862812525895306758">İşlem &amp; nonce bilgisini temizle</translation>
 <translation id="5693968582510626466">İşlemleri temizlemek geliştiriciler için veya yerel bir sunucudaki durumu temizlemek için faydalı olabilir</translation>
 <translation id="5421107279168565467">İşlem ve nonce bilgisini sıfırlamak istediğinizden emin misiniz? Bu seçenek en çok yerel bir test sunucusu çalıştıran geliştiriciler tarafından kullanılır. Onaylamak için "<ph name="CONFIRMATION_PHRASE"/>" yazın</translation>
@@ -800,7 +806,7 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="3506416339268164412">Alıcı adresi bir token'ın kontrat adresi</translation>
 <translation id="3494964159182650590">Ödüller Özeti</translation>
 <translation id="590733288489975971">Ads Ödülleri</translation>
-<translation id="207268487070188114">Tek Seferlik Bahşiş</translation>
+<translation id="2613359062756190460">Tek-Seferlik Bahşiş</translation>
 <translation id="7577100371127227294">Aylık Bahşişler</translation>
 <translation id="7091980679045978090">Tahmini kazanç</translation>
 <translation id="1346059596910821859">Bahşiş</translation>

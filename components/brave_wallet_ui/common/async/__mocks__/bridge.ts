@@ -15,8 +15,8 @@ import type WalletApiProxy from '../../wallet_api_proxy'
 // mocks
 import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
 import { mockedMnemonic } from '../../../stories/mock-data/user-accounts'
-import { mockAccount } from '../../constants/mocks'
-import { mockNetworks } from '../../../stories/mock-data/mock-networks'
+import { mockAccount, mockFilecoinMainnetNetwork, mockSolanaMainnetNetwork } from '../../constants/mocks'
+import { mockEthMainnet, mockNetworks } from '../../../stories/mock-data/mock-networks'
 import { mockAccountAssetOptions } from '../../../stories/mock-data/mock-asset-options'
 
 export const makeMockedStoreWithSpy = () => {
@@ -39,8 +39,30 @@ export const makeMockedStoreWithSpy = () => {
   return { store }
 }
 
+export interface WalletApiDataOverrides {
+  selectedCoin?: BraveWallet.CoinType
+  chainIdsForCoins?: Record<BraveWallet.CoinType, string>
+  networks?: BraveWallet.NetworkInfo[]
+}
+
 export class MockedWalletApiProxy {
   store = makeMockedStoreWithSpy().store
+
+  selectedCoin: BraveWallet.CoinType = BraveWallet.CoinType.ETH
+
+  chainIdsForCoins: Record<BraveWallet.CoinType, string> = {
+    [BraveWallet.CoinType.ETH]: BraveWallet.MAINNET_CHAIN_ID,
+    [BraveWallet.CoinType.SOL]: BraveWallet.SOLANA_MAINNET,
+    [BraveWallet.CoinType.FIL]: BraveWallet.FILECOIN_MAINNET
+  }
+
+  chainsForCoins: Record<BraveWallet.CoinType, BraveWallet.NetworkInfo> = {
+    [BraveWallet.CoinType.ETH]: mockEthMainnet,
+    [BraveWallet.CoinType.SOL]: mockSolanaMainnetNetwork,
+    [BraveWallet.CoinType.FIL]: mockFilecoinMainnetNetwork
+  }
+
+  networks: BraveWallet.NetworkInfo[] = mockNetworks
 
   mockQuote = {
     price: '1705.399509',
@@ -86,6 +108,20 @@ export class MockedWalletApiProxy {
     sources: []
   }
 
+  constructor (overrides?: WalletApiDataOverrides | undefined) {
+    this.applyOverrides(overrides)
+  }
+
+  applyOverrides (overrides?: WalletApiDataOverrides | undefined) {
+    if (!overrides) {
+      return
+    }
+
+    this.selectedCoin = overrides.selectedCoin ?? this.selectedCoin
+    this.chainIdsForCoins = overrides.chainIdsForCoins ?? this.chainIdsForCoins
+    this.networks = overrides.networks ?? this.networks
+  }
+
   blockchainRegistry: Partial<
     InstanceType<typeof BraveWallet.BlockchainRegistryInterface>
   > = {
@@ -107,7 +143,13 @@ export class MockedWalletApiProxy {
           (t) => t.chainId === chainId && t.coin === coin
         )
       }
-    }
+    },
+    getSelectedCoin: async () => {
+      return { coin: this.selectedCoin }
+    },
+    setSelectedCoin: (coin) => {
+      this.selectedCoin = coin
+    },
   }
 
   swapService: Partial<InstanceType<typeof BraveWallet.SwapServiceInterface>> =
@@ -192,7 +234,7 @@ export class MockedWalletApiProxy {
     InstanceType<typeof BraveWallet.BraveWalletP3AInterface>
   > = {
     reportOnboardingAction: () => {},
-    reportEthereumProvider: () => {}
+    reportJSProvider: () => {}
   }
 
   assetRatioService: Partial<
@@ -221,6 +263,32 @@ export class MockedWalletApiProxy {
     },
     getHiddenNetworks: async () => {
       return { chainIds: [] }
+    },
+    getChainId: async (coin) => {
+      return { chainId: this.chainIdsForCoins[coin] }
+    },
+    getNetwork: async (coin) => {
+      return { network: this.chainsForCoins[coin] }
+    },
+    setNetwork: async (chainId, coin) => {
+      this.selectedCoin = coin
+      this.chainIdsForCoins[coin] = chainId
+      const foundNetwork = mockNetworks.find(
+        (net) => net.chainId === chainId && net.coin === coin
+      )
+
+      if (!foundNetwork) {
+        throw new Error(
+          `Could net find a mocked network to use for chainId: ${
+            chainId //
+          } & coin: ${
+            coin //
+          }`
+        )
+      }
+
+      this.chainsForCoins[coin] = foundNetwork
+      return { success: true }
     }
   }
 
@@ -270,12 +338,19 @@ export class MockedWalletApiProxy {
   }
 }
 
+let apiProxy: Partial<WalletApiProxy>
+
 export function getAPIProxy (): Partial<WalletApiProxy> {
-  return new MockedWalletApiProxy() as unknown as Partial<WalletApiProxy> & MockedWalletApiProxy
+  if (!apiProxy) {
+    apiProxy =
+      new MockedWalletApiProxy() as unknown as Partial<WalletApiProxy> &
+        MockedWalletApiProxy
+  }
+  return apiProxy
 }
 
 export function getMockedAPIProxy (): WalletApiProxy & MockedWalletApiProxy {
-  return new MockedWalletApiProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
+  return getAPIProxy() as unknown as WalletApiProxy & MockedWalletApiProxy
 }
 
 export default getAPIProxy

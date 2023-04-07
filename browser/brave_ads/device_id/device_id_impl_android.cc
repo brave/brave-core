@@ -20,8 +20,7 @@ void DeviceIdImpl::GetRawDeviceId(DeviceIdCallback callback) {
   base::android::ScopedJavaLocalRef<jstring> android_id =
       Java_DeviceIdImplAndroid_getAndroidId(env);
   if (!android_id) {
-    std::move(callback).Run({});
-    return;
+    return std::move(callback).Run({});
   }
 
   std::string device_id =

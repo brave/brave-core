@@ -1,7 +1,7 @@
-/* Copyright 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_URL_LOADER_H_
@@ -24,6 +24,8 @@ class BodySnifferThrottle;
 }  // namespace body_sniffer
 
 namespace speedreader {
+
+enum class DistillationResult : int;
 
 class SpeedreaderRewriterService;
 class SpeedreaderService;
@@ -92,6 +94,8 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
   // Not Owned
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;
   raw_ptr<SpeedreaderService> speedreader_service_ = nullptr;
+
+  DistillationResult distillation_result_;
 
   base::WeakPtrFactory<SpeedReaderURLLoader> weak_factory_{this};
 };

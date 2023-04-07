@@ -29,6 +29,8 @@ brave_chrome_java_deps = [
   "//brave/browser/ui/android/omnibox:java",
   "//brave/browser/ui/android/theme:java",
   "//brave/components/brave_news/common:mojom_java",
+  "//brave/components/brave_rewards/common/mojom:ledger_interfaces_java",
+  "//brave/components/brave_rewards/common/mojom:ledger_types_java",
   "//brave/components/brave_shields/common:mojom_java",
   "//brave/components/brave_wallet/common:mojom_java",
   "//brave/components/browser_ui/accessibility/android:java",
@@ -39,15 +41,25 @@ brave_chrome_java_deps = [
   "//brave/third_party/android_deps:com_airbnb_android_java",
   "//brave/third_party/android_deps:com_android_billingclient_java",
   "//brave/third_party/android_deps:com_android_installreferrer_java",
+  "//brave/third_party/android_deps:com_brave_playlist_java",
   "//brave/third_party/android_deps:com_github_bumptech_glide_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_common_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_core_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_database_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_datasource_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_decoder_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_extractor_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_exoplayer_ui_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_extension_cast_java",
+  "//brave/third_party/android_deps:com_google_android_exoplayer_extension_mediasession_java",
   "//brave/third_party/android_deps:com_wireguard_android_J__unpack_aar",
   "//brave/third_party/android_deps:com_wireguard_android_java",
   "//brave/third_party/android_deps:google_play_services_safetynet_java",
   "//brave/third_party/zxing:zxing_java",
-  "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:interfaces_java",
-  "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:ledger_types_java",
+  "//third_party/android_deps:com_google_code_gson_gson_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
   "//third_party/android_deps:google_play_services_vision_java",
+  "//third_party/android_deps:org_jetbrains_kotlinx_kotlinx_coroutines_android_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_core_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_livedata_java",
   "//third_party/androidx:androidx_lifecycle_lifecycle_viewmodel_java",
@@ -77,3 +89,7 @@ brave_chrome_app_java_resources_deps = [
 
 brave_resources_exclusion_exceptions =
     [ "*com_google_android_material*design_bottom_*" ]
+
+# Re-define play core target to use full library as we need it for seemless review processes.
+playcore_target =
+    "//brave/third_party/android_deps:com_google_android_play_core_java"

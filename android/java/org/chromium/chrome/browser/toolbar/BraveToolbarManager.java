@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.toolbar;
 
-import android.content.ActivityNotFoundException;
 import android.content.res.Configuration;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -215,7 +214,7 @@ public class BraveToolbarManager extends ToolbarManager {
                     try {
                         BraveActivity braveActivity = BraveActivity.getBraveActivity();
                         braveActivity.dismissCookieConsent();
-                    } catch (ActivityNotFoundException e) {
+                    } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "setLayoutStateProvider onStartedShowing click " + e);
                     }
                 }
@@ -326,6 +325,12 @@ public class BraveToolbarManager extends ToolbarManager {
                 && BottomToolbarConfiguration.isBottomToolbarEnabled()) {
             boolean isBottomToolbarVisible = newOrientation != Configuration.ORIENTATION_LANDSCAPE;
             setBottomToolbarVisible(isBottomToolbarVisible);
+        }
+
+        assert mActivity instanceof BraveActivity;
+
+        if (mActivity instanceof BraveActivity) {
+            ((BraveActivity) mActivity).updateBottomSheetPosition(newOrientation);
         }
     }
 

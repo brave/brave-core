@@ -19,12 +19,12 @@ class FilePath;
 
 namespace ntp_background_images {
 
-class NTPCustomBackgroundImagesService;
+class BraveNTPCustomBackgroundService;
 
 // This serves background image data.
 class NTPCustomImagesSource : public content::URLDataSource {
  public:
-  explicit NTPCustomImagesSource(NTPCustomBackgroundImagesService* service);
+  explicit NTPCustomImagesSource(BraveNTPCustomBackgroundService* service);
   ~NTPCustomImagesSource() override;
 
   NTPCustomImagesSource(const NTPCustomImagesSource&) = delete;
@@ -43,7 +43,7 @@ class NTPCustomImagesSource : public content::URLDataSource {
                     GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback, const std::string& input);
 
-  raw_ptr<NTPCustomBackgroundImagesService> service_ = nullptr;  // not owned
+  raw_ptr<BraveNTPCustomBackgroundService> service_ = nullptr;  // not owned
   base::WeakPtrFactory<NTPCustomImagesSource> weak_factory_;
 };
 

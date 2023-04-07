@@ -6,7 +6,7 @@
 #import "inline_content_ad_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "bat/ads/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/inline_content_ad_info.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -30,7 +30,7 @@
 @implementation InlineContentAdIOS
 
 - (instancetype)initWithInlineContentAdInfo:
-    (const ads::InlineContentAdInfo&)info {
+    (const brave_ads::InlineContentAdInfo&)info {
   if ((self = [super init])) {
     self.placementID = base::SysUTF8ToNSString(info.placement_id);
     self.creativeInstanceID =

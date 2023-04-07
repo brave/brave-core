@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -33,12 +34,15 @@ namespace brave_wallet {
 class BraveWalletAutoPinService
     : public KeyedService,
       public brave_wallet::mojom::WalletAutoPinService,
-      public brave_wallet::mojom::BraveWalletServiceTokenObserver {
+      public brave_wallet::mojom::BraveWalletServiceTokenObserver,
+      public brave_wallet::BraveWalletServiceObserverBase {
  public:
   BraveWalletAutoPinService(PrefService* prefs,
                             BraveWalletService* brave_wallet_service,
                             BraveWalletPinService* brave_wallet_pin_service);
   ~BraveWalletAutoPinService() override;
+
+  void Reset();
 
   mojo::PendingRemote<mojom::WalletAutoPinService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::WalletAutoPinService> receiver);
@@ -49,6 +53,11 @@ class BraveWalletAutoPinService
   // BraveWalletServiceTokenObserver
   void OnTokenAdded(mojom::BlockchainTokenPtr token) override;
   void OnTokenRemoved(mojom::BlockchainTokenPtr token) override;
+
+  // BraveWalletServiceObserverBase
+  void OnResetWallet() override;
+
+  bool IsAutoPinEnabled();
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest,
@@ -79,8 +88,6 @@ class BraveWalletAutoPinService
   void AddOrExecute(std::unique_ptr<IntentData> data);
   void PostRetry(std::unique_ptr<IntentData> data);
 
-  bool IsAutoPinEnabled();
-
   std::vector<absl::optional<std::string>> GetServicesToPin();
   std::vector<absl::optional<std::string>> GetKnownServices();
 
@@ -89,10 +96,12 @@ class BraveWalletAutoPinService
   void UnpinToken(const std::unique_ptr<IntentData>& data);
 
   void OnTaskFinished(bool result, mojom::PinErrorPtr error);
-  void OnValidateTaskFinished(bool result, mojom::PinErrorPtr error);
+  void OnValidateTaskFinished(mojom::TokenValidationResult result);
 
   mojo::Receiver<brave_wallet::mojom::BraveWalletServiceTokenObserver>
       token_observer_{this};
+  mojo::Receiver<brave_wallet::mojom::BraveWalletServiceObserver>
+      brave_wallet_service_observer_{this};
   mojo::ReceiverSet<brave_wallet::mojom::WalletAutoPinService> receivers_;
 
   raw_ptr<PrefService> pref_service_;

@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #include <string>
 #include <vector>
-#import "bat/ads/ads_client.h"
+#import "brave/components/brave_ads/core/ads_client.h"
 
 @protocol AdsClientBridge;
 
-class AdsClientIOS : public ads::AdsClient {
+class AdsClientIOS : public brave_ads::AdsClient {
  public:
   explicit AdsClientIOS(id<AdsClientBridge> bridge);
   ~AdsClientIOS() override;
@@ -21,11 +21,14 @@ class AdsClientIOS : public ads::AdsClient {
  private:
   __unsafe_unretained id<AdsClientBridge> bridge_;
 
+  void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void BindPendingObservers() override;
   bool IsNetworkConnectionAvailable() const override;
   bool IsBrowserActive() const override;
   bool IsBrowserInFullScreenMode() const override;
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
-  void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
+  void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   bool CanShowNotificationAds() override;
   void CloseNotificationAd(const std::string& placement_id) override;
   void RecordAdEventForId(const std::string& id,
@@ -36,30 +39,32 @@ class AdsClientIOS : public ads::AdsClient {
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
   void ResetAdEventHistoryForId(const std::string& id) const override;
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
-                  ads::UrlRequestCallback callback) override;
+  void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
+                  brave_ads::UrlRequestCallback callback) override;
   void Save(const std::string& name,
             const std::string& value,
-            ads::SaveCallback callback) override;
-  void Load(const std::string& name, ads::LoadCallback callback) override;
+            brave_ads::SaveCallback callback) override;
+  void Load(const std::string& name, brave_ads::LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
                         const int version,
-                        ads::LoadFileCallback callback) override;
-  void GetBrowsingHistory(const int max_count,
-                          const int days_ago,
-                          ads::GetBrowsingHistoryCallback callback) override;
+                        brave_ads::LoadFileCallback callback) override;
+  void GetBrowsingHistory(
+      const int max_count,
+      const int days_ago,
+      brave_ads::GetBrowsingHistoryCallback callback) override;
   std::string LoadDataResource(const std::string& name) override;
   void ClearScheduledCaptcha() override;
-  void GetScheduledCaptcha(const std::string& payment_id,
-                           ads::GetScheduledCaptchaCallback callback) override;
+  void GetScheduledCaptcha(
+      const std::string& payment_id,
+      brave_ads::GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
   void Log(const char* file,
            const int line,
            const int verbose_level,
            const std::string& message) override;
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
-                        ads::RunDBTransactionCallback callback) override;
+  void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
+                        brave_ads::RunDBTransactionCallback callback) override;
   void UpdateAdRewards() override;
   void SetBooleanPref(const std::string& path, const bool value) override;
   bool GetBooleanPref(const std::string& path) const override;
@@ -86,9 +91,9 @@ class AdsClientIOS : public ads::AdsClient {
   bool HasPrefPath(const std::string& path) const override;
   void RecordP2AEvent(const std::string& name,
                       base::Value::List value) override;
-  void LogTrainingInstance(
+  void AddTrainingSample(
       const std::vector<brave_federated::mojom::CovariateInfoPtr>
-          training_instance) override;
+          training_sample) override;
 };
 
 #endif  // BRAVE_IOS_BROWSER_API_ADS_ADS_CLIENT_IOS_H_

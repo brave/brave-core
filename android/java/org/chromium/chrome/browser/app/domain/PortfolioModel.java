@@ -14,6 +14,7 @@ import androidx.lifecycle.MutableLiveData;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
@@ -25,24 +26,29 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.SolanaTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.observers.BraveWalletServiceObserverImpl.BraveWalletServiceObserverImplDelegate;
+import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserverImpl;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AsyncUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
+import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
+import org.chromium.mojo.bindings.Callbacks;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     public final LiveData<List<NftDataModel>> mNftModels;
     private final CryptoSharedData mSharedData;
-    private final MutableLiveData<List<NftDataModel>> _mNftModels;
     private final Object mLock = new Object();
-    public PortfolioHelper mPortfolioHelper;
     private TxService mTxService;
     private KeyringService mKeyringService;
     private BlockchainRegistry mBlockchainRegistry;
@@ -52,8 +58,11 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
     private BraveWalletService mBraveWalletService;
     private AssetRatioService mAssetRatioService;
     private Context mContext;
+    private final MutableLiveData<List<NftDataModel>> _mNftModels;
     private MutableLiveData<Boolean> _mIsDiscoveringUserAssets;
     public LiveData<Boolean> mIsDiscoveringUserAssets;
+    private List<NetworkInfo> mAllNetworkInfos;
+    public PortfolioHelper mPortfolioHelper;
 
     public PortfolioModel(Context context, TxService txService, KeyringService keyringService,
             BlockchainRegistry blockchainRegistry, JsonRpcService jsonRpcService,
@@ -107,7 +116,8 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
                             new AsyncUtils.GetNftSolanaMetadataContext(
                                     nftMetaDataHandler.singleResponseComplete);
                     nftMetadata.asset = userAsset;
-                    mJsonRpcService.getSolTokenMetadata(userAsset.contractAddress, nftMetadata);
+                    mJsonRpcService.getSolTokenMetadata(
+                            userAsset.chainId, userAsset.contractAddress, nftMetadata);
                     nftMetadataList.add(nftMetadata);
 
                 } else {
@@ -130,6 +140,58 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         if (mBraveWalletService == null) return;
         _mIsDiscoveringUserAssets.postValue(true);
         mBraveWalletService.discoverAssetsOnAllSupportedChains();
+    }
+
+    public void fetchAssets(NetworkInfo selectedNetwork,
+            BraveWalletBaseActivity braveWalletBaseActivity,
+            Callbacks.Callback1<PortfolioHelper> callback) {
+        synchronized (mLock) {
+            clear();
+            if (mJsonRpcService == null) {
+                return;
+            }
+            NetworkModel.getAllNetworks(
+                    mJsonRpcService, mSharedData.getSupportedCryptoCoins(), allNetworks -> {
+                        mAllNetworkInfos = new ArrayList<>(allNetworks);
+                        if (selectedNetwork.chainId.equals(
+                                    NetworkUtils.getAllNetworkOption(mContext).chainId)) {
+                            mKeyringService.getKeyringsInfo(
+                                    mSharedData.getEnabledKeyrings(), keyringInfos -> {
+                                        AccountInfo[] accountInfos =
+                                                WalletUtils
+                                                        .getAccountInfosFromKeyrings(keyringInfos)
+                                                        .toArray(new AccountInfo[0]);
+                                        mPortfolioHelper =
+                                                new PortfolioHelper(braveWalletBaseActivity,
+                                                        mAllNetworkInfos, accountInfos);
+                                        mPortfolioHelper.setSelectedNetworks(
+                                                NetworkUtils.nonTestNetwork(mAllNetworkInfos));
+                                        mPortfolioHelper.fetchAllAssetsAndDetails(callback);
+                                    });
+                        } else {
+                            mKeyringService.getKeyringInfo(
+                                    AssetUtils.getKeyringForCoinType(selectedNetwork.coin),
+                                    keyringInfo -> {
+                                        mPortfolioHelper =
+                                                new PortfolioHelper(braveWalletBaseActivity,
+                                                        mAllNetworkInfos, keyringInfo.accountInfos);
+                                        mPortfolioHelper.setSelectedNetworks(
+                                                Arrays.asList(selectedNetwork));
+                                        mPortfolioHelper.fetchAllAssetsAndDetails(callback);
+                                    });
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {
+        _mIsDiscoveringUserAssets.postValue(false);
+    }
+
+    // Clear state
+    public void clear() {
+        _mNftModels.postValue(Collections.emptyList());
     }
 
     private void addServiceObservers() {
@@ -204,10 +266,5 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
             else
                 return AssetUtils.httpifyIpfsUrl(url);
         }
-    }
-
-    @Override
-    public void onDiscoverAssetsCompleted(BlockchainToken[] discoveredAssets) {
-        _mIsDiscoveringUserAssets.postValue(false);
     }
 }

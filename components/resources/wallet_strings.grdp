@@ -99,7 +99,8 @@
   <message name="IDS_BRAVE_WALLET_NOT_ENOUGH_FUNDS" desc="Send tab Not enough funds error">Not enough funds</message>
   <message name="IDS_BRAVE_WALLET_SEND_HALF" desc="Send tab Send Half button">HALF</message>
   <message name="IDS_BRAVE_WALLET_SEND_MAX" desc="Send tab Send Max button">MAX</message>
-  <message name="IDS_BRAVE_WALLET_REVIEW_ORDER" desc="Send tab Review order button">Review order</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_ORDER" desc="Swap tab Review order button">Review order</message>
+  <message name="IDS_BRAVE_WALLET_REVIEW_SEND" desc="Send tab Review order button">Review send</message>
   <message name="IDS_BRAVE_WALLET_NO_AVAILIBLE_TOKENS" desc="Send tab placeholder for empty token list.">No available tokens</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_TOKENS" desc="Send tab search for tokens.">Search token by name</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_NFTS" desc="Send tab search for nfts.">Search NFT by name, id</message>
@@ -136,6 +137,8 @@
   <message name="IDS_BRAVE_WALLET_WELCOME_RESTORE_BUTTON" desc="Restore screen button">Restore</message>
   <message name="IDS_BRAVE_WALLET_WELCOME_BUTTON" desc="Onboarding get started button">Create new wallet</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_EXISTING_WALLET" desc="Wallet onboarding welcome import wallet button">Import existing wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_CONNECT_HARDWARE_WALLET" desc="Wallet onboarding welcome connect hardware wallet button">Connect hardware wallet</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_DIVIDER_TEXT" desc="Wallet onboarding welcome divider text">Or</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TITLE" desc="Backup screen title">Back up your crypto wallet</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_DESCRIPTION" desc="Backup screen description">In the next step you’ll see a <ph name="RECOVERY_PHRASE_LENGTH">$1</ph>-word recovery phrase, which you can use to recover your primary crypto accounts. Save it someplace safe. Your recovery phrase is the only way to regain account access in case of forgotten password, lost or stolen device, or you want to switch wallets.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_INTRO_TERMS" desc="Backup screen terms check box">I understand that if I lose my recovery words, I will not be able to access my crypto wallet.</message>
@@ -356,10 +359,21 @@
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_BYTES" desc="Transaction detail box bytes label">BYTES</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_TITLE" desc="Connect with site panel select accounts label">Select accounts(s)</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_DESCRIPTION" desc="Connect with site panel description">View the addresses of your permitted accounts (required)</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_NEXT" desc="Connect with site panel next button">Next</message>
-  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE_HEADER_TITLE" desc="Connect with site panel header title">Connect with Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_WALLET" desc="Connect with site panel title">Connect wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_WITH_SITE" desc="Connect with site panel select account lable">or connect with:</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMITTED_LABEL" desc="Connect with site DApp will be able to label">This app will be able to:</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_NOT_PERMITTED_LABEL" desc="Connect with site DApp will not be able to label">It will not be able to:</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_BALANCE_AND_ACTIVITY" desc="Connect with site DApp will be able to check wallet balance">Check wallet balance and activity</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_REQUEST_APPROVAL" desc="Connect with site DApp will be able to make requests">Request approval for transactions and signatures</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_ADDRESS" desc="Connect with site DApp will be able to view your address">View your permitted wallet address</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_PERMISSION_MOVE_FUNDS" desc="Connect with site DApp will not be able to move your funds">Move funds without your permission</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_TRUST_WARNING" desc="Connect with site panel do you trust this site warning">Make sure you trust this site.</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_DURATION" desc="Connect with site panel Permission Duration label">Permission duration</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_UNTIL_CLOSE" desc="Connect with site panel DApp is connected until closing site">Until I close this site</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_DAY" desc="Connect with site panel DApp is connected for 1 day">For 24 hours</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_ONE_WEEK" desc="Connect with site panel DApp is connected for 1 week">For 1 week</message>
+  <message name="IDS_BRAVE_WALLET_PERMISSION_FOREVER" desc="Connect with site panel DApp is connected forever">Forever</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DETECTED" desc="Wallet Welcome screen detected crypto wallets title">Existing crypto wallets detected</message>
   <message name="IDS_BRAVE_WALLET_CRYPTO_WALLETS_DESCRIPTION_TWO" desc="Wallet welcome screen detected crypto wallets second description">If you&apos;d rather skip the import and keep the old Crypto Wallets experience, just navigate to the Brave Browser <ph name="LINK_BEFORE">$1</ph>Settings<ph name="LINK_AFTER">$2</ph> and change the default back to Crypto Wallets. You can also import, try the new Brave Wallet, and change back at any time.</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_BRAVE_LEGACY_DESCRIPTION" desc="Import CryptoWallets screen description">Enter your existing crypto wallets password to import to Brave Wallet. Enjoy a faster and more secure way to manage crypto assets and interact with Web3 DApps.</message>
@@ -493,7 +507,6 @@
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_TOKEN_ID" desc="NFT detail screen token id category">Token ID</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CONTRACT_ADDRESS" desc="NFT detail contract address category">Contract address</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_DESCRIPTION" desc="NFT detail description category">Description</message>
-  <message name="IDS_BRAVE_WALLET_NFT_DETAIL_CID" desc="NFT detail CID category">CID</message>
   <message name="IDS_BRAVE_WALLET_NFT_DETAIL_IMAGE_ADDRESS" desc="NFT detail image address category">Image location or address</message>
   <message name="IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED" desc="The error message when request for method 'eth_chainId' on custom network url failed">Request for method 'eth_chainId' on <ph name="URL">$1<ex>https://some.network/rpc/</ex></ph> failed</message>
   <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
@@ -516,24 +529,20 @@
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_ASSETS_COLUMN" desc="Market data table assets column name">Assets</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_PRICE_COLUMN" desc="Market data table price column name">Price</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_24Hr_COLUMN" desc="Market data table 24 hour percentage price change column name">24hr</message>
-  <message name="IDS_BRAVE_WALLET_MARKET_DATA_MARKETCAP_COLUMN" desc="Market data table market cap column name">Mkt. Cap</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_MARKETCAP_COLUMN" desc="Market data table market cap column name">Cap</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_VOLUME_COLUMN" desc="Market data table volume column name">Volume</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_BUY_DEPOSIT_COLUMN" desc="Market data table buy/deposit column name">Buy/Deposit</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND" desc="Text displayed when market data table rows are empty">No assets matching search or filter found</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_COIN_NOT_SUPPORTED" desc="Text displayed market coin item is not supported in brave wallet">This asset is not supported by Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
-  <message name="IDS_BRAVE_WALLET_BUY_WITH_WYRE" desc="Buy with Wyre option label">Buy with Wyre</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
   <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
-  <message name="IDS_BRAVE_WALLET_SELL_MINIMUM_AMOUNT" desc="Sell minimum amount alert">The minimum amount must be <ph name="FIAT_AMOUNT">$1<ex>$50</ex></ph> or more.</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_SARDINE" desc="Buy with Sardine option label">Buy with Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_TRANSAK" desc="Buy with Transak option label">Buy with Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_NETWORK_NAME" desc="Ramp.Network onramp provider name">Ramp.Network</message>
-  <message name="IDS_BRAVE_WALLET_BUY_WYRE_NAME" desc="Wyre onramp provider name">Wyre</message>
   <message name="IDS_BRAVE_WALLET_BUY_SARDINE_NAME" desc="Sardine onramp provider name">Sardine</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_NAME" desc="Transak onramp provider name">Transak</message>
   <message name="IDS_BRAVE_WALLET_BUY_RAMP_DESCRIPTION" desc="Ramp.Network description in buy options list">Buy crypto with Visa or Mastercard.</message>
-  <message name="IDS_BRAVE_WALLET_BUY_WYRE_DESCRIPTION" desc="Wyre description in buy options list">Buy crypto with Visa or Mastercard.</message>
   <message name="IDS_BRAVE_WALLET_BUY_SARDINE_DESCRIPTION" desc="Sardine description in buy options list">Easiest, fastest and cheapest way to buy crypto with card and bank transfers.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TRANSAK_DESCRIPTION" desc="Transak description in buy options list">Instant buy with your bank account. Lower fees.</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
@@ -579,7 +588,7 @@
   <message name="IDS_WALLET_TRANSACTION_STATUS_UPDATE_MESSAGE_TITLE_DROPPED" desc="Notification message title when transaction dropped">Transaction dropped</message>
   <message name="IDS_WALLET_TAB_IS_NOT_ACTIVE_ERROR" desc="Error message if it comes from an inactive tab">The tab is not active</message>
   <message name="IDS_BRAVE_WALLET_APPROVE_TRANSACTION" desc="Title message when dApp transaction approval is requested">Approve transaction</message>
-  
+
   <message name="IDS_BRAVE_WALLET_SOLANA_SYSTEM_PROGRAM" desc="Name of Solana System Program">System Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_CONFIG_PROGRAM" desc="Name of Solana Config Program">Config Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_STAKE_PROGRAM" desc="Name of Solana Stake Program">Stake Program</message>
@@ -591,7 +600,7 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_ASSOCIATED_TOKEN_PROGRAM" desc="Name of Solana Associated Token Program">Associated Token Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_META_DATA_PROGRAM" desc="Name of Solana MetaData Program">MetaData Program</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SYSVAR_RENT_PROGRAM" desc="Name of Solana SysvarRent Program">SysvarRent Program</message>
-  
+
   <message name="IDS_BRAVE_WALLET_SOLANA_ACCOUNTS" desc="Name of Solana instruction 'accounts' param">Accounts:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_DATA" desc="Name of Solana instruction 'data' param">Data:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_PROGRAM_ID" desc="Name of Solana instruction 'programID' param">Program ID:</message>
@@ -644,6 +653,8 @@
   <message name="IDS_BRAVE_WALLET_SOLANA_MAX_RETRIES" desc="Name of Solana instruction 'programID' param">Max Retries:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_PREFLIGHT_COMMITMENT" desc="Name of Solana instruction 'programID' param">Preflight Commitment:</message>
   <message name="IDS_BRAVE_WALLET_SOLANA_SKIP_PREFLIGHT" desc="Name of Solana instruction 'programID' param">Skip Preflight:</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_ACCOUNT" desc="Label for Solana Address Lookup Table Account section">Address Lookup Table Account:</message>
+  <message name="IDS_BRAVE_WALLET_SOLANA_ADDRESS_LOOKUP_TABLE_INDEX" desc="Label for Solana Address Lookup Table Index section">Address Lookup Table Index:</message>
   <message name="IDS_BRAVE_WALLET_SELECT_CURRENCY" desc="Currency selector title">Select currency</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CURRENCY" desc="Search placeholder for coin search input">Search currencies</message>
   <message name="IDS_BRAVE_WALLET_HELP_CENTER" desc="Help center link label">Help center</message>
@@ -844,21 +855,19 @@
 
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_WHY_NOT_AVAILABLE" desc="Inspect NFTs subheading">Why not available?</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_TOOLTIP" desc="Inspect NFTs page tooltip text">Some of NFT data are stored in centralized server such as AWS, Google Cloud, etc. In this case, it is not available to pin your NFT data to IPFS network.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Inspect NFTs page tooltip text">By running IPFS on your computer you can:</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Ensure your NFT data stays online and it cannot be tempered with.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Get content back using content identifier(CID) from an incorrect data.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_THREE" desc="Nft Pinning 3rd benefit">Participate proof of authenticity and make IPFS network rich and healthy.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Keep my NFTs always online</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_BUTTON" desc="Enable NFt pinning button text">Enable NFT pinning</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_HEADING" desc="Inspect NFTs page tooltip text">But IPFS needs individual participants to function. Run IPFS on your computer to:</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_ONE" desc="Nft Pinning 1st benefit">Contribute to the network's speed and availability</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BENEFITS_TWO" desc="Nft Pinning 2nd benefit">Increase the security of your NFTs</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_PIN_NFT_BUTTON" desc="Pin Nfts button text">Get started with IPFS</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BACK_BUTTON" desc="Back button text">Back</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_CLOSE_BUTTON" desc="Close button text">Close</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">A big step toward becoming part of web3</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Run IPFS node and keep your NFTs always online</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">Today's centralized internet model doesn't work in space. On today’s internet, every time you click something, that data has to be retrieved from a centralized server. If you are on the moon, there will be a delay with every click, as content is retrieved from earth. Using IPFS, content is retrieved from wherever is closest. If someone else nearby on the moon has already retrieved that data, your data can be retrieved by you or them on the moon. So is your NFT data.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">Check which NFTs of mine can be pinned</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever and cannot be tampered with.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">You’re running IPFS node. File is being fetched to local IPFS node.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> out of <ph name="PINNABLE">$2<ex>3</ex></ph> NFTs have been successfully pinned to IPFS.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_HEADING" desc="Local IPFS node page heading">The safest way to host NFTs</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_HEADING" desc="Local IPFS page run node heading">Run an IPFS node to keep your NFTs online forever</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">IPFS is a super-secure alternative to traditional Web hosting. Instead of relying on a single host, IPFS enables thousands of individuals (who run “nodes”) to work together to store content. And as long as one person has a copy, a file can never disappear. “Pinning” your NFTs to IPFS—and running your own IPFS node—is the best way to secure your NFTs.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">See which of my NFTs are eligible</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">You’re running IPFS node. File is being uploaded to local IPFS node.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> NFTs have been successfully pinned to IPFS.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE" desc="NFT IPFS banner learn more text">Learn more</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING" desc="Inspect page heading"><ph name="PINNABLE">$1<ex>1</ex></ph> out of <ph name="TOTAL">$2<ex>3</ex></ph> are available!</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN" desc="Inspect page unable to pin text">Unable to pin</message>
@@ -867,8 +876,14 @@
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNED" desc="IPFS pinning status description when an NFT is pinned">Pinned to your local IPFS node</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING" desc="IPFS pinning status description when pinning is in progress">NFT data is being pinned to your local IPFS node</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_FAILED" desc="IPFS pinning status description when pinning failed">Cannot be pinned to your local IPFS node</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_HEADING" desc="Heading shown in the tooltip when IPFS pinning fails">Most common reasons:</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_REASON_ONE" desc="Message shown in the tooltip when IPFS pinning fails">NFT has non-IPFS metadata url problems</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_REASON_TWO" desc="Message shown in the tooltip when IPFS pinning fails">Internal IPFS node problems</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_STATUS_PINNING_TOOLTIP_REASON_THREE" desc="Message shown in the tooltip when IPFS pinning fails">Not enough space on local node</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_IMPORT_NFT" desc="NFT tab import NFT dropdown item">Import NFT</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_HEADING" desc="NFT tab empty state heading">No NFTs here yet.</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_SUBHEADING" desc="NFT tab empty state subheading">Ready to add some? Just click the button below to import.</message>
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Import NFT</message>
+  <message name="IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Edit NFT</message>
 </grit-part>

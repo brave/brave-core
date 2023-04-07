@@ -8,7 +8,6 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//build/config/zip.gni")
-import("//build/util/process_version.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//media/media_options.gni")
 import("//third_party/icu/config.gni")
@@ -77,17 +76,10 @@ if (is_win) {
   if (build_delta_installer) {
     copy("copy_zucchini_binary_as_courgette") {
       # 32 bit Zucchini runs into memory allocation errors when virtual memory
-      # utilization is high. Using the 64 bit version fixes this. The obvious
-      # way of doing this would be to depend on zucchini($host_toolchain). But
-      # on Windows, host_toolchain on an x64 system is actually win_clang_x86 -
-      # see BUILDCONFIG.gn. The following line works around this and is
-      # resilient to upstream changes:
-      zucchini_toolchain = string_replace(host_toolchain, target_cpu, host_cpu)
-      zucchini = "//components/zucchini:zucchini(" + zucchini_toolchain + ")"
-
+      # utilization is high. Using the 64 bit version fixes this.
       visibility = [ ":mini_installer_dependencies" ]
-      deps = [ zucchini ]
-      sources = [ get_label_info(zucchini, "root_out_dir") + "/zucchini.exe" ]
+      deps = [ "//components/zucchini:zucchini64" ]
+      sources = [ "$root_out_dir/zucchini64.exe" ]
       outputs = [ "$root_out_dir/$last_chrome_installer/courgette64.exe" ]
     }
   }
@@ -105,7 +97,7 @@ group("brave") {
   deps = [ "build/$target_os:brave" ]
   if (!is_android && !is_ios) {
     deps += [
-      ":generate_version",
+      "//brave/components/version_info:generate_version",
       "//chrome",
     ]
   }
@@ -124,10 +116,8 @@ group("resources") {
 }
 
 if (is_android) {
-  android_assets("brave_pak_assets") {
+  android_assets("brave_file_assets") {
     sources = [
-      "$root_out_dir/brave_100_percent.pak",
-      "$root_out_dir/brave_resources.pak",
       "//brave/LICENSE.html",
       "//brave/android/java/org/chromium/chrome/browser/ntp/ntp_news_optin_icon_animation.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads.json",
@@ -139,9 +129,17 @@ if (is_android) {
       "//brave/android/java/org/chromium/chrome/browser/shields/disconnect_entitylist.json",
       "//brave/android/java/org/chromium/chrome/browser/vpn/brave_vpn_confirm.json",
     ]
+    disable_compression = false
+  }
+
+  android_assets("brave_pak_assets") {
+    sources = [
+      "$root_out_dir/brave_100_percent.pak",
+      "$root_out_dir/brave_resources.pak",
+    ]
 
     deps = [
-      "//brave:browser_dependencies",
+      "//brave:brave_file_assets",
       "//brave:packed_resources_100_percent",
       "//brave:packed_resources_extra",
     ]
@@ -299,16 +297,6 @@ copy("brave_license_dist_resources") {
   outputs = [ "$brave_dist_dir/{{source_file_part}}" ]
 }
 
-process_version("generate_version") {
-  template_file = "version.version"
-  extra_args = [
-    "-e",
-    "BRAVE_BROWSER_VERSION=\"$brave_version\"",
-  ]
-  output = "$root_out_dir/version"
-  process_only = true
-}
-
 if (!is_android && !is_ios) {
   copy("brave_dist_resources") {
     sources = [ "$root_out_dir/version" ]
@@ -316,9 +304,9 @@ if (!is_android && !is_ios) {
     deps = [
       ":brave",
       ":brave_license_dist_resources",
-      ":generate_version",
       ":packed_resources",
       "build/$target_os:brave",
+      "//brave/components/version_info:generate_version",
       "//chrome:packed_resources",
       "//third_party/icu:icudata",
     ]

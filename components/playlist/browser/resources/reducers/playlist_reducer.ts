@@ -13,7 +13,8 @@ import * as PlaylistMojo from 'gen/brave/components/playlist/common/mojom/playli
 const playlistReducer: Reducer<Playlist.State | undefined> =
     (state: Playlist.State | undefined, action) => {
       if (state === undefined) {
-        state = { lists: [], currentList: undefined }
+        state =
+          { lists: [], currentList: undefined, lastPlayerState: undefined }
       }
 
       switch (action.type) {
@@ -21,7 +22,9 @@ const playlistReducer: Reducer<Playlist.State | undefined> =
           const playlists = action.payload
           let currentList: PlaylistMojo.Playlist | undefined
           if (state.currentList) {
-            currentList = playlists.find((list: PlaylistMojo.Playlist) => list.id === state?.currentList?.id)
+            currentList = playlists.find((list: PlaylistMojo.Playlist) => {
+              return list.id === state?.currentList?.id
+            })
           }
           if (!currentList) currentList = playlists[0]
 
@@ -35,6 +38,11 @@ const playlistReducer: Reducer<Playlist.State | undefined> =
         case types.PLAYLIST_SELECTED:
           const playlist = action.payload
           state = { ...state, currentList: playlist }
+          break
+
+        case types.PLAYLIST_PLAYER_STATE_CHANGED:
+          state = { ...state, lastPlayerState: action.payload }
+          break
       }
       return state
     }

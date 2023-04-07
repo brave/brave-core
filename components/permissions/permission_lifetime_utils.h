@@ -25,6 +25,10 @@ bool ShouldShowLifetimeOptions(PermissionPrompt::Delegate* delegate);
 void SetRequestsLifetime(const std::vector<PermissionLifetimeOption>& options,
                          size_t index,
                          PermissionPrompt::Delegate* delegate);
+// Sets selected liftime for a request.
+void SetRequestLifetime(const std::vector<PermissionLifetimeOption>& options,
+                        size_t index,
+                        PermissionRequest* request);
 
 }  // namespace permissions
 

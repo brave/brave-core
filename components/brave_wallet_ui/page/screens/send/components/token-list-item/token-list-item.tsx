@@ -14,10 +14,11 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Utils
 import { getLocale } from '../../../../../../common/locale'
-import { getTokensNetwork } from '../../../../../utils/network-utils'
 import Amount from '../../../../../utils/amount'
 import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import { formatTokenBalanceWithSymbol } from '../../../../../utils/balance-utils'
+import { checkIfTokenNeedsNetworkIcon } from '../../../../../utils/asset-utils'
+import { useGetNetworkQuery } from '../../../../../common/slices/api.slice'
 
 // Components
 import {
@@ -48,9 +49,11 @@ export const TokenListItem = (props: Props) => {
   const { onClick, token, balance } = props
 
   // Wallet Selectors
-  const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+
+  // Queries
+  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
 
   // Memos
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -60,13 +63,6 @@ export const TokenListItem = (props: Props) => {
       marginRight: 0
     })
   }, [token?.isErc721])
-
-  const tokensNetwork = React.useMemo(() => {
-    if (token) {
-      return getTokensNetwork(networks, token)
-    }
-    return undefined
-  }, [token, networks])
 
   const fiatBalance = React.useMemo(() => {
     return computeFiatAmount(spotPrices, {
@@ -91,9 +87,11 @@ export const TokenListItem = (props: Props) => {
 
   const networkDescription = React.useMemo(() => {
     if (tokensNetwork) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', token.symbol)
-        .replace('$2', tokensNetwork.chainName ?? '')
+      return token.symbol !== ''
+        ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+          .replace('$1', token.symbol)
+          .replace('$2', tokensNetwork.chainName ?? '')
+        : tokensNetwork.chainName
     }
     return token.symbol
   }, [tokensNetwork, token.symbol])
@@ -112,11 +110,13 @@ export const TokenListItem = (props: Props) => {
         <IconAndName horizontalAlign='flex-start'>
           <IconsWrapper>
             <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-            {tokensNetwork && token?.contractAddress !== '' && (
+            {
+              tokensNetwork &&
+              checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
               <NetworkIconWrapper>
                 <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
               </NetworkIconWrapper>
-            )}
+            }
           </IconsWrapper>
           <Column horizontalAlign='flex-start'>
             <Text textColor='text01' textSize='14px' isBold={true} textAlign='left'>

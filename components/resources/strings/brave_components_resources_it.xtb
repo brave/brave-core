@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">Mostra i premi Brave</translation>
 <translation id="5585019845078534178">Carte</translation>
 <translation id="3870475560794762985">Mostra immagini sponsorizzate</translation>
-<translation id="8466529005131466476">Puoi guadagnare visualizzando siti sponsorizzati.</translation>
-<translation id="3955742714798578476">Stai guadagnando per la visualizzazione di immagini sponsorizzate.</translation>
-<translation id="7822618650711767369">Le immagini sponsorizzate sostengono Brave. Con Ricompense Brave puoi guadagnare una parte dei profitti derivanti dalle immagini sponsorizzate e supportare chi crea contenuti!</translation>
-<translation id="5579480493856401823">Disattivando i siti sponsorizzati, guadagnerai meno token al mese e ridurrai il sostegno a chi crea contenuti.</translation>
+<translation id="2414654907269324670">Stai guadagnando BAT per le immagini sponsorizzate.</translation>
+<translation id="4942016616604700968">Abilita Ricompense</translation>
+<translation id="5684562942023496754">Puoi guadagnare visualizzando immagini sponsorizzate.</translation>
+<translation id="8934374643857605034">In qualità di utente di Ricompense Brave puoi guadagnare BAT visualizzando immagini sponsorizzate.</translation>
+<translation id="5236449703984229754">Se attivi gli Annunci Brave puoi guadagnare BAT visualizzando immagini sponsorizzate. Se gli Annunci Brave non sono attivi, puoi comunque attivare le immagini sponsorizzate per supportare la mission di Brave.</translation>
+<translation id="1570714748649804013">In qualità di utente di Ricompense Brave puoi guadagnare BAT per le immagini sponsorizzate che visualizzi. Se disattivi le immagini sponsorizzate guadagnerai di meno.</translation>
+<translation id="8998727244653964783">Se colleghi un conto di custodia a Ricompense Brave puoi guadagnare BAT visualizzando immagini sponsorizzate. Allo stesso tempo con le immagini sponsorizzate supporti chi crea contenuti.</translation>
+<translation id="5512383650263136662">Con Ricompense Brave puoi guadagnare BAT visualizzando immagini sponsorizzate. Non sei ancora un utente di Ricompense Brave? Puoi comunque attivare le immagini sponsorizzate per supportare la mission di Brave.</translation>
 <translation id="2875302873837723333">siti migliori</translation>
 <translation id="8173998484743827990">Statistiche di Brave</translation>
 <translation id="383680190590774040">orologio</translation>
@@ -90,7 +94,7 @@
 <translation id="7894417427965898400">Gestisci i feed</translation>
 <translation id="9164544612367905452">Recupero…</translation>
 <translation id="1276592121036104130">Carica nuovo commento</translation>
-<translation id="2875288128871360696">Scorri per vedere le Brave News</translation>
+<translation id="2875288128871360696">Scorri per vedere le news di Brave</translation>
 <translation id="8510120023634509743">Reimposta le fonti delle Brave News</translation>
 <translation id="75825199302994272">Vuoi reimpostare tutte le scelte relative alle Brave News riportandole alle impostazioni predefinite?</translation>
 <translation id="954001034349395856">Tutte le risorse</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 secondi</translation>
 <translation id="8610523985422563960">1 minuto</translation>
 <translation id="2807328214759298515">Fino a</translation>
-<translation id="9031738692126722094">Abilita le mance a livello di contenuto su questi siti</translation>
+<translation id="7483857210736407752">Mostra i pulsanti Donazione sui siti</translation>
 <translation id="7583327070390027131">Prossima data della donazione mensile</translation>
 <translation id="6231182869178328516">Ho appena dato la mancia a <ph name="NAME"/> usando il Browser Brave. Scroprilo su https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Mi piace l’opportunità che mi dà <ph name="HASHTAG"/>Brave di sostenere gli autori! Ho appena inviato una donazione a <ph name="NAME"/> con <ph name="HASHTAG2"/>BAT. Se esegue la verifica su https://creators.brave.com prima del giorno <ph name="DATE"/>, il BAT diventa suo!</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">Attualmente non c'è cronologia degli Annunci di Brave</translation>
 <translation id="5345727496083327478">Non riceverai più annunci da questa categoria</translation>
 <translation id="2631006050119455616">Modifiche salvate</translation>
-<translation id="3819257035322786455">Backup</translation>
 <translation id="6976444672879155794">Contributo automatico, [[processor]]</translation>
 <translation id="8804164990146287819">Informativa sulla privacy</translation>
 <translation id="7262285991915892790">Trascina l'Icona BAT sul</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">I [[currency]] non utilizzati entro la data di scadenza saranno automaticamente restituiti allo User Growth Pool di Brave.</translation>
 <translation id="279567716178902927">Data di Scadenza Contributo</translation>
 <translation id="1389143276807887637">importa</translation>
-<translation id="3810973564298564668">Gestisci</translation>
-<translation id="6302422639282249274">Gestisci le Ricompense di Brave</translation>
 <translation id="211044356803193224">Donazioni mensili!</translation>
 <translation id="2487641031722095938">È il tuo giorno fortunato!</translation>
 <translation id="6255773350565723852">Il tuo contributo di token è in arrivo.</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">Rimuovi dai salvati</translation>
 <translation id="5530851178552343773">Hai destinato [[reservedAmount]] [[currency]] ai creatori di contenuti che ancora non si sono registrati e che quindi non ricevono offerte. Il tuo browser proverà a fare donazioni fino al momento della verifica, o per un periodo di 90 giorni.</translation>
 <translation id="5939518447894949180">Reimposta</translation>
+<translation id="3349204812119681938">Ripristina Ricompense di Brave</translation>
 <translation id="5669281110673664811">Cancella elenco esclusi</translation>
 <translation id="1797334173232638045">I siti bloccati sono stati spostati su</translation>
-<translation id="542042553430131913">Se il tuo profilo Ricompense Brave non è verificato, il tuo saldo BAT è salvato in locale sul tuo dispositivo.</translation>
-<translation id="2142973554991645476">Se vuoi tenere al sicuro i tuoi BAT in caso di re-installazione del browser o formattazione del dispositivo, e se vuoi dei vantaggi in più come la possibilità di aggiungere, prelevare e trasferire i BAT, ti consigliamo di <ph name="LINK_BEGIN"/>verificare il profilo<ph name="LINK_END"/>.</translation>
 <translation id="5317144262906129592">Puoi supportare chi crea contenuti inviando una mancia. È un modo per dire grazie per i suoi fantastici contenuti.</translation>
 <translation id="3074127054582480056">Attenzione</translation>
 <translation id="3659457123782988823">Vuoi davvero ripristinare il profilo Ricompense Brave?</translation>
 <translation id="1666001796278936721">Con l’azzeramento verrà eliminato il tuo attuale profilo Ricompense Brave e ricomincerai con un profilo Ricompense Brave completamente nuovo. Prima di procedere, <ph name="LINK_BEGIN"/>scopri di più<ph name="LINK_END"/> sull’azzeramento, per non avere alcun dubbio.</translation>
-<translation id="94095197509579227">Nota: attualmente hai guadagni stimati del valore di <ph name="BAT_AMOUNT"/> questo mese; andranno persi se azzeri adesso.</translation>
 <translation id="4806029412510565611">Sono consapevole che il mio attuale profilo Ricompense Brave e i dati di Ricompense Brave verranno eliminati dal mio dispositivo e ho letto l’<ph name="LINK_BEGIN"/>articolo di supporto sull’azzeramento<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Contributi in Token Riscossi</translation>
 <translation id="3494964159182650590">Riepilogo ricompense</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">Visualizza dettagli</translation>
 <translation id="4206899127409458763">Creazione del profilo Ricompense Brave</translation>
 <translation id="1988679729106502285">NOTA:</translation>
-<translation id="942863887222585572">Hai una connessione con <ph name="USER_PROVIDER"/>, ma questo autore è connesso con <ph name="CREATOR_PROVIDER"/>. Ciò significa che questo autore non potrà ricevere la tua donazione. Al momento ogni donazione che farai rimarrà in sospeso; riproveremo automaticamente per 90 giorni.</translation>
 <translation id="5530734056858418442">Questo autore non si è ancora iscritto. Ogni donazione che effettuerai resterà in sospeso e l'invio verrà ritentato automaticamente per 90 giorni.</translation>
 <translation id="3197752845651180812">Contributi in attesa</translation>
 <translation id="6964891561514920613">Mostra tutti i contributi in sospeso</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">Autore non verificato</translation>
 <translation id="6020176662032623904">Autore verificato</translation>
 <translation id="215037911651623564">Aggiorna lo stato di verifica dell’autore</translation>
-<translation id="8946576491316456643">Al momento ogni donazione che farai resterà in sospeso; riproveremo automaticamente per 90 giorni. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">Per il momento, ogni donazione che effettuerai resterà in sospeso e l’invio verrà ritentato automaticamente per 90 giorni.</translation>
 <translation id="7826318737761918938">Questo creatore non si è ancora iscritto.</translation>
 <translation id="3573568055713372419">Hai una connessione con <ph name="USER_PROVIDER"/> ma questo autore è connesso con <ph name="CREATOR_PROVIDER"/>. Ciò significa che questo autore non riceverà la tua donazione.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> su <ph name="PLATFORM"/></translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">Acquista</translation>
 <translation id="1483493594462132177">Invia</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="3488255243387417752">Vendi</translation>
+<translation id="5223034545851554347">Non hai abbastanza <ph name="TOKEN_SYMBOL"/> in questo conto.</translation>
 <translation id="9113988219764868805">Invia token</translation>
 <translation id="4254256922305105713">Invia NFT</translation>
 <translation id="3453833142586986467">Seleziona token</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">prima</translation>
 <translation id="4709524402122994378">transazioni</translation>
 <translation id="4591079278963448049">L’account associato al token non esiste ancora. Una piccola quantità di SOL sarà utilizzata per creare e finanziare l’account.</translation>
+<translation id="1426320910664514906">Gas Limite</translation>
+<translation id="1229774280326250926">Commissione gas premium</translation>
+<translation id="148169246131967347">Limite commissione gas</translation>
 <translation id="523862956770478816">Autorizzazioni del sito</translation>
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> account collegati</translation>
 <translation id="4804818685124855865">Disconnetti</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">Indirizzo ETH non valido</translation>
 <translation id="2832270987629018596">Non è un indirizzo SOL valido</translation>
 <translation id="882486206986535424">Indirizzo non valido</translation>
-<translation id="6825399159373612149">Il dominio <ph name="DOMAIN_NAME"/> non è registrato</translation>
+<translation id="8684908590733515816">Il dominio non ha un indirizzo <ph name="COIN_TYPE_SYMBOL"/> collegato</translation>
 <translation id="8971278306757462297">L’indirizzo di destinazione è il tuo stesso indirizzo</translation>
 <translation id="3506416339268164412">L’indirizzo di destinazione è l’indirizzo di contratto di un token</translation>
+<translation id="6370376419663123629">L’indirizzo non è corretto</translation>
+<translation id="3767148796886402380">Controlla l’indirizzo e assicurati che sia corretto (ad es. lettere maiuscole o minuscole).</translation>
+<translation id="2585599787090762065">Come faccio a risolverlo?</translation>
+<translation id="5517732667776806421">Checksum assente</translation>
 <translation id="2975056993833847787">Non è possibile verificare questo indirizzo (checksum assente). Vuoi procedere?</translation>
 <translation id="6320252966164556855">L’indirizzo non ha superato la verifica (checksum non valido). Riprova sostituendo le lettere minuscole con lettere maiuscole.</translation>
 <translation id="4667144295226514387">Limite gas mancante</translation>
 <translation id="2021522108838444624">L’importo deve essere superiore a 0</translation>
 <translation id="8464365289405373974">Indirizzo di destinazione richiesto</translation>
 <translation id="4884792073752467460">Indirizzo del beneficiario non valido</translation>
+<translation id="8585995109882455949">Come trovo l’indirizzo corretto?</translation>
+<translation id="8395402412470376435">Brave verifica e impedisce agli utenti di inviare fondi all’indirizzo sbagliato per un uso scorretto delle maiuscole. Si tratta di un processo “checksum” per verificare che si tratti di un indirizzo Ethereum valido.</translation>
+<translation id="4583433813614292221">1. Vai su</translation>
+<translation id="5393164213211430081">2. Copia e inserisci l’indirizzo ETH</translation>
+<translation id="2378355054306959991">Ti serve ancora aiuto?</translation>
 <translation id="862585889767884824">di</translation>
 <translation id="9106265941552476098">Rifiuta <ph name="TRANSACTION_LENGTH"/> transazioni</translation>
 <translation id="1118876217803190221">Saldo insufficiente</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">Standard del token</translation>
 <translation id="9033453977881595182">ID del token</translation>
 <translation id="6332387008245531841">Indirizzo di contatto</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">Posizione o indirizzo dell’immagine</translation>
 <translation id="2962388922926051374">La richiesta del metodo “eth_chainId” su <ph name="URL"/> non è andata a buon fine</translation>
 <translation id="8325036459845654666">Questa rete è già stata aggiunta.</translation>
 <translation id="554350381160981853">La firma di dati tipizzati è supportata solo su Trezor Model One con Firmware 1.10.5 o successive</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">Non è un indirizzo FIL valido</translation>
 <translation id="3898731124813934210">Compra con Wyre</translation>
 <translation id="5522073372365069684">Compra con Ramp</translation>
+<translation id="6153197326949684688">Vendi con <ph name="OFFRAMP_PROVIDER"/></translation>
+<translation id="6097502401711916278">L’importo minimo deve essere almeno <ph name="FIAT_AMOUNT"/>.</translation>
 <translation id="7902920577183739843">Acquista con Sardine</translation>
 <translation id="6534275647567011533">Acquista con Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Acquista delle criptovalute con Visa o Mastercard.</translation>
+<translation id="3648994606506382289">Il modo più semplice, veloce ed economico per acquistare criptovaluta tramite carta e bonifico bancario.</translation>
 <translation id="3101839349578102016">Acquisto immediato con il tuo conto bancario. Commissioni ridotte.</translation>
 <translation id="8528916244724490964">Tutte le reti</translation>
 <translation id="4038403584813842767">Saldo ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">Caricatore BPF</translation>
 <translation id="2334098351242742927">Programma Ed25519</translation>
 <translation id="8780753288764281797">Programma Secp256k1</translation>
-<translation id="5275550100743015683">Dall’indirizzo:</translation>
-<translation id="2678433693746214764">All’indirizzo:</translation>
-<translation id="4576396475962922672">Nuovo account:</translation>
+<translation id="6421371987002247943">Programma token</translation>
+<translation id="8642855779894264066">Programma token associati</translation>
+<translation id="3585645354490191700">Programma metadati</translation>
+<translation id="1971875492220112280">Programma SysvarRent</translation>
 <translation id="4719005063558335704">Account:</translation>
 <translation id="4337554812324118382">Dati:</translation>
 <translation id="569870799832027680">ID programma:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">Salta la simulazione della transazione:</translation>
 <translation id="3568017348462868931">Seleziona la valuta</translation>
 <translation id="4420924466038521900">Ricerca valute</translation>
-<translation id="8060029310790625334">Centro assistenza</translation>
+<translation id="4412698727486357573">Centro assistenza</translation>
 <translation id="2095142195578664632">Ti serve aiuto? Consulta</translation>
 <translation id="3253669416991680932">Questo wallet hardware non supporta questa operazione.</translation>
 <translation id="7457027586454688423">Inserisci la password del Portafoglio Brave</translation>
@@ -1430,8 +1448,6 @@
 <translation id="1026825928738055872">Vuoi davvero rimuovere “<ph name="ACCOUNT_NAME"/>”?</translation>
 <translation id="3910551537328657217">Richiedi funzione</translation>
 <translation id="7657322905916621147">La frase di recupero deve contenere 12, 15, 18, 21 o 24 parole</translation>
-<translation id="5307206077701819797">Nessun NFT trovato nel tuo portafoglio. Puoi aggiungere NFT cliccando il pulsante “+ Asset visibili” in fondo alla scheda “Portafoglio”</translation>
-<translation id="3528540388456395658">Nessun NFT corrispondente alla ricerca o al filtro</translation>
 <translation id="5026874946691314267">Non mostrarlo più</translation>
 <translation id="434502623875309667">Per la risoluzione dell’indirizzo sono necessarie richieste su rete off-chain. Procedere?</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">Connetti il portafoglio</translation>
 <translation id="4029551149873989025">Cambia rete</translation>
 <translation id="7561262633951061138">Migliore</translation>
+<translation id="8060029310790625334">Centro assistenza</translation>
 <translation id="3143110700666266545">Questa app utilizza le seguenti API di terze parti:</translation>
 <translation id="163536108506359457">La funzione Scambio di Brave usa <ph name="AGGREGATOR"/> come aggregatore DEX per le reti <ph name="NETWORKS"/> supportate. <ph name="AGGREGATOR"/> eseguirà il trattamento dell’indirizzo del portafoglio e l’indirizzo IP di <ph name="NETWORK"/> per completare le transazioni (e anche per ottenere le quotazioni). <ph name="AGGREGATOR"/> userà questi dati SOLO per eseguire il trattamento delle transazioni.</translation>
 <translation id="1847885264294023691">Clicca qui per consultare l’infomativa sulla privacy di <ph name="AGGREGATOR"/>.</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">Il valore di precisione decimale dei token è obbligatorio</translation>
 <translation id="3797613444743816037">Indirizzo Mint</translation>
 <translation id="7951915459354237451">Il limite previsto per le commissioni è inferiore alla commissione base. La transazione potrebbe richiedere molto tempo o non andare a buon fine.</translation>
+<translation id="2227702748249086756">Impossibile recuperare la stima delle commissioni</translation>
+<translation id="5361710044667743492">Perché non sono disponibili?</translation>
+<translation id="3668838456083358569">Alcuni dati NFT sono archiviati in server centralizzati come AWS, Google Cloud ecc. In questo caso, non è possibile aggiungere i dati NFT alla rete IPFS.</translation>
+<translation id="1293258969121701010">Utilizzando il protocollo IPFS sul tuo computer, puoi:</translation>
+<translation id="4568942135611119076">Fare in modo che i dati NFT siano online e non vengano manomessi.</translation>
+<translation id="4915883034746438977">Ricevere contenuti utilizzando l’identificatore di contenuti (CID) da dati non corretti.</translation>
+<translation id="1373647012698032676">Partecipare a prove di autenticità e contribuire all’integrità della rete IPFS.</translation>
+<translation id="1806204385270226865">Mantieni i miei NFT sempre online</translation>
+<translation id="4323376551843624309">Abilita l’aggiunta di NFT</translation>
+<translation id="6501331923135442324">Un grande passo per entrare a far parte del web3</translation>
+<translation id="5361073938927187534">Esegui il nodo IPFS e mantieni i tuoi NFT sempre online</translation>
+<translation id="1060267371223703324">Controlla quali NFT possono essere aggiunti</translation>
+<translation id="2641083452974145848">Ora puoi eseguire il protocollo IPFS ed entrare a far parte del web3. I tuoi dati NFT saranno online per sempre e non potranno essere manomessi.</translation>
+<translation id="4460927368826360904">Stai eseguendo il nodo IPFS. Il file verrà estratto nel nodo IPFS locale.</translation>
+<translation id="2260350263892668490"><ph name="PINNED"/> di <ph name="PINNABLE"/> NFT sono stati aggiunti a IPFS.</translation>
+<translation id="1474962961180773583"><ph name="PINNABLE"/> di <ph name="TOTAL"/> sono disponibili!</translation>
+<translation id="6852656829524945421">Impossibile aggiungere</translation>
+<translation id="7698019251444927442">Stai eseguendo il nodo IPFS</translation>
+<translation id="5584313306739463968">Il nodo IPFS locale non è in esecuzione</translation>
+<translation id="7527548209942671618">Aggiunto al nodo IPFS locale</translation>
+<translation id="5659058832308365026">I dati NFT sono in corso di aggiunta al nodo IPFS locale</translation>
+<translation id="4919133452617704550">Impossibile aggiungere al nodo IPFS locale</translation>
+<translation id="3225624966527491351">Importa NFT</translation>
+<translation id="9085765419770918643">Non ci sono ancora NFT.</translation>
+<translation id="8445532667841598737">Vuoi aggiungerne? Clicca il pulsante qui sotto per importarli.</translation>
+<translation id="9136462955850040542">Compatibile con NFT su Solana (SPL) ed Ethereum (ERC-721).</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Informazioni generali</translation>
 <translation id="4045404575593562245">Eventi di controllo di Tor</translation>
@@ -1582,6 +1625,8 @@
 <translation id="6531019308847917584">Blocca il fingerprinting</translation>
 <translation id="1899608006846124237">Blocca in modo aggressivo il fingerprinting</translation>
 <translation id="8034285923190068220">Consenti il fingerprinting</translation>
+<translation id="7638541189782135885">Non eseguire l’upgrade delle connessioni HTTP</translation>
+<translation id="2570787596946026998">Connetti solo con HTTPS</translation>
 <translation id="1992750560347846445">Segnala sito</translation>
 <translation id="2387532482048804818">Segnalaci se il sito non funzionava correttamente con le Protezioni attive.</translation>
 <translation id="3795015906457257780">Stai visualizzando il sito senza gli strumenti di Brave a tutela della privacy.</translation>
@@ -1660,8 +1705,16 @@ Abbiamo bloccato <ph name="NUMBER"/> contenuti tra sistemi di tracciamento, annu
 <translation id="888284761945060750">Il DNS sicuro è disabilitato dalle politiche della tua organizzazione. L’utilizzo della VPN di Brave senza il DNS sicuro può rivelare i nomi dei siti che visiti al tuo provider di servizi Internet o alla tua organizzazione.</translation>
 <translation id="6593224083874259773">VPN di Brave su Windows</translation>
 <translation id="3153983908111684619">Durante la connessione l’impostazione è bloccata dalla VPN di Brave</translation>
-<translation id="6507543978646831931">Windows ha una funzione chiamata “risoluzione intelligente dei nomi multihomed”, che può rivelare informazioni relative alla tua posizione geografica e ai siti che visiti. Ora che hai attivato la VPN di Brave, abbiamo modificato le impostazioni del DNS nel browser per proteggerti da tale rischio. Durante la navigazione le impostazioni resteranno in vigore e bloccate. <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">Windows ha una funzione chiamata “Risoluzione intelligente dei nomi multihomed”, che può rivelare informazioni relative alla tua posizione geografica e ai siti che visiti.
+
+Brave offre un servizio che ti protegge da tale rischio filtrando le query DNS sulla connessione VPN.
+
+Abbiamo però notato che questo servizio non sta funzionando, e non vogliamo lasciarti senza protezione. Abbiamo modificato le impostazioni del DNS nel browser per proteggerti da tale rischio. Durante la navigazione le impostazioni resteranno in vigore e bloccate.
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Non avvisarmi più in merito a questo.</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="9061845622728745852">Fuso orario:</translation>
+<translation id="8295393906499561642">Sessione scaduta</translation>
+<translation id="3312623558576021182">Accedi al tuo <ph name="BRAVE_ACCOUNT_BEGIN"/>Account Brave<ph name="BRAVE_ACCOUNT_END"/> per aggiornare la sessione VPN.</translation>
 </translationbundle>

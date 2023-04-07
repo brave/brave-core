@@ -38,6 +38,7 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "net/test/embedded_test_server/request_handler_util.h"
+#include "services/network/public/cpp/network_switches.h"
 
 using content::RenderFrameHost;
 using content::WebContents;
@@ -68,13 +69,10 @@ GURL GetHttpRequestURL(const HttpRequest& http_request) {
 }
 
 std::unique_ptr<HttpResponse> HandleFileRequestWithCustomHeaders(
-    scoped_refptr<base::SequencedTaskRunner> main_thread_task_runner,
-    base::WeakPtr<HttpRequestMonitor> http_request_monitor,
+    HttpRequestMonitor* http_request_monitor,
     const std::vector<base::FilePath>& server_roots,
     const HttpRequest& request) {
-  main_thread_task_runner->PostTask(
-      FROM_HERE, base::BindOnce(&HttpRequestMonitor::OnHttpRequest,
-                                http_request_monitor, request));
+  http_request_monitor->OnHttpRequest(request);
   std::unique_ptr<HttpResponse> http_response;
   for (const auto& server_root : server_roots) {
     http_response = net::test_server::HandleFileRequest(server_root, request);
@@ -140,7 +138,9 @@ int HttpRequestMonitor::GetHttpRequestsCount(const GURL& url) const {
 }
 
 EphemeralStorageBrowserTest::EphemeralStorageBrowserTest()
-    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+    : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+  SetUpHttpsServer();
+}
 
 EphemeralStorageBrowserTest::~EphemeralStorageBrowserTest() = default;
 
@@ -149,9 +149,6 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
 
   host_resolver()->AddRule("*", "127.0.0.1");
   mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
-
-  brave::RegisterPathProvider();
-  SetUpHttpsServer();
 
   a_site_ephemeral_storage_url_ =
       https_server_.GetURL("a.com", "/ephemeral_storage.html");
@@ -167,14 +164,16 @@ void EphemeralStorageBrowserTest::SetUpOnMainThread() {
 }
 
 void EphemeralStorageBrowserTest::SetUpHttpsServer() {
+  brave::RegisterPathProvider();
+  content::RegisterPathProvider();
+
   std::vector<base::FilePath> test_data_dirs(2);
   base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dirs[0]);
   base::PathService::Get(content::DIR_TEST_DATA, &test_data_dirs[1]);
 
-  https_server_.RegisterDefaultHandler(
-      base::BindRepeating(&HandleFileRequestWithCustomHeaders,
-                          base::SequencedTaskRunner::GetCurrentDefault(),
-                          http_request_monitor_.AsWeakPtr(), test_data_dirs));
+  https_server_.RegisterDefaultHandler(base::BindRepeating(
+      &HandleFileRequestWithCustomHeaders,
+      base::Unretained(&http_request_monitor_), test_data_dirs));
   https_server_.AddDefaultHandlers(GetChromeTestDataDir());
   content::SetupCrossSiteRedirector(&https_server_);
   ASSERT_TRUE(https_server_.Start());
@@ -188,6 +187,9 @@ void EphemeralStorageBrowserTest::SetUpCommandLine(
   // JS events to slow down. Disable backgrounding so that the tests work
   // properly.
   command_line->AppendSwitch(switches::kDisableRendererBackgrounding);
+  command_line->AppendSwitchASCII(
+      network::switches::kHostResolverRules,
+      base::StringPrintf("MAP *:443 127.0.0.1:%d", https_server_.port()));
 }
 
 void EphemeralStorageBrowserTest::SetUpInProcessBrowserTestFixture() {

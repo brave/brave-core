@@ -1,0 +1,12 @@
+diff --git a/content/browser/gpu/gpu_internals_ui.cc b/content/browser/gpu/gpu_internals_ui.cc
+index 7ce4efe5cbaac724cf747d5bdb8bba2800204bae..86c35fe09b43ff4354087cffd2fdacacaa7b07f2 100644
+--- a/content/browser/gpu/gpu_internals_ui.cc
++++ b/content/browser/gpu/gpu_internals_ui.cc
+@@ -832,6 +832,7 @@ base::Value::Dict GpuMessageHandler::OnRequestClientInfo() {
+            std::string("Skia/" STRINGIZE(SK_MILESTONE) " " SKIA_COMMIT_HASH));
+   dict.Set("revision_identifier", GPU_LISTS_VERSION);
+ 
++  BRAVE_GPU_MESSAGE_HANDLER_ON_REQUEST_CLIENT_INFO
+   return dict;
+ }
+ 

@@ -33,58 +33,54 @@ void AdsService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
                                 0);
 
-  registry->RegisterIntegerPref(prefs::kVersion, ads::kCurrentVersionNumber);
+  registry->RegisterIntegerPref(prefs::kVersion, kCurrentPrefVersion);
 
-  registry->RegisterBooleanPref(ads::prefs::kEnabled, false);
+  registry->RegisterBooleanPref(prefs::kEnabled, false);
 
   registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionX, 0);
   registry->RegisterIntegerPref(prefs::kNotificationAdLastScreenPositionY, 0);
   registry->RegisterBooleanPref(prefs::kNotificationAdDidFallbackToCustom,
                                 false);
 
-  registry->RegisterStringPref(ads::prefs::kDiagnosticId, "");
+  registry->RegisterStringPref(prefs::kDiagnosticId, "");
 
-  registry->RegisterInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, -1);
+  registry->RegisterInt64Pref(prefs::kMaximumNotificationAdsPerHour, -1);
 
-  registry->RegisterIntegerPref(ads::prefs::kIdleTimeThreshold, 15);
+  registry->RegisterIntegerPref(prefs::kIdleTimeThreshold, 15);
 
-  registry->RegisterBooleanPref(ads::prefs::kShouldAllowSubdivisionTargeting,
-                                false);
-  registry->RegisterStringPref(ads::prefs::kSubdivisionTargetingCode, "AUTO");
-  registry->RegisterStringPref(
-      ads::prefs::kAutoDetectedSubdivisionTargetingCode, "");
+  registry->RegisterBooleanPref(prefs::kShouldAllowSubdivisionTargeting, false);
+  registry->RegisterStringPref(prefs::kSubdivisionTargetingCode, "AUTO");
+  registry->RegisterStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
+                               "");
 
-  registry->RegisterStringPref(ads::prefs::kCatalogId, "");
-  registry->RegisterIntegerPref(ads::prefs::kCatalogVersion, 0);
-  registry->RegisterInt64Pref(ads::prefs::kCatalogPing, 0);
-  registry->RegisterTimePref(ads::prefs::kCatalogLastUpdated, base::Time());
+  registry->RegisterStringPref(prefs::kCatalogId, "");
+  registry->RegisterIntegerPref(prefs::kCatalogVersion, 0);
+  registry->RegisterInt64Pref(prefs::kCatalogPing, 0);
+  registry->RegisterTimePref(prefs::kCatalogLastUpdated, base::Time());
 
-  registry->RegisterIntegerPref(ads::prefs::kIssuerPing, 7'200'000);
-  registry->RegisterListPref(ads::prefs::kIssuers);
+  registry->RegisterIntegerPref(prefs::kIssuerPing, 7'200'000);
+  registry->RegisterListPref(prefs::kIssuers);
 
-  registry->RegisterDictionaryPref(ads::prefs::kEpsilonGreedyBanditArms);
-  registry->RegisterListPref(ads::prefs::kEpsilonGreedyBanditEligibleSegments);
+  registry->RegisterDictionaryPref(prefs::kEpsilonGreedyBanditArms);
+  registry->RegisterListPref(prefs::kEpsilonGreedyBanditEligibleSegments);
 
-  registry->RegisterListPref(ads::prefs::kNotificationAds);
-  registry->RegisterTimePref(ads::prefs::kServeAdAt, base::Time());
+  registry->RegisterListPref(prefs::kNotificationAds);
+  registry->RegisterTimePref(prefs::kServeAdAt, base::Time());
 
-  registry->RegisterTimePref(ads::prefs::kNextTokenRedemptionAt,
-                             base::Time::Now());
+  registry->RegisterTimePref(prefs::kNextTokenRedemptionAt, base::Time::Now());
 
-  registry->RegisterBooleanPref(ads::prefs::kHasMigratedClientState, false);
-  registry->RegisterBooleanPref(ads::prefs::kHasMigratedConfirmationState,
-                                false);
-  registry->RegisterBooleanPref(ads::prefs::kHasMigratedConversionState, false);
-  registry->RegisterBooleanPref(ads::prefs::kHasMigratedNotificationState,
-                                false);
-  registry->RegisterBooleanPref(ads::prefs::kHasMigratedRewardsState, false);
-  registry->RegisterBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser,
+  registry->RegisterBooleanPref(prefs::kHasMigratedClientState, false);
+  registry->RegisterBooleanPref(prefs::kHasMigratedConfirmationState, false);
+  registry->RegisterBooleanPref(prefs::kHasMigratedConversionState, false);
+  registry->RegisterBooleanPref(prefs::kHasMigratedNotificationState, false);
+  registry->RegisterBooleanPref(prefs::kHasMigratedRewardsState, false);
+  registry->RegisterBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser,
                                 false);
 
-  registry->RegisterUint64Pref(ads::prefs::kConfirmationsHash, 0);
-  registry->RegisterUint64Pref(ads::prefs::kClientHash, 0);
+  registry->RegisterUint64Pref(prefs::kConfirmationsHash, 0);
+  registry->RegisterUint64Pref(prefs::kClientHash, 0);
 
-  registry->RegisterStringPref(ads::prefs::kBrowserVersionNumber, "");
+  registry->RegisterStringPref(prefs::kBrowserVersionNumber, "");
 }
 
 }  // namespace brave_ads

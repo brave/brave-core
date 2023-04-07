@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/values.h"
-#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
+#include "brave/browser/brave_ads/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
@@ -28,8 +28,7 @@
 #include "brave/components/misc_metrics/page_metrics_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/p3a/brave_p3a_service.h"
-#include "brave/components/p3a/buildflags.h"
+#include "brave/components/p3a/p3a_service.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -46,6 +45,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/p3a/p3a_core_metrics.h"
+#include "brave/browser/ui/whats_new/whats_new_util.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -68,6 +68,8 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
   // Added 10/2022
   registry->RegisterBooleanPref(kDefaultBrowserPromptEnabled, true);
 #endif
+
+  brave_wallet::RegisterLocalStatePrefsForMigration(registry);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -89,17 +91,14 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       metrics::prefs::kMetricsReportingEnabled,
       base::Value(GetDefaultPrefValueForMetricsReporting()));
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-  brave::BraveP3AService::RegisterPrefs(registry,
+  p3a::P3AService::RegisterPrefs(registry,
 #if !BUILDFLAG(IS_ANDROID)
-                                        first_run::IsChromeFirstRun());
+                                 first_run::IsChromeFirstRun());
 #else
-                                        // BraveP3AService::RegisterPrefs
-                                        // doesn't use this arg on Android
-                                        false);
+                                 // BraveP3AService::RegisterPrefs
+                                 // doesn't use this arg on Android
+                                 false);
 #endif  // !BUILDFLAG(IS_ANDROID)
-
-#endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   brave_shields::RegisterShieldsP3ALocalPrefs(registry);
 #if !BUILDFLAG(IS_ANDROID)
@@ -107,6 +106,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
+  whats_new::RegisterLocalStatePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_CRASH_DIALOG)
@@ -136,7 +136,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   misc_metrics::MenuMetrics::RegisterPrefs(registry);
   misc_metrics::PageMetricsService::RegisterPrefs(registry);
-  brave_ads::BraveStatsUpdaterHelper::RegisterLocalStatePrefs(registry);
+  brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(registry);
   misc_metrics::GeneralBrowserUsage::RegisterPrefs(registry);
 }
 

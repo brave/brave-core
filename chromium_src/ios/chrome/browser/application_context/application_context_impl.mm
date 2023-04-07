@@ -116,6 +116,16 @@ void ApplicationContextImpl::StartTearDown() {
   // `chrome_browser_state_manager_`.
   segmentation_otr_web_state_observer_.reset();
 
+  // We need to destroy the MetricsServicesManager and NetworkTimeTracker before
+  // the IO thread gets destroyed, since the destructor can call the URLFetcher
+  // destructor, which does a PostDelayedTask operation on the IO thread. (The
+  // IO thread will handle that URLFetcher operation before going away.)
+  metrics::MetricsService* metrics_service = GetMetricsService();
+  if (metrics_service) {
+    metrics_service->LogCleanShutdown();
+  }
+  metrics_services_manager_.reset();
+
   // We need to destroy the NetworkTimeTracker before the IO thread gets
   // destroyed, since the destructor can call the URLFetcher destructor,
   // which does a PostDelayedTask operation on the IO thread. (The IO thread
@@ -237,7 +247,7 @@ metrics::MetricsService* ApplicationContextImpl::GetMetricsService() {
 
 ukm::UkmRecorder* ApplicationContextImpl::GetUkmRecorder() {
   DCHECK(thread_checker_.CalledOnValidThread());
-  return GetMetricsServicesManager()->GetUkmService();
+  return nullptr;
 }
 
 variations::VariationsService* ApplicationContextImpl::GetVariationsService() {

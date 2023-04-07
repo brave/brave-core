@@ -51,4 +51,7 @@ public final class BravePreferenceKeys {
     public static final String LOADED_SITE_COUNT = "loaded_site_count";
     public static final String BRAVE_BACKGROUND_VIDEO_PLAYBACK_CONVERTED_TO_FEATURE =
             "brave_background_video_playback_converted_to_feature";
+    public static final String BRAVE_APP_OPEN_COUNT_FOR_WIDGET_PROMO =
+            "brave_app_open_count_for_widget_promo";
+    public static final String SHOULD_SHOW_PLAYLIST_ONBOARDING = "should_show_playlist_onboarding";
 }

@@ -7,14 +7,15 @@ import * as React from 'react'
 
 // components
 import { Image, LoadingOverlay, LoadIcon, ImageWrapper } from './nft-content-styles'
-import { NftDetails } from '../nft-details/nft-details'
 
 // types
 import { BraveWallet, NFTMetadataReturnType } from '../../../constants/types'
 import { DisplayMode } from '../../nft-ui-messages'
-
-import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
 import { PinningStatusType } from '../../../page/constants/action_types'
+
+// components
+import Placeholder from '../../../assets/svg-icons/nft-placeholder.svg'
+import { NftMultimedia } from '../nft-multimedia/nft-multimedia'
 
 interface Props {
   isLoading?: boolean
@@ -25,12 +26,13 @@ interface Props {
   tokenNetwork?: BraveWallet.NetworkInfo
   imageUrl?: string
   nftPinningStatus?: PinningStatusType | undefined
+  imageIpfsUrl?: string
 }
 
 export const NftContent = (props: Props) => {
   const {
     isLoading,
-    selectedAsset,
+    nftMetadata,
     imageUrl,
     displayMode
   } = props
@@ -56,11 +58,8 @@ export const NftContent = (props: Props) => {
           />
         </ImageWrapper>
       }
-      {selectedAsset && displayMode === 'details' &&
-        <NftDetails
-          {...props}
-          selectedAsset={selectedAsset}
-        />
+      { displayMode === 'details' && nftMetadata &&
+        <NftMultimedia nftMetadata={nftMetadata} />
       }
     </>
   )

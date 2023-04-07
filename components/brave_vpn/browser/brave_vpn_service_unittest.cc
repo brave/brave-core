@@ -260,6 +260,13 @@ class BraveVPNServiceTest : public testing::Test {
     return service_->GetPurchasedStateSync();
   }
 
+  void BlockVPNByPolicy(bool value) {
+    profile_pref_service_.SetManagedPref(prefs::kManagedBraveVPNDisabled,
+                                         base::Value(value));
+    EXPECT_EQ(brave_vpn::IsBraveVPNDisabledByPolicy(&profile_pref_service_),
+              value);
+  }
+
 #if !BUILDFLAG(IS_ANDROID)
   mojom::Region device_region() const {
     if (auto region_ptr = GetRegionPtrWithNameFromRegionList(
@@ -482,14 +489,6 @@ class BraveVPNServiceTest : public testing::Test {
   base::HistogramTester histogram_tester_;
 };
 
-TEST(BraveVPNFeatureTest, FeatureTest) {
-#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
-  EXPECT_TRUE(IsBraveVPNEnabled());
-#else
-  EXPECT_FALSE(IsBraveVPNEnabled());
-#endif
-}
-
 TEST_F(BraveVPNServiceTest, ResponseSanitizingTest) {
   // Give invalid json data as a server response and check sanitized(empty
   // string) result is returned.
@@ -539,6 +538,79 @@ TEST_F(BraveVPNServiceTest, RegionDataTest) {
   SetTestTimezone("Invalid");
   OnFetchTimezones(GetTimeZonesData(), true);
   EXPECT_EQ(regions()[0], device_region());
+}
+
+TEST_F(BraveVPNServiceTest, SkusCredentialCacheTest) {
+  std::string env = skus::GetDefaultEnvironment();
+  std::string domain = skus::GetDomain("vpn", env);
+
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": true, "remaining_credential_count": 1 } )");
+  EXPECT_EQ(PurchasedState::LOADING, GetPurchasedStateSync());
+  OnPrepareCredentialsPresentation(
+      domain, "credential=abcdefghijk; Expires=Wed, 21 Oct 2050 07:28:00 GMT");
+  EXPECT_TRUE(HasValidSkusCredential(&local_pref_service_));
+  OnGetSubscriberCredentialV12("inalid", false);
+  EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
+
+  // Trying again with valid subscriber credential.
+  // Check cached skus credential is gone and we have valid subs credential
+  // instead.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnGetSubscriberCredentialV12("valid-subs-credentials", true);
+  EXPECT_FALSE(HasValidSkusCredential(&local_pref_service_));
+  EXPECT_TRUE(HasValidSubscriberCredential(&local_pref_service_));
+}
+
+TEST_F(BraveVPNServiceTest, LoadPurchasedStateSessionExpiredTest) {
+  std::string env = skus::GetDefaultEnvironment();
+  std::string domain = skus::GetDomain("vpn", env);
+
+  // Treat as not purchased when active is false but there is remained
+  // credentials. In this situation, user should activate vpn account.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 1 } )");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  // Treat as not purchased.
+  // Although zero credential credential string received, we think it's
+  // fresh user as there is no cached data such as regions list.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+  auto session_expired_time =
+      local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
+  EXPECT_TRUE(session_expired_time.is_null());
+
+  // Session expired state for non-fresh user.
+  OnFetchRegionList(false, GetRegionsData(), true);
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::SESSION_EXPIRED, GetPurchasedStateSync());
+  // Check session expired start date is set.
+  session_expired_time =
+      local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
+  EXPECT_FALSE(session_expired_time.is_null());
+
+  // Check not purchased state is set after 30 days passed since session expired
+  // starts.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  local_pref_service_.SetTime(prefs::kBraveVPNSessionExpiredDate,
+                              session_expired_time - base::Days(31));
+  OnCredentialSummary(
+      domain, R"({ "active": false, "remaining_credential_count": 0 } )");
+  EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
+
+  // Checks cached time data is cleared when received vaild credential.
+  SetPurchasedState(env, PurchasedState::LOADING);
+  OnCredentialSummary(
+      domain, R"({ "active": true, "remaining_credential_count": 1 } )");
+  session_expired_time =
+      local_pref_service_.GetTime(prefs::kBraveVPNSessionExpiredDate);
+  EXPECT_TRUE(session_expired_time.is_null());
 }
 
 TEST_F(BraveVPNServiceTest, LoadPurchasedStateTest) {
@@ -634,6 +706,22 @@ TEST_F(BraveVPNServiceTest, ConnectionStateUpdateWithPurchasedStateTest) {
   test_api->SetConnectionState(ConnectionState::CONNECTED);
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+}
+
+TEST_F(BraveVPNServiceTest, DisconnectedIfDisabledByPolicy) {
+  // Prepare valid connection info.
+  auto* test_api = static_cast<BraveVPNOSConnectionAPISim*>(GetConnectionAPI());
+
+  TestBraveVPNServiceObserver observer;
+  AddObserver(observer.GetReceiver());
+  std::string env = skus::GetDefaultEnvironment();
+  SetPurchasedState(env, PurchasedState::PURCHASED);
+  test_api->SetConnectionState(ConnectionState::CONNECTED);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(ConnectionState::CONNECTED, observer.GetConnectionState());
+  BlockVPNByPolicy(true);
+  base::RunLoop().RunUntilIdle();
+  EXPECT_EQ(ConnectionState::DISCONNECTED, observer.GetConnectionState());
 }
 
 TEST_F(BraveVPNServiceTest, SelectedRegionChangedUpdateTest) {
@@ -775,7 +863,7 @@ TEST_F(BraveVPNServiceTest, SubscribedCredentials) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
   OnGetSubscriberCredentialV12("Token No Longer Valid", false);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
 }
 
 // Test connection check is asked only when purchased state.
@@ -801,8 +889,8 @@ TEST_F(BraveVPNServiceTest, GetPurchasedStateSync) {
   SetPurchasedState(env, PurchasedState::PURCHASED);
   EXPECT_EQ(PurchasedState::PURCHASED, GetPurchasedStateSync());
 
-  SetPurchasedState(env, PurchasedState::EXPIRED);
-  EXPECT_EQ(PurchasedState::EXPIRED, GetPurchasedStateSync());
+  SetPurchasedState(env, PurchasedState::INVALID);
+  EXPECT_EQ(PurchasedState::INVALID, GetPurchasedStateSync());
 
   SetPurchasedState(env, PurchasedState::FAILED);
   EXPECT_EQ(PurchasedState::FAILED, GetPurchasedStateSync());
@@ -818,7 +906,7 @@ TEST_F(BraveVPNServiceTest, SetPurchasedState) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedStateSync());
 
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::LOADING);
-  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::EXPIRED);
+  SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::INVALID);
   SetAndExpectPurchasedStateChange(&observer, env, PurchasedState::FAILED);
   SetAndExpectPurchasedStateChange(&observer, env,
                                    PurchasedState::NOT_PURCHASED);

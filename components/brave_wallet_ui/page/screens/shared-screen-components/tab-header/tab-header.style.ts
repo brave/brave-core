@@ -4,13 +4,15 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
+import Icon from '@brave/leo/react/icon'
 
 // Assets
 import BraveLogoLight from '../../send/assets/brave-logo-light.svg'
 import BraveLogoDark from '../../send/assets/brave-logo-dark.svg'
 
 // Shared Styles
-import { StyledDiv } from '../../send/shared.styles'
+import { StyledDiv, StyledButton } from '../../send/shared.styles'
 
 export const HeaderWrapper = styled.div`
   display: flex;
@@ -24,7 +26,7 @@ export const HeaderWrapper = styled.div`
   right: 0;
   width: 100vw;
   box-sizing: border-box;
-  position: fixed;
+  position: absolute;
   z-index: 10;
 `
 
@@ -37,4 +39,28 @@ export const BraveLogo = styled(StyledDiv)`
   @media (prefers-color-scheme: dark) {
     background-image: url(${BraveLogoDark});
   }
+`
+
+export const SettingsWrapper = styled(StyledDiv)`
+  position: relative;
+`
+
+export const SettingsButton = styled(StyledButton)`
+  background-color: ${leo.color.container.background};
+  border-radius: 100%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  height: 40px;
+  width: 40px;
+  margin-right: 16px;
+  &:hover {
+    background-color: ${leo.color.container.interactiveBackground};
+  }
+  @media (prefers-color-scheme: dark) {
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.36);
+  }
+`
+
+export const SettingsIcon = styled(Icon)`
+  --leo-icon-size: 20px;
+  color: ${leo.color.iconTint};
 `

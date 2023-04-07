@@ -6,12 +6,14 @@
 import * as React from 'react'
 import type * as CommandsMojo from 'gen/brave/components/commands/common/commands.mojom.m.js'
 import styled from 'styled-components'
-import { api } from '../commands'
-import { allKeys } from '../utils/accelerator'
+import Keys from './Keys'
+import ConfigureShortcut from './ConfigureShortcut'
+import { commandsCache } from '../commands'
+import { stringToKeys } from '../utils/accelerator'
 
 const Grid = styled.div`
   display: grid;
-  grid-template-columns: 200px min-content auto;
+  grid-template-columns: 200px auto min-content min-content;
   gap: 16px;
   align-items: center;
   padding: 4px;
@@ -28,52 +30,62 @@ const Column = styled.div`
   gap: 4px;
 `
 
-const Kbd = styled.div`
-  display: inline-block;
-  border-radius: 4px;
-  padding: 4px;
-  background-color: #f6f8fa;
-  border: 1px solid rgba(174, 184, 193, 0.2);
-  box-shadow: inset 0 -1px 0 rgba(174, 184, 193, 0.2);
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
 `
 
-let isSure = false
-const ifSure = () => {
-  if (isSure) return true
-  return isSure = window.confirm('This is experimental. Executing commands may not behave as expected, or cause your browser to crash. Continue?')
-}
-
-function Accelerator ({
+function Accelerator({
+  commandId,
   accelerator
 }: {
+  commandId: number
   accelerator: CommandsMojo.Accelerator
 }) {
   return (
-    <div>
-      {allKeys(accelerator).map((k, i) => (
-        <React.Fragment key={i}>
-          {i !== 0 && <span>+</span>}
-          <Kbd>{k}</Kbd>
-        </React.Fragment>
-      ))}
-    </div>
+    <Row>
+      <Keys keys={stringToKeys(accelerator.keys)} />
+      <button
+        onClick={() => commandsCache.unassignAccelerator(commandId, accelerator.codes)}
+      >
+        -
+      </button>
+    </Row>
   )
 }
 
-export default function Command ({
+export default function Command({
   command
 }: {
   command: CommandsMojo.Command
 }) {
+  const [adding, setAdding] = React.useState(false)
+
   return (
     <Grid>
       <div>{command.name}</div>
-      <button onClick={() => { ifSure() && api.tryExecuteCommand(command.id) }}>Execute</button>
       <Column>
         {command.accelerators.map((a, i) => (
-          <Accelerator key={i} accelerator={a} />
+          <Accelerator key={i} commandId={command.id} accelerator={a} />
         ))}
       </Column>
+      <button disabled={adding} onClick={() => setAdding(true)}>
+        Add
+      </button>
+      <button onClick={() => commandsCache.reset(command.id)}>Reset</button>
+      {adding && (
+        <ConfigureShortcut
+          onChange={(info) => {
+            setAdding(false)
+            commandsCache.assignAccelerator(command.id, info)
+          }}
+          onCancel={() => {
+            setAdding(false)
+          }}
+        />
+      )}
     </Grid>
   )
 }

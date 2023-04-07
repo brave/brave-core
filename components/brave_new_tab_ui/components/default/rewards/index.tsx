@@ -47,7 +47,7 @@ export interface RewardsProps {
   declaredCountry: string
   enabledAds: boolean
   needsBrowserUpgradeToServeAds: boolean
-  balance: NewTab.RewardsBalance
+  balance?: number
   externalWallet?: RewardsExtension.ExternalWallet
   externalWalletProviders?: string[]
   report?: NewTab.RewardsBalanceReport

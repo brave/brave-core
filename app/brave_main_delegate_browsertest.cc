@@ -30,6 +30,8 @@
 #include "components/permissions/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
+#include "components/safe_browsing/core/common/features.h"
+#include "components/search/ntp_features.h"
 #include "components/segmentation_platform/public/features.h"
 #include "components/send_tab_to_self/features.h"
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
@@ -51,7 +53,6 @@
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/safe_browsing/core/common/features.h"
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #endif
@@ -97,12 +98,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &autofill::features::kAutofillEnableAccountWalletStorage,
     &autofill::features::kAutofillEnableOfferNotificationForPromoCodes,
     &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
-    &autofill::features::kAutofillSaveCardUiExperiment,
-    &autofill::features::kAutofillServerCommunication,
+    &autofill::features::test::kAutofillServerCommunication,
     &autofill::features::kAutofillUpstreamAllowAdditionalEmailDomains,
     &blink::features::kAdInterestGroupAPI,
     &blink::features::kAllowURNsInIframes,
     &blink::features::kAnonymousIframeOriginTrial,
+    &blink::features::kBackgroundResourceFetch,
     &blink::features::kBrowsingTopics,
     &blink::features::kBrowsingTopicsXHR,
     &blink::features::kClientHintsMetaEquivDelegateCH,
@@ -144,6 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kDigitalGoodsApi,
+    &features::kHttpsFirstModeV2,
     &features::kFedCm,
     &features::kFedCmIframeSupport,
     &features::kFedCmUserInfo,
@@ -166,6 +168,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kUseChromiumUpdater,
 #endif
     &features::kWebOTP,
+    &history_clusters::kSidePanelJourneys,
     &history_clusters::features::kOnDeviceClustering,
     &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
     &history_clusters::internal::kHideVisits,
@@ -181,6 +184,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &net::features::kSamePartyAttributeEnabled,
     &network::features::kPrivateStateTokens,
     &network_time::kNetworkTimeServiceQuerying,
+    &ntp_features::kNtpHistoryClustersModule,
+    &ntp_features::kNtpHistoryClustersModuleLoad,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
@@ -193,6 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
     &privacy_sandbox::kPrivacySandboxSettings3,
     &privacy_sandbox::kPrivacySandboxSettings4,
+    &safe_browsing::kExtensionTelemetry,
     &segmentation_platform::features::kSegmentationPlatformFeature,
     &send_tab_to_self::kSendTabToSelfSigninPromo,
     &shared_highlighting::kIOSSharedHighlightingV2,

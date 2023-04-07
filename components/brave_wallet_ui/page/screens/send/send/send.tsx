@@ -23,12 +23,12 @@ import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance, formatTokenBalanceWithSymbol } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
-import { getTokensNetwork } from '../../../../utils/network-utils'
 import { endsWithAny } from '../../../../utils/string-utils'
 
 // Hooks
 import { usePreset, useBalanceUpdater, useSend } from '../../../../common/hooks'
 import { useOnClickOutside } from '../../../../common/hooks/useOnClickOutside'
+import { useGetNetworkQuery } from '../../../../common/slices/api.slice'
 
 // Styled Components
 import {
@@ -77,7 +77,9 @@ export const Send = (props: Props) => {
   const selectedAccount = useUnsafeWalletSelector(WalletSelectors.selectedAccount)
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
-  const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
+
+  // Hooks
+  useBalanceUpdater()
 
   const {
     toAddressOrUrl,
@@ -98,6 +100,12 @@ export const Send = (props: Props) => {
     processAddressOrUrl
   } = useSend(true)
 
+  // Queries
+  const { data: selectedTokensNetwork } = useGetNetworkQuery(
+    selectedSendAsset,
+    { skip: !selectedSendAsset }
+  )
+
   // Refs
   const ref = React.createRef<HTMLDivElement>()
   const checksumInfoModalRef = React.useRef<HTMLDivElement>(null)
@@ -108,8 +116,6 @@ export const Send = (props: Props) => {
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
   const [showChecksumInfoModal, setShowChecksumInfoModal] = React.useState<boolean>(false)
 
-  // Hooks
-  useBalanceUpdater()
 
   const onSelectPresetAmount = usePreset(
     {
@@ -246,18 +252,32 @@ export const Send = (props: Props) => {
                 addressWarning !== getLocale('braveWalletAddressMissingChecksumInfoWarning')
               )
                 ? addressWarning
-                : getLocale('braveWalletReviewOrder')
+                : getLocale('braveWalletReviewSend')
   }, [insufficientFundsError, addressError, addressWarning, sendAmountValidationError, searchingForDomain, showEnsOffchainWarning])
 
   const isReviewButtonDisabled = React.useMemo(() => {
-    return searchingForDomain ||
-      toAddressOrUrl === '' ||
-      parseFloat(sendAmount) === 0 ||
-      sendAmount === '' ||
-      insufficientFundsError ||
-      (addressError !== undefined && addressError !== '') ||
-      sendAmountValidationError !== undefined
-  }, [toAddressOrUrl, sendAmount, insufficientFundsError, addressError, sendAmountValidationError, searchingForDomain])
+    // We only need to check if showEnsOffchainWarning is true here to return
+    // false early before any other checks are made. This is to allow the button
+    // to be pressed to enable offchain lookup.
+    return !showEnsOffchainWarning &&
+      (searchingForDomain ||
+        toAddressOrUrl === '' ||
+        parseFloat(sendAmount) === 0 ||
+        sendAmount === '' ||
+        insufficientFundsError ||
+        (addressError !== undefined && addressError !== '') ||
+        sendAmountValidationError !== undefined)
+  },
+    [
+      toAddressOrUrl,
+      sendAmount,
+      insufficientFundsError,
+      addressError,
+      sendAmountValidationError,
+      searchingForDomain,
+      showEnsOffchainWarning
+    ]
+  )
 
   const reviewButtonHasError = React.useMemo(() => {
     return searchingForDomain
@@ -267,13 +287,6 @@ export const Send = (props: Props) => {
         addressError !== '' &&
         addressError !== getLocale('braveWalletNotValidChecksumAddressError'))
   }, [searchingForDomain, insufficientFundsError, addressError])
-
-  const selectedTokensNetwork = React.useMemo(() => {
-    if (selectedSendAsset) {
-      return getTokensNetwork(networks, selectedSendAsset)
-    }
-    return undefined
-  }, [selectedSendAsset, networks])
 
   const hasAddressError = React.useMemo(() => {
     return searchingForDomain

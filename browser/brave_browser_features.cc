@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/brave_browser_features.h"
+#include "build/build_config.h"
 
 namespace features {
 
@@ -11,5 +12,15 @@ namespace features {
 BASE_FEATURE(kBraveCleanupSessionCookiesOnSessionRestore,
              "BraveCleanupSessionCookiesOnSessionRestore",
              base::FEATURE_ENABLED_BY_DEFAULT);
+
+// Sanitize url before copying, replaces default ctrl+c hotkey for urls.
+BASE_FEATURE(kBraveCopyCleanLinkByDefault,
+             "brave-copy-clean-link-by-default",
+#if BUILDFLAG(IS_MAC)
+             base::FEATURE_DISABLED_BY_DEFAULT
+#else
+             base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+);
 
 }  // namespace features

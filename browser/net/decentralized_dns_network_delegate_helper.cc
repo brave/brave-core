@@ -35,8 +35,9 @@ int OnBeforeURLRequest_DecentralizedDnsPreRedirectWork(
   auto* json_rpc_service =
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           ctx->browser_context);
-  if (!json_rpc_service)
+  if (!json_rpc_service) {
     return net::OK;
+  }
 
   if (IsUnstoppableDomainsTLD(ctx->request_url.host_piece()) &&
       IsUnstoppableDomainsResolveMethodEnabled(
@@ -113,22 +114,25 @@ void OnBeforeURLRequest_SnsRedirectWork(
     ctx->new_url_spec = url->spec();
   }
 
-  if (!next_callback.is_null())
+  if (!next_callback.is_null()) {
     next_callback.Run();
+  }
 }
 
 void OnBeforeURLRequest_UnstoppableDomainsRedirectWork(
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx,
-    const GURL& url,
+    const absl::optional<GURL>& url,
     brave_wallet::mojom::ProviderError error,
     const std::string& error_message) {
-  if (error == brave_wallet::mojom::ProviderError::kSuccess && url.is_valid()) {
-    ctx->new_url_spec = url.spec();
+  if (error == brave_wallet::mojom::ProviderError::kSuccess && url &&
+      url->is_valid()) {
+    ctx->new_url_spec = url->spec();
   }
 
-  if (!next_callback.is_null())
+  if (!next_callback.is_null()) {
     next_callback.Run();
+  }
 }
 
 }  // namespace decentralized_dns

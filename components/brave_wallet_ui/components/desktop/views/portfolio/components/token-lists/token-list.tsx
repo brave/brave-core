@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 
 // Selectors
 import { useSafeWalletSelector, useUnsafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
@@ -59,18 +59,19 @@ interface Props {
 }
 
 export const TokenLists = ({
-                             userAssetList,
-                             networks,
-                             renderToken,
-                             hideAddButton,
-                             enableScroll,
-                             maxListHeight,
-                             hideAssetFilter,
-                             hideAccountFilter,
-                             hideAutoDiscovery
-                           }: Props) => {
+  userAssetList,
+  networks,
+  renderToken,
+  hideAddButton,
+  enableScroll,
+  maxListHeight,
+  hideAssetFilter,
+  hideAccountFilter,
+  hideAutoDiscovery
+}: Props) => {
   // routing
   const history = useHistory()
+  const { tokenId } = useParams<{ tokenId?: string }>()
 
   // unsafe selectors
   const tokenSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
@@ -83,7 +84,7 @@ export const TokenLists = ({
   const { computeFiatAmount } = usePricing(tokenSpotPrices)
 
   // state
-  const [searchValue, setSearchValue] = React.useState<string>('')
+  const [searchValue, setSearchValue] = React.useState<string>(tokenId ?? '')
 
   // methods
 
@@ -181,9 +182,11 @@ export const TokenLists = ({
       }
       {nonFungibleTokens.length !== 0 &&
         <>
-          <Spacer />
-          <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
-          <SubDivider />
+          <Column fullWidth={true} alignItems='flex-start'>
+            <Spacer />
+            <DividerText>{getLocale('braveWalletTopNavNFTS')}</DividerText>
+            <SubDivider />
+          </Column>
           {nonFungibleTokens.map((token, index) => renderToken({ index, item: token, viewMode: 'list' }))}
         </>
       }
@@ -199,10 +202,10 @@ export const TokenLists = ({
   // effects
   React.useEffect(() => {
     // reset search field on list update
-    if (userAssetList) {
+    if (userAssetList && !tokenId) {
       setSearchValue('')
     }
-  }, [userAssetList])
+  }, [userAssetList, tokenId])
 
   // render
   return (

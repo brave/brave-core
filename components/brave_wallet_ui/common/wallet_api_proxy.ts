@@ -10,6 +10,7 @@ import { BraveWallet } from '../constants/types'
 import { objectEquals } from '../utils/object-utils'
 import { makeSerializableOriginInfo, makeSerializableTransaction } from '../utils/model-serialization-utils'
 import { WalletPageActions } from '../page/actions'
+import { walletApi } from './slices/api.slice'
 
 export class WalletApiProxy {
   walletHandler = new BraveWallet.WalletHandlerRemote()
@@ -27,6 +28,7 @@ export class WalletApiProxy {
   braveWalletP3A = new BraveWallet.BraveWalletP3ARemote()
   braveWalletPinService = new BraveWallet.WalletPinServiceRemote()
   braveWalletAutoPinService = new BraveWallet.WalletAutoPinServiceRemote()
+  braveWalletIpfsService = new BraveWallet.IpfsServiceRemote()
 
   addJsonRpcServiceObserver (store: Store) {
     const jsonRpcServiceObserverReceiver = new BraveWallet.JsonRpcServiceObserverReceiver({
@@ -37,7 +39,9 @@ export class WalletApiProxy {
         // TODO: Handle this event.
       },
       onIsEip1559Changed: function (chainId, isEip1559) {
-        store.dispatch(WalletActions.isEip1559Changed({ chainId, isEip1559 }))
+        store.dispatch(
+          walletApi.endpoints.isEip1559Changed.initiate({ chainId, isEip1559 })
+        )
       }
     })
     this.jsonRpcService.addObserver(jsonRpcServiceObserverReceiver.$.bindNewPipeAndPassRemote())
@@ -128,6 +132,8 @@ export class WalletApiProxy {
       },
       onDiscoverAssetsCompleted: function (discoveredAssets) {
         store.dispatch(WalletActions.setAssetAutoDiscoveryCompleted(discoveredAssets))
+      },
+      onResetWallet: function () {
       }
     })
     this.braveWalletService.addObserver(braveWalletServiceObserverReceiver.$.bindNewPipeAndPassRemote())

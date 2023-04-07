@@ -11,21 +11,41 @@ import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
 
+action("generate_command_metadata") {
+  command_files = [
+    "//chrome/app/chrome_command_ids.h",
+    "//brave/app/brave_command_ids.h",
+  ]
+  cc_template = "command_utils.cc.template"
+
+  sources = command_files + [ cc_template ]
+
+  script = "generate_command_metadata.py"
+
+  output_cc = "$target_gen_dir/command_utils.cc"
+  outputs = [ output_cc ]
+
+  args = rebase_path(command_files) + [
+           "--output_cc",
+           rebase_path(output_cc),
+           "--template_cc",
+           rebase_path(cc_template),
+         ]
+}
+
 source_set("command_ids") {
   sources = [ "brave_command_ids.h" ]
 
   deps = [
     "//base",
     "//chrome/app:command_ids",
+    "//components/services/screen_ai/buildflags",
   ]
 
-  if (!is_android && !is_ios) {
-    sources += [
-      "command_utils.cc",
-      "command_utils.h",
-    ]
-
-    deps += [ "//brave/components/commands/common" ]
+  if (!is_android) {
+    sources +=
+        [ "command_utils.h" ] + get_target_outputs(":generate_command_metadata")
+    deps += [ ":generate_command_metadata" ]
   }
 }
 
@@ -89,6 +109,8 @@ source_set("browser_tests") {
       "//components/permissions",
       "//components/privacy_sandbox",
       "//components/reading_list/features:flags",
+      "//components/safe_browsing/core/common",
+      "//components/search",
       "//components/segmentation_platform/public",
       "//components/send_tab_to_self",
       "//components/subresource_filter/core/common",
@@ -110,6 +132,7 @@ source_set("unit_tests") {
       "//base",
       "//base/test:test_support",
       "//brave/components/commands/common",
+      "//chrome/app:command_ids",
       "//chrome/browser/ui/views",
       "//testing/gtest",
     ]

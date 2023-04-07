@@ -38,16 +38,11 @@ const char kNotificationAdDidFallbackToCustom[] =
 const char kSupportedCountryCodesLastSchemaVersion[] =
     "brave.brave_ads.supported_regions_last_schema_version_number";
 
-}  // namespace brave_ads::prefs
-
-// TODO(https://github.com/brave/brave-browser/issues/13793): Rename ads::prefs
-// namespace to brave_ads::prefs when bat-native-ads is moved to
-// components/brave_ads
-namespace ads::prefs {
-
 // Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
 const char kEnabledForLastProfile[] = "brave.brave_ads.enabled_last_profile";
+const char kEverEnabledForAnyProfile[] =
+    "brave.brave_ads.ever_enabled_any_profile";
 
 // Stores a diagnostic id
 const char kDiagnosticId[] = "brave.brave_ads.diagnostics.id";
@@ -120,4 +115,4 @@ const char kShouldMigrateVerifiedRewardsUser[] =
 const char kConfirmationsHash[] = "brave.brave_ads.confirmations.hash";
 const char kClientHash[] = "brave.brave_ads.client.hash";
 
-}  // namespace ads::prefs
+}  // namespace brave_ads::prefs

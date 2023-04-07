@@ -9,6 +9,7 @@ export const AccountCircle = styled.div<{
   orb: string
 }>`
   width: 20px;
+  min-width: 20px;
   height: 20px;
   border-radius: 100%;
   background-image: url(${(p) => p.orb});

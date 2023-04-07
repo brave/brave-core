@@ -5,15 +5,11 @@
 
 import * as React from 'react'
 import {
-  useDispatch,
   useSelector
 } from 'react-redux'
 
 // Proxies
 import getWalletPanelApiProxy from '../../../panel/wallet_panel_api_proxy'
-
-// Actions
-import { PanelActions } from '../../../panel/actions'
 
 // Components
 import { create, background } from 'ethereum-blockies'
@@ -28,7 +24,7 @@ import { deserializeOrigin } from '../../../utils/model-serialization-utils'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
-import { useGetSelectedCoinQuery } from '../../../common/slices/api.slice'
+import { useGetSelectedChainQuery } from '../../../common/slices/api.slice'
 import { useApiProxy } from '../../../common/hooks/use-api-proxy'
 
 // types
@@ -76,18 +72,17 @@ export const ConnectedPanel = (props: Props) => {
     navAction
   } = props
 
-  const dispatch = useDispatch()
   const {
     defaultCurrencies,
     transactionSpotPrices: spotPrices,
     activeOrigin: originInfo,
     selectedAccount,
-    selectedNetwork,
     connectedAccounts
   } = useSelector(({ wallet }: { wallet: WalletState }) => wallet)
 
-  // api
-  const { data: selectedCoin } = useGetSelectedCoinQuery()
+  // queries
+  const { currentData: selectedNetwork } = useGetSelectedChainQuery(undefined)
+  const selectedCoin = selectedNetwork?.coin
 
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
@@ -132,10 +127,6 @@ export const ConnectedPanel = (props: Props) => {
       setShowMore(false)
     }
   }, [showMore])
-
-  const onOpenSettings = React.useCallback(() => {
-    dispatch(PanelActions.openWalletSettings())
-  }, [])
 
   // effects
   React.useEffect(() => {
@@ -249,7 +240,6 @@ export const ConnectedPanel = (props: Props) => {
     <StyledWrapper onClick={onHideMore} panelBackground={bg}>
       <ConnectedHeader
         onExpand={onExpand}
-        onClickSetting={onOpenSettings}
         onClickMore={onShowMore}
         onClickViewOnBlockExplorer={selectedAccount ? onClickViewOnBlockExplorer('address', selectedAccountAddress) : undefined}
         showMore={showMore}

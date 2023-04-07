@@ -38,7 +38,7 @@ public class FilterListServiceFactory {
         if (profile == null) {
             return null;
         }
-        int nativeHandle =
+        long nativeHandle =
                 FilterListServiceFactoryJni.get().getInterfaceToFilterListService(profile);
         if (nativeHandle == -1) {
             return null;
@@ -52,12 +52,12 @@ public class FilterListServiceFactory {
         return filterListAndroidHandler;
     }
 
-    private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
+    private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToFilterListService(Profile profile);
+        long getInterfaceToFilterListService(Profile profile);
     }
 }

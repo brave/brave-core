@@ -64,8 +64,9 @@ class WidgetBoundsChangeWaiter final : public views::WidgetObserver {
 
   // Wait for changes to occur, or return immediately if they already have.
   void Wait() {
-    if (!BoundsChangeMeetsThreshold(widget_->GetWindowBoundsInScreen()))
+    if (!BoundsChangeMeetsThreshold(widget_->GetWindowBoundsInScreen())) {
       run_loop_.Run();
+    }
   }
 
  private:
@@ -138,11 +139,6 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   content::RenderFrameHost* IFrame() const { return ChildFrameAt(Parent(), 0); }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(Contents());
-  }
-
   Browser* OpenPopup(const std::string& script, bool from_iframe) const {
     content::ExecuteScriptAsync(from_iframe ? Parent() : IFrame(), script);
     Browser* popup = ui_test_utils::WaitForBrowserToOpen();
@@ -165,7 +161,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       SetBounds(kTestWindowBounds[j]);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
-        NavigateToURLUntilLoadStop(url);
+        ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
         for (bool test_iframe : {false, true}) {
           if (!content_scheme) {
             continue;
@@ -223,7 +219,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       SetFingerprintingSetting(allow_fingerprinting);
       for (int i = 0; i < static_cast<int>(std::size(kTestWindowBounds)); ++i) {
         SetBounds(kTestWindowBounds[i]);
-        NavigateToURLUntilLoadStop(parent_url());
+        ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
         for (bool test_iframe : {false, true}) {
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
           if (!allow_fingerprinting && !IsFlagDisabled()) {
@@ -255,7 +251,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
       SetBounds(kTestWindowBounds[j]);
       for (bool allow_fingerprinting : {false, true}) {
         SetFingerprintingSetting(allow_fingerprinting);
-        NavigateToURLUntilLoadStop(parent_url());
+        ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
         for (bool test_iframe : {false, true}) {
           content::RenderFrameHost* host = test_iframe ? Parent() : IFrame();
           EXPECT_EQ(
@@ -277,7 +273,7 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
     parent_bounds = SetBounds(kTestWindowBounds[j]);
     for (bool allow_fingerprinting : {false, true}) {
       SetFingerprintingSetting(allow_fingerprinting);
-      NavigateToURLUntilLoadStop(parent_url());
+      ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), parent_url()));
       for (bool test_iframe : {false, true}) {
         const char* script =
             "open('/simple.html', '', `"

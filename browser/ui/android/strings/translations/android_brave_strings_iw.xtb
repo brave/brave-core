@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="iw">
+<translation id="3478449063771497234">ההתראות מושבתות</translation>
+<translation id="7466579932043491502">ייתכן ש-Brave Rewards לא יפעלו בזמן שההודעות מושבתות.</translation>
+<translation id="4259212006412783790">הפעל</translation>
+<translation id="6112331814131703370">חסום הודעות 'עבור לאפליקציה'</translation>
 <translation id="4744921452903670666">אנו מעוניינים בדעתך!</translation>
 <translation id="2524310205387880526">דרג/י את Brave</translation>
 <translation id="4104400246019119780">תודה!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">התגמול שלכם עבור <ph name="MONTH_VALUE"/> כאן!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/>תגמולים:<ph name="TOKEN"/>BAT</translation>
 <translation id="1649629664206601032">יש לכם <ph name="TOKEN"/>ימים נותרים לתביעה</translation>
-<translation id="2323069945529668668">אוי לא!</translation>
-<translation id="7510166204621526816">שרת Brave Rewards אינו מגיב. אנו נתקן זאת בהקדם האפשרי.</translation>
 <translation id="683765328936486920">ביוטיוב</translation>
 <translation id="8969049974285901797">ב-Twitch</translation>
 <translation id="3101693828171454453">אין מספיק <ph name="TOKEN"/>s</translation>
@@ -612,7 +614,7 @@
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
 <translation id="3835223348537121988">יתרה:</translation>
-<translation id="6888491517683356528">המשך ל-Ramp</translation>
+<translation id="3956169227169516344">בחר שיטת רכישה</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="3784455785234192852">נעל</translation>
 <translation id="8796429300536029044">פרטי NFT</translation>
@@ -626,6 +628,10 @@
 <translation id="414639769490080648">מספר הדקות להמתנה עד שה-Brave Wallet יינעל אוטומטית</translation>
 <translation id="4993345308607970390">איפוס ארנק Brave</translation>
 <translation id="4322846864135539519">האם את/ה בטוח/ה שברצונך לאפס את ה-Brave Rewards שלך? אם הארנק שלך לא מגובה, איפוס יגרום לך לאבד את כל נתוני החשבון (כולל כל הכספים הקשורים אליו). יש להקליד "<ph name="CONFIRMATION_PHRASE"/>" כדי לאשר.</translation>
+<translation id="6915083716464390008">בחר אחת מהאפשרויות הבאות</translation>
+<translation id="7667423728712601865">רכשו קריפטו באמצעות ויזה או מאסטרקארד.</translation>
+<translation id="3101839349578102016">קנייה מיידית עם חשבון הבנק שלך. עמלות נמוכות יותר.</translation>
+<translation id="7269640984027668973">קנה עם <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">מחיקת עסקאות ופרטי מספרים ייחודיים</translation>
 <translation id="5693968582510626466">ניקוי עסקאות יכול להיות שימושי עבור מפתחים או בעת ניקוי מצב בשרת מקומי</translation>
 <translation id="5421107279168565467">האם את/ה בטוח/ה שברצונך לאפס את פרטי העסקאות והמספרים הייחודיים? אפשרות זו משמשת בעיקר מפתחים המפעילים שרת בדיקה מקומי. יש להקליד ״<ph name="CONFIRMATION_PHRASE"/> " כדי לאשר.</translation>
@@ -801,7 +807,7 @@
 <translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
 <translation id="3494964159182650590">סיכום תגמולים</translation>
 <translation id="590733288489975971">תגמולים מפרסומות</translation>
-<translation id="207268487070188114">טיפ חד-פעמי</translation>
+<translation id="2613359062756190460">טיפ חד-פעמי</translation>
 <translation id="7577100371127227294">טיפים חודשיים</translation>
 <translation id="7091980679045978090">רווחים משוערים</translation>
 <translation id="1346059596910821859">טיפ</translation>

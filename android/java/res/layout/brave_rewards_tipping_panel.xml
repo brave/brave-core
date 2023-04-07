@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:layout_marginEnd="4dp"
-            android:background="@drawable/bat_logo"
+            app:srcCompat="@drawable/bat_logo"
              />
 
         <TextView

@@ -8,9 +8,9 @@
 #include <utility>
 
 #include "base/base64.h"
+#include "base/base_switches.h"
 #include "base/check.h"
 #include "base/containers/circular_deque.h"
-#include "base/containers/contains.h"
 #include "base/containers/flat_map.h"
 #include "base/cxx17_backports.h"
 #include "base/feature_list.h"
@@ -23,19 +23,12 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/no_destructor.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/timer/timer.h"
-#include "bat/ads/ad_constants.h"
-#include "bat/ads/ads.h"
-#include "bat/ads/database.h"
-#include "bat/ads/new_tab_page_ad_info.h"
-#include "bat/ads/new_tab_page_ad_value_util.h"
-#include "bat/ads/notification_ad_info.h"
-#include "bat/ads/notification_ad_value_util.h"
-#include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/browser/brave_ads/notification_helper/notification_helper.h"
 #include "brave/browser/brave_ads/notifications/notification_ad_platform_bridge.h"
 #include "brave/browser/brave_browser_process.h"
@@ -50,16 +43,25 @@
 #include "brave/components/brave_ads/common/constants.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/ad_constants.h"
+#include "brave/components/brave_ads/core/ad_switches.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/ads_util.h"
+#include "brave/components/brave_ads/core/database.h"
+#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/new_tab_page_ad_value_util.h"
+#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/notification_ad_value_util.h"
+#include "brave/components/brave_ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_federated/data_stores/async_data_store.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/l10n/common/locale_util.h"
-#include "brave/components/rpill/common/rpill.h"
+#include "brave/components/l10n/common/localization_util.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service.h"
@@ -108,10 +110,14 @@ constexpr int kHttpUpgradeRequiredStatusResponseCode = 426;
 
 constexpr char kNotificationAdUrlPrefix[] = "https://www.brave.com/ads/?";
 
-BASE_FEATURE(kServing, "AdServing", base::FEATURE_ENABLED_BY_DEFAULT);
+constexpr char kFeaturesValueSeparator[] = ",";
+
+constexpr char kSwitchValueSeparator[] = "=";
+
+BASE_FEATURE(kFeature, "NotificationAds", base::FEATURE_ENABLED_BY_DEFAULT);
 
 int GetDataResourceId(const std::string& name) {
-  if (name == ads::data::resource::kCatalogJsonSchemaFilename) {
+  if (name == data::resource::kCatalogJsonSchemaFilename) {
     return IDR_ADS_CATALOG_SCHEMA;
   }
 
@@ -120,19 +126,19 @@ int GetDataResourceId(const std::string& name) {
   return -1;
 }
 
-std::string URLMethodToRequestType(ads::mojom::UrlRequestMethodType method) {
-  DCHECK(ads::mojom::IsKnownEnumValue(method));
+std::string URLMethodToRequestType(mojom::UrlRequestMethodType method) {
+  DCHECK(mojom::IsKnownEnumValue(method));
 
   switch (method) {
-    case ads::mojom::UrlRequestMethodType::kGet: {
+    case mojom::UrlRequestMethodType::kGet: {
       return "GET";
     }
 
-    case ads::mojom::UrlRequestMethodType::kPost: {
+    case mojom::UrlRequestMethodType::kPost: {
       return "POST";
     }
 
-    case ads::mojom::UrlRequestMethodType::kPut: {
+    case mojom::UrlRequestMethodType::kPut: {
       return "PUT";
     }
   }
@@ -243,15 +249,15 @@ bool MigrateConfirmationStateOnFileTaskRunner(const base::FilePath& path) {
   return true;
 }
 
-ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
-    ads::mojom::DBTransactionInfoPtr transaction,
-    ads::Database* database) {
-  ads::mojom::DBCommandResponseInfoPtr command_response =
-      ads::mojom::DBCommandResponseInfo::New();
+mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
+    mojom::DBTransactionInfoPtr transaction,
+    Database* database) {
+  mojom::DBCommandResponseInfoPtr command_response =
+      mojom::DBCommandResponseInfo::New();
 
   if (!database) {
     command_response->status =
-        ads::mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
+        mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
   } else {
     database->RunTransaction(std::move(transaction), command_response.get());
   }
@@ -285,6 +291,20 @@ std::vector<std::string> ExtraCommandLineSwitches() {
     command_line_switches.push_back(rewards_command_line_switch);
   }
 
+  const base::CommandLine* command_line =
+      base::CommandLine::ForCurrentProcess();
+  const std::string enabled_features =
+      command_line->GetSwitchValueASCII(::switches::kEnableFeatures);
+  const std::string disabled_features =
+      command_line->GetSwitchValueASCII(::switches::kDisableFeatures);
+
+  if (!enabled_features.empty() || !disabled_features.empty()) {
+    const std::string affected_features = base::StrCat(
+        {enabled_features, kFeaturesValueSeparator, disabled_features});
+    command_line_switches.push_back(base::StrCat(
+        {switches::kFeaturesSwitch, kSwitchValueSeparator, enabled_features}));
+  }
+
   return command_line_switches;
 }
 
@@ -297,13 +317,13 @@ void OnResetState(const bool success) {
   VLOG(6) << "Successfully reset ads state";
 }
 
-void OnLogTrainingInstance(const bool success) {
+void OnAddTrainingSample(const bool success) {
   if (!success) {
-    VLOG(6) << "Failed to log training covariates";
+    VLOG(6) << "Failed to add training sample";
     return;
   }
 
-  VLOG(6) << "Successfully logged training covariates";
+  VLOG(6) << "Successfully added training sample";
 }
 
 }  // namespace
@@ -340,6 +360,8 @@ AdsServiceImpl::AdsServiceImpl(
   InitializeNotificationsForCurrentProfile();
 
   MigratePrefs();
+
+  DisableAdsIfUnsupportedRegion();
 
   MigrateConfirmationState();
 
@@ -382,17 +404,6 @@ void AdsServiceImpl::GetDeviceId() {
 void AdsServiceImpl::OnGetDeviceId(std::string device_id) {
   sys_info_.device_id = std::move(device_id);
 
-  DetectUncertainFuture();
-}
-
-void AdsServiceImpl::DetectUncertainFuture() {
-  brave_rpill::DetectUncertainFuture(
-      base::BindOnce(&AdsServiceImpl::OnDetectUncertainFuture, AsWeakPtr()));
-}
-
-void AdsServiceImpl::OnDetectUncertainFuture(const bool is_uncertain_future) {
-  sys_info_.is_uncertain_future = is_uncertain_future;
-
   InitializePrefChangeRegistrar();
 
   MaybeStartBatAdsService();
@@ -416,9 +427,9 @@ void AdsServiceImpl::MaybeStartBatAdsService() {
     return;
   }
 
-  if (!IsSupportedLocale()) {
-    VLOG(6) << brave_l10n::GetDefaultLocaleString()
-            << " locale does not support ads";
+  if (!IsSupportedRegion()) {
+    VLOG(6) << brave_l10n::GetDefaultISOCountryCodeString()
+            << " region does not support ads";
     return;
   }
 
@@ -448,6 +459,7 @@ void AdsServiceImpl::StartBatAdsService() {
   bat_ads_service_->Create(
       bat_ads_client_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
+      bat_ads_client_notifier_.BindNewPipeAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectory,
                      AsWeakPtr()));
 }
@@ -502,8 +514,8 @@ void AdsServiceImpl::Initialize() {
 void AdsServiceImpl::InitializeDatabase() {
   DCHECK(!database_);
 
-  database_ = std::make_unique<ads::Database>(
-      base_path_.AppendASCII("database.sqlite"));
+  database_ =
+      std::make_unique<Database>(base_path_.AppendASCII("database.sqlite"));
 }
 
 bool AdsServiceImpl::ShouldRewardUser() const {
@@ -574,8 +586,7 @@ void AdsServiceImpl::SetSysInfo() {
 }
 
 void AdsServiceImpl::SetBuildChannel() {
-  ads::mojom::BuildChannelInfoPtr build_channel =
-      ads::mojom::BuildChannelInfo::New();
+  mojom::BuildChannelInfoPtr build_channel = mojom::BuildChannelInfo::New();
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release";
 
@@ -629,12 +640,12 @@ void AdsServiceImpl::InitializePrefChangeRegistrar() {
   pref_change_registrar_.Init(profile_->GetPrefs());
 
   pref_change_registrar_.Add(
-      ads::prefs::kEnabled,
+      prefs::kEnabled,
       base::BindRepeating(&AdsServiceImpl::OnEnabledPrefChanged,
                           base::Unretained(this)));
 
   pref_change_registrar_.Add(
-      ads::prefs::kIdleTimeThreshold,
+      prefs::kIdleTimeThreshold,
       base::BindRepeating(&AdsServiceImpl::OnIdleTimeThresholdPrefChanged,
                           base::Unretained(this)));
 
@@ -678,8 +689,8 @@ void AdsServiceImpl::OnNewTabPageShowTodayPrefChanged() {
 }
 
 void AdsServiceImpl::NotifyPrefChanged(const std::string& path) const {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnPrefDidChange(path);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyPrefDidChange(path);
   }
 }
 
@@ -707,7 +718,7 @@ void AdsServiceImpl::CheckIdleStateAfterDelay() {
 
 void AdsServiceImpl::CheckIdleState() {
   const int idle_threshold =
-      GetPrefService()->GetInteger(ads::prefs::kIdleTimeThreshold);
+      GetPrefService()->GetInteger(prefs::kIdleTimeThreshold);
   const ui::IdleState idle_state = ui::CalculateIdleState(idle_threshold);
   ProcessIdleState(idle_state, last_idle_time_);
 
@@ -724,8 +735,9 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
     case ui::IdleState::IDLE_STATE_ACTIVE: {
       const bool screen_was_locked =
           last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
-      if (bat_ads_.is_bound()) {
-        bat_ads_->OnUserDidBecomeActive(idle_time, screen_was_locked);
+      if (bat_ads_client_notifier_.is_bound()) {
+        bat_ads_client_notifier_->NotifyUserDidBecomeActive(idle_time,
+                                                            screen_was_locked);
       }
 
       break;
@@ -733,8 +745,8 @@ void AdsServiceImpl::ProcessIdleState(const ui::IdleState idle_state,
 
     case ui::IdleState::IDLE_STATE_IDLE:
     case ui::IdleState::IDLE_STATE_LOCKED: {
-      if (bat_ads_.is_bound()) {
-        bat_ads_->OnUserDidBecomeIdle();
+      if (bat_ads_client_notifier_.is_bound()) {
+        bat_ads_client_notifier_->NotifyUserDidBecomeIdle();
       }
 
       break;
@@ -842,14 +854,14 @@ void AdsServiceImpl::NotificationAdTimedOut(const std::string& placement_id) {
   if (!ShouldShowCustomNotificationAds() &&
       NotificationHelper::GetInstance()->DoesSupportSystemNotifications()) {
     bat_ads_->TriggerNotificationAdEvent(
-        placement_id, ads::mojom::NotificationAdEventType::kTimedOut);
+        placement_id, mojom::NotificationAdEventType::kTimedOut);
   }
 }
 
 void AdsServiceImpl::CloseAllNotificationAds() {
   // TODO(https://github.com/brave/brave-browser/issues/25410): Temporary
   // solution until we refactor the shutdown business logic and investigate
-  // calling |ads::NotificationAdManager| to cleanup notification ads.
+  // calling |NotificationAdManager| to cleanup notification ads.
 
 #if BUILDFLAG(IS_ANDROID)
   if (!ShouldShowCustomNotificationAds()) {
@@ -857,27 +869,30 @@ void AdsServiceImpl::CloseAllNotificationAds() {
   }
 #endif
 
-  const auto& list = GetPrefService()->GetList(ads::prefs::kNotificationAds);
+  const auto& list = GetPrefService()->GetList(prefs::kNotificationAds);
 
-  const base::circular_deque<ads::NotificationAdInfo> ads =
-      ads::NotificationAdsFromValue(list);
+  const base::circular_deque<NotificationAdInfo> ads =
+      NotificationAdsFromValue(list);
 
   for (const auto& ad : ads) {
     CloseNotificationAd(ad.placement_id);
   }
 
-  GetPrefService()->SetList(ads::prefs::kNotificationAds, {});
+  GetPrefService()->SetList(prefs::kNotificationAds, {});
 }
 
 void AdsServiceImpl::OnPrefetchNewTabPageAd(
     absl::optional<base::Value::Dict> dict) {
+  DCHECK(!prefetched_new_tab_page_ad_);
+  DCHECK(is_prefetching_new_tab_page_ad_);
+
+  is_prefetching_new_tab_page_ad_ = false;
+
   if (!dict) {
     VLOG(1) << "Failed to prefetch new tab page ad";
     return;
   }
-
-  DCHECK(!prefetched_new_tab_page_ad_);
-  prefetched_new_tab_page_ad_ = ads::NewTabPageAdFromValue(*dict);
+  prefetched_new_tab_page_ad_ = NewTabPageAdFromValue(*dict);
 }
 
 void AdsServiceImpl::MaybeOpenNewTabWithAd() {
@@ -912,8 +927,7 @@ void AdsServiceImpl::OnOpenNewTabWithAd(
     return;
   }
 
-  const ads::NotificationAdInfo notification =
-      ads::NotificationAdFromValue(*dict);
+  const NotificationAdInfo notification = NotificationAdFromValue(*dict);
 
   OpenNewTabWithUrl(notification.target_url);
 }
@@ -992,8 +1006,7 @@ void AdsServiceImpl::OnURLRequest(
     }
   }
 
-  ads::mojom::UrlResponseInfoPtr url_response =
-      ads::mojom::UrlResponseInfo::New();
+  mojom::UrlResponseInfoPtr url_response = mojom::UrlResponseInfo::New();
   url_response->url = url_loader->GetFinalURL();
   url_response->status_code = response_code;
   url_response->body = response_body ? *response_body : "";
@@ -1023,8 +1036,8 @@ bool AdsServiceImpl::IsUpgradingFromPreBraveAdsBuild() {
   // exist, |prefs::kVersion| does not exist and it is not the first time the
   // browser has run for this user
 #if !BUILDFLAG(IS_ANDROID)
-  return GetPrefService()->GetBoolean(ads::prefs::kEnabled) &&
-         !GetPrefService()->HasPrefPath(ads::prefs::kIdleTimeThreshold) &&
+  return GetPrefService()->GetBoolean(prefs::kEnabled) &&
+         !GetPrefService()->HasPrefPath(prefs::kIdleTimeThreshold) &&
          !GetPrefService()->HasPrefPath(prefs::kVersion) &&
          !first_run::IsChromeFirstRun();
 #else
@@ -1046,7 +1059,7 @@ void AdsServiceImpl::MigratePrefs() {
   }
 
   const int source_version = GetPrefService()->GetInteger(prefs::kVersion);
-  const int dest_version = ads::kCurrentVersionNumber;
+  const int dest_version = kCurrentPrefVersion;
 
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
@@ -1142,166 +1155,34 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
   SetEnabled(false);
 }
 
-void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
-    const std::string& country_code,
-    const std::vector<std::string>& supported_country_codes) {
-  if (base::Contains(supported_country_codes, country_code)) {
-    return;
+void AdsServiceImpl::DisableAdsIfUnsupportedRegion() {
+  if (!IsSupportedRegion() && IsEnabled()) {
+    SetEnabled(false);
   }
-
-  SetEnabled(false);
 }
 
 void AdsServiceImpl::MigratePrefsVersion1To2() {
-  // Intentionally empty as we no longer need to migrate ads per day due to
-  // deprecation of prefs::kAdsPerDay
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
   DisableAdsIfUpgradingFromPreBraveAdsBuild();
-
-  // Disable ads for unsupported legacy country_codes due to a bug where ads
-  // were enabled even if the users country code was not supported
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR"   // France
-  };
-
-  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
-  // Disable ads for unsupported legacy country codes due to a bug where ads
-  // were enabled even if the users country code was not supported
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR",  // France
-      "AU",  // Australia
-      "NZ",  // New Zealand
-      "IE"   // Ireland
-  };
-
-  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
+  // Intentionally empty as migration is no longer required
 }
 
-void AdsServiceImpl::MigratePrefsVersion4To5() {
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
-  // Disable ads for unsupported legacy country codes due to a bug where ads
-  // were enabled even if the users country code was not supported
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR",  // France
-      "AU",  // Australia
-      "NZ",  // New Zealand
-      "IE",  // Ireland
-      "AR",  // Argentina
-      "AT",  // Austria
-      "BR",  // Brazil
-      "CH",  // Switzerland
-      "CL",  // Chile
-      "CO",  // Colombia
-      "DK",  // Denmark
-      "EC",  // Ecuador
-      "IL",  // Israel
-      "IN",  // India
-      "IT",  // Italy
-      "JP",  // Japan
-      "KR",  // Korea
-      "MX",  // Mexico
-      "NL",  // Netherlands
-      "PE",  // Peru
-      "PH",  // Philippines
-      "PL",  // Poland
-      "SE",  // Sweden
-      "SG",  // Singapore
-      "VE",  // Venezuela
-      "ZA"   // South Africa
-  };
-
-  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
-}
+void AdsServiceImpl::MigratePrefsVersion4To5() {}
 
 void AdsServiceImpl::MigratePrefsVersion5To6() {
-  // Intentionally empty as we no longer need to migrate ads per day due to
-  // deprecation of prefs::kAdsPerDay
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion6To7() {
-  // Disable ads for newly supported country codes due to a bug where ads were
-  // enabled even if the users country code was not supported
-
-  const auto country_code = brave_l10n::GetDefaultISOCountryCodeString();
-
-  const std::vector<std::string> legacy_country_codes = {
-      "US",  // United States of America
-      "CA",  // Canada
-      "GB",  // United Kingdom (Great Britain and Northern Ireland)
-      "DE",  // Germany
-      "FR",  // France
-      "AU",  // Australia
-      "NZ",  // New Zealand
-      "IE",  // Ireland
-      "AR",  // Argentina
-      "AT",  // Austria
-      "BR",  // Brazil
-      "CH",  // Switzerland
-      "CL",  // Chile
-      "CO",  // Colombia
-      "DK",  // Denmark
-      "EC",  // Ecuador
-      "IL",  // Israel
-      "IN",  // India
-      "IT",  // Italy
-      "JP",  // Japan
-      "KR",  // Korea
-      "MX",  // Mexico
-      "NL",  // Netherlands
-      "PE",  // Peru
-      "PH",  // Philippines
-      "PL",  // Poland
-      "SE",  // Sweden
-      "SG",  // Singapore
-      "VE",  // Venezuela
-      "ZA",  // South Africa
-      "KY"   // Cayman Islands
-  };
-
-  const bool is_a_legacy_country_code =
-      base::Contains(legacy_country_codes, country_code);
-
-  if (is_a_legacy_country_code) {
-    // Do not disable Brave Ads for legacy country codes introduced before
-    // version 1.3.x
-    return;
-  }
-
-  const int last_schema_version = GetPrefService()->GetInteger(
-      prefs::kSupportedCountryCodesLastSchemaVersion);
-
-  if (last_schema_version >= 4) {
-    // Do not disable Brave Ads if |kSupportedCountryCodesLastSchemaVersion|
-    // is newer than or equal to schema version 4. This can occur if a user is
-    // upgrading from an older version of 1.3.x or above
-    return;
-  }
-
-  SetEnabled(false);
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion7To8() {
@@ -1313,38 +1194,35 @@ void AdsServiceImpl::MigratePrefsVersion7To8() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion8To9() {
-  // Intentionally empty as we no longer need to migrate ads per day due to
-  // deprecation of prefs::kAdsPerDay
+  // Intentionally empty as migration is no longer required
 }
 
 void AdsServiceImpl::MigratePrefsVersion9To10() {
-  if (!GetPrefService()->HasPrefPath(
-          ads::prefs::kMaximumNotificationAdsPerHour)) {
+  if (!GetPrefService()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour)) {
     return;
   }
 
   const int64_t ads_per_hour =
-      GetPrefService()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour);
+      GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1 || ads_per_hour == 2) {
     // The user did not change the ads per hour setting from the legacy default
     // value of 2 so we should clear the preference to transition to
     // |kDefaultNotificationAdsPerHour|
-    GetPrefService()->ClearPref(ads::prefs::kMaximumNotificationAdsPerHour);
+    GetPrefService()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
   }
 }
 
 void AdsServiceImpl::MigratePrefsVersion10To11() {
-  if (!GetPrefService()->HasPrefPath(
-          ads::prefs::kMaximumNotificationAdsPerHour)) {
+  if (!GetPrefService()->HasPrefPath(prefs::kMaximumNotificationAdsPerHour)) {
     return;
   }
 
   const int64_t ads_per_hour =
-      GetPrefService()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour);
+      GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == 0 || ads_per_hour == -1) {
     // Clear the ads per hour preference to transition to
     // |kDefaultNotificationAdsPerHour|
-    GetPrefService()->ClearPref(ads::prefs::kMaximumNotificationAdsPerHour);
+    GetPrefService()->ClearPref(prefs::kMaximumNotificationAdsPerHour);
   }
 }
 
@@ -1354,12 +1232,12 @@ void AdsServiceImpl::MigratePrefsVersion11To12() {
   if (base::ReadFileToString(base_path_.AppendASCII("confirmations.json"),
                              &value)) {
     const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
-    SetUint64Pref(ads::prefs::kConfirmationsHash, hash);
+    SetUint64Pref(prefs::kConfirmationsHash, hash);
   }
 
   if (base::ReadFileToString(base_path_.AppendASCII("client.json"), &value)) {
     const auto hash = static_cast<uint64_t>(base::PersistentHash(value));
-    SetUint64Pref(ads::prefs::kClientHash, hash);
+    SetUint64Pref(prefs::kClientHash, hash);
   }
 }
 
@@ -1372,6 +1250,7 @@ void AdsServiceImpl::Shutdown() {
 
   is_bat_ads_initialized_ = false;
 
+  bat_ads_client_notifier_.reset();
   bat_ads_.reset();
   bat_ads_client_.reset();
   bat_ads_service_.reset();
@@ -1385,6 +1264,7 @@ void AdsServiceImpl::Shutdown() {
   idle_state_timer_.Stop();
 
   prefetched_new_tab_page_ad_.reset();
+  is_prefetching_new_tab_page_ad_ = false;
 
   CloseAllNotificationAds();
 
@@ -1399,62 +1279,55 @@ void AdsServiceImpl::Shutdown() {
   VLOG(2) << "Shutdown bat-ads service";
 }
 
-bool AdsServiceImpl::IsSupportedLocale() const {
-  return ads::IsSupportedLocale(brave_l10n::GetDefaultLocaleString());
-}
-
 bool AdsServiceImpl::IsEnabled() const {
-  return GetPrefService()->GetBoolean(ads::prefs::kEnabled);
+  return GetPrefService()->GetBoolean(prefs::kEnabled);
 }
 
 void AdsServiceImpl::SetEnabled(const bool is_enabled) {
-  SetBooleanPref(ads::prefs::kEnabled, is_enabled);
+  SetBooleanPref(prefs::kEnabled, is_enabled);
 }
 
 int64_t AdsServiceImpl::GetMaximumNotificationAdsPerHour() const {
   int64_t ads_per_hour =
-      GetPrefService()->GetInt64(ads::prefs::kMaximumNotificationAdsPerHour);
+      GetPrefService()->GetInt64(prefs::kMaximumNotificationAdsPerHour);
   if (ads_per_hour == -1) {
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
-        kServing, "default_ad_notifications_per_hour",
-        ads::kDefaultNotificationAdsPerHour);
+        kFeature, "default_ads_per_hour", kDefaultNotificationAdsPerHour);
   }
 
   return base::clamp(ads_per_hour,
-                     static_cast<int64_t>(ads::kMinimumNotificationAdsPerHour),
-                     static_cast<int64_t>(ads::kMaximumNotificationAdsPerHour));
+                     static_cast<int64_t>(kMinimumNotificationAdsPerHour),
+                     static_cast<int64_t>(kMaximumNotificationAdsPerHour));
 }
 
 void AdsServiceImpl::SetMaximumNotificationAdsPerHour(
     const int64_t ads_per_hour) {
-  DCHECK((ads_per_hour >= ads::kMinimumNotificationAdsPerHour &&
-          ads_per_hour <= ads::kMaximumNotificationAdsPerHour));
-  SetInt64Pref(ads::prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
+  DCHECK((ads_per_hour >= kMinimumNotificationAdsPerHour &&
+          ads_per_hour <= kMaximumNotificationAdsPerHour));
+  SetInt64Pref(prefs::kMaximumNotificationAdsPerHour, ads_per_hour);
 }
 
 bool AdsServiceImpl::ShouldAllowSubdivisionTargeting() const {
-  return GetPrefService()->GetBoolean(
-      ads::prefs::kShouldAllowSubdivisionTargeting);
+  return GetPrefService()->GetBoolean(prefs::kShouldAllowSubdivisionTargeting);
 }
 
 std::string AdsServiceImpl::GetSubdivisionTargetingCode() const {
-  return GetPrefService()->GetString(ads::prefs::kSubdivisionTargetingCode);
+  return GetPrefService()->GetString(prefs::kSubdivisionTargetingCode);
 }
 
 void AdsServiceImpl::SetSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
-  SetStringPref(ads::prefs::kSubdivisionTargetingCode,
-                subdivision_targeting_code);
+  SetStringPref(prefs::kSubdivisionTargetingCode, subdivision_targeting_code);
 }
 
 std::string AdsServiceImpl::GetAutoDetectedSubdivisionTargetingCode() const {
   return GetPrefService()->GetString(
-      ads::prefs::kAutoDetectedSubdivisionTargetingCode);
+      prefs::kAutoDetectedSubdivisionTargetingCode);
 }
 
 void AdsServiceImpl::SetAutoDetectedSubdivisionTargetingCode(
     const std::string& subdivision_targeting_code) {
-  SetStringPref(ads::prefs::kAutoDetectedSubdivisionTargetingCode,
+  SetStringPref(prefs::kAutoDetectedSubdivisionTargetingCode,
                 subdivision_targeting_code);
 }
 
@@ -1474,7 +1347,7 @@ void AdsServiceImpl::SnoozeScheduledCaptcha() {
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerNotificationAdEvent(
-        placement_id, ads::mojom::NotificationAdEventType::kViewed);
+        placement_id, mojom::NotificationAdEventType::kViewed);
   }
 }
 
@@ -1489,9 +1362,9 @@ void AdsServiceImpl::OnNotificationAdClosed(const std::string& placement_id,
     return;
   }
 
-  const ads::mojom::NotificationAdEventType event_type =
-      by_user ? ads::mojom::NotificationAdEventType::kDismissed
-              : ads::mojom::NotificationAdEventType::kTimedOut;
+  const mojom::NotificationAdEventType event_type =
+      by_user ? mojom::NotificationAdEventType::kDismissed
+              : mojom::NotificationAdEventType::kTimedOut;
 
   bat_ads_->TriggerNotificationAdEvent(placement_id, event_type);
 }
@@ -1504,7 +1377,7 @@ void AdsServiceImpl::OnNotificationAdClicked(const std::string& placement_id) {
   OpenNewTabWithAd(placement_id);
 
   bat_ads_->TriggerNotificationAdEvent(
-      placement_id, ads::mojom::NotificationAdEventType::kClicked);
+      placement_id, mojom::NotificationAdEventType::kClicked);
 }
 
 void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
@@ -1513,71 +1386,6 @@ void AdsServiceImpl::GetDiagnostics(GetDiagnosticsCallback callback) {
   }
 
   bat_ads_->GetDiagnostics(std::move(callback));
-}
-
-void AdsServiceImpl::OnLocaleDidChange(const std::string& locale) {
-  if (!bat_ads_.is_bound()) {
-    return;
-  }
-
-  RegisterResourceComponentsForLocale(locale);
-
-  bat_ads_->OnLocaleDidChange(locale);
-}
-
-void AdsServiceImpl::OnTabHtmlContentDidChange(
-    const SessionID& tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& html) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabHtmlContentDidChange(tab_id.id(), redirect_chain, html);
-  }
-}
-
-void AdsServiceImpl::OnTabTextContentDidChange(
-    const SessionID& tab_id,
-    const std::vector<GURL>& redirect_chain,
-    const std::string& text) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabTextContentDidChange(tab_id.id(), redirect_chain, text);
-  }
-}
-
-void AdsServiceImpl::TriggerUserGestureEvent(
-    const int32_t page_transition_type) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->TriggerUserGestureEvent(page_transition_type);
-  }
-}
-
-void AdsServiceImpl::OnTabDidStartPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabDidStartPlayingMedia(tab_id.id());
-  }
-}
-
-void AdsServiceImpl::OnTabDidStopPlayingMedia(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnTabDidStopPlayingMedia(tab_id.id());
-  }
-}
-
-void AdsServiceImpl::OnTabDidChange(const SessionID& tab_id,
-                                    const std::vector<GURL>& redirect_chain,
-                                    const bool is_active,
-                                    const bool is_browser_active) {
-  if (bat_ads_.is_bound()) {
-    const bool is_incognito = !brave::IsRegularProfile(profile_);
-
-    bat_ads_->OnTabDidChange(tab_id.id(), redirect_chain, is_active,
-                             is_browser_active, is_incognito);
-  }
-}
-
-void AdsServiceImpl::OnDidCloseTab(const SessionID& tab_id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnDidCloseTab(tab_id.id());
-  }
 }
 
 void AdsServiceImpl::GetStatementOfAccounts(
@@ -1591,7 +1399,7 @@ void AdsServiceImpl::GetStatementOfAccounts(
 
 void AdsServiceImpl::MaybeServeInlineContentAd(
     const std::string& dimensions,
-    MaybeServeInlineContentAdCallback callback) {
+    MaybeServeInlineContentAdAsDictCallback callback) {
   if (!bat_ads_.is_bound()) {
     return std::move(callback).Run(dimensions,
                                    /*inline_content_ad*/ absl::nullopt);
@@ -1603,8 +1411,8 @@ void AdsServiceImpl::MaybeServeInlineContentAd(
 void AdsServiceImpl::TriggerInlineContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const ads::mojom::InlineContentAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const mojom::InlineContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
 
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerInlineContentAdEvent(placement_id, creative_instance_id,
@@ -1617,26 +1425,22 @@ void AdsServiceImpl::PrefetchNewTabPageAd() {
     return;
   }
 
-  if (!is_bat_ads_initialized_) {
-    return;
-  }
+  if (!prefetched_new_tab_page_ad_ && !is_prefetching_new_tab_page_ad_) {
+    is_prefetching_new_tab_page_ad_ = true;
 
-  if (prefetched_new_tab_page_ad_) {
-    return;
+    bat_ads_->MaybeServeNewTabPageAd(
+        base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
   }
-
-  bat_ads_->MaybeServeNewTabPageAd(
-      base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
 }
 
-absl::optional<ads::NewTabPageAdInfo>
+absl::optional<NewTabPageAdInfo>
 AdsServiceImpl::GetPrefetchedNewTabPageAdForDisplay() {
   if (!bat_ads_.is_bound()) {
     return absl::nullopt;
   }
 
-  absl::optional<ads::NewTabPageAdInfo> ad;
-  if (prefetched_new_tab_page_ad_) {
+  absl::optional<NewTabPageAdInfo> ad;
+  if (prefetched_new_tab_page_ad_ && prefetched_new_tab_page_ad_->IsValid()) {
     ad = prefetched_new_tab_page_ad_;
     prefetched_new_tab_page_ad_.reset();
   }
@@ -1649,15 +1453,14 @@ void AdsServiceImpl::OnFailedToPrefetchNewTabPageAd(
     const std::string& /*creative_instance_id*/) {
   prefetched_new_tab_page_ad_.reset();
 
-  PurgeOrphanedAdEventsForType(ads::mojom::AdType::kNewTabPageAd,
-                               base::DoNothing());
+  PurgeOrphanedAdEventsForType(mojom::AdType::kNewTabPageAd, base::DoNothing());
 }
 
 void AdsServiceImpl::TriggerNewTabPageAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const ads::mojom::NewTabPageAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const mojom::NewTabPageAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
 
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerNewTabPageAdEvent(placement_id, creative_instance_id,
@@ -1668,8 +1471,8 @@ void AdsServiceImpl::TriggerNewTabPageAdEvent(
 void AdsServiceImpl::TriggerPromotedContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
-    const ads::mojom::PromotedContentAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    const mojom::PromotedContentAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
 
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerPromotedContentAdEvent(placement_id, creative_instance_id,
@@ -1678,9 +1481,9 @@ void AdsServiceImpl::TriggerPromotedContentAdEvent(
 }
 
 void AdsServiceImpl::TriggerSearchResultAdEvent(
-    ads::mojom::SearchResultAdInfoPtr ad_mojom,
-    const ads::mojom::SearchResultAdEventType event_type) {
-  DCHECK(ads::mojom::IsKnownEnumValue(event_type));
+    mojom::SearchResultAdInfoPtr ad_mojom,
+    const mojom::SearchResultAdEventType event_type) {
+  DCHECK(mojom::IsKnownEnumValue(event_type));
 
   if (bat_ads_.is_bound()) {
     bat_ads_->TriggerSearchResultAdEvent(std::move(ad_mojom), event_type);
@@ -1688,9 +1491,9 @@ void AdsServiceImpl::TriggerSearchResultAdEvent(
 }
 
 void AdsServiceImpl::PurgeOrphanedAdEventsForType(
-    const ads::mojom::AdType ad_type,
+    const mojom::AdType ad_type,
     PurgeOrphanedAdEventsForTypeCallback callback) {
-  DCHECK(ads::mojom::IsKnownEnumValue(ad_type));
+  DCHECK(mojom::IsKnownEnumValue(ad_type));
 
   if (bat_ads_.is_bound()) {
     bat_ads_->PurgeOrphanedAdEventsForType(ad_type, std::move(callback));
@@ -1705,47 +1508,121 @@ void AdsServiceImpl::GetHistory(const base::Time from_time,
   }
 }
 
-void AdsServiceImpl::ToggleAdThumbUp(base::Value::Dict value,
-                                     ToggleAdThumbUpCallback callback) {
+void AdsServiceImpl::ToggleLikeAd(base::Value::Dict value,
+                                  ToggleLikeAdCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdThumbUp(std::move(value), std::move(callback));
+    bat_ads_->ToggleLikeAd(std::move(value), std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleAdThumbDown(base::Value::Dict value,
-                                       ToggleAdThumbDownCallback callback) {
+void AdsServiceImpl::ToggleDislikeAd(base::Value::Dict value,
+                                     ToggleDislikeAdCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdThumbDown(std::move(value), std::move(callback));
+    bat_ads_->ToggleDislikeAd(std::move(value), std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleAdOptIn(const std::string& category,
-                                   const int action,
-                                   ToggleAdOptInCallback callback) {
+void AdsServiceImpl::ToggleMarkToReceiveAdsForCategory(
+    const std::string& category,
+    const int action,
+    ToggleMarkToReceiveAdsForCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdOptIn(category, action, std::move(callback));
+    bat_ads_->ToggleMarkToReceiveAdsForCategory(category, action,
+                                                std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleAdOptOut(const std::string& category,
-                                    const int action,
-                                    ToggleAdOptOutCallback callback) {
+void AdsServiceImpl::ToggleMarkToNoLongerReceiveAdsForCategory(
+    const std::string& category,
+    const int action,
+    ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleAdOptOut(category, action, std::move(callback));
+    bat_ads_->ToggleMarkToNoLongerReceiveAdsForCategory(category, action,
+                                                        std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleSavedAd(base::Value::Dict value,
-                                   ToggleSavedAdCallback callback) {
+void AdsServiceImpl::ToggleSaveAd(base::Value::Dict value,
+                                  ToggleSaveAdCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleSavedAd(std::move(value), std::move(callback));
+    bat_ads_->ToggleSaveAd(std::move(value), std::move(callback));
   }
 }
 
-void AdsServiceImpl::ToggleFlaggedAd(base::Value::Dict value,
-                                     ToggleFlaggedAdCallback callback) {
+void AdsServiceImpl::ToggleMarkAdAsInappropriate(
+    base::Value::Dict value,
+    ToggleMarkAdAsInappropriateCallback callback) {
   if (bat_ads_.is_bound()) {
-    bat_ads_->ToggleFlaggedAd(std::move(value), std::move(callback));
+    bat_ads_->ToggleMarkAdAsInappropriate(std::move(value),
+                                          std::move(callback));
+  }
+}
+
+void AdsServiceImpl::NotifyTabTextContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& text) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabTextContentDidChange(
+        tab_id, redirect_chain, text);
+  }
+}
+
+void AdsServiceImpl::NotifyTabHtmlContentDidChange(
+    const int32_t tab_id,
+    const std::vector<GURL>& redirect_chain,
+    const std::string& html) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabHtmlContentDidChange(
+        tab_id, redirect_chain, html);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidStartPlayingMedia(const int32_t tab_id) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabDidStartPlayingMedia(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidStopPlayingMedia(const int32_t tab_id) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabDidStopPlayingMedia(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyTabDidChange(const int32_t tab_id,
+                                        const std::vector<GURL>& redirect_chain,
+                                        const bool is_visible,
+                                        const bool is_incognito) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyTabDidChange(tab_id, redirect_chain,
+                                                 is_visible, is_incognito);
+  }
+}
+
+void AdsServiceImpl::NotifyDidCloseTab(const int32_t tab_id) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyDidCloseTab(tab_id);
+  }
+}
+
+void AdsServiceImpl::NotifyUserGestureEventTriggered(
+    const int32_t page_transition_type) {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyUserGestureEventTriggered(
+        page_transition_type);
+  }
+}
+
+void AdsServiceImpl::NotifyBrowserDidBecomeActive() {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidBecomeActive();
+  }
+}
+
+void AdsServiceImpl::NotifyBrowserDidResignActive() {
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidResignActive();
   }
 }
 
@@ -1780,7 +1657,7 @@ void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
 }
 
 void AdsServiceImpl::ShowNotificationAd(base::Value::Dict dict) {
-  const ads::NotificationAdInfo ad = ads::NotificationAdFromValue(dict);
+  const NotificationAdInfo ad = NotificationAdFromValue(dict);
 
   if (ShouldShowCustomNotificationAds()) {
     std::unique_ptr<NotificationAdPlatformBridge> platform_bridge =
@@ -1906,8 +1783,11 @@ void AdsServiceImpl::GetBrowsingHistory(const int max_count,
       &history_service_task_tracker_);
 }
 
-void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
+void AdsServiceImpl::UrlRequest(mojom::UrlRequestInfoPtr url_request,
                                 UrlRequestCallback callback) {
+  DCHECK(url_request);
+  DCHECK(url_request->url.is_valid());
+
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = url_request->url;
   resource_request->method = URLMethodToRequestType(url_request->method);
@@ -2052,9 +1932,8 @@ void AdsServiceImpl::ClearScheduledCaptcha() {
   adaptive_captcha_service_->ClearScheduledCaptcha();
 }
 
-void AdsServiceImpl::RunDBTransaction(
-    ads::mojom::DBTransactionInfoPtr transaction,
-    RunDBTransactionCallback callback) {
+void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
+                                      RunDBTransactionCallback callback) {
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
@@ -2071,14 +1950,14 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& /*name*/,
   }
 }
 
-void AdsServiceImpl::LogTrainingInstance(
-    std::vector<brave_federated::mojom::CovariateInfoPtr> training_instance) {
+void AdsServiceImpl::AddTrainingSample(
+    std::vector<brave_federated::mojom::CovariateInfoPtr> training_sample) {
   if (!notification_ad_timing_data_store_) {
     return;
   }
 
   notification_ad_timing_data_store_->AddTrainingInstance(
-      std::move(training_instance), base::BindOnce(&OnLogTrainingInstance));
+      std::move(training_sample), base::BindOnce(&OnAddTrainingSample));
 }
 
 void AdsServiceImpl::GetBooleanPref(const std::string& path,
@@ -2203,20 +2082,20 @@ void AdsServiceImpl::Log(const std::string& file,
 }
 
 void AdsServiceImpl::OnBrowserDidEnterForeground() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnBrowserDidEnterForeground();
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidEnterForeground();
   }
 }
 
 void AdsServiceImpl::OnBrowserDidEnterBackground() {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnBrowserDidEnterBackground();
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyBrowserDidEnterBackground();
   }
 }
 
 void AdsServiceImpl::OnDidUpdateResourceComponent(const std::string& id) {
-  if (bat_ads_.is_bound()) {
-    bat_ads_->OnDidUpdateResourceComponent(id);
+  if (bat_ads_client_notifier_.is_bound()) {
+    bat_ads_client_notifier_->NotifyDidUpdateResourceComponent(id);
   }
 }
 
@@ -2225,7 +2104,23 @@ void AdsServiceImpl::OnRewardsWalletUpdated() {
 }
 
 void AdsServiceImpl::OnExternalWalletConnected() {
-  SetBooleanPref(ads::prefs::kShouldMigrateVerifiedRewardsUser, true);
+  SetBooleanPref(prefs::kShouldMigrateVerifiedRewardsUser, true);
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  if (!IsEnabled() || !CheckIfCanShowNotificationAds()) {
+    return;
+  }
+
+  base::Value::Dict dict;
+  dict.Set("title",
+           brave_l10n::GetLocalizedResourceUTF16String(
+               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_TITLE));
+  dict.Set("body",
+           brave_l10n::GetLocalizedResourceUTF16String(
+               IDS_BRAVE_ADS_NOTIFICATION_EXTERNAL_WALLET_CONNECTED_BODY));
+  dict.Set("uuid", base::GUID::GenerateRandomV4().AsLowercaseString());
+  ShowNotificationAd(std::move(dict));
+#endif
 }
 
 void AdsServiceImpl::OnCompleteReset(const bool success) {

@@ -20,8 +20,11 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 #include "brave/browser/permissions/mock_permission_lifetime_prompt_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/permissions/brave_permission_manager.h"
 #include "brave/components/permissions/permission_lifetime_pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/permissions/permission_manager_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -33,6 +36,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "components/permissions/features.h"
+#include "components/permissions/permission_manager.h"
 #include "components/permissions/request_type.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/render_frame_host.h"
@@ -48,11 +52,34 @@
 
 using testing::_;
 
+#define CONTENT_SETTING_TYPE_STRING(type) #type
+
 namespace permissions {
 
 namespace {
 const int kKeepAliveInterval = 2;
 const char kPreTestDataFileName[] = "pre_test_data";
+
+std::string GetContentSettingTypeString(ContentSettingsType type) {
+  std::string type_string;
+  switch (type) {
+#define TYPE_CASE(TYPE)  \
+  case TYPE:             \
+    type_string = #TYPE; \
+    break;
+
+    TYPE_CASE(ContentSettingsType::GEOLOCATION)
+    TYPE_CASE(ContentSettingsType::BRAVE_ETHEREUM)
+    TYPE_CASE(ContentSettingsType::BRAVE_SOLANA)
+
+#undef TYPE_CASE
+    default:
+      DCHECK(false);
+  }
+
+  return type_string;
+}
+
 }  // namespace
 
 class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
@@ -96,6 +123,11 @@ class PermissionLifetimeManagerBrowserTest : public InProcessBrowserTest {
   PermissionRequestManager* GetPermissionRequestManager() {
     return PermissionRequestManager::FromWebContents(
         browser()->tab_strip_model()->GetActiveWebContents());
+  }
+
+  BravePermissionManager* permission_manager() {
+    return static_cast<permissions::BravePermissionManager*>(
+        PermissionManagerFactory::GetForProfile(browser()->profile()));
   }
 
   HostContentSettingsMap* host_content_settings_map() {
@@ -159,38 +191,75 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest, ExpirationSmoke) {
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
-  base::RunLoop run_loop;
-  std::unique_ptr<base::ScopedMockTimeMessageLoopTaskRunner>
-      scoped_mock_time_task_runner;
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        run_loop.Quit();
-        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
-        scoped_mock_time_task_runner =
-            std::make_unique<base::ScopedMockTimeMessageLoopTaskRunner>();
-      }));
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  run_loop.Run();
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
+    base::RunLoop run_loop;
+    std::unique_ptr<base::ScopedMockTimeMessageLoopTaskRunner>
+        scoped_mock_time_task_runner;
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
+          run_loop.Quit();
+          prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
+          scoped_mock_time_task_runner =
+              std::make_unique<base::ScopedMockTimeMessageLoopTaskRunner>();
+        }));
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
-  EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    run_loop.Run();
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  scoped_mock_time_task_runner->task_runner()->FastForwardBy(base::Seconds(20));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  scoped_mock_time_task_runner->task_runner()->FastForwardBy(base::Seconds(20));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_TRUE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
+    EXPECT_TRUE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
+
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    scoped_mock_time_task_runner->task_runner()->FastForwardBy(
+        base::Seconds(20));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    scoped_mock_time_task_runner->task_runner()->FastForwardBy(
+        base::Seconds(20));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+    EXPECT_TRUE(GetExpirationsPrefValue().empty());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
@@ -199,35 +268,79 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
-      }));
 
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  prompt_factory_->WaitForPermissionBubble();
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
+          prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
+        }));
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  pre_test_data_.Set("url", url.spec());
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    prompt_factory_->WaitForPermissionBubble();
+
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
+
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    pre_test_data_.SetByDottedPath(
+        base::JoinString({GetContentSettingTypeString(entry.type), "url"}, "."),
+        target_url.spec());
+  }
   WritePreTestData();
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
                        PermissionExpiredAfterRestart) {
   ReadPreTestData();
-  const GURL url(*pre_test_data_.FindString("url"));
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+  for (auto type :
+       {ContentSettingsType::GEOLOCATION, ContentSettingsType::BRAVE_ETHEREUM,
+        ContentSettingsType::BRAVE_SOLANA}) {
+    const GURL url(*pre_test_data_.FindStringByDottedPath(
+        base::JoinString({GetContentSettingTypeString(type), "url"}, ".")));
+    SCOPED_TRACE(url);
+
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(url, url, type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_TRUE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
+  }
 
   base::ScopedMockTimeMessageLoopTaskRunner scoped_mock_time_task_runner;
   permission_lifetime_manager()->RestartExpirationTimerForTesting();
@@ -236,16 +349,29 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
 
   scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(10));
   EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
+  for (auto type :
+       {ContentSettingsType::GEOLOCATION, ContentSettingsType::BRAVE_ETHEREUM,
+        ContentSettingsType::BRAVE_SOLANA}) {
+    const GURL url(*pre_test_data_.FindStringByDottedPath(
+        base::JoinString({GetContentSettingTypeString(type), "url"}, ".")));
+    SCOPED_TRACE(url);
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(url, url, type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+  }
 
-  scoped_mock_time_task_runner.task_runner()->FastForwardBy(base::Seconds(60));
+  scoped_mock_time_task_runner.task_runner()->FastForwardBy(
+      base::Seconds(30 * 3));
   EXPECT_FALSE(permission_lifetime_timer().IsRunning());
   EXPECT_TRUE(GetExpirationsPrefValue().empty());
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ASK);
+  for (auto type :
+       {ContentSettingsType::GEOLOCATION, ContentSettingsType::BRAVE_ETHEREUM,
+        ContentSettingsType::BRAVE_SOLANA}) {
+    const GURL url(*pre_test_data_.FindStringByDottedPath(
+        base::JoinString({GetContentSettingTypeString(type), "url"}, ".")));
+    SCOPED_TRACE(url);
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(url, url, type),
+              ContentSetting::CONTENT_SETTING_ASK);
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
@@ -254,29 +380,64 @@ IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   prompt_factory_->set_response_type(
       PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
-      }));
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
 
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  prompt_factory_->WaitForPermissionBubble();
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([&](MockPermissionLifetimePrompt* prompt) {
+          prompt->delegate()->Requests()[0]->SetLifetime(base::Seconds(30));
+        }));
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    prompt_factory_->WaitForPermissionBubble();
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_TRUE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
 
-  host_content_settings_map()->SetContentSettingDefaultScope(
-      url, url, ContentSettingsType::GEOLOCATION,
-      ContentSetting::CONTENT_SETTING_DEFAULT);
-  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_TRUE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_TRUE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
+
+    host_content_settings_map()->SetContentSettingDefaultScope(
+        target_url, target_url, entry.type,
+        ContentSetting::CONTENT_SETTING_DEFAULT);
+    EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+    EXPECT_TRUE(GetExpirationsPrefValue().empty());
+  }
 }
 
 class PermissionLifetimeManagerWithOriginMonitorBrowserTest
@@ -290,193 +451,339 @@ class PermissionLifetimeManagerWithOriginMonitorBrowserTest
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        DomainPermissionReset) {
-  const GURL& url = https_server()->GetURL("host.com", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  prompt_factory_->set_response_type(
-      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
+    const GURL& url = https_server()->GetURL("host.com", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    prompt_factory_->set_response_type(
+        PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+          prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+        }));
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-      }));
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  prompt_factory_->WaitForPermissionBubble();
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    prompt_factory_->WaitForPermissionBubble();
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
-  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
+    EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
 
-  // Navigate to another domain. It should not reset the permission.
-  const GURL& other_url =
-      https_server()->GetURL("other_host.com", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
+    // Navigate to another domain. It should not reset the permission.
+    const GURL& other_url =
+        https_server()->GetURL("other_host.com", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
 
-  // Permission Should be reset after the timeout
-  base::RunLoop run_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-  run_loop.Run();
+    // Permission Should be reset after the timeout
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
+    run_loop.Run();
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_TRUE(GetExpirationsPrefValue().empty());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        FriendlyDomainPermissionKept) {
-  const GURL& url = https_server()->GetURL("example.com", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  prompt_factory_->set_response_type(
-      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
+    const GURL& url = https_server()->GetURL("example.com", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    prompt_factory_->set_response_type(
+        PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-      }));
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  prompt_factory_->WaitForPermissionBubble();
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+          prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+        }));
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
-  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    prompt_factory_->WaitForPermissionBubble();
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
+    EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  // Navigate to a subdomain, permission should be kept.
-  const GURL& sub_url =
-      https_server()->GetURL("sub.example.com", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
 
-  // Navigate to another domain. It should keep the permission.
-  const GURL& other_url =
-      https_server()->GetURL("other_host.com", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+    // Navigate to a subdomain, permission should be kept.
+    const GURL& sub_url =
+        https_server()->GetURL("sub.example.com", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  // Permission Should be reset after the timeout
-  base::RunLoop run_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-  run_loop.Run();
+    // Navigate to another domain. It should keep the permission.
+    const GURL& other_url =
+        https_server()->GetURL("other_host.com", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue().empty());
+    // Permission Should be reset after the timeout
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
+    run_loop.Run();
+
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_TRUE(GetExpirationsPrefValue().empty());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        PublicSuffixListDomainPermissionReset) {
-  const GURL& url = https_server()->GetURL("user.github.io", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  prompt_factory_->set_response_type(
-      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
+    const GURL& url = https_server()->GetURL("user.github.io", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    prompt_factory_->set_response_type(
+        PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-      }));
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  prompt_factory_->WaitForPermissionBubble();
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+          prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+        }));
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
-  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    prompt_factory_->WaitForPermissionBubble();
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
+    EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  // Navigate to a subdomain, permission should be kept.
-  const GURL& sub_url =
-      https_server()->GetURL("sub.user.github.io", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
 
-  // Navigate to another domain in PSL. It should keep the permission.
-  const GURL& other_url =
-      https_server()->GetURL("user2.github.io", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+    // Navigate to a subdomain, permission should be kept.
+    const GURL& sub_url =
+        https_server()->GetURL("sub.user.github.io", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), sub_url));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  // Permission Should be reset after the timeout
-  base::RunLoop run_loop;
-  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
-      FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
-  run_loop.Run();
+    // Navigate to another domain in PSL. It should keep the permission.
+    const GURL& other_url =
+        https_server()->GetURL("user2.github.io", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), other_url));
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue().empty());
+    // Permission Should be reset after the timeout
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+        FROM_HERE, run_loop.QuitClosure(), base::Seconds(kKeepAliveInterval));
+    run_loop.Run();
+
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_TRUE(GetExpirationsPrefValue().empty());
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        PRE_DomainPermissionResetAfterRestart) {
-  const GURL& url = https_server()->GetURL("example.com", "/empty.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-  prompt_factory_->set_response_type(
-      PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
+  const struct {
+    absl::optional<std::string> address;
+    ContentSettingsType type;
+    absl::optional<blink::PermissionType> permission;
+  } cases[] = {
+      {absl::nullopt, ContentSettingsType::GEOLOCATION, absl::nullopt},
+      {"0xaf5Ad1E10926C0Ee4af4eDAC61DD60E853753f8A",
+       ContentSettingsType::BRAVE_ETHEREUM,
+       blink::PermissionType::BRAVE_ETHEREUM},
+      {"BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+       ContentSettingsType::BRAVE_SOLANA, blink::PermissionType::BRAVE_SOLANA}};
+  int show_count = 0;
+  for (const auto& entry : cases) {
+    SCOPED_TRACE(GetContentSettingTypeString(entry.type));
+    ++show_count;
+    const GURL& url = https_server()->GetURL("example.com", "/empty.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    prompt_factory_->set_response_type(
+        PermissionRequestManager::AutoResponseType::ACCEPT_ALL);
 
-  EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
-      .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
-        prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
-      }));
-  content::ExecuteScriptAsync(
-      GetActiveMainFrame(),
-      "navigator.geolocation.getCurrentPosition(function(){});");
-  prompt_factory_->WaitForPermissionBubble();
+    EXPECT_CALL(*prompt_factory_, OnPermissionPromptCreated(_))
+        .WillOnce(testing::Invoke([](MockPermissionLifetimePrompt* prompt) {
+          prompt->delegate()->Requests()[0]->SetLifetime(base::TimeDelta());
+        }));
+    GURL target_url;
+    if (entry.address && entry.permission) {
+      auto last_committed_origin =
+          url::Origin::Create(active_web_contents()->GetLastCommittedURL());
+      url::Origin origin;
+      ASSERT_TRUE(brave_wallet::GetConcatOriginFromWalletAddresses(
+          last_committed_origin, {*entry.address}, &origin));
+      permission_manager()->RequestPermissionsForOrigin(
+          {*entry.permission}, active_web_contents()->GetPrimaryMainFrame(),
+          origin.GetURL(), true, base::DoNothing());
 
-  EXPECT_EQ(1, prompt_factory_->show_count());
-  EXPECT_FALSE(permission_lifetime_timer().IsRunning());
-  EXPECT_FALSE(GetExpirationsPrefValue().empty());
+      url::Origin sub_request_origin;
+      ASSERT_TRUE(brave_wallet::GetSubRequestOrigin(
+          ContentSettingsTypeToRequestType(entry.type), last_committed_origin,
+          *entry.address, &sub_request_origin));
+      target_url = sub_request_origin.GetURL();
+    } else {
+      content::ExecuteScriptAsync(
+          GetActiveMainFrame(),
+          "navigator.geolocation.getCurrentPosition(function(){});");
+      target_url = url;
+    }
+    prompt_factory_->WaitForPermissionBubble();
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ALLOW);
+    EXPECT_EQ(show_count, prompt_factory_->show_count());
+    EXPECT_FALSE(permission_lifetime_timer().IsRunning());
+    EXPECT_FALSE(GetExpirationsPrefValue().empty());
 
-  pre_test_data_.Set("url", url.spec());
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(
+                  target_url, target_url, entry.type),
+              ContentSetting::CONTENT_SETTING_ALLOW);
+
+    pre_test_data_.SetByDottedPath(
+        base::JoinString({GetContentSettingTypeString(entry.type), "url"}, "."),
+        target_url.spec());
+  }
   WritePreTestData();
 }
 
 IN_PROC_BROWSER_TEST_F(PermissionLifetimeManagerWithOriginMonitorBrowserTest,
                        DomainPermissionResetAfterRestart) {
   ReadPreTestData();
-  const GURL url(*pre_test_data_.FindString("url"));
+  for (auto type :
+       {ContentSettingsType::GEOLOCATION, ContentSettingsType::BRAVE_ETHEREUM,
+        ContentSettingsType::BRAVE_SOLANA}) {
+    const GURL url(*pre_test_data_.FindStringByDottedPath(
+        base::JoinString({GetContentSettingTypeString(type), "url"}, ".")));
+    SCOPED_TRACE(url);
 
-  EXPECT_EQ(host_content_settings_map()->GetContentSetting(
-                url, url, ContentSettingsType::GEOLOCATION),
-            ContentSetting::CONTENT_SETTING_ASK);
-  EXPECT_TRUE(GetExpirationsPrefValue().empty());
+    EXPECT_EQ(host_content_settings_map()->GetContentSetting(url, url, type),
+              ContentSetting::CONTENT_SETTING_ASK);
+    EXPECT_TRUE(GetExpirationsPrefValue().empty());
+  }
 }
 
 }  // namespace permissions

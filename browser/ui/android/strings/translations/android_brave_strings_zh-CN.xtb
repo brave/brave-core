@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="3478449063771497234">通知被禁用</translation>
+<translation id="7466579932043491502">当通知被禁用时，Brave 奖励可能无法运行。</translation>
+<translation id="4259212006412783790">打开</translation>
+<translation id="6112331814131703370">封鎖「切換至應用程式」通知</translation>
 <translation id="4744921452903670666">请将您的想法告诉我们！</translation>
 <translation id="2524310205387880526">对 Brave 作出评价</translation>
 <translation id="4104400246019119780">谢谢！</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">您的<ph name="MONTH_VALUE"/>广告奖励已到帐！</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/>奖励：<ph name="TOKEN"/>BAT</translation>
 <translation id="1649629664206601032">您可以在<ph name="TOKEN"/>天内领取</translation>
-<translation id="2323069945529668668">糟糕！</translation>
-<translation id="7510166204621526816">Brave Rewards 服务器未响应。我们将尽快修复这个问题。</translation>
 <translation id="683765328936486920">在 YouTube 上</translation>
 <translation id="8969049974285901797">在 Twitch 上</translation>
 <translation id="3101693828171454453"><ph name="TOKEN"/>代币不足</translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">保存账户监视清单</translation>
 <translation id="7755766175599167100">搜索代币</translation>
 <translation id="3835223348537121988">余额：</translation>
-<translation id="6888491517683356528">继续前往 Ramp</translation>
+<translation id="3956169227169516344">选择购买方式</translation>
 <translation id="8488282162676695335">Brave 钱包</translation>
 <translation id="3784455785234192852">锁定</translation>
 <translation id="8796429300536029044">NFT 详细信息</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">自动锁定 Brave 钱包前等待的分钟数</translation>
 <translation id="4993345308607970390">重置 Brave 钱包</translation>
 <translation id="4322846864135539519">确定要重置您的 Brave 奖励吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括任何相关资金）。键入“<ph name="CONFIRMATION_PHRASE"/>”即可确认此操作。</translation>
+<translation id="6915083716464390008">选择以下选项之一</translation>
+<translation id="7667423728712601865">用 Visa 或 Mastercard 购买加密货币。</translation>
+<translation id="3101839349578102016">通过您的银行账户进行即时购买。费用较低。</translation>
+<translation id="7269640984027668973">通过<ph name="RAMP_PROVIDER"/>购买</translation>
 <translation id="4862812525895306758">清除交易和 Nonce 信息</translation>
 <translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
 <translation id="5421107279168565467">确定要重设交易和 Nonce 信息吗？这个选项主要供运行本机测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”即可确认。</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
 <translation id="3494964159182650590">奖励摘要</translation>
 <translation id="590733288489975971">广告奖励</translation>
-<translation id="207268487070188114">一次性赏金</translation>
+<translation id="2613359062756190460">一次赏金</translation>
 <translation id="7577100371127227294">每月小费</translation>
 <translation id="7091980679045978090">预估收益</translation>
 <translation id="1346059596910821859">打赏</translation>

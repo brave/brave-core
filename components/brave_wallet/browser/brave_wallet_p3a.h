@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -24,12 +25,14 @@ extern const char kDefaultSolanaWalletHistogramName[];
 extern const char kKeyringCreatedHistogramName[];
 extern const char kOnboardingConversionHistogramName[];
 extern const char kEthProviderHistogramName[];
+extern const char kSolProviderHistogramName[];
 extern const char kEthTransactionSentHistogramName[];
 extern const char kSolTransactionSentHistogramName[];
 extern const char kFilTransactionSentHistogramName[];
 extern const char kEthActiveAccountHistogramName[];
 extern const char kSolActiveAccountHistogramName[];
 extern const char kFilActiveAccountHistogramName[];
+extern const char kBraveWalletDailyHistogramName[];
 extern const char kBraveWalletWeeklyHistogramName[];
 extern const char kBraveWalletMonthlyHistogramName[];
 extern const char kBraveWalletNewUserReturningHistogramName[];
@@ -37,9 +40,19 @@ extern const char kBraveWalletNewUserReturningHistogramName[];
 class BraveWalletService;
 class KeyringService;
 
+enum class JSProviderAnswer {
+  kNoWallet = 0,
+  kWalletDisabled = 1,
+  kNativeNotOverridden = 2,
+  kNativeOverridingDisallowed = 3,
+  kThirdPartyNotOverriding = 4,
+  kThirdPartyOverriding = 5,
+  kMaxValue = kThirdPartyOverriding
+};
+
 // Reports BraveWallet related P3A data
-class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
-                       public mojom::KeyringServiceObserver,
+class BraveWalletP3A : public mojom::KeyringServiceObserver,
+                       public brave_wallet::BraveWalletServiceObserverBase,
                        public mojom::BraveWalletP3A {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
@@ -60,8 +73,10 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void AddObservers();
 
   void ReportUsage(bool unlocked);
-  void ReportEthereumProvider(
-      mojom::EthereumProviderType provider_type) override;
+  void ReportJSProvider(mojom::JSProviderType provider_type,
+                        mojom::CoinType coin_type,
+                        bool use_native_wallet_enabled,
+                        bool allow_provider_overwrite) override;
   void ReportOnboardingAction(
       mojom::OnboardingAction onboarding_action) override;
   void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
@@ -81,25 +96,15 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void SelectedAccountChanged(mojom::CoinType coin) override {}
 
   // BraveWalletServiceObserver
-  void OnActiveOriginChanged(mojom::OriginInfoPtr origin_info) override {}
   void OnDefaultEthereumWalletChanged(
       brave_wallet::mojom::DefaultWallet wallet) override;
   void OnDefaultSolanaWalletChanged(
       brave_wallet::mojom::DefaultWallet wallet) override;
-  void OnDefaultBaseCurrencyChanged(const std::string& currency) override {}
-  void OnDefaultBaseCryptocurrencyChanged(
-      const std::string& cryptocurrency) override {}
-  void OnNetworkListChanged() override {}
-  void OnDiscoverAssetsCompleted(
-      std::vector<mojom::BlockchainTokenPtr> discovered_assets) override {}
 
  private:
   void MigrateUsageProfilePrefsToLocalState();
   void OnUpdateTimerFired();
-  void WriteUsageStatsToHistogram(base::Time wallet_last_used,
-                                  base::Time first_p3a_used,
-                                  base::Time last_p3a_report,
-                                  unsigned use_days_in_week);
+  void WriteUsageStatsToHistogram();
   void RecordInitialBraveWalletP3AState();
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;

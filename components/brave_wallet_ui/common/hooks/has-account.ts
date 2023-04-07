@@ -4,21 +4,23 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 
 // Constants
-import {
-  BraveWallet,
-  WalletState
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
+
+// Utils
+import { WalletSelectors } from '../selectors'
+import { useGetSelectedChainQuery } from '../slices/api.slice'
+import { useUnsafeWalletSelector } from './use-safe-selector'
 
 export function useHasAccount () {
   // redux
-  const {
-    accounts,
-    selectedNetwork
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
 
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+
+  // memos
   const hasSolAccount = React.useMemo((): boolean => { return accounts.some(account => account.coin === BraveWallet.CoinType.SOL) }, [accounts])
   const hasFilAccount = React.useMemo((): boolean => {
     const keyringForCurrentNetwork = selectedNetwork?.chainId === BraveWallet.FILECOIN_MAINNET
@@ -28,6 +30,11 @@ export function useHasAccount () {
   }, [accounts, selectedNetwork])
 
   const needsAccount = React.useMemo((): boolean => {
+    if (accounts.length === 0) {
+      // still loading accounts
+      return false
+    }
+
     switch (selectedNetwork?.coin) {
       case BraveWallet.CoinType.SOL: return !hasSolAccount
       case BraveWallet.CoinType.FIL: return !hasFilAccount

@@ -4,7 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { Route, useHistory, useLocation, useParams, Switch, Redirect } from 'react-router-dom'
+import {
+  Route,
+  useHistory,
+  useLocation,
+  Switch,
+  Redirect
+} from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 // actions
@@ -16,10 +22,8 @@ import { getLocale } from '../../../../../common/locale'
 // types
 import {
   BraveWallet,
-  TopTabNavTypes,
   WalletRoutes
 } from '../../../../constants/types'
-import { TOP_NAV_OPTIONS } from '../../../../options/top-nav-options'
 
 // style
 import { StyledWrapper } from './style'
@@ -28,7 +32,7 @@ import { StyledWrapper } from './style'
 import { useBalanceUpdater } from '../../../../common/hooks/use-balance-updater'
 
 // components
-import { TopTabNav, WalletBanner, EditVisibleAssetsModal } from '../../'
+import { WalletBanner, EditVisibleAssetsModal } from '../../'
 import { PortfolioOverview } from '../portfolio/portfolio-overview'
 import { PortfolioAsset } from '../portfolio/portfolio-asset'
 import { MarketView } from '../market'
@@ -47,11 +51,6 @@ import { BannerWrapper } from '../../../shared/style'
 import { NftIpfsBanner } from '../../nft-ipfs-banner/nft-ipfs-banner'
 import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../../common/selectors'
-
-interface ParamsType {
-  category?: TopTabNavTypes
-  id?: string
-}
 
 export interface Props {
   onOpenWalletSettings: () => void
@@ -89,12 +88,10 @@ const CryptoView = (props: Props) => {
   // const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
-  const [showMore, setShowMore] = React.useState<boolean>(false)
 
   // routing
   const history = useHistory()
   const location = useLocation()
-  const { category } = useParams<ParamsType>()
 
   // methods
   const onShowBackup = React.useCallback(() => {
@@ -109,10 +106,6 @@ const CryptoView = (props: Props) => {
     }
   }, [])
 
-  const onSelectTab = React.useCallback((path: TopTabNavTypes) => {
-    history.push(`/crypto/${path}`)
-  }, [])
-
   const onDismissBackupWarning = React.useCallback(() => {
     setShowBackupWarning(false)
   }, [])
@@ -124,24 +117,6 @@ const CryptoView = (props: Props) => {
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
   }, [])
-
-  const onClickSettings = React.useCallback(() => {
-    chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
-      if (chrome.runtime.lastError) {
-        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
-      }
-    })
-  }, [])
-
-  const onClickShowMore = React.useCallback(() => {
-    setShowMore(true)
-  }, [])
-
-  const onClickHideMore = React.useCallback(() => {
-    if (showMore) {
-      setShowMore(false)
-    }
-  }, [showMore])
 
   const hideVisibleAssetsModal = React.useCallback(
     () => onShowVisibleAssetsModal(false),
@@ -172,18 +147,8 @@ const CryptoView = (props: Props) => {
   }, [defaultEthereumWallet, defaultSolanaWallet, isMetaMaskInstalled, showDefaultWalletBanner])
 
   // memos
-  const nav = React.useMemo(() => (
+  const banners = React.useMemo(() => (
     <>
-      <TopTabNav
-        selectedTab={category}
-        showMore={showMore}
-        hasMoreButtons={true}
-        onSelectTab={onSelectTab}
-        tabList={TOP_NAV_OPTIONS}
-        onClickBackup={onShowBackup}
-        onClickSettings={onClickSettings}
-        onClickMore={onClickShowMore}
-      />
       {showBanner &&
         <WalletBanner
           onDismiss={onDismissDefaultWalletBanner}
@@ -204,19 +169,13 @@ const CryptoView = (props: Props) => {
       }
     </>
   ), [
-    category,
     showBanner,
     needsBackup,
-    onClickSettings,
-    onClickShowMore,
     onDismissBackupWarning,
     onDismissDefaultWalletBanner,
     onOpenWalletSettings,
-    onSelectTab,
     onShowBackup,
-    showBackupWarning,
-    showMore,
-    isIpfsBannerVisible
+    showBackupWarning
   ])
 
   const ipfsBanner = React.useMemo(() => (
@@ -237,11 +196,11 @@ const CryptoView = (props: Props) => {
 
   // render
   return (
-    <StyledWrapper onClick={onClickHideMore}>
+    <StyledWrapper>
       <Switch>
         {/* Portfolio */}
         <Route path={WalletRoutes.AddAssetModal} exact>{/* Show portfolio overview in background */}
-          {nav}
+          {banners}
           <PortfolioOverview />
         </Route>
 
@@ -250,14 +209,14 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Portfolio}>
-          {nav}
+          {banners}
           {ipfsBanner}
           <PortfolioOverview />
         </Route>
 
         {/* Accounts */}
         <Route path={WalletRoutes.AddAccountModal}>{/* Show accounts overview in background */}
-          {nav}
+          {banners}
           <Accounts />
         </Route>
 
@@ -268,18 +227,18 @@ const CryptoView = (props: Props) => {
         </Route>
 
         <Route path={WalletRoutes.Accounts}>
-          {nav}
+          {banners}
           <Accounts />
         </Route>
 
         {/* Market */}
         <Route path={WalletRoutes.Market} exact={true}>
-          {nav}
+          {banners}
           <MarketView />
         </Route>
 
         <Route path={WalletRoutes.MarketSub} exact={true}>
-          {nav}
+          {banners}
           <PortfolioAsset
             isShowingMarketData={true}
           />
@@ -287,14 +246,14 @@ const CryptoView = (props: Props) => {
 
         {/* NFTs */}
         <Route path={WalletRoutes.Nfts} exact={true}>
-          {nav}
+          {banners}
           {ipfsBanner}
           <NftView onToggleShowIpfsBanner={onToggleShowIpfsBanner} />
         </Route>
 
         {/* Transactions */}
         <Route path={WalletRoutes.Activity} exact={true}>
-          {nav}
+          {banners}
           <TransactionsScreen />
         </Route>
 
@@ -304,7 +263,7 @@ const CryptoView = (props: Props) => {
           exact={true}
           render={(props) => isNftPinningFeatureEnabled
             ? <LocalIpfsNodeScreen onClose={onClose} {...props} />
-            : <Redirect to={WalletRoutes.Portfolio}/>
+            : <Redirect to={WalletRoutes.Portfolio} />
           }
         />
 

@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_RESOURCE_INFO_H_
 
 #include <cstdint>
-
 #include <string>
 
 #include "base/files/file_path.h"

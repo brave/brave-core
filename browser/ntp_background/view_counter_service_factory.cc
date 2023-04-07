@@ -6,12 +6,14 @@
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
@@ -28,7 +30,7 @@
 #include "content/public/browser/url_data_source.h"
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-#include "brave/browser/ntp_background/ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #endif
 
 namespace ntp_background_images {
@@ -50,7 +52,7 @@ ViewCounterServiceFactory::ViewCounterServiceFactory()
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_ads::AdsServiceFactory::GetInstance());
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-  DependsOn(NTPCustomBackgroundImagesServiceFactory::GetInstance());
+  DependsOn(BraveNTPCustomBackgroundServiceFactory::GetInstance());
 #endif
 }
 
@@ -68,25 +70,29 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     bool is_supported_locale = false;
     auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile);
     if (ads_service) {
-      is_supported_locale = ads_service->IsSupportedLocale();
+      is_supported_locale = brave_ads::IsSupportedRegion();
     }
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
 
+    std::unique_ptr<NTPP3AHelperImpl> ntp_p3a_helper;
+    if (g_brave_browser_process->p3a_service() != nullptr) {
+      ntp_p3a_helper = std::make_unique<NTPP3AHelperImpl>(
+          g_browser_process->local_state(),
+          g_brave_browser_process->p3a_service(), ads_service);
+    }
+
     return new ViewCounterService(
         service,
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
-        NTPCustomBackgroundImagesServiceFactory::GetForContext(profile),
+        BraveNTPCustomBackgroundServiceFactory::GetForContext(profile),
 #else
         nullptr,
 #endif
         ads_service, profile->GetPrefs(), g_browser_process->local_state(),
-        std::make_unique<NTPP3AHelperImpl>(
-            g_browser_process->local_state(),
-            g_brave_browser_process->brave_p3a_service(), ads_service),
-        is_supported_locale);
+        std::move(ntp_p3a_helper), is_supported_locale);
   }
 
   return nullptr;

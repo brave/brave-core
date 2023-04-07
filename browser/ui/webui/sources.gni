@@ -6,6 +6,7 @@
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
 
+# This is required for chromium_src overrides.
 brave_browser_ui_webui_configs_deps = [
   "//base",
   "//brave/browser/ui",

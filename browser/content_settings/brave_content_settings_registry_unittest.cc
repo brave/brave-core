@@ -93,6 +93,7 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
       ContentSettingsType::BRAVE_SPEEDREADER,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
   };
 
   for (const ContentSettingsInfo* info : *registry()) {

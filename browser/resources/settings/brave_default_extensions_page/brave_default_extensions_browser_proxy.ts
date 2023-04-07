@@ -6,6 +6,13 @@
 import {sendWithPromise} from 'chrome://resources/js/cr.js'
 import {loadTimeData} from '../i18n_setup.js';
 
+export type ExtensionV2 = {
+  id: string
+  name: string
+  description: string
+  enabled: boolean
+}
+
 export interface BraveDefaultExtensionsBrowserProxy  {
   setWebTorrentEnabled(value: boolean): void
   setHangoutsEnabled(value: boolean): void
@@ -15,6 +22,8 @@ export interface BraveDefaultExtensionsBrowserProxy  {
   getRestartNeeded(): Promise<boolean>
   wasSignInEnabledAtStartup(): boolean
   isMediaRouterEnabled(): boolean
+  getExtensionsManifestV2(): Promise<ExtensionV2[]>
+  enableExtensionManifestV2(id: string, enabled: boolean): Promise<boolean>
 }
 
 export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExtensionsBrowserProxy {
@@ -48,6 +57,14 @@ export class BraveDefaultExtensionsBrowserProxyImpl implements BraveDefaultExten
 
   isMediaRouterEnabled() {
     return loadTimeData.getBoolean('isMediaRouterEnabled')
+  }
+
+  getExtensionsManifestV2() {
+    return sendWithPromise('getExtensionsManifestV2')
+  }
+
+  enableExtensionManifestV2(id: string, enabled: boolean) {
+    return sendWithPromise('enableExtensionManifestV2', id, enabled);
   }
 
   static getInstance(): BraveDefaultExtensionsBrowserProxy {

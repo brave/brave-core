@@ -26,7 +26,7 @@ declare namespace Rewards {
   export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
   export type Address = { address: string, qr: string | null }
 
-  type ConnectExternalWalletError = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').ConnectExternalWalletError
+  type ConnectExternalWalletError = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').ConnectExternalWalletError
   type UserType = import('../brave_rewards/resources/shared/lib/user_type').UserType
 
   export interface State {
@@ -34,13 +34,14 @@ declare namespace Rewards {
     adsData: AdsData
     adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
-    balance: Balance
+    balance: import(
+      '../brave_rewards/resources/shared/lib/optional'
+    ).Optional<number>
     balanceReport?: BalanceReport
     contributionMinTime: number
     contributionMinVisits: number
     contributionMonthly: number
     contributionNonVerified: boolean
-    contributionVideos: boolean
     currentCountryCode: string
     enabledAds: boolean
     enabledAdsMigrated: boolean
@@ -269,12 +270,7 @@ declare namespace Rewards {
     expirationDate: string
   }
 
-  export interface Balance {
-    total: number
-    wallets: Record<string, number>
-  }
-
-  type WalletStatus = import('gen/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.m.js').WalletStatus
+  type WalletStatus = import('gen/brave/components/brave_rewards/common/mojom/ledger_types.mojom.m.js').WalletStatus
 
   export type WalletType = 'uphold' | 'bitflyer' | 'gemini'
 

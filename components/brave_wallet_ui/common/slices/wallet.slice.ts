@@ -36,7 +36,6 @@ import {
   DefaultSolanaWalletChanged,
   GetCoinMarketPayload,
   GetCoinMarketsResponse,
-  IsEip1559Changed,
   NewUnapprovedTxAdded,
   RemoveSitePermissionPayloadType,
   RetryTransactionPayload,
@@ -85,7 +84,6 @@ const defaultState: WalletState = {
   isWalletBackedUp: false,
   hasIncorrectPassword: false,
   selectedAccount: {} as WalletAccountType,
-  selectedNetwork: undefined,
   accounts: [],
   userVisibleTokensInfo: [],
   transactions: {},
@@ -96,8 +94,6 @@ const defaultState: WalletState = {
   selectedPendingTransaction: undefined,
   isFetchingPortfolioPriceHistory: true,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
-  networkList: [],
-  hiddenNetworkList: [],
   transactionSpotPrices: [],
   addUserAssetError: false,
   defaultEthereumWallet: BraveWallet.DefaultWallet.BraveWalletPreferExtension,
@@ -122,7 +118,6 @@ const defaultState: WalletState = {
   transactionProviderErrorRegistry: {},
   isLoadingCoinMarketData: true,
   coinMarketData: [],
-  defaultNetworks: [] as BraveWallet.NetworkInfo[],
   defaultAccounts: [] as BraveWallet.AccountInfo[],
   selectedNetworkFilter: parseJSONFromLocalStorage('PORTFOLIO_NETWORK_FILTER_OPTION', AllNetworksOptionDefault),
   selectedAssetFilter: window.localStorage.getItem(LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION) || HighToLowAssetsFilterOption.id,
@@ -150,7 +145,6 @@ export const WalletAsyncActions = {
     'setUserAssetVisible'
   ), // alias for ApiProxy.braveWalletService.setUserAssetVisible
   selectAccount: createAction<WalletAccountType>('selectAccount'), // should use apiProxy - keyringService
-  selectNetwork: createAction<BraveWallet.NetworkInfo>('selectNetwork'), // should useLib
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   chainChangedEvent:
     createAction<ChainChangedEventPayloadType>('chainChangedEvent'),
@@ -309,22 +303,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isPanelV2FeatureEnabled = payload.isPanelV2FeatureEnabled
       },
 
-      isEip1559Changed (state: WalletState, { payload }: PayloadAction<IsEip1559Changed>) {
-        const networkToUpdate = state.networkList.find(network => network.chainId === payload.chainId)
-
-        if (networkToUpdate) {
-          networkToUpdate.isEip1559 = payload.isEip1559
-
-          if (state.selectedNetwork?.chainId === payload.chainId) {
-            state.selectedNetwork = networkToUpdate
-          }
-
-          state.networkList = state.networkList.map(network =>
-            network.chainId === payload.chainId ? networkToUpdate : network
-          )
-        }
-      },
-
       nativeAssetBalancesUpdated (state: WalletState, { payload }: PayloadAction<GetNativeAssetBalancesPayload>) {
         state.accounts.forEach((account, accountIndex) => {
           payload.balances[accountIndex].forEach((info, tokenIndex) => {
@@ -408,14 +386,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.selectedPendingTransaction = sortedTransactionList[0]
       },
 
-      setAllNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
-        state.networkList = payload
-      },
-
-      setAllHiddenNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
-        state.hiddenNetworkList = payload
-      },
-
       setAllTokensList (state: WalletState, { payload }: PayloadAction<BraveWallet.BlockchainToken[]>) {
         state.fullTokenList = payload
       },
@@ -442,10 +412,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.defaultAccounts = payload
       },
 
-      setDefaultNetworks (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo[]>) {
-        state.defaultNetworks = payload
-      },
-
       setGasEstimates (state: WalletState, { payload }: PayloadAction<BraveWallet.GasEstimation1559>) {
         state.hasFeeEstimatesError = false
         state.gasEstimates = payload
@@ -455,9 +421,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.isMetaMaskInstalled = payload
       },
 
-      setNetwork (state: WalletState, { payload }: PayloadAction<BraveWallet.NetworkInfo>) {
-        state.selectedNetwork = payload
-      },
 
       setOnRampCurrencies (state: WalletState, { payload }: PayloadAction<BraveWallet.OnRampCurrency[]>) {
         state.onRampCurrencies = payload

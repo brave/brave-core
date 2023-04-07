@@ -22,6 +22,11 @@ NET_EXPORT BASE_DECLARE_FEATURE(kBraveHttpsByDefault);
 NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionBlobStorage);
 NET_EXPORT BASE_DECLARE_FEATURE(kBravePartitionHSTS);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveTorWindowsHttpsOnly);
+NET_EXPORT BASE_DECLARE_FEATURE(kBraveForgetFirstPartyStorage);
+NET_EXPORT extern const base::FeatureParam<int>
+    kBraveForgetFirstPartyStorageKeepAliveTimeInSeconds;
+NET_EXPORT extern const base::FeatureParam<bool>
+    kBraveForgetFirstPartyStorageByDefault;
 
 }  // namespace features
 }  // namespace net

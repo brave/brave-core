@@ -12,6 +12,8 @@
 
 namespace brave_vpn {
 
+class BraveVPNConnectionInfo;
+
 namespace internal {
 
 enum class CheckConnectionResult {
@@ -32,10 +34,7 @@ struct RasOperationResult {
 std::string GetRasErrorMessage(DWORD error);
 std::wstring GetPhonebookPath(const std::wstring& entry_name);
 
-RasOperationResult CreateEntry(const std::wstring& entry_name,
-                               const std::wstring& hostname,
-                               const std::wstring& username,
-                               const std::wstring& password);
+RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info);
 RasOperationResult RemoveEntry(const std::wstring& entry_name);
 RasOperationResult DisconnectEntry(const std::wstring& entry_name);
 RasOperationResult ConnectEntry(const std::wstring& entry_name);

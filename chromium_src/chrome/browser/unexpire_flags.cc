@@ -21,8 +21,10 @@ bool IsFlagExpired(const flags_ui::FlagsStorage* storage,
   version_info::Channel channel = chrome::GetChannel();
 
   // Enable playlist feature only for nightly/development.
-  if (base::EqualsCaseInsensitiveASCII(kPlaylistFeatureInternalName,
-                                       internal_name) &&
+  if ((base::EqualsCaseInsensitiveASCII(kPlaylistFeatureInternalName,
+                                        internal_name) ||
+       base::EqualsCaseInsensitiveASCII(kPlaylistFakeUAFeatureInternalName,
+                                        internal_name)) &&
       (channel == version_info::Channel::STABLE ||
        channel == version_info::Channel::BETA)) {
     return true;

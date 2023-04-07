@@ -236,7 +236,6 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount?: WalletAccountType
-  selectedNetwork: BraveWallet.NetworkInfo | undefined
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
@@ -247,8 +246,6 @@ export interface WalletState {
   selectedPendingTransaction: SerializableTransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  networkList: BraveWallet.NetworkInfo[]
-  hiddenNetworkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: AssetPriceWithContractAndChainId[]
   addUserAssetError: boolean
   defaultEthereumWallet: BraveWallet.DefaultWallet
@@ -261,7 +258,6 @@ export interface WalletState {
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
-  defaultNetworks: BraveWallet.NetworkInfo[]
   isLoadingCoinMarketData: boolean
   coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: NetworkFilterType
@@ -514,7 +510,7 @@ export type SerializableSolanaTxData = Omit<
   | 'lamports'
   | 'amount'
   | 'sendOptions'
-  > & {
+> & {
   lastValidBlockHeight: string
   lamports: string
   amount: string
@@ -524,14 +520,14 @@ export type SerializableSolanaTxData = Omit<
 export type SerializableOrigin = Omit<
   BraveWallet.OriginInfo['origin'],
   | 'nonceIfOpaque'
-  > & {
+> & {
   nonceIfOpaque: SerializableUnguessableToken | undefined
 }
 
 export type SerializableOriginInfo = Omit<
   BraveWallet.OriginInfo,
   | 'origin'
-  > & {
+> & {
   origin: SerializableOrigin
 }
 
@@ -733,6 +729,12 @@ export enum WalletRoutes {
   OnboardingImportCryptoWallets = '/crypto/onboarding/import-legacy-wallet',
   OnboardingImportCryptoWalletsSeed = '/crypto/onboarding/import-legacy-seed',
 
+  // onboarding (connect hardware wallet)
+  OnboardingConnectHarwareWalletCreatePassword = '/crypto/onboarding/connect-hardware-wallet/create-password',
+  OnboardingConnectHardwareWalletStart = '/crypto/onboarding/connect-hardware-wallet',
+  OnboardingConnectHardwareWallet = '/crypto/onboarding/connect-hardware-wallet/:accountTypeName?',
+
+
   // onboarding complete
   OnboardingComplete = '/crypto/onboarding/complete',
 
@@ -747,7 +749,7 @@ export enum WalletRoutes {
 
   // market
   Market = '/crypto/market',
-  MarketSub = '/crypto/market/:id?',
+  MarketSub = '/crypto/market/:chainIdOrMarketSymbol?',
 
   // accounts
   Accounts = '/crypto/accounts',
@@ -781,8 +783,8 @@ export enum WalletRoutes {
 
   // portfolio
   Portfolio = '/crypto/portfolio',
-  PortfolioAsset = '/crypto/portfolio/:id/:tokenId?',
-  PortfolioSub = '/crypto/portfolio/:id?',
+  PortfolioAsset = '/crypto/portfolio/:chainIdOrMarketSymbol/:contractOrSymbol?/:tokenId?',
+  PortfolioSub = '/crypto/portfolio/:chainIdOrMarketSymbol?',
 
   // portfolio asset modals
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -815,6 +817,7 @@ export interface CreateAccountOptionsType {
 }
 
 export interface NFTMetadataReturnType {
+  metadataUrl?: string
   chainName: string
   tokenType: string
   tokenID: string
@@ -856,7 +859,6 @@ export const SupportedOnRampNetworks = [
   BraveWallet.FILECOIN_MAINNET,
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -870,7 +872,6 @@ export const SupportedOffRampNetworks = [
   BraveWallet.MAINNET_CHAIN_ID, // ETH
   BraveWallet.POLYGON_MAINNET_CHAIN_ID,
   BraveWallet.BINANCE_SMART_CHAIN_MAINNET_CHAIN_ID,
-  BraveWallet.CELO_MAINNET_CHAIN_ID,
   BraveWallet.AVALANCHE_MAINNET_CHAIN_ID,
   BraveWallet.FANTOM_MAINNET_CHAIN_ID,
   BraveWallet.CELO_MAINNET_CHAIN_ID,
@@ -884,7 +885,8 @@ export const SupportedTestNetworks = [
   BraveWallet.LOCALHOST_CHAIN_ID,
   BraveWallet.SOLANA_DEVNET,
   BraveWallet.SOLANA_TESTNET,
-  BraveWallet.FILECOIN_TESTNET
+  BraveWallet.FILECOIN_TESTNET,
+  BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID
 ]
 
 export enum CoinTypesMap {
@@ -987,6 +989,9 @@ export type NavIDTypes =
   | 'deposit'
   | 'activity'
   | 'portfolio'
+  | 'nfts'
+  | 'market'
+  | 'accounts'
 
 export interface NavOption {
   id: NavIDTypes
@@ -1021,3 +1026,12 @@ export type NetworkFilterType = {
 }
 
 export type SortingOrder = 'ascending' | 'descending'
+
+export type DAppPermissionDurationOption = {
+  name: string
+  id: BraveWallet.PermissionLifetimeOption
+}
+
+export type DAppConnectedPermissionsOption = {
+  name: string
+}

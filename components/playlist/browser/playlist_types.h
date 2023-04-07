@@ -12,33 +12,20 @@
 #include "base/time/time.h"
 #include "base/types/strong_alias.h"
 
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
+
 namespace playlist {
 
 // TODO(sko) Try removing these types. We can use mojom type directly.
 // https://github.com/brave/brave-browser/issues/27516
 struct PlaylistChangeParams {
-  enum class Type {
-    kNone,
-    kItemAdded,             // a new playlist item added but not ready state
-    kItemThumbnailReady,    // Thumbnail ready to use for playlist
-    kItemThumbnailFailed,   // Failed to fetch thumbnail
-    kItemCached,            // The item is cached in local storage
-    kItemDeleted,           // An item deleted
-    kItemUpdated,           // An item's properties have been changed
-    kItemAborted,           // Aborted during the creation process
-    kItemLocalDataRemoved,  // Local data removed
-
-    kListCreated,  // A list is created
-    kListRemoved,  // A list is removed
-    kAllDeleted,   // All playlist are deleted
-  };
-  static std::string GetPlaylistChangeTypeAsString(Type type);
+  static std::string GetPlaylistChangeTypeAsString(mojom::PlaylistEvent type);
 
   PlaylistChangeParams();
-  PlaylistChangeParams(Type type, const std::string& id);
+  PlaylistChangeParams(mojom::PlaylistEvent type, const std::string& id);
   ~PlaylistChangeParams();
 
-  Type change_type = Type::kNone;
+  mojom::PlaylistEvent change_type = mojom::PlaylistEvent::kNone;
   std::string playlist_id;
 
   bool operator==(const PlaylistChangeParams& rhs) const;

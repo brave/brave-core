@@ -39,7 +39,7 @@ export interface Token {
   link?: string
 }
 
-export type SummaryType = 'grant' | 'ads' | 'contribute' | 'monthly' | 'tip'
+export type SummaryType = 'ads' | 'contribute' | 'monthly' | 'tip'
 
 export interface SummaryItem {
   type: SummaryType
@@ -77,10 +77,6 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
   }
 
   private readonly summary: Record<SummaryType, { color: TokenType, translation: string }> = {
-    grant: {
-      color: 'earning',
-      translation: 'tokenGrantClaimed'
-    },
     ads: {
       color: 'earning',
       translation: 'earningsAds'
@@ -132,8 +128,6 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
         return null
       }
 
-      const negative = summaryItem.color === 'contribute'
-
       return (
         <ListToken
           key={`${this.props.id}-summary-${i}`}
@@ -143,7 +137,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
           color={summaryItem.color}
           size={'small'}
           border={i === 0 ? 'first' : 'default'}
-          isNegative={negative}
+          isNegative={false}
           link={item.token.link}
         />
       )

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
 #include "build/build_config.h"
@@ -26,6 +27,30 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
     return browser_view->toolbar()->location_bar();
   }
   OmniboxViewViews* omnibox_view() { return location_bar()->omnibox_view(); }
+};
+
+class BraveOmniboxViewViewsEnabledFeatureTest
+    : public BraveOmniboxViewViewsTest {
+ public:
+  BraveOmniboxViewViewsEnabledFeatureTest() {
+    features_.InitWithFeatureState(features::kBraveCopyCleanLinkByDefault,
+                                   true);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+class BraveOmniboxViewViewsDisabledFeatureTest
+    : public BraveOmniboxViewViewsTest {
+ public:
+  BraveOmniboxViewViewsDisabledFeatureTest() {
+    features_.InitWithFeatureState(features::kBraveCopyCleanLinkByDefault,
+                                   false);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
 };
 
 // Load brave url and check copied url also has brave scheme.
@@ -97,25 +122,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyURLToClipboardTest) {
             "utm_content=removethis&e=&f=g&=end");
 }
 
-IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, DoNotSanitizeInternalURLS) {
-  const std::string test_url("brave://settings/?utm_ad=1");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
-  brave::URLSanitizerServiceFactory::GetForBrowserContext(browser()->profile())
-      ->Initialize(R"([
-    { "include": [ "*://*/*"], "params": ["utm_ad"] }
-  ])");
-  base::RunLoop().RunUntilIdle();
-
-  omnibox_view()->SelectAll(true);
-  omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);
-  ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
-  std::string text_from_clipboard;
-  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
-                           /* data_dst = */ nullptr, &text_from_clipboard);
-  EXPECT_EQ(text_from_clipboard, "brave://settings/?utm_ad=1");
-}
-
-IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
+IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsEnabledFeatureTest,
                        CopyCleanedURLToClipboardByHotkey) {
   brave::URLSanitizerServiceFactory::GetForBrowserContext(browser()->profile())
       ->Initialize(R"([
@@ -140,6 +147,51 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest,
             "https://dev-pages.bravesoftware.com/clean-urls/"
             "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
             "e=&f=g&=end");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, DoNotSanitizeInternalURLS) {
+  const std::string test_url("brave://settings/?utm_ad=1");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
+  brave::URLSanitizerServiceFactory::GetForBrowserContext(browser()->profile())
+      ->Initialize(R"([
+    { "include": [ "*://*/*"], "params": ["utm_ad"] }
+  ])");
+  base::RunLoop().RunUntilIdle();
+
+  omnibox_view()->SelectAll(true);
+  omnibox_view()->ExecuteCommand(views::Textfield::kCopy, 0);
+  ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
+  std::string text_from_clipboard;
+  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
+                           /* data_dst = */ nullptr, &text_from_clipboard);
+  EXPECT_EQ(text_from_clipboard, "brave://settings/?utm_ad=1");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsDisabledFeatureTest,
+                       CopyCleanedURLToClipboardByHotkey) {
+  brave::URLSanitizerServiceFactory::GetForBrowserContext(browser()->profile())
+      ->Initialize(R"([
+    { "include": [ "*://*/*"], "params": ["utm_content"] }
+  ])");
+  const std::string test_url(
+      "https://dev-pages.bravesoftware.com/clean-urls/"
+      "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&"
+      "d&utm_content=removethis&e=&f=g&=end");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(test_url)));
+
+  omnibox_view()->SelectAll(true);
+
+  auto* textfield = static_cast<views::Textfield*>(omnibox_view());
+  textfield->AcceleratorPressed(
+      ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR));
+  ui::Clipboard* clipboard = ui::Clipboard::GetForCurrentThread();
+  std::string text_from_clipboard;
+  clipboard->ReadAsciiText(ui::ClipboardBuffer::kCopyPaste,
+                           /* data_dst = */ nullptr, &text_from_clipboard);
+  EXPECT_EQ(text_from_clipboard,
+            "https://dev-pages.bravesoftware.com/clean-urls/"
+            "?brave_testing1=foo&brave_testing2=bar&brave_testing3=keep&&;b&d&"
+            "utm_content=removethis&e=&f=g&=end");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, CopyTextToClipboardByHotkey) {

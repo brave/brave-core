@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
@@ -124,6 +124,15 @@ void ShieldsPanelDataHandler::AllowScriptsOnce(
   active_shields_data_controller_->AllowScriptsOnce(origins);
 }
 
+void ShieldsPanelDataHandler::BlockAllowedScripts(
+    const std::vector<std::string>& origins) {
+  if (!active_shields_data_controller_) {
+    return;
+  }
+
+  active_shields_data_controller_->BlockAllowedScripts(origins);
+}
+
 void ShieldsPanelDataHandler::SetHTTPSEverywhereEnabled(bool is_enabled) {
   if (!active_shields_data_controller_)
     return;
@@ -169,8 +178,10 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetTotalBlockedCount();
   site_block_info_.ads_list =
       active_shields_data_controller_->GetBlockedAdsList();
-  site_block_info_.js_list =
+  site_block_info_.blocked_js_list =
       active_shields_data_controller_->GetBlockedJsList();
+  site_block_info_.allowed_js_list =
+      active_shields_data_controller_->GetAllowedJsList();
   site_block_info_.fingerprints_list =
       active_shields_data_controller_->GetFingerprintsList();
   site_block_info_.http_redirects_list =
@@ -179,6 +190,9 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       active_shields_data_controller_->GetBraveShieldsEnabled();
   site_block_info_.is_brave_shields_managed =
       active_shields_data_controller_->IsBraveShieldsManaged();
+  site_block_info_.is_forget_first_party_storage_feature_enabled =
+      active_shields_data_controller_
+          ->IsForgetFirstPartyStorageFeatureEnabled();
 
   // This method gets called from various callsites. Constantly updating favicon
   // url will replace the hashed version too. So, we update this once only

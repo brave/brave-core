@@ -16,7 +16,7 @@ import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from 
 import { IconWrapper, Placeholder, NetworkIcon } from './style'
 
 // Options
-import { makeNetworkAsset } from '../../../options/asset-options'
+import { getNetworkLogo } from '../../../options/asset-options'
 
 interface Props {
   network?: BraveWallet.NetworkInfo
@@ -46,8 +46,8 @@ export const CreateNetworkIcon = ({
     return network?.iconUrls[0]?.startsWith('static/media/components/brave_wallet_ui/')
   }, [network?.iconUrls[0]])
 
-  const nativeAsset = React.useMemo(() => {
-    return network && makeNetworkAsset(network)
+  const networkLogo = React.useMemo(() => {
+    return network ? getNetworkLogo(network.chainId, network.symbol) : ''
   }, [network])
 
   const isValidIcon = React.useMemo(() => {
@@ -67,8 +67,8 @@ export const CreateNetworkIcon = ({
   }, [isRemoteURL, isDataURL, networkImageURL])
 
   const needsPlaceholder = React.useMemo(() => {
-    return !nativeAsset || (nativeAsset?.logo === '' && (networkImageURL === '' || !isValidIcon))
-  }, [nativeAsset, networkImageURL, isValidIcon])
+    return networkLogo === '' && (networkImageURL === '' || !isValidIcon)
+  }, [networkLogo, networkImageURL, isValidIcon])
 
   const orb = React.useMemo(() => {
     if (needsPlaceholder && network) {
@@ -105,8 +105,8 @@ export const CreateNetworkIcon = ({
         icon={
           isStorybook
             ? network?.iconUrls[0]
-            : nativeAsset?.logo
-              ? nativeAsset.logo
+            : networkLogo !== ''
+              ? networkLogo
               : isRemoteURL ? remoteImage : network?.iconUrls[0]
         }
       />

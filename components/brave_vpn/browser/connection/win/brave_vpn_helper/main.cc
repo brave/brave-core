@@ -17,7 +17,6 @@
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/brave_vpn_helper_state.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/service_main.h"
 #include "brave/components/brave_vpn/browser/connection/win/brave_vpn_helper/vpn_utils.h"
-#include "components/browser_watcher/exit_code_watcher_win.h"
 #include "components/crash/core/app/crash_switches.h"
 #include "components/crash/core/app/crashpad.h"
 #include "components/crash/core/app/fallback_crash_handling_win.h"
@@ -50,9 +49,6 @@ int main(int argc, char* argv[]) {
   BraveVPNHelperCrashReporterClient::InitializeCrashReportingForProcess(
       process_type);
   if (process_type == crash_reporter::switches::kCrashpadHandler) {
-    // Check if we should monitor the exit code of this process
-    std::unique_ptr<browser_watcher::ExitCodeWatcher> exit_code_watcher;
-
     crash_reporter::SetupFallbackCrashHandling(*command_line);
     // The handler process must always be passed the user data dir on the
     // command line.
@@ -63,11 +59,6 @@ int main(int argc, char* argv[]) {
     int crashpad_status = crash_reporter::RunAsCrashpadHandler(
         *base::CommandLine::ForCurrentProcess(), user_data_dir, kProcessType,
         kUserDataDir);
-    if (crashpad_status != 0 && exit_code_watcher) {
-      // Crashpad failed to initialize, explicitly stop the exit code watcher
-      // so the crashpad-handler process can exit with an error
-      exit_code_watcher->StopWatching();
-    }
     return crashpad_status;
   }
 

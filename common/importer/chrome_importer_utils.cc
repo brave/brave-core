@@ -205,12 +205,15 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   base::FilePath passwords = profile.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
+  base::FilePath passwords_for_account = profile.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("Login Data For Account")));
   if (base::PathExists(bookmarks))
     *services_supported |= importer::FAVORITES;
   if (base::PathExists(history))
     *services_supported |= importer::HISTORY;
-  if (base::PathExists(passwords))
+  if (base::PathExists(passwords) || base::PathExists(passwords_for_account)) {
     *services_supported |= importer::PASSWORDS;
+  }
   if (HasPaymentMethods(profile.Append(kWebDataFilename)))
     *services_supported |= importer::PAYMENTS;
 #if BUILDFLAG(ENABLE_EXTENSIONS)

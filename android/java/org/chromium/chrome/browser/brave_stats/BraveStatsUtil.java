@@ -7,7 +7,6 @@ package org.chromium.chrome.browser.brave_stats;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -120,7 +119,7 @@ public class BraveStatsUtil {
             braveStatsBottomSheetDialogFragment.show(
                     BraveActivity.getBraveActivity().getSupportFragmentManager(),
                     STATS_FRAGMENT_TAG);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showBraveStats " + e);
         }
     }

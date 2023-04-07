@@ -111,12 +111,11 @@ export const disconnectedArrow = styled.div`
 
 export const balance = styled.div`
   margin-top: 16px;
-  margin-bottom: 16px;
   font-size: 12px;
   line-height: 18px;
 
   &.flat {
-    margin-bottom: 6px;
+    margin-bottom: -10px;
   }
 `
 
@@ -233,6 +232,7 @@ export const needsBrowserUpdateContentBody = styled.div`
 `
 
 export const progressHeader = styled.div`
+  margin-top: 16px;
   display: flex;
   align-items: center;
   gap: 11px;

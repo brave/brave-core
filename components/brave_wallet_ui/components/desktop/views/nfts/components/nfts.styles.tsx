@@ -8,13 +8,6 @@ import { WalletButton } from '../../../../shared/style'
 import Ipfs from '../../../../../assets/svg-icons/nft-ipfs/ipfs.svg'
 import PlusIcon from '../../../../../assets/svg-icons/plus-icon.svg'
 
-export const StyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  justify-content: center;
-`
-
 export const FilterTokenRow = styled.div`
   display: flex;
   align-items: center;
@@ -27,18 +20,15 @@ export const FilterTokenRow = styled.div`
 
 export const NftGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-gap: 25px;
   box-sizing: border-box;
   width: 100%;
   padding-top: 10px;
-  @media screen and (max-width: 1350px) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-  @media screen and (max-width: 1150px) {
+  @media screen and (max-width: 700px) {
     grid-template-columns: repeat(3, 1fr);
   }
-  @media screen and (max-width: 950px) {
+  @media screen and (max-width: 545px) {
     grid-template-columns: repeat(2, 1fr);
   }
 `
@@ -71,7 +61,7 @@ export const IpfsIcon = styled.div`
   mask-image: url(${Ipfs});
   -webkit-mask-image: url(${Ipfs});
   mask-repeat: no-repeat;
-  background-color: ${(p) => p.theme.color.background02};
+  background-color: ${(p) => p.theme.color.interactive07};
   cursor: pointer;
 
   &:hover {

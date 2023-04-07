@@ -1,19 +1,24 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
+#include <initializer_list>
+#include <string>
 #include <utility>
 
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
@@ -31,6 +36,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/dom_distiller/content/browser/distillable_page_utils.h"
+#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_details.h"
@@ -38,6 +45,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/resource/resource_bundle.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser_window.h"
@@ -47,15 +55,18 @@
 
 namespace speedreader {
 
-namespace test {
+std::u16string GetSpeedreaderData(
+    std::initializer_list<std::pair<base::StringPiece, int>> resources) {
+  std::u16string result = u"speedreaderData = {";
+  for (const auto& r : resources) {
+    auto text = brave_l10n::GetLocalizedResourceUTF16String(r.second);
+    // Make sure that the text doesn't contain js injection
+    base::ReplaceChars(text, u"\"", u"\\\"", &text);
+    result += base::StrCat({base::UTF8ToUTF16(r.first), u": \"", text, u"\","});
+  }
 
-const std::u16string* g_show_original_link_title = nullptr;
-
-void SetShowOriginalLinkTitle(const std::u16string* title) {
-  g_show_original_link_title = title;
+  return result + u"}\n\n";
 }
-
-}  // namespace test
 
 constexpr const char* kPropertyPrefNames[] = {
     kSpeedreaderPrefTheme, kSpeedreaderPrefFontSize, kSpeedreaderPrefFontFamily,
@@ -63,7 +74,8 @@ constexpr const char* kPropertyPrefNames[] = {
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {
+      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents),
+      PageDistiller(web_contents) {
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   pref_change_registrar_->Init(GetProfile()->GetPrefs());
   pref_change_registrar_->Add(
@@ -77,6 +89,8 @@ SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
         base::BindRepeating(&SpeedreaderTabHelper::OnPropertyPrefChanged,
                             weak_factory_.GetWeakPtr()));
   }
+
+  dom_distiller::AddObserver(web_contents, this);
 
   content_rules_ = HostContentSettingsMapFactory::GetForProfile(
       web_contents->GetBrowserContext());
@@ -101,12 +115,24 @@ void SpeedreaderTabHelper::BindSpeedreaderHost(
     mojo::PendingAssociatedReceiver<mojom::SpeedreaderHost> receiver,
     content::RenderFrameHost* rfh) {
   auto* sender = content::WebContents::FromRenderFrameHost(rfh);
-  if (!sender)
+  if (!sender) {
     return;
+  }
   auto* tab_helper = SpeedreaderTabHelper::FromWebContents(sender);
-  if (!tab_helper)
+  if (!tab_helper) {
     return;
+  }
   tab_helper->BindReceiver(std::move(receiver));
+}
+
+// static
+PageDistiller* SpeedreaderTabHelper::GetPageDistiller(
+    content::WebContents* contents) {
+  auto* tab_helper = SpeedreaderTabHelper::FromWebContents(contents);
+  if (!tab_helper) {
+    return nullptr;
+  }
+  return tab_helper;
 }
 
 void SpeedreaderTabHelper::BindReceiver(
@@ -128,8 +154,9 @@ bool SpeedreaderTabHelper::IsEnabledForSite() {
 }
 
 bool SpeedreaderTabHelper::IsEnabledForSite(const GURL& url) {
-  if (!IsSpeedreaderEnabled())
+  if (!IsSpeedreaderEnabled()) {
     return false;
+  }
   return speedreader::IsEnabledForSite(content_rules_, url);
 }
 
@@ -160,13 +187,15 @@ void SpeedreaderTabHelper::ProcessIconClick() {
 }
 
 void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
-  if (!IsSpeedreaderEnabled())
+  if (!IsSpeedreaderEnabled()) {
     return;
+  }
 
   const bool enabled = speedreader::IsEnabledForSite(
       content_rules_, web_contents()->GetLastCommittedURL());
-  if (enabled == on)
+  if (enabled == on) {
     return;
+  }
 
   speedreader::SetEnabledForSite(content_rules_,
                                  web_contents()->GetLastCommittedURL(), on);
@@ -175,10 +204,11 @@ void SpeedreaderTabHelper::MaybeToggleEnabledForSite(bool on) {
 }
 
 void SpeedreaderTabHelper::SingleShotSpeedreader() {
-  single_shot_next_request_ = true;
+  GetDistilledHTML(base::BindOnce(&SpeedreaderTabHelper::OnGetDocumentSource,
+                                  weak_factory_.GetWeakPtr()));
 
-  // Refresh the page so it runs through the speedreader throttle
-  ReloadContents();
+  SetNextRequestState(DistillState::kReaderModePending);
+  single_shot_next_request_ = true;
 
   // Determine if bubble should be shown automatically
   auto* speedreader_service =
@@ -231,7 +261,8 @@ void SpeedreaderTabHelper::UpdateActiveState(const GURL& url) {
     if (rewriter_service->URLLooksReadable(url)) {
       VLOG(2) << __func__ << "URL passed speedreader heuristic: " << url;
       if (!IsSpeedreaderEnabled()) {
-        SetNextRequestState(DistillState::kPageProbablyReadable);
+        // Determine readability on DOMContentLoaded.
+        SetNextRequestState(DistillState::kNone);
       } else if (!IsEnabledForSite(url)) {
         SetNextRequestState(DistillState::kSpeedreaderOnDisabledPage);
       } else {
@@ -308,11 +339,13 @@ void SpeedreaderTabHelper::OnShowOriginalPage() {
 void SpeedreaderTabHelper::SetTheme(Theme theme) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
+  }
 
-  if (speedreader_service->GetTheme() == theme)
+  if (speedreader_service->GetTheme() == theme) {
     return;
+  }
   speedreader_service->SetTheme(theme);
 }
 
@@ -334,10 +367,12 @@ Theme SpeedreaderTabHelper::GetTheme() {
 void SpeedreaderTabHelper::SetFontFamily(FontFamily font) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (speedreader_service->GetFontFamily() == font)
+  }
+  if (speedreader_service->GetFontFamily() == font) {
     return;
+  }
 
   speedreader_service->SetFontFamily(font);
 }
@@ -350,10 +385,12 @@ FontFamily SpeedreaderTabHelper::GetFontFamily() {
 void SpeedreaderTabHelper::SetFontSize(FontSize size) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (speedreader_service->GetFontSize() == size)
+  }
+  if (speedreader_service->GetFontSize() == size) {
     return;
+  }
 
   speedreader_service->SetFontSize(size);
 }
@@ -365,10 +402,12 @@ FontSize SpeedreaderTabHelper::GetFontSize() const {
 void SpeedreaderTabHelper::SetContentStyle(ContentStyle style) {
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (speedreader_service->GetContentStyle() == style)
+  }
+  if (speedreader_service->GetContentStyle() == style) {
     return;
+  }
 
   speedreader_service->SetContentStyle(style);
 }
@@ -394,7 +433,7 @@ void SpeedreaderTabHelper::ReloadContents() {
 
 void SpeedreaderTabHelper::ProcessNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!navigation_handle->IsInMainFrame() ||
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
       navigation_handle->IsSameDocument() ||
       MaybeUpdateCachedState(navigation_handle)) {
     return;
@@ -448,10 +487,12 @@ void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
 
   auto* speedreader_service =
       SpeedreaderServiceFactory::GetForProfile(GetProfile());
-  if (!speedreader_service)
+  if (!speedreader_service) {
     return;
-  if (!PageStateIsDistilled(distill_state_))
+  }
+  if (!PageStateIsDistilled(distill_state_)) {
     return;
+  }
 
   if (path == kSpeedreaderPrefTheme) {
     SetDocumentAttribute("data-theme", speedreader_service->GetThemeName());
@@ -468,8 +509,17 @@ void SpeedreaderTabHelper::OnPropertyPrefChanged(const std::string& path) {
 }
 
 void SpeedreaderTabHelper::UpdateButtonIfNeeded() {
-  if (!is_visible_)
+  if (PageStateIsDistilled(distill_state_)) {
+    UpdateState(State::kDistilled);
+  } else if (PageSupportsDistillation(distill_state_)) {
+    UpdateState(State::kDistillable);
+  } else {
+    UpdateState(State::kNotDistillable);
+  }
+
+  if (!is_visible_) {
     return;
+  }
 #if !BUILDFLAG(IS_ANDROID)
   if (const auto* browser =
           chrome::FindBrowserWithWebContents(web_contents())) {
@@ -497,38 +547,34 @@ void SpeedreaderTabHelper::DidStopLoading() {
 
 void SpeedreaderTabHelper::DOMContentLoaded(
     content::RenderFrameHost* render_frame_host) {
-  if (!PageWantsDistill(distill_state_))
+  if (PageDistillState() == DistillState::kNone) {
+    auto* rewriter_service =
+        g_brave_browser_process->speedreader_rewriter_service();
+    if (rewriter_service && rewriter_service->URLLooksReadable(
+                                web_contents()->GetLastCommittedURL())) {
+      distill_state_ = DistillState::kPageProbablyReadable;
+      UpdateButtonIfNeeded();
+    }
     return;
-
-  constexpr const char16_t kAddShowOriginalPageLink[] =
-      uR"js(
-    (function() {
-      // element id is hardcoded in extractor.rs
-      const link = document.
-        getElementById('c93e2206-2f31-4ddc-9828-2bb8e8ed940e');
-      if (!link)
-        return;
-      link.innerText = "$1";
-      link.addEventListener('click', (e) => {
-        window.speedreader.showOriginalPage();
-      })
-    })();
-  )js";
-
-  auto link_text = brave_l10n::GetLocalizedResourceUTF16String(
-      IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK);
-  if (test::g_show_original_link_title) {
-    link_text = *test::g_show_original_link_title;
   }
 
-  // Make sure that the link text doesn't contain js injection
-  base::ReplaceChars(link_text, u"\"", u"\\\"", &link_text);
+  if (!PageWantsDistill(distill_state_)) {
+    return;
+  }
 
-  const auto script = base::ReplaceStringPlaceholders(kAddShowOriginalPageLink,
-                                                      link_text, nullptr);
+  static base::NoDestructor<std::u16string> kSpeedreaderData(GetSpeedreaderData(
+      {{"showOriginalLinkText", IDS_SPEEDREADER_SHOW_ORIGINAL_PAGE_LINK},
+       {"minutesText", IDS_SPEEDREADER_MINUTES_TEXT}}));
+
+  static base::NoDestructor<std::u16string> kJsScript(base::UTF8ToUTF16(
+      ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+          IDR_SPEEDREADER_JS_DESKTOP)));
+
+  static base::NoDestructor<std::u16string> kLoadScript(*kSpeedreaderData +
+                                                        *kJsScript);
 
   render_frame_host->ExecuteJavaScriptInIsolatedWorld(
-      script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+      *kLoadScript, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -537,7 +583,9 @@ void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 
 void SpeedreaderTabHelper::WebContentsDestroyed() {
   pref_change_registrar_.reset();
+  dom_distiller::RemoveObserver(web_contents(), this);
   content_rules_ = nullptr;
+  SetWebContents(nullptr);
   HideBubble();
 }
 
@@ -545,12 +593,29 @@ bool SpeedreaderTabHelper::IsPageDistillationAllowed() {
   return speedreader::PageWantsDistill(distill_state_);
 }
 
-void SpeedreaderTabHelper::OnDistillComplete() {
+bool SpeedreaderTabHelper::IsPageContentPresent() {
+  return !single_show_content_.empty();
+}
+
+std::string SpeedreaderTabHelper::TakePageContent() {
+  return std::move(single_show_content_);
+}
+
+void SpeedreaderTabHelper::OnDistillComplete(DistillationResult result) {
+  if (result != DistillationResult::kSuccess) {
+    SetNextRequestState(DistillState::kNone);
+    return;
+  }
+
   // Perform a state transition
   if (distill_state_ == DistillState::kSpeedreaderModePending) {
     distill_state_ = DistillState::kSpeedreaderMode;
   } else if (distill_state_ == DistillState::kReaderModePending) {
-    distill_state_ = DistillState::kReaderMode;
+    if (result == DistillationResult::kSuccess) {
+      distill_state_ = DistillState::kReaderMode;
+    } else {
+      distill_state_ = DistillState::kPageProbablyReadable;
+    }
   } else {
     // We got here via an already cached page.
     DCHECK(distill_state_ == DistillState::kSpeedreaderMode ||
@@ -558,6 +623,17 @@ void SpeedreaderTabHelper::OnDistillComplete() {
   }
 
   UpdateButtonIfNeeded();
+}
+
+void SpeedreaderTabHelper::OnResult(
+    const dom_distiller::DistillabilityResult& result) {
+  if (PageDistillState() == DistillState::kNone) {
+    if (result.is_distillable) {
+      // Page detected as non-readable by URL, but readable by content.
+      distill_state_ = DistillState::kPageProbablyReadable;
+      UpdateButtonIfNeeded();
+    }
+  }
 }
 
 void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
@@ -581,6 +657,19 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 
   web_contents()->GetPrimaryMainFrame()->ExecuteJavaScriptInIsolatedWorld(
       script, base::DoNothing(), ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
+void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
+  DCHECK(single_shot_next_request_);
+  if (!success) {
+    // TODO(boocmp): Show error dialog [Distillation failed on this page].
+    SetNextRequestState(DistillState::kPageProbablyReadable);
+    UpdateButtonIfNeeded();
+    return;
+  }
+
+  single_show_content_.swap(html);
+  ReloadContents();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SpeedreaderTabHelper);

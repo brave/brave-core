@@ -30,7 +30,6 @@ import {
 import { getBalance } from '../../../../utils/balance-utils'
 import { getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion } from '../../../../utils/network-utils'
 import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
-import { selectAllNetworksFromQueryResult } from '../../../../common/slices/entities/network.entity'
 
 // Styled Components
 import {
@@ -47,6 +46,7 @@ import {
   AccountButtonsRow
 } from './style'
 import { TransactionPlaceholderText, Spacer } from '../portfolio/style'
+import { ScrollableColumn, Column } from '../../../shared/style'
 
 // Components
 import { BackButton } from '../../../shared'
@@ -62,7 +62,11 @@ import { AccountButtonOptions } from '../../../../options/account-list-button-op
 
 // Hooks
 import { useScrollIntoView } from '../../../../common/hooks/use-scroll-into-view'
-import { useGetAllNetworksQuery, useGetTokensRegistryQuery, useGetUserTokensRegistryQuery } from '../../../../common/slices/api.slice'
+import {
+  useGetNetworksQuery,
+  useGetTokensRegistryQuery,
+  useGetUserTokensRegistryQuery
+} from '../../../../common/slices/api.slice'
 import { useMultiChainSellAssets } from '../../../../common/hooks/use-multi-chain-sell-assets'
 
 // Actions
@@ -90,11 +94,7 @@ export const Account = ({
   const spotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
 
   // queries
-  const { networkList } = useGetAllNetworksQuery(undefined, {
-    selectFromResult: (result) => ({
-      networkList: selectAllNetworksFromQueryResult(result)
-    })
-  })
+  const { data: networkList = [] } = useGetNetworksQuery()
   const { fullTokenList } = useGetTokensRegistryQuery(undefined, {
     selectFromResult: (result) => ({
       fullTokenList: selectAllBlockchainTokensFromQueryResult(result)
@@ -287,6 +287,9 @@ export const Account = ({
             <WalletAddress>{reduceAddress(selectedAccount.address)}</WalletAddress>
           </CopyTooltip>
         </WalletInfoLeftSide>
+      </WalletInfoRow>
+
+      <WalletInfoRow>
         <AccountButtonsRow>
           {buttonOptions.map((option) =>
             <AccountListItemOptionButton
@@ -298,67 +301,89 @@ export const Account = ({
         </AccountButtonsRow>
       </WalletInfoRow>
 
-      <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
-
-      <SubDivider />
+      <Spacer />
       <Spacer />
 
-      {fungibleTokens.map((item) =>
-        <PortfolioAssetItem
-          key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
-          assetBalance={getBalance(selectedAccount, item)}
-          token={item}
-          isAccountDetails={true}
-          showSellModal={() => onClickShowSellModal(item)}
-          isSellSupported={checkIsAssetSellSupported(item)}
-        />
-      )}
-
-      {!assetAutoDiscoveryCompleted &&
-        <PortfolioAssetItemLoadingSkeleton />
-      }
-
-      <Spacer />
-
-      {nonFungibleTokens?.length !== 0 &&
-        <>
-          <Spacer />
-          <SubviewSectionTitle>{getLocale('braveWalletTopNavNFTS')}</SubviewSectionTitle>
+      <ScrollableColumn>
+        <Column fullWidth={true} alignItems='flex-start'>
+          <SubviewSectionTitle>
+            {getLocale('braveWalletAccountsAssets')}
+          </SubviewSectionTitle>
           <SubDivider />
-          {nonFungibleTokens?.map((item) =>
-            <PortfolioAssetItem
-              key={`${item.contractAddress}-${item.symbol}-${item.chainId}-${item.tokenId}`}
-              assetBalance={getBalance(selectedAccount, item)}
-              token={item}
-            />
-          )}
           <Spacer />
-        </>
-      }
+        </Column>
 
-      <Spacer />
+        {fungibleTokens.map((item) =>
+          <PortfolioAssetItem
+            key={`${item.contractAddress}-${item.symbol}-${item.chainId}`}
+            assetBalance={getBalance(selectedAccount, item)}
+            token={item}
+            isAccountDetails={true}
+            showSellModal={() => onClickShowSellModal(item)}
+            isSellSupported={checkIsAssetSellSupported(item)}
+          />
+        )}
 
-      <SubviewSectionTitle>{getLocale('braveWalletTransactions')}</SubviewSectionTitle>
+        {!assetAutoDiscoveryCompleted &&
+          <PortfolioAssetItemLoadingSkeleton />
+        }
 
-      <SubDivider />
+        <Spacer />
 
-      {transactionList.length !== 0 ? (
-        <>
-          {transactionList.map((transaction) =>
-            <PortfolioTransactionItem
-              key={transaction?.id}
-              transaction={transaction}
-              displayAccountName={false}
-              ref={(ref) => handleScrollIntoView(transaction.id, ref)}
-              isFocused={checkIsTransactionFocused(transaction.id)}
-            />
-          )}
-        </>
-      ) : (
-        <TransactionPlaceholderContainer>
-          <TransactionPlaceholderText>{getLocale('braveWalletTransactionPlaceholder')}</TransactionPlaceholderText>
-        </TransactionPlaceholderContainer>
-      )}
+        {nonFungibleTokens?.length !== 0 &&
+          <>
+            <Column fullWidth={true} alignItems='flex-start'>
+              <Spacer />
+              <SubviewSectionTitle>
+                {getLocale('braveWalletTopNavNFTS')}
+              </SubviewSectionTitle>
+              <SubDivider />
+            </Column>
+            {nonFungibleTokens?.map((item) =>
+              <PortfolioAssetItem
+                key={
+                  `${item.contractAddress}-
+                   ${item.symbol}-
+                   ${item.chainId}-
+                   ${item.tokenId}
+                  `
+                }
+                assetBalance={getBalance(selectedAccount, item)}
+                token={item}
+              />
+            )}
+            <Spacer />
+          </>
+        }
+
+        <Column fullWidth={true} alignItems='flex-start'>
+          <Spacer />
+          <SubviewSectionTitle>
+            {getLocale('braveWalletTransactions')}
+          </SubviewSectionTitle>
+          <SubDivider />
+        </Column>
+
+        {transactionList.length !== 0 ? (
+          <>
+            {transactionList.map((transaction) =>
+              <PortfolioTransactionItem
+                key={transaction?.id}
+                transaction={transaction}
+                displayAccountName={false}
+                ref={(ref) => handleScrollIntoView(transaction.id, ref)}
+                isFocused={checkIsTransactionFocused(transaction.id)}
+              />
+            )}
+          </>
+        ) : (
+          <TransactionPlaceholderContainer>
+            <TransactionPlaceholderText>
+              {getLocale('braveWalletTransactionPlaceholder')}
+            </TransactionPlaceholderText>
+          </TransactionPlaceholderContainer>
+        )}
+      </ScrollableColumn>
       {showSellModal && selectedSellAsset &&
         <SellAssetModal
           selectedAsset={selectedSellAsset}
@@ -368,6 +393,7 @@ export const Account = ({
           setSellAmount={setSellAmount}
           openSellAssetLink={onOpenSellAssetLink}
           showSellModal={showSellModal}
+          account={selectedAccount}
           sellAssetBalance={getBalance(selectedAccount, selectedSellAsset)}
         />
       }

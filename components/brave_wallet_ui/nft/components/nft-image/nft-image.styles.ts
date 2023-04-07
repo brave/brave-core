@@ -14,8 +14,8 @@ export const Image = styled.img`
   object-fit: contain;
   border: transparent;
   border-radius: 4px;
-  max-width: 100%;
-  max-height: 100%;
+  width: auto;
+  height: 500px;
 `
 
 export const MagnifyButton = styled(WalletButton)`
@@ -40,8 +40,6 @@ export const ImageWrapper = styled.div<{ isLoading: boolean }>`
   display: flex;
   justify-items: center;
   align-items: center;
-  width: 100%;
-  height: 100%;
   visibility: ${p => p.isLoading ? 'hidden' : 'visible'};
   border-radius: 12px;
 `

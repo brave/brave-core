@@ -1,0 +1,668 @@
+{
+  "confirmations": {
+    "failed_confirmations": [
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "NJKADVMNZafA2UACNY2TlReaCHn7qnfZwKdGkwwmK0E=",
+        "created": true,
+        "creative_instance_id": "489b1dcc-d938-41cf-92a8-bacea0abb490",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJOSktBRFZNTlphZkEyVUFDTlkyVGxSZWFDSG43cW5mWndLZEdrd3dtSzBFPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjQ4OWIxZGNjLWQ5MzgtNDFjZi05MmE4LWJhY2VhMGFiYjQ5MFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcImRpc21pc3NcIn0iLCJzaWduYXR1cmUiOiJlU3RqbkMzamVUWVBsSXJmb2JSdnBiL05oVCtZQmc1YlllVHlLN3NUcHd3em1pc0FOY0FUU2NSMXRYQkwzOTdFY1NXdVJ5ZHhwQk9ReFF5a0VHQUwrQT09IiwidCI6IlN4UllQVTJVamFNVjhhanV4QmVQRGlCWStsQXM3VHdIc2pubzVHYUJhc2hlZ1BZMmkyUGtTbSswWUIzT0toQ2hlTmVSNWNrYmMvRmREbnFqVktxMW1BPT0ifQ==",
+        "id": "a1af5d10-4445-45b0-a75b-08e8baae9444",
+        "payment_token": "bXmP/B8ckd/8LaH6kWm5UPaTh1TEeBGx6+jJK6c83wHGTxvecYFftEf/FU42kCUX3aObptA4pdJeE0bI8z/nB+ABTOlpID19HH0xWeZFbLSr885XGgJxEHyKeB3s9EIM",
+        "timestamp_in_seconds": "1648581698.366707",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "SxRYPU2UjaMV8ajuxBePDiBY+lAs7TwHsjno5GaBashegPY2i2PkSm+0YB3OKhCheNeR5ckbc/FdDnqjVKq1mALFxdmNd7zYcvFPYSqdy6u5c234mseO1Hb2bH5bpF8E"
+        },
+        "transaction_id": "32c0b83a-5134-4cb0-8abd-fc384032b238",
+        "type": "dismiss",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "CHxdJ9PVi1nB5Ein0XgFEVaNP7ZWaH/vyGAs1o4HdTQ=",
+        "created": true,
+        "creative_instance_id": "489b1dcc-d938-41cf-92a8-bacea0abb490",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJDSHhkSjlQVmkxbkI1RWluMFhnRkVWYU5QN1pXYUgvdnlHQXMxbzRIZFRRPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjQ4OWIxZGNjLWQ5MzgtNDFjZi05MmE4LWJhY2VhMGFiYjQ5MFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcInZpZXdcIn0iLCJzaWduYXR1cmUiOiJsRE13eElOdDFNWnhoNXZ0SEtDcFpKZ1Rjc2hKbDJReXBZUlpiWi9kL2dzR2dpRUVybXlJYUJNZThLdVZoTjh1cU91Qkl2N1ZwRWFlZ0ZMZ1lKSms1QT09IiwidCI6IkdEU1FEM2F3TjUrZUlVaTVQTnJ6MGUxUXA1NnBaeWpmeEtjNmdTYS9IT29lcldLWWFPTkdxV3h1Q0tXTGhPaXlwWENHRmFjdWFYczErWEtad3MyOGZnPT0ifQ==",
+        "id": "29e9909f-1a13-4d90-b78d-7aa03fe4d8be",
+        "payment_token": "HyPZLraCLB1hzraenxyDEPMEhlR5rYdF83zYVLEVSE2xsaquRQ0S2/scaUoudA4j3iVbGO0kViZGeZ+TlXNXO9wL3nP0id32sQubPRX930CqU+sKgFhtEusFmLMWI7gL",
+        "timestamp_in_seconds": "1648581695.597006",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "GDSQD3awN5+eIUi5PNrz0e1Qp56pZyjfxKc6gSa/HOoerWKYaONGqWxuCKWLhOiypXCGFacuaXs1+XKZws28fmQFCBoUaxpQZnZIiJDQbIHJyZoSQpRhH7lCnMdFxcpL"
+        },
+        "transaction_id": "318e3701-e63c-4cac-8933-997fb0be9b23",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "YLnkFpPM8SxCK5M3+ZDNzAvE36pDPo7jBIlnSls7ZFM=",
+        "created": true,
+        "creative_instance_id": "d1f2dad0-70bc-4688-b3d1-885ee6745d34",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJZTG5rRnBQTThTeENLNU0zK1pETnpBdkUzNnBEUG83akJJbG5TbHM3WkZNPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcImQxZjJkYWQwLTcwYmMtNDY4OC1iM2QxLTg4NWVlNjc0NWQzNFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcInZpZXdcIn0iLCJzaWduYXR1cmUiOiJYUW5neit3QlMvNlc4V21ndVlDeXFnNldQUGVLSUNmN0JkUHEzR1hrMXZkR1BSVk1scUZLT044U2JtZGwxTFc0dEZkZGYxNVBIOFMzUnI3Wlc0dG5xZz09IiwidCI6Ii8rdG5PV29ZVnRHWFBnU3FIZDhVUnd2bXYyU2hiOWJVYytwK0pNZ0c5cWtWb3B4aEhScDI1TWV1aGhsR2tjWlgxTnlCL0xEdnZzSTgrVXBYb2JkRnVBPT0ifQ==",
+        "id": "88ea20eb-381c-45b1-a560-9e30833bb3ca",
+        "payment_token": "UEeadVwt3YbRZJtGVDg2aIGq1M1HFvOMAFePHvQkcHYiW+PpxpdUpBHr2J5aNAzOF3hA6BXT4G25BJpXYCSsVGoyXC4jVDEoJ2W9Xwd3MWQDNJ7yd9m9FUhsqzITAO0N",
+        "timestamp_in_seconds": "1648582273.460629",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "/+tnOWoYVtGXPgSqHd8URwvmv2Shb9bUc+p+JMgG9qkVopxhHRp25MeuhhlGkcZX1NyB/LDvvsI8+UpXobdFuFgW53xdZu9U11gXLWGhtkWsp3p/A7jtb35fE7EmULQG"
+        },
+        "transaction_id": "91c78bb8-819e-4dd4-8920-a90e5a56bc48",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "NOkV85EzJs8SbqYapUpWGazhByigk+a9mGfzlItOxzU=",
+        "created": true,
+        "creative_instance_id": "d1f2dad0-70bc-4688-b3d1-885ee6745d34",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJOT2tWODVFekpzOFNicVlhcFVwV0dhemhCeWlnaythOW1HZnpsSXRPeHpVPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcImQxZjJkYWQwLTcwYmMtNDY4OC1iM2QxLTg4NWVlNjc0NWQzNFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcImRpc21pc3NcIn0iLCJzaWduYXR1cmUiOiJQNi9PTStxWFUrY3RHL2lSWllkb1dGUkJLUUQ1dy9Rc1VnNDJmUFkwQmNlUS8vUzJnSStuUDRRQUpaYzhlYzhta0lxR2lSRmRBc2ZyV0o5amN5WmFPdz09IiwidCI6IjRWRW8vb0FDdlRlOGlDckNGRmticW0veHkxNSsxc2F1dDN6Q2FtV1ZSVm5keW42OHhNQ0EwNElmUGJjRFZpWVFBWmxwWkxzTmpzR0NOeVF1M291RUFnPT0ifQ==",
+        "id": "9227c990-3b69-42f1-8daa-a4ae53324693",
+        "payment_token": "/lBcA4GptYFvmQ7hA7a2cueodIIeKw+UmA+aL3s0l37AVzna3CbUS8L1KyRvx7J0mJdwHAMpGE/kySTE/OhDAGRWaMq9YRaczCZxYBwxuve67CLDgO23GCFzIQf/w2wM",
+        "timestamp_in_seconds": "1648582275.757496",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "4VEo/oACvTe8iCrCFFkbqm/xy15+1saut3zCamWVRVndyn68xMCA04IfPbcDViYQAZlpZLsNjsGCNyQu3ouEAuYggeiRhkuS/lqnHqVjCdQmhr30+eEp0prhY0ZNnL9a"
+        },
+        "transaction_id": "b1258ce3-9a42-439b-b1eb-0d4eb58d3d07",
+        "type": "dismiss",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "OKErd1WDdYFESXgvCH8GxDZvEWFA9IA2hHlJKjc9sic=",
+        "created": true,
+        "creative_instance_id": "43665407-304f-4365-95ce-f5cdf752149e",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJPS0VyZDFXRGRZRkVTWGd2Q0g4R3hEWnZFV0ZBOUlBMmhIbEpLamM5c2ljPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjQzNjY1NDA3LTMwNGYtNDM2NS05NWNlLWY1Y2RmNzUyMTQ5ZVwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcInZpZXdcIn0iLCJzaWduYXR1cmUiOiJvektqOWE2eDYwcFdEcS8yd2NiNWk0NUFmRE85VDZQS2lLWk8reU5Kdkl5VEt5b00rcVlkNE43YTJ4d05UWHArOEhOczBudFYzcFhNTWIybFlnZ2ZCQT09IiwidCI6Img5TEZXTU5LTjRFUENNMmxrOEpOMndZNi93S3I4SG1XNElrUEhwQ1dLaVRPeEtxVGUvQ09mT2lhdUhBNEw0SnBxY0R0cHozR0MvdjVXM1JLUzFGTXdBPT0ifQ==",
+        "id": "df50d2a3-6cb4-48fd-a123-0733b0ed6079",
+        "payment_token": "59s3+QJiwNS2pf80Y0yQL9oImBc1RxK8Vcf5+x2SFPuNYizi683oajLI0Szxp6tEZe2iucefrsWd1vOtAaAcNGrm4YhmCw79ClLySfIv4WHQLeWhnZJBXLpdbjCViEEO",
+        "timestamp_in_seconds": "1649178318.702106",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "h9LFWMNKN4EPCM2lk8JN2wY6/wKr8HmW4IkPHpCWKiTOxKqTe/COfOiauHA4L4JpqcDtpz3GC/v5W3RKS1FMwCT+YUD7JUxnbwihoixjwjqeE+RXi/2HhwVJXg0hUFpu"
+        },
+        "transaction_id": "34606cfb-01c5-4c79-a3a4-56ee149640c9",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "OlREoo+mufzXdxonLEhObuFdRTzFHB+N8kRnF/RItD8=",
+        "created": true,
+        "creative_instance_id": "27f06484-516a-4fee-a2d4-16d81cf9f565",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJPbFJFb28rbXVmelhkeG9uTEVoT2J1RmRSVHpGSEIrTjhrUm5GL1JJdEQ4PVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjI3ZjA2NDg0LTUxNmEtNGZlZS1hMmQ0LTE2ZDgxY2Y5ZjU2NVwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcInZpZXdcIn0iLCJzaWduYXR1cmUiOiJnQUpiaUpzUFZ0WXNZeUllNElRMExjRDFRUUdjaEovQ3J1UTlBUFBkczVhK2MrTWdDcXd4Qmx4WCtPeS9YZEVqUHRFS3RmZHA5Q0xudmlUS2tTbWNkUT09IiwidCI6Ikx5TG4wUnJOaURYa0JRVWEwTklyVGFzaHp1dFZpTytoc0hxT2JtRk91UTAvNnMyczRyaVQ0VkpaZXVIYTZ0MHVweFM5TDRRRGZyc2RJeWhydVdncDRBPT0ifQ==",
+        "id": "a6758824-8106-47a6-83cf-cb3132850377",
+        "payment_token": "o7CXko2pPsGWTh3nyh6QEnzlCK+pbhPNs8b2mErcXc/Abc1DzA8UBaAe+kDWMhEFK9REOT97pDY3U/LwmAfmROnNUn1F6RRdqCqzkev0BUK5EQAnkUbtuT5+bosF2XUH",
+        "timestamp_in_seconds": "1648496942.272359",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "LyLn0RrNiDXkBQUa0NIrTashzutViO+hsHqObmFOuQ0/6s2s4riT4VJZeuHa6t0upxS9L4QDfrsdIyhruWgp4GaNp5rXgnx5C3qU/9UttFiz3Xq6MBCe2Jmc0f+rGD8M"
+        },
+        "transaction_id": "394515a6-5929-461f-b42e-05f51463dfea",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "ruUGZRoKEE4QO0fnxtHyoXSUojx945vY0Gl2DrNyLGU=",
+        "created": true,
+        "creative_instance_id": "e0f280fd-c3b7-4b35-a1f0-2131630707f3",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJydVVHWlJvS0VFNFFPMGZueHRIeW9YU1Vvang5NDV2WTBHbDJEck55TEdVPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcImUwZjI4MGZkLWMzYjctNGIzNS1hMWYwLTIxMzE2MzA3MDdmM1wiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiTEFxSnhmeVhnV241MlhRQXFxRVhPMFAvVjQ2dVpjU0kvb1hMZFp3ekFnRT1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcImRpc21pc3NcIn0iLCJzaWduYXR1cmUiOiJzb2o2ZEhuWkc4M3JKYUZzNDRiL3lDanhvSTFoR2NYWHdTaENzcy96M0NFUWR1ZDBubVp1VWoxbHo3OG5hZmVpUHhnM1diY2o5bmYwdUFna2wrMng3Zz09IiwidCI6IjlmalY4cmhyb3F1MVUzQ1l0M2FJRUpjM0dSSGljaEJWQ3NicVVIV1BSaHY2Q1JmZXVEby9QcEpqUFp4ekwwVFljQ04wbHRKSkIwSkhnSzBnK0ZWVXZRPT0ifQ==",
+        "id": "506280e6-7a5e-491b-9843-2c448c1d8e21",
+        "payment_token": "HSKzDXyurkBvfMWjuGCb7pRogfFnloRWOvzvlLWrpwRms+PjL9TdcV1VeAkyrT24zmG5odyvzt5+u9XfMgXwCSI+2CKxAgnbdtGn4bto3SLCNPMRuet80rFmq3Llm5QO",
+        "timestamp_in_seconds": "1648506101.313348",
+        "token_info": {
+          "public_key": "LAqJxfyXgWn52XQAqqEXO0P/V46uZcSI/oXLdZwzAgE=",
+          "unblinded_token": "9fjV8rhroqu1U3CYt3aIEJc3GRHichBVCsbqUHWPRhv6CRfeuDo/PpJjPZxzL0TYcCN0ltJJB0JHgK0g+FVUvaQV3pD5cbIPKDOLZNqzeukUREZtVhbvqWQKFv0oJo9r"
+        },
+        "transaction_id": "2d974d98-297d-4676-9575-0d89f718e964",
+        "type": "dismiss",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "4F0c8QrRZoYtcCg80wuRTx+UOTuGaLLok1AKo9KOi1w=",
+        "created": true,
+        "creative_instance_id": "9a06c1ea-b533-4d2c-bb9d-0cef643c78c8",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCI0RjBjOFFyUlpvWXRjQ2c4MHd1UlR4K1VPVHVHYUxMb2sxQUtvOUtPaTF3PVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjlhMDZjMWVhLWI1MzMtNGQyYy1iYjlkLTBjZWY2NDNjNzhjOFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiNEZCUGU2R0tTbVNjVmtXdEsrNFgrYVV0a1BBTkZJaFk5NmI0VGxOdVNIST1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcImRpc21pc3NcIn0iLCJzaWduYXR1cmUiOiJlcXZ6VVlVYW15T1BBelhaVmNFTTVYbFNjVVVqVUV4M2dLbFdFdEZCaW93M2d1TWJYallTWnFoQW5RV29BV1BVaUEvVk45bkNBc0FnR2RxMkY4cU1Ndz09IiwidCI6IjliQ0xEQmF1WWcwSjN4SmNpdXNpWHU1Mkt4NVo2VHl2RmdtZVA5a0pQaytNZitIaUZKV2pYUkJ5N3Z6T1BMU2Voc1YxTjIwVWpPeGJrZHRaNWVub3lnPT0ifQ==",
+        "id": "7cad3d9c-743a-45f3-8ff7-8224934f56c7",
+        "payment_token": "RXl4Zi1Wo+1qtid40vyKNjQG3Q7cNKjW8Gm7O8ltGAsQZwQVyEVOnGs5UAq8En4v2fWK9KTv8gBnwYnltAu9QKXCcrcbKKxxxI0yBHmVUt7LcIrp37z0TEDYEFT62s0A",
+        "timestamp_in_seconds": "1649806102.089508",
+        "token_info": {
+          "public_key": "4FBPe6GKSmScVkWtK+4X+aUtkPANFIhY96b4TlNuSHI=",
+          "unblinded_token": "9bCLDBauYg0J3xJciusiXu52Kx5Z6TyvFgmeP9kJPk+Mf+HiFJWjXRBy7vzOPLSehsV1N20UjOxbkdtZ5enoygwxrdB51EyPqU3gN8k5eEX0yTIUw66cf28DtwN205ML"
+        },
+        "transaction_id": "af3802ee-6eb7-4e15-a6ea-01c30c2596fd",
+        "type": "dismiss",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "new_tab_page_ad",
+        "blinded_payment_token": "NoievQpNmHWEHGS0opIwvxW4M8seO7MnQNhvA0zaVSI=",
+        "created": true,
+        "creative_instance_id": "2c729feb-cdbb-49ef-a639-6380cfe0cbcf",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJOb2lldlFwTm1IV0VIR1Mwb3BJd3Z4VzRNOHNlTzdNblFOaHZBMHphVlNJPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY291bnRyeUNvZGVcIjpcIlVTXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjJjNzI5ZmViLWNkYmItNDllZi1hNjM5LTYzODBjZmUwY2JjZlwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiakozS3VMY2FxV3lzUHVaSmxYZGMva3I0eHgzR3NHWFhNY0VOa2YvNG4wdz1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInR5cGVcIjpcInZpZXdcIn0iLCJzaWduYXR1cmUiOiJwdXJiSGJOV1IvckRtaWdHSGJJWDVId2U3YVBIS2oxdElFTjUyUFQvNUJ3WEdRUkVmQ1Z2cWVRWFFCS1NoWXk1UlE0cmZhOXRwbDZLMkQyTWdGbTRUQT09IiwidCI6InU5NDlMeEtMcWtBenc5OXRpaEszSy82dnJRYjA5MEpWNFNrUEtTdk1JckNXc2c0aHJ5VkNWL3JRUTFMbWV4Y1JQdXBaVjdRdVlTZnBEWWwzSmd4VW5nPT0ifQ==",
+        "id": "f79c43b8-022a-4062-99d1-0d7f82fe0195",
+        "payment_token": "sTogWm4DmkPyzFYj+ndJgXmUL/5q4bidXPd3bkRRVQGQ1QQvUWskThM9O952kIgyOjttwtGmiAKooKxUz9z8+p/7mLoJVc0JEBuTzaDfP5oYY5A0VjVD7VMRfOur3hQB",
+        "timestamp_in_seconds": "1646938219.848561",
+        "token_info": {
+          "public_key": "jJ3KuLcaqWysPuZJlXdc/kr4xx3GsGXXMcENkf/4n0w=",
+          "unblinded_token": "u949LxKLqkAzw99tihK3K/6vrQb090JV4SkPKSvMIrCWsg4hryVCV/rQQ1LmexcRPupZV7QuYSfpDYl3JgxUnnaRfKYg/K93/Wtb+QN4ZotCPl6F6zSM5mXJkHh8Byt8"
+        },
+        "transaction_id": "0c90df53-7588-4660-b892-a4941447dcb4",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "countryCode": "US",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ]
+        }
+      },
+      {
+        "ad_type": "new_tab_page_ad",
+        "blinded_payment_token": "Dqww4UJ6rCUK6vu/Lm5YtnYujpECiX/9ne1SiLZYAgY=",
+        "created": true,
+        "creative_instance_id": "3de5820e-fcd2-4401-aa70-fec5495fe4f9",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJEcXd3NFVKNnJDVUs2dnUvTG01WXRuWXVqcEVDaVgvOW5lMVNpTFpZQWdZPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY2F0YWxvZ1wiOlt7XCJpZFwiOlwiOGUxNGQwNTQ4NWM1ODJjZmZkOWE0ZGU0N2NmMTVmZTYzNGI1MmNiZlwifV0sXCJjb3VudHJ5Q29kZVwiOlwiVVNcIixcImNyZWF0ZWRBdFRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNjowMDowMC4wMDBaXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjNkZTU4MjBlLWZjZDItNDQwMS1hYTcwLWZlYzU0OTVmZTRmOVwiLFwib2R5c3NleVwiOlwiaG9zdFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiaGhHNS84dlNHN1J3ZlJTRE9JcUJRNnNhN1ZlaDN3aDhmV3U4bGluSzhEcz1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInN5c3RlbVRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNjowMDowMC4wMDBaXCIsXCJ0eXBlXCI6XCJ2aWV3XCIsXCJ2ZXJzaW9uTnVtYmVyXCI6XCIxMDEuMC40OTUxLjU0XCJ9Iiwic2lnbmF0dXJlIjoiSklUK0JxQ1BmK1c3a0E0ODlMbjlhdXFOelNGeFk4U3BjN2VQeCtEWDZ0bFhIdy9iMTM4bHg4WmIrcDhTVDlpbzV1MHRZS3k1T2lZN1ozM3BPZ3FVbGc9PSIsInQiOiIycTNoVHE0NFdJdzV5V1NTQllvSGswNktEQkZTQ1lpZ1JrL3RNL2ROYzZRK2dRTXQrcVExcDhWckx5RFNrWU1rU2NiOUNmTnUvY2RUYk9kWmhwK1lPZz09In0=",
+        "id": "edf4316b-9f96-4bed-836f-a247130badd3",
+        "payment_token": "oxEn9i+kZVVCX4acvUjtQp8Qp+rNoaRT1x3a1E2fhLmlKSNJb4MyeyySG/vw9DQ0CidXPqNoRfIar9VJ7HMnzKr/axgRJCQq7N7pyQ4By9KXmsegOGo/GY/VdPoaSigD",
+        "timestamp_in_seconds": "1652115345.154712",
+        "token_info": {
+          "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+          "unblinded_token": "2q3hTq44WIw5yWSSBYoHk06KDBFSCYigRk/tM/dNc6Q+gQMt+qQ1p8VrLyDSkYMkScb9CfNu/cdTbOdZhp+YOpoX6k0QH9jhYXjFjE5NRXLPaN40B382xuF8tYGfJe1t"
+        },
+        "transaction_id": "9c881913-df5b-49da-967d-8e71dc03e2a5",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "catalog": [
+            {
+              "id": "8e14d05485c582cffd9a4de47cf15fe634b52cbf"
+            }
+          ],
+          "countryCode": "US",
+          "createdAtTimestamp": "2022-05-09T16:00:00.000Z",
+          "odyssey": "host",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ],
+          "systemTimestamp": "2022-05-09T16:00:00.000Z",
+          "versionNumber": "101.0.4951.54"
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "IOVIjP15szxfF/g6xiNbOrTDGD53eC8/OMlkP3x0vng=",
+        "created": true,
+        "creative_instance_id": "5b1486f1-c258-4842-85bf-595704ec45c8",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJJT1ZJalAxNXN6eGZGL2c2eGlOYk9yVERHRDUzZUM4L09NbGtQM3gwdm5nPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY2F0YWxvZ1wiOlt7XCJpZFwiOlwiOGUxNGQwNTQ4NWM1ODJjZmZkOWE0ZGU0N2NmMTVmZTYzNGI1MmNiZlwifV0sXCJjb3VudHJ5Q29kZVwiOlwiVVNcIixcImNyZWF0ZWRBdFRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNzowMDowMC4wMDBaXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjViMTQ4NmYxLWMyNTgtNDg0Mi04NWJmLTU5NTcwNGVjNDVjOFwiLFwib2R5c3NleVwiOlwiaG9zdFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiaGhHNS84dlNHN1J3ZlJTRE9JcUJRNnNhN1ZlaDN3aDhmV3U4bGluSzhEcz1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInN5c3RlbVRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNzowMDowMC4wMDBaXCIsXCJ0eXBlXCI6XCJ2aWV3XCIsXCJ2ZXJzaW9uTnVtYmVyXCI6XCIxMDEuMC40OTUxLjU0XCJ9Iiwic2lnbmF0dXJlIjoiMHVjdms1eTBrbTVuL3ZsdVg4MXNsMHRNZFdGV3NBajdlRUg4OThWUGpXRWJhMzRtN05yejMvT2laUllQNmx1bmRMWnRUOWZXSFVHSEZ2R0VsMzVTQ2c9PSIsInQiOiI2TUZoVjhLcHU1ajdTN1lmNHZRNGVjNU92ZzY5dVRvc0ZZQzRHRnlZdUdEQlRPdkVpOEdVd1FTb2tvemczN29OaGJBMXNZbjhBOGMvNHJVUHc5eXNEZz09In0=",
+        "id": "04ca0694-e6e7-4630-9084-802c2d2e17a1",
+        "payment_token": "VtvxFBJ9FxqpAf82viNXZd4aEGdQy4t93d7RQtgF7yOz2YVh5yaDtpelT/PxUs5w7gKYgb8URgq+vAhc4apDNgFMeRWma6xiqQUEOtL64qz8cIEX+vD1tmHZHJCmEIUB",
+        "timestamp_in_seconds": "1652115679.004682",
+        "token_info": {
+          "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+          "unblinded_token": "6MFhV8Kpu5j7S7Yf4vQ4ec5Ovg69uTosFYC4GFyYuGDBTOvEi8GUwQSokozg37oNhbA1sYn8A8c/4rUPw9ysDlp2nywtHjk2z1aNffEh7abAItFTj7el9tUbF6tEFAUG"
+        },
+        "transaction_id": "0e8df809-92a7-4d3c-a402-f9c3ddd1d71c",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "catalog": [
+            {
+              "id": "8e14d05485c582cffd9a4de47cf15fe634b52cbf"
+            }
+          ],
+          "countryCode": "US",
+          "createdAtTimestamp": "2022-05-09T17:00:00.000Z",
+          "odyssey": "host",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ],
+          "systemTimestamp": "2022-05-09T17:00:00.000Z",
+          "versionNumber": "101.0.4951.54"
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "Jqsf0UaeYlPz8BASpZknqhEIkIyem38LCcqb3k1KBw4=",
+        "created": true,
+        "creative_instance_id": "4357f7b3-b9cc-4e14-b9e2-a0083da86c87",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJKcXNmMFVhZVlsUHo4QkFTcFprbnFoRUlrSXllbTM4TENjcWIzazFLQnc0PVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY2F0YWxvZ1wiOlt7XCJpZFwiOlwiOGUxNGQwNTQ4NWM1ODJjZmZkOWE0ZGU0N2NmMTVmZTYzNGI1MmNiZlwifV0sXCJjb3VudHJ5Q29kZVwiOlwiVVNcIixcImNyZWF0ZWRBdFRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNzowMDowMC4wMDBaXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjQzNTdmN2IzLWI5Y2MtNGUxNC1iOWUyLWEwMDgzZGE4NmM4N1wiLFwib2R5c3NleVwiOlwiaG9zdFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiaGhHNS84dlNHN1J3ZlJTRE9JcUJRNnNhN1ZlaDN3aDhmV3U4bGluSzhEcz1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInN5c3RlbVRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNzowMDowMC4wMDBaXCIsXCJ0eXBlXCI6XCJ2aWV3XCIsXCJ2ZXJzaW9uTnVtYmVyXCI6XCIxMDEuMC40OTUxLjU0XCJ9Iiwic2lnbmF0dXJlIjoiNWJ4U0o1YWFoQ0V6L0NCMkhrcFgyR2plNUNHMzZ5MGFVcnVobzFoT0VJQ2hwVS9DUnlCekxwUjJVandWTm5DQVlPM29EMVFNckxZb2hobDdsRlJFaFE9PSIsInQiOiJEZ2NiR3B2aFhQYUpxNk9vZkJybW1KenF4ZU1pWjF0ejVpTlpWMGhzOXdVNmpYSWQxeUNzSHBwMzlMRG5rUXNYS0xtdlB6aFkzU09kSmhsZnlXYm1KQT09In0=",
+        "id": "74130815-efe7-44ba-940f-5df0e3bf2844",
+        "payment_token": "uxU2RmnemC8m1DCb7ceTfx19on3IZ8omZu+LR5xtUZ4n5ekHhF83k9fUUvhHLpW2Y+ohLQRyf0hb1xUVCFRLLIy+j8emI2pXJynWPoQPj9gea+DDkwYfzLTjkw1xZsgL",
+        "timestamp_in_seconds": "1652116664.998737",
+        "token_info": {
+          "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+          "unblinded_token": "DgcbGpvhXPaJq6OofBrmmJzqxeMiZ1tz5iNZV0hs9wU6jXId1yCsHpp39LDnkQsXKLmvPzhY3SOdJhlfyWbmJC4YWMuDqslj/wM4X5VOiygAKoQ+9Z3lX/HA+KhQ1YBy"
+        },
+        "transaction_id": "9f1255ee-5d95-485a-856e-15f887bdcec3",
+        "type": "view",
+        "user_data": {
+          "buildChannel": "release",
+          "catalog": [
+            {
+              "id": "8e14d05485c582cffd9a4de47cf15fe634b52cbf"
+            }
+          ],
+          "countryCode": "US",
+          "createdAtTimestamp": "2022-05-09T17:00:00.000Z",
+          "odyssey": "host",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ],
+          "systemTimestamp": "2022-05-09T17:00:00.000Z",
+          "versionNumber": "101.0.4951.54"
+        }
+      },
+      {
+        "ad_type": "ad_notification",
+        "blinded_payment_token": "LofrPVAe9spYfvbCNpuAF4ekpKNpox+NuhR5jkxu9FQ=",
+        "created": true,
+        "creative_instance_id": "4357f7b3-b9cc-4e14-b9e2-a0083da86c87",
+        "credential": "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlbnNcIjpbXCJMb2ZyUFZBZTlzcFlmdmJDTnB1QUY0ZWtwS05wb3grTnVoUjVqa3h1OUZRPVwiXSxcImJ1aWxkQ2hhbm5lbFwiOlwicmVsZWFzZVwiLFwiY2F0YWxvZ1wiOlt7XCJpZFwiOlwiOGUxNGQwNTQ4NWM1ODJjZmZkOWE0ZGU0N2NmMTVmZTYzNGI1MmNiZlwifV0sXCJjb3VudHJ5Q29kZVwiOlwiVVNcIixcImNyZWF0ZWRBdFRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNzowMDowMC4wMDBaXCIsXCJjcmVhdGl2ZUluc3RhbmNlSWRcIjpcIjQzNTdmN2IzLWI5Y2MtNGUxNC1iOWUyLWEwMDgzZGE4NmM4N1wiLFwib2R5c3NleVwiOlwiaG9zdFwiLFwicGF5bG9hZFwiOnt9LFwicGxhdGZvcm1cIjpcIndpbmRvd3NcIixcInB1YmxpY0tleVwiOlwiaGhHNS84dlNHN1J3ZlJTRE9JcUJRNnNhN1ZlaDN3aDhmV3U4bGluSzhEcz1cIixcInN0dWRpZXNcIjpbe1wiZ3JvdXBcIjpcIkV4Y2x1ZGVBZElmV2l0aGluVGltZVdpbmRvdz0waFwiLFwibmFtZVwiOlwiQnJhdmVBZHMuRnJlcXVlbmN5Q2FwcGluZ1N0dWR5XCJ9LHtcImdyb3VwXCI6XCJUcmlnZ2Vycz1FTVBUWS9UaHJlc2hvbGQ9MC4wL0lkbGVUaW1lVGhyZXNob2xkPTVcIixcIm5hbWVcIjpcIkJyYXZlQWRzLlVzZXJBY3Rpdml0eVN0dWR5XCJ9XSxcInN5c3RlbVRpbWVzdGFtcFwiOlwiMjAyMi0wNS0wOVQxNzowMDowMC4wMDBaXCIsXCJ0eXBlXCI6XCJkaXNtaXNzXCIsXCJ2ZXJzaW9uTnVtYmVyXCI6XCIxMDEuMC40OTUxLjU0XCJ9Iiwic2lnbmF0dXJlIjoiRExPTXRFM2RKNnJlWFJOeHJ6a0Y2TmVHZVM3VzhjOS9vWUQ1OXZWb202OVArWU82QU9VRjBIOUE4cys3cW94ZkFaQjVqTVFoQnNWVXJZVSs2S3ArUVE9PSIsInQiOiJRMlJYYmdFbUVHZUdyM2hOdkZPUXZBRC9OajNXaDhKR3JsK1ozckxTdkRwZmVmUTBUSlR1bk92VzQ4cG5TU2Y1S2JwbjFMVEFNUjlmVm0yVE5mV2VJUT09In0=",
+        "id": "6216be10-fe80-4d0b-a2d3-791e60038cd4",
+        "payment_token": "7ZnnNVsnrcostcJBfHYYusD+Koeq4dgfqHBEnSDbGi2bq+nsECBOKPyiaoqoVp3sDaoH1uvsMjyykiL+NKMl82KP5sJ0vvsdBKHK+h+bmoZnSkY0secII3U7cnlZofAA",
+        "timestamp_in_seconds": "1652116713.838118",
+        "token_info": {
+          "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+          "unblinded_token": "Q2RXbgEmEGeGr3hNvFOQvAD/Nj3Wh8JGrl+Z3rLSvDpfefQ0TJTunOvW48pnSSf5Kbpn1LTAMR9fVm2TNfWeIc7UR5TJ/FFRDUNPfv5lsxpQi1LN09wgCah5C69w8UFU"
+        },
+        "transaction_id": "9cb0ba65-027c-43f9-ada9-06f9993dec1c",
+        "type": "dismiss",
+        "user_data": {
+          "buildChannel": "release",
+          "catalog": [
+            {
+              "id": "8e14d05485c582cffd9a4de47cf15fe634b52cbf"
+            }
+          ],
+          "countryCode": "US",
+          "createdAtTimestamp": "2022-05-09T17:00:00.000Z",
+          "odyssey": "host",
+          "platform": "windows",
+          "studies": [
+            {
+              "group": "ExcludeAdIfWithinTimeWindow=0h",
+              "name": "BraveAds.FrequencyCappingStudy"
+            },
+            {
+              "group": "Triggers=EMPTY/Threshold=0.0/IdleTimeThreshold=5",
+              "name": "BraveAds.UserActivityStudy"
+            }
+          ],
+          "systemTimestamp": "2022-05-09T17:00:00.000Z",
+          "versionNumber": "101.0.4951.54"
+        }
+      }
+    ]
+  },
+  "issuers": [
+    {
+      "name": "payments",
+      "publicKeys": [
+        {
+          "associatedValue": "0.01",
+          "publicKey": "AiUYLENIETK41hFUmjR1rMim0xO4W9Mp+u//VcTRYhY="
+        },
+        {
+          "associatedValue": "0.05",
+          "publicKey": "DPKQfUlwtrLuvZWaiVaCCkDo5Bw+ZGd3gx+94VAm0x0="
+        },
+        {
+          "associatedValue": "0.3",
+          "publicKey": "EIUIza91Tk4CAva6FxwV6gbXhZCqngex+KJgSCdrWT4="
+        },
+        {
+          "associatedValue": "0.001",
+          "publicKey": "GlkztYz/vRrmRunPU47GhiCTNqPoEER7Fl/gol6WBCM="
+        },
+        {
+          "associatedValue": "0.001",
+          "publicKey": "KnMDoguyu2Um2p6g0KbYwaKb2w3T2H2y0b0YrOAfqCY="
+        },
+        {
+          "associatedValue": "0.3",
+          "publicKey": "Mgb0wFXZDAW0aTmOi2zLAAT/MGyTdNNs63mXqcXA7RA="
+        },
+        {
+          "associatedValue": "0.15",
+          "publicKey": "OqXsBzObfoid6vZmHqSYkDhi6L1dA/UfM84i5sLU1xk="
+        },
+        {
+          "associatedValue": "0.01",
+          "publicKey": "VEQEd0aeRShQeZL7byu6NKUcuLtokl1xcIXEvQkY63o="
+        },
+        {
+          "associatedValue": "0.025",
+          "publicKey": "WgCqZcj6PMbDkKmFhAW7d7uGbKuv/Ls8QFfXRsry9Rs="
+        },
+        {
+          "associatedValue": "0.25",
+          "publicKey": "XjFMu+A6reSlEwn2qwOKivvivI7o8h8+3UPlwrvqZHM="
+        },
+        {
+          "associatedValue": "0",
+          "publicKey": "YG72YS1VTJEE6QfihOg8TU6ne8EX7PZH68nqaUSizAQ="
+        },
+        {
+          "associatedValue": "0.0025",
+          "publicKey": "dMhioPiycvBX4AkH6veBheha4ZljVZiopf/tRg2d6iE="
+        },
+        {
+          "associatedValue": "0.2",
+          "publicKey": "hrpaxNxxKuOmfyMZoUds3FJxwVP9ohsYLXpVhd3s9Q8="
+        },
+        {
+          "associatedValue": "0.025",
+          "publicKey": "lk3+YSE8xmw0HmFEXQUSvWRs+yZ13/sgS3L6MFj91Qs="
+        },
+        {
+          "associatedValue": "0.25",
+          "publicKey": "lnKo5QVp2BBTNOlZdEtkp0VvwqlUXSlEzEjjWKXVM0w="
+        },
+        {
+          "associatedValue": "0",
+          "publicKey": "mBMlh4RFBVqNtHXgpnLH2isAZKGNZNBLcFJxQxDodUQ="
+        },
+        {
+          "associatedValue": "0.005",
+          "publicKey": "mJKVjVGPMbGGQTqCudlLtWXjbNgHmtTTkr4z+U5mnDo="
+        },
+        {
+          "associatedValue": "0.005",
+          "publicKey": "mP8Ymp5wUla73IE1w1g9vqHU5wQ8GFEAGAffXh8a8kE="
+        },
+        {
+          "associatedValue": "0.2",
+          "publicKey": "mtS2kglHTIxpmI27Z6TcxZs0gQc61ZxMuF02uYt4NCU="
+        },
+        {
+          "associatedValue": "0.0025",
+          "publicKey": "qp5TQlDLdVsWd54PKUUAuX6HFIes254Tnbq/njk3aHE="
+        },
+        {
+          "associatedValue": "0.1",
+          "publicKey": "vh6RxeGQAQ6meoIaQWgYoIaI+OLI2kaF+c9eXSZVjS4="
+        },
+        {
+          "associatedValue": "0.15",
+          "publicKey": "wLZXY4bm269d6m3F44vaQCr8kFIW2QUzZNEMHWMvJj8="
+        },
+        {
+          "associatedValue": "0.1",
+          "publicKey": "wiKkz2pYCFai9ua1JpOxE3wpU8v7fBlAE18kdBzbfwY="
+        },
+        {
+          "associatedValue": "0.05",
+          "publicKey": "ytUI5q51Nu1w524I8W4RrKX6xeGpPqepnX1DyUckrz4="
+        }
+      ]
+    },
+    {
+      "name": "confirmations",
+      "publicKeys": [
+        {
+          "associatedValue": "0",
+          "publicKey": "bujsRVXZwtbBjLIOJctDzfjBj30lYo2jquyDhVAdzkk="
+        },
+        {
+          "associatedValue": "0",
+          "publicKey": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds="
+        },
+        {
+          "associatedValue": "0",
+          "publicKey": "xp3xw1ojVDSZBcyDI0E+1zjGHtQmBLZkB5D7Qqqt10w="
+        }
+      ]
+    }
+  ],
+  "unblinded_payment_tokens": [],
+  "unblinded_tokens": [
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "LM2ZgWmFyvchsvdixfqWWcXeyiRDenDrO1D9WRsV0sgqPhlwfmYwP1i+Ls+I8r29ZLjvSLW5CaP53ywvWKV+qGgCgN7jyVmCcLD+rGFddzFgiHu7VYovFbo8wEjzHXxo"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "6KX6VCF15aFCX8o/d/9jDA3XY7W2cLCszsyI+B2UyHiOyPony2bhOAq6JEI7fVuGyZp6PsMpeGqGD5pNYfPEyxajUsbPs3rH1QI2ZuEPT59zXgugetGpxOTMJ5xFok9g"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "D+FT7a2ZwVjJg+YuhwA+QvfQbIxzy6aZci5LhOH2whHcmUq6nMXo7o9/Zsrg/7DkOTYShUWXlAL/8KpgSZmKN46MhL3WBau7oVhFkU4dZzsScpRwBG4jNQO8odBsy+oa"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "sdSQquvheifC47NrYy0JYTRXTSMufgyOZMgIcVh36QXvavKWboUrpsJp6e+qb6215JdXG94PCwvK8j9d2dhy2bochAlSd8pyS97rHHDik2q1qJe/wtZcdDHbCk8C4Zdx"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "f3O3FJBc6fAVPT1fEsZb0PNONRP5j1hz8txgBE0pe5XTaxKYYsx+BUs3SYBpS/MGuwbXCq+KVVslt3uMBH8NKXLlv4Nalvw7NHas4xImtCwGvRU1cmlalNvZBvdTdXM9"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "7ww6zTy0BBgrQdqG/26UqAfKa3guRfdajuSNOyhEZjljgLa4yyD/J6e3fVxz+HboE7Wwb4B13uUKV1WDsRoP1MJyw+QYg57BIdKvliGnkUf9BiWI0DYeY+InOAI+wOBH"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "IoSVplmdg0xveT5hNCEMAdg6bexWkz2TxOoRkCtlS/DognhstLXx4RGkGE47/1SMdB2/ruBW6vmX7FA7QiymP+6illlaa7vMc3VvQ64VxKZkiYjPF/6FYk9QryIam+g7"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "H6vKpu3xo4Oo+M1CaMHL6nbTrrNNbGfZRSRGucIa1Uc577oMSl6iu91n14gy7XnN6jr0YpGBHu+P7QU1XneMHHz+qaZg5RrffyNzyzZ31xdnQxvKIafymVuR7EqIhnR7"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "BKOWKzkqFKXqMIZtjdDQxFAtgNKMdO5jnt1fkE7OuCOyipRbYxe4KMGBIoNCjUDDIpz5Ese4sXH/0RvBPM5sVrZUvN63X2uyeMSQda3WUY8PDt14GPcLThMf8M+m88tK"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "5gq50971BM8I4zZFJ9Pz7bv3y+Z11+z4bX/xsP2u/345qtwQLb5bivEY9gyN/j0aWxYfZe76qO2ZGQdcyDcq31oVLRWSZrs3FtGKCTWWfF+qdOfM7D/G+VYAIFJHdZpQ"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "rF2Ynp2iTRo8mFs8YCuVpTlUKKeiZor8otV87g3GOetEOStb60ICuZ+TrcbjquFXweXsQaVYcUyWoLCdQ669Cp5SDzCTQlKsAKqyt0WafvTRR0R+PqJsB3lOPoKSNZtV"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "jrKQFETnK2LqnNHIufWABktkwO5QnxmCv7XCo/dd69WJWMUJX1ZhnhKzGZR1YTqtVOC8Yy9Y8PZAwp3azOlEX7qjeJECIpzG6u9jVRCNO6/FvzfOqm1lowdBnKlXdIoc"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "yf6viiFNkiiecQFTaQiJZQUMzRzCizOKx+JKsJG1MAO6NXaW9lNoonBAmzIxNEBkAJ7PqZFj6cv80jyKPTgmeJrJlPCFlbt1Cv/mYdRM1+rgJsFcUMrUQqRA5WmZcslr"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "1gI3V/HmFvy/ECpcLeOjbcQXaScU8H93qEaCZ7MzrZ7L4JCJKCVGxeKwEoQ1/Z44WfR0NPlFydXFhTUqhf6IcIzir55q4pgOcObguOc20nBCrztyetWAgAWPk6bi2qV0"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "QOUq2TCIrBRVpKTubNPxAVwNXC6Gob/0Eo9axcUuzHrQ8Nip5eGoP/ImrBT7Yah75lQFoCzyE82xDonW3QgS9Wg134HyUYu6eCI+x0dWukQ5WVRi67dX4nzBw1894lVx"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "HVHlPE1WATa4rheuXtJVsiddsy0m5NZBFS8sdbZvfH3+jDULxJtdzj+hnTB+A/qhcB2fqgF32kVPyUeZxb1YUpipQAVjzqwmqnAuEePpfWO7aIvYNv6aiBNu2CPzz/l+"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "O3V9Gbr3pumIn+Ie0DD1Vt2aefG16F1idyQR8vnunQqPXdcephFVTOXARFCa6q5COVygJ6b7AkgPc55ZrL807c71hPWm+5Xq3lxbc/XDinVsYpNAel0oYS/4KFswS195"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "sRrsEsH22e2OmmS0o1mwYwO0eJWcsWwViWrS+YWUcM7y2qpQpLvueANmFqQEYkYM+32F33r4fmDYKKIpERoFLlBrXGgXOVrii/AQP1EC21xV5Cx4ZuI5QwvPYSX+AQUE"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "532/g1UcItS3OOfbhm0PjctWi/98ftXajDsSromMN0Wi2N+zDivAqkzT0j94wanQM89yfYkuiqBtXlnStwmNudwL1GhxIU+gjh6jJg1U6GFvj2wV0Fba5H6mX0L9HC5E"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "83NbmEgYwI1Y6S412CVvJkpTD+Pt1//VnbeD8JOXMlhjrJxZgQx02rIaF4oyTUp6dpTo9xHLcNqb2PcKw+Z2/bAOgDSzcZArJPrnIOfd+9s521Op7cTtkoQPnmn2PAVZ"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "jUULQ2Q4GB6H/wkzZGlCQOF3dc2K8IcTpqd8A+h/1yb63vWsLa9JahxQqxjCYokf+SRsiKe+Tqd4tmYDTbd3VmiCvkYeDTxK0vdczN70wP8on1UkUgvBmhL9xwfV3/Aa"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "zxtxKU/78a+Zdu4jot23grb/A28S3ibKExWye8FUPJBKTr1TKJ6QiqTq0r+RHFicKEuQNeKfXTHqrDvAwHaMxcb+84zmqyS6f1i6pPaXHE3al3KSmxd6vU6S9BzqVJZ0"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "Bx3bHhXwbU+4XXZKcJXWI8PULMZQNmAtn1F5GnP/pwT/zbhF8p7nXK56xVQ+lFP0X2is079m34xwb1UAwjJGB8T4GylAt8/2Sr+6nWqQK6S6vF/6sBWmLDW88fQrOGYV"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "R1V+2+stcVoJycj9dFobdFd3dWdcf5o7fpcAnWQDI/eRJyISO7jPql4ISoJaPsc9KBvPx9RsRgOaCgZv/V5z3UTYsvYDJXOgO4FCYRDWQuHGXC66da1RsAgimhAOGLov"
+    },
+    {
+      "public_key": "hhG5/8vSG7RwfRSDOIqBQ6sa7Veh3wh8fWu8linK8Ds=",
+      "unblinded_token": "zJW45xMUMMn3RbrtPISprSc+Yf5IkQFtc0tymqI5bZS4/xkh1fFTbs3ArCtPRpeDO89GqmlDdF80ocl8UI58tpwJSudW4SmzOGSn+/nZ60SAeoYNSoAHhbqIa9lmSHgK"
+    }
+  ]
+}

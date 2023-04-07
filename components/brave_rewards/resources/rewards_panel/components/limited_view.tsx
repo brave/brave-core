@@ -91,16 +91,12 @@ export function LimitedView () {
   }
 
   function renderPublisherBox () {
-    if (publishersVisitedCount < 1) {
-      return null
-    }
-
     return (
       <style.publisherSupport>
         <style.publisherCount>
           {publishersVisitedCount}
         </style.publisherCount>
-        <div>
+        <div data-test-id='publishers-count'>
           {publisherCountText}
         </div>
       </style.publisherSupport>

@@ -65,10 +65,14 @@
 <translation id="3446024864193919737">Показувати нагороди Brave</translation>
 <translation id="5585019845078534178">Картки</translation>
 <translation id="3870475560794762985">Показати рекламні зображення</translation>
-<translation id="8466529005131466476">Ви можете заробляти, переглядаючи сайти спонсорів.</translation>
-<translation id="3955742714798578476">Ви заробляєте, переглядаючи спонсовані зображення.</translation>
-<translation id="7822618650711767369">Спонсовані зображення підтримують Brave. За допомогою Brave Rewards ви можете отримувати частину доходу від спонсованих зображень, а також підтримувати авторів вмісту!</translation>
-<translation id="5579480493856401823">Через вимкнення спонсованих сайтів буде зменшено кількість зароблених токенів і обсяг підтримки, що надається авторам вмісту щомісяця.</translation>
+<translation id="2414654907269324670">Ви заробляєте токени BAT, переглядаючи рекламні зображення.</translation>
+<translation id="4942016616604700968">Увімкнути винагороди</translation>
+<translation id="5684562942023496754">Ви можете заробляти, переглядаючи рекламні зображення.</translation>
+<translation id="8934374643857605034">Як користувач Brave Rewards ви можете заробляти токени BAT за перегляд рекламних зображень.</translation>
+<translation id="5236449703984229754">Ви можете заробляти токени BAT за перегляд рекламних зображень, якщо ввімкнете функцію «‎Реклама Brave». Якщо функцію «‎Реклама Brave» вимкнено, увімкнення функції рекламних зображень однаково підтримує місію Brave.</translation>
+<translation id="1570714748649804013">Як користувач Brave Rewards, ви отримуєте токени BAT за перегляд рекламних зображень. Якщо вимкнути функцію «‎Рекламні зображення», ви зароблятимете менше.</translation>
+<translation id="8998727244653964783">Ви можете заробляти токени BAT за перегляд рекламних зображень, підключивши депозитарний рахунок у Brave Rewards. Ви також допомагаєте підтримати авторів за допомогою рекламних зображень.</translation>
+<translation id="5512383650263136662">У Brave Rewards ви можете заробляти токени BAT за перегляд рекламних зображень. Не користуєтеся Brave Rewards? Увімкнувши функцію рекламних зображень ви все одно підтримуєте місію Brave.</translation>
 <translation id="2875302873837723333">найкращі сайти</translation>
 <translation id="8173998484743827990">Статистика Brave</translation>
 <translation id="383680190590774040">годинник</translation>
@@ -219,7 +223,7 @@
 <translation id="4045581694057451126">8 секунд</translation>
 <translation id="8610523985422563960">1 хвилина</translation>
 <translation id="2807328214759298515">До</translation>
-<translation id="9031738692126722094">Увімкнути винагороди за рівнем вмісту на цих сайтах</translation>
+<translation id="7483857210736407752">Показувати кнопки чайових на сайтах</translation>
 <translation id="7583327070390027131">Наступна дата щомісячних чайових</translation>
 <translation id="6231182869178328516">Я щойно відправив/відправила винагороду користувачу <ph name="NAME"/> за допомогою Brave Browser. Спробуйте тут: https://brave.com/tips.</translation>
 <translation id="5916536234616514390">Добре, що <ph name="HASHTAG"/>Brave дає мені змогу підтримати авторів! Даю чайові <ph name="NAME"/> <ph name="HASHTAG2"/>BAT. Якщо вони підтвердять за адресою https://creators.brave.com до <ph name="DATE"/>, BAT будуть їхніми!</translation>
@@ -409,7 +413,6 @@
 <translation id="8988332871810963281">На даний момент немає історії Реклами Brave</translation>
 <translation id="5345727496083327478">Ви більше не отримуватимете реклами з цієї категорії</translation>
 <translation id="2631006050119455616">Збережено</translation>
-<translation id="3819257035322786455">Резервне копіювання</translation>
 <translation id="6976444672879155794">Автоматична пожертва ([[processor]])</translation>
 <translation id="8804164990146287819">Політика конфіденційності</translation>
 <translation id="7262285991915892790">Перетягніть іконку BAT до</translation>
@@ -429,8 +432,6 @@
 <translation id="8802504113265057166">Кошти ([[currency]]), не використані до закінчення терміну дії, буде автоматично повернуто до Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Дата закінчення дії гранта</translation>
 <translation id="1389143276807887637">імпортувати</translation>
-<translation id="3810973564298564668">Змінити</translation>
-<translation id="6302422639282249274">Управління нагородами Brave</translation>
 <translation id="211044356803193224">Щомісячні відрахування!</translation>
 <translation id="2487641031722095938">Сьогодні ваш щасливий день!</translation>
 <translation id="6255773350565723852">Ваш грант з токенів у дорозі.</translation>
@@ -469,15 +470,13 @@
 <translation id="8204292894173669182">Видалити зі Збереженого</translation>
 <translation id="5530851178552343773">Ви призначили [[reservedAmount]] [[currency]] авторам, які ще не підписалися на отримання внесків. Ваш браузер намагатиметься зробити внесок, поки вони не будуть верифіковані або поки не сплине 90 днів.</translation>
 <translation id="5939518447894949180">Скинути</translation>
+<translation id="3349204812119681938">Скинути нагороди Brave</translation>
 <translation id="5669281110673664811">Очистити список винятків</translation>
 <translation id="1797334173232638045">Закріплені сайти було переміщено до</translation>
-<translation id="542042553430131913">Якщо ваш профіль Brave Rewards не підтверджено, баланс BAT зберігатиметься в локальних файлах на вашому пристрої.</translation>
-<translation id="2142973554991645476">Щоб захистити BAT на випадок переустановлення браузера без збереження налаштувань або змінення пристрою, а також отримати інші переваги, як-от функції додавання та виведення BAT, ми радимо <ph name="LINK_BEGIN"/>пройти перевірку<ph name="LINK_END"/>.</translation>
 <translation id="5317144262906129592">Ви можете підтримати цього автора вмісту, надіславши чайові. Це спосіб подякувати за створення чудового вмісту.</translation>
 <translation id="3074127054582480056">Увага</translation>
 <translation id="3659457123782988823">Справді скинути профіль Brave Rewards?</translation>
 <translation id="1666001796278936721">Скидання налаштувань призведе до видалення поточного профілю Brave Rewards. У вас буде новий профіль Brave Rewards. Перед продовженням <ph name="LINK_BEGIN"/>перегляньте додаткову інформацію<ph name="LINK_END"/> про скидання налаштувань.</translation>
-<translation id="94095197509579227">Зверніть увагу! У вас залишилося <ph name="BAT_AMOUNT"/> за цей місяць. Їх буде втрачено, якщо ви зараз скинете налаштування.</translation>
 <translation id="4806029412510565611">Я розумію, що мій поточний профіль Brave Rewards і дані Brave Rewards буде видалено з пристрою. Я також прочитав (-ла) <ph name="LINK_BEGIN"/>статтю щодо скидання налаштувань<ph name="LINK_END"/>.</translation>
 <translation id="4914597931214386232">Гранти з токенів запитано</translation>
 <translation id="3494964159182650590">Підсумок винагород</translation>
@@ -501,7 +500,6 @@
 <translation id="6727483290601442544">Переглянути деталі</translation>
 <translation id="4206899127409458763">Створення профілю Brave Rewards</translation>
 <translation id="1988679729106502285">ЗАУВАЖТЕ:</translation>
-<translation id="942863887222585572">Ви підключені до постачальника <ph name="USER_PROVIDER"/>, а цей автор підключений до постачальника <ph name="CREATOR_PROVIDER"/>. Через це ви не можете надіслати чайові автору. Наразі чайові залишаться в черзі на оброблення. Повторна спроба надіслати їх буде здійснена автоматично через 90 днів.</translation>
 <translation id="5530734056858418442">Цей автор ще не зареєструвався. Усі зроблені чайові залишаться у вашому гаманці, а оплату буде автоматично повторено через 90 днів.</translation>
 <translation id="3197752845651180812">Внески, що очікуються</translation>
 <translation id="6964891561514920613">Показати всі внески, що очікуються</translation>
@@ -684,7 +682,7 @@
 <translation id="2369994359029526515">Неверифікований автор</translation>
 <translation id="6020176662032623904">Перевірений автор</translation>
 <translation id="215037911651623564">Оновити статус перевірки автора</translation>
-<translation id="8946576491316456643">Наразі всі зроблені чайові залишаться в черзі на оброблення, а оплату буде автоматично повторено через 90 днів.<ph name="LINK_BEGIN"/>Дізнатися більше<ph name="LINK_END"/></translation>
+<translation id="7965772152266629939">Наразі, якщо ви спробуєте переказати кошти, запит залишиться в обробці. Оплату буде автоматично повторено через 90 днів.</translation>
 <translation id="7826318737761918938">Цей автор ще не зареєструвався.</translation>
 <translation id="3573568055713372419">Ви підключені до постачальника <ph name="USER_PROVIDER"/>, а цей автор підключений до постачальника <ph name="CREATOR_PROVIDER"/>. Через це ви не можете надіслати чайові автору.</translation>
 <translation id="6633436087937398390"><ph name="NAME"/> у <ph name="PLATFORM"/></translation>
@@ -857,6 +855,8 @@
 <translation id="223536150967420869">Придбати</translation>
 <translation id="1483493594462132177">Надіслати</translation>
 <translation id="538450413584738399">Своп</translation>
+<translation id="3488255243387417752">Продати</translation>
+<translation id="5223034545851554347">На цьому рахунку недостатньо токенів <ph name="TOKEN_SYMBOL"/>.</translation>
 <translation id="9113988219764868805">Надіслати токен</translation>
 <translation id="4254256922305105713">Надіслати NFT</translation>
 <translation id="3453833142586986467">Вибрати токен</translation>
@@ -1074,6 +1074,9 @@
 <translation id="793994607260936590">перша</translation>
 <translation id="4709524402122994378">транзакції</translation>
 <translation id="4591079278963448049">Облікового запису, пов’язаного із цим токеном, ще немає. Невелика кількість SOL буде витрачена на створення й наповнення його.</translation>
+<translation id="1426320910664514906">Ліміт газу</translation>
+<translation id="1229774280326250926">Газ-преміум</translation>
+<translation id="148169246131967347">Обмеження ліміту газа</translation>
 <translation id="523862956770478816">Дозволи сайту</translation>
 <translation id="1575262454612599115">Підключено облікових записів: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
 <translation id="4804818685124855865">Від'єднатися</translation>
@@ -1150,15 +1153,24 @@
 <translation id="749944179568745958">Не є дійсною адресою ETH</translation>
 <translation id="2832270987629018596">Ця адреса не є дійсною адресою SOL</translation>
 <translation id="882486206986535424">Це недійсна адреса</translation>
-<translation id="6825399159373612149">Домен <ph name="DOMAIN_NAME"/> не зареєстровано.</translation>
+<translation id="8684908590733515816">Домен не має прив’‎язаної адреси <ph name="COIN_TYPE_SYMBOL"/></translation>
 <translation id="8971278306757462297">Адреса отримувача є вашою власною адресою</translation>
 <translation id="3506416339268164412">Адреса отримувача є контрактною адресою токену</translation>
+<translation id="6370376419663123629">Адреса має некоректний вигляд</translation>
+<translation id="3767148796886402380">Перевірте адресу, щоб переконатися в її правильності (наприклад, літери в нижньому або верхньому регістрі).</translation>
+<translation id="2585599787090762065">Як можна вирішити цю проблему?</translation>
+<translation id="5517732667776806421">Немає інформації про контрольну суму</translation>
 <translation id="2975056993833847787">Цю адресу неможливо підтвердити (відсутня контрольна сума). Продовжити?</translation>
 <translation id="6320252966164556855">Адреса не пройшла підтвердження (недійсна контрольна сума). Спробуйте ще раз, замінивши малі букви великими.</translation>
 <translation id="4667144295226514387">Немає ліміту газу</translation>
 <translation id="2021522108838444624">Сума має бути більше 0</translation>
 <translation id="8464365289405373974">Потрібна адреса отримання</translation>
 <translation id="4884792073752467460">Недійсна адреса отримувача</translation>
+<translation id="8585995109882455949">Як знайти правильну адресу?</translation>
+<translation id="8395402412470376435">Brave проводить перевірку та не дозволяє користувачам відправляти кошти на неправильну адресу, в якій використано неправильний регістр літер. Це процес перевірки «контрольної суми» для підтвердження того, що це дійсна адреса Ethereum.</translation>
+<translation id="4583433813614292221">1. Відвідайте сайт</translation>
+<translation id="5393164213211430081">2. Скопіюйте та введіть адресу ETH</translation>
+<translation id="2378355054306959991">Потрібна додаткова допомога?</translation>
 <translation id="862585889767884824">з</translation>
 <translation id="9106265941552476098">Відхилити транзакції (<ph name="TRANSACTION_LENGTH"/>)</translation>
 <translation id="1118876217803190221">Недостатній баланс</translation>
@@ -1197,6 +1209,8 @@
 <translation id="1904295039023858291">Стандарт токена</translation>
 <translation id="9033453977881595182">Ідентифікатор токена</translation>
 <translation id="6332387008245531841">Адреса контракту</translation>
+<translation id="6717502994710534866">CID</translation>
+<translation id="2351120707525742989">Розташування або адреса зображення</translation>
 <translation id="2962388922926051374">Помилка запиту метода 'eth_chainId' на сайті <ph name="URL"/></translation>
 <translation id="8325036459845654666">Мережу вже додано.</translation>
 <translation id="554350381160981853">Підпис типованих даних можливий лише в Trezor Model One із вбудованим ПЗ версії 1.10.5 або вище</translation>
@@ -1214,6 +1228,8 @@
 <translation id="6423985584914773314">Недійсна адреса FIL</translation>
 <translation id="3898731124813934210">Купити через Wyre</translation>
 <translation id="5522073372365069684">Купити через Ramp</translation>
+<translation id="6153197326949684688">Продати за допомогою <ph name="OFFRAMP_PROVIDER"/></translation>
+<translation id="6097502401711916278">Мінімальна сума має становити від <ph name="FIAT_AMOUNT"/>.</translation>
 <translation id="7902920577183739843">Купуйте разом із Sardine</translation>
 <translation id="6534275647567011533">Купити через Transak</translation>
 <translation id="8725252491405767337">Ramp.Network</translation>
@@ -1221,6 +1237,7 @@
 <translation id="1130009472404762036">Sardine</translation>
 <translation id="503018546142690471">Transak</translation>
 <translation id="7667423728712601865">Купуйте криптовалюту за допомогою карток Visa або Mastercard.</translation>
+<translation id="3648994606506382289">Найпростіший, найшвидший і найдешевший спосіб купити криптовалюту за допомогою картки або банківського переказу.</translation>
 <translation id="3101839349578102016">Миттєва покупка за допомогою банківського рахунку. Нижчі комісії.</translation>
 <translation id="8528916244724490964">Усі мережі</translation>
 <translation id="4038403584813842767">Баланс ↑</translation>
@@ -1268,9 +1285,10 @@
 <translation id="3538368258493053874">Завантажник BPF</translation>
 <translation id="2334098351242742927">Ed25519 Program</translation>
 <translation id="8780753288764281797">Secp256k1 Program</translation>
-<translation id="5275550100743015683">З адреси:</translation>
-<translation id="2678433693746214764">На адресу:</translation>
-<translation id="4576396475962922672">Новий обліковий запис:</translation>
+<translation id="6421371987002247943">Програма токенів</translation>
+<translation id="8642855779894264066">Програма Associated Token Program</translation>
+<translation id="3585645354490191700">Програма MetaData Program</translation>
+<translation id="1971875492220112280">Програма SysvarRent Program</translation>
 <translation id="4719005063558335704">Облікові записи:</translation>
 <translation id="4337554812324118382">Дані:</translation>
 <translation id="569870799832027680">ID програми:</translation>
@@ -1318,7 +1336,7 @@
 <translation id="5100124500279922001">Пропустити симуляцію:</translation>
 <translation id="3568017348462868931">Виберіть валюту</translation>
 <translation id="4420924466038521900">Пошук валют</translation>
-<translation id="8060029310790625334">Довідковий центр</translation>
+<translation id="4412698727486357573">Довідковий центр</translation>
 <translation id="2095142195578664632">Потрібна допомога? Перегляньте</translation>
 <translation id="3253669416991680932">Цей апаратний гаманець не підтримує цю операцію.</translation>
 <translation id="7457027586454688423">Уведіть пароль до гаманця Brave</translation>
@@ -1430,8 +1448,6 @@
 <translation id="1026825928738055872">Видалити «<ph name="ACCOUNT_NAME"/>»?</translation>
 <translation id="3910551537328657217">Подати запит на функцію</translation>
 <translation id="7657322905916621147">Фраза для відновлення має складатися з 12, 15, 18, 21 або 24 слів</translation>
-<translation id="5307206077701819797">У вашому гаманці не знайдено NFT. Ви можете додати NFT, натиснувши кнопку «+ Видимі активи» на вкладці «Портфель»</translation>
-<translation id="3528540388456395658">Не знайдено NFT, які б відповідали пошуковому запиту чи фільтру</translation>
 <translation id="5026874946691314267">Не показувати це знову</translation>
 <translation id="434502623875309667">Оброблення адреси вимагає запитів на роботу за межами мережі. Продовжити?</translation>
 <translation id="2779500703989728346">NFT</translation>
@@ -1479,6 +1495,7 @@
 <translation id="6065708195277841442">Підключити гаманець</translation>
 <translation id="4029551149873989025">Перемикання мережі</translation>
 <translation id="7561262633951061138">Найкращий варіант</translation>
+<translation id="8060029310790625334">Довідковий центр</translation>
 <translation id="3143110700666266545">Ця програма використовує такі сторонні API:</translation>
 <translation id="163536108506359457">Своп Brave використовує <ph name="AGGREGATOR"/> як агрегатор DEX для підтримуваних мереж <ph name="NETWORKS"/>. <ph name="AGGREGATOR"/> опрацьовує адресу гаманця <ph name="NETWORK"/> та IP-адресу для здійснення транзакції (зокрема, отримання цін). <ph name="AGGREGATOR"/> використовуватиме ці дані ЛИШЕ для здійснення транзакцій.</translation>
 <translation id="1847885264294023691">Натисніть тут, щоб переглянути Політику конфіденційності <ph name="AGGREGATOR"/>.</translation>
@@ -1490,6 +1507,32 @@
 <translation id="4636925020451566238">Укажіть значення з точністю до десятих</translation>
 <translation id="3797613444743816037">Адреса мінту</translation>
 <translation id="7951915459354237451">Ліміт комісії встановлено нижче базової комісії. Ваша транзакція може зайняти багато часу або не вдасться.</translation>
+<translation id="2227702748249086756">Не вдалось розрахувати приблизну вартість послуг</translation>
+<translation id="5361710044667743492">Чому недоступно?</translation>
+<translation id="3668838456083358569">Частина NFT-даних зберігається на централізованих серверах, таких як AWS, Google Cloud тощо. У цьому випадку прикріпити ваші NFT-дані до IPFS-мережі неможливо.</translation>
+<translation id="1293258969121701010">Запустивши IPFS на своєму комп’‎ютері, ви можете:</translation>
+<translation id="4568942135611119076">Бути впевненими, що ваші NFT-дані залишатимуться онлайн та їх не можна буде підробити.</translation>
+<translation id="4915883034746438977">Вилучати вміст із неправильних даних за допомогою ідентифікатора вмісту (CID).</translation>
+<translation id="1373647012698032676">Брати участь у перевірці автентичності та зробити IPFS-мережу розвиненою та безпечною.</translation>
+<translation id="1806204385270226865">Стежити за тим, щоб мої NFT залишалися завжди онлайн</translation>
+<translation id="4323376551843624309">Увімкнути прикріплення NFT</translation>
+<translation id="6501331923135442324">Значний крок на шляху до того, щоб стати частиною web3</translation>
+<translation id="5361073938927187534">Запустіть IPFS-вузол і стежте за тим, щоб ваші NFT залишалися завжди онлайн</translation>
+<translation id="1060267371223703324">Перевірити, які з моїх NFT можна прикріпити</translation>
+<translation id="2641083452974145848">Тепер ви можете запустити свою систему IPFS і стати частиною web 3. Ваші NFT-дані залишаться в мережі назавжди та їх не можна буде підробити.</translation>
+<translation id="4460927368826360904">Запущено IPFS-вузол. Файл завантажується на локальний IPFS-вузол.</translation>
+<translation id="2260350263892668490"><ph name="PINNED"/> із <ph name="PINNABLE"/> NFT прикріплено до IPFS.</translation>
+<translation id="1474962961180773583">Доступно <ph name="PINNABLE"/> із <ph name="TOTAL"/>!</translation>
+<translation id="6852656829524945421">Не вдалося прикріпити</translation>
+<translation id="7698019251444927442">IPFS-вузол запущено</translation>
+<translation id="5584313306739463968">Локальний IPFS-вузол не запущено</translation>
+<translation id="7527548209942671618">Прикріплено до локального IPFS-вузла</translation>
+<translation id="5659058832308365026">NFT-дані прикріплюються до локального IPFS-вузла</translation>
+<translation id="4919133452617704550">Неможливо прикріпити до локального IPFS-вузла</translation>
+<translation id="3225624966527491351">Імпортувати NFT</translation>
+<translation id="9085765419770918643">Поки що тут немає NFT.</translation>
+<translation id="8445532667841598737">Хочете додати? Просто натисніть кнопку нижче для імпортування.</translation>
+<translation id="9136462955850040542">Сумісність із NFT на Solana (SPL) та Ethereum (ERC-721).</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Загальна інформація</translation>
 <translation id="4045404575593562245">Події управління Tor</translation>
@@ -1582,6 +1625,8 @@
 <translation id="6531019308847917584">Блокування цифрових слідів</translation>
 <translation id="1899608006846124237">Агресивне блокування цифрових слідів</translation>
 <translation id="8034285923190068220">Дозволити розпізнавання відбитку пальця</translation>
+<translation id="7638541189782135885">Не оновлювати HTTP-з’‎єднання</translation>
+<translation id="2570787596946026998">Підключатися лише за допомогою HTTPS</translation>
 <translation id="1992750560347846445">Повідомити про сайт</translation>
 <translation id="2387532482048804818">Повідомте нам, якщо сайт не працював належним чином із увімкненими щитами.</translation>
 <translation id="3795015906457257780">Ви переглядаєте цей сайт без захисту приватності Brave.</translation>
@@ -1660,8 +1705,16 @@
 <translation id="888284761945060750">Безпечний сервер DNS вимкнено політиками вашої організації. Якщо ви використовуватимете VPN Brave без безпечного сервера DNS, то ваш інтернет-оператор або організація зможуть побачити адреси переглянутих вами сайтів.</translation>
 <translation id="6593224083874259773">Brave VPN на Windows</translation>
 <translation id="3153983908111684619">Параметр заблоковано BraveVPN під час підключення</translation>
-<translation id="6507543978646831931">У Windows є функція під назвою Smart Multi-Homed Name Resolution (покращене багатоадресне розширення імен), що може передавати інформацію про ваше розташування на сайти, які ви відвідуєте. Після ввімкнення Brave VPN ми змінили параметри DNS у браузері, щоб захистити їх від передачі. Параметр буде ввімкненим, доки підключено VPN. <ph name="LEARN_MORE"/></translation>
+<translation id="1055657720430482013">У Windows є функція «‎Покращене багатоадресне розширення імен», що може показувати інформацію про ваше розташування та сайти, які ви відвідуєте. 
+
+Brave має допоміжну службу, яка захищає вас від цього ризику, фільтруючи спосіб виконання DNS-запитів у вашому VPN-з’‎єднанні.
+
+Однак ми помітили, що ця допоміжна служба не працює — і ми не хочемо, щоб ви залишилися незахищеними. Ми змінили налаштування DNS у браузері, щоб захистити вас від цієї загрози. Налаштування залишатимуться чинними та недоступними для змінення, поки підключено VPN.
+
+<ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Більше не попереджати мене про це.</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="9061845622728745852">Часовий пояс:</translation>
+<translation id="8295393906499561642">Термін дії сеансу сплив</translation>
+<translation id="3312623558576021182">Увійдіть у свій <ph name="BRAVE_ACCOUNT_BEGIN"/>обліковий запис Brave <ph name="BRAVE_ACCOUNT_END"/>, щоб оновити сеанс VPN .</translation>
 </translationbundle>

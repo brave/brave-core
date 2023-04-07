@@ -8,25 +8,27 @@ import * as React from 'react'
 // Utils
 import { getNetworkInfo } from '../../utils/network-utils'
 import {
+  filterTokensByNetworks,
   getRampAssetSymbol
 } from '../../utils/asset-utils'
+import Amount from '../../utils/amount'
 
 // Types
-import {
-  BraveWallet,
-  SupportedOffRampNetworks
-} from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import { WalletSelectors } from '../selectors'
 
 // Hooks
 import { useIsMounted } from './useIsMounted'
 import { useLib } from './useLib'
 import { useUnsafeWalletSelector } from './use-safe-selector'
+import { useGetOffRampNetworksQuery } from '../slices/api.slice'
 
 export const useMultiChainSellAssets = () => {
   // Redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
+
+  // Queries
+  const { data: offRampNetworks = [] } = useGetOffRampNetworksQuery()
 
   // Hooks
   const isMounted = useIsMounted()
@@ -46,28 +48,35 @@ export const useMultiChainSellAssets = () => {
   })
 
   // Memos
-  const supportedSellAssetNetworks = React.useMemo((): BraveWallet.NetworkInfo[] => {
-    return networkList.filter(n =>
-      SupportedOffRampNetworks.includes(n.chainId)
-    )
-  }, [networkList])
-
   const selectedSellAssetNetwork = React.useMemo((): BraveWallet.NetworkInfo | undefined => {
     if (selectedSellAsset?.chainId && selectedSellAsset?.coin) {
-      return getNetworkInfo(selectedSellAsset.chainId, selectedSellAsset.coin, supportedSellAssetNetworks)
+      return getNetworkInfo(
+        selectedSellAsset.chainId,
+        selectedSellAsset.coin,
+        offRampNetworks
+      )
     }
     return undefined
-  }, [selectedSellAsset?.chainId, selectedSellAsset?.coin, supportedSellAssetNetworks])
+  }, [selectedSellAsset?.chainId, selectedSellAsset?.coin, offRampNetworks])
 
   // Methods
   const getAllSellAssetOptions = React.useCallback(() => {
     getAllSellAssets()
       .then(result => {
         if (isMounted && result) {
-          setOptions(result)
+          setOptions({
+            rampAssetOptions: filterTokensByNetworks(
+              result.rampAssetOptions,
+              offRampNetworks
+            ),
+            allAssetOptions: filterTokensByNetworks(
+              result.allAssetOptions,
+              offRampNetworks
+            )
+          })
         }
       }).catch(e => console.error(e))
-  }, [getAllSellAssets, isMounted])
+  }, [getAllSellAssets, offRampNetworks, isMounted])
 
   const openSellAssetLink = React.useCallback(({ sellAddress, sellAsset }: {
     sellAddress: string
@@ -87,7 +96,9 @@ export const useMultiChainSellAssets = () => {
       offRampProvider: BraveWallet.OffRampProvider.kRamp,
       chainId: sellAsset.chainId,
       address: sellAddress,
-      amount: sellAmount,
+      amount: sellAsset.coin === BraveWallet.CoinType.SOL
+        ? new Amount(sellAmount).multiplyByDecimals(sellAsset?.decimals ?? 18).toNumber().toString()
+        : new Amount(sellAmount).multiplyByDecimals(sellAsset?.decimals ?? 18).toHex(),
       currencyCode: defaultCurrencies.fiat
     })
       .then(url => {

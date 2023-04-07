@@ -368,6 +368,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SUMMARY" desc="Switch for Block Scripts summary.">
         Blocks JavaScript (may break sites)
       </message>
+      <message name="IDS_YOUTUBE" desc="Text for youtube">
+        Youtube
+      </message>
+      <message name="IDS_HIDE_YOUTUBE_RECOMMENDED_CONTENT" desc="Hide YouTube Recommended Content">
+        Hide YouTube Recommended Content
+      </message>
+      <message name="IDS_HIDE_YOUTUBE_RECOMMENDED_CONTENT_DESCRIPTION" desc="Hides the up next, home feed and end card elements on YouTube.">
+        Hides the up next, home feed and end card elements on YouTube.
+      </message>
+      <message name="IDS_HIDE_YOUTUBE_DISTRACTING_ELEMENTS" desc="Hide YouTube Distracting Elements">
+        Hide YouTube Distracting Elements
+      </message>
+      <message name="IDS_HIDE_YOUTUBE_DISTRACTING_ELEMENTS_DESCRIPTION" desc="Hides the sign in, menu, comments and video info elements on YouTube.">
+        Hides the sign in, menu, comments and video info elements on YouTube.
+      </message>
       <message name="IDS_BRAVE_SHIELDS_SOCIAL_BLOCKING_TITLE" desc="Title for social media blocking.">
         Social Media Blocking
       </message>
@@ -572,6 +587,24 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BLOCK_TRACKERS_ADS_SUMMARY" desc="Text summary for Block trackers and ads.">
         Prevents trackers &amp; ads from loading and showing in webpages
       </message>
+      <message name="IDS_HTTPS_UPGRADE_TEXT" desc="Text for HTTPS upgrade shields setting.">
+        Ensure the connections to websites are secure.
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_TITLE" desc="Title of HTTPS upgrade shields setting.">
+        Upgrade connections to HTTPS
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_SUMMARY" desc="Summary of HTTPS upgrade shields setting.">
+        Ensure the connections to websites are secure.
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_1" desc="Title for strict HTTPS upgrade option.">
+        Require all connections to use HTTPS (strict)
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_2" desc="Title for standard HTTPS upgrade option.">
+        Upgrade to HTTPS whenever possible (default)
+      </message>
+      <message name="IDS_HTTPS_UPGRADE_OPTION_3" desc="Title for disabled HTTPS upgrade option.">
+        Don't upgrade connections to HTTPS (disabled)
+      </message>
       <message name="IDS_CLOSE_TABS_ON_EXIT_SUMMARY" desc="Summary for closing tabs on exit.">
         Don't persist tabs between browsing sessions
       </message>
@@ -599,6 +632,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_PLAY_YT_VIDEO_IN_BROWSER_ON" desc="Desc for desktop mode in site settings">
         If enabled, videos will be played in Brave instead of corresponding app
       </message>
+      <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
         Autoplay
       </message>
@@ -608,6 +642,20 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_AUTOPLAY" desc="The description for the allow autoplay of muted videos for website dialog.">
         Allow autoplay of muted videos for a specific site.
       </message>
+      <!-- GOOGLE SIGN IN SITE SETTING -->
+      <message name="IDS_GOOGLE_SIGN_IN_TITLE" desc="Label for G sign-in site settings.">
+        Google Sign-In
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_GOOGLE_SIGN_IN_ASK" desc="Label for G sign-in site settings.">
+        Sites can ask to use legacy Google Sign-In via third-party cookies
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_GOOGLE_SIGN_IN_BLOCK" desc="Label for G sign-in site settings.">
+        Don't allow legacy Google Sign-In via third-party cookies
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_GOOGLE_SIGN_IN_ALLOW_EXCEPTIONS" desc="Label for G sign-in site settings.">
+        Allowed to use third-party cookies for legacy Google Sign-In
+      </message>
+
       <message name="IDS_PREFS_SECTION_BRAVE_SHIELDS_GLOBALS" desc="Title for Brave shields global defaults section in the privacy preferences screen">
         Brave shields global defaults
       </message>
@@ -805,8 +853,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_SITE_BANNER_UNVERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
         This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
       </message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_DIFFERENT_VERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
-        NOTE: This creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.
+      <message name="IDS_BRAVE_UI_SITE_BANNER_DIFFERENT_VERIFIED_NOTICE_TEXT1" desc="A message on tipping page when a creator is not verified yet">
+        You're connected to <ph name="WALLET_PROVIDER">%1$s</ph>, but this creator is connected to <ph name="SUPPORTED_WALLET_PROVIDER">%2$s</ph>. This means your tip can't reach this creator. For now, any tip you make will remain pending and retry automatically for 90 days.
       </message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_WELCOME" desc="Tipping page title">
         Welcome!
@@ -2037,6 +2085,9 @@ Are you sure you want to do this?
     <message name="IDS_EDIT_VISIBLE_ASSETS" desc="Brave wallet edit assets button name">
       Edit visible assets
     </message>
+    <message name="IDS_EDIT_VISIBLE_NFTS" desc="Brave wallet edit NFTs button name">
+      Edit visible NFTs
+    </message>
     <message name="IDS_SAVE_ACCOUNT_WATCHLIST" desc="Brave wallet save a watchlist assets button name">
       Save account watchlist
     </message>
@@ -2575,6 +2626,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_WALLET_TX_STATUS_CONFIRMED" desc="Brave wallet tx status is confirmed">
       Confirmed
+    </message>
+    <message name="IDS_WALLET_TX_STATUS_SIGNED" desc="Brave wallet tx status is signed">
+      Signed
     </message>
     <message name="IDS_WALLET_TX_STATUS_ERROR" desc="Brave wallet tx status is error">
       Error
@@ -3559,6 +3613,252 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ENABLE_SPEEDREADER_SUMMARY" desc="Summary for preference that enables or disables Speedreader">
       Automatically loads eligible articles in reader mode
+    </message>
+    <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio asset item network description">
+      <ph name="SYMBOL"><ex>BAT</ex>%1$s</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>%2$s</ph>
+    </message>
+    <message name="IDS_BRAVE_PLAYLIST" desc="Playlist menu item text">
+      Brave Playlist
+    </message>
+    <message name="IDS_VIEW_ACTION" desc="View action text">
+      View
+    </message>
+    <message name="IDS_ADDED_TO_PLAYLIST" desc="Added to specific playlist text">
+      Added to '<ph name="PLAYLIST_NAME">%1$s</ph>'
+    </message>
+    <message name="IDS_PLAYLIST_WARNING_TITLE" desc="Playlist warning dialog title text">
+      Managing your playlist data
+    </message>
+    <message name="IDS_PLAYLIST_WARNING_TEXT" desc="Playlist warning dialog text">
+      By default, Playlist will auto save content to your device for offline playback (on both private &amp; shared playlists). If you’re not on WiFi, auto save will use your cellular data.\n\nTo change this default, use settings.
+    </message>
+    <message name="IDS_ADD_ITEM_TO_PLAYLIST" desc="Playlist warning dialog action button text">
+      Add item to Playlist
+    </message>
+    <message name="IDS_ENABLE_PLAYLIST" desc="Enable playlist settings title">
+      Enable Playlist
+    </message>
+    <message name="IDS_ENABLE_PLAYLIST_SUMMARY" desc="Enable playlist settings summary">
+      Make playlists of your favorite audio and videos, and play anytime, anywhere.
+    </message>
+    <message name="IDS_ADD_TO_PLAYLIST_BUTTON" desc="Add to playlist button settings title">
+      Add to Playlist button
+    </message>
+    <message name="IDS_ADD_TO_PLAYLIST_BUTTON_SUMMARY" desc="Add to playlist button settings summary">
+      Show or hide "Add to Playlist" button for quick access to add or remove media.
+    </message>
+    <message name="IDS_AUTO_PLAY" desc="Auto play settings title">
+      Auto-Play
+    </message>
+    <message name="IDS_AUTO_PLAY_SUMMARY" desc="Auto play settings summary">
+      Enables auto-play when Playlist is opened.
+    </message>
+    <message name="IDS_START_PLAYBACK" desc="Start playback settings title">
+      Start Playback Where I Left Off
+    </message>
+    <message name="IDS_START_PLAYBACK_SUMMARY" desc="Start playback settings summary">
+      Automatically sync any changes the creator made to a shared playlist.
+    </message>
+    <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE" desc="Auto save media for offline settings title">
+      Auto-Save for Offline
+    </message>
+    <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE_SUMMARY" desc="Auto save media for offline settings summary">
+      Automatically saves new playlist items to your device so you can play without an internet connection.
+    </message>
+    <message name="IDS_AUTO_SAVE_ON" desc="Auto save media for offline options title">
+      Auto-Save ON
+    </message>
+    <message name="IDS_AUTO_SAVE_OFF" desc="Auto save media for offline options title">
+      Auto-Save OFF
+    </message>
+    <message name="IDS_AUTO_SAVE_WIFI" desc="Auto save media for offline options title">
+      Auto-Save only when connected to Wi-Fi
+    </message>
+    <message name="IDS_RESET_PLAYLIST" desc="Reset settings title">
+      Reset
+    </message>
+    <message name="IDS_RESET_PLAYLIST_SUMMARY" desc="Reset settings summary">
+      Remove all videos from Playlist, including offline mode storage.
+    </message>
+    <message name="IDS_ON_TEXT" desc="Auto save media option text">
+      On
+    </message>
+    <message name="IDS_OFF_TEXT" desc="Auto save media option text">
+      Off
+    </message>
+    <message name="IDS_WIFI_ONLY_TEXT" desc="Auto save media option text">
+      Wifi Only
+    </message>
+    <message name="IDS_PLAYLIST_FEATURE_TEXT" desc="Playlist feature text">
+      Playlist
+    </message>
+    <message name="IDS_PLAYLIST_CREATE_TOOLBAR_TEXT" desc="Toolbar create button text">
+      Create
+    </message>
+    <message name="IDS_PLAYLIST_CREATE_YOUR_FIRST_TEXT" desc="Create your first playlist text">
+      Create your first playlist
+    </message>
+    <message name="IDS_PLAYLIST_FIRST_MESSAGE_TEXT" desc="Playlist first message text">
+      Make a playlist of your favorite audio and videos and play anytime, anywhere. Even offline.
+    </message>
+    <message name="IDS_PLAYLIST_CREATE_TEXT" desc="Create playlist text">
+      Create a Playlist
+    </message>
+    <message name="IDS_PLAYLIST_SKIP_TEXT" desc="Playlist skip button text">
+      Skip
+    </message>
+    <message name="IDS_PLAYLIST_PLAY_LATER" desc="Play later text">
+      Play Later
+    </message>
+    <message name="IDS_PLAYLIST_BROWSE_AND_ADD" desc="Browse and add button text">
+      Browse and add
+    </message>
+    <message name="IDS_PLAYLIST_BROWSE_AND_ADD_MESSAGE" desc="Browse and add button description text">
+      Add your favorite content. Look for the ( + ) button in the lower right part of your screen.
+    </message>
+    <message name="IDS_PLAYLIST_BROWSE_FOR_MEDIA" desc="Browse for media text">
+      Browse for media
+    </message>
+    <message name="IDS_PLAYLIST_NEW_TEXT" desc="New playlist text">
+      New playlist
+    </message>
+    <message name="IDS_PLAYLIST_NAME_TEXT" desc="Playlist name text">
+      Playlist name
+    </message>
+    <message name="IDS_PLAYLIST_UNTITLED_TEXT" desc="Untitled playlist text">
+      Untitled playlist
+    </message>
+    <message name="IDS_PLAYLIST_CANCEL" desc="Playlist cancel button text">
+      Cancel
+    </message>
+    <message name="IDS_PLAYLIST_REMOVE_DATA" desc="Playlist remove data button text">
+      Remove Data
+    </message>
+    <message name="IDS_PLAYLIST_NUMBER_SELECTED" desc="Playlist selected item text">
+      <ph name="NUMBER">%1$s</ph> Selected
+    </message>
+    <message name="IDS_PLAYLIST_NUMBER_ITEMS" desc="Number of items text">
+      <ph name="NUMBER">%1$s</ph> items
+    </message>
+    <message name="IDS_PLAYLIST_PLAY_ALL" desc="Play all text">
+      Play All
+    </message>
+    <message name="IDS_PLAYLIST_SHUFFLE" desc="Shuffle button text">
+      Shuffle
+    </message>
+    <message name="IDS_PLAYLIST_RECENTLY_PLAYED" desc="Recently played text">
+      Recently played
+    </message>
+    <message name="IDS_PLAYLIST_NEXT" desc="Playlist next button text">
+      Next
+    </message>
+    <message name="IDS_PLAYLIST_TAP_LONG_PRESS_OR_DRAG" desc="Onboarding toast text">
+      Tap, long press, or drag
+    </message>
+    <message name="IDS_PLAYLIST_ADD_TO_PLAYLIST" desc="Add to playlist button text">
+      Add to Playlist
+    </message>
+    <message name="IDS_PLAYLIST_PLAYLISTS_TEXT" desc="Playlists section text">
+      Playlists
+    </message>
+    <message name="IDS_PLAYLIST_ADD_MEDIA" desc="Add media menu item text">
+      Add media
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TITLE_1" desc="Playlist onboarding text">
+      Add videos to Brave Playlist and watch later, even offline
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TEXT_1" desc="Playlist onboarding text">
+      Make playlists of your favorite audio and videos, and play anytime, anywhere.
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TITLE_2" desc="Playlist onboarding text">
+      Out of cell range? Need to calm a crying toddler?
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TEXT_2" desc="Playlist onboarding text">
+      Whether you're on the subway, a flight, or a long car trip. Playlist has you covered.
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TITLE_3" desc="Playlist onboarding text">
+      Or tap the Playlist button when it appears
+    </message>
+    <message name="IDS_PLAYLIST_ONBOARDING_TEXT_3" desc="Playlist onboarding text">
+      Playlist button appears when there’s media to add. Long press it for options. You can even hide it.
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_PLAYLIST" desc="Open playlist menu item text">
+      Open Playlist
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_PLAYLIST_SETTINGS" desc="Open playlist settings menu item text">
+      Open Playlist Settings
+    </message>
+    <message name="IDS_PLAYLIST_HIDE_PLAYLIST_BUTTON" desc="Hide playlist menu item text">
+      Hide Playlist button
+    </message>
+    <message name="IDS_PLAYLIST_TRY_IT" desc="Onboarding try it button text">
+      Try it!
+    </message>
+    <message name="IDS_PLAYLIST_EDIT_TEXT" desc="playlist edit button text">
+      Edit
+    </message>
+    <message name="IDS_PLAYLIST_RENAME_TEXT" desc="playlist rename section text">
+      Rename
+    </message>
+    <message name="IDS_PLAYLIST_REMOVE_PLAYLIST_OFFLINE_DATA" desc="Playlist menu text">
+      Remove playlist offline data
+    </message>
+    <message name="IDS_PLAYLIST_REMOVE_ALL_OFFLINE_DATA" desc="Playlist menu text">
+      Remove all offline data
+    </message>
+    <message name="IDS_PLAYLIST_DOWNLOAD_PLAYLIST_FOR_OFFLINE_USE" desc="Playlist menu text">
+      Keep playlist for offline use
+    </message>
+    <message name="IDS_PLAYLIST_DOWNLOAD_ALL_PLAYLISTS_FOR_OFFLINE_USE" desc="Playlist menu text">
+      Keep all playlists for offline use
+    </message>
+    <message name="IDS_PLAYLIST_DELETE_PLAYLIST" desc="Playlist menu text">
+      Delete playlist
+    </message>
+    <message name="IDS_PLAYLIST_MOVE_ITEM" desc="Move button text">
+      Move
+    </message>
+    <message name="IDS_PLAYLIST_COPY_ITEM" desc="Copy button text">
+      Copy
+    </message>
+    <message name="IDS_PLAYLIST_DELETE_ITEM_OFFLINE_DATA" desc="Playlist menu text">
+      Delete item's offline data
+    </message>
+    <message name="IDS_PLAYLIST_SHARE_ITEM" desc="Playlist menu text">
+      Share
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_IN_NEW_TAB" desc="Playlist menu text">
+      Open in new tab
+    </message>
+    <message name="IDS_PLAYLIST_OPEN_IN_PRIVATE_TAB" desc="Playlist menu text">
+      Open in private tab
+    </message>
+    <message name="IDS_PLAYLIST_DELETE_ITEM" desc="Playlist menu text">
+      Delete
+    </message>
+    <message name="IDS_PLAYLIST_PERCENTAGE_TEXT" desc="Playlist item download progress text" translateable="false">
+      <ph name="PERCENTAGE">%1$s</ph> %%
+    </message>
+    <message name="IDS_PLAYLIST_TIME_TEXT" desc="Playlist duration time text" translateable="false">
+      <ph name="TIME_TEXT">%1$s</ph>:
+    </message>
+    <message name="IDS_PLAYLIST_DURATION_TEXT" desc="Playlist duration text" translateable="false">
+      <ph name="HOUR_TEXT">%1$s</ph><ph name="MINUTE_TEXT">%2$s</ph><ph name="SECOND_TEXT">%3$s</ph>
+    </message>
+    <message name="IDS_PLAYLIST_PLEASE_SELECT_ITEMS" desc="Playlist select items error message text">
+      Please select items first
+    </message>
+    <message name="IDS_PLAYLIST_OFFLINE_MESSAGE" desc="Playlist offline error message text">
+      Playlist item is not cached.\nPlease cache the item for offline mode.
+    </message>
+    <message name="IDS_PLAYLIST_ITEM_EXPIRED_MESSAGE" desc="Playlist item expired message text">
+      Content expired. Try again in a few seconds.
+    </message>
+    <message name="IDS_NO_NFTS" desc="Message shown when there no NFTs in the NFT grid.">
+      No NFTs here yet.
+    </message>
+    <message name="IDS_ADD_NFTS" desc="How to import NFTs in the NFT grid.">
+      Ready to add some? Just click the button below to import.
     </message>
   </messages>
   </release>

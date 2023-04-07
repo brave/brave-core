@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/test/bind.h"
+#include "base/time/time_override.h"
 #include "brave/components/ipfs/ipfs_service.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -16,6 +17,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+using base::subtle::ScopedTimeClockOverrides;
 using testing::_;
 
 namespace ipfs {
@@ -28,6 +30,7 @@ class MockIpfsService : public IpfsService {
 
   ~MockIpfsService() override = default;
 
+  MOCK_METHOD(bool, IsDaemonLaunched, (), (const, override));
   MOCK_METHOD1(StartDaemonAndLaunch, void(base::OnceCallback<void()>));
   MOCK_METHOD2(GetConnectedPeers,
                void(IpfsService::GetConnectedPeersCallback,
@@ -41,6 +44,8 @@ class IpfsBasePinServiceTest : public testing::Test {
   IpfsBasePinServiceTest() = default;
 
   void SetUp() override {
+    task_environment_ = std::make_unique<content::BrowserTaskEnvironment>(
+        base::test::TaskEnvironment::TimeSource::MOCK_TIME);
     ipfs_base_pin_service_ =
         std::make_unique<IpfsBasePinService>(GetIpfsService());
   }
@@ -51,10 +56,12 @@ class IpfsBasePinServiceTest : public testing::Test {
 
   IpfsBasePinService* service() { return ipfs_base_pin_service_.get(); }
 
+  content::BrowserTaskEnvironment* env() { return task_environment_.get(); }
+
  private:
   std::unique_ptr<IpfsBasePinService> ipfs_base_pin_service_;
   testing::NiceMock<MockIpfsService> ipfs_service_;
-  content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<content::BrowserTaskEnvironment> task_environment_;
 };
 
 class MockJob : public IpfsBaseJob {
@@ -74,7 +81,7 @@ class MockJob : public IpfsBaseJob {
 };
 
 TEST_F(IpfsBasePinServiceTest, TasksExecuted) {
-  service()->OnGetConnectedPeers(true, {});
+  service()->OnGetConnectedPeersResult(1, true, {});
   absl::optional<bool> method_called;
   std::unique_ptr<MockJob> first_job = std::make_unique<MockJob>(
       base::BindLambdaForTesting([&method_called]() { method_called = true; }));
@@ -90,6 +97,85 @@ TEST_F(IpfsBasePinServiceTest, TasksExecuted) {
 
   service()->OnJobDone(true);
   EXPECT_TRUE(second_method_called.value());
+}
+
+TEST_F(IpfsBasePinServiceTest, OnIpfsShutdown) {
+  service()->OnGetConnectedPeersResult(1, true, {});
+  EXPECT_TRUE(service()->daemon_ready_);
+
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
+  std::unique_ptr<MockJob> second_job =
+      std::make_unique<MockJob>(base::DoNothing());
+
+  service()->AddJob(std::move(first_job));
+  service()->AddJob(std::move(second_job));
+
+  service()->OnIpfsShutdown();
+
+  EXPECT_EQ(1u, service()->jobs_.size());
+  EXPECT_FALSE(service()->current_job_);
+
+  service()->OnJobDone(false);
+
+  EXPECT_EQ(1u, service()->jobs_.size());
+  EXPECT_FALSE(service()->current_job_);
+}
+
+TEST_F(IpfsBasePinServiceTest, OnGetConnectedPeers) {
+  service()->OnGetConnectedPeersResult(1, true, {});
+  EXPECT_TRUE(service()->daemon_ready_);
+
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
+  std::unique_ptr<MockJob> second_job =
+      std::make_unique<MockJob>(base::DoNothing());
+
+  service()->AddJob(std::move(first_job));
+
+  service()->OnGetConnectedPeersResult(1, true, {});
+
+  service()->AddJob(std::move(second_job));
+
+  service()->OnGetConnectedPeersResult(1, true, {});
+
+  EXPECT_EQ(1u, service()->jobs_.size());
+  EXPECT_TRUE(service()->current_job_);
+
+  service()->OnJobDone(true);
+
+  EXPECT_EQ(0u, service()->jobs_.size());
+  EXPECT_TRUE(service()->current_job_);
+
+  service()->OnJobDone(true);
+
+  EXPECT_EQ(0u, service()->jobs_.size());
+  EXPECT_FALSE(service()->current_job_);
+}
+
+TEST_F(IpfsBasePinServiceTest, OnGetConnectedPeers_Retry) {
+  ON_CALL(*GetIpfsService(), StartDaemonAndLaunch(_))
+      .WillByDefault(
+          ::testing::Invoke([](base::OnceCallback<void(void)> callback) {
+            std::move(callback).Run();
+          }));
+  ON_CALL(*GetIpfsService(), IsDaemonLaunched())
+      .WillByDefault(::testing::Return(true));
+
+  std::unique_ptr<MockJob> first_job =
+      std::make_unique<MockJob>(base::DoNothing());
+
+  service()->AddJob(std::move(first_job));
+  EXPECT_CALL(*GetIpfsService(), GetConnectedPeers(_, _)).Times(1);
+
+  env()->AdvanceClock(base::Minutes(2));
+  env()->RunUntilIdle();
+
+  EXPECT_CALL(*GetIpfsService(), GetConnectedPeers(_, _)).Times(1);
+  service()->OnGetConnectedPeersResult(1, false, {});
+
+  env()->AdvanceClock(base::Minutes(2));
+  env()->RunUntilIdle();
 }
 
 }  // namespace ipfs

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/containers/contains.h"
+#include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "content/public/browser/tld_ephemeral_lifetime.h"
 #include "net/base/features.h"
 #include "net/base/url_util.h"
@@ -34,8 +35,18 @@ std::string
 PermissionOriginLifetimeMonitorImpl::SubscribeToPermissionOriginDestruction(
     const GURL& requesting_origin) {
   DCHECK(permission_destroyed_callback_);
-  std::string storage_domain =
-      net::URLToEphemeralStorageDomain(requesting_origin);
+  url::Origin sub_request_origin;
+  bool is_sub_request_origin = false;
+  for (auto type : {RequestType::kBraveEthereum, RequestType::kBraveSolana}) {
+    if (brave_wallet::ParseRequestingOriginFromSubRequest(
+            type, url::Origin::Create(requesting_origin), &sub_request_origin,
+            nullptr)) {
+      is_sub_request_origin = true;
+      break;
+    }
+  }
+  std::string storage_domain = net::URLToEphemeralStorageDomain(
+      is_sub_request_origin ? sub_request_origin.GetURL() : requesting_origin);
   auto* tld_ephemeral_lifetime =
       content::TLDEphemeralLifetime::Get(browser_context_, storage_domain);
   if (!tld_ephemeral_lifetime) {

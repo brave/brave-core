@@ -11,7 +11,7 @@
 
 // npm run test -- brave_unit_tests --filter=P3AMetrics*
 
-namespace brave::p3a {
+namespace p3a {
 
 TEST(P3AMetrics, Searchable) {
   // Check that some expected elements made it into the set.
@@ -50,4 +50,4 @@ TEST(P3AMetrics, Enumerable) {
   EXPECT_EQ(size, kCollectedTypicalHistograms.size());
 }
 
-}  // namespace brave::p3a
+}  // namespace p3a

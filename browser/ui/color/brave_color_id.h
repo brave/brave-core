@@ -24,7 +24,8 @@
     E_CPONLY(kColorWebDiscoveryInfoBarMessage)      \
     E_CPONLY(kColorWebDiscoveryInfoBarLink)         \
     E_CPONLY(kColorWebDiscoveryInfoBarNoThanks)     \
-    E_CPONLY(kColorWebDiscoveryInfoBarClose)
+    E_CPONLY(kColorWebDiscoveryInfoBarClose)        \
+    E_CPONLY(kColorBraveDownloadToolbarButtonActive)
 
 #define BRAVE_SEARCH_CONVERSION_COLOR_IDS                             \
     E_CPONLY(kColorSearchConversionBannerTypeBackgroundBorder)        \
@@ -75,11 +76,14 @@
 // as brave_color_mixer depends on this without deps to //ui/views:flags.
 // But it's safe have without the guard as this file is included only when
 // !is_android.
-#define BRAVE_VERTICAL_TAB_COLOR_IDS                   \
-    E_CPONLY(kColorBraveVerticalTabSeparator)          \
-    E_CPONLY(kColorBraveVerticalTabActiveBackground)   \
-    E_CPONLY(kColorBraveVerticalTabInactiveBackground) \
-    E_CPONLY(kColorBraveVerticalTabHeaderButtonColor)
+#define BRAVE_VERTICAL_TAB_COLOR_IDS                    \
+    E_CPONLY(kColorBraveVerticalTabSeparator)           \
+    E_CPONLY(kColorBraveVerticalTabActiveBackground)    \
+    E_CPONLY(kColorBraveVerticalTabInactiveBackground)  \
+    E_CPONLY(kColorBraveVerticalTabHeaderButtonColor)   \
+    E_CPONLY(kColorBraveVerticalTabNTBIconColor)        \
+    E_CPONLY(kColorBraveVerticalTabNTBTextColor)        \
+    E_CPONLY(kColorBraveVerticalTabNTBShortcutTextColor)
 
 #define BRAVE_COLOR_IDS               \
     BRAVE_COMMON_COLOR_IDS            \

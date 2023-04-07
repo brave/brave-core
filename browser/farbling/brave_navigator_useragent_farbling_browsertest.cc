@@ -138,8 +138,9 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
   std::string last_requested_http_user_agent() {
-    if (user_agents_.empty())
+    if (user_agents_.empty()) {
       return "";
+    }
     return user_agents_[user_agents_.size() - 1];
   }
 
@@ -169,11 +170,6 @@ class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -194,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   std::string unfarbled_ua = embedder_support::GetUserAgent();
   // Farbling level: off
   AllowFingerprinting(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   // HTTP User-Agent header we just sent in that request should be the same as
   // the unfarbled user agent
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
@@ -202,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // user agent should be the same as the unfarbled user agent
   EXPECT_EQ(unfarbled_ua, off_ua_b);
   AllowFingerprinting(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   // HTTP User-Agent header we just sent in that request should be the same as
   // the unfarbled user agent
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
@@ -214,11 +210,11 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // navigator.userAgent may be farbled, but the farbling is not
   // domain-specific
   SetFingerprintingDefault(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   std::string default_ua_b =
       EvalJs(contents(), kUserAgentScript).ExtractString();
   SetFingerprintingDefault(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   std::string default_ua_z =
       EvalJs(contents(), kUserAgentScript).ExtractString();
   // user agent should be the same on every domain if farbling is default
@@ -230,18 +226,19 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // on domain and session key
   BlockFingerprinting(domain_b);
   // test known values
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   auto max_ua_b = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(default_ua_b + "    ", max_ua_b);
   BlockFingerprinting(domain_z);
-  NavigateToURLUntilLoadStop(url_z);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_z));
   auto max_ua_z = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(default_ua_z + "  ", max_ua_z);
 
   // test that web workers also inherit the farbled user agent
   // (farbling level is still maximum)
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/workers-useragent.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/workers-useragent.html")));
   // HTTP User-Agent header we just sent in that request should be the same as
   // the unfarbled user agent
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
@@ -250,8 +247,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 
   // test that service workers also inherit the farbled user agent
   // (farbling level is still maximum)
-  NavigateToURLUntilLoadStop(https_server()->GetURL(
-      domain_b, "/navigator/service-workers-useragent.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server()->GetURL(
+                     domain_b, "/navigator/service-workers-useragent.html")));
   // HTTP User-Agent header we just sent in that request should be the same as
   // the unfarbled user agent
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
@@ -261,7 +259,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   // Farbling level: off
   // verify that user agent is reset properly after having been farbled
   AllowFingerprinting(domain_b);
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   auto off_ua_b2 = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(off_ua_b.ExtractString(), off_ua_b2);
@@ -276,51 +274,60 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   BlockFingerprinting(domain_b);
 
   // test that local iframes inherit the farbled user agent
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-local-iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-local-iframe.html")));
   TitleWatcher watcher1(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher1.WaitAndGetTitle());
 
   // test that remote iframes inherit the farbled user agent
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-remote-iframe.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-remote-iframe.html")));
   TitleWatcher watcher2(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher2.WaitAndGetTitle());
 
   // test that dynamic iframes inherit the farbled user agent
   // 7 variations based on https://arkenfox.github.io/TZP/tzp.html
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-1.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-1.html")));
   TitleWatcher dynamic_iframe_1_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_1_watcher.WaitAndGetTitle());
 
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-2.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-2.html")));
   TitleWatcher dynamic_iframe_2_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_2_watcher.WaitAndGetTitle());
 
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-3.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-3.html")));
   TitleWatcher dynamic_iframe_3_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_3_watcher.WaitAndGetTitle());
 
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-4.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-4.html")));
   TitleWatcher dynamic_iframe_4_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_4_watcher.WaitAndGetTitle());
 
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-5.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-5.html")));
   TitleWatcher dynamic_iframe_5_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_5_watcher.WaitAndGetTitle());
 
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-6.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-6.html")));
   TitleWatcher dynamic_iframe_6_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_6_watcher.WaitAndGetTitle());
 
-  NavigateToURLUntilLoadStop(
-      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-7.html"));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      https_server()->GetURL(domain_b, "/navigator/ua-dynamic-iframe-7.html")));
   TitleWatcher dynamic_iframe_7_watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, dynamic_iframe_7_watcher.WaitAndGetTitle());
 }
@@ -329,7 +336,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        FarbleNavigatorUserAgentModel) {
   GURL url_b = https_server()->GetURL("b.com", "/navigator/useragentdata.html");
-  NavigateToURLUntilLoadStop(url_b);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url_b));
   std::u16string expected_title(u"pass");
   TitleWatcher watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
@@ -339,7 +346,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        BraveIsInNavigatorUserAgentBrandList) {
   GURL url = https_server()->GetURL("a.com", "/simple.html");
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   std::string brands = EvalJs(contents(), kBrandScript).ExtractString();
   EXPECT_NE(std::string::npos, brands.find("Brave"));
   EXPECT_NE(std::string::npos, brands.find("Chromium"));
@@ -349,7 +356,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        CheckUserAgentMetadataVersions) {
   GURL url = https_server()->GetURL("a.com", "/simple.html");
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   const content::EvalJsResult result =
       EvalJs(contents(), kGetHighEntropyValuesScript);
   EXPECT_TRUE(result.error.empty());

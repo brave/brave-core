@@ -176,8 +176,8 @@ function excludedSiteChanged () {
   actions.getContributeList()
 }
 
-function balance (properties: { status: number, balance: Rewards.Balance }) {
-  actions.onBalance(properties.status, properties.balance)
+function balance (result: mojom.FetchBalanceResult) {
+  actions.onBalance(result)
 }
 
 function reconcileComplete (properties: { type: number, result: number }) {

@@ -28,6 +28,10 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
+namespace network {
+class SharedURLLoaderFactory;
+}
+
 class PrefService;
 
 namespace brave_wallet {
@@ -60,12 +64,14 @@ class BraveWalletService : public KeyedService,
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
-  BraveWalletService(std::unique_ptr<BraveWalletServiceDelegate> delegate,
-                     KeyringService* keyring_service,
-                     JsonRpcService* json_rpc_service,
-                     TxService* tx_service,
-                     PrefService* profile_prefs,
-                     PrefService* local_state);
+  BraveWalletService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      std::unique_ptr<BraveWalletServiceDelegate> delegate,
+      KeyringService* keyring_service,
+      JsonRpcService* json_rpc_service,
+      TxService* tx_service,
+      PrefService* profile_prefs,
+      PrefService* local_state);
 
   ~BraveWalletService() override;
 
@@ -80,6 +86,8 @@ class BraveWalletService : public KeyedService,
   static void MigrateUserAssetsAddPreloadingNetworks(
       PrefService* profile_prefs);
   static void MigrateUserAssetsAddIsNFT(PrefService* profile_prefs);
+  static void MigrateHiddenNetworks(PrefService* profile_prefs);
+  static void MigrateUserAssetsAddIsERC1155(PrefService* profile_prefs);
 
   static bool AddUserAsset(mojom::BlockchainTokenPtr token,
                            PrefService* profile_prefs);
@@ -106,6 +114,11 @@ class BraveWalletService : public KeyedService,
   void GetAllUserAssets(GetUserAssetsCallback callback) override;
   void AddUserAsset(mojom::BlockchainTokenPtr token,
                     AddUserAssetCallback callback) override;
+  void OnGetEthNftStandard(mojom::BlockchainTokenPtr token,
+                           AddUserAssetCallback callback,
+                           const absl::optional<std::string>& standard,
+                           mojom::ProviderError error,
+                           const std::string& error_message);
   void RemoveUserAsset(mojom::BlockchainTokenPtr token,
                        RemoveUserAssetCallback callback) override;
   void SetUserAssetVisible(mojom::BlockchainTokenPtr token,
@@ -202,6 +215,10 @@ class BraveWalletService : public KeyedService,
 
   void DiscoverAssetsOnAllSupportedChains() override;
 
+  void GetNftDiscoveryEnabled(GetNftDiscoveryEnabledCallback callback) override;
+
+  void SetNftDiscoveryEnabled(bool enabled) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 
@@ -278,7 +295,7 @@ class BraveWalletService : public KeyedService,
   bool SetUserAssetVisible(mojom::BlockchainTokenPtr token, bool visible);
   mojom::BlockchainTokenPtr GetUserAsset(const std::string& contract_address,
                                          const std::string& token_id,
-                                         bool is_erc721,
+                                         bool is_nft,
                                          const std::string& chain_id,
                                          mojom::CoinType coin);
   void OnNetworkChanged();

@@ -3,17 +3,31 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import { BraveWallet } from '../../constants/types'
-import { ETH } from '../../options/asset-options'
 import {
   ALGOIconUrl,
   BATIconUrl,
   BNBIconUrl,
   BTCIconUrl,
+  ETHIconUrl,
   ZRXIconUrl
-} from '../../assets/asset-icons'
+} from './asset-icons'
 import MoonCatIcon from '../../assets/png-icons/mooncat.png'
 
-export const mockEthToken = ETH
+export const mockEthToken = {
+  contractAddress: '',
+  name: 'Ethereum',
+  symbol: 'ETH',
+  logo: ETHIconUrl,
+  isErc20: false,
+  isErc721: false,
+  isNft: false,
+  decimals: 18,
+  visible: true,
+  tokenId: '',
+  coingeckoId: '',
+  chainId: '0x1',
+  coin: BraveWallet.CoinType.ETH
+} as BraveWallet.BlockchainToken
 
 export const mockBasicAttentionToken = {
   contractAddress: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
@@ -22,6 +36,7 @@ export const mockBasicAttentionToken = {
   logo: BATIconUrl,
   isErc20: true,
   isErc721: false,
+  isErc1155: false,
   isNft: false,
   decimals: 18,
   visible: true,
@@ -38,6 +53,7 @@ export const mockBinanceCoinErc20Token = {
   logo: BNBIconUrl,
   isErc20: true,
   isErc721: false,
+  isErc1155: false,
   isNft: false,
   decimals: 18,
   visible: true,
@@ -54,6 +70,7 @@ export const mockBitcoinErc20Token = {
   logo: BTCIconUrl,
   isErc20: true,
   isErc721: false,
+  isErc1155: false,
   isNft: false,
   decimals: 8,
   visible: true,
@@ -70,6 +87,7 @@ export const mockAlgorandErc20Token = {
   logo: ALGOIconUrl,
   isErc20: true,
   isErc721: false,
+  isErc1155: false,
   isNft: false,
   decimals: 8,
   visible: true,
@@ -86,6 +104,7 @@ export const mockZrxErc20Token = {
   logo: ZRXIconUrl,
   isErc20: true,
   isErc721: false,
+  isErc1155: false,
   isNft: false,
   decimals: 18,
   visible: true,
@@ -102,6 +121,7 @@ export const mockMoonCatNFT = {
   logo: MoonCatIcon,
   isErc20: false,
   isErc721: true,
+  isErc1155: false,
   isNft: true,
   decimals: 0,
   visible: true,
@@ -112,7 +132,7 @@ export const mockMoonCatNFT = {
 }
 
 export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
-  ETH,
+  mockEthToken,
   mockBasicAttentionToken,
   mockBinanceCoinErc20Token,
   mockBitcoinErc20Token,
@@ -121,7 +141,7 @@ export const mockAccountAssetOptions: BraveWallet.BlockchainToken[] = [
 ]
 
 export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
-  ETH,
+  mockEthToken,
   {
     contractAddress: '2',
     name: 'Basic Attention Token',
@@ -129,6 +149,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     logo: BATIconUrl,
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     decimals: 18,
     visible: true,
@@ -144,6 +165,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     logo: BNBIconUrl,
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     decimals: 18,
     visible: true,
@@ -159,6 +181,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     logo: BTCIconUrl,
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     decimals: 18,
     visible: true,
@@ -174,6 +197,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     logo: ALGOIconUrl,
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     decimals: 18,
     visible: true,
@@ -189,6 +213,7 @@ export const mockNewAssetOptions: BraveWallet.BlockchainToken[] = [
     logo: ZRXIconUrl,
     isErc20: true,
     isErc721: false,
+    isErc1155: false,
     isNft: false,
     decimals: 18,
     visible: true,

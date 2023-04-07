@@ -11,9 +11,10 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/ads_client.h"
-#include "bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/ads_client.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
+#include "brave/components/services/bat_ads/bat_ads_client_notifier_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
@@ -22,16 +23,18 @@ namespace base {
 class Time;
 }  // namespace base
 
-namespace ads {
+namespace brave_ads {
+class AdsClientNotifierObserver;
 struct NotificationAdInfo;
-}  // namespace ads
+}  // namespace brave_ads
 
 namespace bat_ads {
 
-class BatAdsClientMojoBridge : public ads::AdsClient {
+class BatAdsClientMojoBridge : public brave_ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info);
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
 
   BatAdsClientMojoBridge(const BatAdsClientMojoBridge&) = delete;
   BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
@@ -43,6 +46,10 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   ~BatAdsClientMojoBridge() override;
 
   // AdsClient:
+  void AddObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void RemoveObserver(brave_ads::AdsClientNotifierObserver* observer) override;
+  void BindPendingObservers() override;
+
   bool IsNetworkConnectionAvailable() const override;
 
   bool IsBrowserActive() const override;
@@ -50,7 +57,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
 
   bool CanShowNotificationAds() override;
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
-  void ShowNotificationAd(const ads::NotificationAdInfo& ad) override;
+  void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void UpdateAdRewards() override;
@@ -64,36 +71,38 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       const std::string& confirmation_type) const override;
   void ResetAdEventHistoryForId(const std::string& id) const override;
 
-  void GetBrowsingHistory(int max_count,
-                          int days_ago,
-                          ads::GetBrowsingHistoryCallback callback) override;
+  void GetBrowsingHistory(
+      int max_count,
+      int days_ago,
+      brave_ads::GetBrowsingHistoryCallback callback) override;
 
-  void UrlRequest(ads::mojom::UrlRequestInfoPtr url_request,
-                  ads::UrlRequestCallback callback) override;
+  void UrlRequest(brave_ads::mojom::UrlRequestInfoPtr url_request,
+                  brave_ads::UrlRequestCallback callback) override;
 
   void Save(const std::string& name,
             const std::string& value,
-            ads::SaveCallback callback) override;
-  void Load(const std::string& name, ads::LoadCallback callback) override;
+            brave_ads::SaveCallback callback) override;
+  void Load(const std::string& name, brave_ads::LoadCallback callback) override;
   void LoadFileResource(const std::string& id,
                         int version,
-                        ads::LoadFileCallback callback) override;
+                        brave_ads::LoadFileCallback callback) override;
   std::string LoadDataResource(const std::string& name) override;
 
-  void GetScheduledCaptcha(const std::string& payment_id,
-                           ads::GetScheduledCaptchaCallback callback) override;
+  void GetScheduledCaptcha(
+      const std::string& payment_id,
+      brave_ads::GetScheduledCaptchaCallback callback) override;
   void ShowScheduledCaptchaNotification(const std::string& payment_id,
                                         const std::string& captcha_id) override;
   void ClearScheduledCaptcha() override;
 
-  void RunDBTransaction(ads::mojom::DBTransactionInfoPtr transaction,
-                        ads::RunDBTransactionCallback callback) override;
+  void RunDBTransaction(brave_ads::mojom::DBTransactionInfoPtr transaction,
+                        brave_ads::RunDBTransactionCallback callback) override;
 
   void RecordP2AEvent(const std::string& name,
                       base::Value::List value) override;
 
-  void LogTrainingInstance(std::vector<brave_federated::mojom::CovariateInfoPtr>
-                               training_instance) override;
+  void AddTrainingSample(std::vector<brave_federated::mojom::CovariateInfoPtr>
+                             training_sample) override;
 
   bool GetBooleanPref(const std::string& path) const override;
   void SetBooleanPref(const std::string& path, bool value) override;
@@ -126,6 +135,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
 
  private:
   mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
+  BatAdsClientNotifierImpl notifier_impl_;
 };
 
 }  // namespace bat_ads

@@ -10,7 +10,7 @@ import OnboardingCreatePassword from './onboarding-create-password'
 
 export const _OnboardingCreatePassword = () => {
   return <WalletPageStory>
-    <OnboardingCreatePassword />
+    <OnboardingCreatePassword onWalletCreated={() => {}} />
   </WalletPageStory>
 }
 

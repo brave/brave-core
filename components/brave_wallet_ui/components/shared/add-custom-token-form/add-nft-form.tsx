@@ -4,25 +4,34 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-
-// selectors
-import { useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import { useDispatch } from 'react-redux'
 
 // utils
-import {
-  BraveWallet,
-  WalletState
-} from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import Amount from '../../../utils/amount'
-import { getTokensNetwork } from '../../../utils/network-utils'
 import { getLocale } from '$web-common/locale'
+import { WalletActions } from '../../../common/actions'
+import { stripERC20TokenImageURL } from '../../../utils/string-utils'
+import {
+  networkEntityAdapter,
+  emptyNetworksRegistry
+} from '../../../common/slices/entities/network.entity'
+
+// hooks
 import {
   useAssetManagement,
   useLib,
   useTokenInfo
 } from '../../../common/hooks'
+import {
+  useGetNetworksRegistryQuery,
+  useGetSelectedChainQuery
+} from '../../../common/slices/api.slice'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from '../../../common/hooks/use-safe-selector'
+import { WalletSelectors } from '../../../common/selectors'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop'
@@ -40,8 +49,6 @@ import {
   Input,
   InputLabel
 } from './add-custom-token-form-styles'
-import { WalletActions } from '../../../common/actions'
-import { stripERC20TokenImageURL } from '../../../utils/string-utils'
 
 interface Props {
   contractAddress: string
@@ -60,29 +67,38 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress
   } = props
 
+  // redux
+  const dispatch = useDispatch()
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
+  const userVisibleTokensInfo = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
+  const addUserAssetError = useSafeWalletSelector(
+    WalletSelectors.addUserAssetError
+  )
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetNetworksRegistryQuery()
+
+  const selectedAssetNetwork = selectedAsset
+    ? networksRegistry.entities[networkEntityAdapter.selectId(selectedAsset)]
+    : undefined
+
   // state
   const [showTokenIDRequired, setShowTokenIDRequired] = React.useState<boolean>(false)
   const [showNetworkDropDown, setShowNetworkDropDown] = React.useState<boolean>(false)
-
-  // redux networks
-  const networks = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
 
   // Form States
   const [tokenName, setTokenName] = React.useState<string>(selectedAsset?.name || '')
   const [tokenID, setTokenID] = React.useState<string>(selectedAsset?.tokenId ? parseInt(selectedAsset.tokenId, 16).toString() : '')
   const [tokenSymbol, setTokenSymbol] = React.useState<string>(selectedAsset?.symbol || '')
-  const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<BraveWallet.NetworkInfo | undefined>(selectedAsset ? getTokensNetwork(networks, selectedAsset) : undefined)
+  const [customAssetsNetwork, setCustomAssetsNetwork] = React.useState<
+    BraveWallet.NetworkInfo | undefined
+  >(selectedAssetNetwork)
 
-  // redux
-  const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
-  const addUserAssetError = useSelector(({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError)
-
-  // more state
-  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
-
-  const dispatch = useDispatch()
 
   // custom hooks
   const { getBlockchainTokenInfo } = useLib()
@@ -174,6 +190,7 @@ export const AddNftForm = (props: Props) => {
         decimals: 0,
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !tokenID,
         isErc721: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL && !!tokenID,
+        isErc1155: false,
         isNft: true,
         name: tokenName,
         symbol: tokenSymbol,
@@ -249,13 +266,23 @@ export const AddNftForm = (props: Props) => {
     if (foundTokenInfoByContractAddress) {
       setTokenName(foundTokenInfoByContractAddress.name)
       setTokenSymbol(foundTokenInfoByContractAddress.symbol)
-      const network = networks.find(network => network.chainId.toLowerCase() === foundTokenInfoByContractAddress.chainId.toLowerCase())
+      const network =
+        networksRegistry.entities[
+          networkEntityAdapter.selectId(foundTokenInfoByContractAddress)
+        ]
       if (network) setCustomAssetsNetwork(network)
     }
     if (foundTokenInfoByContractAddress?.isErc20 && onTokenFound) {
       onTokenFound(tokenContractAddress)
     }
-  }, [foundTokenInfoByContractAddress, onFindTokenInfoByContractAddress, tokenContractAddress, resetInputFields, networks, onTokenFound])
+  }, [
+    foundTokenInfoByContractAddress,
+    onFindTokenInfoByContractAddress,
+    tokenContractAddress,
+    resetInputFields,
+    networksRegistry,
+    onTokenFound
+  ])
 
   return (
     <FormWrapper onClick={onHideNetworkDropDown}>

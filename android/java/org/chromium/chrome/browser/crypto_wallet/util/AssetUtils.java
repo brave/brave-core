@@ -68,7 +68,13 @@ public class AssetUtils {
         public static boolean isSameNFT(
                 BlockchainToken token, String tokenId, String contractAddress) {
             if (token.isErc721) {
-                return token.tokenId.equals(tokenId);
+                boolean isSameContractAddress = TextUtils.isEmpty(token.contractAddress)
+                        && TextUtils.isEmpty(contractAddress);
+                if (!isSameContractAddress && !TextUtils.isEmpty(token.contractAddress)
+                        && !TextUtils.isEmpty(contractAddress)) {
+                    isSameContractAddress = token.contractAddress.equalsIgnoreCase(contractAddress);
+                }
+                return token.tokenId.equals(tokenId) && isSameContractAddress;
             } else if (token.isNft) { // Solana
                 return token.contractAddress.equals(contractAddress);
             }
@@ -198,6 +204,11 @@ public class AssetUtils {
             put(BraveWalletConstants.SOLANA_MAINNET, Arrays.asList("sol"));
             put(BraveWalletConstants.FILECOIN_MAINNET, Arrays.asList("fil"));
             put(BraveWalletConstants.AVALANCHE_MAINNET_CHAIN_ID, Arrays.asList("avax", "avaxc"));
+            // Test Net
+            put(BraveWalletConstants.GOERLI_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.SEPOLIA_CHAIN_ID, Arrays.asList("eth"));
+            put(BraveWalletConstants.SOLANA_TESTNET, Arrays.asList("sol"));
+            put(BraveWalletConstants.SOLANA_DEVNET, Arrays.asList("sol"));
         }
     };
     public static String httpifyIpfsUrl(String url) {
@@ -206,5 +217,13 @@ public class AssetUtils {
         return trimedUrl.startsWith("ipfs://")
                 ? trimedUrl.replace("ipfs://", "https://ipfs.io/ipfs/")
                 : trimedUrl;
+    }
+
+    public static String assetRatioId(BlockchainToken token) {
+        if (!TextUtils.isEmpty(token.coingeckoId)) return token.coingeckoId;
+        if (BraveWalletConstants.MAINNET_CHAIN_ID.equals(token.chainId)
+                || TextUtils.isEmpty(token.contractAddress))
+            return token.symbol;
+        return token.contractAddress;
     }
 }

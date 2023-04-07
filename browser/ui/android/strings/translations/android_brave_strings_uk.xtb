@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uk">
+<translation id="3478449063771497234">Сповіщення вимкнені</translation>
+<translation id="7466579932043491502">Brave Rewards може не працювати, якщо сповіщення вимкнені.</translation>
+<translation id="4259212006412783790">УВІМКНУТИ</translation>
+<translation id="6112331814131703370">Блокувати сповіщення «Перемкнути програму»</translation>
 <translation id="4744921452903670666">Поділіться з нами своїми думками!</translation>
 <translation id="2524310205387880526">Оцінити Brave</translation>
 <translation id="4104400246019119780">Дякуємо!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Ваші винагороди за рекламу за <ph name="MONTH_VALUE"/> тут!</translation>
 <translation id="2716238748894345194">Винагороди за <ph name="MONTH_VALUE"/>: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">У вас залишилося <ph name="TOKEN"/> дн. для отримання</translation>
-<translation id="2323069945529668668">Йой!</translation>
-<translation id="7510166204621526816">Сервер Brave Rewards не відповідає. Ми полагодимо його так швидко, як зможемо.</translation>
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
 <translation id="3101693828171454453">не достатньо <ph name="TOKEN"/></translation>
@@ -611,7 +613,7 @@
 <translation id="5050890334032852465">Зберегти журнал перегляду акаунту</translation>
 <translation id="7755766175599167100">Пошук токенів</translation>
 <translation id="3835223348537121988">Баланс:</translation>
-<translation id="6888491517683356528">Перейти до Ramp</translation>
+<translation id="3956169227169516344">Вибрати спосіб придбання</translation>
 <translation id="8488282162676695335">Гаманець Brave</translation>
 <translation id="3784455785234192852">Заблокувати</translation>
 <translation id="8796429300536029044">Інформація про NFT</translation>
@@ -625,6 +627,10 @@
 <translation id="414639769490080648">Кількість хвилин до автоматичного блокування гаманця Brave</translation>
 <translation id="4993345308607970390">Скинути гаманець Brave</translation>
 <translation id="4322846864135539519">Дійсно скинути винагороди Brave? Якщо ваш гаманець не має резервної копії, скидання призведе до втрати всіх даних облікового запису, зокрема всіх пов’язаних коштів. Уведіть <ph name="CONFIRMATION_PHRASE"/> для підтвердження.</translation>
+<translation id="6915083716464390008">Виберіть один із доступних способів</translation>
+<translation id="7667423728712601865">Купуйте криптовалюту за допомогою карток Visa або Mastercard.</translation>
+<translation id="3101839349578102016">Миттєва покупка за допомогою банківського рахунку. Нижчі комісії.</translation>
+<translation id="7269640984027668973">Купити за допомогою <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Очистити інформацію про транзакції та нонс</translation>
 <translation id="5693968582510626466">Очищення транзакцій може бути корисним для розробників або під час очищення стану на локальному сервері</translation>
 <translation id="5421107279168565467">Ви впевнені, що хочете скинути інформацію про транзакції та нонс? Цей параметр здебільшого використовується розробниками, які працюють на локальному тестовому сервері. Уведіть «<ph name="CONFIRMATION_PHRASE"/>» для підтвердження.</translation>
@@ -799,7 +805,7 @@
 <translation id="3506416339268164412">Адреса отримувача є контрактною адресою токену</translation>
 <translation id="3494964159182650590">Підсумок винагород</translation>
 <translation id="590733288489975971">Винагороди від рекламних оголошень</translation>
-<translation id="207268487070188114">Одноразові чайові</translation>
+<translation id="2613359062756190460">Разові чайові</translation>
 <translation id="7577100371127227294">Щомісячні платежі</translation>
 <translation id="7091980679045978090">Розрахункова сума надходжень</translation>
 <translation id="1346059596910821859">Відрахування</translation>

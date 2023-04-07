@@ -55,6 +55,7 @@ base::Value::Dict GetDefaultHiddenNetworks() {
   eth_hidden.Append(mojom::kGoerliChainId);
   eth_hidden.Append(mojom::kSepoliaChainId);
   eth_hidden.Append(mojom::kLocalhostChainId);
+  eth_hidden.Append(mojom::kFilecoinEthereumTestnetChainId);
   hidden_networks.Set(kEthereumPrefKey, std::move(eth_hidden));
 
   base::Value::List fil_hidden;
@@ -75,9 +76,6 @@ base::Value::Dict GetDefaultHiddenNetworks() {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
                                        kBraveWalletP3ALastUnlockTime,
                                        kBraveWalletP3AUsedSecondDay, nullptr);
@@ -117,18 +115,17 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterDictionaryPref(kBraveWalletLastTransactionSentTimeDict);
   registry->RegisterTimePref(kBraveWalletLastDiscoveredAssetsAt, base::Time());
 
-  // TODO(djandries): remove the following prefs at some point,
-  //                  since they're now maintained in local state
-  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
-                                       kBraveWalletP3ALastUnlockTime,
-                                       kBraveWalletP3AUsedSecondDay, nullptr);
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
-  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
-  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kPinnedNFTAssets);
   registry->RegisterBooleanPref(kAutoPinEnabled, false);
   registry->RegisterBooleanPref(kShouldShowWalletSuggestionBadge, true);
+  registry->RegisterBooleanPref(kBraveWalletNftDiscoveryEnabled, false);
+}
+
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
+  // Added 04/2023
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
 }
 
 void RegisterProfilePrefsForMigration(
@@ -169,11 +166,31 @@ void RegisterProfilePrefsForMigration(
   // Added 10/2022
   registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsNFTMigrated, false);
 
+  // Added 11/2022
+  p3a_utils::RegisterFeatureUsagePrefs(registry, kBraveWalletP3AFirstUnlockTime,
+                                       kBraveWalletP3ALastUnlockTime,
+                                       kBraveWalletP3AUsedSecondDay, nullptr);
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3ALastReportTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
+  registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
+
   // Added 12/2022
   registry->RegisterBooleanPref(kShowWalletTestNetworksDeprecated, false);
 
   // Added 02/2023
   registry->RegisterBooleanPref(kBraveWalletTransactionsChainIdMigrated, false);
+
+  // Added 03/2023
+  registry->RegisterIntegerPref(kBraveWalletDefaultHiddenNetworksVersion, 0);
+
+  // Added 03/2023
+  registry->RegisterBooleanPref(kBraveWalletUserAssetsAddIsERC1155Migrated,
+                                false);
+
+  // Added 04/2023
+  registry->RegisterBooleanPref(kBraveWalletSolanaTransactionsV0SupportMigrated,
+                                false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -201,7 +218,6 @@ void ClearBraveWalletServicePrefs(PrefService* prefs) {
   prefs->ClearPref(kBraveWalletUserAssets);
   prefs->ClearPref(kDefaultBaseCurrency);
   prefs->ClearPref(kDefaultBaseCryptocurrency);
-  prefs->ClearPref(kPinnedNFTAssets);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
@@ -218,6 +234,12 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 
   // Added 10/22 to have is_nft set for existing ERC721 tokens.
   BraveWalletService::MigrateUserAssetsAddIsNFT(prefs);
+
+  // Added 03/23 to add filecoin evm support.
+  BraveWalletService::MigrateHiddenNetworks(prefs);
+
+  // Added 03/23 to have is_erc1155 set false for existing ERC1155 tokens.
+  BraveWalletService::MigrateUserAssetsAddIsERC1155(prefs);
 
   JsonRpcService::MigrateMultichainNetworks(prefs);
 

@@ -38,6 +38,7 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterDictionaryPref(prefs::kBraveVPNSubscriberCredential);
   registry->RegisterBooleanPref(prefs::kBraveVPNLocalStateMigrated, false);
+  registry->RegisterTimePref(prefs::kBraveVPNSessionExpiredDate, {});
 }
 
 }  // namespace
@@ -80,9 +81,20 @@ void MigrateVPNSettings(PrefService* profile_prefs, PrefService* local_prefs) {
   profile_prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, show_button);
 }
 
-bool IsBraveVPNEnabled() {
+bool IsBraveVPNDisabledByPolicy(PrefService* prefs) {
+  DCHECK(prefs);
+  return prefs->FindPreference(prefs::kManagedBraveVPNDisabled) &&
+         prefs->IsManagedPreference(prefs::kManagedBraveVPNDisabled) &&
+         prefs->GetBoolean(prefs::kManagedBraveVPNDisabled);
+}
+
+bool IsBraveVPNFeatureEnabled() {
   return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN) &&
          base::FeatureList::IsEnabled(skus::features::kSkusFeature);
+}
+
+bool IsBraveVPNEnabled(PrefService* prefs) {
+  return !IsBraveVPNDisabledByPolicy(prefs) && IsBraveVPNFeatureEnabled();
 }
 
 std::string GetBraveVPNEntryName(version_info::Channel channel) {
@@ -129,6 +141,7 @@ std::string GetBraveVPNPaymentsEnv(const std::string& env) {
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(prefs::kManagedBraveVPNDisabled, false);
   registry->RegisterDictionaryPref(prefs::kBraveVPNRootPref);
   registry->RegisterBooleanPref(prefs::kBraveVPNShowButton, true);
 #if BUILDFLAG(IS_WIN)
@@ -179,6 +192,44 @@ std::string GetSubscriberCredential(PrefService* local_prefs) {
   const std::string* cred = sub_cred_dict.FindString(kSubscriberCredentialKey);
   DCHECK(cred);
   return *cred;
+}
+
+bool HasValidSkusCredential(PrefService* local_prefs) {
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  if (sub_cred_dict.empty()) {
+    return false;
+  }
+
+  const std::string* skus_cred = sub_cred_dict.FindString(kSkusCredentialKey);
+  const base::Value* expiration_time_value =
+      sub_cred_dict.Find(kSubscriberCredentialExpirationKey);
+
+  if (!skus_cred || !expiration_time_value) {
+    return false;
+  }
+
+  if (skus_cred->empty()) {
+    return false;
+  }
+
+  auto expiration_time = base::ValueToTime(expiration_time_value);
+  if (!expiration_time || expiration_time < base::Time::Now()) {
+    return false;
+  }
+
+  return true;
+}
+
+std::string GetSkusCredential(PrefService* local_prefs) {
+  CHECK(HasValidSkusCredential(local_prefs))
+      << "Don't call when there is no valid skus credential.";
+
+  const base::Value::Dict& sub_cred_dict =
+      local_prefs->GetDict(prefs::kBraveVPNSubscriberCredential);
+  const std::string* skus_cred = sub_cred_dict.FindString(kSkusCredentialKey);
+  DCHECK(skus_cred);
+  return *skus_cred;
 }
 
 }  // namespace brave_vpn

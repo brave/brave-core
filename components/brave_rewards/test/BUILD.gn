@@ -22,13 +22,13 @@ source_set("brave_rewards_unit_tests") {
     "//brave/components/brave_rewards/browser:testutil",
     "//brave/components/brave_rewards/common:common",
     "//brave/components/brave_rewards/common:features",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core:publishers_proto",
     "//brave/components/brave_rewards/resources:static_resources_grit",
-    "//brave/components/challenge_bypass_ristretto",
     "//brave/components/greaselion/browser/buildflags:buildflags",
     "//brave/components/l10n/common:test_support",
+    "//brave/third_party/challenge_bypass_ristretto_ffi",
     "//brave/third_party/rapidjson",
-    "//brave/vendor/bat-native-ledger",
-    "//brave/vendor/bat-native-ledger:publishers_proto",
     "//chrome/browser:browser",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
@@ -37,6 +37,4 @@ source_set("brave_rewards_unit_tests") {
     "//ui/base:base",
     "//url:url",
   ]
-
-  configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
 }  # source_set("brave_rewards_unit_tests")

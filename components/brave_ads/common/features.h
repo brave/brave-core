@@ -36,7 +36,7 @@ int NotificationAdInsetY();
 BASE_DECLARE_FEATURE(kAllowedToFallbackToCustomNotificationAds);
 bool IsAllowedToFallbackToCustomNotificationAdsEnabled();
 
-BASE_DECLARE_FEATURE(kSupportBraveSearchResultAdConfirmationEvents);
+BASE_DECLARE_FEATURE(kShouldTriggerSearchResultAdEvents);
 
 }  // namespace brave_ads::features
 

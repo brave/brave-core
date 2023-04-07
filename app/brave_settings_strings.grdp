@@ -158,7 +158,7 @@
     Blank page
   </message>
   <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS" desc="The label for widget customization">
-    Customize the background image and widgets that appear on the new tab page
+    Customize new tab page
   </message>
 
   <!-- Settings / Pin shortcut-->
@@ -283,6 +283,9 @@
   </message>
   <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
     Only cross-site
+  </message>
+  <message name="IDS_SETTINGS_FORGET_FIRST_PARTY_COOKIES" desc="Select value">
+    Forget by default
   </message>
   <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
     Disabled
@@ -422,9 +425,6 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_SHOW_NON_VERIFIED_SITES_LABEL" desc="The text label for the setting controlling showing non-verified sites in the auto-contribution list">
     Show non-verified sites in list
-  </message>
-  <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_ALLOW_VIDEO_CONTRIBUTIONS_LABEL" desc="The text label for the setting controlling allowing contributions for videos">
-    Allow contributions for videos
   </message>
   <message name="IDS_SETTINGS_BRAVE_REWARDS_AUTO_CONTRIBUTE_DESC_LABEL" desc="The text label for the description of auto-contribute">
     By turning on Auto-Contribute, you agree to the <ph name="BEGIN_LINK_TOS">&lt;a target="_blank" href="$1"&gt;</ph>Terms of Service<ph name="END_LINK_TOS">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK_PP">&lt;a target="_blank" href="$2"&gt;</ph>Privacy Policy<ph name="END_LINK_PP">&lt;/a&gt;</ph>.
@@ -901,6 +901,39 @@
   <message name="IDS_SETTINGS_ENABLE_WIDEVINE_DESC" desc="Text fragment for enabling widevine component. 'Widevine' is the name of a plugin and should not be translated.">
     Use Widevine digital rights management (DRM) component to view protected streaming video and other content in the browser.
   </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_LABEL" desc="The label of manage v2 extensions link in settings">
+    Manifest V2 extensions
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_SUBLABEL" desc="The sub label of manage v2 extensions link in settings">
+    The following Manifest V2 extensions will be removed from the Chrome Web Store, but are still supported in Brave. Toggle to download and install, or to uninstall.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_TOAST_CONFIRM" desc="The label of the error toast button in settings">
+    Close
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_NAME" desc="Manifest V2 extension toggle's label">
+    Enable NoScript&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_NO_SCRIPT_DESC" desc="Manifest V2 extension toggle's sub label">
+    NoScript is a Manifest V2 extension that allows you to block and unblock individual scripts running or attempting to run on a given page.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_NAME" desc="Manifest V2 extension toggle's label">
+    Enable uBlock Origin&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UBLOCK_ORIGIN_DESC" desc="Manifest V2 extension toggle's sub label">
+    uBlock Origin is a Manifest V2 extension that provides powerful content blocking tools with lots of options for advanced users.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_NAME" desc="Manifest V2 extension toggle's label">
+    Enable uMatrix&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_UMATRIX_DESC" desc="Manifest V2 extension toggle's sub label">
+    uMatrix is a Manifest V2 extension that provides point-and-click matrix-based firewall, with many privacy-enhancing tools.
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_NAME" desc="Manifest V2 extension toggle's label">
+    Enable AdGuard&#x2122;
+  </message>
+  <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_V2_ADGUARD_DESC" desc="Manifest V2 extension toggle's sub label">
+    AdGuard is a Manifest V2 extension that provides ad blocking, parental control options, and integration with other AdGuard service offerings.
+  </message>
   <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
     Manage extensions
   </message>
@@ -939,6 +972,12 @@
   <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
     Show Brave Wallet icon on toolbar
   </message>
+  <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL" desc="The label for enabling NFT discovery">
+    Enable NFT discovery
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC" desc="The description for enabling NFT discovery">
+    Automatically add NFTs you own to the Wallet using third party APIs.
+  </message>
   <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
     Automatically lock Brave Wallet
   </message>
@@ -964,17 +1003,30 @@
   <message name="IDS_SETTINGS_WALLET_RESET" desc="Reset wallet settings item text">
     Reset Brave Wallet
   </message>
+  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT" desc="Clear pinned NFTs item text">
+    Clear pinned NFTs
+  </message>
+  <message name="IDS_SETTINGS_CLEAR_PINNED_NFT_DESC" desc="CL item text">
+    Pinned NFTs are hosted to the IPFS network when local IPFS node is launched.
+    You have <ph name="NFT_COUNT">$1<ex>2</ex></ph> pinned NFTs at the moment.
+  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMATION" desc="Reset wallet settings confirmation for resetting transaction info message text">
     Are you sure you want to reset all of your wallet transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION" desc="Reset wallet settings confirmation message text">
     Are you sure you want to reset your wallet? If your wallet is not backed up, resetting will cause you to lose all account data (including any associated funds). Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
   </message>
+  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_CONFIRMATION" desc="Clear pinned NFTs confirmation message text">
+    Are you sure you want to clear your pinned NFTs? Some of NFTs may be lost forever if there is no other hosters in the IPFS network. Type "<ph name="CONFIRMATION_PHRASE">$1<ex>Yes</ex></ph>" to confirm.
+  </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet was reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_TRANSACTION_INFO_CONFIRMED" desc="Reset wallet settings confirmed message text">
     Your wallet transaction information was reset.
+  </message>
+  <message name="IDS_SETTINGS_WALLET_CLEAR_PINNED_NFT_INFO_CONFIRMED" desc="Clear pinned NFTs confirmed message text">
+    Your pinned NFTs were reset.
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
     Yes

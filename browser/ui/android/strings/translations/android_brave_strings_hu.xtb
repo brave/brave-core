@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
+<translation id="3478449063771497234">Az értesítések le vannak tiltva</translation>
+<translation id="7466579932043491502">A Brave jutalmak működését megakadályozhatja az értesítések kikapcsolása.</translation>
+<translation id="4259212006412783790">BEKAPCSOLÁS</translation>
+<translation id="6112331814131703370">Az 'Alkalmazásra váltás' értesítések letiltása</translation>
 <translation id="4744921452903670666">Mondja el, mit gondol!</translation>
 <translation id="2524310205387880526">Értékeld a Brave-et</translation>
 <translation id="4104400246019119780">Köszönjük!</translation>
@@ -248,8 +252,6 @@
 <translation id="2377929997600454162">Megérkeztek a(z) <ph name="MONTH_VALUE"/> havi hirdetések után kapott jutalmai!</translation>
 <translation id="2716238748894345194"><ph name="MONTH_VALUE"/> havi jutalmak összege: <ph name="TOKEN"/> BAT</translation>
 <translation id="1649629664206601032">Még <ph name="TOKEN"/> napig igényelheti</translation>
-<translation id="2323069945529668668">Ó jaj!</translation>
-<translation id="7510166204621526816">A Brave Jutalmak szerver nem válaszol. A lehető leghamarabb megoldjuk.</translation>
 <translation id="683765328936486920">YouTube-on</translation>
 <translation id="8969049974285901797">Twitchen</translation>
 <translation id="3101693828171454453">nincs elég <ph name="TOKEN"/></translation>
@@ -611,7 +613,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="5050890334032852465">Számla figyelőlistájának elmentése</translation>
 <translation id="7755766175599167100">Token keresése</translation>
 <translation id="3835223348537121988">Egyenleg:</translation>
-<translation id="6888491517683356528">Tovább a Ramp oldalára</translation>
+<translation id="3956169227169516344">Vásárlási mód kiválasztása</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Zárolás</translation>
 <translation id="8796429300536029044">NFT-adatok</translation>
@@ -625,6 +627,10 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="414639769490080648">Ennyi percbe telik, amíg a Brave pénztárca automatikusan zárolva lesz</translation>
 <translation id="4993345308607970390">Brave pénztárca visszaállítása</translation>
 <translation id="4322846864135539519">Biztosan visszaállítja a Brave Jutalmakat? Ha a pénztárcájáról nem készült biztonsági mentés, a visszaállítással elveszíti az összes fiókadatot (beleértve a kapcsolódó forrásokat). A megerősítéshez írja be a következőt: "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="6915083716464390008">Válasszon az alábbi lehetőségek közül</translation>
+<translation id="7667423728712601865">Vásároljon kriptót Visával vagy Mastercarddal.</translation>
+<translation id="3101839349578102016">Azonnali vásárlás a bankszámlájáról, alacsonyabb díjakkal.</translation>
+<translation id="7269640984027668973">Vásárlás a következővel: <ph name="RAMP_PROVIDER"/></translation>
 <translation id="4862812525895306758">Tranzakciós és nonce-adatok törlése</translation>
 <translation id="5693968582510626466">A tranzakciók törlése hasznos lehet fejlesztők számára, vagy pedig helyi kiszolgáló állapotának nullázásakor</translation>
 <translation id="5421107279168565467">Biztosan visszaállítja a tranzakciós- és nonce-adatokat? Ezt a funkciót általában helyi tesztkiszolgálót üzemeltető fejlesztők használják. A megerősítéshez gépelje be a következőt: „<ph name="CONFIRMATION_PHRASE"/>".</translation>
@@ -799,7 +805,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="3506416339268164412">A fogadó cím egy token szerződési címe</translation>
 <translation id="3494964159182650590">Jutalmak összefoglalója</translation>
 <translation id="590733288489975971">Jutalmak az Ads révén</translation>
-<translation id="207268487070188114">Egyszeri borravaló</translation>
+<translation id="2613359062756190460">Egyszeri adományok</translation>
 <translation id="7577100371127227294">Havi tippek</translation>
 <translation id="7091980679045978090">Becsült bevételek</translation>
 <translation id="1346059596910821859">Adomány</translation>

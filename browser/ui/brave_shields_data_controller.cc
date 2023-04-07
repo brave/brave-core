@@ -21,6 +21,7 @@
 #include "components/favicon/content/content_favicon_driver.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/features.h"
 #include "net/base/url_util.h"
 
 using net::AppendQueryParameter;
@@ -229,13 +230,20 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
       GetHostContentSettingsMap(web_contents()), cookie_settings.get(),
       GetCurrentSiteURL());
 
-  if (control_type == ControlType::ALLOW) {
-    return CookieBlockMode::ALLOW;
-  } else if (control_type == ControlType::BLOCK_THIRD_PARTY) {
-    return CookieBlockMode::CROSS_SITE_BLOCKED;
-  } else {
-    return CookieBlockMode::BLOCKED;
+  switch (control_type) {
+    case ControlType::ALLOW:
+      return CookieBlockMode::ALLOW;
+    case ControlType::BLOCK_THIRD_PARTY:
+      return CookieBlockMode::CROSS_SITE_BLOCKED;
+    case ControlType::FORGET_FIRST_PARTY:
+      return CookieBlockMode::FORGET_FIRST_PARTY;
+    case ControlType::BLOCK:
+      return CookieBlockMode::BLOCKED;
+    case ControlType::DEFAULT:
+      break;
   }
+  NOTREACHED();
+  return CookieBlockMode::BLOCKED;
 }
 
 bool BraveShieldsDataController::GetHTTPSEverywhereEnabled() {
@@ -325,14 +333,21 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
 void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
   auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
                     ->GetPrefs();
-  ControlType control_type;
+  ControlType control_type = ControlType::BLOCK;
 
-  if (mode == CookieBlockMode::ALLOW) {
-    control_type = ControlType::ALLOW;
-  } else if (mode == CookieBlockMode::CROSS_SITE_BLOCKED) {
-    control_type = ControlType::BLOCK_THIRD_PARTY;
-  } else {
-    control_type = ControlType::BLOCK;  // STANDARD
+  switch (mode) {
+    case CookieBlockMode::ALLOW:
+      control_type = ControlType::ALLOW;
+      break;
+    case CookieBlockMode::CROSS_SITE_BLOCKED:
+      control_type = ControlType::BLOCK_THIRD_PARTY;
+      break;
+    case CookieBlockMode::FORGET_FIRST_PARTY:
+      control_type = ControlType::FORGET_FIRST_PARTY;
+      break;
+    case CookieBlockMode::BLOCKED:
+      control_type = ControlType::BLOCK;
+      break;
   }
 
   brave_shields::SetCookieControlType(GetHostContentSettingsMap(web_contents()),
@@ -384,6 +399,17 @@ void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
   ReloadWebContents();
 }
 
+void BraveShieldsDataController::BlockAllowedScripts(
+    const std::vector<std::string>& origins) {
+  BraveShieldsWebContentsObserver* observer =
+      BraveShieldsWebContentsObserver::FromWebContents(web_contents());
+  if (!observer) {
+    return;
+  }
+  observer->BlockAllowedScripts(origins);
+  ReloadWebContents();
+}
+
 void BraveShieldsDataController::AllowScriptsOnce(
     const std::vector<std::string>& origins) {
   BraveShieldsWebContentsObserver* observer =
@@ -403,6 +429,12 @@ bool BraveShieldsDataController::IsBraveShieldsManaged() {
   return brave_shields::IsBraveShieldsManaged(
       profile_prefs, GetHostContentSettingsMap(web_contents()),
       GetCurrentSiteURL());
+}
+
+bool BraveShieldsDataController::IsForgetFirstPartyStorageFeatureEnabled()
+    const {
+  return base::FeatureList::IsEnabled(
+      net::features::kBraveForgetFirstPartyStorage);
 }
 
 void BraveShieldsDataController::HandleItemBlocked(

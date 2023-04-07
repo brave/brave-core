@@ -566,9 +566,9 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void onBalance(int errorCode) {
+    public void onBalance(boolean success) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.onBalance(errorCode);
+            observer.onBalance(success);
         }
     }
 

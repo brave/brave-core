@@ -10,7 +10,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
-#include "brave/browser/ntp_background/ntp_custom_background_images_service_factory.h"
+#include "brave/browser/ntp_background/brave_ntp_custom_background_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
@@ -40,10 +40,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
 
   if (brave::ShouldNewTabShowBlankpage(profile)) {
-    content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
+    content::WebUIDataSource* source =
+        content::WebUIDataSource::CreateAndAdd(profile, name);
     source->SetDefaultResource(IDR_BRAVE_BLANK_NEW_TAB_HTML);
     AddBackgroundColorToSource(source, web_ui->GetWebContents());
-    content::WebUIDataSource::Add(profile, source);
     return;
   }
 
@@ -76,7 +76,7 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
 
   // For custom background images.
   if (auto* ntp_custom_background_images_service =
-          NTPCustomBackgroundImagesServiceFactory::GetForContext(profile)) {
+          BraveNTPCustomBackgroundServiceFactory::GetForContext(profile)) {
     content::URLDataSource::Add(profile,
                                 std::make_unique<NTPCustomImagesSource>(
                                     ntp_custom_background_images_service));

@@ -68,6 +68,7 @@ class BraveShieldsDataController
   FingerprintMode GetFingerprintMode();
   CookieBlockMode GetCookieBlockMode();
   bool IsBraveShieldsManaged();
+  bool IsForgetFirstPartyStorageFeatureEnabled() const;
   bool GetHTTPSEverywhereEnabled();
   HttpsUpgradeMode GetHttpsUpgradeMode();
   bool GetNoScriptEnabled();
@@ -78,6 +79,7 @@ class BraveShieldsDataController
   void SetIsNoScriptEnabled(bool is_enabled);
   void SetIsHTTPSEverywhereEnabled(bool is_enabled);
   void AllowScriptsOnce(const std::vector<std::string>& origins);
+  void BlockAllowedScripts(const std::vector<std::string>& origins);
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);

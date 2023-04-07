@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { create } from 'ethereum-blockies'
 
 // actions
@@ -23,34 +23,51 @@ import { useTransactionParser } from './transaction-parser'
 import usePricing from './pricing'
 import useTokenInfo from './token'
 import { useLib } from './useLib'
-import { useSafeWalletSelector } from './use-safe-selector'
+import {
+  useSafeWalletSelector,
+  useUnsafeWalletSelector
+} from './use-safe-selector'
+import {
+  useGetDefaultNetworksQuery,
+  useGetSelectedChainQuery
+} from '../slices/api.slice'
 
 // Constants
-import { WalletState, BraveWallet } from '../../constants/types'
+import { BraveWallet } from '../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
 import { isSolanaTransaction, sortTransactionByDate } from '../../utils/tx-utils'
+import { MAX_UINT256 } from '../constants/magics'
 
 export const usePendingTransactions = () => {
   // redux
   const dispatch = useDispatch()
-  const {
-    accounts,
-    transactions,
-    selectedNetwork,
-    selectedPendingTransaction: transactionInfo,
-    userVisibleTokensInfo: visibleTokens,
-    transactionSpotPrices,
-    gasEstimates,
-    fullTokenList,
-    pendingTransactions,
-    defaultNetworks
-  } = useSelector((state: { wallet: WalletState }) => state.wallet)
+  const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
+  const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
+  const transactionInfo = useUnsafeWalletSelector(
+    WalletSelectors.selectedPendingTransaction
+  )
+  const visibleTokens = useUnsafeWalletSelector(
+    WalletSelectors.userVisibleTokensInfo
+  )
+  const transactionSpotPrices = useUnsafeWalletSelector(
+    WalletSelectors.transactionSpotPrices
+  )
+  const gasEstimates = useUnsafeWalletSelector(WalletSelectors.gasEstimates)
+  const fullTokenList = useUnsafeWalletSelector(WalletSelectors.fullTokenList)
+  const pendingTransactions = useUnsafeWalletSelector(
+    WalletSelectors.pendingTransactions
+  )
   const hasFeeEstimatesError = useSafeWalletSelector(
     WalletSelectors.hasFeeEstimatesError
   )
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: defaultNetworks = [] } = useGetDefaultNetworksQuery()
+
 
   const transactionGasEstimates = transactionInfo?.txDataUnion.ethTxData1559?.gasEstimation
 
@@ -77,7 +94,9 @@ export const usePendingTransactions = () => {
     transactionGasEstimates?.fastMaxPriorityFeePerGas || '0'
   ])
   const [baseFeePerGas, setBaseFeePerGas] = React.useState<string>(transactionGasEstimates?.baseFeePerGas || '')
-  const [currentTokenAllowance, setCurrentTokenAllowance] = React.useState<string>('')
+  const [erc20AllowanceResult, setERC20AllowanceResult] = React.useState<
+    string | undefined
+  >(undefined)
 
   // computed state
   const transactionDetails = transactionInfo ? parseTransaction(transactionInfo) : undefined
@@ -206,6 +225,29 @@ export const usePendingTransactions = () => {
     )
   }, [transactionDetails, hasFeeEstimatesError, isLoadingGasFee])
 
+  const {
+    currentTokenAllowance,
+    isCurrentAllowanceUnlimited
+  } = React.useMemo(() => {
+    if (!transactionDetails || erc20AllowanceResult === undefined) {
+      return {
+        currentTokenAllowance: undefined,
+        isCurrentAllowanceUnlimited: false
+      }
+    }
+    
+    const currentTokenAllowance = new Amount(erc20AllowanceResult)
+      .divideByDecimals(transactionDetails.decimals)
+      .format()
+
+    const isCurrentAllowanceUnlimited = erc20AllowanceResult === MAX_UINT256
+
+    return {
+      currentTokenAllowance,
+      isCurrentAllowanceUnlimited
+    }
+  }, [erc20AllowanceResult])
+
   // effects
   React.useEffect(() => {
     const interval = setInterval(() => {
@@ -235,6 +277,7 @@ export const usePendingTransactions = () => {
   )
 
   React.useEffect(() => {
+    let subscribed = true
     if (transactionInfo?.txType !== BraveWallet.TransactionType.ERC20Approve) {
       return
     }
@@ -248,11 +291,13 @@ export const usePendingTransactions = () => {
       transactionDetails.sender,
       transactionDetails.approvalTarget
     ).then(result => {
-      const allowance = new Amount(result)
-        .divideByDecimals(transactionDetails.decimals)
-        .format()
-      setCurrentTokenAllowance(allowance)
+      subscribed && setERC20AllowanceResult(result)
     }).catch(e => console.error(e))
+
+    // cleanup
+    return () => {
+      subscribed = false
+    }
   }, [transactionInfo?.txType, transactionDetails, getERC20Allowance])
 
   React.useEffect(() => {
@@ -267,6 +312,7 @@ export const usePendingTransactions = () => {
   return {
     baseFeePerGas,
     currentTokenAllowance,
+    isCurrentAllowanceUnlimited,
     findAssetPrice,
     foundTokenInfoByContractAddress,
     fromAccountName,

@@ -15,10 +15,12 @@ def AddBravePolicies(template_file_contents):
         {
             'name': 'TorDisabled',
             'type': 'main',
-            'schema': {'type': 'boolean'},
-            'supported_on': ['chrome.win:78-',
-                             'chrome.mac:93-',
-                             'chrome.linux:93-'],
+            'schema': {
+                'type': 'boolean'
+            },
+            'supported_on': [
+                'chrome.win:78-', 'chrome.mac:93-', 'chrome.linux:93-'
+            ],
             'features': {
                 'dynamic_refresh': False,
                 'per_profile': False,
@@ -35,7 +37,9 @@ def AddBravePolicies(template_file_contents):
         {
             'name': 'IPFSEnabled',
             'type': 'main',
-            'schema': {'type': 'boolean'},
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:87-'],
             'future_on': ['android'],
             'features': {
@@ -54,7 +58,9 @@ def AddBravePolicies(template_file_contents):
         {
             'name': 'BraveRewardsDisabled',
             'type': 'main',
-            'schema': {'type': 'boolean'},
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:105-'],
             'features': {
                 'dynamic_refresh': False,
@@ -72,7 +78,9 @@ def AddBravePolicies(template_file_contents):
         {
             'name': 'BraveWalletDisabled',
             'type': 'main',
-            'schema': {'type': 'boolean'},
+            'schema': {
+                'type': 'boolean'
+            },
             'supported_on': ['chrome.*:106-'],
             'features': {
                 'dynamic_refresh': False,
@@ -91,8 +99,10 @@ def AddBravePolicies(template_file_contents):
             'name': 'BraveShieldsDisabledForUrls',
             'type': 'main',
             'schema': {
-              'type': 'array',
-              'items': { 'type': 'string' },
+                'type': 'array',
+                'items': {
+                    'type': 'string'
+                },
             },
             'supported_on': ['chrome.*:107-'],
             'features': {
@@ -112,8 +122,10 @@ def AddBravePolicies(template_file_contents):
             'name': 'BraveShieldsEnabledForUrls',
             'type': 'main',
             'schema': {
-              'type': 'array',
-              'items': { 'type': 'string' },
+                'type': 'array',
+                'items': {
+                    'type': 'string'
+                },
             },
             'supported_on': ['chrome.*:107-'],
             'features': {
@@ -128,6 +140,27 @@ def AddBravePolicies(template_file_contents):
             'tags': [],
             'desc': ('''This policy allows an admin to specify that Brave '''
                      '''Shields enabled.'''),
+        },
+        {
+            'name': 'BraveVPNDisabled',
+            'type': 'main',
+            'schema': {
+                'type': 'boolean'
+            },
+            'supported_on': ['chrome.*:112-'],
+            'future_on': ['android'],
+            'features': {
+                'dynamic_refresh': False,
+                'per_profile': True,
+                'can_be_recommended': False,
+                'can_be_mandatory': True
+            },
+            'example_value': True,
+            'id': 6,
+            'caption': '''Disable Brave VPN feature.''',
+            'tags': [],
+            'desc': ('''This policy allows an admin to specify that Brave '''
+                     '''VPN feature will be disabled.'''),
         },
     ]
 

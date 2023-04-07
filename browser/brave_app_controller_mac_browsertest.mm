@@ -13,8 +13,10 @@
 #include "base/mac/foundation_util.h"
 #include "base/mac/scoped_nsobject.h"
 #include "base/mac/scoped_objc_class_swizzler.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_app_controller_mac.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser.h"
@@ -30,7 +32,68 @@ namespace {
 
 const char kTestingPage[] = "/empty.html";
 
-using BraveAppControllerBrowserTest = InProcessBrowserTest;
+class BraveAppControllerBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveAppControllerBrowserTest() {
+    features_.InitWithFeatureState(features::kBraveCopyCleanLinkByDefault,
+                                   true);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+class BraveAppControllerCleanLinkFeatureDisabledBrowserTest
+    : public InProcessBrowserTest {
+ public:
+  BraveAppControllerCleanLinkFeatureDisabledBrowserTest() {
+    features_.InitWithFeatureState(features::kBraveCopyCleanLinkByDefault,
+                                   false);
+  }
+
+ private:
+  base::test::ScopedFeatureList features_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
+                       CopyLinkItemVisible) {
+  ASSERT_TRUE(embedded_test_server()->Start());
+  GURL url = embedded_test_server()->GetURL(kTestingPage);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+
+  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
+      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
+  omnibox_view->SetFocus(true);
+  omnibox_view->SelectAll(false);
+  EXPECT_TRUE(omnibox_view->IsSelectAll());
+  EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+
+  BraveAppController* ac = base::mac::ObjCCastStrict<BraveAppController>(
+      [[NSApplication sharedApplication] delegate]);
+  ASSERT_TRUE(ac);
+  base::scoped_nsobject<NSMenu> edit_submenu(
+      [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu],
+      base::scoped_policy::RETAIN);
+
+  base::scoped_nsobject<NSMenuItem> copy_item(
+      [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY],
+      base::scoped_policy::RETAIN);
+
+  base::scoped_nsobject<NSMenuItem> clean_link_menu_item(
+      [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK],
+      base::scoped_policy::RETAIN);
+
+  [ac menuNeedsUpdate:[clean_link_menu_item menu]];
+  base::RunLoop().RunUntilIdle();
+  EXPECT_FALSE([clean_link_menu_item isHidden]);
+
+  EXPECT_TRUE([[clean_link_menu_item keyEquivalent] isEqualToString:@""]);
+
+  EXPECT_TRUE([[copy_item keyEquivalent] isEqualToString:@"c"]);
+  EXPECT_EQ([copy_item keyEquivalentModifierMask], NSEventModifierFlagCommand);
+}
 
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   ASSERT_TRUE(embedded_test_server()->Start());
@@ -41,6 +104,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
+  omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
   EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());

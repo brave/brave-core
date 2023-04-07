@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -27,9 +28,10 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
-import org.chromium.chrome.browser.crypto_wallet.util.ImageLoader;
+import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 import java.util.ArrayList;
@@ -147,9 +149,18 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             }
         }
 
-        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
-                || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
+        if (isAssetSelectionType() || mType == AdapterType.VISIBLE_ASSETS_LIST) {
+            if (walletListItemModel.isNativeAsset()) {
+                AndroidUtils.gone(holder.ivNetworkImage);
+            } else {
+                AndroidUtils.show(holder.ivNetworkImage);
+                Utils.setBitmapResource(mExecutor, mHandler, context,
+                        walletListItemModel.getNetworkIcon(), walletListItemModel.getIcon(),
+                        holder.ivNetworkImage, null, true);
+            }
+        }
+
+        if (isAssetSelectionType()) {
             holder.text1Text.setVisibility(View.GONE);
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
@@ -198,7 +209,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 if (walletListItemModel.hasNftImageLink()
                         && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
                     String url = nftDataModel.nftMetadata.mImageUrl;
-                    ImageLoader.createLoadNftRequest(url, context, false).into(holder.iconImg);
+                    ImageLoader.downloadImage(url, context, false, holder.iconImg, null);
                 } else {
                     Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                             walletListItemModel.getBlockchainToken().contractAddress,
@@ -231,6 +242,12 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
     }
 
+    private boolean isAssetSelectionType() {
+        return mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
+                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
+                || mType == AdapterType.SWAP_FROM_ASSETS_LIST;
+    }
+
     @Override
     public int getItemCount() {
         return walletListItemModelList.size();
@@ -241,10 +258,8 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
-        this.walletListItemModelList = removeDuplicates(walletListItemModelList);
-        if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
-                || mType == AdapterType.SEND_ASSETS_LIST || mType == AdapterType.SWAP_TO_ASSETS_LIST
-                || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
+        this.walletListItemModelList = walletListItemModelList;
+        if (isAssetSelectionType()) {
             walletListItemModelListCopy.addAll(this.walletListItemModelList);
             mCheckedPositions.clear();
         }
@@ -305,43 +320,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         }
     }
 
-    // Removing duplicates will allow the recycler viewer to render a clean list without showing the
-    // same assets multiple times. Currently, the list of available assets is fetched from Core
-    // API the returns a merged list containing the available assets <b>per ramp provider</b>.
-    // It's not unusual to have the same asset multiple times with the same contract address all
-    // upper case from a ramp provider and all lower case from another one. Thus it's important to
-    // compare the contract addresses ignoring case.
-    private List<WalletListItemModel> removeDuplicates(
-            List<WalletListItemModel> walletListItemModelList) {
-        List<WalletListItemModel> result = new ArrayList<>();
-        for (WalletListItemModel item : walletListItemModelList) {
-            if (item.getBlockchainToken() == null) {
-                // If blockchain token is null the item can be safely added without any risk
-                // of duplication.
-                result.add(item);
-                continue;
-            }
-            String contractAddress = item.getBlockchainToken().contractAddress;
-            boolean duplicate = false;
-            for (WalletListItemModel itemResult : result) {
-                // IMPORTANT: use `equalsIgnoreCase` to detect two contract addresses with different
-                // capitalization.
-                if (contractAddress.equalsIgnoreCase(
-                            itemResult.getBlockchainToken().contractAddress)) {
-                    // Duplicated item detected!
-                    duplicate = true;
-                    break;
-                }
-            }
-            // Do not add duplicated item.
-            if (!duplicate) {
-                result.add(item);
-            }
-        }
-
-        return result;
-    }
-
     private void updateSelectedNetwork(int selectedAccountPosition) {
         walletListItemModelList.get(previousSelectedPos).setIsUserSelected(false);
         notifyItemChanged(previousSelectedPos);
@@ -352,30 +330,31 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView iconImg;
-        public TextView titleText;
-        public TextView subTitleText;
-        public TextView txStatus;
-        public TextView text1Text;
-        public TextView text2Text;
-        public CheckBox assetCheck;
-        public LinearLayout feeLayout;
-        public TextView feeText;
-        public ImageView iconTrash;
-        public ImageView ivSelected;
+        private final ImageView iconImg;
+        private final TextView titleText;
+        private final TextView subTitleText;
+        private final TextView txStatus;
+        private final TextView text1Text;
+        private final TextView text2Text;
+        private final CheckBox assetCheck;
+        private final TextView feeText;
+        private final ImageView iconTrash;
+        private final ImageView ivSelected;
+        private final ImageView ivNetworkImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            this.iconImg = itemView.findViewById(R.id.icon);
-            this.titleText = itemView.findViewById(R.id.title);
-            this.txStatus = itemView.findViewById(R.id.status);
-            this.subTitleText = itemView.findViewById(R.id.sub_title);
-            this.text1Text = itemView.findViewById(R.id.text1);
-            this.text2Text = itemView.findViewById(R.id.text2);
-            this.assetCheck = itemView.findViewById(R.id.assetCheck);
-            this.feeText = itemView.findViewById(R.id.fee_text);
-            this.iconTrash = itemView.findViewById(R.id.icon_trash);
-            this.ivSelected = itemView.findViewById(R.id.iv_selected);
+            iconImg = itemView.findViewById(R.id.icon);
+            titleText = itemView.findViewById(R.id.title);
+            txStatus = itemView.findViewById(R.id.status);
+            subTitleText = itemView.findViewById(R.id.sub_title);
+            text1Text = itemView.findViewById(R.id.text1);
+            text2Text = itemView.findViewById(R.id.text2);
+            assetCheck = itemView.findViewById(R.id.assetCheck);
+            feeText = itemView.findViewById(R.id.fee_text);
+            iconTrash = itemView.findViewById(R.id.icon_trash);
+            ivSelected = itemView.findViewById(R.id.iv_selected);
+            ivNetworkImage = itemView.findViewById(R.id.iv_network_Icon);
         }
 
         public void resetObservers() {

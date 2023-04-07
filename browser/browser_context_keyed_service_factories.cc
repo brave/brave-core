@@ -19,15 +19,18 @@
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ntp_background/view_counter_service_factory.h"
 #include "brave/browser/permissions/permission_lifetime_manager_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/sync/brave_sync_alerts_service_factory.h"
+#include "brave/browser/ui/commander/commander_service_factory.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
@@ -44,8 +47,10 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
+#include "brave/components/commands/common/features.h"
 #else
 #include "brave/browser/ntp_background/android/ntp_background_images_bridge.h"
 #endif
@@ -109,6 +114,15 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::TxServiceFactory::GetInstance();
   brave_wallet::BraveWalletServiceFactory::GetInstance();
 
+#if !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    commands::AcceleratorServiceFactory::GetInstance();
+  }
+  if (base::FeatureList::IsEnabled(features::kBraveCommander)) {
+    commander::CommanderServiceFactory::GetInstance();
+  }
+#endif
+
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   EthereumRemoteClientServiceFactory::GetInstance();
 #endif
@@ -122,6 +136,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   brave_wallet::BraveWalletPinServiceFactory::GetInstance();
 #endif
 
+  EphemeralStorageServiceFactory::GetInstance();
   PermissionLifetimeManagerFactory::GetInstance();
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   skus::SkusServiceFactory::GetInstance();

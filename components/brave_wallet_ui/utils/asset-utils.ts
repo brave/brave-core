@@ -10,8 +10,9 @@ import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wal
 import Amount from './amount'
 import {
   getRampNetworkPrefix,
-  addIpfsGateway
 } from './string-utils'
+
+import { getNetworkLogo, makeNativeAssetLogo } from '../options/asset-options'
 
 export const getUniqueAssets = (assets: BraveWallet.BlockchainToken[]) => {
   return assets.filter((asset, index) => {
@@ -77,29 +78,6 @@ export const auroraSupportedContractAddresses = [
   '0x0bc529c00c6401aef6d220be8c6ea1667f6ad93e' // YFI
 ].map(contractAddress => contractAddress.toLowerCase())
 
-export const addLogoToToken = (token: BraveWallet.BlockchainToken) => {
-  const newLogo = token.logo?.startsWith('ipfs://')
-    ? addIpfsGateway(token.logo)
-    : token.logo?.startsWith('data:image/')
-      ? token.logo
-      : `chrome://erc-token-images/${token.logo}`
-
-  if (token.logo === newLogo) {
-    // nothing to change
-    return token
-  }
-
-  try {
-    token.logo = newLogo
-    return token
-  } catch {
-    // the token object was immutable, return a new token object
-    return {
-      ...token,
-      logo: newLogo
-    }
-  }
-}
 
 export const addChainIdToToken = (
   token: BraveWallet.BlockchainToken,
@@ -246,4 +224,22 @@ export const checkIfTokensMatch = (
     tokenOne.contractAddress.toLowerCase() === tokenTwo.contractAddress.toLowerCase() &&
     tokenOne.chainId === tokenTwo.chainId &&
     tokenOne.tokenId === tokenTwo.tokenId
+}
+
+export function filterTokensByNetworks (assets: BraveWallet.BlockchainToken[], networks: BraveWallet.NetworkInfo[]) {
+  return assets.filter(asset =>
+    networks.some(network =>
+      asset.chainId === network.chainId && asset.coin === network.coin))
+}
+
+export const checkIfTokenNeedsNetworkIcon = (
+  network: BraveWallet.NetworkInfo,
+  contractAddress: string
+) => {
+  return contractAddress !== '' || // non-native asset
+
+    // Checks if the network is not the official Ethereum network,
+    // but uses ETH as gas.
+    getNetworkLogo(network.chainId, network.symbol) !==
+    makeNativeAssetLogo(network.symbol, network.chainId)
 }

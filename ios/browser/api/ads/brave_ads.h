@@ -51,17 +51,13 @@ OBJC_EXPORT
 
 #pragma mark - Global
 
-/// Whether or not a given locale is supported. The locale should be a standard
-/// locale identifier, i.e. "en_US"
-+ (BOOL)isSupportedLocale:(NSString*)locale;
-
-/// Whether or not the users current locale (by `NSLocale`) is supported
-+ (BOOL)isCurrentLocaleSupported;
+/// Whether or not the users current region is supported
++ (BOOL)isSupportedRegion;
 
 /// System info
-@property(nonatomic, class) AdsSysInfo* sysInfo;
+@property(nonatomic, class) BraveAdsSysInfo* sysInfo;
 /// The build channel info that ads is configured for
-@property(nonatomic, class) AdsBuildChannelInfo* buildChannelInfo;
+@property(nonatomic, class) BraveAdsBuildChannelInfo* buildChannelInfo;
 
 #pragma mark - Initialization / Shutdown
 
@@ -146,7 +142,7 @@ OBJC_EXPORT
 
 /// Report that a notification ad event type was triggered for a given id
 - (void)reportNotificationAdEvent:(NSString*)placementId
-                        eventType:(AdsNotificationAdEventType)eventType;
+                        eventType:(BraveAdsNotificationAdEventType)eventType;
 
 /// Get inline content ad for the given dimensions
 - (void)inlineContentAdsWithDimensions:(NSString*)dimensions
@@ -158,20 +154,21 @@ OBJC_EXPORT
 /// Report that an inline content ad event type was triggered for a given id
 - (void)reportInlineContentAdEvent:(NSString*)placementId
                 creativeInstanceId:(NSString*)creativeInstanceId
-                         eventType:(AdsInlineContentAdEventType)eventType;
+                         eventType:(BraveAdsInlineContentAdEventType)eventType;
 
 /// Report that a new tab page ad event type was triggered for a given id
 - (void)reportNewTabPageAdEvent:(NSString*)wallpaperId
              creativeInstanceId:(NSString*)creativeInstanceId
-                      eventType:(AdsNewTabPageAdEventType)eventType;
+                      eventType:(BraveAdsNewTabPageAdEventType)eventType;
 
 /// Report that a promoted content ad event type was triggered for a given id
 - (void)reportPromotedContentAdEvent:(NSString*)placementId
                   creativeInstanceId:(NSString*)creativeInstanceId
-                           eventType:(AdsPromotedContentAdEventType)eventType;
+                           eventType:
+                               (BraveAdsPromotedContentAdEventType)eventType;
 
 /// Purge orphaned ad events for a given ad type
-- (void)purgeOrphanedAdEvents:(AdsAdType)adType
+- (void)purgeOrphanedAdEvents:(BraveAdsAdType)adType
                    completion:(void (^)(BOOL success))completion;
 
 /// Get the number of ads received and the estimated earnings of viewing said

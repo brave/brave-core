@@ -23,8 +23,8 @@ namespace market {
 
 UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
-  auto* untrusted_source =
-      content::WebUIDataSource::Create(kUntrustedMarketURL);
+  auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedMarketURL);
 
   for (const auto& str : brave_wallet::kLocalizedStrings) {
     std::u16string l10n_str =
@@ -64,8 +64,6 @@ UntrustedMarketUI::UntrustedMarketUI(content::WebUI* web_ui)
   untrusted_source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
   untrusted_source->AddString("braveWalletMarketUiBridgeUrl",
                               kUntrustedMarketURL);
-  auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  content::WebUIDataSource::Add(browser_context, untrusted_source);
 }
 
 UntrustedMarketUI::~UntrustedMarketUI() = default;

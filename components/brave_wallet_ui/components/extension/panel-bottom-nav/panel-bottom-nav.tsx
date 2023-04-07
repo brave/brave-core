@@ -9,7 +9,7 @@ import * as React from 'react'
 import { PanelTypes, NavOption } from '../../../constants/types'
 
 // Options
-import { NavOptions } from '../../../options/nav-options'
+import { PanelNavOptions } from '../../../options/nav-options'
 
 // Components
 import { PanelBottomNavButton } from './panel-bottom-nav-button/panel-bottom-nav-button'
@@ -23,9 +23,6 @@ import {
 interface Props {
   onNavigate: (path: PanelTypes) => void
 }
-
-// Portfolio is not an option in the panel
-const buttonOptions = NavOptions.filter((option) => option.id !== 'portfolio')
 
 export const PanelBottomNav = (props: Props) => {
   const { onNavigate } = props
@@ -46,7 +43,7 @@ export const PanelBottomNav = (props: Props) => {
   return (
     <StyledWrapper>
       <NavOutline>
-        {buttonOptions.map((option) =>
+        {PanelNavOptions.map((option) =>
           <PanelBottomNavButton
             key={option.id}
             onClick={() => handleOnClick(option)}

@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 // asset
-import { USDCIconUrl } from '../../assets/asset-icons'
+import { USDCIconUrl } from './asset-icons'
 
 // types
 import { BraveWallet, WalletAccountType, WalletState } from '../../constants/types'
@@ -14,9 +14,7 @@ import { AllAccountsOption } from '../../options/account-filter-options'
 import { mockMoonCatNFT } from './mock-asset-options'
 
 // mocks
-import { mockNetwork } from '../../common/constants/mocks'
 import { mockedErc20ApprovalTransaction, mockTransactionInfo } from './mock-transaction-info'
-import { mockNetworks } from './mock-networks'
 import { LAMPORTS_PER_SOL } from '../../common/constants/solana'
 
 const mockAccount: WalletAccountType = {
@@ -176,6 +174,7 @@ export const mockWalletState: WalletState = {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: 'chrome://erc-token-images/usdc.png',
       name: 'USD Coin',
@@ -191,6 +190,7 @@ export const mockWalletState: WalletState = {
       decimals: 18,
       isErc20: true,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: 'chrome://erc-token-images/dai.png',
       name: 'DAI Stablecoin',
@@ -215,12 +215,9 @@ export const mockWalletState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: false,
   knownTransactions: [],
-  networkList: mockNetworks,
-  hiddenNetworkList: [],
   pendingTransactions: [],
   portfolioPriceHistory: [],
   selectedAccount: mockAccount,
-  selectedNetwork: mockNetworks[0],
   selectedPendingTransaction: mockedErc20ApprovalTransaction,
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe.OneDay,
   transactions: {
@@ -259,6 +256,7 @@ export const mockWalletState: WalletState = {
       decimals: 18,
       isErc20: false,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: 'chrome://erc-token-images/',
       name: 'Ethereum',
@@ -274,6 +272,7 @@ export const mockWalletState: WalletState = {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: USDCIconUrl,
       name: 'USD Coin',
@@ -289,6 +288,7 @@ export const mockWalletState: WalletState = {
       decimals: 18,
       isErc20: false,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: 'chrome://erc-token-images/',
       name: 'Ethereum',
@@ -304,6 +304,7 @@ export const mockWalletState: WalletState = {
       decimals: 6,
       isErc20: true,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: USDCIconUrl,
       name: 'USD Coin',
@@ -316,7 +317,6 @@ export const mockWalletState: WalletState = {
     mockMoonCatNFT
   ],
   transactionProviderErrorRegistry: {},
-  defaultNetworks: [mockNetwork],
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
   selectedAccountFilter: AllAccountsOption.id,

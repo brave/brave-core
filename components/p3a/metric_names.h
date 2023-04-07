@@ -9,7 +9,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/string_piece.h"
 
-namespace brave::p3a {
+namespace p3a {
 
 // Allowlist for histograms that we collect.
 // A metric must be listed here to be reported.
@@ -88,7 +88,7 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.ActiveEthAccounts",
     "Brave.Wallet.ActiveFilAccounts",
     "Brave.Wallet.ActiveSolAccounts",
-    "Brave.Wallet.EthProvider.2",
+    "Brave.Wallet.EthProvider.3",
     "Brave.Wallet.EthTransactionSent",
     "Brave.Wallet.FilTransactionSent",
     "Brave.Wallet.DefaultSolanaWalletSetting",
@@ -97,9 +97,9 @@ constexpr inline auto kCollectedTypicalHistograms =
     "Brave.Wallet.LastUsageTime",
     "Brave.Wallet.NewUserReturning",
     "Brave.Wallet.OnboardingConversion.2",
+    "Brave.Wallet.SolProvider",
     "Brave.Wallet.SolTransactionSent",
-    "Brave.Wallet.UsageDaysInWeek",
-    "Brave.Wallet.UsageMonthly.2",
+    "Brave.Wallet.UsageWeekly",
     "Brave.Welcome.InteractionStatus",
 
     // IPFS
@@ -176,20 +176,30 @@ constexpr inline auto kCollectedTypicalHistograms =
 
 constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
-    // Please remove following placeholder metric once
-    // static slow metrics are added
-    "Brave.P3A.ExampleSlowMetric"
+    "Brave.Core.UsageMonthly",
+    "Brave.P3A.TestSlowMetric",
+    "Brave.Wallet.UsageMonthly"
 });
 
 constexpr inline auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
-    // Please remove following placeholder metric once
-    // static express metrics are added
-    "Brave.P3A.ExampleExpressMetric"
+    "Brave.Core.UsageDaily",
+    "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Wallet.UsageDaily"
+});
+
+// List of metrics that should only be sent once per latest histogram update.
+// Once the metric value has been sent, the value will be removed from the log store.
+constexpr inline auto kEphemeralHistograms =
+  base::MakeFixedFlatSet<base::StringPiece>({
+    "Brave.Rewards.EnabledInstallationTime",
+    "Brave.Wallet.UsageDaily",
+    "Brave.Wallet.UsageMonthly",
+    "Brave.Wallet.UsageWeekly"
 });
 
 // clang-format on
 
-}  // namespace brave::p3a
+}  // namespace p3a
 
 #endif  // BRAVE_COMPONENTS_P3A_METRIC_NAMES_H_

@@ -104,7 +104,7 @@ TestingBraveBrowserProcess::ipfs_client_updater() {
 }
 #endif
 
-brave::BraveP3AService* TestingBraveBrowserProcess::brave_p3a_service() {
+p3a::P3AService* TestingBraveBrowserProcess::p3a_service() {
   NOTREACHED();
   return nullptr;
 }
@@ -117,6 +117,12 @@ TestingBraveBrowserProcess::brave_referrals_service() {
 
 brave_stats::BraveStatsUpdater*
 TestingBraveBrowserProcess::brave_stats_updater() {
+  NOTREACHED();
+  return nullptr;
+}
+
+brave_ads::BraveStatsHelper*
+TestingBraveBrowserProcess::ads_brave_stats_helper() {
   NOTREACHED();
   return nullptr;
 }

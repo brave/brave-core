@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 // Options
 import { BraveWallet, WalletState } from '../../../constants/types'
@@ -11,10 +12,13 @@ import { BraveWallet, WalletState } from '../../../constants/types'
 // Utils
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
-import { getTokensNetwork } from '../../../utils/network-utils'
 import { computeFiatAmount } from '../../../utils/pricing-utils'
 import { unbiasedRandom } from '../../../utils/random-utils'
 import { isDataURL } from '../../../utils/string-utils'
+import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+
+// Hooks
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
@@ -36,7 +40,6 @@ import {
   ButtonArea
 } from './style'
 import { IconsWrapper, NetworkIconWrapper, SellButton, SellButtonRow } from '../../shared/style'
-import { useSelector } from 'react-redux'
 
 interface Props {
   action?: () => void
@@ -61,8 +64,10 @@ export const PortfolioAssetItem = ({
 }: Props) => {
   // redux
   const defaultCurrencies = useSelector(({ wallet }: { wallet: WalletState }) => wallet.defaultCurrencies)
-  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const spotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
+
+  // queries
+  const { data: tokensNetwork } = useGetNetworkQuery(token, { skip: !token })
 
   // state
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
@@ -101,15 +106,14 @@ export const PortfolioAssetItem = ({
     return formattedAssetBalance === '' && !isNonFungibleToken
   }, [formattedAssetBalance, token])
 
-  const tokensNetwork = React.useMemo(() => {
-    return getTokensNetwork(networks, token)
-  }, [token, networks])
-
   const NetworkDescription = React.useMemo(() => {
+
     if (tokensNetwork && !isPanel) {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
+      return token.symbol !== ''
+      ? getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', token.symbol)
         .replace('$2', tokensNetwork.chainName ?? '')
+      : tokensNetwork.chainName
     }
     return token.symbol
   }, [tokensNetwork, token])
@@ -135,7 +139,7 @@ export const PortfolioAssetItem = ({
   return (
     <>
       {token.visible &&
-        <StyledWrapper>
+        <StyledWrapper isPanel={isPanel}>
           <ButtonArea disabled={isLoading} rightMargin={isAccountDetails ? 10 : 0} onClick={action}>
             <NameAndIcon>
               <IconsWrapper>
@@ -147,7 +151,10 @@ export const PortfolioAssetItem = ({
                   />
                   : <>
                     <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
-                    {tokensNetwork && token.contractAddress !== '' && !isPanel &&
+                    {
+                      !isPanel &&
+                      tokensNetwork &&
+                      checkIfTokenNeedsNetworkIcon(tokensNetwork, token.contractAddress) &&
                       <NetworkIconWrapper>
                         <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
                       </NetworkIconWrapper>

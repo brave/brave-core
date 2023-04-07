@@ -1,0 +1,12 @@
+diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
+index 946be9bf57478391d39feb706c4f4b6ac920752e..730ce9dd7eb6c68a6d0c786a48424759f1eeac53 100644
+--- a/crypto/unexportable_key_metrics.cc
++++ b/crypto/unexportable_key_metrics.cc
+@@ -95,6 +95,7 @@ void MeasureTpmOperationsInternal() {
+   if (algo) {
+     switch (*algo) {
+       case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
++      case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
+         supported_algo = internal::TPMSupport::kECDSA;
+         break;
+       case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:

@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -63,6 +64,10 @@ void BraveOmniboxViewViews::CopySanitizedURL(const GURL& url) {
 #if BUILDFLAG(IS_WIN)
 bool BraveOmniboxViewViews::AcceleratorPressed(
     const ui::Accelerator& accelerator) {
+  if (!base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkByDefault)) {
+    return OmniboxViewViews::AcceleratorPressed(accelerator);
+  }
+
   ui::KeyEvent event(
       accelerator.key_state() == ui::Accelerator::KeyState::PRESSED
           ? ui::ET_KEY_PRESSED
@@ -85,14 +90,16 @@ bool BraveOmniboxViewViews::AcceleratorPressed(
 bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
     int command_id,
     ui::Accelerator* accelerator) const {
-  bool is_url = const_cast<BraveOmniboxViewViews*>(this)->SelectedTextIsURL();
-  if (is_url) {
-    if (command_id == kCopy) {
-      return false;
-    }
-    if (command_id == IDC_COPY_CLEAN_LINK) {
-      *accelerator = ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR);
-      return true;
+  if (base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkByDefault)) {
+    bool is_url = const_cast<BraveOmniboxViewViews*>(this)->SelectedTextIsURL();
+    if (is_url) {
+      if (command_id == kCopy) {
+        return false;
+      }
+      if (command_id == IDC_COPY_CLEAN_LINK) {
+        *accelerator = ui::Accelerator(ui::VKEY_C, ui::EF_PLATFORM_ACCELERATOR);
+        return true;
+      }
     }
   }
   return OmniboxViewViews::GetAcceleratorForCommandId(command_id, accelerator);
@@ -101,10 +108,12 @@ bool BraveOmniboxViewViews::GetAcceleratorForCommandId(
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC)
 void BraveOmniboxViewViews::ExecuteTextEditCommand(
     ui::TextEditCommand command) {
-  auto url_to_copy = GetURLToCopy();
-  if (command == ui::TextEditCommand::COPY && url_to_copy.has_value()) {
-    CopySanitizedURL(url_to_copy.value());
-    return;
+  if (base::FeatureList::IsEnabled(features::kBraveCopyCleanLinkByDefault)) {
+    auto url_to_copy = GetURLToCopy();
+    if (command == ui::TextEditCommand::COPY && url_to_copy.has_value()) {
+      CopySanitizedURL(url_to_copy.value());
+      return;
+    }
   }
   OmniboxViewViews::ExecuteTextEditCommand(command);
 }

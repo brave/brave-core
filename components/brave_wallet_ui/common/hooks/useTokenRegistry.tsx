@@ -4,25 +4,22 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 
-// Redux
-import { useUnsafeWalletSelector } from './use-safe-selector'
-import { WalletSelectors } from '../selectors'
-
 // Types
 import { TokenRegistry, BraveWallet } from '../../constants/types'
 
 // Hooks
 import { useLib } from './'
+import { useGetNetworksQuery } from '../slices/api.slice'
 
 // Utils
-import { addLogoToToken } from '../../utils/asset-utils'
+import { addLogoToToken } from '../async/lib'
 
 export function useTokenRegistry () {
   // Hooks
   const { getTokenList } = useLib()
 
   // Redux
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
+  const { data: networkList = [] } = useGetNetworksQuery()
 
   // Hook State
   const [tokenRegistry, setTokenRegistry] = React.useState<TokenRegistry>({})
@@ -32,11 +29,12 @@ export function useTokenRegistry () {
     let subscribed = true
     let registry = tokenRegistry
     Promise.all(networkList.map(async (network) => {
-      await getTokenList(network).then(
-        (result) => {
-          const formattedListWithIcons = result.tokens.map((token) => {
-            return addLogoToToken(token)
-          })
+      getTokenList(network).then(
+        async (result) => {
+            const formattedListWithIcons =
+              await Promise.all(result.tokens.map(async (token) => {
+            return await addLogoToToken(token)
+          }))
           registry[network.chainId] = formattedListWithIcons
         }
       ).catch((error) => {

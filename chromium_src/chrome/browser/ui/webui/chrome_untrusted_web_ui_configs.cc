@@ -46,7 +46,7 @@ void RegisterChromeUntrustedWebUIConfigs() {
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<nft::UntrustedNftUIConfig>());
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled()) {
+  if (brave_vpn::IsBraveVPNFeatureEnabled()) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<UntrustedVPNPanelUIConfig>());
   }
@@ -55,6 +55,8 @@ void RegisterChromeUntrustedWebUIConfigs() {
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
         std::make_unique<playlist::UntrustedPlaylistUIConfig>());
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<playlist::UntrustedPlaylistPlayerUIConfig>());
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #endif  // !BUILDFLAG(IS_ANDROID)

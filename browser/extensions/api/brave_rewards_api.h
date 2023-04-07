@@ -12,9 +12,9 @@
 #include <vector>
 
 #include "base/types/expected.h"
-#include "brave/vendor/bat-native-ads/include/bat/ads/public/interfaces/ads.mojom.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_types.mojom.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
@@ -477,13 +477,8 @@ class BraveRewardsFetchBalanceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetExternalWallet(
-      base::expected<ledger::mojom::ExternalWalletPtr,
-                     ledger::mojom::GetExternalWalletError> result);
-
-  void OnFetchBalance(const std::string& connected_wallet_type,
-                      ledger::mojom::Result result,
-                      ledger::mojom::BalancePtr balance);
+  void OnFetchBalance(base::expected<ledger::mojom::BalancePtr,
+                                     ledger::mojom::FetchBalanceError> result);
 };
 
 class BraveRewardsGetExternalWalletProvidersFunction
@@ -542,7 +537,7 @@ class BraveRewardsGetAdsAccountStatementFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetAdsAccountStatement(ads::mojom::StatementInfoPtr statement);
+  void OnGetAdsAccountStatement(brave_ads::mojom::StatementInfoPtr statement);
 };
 
 class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {

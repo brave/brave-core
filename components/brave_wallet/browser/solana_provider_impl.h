@@ -115,12 +115,14 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   void OnRequestSignTransaction(RequestCallback callback,
                                 mojom::SolanaProviderError error,
                                 const std::string& error_message,
-                                const std::vector<uint8_t>& serialized_tx);
+                                const std::vector<uint8_t>& serialized_tx,
+                                mojom::SolanaMessageVersion version);
   void OnRequestSignAllTransactions(
       RequestCallback callback,
       mojom::SolanaProviderError error,
       const std::string& error_message,
-      const std::vector<std::vector<uint8_t>>& serialized_tx);
+      const std::vector<std::vector<uint8_t>>& serialized_tx,
+      const std::vector<mojom::SolanaMessageVersion>& versions);
 
   // mojom::KeyringServiceObserver
   void KeyringCreated(const std::string& keyring_id) override {}

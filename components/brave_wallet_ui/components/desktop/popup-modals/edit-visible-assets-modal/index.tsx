@@ -39,6 +39,7 @@ import {
 // hooks
 import { useAssetManagement, useTokenRegistry } from '../../../../common/hooks'
 import { useSelector } from 'react-redux'
+import { useGetSelectedChainQuery } from '../../../../common/slices/api.slice'
 
 export interface Props {
   onClose: () => void
@@ -47,8 +48,10 @@ export interface Props {
 const EditVisibleAssetsModal = ({ onClose }: Props) => {
   // redux
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+
   // custom hooks
   const {
     onUpdateVisibleAssets
@@ -93,6 +96,7 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
       decimals: selectedNetwork.decimals,
       isErc20: false,
       isErc721: false,
+      isErc1155: false,
       isNft: false,
       logo: selectedNetwork.iconUrls[0] ?? '',
       name: selectedNetwork.symbolName,
@@ -310,7 +314,6 @@ const EditVisibleAssetsModal = ({ onClose }: Props) => {
                   </NoAssetRow>
                   : <VirtualizedVisibleAssetsList
                     tokenList={filteredTokenList}
-                    networkList={networkList}
                     isCustomToken={isCustomToken}
                     onRemoveAsset={onRemoveAsset}
                     isAssetSelected={isAssetSelected}

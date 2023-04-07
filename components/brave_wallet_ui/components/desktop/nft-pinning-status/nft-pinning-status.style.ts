@@ -4,31 +4,18 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import { BraveThemedStyledProps } from 'brave-ui/src/theme/theme-interface'
+import * as leo from '@brave/leo/tokens/css'
+
+// types
+import { BraveWallet } from '../../../constants/types'
+
+// Shared styles
+import { WalletButton } from '../../shared/style'
+
+// Assets
 import Upload from '../../../assets/svg-icons/nft-ipfs/upload.svg'
 import Check from '../../../assets/svg-icons/nft-ipfs/check.svg'
 import Close from '../../../assets/svg-icons/close.svg'
-import { WalletButton } from '../../shared/style'
-import { BraveWallet } from '../../../constants/types'
-
-const getBackground = (
-  p: BraveThemedStyledProps<any>,
-  status: BraveWallet.TokenPinStatusCode
-) => {
-  switch (status) {
-    case BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS:
-      return '#FFFCF0'
-
-    case BraveWallet.TokenPinStatusCode.STATUS_PINNING_FAILED:
-      return '#FFF0F2'
-
-    case BraveWallet.TokenPinStatusCode.STATUS_PINNED:
-      return 'rgba(213, 245, 218, 1)'
-
-    default:
-      return p.theme.background01
-  }
-}
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -42,12 +29,18 @@ export const StyledWrapper = styled.div`
 export const ContentWrapper = styled.div<{
   pinningStatus: BraveWallet.TokenPinStatusCode
 }>`
+  --success-background: ${leo.color.systemfeedback.successBackground};
+  --uploading-background: ${leo.color.systemfeedback.warningBackground};
+  --failed-background: ${leo.color.systemfeedback.errorBackground};
+
+  @media (prefers-color-scheme: dark) {
+    --failed-background: rgba(227, 36, 68, 0.2);
+  }
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-shrink: 0;
   gap: 4px;
-  background: ${(p) => getBackground(p, p.pinningStatus)};
   border-radius: 4px;
   padding: 2px 4px;
   font-family: 'Poppins';
@@ -55,12 +48,15 @@ export const ContentWrapper = styled.div<{
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  color: ${(p) => p.theme.palette.text02};
-  margin-top: ${(p) =>
-    p.pinningStatus ===
-    BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS
-      ? '16px'
-      : 0};
+  color: ${(p) => p.theme.color.text02};
+  background-color: ${(p) =>
+    (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_IN_PROGRESS) ||
+    (p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNING_PENDING)
+
+      ? 'var(--uploading-background)'
+      : p.pinningStatus === BraveWallet.TokenPinStatusCode.STATUS_PINNED
+      ? 'var(--success-background)'
+      : 'var(--failed-background)'};
 `
 
 export const StatusIcon = styled.div`

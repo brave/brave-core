@@ -31,7 +31,7 @@
                android:layout_width="match_parent"
                android:layout_height="0px"
                android:layout_weight="2"
-               android:src="@drawable/brave_sync"
+               app:srcCompat="@drawable/brave_sync"
                android:scaleType="center"
                android:contentDescription="@null" />
 
@@ -150,7 +150,7 @@
                 <ImageButton android:id="@+id/brave_sync_btn_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/brave_sync_btn_mobile"
+                    app:srcCompat="@drawable/brave_sync_btn_mobile"
                     android:contentDescription="@string/brave_sync_btn_mobile"
                     android:background="@drawable/brave_sync_image_btn" />
 

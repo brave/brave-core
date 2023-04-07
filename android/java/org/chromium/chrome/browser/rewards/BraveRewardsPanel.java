@@ -11,7 +11,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -299,7 +298,7 @@ public class BraveRewardsPanel
         });
         try {
             mBraveActivity = BraveRewardsHelper.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             mBraveActivity = null;
             Log.e(TAG, "BraveRewardsPanel constructor " + e);
         }
@@ -1057,10 +1056,10 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void onBalance(int errorCode) {
+    public void onBalance(boolean success) {
         mWalletBalanceLayout.setAlpha(1.0f);
         mWalletBalanceProgress.setVisibility(View.GONE);
-        if (errorCode == BraveRewardsNativeWorker.LEDGER_OK) {
+        if (success) {
             if (mBraveRewardsNativeWorker != null) {
                 BraveRewardsBalance walletBalanceObject =
                         mBraveRewardsNativeWorker.GetWalletBalance();
@@ -1899,7 +1898,7 @@ public class BraveRewardsPanel
 
     @Override
     public void onGetPublishersVisitedCount(int count) {
-        if (mPopupView != null && count > 0) {
+        if (mPopupView != null) {
             mPopupView.findViewById(R.id.rewards_panel_unverified_creator_section)
                     .setVisibility(View.VISIBLE);
             TextView rewardsPanelUnverifiedCreatorCountText =

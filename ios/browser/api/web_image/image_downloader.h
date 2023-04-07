@@ -31,7 +31,8 @@ class ImageDownloader {
   virtual ~ImageDownloader();
 
   virtual int DownloadImage(const GURL& url,
-                            int max_image_size,
+                            std::size_t max_svg_width,
+                            std::size_t max_svg_height,
                             ImageDownloadCallback callback);
 
  private:

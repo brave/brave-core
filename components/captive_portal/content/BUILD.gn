@@ -1,0 +1,27 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//components/captive_portal/core/features.gni")
+
+source_set("unit_tests") {
+  testonly = true
+  sources = []
+  if (enable_captive_portal_detection) {
+    sources += [ "brave_captive_portal_service_unittest.cc" ]
+  }
+  deps = [
+    "//base",
+    "//base/test:test_config",
+    "//base/test:test_support",
+    "//components/captive_portal/content",
+    "//components/captive_portal/core",
+    "//components/captive_portal/core:test_support",
+    "//components/embedder_support",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//net",
+    "//testing/gtest",
+  ]
+}

@@ -23,7 +23,6 @@ import {
   ParsedTransaction,
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
-import { getTokensNetwork } from '../../../../utils/network-utils'
 import { getBalance } from '../../../../utils/balance-utils'
 import useExplorer from '../../../../common/hooks/explorer'
 import {
@@ -37,12 +36,12 @@ import {
   UpdateSelectedAssetMessage,
   UpdateTokenNetworkMessage,
   braveNftDisplayOrigin,
-  IframeSize,
   UpdateNftPinningStatus
 } from '../../../../nft/nft-ui-messages'
 import { auroraSupportedContractAddresses } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import { stripERC20TokenImageURL } from '../../../../utils/string-utils'
+
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
@@ -70,6 +69,10 @@ import {
   useUnsafeWalletSelector
 } from '../../../../common/hooks/use-safe-selector'
 import { useNftPin } from '../../../../common/hooks/nft-pin'
+import {
+  useGetNetworkQuery,
+  useGetSelectedChainQuery
+} from '../../../../common/slices/api.slice'
 
 // Styled Components
 import {
@@ -83,7 +86,7 @@ import {
   DetailText,
   InfoColumn,
   NetworkDescription,
-  NftDetails,
+  NftMultimedia,
   PercentBubble,
   PercentText,
   PriceRow,
@@ -104,6 +107,12 @@ import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
 import { NftModal } from './components/nft-modal/nft-modal'
 import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
 import { IpfsNodeStatus } from './components/ipfs-node-status/ipfs-node-status'
+import {
+  areSupportedForPinning,
+  extractIpfsUrl
+} from '../../../../common/async/lib'
+import { ScrollableColumn } from '../../../shared/style'
+import { NftDetails } from '../../../../nft/components/nft-details/nft-details'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 12 })
 const rainbowbridgeLink = 'https://rainbowbridge.app'
@@ -123,11 +132,10 @@ export const PortfolioAsset = (props: Props) => {
   const [showTokenDetailsModal, setShowTokenDetailsModal] = React.useState<boolean>(false)
   const [showHideTokenModel, setShowHideTokenModal] = React.useState<boolean>(false)
   const [showNftModal, setshowNftModal] = React.useState<boolean>(false)
-  const [iframeHeight, setIframeHeight] = React.useState<string>('0px')
 
   // routing
   const history = useHistory()
-  const { id: assetId, tokenId } = useParams<{ id?: string, tokenId?: string }>()
+  const { chainIdOrMarketSymbol, contractOrSymbol, tokenId } = useParams<{ chainIdOrMarketSymbol?: string, contractOrSymbol?: string, tokenId?: string }>()
   const nftDetailsRef = React.useRef<HTMLIFrameElement>(null)
   const [nftIframeLoaded, setNftIframeLoaded] = React.useState(false)
   // redux
@@ -135,11 +143,9 @@ export const PortfolioAsset = (props: Props) => {
 
   const defaultCurrencies = useUnsafeWalletSelector(WalletSelectors.defaultCurrencies)
   const userVisibleTokensInfo = useUnsafeWalletSelector(WalletSelectors.userVisibleTokensInfo)
-  const selectedNetwork = useUnsafeWalletSelector(WalletSelectors.selectedNetwork)
   const portfolioPriceHistory = useUnsafeWalletSelector(WalletSelectors.portfolioPriceHistory)
   const selectedPortfolioTimeline = useSafeWalletSelector(WalletSelectors.selectedPortfolioTimeline)
   const accounts = useUnsafeWalletSelector(WalletSelectors.accounts)
-  const networkList = useUnsafeWalletSelector(WalletSelectors.networkList)
   const transactions = useUnsafeWalletSelector(WalletSelectors.transactions)
   const isFetchingPortfolioPriceHistory = useSafeWalletSelector(WalletSelectors.isFetchingPortfolioPriceHistory)
   const transactionSpotPrices = useUnsafeWalletSelector(WalletSelectors.transactionSpotPrices)
@@ -158,6 +164,15 @@ export const PortfolioAsset = (props: Props) => {
   const selectedCoinMarket = useUnsafePageSelector(PageSelectors.selectedCoinMarket)
   const nftMetadataError = useSafePageSelector(PageSelectors.nftMetadataError)
   const nftPinningStatus = useUnsafePageSelector(PageSelectors.nftsPinningStatus)
+
+  // queries
+  const { data: assetsNetwork } = useGetNetworkQuery(selectedAsset, {
+    skip: !selectedAsset
+  })
+  const { data: selectedNetwork } = useGetSelectedChainQuery(undefined, {
+    skip: !!assetsNetwork
+  })
+  const selectedAssetsNetwork = assetsNetwork || selectedNetwork
 
   // custom hooks
   const { allAssetOptions, isReduxSelectedAssetBuySupported, getAllBuyOptionsAllChains } = useMultiChainBuyAssets()
@@ -188,36 +203,42 @@ export const PortfolioAsset = (props: Props) => {
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
-    const allAssets = userVisibleTokensInfo.map((asset) => ({
-      asset: asset,
-      assetBalance: fullAssetBalance(asset)
-    }) as UserAssetInfoType)
+    const allAssets = userVisibleTokensInfo.map(
+      (asset) =>
+        ({
+          asset: asset,
+          assetBalance: fullAssetBalance(asset)
+        } as UserAssetInfoType)
+    )
     // By default we dont show any testnetwork assets
     if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
-      return allAssets.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
+      return allAssets.filter(
+        (asset) => !SupportedTestNetworks.includes(asset.asset.chainId)
+      )
     }
     // If chainId is Localhost we also do a check for coinType to return
     // the correct asset
     if (selectedNetworkFilter.chainId === BraveWallet.LOCALHOST_CHAIN_ID) {
-      return allAssets.filter((asset) =>
-        asset.asset.chainId === selectedNetworkFilter.chainId &&
-        asset.asset.coin === selectedNetworkFilter.coin
+      return allAssets.filter(
+        (asset) =>
+          asset.asset.chainId === selectedNetworkFilter.chainId &&
+          asset.asset.coin === selectedNetworkFilter.coin
       )
     }
     // Filter by all other assets by chainId's
-    return allAssets.filter((asset) => asset.asset.chainId === selectedNetworkFilter.chainId)
-  }, [userVisibleTokensInfo, selectedNetworkFilter, fullAssetBalance, networkList])
+    return allAssets.filter(
+      (asset) => asset.asset.chainId === selectedNetworkFilter.chainId
+    )
+  }, [
+    userVisibleTokensInfo,
+    selectedNetworkFilter.chainId,
+    selectedNetworkFilter.coin,
+    fullAssetBalance
+  ])
 
   // state
   const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
   const [hoverPrice, setHoverPrice] = React.useState<string>()
-
-  const selectedAssetsNetwork = React.useMemo(() => {
-    if (!selectedAsset) {
-      return selectedNetwork
-    }
-    return getTokensNetwork(networkList, selectedAsset)
-  }, [selectedNetwork, selectedAsset, networkList])
 
   // more custom hooks
   const parseTransaction = useTransactionParser(selectedAssetsNetwork)
@@ -226,17 +247,13 @@ export const PortfolioAsset = (props: Props) => {
 
   // memos / computed
   const selectedAssetFromParams = React.useMemo(() => {
-    if (!assetId) {
+    if (!chainIdOrMarketSymbol) {
       return undefined
     }
 
-    // If the id length is greater than 15 assumes it's a contractAddress
-    let token = assetId.length > 15
-      ? userVisibleTokensInfo.find((token) => tokenId ? token.contractAddress === assetId && token.tokenId === tokenId : token.contractAddress === assetId)
-      : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === assetId?.toLowerCase() && token.contractAddress === '')
-
-    if (!token && assetId.length < 15) {
-      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === assetId?.toLowerCase())
+    if (isShowingMarketData) {
+      const coinMarket = coinMarketData.find(token => token.symbol.toLowerCase() === chainIdOrMarketSymbol.toLowerCase())
+      let token = undefined as BraveWallet.BlockchainToken | undefined
       if (coinMarket) {
         token = new BraveWallet.BlockchainToken()
         token.coingeckoId = coinMarket.id
@@ -247,12 +264,19 @@ export const PortfolioAsset = (props: Props) => {
       }
       const foundToken = tokensWithCoingeckoId?.find(token => token.coingeckoId.toLowerCase() === coinMarket?.id?.toLowerCase())
       setIsTokenSupported(foundToken !== undefined)
-    } else {
-      setIsTokenSupported(true)
+      return token
     }
-
-    return token
-  }, [assetId, userVisibleTokensInfo, selectedTimeline, tokenId])
+    if (!contractOrSymbol) {
+      return undefined
+    }
+    const userToken = userVisibleTokensInfo.find((token) =>
+      tokenId
+        ? token.tokenId === tokenId && token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol
+        : token.contractAddress.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol ||
+        token.symbol.toLowerCase() === contractOrSymbol.toLowerCase() && token.chainId === chainIdOrMarketSymbol && token.contractAddress === '')
+    setIsTokenSupported(userToken !== undefined)
+    return userToken
+  }, [userVisibleTokensInfo, selectedTimeline, chainIdOrMarketSymbol, contractOrSymbol, tokenId, isShowingMarketData])
 
   const isSelectedAssetBridgeSupported = React.useMemo(() => {
     if (!selectedAssetFromParams) return false
@@ -381,12 +405,41 @@ export const PortfolioAsset = (props: Props) => {
     return fullTokenList.some((asset) => asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase())
   }, [fullTokenList, selectedAsset?.symbol])
 
+
+  const isSelectedAssetPriceDown =
+    selectedAsset &&
+      selectedAssetFiatPrice
+      ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0
+      : false
+
+  const networkDescription =
+    getLocale('braveWalletPortfolioAssetNetworkDescription')
+      .replace('$1', selectedAssetFromParams?.symbol ?? '')
+      .replace('$2', selectedAssetsNetwork?.chainName ?? '')
+
+
+  const [ipfsImageUrl, setIpfsImageUrl] = React.useState<string>()
+  const [nftPinnable, setNftPinnable] = React.useState<boolean>()
+
+  React.useEffect(() => {
+    let ignore = false
+    if (nftMetadata?.imageURL) {
+      areSupportedForPinning([nftMetadata?.imageURL]).then(
+        (v) => {if (!ignore) setNftPinnable(v)})
+      extractIpfsUrl(nftMetadata?.imageURL).then(
+        (v) => {if (!ignore) setIpfsImageUrl(v)})
+    }
+    return () => {
+      ignore = true
+    }
+  }, [nftMetadata])
+
   const currentNftPinningStatus = React.useMemo(() => {
-    if (isNftAsset && selectedAsset) {
+    if (isNftAsset && selectedAsset && nftPinnable) {
       return getNftPinningStatus(selectedAsset)
     }
     return undefined
-  }, [isNftAsset, selectedAsset])
+  }, [nftPinnable, isNftAsset, selectedAsset, nftPinningStatus])
 
   // methods
   const onClickAddAccount = React.useCallback((tabId: AddAccountNavTypes) => () => {
@@ -505,11 +558,6 @@ export const PortfolioAsset = (props: Props) => {
       const { payload } = message as ToggleNftModal
       setshowNftModal(payload)
     }
-
-    if (message.command === NftUiCommand.IframeSize) {
-      const { payload } = message as IframeSize
-      setIframeHeight(payload.height + 10 + 'px')
-    }
   }, [])
 
   const onSelectBuy = React.useCallback(() => {
@@ -555,11 +603,10 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (selectedAsset && networkList && nftDetailsRef?.current) {
-      const tokenNetwork = getTokensNetwork(networkList, selectedAsset)
+    if (selectedAsset && selectedAssetsNetwork && nftDetailsRef?.current) {
       const command: UpdateTokenNetworkMessage = {
         command: NftUiCommand.UpdateTokenNetwork,
-        payload: tokenNetwork
+        payload: selectedAssetsNetwork
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
@@ -586,24 +633,43 @@ export const PortfolioAsset = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    if (nftPinningStatus && selectedAsset && nftDetailsRef?.current) {
+    if (currentNftPinningStatus && nftDetailsRef?.current) {
       const command: UpdateNftPinningStatus = {
         command: NftUiCommand.UpdateNftPinningStatus,
-        payload: currentNftPinningStatus
+        payload: {
+          status: currentNftPinningStatus,
+          url: ipfsImageUrl
+        }
       }
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
     // check if selectedAsset has an icon
-    if (selectedAsset && nftMetadata?.imageURL && stripERC20TokenImageURL(selectedAsset.logo) === '') {
+    if (
+      selectedAsset &&
+      nftMetadata?.imageURL &&
+      stripERC20TokenImageURL(selectedAsset.logo) === ''
+    ) {
       // update asset logo
       const updated = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
-      dispatch(WalletActions.updateUserAsset({
-        existing: selectedAsset,
-        updated
-      }))
+      dispatch(
+        WalletActions.updateUserAsset({
+          existing: selectedAsset,
+          updated
+        })
+      )
     }
-  }, [nftIframeLoaded, nftDetailsRef, selectedAsset, nftMetadata, networkList, nftMetadataError, nftPinningStatus, currentNftPinningStatus])
+  }, [
+    currentNftPinningStatus,
+    ipfsImageUrl,
+    nftDetailsRef,
+    nftIframeLoaded,
+    nftMetadata,
+    nftMetadataError,
+    nftPinningStatus,
+    selectedAsset,
+    selectedAssetsNetwork
+  ])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(JSON.parse(localStorage.getItem(bridgeToAuroraDontShowAgainKey) || 'false'))
@@ -661,143 +727,199 @@ export const PortfolioAsset = (props: Props) => {
         </BalanceRow>
       </TopRow>
 
-      {!isNftAsset &&
-        <InfoColumn>
+      <ScrollableColumn>
+        {!isNftAsset &&
+          <InfoColumn>
 
-          <AssetRow>
-            <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
-            <AssetColumn>
-              <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
-              <NetworkDescription>{selectedAssetFromParams.symbol} {selectedAssetsNetwork?.chainName && `on ${selectedAssetsNetwork?.chainName}`}</NetworkDescription>
-            </AssetColumn>
-          </AssetRow>
+            <AssetRow>
+              <AssetIconWithPlaceholder
+                asset={selectedAsset}
+                network={selectedAssetsNetwork}
+              />
+              <AssetColumn>
+                <AssetNameText>{selectedAssetFromParams.name}</AssetNameText>
+                <NetworkDescription>
+                  {networkDescription}
+                </NetworkDescription>
+              </AssetColumn>
+            </AssetRow>
 
-          <PriceRow>
-            <PriceText>{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat(defaultCurrencies.fiat) : 0.00)}</PriceText>
-            <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
-              <ArrowIcon isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false} />
-              <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
-            </PercentBubble>
-          </PriceRow>
+            <PriceRow>
+              <PriceText>
+                {
+                  hoverPrice ||
+                  (
+                    selectedAssetFiatPrice
+                      ? new Amount(selectedAssetFiatPrice.price)
+                        .formatAsFiat(defaultCurrencies.fiat)
+                      : 0.00
+                  )
+                }
+              </PriceText>
+              <PercentBubble
+                isDown={isSelectedAssetPriceDown}
+              >
+                <ArrowIcon
+                  isDown={isSelectedAssetPriceDown}
+                />
+                <PercentText>
+                  {
+                    selectedAssetFiatPrice
+                      ? Number(selectedAssetFiatPrice.assetTimeframeChange)
+                        .toFixed(2)
+                      : 0.00
+                  }%
+                </PercentText>
+              </PercentBubble>
+            </PriceRow>
 
-          <DetailText>
-            {
-              selectedAssetCryptoPrice
-                ? new Amount(selectedAssetCryptoPrice.price)
-                  .formatAsAsset(undefined, defaultCurrencies.crypto)
-                : ''
+            <DetailText>
+              {
+                selectedAssetCryptoPrice
+                  ? new Amount(selectedAssetCryptoPrice.price)
+                    .formatAsAsset(undefined, defaultCurrencies.crypto)
+                  : ''
+              }
+            </DetailText>
+
+          </InfoColumn>
+        }
+
+        {!isNftAsset &&
+          <LineChart
+            isDown={isSelectedAssetPriceDown}
+            isAsset={!!selectedAsset}
+            priceData={
+              selectedAsset
+                ? formattedPriceHistory
+                : priceHistory
             }
-          </DetailText>
+            onUpdateBalance={onUpdateBalance}
+            isLoading={
+              selectedAsset
+                ? isLoading
+                : parseFloat(fullPortfolioFiatBalance) === 0
+                  ? false
+                  : isFetchingPortfolioPriceHistory
+            }
+            isDisabled={
+              selectedAsset
+                ? false
+                : parseFloat(fullPortfolioFiatBalance) === 0
+            }
+          />
+        }
+        {!isNftAsset &&
+          <ButtonRow noMargin={true}>
+            {isReduxSelectedAssetBuySupported &&
+              <BridgeToAuroraButton
+                onClick={onSelectBuy}
+              >
+                {getLocale('braveWalletBuy')}
+              </BridgeToAuroraButton>
+            }
+            {isSelectedAssetDepositSupported &&
+              <BridgeToAuroraButton
+                onClick={onSelectDeposit}
+              >
+                {getLocale('braveWalletAccountsDeposit')}
+              </BridgeToAuroraButton>
+            }
+            {isSelectedAssetBridgeSupported &&
+              <BridgeToAuroraButton
+                onClick={onBridgeToAuroraButton}
+              >
+                {getLocale('braveWalletBridgeToAuroraButton')}
+              </BridgeToAuroraButton>
+            }
+          </ButtonRow>
+        }
 
-        </InfoColumn>
-      }
+        {showBridgeToAuroraModal &&
+          <BridgeToAuroraModal
+            dontShowWarningAgain={dontShowAuroraWarning}
+            onClose={onCloseAuroraModal}
+            onOpenRainbowAppClick={onOpenRainbowAppClick}
+            onDontShowAgain={onDontShowAgain}
+          />
+        }
 
-      {!isNftAsset &&
-        <LineChart
-          isDown={selectedAsset && selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}
-          isAsset={!!selectedAsset}
-          priceData={
-            selectedAsset
-              ? formattedPriceHistory
-              : priceHistory
-          }
-          onUpdateBalance={onUpdateBalance}
-          isLoading={selectedAsset ? isLoading : parseFloat(fullPortfolioFiatBalance) === 0 ? false : isFetchingPortfolioPriceHistory}
-          isDisabled={selectedAsset ? false : parseFloat(fullPortfolioFiatBalance) === 0}
-        />
-      }
-      {!isNftAsset &&
-        <ButtonRow noMargin={true}>
-          {isReduxSelectedAssetBuySupported &&
-            <BridgeToAuroraButton
-              onClick={onSelectBuy}
-            >
-              {getLocale('braveWalletBuy')}
-            </BridgeToAuroraButton>
-          }
-          {isSelectedAssetDepositSupported &&
-            <BridgeToAuroraButton
-              onClick={onSelectDeposit}
-            >
-              {getLocale('braveWalletAccountsDeposit')}
-            </BridgeToAuroraButton>
-          }
-          {isSelectedAssetBridgeSupported &&
-            <BridgeToAuroraButton
-              onClick={onBridgeToAuroraButton}
-            >
-              {getLocale('braveWalletBridgeToAuroraButton')}
-            </BridgeToAuroraButton>
-          }
-        </ButtonRow>
-      }
+        {showTokenDetailsModal && selectedAsset && selectedAssetsNetwork &&
+          <TokenDetailsModal
+            onClose={onCloseTokenDetailsModal}
+            selectedAsset={selectedAsset}
+            selectedAssetNetwork={selectedAssetsNetwork}
+            assetBalance={formattedAssetBalance}
+            formattedFiatBalance={
+              fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)
+            }
+            onShowHideTokenModal={onShowHideTokenModal}
+          />
+        }
 
-      {showBridgeToAuroraModal &&
-        <BridgeToAuroraModal
-          dontShowWarningAgain={dontShowAuroraWarning}
-          onClose={onCloseAuroraModal}
-          onOpenRainbowAppClick={onOpenRainbowAppClick}
-          onDontShowAgain={onDontShowAgain}
-        />
-      }
+        {showHideTokenModel && selectedAsset && selectedAssetsNetwork &&
+          <HideTokenModal
+            selectedAsset={selectedAsset}
+            selectedAssetNetwork={selectedAssetsNetwork}
+            onClose={onCloseHideTokenModal}
+            onHideAsset={onHideAsset}
+          />
+        }
 
-      {showTokenDetailsModal && selectedAsset && selectedAssetsNetwork &&
-        <TokenDetailsModal
-          onClose={onCloseTokenDetailsModal}
-          selectedAsset={selectedAsset}
-          selectedAssetNetwork={selectedAssetsNetwork}
-          assetBalance={formattedAssetBalance}
-          formattedFiatBalance={fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
-          onShowHideTokenModal={onShowHideTokenModal}
-        />
-      }
+        {!nftMetadataError &&
+          <NftMultimedia
+            onLoad={onNftDetailsLoad}
+            visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
+            ref={nftDetailsRef}
+            sandbox="allow-scripts allow-popups allow-same-origin"
+            allow="clipboard-write"
+            src='chrome-untrusted://nft-display'
+            allowFullScreen
+          />
+        }
 
-      {showHideTokenModel && selectedAsset && selectedAssetsNetwork &&
-        <HideTokenModal
-          selectedAsset={selectedAsset}
-          selectedAssetNetwork={selectedAssetsNetwork}
-          onClose={onCloseHideTokenModal}
-          onHideAsset={onHideAsset}
-        />
-      }
+        {isNftAsset && selectedAsset &&
+          <NftDetails
+            selectedAsset={selectedAsset}
+            nftMetadata={nftMetadata}
+            nftMetadataError={nftMetadataError}
+            tokenNetwork={selectedAssetsNetwork}
+            nftPinningStatus={currentNftPinningStatus}
+            imageIpfsUrl={ipfsImageUrl}
+          />
+        }
 
-      <NftDetails
-        onLoad={onNftDetailsLoad}
-        visible={selectedAsset?.isErc721 || selectedAsset?.isNft}
-        ref={nftDetailsRef}
-        sandbox="allow-scripts allow-popups allow-same-origin"
-        allow="clipboard-write"
-        src='chrome-untrusted://nft-display'
-        allowFullScreen
-        style={{ height: iframeHeight }}
-      />
+        {showNftModal && nftMetadata?.imageURL &&
+          <NftModal
+            nftImageUrl={nftMetadata.imageURL}
+            onClose={onCloseNftModal}
+          />
+        }
 
-      {showNftModal && nftMetadata?.imageURL &&
-        <NftModal nftImageUrl={nftMetadata.imageURL} onClose={onCloseNftModal} />
-      }
-
-      {isTokenSupported
-        ? <AccountsAndTransactionsList
+        {isTokenSupported
+          ? <AccountsAndTransactionsList
             formattedFullAssetBalance={formattedFullAssetBalance}
             fullAssetFiatBalance={fullAssetFiatBalance}
             selectedAsset={selectedAsset}
             selectedAssetTransactions={selectedAssetTransactions}
             onClickAddAccount={onClickAddAccount}
-            networkList={networkList}
           />
-        : <>
+          : <>
             <SubDivider />
-            <NotSupportedText>{getLocale('braveWalletMarketDataCoinNotSupported')}</NotSupportedText>
+            <NotSupportedText>
+              {getLocale('braveWalletMarketDataCoinNotSupported')}
+            </NotSupportedText>
           </>
-      }
+        }
 
-      {isShowingMarketData && selectedCoinMarket &&
-        <CoinStats
-          marketCapRank={selectedCoinMarket.marketCapRank}
-          volume={selectedCoinMarket.totalVolume}
-          marketCap={selectedCoinMarket.marketCap}
-        />
-      }
+        {isShowingMarketData && selectedCoinMarket &&
+          <CoinStats
+            marketCapRank={selectedCoinMarket.marketCapRank}
+            volume={selectedCoinMarket.totalVolume}
+            marketCap={selectedCoinMarket.marketCap}
+          />
+        }
+      </ScrollableColumn>
     </StyledWrapper>
   )
 }

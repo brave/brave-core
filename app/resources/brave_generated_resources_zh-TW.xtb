@@ -4,9 +4,11 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7561196759112975576">總是</translation>
 <translation id="7961015016161918242">一律不要</translation>
+<translation id="7973394300052703468">新增無痕式視窗(&amp;I)</translation>
 <translation id="4615489450165434530">回報壞掉的網站</translation>
 <translation id="8097438084542431276">複製清除連結</translation>
 <translation id="4678672101289648246">僅在新索引標籤頁面</translation>
+<translation id="6516243500644829484">新增無痕式視窗(&amp;I)</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
 <translation id="7630214457764713113">複製潔淨連結</translation>
 <translation id="8294286161128352783">僅在新索引標籤頁面</translation>
@@ -81,6 +83,7 @@
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
 <translation id="3229091547987707389">匯入並分享目錄</translation>
+<translation id="474217410105706308">關閉分頁音訊</translation>
 <translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
 <translation id="5029193871181468990">隱藏 Brave 獎勵圖示</translation>
 <translation id="2808103541110899519">隱藏 Brave 錢包圖示</translation>
@@ -259,7 +262,6 @@
 <translation id="2858138569776157458">熱門網站</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
 <translation id="8820817407110198400">書籤列</translation>
-<translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="2245286910966863912">在網址列顯示 Brave 新聞按鈕</translation>
 <translation id="383007806262310953">顯示書籤列</translation>
 <translation id="4054323497808446566">書籤列在所有頁面上都可見</translation>
@@ -305,6 +307,8 @@
 <translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="6531019308847917584">封鎖指紋識別功能</translation>
 <translation id="5533533363827555308">嚴格，可能會破壞網站</translation>
+<translation id="3570081523466826008">升級連線至 HTTPS</translation>
+<translation id="3357319404342882895">嚴格</translation>
 <translation id="8823559166155093873">封鎖 Cookie</translation>
 <translation id="5770288601196774623">僅跨站</translation>
 <translation id="3587482841069643663">全部</translation>
@@ -319,7 +323,7 @@
 <translation id="8580328754808744073">建立自訂過濾器</translation>
 <translation id="4618274268052410139">在下方欄位中新增您建立的自訂過濾器，每行僅限新增一個。請務必使用 <ph name="BEGIN_LINK"/>Adblock 過濾器語法<ph name="END_LINK"/>。</translation>
 <translation id="7791543448312431591">新增</translation>
-<translation id="571950783952070673">清單 URL</translation>
+<translation id="3075903430639801825">清單標題</translation>
 <translation id="9204006549413740506">上次更新</translation>
 <translation id="6745592621698551453">立即更新</translation>
 <translation id="5334844597069022743">檢視來源</translation>
@@ -350,7 +354,8 @@
 <translation id="6248554379744796526">在清單中顯示未經驗證的網站</translation>
 <translation id="5510618543889994434">允許對影片捐獻</translation>
 <translation id="924777189963477634">開啟自動捐獻即表示您同意<ph name="BEGIN_LINK_TOS"/>服務條款<ph name="END_LINK_TOS"/>與<ph name="BEGIN_LINK_PP"/>隱私政策<ph name="END_LINK_PP"/>。</translation>
-<translation id="5733490796524078528">打賞按鈕</translation>
+<translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
+<translation id="7483857210736407752">在網站上顯示「小費」按鈕</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="6032511312767282174">GitHub</translation>
@@ -382,9 +387,10 @@
 <translation id="4539536028173362640">網站希望存取 Solana 提供者 API 時詢問我</translation>
 <translation id="2777102601740875941">禁止網站存取 Solana 提供者 API</translation>
 <translation id="4206299587103092719">Google 登入</translation>
-<translation id="7458736153596040880">在網站想要使用舊版 Google 登入時詢問</translation>
-<translation id="459266451581663214">阻止網站使用舊版 Google 登入</translation>
-<translation id="8098954941070626949">允許網站使用舊版 Google 登入</translation>
+<translation id="9110294136812584522">網站可要求透過第三方 Cookie 使用舊版 Google 登入</translation>
+<translation id="2903783737778379345">不允許透過第三方 Cookie 使用舊版 Google 登入</translation>
+<translation id="2570833232754279153">不允許使用第三方 Cookie 進行舊版 Google 登入</translation>
+<translation id="6880817299303842099">允許使用第三方 Cookie 進行舊版 Google 登入</translation>
 <translation id="6414370348346025511">標準防護已開啟。</translation>
 <translation id="5565355416171743213">開始使用同步</translation>
 <translation id="4332558599726753990">同步設定</translation>
@@ -509,6 +515,9 @@
 <translation id="856371974127598760">錢包網路</translation>
 <translation id="5975930666279943472">清除錢包交易和 nonce 資訊</translation>
 <translation id="5693968582510626466">清除交易對開發人員或清除本機伺服器上的狀態而言很實用</translation>
+<translation id="4440478655766953083">自動固定 NFT</translation>
+<translation id="464460032678285850">新增至 Brave 錢包的 NFT 可能會自動固定至本機 IPFS 節點。
+    注意：系統可能會為了固定而啟動 IPFS 常駐程式，因此您的本機節點會將快取資料和固定的 NFT 分享到 IPFS 網路。</translation>
 <translation id="4993345308607970390">重設 Brave 錢包</translation>
 <translation id="9216386092464743272">您確定要重設所有錢包交易和 nonce 資訊嗎？執行本機測試伺服器的開發人員通常使用此選項。輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
 <translation id="6369495274982305511">確定要重設錢包嗎？如果錢包未備份，重設將會導致您失去所有帳戶資料（包括任何關聯的資金）。鍵入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>

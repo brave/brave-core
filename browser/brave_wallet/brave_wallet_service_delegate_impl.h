@@ -65,6 +65,8 @@ class BraveWalletServiceDelegateImpl : public BraveWalletServiceDelegate,
 
   void GetActiveOrigin(GetActiveOriginCallback callback) override;
 
+  void ClearWalletUIStoragePartition() override;
+
   void AddObserver(BraveWalletServiceDelegate::Observer* observer) override;
   void RemoveObserver(BraveWalletServiceDelegate::Observer* observer) override;
 

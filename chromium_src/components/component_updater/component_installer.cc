@@ -18,7 +18,7 @@ namespace component_updater {
 void ComponentInstaller::Register(ComponentUpdateService* cus,
                                   base::OnceClosure callback,
                                   base::TaskPriority task_priority) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(cus);
   Register(base::BindOnce(&ComponentUpdateService::RegisterComponent,
                           base::Unretained(cus)),
@@ -44,7 +44,7 @@ void ComponentInstaller::Register(RegisterCallback register_callback,
     "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
 #endif
   };
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (installer_policy_) {
     std::vector<uint8_t> hash;
     installer_policy_->GetHash(&hash);

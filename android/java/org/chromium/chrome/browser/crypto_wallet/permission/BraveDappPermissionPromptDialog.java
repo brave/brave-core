@@ -5,8 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import static org.chromium.chrome.browser.crypto_wallet.util.WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD;
+
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -54,7 +55,6 @@ import java.util.List;
 
 public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ImageDownloadCallback, ConnectionErrorHandler {
-    static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
     private static final String TAG = "BraveDappPermission";
 
     private final ModalDialogManager mModalDialogManager;
@@ -95,7 +95,7 @@ public class BraveDappPermissionPromptDialog
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "BraveDappPermissionPromptDialog constructor " + e);
         }
     }
@@ -146,7 +146,7 @@ public class BraveDappPermissionPromptDialog
             if (mPermissionDialogPositiveButton != null) {
                 mPermissionDialogPositiveButton.setEnabled(false);
             }
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "show " + e);
         }
         initAccounts();
@@ -209,7 +209,7 @@ public class BraveDappPermissionPromptDialog
         }
         mRequestId = mWebContents.downloadImage(new GURL(mFavIconURL), // url
                 true, // isFavicon
-                MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize
+                WalletConstants.MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize
                 false, // bypassCache
                 this); // callback
     }

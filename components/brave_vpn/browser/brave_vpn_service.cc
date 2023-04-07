@@ -49,7 +49,7 @@ BraveVpnService::BraveVpnService(
       profile_prefs_(profile_prefs),
       skus_service_getter_(skus_service_getter),
       api_request_(url_loader_factory) {
-  DCHECK(IsBraveVPNEnabled());
+  DCHECK(IsBraveVPNFeatureEnabled());
 #if !BUILDFLAG(IS_ANDROID)
   connection_api_ = connection_api;
   observed_.Observe(GetBraveVPNConnectionAPI());
@@ -57,6 +57,11 @@ BraveVpnService::BraveVpnService(
   pref_change_registrar_.Init(local_prefs_);
   pref_change_registrar_.Add(
       prefs::kBraveVPNSelectedRegion,
+      base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
+                          base::Unretained(this)));
+  policy_pref_change_registrar_.Init(profile_prefs_);
+  policy_pref_change_registrar_.Add(
+      prefs::kManagedBraveVPNDisabled,
       base::BindRepeating(&BraveVpnService::OnPreferenceChanged,
                           base::Unretained(this)));
 
@@ -67,6 +72,10 @@ BraveVpnService::BraveVpnService(
 }
 
 BraveVpnService::~BraveVpnService() = default;
+
+bool BraveVpnService::IsBraveVPNEnabled() const {
+  return ::brave_vpn::IsBraveVPNEnabled(profile_prefs_);
+}
 
 void BraveVpnService::CheckInitialState() {
   if (HasValidSubscriberCredential(local_prefs_)) {
@@ -89,6 +98,10 @@ void BraveVpnService::CheckInitialState() {
 
     ScheduleBackgroundRegionDataFetch();
 #endif
+  } else if (HasValidSkusCredential(local_prefs_)) {
+    // If we have valid skus creds during the startup, we can try to get subs
+    // credential in advance.
+    ReloadPurchasedState();
   } else {
     // Try to reload purchased state if cached credential is not valid because
     // it could be invalidated when not running.
@@ -141,6 +154,12 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
     return;
 
   if (state == ConnectionState::CONNECTED) {
+    // If user connected vpn from the system and launched the browser
+    // we detected it was disabled by policies and disabling it.
+    if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
+      GetBraveVPNConnectionAPI()->Disconnect();
+      return;
+    }
     RecordP3A(true);
   }
 
@@ -166,17 +185,29 @@ void BraveVpnService::RemoveVPNConnection() {
 void BraveVpnService::Connect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  if (!is_purchased_user()) {
+    return;
+  }
+
   GetBraveVPNConnectionAPI()->Connect();
 }
 
 void BraveVpnService::Disconnect() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  if (!is_purchased_user()) {
+    return;
+  }
+
   GetBraveVPNConnectionAPI()->Disconnect();
 }
 
 void BraveVpnService::ToggleConnection() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!is_purchased_user()) {
+    return;
+  }
 
   GetBraveVPNConnectionAPI()->ToggleConnection();
 }
@@ -402,6 +433,8 @@ void BraveVpnService::GetAllRegions(GetAllRegionsCallback callback) {
 void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
+  DCHECK(!regions_.empty())
+      << "regions data must be prepared before panel asks.";
 
   auto region_name = GetSelectedRegion();
   if (region_name.empty()) {
@@ -493,6 +526,52 @@ void BraveVpnService::OnPreferenceChanged(const std::string& pref_name) {
     }
     return;
   }
+  if (pref_name == prefs::kManagedBraveVPNDisabled) {
+    if (IsBraveVPNDisabledByPolicy(profile_prefs_)) {
+      GetBraveVPNConnectionAPI()->Disconnect();
+    }
+    return;
+  }
+}
+
+void BraveVpnService::UpdatePurchasedStateForSessionExpired(
+    const std::string& env) {
+  // Double check that we don't set session expired state for fresh user.
+  LoadCachedRegionData();
+  if (regions_.empty()) {
+    VLOG(1) << __func__ << " : Treat it as not purchased state for fresh user.";
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+    return;
+  }
+
+  const auto session_expired_time =
+      local_prefs_->GetTime(prefs::kBraveVPNSessionExpiredDate);
+  // If it's not cached, it means this session expiration is first time since
+  // last purchase because this cache is cleared when we get valid credential
+  // summary.
+  if (session_expired_time.is_null()) {
+    local_prefs_->SetTime(prefs::kBraveVPNSessionExpiredDate,
+                          base::Time::Now());
+    SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
+    return;
+  }
+
+  // Weird state. Maybe we don't see this condition.
+  // Just checking for safe.
+  if (session_expired_time > base::Time::Now()) {
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+    return;
+  }
+
+  // Keep session expired state 30 days at most.
+  constexpr int kSessionExpiredCheckingDurationInDays = 30;
+  if ((base::Time::Now() - session_expired_time).InDays() >
+      kSessionExpiredCheckingDurationInDays) {
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+    return;
+  }
+
+  SetPurchasedState(env, PurchasedState::SESSION_EXPIRED);
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
@@ -589,9 +668,28 @@ void BraveVpnService::LoadPurchasedState(const std::string& domain) {
     return;
   }
 
+  if (HasValidSkusCredential(local_prefs_)) {
+    // We can reach here if we fail to get subscriber credential from guardian.
+    VLOG(2) << __func__
+            << " Try to get subscriber credential with valid cached skus "
+               "credential.";
+
+    if (GetCurrentEnvironment() != requested_env) {
+      SetCurrentEnvironment(requested_env);
+    }
+
+    api_request_.GetSubscriberCredentialV12(
+        base::BindOnce(&BraveVpnService::OnGetSubscriberCredentialV12,
+                       base::Unretained(this),
+                       GetExpirationTimeForSkusCredential(local_prefs_)),
+        GetSkusCredential(local_prefs_),
+        GetBraveVPNPaymentsEnv(GetCurrentEnvironment()));
+    return;
+  }
+
   VLOG(2) << __func__
-          << ": Checking purchased state as we doesn't have valid subscriber "
-             "credentials";
+          << ": Checking purchased state as we doesn't have valid skus or "
+             "subscriber credentials";
   ClearSubscriberCredential(local_prefs_);
 
   EnsureMojoConnected();
@@ -615,22 +713,47 @@ void BraveVpnService::OnCredentialSummary(const std::string& domain,
 
   absl::optional<base::Value> records_v = base::JSONReader::Read(
       summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
-  if (records_v && records_v->is_dict()) {
-    if (IsValidCredentialSummary(*records_v)) {
-      VLOG(1) << __func__ << " : Active credential found!";
-      // if a credential is ready, we can present it
-      EnsureMojoConnected();
-      skus_service_->PrepareCredentialsPresentation(
-          domain, "*",
-          base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
-                         base::Unretained(this), domain));
-    } else {
-      VLOG(1) << __func__ << " : Credential is not active.";
-      SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
-    }
-  } else {
+
+  // Early return when summary is invalid or it's empty dict.
+  if (!records_v || !records_v->is_dict()) {
     VLOG(1) << __func__ << " : Got invalid credential summary!";
     SetPurchasedState(env, PurchasedState::FAILED);
+    return;
+  }
+
+  // Empty dict - clean user.
+  if (records_v->GetDict().empty()) {
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+    return;
+  }
+
+  if (IsValidCredentialSummary(*records_v)) {
+    VLOG(1) << __func__ << " : Active credential found!";
+    // if a credential is ready, we can present it
+    EnsureMojoConnected();
+    skus_service_->PrepareCredentialsPresentation(
+        domain, "*",
+        base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
+                       base::Unretained(this), domain));
+#if !BUILDFLAG(IS_ANDROID)
+    // Clear expired state data as we have active credentials.
+    local_prefs_->SetTime(prefs::kBraveVPNSessionExpiredDate, {});
+#endif
+  } else if (IsValidCredentialSummaryButNeedActivation(*records_v)) {
+    // Need to activate from account. Treat as not purchased till activated.
+    VLOG(1) << __func__ << " : Need to activate vpn from account.";
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+  } else {
+    // When reaches here, remained_credential is zero. We can treat it as
+    // user's current purchase is expired.
+    VLOG(1) << __func__ << " : don't have remained credential.";
+#if BUILDFLAG(IS_ANDROID)
+    VLOG(1) << __func__ << " : Treat it as not purchased state in android.";
+    SetPurchasedState(env, PurchasedState::NOT_PURCHASED);
+#else
+    VLOG(1) << __func__ << " : Treat it as session expired state in desktop.";
+    UpdatePurchasedStateForSessionExpired(env);
+#endif
   }
 }
 
@@ -682,9 +805,11 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
 
   // Early return when it's already expired.
   if (time < base::Time::Now()) {
-    SetPurchasedState(env, PurchasedState::EXPIRED);
+    SetPurchasedState(env, PurchasedState::INVALID);
     return;
   }
+
+  SetSkusCredential(local_prefs_, credential, time);
 
   if (GetCurrentEnvironment() != env) {
     // Change environment because we have successfully authorized with new one.
@@ -707,14 +832,16 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
     SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
 #else
     if (subscriber_credential == kTokenNoLongerValid) {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::EXPIRED);
+      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::INVALID);
     } else {
-      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::NOT_PURCHASED);
+      SetPurchasedState(GetCurrentEnvironment(), PurchasedState::FAILED);
     }
 #endif
     return;
   }
 
+  // Previously cached skus credential is cleared and fetched subscriber
+  // credential is cached.
   SetSubscriberCredential(local_prefs_, subscriber_credential, expiration_time);
 
   // Launch one-shot timer for refreshing subscriber_credential before it's

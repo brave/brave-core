@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +40,7 @@ public class AccountSelectorActivity
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mKeyringModel = activity.getWalletModel().getKeyringModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
         assert mKeyringModel != null;

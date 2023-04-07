@@ -16,6 +16,9 @@ namespace safe_browsing {
 class ClientSideDetectionServiceFactory {
  public:
   static ClientSideDetectionService* GetForProfile(Profile* profile);
+
+  // Get the singleton instance.
+  static ClientSideDetectionServiceFactory* GetInstance();
 };
 
 }  // namespace safe_browsing

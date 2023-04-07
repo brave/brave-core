@@ -8,7 +8,6 @@
 #include "base/command_line.h"
 #include "base/feature_list.h"
 #include "base/numerics/safe_conversions.h"
-#include "base/sequence_checker.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/brave_font_whitelist.h"
@@ -16,16 +15,11 @@
 #include "crypto/hmac.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
-#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"
-#include "third_party/blink/renderer/core/workers/worker_global_scope.h"
-#include "third_party/blink/renderer/platform/bindings/script_state.h"
+#include "third_party/blink/renderer/core/workers/worker_or_worklet_global_scope.h"
 #include "third_party/blink/renderer/platform/fonts/font_fallback_list.h"
-#include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
-#include "third_party/blink/renderer/platform/graphics/static_bitmap_image.h"
-#include "third_party/blink/renderer/platform/graphics/unaccelerated_static_bitmap_image.h"
 #include "third_party/blink/renderer/platform/heap/garbage_collected.h"
 #include "third_party/blink/renderer/platform/language.h"
 #include "third_party/blink/renderer/platform/network/network_utils.h"
@@ -56,12 +50,13 @@ const int kFarbledUserAgentMaxExtraSpaces = 5;
 
 // acceptable letters for generating random strings
 const char kLettersForRandomStrings[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789. ";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 // length of kLettersForRandomStrings array
-const size_t kLettersForRandomStringsLength = 64;
+const size_t kLettersForRandomStringsLength = 62;
 
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
-    ExecutionContext* context) {
+    ExecutionContext* context,
+    bool require_filled_content_settings_rules) {
   blink::WebContentSettingsClient* settings = nullptr;
   if (!context)
     return settings;
@@ -73,19 +68,30 @@ blink::WebContentSettingsClient* GetContentSettingsClientFor(
   }
   if (auto* window = blink::DynamicTo<blink::LocalDOMWindow>(context)) {
     auto* local_frame = window->GetFrame();
-    if (!local_frame)
+    if (!local_frame) {
       local_frame = window->GetDisconnectedFrame();
-    if (local_frame) {
-      if (auto* top_local_frame =
-              blink::DynamicTo<blink::LocalFrame>(&local_frame->Tree().Top())) {
-        settings = top_local_frame->GetContentSettingsClient();
-      } else {
-        settings = local_frame->GetContentSettingsClient();
-      }
     }
-  } else if (context->IsWorkerGlobalScope()) {
-    settings =
-        blink::To<blink::WorkerGlobalScope>(context)->ContentSettingsClient();
+    while (local_frame) {
+      settings = local_frame->GetContentSettingsClient();
+      if (!require_filled_content_settings_rules) {
+        break;
+      }
+
+      if (settings && settings->HasContentSettingsRules()) {
+        break;
+      }
+
+      // Dynamic iframes without a committed navigation don't have content
+      // settings rules filled, so in this case we look for a parent frame which
+      // has required data for shields/farbling to be enabled.
+      auto* parent_frame =
+          blink::DynamicTo<blink::LocalFrame>(local_frame->Parent());
+      DCHECK(!parent_frame || parent_frame != local_frame);
+      local_frame = parent_frame;
+    }
+  } else if (auto* worker_or_worklet =
+                 blink::DynamicTo<blink::WorkerOrWorkletGlobalScope>(context)) {
+    settings = worker_or_worklet->ContentSettingsClient();
   }
   return settings;
 }
@@ -108,7 +114,7 @@ bool AllowFontFamily(ExecutionContext* context,
   if (!context)
     return true;
 
-  auto* settings = brave::GetContentSettingsClientFor(context);
+  auto* settings = brave::GetContentSettingsClientFor(context, true);
   if (!settings)
     return true;
 
@@ -199,7 +205,7 @@ BraveSessionCache::BraveSessionCache(ExecutionContext& context)
   double fudge_factor = 0.99 + ((*fudge / maxUInt64AsDouble) / 100);
   uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
   if (blink::WebContentSettingsClient* settings =
-          GetContentSettingsClientFor(&context)) {
+          GetContentSettingsClientFor(&context, true)) {
     farbling_level_ = settings->GetBraveFarblingLevel();
   }
   if (farbling_level_ != BraveFarblingLevel::OFF) {

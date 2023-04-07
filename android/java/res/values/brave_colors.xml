@@ -23,6 +23,7 @@
     <color name="modern_blue_600">#EA3A0D</color>
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
+    <color name="default_text_color_on_accent1_dark">@color/baseline_neutral_0</color>
 
     <!-- Day/Night brave wallet colors -->
     <color name="brave_wallet_day_night_toolbar_icon_color">#495057</color>
@@ -296,4 +297,6 @@
     <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
     <color name="you_are_not_earning_rewards_bg_color">#F8F9FA</color>
 
+    <color name="playlist_warning_dialog_bg">#FFFFFF</color>
+    <color name="playlist_warning_settings_color">#A0A5EB</color>
 </resources>

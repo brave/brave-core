@@ -49,26 +49,8 @@ bool IsOFACSanctionedRegion(const std::string& country_code) {
   return brave_l10n::IsISOCountryCodeOFACSanctioned(country_code);
 }
 
-std::string CountryCodeFromCountryId(int country_id) {
-  std::string country_code = "  ";
-  country_code[1] = country_id & 0xFF;
-  country_code[0] = (country_id >> 8) & 0xFF;
-  return country_code;
-}
-
-std::string& MutableCountryCodeStringForTesting() {
-  static base::NoDestructor<std::string> country_code;
-  return *country_code;
-}
-
-const std::string& CountryCodeStringForTesting() {
-  return MutableCountryCodeStringForTesting();
-}
-
 const std::string GetCountryCode() {
-  return CountryCodeStringForTesting().empty()
-             ? brave_l10n::GetDefaultISOCountryCodeString()
-             : CountryCodeStringForTesting();
+  return brave_l10n::GetDefaultISOCountryCodeString();
 }
 
 }  // namespace
@@ -83,10 +65,6 @@ bool IsSupported(PrefService* prefs, IsSupportedOptions options) {
 
 bool IsUnsupportedRegion() {
   return IsOFACSanctionedRegion(GetCountryCode());
-}
-
-void SetCountryCodeForOFACTesting(int country_id) {
-  MutableCountryCodeStringForTesting() = CountryCodeFromCountryId(country_id);
 }
 
 }  // namespace brave_rewards

@@ -103,11 +103,6 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  bool NavigateToURLUntilLoadStop(const GURL& url) {
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-    return WaitForLoadStop(contents());
-  }
-
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
@@ -121,7 +116,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // Farbling level: off
   // get real navigator.hardwareConcurrency
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int real_value = ExecScriptGetInt(kHardwareConcurrencyScript, contents());
   ASSERT_GE(real_value, 2);
 
@@ -129,7 +124,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // navigator.hardwareConcurrency should be greater than or equal to 2
   // and less than or equal to the real value
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int fake_value = ExecScriptGetInt(kHardwareConcurrencyScript, contents());
   EXPECT_GE(fake_value, 2);
   EXPECT_LE(fake_value, real_value);
@@ -138,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // navigator.hardwareConcurrency should be greater than or equal to 2
   // and less than or equal to 8
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(farbling_url());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int completely_fake_value =
       ExecScriptGetInt(kHardwareConcurrencyScript, contents());
   // For this domain (a.com) + the random seed (constant for browser tests),
@@ -153,13 +148,13 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   // Farbling level: off
   // get real navigator.hardwareConcurrency
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(url);
-  // NavigateToURLUntilLoadStop() will return before our Worker has a chance
-  // to run its code to completion, so we block here until document.title
-  // changes. This will happen relatively quickly if things are going well
-  // inside the Worker. If the browser crashes while executing the Worker
-  // code (which is what this test is really testing), then this will never
-  // unblock and the entire browser test will eventually time out. Timing
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  // ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), ) will return before
+  // our Worker has a chance to run its code to completion, so we block here
+  // until document.title changes. This will happen relatively quickly if things
+  // are going well inside the Worker. If the browser crashes while executing
+  // the Worker code (which is what this test is really testing), then this will
+  // never unblock and the entire browser test will eventually time out. Timing
   // out indicates a fatal error.
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
@@ -168,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   ASSERT_GE(real_value, 2);
 
   SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   int fake_value;
@@ -177,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
   EXPECT_LE(fake_value, real_value);
 
   BlockFingerprinting();
-  NavigateToURLUntilLoadStop(url);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   while (ExecScriptGetStr(kTitleScript, contents()) == "") {
   }
   int completely_fake_value;

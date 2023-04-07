@@ -8,6 +8,10 @@ import { useSelector } from 'react-redux'
 
 // utils
 import { getLocale } from '$web-common/locale'
+import {
+  emptyNetworksRegistry,
+  networkEntityAdapter
+} from '../../../common/slices/entities/network.entity'
 
 // types
 import {
@@ -21,6 +25,10 @@ import {
   useLib,
   useTokenInfo
 } from '../../../common/hooks'
+import {
+  useGetNetworksRegistryQuery,
+  useGetSelectedChainQuery
+} from '../../../common/slices/api.slice'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop'
@@ -44,6 +52,7 @@ import {
   SubDivider
 } from './add-custom-token-form-styles'
 
+
 interface Props {
   contractAddress: string
   onHideForm: () => void
@@ -58,6 +67,11 @@ export const AddCustomTokenForm = (props: Props) => {
     onNftAssetFound,
     onChangeContractAddress
   } = props
+
+  // queries
+  const { data: selectedNetwork } = useGetSelectedChainQuery()
+  const { data: networksRegistry = emptyNetworksRegistry } =
+    useGetNetworksRegistryQuery()
 
   // state
   const [showAdvancedFields, setShowAdvancedFields] = React.useState<boolean>(false)
@@ -74,9 +88,7 @@ export const AddCustomTokenForm = (props: Props) => {
   // redux
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const fullTokenList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.fullTokenList)
-  const selectedNetwork = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetwork)
   const addUserAssetError = useSelector(({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError)
-  const networks = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
 
   // more state
   const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
@@ -150,6 +162,7 @@ export const AddCustomTokenForm = (props: Props) => {
         decimals: Number(tokenDecimals),
         isErc20: customAssetsNetwork.coin !== BraveWallet.CoinType.SOL,
         isErc721: false,
+        isErc1155: false,
         isNft: false,
         name: tokenName,
         symbol: tokenSymbol,
@@ -244,13 +257,23 @@ export const AddCustomTokenForm = (props: Props) => {
       setTokenName(foundTokenInfoByContractAddress.name)
       setTokenSymbol(foundTokenInfoByContractAddress.symbol)
       setTokenDecimals(foundTokenInfoByContractAddress.decimals.toString())
-      const network = networks.find(network => network.chainId.toLowerCase() === foundTokenInfoByContractAddress.chainId.toLowerCase())
+      const network =
+        networksRegistry.entities[
+          networkEntityAdapter.selectId(foundTokenInfoByContractAddress)
+        ]
       if (network) setCustomAssetsNetwork(network)
     }
     if (foundTokenInfoByContractAddress?.isErc721) {
       onNftAssetFound(foundTokenInfoByContractAddress.contractAddress)
     }
-  }, [foundTokenInfoByContractAddress, tokenContractAddress, onFindTokenInfoByContractAddress, resetInputFields, networks, onNftAssetFound])
+  }, [
+    foundTokenInfoByContractAddress,
+    tokenContractAddress,
+    onFindTokenInfoByContractAddress,
+    resetInputFields,
+    networksRegistry,
+    onNftAssetFound
+  ])
 
   // render
   return (

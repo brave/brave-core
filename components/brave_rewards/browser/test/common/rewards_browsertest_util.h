@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "bat/ledger/internal/common/request_util.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/core/common/request_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "url/gurl.h"
@@ -50,7 +50,8 @@ void NavigateToPublisherPage(
 
 void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
 
-void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service);
+void CreateRewardsWallet(brave_rewards::RewardsServiceImpl* rewards_service,
+                         const std::string& country = "US");
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 

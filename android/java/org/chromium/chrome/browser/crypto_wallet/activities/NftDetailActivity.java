@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -35,9 +34,9 @@ import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.PortfolioModel;
+import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
@@ -158,7 +157,7 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
         BraveActivity braveActivity = null;
         try {
             braveActivity = BraveActivity.getBraveActivity();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "triggerLayoutInflation " + e);
         }
         assert braveActivity != null;
@@ -241,25 +240,18 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     }
 
     private void loadNftImage(String imageUrl) {
-        ImageLoader.createLoadNftRequest(imageUrl, this, false)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(GlideException glideException, Object model,
-                            Target<Drawable> target, boolean isFirstResource) {
-                        setNftImageAsNotAvailable();
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model,
-                            Target<Drawable> target, DataSource dataSource,
-                            boolean isFirstResource) {
-                        target.onResourceReady(
-                                resource, new DrawableCrossFadeTransition(250, true));
-                        return true;
-                    }
-                })
-                .into(mNftImageView);
+        ImageLoader.downloadImage(imageUrl, this, false, mNftImageView, new ImageLoader.Callback() {
+            @Override
+            public boolean onLoadFailed() {
+                setNftImageAsNotAvailable();
+                return false;
+            }
+            @Override
+            public boolean onResourceReady(Drawable resource, Target<Drawable> target) {
+                target.onResourceReady(resource, new DrawableCrossFadeTransition(250, true));
+                return true;
+            }
+        });
     }
 
     private void setNftImageAsNotAvailable() {

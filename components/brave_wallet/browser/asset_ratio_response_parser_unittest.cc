@@ -180,9 +180,12 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
 
   mojom::BlockchainTokenPtr expected_token = mojom::BlockchainToken::New(
       "0xdAC17F958D2ee523a2206206994597C13D831ec7", "Tether USD", "", true,
-      false, false, "USDT", 6, true, "", "", "0x1", mojom::CoinType::ETH);
-  EXPECT_EQ(ParseTokenInfo(ParseJson(json), "0x1", mojom::CoinType::ETH),
-            expected_token);
+      false, false, false, "USDT", 6, true, "", "", "0x1",
+      mojom::CoinType::ETH);
+  auto parsed_token =
+      ParseTokenInfo(ParseJson(json), "0x1", mojom::CoinType::ETH);
+  ASSERT_TRUE(parsed_token);
+  EXPECT_EQ(parsed_token, expected_token);
 
   // ERC721
   json = (R"(
@@ -203,9 +206,11 @@ TEST(AssetRatioResponseParserUnitTest, ParseGetTokenInfo) {
   )");
   expected_token = mojom::BlockchainToken::New(
       "0x0E3A2A1f2146d86A604adc220b4967A898D7Fe07", "Gods Unchained Cards", "",
-      false, true, true, "CARD", 0, true, "", "", "0x1", mojom::CoinType::ETH);
-  EXPECT_EQ(ParseTokenInfo(ParseJson(json), "0x1", mojom::CoinType::ETH),
-            expected_token);
+      false, true, false, true, "CARD", 0, true, "", "", "0x1",
+      mojom::CoinType::ETH);
+  parsed_token = ParseTokenInfo(ParseJson(json), "0x1", mojom::CoinType::ETH);
+  ASSERT_TRUE(parsed_token);
+  EXPECT_EQ(parsed_token, expected_token);
 
   const std::string valid_json = (R"(
     {
@@ -312,8 +317,10 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
     }
   )");
 
-  std::vector<brave_wallet::mojom::CoinMarketPtr> values;
-  ASSERT_TRUE(ParseCoinMarkets(ParseJson(json), &values));
+  auto parsed_values = ParseCoinMarkets(ParseJson(json));
+  ASSERT_TRUE(parsed_values);
+
+  std::vector<brave_wallet::mojom::CoinMarketPtr>& values = *parsed_values;
   ASSERT_EQ(values.size(), 1UL);
   EXPECT_EQ(values[0]->id, "bitcoin");
   EXPECT_EQ(values[0]->symbol, "btc");
@@ -330,11 +337,11 @@ TEST(AssetRatioResponseParserUnitTest, ParseCoinMarkets) {
 
   // Invalid input
   json = R"({"id": []})";
-  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json), &values));
+  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
   json = "3";
-  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json), &values));
+  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
   json = "[3]";
-  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json), &values));
+  EXPECT_FALSE(ParseCoinMarkets(ParseJson(json)));
 }
 
 }  // namespace brave_wallet

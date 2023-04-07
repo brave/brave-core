@@ -17,6 +17,7 @@ struct AddPinResult {
   ~AddPinResult();
   AddPinResult(const AddPinResult&);
   AddPinResult& operator=(const AddPinResult&);
+  bool recursive = true;
   std::vector<std::string> pins;
   int progress = 0;
 };

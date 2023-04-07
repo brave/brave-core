@@ -36,14 +36,27 @@ const AssetsPanel = (props: Props) => {
     onAddAsset
   } = props
 
-  const onClickAsset = (symbol: string) => () => {
-    const url = `brave://wallet${WalletRoutes.Portfolio}/${symbol}`
+  const routeToAssetDetails = (url: string) => {
     chrome.tabs.create({ url: url }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
     })
   }
+
+  const onClickAsset = React.useCallback(
+    (
+      contractAddress: string,
+      symbol: string,
+      tokenId: string,
+      chainId: string
+    ) => () => {
+      if (contractAddress === '') {
+        routeToAssetDetails(`brave://wallet${WalletRoutes.Portfolio}/${chainId}/${symbol}`)
+        return
+      }
+      routeToAssetDetails(`brave://wallet${WalletRoutes.Portfolio}/${chainId}/${contractAddress}/${tokenId}`)
+    }, [routeToAssetDetails])
 
   return (
     <StyledWrapper>
@@ -54,7 +67,12 @@ const AssetsPanel = (props: Props) => {
       </AddAssetButton>
       {userAssetList?.map((asset) =>
         <PortfolioAssetItem
-          action={onClickAsset(asset.symbol)}
+          action={onClickAsset(
+            asset.contractAddress,
+            asset.symbol,
+            asset.tokenId,
+            asset.chainId
+          )}
           key={getAssetIdKey(asset)}
           assetBalance={getBalance(selectedAccount, asset)}
           token={asset}

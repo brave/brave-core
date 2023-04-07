@@ -1,5 +1,5 @@
 diff --git a/base/test/launcher/test_results_tracker.cc b/base/test/launcher/test_results_tracker.cc
-index ea2aa1ee0fe12c2d4ca8abd035eac9ba51a72830..aa9eb0aec39c1d9390d248707bdb3066b1d849cc 100644
+index 63a0ac10b98e68fb32547edcd70e635d1dd48e08..7b182a3517009e7a037f44294cba860bd18de040 100644
 --- a/base/test/launcher/test_results_tracker.cc
 +++ b/base/test/launcher/test_results_tracker.cc
 @@ -151,6 +151,7 @@ TestResultsTracker::~TestResultsTracker() {

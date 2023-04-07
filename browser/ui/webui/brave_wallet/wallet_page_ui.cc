@@ -11,6 +11,7 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -51,15 +53,15 @@
 WalletPageUI::WalletPageUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui,
                               true /* Needed for webui browser tests */) {
+  auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kWalletPageHost);
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletPageHost);
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   for (const auto& str : brave_wallet::kLocalizedStrings) {
     std::u16string l10n_str =
         brave_l10n::GetLocalizedResourceUTF16String(str.id);
     source->AddString(str.name, l10n_str);
   }
-  auto* profile = Profile::FromWebUI(web_ui);
   NavigationBarDataProvider::Initialize(source, profile);
   webui::SetupWebUIDataSource(
       source,
@@ -77,7 +79,6 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean(brave_wallet::mojom::kP3ACountTestNetworksLoadTimeKey,
                      base::CommandLine::ForCurrentProcess()->HasSwitch(
                          brave_wallet::mojom::kP3ACountTestNetworksSwitch));
-  content::WebUIDataSource::Add(profile, source);
   content::URLDataSource::Add(profile,
                               std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
@@ -120,7 +121,9 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::WalletPinService>
         brave_wallet_pin_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::WalletAutoPinService>
-        brave_wallet_auto_pin_service_receiver) {
+        brave_wallet_auto_pin_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
+        ipfs_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -158,6 +161,8 @@ void WalletPageUI::CreatePageHandler(
   brave_wallet::BraveWalletAutoPinServiceFactory::BindForContext(
       profile, std::move(brave_wallet_auto_pin_service_receiver));
 #endif
+  brave_wallet::BraveWalletIpfsServiceFactory::BindForContext(
+      profile, std::move(ipfs_service_receiver));
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

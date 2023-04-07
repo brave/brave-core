@@ -68,6 +68,7 @@ class MockBraveWalletPinService : public BraveWalletPinService {
   MOCK_METHOD2(MarkAsPendingForUnpinning,
                void(const mojom::BlockchainTokenPtr&,
                     const absl::optional<std::string>&));
+  MOCK_METHOD1(Reset, void(base::OnceCallback<void(bool)> callback));
 };
 
 class MockBraveWalletService : public BraveWalletService {
@@ -269,7 +270,8 @@ TEST_F(BraveWalletAutoPinServiceTest, ValidateOldTokens_WhenRestore) {
           [](BlockchainTokenPtr token,
              const absl::optional<std::string>& service,
              BraveWalletPinService::ValidateCallback callback) {
-            std::move(callback).Run(true, nullptr);
+            std::move(callback).Run(
+                mojom::TokenValidationResult::kValidationPassed);
           }));
 
   EXPECT_CALL(*GetBraveWalletPinService(),
@@ -552,6 +554,17 @@ TEST_F(BraveWalletAutoPinServiceTest, RestoreNotCalled_WhenAutoPinDisabled) {
   BraveWalletAutoPinService auto_pin_service(
       GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
   EXPECT_CALL(*GetBraveWalletPinService(), Restore()).Times(0);
+}
+
+TEST_F(BraveWalletAutoPinServiceTest, Reset) {
+  service()->SetAutoPinEnabled(true);
+  ON_CALL(*GetBraveWalletPinService(), Reset(_))
+      .WillByDefault(
+          ::testing::Invoke([](base::OnceCallback<void(bool)> callback) {
+            std::move(callback).Run(true);
+          }));
+  service()->Reset();
+  EXPECT_FALSE(service()->IsAutoPinEnabled());
 }
 
 }  // namespace brave_wallet

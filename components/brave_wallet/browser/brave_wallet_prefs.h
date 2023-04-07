@@ -17,6 +17,7 @@ namespace brave_wallet {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry);
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs);

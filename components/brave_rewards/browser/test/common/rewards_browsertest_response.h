@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/mojom_structs.h"
+#include "brave/components/brave_rewards/core/mojom_structs.h"
 
 namespace rewards_browsertest {
 

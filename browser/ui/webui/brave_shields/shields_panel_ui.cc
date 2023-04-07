@@ -32,8 +32,8 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
       profile_(Profile::FromWebUI(web_ui)) {
   browser_ = chrome::FindLastActiveWithProfile(profile_);
 
-  content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(kShieldsPanelHost);
+  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kShieldsPanelHost);
 
   for (const auto& str : brave_shields::kLocalizedStrings) {
     std::u16string l10n_str =
@@ -57,9 +57,6 @@ ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
                               base::make_span(kBraveShieldsPanelGenerated,
                                               kBraveShieldsPanelGeneratedSize),
                               IDR_SHIELDS_PANEL_HTML);
-
-  content::WebUIDataSource::Add(web_ui->GetWebContents()->GetBrowserContext(),
-                                source);
 }
 
 ShieldsPanelUI::~ShieldsPanelUI() = default;

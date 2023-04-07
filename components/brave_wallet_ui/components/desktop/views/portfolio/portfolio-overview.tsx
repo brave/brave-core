@@ -18,11 +18,17 @@ import {
 } from '../../../../constants/types'
 import { LOCAL_STORAGE_KEYS } from '../../../../common/constants/local-storage-keys'
 
+// actions
+import { WalletActions } from '../../../../common/actions'
+import { WalletPageActions } from '../../../../page/actions'
+
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../utils/pricing-utils'
+import { getAssetIdKey } from '../../../../utils/asset-utils'
+import { formatAsDouble } from '../../../../utils/string-utils'
 
 // Options
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
@@ -34,21 +40,18 @@ import { LoadingSkeleton } from '../../../shared'
 import { PortfolioAssetItem } from '../../'
 import { NFTGridViewItem } from './components/nft-grid-view/nft-grid-view-item'
 import { TokenLists } from './components/token-lists/token-list'
+import {
+  PortfolioOverviewChart //
+} from './components/portfolio-overview-chart/portfolio-overview-chart'
+import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
+import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
 
 // Styled Components
 import {
-  StyledWrapper,
   BalanceTitle,
   BalanceText,
   BalanceRow
 } from './style'
-
-// actions
-import { WalletActions } from '../../../../common/actions'
-import { WalletPageActions } from '../../../../page/actions'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
-import PortfolioOverviewChart from './components/portfolio-overview-chart/portfolio-overview-chart'
-import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
 import {
   Column,
   HorizontalSpace,
@@ -56,9 +59,8 @@ import {
   ToggleVisibilityButton,
   VerticalSpace
 } from '../../../shared/style'
-import { formatAsDouble } from '../../../../utils/string-utils'
-import { ChartControlBar } from '../../chart-control-bar/chart-control-bar'
-import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
+import { PlaceholderText } from '../../with-hide-balance-placeholder/style'
+import { useGetVisibleNetworksQuery } from '../../../../common/slices/api.slice'
 
 export const PortfolioOverview = () => {
   // routing
@@ -70,14 +72,14 @@ export const PortfolioOverview = () => {
   const userVisibleTokensInfo = useSelector(({ wallet }: { wallet: WalletState }) => wallet.userVisibleTokensInfo)
   const selectedPortfolioTimeline = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedPortfolioTimeline)
   const accounts = useSelector(({ wallet }: { wallet: WalletState }) => wallet.accounts)
-  const networkList = useSelector(({ wallet }: { wallet: WalletState }) => wallet.networkList)
   const transactionSpotPrices = useSelector(({ wallet }: { wallet: WalletState }) => wallet.transactionSpotPrices)
   const selectedNetworkFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedNetworkFilter)
   const selectedAccountFilter = useSelector(({ wallet }: { wallet: WalletState }) => wallet.selectedAccountFilter)
   const selectedTimeline = useSelector(({ page }: { page: PageState }) => page.selectedTimeline)
   const nftMetadata = useSelector(({ page }: { page: PageState }) => page.nftMetadata)
 
-  // memos / computed
+  // queries
+  const { data: networks } = useGetVisibleNetworksQuery()
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
@@ -97,6 +99,8 @@ export const PortfolioOverview = () => {
         : ''
     })
   }, [accounts, getBalance])
+
+  // memos / computed
 
   // filter the user's assets based on the selected network
   const visibleTokensForSupportedChains = React.useMemo(() => {
@@ -118,8 +122,7 @@ export const PortfolioOverview = () => {
   }, [
     selectedNetworkFilter.chainId,
     selectedNetworkFilter.coin,
-    userVisibleTokensInfo,
-    networkList
+    userVisibleTokensInfo
   ])
 
   // Filters visibleTokensForSupportedChains if a selectedAccountFilter is selected.
@@ -137,7 +140,12 @@ export const PortfolioOverview = () => {
         ? fullAssetBalance(asset)
         : getBalance(accounts.find(account => account.id === selectedAccountFilter), asset)
     }))
-  }, [visibleTokensForFilteredAccount, selectedAccountFilter, networkList, fullAssetBalance, accounts])
+  }, [
+    visibleTokensForFilteredAccount,
+    selectedAccountFilter,
+    fullAssetBalance,
+    accounts
+  ])
 
   const visibleAssetOptions = React.useMemo((): UserAssetInfoType[] => {
     return userAssetList.filter(({ asset }) => asset.visible && !(asset.isErc721 || asset.isNft))
@@ -168,11 +176,11 @@ export const PortfolioOverview = () => {
     })
     return grandTotal.formatAsFiat(defaultCurrencies.fiat)
   },
-  [
-    visibleAssetOptions,
-    defaultCurrencies.fiat,
-    transactionSpotPrices
-  ])
+    [
+      visibleAssetOptions,
+      defaultCurrencies.fiat,
+      transactionSpotPrices
+    ])
 
   const isZeroBalance = React.useMemo((): boolean => {
     // In some cases we need to check if the balance is zero
@@ -193,14 +201,10 @@ export const PortfolioOverview = () => {
 
   const onSelectAsset = React.useCallback((asset: BraveWallet.BlockchainToken) => {
     if (asset.contractAddress === '') {
-      history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+      history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.symbol}`)
       return
-    } else if (asset.isErc721) {
-       history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}/${asset.tokenId}`)
-    } else {
-      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
     }
-
+    history.push(`${WalletRoutes.Portfolio}/${asset.chainId}/${asset.contractAddress}/${asset.tokenId}`)
     dispatch(WalletPageActions.selectAsset({ asset, timeFrame: selectedTimeline }))
     if ((asset.isErc721 || asset.isNft) && nftMetadata) {
       // reset nft metadata
@@ -229,17 +233,18 @@ export const PortfolioOverview = () => {
 
   // render
   return (
-    <StyledWrapper>
-      <Row alignItems='flex-start' justifyContent='flex-start'>
-        <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
-      </Row>
+    <>
+      <Column fullWidth={true} justifyContent='flex-start'>
+        <Row alignItems='flex-start' justifyContent='flex-start'>
+          <BalanceTitle>{getLocale('braveWalletBalance')}</BalanceTitle>
+        </Row>
 
-      <Row justifyContent='space-between'>
-        <Column>
-          <BalanceRow>
-            {hideBalances
-              ? <PlaceholderText isBig>******</PlaceholderText>
-              : <div>
+        <Row justifyContent='space-between'>
+          <Column>
+            <BalanceRow>
+              {hideBalances
+                ? <PlaceholderText isBig>******</PlaceholderText>
+                : <div>
                   <BalanceText>
                     {fullPortfolioFiatBalance !== ''
                       ? `${hoverBalance || fullPortfolioFiatBalance}`
@@ -247,58 +252,60 @@ export const PortfolioOverview = () => {
                     }
                   </BalanceText>
                 </div>
-            }
-            <HorizontalSpace space='16px' />
-            <ToggleVisibilityButton
-              isVisible={!hideBalances}
-              onClick={onToggleHideBalances}
-            />
-          </BalanceRow>
-        </Column>
+              }
+              <HorizontalSpace space='16px' />
+              <ToggleVisibilityButton
+                isVisible={!hideBalances}
+                onClick={onToggleHideBalances}
+              />
+            </BalanceRow>
+          </Column>
 
-        <Column>
-          <BalanceRow>
-            <ChartControlBar
-              disabled={!showChart}
-              onSelectTimeframe={onChangeTimeline}
-              onDisabledChanged={onToggleShowChart}
-              selectedTimeline={selectedPortfolioTimeline}
-              timelineOptions={ChartTimelineOptions}
-            />
-          </BalanceRow>
-        </Column>
-      </Row>
+          <Column>
+            <BalanceRow>
+              <ChartControlBar
+                disabled={!showChart}
+                onSelectTimeframe={onChangeTimeline}
+                onDisabledChanged={onToggleShowChart}
+                selectedTimeline={selectedPortfolioTimeline}
+                timelineOptions={ChartTimelineOptions}
+              />
+            </BalanceRow>
+          </Column>
+        </Row>
 
-      <VerticalSpace space='20px' />
+        <VerticalSpace space='20px' />
 
-      <ColumnReveal hideContent={!showChart}>
-        <PortfolioOverviewChart
-          hasZeroBalance={isZeroBalance}
-          onHover={setHoverBalance}
-        />
-      </ColumnReveal>
-
+        <ColumnReveal hideContent={!showChart}>
+          <PortfolioOverviewChart
+            hasZeroBalance={isZeroBalance}
+            onHover={setHoverBalance}
+          />
+        </ColumnReveal>
+      </Column>
       <TokenLists
         userAssetList={userAssetList}
-        networks={networkList}
+        networks={networks || []}
         estimatedItemSize={58}
+        enableScroll={true}
         renderToken={({ item, viewMode }) =>
           viewMode === 'list'
-          ? <PortfolioAssetItem
+            ? <PortfolioAssetItem
               action={() => onSelectAsset(item.asset)}
               key={getAssetIdKey(item.asset)}
               assetBalance={item.assetBalance}
               token={item.asset}
               hideBalances={hideBalances}
             />
-          : <NFTGridViewItem
+            : <NFTGridViewItem
               key={`${item.asset.tokenId}-${item.asset.contractAddress}`}
               token={item.asset}
               onSelectAsset={() => onSelectAsset(item.asset)}
             />
         }
       />
-    </StyledWrapper>
+
+    </>
   )
 }
 

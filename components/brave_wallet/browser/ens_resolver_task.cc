@@ -546,7 +546,7 @@ void EnsResolverTask::OnFetchOffchainDone(APIRequestResult api_request_result) {
   DCHECK_GE(offchain_lookup_attemps_left_, 0);
   DCHECK_EQ(offchain_lookup_data_->callback_function.size(), 4u);
   eth_abi::Span4 callback_selector(
-      offchain_lookup_data_->callback_function.begin(), 4);
+      offchain_lookup_data_->callback_function.begin(), 4u);
 
   offchain_callback_call_ = eth_abi::TupleEncoder()
                                 .AddBytes(*bytes_result)

@@ -10,8 +10,9 @@
 #include "base/strings/string_split.h"
 #include "base/system/sys_info.h"
 #include "base/test/bind.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_ads/brave_stats_updater_helper.h"
+#include "brave/browser/brave_ads/brave_stats_helper.h"
 #include "brave/browser/brave_stats/brave_stats_updater.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -74,7 +75,7 @@ class BraveStatsUpdaterTest : public testing::Test {
         testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
-    brave_ads::BraveStatsUpdaterHelper::RegisterLocalStatePrefs(
+    brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(
         testing_local_state_.registry());
     SetCurrentTimeForTest(base::Time());
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
@@ -86,7 +87,7 @@ class BraveStatsUpdaterTest : public testing::Test {
         GetLocalState(), brave_stats::ProcessArch::kArchSkip);
   }
   void SetEnableAds(bool ads_enabled) {
-    GetLocalState()->SetBoolean(ads::prefs::kEnabledForLastProfile,
+    GetLocalState()->SetBoolean(brave_ads::prefs::kEnabledForLastProfile,
                                 ads_enabled);
   }
 
@@ -98,6 +99,7 @@ class BraveStatsUpdaterTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  base::HistogramTester histogram_tester_;
 
  private:
   TestingPrefServiceSimple testing_local_state_;
@@ -714,4 +716,21 @@ TEST_F(BraveStatsUpdaterTest, UsagePingRequest) {
               HasSubstr("daily=true&weekly=true&monthly=false"));
 
   ASSERT_EQ(ping_count, 3);
+}
+
+TEST_F(BraveStatsUpdaterTest, RecordP3APing) {
+  brave_stats::BraveStatsUpdater updater(GetLocalState());
+  updater.SetURLLoaderFactoryForTesting(shared_url_loader_factory_);
+
+  histogram_tester_.ExpectUniqueSample(
+      brave_stats::kP3AMonthlyPingHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(brave_stats::kP3ADailyPingHistogramName,
+                                       1, 1);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  histogram_tester_.ExpectUniqueSample(
+      brave_stats::kP3AMonthlyPingHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(brave_stats::kP3ADailyPingHistogramName,
+                                       1, 1);
 }

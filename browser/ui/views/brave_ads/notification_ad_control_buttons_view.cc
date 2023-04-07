@@ -19,7 +19,6 @@
 #include "ui/gfx/color_palette.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/native_theme/native_theme.h"
-#include "ui/views/background.h"
 #include "ui/views/layout/box_layout.h"
 
 namespace brave_ads {

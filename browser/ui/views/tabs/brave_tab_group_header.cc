@@ -47,8 +47,10 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   title_->SetEnabledColor(GetGroupBackgroundColorForVerticalTabs(
       group().value(), base::to_address(tab_slot_controller_)));
-  title_->SetFontList(
-      title_->font_list().DeriveWithWeight(gfx::Font::Weight::MEDIUM));
+
+  auto font_list = title_->font_list();
+  title_->SetFontList(font_list.DeriveWithWeight(gfx::Font::Weight::MEDIUM)
+                          .DeriveWithSizeDelta(13 - font_list.GetFontSize()));
 
   // We don't draw background for vertical tabs.
   title_chip_->SetBackground(nullptr);
@@ -79,6 +81,10 @@ void BraveTabGroupHeader::LayoutTitleChip() {
   auto title_bounds = GetContentsBounds();
   title_bounds.Inset(gfx::Insets(kPaddingForGroup * 2));
   title_chip_->SetBoundsRect(title_bounds);
+
+  // |title_| is a child view of |title_chip_| and there could be |sync_icon_|
+  // before |title_|. So expand |title_|'s width considering that.
+  title_->SetSize({title_bounds.width() - title_->x(), title_->height()});
 }
 
 BEGIN_METADATA(BraveTabGroupHeader, TabGroupHeader)

@@ -10,7 +10,6 @@
 
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/ui/tabs/features.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
@@ -20,14 +19,15 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "ui/base/models/list_selection_model.h"
 
 BraveTabMenuModel::BraveTabMenuModel(
     ui::SimpleMenuModel::Delegate* delegate,
     TabMenuModelDelegate* tab_menu_model_delegate,
     TabStripModel* tab_strip_model,
-    int index)
-    : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index) {
+    int index,
+    bool is_vertical_tab)
+    : TabMenuModel(delegate, tab_menu_model_delegate, tab_strip_model, index),
+      is_vertical_tab_(is_vertical_tab) {
   web_contents_ = tab_strip_model->GetWebContentsAt(index);
   if (web_contents_) {
     Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
@@ -64,6 +64,23 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
   }
 
   return id;
+}
+
+std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
+  if (!is_vertical_tab_) {
+    return TabMenuModel::GetLabelAt(index);
+  }
+
+  if (auto command_id = GetCommandIdAt(index);
+      command_id == TabStripModel::CommandNewTabToRight) {
+    return l10n_util::GetStringUTF16(
+        IDS_TAB_CXMENU_NEWTABTORIGHT_VERTICAL_TABS);
+  } else if (command_id == TabStripModel::CommandCloseTabsToRight) {
+    return l10n_util::GetStringUTF16(
+        IDS_TAB_CXMENU_CLOSETABSTORIGHT_VERTICAL_TABS);
+  }
+
+  return TabMenuModel::GetLabelAt(index);
 }
 
 void BraveTabMenuModel::Build(int selected_tab_count) {

@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.51.15",
+  "version": "1.52.26",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,8 @@
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test",
     "update_symlink": "node ./build/commands/scripts/commands.js update_symlink",
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
-    "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer"
+    "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
+    "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests"
   },
   "repository": {
     "type": "git",
@@ -264,7 +265,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "111.0.5563.64",
+        "tag": "112.0.5615.49",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
@@ -281,7 +282,7 @@
     "@storybook/react": "6.4.13",
     "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
-    "@types/chrome": "0.0.213",
+    "@types/chrome": "0.0.222",
     "@types/enzyme": "3.10.12",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/jest": "26.0.24",
@@ -291,8 +292,8 @@
     "@types/react-redux": "7.1.16",
     "@types/react-window": "1.8.5",
     "@types/recharts": "1.8.24",
-    "@types/redux-logger": "3.0.8",
-    "@types/styled-components": "5.1.9",
+    "@types/redux-logger": "3.0.9",
+    "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "5.51.0",
     "acorn": "8.0.5",
     "babel-loader": "8.2.3",
@@ -300,11 +301,11 @@
     "chalk": "4.1.2",
     "commander": "2.20.3",
     "css-loader": "3.6.0",
-    "csstype": "2.6.15",
+    "csstype": "2.6.21",
     "emptykit.css": "1.0.1",
     "enhanced-resolve": "5.8.3",
     "enzyme": "3.11.0",
-    "enzyme-adapter-react-16": "1.15.6",
+    "enzyme-adapter-react-16": "1.15.7",
     "eslint": "8.33.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-config-standard-with-typescript": "34.0.0",
@@ -325,7 +326,7 @@
     "less": "3.13.1",
     "less-loader": "4.1.0",
     "log-update": "3.4.0",
-    "mkdirp": "0.5.5",
+    "mkdirp": "0.5.6",
     "mz": "2.7.0",
     "prettier": "2.8.4",
     "react": "16.14.0",
@@ -336,7 +337,7 @@
     "sass-loader": "10.2.1",
     "sinon": "7.5.0",
     "style-loader": "0.23.1",
-    "styled-components": "5.3.0",
+    "styled-components": "5.3.9",
     "terser": "5.16.2",
     "trezor-connect": "8.2.6-extended",
     "ts-jest": "26.5.6",
@@ -350,9 +351,9 @@
     "webpack-cli": "3.3.12"
   },
   "dependencies": {
-    "@brave/leo": "github:brave/leo#342a641",
+    "@brave/leo": "github:brave/leo#16eb3a3",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
-    "@brave/wallet-standard-brave": "~0.0.6",
+    "@brave/wallet-standard-brave": "~0.0.10",
     "@dnd-kit/core": "6.0.5",
     "@dnd-kit/sortable": "7.0.1",
     "@glif/filecoin-wallet-provider": "2.0.0-beta.12",
@@ -385,6 +386,6 @@
   },
   "overrides": {
     "loader-utils": "2.0.3",
-    "json5": "2.2.2"
+    "json5": "2.2.3"
   }
 }

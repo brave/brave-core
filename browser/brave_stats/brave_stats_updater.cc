@@ -10,6 +10,7 @@
 
 #include "base/barrier_closure.h"
 #include "base/command_line.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/system/sys_info.h"
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/buildflags.h"
@@ -40,6 +41,9 @@
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 
 namespace brave_stats {
+
+const char kP3AMonthlyPingHistogramName[] = "Brave.Core.UsageMonthly";
+const char kP3ADailyPingHistogramName[] = "Brave.Core.UsageDaily";
 
 namespace {
 
@@ -89,6 +93,7 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
         "Not implemented."
     })");
 }
+
 }  // anonymous namespace
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
@@ -126,6 +131,10 @@ void BraveStatsUpdater::Start() {
   server_ping_periodic_timer_->Start(
       FROM_HERE, base::Seconds(kUpdateServerPeriodicPingFrequencySeconds), this,
       &BraveStatsUpdater::OnServerPingTimerFired);
+
+  // Record ping for P3A.
+  UMA_HISTOGRAM_BOOLEAN(kP3AMonthlyPingHistogramName, true);
+  UMA_HISTOGRAM_BOOLEAN(kP3ADailyPingHistogramName, true);
 }
 
 void BraveStatsUpdater::Stop() {
@@ -291,7 +300,7 @@ bool BraveStatsUpdater::IsReferralInitialized() {
 }
 
 bool BraveStatsUpdater::IsAdsEnabled() {
-  return pref_service_->GetBoolean(ads::prefs::kEnabledForLastProfile);
+  return pref_service_->GetBoolean(brave_ads::prefs::kEnabledForLastProfile);
 }
 
 bool BraveStatsUpdater::HasDoneThresholdPing() {
@@ -322,7 +331,7 @@ void BraveStatsUpdater::QueueServerPing() {
   stats_preconditions_barrier_ = base::BarrierClosure(
       num_closures,
       base::BindOnce(&BraveStatsUpdater::StartServerPingStartupTimer,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
   if (!referrals_initialized) {
     pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
     pref_change_registrar_->Init(pref_service_);
@@ -338,13 +347,16 @@ void BraveStatsUpdater::QueueServerPing() {
 }
 
 void BraveStatsUpdater::DetectUncertainFuture() {
-  auto callback = base::BindOnce(&BraveStatsUpdater::OnDetectUncertainFuture,
-                                 base::Unretained(this));
-  brave_rpill::DetectUncertainFuture(base::BindOnce(std::move(callback)));
+  brave_rpill::DetectUncertainFuture(
+      base::BindOnce(&BraveStatsUpdater::OnDetectUncertainFuture,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveStatsUpdater::OnReferralInitialization() {
-  stats_preconditions_barrier_.Run();
+  pref_change_registrar_ = nullptr;
+  if (stats_preconditions_barrier_) {
+    stats_preconditions_barrier_.Run();
+  }
 }
 
 void BraveStatsUpdater::OnDetectUncertainFuture(
@@ -354,10 +366,13 @@ void BraveStatsUpdater::OnDetectUncertainFuture(
   } else {
     arch_ = ProcessArch::kArchMetal;
   }
-  stats_preconditions_barrier_.Run();
+  if (stats_preconditions_barrier_) {
+    stats_preconditions_barrier_.Run();
+  }
 }
 
 void BraveStatsUpdater::StartServerPingStartupTimer() {
+  stats_preconditions_barrier_.Reset();
   stats_startup_complete_ = true;
   server_ping_startup_timer_->Start(
       FROM_HERE, base::Seconds(kUpdateServerStartupPingDelaySeconds), this,

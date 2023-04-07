@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
@@ -152,7 +151,7 @@ public class AccountDetailActivity
                     portfolioHelper.calculateBalances(() -> {
                         RecyclerView rvAssets = findViewById(R.id.rv_assets);
 
-                        BlockchainToken[] userAssets = portfolioHelper.getUserAssets();
+                        List<BlockchainToken> userAssets = portfolioHelper.getUserAssets();
                         HashMap<String, Double> perTokenCryptoSum =
                                 portfolioHelper.getPerTokenCryptoSum();
                         HashMap<String, Double> perTokenFiatSum =
@@ -161,8 +160,9 @@ public class AccountDetailActivity
                         String tokensPath =
                                 BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
 
-                        WalletCoinAdapter walletCoinAdapter = Utils.setupVisibleAssetList(
-                                userAssets, perTokenCryptoSum, perTokenFiatSum, tokensPath);
+                        WalletCoinAdapter walletCoinAdapter =
+                                Utils.setupVisibleAssetList(userAssets, perTokenCryptoSum,
+                                        perTokenFiatSum, tokensPath, getResources(), allNetworks);
                         walletCoinAdapter.setOnWalletListItemClick(AccountDetailActivity.this);
                         rvAssets.setAdapter(walletCoinAdapter);
                         rvAssets.setLayoutManager(new LinearLayoutManager(this));
@@ -228,7 +228,7 @@ public class AccountDetailActivity
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "finishNativeInitialization " + e);
         }
         assert mJsonRpcService != null;

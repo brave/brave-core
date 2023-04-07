@@ -39,7 +39,7 @@ export const PanelBottomNavButton = (props: Props) => {
 
   return (
     <Button onMouseEnter={showTip} onMouseLeave={hideTip} onClick={onClick}>
-      <ButtonIcon icon={option.icon} />
+      <ButtonIcon name={option.icon} />
 
       <NavTooltip
         orientation='top'

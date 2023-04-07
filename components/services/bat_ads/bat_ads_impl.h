@@ -12,16 +12,14 @@
 #include <vector>
 
 #include "base/values.h"
-#include "bat/ads/public/interfaces/ads.mojom-forward.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom-forward.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 
-class GURL;
-
-namespace ads {
+namespace brave_ads {
 class Ads;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
-}  // namespace ads
+}  // namespace brave_ads
 
 namespace bat_ads {
 
@@ -29,8 +27,9 @@ class BatAdsClientMojoBridge;
 
 class BatAdsImpl : public mojom::BatAds {
  public:
-  explicit BatAdsImpl(
-      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client);
+  BatAdsImpl(
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client,
+      mojo::PendingReceiver<mojom::BatAdsClientNotifier> client_notifier);
 
   BatAdsImpl(const BatAdsImpl&) = delete;
   BatAdsImpl& operator=(const BatAdsImpl&) = delete;
@@ -46,37 +45,6 @@ class BatAdsImpl : public mojom::BatAds {
 
   void GetDiagnostics(GetDiagnosticsCallback callback) override;
 
-  void OnLocaleDidChange(const std::string& locale) override;
-
-  void OnPrefDidChange(const std::string& path) override;
-
-  void OnDidUpdateResourceComponent(const std::string& id) override;
-
-  void OnTabHtmlContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& html) override;
-  void OnTabTextContentDidChange(int32_t tab_id,
-                                 const std::vector<GURL>& redirect_chain,
-                                 const std::string& text) override;
-
-  void OnUserDidBecomeIdle() override;
-  void OnUserDidBecomeActive(base::TimeDelta idle_time,
-                             bool screen_was_locked) override;
-
-  void TriggerUserGestureEvent(int32_t page_transition_type) override;
-
-  void OnBrowserDidEnterForeground() override;
-  void OnBrowserDidEnterBackground() override;
-
-  void OnTabDidStartPlayingMedia(int32_t tab_id) override;
-  void OnTabDidStopPlayingMedia(int32_t tab_id) override;
-  void OnTabDidChange(int32_t tab_id,
-                      const std::vector<GURL>& redirect_chain,
-                      bool is_active,
-                      bool is_browser_active,
-                      bool is_incognito) override;
-  void OnDidCloseTab(int32_t tab_id) override;
-
   void OnRewardsWalletDidChange(const std::string& payment_id,
                                 const std::string& recovery_seed) override;
 
@@ -88,31 +56,31 @@ class BatAdsImpl : public mojom::BatAds {
   void TriggerInlineContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::InlineContentAdEventType event_type) override;
+      brave_ads::mojom::InlineContentAdEventType event_type) override;
 
   void MaybeServeNewTabPageAd(MaybeServeNewTabPageAdCallback callback) override;
   void TriggerNewTabPageAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::NewTabPageAdEventType event_type) override;
+      brave_ads::mojom::NewTabPageAdEventType event_type) override;
 
   void MaybeGetNotificationAd(const std::string& placement_id,
                               MaybeGetNotificationAdCallback callback) override;
   void TriggerNotificationAdEvent(
       const std::string& placement_id,
-      ads::mojom::NotificationAdEventType event_type) override;
+      brave_ads::mojom::NotificationAdEventType event_type) override;
 
   void TriggerPromotedContentAdEvent(
       const std::string& placement_id,
       const std::string& creative_instance_id,
-      ads::mojom::PromotedContentAdEventType event_type) override;
+      brave_ads::mojom::PromotedContentAdEventType event_type) override;
 
   void TriggerSearchResultAdEvent(
-      ads::mojom::SearchResultAdInfoPtr ad_mojom,
-      ads::mojom::SearchResultAdEventType event_type) override;
+      brave_ads::mojom::SearchResultAdInfoPtr ad_mojom,
+      brave_ads::mojom::SearchResultAdEventType event_type) override;
 
   void PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType ad_type,
+      brave_ads::mojom::AdType ad_type,
       PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetHistory(base::Time from_time,
@@ -120,24 +88,27 @@ class BatAdsImpl : public mojom::BatAds {
                   GetHistoryCallback callback) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
 
-  void ToggleAdThumbUp(base::Value::Dict value,
-                       ToggleAdThumbUpCallback callback) override;
-  void ToggleAdThumbDown(base::Value::Dict value,
-                         ToggleAdThumbUpCallback callback) override;
-  void ToggleAdOptIn(const std::string& category,
-                     int opt_action_type,
-                     ToggleAdOptInCallback callback) override;
-  void ToggleAdOptOut(const std::string& category,
-                      int opt_action_type,
-                      ToggleAdOptOutCallback callback) override;
-  void ToggleSavedAd(base::Value::Dict value,
-                     ToggleSavedAdCallback callback) override;
-  void ToggleFlaggedAd(base::Value::Dict value,
-                       ToggleFlaggedAdCallback callback) override;
+  void ToggleLikeAd(base::Value::Dict value,
+                    ToggleLikeAdCallback callback) override;
+  void ToggleDislikeAd(base::Value::Dict value,
+                       ToggleLikeAdCallback callback) override;
+  void ToggleMarkToReceiveAdsForCategory(
+      const std::string& category,
+      int opt_action_type,
+      ToggleMarkToReceiveAdsForCategoryCallback callback) override;
+  void ToggleMarkToNoLongerReceiveAdsForCategory(
+      const std::string& category,
+      int opt_action_type,
+      ToggleMarkToNoLongerReceiveAdsForCategoryCallback callback) override;
+  void ToggleSaveAd(base::Value::Dict value,
+                    ToggleSaveAdCallback callback) override;
+  void ToggleMarkAdAsInappropriate(
+      base::Value::Dict value,
+      ToggleMarkAdAsInappropriateCallback callback) override;
 
  private:
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
-  std::unique_ptr<ads::Ads> ads_;
+  std::unique_ptr<brave_ads::Ads> ads_;
 };
 
 }  // namespace bat_ads

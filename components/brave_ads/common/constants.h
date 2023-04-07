@@ -8,18 +8,15 @@
 
 #include <cstdint>
 
-// TODO(https://github.com/brave/brave-browser/issues/13793): Rename ads
-// namespace to brave_ads when bat-native-ads is moved to components/brave_ads
-namespace ads {
+namespace brave_ads {
 
-// Brave Ads current version number
-constexpr int kCurrentVersionNumber = 12;
+constexpr int kCurrentPrefVersion = 12;
 
 // Brave Ads per hour are user configurable within the brave://rewards ads UI
 constexpr int64_t kMinimumNotificationAdsPerHour = 0;
 constexpr int64_t kMaximumNotificationAdsPerHour = 10;
-constexpr int64_t kDefaultNotificationAdsPerHour = 5;
+constexpr int64_t kDefaultNotificationAdsPerHour = 10;
 
-}  // namespace ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_COMMON_CONSTANTS_H_

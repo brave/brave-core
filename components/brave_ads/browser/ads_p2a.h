@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 
 #include <cstdint>
-
 #include <string>
 
 class PrefService;

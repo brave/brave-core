@@ -23,13 +23,14 @@
 #include "brave/browser/search_engines/pref_names.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_ads/core/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
-#include "brave/components/p3a/brave_p3a_utils.h"
+#include "brave/components/p3a/utils.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "chrome/browser/browser_process.h"
@@ -123,7 +124,7 @@ void BraveNewTabMessageHandler::RegisterLocalStatePrefs(
 
 void BraveNewTabMessageHandler::RecordInitialP3AValues(
     PrefService* local_state) {
-  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kNeverOpened, "Brave.NTP.CustomizeUsageStatus",
       kNTPCustomizeUsageStatus, local_state);
 }
@@ -160,7 +161,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   if (!ads_service) {
     LOG(ERROR) << "Ads service is not initialized!";
   } else {
-    is_ads_supported_locale = ads_service->IsSupportedLocale();
+    is_ads_supported_locale = brave_ads::IsSupportedRegion();
   }
 
   source->AddBoolean("featureFlagBraveNTPSponsoredImagesWallpaper",
@@ -381,7 +382,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     LOG(ERROR) << "Invalid input";
     return;
   }
-  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpenedAndEdited, "Brave.NTP.CustomizeUsageStatus",
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
   PrefService* prefs = profile_->GetPrefs();
@@ -537,7 +538,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 void BraveNewTabMessageHandler::HandleCustomizeClicked(
     const base::Value::List& args) {
   AllowJavascript();
-  brave::RecordValueIfGreater<NTPCustomizeUsage>(
+  p3a::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
       kNTPCustomizeUsageStatus, g_browser_process->local_state());
 }

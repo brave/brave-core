@@ -46,6 +46,13 @@
             app:dialog_subtitle="@string/block_fingerprinting_text"
             app:dialog_entries="@array/blockFingerprintingTexts"
             app:dialog_default_index="1" />
+        <org.chromium.chrome.browser.settings.BraveDialogPreference
+            android:key="https_upgrade"
+            android:title="@string/https_upgrade_title"
+            android:summary="@string/https_upgrade_summary"
+            app:dialog_subtitle="@string/https_upgrade_text"
+            app:dialog_entries="@array/httpsUpgradeTexts"
+            app:dialog_default_index="1" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="fingerprint_language"
             android:title="@string/fingerprint_language_switch"
@@ -89,6 +96,23 @@
             android:key="social_blocking_linkedin"
             android:title="@string/brave_shields_social_blocking_linkedin"
             android:defaultValue="false" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="youtube_section"
+        android:title="@string/youtube">
+            <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_recommended_content"
+            android:title="@string/hide_youtube_recommended_content"
+            android:order="25"
+            android:summary="@string/hide_youtube_recommended_content_description"
+            android:defaultValue="true" />
+        <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+            android:key="hide_youtube_distracting_elements"
+            android:title="@string/hide_youtube_distracting_elements"
+            android:order="25"
+            android:summary="@string/hide_youtube_distracting_elements_description"
+            android:defaultValue="true" />
     </PreferenceCategory>
         <PreferenceCategory
         android:key="other_privacy_settings_section"
@@ -146,10 +170,10 @@
             android:persistent="false"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="search_suggestions"
-            android:title="@string/autocomplete_searches_and_urls_title"
-            android:order="25"
-            android:summary="@string/autocomplete_searches_and_urls_summary"
-            android:persistent="false"/>
+            android:title="@string/improve_search_suggestions_title"
+            android:summary="@string/improve_search_suggestions_summary"
+            android:persistent="false"
+            android:order="25"/>
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="autocomplete_top_sites"
             android:order="25"
