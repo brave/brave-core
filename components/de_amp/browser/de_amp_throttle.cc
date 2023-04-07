@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 
@@ -82,15 +82,12 @@ void DeAmpThrottle::WillProcessResponse(
 
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
-  mojo::PendingRemote<network::mojom::URLLoader> source_loader;
-  mojo::PendingReceiver<network::mojom::URLLoaderClient> source_client_receiver;
   DeAmpURLLoader* de_amp_loader;
   std::tie(new_remote, new_receiver, de_amp_loader) =
       DeAmpURLLoader::CreateLoader(weak_factory_.GetWeakPtr(), response_url,
                                    task_runner_);
-  InterceptAndStartLoader(
-      std::move(source_loader), std::move(source_client_receiver),
-      std::move(new_remote), std::move(new_receiver), de_amp_loader);
+  InterceptAndStartLoader(std::move(new_remote), std::move(new_receiver),
+                          de_amp_loader);
 }
 
 bool DeAmpThrottle::OpenCanonicalURL(const GURL& new_url,

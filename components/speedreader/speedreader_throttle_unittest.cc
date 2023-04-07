@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -36,7 +37,9 @@ class TestSpeedreaderThrottleDelegate
  public:
   ~TestSpeedreaderThrottleDelegate() override = default;
   bool IsPageDistillationAllowed() override { return true; }
-  void OnDistillComplete() override {}
+  bool IsPageContentPresent() override { return false; }
+  std::string TakePageContent() override { return {}; }
+  void OnDistillComplete(DistillationResult result) override {}
 };
 
 }  // anonymous namespace
