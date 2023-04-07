@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   background-color: var(--nav-background);
   border-radius: 12px;
   border: 1px solid var(--nav-border);
-  position: fixed;
+  position: absolute;
   top: 100px;
   left: 32px;
   overflow: visible;

@@ -32,10 +32,12 @@ import {
   Wrapper,
   LayoutCardWrapper,
   ContainerCard,
-  BackgroundWrapper,
+  StaticBackground,
+  BackgroundGradientWrapper,
   BackgroundGradientTopLayer,
   BackgroundGradientMiddleLayer,
-  BackgroundGradientBottomLayer
+  BackgroundGradientBottomLayer,
+  BlockForHeight
 } from './wallet-page-wrapper.style'
 
 export interface Props {
@@ -83,37 +85,41 @@ export const WalletPageWrapper = (props: Props) => {
     walletLocation.includes(option.route))?.name ?? ''
 
   return (
-    <Wrapper noPadding={noPadding}>
-      {showNavigationAndHeader && walletLocation !== WalletRoutes.Swap &&
-        <TabHeader title={headerTitle} />
-      }
-      {showNavigationAndHeader &&
-        <WalletNav isSwap={walletLocation === WalletRoutes.Swap} />
-      }
-      {!isWalletLocked &&
-        <FeatureRequestButton />
-      }
+    <>
+      <StaticBackground />
       {!hideBackground &&
-        <BackgroundWrapper>
+        <BackgroundGradientWrapper>
           <BackgroundGradientTopLayer />
           <BackgroundGradientMiddleLayer />
           <BackgroundGradientBottomLayer />
-        </BackgroundWrapper>
+        </BackgroundGradientWrapper>
       }
-      {wrapContentInBox ? (
-        <LayoutCardWrapper
-          maxWidth={cardWidth}
-        >
-          <ContainerCard
-            cardOverflow={cardOverflow}
+      <Wrapper noPadding={noPadding}>
+        {showNavigationAndHeader && walletLocation !== WalletRoutes.Swap &&
+          <TabHeader title={headerTitle} />
+        }
+        {showNavigationAndHeader &&
+          <WalletNav isSwap={walletLocation === WalletRoutes.Swap} />
+        }
+        {!isWalletLocked &&
+          <FeatureRequestButton />
+        }
+        <BlockForHeight />
+        {wrapContentInBox ? (
+          <LayoutCardWrapper
+            maxWidth={cardWidth}
           >
-            {children}
-          </ContainerCard>
-        </LayoutCardWrapper>
-      ) : (
-        children
-      )}
-    </Wrapper>
+            <ContainerCard
+              cardOverflow={cardOverflow}
+            >
+              {children}
+            </ContainerCard>
+          </LayoutCardWrapper>
+        ) : (
+          children
+        )}
+      </Wrapper>
+    </>
   )
 }
 
