@@ -14,6 +14,8 @@ interface InputBoxProps {
   onSubmit?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   onSummaryClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void
+  showSummarizeButton?: boolean
+  showInput?: boolean
   value: string
   hasSummarizationFailed?: boolean
   hasSeenAgreement: boolean
@@ -64,7 +66,10 @@ function InputBox (props: InputBoxProps) {
   return (
     <div className={styles.container}>
       {summaryFailedView}
+      {props.showSummarizeButton &&
       <button disabled={props.hasSummarizationFailed} className={styles.buttonPrimary} onClick={handleSummaryClick}>{getLocale('summarizeButtonLabel')}</button>
+      }
+      {props.showInput &&
       <form className={styles.form}>
         <textarea
           className={styles.textbox}
@@ -79,6 +84,7 @@ function InputBox (props: InputBoxProps) {
           </button>
         </div>
       </form>
+      }
     </div>
   )
 }
