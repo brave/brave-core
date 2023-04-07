@@ -300,18 +300,14 @@ public class ImageLoader {
                         return callback != null && callback.onLoadFailed();
                     }
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model,
-                                Target<Drawable> target, DataSource dataSource,
-                                boolean isFirstResource) {
-                            return callback != null && callback.onResourceReady(resource, target);
-                        }
-                    })
-                    .into(imageView);
-        } catch (IllegalArgumentException e) {
-            Log.e(TAG, "loadImage error: " + e.getMessage());
-            if (callback != null) callback.onLoadFailed();
-        }
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model,
+                            Target<Drawable> target, DataSource dataSource,
+                            boolean isFirstResource) {
+                        return callback != null && callback.onResourceReady(resource, target);
+                    }
+                })
+                .into(imageView);
     }
 
     private static BitmapTransformation[] getTransformations(

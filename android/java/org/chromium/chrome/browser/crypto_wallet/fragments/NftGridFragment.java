@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
@@ -16,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +56,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.custom_layout.AutoFitVerticalGridLayoutManager;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
+import org.chromium.ui.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -195,7 +196,7 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();
             activity.openNetworkSelection(NetworkSelectorModel.Mode.LOCAL_NETWORK_FILTER, TAG);
-        } catch (ActivityNotFoundException e) {
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "Network selection cannot be opened.", e);
         }
     }
