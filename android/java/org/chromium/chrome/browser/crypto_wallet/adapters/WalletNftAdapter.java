@@ -70,6 +70,9 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
             onWalletListItemClick.onAssetClick(walletListItemModel.getBlockchainToken());
         });
 
+        Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getNetworkIcon(),
+                walletListItemModel.getIcon(), holder.networkIconImage, null, true);
+
         if (walletListItemModel.getBlockchainToken() == null
                 || !walletListItemModel.getBlockchainToken().logo.isEmpty()) {
             Utils.setBitmapResource(mExecutor, mHandler, context, walletListItemModel.getIconPath(),
@@ -123,12 +126,14 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView iconImg;
+        public final ImageView networkIconImage;
         public final TextView titleText;
         public final TextView subTitleText;
 
         public ViewHolder(View itemView) {
             super(itemView);
             iconImg = itemView.findViewById(R.id.icon);
+            networkIconImage = itemView.findViewById(R.id.network_icon);
             titleText = itemView.findViewById(R.id.title);
             subTitleText = itemView.findViewById(R.id.sub_title);
         }
