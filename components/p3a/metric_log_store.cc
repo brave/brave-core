@@ -24,7 +24,7 @@ namespace {
 constexpr char kTypicalJsonLogPrefName[] = "p3a.logs";
 constexpr char kSlowJsonLogPrefName[] = "p3a.logs_slow";
 constexpr char kExpressJsonLogPrefName[] = "p3a.logs_express";
-constexpr char kConstellationPrepPrefName[] = "p3a.logs.constellation_prep";
+constexpr char kConstellationPrepPrefName[] = "p3a.logs_constellation_prep";
 constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
