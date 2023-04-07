@@ -143,6 +143,33 @@ internal::RasOperationResult GetRasErrorResult(const std::string& error,
   return result;
 }
 
+DWORD ValidateEntryName(const std::wstring& entry_name) {
+  // Simple validation on the entry name.
+  DWORD dw_ret = RasValidateEntryName(DEFAULT_PHONE_BOOK, entry_name.c_str());
+  switch (dw_ret) {
+    // New or existing is the happy path.
+    // `RasSetEntryProperties` will add new entry or update an existing entry.
+    case ERROR_SUCCESS:
+      VLOG(2) << __func__ << " Entry name is valid";
+      break;
+    case ERROR_ALREADY_EXISTS:
+      VLOG(2) << __func__
+              << " The entry name already exists in the specified phonebook.";
+      break;
+    // Possible error conditions.
+    case ERROR_INVALID_NAME:
+      VLOG(2) << __func__ << " Entry name: `" << entry_name.c_str()
+              << "` is invalid";
+      break;
+    default:
+      VLOG(2) << __func__ << " RasValidateEntryName failed: Error=\""
+              << internal::GetRasErrorMessage(dw_ret) << "\" (" << dw_ret
+              << ")";
+      break;
+  }
+  return dw_ret;
+}
+
 }  // namespace
 
 namespace internal {
@@ -351,28 +378,11 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
     return GetRasErrorResult("`hostname` is empty");
   }
 
-  // Simple validation on the entry name.
-  DWORD dw_ret = RasValidateEntryName(DEFAULT_PHONE_BOOK, entry_name.c_str());
-  switch (dw_ret) {
-    // New or existing is the happy path.
-    // `RasSetEntryProperties` will add new entry or update an existing entry.
-    case ERROR_SUCCESS:
-      VLOG(2) << __func__ << " Entry name is valid";
-      break;
-    case ERROR_ALREADY_EXISTS:
-      VLOG(2) << __func__
-              << " The entry name already exists in the specified phonebook.";
-      break;
-    // Possible error conditions.
-    case ERROR_INVALID_NAME:
-      VLOG(2) << __func__ << " Entry name: `" << entry_name.c_str()
-              << "` is invalid";
-      return GetRasErrorResult(
-          "The format of the specified entry name is invalid.");
-    default:
-      VLOG(2) << __func__ << " RasValidateEntryName failed: Error=\""
-              << GetRasErrorMessage(dw_ret) << "\" (" << dw_ret << ")";
-      break;
+  // In this step, we could get ERROR_SUCCESS or ERROR_ALREADY_EXISTS.
+  DWORD dw_ret = ValidateEntryName(entry_name);
+  if (dw_ret == ERROR_INVALID_NAME) {
+    return GetRasErrorResult(
+        "The format of the specified entry name is invalid.");
   }
 
   auto connection_result = CheckConnection(entry_name);
@@ -417,6 +427,16 @@ RasOperationResult CreateEntry(const BraveVPNConnectionInfo& info) {
   if (dw_ret != ERROR_SUCCESS) {
     return GetRasErrorResult(GetRasErrorMessage(dw_ret),
                              "RasSetEntryProperties()");
+  }
+
+  // In this step, we should get ERROR_ALREADY_EXISTS.
+  dw_ret = ValidateEntryName(entry_name);
+  if (dw_ret != ERROR_ALREADY_EXISTS) {
+    // TODO(simonhong): What should we do when this happens.
+    // Trying RasSetEntryProperties() once again?
+    VLOG(2) << __func__
+            << " Entry should be in rasphonebook after successful "
+               "RasSetEntryProperties()";
   }
 
   if (const auto error = SetCredentials(entry_name.c_str(), username.c_str(),
