@@ -85,6 +85,12 @@
 
 # This test fails because kPrerender2 feature is disabled.
 -NoCancelSearchPreloadUnifiedBrowserTest.SuggestionChangeAfterStartPrerender
+-NoCancelSearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
+-SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderActivated
+-SearchPreloadUnifiedFallbackBrowserTest.FetchPrerenderFetch
+-SearchPreloadUnifiedFallbackBrowserTest.PrefetchErrorCancelsPrerender
+-SearchPreloadUnifiedFallbackBrowserTest.PrerenderHintReceivedAfterCompletion
+-SearchPreloadUnifiedFallbackBrowserTest.ServingToPrerenderingUntilCompletion
 
 # These tests fail because of the following failed expectation in prerender_test_util.cc:
 # Expected: (host_id) != (RenderFrameHost::kNoFrameTreeNodeId), actual: -1 vs -1
@@ -161,6 +167,7 @@
 -PictureInPictureWindowControllerPrerenderBrowserTest.*
 -PlatformAppNavigationRedirectorPrerenderingBrowserTest.*
 -PopupTrackerPrerenderBrowserTest.*
+-PrefetchPageLoadMetricsObserverPrerenderBrowserTest.PrerenderingShouldNotRecordMetrics
 -PrefetchProxyPageLoadMetricsObserverPrerenderBrowserTest.*
 -PrefetchProxyPrerenderBrowserTest.*
 -PrerenderAutofillTest.*
@@ -211,11 +218,14 @@
 # This test fails because we disable Browsing Topics (and Trust Tokens, and
 # Fledge, and Interest Groups, etc.)
 -BrowsingDataModelBrowserTest.AttributionReportingAccessReportedCorrectly
+-BrowsingDataModelBrowserTest.TopicsAccessReportedCorrectly
 
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
 # https://github.com/brave/brave-browser/issues/11546 for additional
 # information.
+-BorderlessIsolatedWebAppBrowserTest.*
+-BrowsingDataModelBrowserTest.IsolatedWebAppUsageInDefaultStoragePartitionModel
 -ChromeDirectSocketsTcpApiTest.TcpReadWrite
 -ChromeDirectSocketsTcpIsolatedWebAppTest.TcpReadWrite
 -ChromeDirectSocketsUdpApiTest.UdpReadWrite
@@ -223,8 +233,10 @@
 -ChromeDirectSocketsUdpApiTest.UdpServerReadWrite
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpReadWrite
 -ChromeDirectSocketsUdpIsolatedWebAppTest.UdpServerReadWrite
+-GetIsolatedWebAppBrowsingDataCommandBrowserTest.*
 -InstallIsolatedWebAppFromCommandLineFromFileBrowserTest.AppFromCommandLineIsInstalled
 -InstallIsolatedWebAppFromCommandLineFromUrlBrowserTest.AppFromCommandLineIsInstalled
+-IsolatedWebAppBrowserServiceWorkerPushTest.ServiceWorkerPartitionedWhenWakingUpDueToPushNotification
 -IsolatedWebAppBrowserServiceWorkerTest.ServiceWorkerPartitioned
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockTcp/0
 -IsolatedWebAppsDeveloperModeAllowedPolicyTest.MockUdp/0
@@ -283,6 +295,10 @@
 -All/DIPSTabHelperBrowserTest.Histograms_MultipleClicksThenStorage/*
 -All/DIPSTabHelperBrowserTest.Histograms_MultipleStoragesThenClick/*
 -All/DIPSTabHelperBrowserTest.Histograms_StorageThenClick/*
+
+# These tests fail because we block 3p cookies (which causes the sandbox
+# service to set ANTI_ABUSE setting to BLOCK).
+-ExtensionContentSettingsApiTest.Standard
 
 # These tests fail because of the shields. Didn't investigate in depth, but
 # the tests pass when run with --disable-brave-extension.
@@ -428,6 +444,8 @@
 # These tests fail because we intentionally disable DICE signin via
 # BraveAccountConsistencyModeManager::IsDiceSignInAllowed()
 -DiceBrowserTest.*
+-DiceBrowserTestWithWebAuthFlowInBrowserTabOff.DiceExtensionConsent_GetAuthToken
+-DiceBrowserTestWithWebAuthFlowInBrowserTabOff.NoDiceExtensionConsent_LaunchWebAuthFlow
 -DiceBrowsingDataRemoverBrowserTest.*
 -DiceManageAccountBrowserTest.*
 -DiceSigninUiUtilBrowserTest.*
@@ -468,6 +486,15 @@
 # frame/document scope
 # Terminating renderer for bad IPC message, reason 123
 -DevToolsExtensionChromeUrlTest.TestExtensionOnNewTab
+-PersistentBackground/ExtensionApiTabTestWithContextType.Move/0
+-PersistentBackground/ExtensionApiTabTestWithContextType.NoPermissions/0
+-PersistentBackground/ExtensionApiTabTestWithContextType.OnUpdated/0
+-PersistentBackground/ExtensionApiTabTestWithContextType.RemoveMultiple/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.Move/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.NoPermissions/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.OnUpdated/0
+-ServiceWorker/ExtensionApiTabTestWithContextType.RemoveMultiple/0
+-SystemNetworkContextManagerWithIpProtectionFlagsEnabledAndCommandLineSettingsEnabled.EnableIpProtectionProxyCommandLineOverridesFeature
 
 # These tests fail because we disable DIPS via dips::kFeature
 -All/DIPSTabHelperBrowserTest.*/*
@@ -500,9 +527,15 @@
 -DownloadExtensionTest.DownloadExtensionTest_SearchPauseResumeCancelGetFileIconIncognito
 -DownloadTestWithFakeSafeBrowsing.NoUncommonDownloadReportIfIncognito
 
+# These tests fail because we have "ask for download destination" setting turned
+# on by default.
+-DownloadBubbleTest.IPHWithNoInteraction
+-DownloadBubbleTest.NoIPHWithInteraction
+
 # These tests fail because we null out ClientSideDetectionServiceFactory.
 -All/ClientSideDetectionServiceBrowserTest.ModelUpdatesPropagated/*
 -All/ClientSideDetectionServiceBrowserTest.TfLiteClassification/*
+-All/ClientSideDetectionServiceBrowserTest.TfLiteClassificationAfterTwoModelUploads/1
 
 # This test crashes because we have kOptimizationHints feature disabled.
 -PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers 
@@ -525,20 +558,83 @@
 -HttpsUpgradesBrowserTest.HttpsUpgradeWithBrokenSSL_ShouldTriggerSSLInterstitial/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.InterstitialBypassed_HttpFallbackLoaded/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.NetErrorOnUpgrade_ShouldInterstitial/HttpsUpgradesOnly
+-HttpsUpgradesBrowserTest.NonUniqueHost_RecordsMetrics/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.SlowHttps_ShouldInterstitial/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.UrlWithHttpScheme_BrokenSSL_ShouldInterstitial/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.AllowlistEntryExpires/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.EnterpriseAllowlistDisablesUpgrades/HttpsUpgradesOnly
 -HttpsUpgradesBrowserTest.RevisitingBumpsExpiration/HttpsUpgradesOnly
 
+# These tests crash because we disable 
+# enterprise_connectors::kLocalContentAnalysisEnabled feature
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/1
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/11
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/13
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/15
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/17
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/19
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/21
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/23
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/3
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/5
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/7
+-ConnectorsServiceAnalysisProfileBrowserTest.DeviceReporting/9
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/1
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/11
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/13
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/15
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/17
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/19
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/21
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/23
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/3
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/5
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/7
+-ConnectorsServiceAnalysisProfileBrowserTest.NoReporting/9
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/1
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/11
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/13
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/15
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/17
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/19
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/21
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/23
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/3
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/5
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/7
+-ConnectorsServiceAnalysisProfileBrowserTest.ProfileReporting/9
+-EnterpriseReportingPrivateGetContextInfoBaseBrowserTest.TestAllProviderNamesSet
+-IsClipboardPasteContentAllowedTest.AllFilesBlocked
+-IsClipboardPasteContentAllowedTest.SomeFilesBlocked
+-IsClipboardPasteContentAllowedTest.TextBlocked
+
+# Thread profiler is disabled in Brave.
+-ThreadProfilerBrowserTest.*
+
+# These fail because we disable kPartitionedCookies
+-StorageAccessAPIEnterprisePolicyBrowserTest.PartitionedStorage/*
+-StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameOriginCookieAccess_CrossSiteAncestorChain
+-StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameSiteCookieAccess_CrossSiteAncestorChain
+
+# These fail because we disable kFirstPartySets
+-RequestStorageAccessForBrowserTest.ThirdPartyGrantsExpireOverIPC
+-RequestStorageAccessForWithCHIPSBrowserTest.RequestStorageAccessFor_CoexistsWithCHIPS
+-RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AllowsRequestStorageAccessResolution
+-RequestStorageAccessForWithFirstPartySetsBrowserTest.Permission_AutograntedWithinFirstPartySet 
+-RequestStorageAccessForWithFirstPartySetsBrowserTest.RequestStorageAccessForTopLevelScoping
+-RequestStorageAccessForWithFirstPartySetsBrowserTest.RequestStorageAccessForTopLevelScopingWhenRequestedFromSubdomain
+
+# SignedExchange is disabled.
+-SignedExchangePageLoadMetricsBrowserTest.*
+
 # Flaky upstream.
 -ExtensionWindowCreateTest.AcceptState
 -FirstRunFlowControllerDiceBrowserTest.ButtonsAreDisabledOnClickAndEnabledOnNavigateBack
 -PasswordGenerationPopupViewWithMinimizedStrengthIndicatorTest.*
 -PasswordGenerationPopupViewWithStrengthIndicatorTest.*
-
-# Thread profiler is disabled in Brave.
--ThreadProfilerBrowserTest.*
+-MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCbcsVideo_Success
+-MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCencVideo_Success
+-VideoLCPTypeTest.DataURIType_Video
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
