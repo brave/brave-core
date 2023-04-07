@@ -14,11 +14,14 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
+#include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/ui/webui/brave_wallet/android/swap_page_handler.h"
 
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -124,9 +127,8 @@ void SwapPageUI::CreatePageHandler(
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
-
-  page_handler_ =
-      std::make_unique<WalletPageHandler>(std::move(page_receiver), profile);
+  page_handler_ = std::make_unique<SwapPageHandler>(std::move(page_receiver),
+                                                    profile, this);
   wallet_handler_ =
       std::make_unique<WalletHandler>(std::move(wallet_receiver), profile);
 
@@ -156,4 +158,5 @@ void SwapPageUI::CreatePageHandler(
   if (blockchain_registry) {
     blockchain_registry->Bind(std::move(blockchain_registry_receiver));
   }
+  brave_wallet::WalletInteractionDetected(web_ui()->GetWebContents());
 }
