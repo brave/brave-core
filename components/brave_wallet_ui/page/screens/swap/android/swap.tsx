@@ -27,18 +27,20 @@ import BraveCoreThemeProvider
   from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
 
+export function AndroidSwapApp() {
+  return (
+    <Provider store={store}>
+      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+        <Swap />
+      </BraveCoreThemeProvider>
+    </Provider>
+  )
+}
+
 function initialize () {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize())
-  render(
-    <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={walletDarkTheme}
-        light={walletLightTheme}
-      >
-        <Swap />
-      </BraveCoreThemeProvider>
-    </Provider>, document.getElementById('root'))
+  render(AndroidSwapApp(), document.getElementById('root'))
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
