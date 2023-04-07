@@ -79,12 +79,15 @@ public class ImageLoader {
      * @param url URL of the image to download.
      * @param RequestManager Glide request manager for applying transformations.
      * @param isCircular When {@code true}, a circular transformation will be applied.
+     * @param roundedCorners Radius of the circle used to round the corners in dip. Unused when
+     *         {@code isCircular} is {@code true}.
      * @param imageView ImageView where the downloaded image will be set.
      * @param callback Callback used to notify if the image has been set correctly. It can be {@code
      *         null}.
      */
     public static void downloadImage(String url, final RequestManager requestManager,
-            final boolean isCircular, final ImageView imageView, final Callback callback) {
+            final boolean isCircular, final int roundedCorners, final ImageView imageView,
+            final Callback callback) {
         if (!isValidImgUrl(url)) {
             if (callback != null) callback.onLoadFailed();
             return;
@@ -143,8 +146,8 @@ public class ImageLoader {
                                     new BitmapDrawable(resources, bestBitmap);
                             imageFetcherFacade = new ImageFetcherFacade(bitmapDrawable);
                         }
-                        loadImage(imageFetcherFacade, requestManager, isCircular, imageView,
-                                callback);
+                        loadImage(imageFetcherFacade, requestManager, isCircular, roundedCorners,
+                                imageView, callback);
                     });
         } else {
             ImageFetcher imageFetcher = ImageFetcherFactory.createImageFetcher(
@@ -154,8 +157,8 @@ public class ImageLoader {
                         Params.create(new GURL(url), UNUSED_CLIENT_NAME), gifImage -> {
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(gifImage.getData());
-                            loadImage(imageFetcherFacade, requestManager, isCircular, imageView,
-                                    callback);
+                            loadImage(imageFetcherFacade, requestManager, isCircular,
+                                    roundedCorners, imageView, callback);
                         });
             } else {
                 imageFetcher.fetchImage(
@@ -163,8 +166,8 @@ public class ImageLoader {
                             BitmapDrawable bitmapDrawable = new BitmapDrawable(resources, bitmap);
                             ImageFetcherFacade imageFetcherFacade =
                                     new ImageFetcherFacade(bitmapDrawable);
-                            loadImage(imageFetcherFacade, requestManager, isCircular, imageView,
-                                    callback);
+                            loadImage(imageFetcherFacade, requestManager, isCircular,
+                                    roundedCorners, imageView, callback);
                         });
             }
         }
@@ -277,8 +280,8 @@ public class ImageLoader {
     }
 
     private static void loadImage(ImageFetcherFacade imageFetcherFacade,
-            RequestManager requestManager, boolean isCircular, ImageView imageView,
-            Callback callback) {
+            RequestManager requestManager, boolean isCircular, final int roundedCorners,
+            ImageView imageView, Callback callback) {
         if (imageFetcherFacade == null
                 || (imageFetcherFacade.data == null && imageFetcherFacade.drawable == null)) {
             if (callback != null) callback.onLoadFailed();
@@ -287,7 +290,7 @@ public class ImageLoader {
         requestManager
                 .load(imageFetcherFacade.data != null ? imageFetcherFacade.data
                                                       : imageFetcherFacade.drawable)
-                .transform(getTransformations(isCircular))
+                .transform(getTransformations(isCircular, roundedCorners))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .priority(Priority.IMMEDIATE)
                 .listener(new RequestListener<Drawable>() {
@@ -311,16 +314,16 @@ public class ImageLoader {
         }
     }
 
-    private static BitmapTransformation[] getTransformations(boolean isCircular) {
+    private static BitmapTransformation[] getTransformations(
+            boolean isCircular, final int roundedCorners) {
         if (isCircular) {
             return new BitmapTransformation[] {new FitCenter(), new CircleCrop()};
         }
 
         DisplayMetrics displayMetrics =
                 ContextUtils.getApplicationContext().getResources().getDisplayMetrics();
-        return new BitmapTransformation[] {new FitCenter(),
-                new RoundedCorners(
-                        dpToPx(displayMetrics, WalletConstants.RECT_ROUNDED_CORNERS_DP))};
+        return new BitmapTransformation[] {
+                new FitCenter(), new RoundedCorners(dpToPx(displayMetrics, roundedCorners))};
     }
 
     /**
@@ -413,7 +416,7 @@ public class ImageLoader {
 
     /**
      * Callback used to notify if the image has been downloaded successfully.
-     * @see #downloadImage(String, RequestManager, boolean, ImageView, Callback)
+     * @see #downloadImage(String, RequestManager, boolean, int, ImageView, Callback)
      */
     public interface Callback {
         boolean onLoadFailed();

@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.util.AddressUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.AndroidUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
@@ -241,8 +242,8 @@ public class NftDetailActivity extends BraveWalletBaseActivity {
     }
 
     private void loadNftImage(String imageUrl) {
-        ImageLoader.downloadImage(
-                imageUrl, Glide.with(this), false, mNftImageView, new ImageLoader.Callback() {
+        ImageLoader.downloadImage(imageUrl, Glide.with(this), false,
+                WalletConstants.RECT_ROUNDED_CORNERS_DP, mNftImageView, new ImageLoader.Callback() {
                     @Override
                     public boolean onLoadFailed() {
                         setNftImageAsNotAvailable();

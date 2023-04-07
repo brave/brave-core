@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +82,8 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
             if (walletListItemModel.hasNftImageLink()
                     && ImageLoader.isSupported(nftDataModel.nftMetadata.mImageUrl)) {
                 String url = nftDataModel.nftMetadata.mImageUrl;
-                ImageLoader.downloadImage(url, Glide.with(context), false, holder.iconImg, null);
+                ImageLoader.downloadImage(url, Glide.with(context), false,
+                        WalletConstants.RECT_SHARP_ROUNDED_CORNERS_DP, holder.iconImg, null);
             } else {
                 Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, holder.iconImg,
                         walletListItemModel.getBlockchainToken().contractAddress,
