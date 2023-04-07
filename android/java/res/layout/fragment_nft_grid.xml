@@ -28,8 +28,7 @@
             <FrameLayout
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight=".6"
-                >
+                android:layout_weight=".6">
                 <ProgressBar
                     android:layout_gravity="start|center_vertical"
                     android:id="@+id/frag_nft_grid_pb_asset_discovery"
