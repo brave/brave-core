@@ -544,8 +544,6 @@ class RewardsServiceImpl : public RewardsService,
   void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
-  void GetCreateScript(GetCreateScriptCallback callback) override;
-
   void PendingContributionSaved(ledger::mojom::Result result) override;
 
   void OnTipPublisherSaved(const std::string& publisher_key,

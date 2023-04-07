@@ -14,7 +14,7 @@ BATLedgerTest::BATLedgerTest()
 BATLedgerTest::~BATLedgerTest() = default;
 
 void BATLedgerTest::InitializeLedger() {
-  const auto result = mojom::LedgerAsyncWaiter(&ledger_).Initialize(false);
+  const auto result = mojom::LedgerAsyncWaiter(&ledger_).Initialize();
   DCHECK(result == mojom::Result::LEDGER_OK);
 }
 

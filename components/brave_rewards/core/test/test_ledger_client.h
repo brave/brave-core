@@ -179,8 +179,6 @@ class TestLedgerClient : public mojom::LedgerClient {
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
 
-  void GetCreateScript(GetCreateScriptCallback callback) override;
-
   void PendingContributionSaved(mojom::Result result) override;
 
   void Log(const std::string& file,

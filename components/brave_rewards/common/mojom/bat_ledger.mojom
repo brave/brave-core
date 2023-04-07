@@ -11,8 +11,7 @@ import "mojo/public/mojom/base/time.mojom";
 import "mojo/public/mojom/base/values.mojom";
 
 interface Ledger {
-  Initialize(
-      bool execute_create_script) => (ledger.mojom.Result result);
+  Initialize() => (ledger.mojom.Result result);
 
   SetEnvironment(ledger.mojom.Environment environment);
 
@@ -294,8 +293,6 @@ interface LedgerClient {
   ReconcileStampReset();
 
   RunDBTransaction(ledger.mojom.DBTransaction transaction) => (ledger.mojom.DBCommandResponse response);
-
-  GetCreateScript() => (string script, int32 table_version);
 
   PendingContributionSaved(ledger.mojom.Result result);
 
