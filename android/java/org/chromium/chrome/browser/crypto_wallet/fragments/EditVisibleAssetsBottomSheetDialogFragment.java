@@ -374,6 +374,7 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         tokenContractAddressEdit.addTextChangedListener(filterAddCustomAssetTextWatcher);
         tokenSymbolEdit.addTextChangedListener(filterAddCustomAssetTextWatcher);
         tokenDecimalsEdit.addTextChangedListener(filterAddCustomAssetTextWatcher);
+        tokenIdEdit.addTextChangedListener(filterAddCustomAssetTextWatcher);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -485,14 +486,20 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                                 String.valueOf(token.decimals), TextView.BufferType.EDITABLE);
                         if (!token.isErc721) tokenIdEdit.setEnabled(false);
                         selfChange = false;
-                        addButton.setEnabled(true);
+                        if (!mNftsOnly
+                                || (token.isErc721 && !tokenIdEdit.getText().toString().isEmpty())
+                                || !token.isErc721) {
+                            addButton.setEnabled(true);
+                        }
                     }
                 });
             }
 
             if (tokenName.isEmpty() || tokenSymbol.isEmpty()
-                    || mSelectedNetwork.coin == CoinType.ETH
-                            && tokenDecimalsEdit.getText().toString().isEmpty()) {
+                    || (mSelectedNetwork.coin == CoinType.ETH && mNftsOnly
+                            && tokenIdEdit.getText().toString().isEmpty())
+                    || (mSelectedNetwork.coin == CoinType.ETH
+                            && tokenDecimalsEdit.getText().toString().isEmpty())) {
                 return;
             }
 
