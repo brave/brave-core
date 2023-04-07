@@ -36,12 +36,6 @@ bool ServiceMain::InitWithCommandLine(const base::CommandLine* command_line) {
     return false;
   }
 
-  // Crash itself if crash-me was used.
-  if (command_line->HasSwitch(kBraveVpnHelperCrashMe)) {
-    CHECK(!command_line->HasSwitch(kBraveVpnHelperCrashMe))
-        << "--crash-me was used.";
-  }
-
   // Run interactively if needed.
   if (command_line->HasSwitch(kConsoleSwitchName)) {
     run_routine_ = &ServiceMain::RunInteractive;
@@ -135,6 +129,13 @@ void ServiceMain::SetServiceStatus(DWORD state) {
 
 HRESULT ServiceMain::Run() {
   VLOG(1) << __func__;
+  auto* command_line = base::CommandLine::ForCurrentProcess();
+  // Crash itself if crash-me was used.
+  if (command_line && command_line->HasSwitch(kBraveVpnHelperCrashMe)) {
+    CHECK(!command_line->HasSwitch(kBraveVpnHelperCrashMe))
+        << "--crash-me was used.";
+  }
+
   base::SingleThreadTaskExecutor service_task_executor(
       base::MessagePumpType::UI);
   base::RunLoop loop;
