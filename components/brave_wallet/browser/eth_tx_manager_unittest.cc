@@ -256,8 +256,9 @@ class EthTxManagerUnitTest : public testing::Test {
         shared_url_loader_factory_, &profile_prefs_);
     keyring_service_ = std::make_unique<KeyringService>(
         json_rpc_service_.get(), &profile_prefs_, &local_state_);
-    tx_service_ = std::make_unique<TxService>(
-        json_rpc_service_.get(), keyring_service_.get(), &profile_prefs_);
+    tx_service_ =
+        std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
+                                    keyring_service_.get(), &profile_prefs_);
 
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();

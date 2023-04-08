@@ -12,7 +12,6 @@
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 class PrefService;
@@ -192,6 +191,11 @@ std::string eTLDPlusOne(const url::Origin& origin);
 mojom::OriginInfoPtr MakeOriginInfo(const url::Origin& origin);
 
 bool IsFilecoinKeyringId(const std::string& keyring_id);
+
+bool IsBitcoinKeyring(const std::string& keyring_id);
+bool IsBitcoinNetwork(const std::string& network_id);
+bool IsValidBitcoinNetworkKeyringPair(const std::string& network_id,
+                                      const std::string& keyring_id);
 
 std::string GetFilecoinKeyringId(const std::string& network);
 

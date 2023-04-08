@@ -24,6 +24,7 @@ class PrefService;
 namespace brave_wallet {
 
 class JsonRpcService;
+class BitcoinWalletService;
 class KeyringService;
 class TxManager;
 class EthTxManager;
@@ -37,6 +38,7 @@ class TxService : public KeyedService,
                   public mojom::FilTxManagerProxy {
  public:
   TxService(JsonRpcService* json_rpc_service,
+            BitcoinWalletService* bitcoin_wallet_service,
             KeyringService* keyring_service,
             PrefService* prefs);
   ~TxService() override;

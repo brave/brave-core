@@ -29,7 +29,7 @@ static_library("bitcoin-core") {
 
   visibility = [
     "//brave/components/brave_wallet/browser/internal:hd_key",
-    "//brave/components/brave_wallet/common:solana_utils",  # for base58
+    "//brave/components/brave_wallet/common",
   ]
 
   # Do NOT add any files here without security review

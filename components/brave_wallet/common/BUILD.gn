@@ -30,6 +30,8 @@ static_library("common") {
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
+    "bitcoin_utils.cc",
+    "bitcoin_utils.h",
     "brave_wallet_response_helpers.cc",
     "brave_wallet_response_helpers.h",
     "brave_wallet_types.cc",
@@ -54,6 +56,8 @@ static_library("common") {
     "mem_utils.h",
     "solana_address.cc",
     "solana_address.h",
+    "solana_utils.cc",
+    "solana_utils.h",
     "string_utils.cc",
     "string_utils.h",
     "switches.cc",
@@ -65,8 +69,8 @@ static_library("common") {
     ":common_constants",
     ":generated_json_rpc_requests",
     ":mojom__generator",
-    ":solana_utils",
     "//brave/third_party/argon2",
+    "//brave/third_party/bitcoin-core",
     "//brave/third_party/ethash",
     "//components/base32",
     "//components/prefs",
@@ -84,19 +88,6 @@ source_set("common_constants") {
     "web3_provider_constants.h",
   ]
   deps = [ ":mojom" ]
-}
-
-source_set("solana_utils") {
-  sources = [
-    "solana_utils.cc",
-    "solana_utils.h",
-  ]
-
-  deps = [
-    ":common_constants",
-    "//base",
-    "//brave/third_party/bitcoin-core",  # for base58
-  ]
 }
 
 source_set("pref_names") {
@@ -144,6 +135,7 @@ mojom("mojom") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "bitcoin_utils_unittest.cc",
     "brave_wallet_types_unittest.cc",
     "eth_abi_utils_unittest.cc",
     "eth_request_helper_unittest.cc",
@@ -161,7 +153,6 @@ source_set("unit_tests") {
     ":common",
     ":common_constants",
     ":mojom",
-    ":solana_utils",
     ":test_support",
     "//base/test:test_support",
     "//testing/gtest",

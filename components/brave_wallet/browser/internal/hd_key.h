@@ -62,7 +62,7 @@ class HDKey : public HDKeyBase {
   std::vector<uint8_t> GetPublicKeyBytes() const override;
   std::string GetPublicExtendedKey(
       ExtendedKeyVersion version = ExtendedKeyVersion::kXpub) const;
-  std::string GetSegwitAddress() const;
+  std::string GetSegwitAddress(bool testnet) const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
   std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
   absl::optional<std::vector<uint8_t>>
@@ -88,6 +88,10 @@ class HDKey : public HDKeyBase {
   // if recid is not null, recovery id will be filled.
   std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
                             int* recid = nullptr) override;
+
+  // Sign the message using private key and return it in DER format.
+  std::vector<uint8_t> SignBitcoin(base::span<const uint8_t, 32> msg);
+
   // Verify the ECDSA signature using public key. The msg has to be exactly 32
   // bytes and the sig has to be 64 bytes.
   // Return true when successfully verified, false otherwise.

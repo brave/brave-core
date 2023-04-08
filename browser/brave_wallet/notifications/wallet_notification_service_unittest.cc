@@ -40,7 +40,7 @@ class WalletNotificationServiceUnitTest : public testing::Test {
         std::make_unique<JsonRpcService>(shared_url_loader_factory_, prefs());
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         prefs(), local_state());
-    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(),
+    tx_service_ = std::make_unique<TxService>(json_rpc_service_.get(), nullptr,
                                               keyring_service_.get(), prefs());
     notification_service_ =
         std::make_unique<WalletNotificationService>(profile());

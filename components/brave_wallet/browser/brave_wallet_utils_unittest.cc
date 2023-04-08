@@ -12,8 +12,6 @@
 #include <vector>
 
 #include "base/containers/flat_set.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/test/gtest_util.h"
@@ -22,8 +20,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -500,8 +496,9 @@ TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
 
     mojom::NetworkInfo chain2 = GetTestNetworkInfo2();
     chain2.coin = coin;
-    if (coin != mojom::CoinType::ETH)
+    if (coin != mojom::CoinType::ETH) {
       chain2.is_eip1559 = false;
+    }
     values.push_back(NetworkInfoToValue(chain2));
     UpdateCustomNetworks(&prefs, std::move(values), coin);
 
@@ -664,8 +661,9 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   for (const auto& chain : GetAllKnownChains(&prefs, mojom::CoinType::ETH)) {
     // Brave proxies should have infura key added to path.
     GURL rpc_url(chain->rpc_endpoints.front());
-    if (base::EndsWith(rpc_url.host(), "brave.com"))
+    if (base::EndsWith(rpc_url.host(), "brave.com")) {
       rpc_url = AddInfuraProjectId(rpc_url);
+    }
 
     EXPECT_EQ(rpc_url,
               GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH));
@@ -987,8 +985,9 @@ TEST(BraveWalletUtilsUnitTest, CustomNetworkMatchesKnownNetwork) {
 
   auto get_polygon_from_all = [&] {
     for (const auto& chain : GetAllChains(&prefs, mojom::CoinType::ETH)) {
-      if (chain->chain_id == mojom::kPolygonMainnetChainId)
+      if (chain->chain_id == mojom::kPolygonMainnetChainId) {
         return chain.Clone();
+      }
     }
     return mojom::NetworkInfoPtr();
   };
