@@ -813,11 +813,6 @@ void RewardsServiceImpl::RestorePublishers() {
       base::BindOnce(&RewardsServiceImpl::OnRestorePublishers, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::URIEncode(const std::string& value,
-                                   URIEncodeCallback callback) {
-  std::move(callback).Run(base::EscapeQueryParamValue(value, false));
-}
-
 void RewardsServiceImpl::Shutdown() {
   RemoveObserver(notification_service_.get());
 
