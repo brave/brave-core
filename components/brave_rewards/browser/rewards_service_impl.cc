@@ -1562,46 +1562,6 @@ void RewardsServiceImpl::GetBooleanOption(const std::string& name,
   std::move(callback).Run(kBoolOptions.at(name));
 }
 
-void RewardsServiceImpl::GetIntegerOption(const std::string& name,
-                                          GetIntegerOptionCallback callback) {
-  DCHECK(!name.empty());
-
-  const auto it = kIntegerOptions.find(name);
-  DCHECK(it != kIntegerOptions.end());
-
-  std::move(callback).Run(kIntegerOptions.at(name));
-}
-
-void RewardsServiceImpl::GetDoubleOption(const std::string& name,
-                                         GetDoubleOptionCallback callback) {
-  DCHECK(!name.empty());
-
-  const auto it = kDoubleOptions.find(name);
-  DCHECK(it != kDoubleOptions.end());
-
-  std::move(callback).Run(kDoubleOptions.at(name));
-}
-
-void RewardsServiceImpl::GetStringOption(const std::string& name,
-                                         GetStringOptionCallback callback) {
-  DCHECK(!name.empty());
-
-  const auto it = kStringOptions.find(name);
-  DCHECK(it != kStringOptions.end());
-
-  std::move(callback).Run(kStringOptions.at(name));
-}
-
-void RewardsServiceImpl::GetInt64Option(const std::string& name,
-                                        GetInt64OptionCallback callback) {
-  DCHECK(!name.empty());
-
-  const auto it = kInt64Options.find(name);
-  DCHECK(it != kInt64Options.end());
-
-  std::move(callback).Run(kInt64Options.at(name));
-}
-
 void RewardsServiceImpl::GetUint64Option(const std::string& name,
                                          GetUint64OptionCallback callback) {
   DCHECK(!name.empty());

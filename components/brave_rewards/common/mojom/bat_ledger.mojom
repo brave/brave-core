@@ -260,18 +260,6 @@ interface LedgerClient {
   GetBooleanOption(string name) => (bool value);
 
   [Sync]
-  GetIntegerOption(string name) => (int32 value);
-
-  [Sync]
-  GetDoubleOption(string name) => (double value);
-
-  [Sync]
-  GetStringOption(string name) => (string value);
-
-  [Sync]
-  GetInt64Option(string name) => (int64 value);
-
-  [Sync]
   GetUint64Option(string name) => (uint64 value);
 
   OnContributeUnverifiedPublishers(ledger.mojom.Result result, string publisher_key,
