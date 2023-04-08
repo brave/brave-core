@@ -333,8 +333,6 @@ class LedgerImpl : public mojom::Ledger {
     }
   }
 
-  std::string URIEncode(const std::string& value);
-
   template <typename T>
   T GetState(const std::string& name) {
     T value;

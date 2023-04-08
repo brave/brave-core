@@ -37,11 +37,6 @@ MockLedgerClient::MockLedgerClient() {
         std::move(callback).Run(nullptr);
       });
 
-  ON_CALL(*this, URIEncode(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run("");
-      });
-
   ON_CALL(*this, GetBooleanState(_, _))
       .WillByDefault([](const std::string&, auto callback) {
         std::move(callback).Run(false);

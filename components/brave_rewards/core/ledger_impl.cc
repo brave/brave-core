@@ -789,12 +789,6 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 // mojom::Ledger implementation end
 
 // mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
-std::string LedgerImpl::URIEncode(const std::string& value) {
-  std::string encoded_value;
-  ledger_client_->URIEncode(value, &encoded_value);
-  return encoded_value;
-}
-
 std::string LedgerImpl::GetLegacyWallet() {
   std::string wallet;
   ledger_client_->GetLegacyWallet(&wallet);
