@@ -29,8 +29,11 @@ EthPendingTxTracker::EthPendingTxTracker(EthTxStateManager* tx_state_manager,
       weak_factory_(this) {}
 EthPendingTxTracker::~EthPendingTxTracker() = default;
 
-bool EthPendingTxTracker::UpdatePendingTransactions(const std::string& chain_id,
-                                                    size_t* num_pending) {
+bool EthPendingTxTracker::UpdatePendingTransactions(
+    const absl::optional<std::string>& chain_id,
+    size_t* num_pending,
+    std::set<std::string>* pending_chain_ids) {
+  CHECK(num_pending && pending_chain_ids);
   base::Lock* nonce_lock = nonce_tracker_->GetLock();
   if (!nonce_lock->Try())
     return false;
@@ -48,11 +51,14 @@ bool EthPendingTxTracker::UpdatePendingTransactions(const std::string& chain_id,
       DropTransaction(pending_transaction.get());
       continue;
     }
+    const auto& pending_chain_id = pending_transaction->chain_id();
+    pending_chain_ids->emplace(pending_chain_id);
     std::string id = pending_transaction->id();
     json_rpc_service_->GetTransactionReceipt(
-        chain_id, pending_transaction->tx_hash(),
+        pending_chain_id, pending_transaction->tx_hash(),
         base::BindOnce(&EthPendingTxTracker::OnGetTxReceipt,
-                       weak_factory_.GetWeakPtr(), chain_id, std::move(id)));
+                       weak_factory_.GetWeakPtr(), pending_chain_id,
+                       std::move(id)));
   }
 
   nonce_lock->Release();

@@ -112,7 +112,8 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   mojom::CoinType GetCoinType() const override;
 
   // TxManager
-  void UpdatePendingTransactions(const std::string& chain_id) override;
+  void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) override;
 
   void OnGetBlockHeight(const std::string& chain_id,
                         uint64_t block_height,

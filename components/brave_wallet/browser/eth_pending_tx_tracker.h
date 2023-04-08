@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_PENDING_TX_TRACKER_H_
 
 #include <map>
+#include <set>
 #include <string>
 
 #include "base/containers/flat_map.h"
@@ -32,8 +33,9 @@ class EthPendingTxTracker {
   EthPendingTxTracker(const EthPendingTxTracker&) = delete;
   EthPendingTxTracker operator=(const EthPendingTxTracker&) = delete;
 
-  bool UpdatePendingTransactions(const std::string& chain_id,
-                                 size_t* num_pending);
+  bool UpdatePendingTransactions(const absl::optional<std::string>& chain_id,
+                                 size_t* num_pending,
+                                 std::set<std::string>* pending_chain_ids);
   void Reset();
 
  private:

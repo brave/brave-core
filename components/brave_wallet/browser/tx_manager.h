@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_MANAGER_H_
 
 #include <memory>
-#include <set>
 #include <string>
 #include <vector>
 
@@ -88,8 +87,10 @@ class TxManager : public TxStateManager::Observer,
   virtual void Reset();
 
  protected:
-  void CheckIfBlockTrackerShouldRun(const std::string& chain_id);
-  virtual void UpdatePendingTransactions(const std::string& chain_id) = 0;
+  void CheckIfBlockTrackerShouldRun(
+      const absl::optional<std::string>& chain_id);
+  virtual void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) = 0;
 
   std::unique_ptr<TxStateManager> tx_state_manager_;
   std::unique_ptr<BlockTracker> block_tracker_;
@@ -97,8 +98,7 @@ class TxManager : public TxStateManager::Observer,
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
   raw_ptr<KeyringService> keyring_service_ = nullptr;   // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;                // NOT OWNED
-  // chain_id
-  std::set<std::string> known_no_pending_tx_;
+  bool known_no_pending_tx_ = false;
 
  private:
   virtual mojom::CoinType GetCoinType() const = 0;
@@ -108,8 +108,8 @@ class TxManager : public TxStateManager::Observer,
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
   // mojom::KeyringServiceObserver
-  void KeyringCreated(const std::string& keyring_id) override;
-  void KeyringRestored(const std::string& keyring_id) override;
+  void KeyringCreated(const std::string& keyring_id) override {}
+  void KeyringRestored(const std::string& keyring_id) override {}
   void KeyringReset() override;
   void Locked() override;
   void Unlocked() override;

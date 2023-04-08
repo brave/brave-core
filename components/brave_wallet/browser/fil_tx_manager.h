@@ -127,7 +127,8 @@ class FilTxManager : public TxManager, public FilBlockTracker::Observer {
                              uint64_t latest_height) override;
 
   // TxManager
-  void UpdatePendingTransactions(const std::string& chain_id) override;
+  void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) override;
 
   std::unique_ptr<FilNonceTracker> nonce_tracker_;
   base::WeakPtrFactory<FilTxManager> weak_factory_{this};

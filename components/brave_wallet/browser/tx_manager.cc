@@ -38,8 +38,6 @@ TxManager::TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
   DCHECK(json_rpc_service_);
   DCHECK(keyring_service_);
 
-  // TODO(darkdh): Check if this is needed. (Unlock should be sufficient)
-  // CheckIfBlockTrackerShouldRun(absl::nullopt);
   tx_state_manager_->AddObserver(this);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
@@ -98,18 +96,20 @@ void TxManager::RejectTransaction(const std::string& chain_id,
   std::move(callback).Run(true);
 }
 
-void TxManager::CheckIfBlockTrackerShouldRun(const std::string& chain_id) {
+void TxManager::CheckIfBlockTrackerShouldRun(
+    const absl::optional<std::string>& chain_id) {
   const auto& keyring_id = CoinTypeToKeyringId(GetCoinType(), chain_id);
   CHECK(keyring_id.has_value());
   bool keyring_created = keyring_service_->IsKeyringCreated(*keyring_id);
   bool locked = keyring_service_->IsLockedSync();
-  bool running = block_tracker_->IsRunning(chain_id);
-  if (keyring_created && !locked && !running) {
-    block_tracker_->Start(chain_id,
+  // If a timer in BlockTracker has already stopped, calling Stop() will be a no
+  // op.
+  bool running = chain_id.has_value() && block_tracker_->IsRunning(*chain_id);
+  if (keyring_created && !locked && !running && chain_id.has_value()) {
+    block_tracker_->Start(*chain_id,
                           base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-  } else if ((locked || base::Contains(known_no_pending_tx_, chain_id)) &&
-             running) {
-    block_tracker_->Stop(chain_id);
+  } else if (locked || known_no_pending_tx_) {
+    block_tracker_->Stop();
   }
 }
 
@@ -126,24 +126,7 @@ void TxManager::Locked() {
 }
 
 void TxManager::Unlocked() {
-  const std::string& chain_id =
-      json_rpc_service_->GetChainId(GetCoinType(), absl::nullopt);
-  CheckIfBlockTrackerShouldRun(chain_id);
-  UpdatePendingTransactions(chain_id);
-}
-
-void TxManager::KeyringCreated(const std::string& keyring_id) {
-  /* TODO(darkdh): Check if this is needed (There should be no pending txs)
-  const auto coin = GetCoinForKeyring(keyring_id);
-  UpdatePendingTransactions(json_rpc_service_->GetChainId(coin, absl::nullopt));
-  */
-}
-
-void TxManager::KeyringRestored(const std::string& keyring_id) {
-  /* TODO(darkdh): Check if this is needed (There should be no pending txs)
-  const auto coin = GetCoinForKeyring(keyring_id);
-  UpdatePendingTransactions(json_rpc_service_->GetChainId(coin, absl::nullopt));
-  */
+  UpdatePendingTransactions(absl::nullopt);
 }
 
 void TxManager::KeyringReset() {
@@ -152,7 +135,7 @@ void TxManager::KeyringReset() {
 
 void TxManager::Reset() {
   block_tracker_->Stop();
-  known_no_pending_tx_.clear();
+  known_no_pending_tx_ = false;
 }
 
 }  // namespace brave_wallet

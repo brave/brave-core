@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <limits>
 #include <memory>
+#include <set>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -950,15 +951,21 @@ void EthTxManager::OnNewBlock(const std::string& chain_id,
   UpdatePendingTransactions(chain_id);
 }
 
-void EthTxManager::UpdatePendingTransactions(const std::string& chain_id) {
+void EthTxManager::UpdatePendingTransactions(
+    const absl::optional<std::string>& chain_id) {
+  std::set<std::string> pending_chain_ids;
   size_t num_pending;
-  if (pending_tx_tracker_->UpdatePendingTransactions(chain_id, &num_pending)) {
+  if (pending_tx_tracker_->UpdatePendingTransactions(chain_id, &num_pending,
+                                                     &pending_chain_ids)) {
     if (num_pending == 0) {
-      known_no_pending_tx_.emplace(chain_id);
+      known_no_pending_tx_ = true;
+      CheckIfBlockTrackerShouldRun(absl::nullopt);
     } else {
-      known_no_pending_tx_.erase(chain_id);
+      known_no_pending_tx_ = false;
+      for (const auto& pending_chain_id : pending_chain_ids) {
+        CheckIfBlockTrackerShouldRun(pending_chain_id);
+      }
     }
-    CheckIfBlockTrackerShouldRun(chain_id);
   }
 }
 

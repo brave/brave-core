@@ -248,7 +248,8 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       AddUnapprovedTransactionCallback callback,
       bool sign_only,
       mojom::GasEstimation1559Ptr gas_estimation);
-  void UpdatePendingTransactions(const std::string& chain_id) override;
+  void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) override;
 
   void ContinueSpeedupOrCancelTransaction(
       const std::string& chain_id,

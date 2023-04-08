@@ -354,7 +354,8 @@ FilTxStateManager* FilTxManager::GetFilTxStateManager() {
   return static_cast<FilTxStateManager*>(tx_state_manager_.get());
 }
 
-void FilTxManager::UpdatePendingTransactions(const std::string& chain_id) {
+void FilTxManager::UpdatePendingTransactions(
+    const absl::optional<std::string>& chain_id) {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       chain_id, mojom::TransactionStatus::Submitted, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
@@ -367,18 +368,20 @@ void FilTxManager::UpdatePendingTransactions(const std::string& chain_id) {
     // difference between current time and transaction submission to calculate
     // the limit. In case of zero we are looking at last message.
     uint64_t limit_epochs = seconds == 0 ? 1 : seconds;
+    const auto& pending_chain_id = pending_transaction->chain_id();
     json_rpc_service_->GetFilStateSearchMsgLimited(
-        chain_id, cid, limit_epochs,
+        pending_chain_id, cid, limit_epochs,
         base::BindOnce(&FilTxManager::OnGetFilStateSearchMsgLimited,
-                       weak_factory_.GetWeakPtr(), chain_id,
+                       weak_factory_.GetWeakPtr(), pending_chain_id,
                        pending_transaction->id()));
+    CheckIfBlockTrackerShouldRun(pending_chain_id);
   }
   if (pending_transactions.empty()) {
-    known_no_pending_tx_.emplace(chain_id);
+    known_no_pending_tx_ = true;
+    CheckIfBlockTrackerShouldRun(absl::nullopt);
   } else {
-    known_no_pending_tx_.erase(chain_id);
+    known_no_pending_tx_ = false;
   }
-  CheckIfBlockTrackerShouldRun(chain_id);
 }
 
 void FilTxManager::OnGetFilStateSearchMsgLimited(

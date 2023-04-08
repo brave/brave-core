@@ -205,10 +205,31 @@ void SolanaTxManager::OnSendSolanaTransaction(
       mojom::ProviderErrorUnion::NewSolanaProviderError(error), error_message);
 }
 
-void SolanaTxManager::UpdatePendingTransactions(const std::string& chain_id) {
-  json_rpc_service_->GetSolanaBlockHeight(
-      chain_id, base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
-                               weak_ptr_factory_.GetWeakPtr(), chain_id));
+void SolanaTxManager::UpdatePendingTransactions(
+    const absl::optional<std::string>& chain_id) {
+  if (chain_id.has_value()) {
+    CheckIfBlockTrackerShouldRun(chain_id);
+    json_rpc_service_->GetSolanaBlockHeight(
+        *chain_id, base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
+                                  weak_ptr_factory_.GetWeakPtr(), *chain_id));
+  } else {
+    auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
+        absl::nullopt, mojom::TransactionStatus::Submitted, absl::nullopt);
+    for (const auto& pending_transaction : pending_transactions) {
+      const auto& pending_chain_id = pending_transaction->chain_id();
+      json_rpc_service_->GetSolanaBlockHeight(
+          pending_chain_id,
+          base::BindOnce(&SolanaTxManager::OnGetBlockHeight,
+                         weak_ptr_factory_.GetWeakPtr(), pending_chain_id));
+      CheckIfBlockTrackerShouldRun(pending_chain_id);
+    }
+    if (pending_transactions.empty()) {
+      known_no_pending_tx_ = true;
+      CheckIfBlockTrackerShouldRun(absl::nullopt);
+    } else {
+      known_no_pending_tx_ = false;
+    }
+  }
 }
 
 void SolanaTxManager::OnGetBlockHeight(const std::string& chain_id,
@@ -232,12 +253,6 @@ void SolanaTxManager::OnGetBlockHeight(const std::string& chain_id,
       base::BindOnce(&SolanaTxManager::OnGetSignatureStatuses,
                      weak_ptr_factory_.GetWeakPtr(), chain_id, tx_meta_ids,
                      block_height));
-  if (pending_transactions.empty()) {
-    known_no_pending_tx_.emplace(chain_id);
-  } else {
-    known_no_pending_tx_.erase(chain_id);
-  }
-  CheckIfBlockTrackerShouldRun(chain_id);
 }
 
 void SolanaTxManager::OnGetSignatureStatuses(
