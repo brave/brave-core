@@ -121,35 +121,9 @@ MockLedgerClient::MockLedgerClient() {
       .WillByDefault(
           [](const std::string&, auto callback) { std::move(callback).Run(); });
 
-  ON_CALL(*this, GetBooleanOption(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run(false);
-      });
-
-  ON_CALL(*this, GetIntegerOption(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run(0);
-      });
-
-  ON_CALL(*this, GetDoubleOption(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run(0.0);
-      });
-
-  ON_CALL(*this, GetStringOption(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run("");
-      });
-
-  ON_CALL(*this, GetInt64Option(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run(0);
-      });
-
-  ON_CALL(*this, GetUint64Option(_, _))
-      .WillByDefault([](const std::string&, auto callback) {
-        std::move(callback).Run(0);
-      });
+  ON_CALL(*this, IsBitFlyerRegion(_)).WillByDefault([](auto callback) {
+    std::move(callback).Run(false);
+  });
 
   ON_CALL(*this, GetLegacyWallet(_)).WillByDefault([](auto callback) {
     std::move(callback).Run("");

@@ -101,23 +101,7 @@ class MockLedgerClient : public mojom::LedgerClient {
 
   MOCK_METHOD2(ClearState, void(const std::string&, ClearStateCallback));
 
-  MOCK_METHOD2(GetBooleanOption,
-               void(const std::string&, GetBooleanOptionCallback));
-
-  MOCK_METHOD2(GetIntegerOption,
-               void(const std::string&, GetIntegerOptionCallback));
-
-  MOCK_METHOD2(GetDoubleOption,
-               void(const std::string&, GetDoubleOptionCallback));
-
-  MOCK_METHOD2(GetStringOption,
-               void(const std::string&, GetStringOptionCallback));
-
-  MOCK_METHOD2(GetInt64Option,
-               void(const std::string&, GetInt64OptionCallback));
-
-  MOCK_METHOD2(GetUint64Option,
-               void(const std::string&, GetUint64OptionCallback));
+  MOCK_METHOD1(IsBitFlyerRegion, void(IsBitFlyerRegionCallback));
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers,
                void(mojom::Result, const std::string&, const std::string&));

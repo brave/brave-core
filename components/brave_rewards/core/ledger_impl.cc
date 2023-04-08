@@ -764,6 +764,12 @@ void LedgerImpl::GetRewardsWallet(GetRewardsWalletCallback callback) {
 // mojom::Ledger implementation end
 
 // mojom::LedgerClient helpers begin (in the order of appearance in Mojom)
+bool LedgerImpl::IsBitFlyerRegion() {
+  bool value = false;
+  ledger_client_->IsBitFlyerRegion(&value);
+  return value;
+}
+
 std::string LedgerImpl::GetLegacyWallet() {
   std::string wallet;
   ledger_client_->GetLegacyWallet(&wallet);

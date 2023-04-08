@@ -27,6 +27,14 @@ inline bool is_testing = false;
 inline int state_migration_target_version_for_testing = -1;
 inline int reconcile_interval = 0;  // minutes
 inline int retry_interval = 0;      // seconds
+
+#if BUILDFLAG(IS_ANDROID)
+inline constexpr uint64_t kPublisherListRefreshInterval =
+    7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+#else
+inline constexpr uint64_t kPublisherListRefreshInterval =
+    3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+#endif
 }  // namespace ledger
 
 namespace braveledger_media {
@@ -378,28 +386,7 @@ class LedgerImpl : public mojom::Ledger {
     }
   }
 
-  template <typename T>
-  T GetOption(const std::string& name) {
-    T value;
-
-    if constexpr (std::is_same_v<T, bool>) {
-      ledger_client_->GetBooleanOption(name, &value);
-    } else if constexpr (std::is_same_v<T, int32_t>) {
-      ledger_client_->GetIntegerOption(name, &value);
-    } else if constexpr (std::is_same_v<T, double>) {
-      ledger_client_->GetDoubleOption(name, &value);
-    } else if constexpr (std::is_same_v<T, std::string>) {
-      ledger_client_->GetStringOption(name, &value);
-    } else if constexpr (std::is_same_v<T, int64_t>) {
-      ledger_client_->GetInt64Option(name, &value);
-    } else if constexpr (std::is_same_v<T, uint64_t>) {
-      ledger_client_->GetUint64Option(name, &value);
-    } else {
-      static_assert(base::AlwaysFalse<T>, "Unsupported type!");
-    }
-
-    return value;
-  }
+  bool IsBitFlyerRegion();
 
   std::string GetLegacyWallet();
 
