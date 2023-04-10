@@ -286,6 +286,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
       content_settings()->GetContentSetting(url, url,
                                             ContentSettingsType::JAVASCRIPT);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+
   // Enable JavaScript blocking globally now.
   content_settings()->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
@@ -299,11 +300,30 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
       embedded_test_server()->GetURL("a.com", "/load_js_dataurls.html");
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
   EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 4);
+  brave_shields_web_contents_observer()->Reset();
+  // Allow subframe script and check we still block his data urls.
+  std::string subframe_script =
+      url::Origin::Create(page_url).Serialize() + "/load_js_dataurls.js";
+  brave_shields_web_contents_observer()->AllowScriptsOnce(
+      std::vector<std::string>({subframe_script}));
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(GetBlockedJsList().size(), 1u);
+  EXPECT_EQ(GetAllowedJsList().size(), 1u);
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 3);
-  auto blocked_list = GetBlockedJsList();
-  EXPECT_EQ(blocked_list.size(), 1u);
-  EXPECT_EQ(GURL(blocked_list.front()),
-            GURL(url::Origin::Create(page_url).Serialize()));
+  brave_shields_web_contents_observer()->Reset();
+
+  // Allow all scripts for domain.
+  brave_shields_web_contents_observer()->AllowScriptsOnce(
+      std::vector<std::string>({url::Origin::Create(page_url).Serialize()}));
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+
+  EXPECT_EQ(GetAllowedJsList().size(), 2u);
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
 }
 
 }  // namespace brave_shields

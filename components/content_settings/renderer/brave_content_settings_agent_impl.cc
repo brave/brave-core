@@ -228,7 +228,7 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   // For scripts w/o sources it should report the domain / site used for
   // executing the frame (which most, but not all, of the time will just be from
   // document.location
-  if (secondary_url.SchemeIs(url::kDataScheme)) {
+  if (secondary_url.SchemeIsLocal()) {
     secondary_url =
         url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
             .GetURL();
