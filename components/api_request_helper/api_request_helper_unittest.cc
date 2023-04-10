@@ -58,8 +58,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
                       const std::string& content_to_respond,
                       bool enable_cache) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
-        [&, expected_method, expected_url,
-         content_to_respond](const network::ResourceRequest& request) {
+        [&, expected_method, expected_url, content_to_respond,
+         enable_cache](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           EXPECT_EQ(request.url, expected_url);
           EXPECT_EQ(request.method, expected_method);
@@ -188,6 +188,13 @@ TEST_F(ApiRequestHelperUnitTest, Is2XXResponseCode) {
       APIRequestResult(300, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
   EXPECT_FALSE(
       APIRequestResult(500, {}, {}, {}, net::OK, GURL()).Is2XXResponseCode());
+}
+
+TEST_F(ApiRequestHelperUnitTest, EnableCache) {
+  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+              base::NullCallback(), false);
+  SendRequest("{}", "{}", base::Value(base::Value::Type::DICT), 200, net::OK,
+              base::NullCallback(), true);
 }
 
 }  // namespace api_request_helper
