@@ -113,14 +113,13 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const std::string& payload,
     const std::string& payload_content_type,
     bool auto_retry_on_network_change,
-    bool enable_cache,
     ResultCallback callback,
     const base::flat_map<std::string, std::string>& headers,
     size_t max_body_size /* = -1u */,
     ResponseConversionCallback conversion_callback) {
   return Request(method, url, payload, payload_content_type,
                  std::move(callback),
-                 APIRequestOptions(auto_retry_on_network_change, enable_cache,
+                 APIRequestOptions(auto_retry_on_network_change, false,
                                    max_body_size, absl::nullopt),
                  headers, std::move(conversion_callback));
 }

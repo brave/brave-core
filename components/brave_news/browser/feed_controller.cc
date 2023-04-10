@@ -252,7 +252,7 @@ void FeedController::UpdateIfRemoteChanged() {
 
           // Get new Etag
           controller->api_request_helper_->Request(
-              "HEAD", GetFeedUrl(locale), "", "", true, false,
+              "HEAD", GetFeedUrl(locale), "", "", true,
               base::BindOnce(
                   [](std::string current_etag,
                      base::RepeatingCallback<void(bool)> has_update_callback,
@@ -363,7 +363,7 @@ void FeedController::FetchCombinedFeed(GetFeedItemsCallback callback) {
           GURL feed_url(GetFeedUrl(locale));
           VLOG(1) << "Making feed request to " << feed_url.spec();
           controller->api_request_helper_->Request(
-              "GET", feed_url, "", "", true, false, std::move(response_handler),
+              "GET", feed_url, "", "", true, std::move(response_handler),
               brave::private_cdn_headers);
         }
       },

@@ -294,7 +294,7 @@ void SuggestionsController::EnsureSimilarityMatrixIsUpdating() {
                              "/source-suggestions/source_similarity_t10." +
                              locale + ".json");
               controller->api_request_helper_->Request(
-                  "GET", url, "", "", true, false,
+                  "GET", url, "", "", true,
                   base::BindOnce(
                       [](SuggestionsController* controller, std::string locale,
                          api_request_helper::APIRequestResult

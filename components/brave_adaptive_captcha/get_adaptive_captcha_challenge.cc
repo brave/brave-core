@@ -80,7 +80,7 @@ void GetAdaptiveCaptchaChallenge::Request(
       base::BindOnce(&GetAdaptiveCaptchaChallenge::OnResponse,
                      base::Unretained(this), std::move(callback));
   api_request_helper_->Request("GET", GURL(GetUrl(payment_id)), "", "", false,
-                               false, std::move(api_request_helper_callback));
+                               std::move(api_request_helper_callback));
 }
 
 void GetAdaptiveCaptchaChallenge::OnResponse(

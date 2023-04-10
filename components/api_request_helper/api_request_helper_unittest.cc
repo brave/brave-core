@@ -105,9 +105,10 @@ class ApiRequestHelperUnitTest : public testing::Test {
     EXPECT_CALL(callback, Run(MatchesAPIRequestResult(&expected_result)));
 
     SetInterceptor("POST", network_url, server_raw_response, enable_cache);
-    api_request_helper_->Request("POST", network_url, "", "application/json",
-                                 false, enable_cache, callback.Get(), {}, -1u,
-                                 std::move(conversion_callback));
+    api_request_helper_->Request(
+        "POST", network_url, "", "application/json", callback.Get(),
+        APIRequestOptions(false, enable_cache, -1u, absl::nullopt), {},
+        std::move(conversion_callback));
     base::RunLoop().RunUntilIdle();
   }
 

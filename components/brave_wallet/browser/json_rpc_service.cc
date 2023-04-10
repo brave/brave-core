@@ -361,7 +361,7 @@ void JsonRpcService::RequestInternal(
 
   api_request_helper_->Request("POST", network_url, json_payload,
                                "application/json", auto_retry_on_network_change,
-                               false, std::move(callback),
+                               std::move(callback),
                                MakeCommonJsonRpcHeaders(json_payload), -1u,
                                std::move(conversion_callback));
 }

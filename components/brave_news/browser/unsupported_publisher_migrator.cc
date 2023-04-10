@@ -63,7 +63,7 @@ void UnsupportedPublisherMigrator::EnsureInitialized() {
       },
       base::Unretained(this));
 
-  api_request_helper_->Request("GET", sources_url, "", "", true, false,
+  api_request_helper_->Request("GET", sources_url, "", "", true,
                                std::move(onResponse),
                                brave::private_cdn_headers);
   initialized_ = true;

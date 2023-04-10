@@ -432,7 +432,7 @@ void AssetDiscoveryManager::FetchNFTsFromSimpleHash(
                      weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
                      coin, std::move(callback));
 
-  api_request_helper_->Request("GET", url, "", "", true, false,
+  api_request_helper_->Request("GET", url, "", "", true,
                                std::move(internal_callback),
                                MakeBraveServicesKeyHeader());
 }
@@ -471,7 +471,7 @@ void AssetDiscoveryManager::OnFetchNFTsFromSimpleHash(
                        weak_ptr_factory_.GetWeakPtr(), std::move(nfts_so_far),
                        coin, std::move(callback));
     api_request_helper_->Request("GET", result.value().first, "", "", true,
-                                 false, std::move(internal_callback),
+                                 std::move(internal_callback),
                                  MakeBraveServicesKeyHeader());
     return;
   }

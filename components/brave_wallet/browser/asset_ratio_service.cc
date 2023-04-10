@@ -218,7 +218,7 @@ void AssetRatioService::GetBuyUrlV1(mojom::OnRampProvider provider,
         base::StringPrintf("Basic %s", base64_credentials.c_str());
     request_headers["Authorization"] = std::move(header);
     api_request_helper_->Request("POST", sardine_token_url, payload,
-                                 "application/json", true, false,
+                                 "application/json", true,
                                  std::move(internal_callback), request_headers);
   } else if (provider == mojom::OnRampProvider::kTransak) {
     GURL transak_url = GURL(kTransakURL);
@@ -295,7 +295,7 @@ void AssetRatioService::GetPrice(
 
   api_request_helper_->Request(
       "GET", GetPriceURL(from_assets_lower, to_assets_lower, timeframe), "", "",
-      true, false, std::move(internal_callback), request_headers);
+      true, std::move(internal_callback), request_headers);
 }
 
 void AssetRatioService::OnGetSardineAuthToken(
@@ -352,7 +352,7 @@ void AssetRatioService::GetPriceHistory(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request(
       "GET", GetPriceHistoryURL(asset_lower, vs_asset_lower, timeframe), "", "",
-      true, false, std::move(internal_callback));
+      true, std::move(internal_callback));
 }
 
 void AssetRatioService::OnGetPriceHistory(GetPriceHistoryCallback callback,
@@ -387,7 +387,7 @@ void AssetRatioService::GetTokenInfo(const std::string& contract_address,
       base::BindOnce(&AssetRatioService::OnGetTokenInfo,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request("GET", GetTokenInfoURL(contract_address), "", "",
-                               true, false, std::move(internal_callback));
+                               true, std::move(internal_callback));
 }
 
 void AssetRatioService::OnGetTokenInfo(GetTokenInfoCallback callback,
@@ -422,8 +422,7 @@ void AssetRatioService::GetCoinMarkets(const std::string& vs_asset,
       base::BindOnce(&AssetRatioService::OnGetCoinMarkets,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_->Request("GET", GetCoinMarketsURL(vs_asset_lower, limit),
-                               "", "", true, false,
-                               std::move(internal_callback));
+                               "", "", true, std::move(internal_callback));
 }
 
 void AssetRatioService::OnGetCoinMarkets(GetCoinMarketsCallback callback,
