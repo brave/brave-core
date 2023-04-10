@@ -82,7 +82,7 @@ export const BackgroundGradientWrapper = styled.div`
   left: 0px;
   right: 0px;
   opacity: 0.5;
-  background-color: ${(p) => p.theme.color.background01};
+  background-color: ${leo.color.container.highlight};
 `
 
 export const BackgroundGradientTopLayer = styled.div`
@@ -97,7 +97,14 @@ export const BackgroundGradientTopLayer = styled.div`
   transform: matrix(1, -0.06, -0.32, -0.95, 0, 0);
   z-index: 5;
   @media (prefers-color-scheme: dark) {
-    background: #101D3C;
+    /* #013F4B does not exist in design system */
+    background: #013F4B;
+    filter: blur(47px);
+    left: 35%;
+    right: -100%;
+    top: 2%;
+    bottom: 25%;
+    transform: matrix(-0.98, 0.19, -0.73, -0.68, 0, 0);
   }
 `
 
@@ -113,7 +120,14 @@ export const BackgroundGradientMiddleLayer = styled.div`
   transform: matrix(-1, 0.06, -0.32, -0.95, 0, 0);
   z-index: 4;
   @media (prefers-color-scheme: dark) {
-    background: #08484D;
+    /* #030A49 does not exist in design system */
+    background: #030A49;
+    filter: blur(70px);
+    left: -40%;
+    right: 17%;
+    top: 50%;
+    bottom: -80%;
+    transform: matrix(-0.98, 0.19, -0.73, -0.68, 0, 0);
   }
 `
 
@@ -129,7 +143,14 @@ export const BackgroundGradientBottomLayer = styled.div`
   transform: matrix(-1, 0.06, -0.32, -0.95, 0, 0);
   z-index: 3;
   @media (prefers-color-scheme: dark) {
-    background: #141C38;
+    /* #014B3A does not exist in design system */
+    background: #014B3A;
+    filter: blur(70px);
+    left: 25%;
+    right: -80%;
+    top: 15%;
+    bottom: -40%;
+    transform: matrix(-0.79, 0.61, -0.98, -0.22, 0, 0);
   }
 `
 
