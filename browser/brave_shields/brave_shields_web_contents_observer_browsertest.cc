@@ -277,4 +277,33 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
+                       JavaScriptAllowedDataUrls) {
+  const GURL& url = GURL("a.com");
+
+  // Start with JavaScript blocking initially disabled.
+  ContentSetting block_javascript_setting =
+      content_settings()->GetContentSetting(url, url,
+                                            ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+  // Enable JavaScript blocking globally now.
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+  block_javascript_setting = content_settings()->GetContentSetting(
+      url, url, ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, block_javascript_setting);
+
+  // Load a simple HTML that attempts to load some JavaScript with data urls.
+  auto page_url =
+      embedded_test_server()->GetURL("a.com", "/load_js_dataurls.html");
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 3);
+  auto blocked_list = GetBlockedJsList();
+  EXPECT_EQ(blocked_list.size(), 1u);
+  EXPECT_EQ(GURL(blocked_list.front()),
+            GURL(url::Origin::Create(page_url).Serialize()));
+}
+
 }  // namespace brave_shields
