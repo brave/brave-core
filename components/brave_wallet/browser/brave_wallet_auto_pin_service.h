@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
@@ -71,6 +72,7 @@ class BraveWalletAutoPinService
     Operation operation;
     absl::optional<std::string> service;
     size_t attempt = 0;
+
     IntentData(const BlockchainTokenPtr& token,
                Operation operation,
                absl::optional<std::string> service);
