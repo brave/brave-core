@@ -22,7 +22,7 @@ void Log(const char* file,
     return;
   }
 
-  g_ledger_client->Log(file, line, verbose_level, message);
+  //g_ledger_client->Log(file, line, verbose_level, message);
 }
 
 }  // namespace ledger

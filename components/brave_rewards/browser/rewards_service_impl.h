@@ -352,7 +352,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void CheckPreferences();
 
-  void StartLedgerProcessIfNecessary();
+  void MaybeCreateLedger();
 
   void OnStopLedger(StopLedgerCallback callback,
                     const ledger::mojom::Result result);
@@ -623,7 +623,6 @@ class RewardsServiceImpl : public RewardsService,
 #endif
   mojo::AssociatedReceiver<ledger::mojom::LedgerClient> receiver_;
   mojo::AssociatedRemote<ledger::mojom::Ledger> ledger_;
-  mojo::Remote<ledger::mojom::LedgerFactory> ledger_factory_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;
 

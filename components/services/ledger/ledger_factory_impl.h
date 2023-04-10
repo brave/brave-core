@@ -6,12 +6,13 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
 
+#include "base/files/file_path.h"
 #include "brave/components/services/ledger/public/interfaces/ledger_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
+#include "mojo/public/cpp/bindings/unique_associated_receiver_set.h"
 
 namespace ledger {
 
@@ -26,13 +27,16 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
   LedgerFactoryImpl& operator=(const LedgerFactoryImpl&) = delete;
 
   void CreateLedger(
+      const base::FilePath& profile_path,
       mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
       mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
       CreateLedgerCallback callback) override;
 
  private:
+  void OnDisconnect();
+
   mojo::Receiver<mojom::LedgerFactory> receiver_;
-  mojo::SelfOwnedAssociatedReceiverRef<mojom::Ledger> ledger_;
+  mojo::UniqueAssociatedReceiverSet<mojom::Ledger, base::FilePath> ledgers_;
 };
 
 }  // namespace ledger

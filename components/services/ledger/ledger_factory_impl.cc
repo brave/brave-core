@@ -14,21 +14,38 @@ namespace ledger {
 
 LedgerFactoryImpl::LedgerFactoryImpl(
     mojo::PendingReceiver<mojom::LedgerFactory> receiver)
-    : receiver_(this, std::move(receiver)) {}
+    : receiver_(this, std::move(receiver)) {
+  VLOG(0) << "Constructor";
 
-LedgerFactoryImpl::~LedgerFactoryImpl() = default;
+  ledgers_.set_disconnect_handler(base::BindRepeating(
+      &LedgerFactoryImpl::OnDisconnect, base::Unretained(this)));
+}
+
+LedgerFactoryImpl::~LedgerFactoryImpl() {
+  VLOG(0) << "Destructor";
+}
 
 void LedgerFactoryImpl::CreateLedger(
+    const base::FilePath& profile_path,
     mojo::PendingAssociatedReceiver<mojom::Ledger> ledger_receiver,
     mojo::PendingAssociatedRemote<mojom::LedgerClient> ledger_client_remote,
     CreateLedgerCallback callback) {
-  if (!ledger_) {
-    ledger_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<LedgerImpl>(std::move(ledger_client_remote)),
-        std::move(ledger_receiver));
-  }
+  ledgers_.Add(std::make_unique<LedgerImpl>(std::move(ledger_client_remote)),
+               std::move(ledger_receiver), profile_path);
+
+  VLOG(0) << "Added " << profile_path;
+  VLOG(0) << "Number of ledgers: " << ledgers_.size();
 
   std::move(callback).Run();
+}
+
+void LedgerFactoryImpl::OnDisconnect() {
+  VLOG(0) << "Removed " << ledgers_.current_context();
+  VLOG(0) << "Number of ledgers: " << ledgers_.size();
+
+  if (ledgers_.empty()) {
+    receiver_.reset();
+  }
 }
 
 }  // namespace ledger
