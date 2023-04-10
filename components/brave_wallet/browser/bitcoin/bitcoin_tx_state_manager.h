@@ -31,9 +31,12 @@ class BitcoinTxStateManager : public TxStateManager {
   BitcoinTxStateManager operator=(const BitcoinTxStateManager&) = delete;
 
  private:
+  mojom::CoinType GetCoinType() const override;
+
   std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) override;
-  std::string GetTxPrefPathPrefix() override;
+  std::string GetTxPrefPathPrefix(
+      const absl::optional<std::string>& chain_id) override;
 };
 
 }  // namespace brave_wallet

@@ -15,28 +15,33 @@
 namespace brave_wallet {
 
 BitcoinBlockTracker::BitcoinBlockTracker(
-    const std::string& network_id,
     JsonRpcService* json_rpc_service,
     BitcoinWalletService* bitcoin_wallet_service)
     : BlockTracker(json_rpc_service),
-      network_id_(network_id),
       bitcoin_wallet_service_(bitcoin_wallet_service) {}
 
 BitcoinBlockTracker::~BitcoinBlockTracker() = default;
 
-void BitcoinBlockTracker::Start(base::TimeDelta interval) {
-  timer_.Start(FROM_HERE, interval,
-               base::BindRepeating(&BitcoinBlockTracker::GetBlockHeight,
-                                   weak_ptr_factory_.GetWeakPtr()));
+void BitcoinBlockTracker::Start(const std::string& chain_id,
+                                base::TimeDelta interval) {
+  if (!base::Contains(timers_, chain_id)) {
+    timers_[chain_id] = std::make_unique<base::RepeatingTimer>();
+  }
+
+  timers_[chain_id]->Start(
+      FROM_HERE, interval,
+      base::BindRepeating(&BitcoinBlockTracker::GetBlockHeight,
+                          weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
-void BitcoinBlockTracker::GetBlockHeight() {
+void BitcoinBlockTracker::GetBlockHeight(const std::string& chain_id) {
   bitcoin_wallet_service_->bitcoin_rpc()->GetChainHeight(
-      network_id_, base::BindOnce(&BitcoinBlockTracker::OnGetBlockHeight,
-                                  weak_ptr_factory_.GetWeakPtr()));
+      chain_id, base::BindOnce(&BitcoinBlockTracker::OnGetBlockHeight,
+                               weak_ptr_factory_.GetWeakPtr(), chain_id));
 }
 
 void BitcoinBlockTracker::OnGetBlockHeight(
+    const std::string& chain_id,
     base::expected<uint32_t, std::string> latest_height) {
   if (!latest_height.has_value()) {
     return;
@@ -46,7 +51,7 @@ void BitcoinBlockTracker::OnGetBlockHeight(
   }
   latest_height_ = latest_height.value();
   for (auto& observer : observers_) {
-    observer.OnLatestHeightUpdated(network_id_, latest_height_);
+    observer.OnLatestHeightUpdated(chain_id, latest_height_);
   }
 }
 

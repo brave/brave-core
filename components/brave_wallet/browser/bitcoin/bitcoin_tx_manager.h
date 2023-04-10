@@ -32,31 +32,39 @@ class BitcoinTxManager : public TxManager {
   BitcoinTxManager(const BitcoinTxManager&) = delete;
   BitcoinTxManager& operator=(const BitcoinTxManager&) = delete;
 
-  void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
+  void AddUnapprovedTransaction(const std::string& chain_id,
+                                mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
                                 const absl::optional<url::Origin>& origin,
                                 const absl::optional<std::string>& group_id,
                                 AddUnapprovedTransactionCallback) override;
-  void ApproveTransaction(const std::string& tx_meta_id,
+  void ApproveTransaction(const std::string& chain_id,
+                          const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void GetAllTransactionInfo(const absl::optional<std::string>& from,
+  void GetAllTransactionInfo(const absl::optional<std::string>& chain_id,
+                             const absl::optional<std::string>& from,
                              GetAllTransactionInfoCallback) override;
   void GetTransactionMessageToSign(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) override;
 
   void SpeedupOrCancelTransaction(
+      const std::string& chain_id,
       const std::string& tx_meta_id,
       bool cancel,
       SpeedupOrCancelTransactionCallback callback) override;
-  void RetryTransaction(const std::string& tx_meta_id,
+  void RetryTransaction(const std::string& chain_id,
+                        const std::string& tx_meta_id,
                         RetryTransactionCallback callback) override;
 
   void Reset() override;
 
  private:
   // TxManager
-  void UpdatePendingTransactions() override;
+  mojom::CoinType GetCoinType() const override;
+  void UpdatePendingTransactions(
+      const absl::optional<std::string>& chain_id) override;
 
   base::WeakPtrFactory<BitcoinTxManager> weak_factory_{this};
 };

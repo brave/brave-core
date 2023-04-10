@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 // utils
@@ -20,7 +20,7 @@ import { PageSelectors } from './selectors'
 
 // types
 import {
-  WalletRoutes
+  WalletRoutes, WalletState
 } from '../constants/types'
 
 // hooks
@@ -43,6 +43,7 @@ import { DepositFundsScreen } from './screens/fund-wallet/deposit-funds'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
 import { Swap } from './screens/swap/swap'
 import { SendScreen } from './screens/send/send-page/send-screen'
+import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import {
   WalletPageWrapper
 } from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
@@ -54,6 +55,9 @@ export const Container = () => {
 
   // redux
   const dispatch = useDispatch()
+  const isBitcoinEnabled = useSelector(
+    ({ wallet }: { wallet: WalletState }) => wallet.isBitcoinEnabled
+  )
 
   // wallet selectors (safe)
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
@@ -283,6 +287,12 @@ export const Container = () => {
                 </WalletPageWrapper>
               </Route>
             }
+
+            {isBitcoinEnabled && !isWalletLocked && (
+              <Route path={WalletRoutes.DevBitcoin} exact={true}>
+                <DevBitcoin />
+              </Route>
+            )}
 
             {!isWalletLocked &&
               <Route path={WalletRoutes.Send} exact={true}>

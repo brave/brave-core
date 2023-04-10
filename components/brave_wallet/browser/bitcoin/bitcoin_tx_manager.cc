@@ -23,9 +23,7 @@ BitcoinTxManager::BitcoinTxManager(TxService* tx_service,
                                    PrefService* prefs)
     : TxManager(
           std::make_unique<BitcoinTxStateManager>(prefs, json_rpc_service),
-          // TODO(apaymyshev): support mainnet here also.
-          std::make_unique<BitcoinBlockTracker>(mojom::kBitcoinTestnet,
-                                                json_rpc_service,
+          std::make_unique<BitcoinBlockTracker>(json_rpc_service,
                                                 bitcoin_wallet_service),
           tx_service,
           json_rpc_service,
@@ -35,6 +33,7 @@ BitcoinTxManager::BitcoinTxManager(TxService* tx_service,
 BitcoinTxManager::~BitcoinTxManager() = default;
 
 void BitcoinTxManager::AddUnapprovedTransaction(
+    const std::string& chain_id,
     mojom::TxDataUnionPtr tx_data_union,
     const std::string& from,
     const absl::optional<url::Origin>& origin,
@@ -43,12 +42,14 @@ void BitcoinTxManager::AddUnapprovedTransaction(
   // TODO(apaymyshev): implement
 }
 
-void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
+void BitcoinTxManager::ApproveTransaction(const std::string& chain_id,
+                                          const std::string& tx_meta_id,
                                           ApproveTransactionCallback callback) {
   // TODO(apaymyshev): implement
 }
 
 void BitcoinTxManager::GetAllTransactionInfo(
+    const absl::optional<std::string>& chain_id,
     const absl::optional<std::string>& from,
     GetAllTransactionInfoCallback callback) {
   // TODO(apaymyshev): implement
@@ -57,18 +58,21 @@ void BitcoinTxManager::GetAllTransactionInfo(
 }
 
 void BitcoinTxManager::SpeedupOrCancelTransaction(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     bool cancel,
     SpeedupOrCancelTransactionCallback callback) {
   NOTIMPLEMENTED();
 }
 
-void BitcoinTxManager::RetryTransaction(const std::string& tx_meta_id,
+void BitcoinTxManager::RetryTransaction(const std::string& chain_id,
+                                        const std::string& tx_meta_id,
                                         RetryTransactionCallback callback) {
   NOTIMPLEMENTED();
 }
 
 void BitcoinTxManager::GetTransactionMessageToSign(
+    const std::string& chain_id,
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
   // TODO(apaymyshev): implement
@@ -78,7 +82,12 @@ void BitcoinTxManager::Reset() {
   TxManager::Reset();
 }
 
-void BitcoinTxManager::UpdatePendingTransactions() {
+mojom::CoinType BitcoinTxManager::GetCoinType() const {
+  return mojom::CoinType::BTC;
+}
+
+void BitcoinTxManager::UpdatePendingTransactions(
+    const absl::optional<std::string>& chain_id) {
   // TODO(apaymyshev): implement
 }
 

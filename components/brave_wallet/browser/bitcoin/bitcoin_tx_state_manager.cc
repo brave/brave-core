@@ -16,14 +16,19 @@ namespace brave_wallet {
 
 BitcoinTxStateManager::BitcoinTxStateManager(PrefService* prefs,
                                              JsonRpcService* json_rpc_service)
-    : TxStateManager(prefs, json_rpc_service) {}
+    : TxStateManager(prefs) {}
 
 BitcoinTxStateManager::~BitcoinTxStateManager() = default;
 
-std::string BitcoinTxStateManager::GetTxPrefPathPrefix() {
+std::string BitcoinTxStateManager::GetTxPrefPathPrefix(
+    const absl::optional<std::string>& chain_id) {
   // TODO(apaymyshev): implement
 
   return "";
+}
+
+mojom::CoinType BitcoinTxStateManager::GetCoinType() const {
+  return mojom::CoinType::BTC;
 }
 
 std::unique_ptr<TxMeta> BitcoinTxStateManager::ValueToTxMeta(

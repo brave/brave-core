@@ -21,8 +21,7 @@ class BitcoinWalletService;
 
 class BitcoinBlockTracker : public BlockTracker {
  public:
-  BitcoinBlockTracker(const std::string& network_id,
-                      JsonRpcService* json_rpc_service,
+  BitcoinBlockTracker(JsonRpcService* json_rpc_service,
                       BitcoinWalletService* bitcoin_wallet_service);
   ~BitcoinBlockTracker() override;
   BitcoinBlockTracker(const BitcoinBlockTracker&) = delete;
@@ -30,7 +29,7 @@ class BitcoinBlockTracker : public BlockTracker {
 
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnLatestHeightUpdated(const std::string& network_id,
+    virtual void OnLatestHeightUpdated(const std::string& chain_id,
                                        uint64_t latest_height) = 0;
   };
 
@@ -38,16 +37,16 @@ class BitcoinBlockTracker : public BlockTracker {
   void RemoveObserver(Observer* observer);
 
   uint64_t latest_height() const { return latest_height_; }
-  void Start(base::TimeDelta interval) override;
+  void Start(const std::string& chain_id, base::TimeDelta interval) override;
 
  private:
-  void GetBlockHeight();
-  void OnGetBlockHeight(base::expected<uint32_t, std::string> latest_height);
+  void GetBlockHeight(const std::string& chain_id);
+  void OnGetBlockHeight(const std::string& chain_id,
+                        base::expected<uint32_t, std::string> latest_height);
 
   uint64_t latest_height_ = 0;
   base::ObserverList<Observer> observers_;
 
-  std::string network_id_;
   raw_ptr<BitcoinWalletService> bitcoin_wallet_service_ = nullptr;
 
   base::WeakPtrFactory<BitcoinBlockTracker> weak_ptr_factory_{this};
