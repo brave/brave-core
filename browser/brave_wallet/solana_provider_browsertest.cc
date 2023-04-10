@@ -362,9 +362,33 @@ class SolanaProviderTest : public InProcessBrowserTest {
     https_server_for_rpc()->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
     https_server_for_rpc()->RegisterRequestHandler(callback);
     ASSERT_TRUE(https_server_for_rpc()->Start());
-    json_rpc_service_->SetCustomNetworkForTesting(
-        mojom::kLocalhostChainId, mojom::CoinType::SOL,
-        https_server_for_rpc()->base_url());
+
+    // Update rpc url for kLocalhostChainId
+    mojom::NetworkInfoPtr chain;
+    json_rpc_service_->SetNetwork(mojom::kLocalhostChainId,
+                                  mojom::CoinType::SOL, absl::nullopt, true);
+    base::RunLoop run_loop;
+    json_rpc_service_->GetNetwork(
+        mojom::CoinType::SOL, absl::nullopt,
+        base::BindLambdaForTesting([&](mojom::NetworkInfoPtr info) {
+          chain = info.Clone();
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    base::RunLoop run_loop1;
+    chain->rpc_endpoints =
+        std::vector<GURL>({https_server_for_rpc()->base_url()});
+    json_rpc_service_->AddChain(
+        std::move(chain),
+        base::BindLambdaForTesting([&](const std::string& chain_id,
+                                       mojom::ProviderError error,
+                                       const std::string& error_message) {
+          ASSERT_EQ(chain_id, mojom::kLocalhostChainId);
+          ASSERT_EQ(error, mojom::ProviderError::kSuccess);
+          ASSERT_TRUE(error_message.empty());
+          run_loop1.Quit();
+        }));
+    run_loop1.Run();
   }
 
   content::WebContents* web_contents() {
@@ -449,7 +473,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
     std::vector<mojom::TransactionInfoPtr> transaction_infos;
     base::RunLoop run_loop;
     tx_service_->GetAllTransactionInfo(
-        mojom::CoinType::SOL, kFirstAccount,
+        mojom::CoinType::SOL, mojom::kLocalhostChainId, kFirstAccount,
         base::BindLambdaForTesting(
             [&](std::vector<mojom::TransactionInfoPtr> v) {
               transaction_infos = std::move(v);
@@ -462,7 +486,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void ApproveTransaction(const std::string& tx_meta_id) {
     base::RunLoop run_loop;
     tx_service_->ApproveTransaction(
-        mojom::CoinType::SOL, tx_meta_id,
+        mojom::CoinType::SOL, mojom::kLocalhostChainId, tx_meta_id,
         base::BindLambdaForTesting([&](bool success,
                                        mojom::ProviderErrorUnionPtr error_union,
                                        const std::string& error_message) {
@@ -479,7 +503,7 @@ class SolanaProviderTest : public InProcessBrowserTest {
   void RejectTransaction(const std::string& tx_meta_id) {
     base::RunLoop run_loop;
     tx_service_->RejectTransaction(
-        mojom::CoinType::SOL, tx_meta_id,
+        mojom::CoinType::SOL, mojom::kLocalhostChainId, tx_meta_id,
         base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           observer()->WaitForRjectedStatus();

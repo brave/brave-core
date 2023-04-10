@@ -416,6 +416,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void SetAPIRequestHelperForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
+  void SetSkipEthChainIdValidationForTesting(bool skipped) {
+    skip_eth_chain_id_validation_for_testing_ = skipped;
+  }
+
   // Solana JSON RPCs
   void GetSolanaBalance(const std::string& pubkey,
                         const std::string& chain_id,
@@ -664,6 +668,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   SnsResolverTaskContainer<SnsGetSolAddrCallback> sns_get_sol_addr_tasks_;
   SnsResolverTaskContainer<SnsResolveHostCallback> sns_resolve_host_tasks_;
+
+  bool skip_eth_chain_id_validation_for_testing_ = false;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;
   PrefService* prefs_ = nullptr;

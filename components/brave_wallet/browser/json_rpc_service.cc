@@ -455,7 +455,8 @@ void JsonRpcService::OnEthChainIdValidated(
     AddChainCallback callback,
     APIRequestResult api_request_result) {
   if (ParseSingleStringResult(api_request_result.value_body()) !=
-      chain->chain_id) {
+          chain->chain_id &&
+      !skip_eth_chain_id_validation_for_testing_) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
@@ -532,7 +533,8 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
   }
 
   const auto& chain = *add_chain_pending_requests_.at(chain_id)->network_info;
-  if (ParseSingleStringResult(api_request_result.value_body()) != chain_id) {
+  if (ParseSingleStringResult(api_request_result.value_body()) != chain_id &&
+      !skip_eth_chain_id_validation_for_testing_) {
     FirePendingRequestCompleted(
         chain_id,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
