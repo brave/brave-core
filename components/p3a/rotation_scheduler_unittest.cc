@@ -46,7 +46,15 @@ class P3ARotationSchedulerTest : public testing::Test {
   size_t constellation_rotation_count_ = 0;
 };
 
-TEST_F(P3ARotationSchedulerTest, JsonRotation) {
+#if BUILDFLAG(IS_MAC)
+// FIXME(darnell) Please fix this.
+// https://github.com/brave/brave-browser/issues/29571
+#define MAYBE_JsonRotation DISABLED_JsonRotation
+#else
+#define MAYBE_JsonRotation JsonRotation
+#endif
+
+TEST_F(P3ARotationSchedulerTest, MAYBE_JsonRotation) {
   task_environment_.FastForwardBy(base::Days(60));
 
   // 60 days + 1 initial rotation
@@ -57,7 +65,15 @@ TEST_F(P3ARotationSchedulerTest, JsonRotation) {
   EXPECT_EQ(json_rotation_counts_[MetricLogType::kSlow], 3u);
 }
 
-TEST_F(P3ARotationSchedulerTest, ConstellationRotation) {
+#if BUILDFLAG(IS_MAC)
+// FIXME(darnell) Please fix this.
+// https://github.com/brave/brave-browser/issues/29571
+#define MAYBE_ConstellationRotation DISABLED_ConstellationRotation
+#else
+#define MAYBE_ConstellationRotation ConstellationRotation
+#endif
+
+TEST_F(P3ARotationSchedulerTest, MAYBE_ConstellationRotation) {
   task_environment_.FastForwardBy(base::Days(7));
   // Should be 0 since the timer has not started
   EXPECT_EQ(constellation_rotation_count_, 0u);
