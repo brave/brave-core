@@ -86,8 +86,8 @@ void BraveWalletHandler::RegisterMessages() {
       "addChain", base::BindRepeating(&BraveWalletHandler::AddChain,
                                       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "setActiveNetwork",
-      base::BindRepeating(&BraveWalletHandler::SetActiveNetwork,
+      "setDefaultNetwork",
+      base::BindRepeating(&BraveWalletHandler::SetDefaultNetwork,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "addHiddenNetwork",
@@ -181,8 +181,7 @@ void BraveWalletHandler::GetNetworksList(const base::Value::List& args) {
     return;
   }
 
-  // TODO(darkdh): change this to default network.
-  result.Set("activeNetwork",
+  result.Set("defaultNetwork",
              brave_wallet::GetCurrentChainId(prefs, *coin, absl::nullopt));
 
   auto& networks = result.Set("networks", base::Value::List())->GetList();
@@ -269,7 +268,7 @@ void BraveWalletHandler::AddChain(const base::Value::List& args) {
                      weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
 }
 
-void BraveWalletHandler::SetActiveNetwork(const base::Value::List& args) {
+void BraveWalletHandler::SetDefaultNetwork(const base::Value::List& args) {
   CHECK_EQ(args.size(), 3U);
 
   auto* chain_id = args[1].GetIfString();

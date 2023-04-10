@@ -7,7 +7,7 @@
     padding-inline-end: var(--cr-section-padding);
     padding-inline-start: var(--cr-section-indent-padding);
   }
-  .active-network {
+  .default-network {
     font-weight: bold;
   }
 </style>
@@ -68,10 +68,10 @@
                     on-click="onResetActionTapped_">
                   $i18n{walletNetworkReset}
                 </button>
-                <button class="dropdown-item" id="set-active"
-                    hidden=[[isActiveNetwork]]
-                    on-click="onSetAsActiveActionTapped_">
-                  $i18n{walletNetworkSetAsActive}
+                <button class="dropdown-item" id="set-default"
+                    hidden=[[isDefaultNetwork]]
+                    on-click="onSetAsDefaultActionTapped_">
+                  $i18n{walletNetworkSetAsDefault}
                 </button>
               </cr-action-menu>
             </template>

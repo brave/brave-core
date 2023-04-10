@@ -45,7 +45,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void GetNetworksList(const base::Value::List& args);
   void GetPrepopulatedNetworksList(const base::Value::List& args);
   void AddChain(const base::Value::List& args);
-  void SetActiveNetwork(const base::Value::List& args);
+  void SetDefaultNetwork(const base::Value::List& args);
   void AddHiddenNetwork(const base::Value::List& args);
   void RemoveHiddenNetwork(const base::Value::List& args);
   void IsNftPinningEnabled(const base::Value::List& args);

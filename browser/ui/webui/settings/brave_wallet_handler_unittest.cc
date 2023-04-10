@@ -130,8 +130,8 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   void AddChain(const base::Value::List& args) {
     BraveWalletHandler::AddChain(args);
   }
-  void SetActiveNetwork(const base::Value::List& args) {
-    BraveWalletHandler::SetActiveNetwork(args);
+  void SetDefaultNetwork(const base::Value::List& args) {
+    BraveWalletHandler::SetDefaultNetwork(args);
   }
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
@@ -332,7 +332,7 @@ TEST(TestBraveWalletHandler, GetNetworkListFilSol) {
   }
 }
 
-TEST(TestBraveWalletHandler, SetActiveNetwork) {
+TEST(TestBraveWalletHandler, SetDefaultNetwork) {
   TestBraveWalletHandler handler;
 
   std::vector<base::Value::Dict> values;
@@ -352,7 +352,7 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     args.Append(base::Value("chain_id2"));
     args.Append(base::Value(static_cast<int>(CoinType::ETH)));
 
-    handler.SetActiveNetwork(args);
+    handler.SetDefaultNetwork(args);
     const auto& data = *handler.web_ui()->call_data()[0];
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), true);
@@ -367,7 +367,7 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     args.Append(base::Value("unknown_chain_id"));
     args.Append(base::Value(static_cast<int>(CoinType::ETH)));
 
-    handler.SetActiveNetwork(args);
+    handler.SetDefaultNetwork(args);
     const auto& data = *handler.web_ui()->call_data()[1];
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), false);
