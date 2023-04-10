@@ -229,7 +229,9 @@ bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
   // executing the frame (which most, but not all, of the time will just be from
   // document.location
   if (secondary_url.SchemeIs(url::kDataScheme)) {
-    secondary_url = render_frame()->GetWebFrame()->GetDocument().Url();
+    secondary_url =
+        url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
+            .GetURL();
   }
   bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
