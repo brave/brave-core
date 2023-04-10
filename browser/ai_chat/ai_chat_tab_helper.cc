@@ -40,6 +40,17 @@ static const ax::mojom::Role kRolesToSkip[] = {
     ax::mojom::Role::kImage,
     ax::mojom::Role::kLabelText,
     ax::mojom::Role::kNavigation,
+    /* input elements */
+    ax::mojom::Role::kTextField,
+    ax::mojom::Role::kTextFieldWithComboBox,
+    ax::mojom::Role::kComboBoxSelect,
+    ax::mojom::Role::kListBox,
+    ax::mojom::Role::kListBoxOption,
+    ax::mojom::Role::kCheckBox,
+    ax::mojom::Role::kRadioButton,
+    ax::mojom::Role::kSlider,
+    ax::mojom::Role::kSpinButton,
+    ax::mojom::Role::kSearchBox,
 };
 
 void GetContentRootNodes(const ui::AXNode* root,
@@ -81,6 +92,10 @@ void AddContentNodesToVector(const ui::AXNode* node,
 void AddTextNodesToVector(const ui::AXNode* node,
                           std::vector<std::u16string>* strings) {
   const ui::AXNodeData& node_data = node->data();
+
+  if (base::Contains(kRolesToSkip, node_data.role)) {
+    return;
+  }
 
   if (node_data.role == ax::mojom::Role::kStaticText) {
     if (node_data.HasStringAttribute(ax::mojom::StringAttribute::kName)) {
@@ -206,7 +221,6 @@ void AIChatTabHelper::DistillViaAlgorithm(const ui::AXTree& tree) {
   // needed for accurate measurement.
   std::string contents_text = base::UTF16ToUTF8(
       base::JoinString(text_node_contents, u" ").substr(0, 9300));
-
   if (contents_text.empty()) {
     VLOG(1) << __func__ << " Contents is empty\n";
 
