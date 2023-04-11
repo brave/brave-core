@@ -23,6 +23,7 @@ patches/**/*.patchinfo
 /third_party/playlist_component/src
 /third_party/rapidjson/src
 /third_party/rust/cxx
+/third_party/rust/either/v1/crate
 *.xcodeproj
 *.swp
 *.pyc
