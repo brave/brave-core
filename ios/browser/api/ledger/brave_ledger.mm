@@ -30,8 +30,6 @@
 #import "brave/ios/browser/api/ledger/ledger_client_bridge.h"
 #import "brave/ios/browser/api/ledger/ledger_client_ios.h"
 #import "brave/ios/browser/api/ledger/ledger_types.mojom.objc+private.h"
-#import "brave/ios/browser/api/ledger/legacy_database/data_controller.h"
-#import "brave/ios/browser/api/ledger/legacy_database/legacy_ledger_database.h"
 #import "brave/ios/browser/api/ledger/promotion_solution.h"
 #import "brave/ios/browser/api/ledger/rewards_notification.h"
 #include "components/os_crypt/os_crypt.h"
@@ -86,8 +84,6 @@ BraveGeneralLedgerNotificationID const
     BATBraveGeneralLedgerNotificationIDWalletDisconnected =
         @"wallet_disconnected";
 
-static NSString* const kMigrationSucceeded = @"BATRewardsMigrationSucceeded";
-
 static NSString* const kContributionQueueAutoincrementID =
     @"BATContributionQueueAutoincrementID";
 static NSString* const kUnblindedTokenAutoincrementID =
@@ -111,16 +107,6 @@ const std::map<std::string, uint64_t> kUInt64Options = {
     {ledger::option::kPublisherListRefreshInterval,
      7 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 /// ---
-
-/// When initializing the ledger, what should we do when migrating
-typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
-  /// Attempt to migrate all rewards data if needed
-  BATLedgerDatabaseMigrationTypeDefault = 0,
-  /// Only migrate unblinded tokens if needed
-  BATLedgerDatabaseMigrationTypeTokensOnly,
-  /// Do not migrate any data (essentially resetting rewards activity & balance)
-  BATLedgerDatabaseMigrationTypeNone
-};
 
 @interface BraveLedger () <LedgerClientBridge> {
   // DO NOT ACCESS DIRECTLY, use `postLedgerTask` or ensure you are accessing
@@ -153,7 +139,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 @property(nonatomic) LedgerResult initializationResult;
 @property(nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property(nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
-@property(nonatomic) BATLedgerDatabaseMigrationType migrationType;
 
 /// Notifications
 
@@ -190,9 +175,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
         [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
-      // Setup defaults
-      self.prefs[kMigrationSucceeded] = @(NO);
-      [self savePrefs];
     }
 
     NSString* walletProviderRegionsKey = @"parameters.wallet_provider_regions";
@@ -267,16 +249,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
 }
 
-- (void)initializeLedgerService:(nullable void (^)())completion {
-  self.migrationType = BATLedgerDatabaseMigrationTypeDefault;
-  [self databaseNeedsMigration:^(BOOL needsMigration) {
-    if (needsMigration) {
-      [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
-    }
-    [self initializeLedgerService:needsMigration completion:completion];
-  }];
-}
-
 - (void)postLedgerTask:(void (^)(ledger::LedgerImpl*))task {
   _ledgerTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
                                 CHECK(self->_ledger != nullptr);
@@ -284,136 +256,39 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                               }));
 }
 
-- (void)initializeLedgerService:(BOOL)executeMigrateScript
-                     completion:(nullable void (^)())completion {
+- (void)initializeLedgerService:(nullable void (^)())completion {
   if (self.initialized || self.initializing) {
     return;
   }
   self.initializing = YES;
 
-  LLOG(3, @"DB: Migrate from CoreData? %@",
-       (executeMigrateScript ? @"YES" : @"NO"));
   [self postLedgerTask:^(ledger::LedgerImpl* ledger) {
-    ledger->Initialize(
-        executeMigrateScript, base::BindOnce(^(ledger::mojom::Result result) {
-          self.initialized =
-              (result == ledger::mojom::Result::LEDGER_OK ||
-               result == ledger::mojom::Result::NO_LEDGER_STATE ||
-               result == ledger::mojom::Result::NO_PUBLISHER_STATE);
-          self.initializing = NO;
-          if (self.initialized) {
-            self.prefs[kMigrationSucceeded] = @(YES);
-            [self savePrefs];
-
-            [self getRewardsParameters:nil];
-            [self fetchBalance:nil];
-          } else {
-            LLOG(0, @"Ledger Initialization Failed with error: %d", result);
-            if (result == ledger::mojom::Result::DATABASE_INIT_FAILED) {
-              // Failed to migrate data...
-              switch (self.migrationType) {
-                case BATLedgerDatabaseMigrationTypeDefault:
-                  LLOG(0, @"DB: Full migration failed, attempting BAT only "
-                          @"migration.");
-                  self.dataMigrationFailed = YES;
-                  self.migrationType = BATLedgerDatabaseMigrationTypeTokensOnly;
-                  [self resetRewardsDatabase];
-                  // attempt re-initialize without other data
-                  [self initializeLedgerService:YES completion:completion];
-                  return;
-                case BATLedgerDatabaseMigrationTypeTokensOnly:
-                  LLOG(0,
-                       @"DB: BAT only migration failed. Initializing without "
-                       @"migration.");
-                  self.dataMigrationFailed = YES;
-                  self.migrationType = BATLedgerDatabaseMigrationTypeNone;
-                  [self resetRewardsDatabase];
-                  // attempt initialize without migrating at all
-                  [self initializeLedgerService:NO completion:completion];
-                  return;
-                default:
-                  break;
-              }
-            }
+    ledger->Initialize(base::BindOnce(^(ledger::mojom::Result result) {
+      self.initialized = (result == ledger::mojom::Result::LEDGER_OK ||
+                          result == ledger::mojom::Result::NO_LEDGER_STATE ||
+                          result == ledger::mojom::Result::NO_PUBLISHER_STATE);
+      self.initializing = NO;
+      if (self.initialized) {
+        [self getRewardsParameters:nil];
+        [self fetchBalance:nil];
+      } else {
+        LLOG(0, @"Ledger Initialization Failed with error: %d", result);
+      }
+      self.initializationResult = static_cast<LedgerResult>(result);
+      if (completion) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          completion();
+        });
+      }
+      dispatch_async(dispatch_get_main_queue(), ^{
+        for (BraveLedgerObserver* observer in [self.observers copy]) {
+          if (observer.walletInitalized) {
+            observer.walletInitalized(self.initializationResult);
           }
-          self.initializationResult = static_cast<LedgerResult>(result);
-          if (completion) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-              completion();
-            });
-          }
-          dispatch_async(dispatch_get_main_queue(), ^{
-            for (BraveLedgerObserver* observer in [self.observers copy]) {
-              if (observer.walletInitalized) {
-                observer.walletInitalized(self.initializationResult);
-              }
-            }
-          });
-        }));
+        }
+      });
+    }));
   }];
-}
-
-- (void)databaseNeedsMigration:(void (^)(BOOL needsMigration))completion {
-  // Check if we even have a DB to migrate
-  if (!DataController.defaultStoreExists) {
-    completion(NO);
-    return;
-  }
-  // Have we set the pref saying ledger has alaready initialized successfully?
-  if ([self.prefs[kMigrationSucceeded] boolValue]) {
-    completion(NO);
-    return;
-  }
-  // Can we even check the DB
-  if (!rewardsDatabase) {
-    LLOG(3, @"DB: No rewards database object");
-    completion(YES);
-    return;
-  }
-  // Check integrity of the new DB. Safe to assume if `publisher_info` table
-  // exists, then all the others do as well.
-  auto transaction = ledger::mojom::DBTransaction::New();
-  const auto command = ledger::mojom::DBCommand::New();
-  command->type = ledger::mojom::DBCommand::Type::READ;
-  command->command = "SELECT name FROM sqlite_master WHERE type = 'table' AND "
-                     "name = 'publisher_info';";
-  command->record_bindings = {
-      ledger::mojom::DBCommand::RecordBindingType::STRING_TYPE};
-  transaction->commands.push_back(command->Clone());
-
-  [self runDbTransaction:std::move(transaction)
-                callback:base::BindOnce(^(
-                             ledger::mojom::DBCommandResponsePtr response) {
-                  // Failed to even run the check, tables probably don't exist,
-                  // restart from scratch
-                  if (response->status !=
-                      ledger::mojom::DBCommandResponse::Status::RESPONSE_OK) {
-                    [self resetRewardsDatabase];
-                    LLOG(3, @"DB: Failed to run transaction with status: %d",
-                         response->status);
-                    completion(YES);
-                    return;
-                  }
-
-                  const auto record =
-                      std::move(response->result->get_records());
-                  // sqlite_master table exists, but the publisher_info table
-                  // doesn't exist? Restart from scratch
-                  if (record.empty() || record.front()->fields.empty()) {
-                    [self resetRewardsDatabase];
-                    LLOG(3, @"DB: Migrate because we couldnt find tables in "
-                            @"sqlite_master");
-                    completion(YES);
-                    return;
-                  }
-
-                  // Tables exist so migration has happened already, but somehow
-                  // the flag wasn't saved.
-                  self.prefs[kMigrationSucceeded] = @(YES);
-                  [self savePrefs];
-
-                  completion(NO);
-                })];
 }
 
 - (NSString*)rewardsDatabasePath {
@@ -428,27 +303,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
                  error:nil];
   rewardsDatabase = base::SequenceBound<ledger::LedgerDatabase>(
       databaseQueue, base::FilePath(base::SysNSStringToUTF8(dbPath)));
-}
-
-- (void)createScript:
-    (ledger::mojom::LedgerClient::GetCreateScriptCallback)callback {
-  NSString* migrationScript = @"";
-  switch (self.migrationType) {
-    case BATLedgerDatabaseMigrationTypeNone:
-      // We shouldn't be migrating, therefore doesn't make sense that
-      // `getCreateScript` was called
-      LLOG(0,
-           @"DB: Attempted CoreData migration with an empty migration script");
-      break;
-    case BATLedgerDatabaseMigrationTypeTokensOnly:
-      migrationScript =
-          [BATLedgerDatabase migrateCoreDataBATOnlyToSQLTransaction];
-      break;
-    case BATLedgerDatabaseMigrationTypeDefault:
-    default:
-      migrationScript = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
-  }
-  std::move(callback).Run(base::SysNSStringToUTF8(migrationScript), 10);
 }
 
 - (NSString*)randomStatePath {

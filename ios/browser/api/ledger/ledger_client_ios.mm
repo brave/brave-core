@@ -209,9 +209,6 @@ void LedgerClientIOS::RunDBTransaction(
   [bridge_ runDbTransaction:std::move(transaction)
                    callback:std::move(callback)];
 }
-void LedgerClientIOS::GetCreateScript(GetCreateScriptCallback callback) {
-  [bridge_ createScript:std::move(callback)];
-}
 void LedgerClientIOS::PendingContributionSaved(
     const ledger::mojom::Result result) {
   [bridge_ pendingContributionSaved:result];
