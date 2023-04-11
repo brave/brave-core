@@ -30,10 +30,16 @@ extension Preferences {
     public static let referralLookupOutstanding = Option<Bool?>(key: "urp.referral.lookkup-completed", default: nil)
   }
 
-  public final class LegacyReview {
-    /// Review Threshold (the total amount of launches needed for the next review to show up) Default VAlue first Threashold which will be 14
-    static let threshold = Option<Int>(key: "review.threshold", default: 14)
-    /// Last Review Date
-    static let lastReviewDate = Option<Date?>(key: "review.last-date", default: nil)
+  public final class Review {
+    /// Application Launch Count (how many times the application has been launched)
+    public static let launchCount = Option<Int>(key: "review.launch-count", default: 0)
+    public static let braveNewsCriteriaPassed = Option<Bool>(key: "review.brave-new.criteria", default: false)
+    public static let numberBookmarksAdded =  Option<Int>(key: "review.numberBookmarksAdded", default: 0)
+    public static let numberPlaylistItemsAdded =  Option<Int>(key: "review.numberPlaylistItemsAdded", default: 0)
+    public static let dateWalletConnectedToDapp =  Option<Date?>(key: "review.connect-dapp.wallet", default: nil)
+    public static let daysInUse = Option<[Date]>(key: "review.in-use", default: [])
+    /// Review Threshold (the total amount of launches needed for the next review to show up) Default Value first Threashold which will be 14
+    public static let threshold = Option<Int>(key: "review.threshold", default: 14)
+    public static let lastReviewDate = Option<Date?>(key: "review.last-date", default: nil)
   }
 }

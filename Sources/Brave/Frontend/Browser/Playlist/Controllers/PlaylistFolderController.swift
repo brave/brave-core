@@ -98,7 +98,7 @@ class PlaylistFolderController: UIViewController {
     dismiss(animated: true) {
       // Handle App Rating
       // User finished viewing the playlist folder view.
-      AppReviewManager.shared.handleAppReview(for: self)
+      AppReviewManager.shared.handleAppReview(for: .revised, using: self)
     }
   }
   

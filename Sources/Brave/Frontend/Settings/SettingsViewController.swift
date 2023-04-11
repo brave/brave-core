@@ -248,7 +248,7 @@ class SettingsViewController: TableViewController {
           })
           controller.viewDidDisappear = {
             if Preferences.Review.braveNewsCriteriaPassed.value {
-              AppReviewManager.shared.isReviewRequired = true
+              AppReviewManager.shared.isRevisedReviewRequired = true
               Preferences.Review.braveNewsCriteriaPassed.value = false
             }
           }
