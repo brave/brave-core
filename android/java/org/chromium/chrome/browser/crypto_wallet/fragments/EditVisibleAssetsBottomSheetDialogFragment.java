@@ -477,7 +477,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
             AssetRatioService assetRatioService = getAssetRatioService();
             // Do not assert here, service can be null when backed from dialog
-            if (assetRatioService != null && !contractAddress.isEmpty()) {
+            if (assetRatioService != null && !contractAddress.isEmpty()
+                    && mSelectedNetwork.coin == CoinType.ETH) {
                 assetRatioService.getTokenInfo(contractAddress, token -> {
                     if (token != null) {
                         selfChange = true;
