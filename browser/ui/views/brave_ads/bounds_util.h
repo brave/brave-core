@@ -6,18 +6,22 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_BOUNDS_UTIL_H_
 #define BRAVE_BROWSER_UI_VIEWS_BRAVE_ADS_BOUNDS_UTIL_H_
 
-#include "ui/gfx/native_widget_types.h"
-
 namespace gfx {
 class Rect;
 }  // namespace gfx
 
+namespace display {
+class Display;
+}  // namespace display
+
+namespace views {
+class Widget;
+}  // namespace views
+
 namespace brave_ads {
 
-void AdjustBoundsAndSnapToFitWorkAreaForNativeView(
-    gfx::NativeView native_view,
-    gfx::Rect* bounds,
-    bool should_support_multiple_displays);
+void AdjustBoundsAndSnapToFitWorkAreaForNativeView(views::Widget* widget,
+                                                   gfx::Rect* bounds);
 
 // Exposed here to be available in tests.
 void SnapBoundsToEdgeOfWorkArea(const gfx::Rect& work_area, gfx::Rect* bounds);
