@@ -11,29 +11,13 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="enable_playlist"
         android:title="@string/enable_playlist"
-        android:summary="@string/enable_playlist_summary" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="add_to_playlist_button"
-        android:title="@string/add_to_playlist_button"
-        android:summary="@string/add_to_playlist_button_summary"
-        android:enabled="false" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="auto_play"
-        android:title="@string/auto_play"
-        android:summary="@string/auto_play_summary"
-        app:isPreferenceVisible="false" />
+        android:summary="@string/enable_playlist_summary"
+        android:defaultValue="true" />
 
     <Preference
         android:fragment="org.chromium.chrome.browser.playlist.settings.BravePlaylistSaveMediaFragment"
         android:key="auto_save_media_for_offline"
         android:title="@string/auto_save_media_for_offline" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="start_playback"
-        android:title="@string/start_playback"
-        android:summary="@string/start_playback_summary" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="remember_file_playback_position"

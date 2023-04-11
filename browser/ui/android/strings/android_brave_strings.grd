@@ -3678,24 +3678,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ENABLE_PLAYLIST_SUMMARY" desc="Enable playlist settings summary">
       Make playlists of your favorite audio and videos, and play anytime, anywhere.
     </message>
-    <message name="IDS_ADD_TO_PLAYLIST_BUTTON" desc="Add to playlist button settings title">
-      Add to Playlist button
-    </message>
-    <message name="IDS_ADD_TO_PLAYLIST_BUTTON_SUMMARY" desc="Add to playlist button settings summary">
-      Show or hide "Add to Playlist" button for quick access to add or remove media.
-    </message>
-    <message name="IDS_AUTO_PLAY" desc="Auto play settings title">
-      Auto-Play
-    </message>
-    <message name="IDS_AUTO_PLAY_SUMMARY" desc="Auto play settings summary">
-      Enables auto-play when Playlist is opened.
-    </message>
-    <message name="IDS_START_PLAYBACK" desc="Start playback settings title">
-      Start Playback Where I Left Off
-    </message>
-    <message name="IDS_START_PLAYBACK_SUMMARY" desc="Start playback settings summary">
-      Automatically sync any changes the creator made to a shared playlist.
-    </message>
     <message name="IDS_AUTO_SAVE_MEDIA_FOR_OFFLINE" desc="Auto save media for offline settings title">
       Auto-Save for Offline
     </message>
