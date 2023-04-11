@@ -10,6 +10,7 @@ public enum Web3Service: String, CaseIterable {
   case solana
   case ethereum
   case ethereumOffchain
+  case unstoppable
   
   public var id: String { rawValue }
 }
@@ -39,7 +40,9 @@ public enum Web3Service: String, CaseIterable {
     guard let fixupURL = URIFixup.getURL(domain) else {
       return .none
     }
-    if fixupURL.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedENSExtension {
+    if fixupURL.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedUDExtension {
+      return await lookupUD(domain: domain)
+    } else if fixupURL.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedENSExtension {
       return await lookupENS(domain: domain)
     } else if fixupURL.domainURL.schemelessAbsoluteDisplayString.endsWithSupportedSNSExtension {
       return await lookupSNS(domain: domain)
@@ -47,6 +50,25 @@ public enum Web3Service: String, CaseIterable {
     return .none
   }
   
+  /// Decentralized DNS lookup for an Unstoppable Domains domain
+  private func lookupUD(domain: String) async -> DNSLookupResult {
+    let udResolveMethod = await rpcService.unstoppableDomainsResolveMethod()
+    switch udResolveMethod {
+    case .ask:
+      return .loadInterstitial(.unstoppable)
+    case .enabled:
+      let (url, status, _) = await rpcService.unstoppableDomainsResolveDns(domain)
+      guard status == .success, let url else {
+        return .none
+      }
+      return .load(url)
+    case .disabled:
+      return .none
+    @unknown default:
+      return .none
+    }
+  }
+
   /// Decentralized DNS lookup for an ENS domain
   private func lookupENS(domain: String) async -> DNSLookupResult {
     let ensResolveMethod = await rpcService.ensResolveMethod()
@@ -94,6 +116,8 @@ public enum Web3Service: String, CaseIterable {
   }
   
   public static func isSupported(domain: String) -> Bool {
-    domain.endsWithSupportedENSExtension || domain.endsWithSupportedSNSExtension
+    domain.endsWithSupportedUDExtension ||
+    domain.endsWithSupportedENSExtension ||
+    domain.endsWithSupportedSNSExtension
   }
 }

@@ -38,6 +38,8 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
         rpcService.setEnsResolveMethod(proceed ? .enabled : .disabled)
       case .ethereumOffchain:
         rpcService.setEnsOffchainLookupResolveMethod(proceed ? .enabled : .disabled)
+      case .unstoppable:
+        rpcService.setUnstoppableDomainsResolveMethod(proceed ? .enabled : .disabled)
       }
       let result = await decentralizedDNSHelper.lookup(domain: originalURL.host ?? originalURL.absoluteString)
       switch result {

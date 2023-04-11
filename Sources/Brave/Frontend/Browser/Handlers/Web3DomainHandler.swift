@@ -18,6 +18,8 @@ extension Web3Service {
       return Strings.Wallet.ensDomainInterstitialPageTitle
     case .ethereumOffchain:
       return Strings.Wallet.ensOffchainDomainInterstitialPageTitle
+    case .unstoppable:
+      return Strings.Wallet.udDomainInterstitialPageTitle
     }
   }
   
@@ -47,6 +49,17 @@ extension Web3Service {
         Strings.Wallet.ensOffchainDomainInterstitialPageDescription,
         learnMore,
         Strings.Wallet.learnMoreButton)
+    case .unstoppable:
+      let termsOfUseUrl = WalletConstants.ensTermsOfUseURL.absoluteString
+      let privacyPolicyUrl = WalletConstants.ensPrivacyPolicyURL.absoluteString
+      let nonCryptoExtensions = WalletConstants.supportedUDExtensions.filter { $0 != ".crypto" }
+      return String.localizedStringWithFormat(
+        Strings.Wallet.udDomainInterstitialPageDescription,
+        nonCryptoExtensions.joined(separator: ", "),
+        termsOfUseUrl,
+        Strings.Wallet.web3DomainInterstitialPageTAndU,
+        privacyPolicyUrl,
+        Strings.Wallet.web3DomainInterstitialPagePrivacyPolicy)
     }
   }
   
@@ -62,6 +75,8 @@ extension Web3Service {
       return Strings.Wallet.ensDomainInterstitialPageButtonProceed
     case .ethereumOffchain:
       return Strings.Wallet.ensOffchainDomainInterstitialPageButtonProceed
+    case .unstoppable:
+      return Strings.Wallet.ensDomainInterstitialPageButtonProceed
     }
   }
 }

@@ -316,6 +316,7 @@ private struct Web3DomainSettingsView: View {
         snsResolveMethodPreference
         ensResolveMethodPreference
         ensOffchainResolveMethodPreference
+        udResolveMethodPreference
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
@@ -366,6 +367,26 @@ private struct Web3DomainSettingsView: View {
       Text(Strings.Wallet.snsResolveMethodTitle)
         .foregroundColor(Color(.braveLabel))
         .padding(.vertical, 4)
+    }
+  }
+  
+  @ViewBuilder private var udResolveMethodPreference: some View {
+    Picker(selection: $settingsStore.udResolveMethod) {
+      ForEach(BraveWallet.ResolveMethod.allCases) { option in
+        Text(option.name)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .tag(option)
+      }
+    } label: {
+      VStack(alignment: .leading, spacing: 6) {
+        Text(Strings.Wallet.udResolveMethodTitle)
+          .foregroundColor(Color(.braveLabel))
+        Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.udResolveMethodDescription, WalletConstants.braveWalletUnstoppableDomainsURL.absoluteDisplayString)))
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .tint(Color(.braveBlurpleTint))
+          .font(.footnote)
+      }
+      .padding(.vertical, 4)
     }
   }
 }
