@@ -866,8 +866,8 @@
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_RUN_NODE_DESCRIPTION" desc="Local IPFS page run node description">IPFS is a super-secure alternative to traditional Web hosting. Instead of relying on a single host, IPFS enables thousands of individuals (who run “nodes”) to work together to store content. And as long as one person has a copy, a file can never disappear. “Pinning” your NFTs to IPFS—and running your own IPFS node—is the best way to secure your NFTs.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_CHECK_NFTS_BUTTON" desc="Check pinnable NFTs button text">See which of my NFTs are eligible</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_START" desc="NFT IPFS banner initial text">Now you can run your IPFS and be part of web 3. Your NFT data will stay online forever.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">You’re running IPFS node. File is being uploaded to local IPFS node.</message>
-  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> NFTs have been successfully pinned to IPFS.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_UPLOADING" desc="NFT IPFS banner uploading text">NFTs are being pinned to your local IPFS node.</message>
+  <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_SUCCESS" desc="NFT IPFS banner success text"><ph name="PINNED">$1<ex>1</ex></ph> supported NFTs are pinned to your local IPFS node.</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_BANNER_LEARN_MORE" desc="NFT IPFS banner learn more text">Learn more</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_INSPECT_HEADING" desc="Inspect page heading"><ph name="PINNABLE">$1<ex>1</ex></ph> out of <ph name="TOTAL">$2<ex>3</ex></ph> are available!</message>
   <message name="IDS_BRAVE_WALLET_NFT_PINNING_UNABLE_TO_PIN" desc="Inspect page unable to pin text">Unable to pin</message>
