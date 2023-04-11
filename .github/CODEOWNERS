@@ -11,6 +11,11 @@ script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 **/Cargo.* @brave/rust-deps-reviewers
 
+# Strings
+**/*.grd @brave/string-reviewers-team
+**/*.grdp @brave/string-reviewers-team
+components/brave_extension/extension/brave_extension/_locales/en_US/messages.json @brave/string-reviewers-team
+
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
 browser/extensions/api/brave_rewards_api.cc @brave/rewards-client
