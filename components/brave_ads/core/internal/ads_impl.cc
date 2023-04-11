@@ -47,6 +47,7 @@
 #include "brave/components/brave_ads/core/internal/processors/behavioral/purchase_intent/purchase_intent_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_classification/text_classification_processor.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
+#include "brave/components/brave_ads/core/internal/reminder/reminder.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/multi_armed_bandits/epsilon_greedy_bandit_resource.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_resource.h"
@@ -129,6 +130,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       std::make_unique<PromotedContentAd>(account_.get(), transfer_.get());
   search_result_ad_handler_ =
       std::make_unique<SearchResultAd>(account_.get(), transfer_.get());
+
+  reminder_ = std::make_unique<Reminder>();
 
   user_reactions_ = std::make_unique<UserReactions>(account_.get());
 

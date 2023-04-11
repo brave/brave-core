@@ -60,6 +60,10 @@ void AdsClientIOS::CloseNotificationAd(const std::string& placement_id) {
   [bridge_ closeNotificationAd:placement_id];
 }
 
+void AdsClientIOS::ShowReminder(const brave_ads::mojom::ReminderType type) {
+  [bridge_ showReminder:type];
+}
+
 void AdsClientIOS::RecordAdEventForId(const std::string& id,
                                       const std::string& ad_type,
                                       const std::string& confirmation_type,

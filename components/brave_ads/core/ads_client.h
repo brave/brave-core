@@ -59,6 +59,9 @@ class ADS_EXPORT AdsClient {
   // Close the notification ad for the specified |placement_id|.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;
 
+  // Show reminder for the specified |type|.
+  virtual void ShowReminder(mojom::ReminderType type) = 0;
+
   // Record an ad event for the specified |id|, |ad_type|, |confirmation_type|
   // and |time|.
   virtual void RecordAdEventForId(const std::string& id,

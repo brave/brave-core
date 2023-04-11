@@ -70,6 +70,7 @@ class NotificationAdHandler;
 class NotificationAdManager;
 class PredictorsManager;
 class PromotedContentAd;
+class Reminder;
 class SearchResultAd;
 class TabManager;
 class Transfer;
@@ -228,6 +229,8 @@ class AdsImpl final : public Ads,
   std::unique_ptr<NotificationAdHandler> notification_ad_handler_;
   std::unique_ptr<PromotedContentAd> promoted_content_ad_handler_;
   std::unique_ptr<SearchResultAd> search_result_ad_handler_;
+
+  std::unique_ptr<Reminder> reminder_;
 
   std::unique_ptr<UserReactions> user_reactions_;
 

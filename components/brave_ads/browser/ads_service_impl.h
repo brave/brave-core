@@ -320,6 +320,8 @@ class AdsServiceImpl : public AdsService,
   void ShowNotificationAd(base::Value::Dict dict) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
+  void ShowReminder(mojom::ReminderType type) override;
+
   void UpdateAdRewards() override;
 
   void RecordAdEventForId(const std::string& id,

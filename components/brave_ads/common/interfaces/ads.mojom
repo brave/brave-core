@@ -23,6 +23,11 @@ struct StatementInfo {
   int32 ads_received_this_month;
 };
 
+enum ReminderType {
+  kClickedSameAdMultipleTimes = 0,
+  kExternalWalletConnected
+};
+
 enum AdType {
   kUndefined = 0,
   kNotificationAd,

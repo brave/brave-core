@@ -166,8 +166,15 @@ void MockCanShowNotificationAdsWhileBrowserIsBackgrounded(
 
 void MockShowNotificationAd(const std::unique_ptr<AdsClientMock>& mock) {
   ON_CALL(*mock, ShowNotificationAd(_))
-      .WillByDefault(
-          Invoke([](const NotificationAdInfo& ad) { CHECK(ad.IsValid()); }));
+      .WillByDefault(Invoke([](const NotificationAdInfo& ad) {
+        // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple
+        // reminders from push notification ads.
+        const bool is_reminder_valid = !ad.placement_id.empty() &&
+                                       !ad.title.empty() && !ad.body.empty() &&
+                                       ad.target_url.is_valid();
+
+        CHECK(ad.IsValid() || is_reminder_valid);
+      }));
 }
 
 void MockCloseNotificationAd(const std::unique_ptr<AdsClientMock>& mock) {

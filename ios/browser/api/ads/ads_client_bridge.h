@@ -46,6 +46,7 @@
     callback:(brave_ads::SaveCallback)callback;
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
 - (void)closeNotificationAd:(const std::string&)placement_id;
+- (void)showReminder:(const brave_ads::mojom::ReminderType)type;
 - (void)recordAdEventForId:(const std::string&)id
                     adType:(const std::string&)ad_type
           confirmationType:(const std::string&)confirmation_type

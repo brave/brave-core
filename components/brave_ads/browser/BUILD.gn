@@ -23,6 +23,8 @@ source_set("browser") {
     "component_updater/resource_info.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
+    "reminder_util.cc",
+    "reminder_util.h",
   ]
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
