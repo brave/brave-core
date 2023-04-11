@@ -25,7 +25,7 @@ def GetProcessOutput(args: List[str],
                      check=False,
                      timeout: Optional[int] = None) -> Tuple[bool, str]:
   if logging.root.isEnabledFor(logging.DEBUG):
-    logging.debug('Run binary: %s, cwd = %s  Binary output:', ' '.join(args), cwd)
+    logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
     process = subprocess.Popen(args,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
