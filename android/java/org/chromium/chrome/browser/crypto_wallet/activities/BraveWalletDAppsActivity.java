@@ -147,7 +147,7 @@ public class BraveWalletDAppsActivity extends BraveWalletBaseActivity
         for (TransactionInfo transactionInfo : mPendingTxHelper.getPendingTransactions()) {
             getTxService().rejectTransaction(
                     TransactionUtils.getCoinFromTxDataUnion(transactionInfo.txDataUnion),
-                    transactionInfo.id, success -> {
+                    transactionInfo.chainId, transactionInfo.id, success -> {
                         if (!success) {
                             Log.e(TAG, "Transaction failed " + transactionInfo.id);
                         }

@@ -110,8 +110,8 @@ public class AddTokenFragment extends BaseDAppsFragment {
     }
 
     private void updateNetwork(@CoinType.EnumType int coin) {
-        getJsonRpcService().getNetwork(
-                coin, selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
+        getJsonRpcService().getNetwork(coin, null,
+                selectedNetwork -> { mNetworkName.setText(selectedNetwork.chainName); });
     }
 
     private void initToken() {

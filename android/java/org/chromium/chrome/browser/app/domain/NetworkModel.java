@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.bindings.Callbacks;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.url.internal.mojom.Origin;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -123,10 +124,11 @@ public class NetworkModel implements JsonRpcServiceObserver {
             }
         });
         _mChainId.addSource(mSharedData.getCoinTypeLd(), coinType -> {
-            mJsonRpcService.getChainId(coinType, chainId -> {
+            mJsonRpcService.getChainId(coinType, null, chainId -> {
                 String id = BraveWalletConstants.MAINNET_CHAIN_ID;
                 if (TextUtils.isEmpty(chainId)) {
-                    mJsonRpcService.setNetwork(id, mSharedData.getCoinType(), hasSetNetwork -> {});
+                    mJsonRpcService.setNetwork(
+                            id, mSharedData.getCoinType(), null, hasSetNetwork -> {});
                 } else {
                     id = chainId;
                 }
@@ -292,8 +294,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
         if (isSameNetwork(networkToBeSetAsSelected, selectedNetwork)) return;
         boolean hasAccountOfNetworkType = hasAccountOfNetworkType(networkToBeSetAsSelected);
         if (hasAccountOfNetworkType) {
-            mJsonRpcService.setNetwork(
-                    networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin, isSelected -> {
+            mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId,
+                    networkToBeSetAsSelected.coin, null, isSelected -> {
                         callback.call(isSelected);
                         mCryptoActions.updateCoinType();
                         init();
@@ -311,8 +313,8 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void setNetwork(
             NetworkInfo networkToBeSetAsSelected, Callbacks.Callback1<Boolean> callback) {
-        mJsonRpcService.setNetwork(
-                networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin, isSelected -> {
+        mJsonRpcService.setNetwork(networkToBeSetAsSelected.chainId, networkToBeSetAsSelected.coin,
+                null, isSelected -> {
                     callback.call(isSelected);
                     mCryptoActions.updateCoinType();
                     init();
@@ -320,7 +322,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     public void getNetwork(@CoinType.EnumType int coin, Callbacks.Callback1<NetworkInfo> callback) {
-        mJsonRpcService.getNetwork(coin, networkInfo -> { callback.call(networkInfo); });
+        mJsonRpcService.getNetwork(coin, null, networkInfo -> { callback.call(networkInfo); });
     }
 
     public void clearCreateAccountState() {
@@ -413,7 +415,7 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     @Override
-    public void chainChangedEvent(String chainId, int coin) {
+    public void chainChangedEvent(String chainId, int coin, Origin origin) {
         _mChainId.postValue(chainId);
         mCryptoActions.updateCoinAccountNetworkInfo(coin);
     }
