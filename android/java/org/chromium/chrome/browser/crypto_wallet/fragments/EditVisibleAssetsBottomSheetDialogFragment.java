@@ -398,7 +398,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     token.decimals = Integer.valueOf(tokenDecimalsEdit.getText().toString());
                 } catch (NumberFormatException exc) {
                 }
-                if (mSelectedNetwork.coin == CoinType.SOL && mNftsOnly) {
+                if (mSelectedNetwork.coin == CoinType.SOL) {
+                    token.isNft = mNftsOnly;
                     token.decimals = 0;
                 }
                 token.visible = true;
