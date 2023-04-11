@@ -10,6 +10,7 @@
 #include "chrome/browser/dips/dips_features.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/enterprise/connectors/analysis/content_analysis_features.h"
+#include "chrome/browser/signin/signin_features.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/test/base/chrome_test_utils.h"
@@ -93,6 +94,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(IS_ANDROID)
     &android_webview::features::kWebViewAppsPackageNamesServerSideAllowlist,
     &android_webview::features::kWebViewEnumerateDevicesCache,
+    &android_webview::features::kWebViewServerSideSampling,
     &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
@@ -149,6 +151,9 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFedCmUserInfo,
     &features::kFedCmWithoutThirdPartyCookies,
     &features::kFirstPartySets,
+#if !BUILDFLAG(IS_ANDROID)
+    &features::kGetTheMostOutOfProgram,
+#endif
     &features::kIdleDetection,
     &features::kKAnonymityService,
     &features::kNotificationTriggers,
@@ -172,8 +177,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &history_clusters::internal::kHistoryClustersInternalsPage,
     &history_clusters::internal::kJourneys,
     &history_clusters::internal::kOmniboxAction,
+    &history_clusters::internal::kOmniboxHistoryClusterProvider,
     &history_clusters::internal::kPersistedClusters,
     &history_clusters::internal::kPersistContextAnnotationsInHistoryDb,
+#if !BUILDFLAG(IS_ANDROID)
+    &kForYouFre,
+#endif
     &lens::features::kLensStandalone,
     &media::kLiveCaption,
     &net::features::kNoncedPartitionedCookies,
@@ -222,6 +231,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #endif
 #if !BUILDFLAG(IS_ANDROID)
     &performance_manager::features::kBatterySaverModeAvailable,
+    &performance_manager::features::kHeuristicMemorySaver,
     &performance_manager::features::kHighEfficiencyModeAvailable,
     &safe_browsing::kDownloadBubble,
     &safe_browsing::kDownloadBubbleV2,
