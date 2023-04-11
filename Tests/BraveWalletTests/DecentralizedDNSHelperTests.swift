@@ -267,6 +267,84 @@ import BraveCore
     XCTAssertEqual(result, .none)
   }
   
+  /// Test `lookup(domain:)` provided a `.crypto` domain  will return `.loadInterstitial(.solana)` when Unstoppable Domains Resolve Method is `.ask`.
+  func testLookupWithUnstoppableDomainsDomainAsk() async {
+    let domain = "braveexample.crypto"
+    
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._unstoppableDomainsResolveMethod = { $0(.ask) }
+    rpcService._unstoppableDomainsResolveDns = { _, completion in
+      completion(nil, .internalError, "")
+    }
+    
+    guard let sut = DecentralizedDNSHelper(
+      rpcService: rpcService,
+      ipfsApi: TestIpfsAPI(),
+      isPrivateMode: false
+    ) else {
+      XCTFail("Unexpected test setup")
+      return
+    }
+    
+    let result = await sut.lookup(domain: domain)
+    guard case let .loadInterstitial(service) = result else {
+      XCTFail("Expected to load interstitial")
+      return
+    }
+    XCTAssertEqual(service, .unstoppable)
+  }
+  
+  /// Test `lookup(domain:)` provided a `.crypto` domain  will return `.loadURL(URL)` when Unstoppable Domains Resolve Method is `.enabled`.
+  func testLookupWithUnstoppableDomainsDomainEnabled() async {
+    let domain = "braveexample.crypto"
+    let resolvedURL = URL(string: "https://brave.com")!
+    
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._unstoppableDomainsResolveMethod = { $0(.enabled) }
+    rpcService._unstoppableDomainsResolveDns = { _, completion in
+      completion(resolvedURL, .success, "")
+    }
+    
+    guard let sut = DecentralizedDNSHelper(
+      rpcService: rpcService,
+      ipfsApi: TestIpfsAPI(),
+      isPrivateMode: false
+    ) else {
+      XCTFail("Unexpected test setup")
+      return
+    }
+    
+    let result = await sut.lookup(domain: domain)
+    guard case let .load(url) = result else {
+      XCTFail("Expected to load url")
+      return
+    }
+    XCTAssertEqual(url, resolvedURL)
+  }
+  
+  /// Test `lookup(domain:)` provided a `.crypto` domain  will return `.none` when Unstoppable Domains Resolve Method is `.disabled`.
+  func testLookupWithUnstoppableDomainsDomainDisabled() async {
+    let domain = "braveexample.crypto"
+    
+    let rpcService = BraveWallet.TestJsonRpcService()
+    rpcService._unstoppableDomainsResolveMethod = { $0(.disabled) }
+    rpcService._unstoppableDomainsResolveDns = { _, completion in
+      completion(nil, .internalError, "")
+    }
+    
+    guard let sut = DecentralizedDNSHelper(
+      rpcService: rpcService,
+      ipfsApi: TestIpfsAPI(),
+      isPrivateMode: false
+    ) else {
+      XCTFail("Unexpected test setup")
+      return
+    }
+    
+    let result = await sut.lookup(domain: domain)
+    XCTAssertEqual(result, .none)
+  }
+  
   func testIsSupported() {
     let ensDomain = "ethereum.eth"
     XCTAssertTrue(DecentralizedDNSHelper.isSupported(domain: ensDomain))
@@ -277,5 +355,14 @@ import BraveCore
     XCTAssertTrue(DecentralizedDNSHelper.isSupported(domain: snsDomain))
     let nonSupportedSNSDomain = "braveexamplesol"
     XCTAssertFalse(DecentralizedDNSHelper.isSupported(domain: nonSupportedSNSDomain))
+    
+    let unstoppableDomain = "braveexample"
+    XCTAssertFalse(DecentralizedDNSHelper.isSupported(domain: unstoppableDomain))
+    for tld in WalletConstants.supportedENSExtensions {
+      let domainWithTld = unstoppableDomain + tld
+      XCTAssertTrue(DecentralizedDNSHelper.isSupported(domain: domainWithTld))
+    }
+    let nonSupportedUnstoppableDomain = "braveexamplecrypto"
+    XCTAssertFalse(DecentralizedDNSHelper.isSupported(domain: nonSupportedUnstoppableDomain))
   }
 }

@@ -3571,6 +3571,20 @@ extension Strings {
       value: "Resolve Solana Name Service (SNS) Domain Names",
       comment: "The title for the options to resolve Solana Name service domain names."
     )
+    public static let udResolveMethodTitle = NSLocalizedString(
+      "wallet.udResolveMethodTitle",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Resolve Unstoppable Domains Domain Names",
+      comment: "The title for the options to resolve Unstoppable Domains domain names."
+    )
+    public static let udResolveMethodDescription = NSLocalizedString(
+      "wallet.udResolveMethodDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "[Learn more](%@) about Unstoppable Domains privacy considerations.",
+      comment: "The description for the options to allow Unstoppable Domain domain names. '%@' will be replaced with a url to explain more about Unstoppable Domains."
+    )
     public static let web3DomainOptionsHeader = NSLocalizedString(
       "wallet.web3DomainOptionsHeader",
       tableName: "BraveWallet",
@@ -3888,6 +3902,21 @@ extension Strings {
       bundle: .module,
       value: "Proceed with offchain lookup",
       comment: "Title on the button that users can click to enable Brave to resolve the ENS offchain lookup for the domain they entered."
+    )
+    // Unstoppable Domains
+    public static let udDomainInterstitialPageTitle = NSLocalizedString(
+      "wallet.udDomainInterstitialPageTitle",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Enable support of Unstoppable Domains in Brave?",
+      comment: "Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one."
+    )
+    public static let udDomainInterstitialPageDescription = NSLocalizedString(
+      "wallet.udDomainInterstitialPageDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Brave will be using Infura to resolve .crypto (and also %@) domain names that are on Unstoppable Domains. Brave hides your IP address. If you enable this, Infura will see that someone is trying to visit these domains but nothing else. See Infura's <a href=%@>%@</a> and <a href=%@>%@</a>.",
+      comment: "Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'."
     )
   }
 }

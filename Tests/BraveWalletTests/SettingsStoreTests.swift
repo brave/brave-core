@@ -49,6 +49,8 @@ class SettingsStoreTests: XCTestCase {
     rpcService._setEnsOffchainLookupResolveMethod = { _ in }
     rpcService._snsResolveMethod = { $0(.ask) }
     rpcService._setSnsResolveMethod = { _ in }
+    rpcService._unstoppableDomainsResolveMethod = { $0(.ask) }
+    rpcService._setUnstoppableDomainsResolveMethod = { _ in }
     
     let txService = BraveWallet.TestTxService()
     
@@ -65,6 +67,7 @@ class SettingsStoreTests: XCTestCase {
     rpcService._ensResolveMethod = { $0(.disabled) }
     rpcService._ensOffchainLookupResolveMethod = { $0(.disabled) }
     rpcService._snsResolveMethod = { $0(.disabled) }
+    rpcService._unstoppableDomainsResolveMethod = { $0(.disabled) }
 
     let sut = SettingsStore(
       keyringService: keyringService,
@@ -117,6 +120,15 @@ class SettingsStoreTests: XCTestCase {
       .sink { snsResolveMethod in
         defer { snsResolveMethodExpectation.fulfill() }
         XCTAssertEqual(snsResolveMethod, .disabled)
+      }
+      .store(in: &cancellables)
+    
+    let udResolveMethodExpectation = expectation(description: "setup-udResolveMethod")
+    sut.$udResolveMethod
+      .dropFirst()
+      .sink { udResolveMethod in
+        defer { udResolveMethodExpectation.fulfill() }
+        XCTAssertEqual(udResolveMethod, .disabled)
       }
       .store(in: &cancellables)
     

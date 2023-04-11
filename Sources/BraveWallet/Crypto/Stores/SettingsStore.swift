@@ -57,6 +57,14 @@ public class SettingsStore: ObservableObject {
       rpcService.setSnsResolveMethod(snsResolveMethod)
     }
   }
+  
+  /// The current Unstoppable Domains Resolve Method preference (Ask / Enabled / Disabled)
+  @Published var udResolveMethod: BraveWallet.ResolveMethod = .ask {
+    didSet {
+      guard oldValue != udResolveMethod else { return }
+      rpcService.setUnstoppableDomainsResolveMethod(udResolveMethod)
+    }
+  }
 
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
@@ -95,6 +103,7 @@ public class SettingsStore: ObservableObject {
       self.snsResolveMethod = await rpcService.snsResolveMethod()
       self.ensResolveMethod = await rpcService.ensResolveMethod()
       self.ensOffchainResolveMethod = await rpcService.ensOffchainLookupResolveMethod()
+      self.udResolveMethod = await rpcService.unstoppableDomainsResolveMethod()
     }
   }
 

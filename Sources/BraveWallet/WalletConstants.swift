@@ -41,6 +41,9 @@ public struct WalletConstants {
   /// The url to learn more about ENS off-chain lookups
   public static let braveWalletENSOffchainURL = URL(string: "https://github.com/brave/brave-browser/wiki/ENS-offchain-lookup")!
   
+  /// The url to learn more about Unstoppable Domains resolve methods.
+  public static let braveWalletUnstoppableDomainsURL = URL(string: "https://github.com/brave/brave-browser/wiki/Resolve-Methods-for-Unstoppable-Domains")!
+  
   /// The url to the privacy policy for 0x swaps
   static let zeroXPrivacyPolicy = URL(string: "https://www.0x.org/privacy")!
   
@@ -74,7 +77,7 @@ public struct WalletConstants {
   /// The supported Solana Name Service (SNS) extensions
   static let supportedSNSExtensions = [".sol"]
   /// The supported Unstoppable Domain (UD) extensions
-  static let supportedUDExtensions = [".crypto", ".x", ".nft", ".dao", ".wallet", ".888", ".blockchain", ".bitcoin"]
+  public static let supportedUDExtensions = [".crypto", ".x", ".nft", ".dao", ".wallet", ".blockchain", ".bitcoin", ".zil"]
   
   /// The supported IPFS schemes
   static let supportedIPFSSchemes = ["ipfs", "ipns"]
