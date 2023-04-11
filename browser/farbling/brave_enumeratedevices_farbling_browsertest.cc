@@ -104,13 +104,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   template <typename T>
-  int ExecScriptGetInt(const std::string& script, T* frame) {
-    int value;
-    EXPECT_TRUE(ExecuteScriptAndExtractInt(frame, script, &value));
-    return value;
-  }
-
-  template <typename T>
   std::string ExecScriptGetStr(const std::string& script, T* frame) {
     std::string value;
     EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));

@@ -56,8 +56,7 @@ const char kGetImageDataScript[] =
     "var ctx = canvas.getContext('2d');"
     "var data = ctx.createImageData(canvas.width, canvas.height);"
     "ctx.putImageData(data, 0, 0);"
-    "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
-    "canvas.height).data.reduce(adder));";
+    "ctx.getImageData(0, 0, canvas.width, canvas.height).data.reduce(adder);";
 
 const int kExpectedImageDataHashFarblingBalanced = 172;
 const int kExpectedImageDataHashFarblingOff = 0;
@@ -440,36 +439,28 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        FarbleGetImageData) {
   // Farbling should be balanced by default
   NavigateToPageWithIframe();
-  int hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(contents(), kGetImageDataScript));
 
   // The iframe should have the same result as the top frame because farbling is
   // based on the top frame's session token.
-  hash = -1;
   NavigateIframe(cross_site_url());
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(child_frame(), kGetImageDataScript));
 
   // Farbling should be off if shields is down
   ShieldsDown();
   NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
+            content::EvalJs(contents(), kGetImageDataScript));
 
   // Farbling should be off if shields is up but fingerprinting is allowed
   // via content settings
   ShieldsUp();
   AllowFingerprinting();
   NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
+            content::EvalJs(contents(), kGetImageDataScript));
 }
 
 class BraveContentSettingsAgentImplV2BrowserTest
@@ -517,37 +508,29 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
   // Farbling should be default when kBraveFingerprintingV2 is enabled
   // because it uses a different content setting
   NavigateToPageWithIframe();
-  int hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(contents(), kGetImageDataScript));
 
   // Farbling should be maximum if fingerprinting is blocked via content
   // settings and kBraveFingerprintingV2 is enabled
   BlockFingerprinting();
   NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingMaximum, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingMaximum,
+            content::EvalJs(contents(), kGetImageDataScript));
 
   // Farbling should be balanced if fingerprinting is default via
   // content settings and kBraveFingerprintingV2 is enabled
   SetFingerprintingDefault();
   NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced,
+            content::EvalJs(contents(), kGetImageDataScript));
 
   // Farbling should be off if fingerprinting is allowed via
   // content settings and kBraveFingerprintingV2 is enabled
   AllowFingerprinting();
   NavigateToPageWithIframe();
-  hash = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff,
+            content::EvalJs(contents(), kGetImageDataScript));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
