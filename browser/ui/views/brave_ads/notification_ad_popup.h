@@ -79,6 +79,9 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   void OnWorkAreaChanged() override;
   void OnPaintBackground(gfx::Canvas* canvas) override;
   void OnThemeChanged() override;
+  bool OnMousePressed(const ui::MouseEvent& event) override;
+  bool OnMouseDragged(const ui::MouseEvent& event) override;
+  void OnMouseReleased(const ui::MouseEvent& event) override;
 
   // views::WidgetObserver:
   void OnWidgetDestroyed(views::Widget* widget) override;
@@ -140,6 +143,9 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   void UpdateAnimation();
 
   bool IsWidgetValid() const;
+
+  gfx::Point initial_mouse_pressed_location_;
+  bool is_dragging_ = false;
 
   bool inside_adjust_bounds_ = false;
 

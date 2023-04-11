@@ -5,10 +5,7 @@
 
 #include "brave/browser/ui/views/brave_ads/notification_ad_view.h"
 
-#include "brave/browser/ui/brave_ads/notification_ad_delegate.h"
 #include "brave/browser/ui/brave_ads/notification_ad_popup_handler.h"
-#include "brave/browser/ui/views/brave_ads/bounds_util.h"
-#include "brave/browser/ui/views/brave_ads/notification_ad_popup.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
@@ -16,8 +13,8 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/compositor/layer.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/geometry/vector2d.h"
 #include "ui/views/view.h"
+#include "ui/views/widget/widget.h"
 
 namespace brave_ads {
 
@@ -57,48 +54,6 @@ void NotificationAdView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   }
 
   node_data->SetName(accessible_name_);
-}
-
-bool NotificationAdView::OnMousePressed(const ui::MouseEvent& event) {
-  initial_mouse_pressed_location_ = event.location();
-
-  return true;
-}
-
-bool NotificationAdView::OnMouseDragged(const ui::MouseEvent& event) {
-  const gfx::Vector2d movement =
-      event.location() - initial_mouse_pressed_location_;
-
-  if (!is_dragging_ && ExceededDragThreshold(movement)) {
-    is_dragging_ = true;
-  }
-
-  if (!is_dragging_) {
-    return false;
-  }
-
-  NotificationAdPopupHandler::Move(notification_ad_.id(), movement);
-
-  return true;
-}
-
-void NotificationAdView::OnMouseReleased(const ui::MouseEvent& event) {
-  if (is_dragging_) {
-    is_dragging_ = false;
-    return;
-  }
-
-  if (!event.IsOnlyLeftMouseButton()) {
-    return;
-  }
-
-  NotificationAdDelegate* delegate = notification_ad_.delegate();
-  if (delegate) {
-    // This call will eventually lead to NotificationAdPopupHandler::Close call.
-    delegate->OnClick();
-  }
-
-  View::OnMouseReleased(event);
 }
 
 void NotificationAdView::OnDeviceScaleFactorChanged(

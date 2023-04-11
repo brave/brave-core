@@ -198,6 +198,48 @@ void NotificationAdPopup::OnThemeChanged() {
   SchedulePaint();
 }
 
+bool NotificationAdPopup::OnMousePressed(const ui::MouseEvent& event) {
+  initial_mouse_pressed_location_ = event.location();
+
+  return true;
+}
+
+bool NotificationAdPopup::OnMouseDragged(const ui::MouseEvent& event) {
+  const gfx::Vector2d movement =
+      event.location() - initial_mouse_pressed_location_;
+
+  if (!is_dragging_ && ExceededDragThreshold(movement)) {
+    is_dragging_ = true;
+  }
+
+  if (!is_dragging_) {
+    return false;
+  }
+
+  MovePopup(movement);
+
+  return true;
+}
+
+void NotificationAdPopup::OnMouseReleased(const ui::MouseEvent& event) {
+  WidgetDelegateView::OnMouseReleased(event);
+
+  if (is_dragging_) {
+    is_dragging_ = false;
+    return;
+  }
+
+  if (!event.IsOnlyLeftMouseButton()) {
+    return;
+  }
+
+  NotificationAdDelegate* delegate = notification_ad_.delegate();
+  if (delegate) {
+    // This call will eventually lead to NotificationAdPopupHandler::Close call.
+    delegate->OnClick();
+  }
+}
+
 void NotificationAdPopup::OnWidgetDestroyed(views::Widget* widget) {
   DCHECK(widget);
 

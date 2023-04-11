@@ -38,18 +38,12 @@ class NotificationAdView : public views::View {
 
   // views::View:
   void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
-  bool OnMousePressed(const ui::MouseEvent& event) override;
-  bool OnMouseDragged(const ui::MouseEvent& event) override;
-  void OnMouseReleased(const ui::MouseEvent& event) override;
   void OnDeviceScaleFactorChanged(float old_device_scale_factor,
                                   float new_device_scale_factor) override;
   void OnThemeChanged() override;
 
  private:
   NotificationAd notification_ad_;
-
-  gfx::Point initial_mouse_pressed_location_;
-  bool is_dragging_ = false;
 
   bool is_closing_ = false;
 
