@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
@@ -49,7 +50,7 @@ void WalletBalance::OnGetUnblindedTokens(
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
   const auto wallet_type =
-      ledger_->ledger_client()->GetStringState(state::kExternalWalletType);
+      ledger_->GetState<std::string>(state::kExternalWalletType);
   if (wallet_type.empty() ||
       !wallet::GetWalletIf(ledger_, wallet_type,
                            {mojom::WalletStatus::kConnected})) {

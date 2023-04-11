@@ -12,7 +12,9 @@
 #include <utility>
 
 #include "base/time/time.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
 
 namespace {
 
@@ -97,7 +99,7 @@ namespace publisher {
 
 void RefreshPublisherStatus(LedgerImpl* ledger,
                             std::vector<mojom::PublisherInfoPtr>&& info_list,
-                            ledger::PublisherInfoListCallback callback) {
+                            ledger::GetRecurringTipsCallback callback) {
   DCHECK(ledger);
 
   PublisherStatusMap map;
@@ -120,7 +122,7 @@ void RefreshPublisherStatus(LedgerImpl* ledger,
 void RefreshPublisherStatus(
     LedgerImpl* ledger,
     std::vector<mojom::PendingContributionInfoPtr>&& info_list,
-    ledger::PendingContributionInfoListCallback callback) {
+    ledger::GetPendingContributionsCallback callback) {
   DCHECK(ledger);
 
   PublisherStatusMap map;

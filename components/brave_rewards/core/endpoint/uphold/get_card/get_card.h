@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET https://api.uphold.com/v0/me/cards/{wallet_address}
 //
@@ -96,7 +96,7 @@ class GetCard {
 
   mojom::Result ParseBody(const std::string& body, double* available);
 
-  void OnRequest(GetCardCallback callback, const mojom::UrlResponse& response);
+  void OnRequest(GetCardCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

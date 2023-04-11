@@ -85,16 +85,17 @@ void PostCards::Request(const std::string& token, PostCardsCallback callback) {
 }
 
 void PostCards::OnRequest(PostCardsCallback callback,
-                          const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response, true);
+                          mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response, true);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     return std::move(callback).Run(result, "");
   }
 
   std::string id;
-  result = ParseBody(response.body, &id);
+  result = ParseBody(response->body, &id);
   std::move(callback).Run(result, std::move(id));
 }
 

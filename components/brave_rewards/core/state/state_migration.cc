@@ -5,7 +5,9 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
 using std::placeholders::_1;
@@ -40,17 +42,17 @@ StateMigration::StateMigration(LedgerImpl* ledger)
 
 StateMigration::~StateMigration() = default;
 
-void StateMigration::Start(ledger::LegacyResultCallback callback) {
-  Migrate(callback);
+void StateMigration::Start(ResultCallback callback) {
+  Migrate(std::move(callback));
 }
 
-void StateMigration::FreshInstall(ledger::LegacyResultCallback callback) {
+void StateMigration::FreshInstall(ResultCallback callback) {
   BLOG(1, "Fresh install, state version set to " << kCurrentVersionNumber);
   ledger_->state()->SetVersion(kCurrentVersionNumber);
-  callback(mojom::Result::LEDGER_OK);
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
+void StateMigration::Migrate(ResultCallback callback) {
   int current_version = ledger_->state()->GetVersion();
 
   if (current_version < 0) {
@@ -60,70 +62,71 @@ void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
 
   if (ledger::is_testing &&
       current_version == ledger::state_migration_target_version_for_testing) {
-    return callback(mojom::Result::LEDGER_OK);
+    return std::move(callback).Run(mojom::Result::LEDGER_OK);
   }
 
   if (current_version == kCurrentVersionNumber) {
-    callback(mojom::Result::LEDGER_OK);
+    std::move(callback).Run(mojom::Result::LEDGER_OK);
     return;
   }
 
   const int new_version = current_version + 1;
 
   auto migrate_callback =
-      std::bind(&StateMigration::OnMigration, this, _1, new_version, callback);
+      base::BindOnce(&StateMigration::OnMigration, base::Unretained(this),
+                     std::move(callback), new_version);
 
   switch (new_version) {
     case 1: {
-      v1_->Migrate(migrate_callback);
+      v1_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 2: {
-      v2_->Migrate(migrate_callback);
+      v2_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 3: {
-      v3_->Migrate(migrate_callback);
+      v3_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 4: {
-      v4_->Migrate(migrate_callback);
+      v4_->Migrate(std::move(migrate_callback));
       return;
     }
     case 5: {
-      v5_->Migrate(migrate_callback);
+      v5_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 6: {
-      v6_->Migrate(migrate_callback);
+      v6_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 7: {
-      v7_->Migrate(migrate_callback);
+      v7_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 8: {
-      v8_->Migrate(migrate_callback);
+      v8_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 9: {
-      v9_->Migrate(migrate_callback);
+      v9_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 10: {
-      v10_->Migrate(migrate_callback);
+      v10_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 11: {
-      v11_->Migrate(migrate_callback);
+      v11_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 12: {
-      v12_->Migrate(migrate_callback);
+      v12_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
     case 13: {
-      v13_->Migrate(migrate_callback);
+      v13_->Migrate(ToLegacyCallback(std::move(migrate_callback)));
       return;
     }
   }
@@ -132,13 +135,13 @@ void StateMigration::Migrate(ledger::LegacyResultCallback callback) {
   NOTREACHED();
 }
 
-void StateMigration::OnMigration(mojom::Result result,
+void StateMigration::OnMigration(ResultCallback callback,
                                  int version,
-                                 ledger::LegacyResultCallback callback) {
+                                 mojom::Result result) {
   if (result != mojom::Result::LEDGER_OK) {
     BLOG(0, "State: Error with migration from " << (version - 1) << " to "
                                                 << version);
-    callback(mojom::Result::LEDGER_ERROR);
+    std::move(callback).Run(mojom::Result::LEDGER_ERROR);
     return;
   }
 
@@ -149,11 +152,11 @@ void StateMigration::OnMigration(mojom::Result result,
   // migration did not find any rewards data stored in JSON files, assume that
   // this is a "fresh" Rewards profile and skip the remaining migrations.
   if (version == 1 && !v1_->legacy_data_migrated()) {
-    FreshInstall(callback);
+    FreshInstall(std::move(callback));
     return;
   }
 
-  Migrate(callback);
+  Migrate(std::move(callback));
 }
 
 }  // namespace state

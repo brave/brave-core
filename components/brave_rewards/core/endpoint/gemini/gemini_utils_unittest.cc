@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/buildflags.h"
 #include "brave/components/brave_rewards/core/endpoint/gemini/gemini_utils.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace gemini {
 
-class GeminiUtilsTest : public BATLedgerTest {};
+class GeminiUtilsTest : public testing::Test {};
 
 TEST_F(GeminiUtilsTest, GetApiServerUrlDevelopment) {
   ledger::_environment = mojom::Environment::DEVELOPMENT;

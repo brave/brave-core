@@ -13,7 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/gtest_prod_util.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/media/helper.h"
 
 namespace ledger {
@@ -47,12 +47,12 @@ class GitHub {
                                 const std::string& media_key);
 
   void FetchDataFromUrl(const std::string& url,
-                        ledger::client::LegacyLoadURLCallback callback);
+                        ledger::LegacyLoadURLCallback callback);
 
   void OnUserPage(const uint64_t duration,
                   uint64_t window_id,
                   const ledger::mojom::VisitData& visit_data,
-                  const ledger::mojom::UrlResponse& response);
+                  ledger::mojom::UrlResponsePtr response);
 
   void SavePublisherInfo(const uint64_t duration,
                          const std::string& user_id,
@@ -75,7 +75,7 @@ class GitHub {
   void OnMediaActivityError(uint64_t window_id);
 
   void OnMetaDataGet(ledger::PublisherInfoCallback callback,
-                     const ledger::mojom::UrlResponse& response);
+                     ledger::mojom::UrlResponsePtr response);
 
   void OnMediaPublisherInfo(uint64_t window_id,
                             const std::string& user_id,

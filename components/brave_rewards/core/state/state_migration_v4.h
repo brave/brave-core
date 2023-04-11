@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V4_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_STATE_STATE_MIGRATION_V4_H_
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -18,7 +18,7 @@ class StateMigrationV4 {
   explicit StateMigrationV4(LedgerImpl* ledger);
   ~StateMigrationV4();
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(ResultCallback callback);
 
  private:
   LedgerImpl* ledger_;  // NOT OWNED

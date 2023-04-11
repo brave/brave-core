@@ -13,9 +13,12 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/media/github.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -295,13 +298,12 @@ void GitHub::OnPublisherPanelInfo(uint64_t window_id,
         std::bind(&GitHub::OnUserPage, this, 0, window_id, visit_data, _1);
     FetchDataFromUrl(url, url_callback);
   } else {
-    ledger_->ledger_client()->OnPanelPublisherInfo(result, std::move(info),
-                                                   window_id);
+    ledger_->client()->OnPanelPublisherInfo(result, std::move(info), window_id);
   }
 }
 
 void GitHub::FetchDataFromUrl(const std::string& url,
-                              ledger::client::LegacyLoadURLCallback callback) {
+                              ledger::LegacyLoadURLCallback callback) {
   auto request = ledger::mojom::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
@@ -311,16 +313,17 @@ void GitHub::FetchDataFromUrl(const std::string& url,
 void GitHub::OnUserPage(const uint64_t duration,
                         uint64_t window_id,
                         const ledger::mojom::VisitData& visit_data,
-                        const ledger::mojom::UrlResponse& response) {
-  if (response.status_code != net::HTTP_OK) {
+                        ledger::mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  if (response->status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
   }
 
-  const std::string user_id = GetUserId(response.body);
+  const std::string user_id = GetUserId(response->body);
   const std::string user_name = GetUserNameFromURL(visit_data.path);
-  const std::string publisher_name = GetPublisherName(response.body);
-  const std::string profile_picture = GetProfileImageURL(response.body);
+  const std::string publisher_name = GetPublisherName(response->body);
+  const std::string profile_picture = GetProfileImageURL(response->body);
 
   SavePublisherInfo(
       duration, user_id, user_name, publisher_name, profile_picture, window_id,
@@ -386,17 +389,18 @@ void GitHub::OnMediaPublisherInfo(
 }
 
 void GitHub::OnMetaDataGet(ledger::PublisherInfoCallback callback,
-                           const ledger::mojom::UrlResponse& response) {
-  if (response.status_code != net::HTTP_OK) {
+                           ledger::mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  if (response->status_code != net::HTTP_OK) {
     callback(ledger::mojom::Result::TIP_ERROR, nullptr);
     return;
   }
 
-  const std::string user_id = GetUserId(response.body);
-  const std::string user_name = GetUserName(response.body);
+  const std::string user_id = GetUserId(response->body);
+  const std::string user_name = GetUserName(response->body);
   const std::string media_key = GetMediaKey(user_name);
-  const std::string publisher_name = GetPublisherName(response.body);
-  const std::string profile_picture = GetProfileImageURL(response.body);
+  const std::string publisher_name = GetPublisherName(response->body);
+  const std::string profile_picture = GetProfileImageURL(response->body);
 
   ledger_->database()->GetMediaPublisherInfo(
       media_key,

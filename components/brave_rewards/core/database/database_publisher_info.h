@@ -22,27 +22,27 @@ class DatabasePublisherInfo : public DatabaseTable {
                       ledger::LegacyResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
-                 ledger::PublisherInfoCallback callback);
+                 ledger::GetPublisherInfoCallback callback);
 
   void GetPanelRecord(mojom::ActivityInfoFilterPtr filter,
-                      ledger::PublisherInfoCallback callback);
+                      ledger::GetPublisherPanelInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
 
-  void GetExcludedList(ledger::PublisherInfoListCallback callback);
+  void GetExcludedList(ledger::GetExcludedListCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
-                   ledger::PublisherInfoCallback callback);
+                   ledger::GetPublisherInfoCallback callback);
 
   void OnGetPanelRecord(mojom::DBCommandResponsePtr response,
-                        ledger::PublisherInfoCallback callback);
+                        ledger::GetPublisherPanelInfoCallback callback);
 
   void OnRestorePublishers(ledger::ResultCallback callback,
                            mojom::DBCommandResponsePtr response);
 
   void OnGetExcludedList(mojom::DBCommandResponsePtr response,
-                         ledger::PublisherInfoListCallback callback);
+                         ledger::GetExcludedListCallback callback);
 };
 
 }  // namespace database

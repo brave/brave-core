@@ -81,9 +81,10 @@ void PutCaptcha::Request(const int x,
 }
 
 void PutCaptcha::OnRequest(PutCaptchaCallback callback,
-                           const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
-  std::move(callback).Run(CheckStatusCode(response.status_code));
+                           mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
+  std::move(callback).Run(CheckStatusCode(response->status_code));
 }
 
 }  // namespace promotion

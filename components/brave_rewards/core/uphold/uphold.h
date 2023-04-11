@@ -18,7 +18,7 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_capabilities/get_capabilities.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_me/get_me.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_user.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/get_external_wallet.h"
@@ -59,7 +59,7 @@ class Uphold {
   void TransferFunds(double amount,
                      const std::string& address,
                      const std::string& contribution_id,
-                     client::LegacyResultCallback);
+                     LegacyResultCallback);
 
   void ConnectWallet(const base::flat_map<std::string, std::string>& args,
                      ledger::ConnectExternalWalletCallback);

@@ -58,8 +58,7 @@ source_set("headers") {
 
   sources = [
     "global_constants.h",
-    "ledger.h",
-    "ledger_client.h",
+    "ledger_callbacks.h",
     "ledger_database.cc",
     "ledger_database.h",
     "mojom_structs.h",
@@ -70,6 +69,7 @@ source_set("headers") {
 
   public_deps = [
     ":buildflags",
+    "//brave/components/brave_rewards/common/mojom:interfaces",
     "//brave/components/brave_rewards/common/mojom:ledger_interfaces",
     "//brave/components/brave_rewards/common/mojom:ledger_types",
   ]
@@ -295,8 +295,6 @@ static_library("ledger") {
     "endpoint/promotion/get_available/get_available.h",
     "endpoint/promotion/get_captcha/get_captcha.cc",
     "endpoint/promotion/get_captcha/get_captcha.h",
-    "endpoint/promotion/get_drain/get_drain.cc",
-    "endpoint/promotion/get_drain/get_drain.h",
     "endpoint/promotion/get_signed_creds/get_signed_creds.cc",
     "endpoint/promotion/get_signed_creds/get_signed_creds.h",
     "endpoint/promotion/get_wallet/get_wallet.cc",
@@ -392,7 +390,6 @@ static_library("ledger") {
     "gemini/gemini.h",
     "gemini/gemini_util.cc",
     "gemini/gemini_util.h",
-    "ledger.cc",
     "ledger_impl.cc",
     "ledger_impl.h",
     "legacy/bat_helper.cc",
@@ -454,15 +451,10 @@ static_library("ledger") {
     "recovery/recovery_empty_balance.h",
     "report/report.cc",
     "report/report.h",
+    "sku/sku.cc",
     "sku/sku.h",
-    "sku/sku_brave.cc",
-    "sku/sku_brave.h",
     "sku/sku_common.cc",
     "sku/sku_common.h",
-    "sku/sku_factory.cc",
-    "sku/sku_factory.h",
-    "sku/sku_merchant.cc",
-    "sku/sku_merchant.h",
     "sku/sku_order.cc",
     "sku/sku_order.h",
     "sku/sku_transaction.cc",

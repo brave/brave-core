@@ -35,7 +35,7 @@
 #include "brave/components/brave_rewards/core/database/database_sku_order.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
 
 namespace ledger {
@@ -65,7 +65,7 @@ class Database {
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,
-                           ledger::PublisherInfoListCallback callback);
+                           ledger::GetActivityInfoListCallback callback);
 
   void DeleteActivityInfo(const std::string& publisher_key,
                           ledger::LegacyResultCallback callback);
@@ -101,12 +101,12 @@ class Database {
   void SaveContributionInfo(mojom::ContributionInfoPtr info,
                             ledger::LegacyResultCallback callback);
 
-  void GetContributionInfo(const std::string& contribution_id,
-                           GetContributionInfoCallback callback);
+  virtual void GetContributionInfo(const std::string& contribution_id,
+                                   GetContributionInfoCallback callback);
 
   void GetOneTimeTips(const mojom::ActivityMonth month,
                       const int year,
-                      ledger::PublisherInfoListCallback callback);
+                      ledger::GetOneTimeTipsCallback callback);
 
   void GetContributionReport(const mojom::ActivityMonth month,
                              const int year,
@@ -218,10 +218,10 @@ class Database {
                                ledger::LegacyResultCallback callback);
 
   void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback);
+      ledger::GetPendingContributionsTotalCallback callback);
 
   void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback);
+      ledger::GetPendingContributionsCallback callback);
 
   void GetUnverifiedPublishersForPendingContributions(
       ledger::UnverifiedPublishersCallback callback);
@@ -266,7 +266,7 @@ class Database {
                                     ledger::LegacyResultCallback callback);
 
   void GetPromotionList(const std::vector<std::string>& ids,
-                        client::GetPromotionListCallback callback);
+                        GetPromotionListCallback callback);
 
   void UpdatePromotionsBlankPublicKey(const std::vector<std::string>& ids,
                                       ledger::LegacyResultCallback callback);
@@ -278,14 +278,14 @@ class Database {
                          ledger::LegacyResultCallback callback);
 
   void GetPublisherInfo(const std::string& publisher_key,
-                        ledger::PublisherInfoCallback callback);
+                        ledger::GetPublisherInfoCallback callback);
 
   void GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
-                             ledger::PublisherInfoCallback callback);
+                             ledger::GetPublisherPanelInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
 
-  void GetExcludedList(ledger::PublisherInfoListCallback callback);
+  void GetExcludedList(ledger::GetExcludedListCallback callback);
 
   /**
    * RECURRING TIPS
@@ -306,7 +306,7 @@ class Database {
   void GetNextMonthlyContributionTime(
       base::OnceCallback<void(absl::optional<base::Time>)> callback);
 
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback);
+  void GetRecurringTips(ledger::GetRecurringTipsCallback callback);
 
   void RemoveRecurringTip(const std::string& publisher_key,
                           ledger::LegacyResultCallback callback);
@@ -328,7 +328,7 @@ class Database {
                                         ledger::LegacyResultCallback callback);
 
   void GetServerPublisherInfo(const std::string& publisher_key,
-                              client::GetServerPublisherInfoCallback callback);
+                              GetServerPublisherInfoCallback callback);
 
   /**
    * SKU ORDER
@@ -385,7 +385,7 @@ class Database {
   void GetReservedUnblindedTokens(const std::string& redeem_id,
                                   GetUnblindedTokenListCallback callback);
 
-  void GetSpendableUnblindedTokensByBatchTypes(
+  virtual void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<mojom::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 

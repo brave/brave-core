@@ -3,21 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <utility>
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
-#include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
+using ::testing::MockFunction;
 
 namespace {
 const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
@@ -27,65 +24,49 @@ namespace ledger {
 namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<Unblinded> unblinded_;
-  std::unique_ptr<database::MockDatabase> mock_database_;
-
-  UnblindedTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    unblinded_ = std::make_unique<Unblinded>(mock_ledger_impl_.get());
-    mock_database_ =
-        std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
-  }
-
-  void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(mock_database_.get()));
-
-    ON_CALL(*mock_database_, GetContributionInfo(contribution_id, _))
-        .WillByDefault(
-            Invoke([](const std::string& id,
-                      database::GetContributionInfoCallback callback) {
-              auto info = mojom::ContributionInfo::New();
-              info->contribution_id = contribution_id;
-              info->amount = 5.0;
-              info->type = mojom::RewardsType::ONE_TIME_TIP;
-              info->step = mojom::ContributionStep::STEP_NO;
-              info->retry_count = 0;
-
-              callback(std::move(info));
-            }));
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  Unblinded unblinded_{&mock_ledger_impl_};
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(*mock_database_, GetReservedUnblindedTokens(_, _))
-      .WillByDefault(
-          Invoke([](const std::string&,
-                    database::GetUnblindedTokenListCallback callback) {
-            std::vector<mojom::UnblindedTokenPtr> list;
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+              GetSpendableUnblindedTokensByBatchTypes(_, _))
+      .Times(1)
+      .WillOnce([](const std::vector<mojom::CredsBatchType>&, auto callback) {
+        std::vector<mojom::UnblindedTokenPtr> tokens;
 
-            auto info = mojom::UnblindedToken::New();
-            info->id = 1;
-            info->token_value = "asdfasdfasdfsad=";
-            info->value = 2;
-            info->expires_at = 1574133178;
-            list.push_back(info->Clone());
+        auto token = mojom::UnblindedToken::New();
+        token->id = 1;
+        token->token_value = "asdfasdfasdfsad=";
+        token->value = 2;
+        token->expires_at = 1574133178;
+        tokens.push_back(std::move(token));
 
-            callback(std::move(list));
-          }));
+        callback(std::move(tokens));
+      });
 
-  unblinded_->Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
-                    [](const mojom::Result result) {
-                      ASSERT_EQ(result, mojom::Result::NOT_ENOUGH_FUNDS);
-                    });
+  EXPECT_CALL(*mock_ledger_impl_.mock_database(),
+              GetContributionInfo(contribution_id, _))
+      .Times(1)
+      .WillOnce([](const std::string& id, auto callback) {
+        auto info = mojom::ContributionInfo::New();
+        info->contribution_id = contribution_id;
+        info->amount = 5.0;
+        info->type = mojom::RewardsType::ONE_TIME_TIP;
+        info->step = mojom::ContributionStep::STEP_NO;
+        info->retry_count = 0;
+
+        callback(std::move(info));
+      });
+
+  MockFunction<LegacyResultCallback> callback;
+  EXPECT_CALL(callback, Call(mojom::Result::NOT_ENOUGH_FUNDS)).Times(1);
+  unblinded_.Start({mojom::CredsBatchType::PROMOTION}, contribution_id,
+                   callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
@@ -128,10 +109,12 @@ TEST_F(UnblindedTest, GetStatisticalVotingWinner) {
 
   for (auto& entry : cases) {
     const std::string publisher_key =
-        unblinded_->GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
-                                                         publisher_list);
+        unblinded_.GetStatisticalVotingWinnerForTesting(entry.dart, 100.0,
+                                                        publisher_list);
     EXPECT_STREQ(publisher_key.c_str(), entry.publisher_key);
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace contribution

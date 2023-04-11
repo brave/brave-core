@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_settings_properties.h"
 
 namespace ledger {
@@ -41,9 +41,9 @@ class LegacyPublisherState {
       std::vector<ledger::mojom::BalanceReportInfoPtr>* reports);
 
  private:
-  void OnLoad(ledger::mojom::Result result,
-              const std::string& data,
-              ledger::LegacyResultCallback callback);
+  void OnLoad(LegacyResultCallback callback,
+              mojom::Result result,
+              const std::string& data);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::PublisherSettingsProperties> state_;

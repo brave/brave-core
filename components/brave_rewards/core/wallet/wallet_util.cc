@@ -14,14 +14,19 @@
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/bitflyer/bitflyer_util.h"
 #include "brave/components/brave_rewards/core/common/random_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/gemini/gemini_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_util.h"
 
 namespace ledger::wallet {
@@ -398,11 +403,11 @@ bool LogOutWallet(LedgerImpl* ledger,
                                    wallet_type + abbreviated_address);
 
   if (!ledger->IsShuttingDown()) {
-    ledger->ledger_client()->ExternalWalletLoggedOut();
-    ledger->ledger_client()->ShowNotification(
+    ledger->client()->ExternalWalletLoggedOut();
+    ledger->client()->ShowNotification(
         notification.empty() ? ledger::notifications::kWalletDisconnected
                              : notification,
-        {}, [](auto) {});
+        {}, base::DoNothing());
   }
 
   return true;

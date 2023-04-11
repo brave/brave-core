@@ -9,7 +9,7 @@
 #include "base/containers/flat_map.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
@@ -17,7 +17,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using ::testing::_;
-using ::testing::Invoke;
 
 // npm run test -- brave_unit_tests --filter=PublisherTest.*
 
@@ -25,9 +24,6 @@ namespace ledger {
 namespace publisher {
 
 class PublisherTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
   void CreatePublisherInfoList(std::vector<mojom::PublisherInfoPtr>* list) {
     double prev_score;
@@ -47,96 +43,101 @@ class PublisherTest : public testing::Test {
     }
   }
 
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<Publisher> publisher_;
-  std::unique_ptr<database::MockDatabase> mock_database_;
-
-  PublisherTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    publisher_ = std::make_unique<Publisher>(mock_ledger_impl_.get());
-    mock_database_ =
-        std::make_unique<database::MockDatabase>(mock_ledger_impl_.get());
-  }
-
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, database())
-        .WillByDefault(testing::Return(mock_database_.get()));
+    ON_CALL(*mock_ledger_impl_.mock_client(), GetDoubleState(state::kScoreA, _))
+        .WillByDefault([this](const std::string&, auto callback) {
+          std::move(callback).Run(a_);
+        });
 
-    ON_CALL(*mock_ledger_client_, GetDoubleState(state::kScoreA))
-        .WillByDefault(Invoke([this](const std::string& key) { return a_; }));
+    ON_CALL(*mock_ledger_impl_.mock_client(), GetDoubleState(state::kScoreB, _))
+        .WillByDefault([this](const std::string&, auto callback) {
+          std::move(callback).Run(b_);
+        });
 
-    ON_CALL(*mock_ledger_client_, GetDoubleState(state::kScoreB))
-        .WillByDefault(Invoke([this](const std::string& key) { return b_; }));
+    ON_CALL(*mock_ledger_impl_.mock_client(), SetDoubleState(_, _, _))
+        .WillByDefault(
+            [this](const std::string& key, double value, auto callback) {
+              if (key == state::kScoreA) {
+                a_ = value;
+                std::move(callback).Run();
+              }
 
-    ON_CALL(*mock_ledger_client_, SetDoubleState(_, _))
-        .WillByDefault(Invoke([this](const std::string& key, double value) {
-          if (key == state::kScoreA) {
-            a_ = value;
-            return;
-          }
+              if (key == state::kScoreB) {
+                b_ = value;
+                std::move(callback).Run();
+              }
+            });
 
-          if (key == state::kScoreB) {
-            b_ = value;
-            return;
-          }
-        }));
+    ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+        .WillByDefault([](mojom::DBTransactionPtr, auto callback) {
+          std::move(callback).Run(db_error_response->Clone());
+        });
   }
+
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  Publisher publisher_{&mock_ledger_impl_};
 
   double a_ = 0;
   double b_ = 0;
 };
 
 TEST_F(PublisherTest, CalcScoreConsts5) {
-  publisher_->CalcScoreConsts(5);
+  publisher_.CalcScoreConsts(5);
 
   ASSERT_EQ(a_, 14500);
   ASSERT_EQ(b_, -14000);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, CalcScoreConsts8) {
-  publisher_->CalcScoreConsts(8);
+  publisher_.CalcScoreConsts(8);
 
   ASSERT_EQ(a_, 14200);
   ASSERT_EQ(b_, -13400);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, CalcScoreConsts60) {
-  publisher_->CalcScoreConsts(60);
+  publisher_.CalcScoreConsts(60);
 
   ASSERT_EQ(a_, 9000);
   ASSERT_EQ(b_, -3000);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, concaveScore) {
-  publisher_->CalcScoreConsts(5);
-  EXPECT_NEAR(publisher_->concaveScore(5), 1, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(15), 1.06285, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(60), 1.28703, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(1000), 3.15289, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(10000), 8.80133, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(150000), 32.6498, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(500000), 59.2068, 0.001f);
+  publisher_.CalcScoreConsts(5);
+  EXPECT_NEAR(publisher_.concaveScore(5), 1, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(15), 1.06285, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(60), 1.28703, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(1000), 3.15289, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(10000), 8.80133, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(150000), 32.6498, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(500000), 59.2068, 0.001f);
 
-  publisher_->CalcScoreConsts(8);
-  EXPECT_NEAR(publisher_->concaveScore(5), 0.979606, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(15), 1.04477, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(60), 1.27505, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(1000), 3.16717, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(10000), 8.8769, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(150000), 32.9766, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(500000), 59.8128, 0.001f);
+  publisher_.CalcScoreConsts(8);
+  EXPECT_NEAR(publisher_.concaveScore(5), 0.979606, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(15), 1.04477, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(60), 1.27505, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(1000), 3.16717, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(10000), 8.8769, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(150000), 32.9766, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(500000), 59.8128, 0.001f);
 
-  publisher_->CalcScoreConsts(60);
-  EXPECT_NEAR(publisher_->concaveScore(5), 0.455342, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(15), 0.607625, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(60), 1, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(1000), 3.50416, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(10000), 10.7089, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(150000), 40.9918, 0.001f);
-  EXPECT_NEAR(publisher_->concaveScore(500000), 74.7025, 0.001f);
+  publisher_.CalcScoreConsts(60);
+  EXPECT_NEAR(publisher_.concaveScore(5), 0.455342, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(15), 0.607625, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(60), 1, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(1000), 3.50416, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(10000), 10.7089, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(150000), 40.9918, 0.001f);
+  EXPECT_NEAR(publisher_.concaveScore(500000), 74.7025, 0.001f);
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, synopsisNormalizerInternal) {
@@ -144,25 +145,28 @@ TEST_F(PublisherTest, synopsisNormalizerInternal) {
   std::vector<mojom::PublisherInfoPtr> new_list;
   std::vector<mojom::PublisherInfoPtr> list;
   CreatePublisherInfoList(&list);
-  publisher_->synopsisNormalizerInternal(&new_list, &list, 0);
+  publisher_.synopsisNormalizerInternal(&new_list, &list, 0);
 
   // simulate exclude and re-normalize
   new_list.erase(new_list.begin() + 3);
   std::vector<mojom::PublisherInfoPtr> new_list2;
-  publisher_->synopsisNormalizerInternal(&new_list2, &new_list, 0);
+  publisher_.synopsisNormalizerInternal(&new_list2, &new_list, 0);
   new_list2.erase(new_list2.begin() + 4);
   std::vector<mojom::PublisherInfoPtr> new_list3;
-  publisher_->synopsisNormalizerInternal(&new_list3, &new_list2, 0);
+  publisher_.synopsisNormalizerInternal(&new_list3, &new_list2, 0);
   new_list3.erase(new_list3.begin() + 5);
   std::vector<mojom::PublisherInfoPtr> new_list4;
-  publisher_->synopsisNormalizerInternal(&new_list4, &new_list3, 0);
+  publisher_.synopsisNormalizerInternal(&new_list4, &new_list3, 0);
   new_list4.erase(new_list4.begin() + 6);
   std::vector<mojom::PublisherInfoPtr> new_list5;
-  publisher_->synopsisNormalizerInternal(&new_list5, &new_list4, 0);
+  publisher_.synopsisNormalizerInternal(&new_list5, &new_list4, 0);
+
   for (const auto& element : new_list5) {
     ASSERT_GE((int32_t)element->percent, 0);
     ASSERT_LE((int32_t)element->percent, 100);
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PublisherTest, GetShareURL) {

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PUT /v1/captchas/{captcha_id}
 //
@@ -62,8 +62,7 @@ class PutCaptcha {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(PutCaptchaCallback callback,
-                 const mojom::UrlResponse& response);
+  void OnRequest(PutCaptchaCallback callback, mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

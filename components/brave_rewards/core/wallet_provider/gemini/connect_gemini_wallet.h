@@ -11,7 +11,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/endpoints/gemini/get_recipient_id/get_recipient_id_gemini.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace ledger {

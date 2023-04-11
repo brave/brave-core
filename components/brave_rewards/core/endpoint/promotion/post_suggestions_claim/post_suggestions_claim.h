@@ -9,7 +9,7 @@
 #include <string>
 
 #include "brave/components/brave_rewards/core/credentials/credentials_redeem.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/suggestions/claim
 //
@@ -57,7 +57,7 @@ class PostSuggestionsClaim {
   mojom::Result CheckStatusCode(const int status_code);
 
   void OnRequest(PostSuggestionsClaimCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

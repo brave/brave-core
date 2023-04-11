@@ -9,6 +9,7 @@
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "build/build_config.h"
 
 namespace braveledger_media {

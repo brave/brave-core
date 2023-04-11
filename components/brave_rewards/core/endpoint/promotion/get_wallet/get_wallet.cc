@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -41,18 +42,19 @@ std::string GetWallet::GetUrl() const {
   return GetServerUrl("/v3/wallet/" + rewards_wallet->payment_id);
 }
 
-void GetWallet::OnRequest(const mojom::UrlResponse& response,
+void GetWallet::OnRequest(mojom::UrlResponsePtr response,
                           GetWalletCallback callback) const {
-  ledger::LogUrlResponse(__func__, response);
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
   if (result != mojom::Result::LEDGER_OK) {
     return callback(result, std::string{}, false);
   }
 
   std::string custodian = "";
   bool linked = false;
-  result = ParseBody(response.body, &custodian, &linked);
+  result = ParseBody(response->body, &custodian, &linked);
   callback(result, custodian, linked);
 }
 

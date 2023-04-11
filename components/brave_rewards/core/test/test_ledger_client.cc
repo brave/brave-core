@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
 #include "net/http/http_status_code.h"
 
 namespace ledger {
@@ -78,190 +79,233 @@ TestLedgerClient::TestLedgerClient() : ledger_database_(base::FilePath()) {
 
 TestLedgerClient::~TestLedgerClient() = default;
 
+void TestLedgerClient::LoadLedgerState(LoadLedgerStateCallback callback) {
+  std::move(callback).Run(mojom::Result::NO_LEDGER_STATE, "");
+}
+
+void TestLedgerClient::LoadPublisherState(LoadPublisherStateCallback callback) {
+  std::move(callback).Run(mojom::Result::NO_PUBLISHER_STATE, "");
+}
+
 void TestLedgerClient::OnReconcileComplete(
-    const mojom::Result result,
+    mojom::Result result,
     mojom::ContributionInfoPtr contribution) {}
-
-void TestLedgerClient::LoadLedgerState(client::OnLoadCallback callback) {
-  callback(mojom::Result::NO_LEDGER_STATE, "");
-}
-
-void TestLedgerClient::LoadPublisherState(client::OnLoadCallback callback) {
-  callback(mojom::Result::NO_PUBLISHER_STATE, "");
-}
 
 void TestLedgerClient::OnPanelPublisherInfo(
     mojom::Result result,
     mojom::PublisherInfoPtr publisher_info,
-    uint64_t windowId) {}
-
-void TestLedgerClient::OnPublisherRegistryUpdated() {}
-
-void TestLedgerClient::OnPublisherUpdated(const std::string& publisher_id) {}
+    uint64_t window_id) {}
 
 void TestLedgerClient::FetchFavIcon(const std::string& url,
                                     const std::string& favicon_key,
-                                    client::FetchIconCallback callback) {
-  callback(true, favicon_key);
-}
-
-std::string TestLedgerClient::URIEncode(const std::string& value) {
-  return base::EscapeQueryParamValue(value, false);
+                                    FetchFavIconCallback callback) {
+  std::move(callback).Run(true, favicon_key);
 }
 
 void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
-                               client::LoadURLCallback callback) {
+                               LoadURLCallback callback) {
   DCHECK(request);
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&TestLedgerClient::LoadURLAfterDelay,
-                                weak_factory_.GetWeakPtr(), std::move(request),
-                                std::move(callback)));
+  auto iter = base::ranges::find_if(network_results_, [&request](auto& result) {
+    return request->url == result.url && request->method == result.method;
+  });
+
+  if (iter != network_results_.end()) {
+    std::move(callback).Run(std::move(iter->response));
+    network_results_.erase(iter);
+    return;
+  }
+
+  LOG(INFO) << "Test network result not found for " << request->method << ":"
+            << request->url;
+
+  auto response = mojom::UrlResponse::New();
+  response->url = request->url;
+  response->status_code = net::HTTP_BAD_REQUEST;
+  std::move(callback).Run(std::move(response));
 }
 
-void TestLedgerClient::Log(const char* file,
-                           const int line,
-                           const int verbose_level,
-                           const std::string& message) {
-  int vlog_level = logging::GetVlogLevelHelper(file, strlen(file));
-  if (verbose_level <= vlog_level) {
-    logging::LogMessage(file, line, -verbose_level).stream() << message;
-  }
-
-  if (log_callback_) {
-    log_callback_.Run(message);
-  }
+void TestLedgerClient::URIEncode(const std::string& value,
+                                 URIEncodeCallback callback) {
+  std::move(callback).Run(base::EscapeQueryParamValue(value, false));
 }
 
 void TestLedgerClient::PublisherListNormalized(
     std::vector<mojom::PublisherInfoPtr> list) {}
 
-void TestLedgerClient::SetBooleanState(const std::string& name, bool value) {
+void TestLedgerClient::OnPublisherRegistryUpdated() {}
+
+void TestLedgerClient::OnPublisherUpdated(const std::string& publisher_id) {}
+
+void TestLedgerClient::GetBooleanState(const std::string& name,
+                                       GetBooleanStateCallback callback) {
+  std::move(callback).Run(
+      state_store_.FindBoolByDottedPath(name).value_or(false));
+}
+
+void TestLedgerClient::SetBooleanState(const std::string& name,
+                                       bool value,
+                                       SetBooleanStateCallback callback) {
   state_store_.SetByDottedPath(name, value);
+  std::move(callback).Run();
 }
 
-bool TestLedgerClient::GetBooleanState(const std::string& name) const {
-  return state_store_.FindBoolByDottedPath(name).value_or(false);
+void TestLedgerClient::GetIntegerState(const std::string& name,
+                                       GetIntegerStateCallback callback) {
+  std::move(callback).Run(state_store_.FindIntByDottedPath(name).value_or(0));
 }
 
-void TestLedgerClient::SetIntegerState(const std::string& name, int value) {
+void TestLedgerClient::SetIntegerState(const std::string& name,
+                                       int32_t value,
+                                       SetIntegerStateCallback callback) {
   state_store_.SetByDottedPath(name, value);
+  std::move(callback).Run();
 }
 
-int TestLedgerClient::GetIntegerState(const std::string& name) const {
-  return state_store_.FindIntByDottedPath(name).value_or(0);
+void TestLedgerClient::GetDoubleState(const std::string& name,
+                                      GetDoubleStateCallback callback) {
+  std::move(callback).Run(
+      state_store_.FindDoubleByDottedPath(name).value_or(0.0));
 }
 
-void TestLedgerClient::SetDoubleState(const std::string& name, double value) {
+void TestLedgerClient::SetDoubleState(const std::string& name,
+                                      double value,
+                                      SetDoubleStateCallback callback) {
   state_store_.SetByDottedPath(name, value);
+  std::move(callback).Run();
 }
 
-double TestLedgerClient::GetDoubleState(const std::string& name) const {
-  return state_store_.FindDoubleByDottedPath(name).value_or(0.0);
+void TestLedgerClient::GetStringState(const std::string& name,
+                                      GetStringStateCallback callback) {
+  const auto* value = state_store_.FindStringByDottedPath(name);
+  std::move(callback).Run(value ? *value : base::EmptyString());
 }
 
 void TestLedgerClient::SetStringState(const std::string& name,
-                                      const std::string& value) {
+                                      const std::string& value,
+                                      SetStringStateCallback callback) {
   state_store_.SetByDottedPath(name, value);
+  std::move(callback).Run();
 }
 
-std::string TestLedgerClient::GetStringState(const std::string& name) const {
-  const auto* value = state_store_.FindStringByDottedPath(name);
-  return value ? *value : base::EmptyString();
-}
-
-void TestLedgerClient::SetInt64State(const std::string& name, int64_t value) {
-  state_store_.SetByDottedPath(name, base::NumberToString(value));
-}
-
-int64_t TestLedgerClient::GetInt64State(const std::string& name) const {
+void TestLedgerClient::GetInt64State(const std::string& name,
+                                     GetInt64StateCallback callback) {
   if (const std::string* opt = state_store_.FindStringByDottedPath(name)) {
     int64_t value;
     if (base::StringToInt64(*opt, &value)) {
-      return value;
+      return std::move(callback).Run(value);
     }
   }
-  return 0;
+
+  std::move(callback).Run(0);
 }
 
-void TestLedgerClient::SetUint64State(const std::string& name, uint64_t value) {
+void TestLedgerClient::SetInt64State(const std::string& name,
+                                     int64_t value,
+                                     SetInt64StateCallback callback) {
   state_store_.SetByDottedPath(name, base::NumberToString(value));
+  std::move(callback).Run();
 }
 
-uint64_t TestLedgerClient::GetUint64State(const std::string& name) const {
+void TestLedgerClient::GetUint64State(const std::string& name,
+                                      GetUint64StateCallback callback) {
   if (const std::string* opt = state_store_.FindStringByDottedPath(name)) {
     uint64_t value;
     if (base::StringToUint64(*opt, &value)) {
-      return value;
+      return std::move(callback).Run(value);
     }
   }
-  return 0;
+  std::move(callback).Run(0);
+}
+
+void TestLedgerClient::SetUint64State(const std::string& name,
+                                      uint64_t value,
+                                      SetUint64StateCallback callback) {
+  state_store_.SetByDottedPath(name, base::NumberToString(value));
+  std::move(callback).Run();
+}
+
+void TestLedgerClient::GetValueState(const std::string& name,
+                                     GetValueStateCallback callback) {
+  const auto* value = state_store_.FindByDottedPath(name);
+  std::move(callback).Run(value ? value->Clone() : base::Value());
 }
 
 void TestLedgerClient::SetValueState(const std::string& name,
-                                     base::Value value) {
+                                     base::Value value,
+                                     SetValueStateCallback callback) {
   state_store_.SetByDottedPath(name, std::move(value));
+  std::move(callback).Run();
 }
 
-base::Value TestLedgerClient::GetValueState(const std::string& name) const {
-  const auto* value = state_store_.FindByDottedPath(name);
-  return value ? value->Clone() : base::Value();
-}
-
-void TestLedgerClient::SetTimeState(const std::string& name, base::Time time) {
-  state_store_.SetByDottedPath(name, base::TimeToValue(time));
-}
-
-base::Time TestLedgerClient::GetTimeState(const std::string& name) const {
+void TestLedgerClient::GetTimeState(const std::string& name,
+                                    GetTimeStateCallback callback) {
   const auto* value = state_store_.FindByDottedPath(name);
   DCHECK(value);
   if (!value) {
-    return base::Time();
+    return std::move(callback).Run(base::Time());
   }
 
   auto time = base::ValueToTime(*value);
   DCHECK(time);
-  return time.value_or(base::Time());
+  std::move(callback).Run(time.value_or(base::Time()));
 }
 
-void TestLedgerClient::ClearState(const std::string& name) {
+void TestLedgerClient::SetTimeState(const std::string& name,
+                                    base::Time value,
+                                    SetTimeStateCallback callback) {
+  state_store_.SetByDottedPath(name, base::TimeToValue(value));
+  std::move(callback).Run();
+}
+
+void TestLedgerClient::ClearState(const std::string& name,
+                                  ClearStateCallback callback) {
   state_store_.RemoveByDottedPath(name);
+  std::move(callback).Run();
 }
 
-bool TestLedgerClient::GetBooleanOption(const std::string& name) const {
-  return option_store_.FindBoolByDottedPath(name).value_or(false);
+void TestLedgerClient::GetBooleanOption(const std::string& name,
+                                        GetBooleanOptionCallback callback) {
+  std::move(callback).Run(
+      option_store_.FindBoolByDottedPath(name).value_or(false));
 }
 
-int TestLedgerClient::GetIntegerOption(const std::string& name) const {
-  return option_store_.FindIntByDottedPath(name).value_or(0);
+void TestLedgerClient::GetIntegerOption(const std::string& name,
+                                        GetIntegerOptionCallback callback) {
+  std::move(callback).Run(option_store_.FindIntByDottedPath(name).value_or(0));
 }
 
-double TestLedgerClient::GetDoubleOption(const std::string& name) const {
-  return option_store_.FindDoubleByDottedPath(name).value_or(0.0);
+void TestLedgerClient::GetDoubleOption(const std::string& name,
+                                       GetDoubleOptionCallback callback) {
+  std::move(callback).Run(
+      option_store_.FindDoubleByDottedPath(name).value_or(0.0));
 }
 
-std::string TestLedgerClient::GetStringOption(const std::string& name) const {
+void TestLedgerClient::GetStringOption(const std::string& name,
+                                       GetStringOptionCallback callback) {
   const auto* value = option_store_.FindStringByDottedPath(name);
-  return value ? *value : base::EmptyString();
+  std::move(callback).Run(value ? *value : base::EmptyString());
 }
 
-int64_t TestLedgerClient::GetInt64Option(const std::string& name) const {
+void TestLedgerClient::GetInt64Option(const std::string& name,
+                                      GetInt64OptionCallback callback) {
   if (const std::string* opt = option_store_.FindStringByDottedPath(name)) {
     int64_t value;
     if (base::StringToInt64(*opt, &value)) {
-      return value;
+      return std::move(callback).Run(value);
     }
   }
-  return 0;
+  std::move(callback).Run(0);
 }
 
-uint64_t TestLedgerClient::GetUint64Option(const std::string& name) const {
+void TestLedgerClient::GetUint64Option(const std::string& name,
+                                       GetUint64OptionCallback callback) {
   if (const std::string* opt = option_store_.FindStringByDottedPath(name)) {
     uint64_t value;
     if (base::StringToUint64(*opt, &value)) {
-      return value;
+      return std::move(callback).Run(value);
     }
   }
-  return 0;
+  std::move(callback).Run(0);
 }
 
 void TestLedgerClient::OnContributeUnverifiedPublishers(
@@ -269,62 +313,72 @@ void TestLedgerClient::OnContributeUnverifiedPublishers(
     const std::string& publisher_key,
     const std::string& publisher_name) {}
 
-std::string TestLedgerClient::GetLegacyWallet() {
-  return "";
+void TestLedgerClient::GetLegacyWallet(GetLegacyWalletCallback callback) {
+  std::move(callback).Run("");
 }
 
 void TestLedgerClient::ShowNotification(const std::string& type,
                                         const std::vector<std::string>& args,
-                                        client::LegacyResultCallback callback) {
-}
+                                        ShowNotificationCallback callback) {}
 
-mojom::ClientInfoPtr TestLedgerClient::GetClientInfo() {
+void TestLedgerClient::GetClientInfo(GetClientInfoCallback callback) {
   auto info = mojom::ClientInfo::New();
   info->platform = mojom::Platform::DESKTOP;
   info->os = mojom::OperatingSystem::UNDEFINED;
-  return info;
+  std::move(callback).Run(std::move(info));
 }
 
 void TestLedgerClient::UnblindedTokensReady() {}
 
 void TestLedgerClient::ReconcileStampReset() {}
 
-void TestLedgerClient::RunDBTransaction(
-    mojom::DBTransactionPtr transaction,
-    client::RunDBTransactionCallback callback) {
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&TestLedgerClient::RunDBTransactionAfterDelay,
-                                weak_factory_.GetWeakPtr(),
-                                std::move(transaction), std::move(callback)));
+void TestLedgerClient::RunDBTransaction(mojom::DBTransactionPtr transaction,
+                                        RunDBTransactionCallback callback) {
+  auto response = ledger_database_.RunTransaction(std::move(transaction));
+  std::move(callback).Run(std::move(response));
 }
 
-void TestLedgerClient::GetCreateScript(
-    client::GetCreateScriptCallback callback) {
-  callback("", 0);
+void TestLedgerClient::GetCreateScript(GetCreateScriptCallback callback) {
+  std::move(callback).Run("", 0);
 }
 
-void TestLedgerClient::PendingContributionSaved(const mojom::Result result) {}
+void TestLedgerClient::PendingContributionSaved(mojom::Result result) {}
+
+void TestLedgerClient::Log(const std::string& file,
+                           int32_t line,
+                           int32_t verbose_level,
+                           const std::string& message) {
+  int vlog_level =
+      logging::GetVlogLevelHelper(file.c_str(), strlen(file.c_str()));
+  if (verbose_level <= vlog_level) {
+    logging::LogMessage(file.c_str(), line, -verbose_level).stream() << message;
+  }
+
+  if (log_callback_) {
+    log_callback_.Run(message);
+  }
+}
 
 void TestLedgerClient::ClearAllNotifications() {}
 
-void TestLedgerClient::ExternalWalletConnected() const {}
+void TestLedgerClient::ExternalWalletConnected() {}
 
-void TestLedgerClient::ExternalWalletLoggedOut() const {}
+void TestLedgerClient::ExternalWalletLoggedOut() {}
 
-void TestLedgerClient::ExternalWalletReconnected() const {}
+void TestLedgerClient::ExternalWalletReconnected() {}
 
-void TestLedgerClient::DeleteLog(client::LegacyResultCallback callback) {
-  callback(mojom::Result::LEDGER_OK);
+void TestLedgerClient::DeleteLog(DeleteLogCallback callback) {
+  std::move(callback).Run(mojom::Result::LEDGER_OK);
 }
 
-absl::optional<std::string> TestLedgerClient::EncryptString(
-    const std::string& value) {
-  return FakeEncryption::EncryptString(value);
+void TestLedgerClient::EncryptString(const std::string& value,
+                                     EncryptStringCallback callback) {
+  std::move(callback).Run(FakeEncryption::EncryptString(value));
 }
 
-absl::optional<std::string> TestLedgerClient::DecryptString(
-    const std::string& value) {
-  return FakeEncryption::DecryptString(value);
+void TestLedgerClient::DecryptString(const std::string& value,
+                                     DecryptStringCallback callback) {
+  std::move(callback).Run(FakeEncryption::DecryptString(value));
 }
 
 void TestLedgerClient::SetOptionForTesting(const std::string& name,
@@ -341,34 +395,6 @@ void TestLedgerClient::AddNetworkResultForTesting(
 
 void TestLedgerClient::SetLogCallbackForTesting(LogCallback callback) {
   log_callback_ = std::move(callback);
-}
-
-void TestLedgerClient::LoadURLAfterDelay(mojom::UrlRequestPtr request,
-                                         client::LoadURLCallback callback) {
-  auto iter = base::ranges::find_if(network_results_, [&request](auto& result) {
-    return request->url == result.url && request->method == result.method;
-  });
-
-  if (iter != network_results_.end()) {
-    std::move(callback).Run(*iter->response);
-    network_results_.erase(iter);
-    return;
-  }
-
-  LOG(INFO) << "Test network result not found for " << request->method << ":"
-            << request->url;
-
-  mojom::UrlResponse response;
-  response.url = request->url;
-  response.status_code = net::HTTP_BAD_REQUEST;
-  std::move(callback).Run(response);
-}
-
-void TestLedgerClient::RunDBTransactionAfterDelay(
-    mojom::DBTransactionPtr transaction,
-    client::RunDBTransactionCallback callback) {
-  auto response = ledger_database_.RunTransaction(std::move(transaction));
-  std::move(callback).Run(std::move(response));
 }
 
 }  // namespace ledger

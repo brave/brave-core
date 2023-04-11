@@ -31,7 +31,7 @@ bool StateMigrationV13::MigrateExternalWallet(const std::string& wallet_type) {
                            {mojom::WalletStatus::kConnected})) {
     BLOG(1, "User doesn't have a connected " << wallet_type << " wallet.");
   } else {
-    ledger_->ledger_client()->ExternalWalletConnected();
+    ledger_->client()->ExternalWalletConnected();
   }
 
   return true;

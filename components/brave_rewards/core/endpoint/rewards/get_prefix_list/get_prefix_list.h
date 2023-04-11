@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // GET /publishers/prefix-list
 //
@@ -39,7 +39,7 @@ class GetPrefixList {
 
   mojom::Result CheckStatusCode(const int status_code);
 
-  void OnRequest(const mojom::UrlResponse& response,
+  void OnRequest(mojom::UrlResponsePtr response,
                  GetPrefixListCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
