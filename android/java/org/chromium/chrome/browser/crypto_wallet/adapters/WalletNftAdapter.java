@@ -65,7 +65,7 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
         holder.titleText.setText(walletListItemModel.getTitle());
 
         PortfolioModel.NftDataModel nftDataModel = walletListItemModel.getNftDataModel();
-        holder.subTitleText.setText(nftDataModel.token.name);
+        holder.subTitleText.setText(nftDataModel.token.symbol);
 
         holder.itemView.setOnClickListener(v -> {
             onWalletListItemClick.onAssetClick(walletListItemModel.getBlockchainToken());
