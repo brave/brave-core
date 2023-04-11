@@ -169,7 +169,7 @@ public class ActivityShortcutManager: NSObject {
         })
         controller.viewDidDisappear = {
           if Preferences.Review.braveNewsCriteriaPassed.value {
-            AppReviewManager.shared.isReviewRequired = true
+            AppReviewManager.shared.isRevisedReviewRequired = true
             Preferences.Review.braveNewsCriteriaPassed.value = false
           }
         }

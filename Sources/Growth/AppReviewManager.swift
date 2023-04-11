@@ -14,11 +14,74 @@ import BraveVPN
 /// Singleton Manager handles App Review Criteria
 public class AppReviewManager: ObservableObject {
   
+  struct Constants {
+    // Legacy Review Constants
+    static let firstThreshold = 14
+    static let secondThreshold = 41
+    static let lastThreshold = 121
+    static let minimumDaysBetweenReviewRequest = 60
+
+    // Revised Review Constants
+    static let launchCountLimit = 5
+    static let bookmarksCountLimit = 5
+    static let playlistCountLimit = 5
+    static let dappConnectionPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
+    static let daysInUseMaxPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
+    static let daysInUseRequiredPeriod = 4
+    static let revisedMinimumDaysBetweenReviewRequest = 30
+  }
+  
+  /// A enumeration for which type of App Review Logic will be used
+  /// Helper for quick changes between different types of logic
+  /// Active request review type can be changed using activeAppReviewLogicType
+  public enum AppReviewLogicType: CaseIterable {
+    // Legacy Review Logic used as baseline
+    // Only checking Launch Count and Days in Between reviews
+    // Performing Rating Request in App Launch
+    case legacy
+    // Revised Review Logic used to test
+    // various success scenarios for review request
+    // Checking various main criteria and sub criteria
+    // Performing Rating Request as a result of some actions
+    // This logic is reverted to legacy logic later
+    // Context: https://github.com/brave/brave-ios/pull/6210
+    case revised
+    // Revised Review Logic which aligns with Android platform
+    // Checking various main criteria and sub criteria
+    // Performing Rating Request in App Launch
+    case revisedCrossPlatform
+    
+    var mainCriteria: [AppReviewMainCriteriaType] {
+      switch self {
+      case .legacy:
+        return [.threshold]
+      case .revised:
+        return [.launchCount, .daysInUse, .sessionCrash]
+      case .revisedCrossPlatform:
+        return [.launchCount, .daysInUse, .sessionCrash, .daysInBetweenReview]
+      }
+    }
+    
+    var subCriteria: [AppReviewSubCriteriaType] {
+      switch self {
+      case .legacy:
+        return []
+      case .revised:
+        return [.numberOfBookmarks, .paidVPNSubscription, .walletConnectedDapp,
+                .numberOfPlaylistItems, .syncEnabledWithTabSync]
+      case .revisedCrossPlatform:
+        return [.numberOfBookmarks, .paidVPNSubscription]
+      }
+    }
+  }
+  
   /// A main criteria that should be satisfied before checking sub-criteria
   public enum AppReviewMainCriteriaType: CaseIterable {
+    case threshold
     case launchCount
     case daysInUse
     case sessionCrash
+    case daysInBetweenReview
   }
   
   /// A sub-criteria that should be satisfied if all main criterias are valid
@@ -30,80 +93,61 @@ public class AppReviewManager: ObservableObject {
     case syncEnabledWithTabSync
   }
     
-  @Published public var isReviewRequired = false
-  
-  private let launchCountLimit = 5
-  private let bookmarksCountLimit = 5
-  private let playlistCountLimit = 5
-  private let dappConnectionPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
-  private let daysInUseMaxPeriod = AppConstants.buildChannel.isPublic ? 7.days : 7.minutes
-  private let daysInUseRequiredPeriod = 4
-  
-  // MARK: Legacy properties - Added for swithing back to legacy logic easily
-  private let legacyAppReviewLogicEnabled = true
-  let legacyFirstThreshold = 14
-  let legacySecondThreshold = 41
-  let legacyLastThreshold = 121
-  private let legacyMinimumDaysBetweenReviewRequest = 60
+  @Published public var isRevisedReviewRequired = false
+  private var activeAppReviewLogicType: AppReviewLogicType = .revisedCrossPlatform
   
   // MARK: Lifecycle
   
   public static var shared = AppReviewManager()
   
-  // MARK: Legacy Review Methods
+  // MARK: Review Request Handling
   
-  public func legacyShouldRequestReview(date: Date = Date()) -> Bool {
-     let launchCount = Preferences.Review.launchCount.value
-     let threshold = Preferences.LegacyReview.threshold.value
-
-     var daysSinceLastRequest = 0
-     if let previousRequest = Preferences.LegacyReview.lastReviewDate.value {
-       daysSinceLastRequest = Calendar.current.dateComponents([.day], from: previousRequest, to: date).day ?? 0
-     } else {
-       daysSinceLastRequest = legacyMinimumDaysBetweenReviewRequest
-     }
-
-     if launchCount <= threshold || daysSinceLastRequest < legacyMinimumDaysBetweenReviewRequest {
-       return false
-     }
-
-     Preferences.LegacyReview.lastReviewDate.value = date
-
-     switch threshold {
-     case legacyFirstThreshold:
-       Preferences.LegacyReview.threshold.value = legacySecondThreshold
-     case legacySecondThreshold:
-       Preferences.LegacyReview.threshold.value = legacyLastThreshold
-     default:
-       break
-     }
-
-     return legacyAppReviewLogicEnabled
-   }
-  
-  // MARK: Review Handler Methods
-  
-  /// Method that handles If App Rating should be requested and request if condition is sucessful
-  /// - Parameter currentScene: Current Scene where App Rating will be asked
-  public func handleAppReview(for controller: UIViewController) {
-    if shouldRequestReview() {
-      if AppConstants.buildChannel.isPublic {
-        // Request Review when the main-queue is free or on the next cycle.
-        DispatchQueue.main.async {
-          guard let windowScene = controller.currentScene else { return }
-          SKStoreReviewController.requestReview(in: windowScene)
-        }
-      } else {
+  public func handleAppReview(for logicType: AppReviewLogicType, using controller: UIViewController) {
+    guard logicType == activeAppReviewLogicType else {
+      return
+    }
+    
+    if shouldRequestReview(for: logicType) {
+      guard AppConstants.buildChannel.isPublic else {
         let alert = UIAlertController(
           title: "Show App Rating",
-          message: "Criteria is satified to Request Review",
+          message: "Criteria is satified to Request Review for Logic Type \(logicType)",
           preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         controller.present(alert, animated: true)
+        
+        return
+      }
+      
+      DispatchQueue.main.async {
+        if let windowScene = controller.currentScene {
+          SKStoreReviewController.requestReview(in: windowScene)
+        }
       }
     }
   }
   
+  // MARK: Review Request Inquiry
+
+  public func shouldRequestReview(for logicType: AppReviewLogicType, date: Date = Date()) -> Bool {
+    // All of the main criterias should be met before additional situation can be checked
+    let mainCriteriaSatisfied = logicType.mainCriteria.allSatisfy({ criteria in
+      checkMainCriteriaSatisfied(for: criteria, date: date)
+    })
+    
+    var subCriteriaSatisfied = true
+    if !logicType.subCriteria.isEmpty {
+      // Additionally if all main criterias are accomplished one of following conditions must also be met
+      if mainCriteriaSatisfied {
+        subCriteriaSatisfied = logicType.subCriteria.contains(where: checkSubCriteriaSatisfied(for:))
+      }
+    }
+    
+    return mainCriteriaSatisfied && subCriteriaSatisfied
+  }
+  
+  // MARK: Review Criteria Process
+
   /// Method for handling changes to main criteria inside the various parts in application
   /// - Parameter mainCriteria: Type of the main Criteria
   public func processMainCriteria(for mainCriteria: AppReviewMainCriteriaType) {
@@ -112,7 +156,7 @@ public class AppReviewManager: ObservableObject {
       var daysInUse = Preferences.Review.daysInUse.value
       
       daysInUse.append(Date())
-      daysInUse = daysInUse.filter { $0 < Date().addingTimeInterval(daysInUseMaxPeriod) }
+      daysInUse = daysInUse.filter { $0 < Date().addingTimeInterval(Constants.daysInUseMaxPeriod) }
       
       Preferences.Review.daysInUse.value = daysInUse
     default:
@@ -138,34 +182,59 @@ public class AppReviewManager: ObservableObject {
     }
   }
   
-  /// Method checking If all main criterias are handled including at least one additional sub-criteria
-  /// - Returns: Boolean value showing If App RAting should be requested
-  func shouldRequestReview() -> Bool {
-    var subCriteriaSatisfied = false
-        
-    // All of the main criterias should be met before additional situation can be checked
-    let mainCriteriaSatisfied = AppReviewMainCriteriaType.allCases.allSatisfy(checkMainCriteriaSatisfied(for:))
-    
-    // Additionally if all main criterias are accomplished one of following conditions must also be met
-    if mainCriteriaSatisfied {
-      // One of the sub criterias also should be satisfied
-      subCriteriaSatisfied = AppReviewSubCriteriaType.allCases.contains(where: checkSubCriteriaSatisfied(for:))
-    }
-    
-    return legacyAppReviewLogicEnabled ? false : mainCriteriaSatisfied && subCriteriaSatisfied
-  }
-  
   /// This method is for checking App Review Sub Criteria is satisfied for a type
   /// - Parameter type: Main-criteria type
   /// - Returns:Boolean value showing particular criteria is satisfied
-  private func checkMainCriteriaSatisfied(for type: AppReviewMainCriteriaType) -> Bool {
+  private func checkMainCriteriaSatisfied(for type: AppReviewMainCriteriaType, date: Date = Date()) -> Bool {
     switch type {
+    case .threshold:
+      let launchCount = Preferences.Review.launchCount.value
+      let threshold = Preferences.Review.threshold.value
+
+      var daysSinceLastRequest = 0
+      if let previousRequest = Preferences.Review.lastReviewDate.value {
+        daysSinceLastRequest = Calendar.current.dateComponents([.day], from: previousRequest, to: date).day ?? 0
+      } else {
+        daysSinceLastRequest = Constants.minimumDaysBetweenReviewRequest
+      }
+
+      if launchCount <= threshold || daysSinceLastRequest < Constants.minimumDaysBetweenReviewRequest {
+        return false
+      }
+
+      Preferences.Review.lastReviewDate.value = date
+
+      switch threshold {
+      case Constants.firstThreshold:
+        Preferences.Review.threshold.value = Constants.secondThreshold
+      case Constants.secondThreshold:
+        Preferences.Review.threshold.value = Constants.lastThreshold
+      default:
+        break
+      }
+
+      return true
     case .launchCount:
-      return Preferences.Review.launchCount.value >= launchCountLimit
+      return Preferences.Review.launchCount.value >= Constants.launchCountLimit
     case .daysInUse:
-      return Preferences.Review.daysInUse.value.count >= daysInUseRequiredPeriod
+      return Preferences.Review.daysInUse.value.count >= Constants.daysInUseRequiredPeriod
     case .sessionCrash:
       return !(!Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug)
+    case .daysInBetweenReview:
+      var daysSinceLastRequest = 0
+      if let previousRequest = Preferences.Review.lastReviewDate.value {
+        daysSinceLastRequest = Calendar.current.dateComponents([.day], from: previousRequest, to: date).day ?? 0
+      } else {
+        Preferences.Review.lastReviewDate.value = date
+        return true
+      }
+
+      if daysSinceLastRequest < Constants.revisedMinimumDaysBetweenReviewRequest {
+        return false
+      }
+
+      Preferences.Review.lastReviewDate.value = date
+      return true
     }
   }
   
@@ -175,7 +244,7 @@ public class AppReviewManager: ObservableObject {
   private func checkSubCriteriaSatisfied(for type: AppReviewSubCriteriaType) -> Bool {
     switch type {
     case .numberOfBookmarks:
-      return Preferences.Review.numberBookmarksAdded.value >= bookmarksCountLimit
+      return Preferences.Review.numberBookmarksAdded.value >= Constants.bookmarksCountLimit
     case .paidVPNSubscription:
       if case .purchased(_) = BraveVPN.vpnState {
         return true
@@ -185,9 +254,9 @@ public class AppReviewManager: ObservableObject {
       guard let connectedDappDate = Preferences.Review.dateWalletConnectedToDapp.value else {
         return false
       }
-      return Date() < connectedDappDate.addingTimeInterval(dappConnectionPeriod)
+      return Date() < connectedDappDate.addingTimeInterval(Constants.dappConnectionPeriod)
     case .numberOfPlaylistItems:
-      return Preferences.Review.numberPlaylistItemsAdded.value >= playlistCountLimit
+      return Preferences.Review.numberPlaylistItemsAdded.value >= Constants.playlistCountLimit
     case .syncEnabledWithTabSync:
       return Preferences.Chromium.syncEnabled.value && Preferences.Chromium.syncOpenTabsEnabled.value
     }

@@ -15,6 +15,7 @@ class AppReviewManagerTests: XCTestCase {
     case launchCount
     case daysInUse
     case sessionCrash
+    case daysInBetweenReview
   }
   
   private enum SubCriteriaType {
@@ -37,14 +38,16 @@ class AppReviewManagerTests: XCTestCase {
     resetAppReviewConstants()
   }
 
-  func testPassingMainCriteriasPassingSubCriteria() {
+  func testRevisedReviewPassingMainCriteriasPassingSubCriteria() {
     // Paid VPN Subcription
     resetAppReviewConstants()
     
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .paidVPNSubscription)
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview())
+    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
     
     // Number Of Bookmarks
     resetAppReviewConstants()
@@ -52,7 +55,10 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .numberOfBookmarks)
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview())
+    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+
     
     // Sync Tab Sync Enabled
     resetAppReviewConstants()
@@ -60,42 +66,65 @@ class AppReviewManagerTests: XCTestCase {
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .syncEnabledWithTabSync)
     
-    // Number Of Plasylist Items
-    XCTAssert(AppReviewManager.shared.shouldRequestReview())
+    // Number Of Playlist Items
+    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+
     
     resetAppReviewConstants()
     
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: .numberOfPlaylistItems)
     
-    XCTAssert(AppReviewManager.shared.shouldRequestReview())
+    XCTAssert(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
   }
   
-  func testFailigMainCriteriaPassingVPNSubCriteria() {
+  func testRevisedReviewFailigMainCriteriaPassingVPNSubCriteria() {
     resetAppReviewConstants()
     
     generateMainCriterias(passing: false, failingCriteria: nil)
     generateSubCriterias(failing: false, passingCriteria: nil)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview())
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
   }
   
-  func testPassingMainCriteriaFailingVPNSubCriteria() {
+  func testRevisedReviewPassingMainCriteriaFailingVPNSubCriteria() {
     resetAppReviewConstants()
     
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: true, passingCriteria: nil)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview())
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+
   }
   
-  func testFailigMainCriteriaFailingVPNSubCriteria() {
+  func testRevisedReviewFailigMainCriteriaFailingVPNSubCriteria() {
     resetAppReviewConstants()
     
     generateMainCriterias(passing: true, failingCriteria: nil)
     generateSubCriterias(failing: true, passingCriteria: nil)
     
-    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview())
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
+  }
+  
+  func testRevisedReviewFailingMainCriteriaDaysInBetween() {
+    resetAppReviewConstants()
+    
+    generateMainCriterias(passing: false, failingCriteria: .daysInBetweenReview)
+    generateSubCriterias(failing: false, passingCriteria: .numberOfBookmarks)
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revised))
+    
+    XCTAssertFalse(AppReviewManager.shared.shouldRequestReview(for: .revisedCrossPlatform))
   }
   
   private func resetAppReviewConstants() {
@@ -109,6 +138,7 @@ class AppReviewManagerTests: XCTestCase {
     Preferences.Review.numberPlaylistItemsAdded.reset()
     Preferences.Chromium.syncEnabled.reset()
     Preferences.Chromium.syncOpenTabsEnabled.reset()
+    Preferences.Review.lastReviewDate.value = nil
   }
   
   private func generateDaysOfUse(active: Bool) {
@@ -132,6 +162,7 @@ class AppReviewManagerTests: XCTestCase {
       Preferences.Review.launchCount.value = 5
       Preferences.AppState.backgroundedCleanly.value = true
       generateDaysOfUse(active: true)
+      Preferences.Review.lastReviewDate.value = nil
       return
     }
     
@@ -141,14 +172,22 @@ class AppReviewManagerTests: XCTestCase {
         Preferences.Review.launchCount.value = 3
         Preferences.AppState.backgroundedCleanly.value = true
         generateDaysOfUse(active: true)
+        Preferences.Review.lastReviewDate.value = nil
       case .sessionCrash:
         Preferences.Review.launchCount.value = 5
         Preferences.AppState.backgroundedCleanly.value = false
         generateDaysOfUse(active: true)
+        Preferences.Review.lastReviewDate.value = nil
       case .daysInUse:
         Preferences.Review.launchCount.value = 5
         Preferences.AppState.backgroundedCleanly.value = true
         generateDaysOfUse(active: false)
+        Preferences.Review.lastReviewDate.value = nil
+      case .daysInBetweenReview:
+        Preferences.Review.launchCount.value = 5
+        Preferences.AppState.backgroundedCleanly.value = true
+        generateDaysOfUse(active: false)
+        Preferences.Review.lastReviewDate.value = Date()
       }
     }
   }

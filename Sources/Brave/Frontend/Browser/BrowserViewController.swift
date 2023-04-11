@@ -607,6 +607,9 @@ public class BrowserViewController: UIViewController {
     
     maybeRecordInitialShieldsP3A()
     recordVPNUsageP3A(vpnEnabled: BraveVPN.isConnected)
+    
+    // Revised Review Handling
+    AppReviewManager.shared.handleAppReview(for: .revisedCrossPlatform, using: self)
   }
 
   private func setupAdsNotificationHandler() {
@@ -848,13 +851,7 @@ public class BrowserViewController: UIViewController {
     updateToolbarStateForTraitCollection(self.traitCollection)
     
     // Legacy Review Handling
-    if AppConstants.buildChannel.isPublic && AppReviewManager.shared.legacyShouldRequestReview() {
-      // Request Review when the main-queue is free or on the next cycle.
-      DispatchQueue.main.async {
-        guard let windowScene = self.currentScene else { return }
-        SKStoreReviewController.requestReview(in: windowScene)
-      }
-    }
+    AppReviewManager.shared.handleAppReview(for: .legacy, using: self)
     
     // Adding Screenshot Service Delegate to browser to fetch full screen webview screenshots
     currentScene?.screenshotService?.delegate = self
@@ -944,14 +941,16 @@ public class BrowserViewController: UIViewController {
       })
     
     appReviewCancelable = AppReviewManager.shared
-      .$isReviewRequired
+      .$isRevisedReviewRequired
       .removeDuplicates()
-      .sink(receiveValue: { [weak self] isReviewRequired in
+      .sink(receiveValue: { [weak self] isRevisedReviewRequired in
         guard let self = self else { return }
-        if isReviewRequired {
+        if isRevisedReviewRequired {
+          AppReviewManager.shared.isRevisedReviewRequired = false
+          
           // Handle App Rating
           // User made changes to the Brave News sources (tapped close)
-          AppReviewManager.shared.handleAppReview(for: self)
+          AppReviewManager.shared.handleAppReview(for: .revised, using: self)
         }
       })
     
@@ -2031,7 +2030,7 @@ public class BrowserViewController: UIViewController {
             FavoritesHelper.add(url: url, title: tab?.displayTitle)
             // Handle App Rating
             // Check for review condition after adding a favorite
-            AppReviewManager.shared.handleAppReview(for: self)
+            AppReviewManager.shared.handleAppReview(for: .revised, using: self)
           })
       }
 

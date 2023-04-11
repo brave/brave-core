@@ -160,7 +160,7 @@ class NewTabPageViewController: UIViewController {
             
             // Handle App Rating
             // User finished viewing the privacy report (tapped close)
-            AppReviewManager.shared.handleAppReview(for: self)
+            AppReviewManager.shared.handleAppReview(for: .revised, using: self)
           }
         }
         
@@ -754,7 +754,7 @@ class NewTabPageViewController: UIViewController {
     })
     controller.viewDidDisappear = { [weak self] in
       if Preferences.Review.braveNewsCriteriaPassed.value {
-        AppReviewManager.shared.isReviewRequired = true
+        AppReviewManager.shared.isRevisedReviewRequired = true
         Preferences.Review.braveNewsCriteriaPassed.value = false
       }
       self?.checkForUpdatedFeed()
