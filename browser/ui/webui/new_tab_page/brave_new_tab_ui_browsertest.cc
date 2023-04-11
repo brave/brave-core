@@ -101,9 +101,6 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
   WaitForLoadStop(contents);
 
   std::string inner_text;
-  ASSERT_TRUE(content::ExecuteScriptAndExtractString(
-      contents,
-      "window.domAutomationController.send(document.body.innerText)",
-      &inner_text));
-  ASSERT_EQ("New tab override!", inner_text);
+  ASSERT_EQ("New tab override!",
+            content::EvalJs(contents, "document.body.innerText;"));
 }

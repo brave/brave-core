@@ -38,7 +38,7 @@ const char kEnumerateDevicesScript[] =
     "  devices.forEach(function(device) {"
     "    devicekinds = devicekinds + device.kind + '|';"
     "  });"
-    "  domAutomationController.send(devicekinds);"
+    "  return devicekinds;"
     "})";
 
 class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
@@ -103,13 +103,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
-  template <typename T>
-  std::string ExecScriptGetStr(const std::string& script, T* frame) {
-    std::string value;
-    EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));
-    return value;
-  }
-
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -129,7 +122,7 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   AllowFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   std::string real_value =
-      ExecScriptGetStr(kEnumerateDevicesScript, contents());
+      content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
   ASSERT_NE(real_value, "");
 
   // Farbling level: balanced (default)
@@ -138,7 +131,7 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   std::string balanced_value =
-      ExecScriptGetStr(kEnumerateDevicesScript, contents());
+      content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
   EXPECT_NE(balanced_value, real_value);
 
   // Farbling level: maximum
@@ -146,6 +139,6 @@ IN_PROC_BROWSER_TEST_F(BraveEnumerateDevicesFarblingBrowserTest,
   BlockFingerprinting();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   std::string maximum_value =
-      ExecScriptGetStr(kEnumerateDevicesScript, contents());
+      content::EvalJs(contents(), kEnumerateDevicesScript).ExtractString();
   EXPECT_EQ(balanced_value, maximum_value);
 }

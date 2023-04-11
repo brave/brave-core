@@ -86,13 +86,6 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
         content_settings(), ControlType::DEFAULT, top_level_page_url_);
   }
 
-  template <typename T>
-  std::string ExecScriptGetStr(const std::string& script, T* frame) {
-    std::string value;
-    EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));
-    return value;
-  }
-
   content::WebContents* contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -137,52 +130,26 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   int maximum_length =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
   EXPECT_EQ(maximum_length, 2);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
             "8mTJjRv2");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].filename);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].filename;"),
             "0iZUpzhYrVxgvf2b");
-  EXPECT_EQ(
-      ExecScriptGetStr(
-          "domAutomationController.send(navigator.plugins[0].description);",
-          contents()),
-      "z8eu2Eh36GLs9mTRIMtWyZrdOuf2bNl5");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].description;"),
+            "z8eu2Eh36GLs9mTRIMtWyZrdOuf2bNl5");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].length;"), 1);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0][0].type);",
-                contents()),
-            "");
-  EXPECT_EQ(
-      ExecScriptGetStr(
-          "domAutomationController.send(navigator.plugins[0][0].description);",
-          contents()),
-      "6pc1iZMOHDBny4cOuf2j4FCgYrVpzhYz");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][0].type;"), "");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0][0].description;"),
+            "6pc1iZMOHDBny4cOuf2j4FCgYrVpzhYz");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
             "JjZUxgv");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].filename);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].filename;"),
             "2nyCJECgYrVp7GD");
-  EXPECT_EQ(
-      ExecScriptGetStr(
-          "domAutomationController.send(navigator.plugins[1].description);",
-          contents()),
-      "nb0Do7GLs9mb0DgYzCJMteXq8HiwYUx");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].description;"),
+            "nb0Do7GLs9mb0DgYzCJMteXq8HiwYUx");
   EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].length;"), 1);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1][0].type);",
-                contents()),
-            "");
-  EXPECT_EQ(
-      ExecScriptGetStr(
-          "domAutomationController.send(navigator.plugins[1][0].description);",
-          contents()),
-      "pzhQIECgYzCBny4cOuXLFh3Epc1aseXq");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][0].type;"), "");
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1][0].description;"),
+            "pzhQIECgYzCBny4cOuXLFh3Epc1aseXq");
 }
 
 // Tests that names of built-in plugins get farbled by default
@@ -195,25 +162,17 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   int off_length =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
   EXPECT_EQ(off_length, 2);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
             "Chrome PDF Plugin");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
             "Chrome PDF Viewer");
 
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
             "OpenSource doc Renderer");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[3].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[3].name;"),
             "Chrome doc Viewer");
 }
 
@@ -225,13 +184,9 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   // Farbling level: balanced (default)
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
             "OpenSource doc Renderer");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[3].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[3].name;"),
             "Chrome doc Viewer");
 
   // Farbling level: off
@@ -240,12 +195,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   int off_length =
       content::EvalJs(contents(), kPluginsLengthScript).ExtractInt();
   EXPECT_EQ(off_length, 2);
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[0].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[0].name;"),
             "Chrome PDF Plugin");
-  EXPECT_EQ(ExecScriptGetStr(
-                "domAutomationController.send(navigator.plugins[1].name);",
-                contents()),
+  EXPECT_EQ(content::EvalJs(contents(), "navigator.plugins[1].name;"),
             "Chrome PDF Viewer");
 }
