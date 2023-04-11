@@ -155,8 +155,8 @@ TEST_F(CookiesViewHandlerTest, ImmediateTreeOperation) {
 
   const base::Value::List& cookies_list = data.arg3()->GetList();
   ASSERT_EQ(2UL, cookies_list.size());
-  EXPECT_EQ("cookie", cookies_list[0].FindKey("type")->GetString());
-  EXPECT_EQ("local_storage", cookies_list[1].FindKey("type")->GetString());
+  EXPECT_EQ("cookie", *cookies_list[0].GetDict().FindString("type"));
+  EXPECT_EQ("local_storage", *cookies_list[1].GetDict().FindString("type"));
 }
 
 TEST_F(CookiesViewHandlerTest, HandleGetCookieDetails) {
@@ -175,8 +175,8 @@ TEST_F(CookiesViewHandlerTest, HandleGetCookieDetails) {
 
   const base::Value::List& cookies_list = data.arg3()->GetList();
   ASSERT_EQ(2UL, cookies_list.size());
-  EXPECT_EQ("cookie", cookies_list[0].FindKey("type")->GetString());
-  EXPECT_EQ("local_storage", cookies_list[1].FindKey("type")->GetString());
+  EXPECT_EQ("cookie", *cookies_list[0].GetDict().FindString("type"));
+  EXPECT_EQ("local_storage", *cookies_list[1].GetDict().FindString("type"));
 }
 
 TEST_F(CookiesViewHandlerTest, HandleRemoveAll) {
@@ -214,8 +214,8 @@ TEST_F(CookiesViewHandlerTest, HandleRemoveItem) {
     ASSERT_EQ(2UL, cookies_list.size());
     // Find the entry item associated with the kTestCookie1 cookie.
     for (const auto& cookie : cookies_list) {
-      if (cookie.FindKey("type")->GetString() == "cookie") {
-        node_path_id = cookie.FindKey("idPath")->GetString();
+      if (*cookie.GetDict().FindString("type") == "cookie") {
+        node_path_id = *cookie.GetDict().FindString("idPath");
       }
     }
   }
@@ -245,7 +245,7 @@ TEST_F(CookiesViewHandlerTest, HandleRemoveItem) {
     const content::TestWebUI::CallData& data = *web_ui()->call_data().back();
     const base::Value::List& cookies_list = data.arg3()->GetList();
     ASSERT_EQ(1UL, cookies_list.size());
-    EXPECT_EQ("local_storage", cookies_list[0].FindKey("type")->GetString());
+    EXPECT_EQ("local_storage", *cookies_list[0].GetDict().FindString("type"));
   }
 }
 
