@@ -364,8 +364,10 @@ class PlaylistViewController: UIViewController {
         button.setTitle("1x", for: .normal)
       } else if playbackRate == 1.5 {
         button.setTitle("1.5x", for: .normal)
+      } else if playbackRate == 2.0 {
+        button.setTitle("2.0x", for: .normal)
       } else {
-        button.setTitle("2x", for: .normal)
+        button.setTitle("2.5x", for: .normal)
       }
 
       if !PlaylistCarplayManager.shared.isCarPlayAvailable {

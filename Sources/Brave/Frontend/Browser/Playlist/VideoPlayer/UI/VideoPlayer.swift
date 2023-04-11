@@ -429,6 +429,9 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     } else if playbackRate == 1.5 {
       playbackRate = 2.0
       button.setTitle("2x", for: .normal)
+    } else if playbackRate == 2.0 {
+        playbackRate = 2.5
+        button.setTitle("2.5x", for: .normal)
     } else {
       playbackRate = 1.0
       button.setTitle("1x", for: .normal)
