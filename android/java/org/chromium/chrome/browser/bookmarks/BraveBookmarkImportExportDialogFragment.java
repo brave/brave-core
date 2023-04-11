@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -26,8 +27,8 @@ public class BraveBookmarkImportExportDialogFragment
     private static final String IS_IMPORT = "is_import";
     private static final String IS_SUCCESS = "is_success";
 
-    private boolean isImport;
-    private boolean isSuccess;
+    private boolean mIsImport;
+    private boolean mIsSuccess;
 
     public static BraveBookmarkImportExportDialogFragment newInstance(
             boolean isImport, boolean isSuccess) {
@@ -45,8 +46,8 @@ public class BraveBookmarkImportExportDialogFragment
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            isImport = getArguments().getBoolean(IS_IMPORT);
-            isSuccess = getArguments().getBoolean(IS_SUCCESS);
+            mIsImport = getArguments().getBoolean(IS_IMPORT);
+            mIsSuccess = getArguments().getBoolean(IS_SUCCESS);
         }
     }
 
@@ -68,15 +69,15 @@ public class BraveBookmarkImportExportDialogFragment
         ImageView imageView = view.findViewById(R.id.imageView);
         TextView tvDesc = view.findViewById(R.id.tv_bookmark_desc);
 
-        imageView.setImageResource(isSuccess ? R.drawable.ic_bookmark_import_export_success
-                                             : R.drawable.ic_bookmark_import_export_failed);
+        imageView.setImageResource(mIsSuccess ? R.drawable.ic_bookmark_import_export_success
+                                              : R.drawable.ic_bookmark_import_export_failed);
 
-        if (isImport) {
-            tvDesc.setText(isSuccess ? R.string.import_bookmarks_success
-                                     : R.string.import_bookmarks_failed);
+        if (mIsImport) {
+            tvDesc.setText(mIsSuccess ? R.string.import_bookmarks_success
+                                      : R.string.import_bookmarks_failed);
         } else {
-            tvDesc.setText(isSuccess ? R.string.export_bookmarks_success
-                                     : R.string.export_bookmarks_failed);
+            tvDesc.setText(mIsSuccess ? R.string.export_bookmarks_success
+                                      : R.string.export_bookmarks_failed);
         }
         Button okBtn = view.findViewById(R.id.btn_ok);
         okBtn.setOnClickListener(this);
@@ -85,5 +86,14 @@ public class BraveBookmarkImportExportDialogFragment
     @Override
     public void onClick(View view) {
         dismiss();
+        if (mIsImport) {
+            Activity activity = getActivity();
+            if (activity != null) {
+                activity.finish();
+                activity.overridePendingTransition(0, 0);
+                activity.startActivity(activity.getIntent());
+                activity.overridePendingTransition(0, 0);
+            }
+        }
     }
 }

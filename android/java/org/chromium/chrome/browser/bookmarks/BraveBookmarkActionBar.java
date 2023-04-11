@@ -15,6 +15,7 @@ public class BraveBookmarkActionBar extends BookmarkActionBar {
     private int MENU_IMPORT_ID = 100;
     private int MENU_EXPORT_ID = 101;
 
+    // Overridden Chromium's BookmarkActionBar.mDelegate
     private BookmarkDelegate mDelegate;
 
     public BraveBookmarkActionBar(Context context, AttributeSet attrs) {

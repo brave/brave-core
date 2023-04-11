@@ -42,3 +42,11 @@ void ProfileWriter::AddCreditCard(const std::u16string& name_on_card,
 
   personal_data->AddCreditCard(credit_card);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+namespace first_run {
+bool IsChromeFirstRun() {
+  return false;
+}
+}  // namespace first_run
+#endif  // BUILDFLAG(IS_ANDROID)

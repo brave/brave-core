@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
-index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..dfe868817b6c0f4eb68a884da156377d183da4ad 100644
+index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..1f879ec22fc9496eef3e9f4be93184d9194a194b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
 @@ -11,6 +11,7 @@ import android.util.Pair;
@@ -34,7 +34,7 @@ index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..dfe868817b6c0f4eb68a884da156377d
  
      /**
       * Handler to fetch the bookmarks, titles, urls and folder hierarchy.
-@@ -1005,6 +1009,48 @@ class BookmarkBridge {
+@@ -1005,6 +1009,47 @@ class BookmarkBridge {
          return pairList;
      }
  
@@ -47,7 +47,6 @@ index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..dfe868817b6c0f4eb68a884da156377d
 +                public void run() {
 +                    BraveBookmarkUtils.showBookmarkImportExportDialog(
 +                            (AppCompatActivity) mWindowAndroid.getContext().get(), true, isSuccess);
-+                    ((AppCompatActivity) mWindowAndroid.getContext().get()).recreate();
 +                }
 +            });
 +        }
@@ -83,7 +82,7 @@ index bab4cb91f75cc8a8f3b238d6e658df93b8980af8..dfe868817b6c0f4eb68a884da156377d
      @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
      @NativeMethods
      public interface Natives {
-@@ -1082,5 +1128,9 @@ class BookmarkBridge {
+@@ -1082,5 +1127,9 @@ class BookmarkBridge {
          void reorderChildren(long nativeBookmarkBridge, BookmarkBridge caller, BookmarkId parent,
                  long[] orderedNodes);
          boolean isBookmarked(long nativeBookmarkBridge, GURL url);

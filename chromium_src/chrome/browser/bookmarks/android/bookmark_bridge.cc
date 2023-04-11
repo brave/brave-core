@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <tuple>
+#include <utility>
 
 #include "base/task/thread_pool.h"
 #include "base/threading/thread.h"
@@ -11,7 +11,6 @@
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/utility/importer/bookmark_html_reader.h"
-#include "components/favicon_base/favicon_usage_data.h"
 #include "components/url_formatter/url_fixer.h"
 #include "src/chrome/browser/bookmarks/android/bookmark_bridge.cc"
 #include "ui/android/window_android.h"
@@ -124,25 +123,22 @@ void BookmarkBridge::ImportBookmarks(
 
   std::vector<ImportedBookmarkEntry> bookmarks;
   std::vector<importer::SearchEngineInfo> search_engines;
-  favicon_base::FaviconUsageDataList favicons;
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&BookmarkBridge::ImportBookmarksReader,
                      base::Unretained(this), import_path, bookmarks,
-                     search_engines, favicons),
+                     search_engines /*, favicons*/),
       base::BindOnce(&BookmarkBridge::ImportBookmarksImpl,
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BookmarkBridge::ImportBookmarksImpl(
-    std::tuple<std::vector<ImportedBookmarkEntry>,
-               std::vector<importer::SearchEngineInfo>,
-               favicon_base::FaviconUsageDataList> importedItems) {
+    std::pair<std::vector<ImportedBookmarkEntry>,
+              std::vector<importer::SearchEngineInfo>> importedItems) {
   std::vector<ImportedBookmarkEntry> bookmarks = get<0>(importedItems);
   std::vector<importer::SearchEngineInfo> search_engines =
       get<1>(importedItems);
-  favicon_base::FaviconUsageDataList favicons = get<2>(importedItems);
   auto* writer = new ProfileWriter(profile_);
 
   if (!bookmarks.empty()) {
@@ -161,10 +157,6 @@ void BookmarkBridge::ImportBookmarksImpl(
     writer->AddKeywords(std::move(owned_template_urls), false);
   }
 
-  if (!favicons.empty()) {
-    writer->AddFavicons(favicons);
-  }
-
   JNIEnv* env = AttachCurrentThread();
   ScopedJavaLocalRef<jobject> obj =
       ScopedJavaLocalRef<jobject>(java_bookmark_model_);
@@ -175,21 +167,19 @@ void BookmarkBridge::ImportBookmarksImpl(
   Java_BookmarkBridge_bookmarksImported(env, obj, !bookmarks.empty());
 }
 
-std::tuple<std::vector<ImportedBookmarkEntry>,
-           std::vector<importer::SearchEngineInfo>,
-           favicon_base::FaviconUsageDataList>
+std::pair<std::vector<ImportedBookmarkEntry>,
+          std::vector<importer::SearchEngineInfo>>
 BookmarkBridge::ImportBookmarksReader(
     std::u16string import_path,
     std::vector<ImportedBookmarkEntry> bookmarks,
-    std::vector<importer::SearchEngineInfo> search_engines,
-    favicon_base::FaviconUsageDataList favicons) {
+    std::vector<importer::SearchEngineInfo> search_engines) {
   base::FilePath import_path_ = base::FilePath::FromUTF16Unsafe(import_path);
   bookmark_html_reader::ImportBookmarksFile(
       base::RepeatingCallback<bool(void)>(),
       base::BindRepeating(internal::CanImportURL), import_path_, &bookmarks,
-      &search_engines, &favicons);
+      &search_engines, nullptr);
 
-  return std::make_tuple(bookmarks, search_engines, favicons);
+  return std::make_pair(bookmarks, search_engines);
 }
 
 void BookmarkBridge::ExportBookmarks(
@@ -207,9 +197,10 @@ void BookmarkBridge::ExportBookmarks(
 
   std::u16string export_path =
       base::android::ConvertJavaStringToUTF16(env, j_export_path);
-  base::FilePath export_path_ = base::FilePath::FromUTF16Unsafe(export_path);
+  base::FilePath file_export_path =
+      base::FilePath::FromUTF16Unsafe(export_path);
 
-  BookmarksExportObserver* observer_ = new FileBookmarksExportObserver(obj);
+  BookmarksExportObserver* observer = new FileBookmarksExportObserver(obj);
 
-  bookmark_html_writer::WriteBookmarks(profile_, export_path_, observer_);
+  bookmark_html_writer::WriteBookmarks(profile_, file_export_path, observer);
 }

@@ -14,6 +14,7 @@ import org.chromium.ui.base.ActivityWindowAndroid;
 import org.chromium.ui.base.IntentRequestTracker;
 
 public class BraveBookmarkActivity extends BookmarkActivity {
+    // Overridden Chromium's BookmarkActivity.mBookmarkManager
     private BookmarkManager mBookmarkManager;
     private ActivityWindowAndroid mWindowAndroid;
 

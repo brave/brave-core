@@ -1154,9 +1154,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_EXPORT_BOOKMARKS" desc="Export Bookmarks menu item text for the bookmark.">
         Export bookmarks
       </message>
-      <!-- <message name="IDS_IMPORT_BOOKMARKS_SELECT_FILE" desc="Import Bookmarks file chooser text">
+      <message name="IDS_IMPORT_BOOKMARKS_SELECT_FILE" desc="Import Bookmarks file chooser text">
         Select a File to Import bookmarks
-      </message> -->
+      </message>
       <message name="IDS_IMPORT_BOOKMARKS_SUCCESS" desc="Import Bookmarks success text message.">
         Bookmarks imported successfully.
       </message>

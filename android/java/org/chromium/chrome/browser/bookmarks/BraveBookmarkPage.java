@@ -13,6 +13,7 @@ import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
 
 public class BraveBookmarkPage extends BookmarkPage {
+    // Overridden Chromium's BookmarkPage.mManager
     private BookmarkManager mManager;
 
     public BraveBookmarkPage(ComponentName componentName, SnackbarManager snackbarManager,

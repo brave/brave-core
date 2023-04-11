@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.OpenableColumns;
 
@@ -19,7 +20,6 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.ui.base.ActivityWindowAndroid;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.base.WindowAndroid;
 
 import java.io.File;
@@ -28,7 +28,11 @@ import java.io.InputStream;
 
 public class BraveBookmarkManager extends BookmarkManager implements BraveBookmarkDelegate {
     private ActivityWindowAndroid mWindowAndroid;
+
+    // Overridden Chromium's BookmarkManager.mBookmarkModel
     private BookmarkModel mBookmarkModel;
+
+    // Overridden Chromium's BookmarkManager.mContext
     private Context mContext;
     private static final String TAG = "BraveBookmarkManager";
 
@@ -47,7 +51,7 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
             return;
         }
 
-        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             doImportBookmarks();
         } else {
             if (mWindowAndroid.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -59,6 +63,8 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                             if (grantResults.length >= 1
                                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                                 doImportBookmarks();
+                            } else {
+                                Log.e("tapan", "else import bookmarks");
                             }
                         });
             }
@@ -69,8 +75,9 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("text/html");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        if (mWindowAndroid.showIntent(
-                    Intent.createChooser(intent, "R.string.import_bookmarks_select_file"),
+        if (mWindowAndroid.showIntent(Intent.createChooser(intent,
+                                              mContext.getResources().getString(
+                                                      R.string.import_bookmarks_select_file)),
                     new WindowAndroid.IntentCallback() {
                         @Override
                         public void onIntentCompleted(int resultCode, Intent results) {
@@ -88,15 +95,13 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                                             mContext.getContentResolver().openInputStream(
                                                     results.getData());
                                     FileOutputStream outputStream = new FileOutputStream(file);
-                                    int read = 0;
                                     int maxBufferSize = 1 * 1024 * 1024;
                                     int bytesAvailable = inputStream.available();
                                     int bufferSize = Math.min(bytesAvailable, maxBufferSize);
                                     byte[] buffers = new byte[bufferSize];
-                                    int k;
-                                    while ((k = inputStream.read(buffers)) != -1) {
-                                        read = k;
-                                        outputStream.write(buffers, 0, read);
+                                    int byteRead;
+                                    while ((byteRead = inputStream.read(buffers)) != -1) {
+                                        outputStream.write(buffers, 0, byteRead);
                                     }
                                     inputStream.close();
                                     outputStream.close();
@@ -118,7 +123,7 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
             return;
         }
 
-        if (DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             doExportBookmarks();
         } else {
             if (mWindowAndroid.hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -130,6 +135,8 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                             if (grantResults.length >= 1
                                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                                 doExportBookmarks();
+                            } else {
+                                Log.e("tapan", "else export bookmarks");
                             }
                         });
             }
