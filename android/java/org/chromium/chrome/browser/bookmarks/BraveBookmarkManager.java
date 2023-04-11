@@ -24,6 +24,7 @@ import org.chromium.ui.base.WindowAndroid;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 public class BraveBookmarkManager extends BookmarkManager implements BraveBookmarkDelegate {
@@ -91,21 +92,25 @@ public class BraveBookmarkManager extends BookmarkManager implements BraveBookma
                                     cursor.moveToFirst();
                                     String name = cursor.getString(nameIndex);
                                     File file = new File(mContext.getFilesDir(), name);
-                                    InputStream inputStream =
-                                            mContext.getContentResolver().openInputStream(
-                                                    results.getData());
-                                    FileOutputStream outputStream = new FileOutputStream(file);
-                                    int maxBufferSize = 1 * 1024 * 1024;
-                                    int bytesAvailable = inputStream.available();
-                                    int bufferSize = Math.min(bytesAvailable, maxBufferSize);
-                                    byte[] buffers = new byte[bufferSize];
-                                    int byteRead;
-                                    while ((byteRead = inputStream.read(buffers)) != -1) {
-                                        outputStream.write(buffers, 0, byteRead);
+                                    try (InputStream inputStream =
+                                                    mContext.getContentResolver().openInputStream(
+                                                            results.getData());
+                                            FileOutputStream outputStream =
+                                                    new FileOutputStream(file)) {
+                                        int maxBufferSize = 1 * 1024 * 1024;
+                                        int bytesAvailable = inputStream.available();
+                                        int bufferSize = Math.min(bytesAvailable, maxBufferSize);
+                                        byte[] buffers = new byte[bufferSize];
+                                        int byteRead;
+                                        while ((byteRead = inputStream.read(buffers)) != -1) {
+                                            outputStream.write(buffers, 0, byteRead);
+                                        }
+                                        mBookmarkModel.importBookmarks(
+                                                mWindowAndroid, file.getPath());
+                                    } catch (IOException e) {
+                                        Log.e(TAG,
+                                                "doImportBookmarks IOException:" + e.getMessage());
                                     }
-                                    inputStream.close();
-                                    outputStream.close();
-                                    mBookmarkModel.importBookmarks(mWindowAndroid, file.getPath());
 
                                 } catch (Exception e) {
                                     Log.e(TAG, "doImportBookmarks:" + e.getMessage());
