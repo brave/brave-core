@@ -102,8 +102,9 @@ class APIRequestHelper {
   // conversion_callback is added which receives raw response and can perform
   // necessary conversions.
   //
-  // This method will be deprecated soon,
-  // thttps://github.com/brave/brave-browser/issues/29611
+  // This method will be deprecated soon, please use the one underneath with
+  // APIRequestOption parameter.
+  // https://github.com/brave/brave-browser/issues/29611
   Ticket Request(
       const std::string& method,
       const GURL& url,
