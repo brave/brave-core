@@ -25,7 +25,7 @@ def GetProcessOutput(args: List[str],
                      check=False,
                      timeout: Optional[int] = None) -> Tuple[bool, str]:
   if logging.root.isEnabledFor(logging.DEBUG):
-    logging.debug('Run binary: %s, cwd = %s', ' '.join(args), cwd)
+    logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
     process = subprocess.Popen(args,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT,
@@ -43,16 +43,17 @@ def GetProcessOutput(args: List[str],
       while True:
         assert process.stdout is not None
         line = process.stdout.readline()
-        output += line
-        logging.debug(line.rstrip())
-        if process.poll() is not None:
+        if line:
+          output += line
+          logging.debug(line.rstrip())
+        if not line and process.poll() is not None:
           break
     finally:
       if timer:
         timer.cancel()
     rc = process.poll()
-    logging.debug('Binary output: %s', output)
     if check and rc != 0:
+      logging.debug('Binary failed. Exit code: %d', rc)
       if not rc:
         rc = -1
       raise subprocess.CalledProcessError(rc, args, output)
