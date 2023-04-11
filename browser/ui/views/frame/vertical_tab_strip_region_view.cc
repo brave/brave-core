@@ -66,10 +66,6 @@ class ToggleButton : public BraveNewTabButton {
                           std::move(std::move(callback))),
         region_view_(region_view),
         tab_strip_(region_view_->tab_strip()) {
-    // TODO(sangwoo.ko) Temporary workaround before we have a proper tooltip
-    // text.
-    // https://github.com/brave/brave-browser/issues/24717
-    SetProperty(views::kSkipAccessibilityPaintChecks, true);
     SetPreferredSize(gfx::Size{GetIconWidth(), GetIconWidth()});
   }
   ~ToggleButton() override = default;
@@ -105,6 +101,15 @@ class ToggleButton : public BraveNewTabButton {
 
   void PaintFill(gfx::Canvas* canvas) const override {
     // dont' fill
+  }
+
+  std::u16string GetTooltipText(const gfx::Point& p) const override {
+    if (region_view_->state() == VerticalTabStripRegionView::State::kExpanded) {
+      return l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_MINIMIZE);
+    }
+
+    // When it's minimized or floating.
+    return l10n_util::GetStringUTF16(IDS_VERTICAL_TABS_EXPAND);
   }
 
 #if DCHECK_IS_ON()
@@ -251,10 +256,10 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
     // Set additional horizontal inset for '+' icon.
     if (region_view_->state() ==
         VerticalTabStripRegionView::State::kCollapsed) {
-      // // When |text_| is empty, the vertical tab strip could be minimized.
-      // // In this case we should align icon center.
-      // // TODO(sko) Should we keep this padding when it's transitioned to
-      // // floating mode?
+      // When |text_| is empty, the vertical tab strip could be minimized.
+      // In this case we should align icon center.
+      // TODO(sko) Should we keep this padding when it's transitioned to
+      // floating mode?
       SetImageHorizontalAlignment(
           views::ImageButton::HorizontalAlignment::ALIGN_CENTER);
     } else {
