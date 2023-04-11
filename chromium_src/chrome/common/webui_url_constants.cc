@@ -4,12 +4,18 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "chrome/common/webui_url_constants.h"
 
-#define kChromeUIAttributionInternalsHost                                    \
-  kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost,    \
-      kIPFSWebUIHost, kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost, \
-      kWalletPageHost, kTorInternalsHost
+#define kChromeUIAttributionInternalsHost                                     \
+  kChromeUIAttributionInternalsHost, kAdblockHost, kAdblockInternalsHost,     \
+      kRewardsPageHost, kRewardsInternalsHost, kWelcomeHost, kWalletPageHost, \
+      kTorInternalsHost
+
+#if BUILDFLAG(ENABLE_IPFS_WEBUI)
+#define kChromeUIBlobInternalsHost kChromeUIBlobInternalsHost, kIPFSWebUIHost
+#endif
+
 #define kChromeUIPerformanceSettingsURL kChromeUIPerformanceSettingsURL_UnUsed
 #define kPerformanceSubPage kPerformanceSubPage_UnUsed
 
@@ -17,6 +23,9 @@
 
 #undef kPerformanceSubPage
 #undef kChromeUIPerformanceSettingsURL
+#if BUILDFLAG(ENABLE_IPFS_WEBUI)
+#undef kChromeUIBlobInternalsHost
+#endif
 #undef kChromeUIAttributionInternalsHost
 
 namespace chrome {

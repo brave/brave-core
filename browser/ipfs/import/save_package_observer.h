@@ -10,7 +10,7 @@
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/download_manager.h"
 
-// Tracks downloading process for a pacakge and notifies when it is completed.
+// Tracks downloading process for a package and notifies when it is completed.
 class SavePackageFinishedObserver : public download::DownloadItem::Observer,
                                     public content::DownloadManager::Observer {
  public:

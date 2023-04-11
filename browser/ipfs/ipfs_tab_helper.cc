@@ -67,7 +67,9 @@ IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
       IpfsImportController(web_contents),
+#endif
       content::WebContentsUserData<IPFSTabHelper>(*web_contents) {
   pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   auto* storage_partition =

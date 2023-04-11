@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_CONSTANTS_WEBUI_URL_CONSTANTS_H_
 
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 extern const char kAdblockHost[];
 extern const char kAdblockInternalsHost[];
 extern const char kAdblockJS[];
+#if BUILDFLAG(ENABLE_IPFS_WEBUI)
 extern const char kIPFSWebUIHost[];
 extern const char kIPFSWebUIURL[];
+#endif
 extern const char kWebcompatReporterHost[];
 extern const char kRewardsPageHost[];
 extern const char kRewardsInternalsHost[];

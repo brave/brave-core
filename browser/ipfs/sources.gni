@@ -10,11 +10,15 @@ brave_browser_ipfs_sources = []
 brave_browser_ipfs_deps = []
 
 if (enable_ipfs) {
+  if (enable_ipfs_local_node) {
+    brave_browser_ipfs_sources += [
+      "//brave/browser/ipfs/import/ipfs_import_controller.cc",
+      "//brave/browser/ipfs/import/ipfs_import_controller.h",
+    ]
+  }
   brave_browser_ipfs_sources += [
     "//brave/browser/ipfs/content_browser_client_helper.cc",
     "//brave/browser/ipfs/content_browser_client_helper.h",
-    "//brave/browser/ipfs/import/ipfs_import_controller.cc",
-    "//brave/browser/ipfs/import/ipfs_import_controller.h",
     "//brave/browser/ipfs/import/save_package_observer.cc",
     "//brave/browser/ipfs/import/save_package_observer.h",
     "//brave/browser/ipfs/ipfs_blob_context_getter_factory.cc",

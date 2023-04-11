@@ -56,8 +56,7 @@ source_set("ui") {
       "webui/commands_ui.h",
     ]
   }
-
-  if (enable_ipfs) {
+  if (enable_ipfs_webui) {
     sources += [
       "webui/ipfs_ui.cc",
       "webui/ipfs_ui.h",
@@ -586,9 +585,11 @@ source_set("ui") {
   if (enable_ipfs) {
     deps += [
       "//brave/components/ipfs",
-      "//brave/components/ipfs_ui:generated_resources",
       "//components/component_updater",
     ]
+    if (enable_ipfs_webui) {
+      deps += [ "//brave/components/ipfs_ui:generated_resources" ]
+    }
   }
 
   if (enable_speedreader && !is_android) {

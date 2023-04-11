@@ -19,7 +19,11 @@ bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
 
 bool IsIpfsImportDownloadCreated(content::WebContents* web_contents,
                                  download::DownloadItem* item) {
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   ipfs::IPFSTabHelper* helper =
       ipfs::IPFSTabHelper::FromWebContents(web_contents);
   return (helper && helper->GetImportController()->HasInProgressDownload(item));
+#else
+  return false;
+#endif
 }

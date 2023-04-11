@@ -42,6 +42,9 @@
 #include "ui/message_center/public/cpp/notification_types.h"
 #include "ui/message_center/public/cpp/notifier_id.h"
 
+static_assert(!BUILDFLAG(IS_ANDROID));
+static_assert(BUILDFLAG(ENABLE_IPFS_LOCAL_NODE));
+
 namespace {
 
 // Converts url to directory name:

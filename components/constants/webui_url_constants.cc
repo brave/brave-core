@@ -4,12 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 const char kAdblockHost[] = "adblock";
 const char kAdblockInternalsHost[] = "adblock-internals";
 const char kAdblockJS[] = "brave_adblock.js";
+#if BUILDFLAG(ENABLE_IPFS_WEBUI)
 const char kIPFSWebUIHost[] = "ipfs-internals";
 const char kIPFSWebUIURL[] = "chrome://ipfs-internals/";
+#endif
 const char kWebcompatReporterHost[] = "webcompat";
 const char kRewardsPageHost[] = "rewards";
 const char kRewardsInternalsHost[] = "rewards-internals";

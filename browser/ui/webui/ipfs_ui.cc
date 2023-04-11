@@ -24,6 +24,8 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
 
+static_assert(!BUILDFLAG(IS_ANDROID));
+
 namespace {
 
 std::string GetIPFSUpdaterVersion() {

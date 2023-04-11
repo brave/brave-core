@@ -12,7 +12,11 @@
 #include <vector>
 
 #include "brave/components/ipfs/ipfs_service.h"
+#include "build/build_config.h"
 #include "ui/shell_dialogs/select_file_dialog.h"
+
+static_assert(!BUILDFLAG(IS_ANDROID));
+static_assert(BUILDFLAG(ENABLE_IPFS_LOCAL_NODE));
 
 namespace content {
 class WebContents;

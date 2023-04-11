@@ -16,6 +16,8 @@
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
+static_assert(!BUILDFLAG(IS_ANDROID));
+
 namespace ipfs {
 struct AddressesConfig;
 struct RepoStats;

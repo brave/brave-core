@@ -87,7 +87,7 @@ repack("resources") {
     ]
   }
 
-  if (enable_ipfs) {
+  if (enable_ipfs_webui) {
     deps += [ "//brave/components/ipfs_ui:generated_resources" ]
     sources += [
       "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",

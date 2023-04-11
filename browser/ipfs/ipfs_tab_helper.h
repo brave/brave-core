@@ -11,11 +11,15 @@
 #include <utility>
 #include <vector>
 
-#include "brave/browser/ipfs/import/ipfs_import_controller.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/browser/ipfs/import/ipfs_import_controller.h"
+#endif
 
 namespace content {
 class NavigationHandle;
@@ -30,7 +34,9 @@ class IpfsImportController;
 
 // Determines if IPFS should be active for a given top-level navigation.
 class IPFSTabHelper : public content::WebContentsObserver,
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
                       public IpfsImportController,
+#endif
                       public content::WebContentsUserData<IPFSTabHelper> {
  public:
   IPFSTabHelper(const IPFSTabHelper&) = delete;
@@ -44,9 +50,11 @@ class IPFSTabHelper : public content::WebContentsObserver,
     resolver_ = std::move(resolver);
   }
 
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   IpfsImportController* GetImportController() {
     return static_cast<IpfsImportController*>(this);
   }
+#endif
 
   void SetPageURLForTesting(const GURL& url) {
     current_page_url_for_testing_ = url;

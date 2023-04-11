@@ -140,9 +140,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_navigation_throttle.h"
+#endif
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/browser/ipfs/ipfs_subframe_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -996,7 +999,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   }
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   throttles.insert(
       throttles.begin(),
       ipfs::IpfsSubframeNavigationThrottle::CreateThrottleFor(handle));
