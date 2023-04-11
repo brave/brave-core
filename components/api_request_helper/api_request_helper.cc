@@ -166,14 +166,13 @@ APIRequestHelper::Ticket APIRequestHelper::Download(
     const std::string& payload,
     const std::string& payload_content_type,
     bool auto_retry_on_network_change,
-    bool enable_cache,
     const base::FilePath& path,
     DownloadCallback callback,
     const base::flat_map<std::string, std::string>& headers) {
   auto iter = url_loaders_.insert(
       url_loaders_.begin(),
       CreateLoader({}, url, payload, payload_content_type,
-                   auto_retry_on_network_change, enable_cache,
+                   auto_retry_on_network_change, false /* enable_cache */,
                    false /*allow_http_error_result*/, headers));
   iter->get()->DownloadToFile(
       url_loader_factory_.get(),

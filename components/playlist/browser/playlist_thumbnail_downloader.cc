@@ -64,7 +64,7 @@ void PlaylistThumbnailDownloader::DownloadThumbnail(
   }
 
   auto ticket = request_helper_->Download(
-      thumbnail_url, {}, {}, true, false, target_thumbnail_path,
+      thumbnail_url, {}, {}, true, target_thumbnail_path,
       base::BindOnce(&PlaylistThumbnailDownloader::OnThumbnailDownloaded,
                      base::Unretained(this), id));
   ticket_map_[id] = ticket;
