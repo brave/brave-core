@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
-#define BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
+#ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
+#define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_
 
-#include "brave/components/services/ledger/public/interfaces/ledger_factory.mojom.h"
+#include "brave/components/services/bat_ledger/public/interfaces/ledger_factory.mojom.h"
 #include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -37,4 +37,4 @@ class LedgerFactoryImpl : public mojom::LedgerFactory {
 
 }  // namespace ledger
 
-#endif  // BRAVE_COMPONENTS_SERVICES_LEDGER_LEDGER_FACTORY_IMPL_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_LEDGER_FACTORY_IMPL_H_

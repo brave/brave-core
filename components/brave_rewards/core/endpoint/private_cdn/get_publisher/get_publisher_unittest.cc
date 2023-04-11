@@ -7,22 +7,41 @@
 #include <utility>
 
 #include "base/big_endian.h"
-#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_util.h"
-#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
+#include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=GetPublisherTest.*
 
-using ::testing::_;
-using ::testing::MockFunction;
+namespace ledger {
+namespace endpoint {
+namespace private_cdn {
 
-namespace ledger::endpoint::private_cdn {
-
-class GetPublisherTest : public testing::Test {
+class GetPublisherTest : public BATLedgerTest {
  protected:
+  mojom::Result Request(const std::string& id,
+                        const std::string& prefix,
+                        mojom::ServerPublisherInfoPtr* info) {
+    DCHECK(info);
+    base::RunLoop run_loop;
+    mojom::Result result;
+
+    GetPublisher(GetLedgerImpl())
+        .Request(id, prefix,
+                 [&run_loop, &result, info](
+                     mojom::Result request_result,
+                     mojom::ServerPublisherInfoPtr request_info) {
+                   result = request_result;
+                   *info = std::move(request_info);
+                   run_loop.Quit();
+                 });
+
+    run_loop.Run();
+    return result;
+  }
+
   std::string StringifyChannelResponse(
       const publishers_pb::ChannelResponseList& message) {
     std::string out;
@@ -35,99 +54,78 @@ class GetPublisherTest : public testing::Test {
 
     return out;
   }
-
-  base::test::TaskEnvironment task_environment_;
-  MockLedgerImpl mock_ledger_impl_;
-  GetPublisher get_publisher{&mock_ledger_impl_};
 };
 
 TEST_F(GetPublisherTest, ServerError404) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_NOT_FOUND;
-        std::move(callback).Run(std::move(response));
-      });
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HTTP_NOT_FOUND;
+  AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
+                             mojom::UrlMethod::GET, std::move(response));
 
-  MockFunction<GetPublisherCallback> callback;
-  EXPECT_CALL(callback, Call)
-      .Times(1)
-      .WillOnce([](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-        ASSERT_TRUE(info);
-        EXPECT_EQ(info->publisher_key, "brave.com");
-        EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
-      });
-  get_publisher.Request("brave.com", "ce55", callback.AsStdFunction());
+  mojom::Result result;
+  mojom::ServerPublisherInfoPtr info;
 
-  task_environment_.RunUntilIdle();
+  result = Request("brave.com", "ce55", &info);
+  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->publisher_key, "brave.com");
+  EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
 }
 
 TEST_F(GetPublisherTest, UpholdVerified) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([&](mojom::UrlRequestPtr request, auto callback) {
-        publishers_pb::ChannelResponseList message;
-        auto* channel = message.add_channel_responses();
-        channel->set_channel_identifier("brave.com");
+  publishers_pb::ChannelResponseList message;
+  auto* channel = message.add_channel_responses();
+  channel->set_channel_identifier("brave.com");
 
-        auto* uphold_wallet = channel->add_wallets()->mutable_uphold_wallet();
-        uphold_wallet->set_wallet_state(publishers_pb::UPHOLD_ACCOUNT_KYC);
-        uphold_wallet->set_address("abcd");
+  auto* uphold_wallet = channel->add_wallets()->mutable_uphold_wallet();
+  uphold_wallet->set_wallet_state(publishers_pb::UPHOLD_ACCOUNT_KYC);
+  uphold_wallet->set_address("abcd");
 
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
-        response->body = StringifyChannelResponse(message);
-        std::move(callback).Run(std::move(response));
-      });
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HTTP_OK;
+  response->body = StringifyChannelResponse(message);
 
-  MockFunction<GetPublisherCallback> callback;
-  EXPECT_CALL(callback, Call)
-      .Times(1)
-      .WillOnce([](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-        ASSERT_TRUE(info);
-        EXPECT_EQ(info->publisher_key, "brave.com");
-        EXPECT_EQ(info->status, mojom::PublisherStatus::UPHOLD_VERIFIED);
-        EXPECT_EQ(info->address, "abcd");
-      });
-  get_publisher.Request("brave.com", "ce55", callback.AsStdFunction());
+  AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
+                             mojom::UrlMethod::GET, std::move(response));
 
-  task_environment_.RunUntilIdle();
+  mojom::Result result;
+  mojom::ServerPublisherInfoPtr info;
+
+  result = Request("brave.com", "ce55", &info);
+  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->publisher_key, "brave.com");
+  EXPECT_EQ(info->status, mojom::PublisherStatus::UPHOLD_VERIFIED);
+  EXPECT_EQ(info->address, "abcd");
 }
 
 TEST_F(GetPublisherTest, EmptyWalletAddress) {
-  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
-      .Times(1)
-      .WillOnce([&](mojom::UrlRequestPtr request, auto callback) {
-        publishers_pb::ChannelResponseList message;
-        auto* channel = message.add_channel_responses();
-        channel->set_channel_identifier("brave.com");
+  publishers_pb::ChannelResponseList message;
+  auto* channel = message.add_channel_responses();
+  channel->set_channel_identifier("brave.com");
 
-        auto* uphold_wallet = channel->add_wallets()->mutable_uphold_wallet();
-        uphold_wallet->set_wallet_state(publishers_pb::UPHOLD_ACCOUNT_KYC);
-        uphold_wallet->set_address("");
+  auto* uphold_wallet = channel->add_wallets()->mutable_uphold_wallet();
+  uphold_wallet->set_wallet_state(publishers_pb::UPHOLD_ACCOUNT_KYC);
+  uphold_wallet->set_address("");
 
-        auto response = mojom::UrlResponse::New();
-        response->status_code = net::HTTP_OK;
-        response->body = StringifyChannelResponse(message);
-        std::move(callback).Run(std::move(response));
-      });
+  auto response = mojom::UrlResponse::New();
+  response->status_code = net::HTTP_OK;
+  response->body = StringifyChannelResponse(message);
 
-  MockFunction<GetPublisherCallback> callback;
-  EXPECT_CALL(callback, Call)
-      .Times(1)
-      .WillOnce([](mojom::Result result, mojom::ServerPublisherInfoPtr info) {
-        EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-        ASSERT_TRUE(info);
-        EXPECT_EQ(info->publisher_key, "brave.com");
-        EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
-        EXPECT_EQ(info->address, "");
-      });
-  get_publisher.Request("brave.com", "ce55", callback.AsStdFunction());
+  AddNetworkResultForTesting(GetServerUrl("/publishers/prefixes/ce55"),
+                             mojom::UrlMethod::GET, std::move(response));
 
-  task_environment_.RunUntilIdle();
+  mojom::Result result;
+  mojom::ServerPublisherInfoPtr info;
+
+  result = Request("brave.com", "ce55", &info);
+  EXPECT_EQ(result, mojom::Result::LEDGER_OK);
+  ASSERT_TRUE(info);
+  EXPECT_EQ(info->publisher_key, "brave.com");
+  EXPECT_EQ(info->status, mojom::PublisherStatus::NOT_VERIFIED);
+  EXPECT_EQ(info->address, "");
 }
 
-}  // namespace ledger::endpoint::private_cdn
+}  // namespace private_cdn
+}  // namespace endpoint
+}  // namespace ledger

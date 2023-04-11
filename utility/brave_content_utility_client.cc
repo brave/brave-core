@@ -11,8 +11,8 @@
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "brave/components/services/ledger/ledger_factory_impl.h"
-#include "brave/components/services/ledger/public/interfaces/ledger_factory.mojom.h"
+#include "brave/components/services/bat_ledger/ledger_factory_impl.h"
+#include "brave/components/services/bat_ledger/public/interfaces/ledger_factory.mojom.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/service_factory.h"
 
