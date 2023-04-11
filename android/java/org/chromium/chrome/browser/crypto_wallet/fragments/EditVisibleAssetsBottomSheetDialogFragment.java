@@ -400,7 +400,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                 }
                 if (mSelectedNetwork.coin == CoinType.SOL) {
                     token.isNft = mNftsOnly;
-                    token.decimals = 0;
+                    if (mNftsOnly) {
+                        token.decimals = 0;
+                    }
                 }
                 token.visible = true;
 
