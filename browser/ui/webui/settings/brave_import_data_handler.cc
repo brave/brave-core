@@ -14,6 +14,7 @@
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(IS_MAC)
@@ -24,7 +25,6 @@
 #include "brave/browser/ui/webui/settings/brave_full_disk_access_confirm_dialog_delegate.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tab_modal_confirm_dialog.h"
-#include "content/public/browser/browser_thread.h"
 #endif  // BUILDFLAG(IS_MAC)
 
 namespace {
