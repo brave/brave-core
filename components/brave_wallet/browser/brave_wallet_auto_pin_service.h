@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
-#include "base/task/cancelable_task_tracker.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_pin_service.h"
@@ -77,10 +76,14 @@ class BraveWalletAutoPinService
                Operation operation,
                absl::optional<std::string> service);
     ~IntentData();
+
+    bool Equals(
+        const std::unique_ptr<BraveWalletAutoPinService::IntentData>& other);
   };
 
   void OnAutoPinStatusChanged();
 
+  void ResetLocalState();
   // Iterates through user tokens and manages their pin statuses.
   void Restore();
   void OnTokenListResolved(std::vector<BlockchainTokenPtr>);
@@ -117,6 +120,7 @@ class BraveWalletAutoPinService
   mojo::RemoteSet<mojom::WalletAutoPinServiceObserver> observers_;
 
   base::WeakPtrFactory<BraveWalletAutoPinService> weak_ptr_factory_{this};
+  base::WeakPtrFactory<BraveWalletAutoPinService> tasks_weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
