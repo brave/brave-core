@@ -650,7 +650,8 @@ void BraveBrowserView::OnThemeChanged() {
 
 TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
   if (!base::FeatureList::IsEnabled(tabs::features::kBraveVerticalTabs) ||
-      !tabs::utils::ShouldShowVerticalTabs(browser())) {
+      !tabs::utils::ShouldShowVerticalTabs(browser()) ||
+      WindowFrameUtil::IsWin10TabSearchCaptionButtonEnabled(browser())) {
     return BrowserView::GetTabSearchBubbleHost();
   }
 
