@@ -6,7 +6,10 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments;
 
 import android.app.Activity;
+import android.hardware.biometrics.BiometricPrompt;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,15 +25,19 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 
-import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.BraveWalletP3a;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.ui.widget.Toast;
+
+import java.util.concurrent.Executor;
 
 public class RestoreWalletFragment extends CryptoOnboardingFragment {
     private static final String IS_ONBOARDING = "is_onboarding";
@@ -138,13 +145,45 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     return;
                 }
 
-                proceedWithAStrongPassword(passwordInput, view, recoveryPhraseText);
+                proceedWithAStrongPassword(passwordInput, recoveryPhraseText);
             });
         });
     }
 
-    private void proceedWithAStrongPassword(
-            String passwordInput, View view, EditText recoveryPhraseText) {
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void enableBiometricLogin(String passwordInput) {
+        final BiometricPrompt.AuthenticationCallback authenticationCallback =
+                new BiometricPrompt.AuthenticationCallback() {
+                    private void onNextPage() {
+                        onNextPage.gotoNextPage(true);
+                    }
+
+                    @Override
+                    public void onAuthenticationSucceeded(
+                            BiometricPrompt.AuthenticationResult result) {
+                        super.onAuthenticationSucceeded(result);
+                        KeystoreHelper.useBiometricOnUnlock(passwordInput);
+                        onNextPage();
+                    }
+
+                    @Override
+                    public void onAuthenticationError(int errorCode, CharSequence errString) {
+                        super.onAuthenticationError(errorCode, errString);
+
+                        // Even though we have an error, we allow to continue with password login
+                        if (!TextUtils.isEmpty(errString)) {
+                            android.widget.Toast
+                                    .makeText(getActivity(), errString,
+                                            android.widget.Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        onNextPage();
+                    }
+                };
+        showFingerprintDialog(authenticationCallback);
+    }
+
+    private void proceedWithAStrongPassword(String passwordInput, EditText recoveryPhraseText) {
         String retypePasswordInput = retypePasswordEdittext.getText().toString();
 
         if (!passwordInput.equals(retypePasswordInput)) {
@@ -159,9 +198,16 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                     passwordInput, isLegacyWalletRestoreEnable, result -> {
                         if (result) {
                             Utils.hideKeyboard(getActivity());
-                            onNextPage.gotoNextPage(true);
-                            Utils.setCryptoOnboarding(false);
                             keyringService.notifyWalletBackupComplete();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                                    && Utils.isBiometricAvailable(getContext())) {
+                                // Clear previously set bio-metric credentials
+                                KeystoreHelper.resetBiometric();
+                                enableBiometricLogin(retypePasswordInput);
+                            } else {
+                                onNextPage.gotoNextPage(true);
+                            }
+                            Utils.setCryptoOnboarding(false);
                             Utils.clearClipboard(recoveryPhraseText.getText().toString().trim(), 0);
                             Utils.clearClipboard(passwordInput, 0);
                             Utils.clearClipboard(retypePasswordInput, 0);
@@ -187,5 +233,21 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
         retypePasswordEdittext.getText().clear();
         showRecoveryPhraseCheckbox.setChecked(false);
         restoreLegacyWalletCheckbox.setChecked(false);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    private void showFingerprintDialog(
+            @NonNull final BiometricPrompt.AuthenticationCallback authenticationCallback) {
+        assert getActivity() != null;
+        Executor executor = ContextCompat.getMainExecutor(getActivity());
+        new BiometricPrompt.Builder(getActivity())
+                .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
+                .setDescription(getResources().getString(R.string.enable_fingerprint_text))
+                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
+                        (dialog, which)
+                                -> authenticationCallback.onAuthenticationError(
+                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                .build()
+                .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
 }
