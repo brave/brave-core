@@ -42,7 +42,6 @@ import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -233,11 +232,7 @@ public class BraveVpnUtils {
         } catch (Exception ex) {
             Log.e(TAG, "resetProfileConfiguration : " + ex.getMessage());
         }
-        BraveVpnPrefUtils.setHostname("");
-        BraveVpnPrefUtils.setHostnameDisplay("");
-        BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
-        BraveVpnPrefUtils.setExcludedPackages(Collections.emptySet());
         dismissProgressDialog();
     }
 
