@@ -66,6 +66,7 @@
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "services/data_decoder/public/cpp/json_sanitizer.h"
@@ -1782,13 +1783,13 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
-    return;
+    return std::move(callback).Run(false, "");
   }
 
   auto it = current_media_fetchers_.find(url);
   if (it != current_media_fetchers_.end()) {
     BLOG(1, "Already fetching favicon");
-    return;
+    return std::move(callback).Run(false, "");
   }
 
   BitmapFetcherService* image_service =
@@ -1796,10 +1797,21 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
   if (image_service) {
     current_media_fetchers_[url] = image_service->RequestImage(
         parsedUrl,
-        base::BindOnce(&RewardsServiceImpl::OnFetchFavIconCompleted,
-                       AsWeakPtr(), std::move(callback), favicon_key,
-                       parsedUrl),
+        base::BindOnce(
+            &RewardsServiceImpl::OnFetchFavIconCompleted, AsWeakPtr(),
+            // Internally, BitmapFetcherService::OnFetchComplete() passes the
+            // bitmap to the request via NotifyImageChanged(), and then drops
+            // the request. BitmapFetcherRequest::NotifyImageChanged(), however,
+            // fails to call the callback if !bitmap || bitmap->empty(), hence
+            // BitmapFetcherService might end up dropping the callback while
+            // dropping the request.
+            // Wrap the callback until upstream sorts out the issue!
+            mojo::WrapCallbackWithDefaultInvokeIfNotRun(std::move(callback),
+                                                        false, ""),
+            favicon_key, parsedUrl),
         GetNetworkTrafficAnnotationTagForFaviconFetch());
+  } else {
+    std::move(callback).Run(false, "");
   }
 }
 
