@@ -49,7 +49,6 @@ class LedgerClientIOS : public ledger::mojom::LedgerClient {
       ledger::mojom::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(
       std::vector<ledger::mojom::PublisherInfoPtr> list) override;
-  void URIEncode(const std::string& value, URIEncodeCallback callback) override;
   void OnContributeUnverifiedPublishers(
       ledger::mojom::Result result,
       const std::string& publisher_key,

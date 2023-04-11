@@ -1463,17 +1463,6 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
             }];
 }
 
-- (void)uriEncode:(const std::string&)value
-         callback:(ledger::mojom::LedgerClient::URIEncodeCallback)callback {
-  const auto allowedCharacters =
-      [NSMutableCharacterSet alphanumericCharacterSet];
-  [allowedCharacters addCharactersInString:@"-._~"];
-  const auto string = base::SysUTF8ToNSString(value);
-  const auto encoded = [string
-      stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
-  std::move(callback).Run(base::SysNSStringToUTF8(encoded));
-}
-
 - (void)fetchFavIcon:(const std::string&)url
           faviconKey:(const std::string&)faviconKey
             callback:
