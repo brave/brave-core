@@ -178,6 +178,8 @@ constexpr inline auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<base::StringPiece>({
     "Brave.Core.UsageMonthly",
     "Brave.P3A.TestSlowMetric",
+    "Brave.Sync.EnabledTypes",
+    "Brave.Sync.SyncedObjectsCount",
     "Brave.Wallet.UsageMonthly"
 });
 

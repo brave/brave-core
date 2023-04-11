@@ -1,3 +1,8 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/components/common/typescript.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -63,6 +68,19 @@ static_library("network_time_helper") {
   }
 }
 
+source_set("p3a") {
+  sources = [
+    "brave_sync_p3a.cc",
+    "brave_sync_p3a.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/p3a_utils",
+    "//components/sync/base",
+  ]
+}
+
 source_set("prefs") {
   sources = [
     "brave_sync_prefs.cc",
@@ -114,6 +132,7 @@ group("brave_sync") {
     ":time_limited_codes",
     "//base",
   ]
+  public_deps = [ ":p3a" ]
 }
 
 group("constants") {
@@ -123,6 +142,7 @@ group("constants") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "//brave/components/brave_sync/brave_sync_p3a_unittest.cc",
     "//brave/components/brave_sync/brave_sync_prefs_unittest.cc",
     "//brave/components/brave_sync/qr_code_data_unittest.cc",
     "//brave/components/brave_sync/qr_code_validator_unittest.cc",
@@ -130,10 +150,12 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":p3a",
     ":prefs",
     ":time_limited_codes",
     "//base/test:test_support",
     "//components/os_crypt:test_support",
     "//components/prefs:test_support",
+    "//components/sync/base",
   ]
 }
