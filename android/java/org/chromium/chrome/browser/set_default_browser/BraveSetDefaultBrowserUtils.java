@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
@@ -33,6 +34,7 @@ import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
 
 public class BraveSetDefaultBrowserUtils {
+    private static final String TAG = "BSDBrowserUtils";
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "https://brave.com/privacy-features/";
@@ -98,6 +100,18 @@ public class BraveSetDefaultBrowserUtils {
         if (!isBottomSheetVisible) {
             isBottomSheetVisible = true;
 
+            try {
+                SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
+                        SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
+
+                bottomSheetDialog.show(activity.getSupportFragmentManager(),
+                        "SetDefaultBrowserBottomSheetFragment");
+            } catch (IllegalStateException e) {
+                // That exception could be thrown when Activity is not in the foreground.
+                Log.e(TAG, "showBraveSetDefaultBrowserDialog error: " + e.getMessage());
+                return;
+            }
+
             if (!isFromMenu) {
                 int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
                         BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
@@ -105,12 +119,6 @@ public class BraveSetDefaultBrowserUtils {
                         BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
                         braveDefaultModalCount + 1);
             }
-
-            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
-                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
-
-            bottomSheetDialog.show(
-                    activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");
         }
     }
 
