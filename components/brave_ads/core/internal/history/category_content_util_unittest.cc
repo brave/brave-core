@@ -6,15 +6,12 @@
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
 #include "brave/components/brave_ads/core/category_content_action_types.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-constexpr char kSegment[] = "segment";
-}  // namespace
 
 class BatAdsCategoryContentUtilTest : public UnitTestBase {};
 

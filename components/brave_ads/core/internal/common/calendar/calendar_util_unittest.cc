@@ -57,8 +57,7 @@ TEST(BatAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
   const int day_of_week = GetDayOfWeek(year, month, day);
 
   // Assert
-  const int expected_day_of_week = 6;  // Saturday
-  EXPECT_EQ(expected_day_of_week, day_of_week);
+  EXPECT_EQ(6, day_of_week);
 }
 
 TEST(BatAdsCalendarUtilTest, GetDayOfWeek) {
@@ -70,8 +69,7 @@ TEST(BatAdsCalendarUtilTest, GetDayOfWeek) {
   const int day_of_week = GetDayOfWeek(time, /*is_local*/ false);
 
   // Assert
-  const int expected_day_of_week = 3;  // Wednesday
-  EXPECT_EQ(expected_day_of_week, day_of_week);
+  EXPECT_EQ(3, day_of_week);
 }
 
 }  // namespace brave_ads

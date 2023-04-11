@@ -8,6 +8,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -19,13 +20,6 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kPlacementId[] = "f0948316-df6f-4e31-814d-d0b5f2a1f28c";
-constexpr char kCreativeInstanceIdId[] = "7ff400b9-7f8a-46a8-89f1-cb386612edcf";
-
-}  // namespace
 
 class BatAdsNewTabPageAdIntegrationTest : public UnitTestBase {
  protected:
@@ -61,7 +55,7 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
   // Arrange
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kServed);
 
   // Assert
@@ -73,11 +67,11 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerServedEvent) {
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kServed);
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kViewed);
 
   // Assert
@@ -91,13 +85,13 @@ TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerViewedEvent) {
 
 TEST_F(BatAdsNewTabPageAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kServed);
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kViewed);
 
   // Act
-  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceIdId,
+  GetAds()->TriggerNewTabPageAdEvent(kPlacementId, kCreativeInstanceId,
                                      mojom::NewTabPageAdEventType::kClicked);
 
   // Assert

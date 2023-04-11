@@ -149,8 +149,9 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForExploitation) {
   processor::EpsilonGreedyBandit::Process(
       {segment_3, mojom::NotificationAdEventType::kClicked});
 
-  // Act
   const EpsilonGreedyBandit model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
@@ -202,13 +203,13 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsForEligibleSegments) {
   processor::EpsilonGreedyBandit::Process(
       {segment_3, mojom::NotificationAdEventType::kClicked});
 
-  // Act
   const EpsilonGreedyBandit model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
   const SegmentList expected_segments = {"science", "technology & computing"};
-
   EXPECT_EQ(expected_segments, segments);
 }
 

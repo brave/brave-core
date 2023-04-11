@@ -18,7 +18,6 @@ class BatAdsHashedNGramsTransformationTest : public UnitTestBase {};
 TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   // Arrange
   constexpr int kDefaultBucketCount = 10'000;
-  constexpr size_t kExpectedElementCount = 10;
   constexpr char kTestString[] = "tiny";
   const std::unique_ptr<Data> text_data =
       std::make_unique<TextData>(kTestString);
@@ -38,7 +37,7 @@ TEST_F(BatAdsHashedNGramsTransformationTest, HashingTest) {
   ASSERT_EQ(kDefaultBucketCount, hashed_vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, hashed_vector_data->GetData().size());
+  EXPECT_EQ(10U, hashed_vector_data->GetData().size());
 }
 
 TEST_F(BatAdsHashedNGramsTransformationTest, CustomHashingTest) {

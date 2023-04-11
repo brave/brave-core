@@ -12,28 +12,20 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "brave/components/brave_ads/core/sys_info.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kCatalogId[] = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
-
-constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-constexpr char kConversionId[] = "smartbrownfoxes42";
-constexpr char kAdvertiserPublicKey[] =
-    "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-
-}  // namespace
 
 class BatAdsConfirmationUserDataBuilderTest : public UnitTestBase {};
 
@@ -56,8 +48,12 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
   transaction.creative_instance_id = kCreativeInstanceId;
 
+  BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
+                                   kConversionAdvertiserPublicKey,
+                                   /*should_use_random_guids*/ false,
+                                   /*count*/ 1);
+
   // Act
-  BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Assert
   const ConfirmationUserDataBuilder user_data_builder(transaction);
@@ -66,7 +62,7 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
     ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
-        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   }));
 }
@@ -90,8 +86,12 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kConversion);
   transaction.creative_instance_id = kCreativeInstanceId;
 
+  BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
+                                   kConversionAdvertiserPublicKey,
+                                   /*should_use_random_guids*/ false,
+                                   /*count*/ 1);
+
   // Act
-  BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
   // Assert
   const ConfirmationUserDataBuilder user_data_builder(transaction);
@@ -100,7 +100,7 @@ TEST_F(BatAdsConfirmationUserDataBuilderTest,
     ASSERT_TRUE(base::JSONWriter::Write(user_data, &json));
 
     const std::string pattern =
-        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"p3QDOuQ3HakWNXLBZCP8dktH\+zyu7FsHpKONKhWliJE=","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
+        R"~({"buildChannel":"release","catalog":\[{"id":"29e5c8bc0ba319069980bb390d8e8f9b58c05a20"}],"conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","createdAtTimestamp":"2020-11-18T12:00:00.000Z","mutated":true,"platform":"windows","rotating_hash":"(.{44})","segment":"untargeted","studies":\[],"versionNumber":"\d{1,}\.\d{1,}\.\d{1,}\.\d{1,}"})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   }));
 }

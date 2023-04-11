@@ -18,7 +18,8 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
-#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -29,7 +30,6 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-#include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds
 
@@ -105,8 +105,7 @@ TEST_F(BatAdsAccountTest, SetWallet) {
   // Arrange
 
   // Act
-  account_->SetWallet(GetWalletPaymentIdForTesting(),
-                      GetWalletRecoverySeedForTesting());
+  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
   EXPECT_TRUE(wallet_was_created_);
@@ -120,7 +119,7 @@ TEST_F(BatAdsAccountTest, SetWalletWithEmptyPaymentId) {
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
-  account_->SetWallet(/*payment_id*/ {}, GetWalletRecoverySeedForTesting());
+  account_->SetWallet(/*payment_id*/ {}, kWalletRecoverySeed);
 
   // Assert
   EXPECT_FALSE(wallet_was_created_);
@@ -134,8 +133,7 @@ TEST_F(BatAdsAccountTest, SetWalletWithInvalidRecoverySeed) {
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
-  account_->SetWallet(GetWalletPaymentIdForTesting(),
-                      GetInvalidWalletRecoverySeedForTesting());
+  account_->SetWallet(kWalletPaymentId, kInvalidWalletRecoverySeed);
 
   // Assert
   EXPECT_FALSE(wallet_was_created_);
@@ -149,7 +147,7 @@ TEST_F(BatAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
-  account_->SetWallet(GetWalletPaymentIdForTesting(), /*recovery_seed*/ "");
+  account_->SetWallet(kWalletPaymentId, /*recovery_seed*/ "");
 
   // Assert
   EXPECT_FALSE(wallet_was_created_);
@@ -160,12 +158,11 @@ TEST_F(BatAdsAccountTest, SetWalletWithEmptyRecoverySeed) {
 
 TEST_F(BatAdsAccountTest, ChangeWallet) {
   // Arrange
-  account_->SetWallet(GetWalletPaymentIdForTesting(),
-                      GetWalletRecoverySeedForTesting());
+  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Act
   account_->SetWallet(/*payment_id*/ "c1bf0a09-cac8-48eb-8c21-7ca6d995b0a3",
-                      GetWalletRecoverySeedForTesting());
+                      kWalletRecoverySeed);
 
   // Assert
   EXPECT_TRUE(wallet_was_created_);
@@ -176,19 +173,16 @@ TEST_F(BatAdsAccountTest, ChangeWallet) {
 
 TEST_F(BatAdsAccountTest, GetWallet) {
   // Arrange
-  account_->SetWallet(GetWalletPaymentIdForTesting(),
-                      GetWalletRecoverySeedForTesting());
+  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Act
   const WalletInfo& wallet = account_->GetWallet();
 
   // Assert
   WalletInfo expected_wallet;
-  expected_wallet.payment_id = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
-  expected_wallet.public_key = "BiG/i3tfNLSeOA9ZF5rkPCGyhkc7KCRbQS3bVGMvFQ0=";
-  expected_wallet.secret_key =
-      "kwUjEEdzI6rkI6hLoyxosa47ZrcZUvbYppAm4zvYF5gGIb+"
-      "Le180tJ44D1kXmuQ8IbKGRzsoJFtBLdtUYy8VDQ==";
+  expected_wallet.payment_id = kWalletPaymentId;
+  expected_wallet.public_key = kWalletPublicKey;
+  expected_wallet.secret_key = kWalletSecretKey;
 
   EXPECT_EQ(expected_wallet, wallet);
 }
@@ -196,11 +190,11 @@ TEST_F(BatAdsAccountTest, GetWallet) {
 TEST_F(BatAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   // Arrange
   privacy::SetUnblindedTokens(50);
+
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   // Act
-  account_->SetWallet(GetWalletPaymentIdForTesting(),
-                      GetWalletRecoverySeedForTesting());
+  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
   EXPECT_TRUE(wallet_was_created_);
@@ -218,13 +212,13 @@ TEST_F(BatAdsAccountTest,
        DoNotGetIssuersWhenWalletIsCreatedIfIssuersAlreadyExist) {
   // Arrange
   privacy::SetUnblindedTokens(50);
+
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
   BuildAndSetIssuers();
 
   // Act
-  account_->SetWallet(GetWalletPaymentIdForTesting(),
-                      GetWalletRecoverySeedForTesting());
+  account_->SetWallet(kWalletPaymentId, kWalletRecoverySeed);
 
   // Assert
   EXPECT_TRUE(wallet_was_created_);
@@ -269,7 +263,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
 
   // Assert
   const IssuersInfo expected_issuers;
-
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
@@ -285,7 +278,6 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
 
   // Assert
   const IssuersInfo expected_issuers;
-
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
@@ -309,7 +301,6 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingIssuers) {
 
   // Assert
   const IssuersInfo expected_issuers;
-
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
@@ -328,7 +319,6 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersFromInvalidResponse) {
 
   // Assert
   const IssuersInfo expected_issuers;
-
   EXPECT_EQ(expected_issuers, *issuers);
 }
 
@@ -382,36 +372,13 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 
   privacy::SetUnblindedTokens(1);
 
-  CreativeNotificationAdList creative_ads;
-  const CreativeDaypartInfo daypart_info;
-  CreativeNotificationAdInfo info;
-  info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at = DistantPast();
-  info.end_at = DistantFuture();
-  info.daily_cap = 1;
-  info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info.priority = 2;
-  info.per_day = 3;
-  info.per_week = 4;
-  info.per_month = 5;
-  info.total_max = 6;
-  info.value = 1.0;
-  info.segment = "technology & computing-software";
-  info.dayparts.push_back(daypart_info);
-  info.geo_targets = {"US"};
-  info.target_url = GURL("https://brave.com");
-  info.title = "Test Ad 1 Title";
-  info.body = "Test Ad 1 Body";
-  info.ptr = 1.0;
-  creative_ads.push_back(info);
-
-  SaveCreativeAds(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  SaveCreativeAds({creative_ad});
 
   // Act
-  account_->Deposit(info.creative_instance_id, AdType::kNotificationAd,
-                    "segment", ConfirmationType::kViewed);
+  account_->Deposit(creative_ad.creative_instance_id, AdType::kNotificationAd,
+                    kSegment, ConfirmationType::kViewed);
 
   // Assert
   EXPECT_TRUE(did_process_deposit_);
@@ -422,8 +389,8 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   TransactionInfo expected_transaction;
   expected_transaction.id = transaction_.id;
   expected_transaction.created_at = Now();
-  expected_transaction.creative_instance_id = info.creative_instance_id;
-  expected_transaction.segment = "segment";
+  expected_transaction.creative_instance_id = creative_ad.creative_instance_id;
+  expected_transaction.segment = kSegment;
   expected_transaction.value = 1.0;
   expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kViewed;
@@ -448,8 +415,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
   privacy::SetUnblindedTokens(1);
 
   // Act
-  account_->Deposit("3519f52c-46a4-4c48-9c2b-c264c0067f04",
-                    AdType::kNotificationAd, "segment",
+  account_->Deposit(kCreativeInstanceId, AdType::kNotificationAd, kSegment,
                     ConfirmationType::kClicked);
 
   // Assert
@@ -461,9 +427,8 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
   TransactionInfo expected_transaction;
   expected_transaction.id = transaction_.id;
   expected_transaction.created_at = Now();
-  expected_transaction.creative_instance_id =
-      "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  expected_transaction.segment = "segment";
+  expected_transaction.creative_instance_id = kCreativeInstanceId;
+  expected_transaction.segment = kSegment;
   expected_transaction.value = 0.0;
   expected_transaction.ad_type = AdType::kNotificationAd;
   expected_transaction.confirmation_type = ConfirmationType::kClicked;
@@ -485,37 +450,13 @@ TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   ON_CALL(*token_generator_mock_, Generate(_))
       .WillByDefault(Return(privacy::GetTokens(1)));
 
-  CreativeNotificationAdList creative_ads;
-  const CreativeDaypartInfo daypart_info;
-  CreativeNotificationAdInfo info;
-  info.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-  info.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-  info.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-  info.start_at = DistantPast();
-  info.end_at = DistantFuture();
-  info.daily_cap = 1;
-  info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-  info.priority = 2;
-  info.per_day = 3;
-  info.per_week = 4;
-  info.per_month = 5;
-  info.total_max = 6;
-  info.value = 1.0;
-  info.segment = "technology & computing-software";
-  info.dayparts.push_back(daypart_info);
-  info.geo_targets = {"US"};
-  info.target_url = GURL("https://brave.com");
-  info.title = "Test Ad 1 Title";
-  info.body = "Test Ad 1 Body";
-  info.ptr = 1.0;
-  creative_ads.push_back(info);
-
-  SaveCreativeAds(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
+  SaveCreativeAds({creative_ad});
 
   // Act
-  account_->Deposit("eaa6224a-876d-4ef8-a384-9ac34f238631",
-                    AdType::kNotificationAd, "segment",
-                    ConfirmationType::kViewed);
+  account_->Deposit(kMissingCreativeInstanceId, AdType::kNotificationAd,
+                    kSegment, ConfirmationType::kViewed);
 
   // Assert
   EXPECT_FALSE(did_process_deposit_);

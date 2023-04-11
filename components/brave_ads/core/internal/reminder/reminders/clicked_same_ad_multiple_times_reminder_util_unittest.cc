@@ -18,8 +18,6 @@
 
 namespace brave_ads {
 
-using ::testing::_;
-
 namespace {
 
 constexpr char kHistoryTitle[] = "title";

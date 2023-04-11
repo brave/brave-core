@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/exclusion_rule_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -30,7 +31,7 @@ class BatAdsConversionExclusionRuleTest : public UnitTestBase {};
 TEST_F(BatAdsConversionExclusionRuleTest, AllowAdIfThereIsNoConversionHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+  creative_ad.creative_set_id = kCreativeSetId;
 
   const AdEventList ad_events;
 

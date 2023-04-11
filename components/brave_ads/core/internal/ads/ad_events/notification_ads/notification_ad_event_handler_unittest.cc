@@ -11,6 +11,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/notification_ads/notification_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
@@ -23,10 +24,9 @@ namespace brave_ads::notification_ads {
 
 namespace {
 
-constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
-
 NotificationAdInfo BuildAndSaveNotificationAd() {
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   NotificationAdInfo ad = BuildNotificationAd(creative_ad);
   NotificationAdManager::GetInstance()->Add(ad);
   return ad;

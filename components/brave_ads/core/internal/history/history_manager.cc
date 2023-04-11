@@ -61,12 +61,16 @@ void HistoryManager::RemoveObserver(HistoryManagerObserver* observer) {
 }
 
 // static
+const HistoryItemList& HistoryManager::Get() {
+  return ClientStateManager::GetInstance()->GetHistory();
+}
+
+// static
 HistoryItemList HistoryManager::Get(const HistoryFilterType filter_type,
                                     const HistorySortType sort_type,
                                     const base::Time from_time,
                                     const base::Time to_time) {
-  HistoryItemList history_items =
-      ClientStateManager::GetInstance()->GetHistory();
+  HistoryItemList history_items = Get();
 
   const auto date_range_filter =
       std::make_unique<DateRangeHistoryFilter>(from_time, to_time);
@@ -90,7 +94,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
-  NotifyHistoryDidChange();
+  NotifyHistoryDidChange(history_item);
   return history_item;
 }
 
@@ -99,7 +103,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.company_name, ad.alt);
-  NotifyHistoryDidChange();
+  NotifyHistoryDidChange(history_item);
   return history_item;
 }
 
@@ -108,7 +112,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.body);
-  NotifyHistoryDidChange();
+  NotifyHistoryDidChange(history_item);
   return history_item;
 }
 
@@ -117,7 +121,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
-  NotifyHistoryDidChange();
+  NotifyHistoryDidChange(history_item);
   return history_item;
 }
 
@@ -126,7 +130,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.headline_text, ad.description);
-  NotifyHistoryDidChange();
+  NotifyHistoryDidChange(history_item);
   return history_item;
 }
 
@@ -208,9 +212,10 @@ bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void HistoryManager::NotifyHistoryDidChange() const {
+void HistoryManager::NotifyHistoryDidChange(
+    const HistoryItemInfo& history_item) const {
   for (HistoryManagerObserver& observer : observers_) {
-    observer.OnHistoryDidChange();
+    observer.OnHistoryDidChange(history_item);
   }
 }
 

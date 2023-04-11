@@ -7,19 +7,13 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/guid.h"
+#include "brave/components/brave_ads/core/ad_type.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kCampaignId[] = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-constexpr char kCreativeSetId[] = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-constexpr char kAdvertiserId[] = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-
-}  // namespace
 
 void SaveConversionQueueItems(
     const ConversionQueueItemList& conversion_queue_items) {
@@ -30,31 +24,64 @@ void SaveConversionQueueItems(
 }
 
 ConversionQueueItemInfo BuildConversionQueueItem(
+    const AdType& ad_type,
     const std::string& conversion_id,
-    const std::string& advertiser_public_key) {
+    const std::string& advertiser_public_key,
+    const bool should_use_random_guids) {
   ConversionQueueItemInfo conversion_queue_item;
-  conversion_queue_item.campaign_id = kCampaignId;
-  conversion_queue_item.creative_set_id = kCreativeSetId;
-  conversion_queue_item.creative_instance_id = kCreativeInstanceId;
-  conversion_queue_item.advertiser_id = kAdvertiserId;
+
+  conversion_queue_item.ad_type = ad_type;
+
+  conversion_queue_item.creative_instance_id =
+      should_use_random_guids
+          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          : kCreativeInstanceId;
+
+  conversion_queue_item.creative_set_id =
+      should_use_random_guids
+          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          : kCreativeSetId;
+
+  conversion_queue_item.campaign_id =
+      should_use_random_guids
+          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          : kCampaignId;
+
+  conversion_queue_item.advertiser_id =
+      should_use_random_guids
+          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          : kAdvertiserId;
+
+  conversion_queue_item.segment = kSegment;
+
   conversion_queue_item.conversion_id = conversion_id;
+
   conversion_queue_item.advertiser_public_key = advertiser_public_key;
-  conversion_queue_item.ad_type = AdType::kNotificationAd;
+
   conversion_queue_item.process_at = Now();
 
   return conversion_queue_item;
 }
 
-void BuildAndSaveConversionQueueItem(const std::string& conversion_id,
-                                     const std::string& advertiser_public_key) {
+ConversionQueueItemList BuildAndSaveConversionQueueItems(
+    const AdType& ad_type,
+    const std::string& conversion_id,
+    const std::string& advertiser_public_key,
+    const bool should_use_random_guids,
+    const size_t count) {
   ConversionQueueItemList conversion_queue_items;
 
-  const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(conversion_id, advertiser_public_key);
+  for (size_t i = 0; i < count; i++) {
+    const ConversionQueueItemInfo conversion_queue_item =
+        BuildConversionQueueItem(ad_type, conversion_id, advertiser_public_key,
+                                 should_use_random_guids);
 
-  conversion_queue_items.push_back(conversion_queue_item);
+    conversion_queue_items.push_back(conversion_queue_item);
+  }
 
   SaveConversionQueueItems(conversion_queue_items);
+
+  return conversion_queue_items;
 }
 
 }  // namespace brave_ads

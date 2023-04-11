@@ -24,19 +24,23 @@ TEST(BatAdsEligibleAdsPredictorUtilTest, GroupCreativeAdsByCreativeInstanceId) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar2";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_3);
 
-  CreativeNotificationAdInfo creative_ad_4 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_4 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.segment = "foo-bar4";
   creative_ads.push_back(creative_ad_4);
@@ -78,7 +82,8 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   scoped_feature_list.InitWithFeaturesAndParameters(
       {{features::kEligibleAds, params}}, {});
 
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
@@ -101,7 +106,8 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
 TEST(BatAdsEligibleAdsPredictorUtilTest,
      ComputePredictorScoreWithDefaultWeights) {
   // Arrange
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "foo-bar";
 
   AdPredictorInfo<CreativeNotificationAdInfo> ad_predictor;
@@ -118,9 +124,8 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   ad_predictor.score = ComputePredictorScore(ad_predictor);
 
   // Assert
-  const double expected_score =
-      0.0 + 1.0 + 1.0 * (15 / 24.0) + (1.0 / 2.0) * 1.0;
-  EXPECT_EQ(expected_score, ad_predictor.score);
+  EXPECT_EQ(0.0 + 1.0 + 1.0 * (15 / 24.0) + (1.0 / 2.0) * 1.0,
+            ad_predictor.score);
 }
 
 TEST(BatAdsEligibleAdsPredictorUtilTest,
@@ -132,27 +137,30 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   ad_predictor.score = ComputePredictorScore(ad_predictor);
 
   // Assert
-  const double expected_score = 0.0;
-  EXPECT_EQ(expected_score, ad_predictor.score);
+  EXPECT_EQ(0.0, ad_predictor.score);
 }
 
 TEST(BatAdsEligibleAdsPredictorUtilTest, ComputeVoteRegistry) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.embedding = {-0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
-  CreativeNotificationAdInfo creative_ad_4 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_4 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_4);
@@ -188,15 +196,18 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
@@ -228,19 +239,23 @@ TEST(BatAdsEligibleAdsPredictorUtilTest,
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.embedding = {0.0853, -0.1789, -0.4221};
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.embedding = {-0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.embedding = {-0.0853, 0.1789, -0.4221};
   creative_ads.push_back(creative_ad_3);
 
-  CreativeNotificationAdInfo creative_ad_4 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_4 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_4.creative_instance_id = creative_ad_2.creative_instance_id;
   creative_ad_4.embedding = {0.0853, -0.1789, 0.4221};
   creative_ads.push_back(creative_ad_4);

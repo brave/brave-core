@@ -102,11 +102,9 @@ TEST_F(BatAdsInlineContentAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(
@@ -128,11 +126,9 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(
@@ -154,11 +150,9 @@ TEST_F(BatAdsInlineContentAdServingTest, DoNotServeAdForNonExistentDimensions) {
 TEST_F(BatAdsInlineContentAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
   const CreativeInlineContentAdInfo creative_ad =
-      BuildCreativeInlineContentAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(

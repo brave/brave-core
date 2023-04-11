@@ -11,39 +11,18 @@
 #include "base/check.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
+#include "brave/components/brave_ads/core/internal/account/wallet/wallet_unittest_constants.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
-namespace {
-
-constexpr char kPaymentId[] = "27a39b2f-9b2e-4eb0-bbb2-2f84447496e7";
-constexpr char kValidRecoverySeed[] =
-    "x5uBvgI5MTTVY6sjGv65e9EHr8v7i+UxkFB9qVc5fP0=";
-constexpr char kInvalidRecoverySeed[] =
-    "y6vCwhJ6NUUWZ7tkHw76f0FIs9w8j-VylGC0rWd6gQ1=";
-
-}  // namespace
-
-std::string GetWalletPaymentIdForTesting() {
-  return kPaymentId;
-}
-
-std::string GetWalletRecoverySeedForTesting() {
-  return kValidRecoverySeed;
-}
-
-std::string GetInvalidWalletRecoverySeedForTesting() {
-  return kInvalidRecoverySeed;
-}
-
 WalletInfo GetWalletForTesting() {
   const absl::optional<std::vector<uint8_t>> raw_recovery_seed =
-      base::Base64Decode(kValidRecoverySeed);
+      base::Base64Decode(kWalletRecoverySeed);
   CHECK(raw_recovery_seed);
 
   Wallet wallet;
-  wallet.Set(kPaymentId, *raw_recovery_seed);
+  wallet.Set(kWalletPaymentId, *raw_recovery_seed);
   return wallet.Get();
 }
 

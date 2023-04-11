@@ -17,6 +17,7 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_table.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversions_database_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
@@ -60,7 +61,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -96,7 +98,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -125,7 +128,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNotificationAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -139,7 +142,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -178,7 +182,8 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -210,7 +215,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNotificationAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -224,7 +229,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
                                             ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -260,7 +266,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
                                             ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -289,7 +296,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedNewTabPageAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -303,7 +310,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -342,7 +350,8 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -374,7 +383,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedNewTabPageAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -388,7 +397,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -425,7 +435,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -455,7 +466,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedPromotedContentAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -469,7 +480,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -511,7 +523,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 =
       BuildAdEvent(creative_ad, AdType::kPromotedContentAd,
                    ConfirmationType::kViewed, Now());
@@ -545,7 +558,7 @@ TEST_F(BatAdsConversionsTest,
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -559,7 +572,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -596,7 +610,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -632,7 +647,8 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -664,7 +680,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreDisabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -677,7 +693,8 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kInlineContentAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -709,7 +726,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedInlineContentAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -723,7 +740,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -759,7 +777,8 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event);
@@ -788,7 +807,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedSearchResultAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -802,7 +821,8 @@ TEST_F(BatAdsConversionsTest,
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, false);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -841,7 +861,8 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
   // Arrange
   AdsClientHelper::GetInstance()->SetBooleanPref(prefs::kEnabled, true);
 
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event_1 = BuildAdEvent(
       creative_ad, AdType::kSearchResultAd, ConfirmationType::kViewed, Now());
   FireAdEvent(ad_event_1);
@@ -873,7 +894,7 @@ TEST_F(BatAdsConversionsTest, ConvertClickedSearchResultAdWhenAdsAreEnabled) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
 
                        const AdEventInfo& ad_event = ad_events.front();
                        EXPECT_EQ(conversion.creative_set_id,
@@ -887,7 +908,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
   ConversionList conversions;
 
   ConversionInfo conversion_1;
-  conversion_1.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion_1.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion_1.type = "postview";
   conversion_1.url_pattern = "https://www.foo.com/*";
   conversion_1.observation_window = 3;
@@ -941,7 +962,7 @@ TEST_F(BatAdsConversionsTest, ConvertMultipleAds) {
              const AdEventList& ad_events) {
             ASSERT_TRUE(success);
 
-            EXPECT_EQ(2UL, ad_events.size());
+            EXPECT_EQ(2U, ad_events.size());
 
             const ConversionInfo& conversion_1 = conversions.at(0);
             const AdEventInfo& ad_event_1 = ad_events.at(1);
@@ -959,7 +980,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*bar*";
   conversion.observation_window = 3;
@@ -989,7 +1010,7 @@ TEST_F(BatAdsConversionsTest, ConvertViewedAdWhenAdWasDismissed) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
                        const AdEventInfo& ad_event = ad_events.front();
 
                        EXPECT_EQ(conversion.creative_set_id,
@@ -1003,7 +1024,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertNonViewedOrClickedAds) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
   conversion.observation_window = 3;
@@ -1056,7 +1077,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postclick";
   conversion.url_pattern = "https://www.foo.com/bar";
   conversion.observation_window = 3;
@@ -1088,7 +1109,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertViewedAdForPostClick) {
 
 TEST_F(BatAdsConversionsTest, DoNotConvertAdIfConversionDoesNotExist) {
   // Arrange
-  const std::string creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  const std::string creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
 
   const AdEventInfo ad_event =
       BuildAdEvent(creative_set_id, ConfirmationType::kViewed);
@@ -1117,7 +1138,7 @@ TEST_F(BatAdsConversionsTest,
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/*";
   conversion.observation_window = 3;
@@ -1146,7 +1167,7 @@ TEST_F(BatAdsConversionsTest,
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
                        const AdEventInfo& ad_event = ad_events.front();
 
                        EXPECT_EQ(conversion.creative_set_id,
@@ -1161,7 +1182,7 @@ TEST_F(BatAdsConversionsTest,
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/bar/*";
   conversion.observation_window = 3;
@@ -1196,7 +1217,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://*.bar.com/*";
   conversion.observation_window = 3;
@@ -1225,7 +1246,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
                        const AdEventInfo& ad_event = ad_events.front();
 
                        EXPECT_EQ(conversion.creative_set_id,
@@ -1239,7 +1260,7 @@ TEST_F(BatAdsConversionsTest, DoNotConvertAdWhenTheConversionHasExpired) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://www.foo.com/b*r/*";
   conversion.observation_window = 3;
@@ -1276,7 +1297,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/baz";
   conversion.observation_window = 3;
@@ -1306,7 +1327,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainIntermediateUrl) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
                        const AdEventInfo& ad_event = ad_events.front();
 
                        EXPECT_EQ(conversion.creative_set_id,
@@ -1320,7 +1341,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/bar";
   conversion.observation_window = 3;
@@ -1350,7 +1371,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainOriginalUrl) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
                        const AdEventInfo& ad_event = ad_events.front();
 
                        EXPECT_EQ(conversion.creative_set_id,
@@ -1364,7 +1385,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://foo.com/qux";
   conversion.observation_window = 3;
@@ -1394,7 +1415,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdForRedirectChainUrl) {
                         const AdEventList& ad_events) {
                        ASSERT_TRUE(success);
 
-                       EXPECT_EQ(1UL, ad_events.size());
+                       EXPECT_EQ(1U, ad_events.size());
                        const AdEventInfo& ad_event = ad_events.front();
 
                        EXPECT_EQ(conversion.creative_set_id,
@@ -1412,9 +1433,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.advertiser_public_key = kConversionAdvertiserPublicKey;
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/thankyou";
   conversion.observation_window = 3;
@@ -1439,7 +1459,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
-        ASSERT_EQ(1UL, conversion_queue_items.size());
+        ASSERT_EQ(1U, conversion_queue_items.size());
         const ConversionQueueItemInfo& conversion_queue_item =
             conversion_queue_items.front();
 
@@ -1448,8 +1468,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionId) {
         ASSERT_EQ(conversion.advertiser_public_key,
                   conversion_queue_item.advertiser_public_key);
 
-        const std::string expected_conversion_id = "abc123";
-        EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
+        EXPECT_EQ("abc123", conversion_queue_item.conversion_id);
       },
       conversion));
 }
@@ -1463,9 +1482,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.advertiser_public_key = kConversionAdvertiserPublicKey;
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar";
   conversion.observation_window = 3;
@@ -1492,7 +1510,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
-        ASSERT_EQ(1UL, conversion_queue_items.size());
+        ASSERT_EQ(1U, conversion_queue_items.size());
         const ConversionQueueItemInfo& conversion_queue_item =
             conversion_queue_items.front();
 
@@ -1501,8 +1519,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromHtml) {
         ASSERT_EQ(conversion.advertiser_public_key,
                   conversion_queue_item.advertiser_public_key);
 
-        const std::string expected_conversion_id = "abc123";
-        EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
+        EXPECT_EQ("abc123", conversion_queue_item.conversion_id);
       },
       conversion));
 }
@@ -1516,9 +1533,8 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
   ConversionList conversions;
 
   ConversionInfo conversion;
-  conversion.advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  conversion.creative_set_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  conversion.advertiser_public_key = kConversionAdvertiserPublicKey;
+  conversion.creative_set_id = "340c927f-696e-4060-9933-3eafc56c3f31";
   conversion.type = "postview";
   conversion.url_pattern = "https://brave.com/foobar?conversion_id=*";
   conversion.observation_window = 3;
@@ -1546,7 +1562,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
          const ConversionQueueItemList& conversion_queue_items) {
         ASSERT_TRUE(success);
 
-        ASSERT_EQ(1UL, conversion_queue_items.size());
+        ASSERT_EQ(1U, conversion_queue_items.size());
         const ConversionQueueItemInfo& conversion_queue_item =
             conversion_queue_items.front();
 
@@ -1555,8 +1571,7 @@ TEST_F(BatAdsConversionsTest, ExtractConversionIdWithResourcePatternFromUrl) {
         ASSERT_EQ(conversion.advertiser_public_key,
                   conversion_queue_item.advertiser_public_key);
 
-        const std::string expected_conversion_id = "abc123";
-        EXPECT_EQ(expected_conversion_id, conversion_queue_item.conversion_id);
+        EXPECT_EQ("abc123", conversion_queue_item.conversion_id);
       },
       conversion));
 }

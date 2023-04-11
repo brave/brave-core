@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler_observer.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/new_tab_page_ad_features.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -29,18 +30,11 @@ namespace brave_ads::new_tab_page_ads {
 
 namespace {
 
-constexpr char kPlacementId[] = "d2ef9bb0-a0dc-472c-bc49-62105bb6da68";
-constexpr char kInvalidPlacementId[] = "";
-
-constexpr char kCreativeInstanceId[] = "1547f94f-9086-4db9-a441-efb2f0365269";
-constexpr char kInvalidCreativeInstanceId[] = "";
-
 CreativeNewTabPageAdInfo BuildAndSaveCreativeAd() {
-  CreativeNewTabPageAdList creative_ads;
-  CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
-  creative_ads.push_back(creative_ad);
+  CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
 
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   return creative_ad;
 }

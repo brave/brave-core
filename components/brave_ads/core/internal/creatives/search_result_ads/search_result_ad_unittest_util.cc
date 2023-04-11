@@ -5,32 +5,79 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 
+#include "base/check.h"
 #include "base/guid.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-mojom::SearchResultAdInfoPtr BuildSearchResultAd() {
+namespace {
+
+constexpr char kHeadlineText[] = "headline";
+constexpr char kDescription[] = "description";
+constexpr int kValue = 1.0;
+
+constexpr char kConversionType[] = "postview";
+constexpr char kConversionUrlPattern[] = "https://brave.com/*";
+constexpr int kConversionObservationWindow = 3;
+const base::Time kConversionExpireAt = DistantFuture();
+
+}  // namespace
+
+mojom::SearchResultAdInfoPtr BuildSearchResultAd(
+    const bool should_use_random_guids) {
   mojom::SearchResultAdInfoPtr ad = mojom::SearchResultAdInfo::New();
 
-  ad->creative_instance_id = base::GUID::GenerateRandomV4().AsLowercaseString();
-  ad->placement_id = base::GUID::GenerateRandomV4().AsLowercaseString();
-  ad->creative_set_id = base::GUID::GenerateRandomV4().AsLowercaseString();
-  ad->campaign_id = base::GUID::GenerateRandomV4().AsLowercaseString();
-  ad->advertiser_id = base::GUID::GenerateRandomV4().AsLowercaseString();
+  ad->placement_id = should_use_random_guids
+                         ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                         : kPlacementId;
+
+  ad->creative_instance_id =
+      should_use_random_guids
+          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+          : kCreativeInstanceId;
+
+  ad->creative_set_id = should_use_random_guids
+                            ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                            : kCreativeSetId;
+
+  ad->campaign_id = should_use_random_guids
+                        ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                        : kCampaignId;
+
+  ad->advertiser_id = should_use_random_guids
+                          ? base::GUID::GenerateRandomV4().AsLowercaseString()
+                          : kAdvertiserId;
+
   ad->target_url = GURL("https://brave.com");
-  ad->headline_text = "headline";
-  ad->description = "description";
-  ad->value = 1.0;
+
+  ad->headline_text = kHeadlineText;
+
+  ad->description = kDescription;
+
+  ad->value = kValue;
+
   ad->conversion = mojom::ConversionInfo::New();
-  ad->conversion->type = "postview";
-  ad->conversion->url_pattern = "https://brave.com/*";
-  ad->conversion->advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  ad->conversion->observation_window = 3;
-  ad->conversion->expire_at = DistantFuture();
+
+  return ad;
+}
+
+mojom::SearchResultAdInfoPtr BuildSearchResultAdWithConversion(
+    const bool should_use_random_guids) {
+  mojom::SearchResultAdInfoPtr ad =
+      BuildSearchResultAd(should_use_random_guids);
+  CHECK(ad);
+  CHECK(ad->conversion);
+
+  ad->conversion->type = kConversionType;
+  ad->conversion->url_pattern = kConversionUrlPattern;
+  ad->conversion->advertiser_public_key = kConversionAdvertiserPublicKey;
+  ad->conversion->observation_window = kConversionObservationWindow;
+  ad->conversion->expire_at = kConversionExpireAt;
 
   return ad;
 }

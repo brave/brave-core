@@ -7,6 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/sys_info.h"
@@ -14,10 +15,6 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads::user_data {
-
-namespace {
-constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-}  // namespace
 
 class BatAdsRotatingHashUserDataTest : public UnitTestBase {};
 
@@ -36,7 +33,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, GetRotatingHash) {
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson(
-      R"({"rotating_hash":"06a6D0QCW5onYUDKqCBBXUoil02apd6pcJ47M3Li7hA="})");
+      R"({"rotating_hash":"ooLbypB5vcA/kLjWz+w395SGG+s5M8O9IWbj/OlHuR8="})");
   ASSERT_TRUE(expected_user_data.is_dict());
 
   EXPECT_EQ(expected_user_data, user_data);

@@ -45,7 +45,6 @@ class BatAdsTextProcessingTest : public UnitTestBase {};
 TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   // Arrange
   constexpr double kTolerance = 1e-6;
-  constexpr unsigned kExpectedLen = 3;
   constexpr char kTestString[] = "Test String";
 
   TransformationVector transformations;
@@ -70,16 +69,17 @@ TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   model::Linear linear_model(weights, biases);
   const PredictionMap data_point_3_predictions =
       linear_model.Predict(data_point_3);
+  ASSERT_EQ(3U, data_point_3_predictions.size());
 
   const pipeline::TextProcessing pipeline = pipeline::TextProcessing(
       std::move(transformations), std::move(linear_model));
 
   // Act
   const PredictionMap predictions = pipeline.GetTopPredictions(kTestString);
+  ASSERT_TRUE(!predictions.empty());
+  ASSERT_LE(predictions.size(), 3U);
 
   // Assert
-  ASSERT_EQ(kExpectedLen, data_point_3_predictions.size());
-  ASSERT_TRUE(!predictions.empty() && predictions.size() <= kExpectedLen);
   for (const auto& prediction : predictions) {
     EXPECT_TRUE(prediction.second > -kTolerance &&
                 prediction.second < 1.0 + kTolerance);

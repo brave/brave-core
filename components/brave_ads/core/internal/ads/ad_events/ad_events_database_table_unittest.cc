@@ -13,14 +13,12 @@ namespace brave_ads::database::table {
 
 TEST(BatAdsAdEventsDatabaseTableTest, TableName) {
   // Arrange
-  AdEvents const database_table;
+  const AdEvents database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "ad_events";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("ad_events", database_table.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

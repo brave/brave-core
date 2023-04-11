@@ -7,6 +7,7 @@
 
 #include "base/metrics/field_trial.h"
 #include "base/test/mock_entropy_provider.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -17,8 +18,6 @@ namespace {
 
 constexpr char kTrialName[] = "AdvertiserSplitTestStudy";
 constexpr char kGroupName[] = "GroupA";
-
-constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 scoped_refptr<base::FieldTrial> CreateFieldTrial(
     const std::string& trial_name) {

@@ -12,15 +12,23 @@
 
 namespace brave_ads {
 
+class AdType;
+
 void SaveConversionQueueItems(
     const ConversionQueueItemList& conversion_queue_items);
 
 ConversionQueueItemInfo BuildConversionQueueItem(
+    const AdType& ad_type,
     const std::string& conversion_id,
-    const std::string& advertiser_public_key);
+    const std::string& advertiser_public_key,
+    bool should_use_random_guids);
 
-void BuildAndSaveConversionQueueItem(const std::string& conversion_id,
-                                     const std::string& advertiser_public_key);
+ConversionQueueItemList BuildAndSaveConversionQueueItems(
+    const AdType& ad_type,
+    const std::string& conversion_id,
+    const std::string& advertiser_public_key,
+    bool should_use_random_guids,
+    size_t count);
 
 }  // namespace brave_ads
 

@@ -19,8 +19,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   const AdPredictorWeightList weights = ToAdPredictorWeights({});
 
   // Assert
-  const AdPredictorWeightList expected_weights;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_TRUE(weights.empty());
 }
 
 TEST(BatAdsEligibleAdsFeaturesUtilTest,
@@ -32,8 +31,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
       ToAdPredictorWeights("1.0, foobar, 2.2");
 
   // Assert
-  const AdPredictorWeightList expected_weights;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_TRUE(weights.empty());
 }
 
 TEST(BatAdsEligibleAdsFeaturesUtilTest,
@@ -44,8 +42,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   const AdPredictorWeightList weights = ToAdPredictorWeights("0.0, 0.0, 0.0");
 
   // Assert
-  const AdPredictorWeightList expected_weights;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_TRUE(weights.empty());
 }
 
 TEST(BatAdsEligibleAdsFeaturesUtilTest,
@@ -68,8 +65,7 @@ TEST(BatAdsEligibleAdsFeaturesUtilTest,
   const AdPredictorWeightList weights = ToAdPredictorWeights("1.0, 3.0, -2.0");
 
   // Assert
-  const AdPredictorWeightList expected_weights;
-  EXPECT_EQ(expected_weights, weights);
+  EXPECT_TRUE(weights.empty());
 }
 
 TEST(BatAdsEligibleAdsFeaturesUtilTest,

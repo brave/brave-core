@@ -7,6 +7,7 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/category_content_info.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
@@ -15,11 +16,7 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr char kSegment[] = "segment";
-
-constexpr char kJson[] = R"({"category":"segment","optAction":0})";
-
+constexpr char kJson[] = R"({"category":"untargeted","optAction":0})";
 }  // namespace
 
 class BatAdsCategoryContentValueUtilTest : public UnitTestBase {};

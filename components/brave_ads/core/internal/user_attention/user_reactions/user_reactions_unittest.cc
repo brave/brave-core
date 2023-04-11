@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
@@ -57,7 +58,7 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
 
   static HistoryItemInfo AddHistoryItem() {
     const CreativeNotificationAdInfo creative_ad =
-        BuildCreativeNotificationAd();
+        BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
     const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
     return HistoryManager::GetInstance()->Add(ad, ConfirmationType::kViewed);

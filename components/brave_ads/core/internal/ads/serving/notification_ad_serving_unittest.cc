@@ -83,10 +83,9 @@ TEST_F(BatAdsNotificationAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeNotificationAdList creative_ads;
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd();
@@ -117,10 +116,9 @@ TEST_F(BatAdsNotificationAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
 TEST_F(BatAdsNotificationAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd();

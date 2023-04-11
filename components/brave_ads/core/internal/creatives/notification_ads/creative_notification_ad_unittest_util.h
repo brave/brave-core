@@ -14,7 +14,7 @@ void SaveCreativeAds(const CreativeNotificationAdList& creative_ads);
 
 CreativeNotificationAdList BuildCreativeNotificationAds(int count);
 CreativeNotificationAdInfo BuildCreativeNotificationAd(
-    bool should_use_random_guids = true);
+    bool should_use_random_guids);
 
 }  // namespace brave_ads
 

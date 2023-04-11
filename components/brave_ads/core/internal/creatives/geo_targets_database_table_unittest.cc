@@ -16,11 +16,9 @@ TEST(BatAdsGeoTargetsDatabaseTableTest, TableName) {
   const GeoTargets database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "geo_targets";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("geo_targets", database_table.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

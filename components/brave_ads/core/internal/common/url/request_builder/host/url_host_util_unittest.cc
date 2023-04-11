@@ -21,11 +21,9 @@ TEST_F(BatAdsUrlHostUtilTest, GetStaticUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetStaticUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://static.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
 }
 
 TEST_F(BatAdsUrlHostUtilTest, GetGeoUrlHost) {
@@ -34,11 +32,9 @@ TEST_F(BatAdsUrlHostUtilTest, GetGeoUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetGeoUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://geo.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://geo.ads.brave.com", GetGeoUrlHost());
 }
 
 TEST_F(BatAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
@@ -47,11 +43,9 @@ TEST_F(BatAdsUrlHostUtilTest, GetNonAnonymousUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetNonAnonymousUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://mywallet.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
 }
 
 TEST_F(BatAdsUrlHostUtilTest, GetAnonymousUrlHost) {
@@ -60,11 +54,9 @@ TEST_F(BatAdsUrlHostUtilTest, GetAnonymousUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetAnonymousUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://anonymous.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
 }
 
 TEST_F(BatAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
@@ -73,12 +65,10 @@ TEST_F(BatAdsUrlHostUtilTest, GetAnonymousSearchUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetAnonymousSearchUrlHost();
 
   // Assert
-  const std::string expected_url_host =
-      "https://search.anonymous.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://search.anonymous.ads.brave.com",
+            GetAnonymousSearchUrlHost());
 }
 
 }  // namespace brave_ads

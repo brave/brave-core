@@ -40,11 +40,13 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo-bar1";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar3";
   creative_ads.push_back(creative_ad_2);
 
@@ -52,7 +54,8 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"foo-bar3"}, /*latent_interest_segments*/ {},
+      targeting::BuildUserModel({/*interest_segments*/ "foo-bar3"},
+                                /*latent_interest_segments*/ {},
                                 {"foo-bar1", "foo-bar2"},
                                 /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
@@ -67,11 +70,13 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, GetAdsForNoSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "foo";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "foo-bar";
   creative_ads.push_back(creative_ad_2);
 
@@ -96,10 +101,10 @@ TEST_F(BatAdsEligibleNotificationAdsV2Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"interest-foo", "interest-bar"},
-                                /*latent_interest_segments*/ {},
-                                {"intent-foo", "intent-bar"},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "interest-foo", "interest-bar"},
+          /*latent_interest_segments*/ {}, {"intent-foo", "intent-bar"},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert

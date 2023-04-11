@@ -20,11 +20,9 @@ TEST_F(BatAdsNonAnonymousUrlHostTest, GetProductionUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetNonAnonymousUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://mywallet.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://mywallet.ads.brave.com", GetNonAnonymousUrlHost());
 }
 
 TEST_F(BatAdsNonAnonymousUrlHostTest, GetStagingUrlHost) {
@@ -33,12 +31,9 @@ TEST_F(BatAdsNonAnonymousUrlHostTest, GetStagingUrlHost) {
       EnvironmentType::kStaging);
 
   // Act
-  const std::string url_host = GetNonAnonymousUrlHost();
 
   // Assert
-  const std::string expected_url_host =
-      "https://mywallet.ads.bravesoftware.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://mywallet.ads.bravesoftware.com", GetNonAnonymousUrlHost());
 }
 
 }  // namespace brave_ads

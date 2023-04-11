@@ -40,10 +40,9 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeHtml) {
 
   for (const auto& [html, expected_text] : samples) {
     // Act
-    const std::string text = SanitizeHtml(html);
 
     // Assert
-    EXPECT_EQ(expected_text, text);
+    EXPECT_EQ(expected_text, SanitizeHtml(html));
   }
 }
 
@@ -64,10 +63,9 @@ TEST_F(BatAdsTextEmbeddingProcessorUtilTest, SanitizeText) {
 
   for (const auto& [text, expected_sanitized_text] : samples) {
     // Act
-    const std::string sanitized_text = SanitizeText(text);
 
     // Assert
-    EXPECT_EQ(expected_sanitized_text, sanitized_text);
+    EXPECT_EQ(expected_sanitized_text, SanitizeText(text));
   }
 }
 

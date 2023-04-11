@@ -21,7 +21,8 @@ class BatAdsHistoryItemUtilTest : public UnitTestBase {};
 
 TEST_F(BatAdsHistoryItemUtilTest, BuildHistoryItem) {
   // Arrange
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const NotificationAdInfo ad = BuildNotificationAd(creative_ad);
 
   // Act

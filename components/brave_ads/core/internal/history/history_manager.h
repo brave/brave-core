@@ -49,6 +49,7 @@ class HistoryManager final {
   void AddObserver(HistoryManagerObserver* observer);
   void RemoveObserver(HistoryManagerObserver* observer);
 
+  static const HistoryItemList& Get();
   static HistoryItemList Get(HistoryFilterType filter_type,
                              HistorySortType sort_type,
                              base::Time from_time,
@@ -80,7 +81,7 @@ class HistoryManager final {
   bool ToggleSaveAd(const AdContentInfo& ad_content) const;
 
  private:
-  void NotifyHistoryDidChange() const;
+  void NotifyHistoryDidChange(const HistoryItemInfo& history_item) const;
   void NotifyDidLikeAd(const AdContentInfo& ad_content) const;
   void NotifyDidDislikeAd(const AdContentInfo& ad_content) const;
   void NotifyDidMarkToNoLongerReceiveAdsForCategory(

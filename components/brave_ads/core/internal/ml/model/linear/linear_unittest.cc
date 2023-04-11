@@ -71,15 +71,11 @@ TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
 
 TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
   // Arrange
-  constexpr size_t kExpectedPredictionSize = 1;
   const std::vector<float> data = {0.3, 0.2, 0.25};
   const std::map<std::string, VectorData> weights = {
-      {"the_only_class", VectorData(data)},
-  };
+      {"the_only_class", VectorData(data)}};
 
-  const std::map<std::string, double> biases = {
-      {"the_only_class", -0.45},
-  };
+  const std::map<std::string, double> biases = {{"the_only_class", -0.45}};
 
   const model::Linear linear(weights, biases);
   const VectorData vector_data_0({1.07, 1.52, 0.91});
@@ -87,12 +83,11 @@ TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
 
   // Act
   const PredictionMap predictions_0 = linear.Predict(vector_data_0);
+  ASSERT_EQ(1U, predictions_0.size());
   const PredictionMap predictions_1 = linear.Predict(vector_data_1);
+  ASSERT_EQ(1U, predictions_1.size());
 
   // Assert
-  ASSERT_EQ(kExpectedPredictionSize, predictions_0.size());
-  ASSERT_EQ(kExpectedPredictionSize, predictions_1.size());
-
   EXPECT_TRUE(predictions_0.at("the_only_class") < 0.5 &&
               predictions_1.at("the_only_class") > 0.5);
 }

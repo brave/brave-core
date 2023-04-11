@@ -53,6 +53,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   SaveTransactions(transactions);
 
   privacy::SetUnblindedTokens(1);
+
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
   ConfirmationStateManager::GetInstance()->AppendFailedConfirmation(

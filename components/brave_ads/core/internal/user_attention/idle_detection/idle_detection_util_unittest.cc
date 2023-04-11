@@ -187,8 +187,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, UpdateIdleTimeThreshold) {
       AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
-  const int expected_idle_time_threshold = 5;
-  EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
+  EXPECT_EQ(5, idle_time_threshold);
 }
 
 TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
@@ -213,8 +212,7 @@ TEST_F(BatAdsIdleDetectionUtilTest, DoNotUpdateIdleTimeThreshold) {
       AdsClientHelper::GetInstance()->GetIntegerPref(prefs::kIdleTimeThreshold);
 
   // Assert
-  const int expected_idle_time_threshold = 10;
-  EXPECT_EQ(expected_idle_time_threshold, idle_time_threshold);
+  EXPECT_EQ(10, idle_time_threshold);
 }
 
 }  // namespace brave_ads::idle_detection
