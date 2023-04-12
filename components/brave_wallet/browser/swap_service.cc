@@ -121,6 +121,13 @@ GURL AppendJupiterQuoteParams(
   return url;
 }
 
+auto Get0xAPIHeaders() {
+  const std::string& zero_ex_api_key(ZERO_EX_API_KEY);
+  using headers_map = base::flat_map<std::string, std::string>;
+  return zero_ex_api_key.empty() ? headers_map{}
+                                 : headers_map{{"0x-api-key", zero_ex_api_key}};
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -297,7 +304,7 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
       "GET",
       GetPriceQuoteURL(std::move(swap_params),
                        json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback));
+      "", "", true, std::move(internal_callback), std::move(Get0xAPIHeaders()));
 }
 
 void SwapService::OnGetPriceQuote(GetPriceQuoteCallback callback,
@@ -340,7 +347,7 @@ void SwapService::GetTransactionPayload(
       GetTransactionPayloadURL(
           std::move(swap_params),
           json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
-      "", "", true, std::move(internal_callback));
+      "", "", true, std::move(internal_callback), std::move(Get0xAPIHeaders()));
 }
 
 void SwapService::OnGetTransactionPayload(
