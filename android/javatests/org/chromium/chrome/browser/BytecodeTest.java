@@ -72,6 +72,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdow
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionProcessor;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.base.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -580,7 +581,7 @@ public class BytecodeTest {
                 BottomSheetController.class, Supplier.class, TabContentManager.class,
                 TabCreatorManager.class, SnackbarManager.class, JankTracker.class, Supplier.class,
                 OneshotSupplier.class, ActionChipsDelegate.class, Supplier.class, boolean.class,
-                BackPressManager.class));
+                BackPressManager.class, OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -669,7 +670,7 @@ public class BytecodeTest {
                 UrlBarEditingTextStateProvider.class, PropertyModel.class, Handler.class,
                 Supplier.class, Supplier.class, Supplier.class, LocationBarDataProvider.class,
                 Callback.class, Supplier.class, BookmarkState.class, JankTracker.class,
-                ActionChipsDelegate.class));
+                ActionChipsDelegate.class, OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
@@ -698,7 +699,8 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
-                Supplier.class, BookmarkState.class, ActionChipsDelegate.class));
+                Supplier.class, BookmarkState.class, ActionChipsDelegate.class,
+                OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
                 "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager",
@@ -717,7 +719,8 @@ public class BytecodeTest {
                 BraveLocationBarMediator.getOmniboxUmaClass(), Supplier.class, BookmarkState.class,
                 BooleanSupplier.class, JankTracker.class, Supplier.class, ActionChipsDelegate.class,
                 BrowserStateBrowserControlsVisibilityDelegate.class, Callback.class,
-                BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class));
+                BackPressManager.class, OmniboxSuggestionsDropdownScrollListener.class,
+                OpenHistoryClustersDelegate.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/omnibox/LocationBarMediator",
                 "org/chromium/chrome/browser/omnibox/BraveLocationBarMediator", Context.class,
