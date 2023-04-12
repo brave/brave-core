@@ -23,6 +23,7 @@ class Campaigns;
 class CreativeAds;
 class Dayparts;
 class Deposits;
+class Embeddings;
 class GeoTargets;
 class Segments;
 
@@ -79,6 +80,7 @@ class CreativeNotificationAds final : public TableInterface {
   std::unique_ptr<CreativeAds> creative_ads_database_table_;
   std::unique_ptr<Dayparts> dayparts_database_table_;
   std::unique_ptr<Deposits> deposits_database_table_;
+  std::unique_ptr<Embeddings> embeddings_database_table_;
   std::unique_ptr<GeoTargets> geo_targets_database_table_;
   std::unique_ptr<Segments> segments_database_table_;
 };

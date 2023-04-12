@@ -38,21 +38,22 @@ TEST_F(BatAdsNormalizationTransformationTest, NormalizationTest) {
 
   ASSERT_EQ(DataType::kVector, data->GetType());
 
-  const VectorData* const norm_data = static_cast<VectorData*>(data.release());
+  const VectorData* const vector_data =
+      static_cast<VectorData*>(data.release());
 
   std::vector<double> components;
   double s = 0.0;
-  for (const double x : norm_data->GetValuesForTesting()) {
-    components.push_back(x);
-    s += x * x;
+  for (const double component : vector_data->GetData()) {
+    components.push_back(component);
+    s += component * component;
   }
 
   // Assert
-  for (double const& x : components) {
-    ASSERT_TRUE(x >= 0.0);
-    ASSERT_TRUE(x <= 1.0);
+  for (double const& component : components) {
+    ASSERT_GE(component, 0.0);
+    ASSERT_LE(component, 1.0);
   }
-  EXPECT_TRUE(std::fabs(s - 1.0) < kTolerance);
+  EXPECT_LT(std::fabs(s - 1.0), kTolerance);
 }
 
 TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
@@ -84,7 +85,7 @@ TEST_F(BatAdsNormalizationTransformationTest, ChainingTest) {
   ASSERT_EQ(kDefaultBucketCount, vector_data->GetDimensionCount());
 
   // Hashes for [t, i, n, y, ti, in, ny, tin, iny, tiny] -- 10 in total
-  EXPECT_EQ(kExpectedElementCount, vector_data->GetValuesForTesting().size());
+  EXPECT_EQ(kExpectedElementCount, vector_data->GetData().size());
 }
 
 }  // namespace brave_ads::ml

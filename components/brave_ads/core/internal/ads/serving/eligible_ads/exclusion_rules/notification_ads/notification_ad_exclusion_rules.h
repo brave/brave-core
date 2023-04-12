@@ -20,10 +20,12 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class DismissedExclusionRule;
-class PerHourExclusionRule;
+class CreativeInstanceExclusionRule;
 
 namespace notification_ads {
+
+class DismissedExclusionRule;
+class EmbeddingExclusionRule;
 
 class ExclusionRules final : public ExclusionRulesBase {
  public:
@@ -41,8 +43,10 @@ class ExclusionRules final : public ExclusionRulesBase {
   ~ExclusionRules() override;
 
  private:
+  std::unique_ptr<CreativeInstanceExclusionRule>
+      creative_instance_exclusion_rule_;
   std::unique_ptr<DismissedExclusionRule> dismissed_exclusion_rule_;
-  std::unique_ptr<PerHourExclusionRule> per_hour_exclusion_rule_;
+  std::unique_ptr<EmbeddingExclusionRule> embedding_exclusion_rule_;
 };
 
 }  // namespace notification_ads

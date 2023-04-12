@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/pipelines/inline_content_ads/eligible_inline_content_ads_base.h"
@@ -65,8 +66,14 @@ void Serving::MaybeServeAd(const std::string& dimensions,
     return FailedToServeAd(dimensions, std::move(callback));
   }
 
-  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
+  targeting::BuildUserModel(base::BindOnce(&Serving::OnBuildUserModel,
+                                           weak_factory_.GetWeakPtr(),
+                                           dimensions, std::move(callback)));
+}
 
+void Serving::OnBuildUserModel(const std::string& dimensions,
+                               MaybeServeInlineContentAdCallback callback,
+                               const targeting::UserModelInfo& user_model) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, dimensions,

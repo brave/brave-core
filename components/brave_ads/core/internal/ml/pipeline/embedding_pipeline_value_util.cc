@@ -58,7 +58,7 @@ absl::optional<EmbeddingPipelineInfo> EmbeddingPipelineFromValue(
     std::vector<float> embedding;
     embedding.reserve(list->size());
     for (const base::Value& dimension_value : *list) {
-      embedding.push_back(dimension_value.GetDouble());
+      embedding.push_back(static_cast<float>(dimension_value.GetDouble()));
     }
     embedding_pipeline.embeddings[embedding_key] =
         VectorData(std::move(embedding));

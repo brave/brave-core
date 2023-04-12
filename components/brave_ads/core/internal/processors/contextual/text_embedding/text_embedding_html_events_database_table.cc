@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/functional/callback.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
@@ -19,12 +18,14 @@
 #include "brave/components/brave_ads/core/internal/common/database/database_column_util.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
 namespace brave_ads::database::table {
 
 namespace {
 
 constexpr char kTableName[] = "text_embedding_html_events";
+constexpr char kDelimiter[] = " ";
 
 int BindParameters(
     mojom::DBCommandInfo* command,
@@ -40,7 +41,9 @@ int BindParameters(
                   .InMicroseconds());
     BindString(command, index++, text_embedding_html_event.locale);
     BindString(command, index++, text_embedding_html_event.hashed_text_base64);
-    BindString(command, index++, text_embedding_html_event.embedding);
+    BindString(command, index++,
+               VectorToDelimitedString(text_embedding_html_event.embedding,
+                                       kDelimiter));
 
     count++;
   }
@@ -57,7 +60,8 @@ TextEmbeddingHtmlEventInfo GetFromRecord(mojom::DBRecordInfo* record) {
       base::Microseconds(ColumnInt64(record, 0)));
   text_embedding_html_event.locale = ColumnString(record, 1);
   text_embedding_html_event.hashed_text_base64 = ColumnString(record, 2);
-  text_embedding_html_event.embedding = ColumnString(record, 3);
+  text_embedding_html_event.embedding =
+      DelimitedStringToVector(ColumnString(record, 3), kDelimiter);
 
   return text_embedding_html_event;
 }

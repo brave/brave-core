@@ -107,15 +107,18 @@ void Serving::MaybeServeAd() {
     return FailedToServeAd();
   }
 
-  const targeting::UserModelInfo user_model = targeting::BuildUserModel();
+  targeting::BuildUserModel(
+      base::BindOnce(&Serving::OnBuildUserModel, weak_factory_.GetWeakPtr()));
+}
 
+///////////////////////////////////////////////////////////////////////////////
+
+void Serving::OnBuildUserModel(const targeting::UserModelInfo& user_model) {
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, base::BindOnce(&Serving::OnGetForUserModel,
                                  weak_factory_.GetWeakPtr(), user_model));
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void Serving::OnGetForUserModel(
     const targeting::UserModelInfo& user_model,

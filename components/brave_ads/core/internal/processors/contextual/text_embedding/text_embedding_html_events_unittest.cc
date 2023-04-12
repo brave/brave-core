@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events.h"
 
+#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/embedding_info.h"
@@ -29,8 +30,7 @@ TEST_F(BatAdsTextEmbeddingHtmlEventsTest, BuildEvent) {
   EXPECT_EQ(text_embedding.locale, text_embedding_html_event.locale);
   EXPECT_EQ(text_embedding.hashed_text_base64,
             text_embedding_html_event.hashed_text_base64);
-  EXPECT_EQ(text_embedding.embedding.GetVectorAsString(),
-            text_embedding_html_event.embedding);
+  EXPECT_EQ(text_embedding.embedding, text_embedding_html_event.embedding);
 }
 
 TEST_F(BatAdsTextEmbeddingHtmlEventsTest, LogEvent) {

@@ -16,8 +16,9 @@
 
 namespace brave_ads::database::table {
 
-using GetTextEmbeddingHtmlEventsCallback =
-    base::OnceCallback<void(const bool, const TextEmbeddingHtmlEventList&)>;
+using GetTextEmbeddingHtmlEventsCallback = base::OnceCallback<void(
+    const bool success,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events)>;
 
 class TextEmbeddingHtmlEvents final : public TableInterface {
  public:

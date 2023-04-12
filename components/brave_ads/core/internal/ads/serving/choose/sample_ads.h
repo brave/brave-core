@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_SERVING_CHOOSE_SAMPLE_ADS_H_
 
+#include <numeric>
 #include <ostream>
+#include <vector>
 
 #include "base/notreached.h"
 #include "base/rand_util.h"
@@ -17,22 +19,28 @@
 namespace brave_ads {
 
 template <typename T>
-double CalculateNormalizingConstant(
+T CalculateNormalizingConstant(const std::vector<T>& scores) {
+  return std::accumulate(scores.cbegin(), scores.cend(), T{});
+}
+
+template <typename T>
+double CalculateNormalizingConstantFromPredictors(
     const CreativeAdPredictorMap<T>& creative_ad_predictors) {
-  double normalizing_constant = 0.0;
+  std::vector<double> scores;
+  scores.reserve(creative_ad_predictors.size());
 
   for (const auto& [segment, ad_predictor] : creative_ad_predictors) {
-    normalizing_constant += ad_predictor.score;
+    scores.push_back(ad_predictor.score);
   }
 
-  return normalizing_constant;
+  return CalculateNormalizingConstant(scores);
 }
 
 template <typename T>
 absl::optional<T> SampleAdFromPredictors(
     const CreativeAdPredictorMap<T>& creative_ad_predictors) {
   const double normalizing_constant =
-      CalculateNormalizingConstant(creative_ad_predictors);
+      CalculateNormalizingConstantFromPredictors(creative_ad_predictors);
   if (DoubleIsLessEqual(normalizing_constant, 0.0)) {
     return absl::nullopt;
   }
@@ -51,6 +59,20 @@ absl::optional<T> SampleAdFromPredictors(
 
   NOTREACHED() << "Sum should always be less than probability";
   return absl::nullopt;
+}
+
+template <typename T>
+std::vector<double> ComputeProbabilities(const std::vector<T>& scores) {
+  std::vector<double> probabilities;
+  probabilities.reserve(scores.size());
+
+  const double normalizing_constant = CalculateNormalizingConstant(scores);
+
+  for (const auto score : scores) {
+    probabilities.push_back(score / normalizing_constant);
+  }
+
+  return probabilities;
 }
 
 }  // namespace brave_ads

@@ -56,6 +56,9 @@ class Serving final {
                     MaybeServeInlineContentAdCallback callback);
 
  private:
+  void OnBuildUserModel(const std::string& dimensions,
+                        MaybeServeInlineContentAdCallback callback,
+                        const targeting::UserModelInfo& user_model);
   void OnGetForUserModel(const targeting::UserModelInfo& user_model,
                          const std::string& dimensions,
                          MaybeServeInlineContentAdCallback callback,

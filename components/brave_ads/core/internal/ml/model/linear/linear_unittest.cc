@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/ml/model/linear/linear.h"
 
+#include <vector>
+
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
@@ -70,8 +72,9 @@ TEST_F(BatAdsLinearTest, BiasesPredictionTest) {
 TEST_F(BatAdsLinearTest, BinaryClassifierPredictionTest) {
   // Arrange
   constexpr size_t kExpectedPredictionSize = 1;
+  const std::vector<float> data = {0.3, 0.2, 0.25};
   const std::map<std::string, VectorData> weights = {
-      {"the_only_class", VectorData({0.3, 0.2, 0.25})},
+      {"the_only_class", VectorData(data)},
   };
 
   const std::map<std::string, double> biases = {
@@ -111,9 +114,12 @@ TEST_F(BatAdsLinearTest, TopPredictionsTest) {
                                                 {"class_5", 0.21}};
 
   const model::Linear linear_biased(weights, biases);
-  const VectorData point_1({1.0, 0.99, 0.98, 0.97, 0.96});
-  const VectorData point_2({0.83, 0.79, 0.91, 0.87, 0.82});
-  const VectorData point_3({0.92, 0.95, 0.85, 0.91, 0.73});
+  const std::vector<float> pt_1 = {1.0, 0.99, 0.98, 0.97, 0.96};
+  const std::vector<float> pt_2 = {0.83, 0.79, 0.91, 0.87, 0.82};
+  const std::vector<float> pt_3 = {0.92, 0.95, 0.85, 0.91, 0.73};
+  const VectorData point_1(pt_1);
+  const VectorData point_2(pt_2);
+  const VectorData point_3(pt_3);
 
   // Act
   const PredictionMap predictions_1 = linear_biased.GetTopPredictions(point_1);

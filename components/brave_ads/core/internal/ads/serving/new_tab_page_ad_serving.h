@@ -54,6 +54,8 @@ class Serving final {
   void MaybeServeAd(MaybeServeNewTabPageAdCallback callback);
 
  private:
+  void OnBuildUserModel(MaybeServeNewTabPageAdCallback callback,
+                        const targeting::UserModelInfo& user_model);
   void OnGetForUserModel(MaybeServeNewTabPageAdCallback callback,
                          const targeting::UserModelInfo& user_model,
                          bool had_opportunity,
