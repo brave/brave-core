@@ -178,12 +178,13 @@ void PostOrder::Request(const std::vector<mojom::SKUOrderItem>& items,
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
-void PostOrder::OnRequest(const mojom::UrlResponse& response,
+void PostOrder::OnRequest(mojom::UrlResponsePtr response,
                           const std::vector<mojom::SKUOrderItem>& items,
                           PostOrderCallback callback) {
-  ledger::LogUrlResponse(__func__, response);
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  mojom::Result result = CheckStatusCode(response.status_code);
+  mojom::Result result = CheckStatusCode(response->status_code);
 
   if (result != mojom::Result::LEDGER_OK) {
     callback(result, nullptr);
@@ -191,7 +192,7 @@ void PostOrder::OnRequest(const mojom::UrlResponse& response,
   }
 
   auto order = mojom::SKUOrder::New();
-  result = ParseBody(response.body, items, order.get());
+  result = ParseBody(response->body, items, order.get());
   callback(result, std::move(order));
 }
 

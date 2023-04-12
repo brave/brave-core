@@ -6,23 +6,41 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_LEDGER_IMPL_MOCK_H_
 
-#include "brave/components/brave_rewards/core/ledger_client.h"
+#include "brave/components/brave_rewards/core/database/database_mock.h"
+#include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace ledger {
 
-class MockLedgerImpl : public LedgerImpl {
+class AddMockLedgerClient {
+ protected:
+  AddMockLedgerClient();
+
+  ~AddMockLedgerClient();
+
+  MockLedgerClient mock_ledger_client_;
+  mojo::AssociatedReceiver<mojom::LedgerClient> mock_ledger_client_receiver_{
+      &mock_ledger_client_};
+};
+
+class MockLedgerImpl : private AddMockLedgerClient, public LedgerImpl {
  public:
-  explicit MockLedgerImpl(ledger::LedgerClient* client);
+  MockLedgerImpl();
 
   ~MockLedgerImpl() override;
 
-  MOCK_CONST_METHOD0(database, database::Database*());
+  MockLedgerClient* mock_client();
 
-  MOCK_CONST_METHOD0(promotion, promotion::Promotion*());
+  database::MockDatabase* mock_database();
 
-  MOCK_METHOD2(Initialize, void(bool, ledger::LegacyResultCallback));
+  MOCK_METHOD2(InitializeDatabase, void(bool, LegacyResultCallback));
+
+  MOCK_METHOD0(database, database::Database*());
+
+ private:
+  database::MockDatabase mock_database_{this};
 };
 
 }  // namespace ledger

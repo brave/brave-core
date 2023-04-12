@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/core/wallet/wallet.h"
-
 #include <utility>
 #include <vector>
 
 #include "base/test/bind.h"
+#include "brave/components/brave_rewards/common/mojom/bat_ledger.mojom-test-utils.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotions_util.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=*WalletTest*
@@ -54,7 +54,8 @@ TEST_F(WalletTest, GetWallet) {
 
   // When there is no current wallet information, `GetWallet` returns empty and
   // sets the corrupted flag to false.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
+  mojom::LedgerClientAsyncWaiter(GetTestLedgerClient())
+      .SetStringState(state::kWalletBrave, "");
   corrupted = true;
   mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
@@ -62,11 +63,13 @@ TEST_F(WalletTest, GetWallet) {
 
   // When there is invalid wallet information, `GetWallet` returns empty, sets
   // the corrupted flag to true, and does not modify prefs.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  mojom::LedgerClientAsyncWaiter(GetTestLedgerClient())
+      .SetStringState(state::kWalletBrave, "BAD-DATA");
   wallet = ledger->wallet()->GetWallet(&corrupted);
   EXPECT_FALSE(wallet);
   EXPECT_TRUE(corrupted);
-  EXPECT_EQ(GetTestLedgerClient()->GetStringState(state::kWalletBrave),
+  EXPECT_EQ(mojom::LedgerClientAsyncWaiter(GetTestLedgerClient())
+                .GetStringState(state::kWalletBrave),
             "BAD-DATA");
 }
 
@@ -74,7 +77,8 @@ TEST_F(WalletTest, CreateWallet) {
   auto* ledger = GetLedgerImpl();
 
   // Create a wallet when there is no current wallet information.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "");
+  mojom::LedgerClientAsyncWaiter(GetTestLedgerClient())
+      .SetStringState(state::kWalletBrave, "");
   mojom::CreateRewardsWalletResult result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   mojom::RewardsWalletPtr wallet = ledger->wallet()->GetWallet();
@@ -83,7 +87,8 @@ TEST_F(WalletTest, CreateWallet) {
   EXPECT_TRUE(!wallet->recovery_seed.empty());
 
   // Create a wallet when there is corrupted wallet information.
-  GetTestLedgerClient()->SetStringState(state::kWalletBrave, "BAD-DATA");
+  mojom::LedgerClientAsyncWaiter(GetTestLedgerClient())
+      .SetStringState(state::kWalletBrave, "BAD-DATA");
   result = CreateWalletIfNecessary();
   EXPECT_EQ(result, mojom::CreateRewardsWalletResult::kSuccess);
   wallet = ledger->wallet()->GetWallet();

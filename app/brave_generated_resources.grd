@@ -630,6 +630,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
             By clicking OK, you acknowledge that your installation of Brave will NOT receive critical security fixes until you update to Windows 10 or later. This warning will NOT show again.
           </message>
         </if>
+        <message name="IDS_DOWNLOAD_BUBBLE_ITEM_CTX_MENU_REMOVE_ITEM" desc="Text for the download bubble context menu item for removing item from the list">
+          Remove from list
+        </message>
       </if>
 
       <!-- Brave Ads -->
@@ -1082,6 +1085,26 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_IMPORTED_FROM_BOOKMARK_FOLDER" desc="Name for bookmark panel folder imported from another browser">
         Imported from <ph name="BROWSER_NAME">$1<ex>Chrome</ex></ph>.
       </message>
+
+      <!-- Vertical tab strip -->
+      <if expr="toolkit_views">
+        <if expr="use_titlecase">
+          <message name="IDS_VERTICAL_TABS_EXPAND" desc="A tooltip text for button when vertical tab strip is minimized or floating">
+            Expand Tabs
+          </message>
+          <message name="IDS_VERTICAL_TABS_MINIMIZE" desc="A tooltip text for button when vertical tab strip is expanded">
+            Minimize Tabs
+          </message>
+        </if>
+        <if expr="not use_titlecase">
+          <message name="IDS_VERTICAL_TABS_EXPAND" desc="A tooltip text for button when vertical tab strip is minimized or floating">
+            Expand tabs
+          </message>
+          <message name="IDS_VERTICAL_TABS_MINIMIZE" desc="A tooltip text for button when vertical tab strip is expanded">
+            Minimize tabs
+          </message>
+        </if>
+      </if>
       <!--Add new items to the appropriate sections above -->
     </messages>
   </release>

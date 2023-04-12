@@ -17,6 +17,7 @@ import 'emptykit.css'
 
 // Utils
 import { loadTimeData } from '../../../../../common/loadTimeData'
+import * as Lib from '../../../../common/async/lib'
 
 // actions
 import * as WalletActions from '../../../../common/actions/wallet_actions'
@@ -26,19 +27,24 @@ import { store } from '../../../store'
 import BraveCoreThemeProvider
   from '../../../../../common/BraveCoreThemeProvider'
 import { Swap } from '../swap'
+import { LibContext } from '../../../../common/context/lib.context'
+
+export function AndroidSwapApp() {
+  return (
+    <Provider store={store}>
+      <BraveCoreThemeProvider dark={walletDarkTheme} light={walletLightTheme}>
+        <LibContext.Provider value={Lib}>
+          <Swap />
+        </LibContext.Provider>
+      </BraveCoreThemeProvider>
+    </Provider>
+  )
+}
 
 function initialize () {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize())
-  render(
-    <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={walletDarkTheme}
-        light={walletLightTheme}
-      >
-        <Swap />
-      </BraveCoreThemeProvider>
-    </Provider>, document.getElementById('root'))
+  render(AndroidSwapApp(), document.getElementById('root'))
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

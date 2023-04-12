@@ -35,10 +35,11 @@ void GetCapabilities::Request(const std::string& token,
 }
 
 void GetCapabilities::OnRequest(GetCapabilitiesCallback callback,
-                                const mojom::UrlResponse& response) {
-  ledger::LogUrlResponse(__func__, response);
+                                mojom::UrlResponsePtr response) {
+  DCHECK(response);
+  ledger::LogUrlResponse(__func__, *response);
 
-  auto [result, capability_map] = ProcessResponse(response);
+  auto [result, capability_map] = ProcessResponse(*response);
 
   Capabilities capabilities;
   if (capability_map.count("receives") && capability_map.count("sends")) {

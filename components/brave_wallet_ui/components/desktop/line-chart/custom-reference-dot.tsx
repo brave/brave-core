@@ -4,6 +4,8 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import theme from 'brave-ui/theme/colors/'
+import * as leo from '@brave/leo/tokens/css'
+import { assetDownColor, assetUpColor } from './index'
 
 interface CustomReferenceDotProps {
   cx: string
@@ -22,11 +24,45 @@ export const CustomReferenceDot = ({
 }: CustomReferenceDotProps) => {
   return (
     <>
-      <circle fill='none' cx={cx} r='3' cy={cy} stroke={isAsset ? isDown ? theme.red600 : theme.teal600 : '#BF14A2'} strokeWidth='1'>
-        <animate attributeName='r' values='3;8;3;3' dur='3s' begin='0s' repeatCount='indefinite' />
-        <animate attributeName='opacity' values='1;0;0;0' dur='3s' begin='0s' repeatCount='indefinite' />
+      <circle
+        fill='none'
+        cx={cx} r='3'
+        cy={cy}
+        stroke={
+          isAsset
+            ? isDown
+              ? theme.red600
+              : theme.teal600
+            : leo.color.icon.interactive
+        }
+        strokeWidth='1'>
+        <animate
+          attributeName='r'
+          values='3;8;3;3'
+          dur='3s'
+          begin='0s'
+          repeatCount='indefinite'
+        />
+        <animate
+          attributeName='opacity'
+          values='1;0;0;0'
+          dur='3s'
+          begin='0s'
+          repeatCount='indefinite'
+        />
       </circle>
-      <circle fill={isAsset ? isDown ? '#EE6374' : '#2AC194' : '#BF14A2'} cx={cx} r='3' cy={cy} />
+      <circle
+        fill={
+          isAsset
+            ? isDown
+              ? assetDownColor
+              : assetUpColor
+            : leo.color.icon.interactive
+        }
+        cx={cx}
+        r='3'
+        cy={cy}
+      />
     </>
   )
 }

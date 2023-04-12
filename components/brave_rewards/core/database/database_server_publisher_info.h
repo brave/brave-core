@@ -16,6 +16,9 @@
 namespace ledger {
 namespace database {
 
+using GetServerPublisherInfoCallback =
+    std::function<void(mojom::ServerPublisherInfoPtr)>;
+
 class DatabaseServerPublisherInfo : public DatabaseTable {
  public:
   explicit DatabaseServerPublisherInfo(LedgerImpl* ledger);
@@ -25,7 +28,7 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
                       ledger::LegacyResultCallback callback);
 
   void GetRecord(const std::string& publisher_key,
-                 client::GetServerPublisherInfoCallback callback);
+                 GetServerPublisherInfoCallback callback);
 
   void DeleteExpiredRecords(int64_t max_age_seconds,
                             ledger::LegacyResultCallback callback);
@@ -33,12 +36,12 @@ class DatabaseServerPublisherInfo : public DatabaseTable {
  private:
   void OnGetRecordBanner(mojom::PublisherBannerPtr banner,
                          const std::string& publisher_key,
-                         client::GetServerPublisherInfoCallback callback);
+                         GetServerPublisherInfoCallback callback);
 
   void OnGetRecord(mojom::DBCommandResponsePtr response,
                    const std::string& publisher_key,
                    const mojom::PublisherBanner& banner,
-                   client::GetServerPublisherInfoCallback callback);
+                   GetServerPublisherInfoCallback callback);
 
   void OnExpiredRecordsSelected(mojom::DBCommandResponsePtr response,
                                 ledger::LegacyResultCallback callback);

@@ -7,7 +7,7 @@
 #include <tuple>
 #include <utility>
 
-#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_commit_transaction/post_commit_transaction_uphold.h"
@@ -19,7 +19,6 @@
 // npm run test -- brave_unit_tests --filter=*PostCommitTransactionUphold*
 
 using ::testing::_;
-using ::testing::Invoke;
 using ::testing::TestWithParam;
 using ::testing::Values;
 
@@ -38,47 +37,33 @@ using PostCommitTransactionUpholdParamType = std::tuple<
 
 class PostCommitTransactionUphold
     : public TestWithParam<PostCommitTransactionUpholdParamType> {
- public:
-  PostCommitTransactionUphold(const PostCommitTransactionUphold&) = delete;
-  PostCommitTransactionUphold& operator=(const PostCommitTransactionUphold&) =
-      delete;
-
-  PostCommitTransactionUphold(PostCommitTransactionUphold&&) = delete;
-  PostCommitTransactionUphold& operator=(PostCommitTransactionUphold&&) =
-      delete;
-
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  PostCommitTransactionUphold()
-      : mock_ledger_client_(), mock_ledger_impl_(&mock_ledger_client_) {}
-
-  MockLedgerClient mock_ledger_client_;
+  base::test::TaskEnvironment task_environment_;
   MockLedgerImpl mock_ledger_impl_;
 };
 
 TEST_P(PostCommitTransactionUphold, Paths) {
   const auto& [ignore, status_code, body, expected_result] = GetParam();
 
-  ON_CALL(mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [status_code = status_code, body = body](
-              mojom::UrlRequestPtr, client::LoadURLCallback callback) mutable {
-            mojom::UrlResponse response;
-            response.status_code = status_code;
-            response.body = std::move(body);
-            std::move(callback).Run(response);
-          }));
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = status_code;
+        response->body = body;
+        std::move(callback).Run(std::move(response));
+      });
+
+  base::MockCallback<base::OnceCallback<void(Result&&)>> callback;
+  EXPECT_CALL(callback, Run(Result(expected_result))).Times(1);
 
   RequestFor<endpoints::PostCommitTransactionUphold>(
       &mock_ledger_impl_, "token", "address",
       mojom::ExternalTransaction::New("transaction_id", "contribution_id",
                                       "destination", "amount"))
-      .Send(base::BindLambdaForTesting(
-          [expected_result = expected_result](Result&& result) {
-            EXPECT_EQ(result, expected_result);
-          }));
+      .Send(callback.Get());
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

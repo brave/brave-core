@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { CSSProperties } from 'styled-components'
+import * as leo from '@brave/leo/tokens/css'
 
 import {
   AreaChart,
@@ -25,6 +26,11 @@ import {
   LoadIcon
 } from './style'
 import { CustomReferenceDot } from './custom-reference-dot'
+
+// #EE6374 and #2AC194 do not exist in design system,
+// will be updated in future design work.
+export const assetDownColor = '#EE6374'
+export const assetUpColor = '#2AC194'
 
 export interface Props {
   priceData: PriceDataObjectType[]
@@ -94,10 +100,23 @@ function LineChart ({
           onMouseLeave={onChartMouseLeave}
         >
           <defs>
-            <linearGradient id='lineGradient' x1='0' y1='0' x2='1' y2='0'>
-              <stop offset='0%' stopColor='#F73A1C' stopOpacity={1} />
-              <stop offset='50%' stopColor='#BF14A2' stopOpacity={1} />
-              <stop offset='100%' stopColor='#6F4CD2' stopOpacity={1} />
+            <linearGradient
+              id='portfolioGradient'
+              x1='0'
+              y1='0'
+              x2='0'
+              y2='1'
+            >
+              <stop
+                offset='0%'
+                stopColor={leo.color.icon.interactive}
+                stopOpacity={0.2}
+              />
+              <stop
+                offset='110%'
+                stopColor={leo.color.icon.interactive}
+                stopOpacity={0}
+              />
             </linearGradient>
           </defs>
           <YAxis hide={true} domain={['auto', 'auto']} />
@@ -119,8 +138,32 @@ function LineChart ({
             type='monotone'
             dataKey='close'
             strokeWidth={2}
-            stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : 'url(#lineGradient)'}
-            fill='none'
+            stroke={
+              isAsset
+                ? isDown
+                  ? assetDownColor
+                  : assetUpColor
+                : leo.color.icon.interactive}
+            fill={
+              isAsset ||
+                priceData.length <= 0
+                ? 'none'
+                : 'url(#portfolioGradient)'}
+            activeDot={
+              {
+                stroke:
+                  isAsset
+                    ? leo.color.white
+                    : leo.color.icon.interactive,
+                fill:
+                  isAsset
+                    ? isDown
+                      ? assetDownColor
+                      : assetUpColor
+                    : leo.color.white,
+                strokeWidth: 2,
+                r: isAsset ? 4 : 5
+              }}
           />
           {showPulsatingDot &&
             <ReferenceDot

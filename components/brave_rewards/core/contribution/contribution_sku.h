@@ -11,8 +11,8 @@
 #include <vector>
 
 #include "brave/components/brave_rewards/core/credentials/credentials_factory.h"
-#include "brave/components/brave_rewards/core/ledger.h"
-#include "brave/components/brave_rewards/core/sku/sku_factory.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
+#include "brave/components/brave_rewards/core/sku/sku.h"
 
 namespace ledger {
 class LedgerImpl;
@@ -28,8 +28,7 @@ class ContributionSKU {
                         const std::string& wallet_type,
                         ledger::LegacyResultCallback callback);
 
-  void Merchant(const mojom::SKUTransaction&,
-                client::LegacyResultCallback callback);
+  void Merchant(const mojom::SKUTransaction&, LegacyResultCallback callback);
 
   void Retry(mojom::ContributionInfoPtr contribution,
              ledger::LegacyResultCallback callback);
@@ -65,13 +64,13 @@ class ContributionSKU {
 
   void GetUnblindedTokens(std::vector<mojom::UnblindedTokenPtr> list,
                           const mojom::SKUTransaction&,
-                          client::LegacyResultCallback);
+                          LegacyResultCallback);
 
   void GetOrderMerchant(mojom::SKUOrderPtr,
                         const credential::CredentialsRedeem&,
-                        client::LegacyResultCallback);
+                        LegacyResultCallback);
 
-  void OnRedeemTokens(mojom::Result, client::LegacyResultCallback);
+  void OnRedeemTokens(mojom::Result, LegacyResultCallback);
 
   void OnOrder(mojom::SKUOrderPtr order,
                std::shared_ptr<mojom::ContributionInfoPtr> shared_contribution,

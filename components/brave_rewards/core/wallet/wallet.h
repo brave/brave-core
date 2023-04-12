@@ -13,7 +13,7 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

@@ -43,38 +43,33 @@ void StateMigrationV2::OnLoadState(mojom::Result result,
     return;
   }
 
-  ledger_->ledger_client()->SetBooleanState(
-      "enabled", legacy_state_->GetRewardsMainEnabled());
+  ledger_->SetState("enabled", legacy_state_->GetRewardsMainEnabled());
 
-  ledger_->ledger_client()->SetBooleanState(
-      kAutoContributeEnabled, legacy_state_->GetAutoContributeEnabled());
+  ledger_->SetState(kAutoContributeEnabled,
+                    legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
-    ledger_->ledger_client()->SetDoubleState(
-        kAutoContributeAmount, legacy_state_->GetAutoContributionAmount());
+    ledger_->SetState(kAutoContributeAmount,
+                      legacy_state_->GetAutoContributionAmount());
   }
 
-  ledger_->ledger_client()->SetUint64State(kNextReconcileStamp,
-                                           legacy_state_->GetReconcileStamp());
+  ledger_->SetState(kNextReconcileStamp, legacy_state_->GetReconcileStamp());
 
-  ledger_->ledger_client()->SetUint64State(kCreationStamp,
-                                           legacy_state_->GetCreationStamp());
+  ledger_->SetState(kCreationStamp, legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
-  ledger_->ledger_client()->SetStringState(kRecoverySeed,
-                                           base::Base64Encode(seed));
+  ledger_->SetState(kRecoverySeed, base::Base64Encode(seed));
 
-  ledger_->ledger_client()->SetStringState(kPaymentId,
-                                           legacy_state_->GetPaymentId());
+  ledger_->SetState(kPaymentId, legacy_state_->GetPaymentId());
 
-  ledger_->ledger_client()->SetBooleanState(
-      kInlineTipRedditEnabled, legacy_state_->GetInlineTipSetting("reddit"));
+  ledger_->SetState(kInlineTipRedditEnabled,
+                    legacy_state_->GetInlineTipSetting("reddit"));
 
-  ledger_->ledger_client()->SetBooleanState(
-      kInlineTipTwitterEnabled, legacy_state_->GetInlineTipSetting("twitter"));
+  ledger_->SetState(kInlineTipTwitterEnabled,
+                    legacy_state_->GetInlineTipSetting("twitter"));
 
-  ledger_->ledger_client()->SetBooleanState(
-      kInlineTipGithubEnabled, legacy_state_->GetInlineTipSetting("github"));
+  ledger_->SetState(kInlineTipGithubEnabled,
+                    legacy_state_->GetInlineTipSetting("github"));
 
   callback(mojom::Result::LEDGER_OK);
 }

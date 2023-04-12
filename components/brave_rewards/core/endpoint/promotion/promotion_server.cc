@@ -26,8 +26,7 @@ PromotionServer::PromotionServer(LedgerImpl* ledger)
       put_devicecheck_(std::make_unique<promotion::PutDevicecheck>(ledger)),
       post_suggestions_(std::make_unique<promotion::PostSuggestions>(ledger)),
       post_suggestions_claim_(
-          std::make_unique<promotion::PostSuggestionsClaim>(ledger)),
-      get_drain_(std::make_unique<promotion::GetDrain>(ledger)) {}
+          std::make_unique<promotion::PostSuggestionsClaim>(ledger)) {}
 
 PromotionServer::~PromotionServer() = default;
 
@@ -90,10 +89,6 @@ promotion::PostSuggestions* PromotionServer::post_suggestions() const {
 promotion::PostSuggestionsClaim* PromotionServer::post_suggestions_claim()
     const {
   return post_suggestions_claim_.get();
-}
-
-promotion::GetDrain* PromotionServer::get_drain() const {
-  return get_drain_.get();
 }
 
 }  // namespace endpoint

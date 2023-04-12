@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // PATCH https://api.uphold.com/v0/me/cards/{wallet_address}
 //
@@ -102,7 +102,7 @@ class PatchCard {
 
   mojom::Result CheckStatusCode(int status_code);
 
-  void OnRequest(PatchCardCallback, const mojom::UrlResponse&);
+  void OnRequest(PatchCardCallback, mojom::UrlResponsePtr);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

@@ -70,7 +70,7 @@ import {
 // utils
 import { cacher } from '../../utils/query-cache-utils'
 import getAPIProxy from '../async/bridge'
-import WalletApiProxy from '../wallet_api_proxy'
+import type WalletApiProxy from '../wallet_api_proxy'
 import {
   addChainIdToToken,
   getAssetIdKey,
@@ -180,16 +180,14 @@ let selectedPendingTransactionId: string = ''
   class BaseQueryCache {
     private _networksRegistry?: NetworksRegistry
 
-    constructor(private getProxy: () => WalletApiProxy) {}
-
     getWalletInfoBase = async () => {
       // TODO: cache this result when deprecating uncached accounts
-      return (await this.getProxy().walletHandler.getWalletInfo()).walletInfo
+      return (await apiProxyFetcher().walletHandler.getWalletInfo()).walletInfo
     }
 
     getNetworksRegistry = async () => {
       if (!this._networksRegistry) {
-        const { jsonRpcService } = this.getProxy()
+        const { jsonRpcService } = apiProxyFetcher()
 
         // network type flags
         const { isFilecoinEnabled, isSolanaEnabled } =
@@ -316,7 +314,7 @@ export function createWalletApi (
 ) {
   apiProxyFetcher = getProxy // update the proxy whenever a new api is created
 
-  const baseQueryCache = new BaseQueryCache(apiProxyFetcher);
+  const baseQueryCache = new BaseQueryCache();
 
   const walletApi = createApi({
     reducerPath: 'walletApi',

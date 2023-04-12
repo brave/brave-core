@@ -29,16 +29,16 @@ class DatabaseServerPublisherBanner : public DatabaseTable {
                      const std::string& publisher_key_list);
 
   void GetRecord(const std::string& publisher_key,
-                 ledger::PublisherBannerCallback callback);
+                 ledger::GetPublisherBannerCallback callback);
 
  private:
   void OnGetRecord(mojom::DBCommandResponsePtr response,
                    const std::string& publisher_key,
-                   ledger::PublisherBannerCallback callback);
+                   ledger::GetPublisherBannerCallback callback);
 
   void OnGetRecordLinks(const std::map<std::string, std::string>& links,
                         const mojom::PublisherBanner& banner,
-                        ledger::PublisherBannerCallback callback);
+                        ledger::GetPublisherBannerCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherLinks> links_;
 };

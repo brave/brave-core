@@ -9,8 +9,10 @@
 
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/recovery/recovery_empty_balance.h"
+#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -63,7 +65,7 @@ void EmptyBalance::OnAllContributions(
   GetPromotions(get_callback);
 }
 
-void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
+void EmptyBalance::GetPromotions(database::GetPromotionListCallback callback) {
   auto get_callback =
       std::bind(&EmptyBalance::OnPromotions, this, _1, callback);
 
@@ -72,7 +74,7 @@ void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
 
 void EmptyBalance::OnPromotions(
     base::flat_map<std::string, mojom::PromotionPtr> promotions,
-    client::GetPromotionListCallback callback) {
+    database::GetPromotionListCallback callback) {
   std::vector<mojom::PromotionPtr> list;
 
   for (auto& promotion : promotions) {

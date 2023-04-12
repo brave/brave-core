@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "crypto/sha2.h"
 
 using ledger::endpoints::PostConnectBitflyer;

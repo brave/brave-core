@@ -119,8 +119,8 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     ResponseConversionCallback conversion_callback) {
   return Request(method, url, payload, payload_content_type,
                  std::move(callback),
-                 APIRequestOptions(auto_retry_on_network_change, max_body_size,
-                                   absl::nullopt),
+                 APIRequestOptions(auto_retry_on_network_change, false,
+                                   max_body_size, absl::nullopt),
                  headers, std::move(conversion_callback));
 }
 
@@ -135,6 +135,7 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     ResponseConversionCallback conversion_callback) {
   auto loader = CreateLoader(method, url, payload, payload_content_type,
                              request_options.auto_retry_on_network_change,
+                             request_options.enable_cache,
                              true /* allow_http_error_result*/, headers);
 
   if (request_options.timeout) {
@@ -171,7 +172,7 @@ APIRequestHelper::Ticket APIRequestHelper::Download(
   auto iter = url_loaders_.insert(
       url_loaders_.begin(),
       CreateLoader({}, url, payload, payload_content_type,
-                   auto_retry_on_network_change,
+                   auto_retry_on_network_change, false /* enable_cache */,
                    false /*allow_http_error_result*/, headers));
   iter->get()->DownloadToFile(
       url_loader_factory_.get(),
@@ -192,12 +193,17 @@ std::unique_ptr<network::SimpleURLLoader> APIRequestHelper::CreateLoader(
     const std::string& payload,
     const std::string& payload_content_type,
     bool auto_retry_on_network_change,
+    bool enable_cache,
     bool allow_http_error_result,
     const base::flat_map<std::string, std::string>& headers) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
-  request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
-                        net::LOAD_DO_NOT_SAVE_COOKIES;
+  request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+  if (!enable_cache) {
+    request->load_flags =
+        request->load_flags | net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
+  }
+
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   if (!method.empty())
     request->method = method;

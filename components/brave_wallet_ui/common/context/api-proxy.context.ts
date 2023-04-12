@@ -5,6 +5,6 @@
 
 import * as React from 'react'
 
-import WalletApiProxy from '../wallet_api_proxy'
+import type WalletApiProxy from '../wallet_api_proxy'
 
 export const ApiProxyContext = React.createContext<WalletApiProxy | undefined>(undefined)

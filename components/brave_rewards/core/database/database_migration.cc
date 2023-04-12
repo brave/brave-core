@@ -8,6 +8,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v1.h"
@@ -94,7 +95,7 @@ void DatabaseMigration::Start(uint32_t table_version,
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (ledger_->ledger_client()->GetBooleanOption(option::kIsBitflyerRegion)) {
+  if (ledger_->GetOption<bool>(option::kIsBitflyerRegion)) {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }
@@ -165,11 +166,14 @@ void DatabaseMigration::Start(uint32_t table_version,
       base::StringPrintf("%d->%d", start_version, migrated_version);
 
   ledger_->RunDBTransaction(
-      std::move(transaction),
-      [this, callback, message](mojom::DBCommandResponsePtr response) {
+      std::move(transaction), [this, callback, message, migrated_version](
+                                  mojom::DBCommandResponsePtr response) {
         if (response &&
             response->status == mojom::DBCommandResponse::Status::RESPONSE_OK) {
-          ledger_->database()->SaveEventLog(log::kDatabaseMigrated, message);
+          // The event_log table was introduced in v29.
+          if (migrated_version >= 29) {
+            ledger_->database()->SaveEventLog(log::kDatabaseMigrated, message);
+          }
           callback(mojom::Result::LEDGER_OK);
           return;
         }

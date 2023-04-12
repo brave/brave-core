@@ -76,10 +76,11 @@ void Database::NormalizeActivityInfoList(
   activity_info_->NormalizeList(std::move(list), callback);
 }
 
-void Database::GetActivityInfoList(uint32_t start,
-                                   uint32_t limit,
-                                   mojom::ActivityInfoFilterPtr filter,
-                                   ledger::PublisherInfoListCallback callback) {
+void Database::GetActivityInfoList(
+    uint32_t start,
+    uint32_t limit,
+    mojom::ActivityInfoFilterPtr filter,
+    ledger::GetActivityInfoListCallback callback) {
   activity_info_->GetRecordsList(start, limit, std::move(filter), callback);
 }
 
@@ -151,7 +152,7 @@ void Database::GetAllContributions(
 
 void Database::GetOneTimeTips(const mojom::ActivityMonth month,
                               const int year,
-                              ledger::PublisherInfoListCallback callback) {
+                              ledger::GetOneTimeTipsCallback callback) {
   contribution_info_->GetOneTimeTips(month, year, callback);
 }
 
@@ -327,12 +328,12 @@ void Database::SavePendingContribution(
 }
 
 void Database::GetPendingContributionsTotal(
-    ledger::PendingContributionsTotalCallback callback) {
+    ledger::GetPendingContributionsTotalCallback callback) {
   pending_contribution_->GetReservedAmount(callback);
 }
 
 void Database::GetPendingContributions(
-    ledger::PendingContributionInfoListCallback callback) {
+    ledger::GetPendingContributionsCallback callback) {
   pending_contribution_->GetAllRecords(callback);
 }
 
@@ -409,7 +410,7 @@ void Database::PromotionCredentialCompleted(
 }
 
 void Database::GetPromotionList(const std::vector<std::string>& ids,
-                                client::GetPromotionListCallback callback) {
+                                GetPromotionListCallback callback) {
   promotion_->GetRecords(ids, callback);
 }
 
@@ -428,12 +429,13 @@ void Database::SavePublisherInfo(mojom::PublisherInfoPtr publisher_info,
 }
 
 void Database::GetPublisherInfo(const std::string& publisher_key,
-                                ledger::PublisherInfoCallback callback) {
+                                ledger::GetPublisherInfoCallback callback) {
   publisher_info_->GetRecord(publisher_key, callback);
 }
 
-void Database::GetPanelPublisherInfo(mojom::ActivityInfoFilterPtr filter,
-                                     ledger::PublisherInfoCallback callback) {
+void Database::GetPanelPublisherInfo(
+    mojom::ActivityInfoFilterPtr filter,
+    ledger::GetPublisherPanelInfoCallback callback) {
   publisher_info_->GetPanelRecord(std::move(filter), callback);
 }
 
@@ -441,7 +443,7 @@ void Database::RestorePublishers(ledger::ResultCallback callback) {
   publisher_info_->RestorePublishers(std::move(callback));
 }
 
-void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {
+void Database::GetExcludedList(ledger::GetExcludedListCallback callback) {
   publisher_info_->GetExcludedList(callback);
 }
 
@@ -475,7 +477,7 @@ void Database::GetNextMonthlyContributionTime(
   recurring_tip_->GetNextMonthlyContributionTime(std::move(callback));
 }
 
-void Database::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
+void Database::GetRecurringTips(ledger::GetRecurringTipsCallback callback) {
   recurring_tip_->GetAllRecords(callback);
 }
 
@@ -506,9 +508,8 @@ void Database::InsertServerPublisherInfo(
   server_publisher_info_->InsertOrUpdate(server_info, callback);
 }
 
-void Database::GetServerPublisherInfo(
-    const std::string& publisher_key,
-    client::GetServerPublisherInfoCallback callback) {
+void Database::GetServerPublisherInfo(const std::string& publisher_key,
+                                      GetServerPublisherInfoCallback callback) {
   server_publisher_info_->GetRecord(publisher_key, callback);
 }
 

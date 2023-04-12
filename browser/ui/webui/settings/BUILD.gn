@@ -10,6 +10,7 @@ source_set("unittests") {
     sources = [
       "brave_importer_observer_unittest.cc",
       "brave_site_settings_handler_unittest.cc",
+      "settings_cookies_view_handler_unittest.cc",
     ]
 
     deps = [
@@ -19,6 +20,7 @@ source_set("unittests") {
       "//chrome/browser",
       "//chrome/browser/ui",
       "//chrome/test:test_support",
+      "//components/browsing_data/content:test_support",
       "//components/sync_preferences:test_support",
       "//content/test:test_support",
       "//testing/gtest",

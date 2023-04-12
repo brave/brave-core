@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 
 // POST /v1/devicecheck/attestations
 //
@@ -56,7 +56,7 @@ class PostDevicecheck {
   mojom::Result ParseBody(const std::string& body, std::string* nonce);
 
   void OnRequest(PostDevicecheckCallback callback,
-                 const mojom::UrlResponse& response);
+                 mojom::UrlResponsePtr response);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

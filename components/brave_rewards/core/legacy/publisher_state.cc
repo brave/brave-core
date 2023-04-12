@@ -33,15 +33,15 @@ bool LegacyPublisherState::GetPublisherAllowNonVerified() const {
   return state_->allow_non_verified_sites_in_list;
 }
 
-void LegacyPublisherState::Load(ledger::LegacyResultCallback callback) {
-  auto load_callback =
-      std::bind(&LegacyPublisherState::OnLoad, this, _1, _2, callback);
-  ledger_->ledger_client()->LoadPublisherState(load_callback);
+void LegacyPublisherState::Load(LegacyResultCallback callback) {
+  ledger_->client()->LoadPublisherState(
+      base::BindOnce(&LegacyPublisherState::OnLoad, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void LegacyPublisherState::OnLoad(ledger::mojom::Result result,
-                                  const std::string& data,
-                                  ledger::LegacyResultCallback callback) {
+void LegacyPublisherState::OnLoad(LegacyResultCallback callback,
+                                  mojom::Result result,
+                                  const std::string& data) {
   if (result != ledger::mojom::Result::LEDGER_OK) {
     callback(result);
     return;

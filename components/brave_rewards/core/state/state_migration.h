@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v10.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v11.h"
@@ -34,16 +34,14 @@ class StateMigration {
   explicit StateMigration(LedgerImpl* ledger);
   ~StateMigration();
 
-  void Start(ledger::LegacyResultCallback callback);
+  void Start(ResultCallback callback);
 
-  void Migrate(ledger::LegacyResultCallback callback);
+  void Migrate(ResultCallback callback);
 
  private:
-  void FreshInstall(ledger::LegacyResultCallback callback);
+  void FreshInstall(ResultCallback callback);
 
-  void OnMigration(mojom::Result result,
-                   int version,
-                   ledger::LegacyResultCallback callback);
+  void OnMigration(ResultCallback callback, int version, mojom::Result result);
 
   std::unique_ptr<StateMigrationV1> v1_;
   std::unique_ptr<StateMigrationV2> v2_;

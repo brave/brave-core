@@ -5,15 +5,19 @@
 
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
+#include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "brave/components/brave_rewards/core/mojom_structs.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
-#include "brave/components/brave_rewards/core/test/bat_ledger_test.h"
+#include "brave/components/brave_rewards/core/test/test_ledger_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=*WalletUtilTest*
 
+using testing::_;
+using testing::Test;
 using testing::Values;
 using testing::WithParamInterface;
 
@@ -22,12 +26,10 @@ namespace ledger::wallet {
 mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(std::string wallet_string,
                                                    std::string wallet_type);
 
-class WalletUtilTest : public BATLedgerTest {};
+class WalletUtilTest : public Test {};
 
 TEST_F(WalletUtilTest, InvalidJSON) {
-  const char data[] = "";
-  mojom::ExternalWalletPtr wallet = ExternalWalletPtrFromJSON(data, "uphold");
-  EXPECT_EQ(nullptr, wallet.get());
+  EXPECT_FALSE(ExternalWalletPtrFromJSON("", "uphold"));
 }
 
 TEST_F(WalletUtilTest, ExternalWalletPtrFromJSON) {
@@ -64,19 +66,32 @@ using TransitionWalletCreateParamType =
                >;
 
 class TransitionWalletCreate
-    : public BATLedgerTest,
-      public WithParamInterface<TransitionWalletCreateParamType> {};
+    : public Test,
+      public WithParamInterface<TransitionWalletCreateParamType> {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+};
 
 TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
-  if (wallet_already_exists) {
-    GetTestLedgerClient()->SetStringState(
-        state::kWalletUphold, FakeEncryption::Base64EncryptString("{}"));
-  }
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(),
+              GetStringState(state::kWalletUphold, _))
+      .Times(1)
+      .WillOnce([&](const std::string&, auto callback) {
+        std::move(callback).Run(wallet_already_exists
+                                    ? FakeEncryption::Base64EncryptString("{}")
+                                    : "");
+      });
+
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
 
   const auto wallet =
-      TransitionWallet(GetLedgerImpl(), constant::kWalletUphold, to);
+      TransitionWallet(&mock_ledger_impl_, constant::kWalletUphold, to);
   EXPECT_EQ(static_cast<bool>(wallet), expected);
 
   if (wallet) {
@@ -91,6 +106,8 @@ TEST_P(TransitionWalletCreate, Paths) {
     EXPECT_TRUE(wallet->token.empty());
     EXPECT_TRUE(wallet->address.empty());
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off
@@ -137,14 +154,23 @@ using TransitionWalletTransitionParamType =
                >;
 
 class TransitionWalletTransition
-    : public BATLedgerTest,
-      public WithParamInterface<TransitionWalletTransitionParamType> {};
+    : public Test,
+      public WithParamInterface<TransitionWalletTransitionParamType> {
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+};
 
 TEST_P(TransitionWalletTransition, Paths) {
   const auto& [ignore, from_wallet, to, expected] = GetParam();
 
+  ON_CALL(*mock_ledger_impl_.mock_client(), RunDBTransaction(_, _))
+      .WillByDefault([](mojom::DBTransactionPtr transaction, auto callback) {
+        std::move(callback).Run(db_error_response->Clone());
+      });
+
   const auto to_wallet =
-      TransitionWallet(GetLedgerImpl(), std::move(*from_wallet), to);
+      TransitionWallet(&mock_ledger_impl_, std::move(*from_wallet), to);
   EXPECT_EQ(static_cast<bool>(to_wallet), expected);
 
   if (to_wallet) {
@@ -167,6 +193,8 @@ TEST_P(TransitionWalletTransition, Paths) {
       EXPECT_TRUE(to_wallet->address.empty());
     }
   }
+
+  task_environment_.RunUntilIdle();
 }
 
 // clang-format off

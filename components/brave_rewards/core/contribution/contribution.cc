@@ -15,13 +15,19 @@
 #include "base/functional/callback.h"
 #include "base/guid.h"
 #include "base/time/time.h"
+#include "brave/components/brave_rewards/core/bitflyer/bitflyer.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
+#include "brave/components/brave_rewards/core/database/database.h"
+#include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
 #include "brave/components/brave_rewards/core/option_keys.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
+#include "brave/components/brave_rewards/core/state/state.h"
+#include "brave/components/brave_rewards/core/uphold/uphold.h"
+#include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
 
 using std::placeholders::_1;
@@ -379,8 +385,7 @@ void Contribution::ContributionCompleted(
   // browser restart. Those ACs should complete in the background without
   // updating the current month's balance report or generating a notification.
   if (!IsRevivedAC(*contribution)) {
-    ledger_->ledger_client()->OnReconcileComplete(result,
-                                                  contribution->Clone());
+    ledger_->client()->OnReconcileComplete(result, contribution->Clone());
 
     if (result == mojom::Result::LEDGER_OK) {
       ledger_->database()->SaveBalanceReportInfoItem(
@@ -639,7 +644,7 @@ void Contribution::TransferFunds(const mojom::SKUTransaction& transaction,
                                  const std::string& destination,
                                  const std::string& wallet_type,
                                  const std::string& contribution_id,
-                                 client::LegacyResultCallback callback) {
+                                 LegacyResultCallback callback) {
   if (wallet_type == constant::kWalletUphold) {
     ledger_->uphold()->TransferFunds(transaction.amount, destination,
                                      contribution_id, callback);
@@ -875,8 +880,7 @@ void Contribution::Retry(
   }
 }
 
-void Contribution::GetRecurringTips(
-    ledger::PublisherInfoListCallback callback) {
+void Contribution::GetRecurringTips(ledger::GetRecurringTipsCallback callback) {
   ledger_->database()->GetRecurringTips(
       [this, callback](std::vector<mojom::PublisherInfoPtr> list) {
         // The publisher status field may be expired. Attempt to refresh

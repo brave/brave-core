@@ -10,12 +10,8 @@ static_library("lib") {
   ]
 
   sources = [
-    "bat_ledger_client_mojo_bridge.cc",
-    "bat_ledger_client_mojo_bridge.h",
-    "bat_ledger_impl.cc",
-    "bat_ledger_impl.h",
-    "bat_ledger_service_impl.cc",
-    "bat_ledger_service_impl.h",
+    "ledger_factory_impl.cc",
+    "ledger_factory_impl.h",
   ]
 
   public_deps = [

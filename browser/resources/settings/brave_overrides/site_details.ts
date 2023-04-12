@@ -5,10 +5,16 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {RegisterPolymerTemplateModifications,RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
 import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 
 import {loadTimeData} from '../i18n_setup.js'
+import {BraveSiteDetailsElement} from '../brave_site_details/brave_site_details.js'
+
+RegisterPolymerComponentReplacement(
+  'site-details',
+  BraveSiteDetailsElement
+)
 
 RegisterPolymerTemplateModifications({
   'site-details': (templateContent) => {
@@ -149,6 +155,25 @@ RegisterPolymerTemplateModifications({
       } else {
         shieldsSettings.setAttribute(
             'label', loadTimeData.getString('siteSettingsShieldsStatus'))
+      }
+      usageSection.insertAdjacentHTML(
+        'afterend',
+        getTrustedHTML`
+
+          <cr-link-row id="cookiesLink" on-click="onCookiesDetailClicked_">
+          </cr-link-row>
+
+        `)
+      const cookiesDetail =
+        templateContent.querySelector('#cookiesLink')
+      if (!cookiesDetail) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find cookies link')
+      } else {
+        cookiesDetail.setAttribute('label',
+            loadTimeData.getString('siteCookiesLinkLabel'))
+        cookiesDetail.setAttribute('sub-label',
+            loadTimeData.getString('siteCookiesLinkDesc'))
       }
     }
   }

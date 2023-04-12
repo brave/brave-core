@@ -3,14 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/payment/post_votes/post_votes.h"
-#include "brave/components/brave_rewards/core/ledger.h"
+#include "brave/components/brave_rewards/core/ledger_callbacks.h"
 #include "brave/components/brave_rewards/core/ledger_client_mock.h"
 #include "brave/components/brave_rewards/core/ledger_impl_mock.h"
 #include "net/http/http_status_code.h"
@@ -19,39 +18,29 @@
 // npm run test -- brave_unit_tests --filter=PostVotesTest.*
 
 using ::testing::_;
-using ::testing::Invoke;
+using ::testing::MockFunction;
 
 namespace ledger {
 namespace endpoint {
 namespace payment {
 
 class PostVotesTest : public testing::Test {
- private:
-  base::test::TaskEnvironment scoped_task_environment_;
-
  protected:
-  std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
-  std::unique_ptr<PostVotes> votes_;
-
-  PostVotesTest() {
-    mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-    mock_ledger_impl_ =
-        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
-    votes_ = std::make_unique<PostVotes>(mock_ledger_impl_.get());
-  }
+  base::test::TaskEnvironment task_environment_;
+  MockLedgerImpl mock_ledger_impl_;
+  PostVotes votes_{&mock_ledger_impl_};
 };
 
 TEST_F(PostVotesTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 200;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 200;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::UnblindedToken token;
   token.token_value =
@@ -68,21 +57,23 @@ TEST_F(PostVotesTest, ServerOK) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
-    EXPECT_EQ(result, mojom::Result::LEDGER_OK);
-  });
+  MockFunction<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_OK)).Times(1);
+  votes_.Request(redeem, callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostVotesTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 400;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 400;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::UnblindedToken token;
   token.token_value =
@@ -99,21 +90,23 @@ TEST_F(PostVotesTest, ServerError400) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
-    EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
-  });
+  MockFunction<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Call(mojom::Result::RETRY_SHORT)).Times(1);
+  votes_.Request(redeem, callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostVotesTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 500;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 500;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::UnblindedToken token;
   token.token_value =
@@ -130,21 +123,23 @@ TEST_F(PostVotesTest, ServerError500) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
-    EXPECT_EQ(result, mojom::Result::RETRY_SHORT);
-  });
+  MockFunction<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Call(mojom::Result::RETRY_SHORT)).Times(1);
+  votes_.Request(redeem, callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(PostVotesTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
-      .WillByDefault(Invoke(
-          [](mojom::UrlRequestPtr request, client::LoadURLCallback callback) {
-            mojom::UrlResponse response;
-            response.status_code = 453;
-            response.url = request->url;
-            response.body = "";
-            std::move(callback).Run(response);
-          }));
+  EXPECT_CALL(*mock_ledger_impl_.mock_client(), LoadURL(_, _))
+      .Times(1)
+      .WillOnce([](mojom::UrlRequestPtr request, auto callback) {
+        auto response = mojom::UrlResponse::New();
+        response->status_code = 453;
+        response->url = request->url;
+        response->body = "";
+        std::move(callback).Run(std::move(response));
+      });
 
   mojom::UnblindedToken token;
   token.token_value =
@@ -161,9 +156,11 @@ TEST_F(PostVotesTest, ServerErrorRandom) {
   redeem.order_id = "c4645786-052f-402f-8593-56af2f7a21ce";
   redeem.contribution_id = "83b3b77b-e7c3-455b-adda-e476fa0656d2";
 
-  votes_->Request(redeem, [](const mojom::Result result) {
-    EXPECT_EQ(result, mojom::Result::LEDGER_ERROR);
-  });
+  MockFunction<PostVotesCallback> callback;
+  EXPECT_CALL(callback, Call(mojom::Result::LEDGER_ERROR)).Times(1);
+  votes_.Request(redeem, callback.AsStdFunction());
+
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace payment

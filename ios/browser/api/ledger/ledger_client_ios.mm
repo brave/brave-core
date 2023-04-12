@@ -4,6 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "ledger_client_ios.h"
+#include "brave/components/brave_rewards/common/mojom/ledger.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_database.mojom.h"
+#include "brave/components/brave_rewards/common/mojom/ledger_types.mojom.h"
 #import "ledger_client_bridge.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
@@ -12,30 +15,37 @@
 
 // Constructor & Destructor
 LedgerClientIOS::LedgerClientIOS(id<LedgerClientBridge> bridge)
-    : bridge_(bridge) {}
+    : bridge_(bridge), receiver_(this) {}
 LedgerClientIOS::~LedgerClientIOS() {
   bridge_ = nil;
 }
 
+mojo::PendingAssociatedRemote<ledger::mojom::LedgerClient>
+LedgerClientIOS::MakeRemote() {
+  return receiver_.BindNewEndpointAndPassDedicatedRemote();
+}
+
 void LedgerClientIOS::FetchFavIcon(const std::string& url,
                                    const std::string& favicon_key,
-                                   ledger::client::FetchIconCallback callback) {
-  [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
+                                   FetchFavIconCallback callback) {
+  [bridge_ fetchFavIcon:url
+             faviconKey:favicon_key
+               callback:std::move(callback)];
+  ;
 }
-void LedgerClientIOS::LoadLedgerState(ledger::client::OnLoadCallback callback) {
-  [bridge_ loadLedgerState:callback];
+void LedgerClientIOS::LoadLedgerState(LoadLedgerStateCallback callback) {
+  [bridge_ loadLedgerState:std::move(callback)];
 }
-void LedgerClientIOS::LoadPublisherState(
-    ledger::client::OnLoadCallback callback) {
-  [bridge_ loadPublisherState:callback];
+void LedgerClientIOS::LoadPublisherState(LoadPublisherStateCallback callback) {
+  [bridge_ loadPublisherState:std::move(callback)];
 }
 void LedgerClientIOS::LoadURL(ledger::mojom::UrlRequestPtr request,
-                              ledger::client::LoadURLCallback callback) {
-  [bridge_ loadURL:std::move(request) callback:std::move(callback)];
+                              LoadURLCallback callback) {
+  [bridge_ loadUrl:std::move(request) callback:std::move(callback)];
 }
-void LedgerClientIOS::Log(const char* file,
-                          const int line,
-                          const int verbose_level,
+void LedgerClientIOS::Log(const std::string& file,
+                          int32_t line,
+                          int32_t verbose_level,
                           const std::string& message) {
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];
 }
@@ -47,8 +57,12 @@ void LedgerClientIOS::OnPanelPublisherInfo(
                   publisherInfo:std::move(publisher_info)
                        windowId:windowId];
 }
-void LedgerClientIOS::OnPublisherRegistryUpdated() {}
-void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {}
+void LedgerClientIOS::OnPublisherRegistryUpdated() {
+  [bridge_ onPublisherRegistryUpdated];
+}
+void LedgerClientIOS::OnPublisherUpdated(const std::string& publisher_id) {
+  [bridge_ onPublisherUpdated:publisher_id];
+}
 void LedgerClientIOS::OnReconcileComplete(
     ledger::mojom::Result result,
     ledger::mojom::ContributionInfoPtr contribution) {
@@ -58,99 +72,130 @@ void LedgerClientIOS::PublisherListNormalized(
     std::vector<ledger::mojom::PublisherInfoPtr> list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
-std::string LedgerClientIOS::URIEncode(const std::string& value) {
-  return [bridge_ URIEncode:value];
+void LedgerClientIOS::URIEncode(const std::string& value,
+                                URIEncodeCallback callback) {
+  [bridge_ uriEncode:value callback:std::move(callback)];
 }
 void LedgerClientIOS::OnContributeUnverifiedPublishers(
     ledger::mojom::Result result,
     const std::string& publisher_key,
     const std::string& publisher_name) {
-  return [bridge_ onContributeUnverifiedPublishers:result
-                                      publisherKey:publisher_key
-                                     publisherName:publisher_name];
+  [bridge_ onContributeUnverifiedPublishers:result
+                               publisherKey:publisher_key
+                              publisherName:publisher_name];
 }
-void LedgerClientIOS::SetBooleanState(const std::string& name, bool value) {
-  [bridge_ setBooleanState:name value:value];
+void LedgerClientIOS::SetBooleanState(const std::string& name,
+                                      bool value,
+                                      SetBooleanStateCallback callback) {
+  [bridge_ setBooleanState:name value:value callback:std::move(callback)];
 }
-bool LedgerClientIOS::GetBooleanState(const std::string& name) const {
-  return [bridge_ getBooleanState:name];
+void LedgerClientIOS::GetBooleanState(const std::string& name,
+                                      GetBooleanStateCallback callback) {
+  [bridge_ booleanState:name callback:std::move(callback)];
 }
-void LedgerClientIOS::SetIntegerState(const std::string& name, int value) {
-  [bridge_ setIntegerState:name value:value];
+void LedgerClientIOS::SetIntegerState(const std::string& name,
+                                      int32_t value,
+                                      SetIntegerStateCallback callback) {
+  [bridge_ setIntegerState:name value:value callback:std::move(callback)];
 }
-int LedgerClientIOS::GetIntegerState(const std::string& name) const {
-  return [bridge_ getIntegerState:name];
+void LedgerClientIOS::GetIntegerState(const std::string& name,
+                                      GetIntegerStateCallback callback) {
+  [bridge_ integerState:name callback:std::move(callback)];
 }
-void LedgerClientIOS::SetDoubleState(const std::string& name, double value) {
-  [bridge_ setDoubleState:name value:value];
+void LedgerClientIOS::SetDoubleState(const std::string& name,
+                                     double value,
+                                     SetDoubleStateCallback callback) {
+  [bridge_ setDoubleState:name value:value callback:std::move(callback)];
 }
-double LedgerClientIOS::GetDoubleState(const std::string& name) const {
-  return [bridge_ getDoubleState:name];
+void LedgerClientIOS::GetDoubleState(const std::string& name,
+                                     GetDoubleStateCallback callback) {
+  [bridge_ doubleState:name callback:std::move(callback)];
 }
 void LedgerClientIOS::SetStringState(const std::string& name,
-                                     const std::string& value) {
-  [bridge_ setStringState:name value:value];
+                                     const std::string& value,
+                                     SetStringStateCallback callback) {
+  [bridge_ setStringState:name value:value callback:std::move(callback)];
 }
-std::string LedgerClientIOS::GetStringState(const std::string& name) const {
-  return [bridge_ getStringState:name];
+void LedgerClientIOS::GetStringState(const std::string& name,
+                                     GetStringStateCallback callback) {
+  [bridge_ stringState:name callback:std::move(callback)];
 }
-void LedgerClientIOS::SetInt64State(const std::string& name, int64_t value) {
-  [bridge_ setInt64State:name value:value];
+void LedgerClientIOS::SetInt64State(const std::string& name,
+                                    int64_t value,
+                                    SetInt64StateCallback callback) {
+  [bridge_ setInt64State:name value:value callback:std::move(callback)];
 }
-int64_t LedgerClientIOS::GetInt64State(const std::string& name) const {
-  return [bridge_ getInt64State:name];
+void LedgerClientIOS::GetInt64State(const std::string& name,
+                                    GetInt64StateCallback callback) {
+  [bridge_ int64State:name callback:std::move(callback)];
 }
-void LedgerClientIOS::SetUint64State(const std::string& name, uint64_t value) {
-  [bridge_ setUint64State:name value:value];
+void LedgerClientIOS::SetUint64State(const std::string& name,
+                                     uint64_t value,
+                                     SetUint64StateCallback callback) {
+  [bridge_ setUint64State:name value:value callback:std::move(callback)];
 }
-uint64_t LedgerClientIOS::GetUint64State(const std::string& name) const {
-  return [bridge_ getUint64State:name];
+void LedgerClientIOS::GetUint64State(const std::string& name,
+                                     GetUint64StateCallback callback) {
+  [bridge_ uint64State:name callback:std::move(callback)];
 }
 void LedgerClientIOS::SetValueState(const std::string& name,
-                                    base::Value value) {
-  [bridge_ setValueState:name value:std::move(value)];
+                                    base::Value value,
+                                    SetValueStateCallback callback) {
+  [bridge_ setValueState:name
+                   value:std::move(value)
+                callback:std::move(callback)];
 }
-base::Value LedgerClientIOS::GetValueState(const std::string& name) const {
-  return [bridge_ getValueState:name];
+void LedgerClientIOS::GetValueState(const std::string& name,
+                                    GetValueStateCallback callback) {
+  [bridge_ valueState:name callback:std::move(callback)];
 }
-void LedgerClientIOS::SetTimeState(const std::string& name, base::Time time) {
-  [bridge_ setTimeState:name time:time];
+void LedgerClientIOS::SetTimeState(const std::string& name,
+                                   base::Time value,
+                                   SetTimeStateCallback callback) {
+  [bridge_ setTimeState:name value:value callback:std::move(callback)];
 }
-base::Time LedgerClientIOS::GetTimeState(const std::string& name) const {
-  return [bridge_ getTimeState:name];
+void LedgerClientIOS::GetTimeState(const std::string& name,
+                                   GetTimeStateCallback callback) {
+  [bridge_ timeState:name callback:std::move(callback)];
 }
-void LedgerClientIOS::ClearState(const std::string& name) {
-  [bridge_ clearState:name];
+void LedgerClientIOS::ClearState(const std::string& name,
+                                 ClearStateCallback callback) {
+  [bridge_ clearState:name callback:std::move(callback)];
 }
-std::string LedgerClientIOS::GetLegacyWallet() {
-  return [bridge_ getLegacyWallet];
+void LedgerClientIOS::GetLegacyWallet(GetLegacyWalletCallback callback) {
+  [bridge_ legacyWallet:std::move(callback)];
 }
-void LedgerClientIOS::ShowNotification(
-    const std::string& type,
-    const std::vector<std::string>& args,
-    ledger::client::LegacyResultCallback callback) {
-  [bridge_ showNotification:type args:args callback:callback];
+void LedgerClientIOS::ShowNotification(const std::string& type,
+                                       const std::vector<std::string>& args,
+                                       ShowNotificationCallback callback) {
+  [bridge_ showNotification:type args:args callback:std::move(callback)];
 }
-bool LedgerClientIOS::GetBooleanOption(const std::string& name) const {
-  return [bridge_ getBooleanOption:name];
+void LedgerClientIOS::GetBooleanOption(const std::string& name,
+                                       GetBooleanOptionCallback callback) {
+  [bridge_ booleanOption:name callback:std::move(callback)];
 }
-int LedgerClientIOS::GetIntegerOption(const std::string& name) const {
-  return [bridge_ getIntegerOption:name];
+void LedgerClientIOS::GetIntegerOption(const std::string& name,
+                                       GetIntegerOptionCallback callback) {
+  [bridge_ integerOption:name callback:std::move(callback)];
 }
-double LedgerClientIOS::GetDoubleOption(const std::string& name) const {
-  return [bridge_ getDoubleOption:name];
+void LedgerClientIOS::GetDoubleOption(const std::string& name,
+                                      GetDoubleOptionCallback callback) {
+  [bridge_ doubleOption:name callback:std::move(callback)];
 }
-std::string LedgerClientIOS::GetStringOption(const std::string& name) const {
-  return [bridge_ getStringOption:name];
+void LedgerClientIOS::GetStringOption(const std::string& name,
+                                      GetStringOptionCallback callback) {
+  [bridge_ stringOption:name callback:std::move(callback)];
 }
-int64_t LedgerClientIOS::GetInt64Option(const std::string& name) const {
-  return [bridge_ getInt64Option:name];
+void LedgerClientIOS::GetInt64Option(const std::string& name,
+                                     GetInt64OptionCallback callback) {
+  [bridge_ int64Option:name callback:std::move(callback)];
 }
-uint64_t LedgerClientIOS::GetUint64Option(const std::string& name) const {
-  return [bridge_ getUint64Option:name];
+void LedgerClientIOS::GetUint64Option(const std::string& name,
+                                      GetUint64OptionCallback callback) {
+  [bridge_ uint64Option:name callback:std::move(callback)];
 }
-ledger::mojom::ClientInfoPtr LedgerClientIOS::GetClientInfo() {
-  return [bridge_ getClientInfo];
+void LedgerClientIOS::GetClientInfo(GetClientInfoCallback callback) {
+  [bridge_ clientInfo:std::move(callback)];
 }
 void LedgerClientIOS::UnblindedTokensReady() {
   [bridge_ unblindedTokensReady];
@@ -160,13 +205,12 @@ void LedgerClientIOS::ReconcileStampReset() {
 }
 void LedgerClientIOS::RunDBTransaction(
     ledger::mojom::DBTransactionPtr transaction,
-    ledger::client::RunDBTransactionCallback callback) {
-  [bridge_ runDBTransaction:std::move(transaction)
+    RunDBTransactionCallback callback) {
+  [bridge_ runDbTransaction:std::move(transaction)
                    callback:std::move(callback)];
 }
-void LedgerClientIOS::GetCreateScript(
-    ledger::client::GetCreateScriptCallback callback) {
-  [bridge_ getCreateScript:callback];
+void LedgerClientIOS::GetCreateScript(GetCreateScriptCallback callback) {
+  [bridge_ createScript:std::move(callback)];
 }
 void LedgerClientIOS::PendingContributionSaved(
     const ledger::mojom::Result result) {
@@ -175,17 +219,23 @@ void LedgerClientIOS::PendingContributionSaved(
 void LedgerClientIOS::ClearAllNotifications() {
   [bridge_ clearAllNotifications];
 }
-void LedgerClientIOS::ExternalWalletConnected() const {}
-void LedgerClientIOS::ExternalWalletLoggedOut() const {}
-void LedgerClientIOS::ExternalWalletReconnected() const {}
-void LedgerClientIOS::DeleteLog(ledger::client::LegacyResultCallback callback) {
-  [bridge_ deleteLog:callback];
+void LedgerClientIOS::ExternalWalletConnected() {
+  [bridge_ externalWalletConnected];
 }
-absl::optional<std::string> LedgerClientIOS::EncryptString(
-    const std::string& value) {
-  return [bridge_ encryptString:value];
+void LedgerClientIOS::ExternalWalletLoggedOut() {
+  [bridge_ externalWalletLoggedOut];
 }
-absl::optional<std::string> LedgerClientIOS::DecryptString(
-    const std::string& value) {
-  return [bridge_ decryptString:value];
+void LedgerClientIOS::ExternalWalletReconnected() {
+  [bridge_ externalWalletReconnected];
+}
+void LedgerClientIOS::DeleteLog(DeleteLogCallback callback) {
+  [bridge_ deleteLog:std::move(callback)];
+}
+void LedgerClientIOS::EncryptString(const std::string& value,
+                                    EncryptStringCallback callback) {
+  [bridge_ encryptString:value callback:std::move(callback)];
+}
+void LedgerClientIOS::DecryptString(const std::string& value,
+                                    DecryptStringCallback callback) {
+  [bridge_ decryptString:value callback:std::move(callback)];
 }
