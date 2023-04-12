@@ -5,7 +5,7 @@
 
 "use strict";
 
-window.__firefox__.execute("FarblingProtection", function($) {
+window.__firefox__.execute(function($) {
   (function() {
     const args = $<farbling_protection_args>;
     const braveNacl = window.nacl
