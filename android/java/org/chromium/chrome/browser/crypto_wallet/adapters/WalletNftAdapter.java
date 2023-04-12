@@ -39,7 +39,6 @@ public class WalletNftAdapter extends RecyclerView.Adapter<WalletNftAdapter.View
     private OnWalletListItemClick onWalletListItemClick;
     private ExecutorService mExecutor;
     private Handler mHandler;
-    private int previousSelectedPos;
 
     public WalletNftAdapter() {
         mExecutor = Executors.newSingleThreadExecutor();
