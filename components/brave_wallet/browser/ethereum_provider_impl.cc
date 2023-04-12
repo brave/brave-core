@@ -885,7 +885,9 @@ void EthereumProviderImpl::ContinueSignMessage(
 
   auto request = mojom::SignMessageRequest::New(
       MakeOriginInfo(origin), -1, address, domain, message, is_eip712,
-      domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH);
+      domain_hash, primary_hash, absl::nullopt, mojom::CoinType::ETH,
+      json_rpc_service_->GetChainId(mojom::CoinType::ETH,
+                                    delegate_->GetOrigin()));
 
   brave_wallet_service_->AddSignMessageRequest(
       std::move(request),

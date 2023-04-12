@@ -1449,6 +1449,7 @@ struct SignMessageRequest {
   // to sign.
   array<uint8>? message_bytes;
   CoinType coin;
+  string chain_id;
 };
 
 struct SignTransactionRequest {
@@ -1458,6 +1459,7 @@ struct SignTransactionRequest {
   TxDataUnion tx_data;
   ByteArrayStringUnion raw_message;
   CoinType coin;
+  string chain_id;
 };
 
 struct SignAllTransactionsRequest {
@@ -1467,6 +1469,7 @@ struct SignAllTransactionsRequest {
   array<TxDataUnion> tx_datas;
   array<ByteArrayStringUnion> raw_messages;
   CoinType coin;
+  string chain_id;
 };
 
 enum ExternalWalletType {

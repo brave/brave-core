@@ -682,15 +682,19 @@ class EthereumProviderImplUnitTest : public testing::Test {
     return brave_wallet_service_->sign_message_requests_.front();
   }
 
-  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests()
-      const {
+  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests() {
     base::RunLoop run_loop;
     std::vector<mojom::SignMessageRequestPtr> requests_out;
     brave_wallet_service_->GetPendingSignMessageRequests(
         base::BindLambdaForTesting(
             [&](std::vector<mojom::SignMessageRequestPtr> requests) {
-              for (const auto& request : requests)
+              for (const auto& request : requests) {
+                SCOPED_TRACE(request->message);
+                EXPECT_EQ(request->chain_id,
+                          json_rpc_service_->GetChainId(mojom::CoinType::ETH,
+                                                        GetOrigin()));
                 requests_out.push_back(request.Clone());
+              }
               run_loop.Quit();
             }));
     run_loop.Run();

@@ -58,7 +58,8 @@ const defaultState: PanelState = {
     domainHash: '',
     primaryHash: '',
     messageBytes: undefined,
-    coin: BraveWallet.CoinType.ETH
+    coin: BraveWallet.CoinType.ETH,
+    chainId: ''
   }],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],

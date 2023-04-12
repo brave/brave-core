@@ -12,12 +12,15 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
+class PrefService;
 
 namespace brave_wallet {
 
@@ -37,7 +40,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
   SolanaProviderImpl(KeyringService* keyring_service,
                      BraveWalletService* brave_wallet_service,
                      TxService* tx_service,
-                     std::unique_ptr<BraveWalletProviderDelegate> delegate);
+                     std::unique_ptr<BraveWalletProviderDelegate> delegate,
+                     PrefService* prefs);
   ~SolanaProviderImpl() override;
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
@@ -158,6 +162,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider,
       keyring_observer_receiver_{this};
   mojo::Receiver<mojom::TxServiceObserver> tx_observer_receiver_{this};
   std::unique_ptr<BraveWalletProviderDelegate> delegate_;
+  const raw_ptr<PrefService> prefs_ = nullptr;
   base::WeakPtrFactory<SolanaProviderImpl> weak_factory_;
 };
 

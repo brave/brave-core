@@ -483,6 +483,7 @@ export const _SignData = () => {
     domain: '',
     originInfo: mockOriginInfo,
     coin: BraveWallet.CoinType.ETH,
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
     isEip712: true,
     domainHash: '',
     primaryHash: '',

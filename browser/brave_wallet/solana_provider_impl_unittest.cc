@@ -16,9 +16,11 @@
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -117,6 +119,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
         web_contents_.get());
     brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
+    json_rpc_service_ =
+        JsonRpcServiceFactory::GetServiceForContext(browser_context());
     keyring_service_ =
         KeyringServiceFactory::GetServiceForContext(browser_context());
     brave_wallet_service_ =
@@ -131,7 +135,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
     provider_ = std::make_unique<SolanaProviderImpl>(
         keyring_service_, brave_wallet_service_, tx_service_,
         std::make_unique<brave_wallet::BraveWalletProviderDelegateImpl>(
-            web_contents(), web_contents()->GetPrimaryMainFrame()));
+            web_contents(), web_contents()->GetPrimaryMainFrame()),
+        profile_.GetPrefs());
     observer_ = std::make_unique<TestEventsListener>();
     provider_->Init(observer_->GetReceiver());
   }
@@ -149,14 +154,17 @@ class SolanaProviderImplUnitTest : public testing::Test {
     return web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   }
 
-  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests()
-      const {
+  std::vector<mojom::SignMessageRequestPtr> GetPendingSignMessageRequests() {
     base::RunLoop run_loop;
     std::vector<mojom::SignMessageRequestPtr> requests_out;
     brave_wallet_service_->GetPendingSignMessageRequests(
         base::BindLambdaForTesting(
             [&](std::vector<mojom::SignMessageRequestPtr> requests) {
               for (const auto& request : requests) {
+                SCOPED_TRACE(request->message);
+                EXPECT_EQ(request->chain_id,
+                          json_rpc_service_->GetChainId(mojom::CoinType::SOL,
+                                                        GetOrigin()));
                 requests_out.push_back(request.Clone());
               }
               run_loop.Quit();
@@ -450,6 +458,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
  protected:
   std::unique_ptr<SolanaProviderImpl> provider_;
   std::unique_ptr<TestEventsListener> observer_;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
 
  private:
@@ -752,7 +761,8 @@ TEST_F(SolanaProviderImplUnitTest, SignMessage) {
   AddAccount();
   std::string address = GetAddressByIndex(0);
   SetSelectedAccount(address, mojom::CoinType::SOL);
-  Navigate(GURL("https://brave.com"));
+  GURL url("https://brave.com");
+  Navigate(url);
 
   mojom::SolanaProviderError error;
   std::string error_message;

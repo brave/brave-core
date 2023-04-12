@@ -128,7 +128,8 @@ BraveWalletProviderScriptKey const BraveWalletProviderScriptKeyWalletStandard =
   auto provider = std::make_unique<brave_wallet::SolanaProviderImpl>(
       keyring_service, brave_wallet_service, tx_service,
       std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
-          delegate));
+          delegate),
+      browserState->GetPrefs());
   return [[BraveWalletSolanaProviderOwnedImpl alloc]
       initWithSolanaProvider:std::move(provider)];
 }
