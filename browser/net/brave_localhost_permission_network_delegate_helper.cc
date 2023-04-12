@@ -41,39 +41,73 @@ bool IsLocalhostRequest(const GURL& request_url,
          !net::IsLocalhost(request_initiator_url);
 }
 
+// Assumes that the caller has verified that
+// the request is valid and for a localhost subresource.
+// If no WebContents, then we can't prompt for permission;
+// use existing content setting.
+int HandleLocalhostRequestsWithNoWebContents(
+    const GURL& request_initiator_url,
+    content::BrowserContext* browser_context) {
+  auto* settings_map =
+      HostContentSettingsMapFactory::GetForProfile(browser_context);
+  auto setting_for_url = settings_map->GetContentSetting(
+      request_initiator_url, GURL(),
+      ContentSettingsType::BRAVE_LOCALHOST_ACCESS);
+  switch (setting_for_url) {
+    case ContentSetting::CONTENT_SETTING_ALLOW: {
+      return net::OK;
+    }
+    default: {
+      return net::ERR_ACCESS_DENIED;
+    }
+  }
+}
+
 int OnBeforeURLRequest_LocalhostPermissionWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  auto* contents =
-      content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
-  if (!contents) {
-    return net::OK;
-  }
-
+  // If request is already blocked by adblock, return.
   if (ctx->blocked_by == kAdBlocked) {
-    // If request is already blocked by adblock, return.
     return net::OK;
   }
 
-  // Only throttle subresource requests and WebSockets.
+  const bool is_web_socket_request = ctx->request_url.SchemeIsWSOrWSS();
+  const bool is_valid_subresource_request =
+      ctx->resource_type != blink::mojom::ResourceType::kMainFrame &&
+      ctx->resource_type != BraveRequestInfo::kInvalidResourceType;
+
+  // Only throttle valid subresource requests + WebSockets.
   // https://github.com/brave/brave-browser/issues/26302
-  if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame &&
-      !ctx->request_url.SchemeIsWSOrWSS()) {
+  if (!is_web_socket_request && !is_valid_subresource_request) {
     return net::OK;
   }
 
   const auto& request_initiator_url = ctx->initiator_url;
   const auto& request_url = ctx->request_url;
 
+  // If the following info isn't available, then there's not much we can do.
+  if (request_url.is_empty() || request_initiator_url.is_empty() ||
+      !request_initiator_url.has_host()) {
+    return net::OK;
+  }
+
   if (!IsLocalhostRequest(request_url, request_initiator_url)) {
     return net::OK;
+  }
+
+  auto* contents =
+      content::WebContents::FromFrameTreeNodeId(ctx->frame_tree_node_id);
+
+  if (!contents) {
+    return HandleLocalhostRequestsWithNoWebContents(request_initiator_url,
+                                                    ctx->browser_context);
   }
 
   content::PermissionControllerDelegate* permission_controller =
       contents->GetBrowserContext()->GetPermissionControllerDelegate();
   auto current_status = permission_controller->GetPermissionStatusForOrigin(
       blink::PermissionType::BRAVE_LOCALHOST_ACCESS,
-      /* rfh */ contents->GetPrimaryMainFrame(), request_url);
+      /* rfh */ contents->GetPrimaryMainFrame(), request_initiator_url);
 
   switch (current_status) {
     case blink::mojom::PermissionStatus::GRANTED: {
@@ -88,13 +122,12 @@ int OnBeforeURLRequest_LocalhostPermissionWork(
       permission_controller->RequestPermissionsForOrigin(
           {blink::PermissionType::BRAVE_LOCALHOST_ACCESS},
           /* rfh */ contents->GetPrimaryMainFrame(),
-          /* requesting_origin */ request_url, true,
+          /* requesting_origin */ request_initiator_url, true,
           base::BindOnce(&OnPermissionRequestStatus, contents));
 
       return net::ERR_ACCESS_DENIED;
     }
   }
-
   return net::OK;
 }
 

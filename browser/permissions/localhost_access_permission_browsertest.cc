@@ -388,6 +388,36 @@ IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, WebSocket) {
   ASSERT_EQ("open", EvalJs(contents(), ws_open_script));
 }
 
+// Test that service worker connections are blocked/allowed correctly.
+// Service workers making requests to localhost subresources should be allowed
+// if the page has the ALLOW content setting, and blocked otherwise.
+IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, ServiceWorker) {
+  std::string test_domain = "localhost";
+  embedding_url_ =
+      https_server_->GetURL(kTestEmbeddingDomain, "/navigator/simple.html");
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  // Go to page.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), embedding_url_));
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+  // Register service worker that will capture all fetches.
+  std::string sw_register_script = R"(
+    registerServiceWorker('./service-workers-localhost-permission.js')
+  )";
+  ASSERT_EQ(true, EvalJs(contents(), sw_register_script));
+  // Load subresource - it should fail without prompt
+  // because the request goes through the SW.
+  InsertImage(target_url.spec(), false);
+  EXPECT_EQ(0, prompt_factory()->show_count());
+  // Now set the content setting to ALLOW.
+  SetCurrentStatus(ContentSetting::CONTENT_SETTING_ALLOW);
+  // Load subresource, should succeed.
+  InsertImage(target_url.spec(), true);
+  // Still no prompt though.
+  EXPECT_EQ(0, prompt_factory()->show_count());
+}
+
 // Test that localhost connections blocked by adblock are still blocked without
 // permission prompt, and exceptioned domains cause permission prompt.
 IN_PROC_BROWSER_TEST_F(LocalhostAccessBrowserTest, AdblockRule) {
