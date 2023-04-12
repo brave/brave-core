@@ -158,7 +158,7 @@
     Blank page
   </message>
   <message name="IDS_SETTINGS_NEW_TAB_NEW_TAB_CUSTOMIZE_WIDGETS" desc="The label for widget customization">
-    Customize the background image and widgets that appear on the new tab page
+    Customize new tab page
   </message>
 
   <!-- Settings / Pin shortcut-->
