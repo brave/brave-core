@@ -89,13 +89,6 @@ class BraveShieldsDataControllerTest : public testing::Test {
                                   secondary_url, type);
   }
 
-  ContentSettingsPattern GetPatternFromURL(const GURL& url) {
-    DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
-    if (url.is_empty() && url.possibly_invalid_spec() == "")
-      return ContentSettingsPattern::Wildcard();
-    return ContentSettingsPattern::FromString("*://" + url.host() + "/*");
-  }
-
   void SetContentSettingFor(ContentSettingsType type,
                             ContentSetting setting,
                             GURL secondary_url = GURL()) {
@@ -103,8 +96,8 @@ class BraveShieldsDataControllerTest : public testing::Test {
     auto* controller = GetShieldsDataController();
 
     map->SetContentSettingCustomScope(
-        GetPatternFromURL(controller->GetCurrentSiteURL()),
-        GetPatternFromURL(secondary_url), type, setting);
+        brave_shields::GetPatternFromURL(controller->GetCurrentSiteURL()),
+        brave_shields::GetPatternFromURL(secondary_url), type, setting);
   }
 
  private:

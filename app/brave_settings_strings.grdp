@@ -296,9 +296,6 @@
   <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_COOKIES" desc="Select value">
     Only cross-site
   </message>
-  <message name="IDS_SETTINGS_FORGET_FIRST_PARTY_COOKIES" desc="Select value">
-    Forget by default
-  </message>
   <message name="IDS_SETTINGS_ALLOW_ALL_COOKIES" desc="Select value">
     Disabled
   </message>
@@ -313,6 +310,9 @@
   </message>
   <message name="IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_ADVANCED_VIEW_LABEL" desc="Default Brave advanced view title label">
     Advanced view
+  </message>
+  <message name="IDS_SETTINGS_FORGET_FIRST_PARTY_STORAGE" desc="Toggle label">
+    Forget me when I close a site
   </message>
 
   <!-- Settings / Shields / ContentFilters -->

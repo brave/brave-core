@@ -64,6 +64,15 @@ export interface DefaultBraveShieldsBrowserProxy {
    * @param {string} value name.
    */
   setNoScriptControlType(value)
+
+  /**
+   * @return {!Promise<Boolean>}
+   */
+  getForgetFirstPartyStorageEnabled()
+  /**
+   * @param {Boolean} value name.
+   */
+  setForgetFirstPartyStorageEnabled(value)
 }
 
 export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsBrowserProxy {
@@ -125,6 +134,16 @@ export class DefaultBraveShieldsBrowserProxyImpl implements DefaultBraveShieldsB
   /** @override */
   setNoScriptControlType(value) {
     chrome.send('setNoScriptControlType', [value]);
+  }
+
+  /** @override */
+  getForgetFirstPartyStorageEnabled() {
+    return sendWithPromise('getForgetFirstPartyStorageEnabled');
+  }
+
+  /** @override */
+  setForgetFirstPartyStorageEnabled(value) {
+    chrome.send('setForgetFirstPartyStorageEnabled', [value]);
   }
 
   static getInstance(): DefaultBraveShieldsBrowserProxy {

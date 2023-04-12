@@ -58,7 +58,6 @@ export default {
           totalBlockedResources: (LIST_ADS.length + LIST_JS.length),
           isBraveShieldsEnabled: boolean('Enable Shields', true),
           isBraveShieldsManaged: boolean('Shields Managed', false),
-          isForgetFirstPartyStorageFeatureEnabled: boolean('FFPS Feature Enabled', false),
           adsList: LIST_ADS,
           blockedJsList: LIST_JS,
           allowedJsList: LIST_JS,
@@ -72,7 +71,8 @@ export default {
           cookieBlockMode: CookieBlockMode.ALLOW,
           isHttpsEverywhereEnabled: true,
           httpsUpgradeMode: HttpsUpgradeMode.DISABLED,
-          isNoscriptEnabled: false
+          isNoscriptEnabled: false,
+          isForgetFirstPartyStorageEnabled: false
         },
         viewType: ViewType.Main
       }

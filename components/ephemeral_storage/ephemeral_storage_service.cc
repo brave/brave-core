@@ -223,26 +223,16 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
       net::features::kBraveForgetFirstPartyStorage));
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
   content::BrowsingDataRemover::DataType data_to_remove =
+      content::BrowsingDataRemover::DATA_TYPE_COOKIES |
       content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE;
   content::BrowsingDataRemover::OriginType origin_type =
       content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
       content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kDelete);
-  filter_builder->AddOrigin(origin);
+  filter_builder->AddRegisterableDomain(origin.host());
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
-
-  const auto& url = net::SchemefulSite(origin).GetURL();
-  auto cookie_deletion_filter = network::mojom::CookieDeletionFilter::New();
-  cookie_deletion_filter->including_domains.emplace({url.host()});
-
-  auto site_instance = content::SiteInstance::CreateForURL(context_, url);
-  auto* storage_partition = context_->GetStoragePartition(site_instance.get());
-  if (storage_partition) {
-    storage_partition->GetCookieManagerForBrowserProcess()->DeleteCookies(
-        std::move(cookie_deletion_filter), base::NullCallback());
-  }
 }
 
 }  // namespace ephemeral_storage

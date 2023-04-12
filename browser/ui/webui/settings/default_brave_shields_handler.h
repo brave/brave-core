@@ -39,6 +39,8 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void GetHttpsUpgradeControlType(const base::Value::List& args);
   void SetNoScriptControlType(const base::Value::List& args);
   void GetNoScriptControlType(const base::Value::List& args);
+  void SetForgetFirstPartyStorageEnabled(const base::Value::List& args);
+  void GetForgetFirstPartyStorageEnabled(const base::Value::List& args);
 
   raw_ptr<Profile> profile_ = nullptr;
 };

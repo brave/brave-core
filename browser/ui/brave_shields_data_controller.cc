@@ -235,8 +235,6 @@ CookieBlockMode BraveShieldsDataController::GetCookieBlockMode() {
       return CookieBlockMode::ALLOW;
     case ControlType::BLOCK_THIRD_PARTY:
       return CookieBlockMode::CROSS_SITE_BLOCKED;
-    case ControlType::FORGET_FIRST_PARTY:
-      return CookieBlockMode::FORGET_FIRST_PARTY;
     case ControlType::BLOCK:
       return CookieBlockMode::BLOCKED;
     case ControlType::DEFAULT:
@@ -274,6 +272,11 @@ bool BraveShieldsDataController::GetNoScriptEnabled() {
   }
 
   return true;
+}
+
+bool BraveShieldsDataController::GetForgetFirstPartyStorageEnabled() {
+  return brave_shields::GetForgetFirstPartyStorageEnabled(
+      GetHostContentSettingsMap(web_contents()), GetCurrentSiteURL());
 }
 
 void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
@@ -342,9 +345,6 @@ void BraveShieldsDataController::SetCookieBlockMode(CookieBlockMode mode) {
     case CookieBlockMode::CROSS_SITE_BLOCKED:
       control_type = ControlType::BLOCK_THIRD_PARTY;
       break;
-    case CookieBlockMode::FORGET_FIRST_PARTY:
-      control_type = ControlType::FORGET_FIRST_PARTY;
-      break;
     case CookieBlockMode::BLOCKED:
       control_type = ControlType::BLOCK;
       break;
@@ -393,6 +393,15 @@ void BraveShieldsDataController::SetIsNoScriptEnabled(bool is_enabled) {
 
 void BraveShieldsDataController::SetIsHTTPSEverywhereEnabled(bool is_enabled) {
   brave_shields::SetHTTPSEverywhereEnabled(
+      GetHostContentSettingsMap(web_contents()), is_enabled,
+      GetCurrentSiteURL(), g_browser_process->local_state());
+
+  ReloadWebContents();
+}
+
+void BraveShieldsDataController::SetForgetFirstPartyStorageEnabled(
+    bool is_enabled) {
+  brave_shields::SetForgetFirstPartyStorageEnabled(
       GetHostContentSettingsMap(web_contents()), is_enabled,
       GetCurrentSiteURL(), g_browser_process->local_state());
 

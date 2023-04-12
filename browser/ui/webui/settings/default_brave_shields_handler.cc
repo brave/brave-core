@@ -79,6 +79,16 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getForgetFirstPartyStorageEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setForgetFirstPartyStorageEnabled",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled,
+          base::Unretained(this)));
 }
 
 void DefaultBraveShieldsHandler::IsAdControlEnabled(
@@ -226,4 +236,27 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
       HostContentSettingsMapFactory::GetForProfile(profile_),
       value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
       g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::SetForgetFirstPartyStorageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+  bool value = args[0].GetBool();
+
+  brave_shields::SetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_), value, GURL(),
+      g_browser_process->local_state());
+}
+
+void DefaultBraveShieldsHandler::GetForgetFirstPartyStorageEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  CHECK(profile_);
+
+  const bool result = brave_shields::GetForgetFirstPartyStorageEnabled(
+      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0].Clone(), base::Value(result));
 }

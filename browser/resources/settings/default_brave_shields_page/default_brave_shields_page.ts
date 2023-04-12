@@ -48,18 +48,11 @@ class BraveShieldsPage extends BraveShieldsPageBase {
           readOnly: true,
           type: Array,
           value: function () {
-            let types = [
+            return [
                 { value: 'block', name: loadTimeData.getString('blockAllCookies') },
                 { value: 'block_third_party', name: loadTimeData.getString('block3rdPartyCookies') },
                 { value: 'allow', name: loadTimeData.getString('allowAllCookies') }
             ];
-            if (loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')) {
-              // Insert after 'block'.
-              types.splice(1, 0, {
-                value: 'forget_first_party', name: loadTimeData.getString('forgetFirstPartyCookies')
-              });
-            }
-            return types;
           }
       },
       fingerprintingControlTypes_: {
@@ -112,6 +105,14 @@ class BraveShieldsPage extends BraveShieldsPageBase {
       isHttpsByDefaultEnabled_: {
         type: Boolean,
         value: loadTimeData.getBoolean('isHttpsByDefaultEnabled')
+      },
+      isForgetFirstPartyStorageFeatureEnabled_: {
+        type: Boolean,
+        value: loadTimeData.getBoolean('isForgetFirstPartyStorageFeatureEnabled')
+      },
+      isForgetFirstPartyStorageEnabled_: {
+        type: Boolean,
+        value: false
       }
     }
   }
@@ -148,6 +149,10 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
     this.browserProxy_.getHttpsUpgradeControlType().then(value => {
       this.httpsUpgradeControlType_ = value
+    })
+
+    this.browserProxy_.getForgetFirstPartyStorageEnabled().then(value => {
+      this.isForgetFirstPartyStorageEnabled_ = value
     })
   }
 
@@ -192,6 +197,12 @@ class BraveShieldsPage extends BraveShieldsPageBase {
 
   onNoScriptControlChange_ () {
     this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked)
+  }
+
+  onForgetFirstPartyStorageChange_ () {
+    this.browserProxy_.setForgetFirstPartyStorageEnabled(
+      this.$.forgetFirstPartyStorageControlType.checked
+    )
   }
 }
 
