@@ -32,6 +32,7 @@ class BraveVPNOSConnectionAPI {
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnConnectionStateChanged(mojom::ConnectionState state) = 0;
+    virtual void OnRegionDataReady() = 0;
 
    protected:
     ~Observer() override = default;

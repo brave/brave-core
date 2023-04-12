@@ -164,6 +164,7 @@ class BraveVpnService :
 
   // BraveVPNOSConnectionAPI::Observer overrides:
   void OnConnectionStateChanged(mojom::ConnectionState state) override;
+  void OnRegionDataReady() override;
 
   void LoadCachedRegionData();
   void FetchRegionData(bool background_fetch);

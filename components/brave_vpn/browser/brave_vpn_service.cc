@@ -167,6 +167,10 @@ void BraveVpnService::OnConnectionStateChanged(mojom::ConnectionState state) {
     obs->OnConnectionStateChanged(state);
 }
 
+void BraveVpnService::OnRegionDataReady() {
+  NOTIMPLEMENTED();
+}
+
 mojom::ConnectionState BraveVpnService::GetConnectionState() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return GetBraveVPNConnectionAPI()->GetConnectionState();
