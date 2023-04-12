@@ -35,7 +35,7 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
 }  // namespace
 
 bool AdsPerHourPermissionRule::ShouldAllow() {
-  if (PlatformHelper::GetInstance()->IsMobile()) {
+  if (PlatformHelper::GetInstance().IsMobile()) {
     // Ads are periodically served on mobile so they will never exceed the
     // maximum ads per hour
     return true;

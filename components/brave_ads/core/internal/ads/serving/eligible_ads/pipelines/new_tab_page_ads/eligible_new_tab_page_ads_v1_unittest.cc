@@ -291,7 +291,7 @@ TEST_F(BatAdsEligibleNewTabPageAdsV1Test, DoNotGetPacedAds) {
   SaveCreativeAds(creative_ads);
 
   // Act
-  const ScopedPacingRandomNumberSetter scoped_setter(0.3);
+  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
 
   CreativeNewTabPageAdList expected_creative_ads = {creative_ad_2};
 

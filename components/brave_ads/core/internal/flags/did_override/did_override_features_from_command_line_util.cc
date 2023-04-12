@@ -55,29 +55,27 @@ const base::Feature* const kFeatures[] = {
 
 constexpr char kFeaturesSeparators[] = ",:<";
 
-bool IsFeatureOverridden(const std::string& feature) {
-  const base::NoDestructor<base::flat_set<std::string>> brave_ad_features(
-      []() -> base::flat_set<std::string> {
-        const auto* const command_line = base::CommandLine::ForCurrentProcess();
-        const std::string features_switch =
-            command_line->GetSwitchValueASCII(switches::kFeaturesSwitch);
-        base::flat_set<std::string> features =
-            base::SplitString(features_switch, kFeaturesSeparators,
-                              base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-        return features;
-      }());
-  return brave_ad_features->contains(feature);
+base::flat_set<std::string> ParseCommandLineSwitches() {
+  const auto* const command_line = base::CommandLine::ForCurrentProcess();
+  const std::string features_switch =
+      command_line->GetSwitchValueASCII(switches::kFeaturesSwitch);
+  base::flat_set<std::string> features =
+      base::SplitString(features_switch, kFeaturesSeparators,
+                        base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  return features;
 }
 
 }  // namespace
 
 bool DidOverrideFeaturesFromCommandLine() {
-  return base::ranges::any_of(kFeatures, [](const auto* feature) {
+  const auto brave_ads_features = ParseCommandLineSwitches();
+  return base::ranges::any_of(kFeatures, [&brave_ads_features](
+                                             const auto* feature) {
     DCHECK(feature);
 
     return base::FeatureList::GetInstance()->IsFeatureOverriddenFromCommandLine(
                feature->name) ||
-           IsFeatureOverridden(feature->name);
+           brave_ads_features.contains(feature->name);
   });
 }
 

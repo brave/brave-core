@@ -66,7 +66,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
       // Operating system
       if (!creative_set.DoesSupportOS()) {
         const std::string platform_name =
-            PlatformHelper::GetInstance()->GetName();
+            PlatformHelper::GetInstance().GetName();
 
         BLOG(1, "Creative set id " << creative_set.creative_set_id
                                    << " does not support " << platform_name);

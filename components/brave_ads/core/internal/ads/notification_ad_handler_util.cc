@@ -20,11 +20,11 @@ bool ShouldServe() {
 }
 
 bool CanServeIfUserIsActive() {
-  return !PlatformHelper::GetInstance()->IsMobile();
+  return !PlatformHelper::GetInstance().IsMobile();
 }
 
 bool CanServeAtRegularIntervals() {
-  return PlatformHelper::GetInstance()->IsMobile();
+  return PlatformHelper::GetInstance().IsMobile();
 }
 
 bool ShouldServeAtRegularIntervals() {

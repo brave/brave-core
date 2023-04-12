@@ -35,7 +35,7 @@ TEST(BatAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
 
   // Act
   for (const double number : GetPacingRandomNumbers()) {
-    const ScopedPacingRandomNumberSetter scoped_setter(number);
+    const ScopedPacingRandomNumberSetterForTesting scoped_setter(number);
     const CreativeNotificationAdList paced_creative_ads =
         PaceCreativeAds(creative_ads);
 
@@ -55,7 +55,7 @@ TEST(BatAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
 
   // Act
   for (const double number : GetPacingRandomNumbers()) {
-    const ScopedPacingRandomNumberSetter scoped_setter(number);
+    const ScopedPacingRandomNumberSetterForTesting scoped_setter(number);
     const CreativeNotificationAdList paced_creative_ads =
         PaceCreativeAds(creative_ads);
 
@@ -77,7 +77,7 @@ TEST(BatAdsPacingTest,
   creative_ads.push_back(creative_ad);
 
   // Act
-  const ScopedPacingRandomNumberSetter scoped_setter(0.7);
+  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.7);
   const CreativeNotificationAdList paced_creative_ads =
       PaceCreativeAds(creative_ads);
 
@@ -100,7 +100,7 @@ TEST(BatAdsPacingTest, DoNotPaceCreativeAdWhenPacingIsLessThanPassThroughRate) {
   creative_ads.push_back(creative_ad_2);
 
   // Act
-  const ScopedPacingRandomNumberSetter scoped_setter(0.3);
+  const ScopedPacingRandomNumberSetterForTesting scoped_setter(0.3);
   const CreativeNotificationAdList paced_creative_ads =
       PaceCreativeAds(creative_ads);
 

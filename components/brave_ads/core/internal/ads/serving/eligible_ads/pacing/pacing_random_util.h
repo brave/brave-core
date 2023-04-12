@@ -10,11 +10,11 @@ namespace brave_ads {
 
 double GeneratePacingRandomNumber();
 
-class ScopedPacingRandomNumberSetter final {
+class ScopedPacingRandomNumberSetterForTesting final {
  public:
-  explicit ScopedPacingRandomNumberSetter(double number);
+  explicit ScopedPacingRandomNumberSetterForTesting(double number);
 
-  ~ScopedPacingRandomNumberSetter();
+  ~ScopedPacingRandomNumberSetterForTesting();
 };
 
 }  // namespace brave_ads

@@ -14,7 +14,7 @@ namespace brave_ads {
 namespace {
 
 bool DoesRespectCap() {
-  if (PlatformHelper::GetInstance()->GetType() == PlatformType::kAndroid) {
+  if (PlatformHelper::GetInstance().GetType() == PlatformType::kAndroid) {
     return true;
   }
 
