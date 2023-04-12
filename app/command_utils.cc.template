@@ -45,7 +45,7 @@ base::StringPiece GetCommandName(int command_id) {
   CHECK(it != kCommandInfos.end())
       << "Unknown command " << command_id
       << ". This function should only be used for known "
-         "commands (i.e. commands in |GetCommandInfo|). "
+         "commands (i.e. commands in |GetCommands()|). "
          "This command should probably be added.";
   return it->second.data();
 }
