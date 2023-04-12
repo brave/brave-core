@@ -81,7 +81,7 @@ class HistoryManager final {
   bool ToggleSaveAd(const AdContentInfo& ad_content) const;
 
  private:
-  void NotifyHistoryDidChange(const HistoryItemInfo& history_item) const;
+  void NotifyDidAddHistory(const HistoryItemInfo& history_item) const;
   void NotifyDidLikeAd(const AdContentInfo& ad_content) const;
   void NotifyDidDislikeAd(const AdContentInfo& ad_content) const;
   void NotifyDidMarkToNoLongerReceiveAdsForCategory(

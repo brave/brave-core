@@ -26,7 +26,7 @@ class Reminder : public HistoryManagerObserver {
 
  private:
   // HistoryManagerObserver:
-  void OnHistoryDidChange(const HistoryItemInfo& history_item) override;
+  void OnDidAddHistory(const HistoryItemInfo& history_item) override;
 };
 
 }  // namespace brave_ads

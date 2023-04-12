@@ -94,7 +94,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
-  NotifyHistoryDidChange(history_item);
+  NotifyDidAddHistory(history_item);
   return history_item;
 }
 
@@ -103,7 +103,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.company_name, ad.alt);
-  NotifyHistoryDidChange(history_item);
+  NotifyDidAddHistory(history_item);
   return history_item;
 }
 
@@ -112,7 +112,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.body);
-  NotifyHistoryDidChange(history_item);
+  NotifyDidAddHistory(history_item);
   return history_item;
 }
 
@@ -121,7 +121,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.title, ad.description);
-  NotifyHistoryDidChange(history_item);
+  NotifyDidAddHistory(history_item);
   return history_item;
 }
 
@@ -130,7 +130,7 @@ HistoryItemInfo HistoryManager::Add(
     const ConfirmationType& confirmation_type) const {
   HistoryItemInfo history_item =
       AddHistory(ad, confirmation_type, ad.headline_text, ad.description);
-  NotifyHistoryDidChange(history_item);
+  NotifyDidAddHistory(history_item);
   return history_item;
 }
 
@@ -212,10 +212,10 @@ bool HistoryManager::ToggleSaveAd(const AdContentInfo& ad_content) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void HistoryManager::NotifyHistoryDidChange(
+void HistoryManager::NotifyDidAddHistory(
     const HistoryItemInfo& history_item) const {
   for (HistoryManagerObserver& observer : observers_) {
-    observer.OnHistoryDidChange(history_item);
+    observer.OnDidAddHistory(history_item);
   }
 }
 

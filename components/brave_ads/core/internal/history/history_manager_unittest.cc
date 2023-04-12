@@ -45,8 +45,8 @@ class BatAdsHistoryManagerTest : public HistoryManagerObserver,
     UnitTestBase::TearDown();
   }
 
-  void OnHistoryDidChange(const HistoryItemInfo& /*history_item*/) override {
-    history_did_change_ = true;
+  void OnDidAddHistory(const HistoryItemInfo& /*history_item*/) override {
+    did_add_history_ = true;
   }
 
   void OnDidLikeAd(const AdContentInfo& /*ad_content*/) override {
@@ -84,7 +84,7 @@ class BatAdsHistoryManagerTest : public HistoryManagerObserver,
     did_unsave_ad_ = true;
   }
 
-  bool history_did_change_ = false;
+  bool did_add_history_ = false;
   bool did_like_ad_ = false;
   bool did_dislike_ad_ = false;
   bool did_mark_to_no_longer_receive_ads_for_category_ = false;
@@ -122,7 +122,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNotificationAd) {
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
-  EXPECT_TRUE(history_did_change_);
+  EXPECT_TRUE(did_add_history_);
 }
 
 TEST_F(BatAdsHistoryManagerTest, AddNewTabPageAd) {
@@ -142,7 +142,7 @@ TEST_F(BatAdsHistoryManagerTest, AddNewTabPageAd) {
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
-  EXPECT_TRUE(history_did_change_);
+  EXPECT_TRUE(did_add_history_);
 }
 
 TEST_F(BatAdsHistoryManagerTest, AddPromotedContentAd) {
@@ -162,7 +162,7 @@ TEST_F(BatAdsHistoryManagerTest, AddPromotedContentAd) {
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
-  EXPECT_TRUE(history_did_change_);
+  EXPECT_TRUE(did_add_history_);
 }
 
 TEST_F(BatAdsHistoryManagerTest, AddInlineContentAd) {
@@ -182,7 +182,7 @@ TEST_F(BatAdsHistoryManagerTest, AddInlineContentAd) {
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
-  EXPECT_TRUE(history_did_change_);
+  EXPECT_TRUE(did_add_history_);
 }
 
 TEST_F(BatAdsHistoryManagerTest, AddSearchResultAd) {
@@ -202,7 +202,7 @@ TEST_F(BatAdsHistoryManagerTest, AddSearchResultAd) {
       ClientStateManager::GetInstance()->GetHistory();
 
   EXPECT_TRUE(base::ranges::equal(expected_history, history));
-  EXPECT_TRUE(history_did_change_);
+  EXPECT_TRUE(did_add_history_);
 }
 
 TEST_F(BatAdsHistoryManagerTest, LikeAd) {

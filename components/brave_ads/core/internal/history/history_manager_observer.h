@@ -17,8 +17,8 @@ struct HistoryItemInfo;
 
 class HistoryManagerObserver : public base::CheckedObserver {
  public:
-  // Invoked when the history has changed.
-  virtual void OnHistoryDidChange(const HistoryItemInfo& history_item) {}
+  // Invoked when history is added.
+  virtual void OnDidAddHistory(const HistoryItemInfo& history_item) {}
 
   // Invoked when the user likes an ad.
   virtual void OnDidLikeAd(const AdContentInfo& ad_content) {}

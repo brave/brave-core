@@ -34,7 +34,7 @@ Reminder::~Reminder() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Reminder::OnHistoryDidChange(const HistoryItemInfo& history_item) {
+void Reminder::OnDidAddHistory(const HistoryItemInfo& history_item) {
   MaybeShowReminder(history_item);
 }
 
