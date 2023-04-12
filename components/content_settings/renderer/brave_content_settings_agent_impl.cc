@@ -224,7 +224,15 @@ bool BraveContentSettingsAgentImpl::AllowStorageAccessSync(
 bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     bool enabled_per_settings,
     const blink::WebURL& script_url) {
-  const GURL secondary_url(script_url);
+  GURL secondary_url(script_url);
+  // For scripts w/o sources it should report the domain / site used for
+  // executing the frame (which most, but not all, of the time will just be from
+  // document.location
+  if (secondary_url.SchemeIsLocal()) {
+    secondary_url =
+        url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
+            .GetURL();
+  }
   bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
 
