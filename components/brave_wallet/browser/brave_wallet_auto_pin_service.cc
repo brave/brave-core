@@ -8,6 +8,12 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 
 namespace brave_wallet {
+namespace {
+bool ShouldRetryOnError(const mojom::PinErrorPtr& error) {
+  return !error || error->error_code !=
+                       mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL;
+}
+}  // namespace
 
 BraveWalletAutoPinService::IntentData::IntentData(
     const BlockchainTokenPtr& token,
@@ -137,8 +143,12 @@ void BraveWalletAutoPinService::OnTokenListResolved(
       AddOrExecute(
           std::make_unique<IntentData>(token, Operation::kAdd, absl::nullopt));
     } else if (status->code ==
-                   mojom::TokenPinStatusCode::STATUS_PINNING_FAILED ||
-               status->code ==
+               mojom::TokenPinStatusCode::STATUS_PINNING_FAILED) {
+      if (ShouldRetryOnError(status->error)) {
+        AddOrExecute(std::make_unique<IntentData>(token, Operation::kAdd,
+                                                  absl::nullopt));
+      }
+    } else if (status->code ==
                    mojom::TokenPinStatusCode::STATUS_PINNING_IN_PROGRESS ||
                status->code ==
                    mojom::TokenPinStatusCode::STATUS_PINNING_PENDING) {
@@ -247,7 +257,7 @@ void BraveWalletAutoPinService::PostRetry(std::unique_ptr<IntentData> data) {
       FROM_HERE,
       base::BindOnce(&BraveWalletAutoPinService::AddOrExecute,
                      weak_ptr_factory_.GetWeakPtr(), std::move(data)),
-      base::Minutes(1 * multiply));
+      base::Minutes(2 * multiply));
 }
 
 void BraveWalletAutoPinService::CheckQueue() {
@@ -273,7 +283,8 @@ void BraveWalletAutoPinService::CheckQueue() {
 void BraveWalletAutoPinService::OnTaskFinished(bool result,
                                                mojom::PinErrorPtr error) {
   CHECK(current_);
-  if (!result) {
+  if (!result &&
+      (current_->operation != Operation::kAdd || ShouldRetryOnError(error))) {
     PostRetry(std::move(current_));
   }
   current_.reset();
