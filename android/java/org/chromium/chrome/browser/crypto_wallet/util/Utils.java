@@ -1116,8 +1116,7 @@ public class Utils {
                     blockExplorerUrl += toAppend;
                 }
             }
-            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-            TabUtils.bringChromeTabbedActivityToTheTop(activity);
+            TabUtils.openUrlInCustomTab(activity, blockExplorerUrl);
         });
     }
 
