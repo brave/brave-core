@@ -28,7 +28,10 @@ import {
   sortTransactionByDate
 } from '../../../../utils/tx-utils'
 import { getBalance } from '../../../../utils/balance-utils'
-import { getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion } from '../../../../utils/network-utils'
+import {
+  getCoinFromTxDataUnion,
+  getFilecoinKeyringIdFromNetwork
+} from '../../../../utils/network-utils'
 import { selectAllBlockchainTokensFromQueryResult, selectAllUserAssetsFromQueryResult } from '../../../../common/slices/entities/blockchain-token.entity'
 
 // Styled Components
@@ -145,15 +148,21 @@ export const Account = ({
       return sortTransactionByDate(
         transactions[selectedAccount.address],
         'descending'
-      ).map(tx => parseTransactionWithPrices({
-        tx,
-        accounts,
-        fullTokenList,
-        userVisibleTokensList,
-        solFeeEstimates,
-        transactionNetwork: getNetworkFromTXDataUnion(tx.txDataUnion, networkList),
-        spotPrices
-      }))
+      ).map((tx) =>
+        parseTransactionWithPrices({
+          tx,
+          accounts,
+          fullTokenList,
+          userVisibleTokensList,
+          solFeeEstimates,
+          transactionNetwork: networkList.find(
+            (n) =>
+              n.chainId === tx.chainId &&
+              n.coin === getCoinFromTxDataUnion(tx.txDataUnion)
+          ),
+          spotPrices
+        })
+      )
     } else {
       return []
     }

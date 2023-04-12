@@ -80,7 +80,11 @@ import { getEntitiesListFromEntityState } from '../../utils/entities.utils'
 import { makeNetworkAsset } from '../../options/asset-options'
 import { getTokenParam } from '../../utils/api-utils'
 import { getAccountType, getAddressLabelFromRegistry } from '../../utils/account-utils'
-import { getCoinFromTxDataUnion, getFilecoinKeyringIdFromNetwork, getNetworkFromTXDataUnion, hasEIP1559Support } from '../../utils/network-utils'
+import {
+  getCoinFromTxDataUnion,
+  getFilecoinKeyringIdFromNetwork,
+  hasEIP1559Support
+} from '../../utils/network-utils'
 import Amount from '../../utils/amount'
 import {
   accountHasInsufficientFundsForGas,
@@ -3321,9 +3325,10 @@ export const parseTransactionWithoutPricesAsync = async ({
   dispatch: ThunkDispatch<any, any, any>
 }): Promise<ParsedTransactionWithoutFiatValues> => {
   const networks = getEntitiesListFromEntityState(networksRegistry)
-  const transactionNetwork = getNetworkFromTXDataUnion(
-    tx.txDataUnion,
-    networks
+  const transactionNetwork = networks.find(
+    (n) =>
+      n.chainId === tx.chainId &&
+      n.coin === getCoinFromTxDataUnion(tx.txDataUnion)
   )
 
   // Tokens lists

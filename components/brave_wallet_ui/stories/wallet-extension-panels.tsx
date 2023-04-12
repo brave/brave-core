@@ -730,7 +730,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         onSpeedupTransaction={onClickSpeedupTransaction}
                         accounts={mockAccounts}
                         defaultCurrencies={mockDefaultCurrencies}
-                        selectedNetwork={mockNetworks[0]}
                         visibleTokens={mockNewAssetOptions}
                         transactionSpotPrices={[]}
                       />
@@ -897,7 +896,6 @@ export const _TransactionDetail = () => {
               onSpeedupTransaction={mockedFunction}
               accounts={mockedTransactionAccounts}
               defaultCurrencies={mockDefaultCurrencies}
-              selectedNetwork={mockNetworks[0]}
               visibleTokens={mockNewAssetOptions}
               transactionSpotPrices={[]}
               transaction={tx}

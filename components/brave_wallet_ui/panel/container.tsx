@@ -643,7 +643,6 @@ function Container () {
             onBack={onGoBackToTransactions}
             accounts={accounts}
             defaultCurrencies={defaultCurrencies}
-            selectedNetwork={selectedNetwork}
             transaction={selectedTransaction}
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokensInfo}
