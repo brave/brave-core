@@ -25,11 +25,14 @@ import { WalletPageActions } from '../../../../../page/actions'
 // utils
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../../utils/amount'
+import { setNftDiscoveryEnabled } from '../../../../../common/async/lib'
+import { LOCAL_STORAGE_KEYS } from '../../../../../common/constants/local-storage-keys'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
 import NetworkFilterSelector from '../../../network-filter-selector'
 import { NFTGridViewItem } from '../../portfolio/components/nft-grid-view/nft-grid-view-item'
+import { EnableNftDiscoveryModal } from '../../../popup-modals/enable-nft-discovery-modal/enable-nft-discovery-modal'
 
 // styles
 import {
@@ -62,6 +65,9 @@ export const Nfts = (props: Props) => {
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
   const [showAddNftModal, setShowAddNftModal] = React.useState<boolean>(false)
+  const [showNftDiscoveryModal, setShowNftDiscoveryModal] = React.useState<boolean>(
+    localStorage.getItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN) === null
+  )
 
   // hooks
   const history = useHistory()
@@ -86,6 +92,18 @@ export const Nfts = (props: Props) => {
   const toggleShowAddNftModal = React.useCallback(() => {
     setShowAddNftModal(value => !value)
   }, [])
+
+  const hideNftDiscoveryModal = React.useCallback(() => {
+    setShowNftDiscoveryModal(current => {
+      localStorage.setItem(LOCAL_STORAGE_KEYS.IS_ENABLE_NFT_AUTO_DISCOVERY_MODAL_HIDDEN, 'true')
+      return !current
+    })
+  }, [])
+
+  const onConfirmNftAutoDiscovery = React.useCallback(async () => {
+    await setNftDiscoveryEnabled(true)
+    hideNftDiscoveryModal()
+  }, [hideNftDiscoveryModal])
 
   // memos
   const filteredNfts = React.useMemo(() => {
@@ -147,6 +165,12 @@ export const Nfts = (props: Props) => {
         <AddOrEditNftModal
           onClose={toggleShowAddNftModal}
           onHideForm={toggleShowAddNftModal}
+        />
+      }
+      {showNftDiscoveryModal &&
+        <EnableNftDiscoveryModal
+          onConfirm={onConfirmNftAutoDiscovery}
+          onCancel={hideNftDiscoveryModal}
         />
       }
     </>

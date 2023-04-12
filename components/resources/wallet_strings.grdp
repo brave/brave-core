@@ -886,4 +886,8 @@
   <message name="IDS_BRAVE_WALLET_NFTS_TAB_EMPTY_STATE_DISCLAIMER" desc="NFT tab empty state disclaimer">Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).</message>
   <message name="IDS_BRAVE_WALLET_IMPORT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Import NFT</message>
   <message name="IDS_BRAVE_WALLET_EDIT_NFT_MODAL_TITLE" desc="NFT Import NFT modal title">Edit NFT</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_HEADER" desc="Enable NFT auto-discovery modal header">Show your NFTs in Brave Wallet?</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_DESCRIPTION" desc="Enable NFT auto-discovery modal description">Brave Wallet can use a third-party service (SimpleHash) to automatically show your NFTs. Just share your public address to proceed. <ph name="BEFORE_URL">$1</ph>Learn more.<ph name="AFTER_URL">$2</ph></message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CONFIRM" desc="Enable NFT auto-discovery modal confirm button text">Share now</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_NFT_AUTODISCOVERY_MODAL_CANCEL" desc="Enable NFT auto-discovery modal cancel button text">No thanks</message>
 </grit-part>
