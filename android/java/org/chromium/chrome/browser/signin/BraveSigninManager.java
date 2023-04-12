@@ -62,12 +62,12 @@ public class BraveSigninManager implements SigninManager {
     public void runAfterOperationInProgress(Runnable runnable) {}
 
     @Override
-    @Deprecated
-    public void signinAndEnableSync(@SigninAccessPoint int accessPoint, Account account,
+    public void signinAndEnableSync(Account account, @SigninAccessPoint int accessPoint,
             @Nullable SignInCallback callback) {}
 
     @Override
-    public void signin(Account account, @Nullable SignInCallback callback) {}
+    public void signin(Account account, @SigninAccessPoint int accessPoint,
+            @Nullable SignInCallback callback) {}
 
     @Override
     public void removeSignInStateObserver(SignInStateObserver observer) {}

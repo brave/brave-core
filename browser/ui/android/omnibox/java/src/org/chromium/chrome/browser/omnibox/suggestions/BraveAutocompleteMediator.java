@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveDropdownItemViewInfoListManager;
+import org.chromium.chrome.browser.omnibox.suggestions.base.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.brave_search.BraveSearchBannerProcessor;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -47,11 +48,12 @@ class BraveAutocompleteMediator extends AutocompleteMediator implements BraveSug
             @NonNull Callback<Tab> bringTabToFrontCallback,
             @NonNull Supplier<TabWindowManager> tabWindowManagerSupplier,
             @NonNull BookmarkState bookmarkState, @NonNull JankTracker jankTracker,
-            @NonNull ActionChipsDelegate actionChipsDelegate) {
+            @NonNull ActionChipsDelegate actionChipsDelegate,
+            @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate) {
         super(context, controllerProvider, delegate, textProvider, listPropertyModel, handler,
                 modalDialogManagerSupplier, activityTabSupplier, shareDelegateSupplier,
                 locationBarDataProvider, bringTabToFrontCallback, tabWindowManagerSupplier,
-                bookmarkState, jankTracker, actionChipsDelegate);
+                bookmarkState, jankTracker, actionChipsDelegate, openHistoryClustersDelegate);
     }
 
     @Override

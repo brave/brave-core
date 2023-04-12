@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarMediator.SaveOfflineButton
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
 import org.chromium.chrome.browser.omnibox.suggestions.ActionChipsDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
+import org.chromium.chrome.browser.omnibox.suggestions.base.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -65,7 +66,8 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
             Callback<Throwable> reportExceptionCallback,
             @Nullable BackPressManager backPressManager,
             @NonNull OmniboxSuggestionsDropdownScrollListener
-                    omniboxSuggestionsDropdownScrollListener) {
+                    omniboxSuggestionsDropdownScrollListener,
+            @Nullable OpenHistoryClustersDelegate openHistoryClustersDelegate) {
         super(locationBarLayout, autocompleteAnchorView, profileObservableSupplier,
                 privacyPreferencesManager, locationBarDataProvider, actionModeCallback,
                 windowDelegate, windowAndroid, activityTabSupplier, modalDialogManagerSupplier,
@@ -75,7 +77,7 @@ public class BraveLocationBarCoordinator extends LocationBarCoordinator {
                 tabWindowManagerSupplier, bookmarkState, isToolbarMicEnabledSupplier, jankTracker,
                 merchantTrustSignalsCoordinatorSupplier, actionChipsDelegate,
                 browserControlsVisibilityDelegate, reportExceptionCallback, backPressManager,
-                omniboxSuggestionsDropdownScrollListener);
+                omniboxSuggestionsDropdownScrollListener, openHistoryClustersDelegate);
 
         if (mLocationBarMediator instanceof BraveLocationBarMediator) {
             mQRButton = locationBarLayout.findViewById(R.id.qr_button);
