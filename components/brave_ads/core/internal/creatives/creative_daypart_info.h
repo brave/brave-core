@@ -19,8 +19,8 @@ struct CreativeDaypartInfo final {
   int end_minute = (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;
 };
 
-bool operator==(const CreativeDaypartInfo& lhs, const CreativeDaypartInfo& rhs);
-bool operator!=(const CreativeDaypartInfo& lhs, const CreativeDaypartInfo& rhs);
+bool operator==(const CreativeDaypartInfo&, const CreativeDaypartInfo&);
+bool operator!=(const CreativeDaypartInfo&, const CreativeDaypartInfo&);
 
 using CreativeDaypartList = std::vector<CreativeDaypartInfo>;
 

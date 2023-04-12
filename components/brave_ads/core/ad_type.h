@@ -40,8 +40,8 @@ class AdType final {
   Value value_ = kUndefined;
 };
 
-bool operator==(const AdType& lhs, const AdType& rhs);
-bool operator!=(const AdType& lhs, const AdType& rhs);
+bool operator==(const AdType&, const AdType&);
+bool operator!=(const AdType&, const AdType&);
 
 std::ostream& operator<<(std::ostream& os, const AdType& type);
 

@@ -18,10 +18,10 @@ struct CatalogPromotedContentAdPayloadInfo final {
   GURL target_url;
 };
 
-bool operator==(const CatalogPromotedContentAdPayloadInfo& lhs,
-                const CatalogPromotedContentAdPayloadInfo& rhs);
-bool operator!=(const CatalogPromotedContentAdPayloadInfo& lhs,
-                const CatalogPromotedContentAdPayloadInfo& rhs);
+bool operator==(const CatalogPromotedContentAdPayloadInfo&,
+                const CatalogPromotedContentAdPayloadInfo&);
+bool operator!=(const CatalogPromotedContentAdPayloadInfo&,
+                const CatalogPromotedContentAdPayloadInfo&);
 
 }  // namespace brave_ads
 

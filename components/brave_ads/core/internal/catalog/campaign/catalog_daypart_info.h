@@ -19,8 +19,8 @@ struct CatalogDaypartInfo final {
   int end_minute = (base::Time::kMinutesPerHour * base::Time::kHoursPerDay) - 1;
 };
 
-bool operator==(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs);
-bool operator!=(const CatalogDaypartInfo& lhs, const CatalogDaypartInfo& rhs);
+bool operator==(const CatalogDaypartInfo&, const CatalogDaypartInfo&);
+bool operator!=(const CatalogDaypartInfo&, const CatalogDaypartInfo&);
 
 using CatalogDaypartList = std::vector<CatalogDaypartInfo>;
 

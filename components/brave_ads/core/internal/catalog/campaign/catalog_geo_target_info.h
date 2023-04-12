@@ -16,10 +16,8 @@ struct CatalogGeoTargetInfo final {
   std::string name;
 };
 
-bool operator==(const CatalogGeoTargetInfo& lhs,
-                const CatalogGeoTargetInfo& rhs);
-bool operator!=(const CatalogGeoTargetInfo& lhs,
-                const CatalogGeoTargetInfo& rhs);
+bool operator==(const CatalogGeoTargetInfo&, const CatalogGeoTargetInfo&);
+bool operator!=(const CatalogGeoTargetInfo&, const CatalogGeoTargetInfo&);
 
 using CatalogGeoTargetList = std::vector<CatalogGeoTargetInfo>;
 

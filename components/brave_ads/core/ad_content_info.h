@@ -47,8 +47,8 @@ struct ADS_EXPORT AdContentInfo final {
   bool is_flagged = false;
 };
 
-bool operator==(const AdContentInfo& lhs, const AdContentInfo& rhs);
-bool operator!=(const AdContentInfo& lhs, const AdContentInfo& rhs);
+bool operator==(const AdContentInfo&, const AdContentInfo&);
+bool operator!=(const AdContentInfo&, const AdContentInfo&);
 
 }  // namespace brave_ads
 

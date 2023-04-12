@@ -16,10 +16,8 @@ struct UserActivityTriggerInfo final {
   double score = 0.0;
 };
 
-bool operator==(const UserActivityTriggerInfo& lhs,
-                const UserActivityTriggerInfo& rhs);
-bool operator!=(const UserActivityTriggerInfo& lhs,
-                const UserActivityTriggerInfo& rhs);
+bool operator==(const UserActivityTriggerInfo&, const UserActivityTriggerInfo&);
+bool operator!=(const UserActivityTriggerInfo&, const UserActivityTriggerInfo&);
 
 using UserActivityTriggerList = std::vector<UserActivityTriggerInfo>;
 

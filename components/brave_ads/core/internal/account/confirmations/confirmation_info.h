@@ -37,8 +37,8 @@ struct ConfirmationInfo final {
   absl::optional<OptedInInfo> opted_in;
 };
 
-bool operator==(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
-bool operator!=(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
+bool operator==(const ConfirmationInfo&, const ConfirmationInfo&);
+bool operator!=(const ConfirmationInfo&, const ConfirmationInfo&);
 
 using ConfirmationList = std::vector<ConfirmationInfo>;
 

@@ -41,7 +41,7 @@ class VectorData final : public Data {
   ~VectorData() override;
 
   // Mathematical vector operations
-  friend float operator*(const VectorData& lhs, const VectorData& rhs);
+  friend float operator*(const VectorData&, const VectorData&);
   float ComputeSimilarity(const VectorData& other) const;
 
   void AddElementWise(const VectorData& other);

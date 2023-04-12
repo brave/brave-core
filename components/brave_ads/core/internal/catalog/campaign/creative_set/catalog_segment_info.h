@@ -16,8 +16,8 @@ struct CatalogSegmentInfo final {
   std::string name;
 };
 
-bool operator==(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs);
-bool operator!=(const CatalogSegmentInfo& lhs, const CatalogSegmentInfo& rhs);
+bool operator==(const CatalogSegmentInfo&, const CatalogSegmentInfo&);
+bool operator!=(const CatalogSegmentInfo&, const CatalogSegmentInfo&);
 
 using CatalogSegmentList = std::vector<CatalogSegmentInfo>;
 

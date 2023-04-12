@@ -34,8 +34,8 @@ struct OptedInInfo final {
   absl::optional<std::string> credential_base64url;
 };
 
-bool operator==(const OptedInInfo& lhs, const OptedInInfo& rhs);
-bool operator!=(const OptedInInfo& lhs, const OptedInInfo& rhs);
+bool operator==(const OptedInInfo&, const OptedInInfo&);
+bool operator!=(const OptedInInfo&, const OptedInInfo&);
 
 }  // namespace brave_ads
 

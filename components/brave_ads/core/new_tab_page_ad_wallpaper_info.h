@@ -19,10 +19,10 @@ struct ADS_EXPORT NewTabPageAdWallpaperInfo final {
   NewTabPageAdWallpaperFocalPointInfo focal_point;
 };
 
-bool operator==(const NewTabPageAdWallpaperInfo& lhs,
-                const NewTabPageAdWallpaperInfo& rhs);
-bool operator!=(const NewTabPageAdWallpaperInfo& lhs,
-                const NewTabPageAdWallpaperInfo& rhs);
+bool operator==(const NewTabPageAdWallpaperInfo&,
+                const NewTabPageAdWallpaperInfo&);
+bool operator!=(const NewTabPageAdWallpaperInfo&,
+                const NewTabPageAdWallpaperInfo&);
 
 using NewTabPageAdWallpaperList = std::vector<NewTabPageAdWallpaperInfo>;
 
