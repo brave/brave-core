@@ -111,7 +111,3 @@ export const mount = (at: HTMLElement) => {
 }
 
 (window as any).mountCommands = mount
-
-document.addEventListener('DOMContentLoaded', () => {
-  mount(document.getElementById('commandsRoot')!)
-})

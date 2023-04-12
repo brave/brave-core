@@ -329,7 +329,6 @@ RegisterPolymerTemplateModifications({
     )
     const downloadsEl = getMenuElement(templateContent, '/downloads')
     downloadsEl.insertAdjacentElement('afterend', helpTipsEl)
-
     // Allow Accessibility to be removed :-(
     const a11yEl = getMenuElement(templateContent, '/accessibility')
     a11yEl.setAttribute('hidden', '[[!pageVisibility.a11y]')

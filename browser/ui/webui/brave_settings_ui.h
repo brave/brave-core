@@ -11,7 +11,7 @@
 
 #include "chrome/browser/ui/webui/settings/settings_ui.h"
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_ANDROID)
 #include "brave/components/commands/common/commands.mojom.h"
 #endif
 
@@ -35,7 +35,7 @@ class BraveSettingsUI : public settings::SettingsUI {
 
   static bool& ShouldExposeElementsForTesting();
 
-#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+#if !BUILDFLAG(IS_ANDROID)
   void BindInterface(
       mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver);
 #endif
