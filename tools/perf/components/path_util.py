@@ -46,9 +46,21 @@ def GetPyJson5Dir() -> str:
   return os.path.join(GetSrcDir(), 'third_party', 'pyjson5', 'src')
 
 
+def GetCatapultDir() -> str:
+  return os.path.join(GetSrcDir(), 'third_party', 'catapult')
+
+
+def GetTelemetryDir() -> str:
+  return os.path.join(GetCatapultDir(), 'telemetry')
+
+
 def GetGoogleAuthDir() -> str:
-  return os.path.join(GetSrcDir(), 'third_party', 'catapult', 'third_party',
-                      'google-auth')
+  return os.path.join(GetCatapultDir(), 'third_party', 'google-auth')
+
+
+def GetAdbPath() -> str:
+  return os.path.join(GetSrcDir(), 'third_party', 'android_sdk', 'public',
+                      'platform-tools', 'adb')
 
 
 def GetVpython3Path() -> str:
