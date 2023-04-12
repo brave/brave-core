@@ -62,7 +62,7 @@ export const NavOptions: NavOption[] = [
   {
     id: 'accounts',
     name: 'braveWalletTopNavAccounts',
-    icon: 'user-circle',
+    icon: 'user-accounts',
     route: WalletRoutes.Accounts
   },
   {
