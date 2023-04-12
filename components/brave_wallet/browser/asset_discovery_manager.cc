@@ -820,6 +820,7 @@ void AssetDiscoveryManager::DiscoverNFTsOnAllSupportedChains(
   // Users must opt-in for NFT discovery
   if (!prefs_->GetBoolean(kBraveWalletNftDiscoveryEnabled)) {
     CompleteDiscoverAssets({}, triggered_by_accounts_added);
+    return;
   }
 
   auto it_eth = account_addresses.find(mojom::CoinType::ETH);
