@@ -14,16 +14,16 @@ namespace brave_ads {
 struct CatalogTypeInfo final {
   CatalogTypeInfo();
 
-  CatalogTypeInfo(const CatalogTypeInfo& other);
-  CatalogTypeInfo& operator=(const CatalogTypeInfo& other);
+  CatalogTypeInfo(const CatalogTypeInfo&);
+  CatalogTypeInfo& operator=(const CatalogTypeInfo&);
 
-  CatalogTypeInfo(CatalogTypeInfo&& other) noexcept;
-  CatalogTypeInfo& operator=(CatalogTypeInfo&& other) noexcept;
+  CatalogTypeInfo(CatalogTypeInfo&&) noexcept;
+  CatalogTypeInfo& operator=(CatalogTypeInfo&&) noexcept;
 
   ~CatalogTypeInfo();
 
-  bool operator==(const CatalogTypeInfo& other) const;
-  bool operator!=(const CatalogTypeInfo& other) const;
+  bool operator==(const CatalogTypeInfo&) const;
+  bool operator!=(const CatalogTypeInfo&) const;
 
   std::string code;
   std::string name;

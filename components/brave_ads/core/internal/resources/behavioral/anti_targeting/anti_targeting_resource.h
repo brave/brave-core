@@ -20,11 +20,11 @@ class AntiTargeting final : public AdsClientNotifierObserver {
  public:
   AntiTargeting();
 
-  AntiTargeting(const AntiTargeting& other) = delete;
-  AntiTargeting& operator=(const AntiTargeting& other) = delete;
+  AntiTargeting(const AntiTargeting&) = delete;
+  AntiTargeting& operator=(const AntiTargeting&) = delete;
 
-  AntiTargeting(AntiTargeting&& other) noexcept = delete;
-  AntiTargeting& operator=(AntiTargeting&& other) noexcept = delete;
+  AntiTargeting(AntiTargeting&&) noexcept = delete;
+  AntiTargeting& operator=(AntiTargeting&&) noexcept = delete;
 
   ~AntiTargeting() override;
 

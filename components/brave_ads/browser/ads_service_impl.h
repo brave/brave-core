@@ -83,8 +83,8 @@ class AdsServiceImpl : public AdsService,
   AdsServiceImpl(const AdsServiceImpl&) = delete;
   AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
 
-  AdsServiceImpl(AdsServiceImpl&& other) noexcept = delete;
-  AdsServiceImpl& operator=(AdsServiceImpl&& other) noexcept = delete;
+  AdsServiceImpl(AdsServiceImpl&&) noexcept = delete;
+  AdsServiceImpl& operator=(AdsServiceImpl&&) noexcept = delete;
 
   ~AdsServiceImpl() override;
 

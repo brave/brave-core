@@ -20,11 +20,11 @@ class AdsClientMock : public AdsClient {
  public:
   AdsClientMock();
 
-  AdsClientMock(const AdsClientMock& other) = delete;
-  AdsClientMock& operator=(const AdsClientMock& other) = delete;
+  AdsClientMock(const AdsClientMock&) = delete;
+  AdsClientMock& operator=(const AdsClientMock&) = delete;
 
-  AdsClientMock(AdsClientMock&& other) noexcept = delete;
-  AdsClientMock& operator=(AdsClientMock&& other) noexcept = delete;
+  AdsClientMock(AdsClientMock&&) noexcept = delete;
+  AdsClientMock& operator=(AdsClientMock&&) noexcept = delete;
 
   ~AdsClientMock() override;
 

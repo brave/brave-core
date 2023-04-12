@@ -19,11 +19,11 @@ class Conversions final {
  public:
   Conversions();
 
-  Conversions(const Conversions& other) = delete;
-  Conversions& operator=(const Conversions& other) = delete;
+  Conversions(const Conversions&) = delete;
+  Conversions& operator=(const Conversions&) = delete;
 
-  Conversions(Conversions&& other) noexcept = delete;
-  Conversions& operator=(Conversions&& other) noexcept = delete;
+  Conversions(Conversions&&) noexcept = delete;
+  Conversions& operator=(Conversions&&) noexcept = delete;
 
   ~Conversions();
 

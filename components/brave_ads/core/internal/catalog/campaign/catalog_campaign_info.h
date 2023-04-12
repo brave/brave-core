@@ -18,16 +18,16 @@ namespace brave_ads {
 struct CatalogCampaignInfo final {
   CatalogCampaignInfo();
 
-  CatalogCampaignInfo(const CatalogCampaignInfo& other);
-  CatalogCampaignInfo& operator=(const CatalogCampaignInfo& other);
+  CatalogCampaignInfo(const CatalogCampaignInfo&);
+  CatalogCampaignInfo& operator=(const CatalogCampaignInfo&);
 
-  CatalogCampaignInfo(CatalogCampaignInfo&& other) noexcept;
-  CatalogCampaignInfo& operator=(CatalogCampaignInfo&& other) noexcept;
+  CatalogCampaignInfo(CatalogCampaignInfo&&) noexcept;
+  CatalogCampaignInfo& operator=(CatalogCampaignInfo&&) noexcept;
 
   ~CatalogCampaignInfo();
 
-  bool operator==(const CatalogCampaignInfo& other) const;
-  bool operator!=(const CatalogCampaignInfo& other) const;
+  bool operator==(const CatalogCampaignInfo&) const;
+  bool operator!=(const CatalogCampaignInfo&) const;
 
   std::string campaign_id;
   unsigned int priority = 0;

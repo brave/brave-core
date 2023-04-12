@@ -14,11 +14,11 @@ namespace brave_ads::targeting {
 struct UserModelInfo final {
   UserModelInfo();
 
-  UserModelInfo(const UserModelInfo& other);
-  UserModelInfo& operator=(const UserModelInfo& other);
+  UserModelInfo(const UserModelInfo&);
+  UserModelInfo& operator=(const UserModelInfo&);
 
-  UserModelInfo(UserModelInfo&& other) noexcept;
-  UserModelInfo& operator=(UserModelInfo&& other) noexcept;
+  UserModelInfo(UserModelInfo&&) noexcept;
+  UserModelInfo& operator=(UserModelInfo&&) noexcept;
 
   ~UserModelInfo();
 

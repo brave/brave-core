@@ -18,14 +18,14 @@ class RedeemUnblindedPaymentTokensUserDataBuilder final
       privacy::UnblindedPaymentTokenList unblinded_payment_tokens);
 
   RedeemUnblindedPaymentTokensUserDataBuilder(
-      const RedeemUnblindedPaymentTokensUserDataBuilder& other) = delete;
+      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
   RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
-      const RedeemUnblindedPaymentTokensUserDataBuilder& other) = delete;
+      const RedeemUnblindedPaymentTokensUserDataBuilder&) = delete;
 
   RedeemUnblindedPaymentTokensUserDataBuilder(
-      RedeemUnblindedPaymentTokensUserDataBuilder&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokensUserDataBuilder&&) noexcept = delete;
   RedeemUnblindedPaymentTokensUserDataBuilder& operator=(
-      RedeemUnblindedPaymentTokensUserDataBuilder&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokensUserDataBuilder&&) noexcept = delete;
 
   ~RedeemUnblindedPaymentTokensUserDataBuilder() override;
 

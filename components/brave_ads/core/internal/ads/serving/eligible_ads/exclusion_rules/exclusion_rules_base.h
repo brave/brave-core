@@ -43,11 +43,11 @@ struct CreativeAdInfo;
 
 class ExclusionRulesBase {
  public:
-  ExclusionRulesBase(const ExclusionRulesBase& other) = delete;
-  ExclusionRulesBase& operator=(const ExclusionRulesBase& other) = delete;
+  ExclusionRulesBase(const ExclusionRulesBase&) = delete;
+  ExclusionRulesBase& operator=(const ExclusionRulesBase&) = delete;
 
-  ExclusionRulesBase(ExclusionRulesBase&& other) noexcept = delete;
-  ExclusionRulesBase& operator=(ExclusionRulesBase&& other) noexcept = delete;
+  ExclusionRulesBase(ExclusionRulesBase&&) noexcept = delete;
+  ExclusionRulesBase& operator=(ExclusionRulesBase&&) noexcept = delete;
 
   virtual ~ExclusionRulesBase();
 

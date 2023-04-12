@@ -11,8 +11,8 @@
 namespace brave_ads {
 
 struct VerifiableConversionInfo final {
-  bool operator==(const VerifiableConversionInfo& other) const;
-  bool operator!=(const VerifiableConversionInfo& other) const;
+  bool operator==(const VerifiableConversionInfo&) const;
+  bool operator!=(const VerifiableConversionInfo&) const;
 
   bool IsValid() const;
 

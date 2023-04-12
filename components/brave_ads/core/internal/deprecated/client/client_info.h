@@ -21,11 +21,11 @@ namespace brave_ads {
 struct ClientInfo final {
   ClientInfo();
 
-  ClientInfo(const ClientInfo& other);
-  ClientInfo& operator=(const ClientInfo& other);
+  ClientInfo(const ClientInfo&);
+  ClientInfo& operator=(const ClientInfo&);
 
-  ClientInfo(ClientInfo&& other) noexcept;
-  ClientInfo& operator=(ClientInfo&& other) noexcept;
+  ClientInfo(ClientInfo&&) noexcept;
+  ClientInfo& operator=(ClientInfo&&) noexcept;
 
   ~ClientInfo();
 

@@ -48,11 +48,11 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
  public:
   UnitTestBase();
 
-  UnitTestBase(const UnitTestBase& other) = delete;
-  UnitTestBase& operator=(const UnitTestBase& other) = delete;
+  UnitTestBase(const UnitTestBase&) = delete;
+  UnitTestBase& operator=(const UnitTestBase&) = delete;
 
-  UnitTestBase(UnitTestBase&& other) noexcept = delete;
-  UnitTestBase& operator=(UnitTestBase&& other) noexcept = delete;
+  UnitTestBase(UnitTestBase&&) noexcept = delete;
+  UnitTestBase& operator=(UnitTestBase&&) noexcept = delete;
 
   ~UnitTestBase() override;
 

@@ -18,11 +18,11 @@ class PlatformHelperMock : public PlatformHelper {
  public:
   PlatformHelperMock();
 
-  PlatformHelperMock(const PlatformHelperMock& other) = delete;
-  PlatformHelperMock& operator=(const PlatformHelperMock& other) = delete;
+  PlatformHelperMock(const PlatformHelperMock&) = delete;
+  PlatformHelperMock& operator=(const PlatformHelperMock&) = delete;
 
-  PlatformHelperMock(PlatformHelperMock&& other) noexcept = delete;
-  PlatformHelperMock& operator=(PlatformHelperMock&& other) noexcept = delete;
+  PlatformHelperMock(PlatformHelperMock&&) noexcept = delete;
+  PlatformHelperMock& operator=(PlatformHelperMock&&) noexcept = delete;
 
   ~PlatformHelperMock() override;
 

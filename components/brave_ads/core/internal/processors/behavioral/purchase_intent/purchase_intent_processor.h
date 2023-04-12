@@ -35,11 +35,11 @@ class PurchaseIntent final : public AdsClientNotifierObserver,
  public:
   explicit PurchaseIntent(resource::PurchaseIntent* resource);
 
-  PurchaseIntent(const PurchaseIntent& other) = delete;
-  PurchaseIntent& operator=(const PurchaseIntent& other) = delete;
+  PurchaseIntent(const PurchaseIntent&) = delete;
+  PurchaseIntent& operator=(const PurchaseIntent&) = delete;
 
-  PurchaseIntent(PurchaseIntent&& other) noexcept = delete;
-  PurchaseIntent& operator=(PurchaseIntent&& other) noexcept = delete;
+  PurchaseIntent(PurchaseIntent&&) noexcept = delete;
+  PurchaseIntent& operator=(PurchaseIntent&&) noexcept = delete;
 
   ~PurchaseIntent() override;
 

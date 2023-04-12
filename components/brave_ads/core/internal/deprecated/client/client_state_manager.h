@@ -33,11 +33,11 @@ class ClientStateManager final {
  public:
   ClientStateManager();
 
-  ClientStateManager(const ClientStateManager& other) = delete;
-  ClientStateManager& operator=(const ClientStateManager& other) = delete;
+  ClientStateManager(const ClientStateManager&) = delete;
+  ClientStateManager& operator=(const ClientStateManager&) = delete;
 
-  ClientStateManager(ClientStateManager&& other) noexcept = delete;
-  ClientStateManager& operator=(ClientStateManager&& other) noexcept = delete;
+  ClientStateManager(ClientStateManager&&) noexcept = delete;
+  ClientStateManager& operator=(ClientStateManager&&) noexcept = delete;
 
   ~ClientStateManager();
 

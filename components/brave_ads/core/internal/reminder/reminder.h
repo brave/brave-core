@@ -16,11 +16,11 @@ class Reminder : public HistoryManagerObserver {
  public:
   Reminder();
 
-  Reminder(const Reminder& other) = delete;
-  Reminder& operator=(const Reminder& other) = delete;
+  Reminder(const Reminder&) = delete;
+  Reminder& operator=(const Reminder&) = delete;
 
-  Reminder(Reminder&& other) noexcept = delete;
-  Reminder& operator=(Reminder&& other) noexcept = delete;
+  Reminder(Reminder&&) noexcept = delete;
+  Reminder& operator=(Reminder&&) noexcept = delete;
 
   ~Reminder() override;
 

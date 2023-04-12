@@ -20,11 +20,11 @@ namespace brave_ads {
 struct ConfirmationInfo final {
   ConfirmationInfo();
 
-  ConfirmationInfo(const ConfirmationInfo& other);
-  ConfirmationInfo& operator=(const ConfirmationInfo& other);
+  ConfirmationInfo(const ConfirmationInfo&);
+  ConfirmationInfo& operator=(const ConfirmationInfo&);
 
-  ConfirmationInfo(ConfirmationInfo&& other) noexcept;
-  ConfirmationInfo& operator=(ConfirmationInfo&& other) noexcept;
+  ConfirmationInfo(ConfirmationInfo&&) noexcept;
+  ConfirmationInfo& operator=(ConfirmationInfo&&) noexcept;
 
   ~ConfirmationInfo();
 

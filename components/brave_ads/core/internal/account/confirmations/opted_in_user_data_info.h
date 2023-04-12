@@ -13,11 +13,11 @@ namespace brave_ads {
 struct OptedInUserDataInfo final {
   OptedInUserDataInfo();
 
-  OptedInUserDataInfo(const OptedInUserDataInfo& other);
-  OptedInUserDataInfo& operator=(const OptedInUserDataInfo& other);
+  OptedInUserDataInfo(const OptedInUserDataInfo&);
+  OptedInUserDataInfo& operator=(const OptedInUserDataInfo&);
 
-  OptedInUserDataInfo(OptedInUserDataInfo&& other) noexcept;
-  OptedInUserDataInfo& operator=(OptedInUserDataInfo&& other) noexcept;
+  OptedInUserDataInfo(OptedInUserDataInfo&&) noexcept;
+  OptedInUserDataInfo& operator=(OptedInUserDataInfo&&) noexcept;
 
   ~OptedInUserDataInfo();
 

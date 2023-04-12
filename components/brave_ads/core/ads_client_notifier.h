@@ -21,11 +21,11 @@ class AdsClientNotifier {
  public:
   AdsClientNotifier();
 
-  AdsClientNotifier(const AdsClientNotifier& other) = delete;
-  AdsClientNotifier& operator=(const AdsClientNotifier& other) = delete;
+  AdsClientNotifier(const AdsClientNotifier&) = delete;
+  AdsClientNotifier& operator=(const AdsClientNotifier&) = delete;
 
-  AdsClientNotifier(AdsClientNotifier&& other) noexcept = delete;
-  AdsClientNotifier& operator=(AdsClientNotifier&& other) noexcept = delete;
+  AdsClientNotifier(AdsClientNotifier&&) noexcept = delete;
+  AdsClientNotifier& operator=(AdsClientNotifier&&) noexcept = delete;
 
   virtual ~AdsClientNotifier();
 

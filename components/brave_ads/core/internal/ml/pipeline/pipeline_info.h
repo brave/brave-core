@@ -21,8 +21,8 @@ struct PipelineInfo final {
                TransformationVector transformations,
                model::Linear linear_model);
 
-  PipelineInfo(PipelineInfo&& other) noexcept;
-  PipelineInfo& operator=(PipelineInfo&& other) noexcept;
+  PipelineInfo(PipelineInfo&&) noexcept;
+  PipelineInfo& operator=(PipelineInfo&&) noexcept;
 
   ~PipelineInfo();
 

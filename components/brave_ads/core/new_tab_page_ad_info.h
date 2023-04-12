@@ -18,16 +18,16 @@ namespace brave_ads {
 struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
   NewTabPageAdInfo();
 
-  NewTabPageAdInfo(const NewTabPageAdInfo& other);
-  NewTabPageAdInfo& operator=(const NewTabPageAdInfo& other);
+  NewTabPageAdInfo(const NewTabPageAdInfo&);
+  NewTabPageAdInfo& operator=(const NewTabPageAdInfo&);
 
-  NewTabPageAdInfo(NewTabPageAdInfo&& other) noexcept;
-  NewTabPageAdInfo& operator=(NewTabPageAdInfo&& other) noexcept;
+  NewTabPageAdInfo(NewTabPageAdInfo&&) noexcept;
+  NewTabPageAdInfo& operator=(NewTabPageAdInfo&&) noexcept;
 
   ~NewTabPageAdInfo();
 
-  bool operator==(const NewTabPageAdInfo& other) const;
-  bool operator!=(const NewTabPageAdInfo& other) const;
+  bool operator==(const NewTabPageAdInfo&) const;
+  bool operator!=(const NewTabPageAdInfo&) const;
 
   bool IsValid() const;
 

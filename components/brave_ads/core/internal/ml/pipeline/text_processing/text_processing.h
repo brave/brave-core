@@ -31,11 +31,11 @@ class TextProcessing final {
   TextProcessing(TransformationVector transformations,
                  model::Linear linear_model);
 
-  TextProcessing(const TextProcessing& pipeline) = delete;
-  TextProcessing& operator=(const TextProcessing& pipeline) = delete;
+  TextProcessing(const TextProcessing&) = delete;
+  TextProcessing& operator=(const TextProcessing&) = delete;
 
-  TextProcessing(TextProcessing&& other) noexcept = delete;
-  TextProcessing& operator=(TextProcessing&& other) noexcept = delete;
+  TextProcessing(TextProcessing&&) noexcept = delete;
+  TextProcessing& operator=(TextProcessing&&) noexcept = delete;
 
   ~TextProcessing();
 

@@ -16,16 +16,16 @@ namespace brave_ads {
 struct TabInfo final {
   TabInfo();
 
-  TabInfo(const TabInfo& other);
-  TabInfo& operator=(const TabInfo& other);
+  TabInfo(const TabInfo&);
+  TabInfo& operator=(const TabInfo&);
 
-  TabInfo(TabInfo&& other) noexcept;
-  TabInfo& operator=(TabInfo&& other) noexcept;
+  TabInfo(TabInfo&&) noexcept;
+  TabInfo& operator=(TabInfo&&) noexcept;
 
   ~TabInfo();
 
-  bool operator==(const TabInfo& other) const;
-  bool operator!=(const TabInfo& other) const;
+  bool operator==(const TabInfo&) const;
+  bool operator!=(const TabInfo&) const;
 
   int32_t id = 0;
   std::vector<GURL> redirect_chain;

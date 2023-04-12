@@ -22,10 +22,10 @@ class NotificationAdPlatformBridge {
   NotificationAdPlatformBridge& operator=(const NotificationAdPlatformBridge&) =
       delete;
 
-  NotificationAdPlatformBridge(NotificationAdPlatformBridge&& other) noexcept =
+  NotificationAdPlatformBridge(NotificationAdPlatformBridge&&) noexcept =
       delete;
   NotificationAdPlatformBridge& operator=(
-      NotificationAdPlatformBridge&& other) noexcept = delete;
+      NotificationAdPlatformBridge&&) noexcept = delete;
 
   ~NotificationAdPlatformBridge();
 

@@ -46,11 +46,11 @@ class Account final : public AdsClientNotifierObserver,
  public:
   explicit Account(privacy::TokenGeneratorInterface* token_generator);
 
-  Account(const Account& other) = delete;
-  Account& operator=(const Account& other) = delete;
+  Account(const Account&) = delete;
+  Account& operator=(const Account&) = delete;
 
-  Account(Account&& other) noexcept = delete;
-  Account& operator=(Account&& other) noexcept = delete;
+  Account(Account&&) noexcept = delete;
+  Account& operator=(Account&&) noexcept = delete;
 
   ~Account() override;
 

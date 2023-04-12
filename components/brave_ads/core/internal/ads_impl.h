@@ -87,11 +87,11 @@ class AdsImpl final : public Ads,
  public:
   explicit AdsImpl(AdsClient* ads_client);
 
-  AdsImpl(const AdsImpl& other) = delete;
-  AdsImpl& operator=(const AdsImpl& other) = delete;
+  AdsImpl(const AdsImpl&) = delete;
+  AdsImpl& operator=(const AdsImpl&) = delete;
 
-  AdsImpl(AdsImpl&& other) noexcept = delete;
-  AdsImpl& operator=(AdsImpl&& other) noexcept = delete;
+  AdsImpl(AdsImpl&&) noexcept = delete;
+  AdsImpl& operator=(AdsImpl&&) noexcept = delete;
 
   ~AdsImpl() override;
 

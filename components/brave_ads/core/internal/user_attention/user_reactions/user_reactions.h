@@ -18,11 +18,11 @@ class UserReactions final : public HistoryManagerObserver {
  public:
   explicit UserReactions(Account* account);
 
-  UserReactions(const UserReactions& other) = delete;
-  UserReactions& operator=(const UserReactions& other) = delete;
+  UserReactions(const UserReactions&) = delete;
+  UserReactions& operator=(const UserReactions&) = delete;
 
-  UserReactions(UserReactions&& other) noexcept = delete;
-  UserReactions& operator=(UserReactions&& other) noexcept = delete;
+  UserReactions(UserReactions&&) noexcept = delete;
+  UserReactions& operator=(UserReactions&&) noexcept = delete;
 
   ~UserReactions() override;
 

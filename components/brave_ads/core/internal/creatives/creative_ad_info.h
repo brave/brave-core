@@ -19,16 +19,16 @@ namespace brave_ads {
 struct CreativeAdInfo {
   CreativeAdInfo();
 
-  CreativeAdInfo(const CreativeAdInfo& other);
-  CreativeAdInfo& operator=(const CreativeAdInfo& other);
+  CreativeAdInfo(const CreativeAdInfo&);
+  CreativeAdInfo& operator=(const CreativeAdInfo&);
 
-  CreativeAdInfo(CreativeAdInfo&& other) noexcept;
-  CreativeAdInfo& operator=(CreativeAdInfo&& other) noexcept;
+  CreativeAdInfo(CreativeAdInfo&&) noexcept;
+  CreativeAdInfo& operator=(CreativeAdInfo&&) noexcept;
 
   ~CreativeAdInfo();
 
-  bool operator==(const CreativeAdInfo& other) const;
-  bool operator!=(const CreativeAdInfo& other) const;
+  bool operator==(const CreativeAdInfo&) const;
+  bool operator!=(const CreativeAdInfo&) const;
 
   std::string creative_instance_id;
   std::string creative_set_id;

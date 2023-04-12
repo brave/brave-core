@@ -34,8 +34,8 @@ class AdsService : public KeyedService {
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
 
-  AdsService(AdsService&& other) noexcept = delete;
-  AdsService& operator=(AdsService&& other) noexcept = delete;
+  AdsService(AdsService&&) noexcept = delete;
+  AdsService& operator=(AdsService&&) noexcept = delete;
 
   ~AdsService() override;
 

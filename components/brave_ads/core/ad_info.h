@@ -17,16 +17,16 @@ namespace brave_ads {
 struct ADS_EXPORT AdInfo {
   AdInfo();
 
-  AdInfo(const AdInfo& other);
-  AdInfo& operator=(const AdInfo& other);
+  AdInfo(const AdInfo&);
+  AdInfo& operator=(const AdInfo&);
 
-  AdInfo(AdInfo&& other) noexcept;
-  AdInfo& operator=(AdInfo&& other) noexcept;
+  AdInfo(AdInfo&&) noexcept;
+  AdInfo& operator=(AdInfo&&) noexcept;
 
   ~AdInfo();
 
-  bool operator==(const AdInfo& other) const;
-  bool operator!=(const AdInfo& other) const;
+  bool operator==(const AdInfo&) const;
+  bool operator!=(const AdInfo&) const;
 
   bool IsValid() const;
 

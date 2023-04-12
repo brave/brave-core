@@ -19,8 +19,8 @@ class BackgroundHelperWin : public BackgroundHelper {
   BackgroundHelperWin(const BackgroundHelperWin&) = delete;
   BackgroundHelperWin& operator=(const BackgroundHelperWin&) = delete;
 
-  BackgroundHelperWin(BackgroundHelperWin&& other) noexcept = delete;
-  BackgroundHelperWin& operator=(BackgroundHelperWin&& other) noexcept = delete;
+  BackgroundHelperWin(BackgroundHelperWin&&) noexcept = delete;
+  BackgroundHelperWin& operator=(BackgroundHelperWin&&) noexcept = delete;
 
   ~BackgroundHelperWin() override;
 

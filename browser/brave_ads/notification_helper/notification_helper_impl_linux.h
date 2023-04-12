@@ -19,10 +19,9 @@ class NotificationHelperImplLinux
   NotificationHelperImplLinux& operator=(const NotificationHelperImplLinux&) =
       delete;
 
-  NotificationHelperImplLinux(NotificationHelperImplLinux&& other) noexcept =
-      delete;
+  NotificationHelperImplLinux(NotificationHelperImplLinux&&) noexcept = delete;
   NotificationHelperImplLinux& operator=(
-      NotificationHelperImplLinux&& other) noexcept = delete;
+      NotificationHelperImplLinux&&) noexcept = delete;
 
   ~NotificationHelperImplLinux() override;
 

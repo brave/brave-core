@@ -23,8 +23,8 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   AdsServiceFactory(const AdsServiceFactory&) = delete;
   AdsServiceFactory& operator=(const AdsServiceFactory&) = delete;
 
-  AdsServiceFactory(AdsServiceFactory&& other) noexcept = delete;
-  AdsServiceFactory& operator=(AdsServiceFactory&& other) noexcept = delete;
+  AdsServiceFactory(AdsServiceFactory&&) noexcept = delete;
+  AdsServiceFactory& operator=(AdsServiceFactory&&) noexcept = delete;
 
   static AdsService* GetForProfile(Profile* profile);
 

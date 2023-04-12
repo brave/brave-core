@@ -28,12 +28,12 @@ class SubdivisionTargetingExclusionRule final
   SubdivisionTargetingExclusionRule(const SubdivisionTargetingExclusionRule&) =
       delete;
   SubdivisionTargetingExclusionRule& operator=(
-      const SubdivisionTargetingExclusionRule& other) = delete;
+      const SubdivisionTargetingExclusionRule&) = delete;
 
   SubdivisionTargetingExclusionRule(
-      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+      SubdivisionTargetingExclusionRule&&) noexcept = delete;
   SubdivisionTargetingExclusionRule& operator=(
-      SubdivisionTargetingExclusionRule&& other) noexcept = delete;
+      SubdivisionTargetingExclusionRule&&) noexcept = delete;
 
   ~SubdivisionTargetingExclusionRule() override;
 

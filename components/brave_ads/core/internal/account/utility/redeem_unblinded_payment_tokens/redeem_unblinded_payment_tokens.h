@@ -23,15 +23,14 @@ class RedeemUnblindedPaymentTokens final {
  public:
   RedeemUnblindedPaymentTokens();
 
-  RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens& other) =
-      delete;
+  RedeemUnblindedPaymentTokens(const RedeemUnblindedPaymentTokens&) = delete;
   RedeemUnblindedPaymentTokens& operator=(const RedeemUnblindedPaymentTokens&) =
       delete;
 
-  RedeemUnblindedPaymentTokens(RedeemUnblindedPaymentTokens&& other) noexcept =
+  RedeemUnblindedPaymentTokens(RedeemUnblindedPaymentTokens&&) noexcept =
       delete;
   RedeemUnblindedPaymentTokens& operator=(
-      RedeemUnblindedPaymentTokens&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokens&&) noexcept = delete;
 
   ~RedeemUnblindedPaymentTokens();
 

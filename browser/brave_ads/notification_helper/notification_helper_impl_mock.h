@@ -19,10 +19,9 @@ class NotificationHelperImplMock : public NotificationHelperImpl {
   NotificationHelperImplMock& operator=(const NotificationHelperImplMock&) =
       delete;
 
-  NotificationHelperImplMock(NotificationHelperImplMock&& other) noexcept =
+  NotificationHelperImplMock(NotificationHelperImplMock&&) noexcept = delete;
+  NotificationHelperImplMock& operator=(NotificationHelperImplMock&&) noexcept =
       delete;
-  NotificationHelperImplMock& operator=(
-      NotificationHelperImplMock&& other) noexcept = delete;
 
   ~NotificationHelperImplMock() override;
 

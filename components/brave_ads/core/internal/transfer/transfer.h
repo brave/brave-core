@@ -30,11 +30,11 @@ class Transfer final : public TabManagerObserver {
  public:
   Transfer();
 
-  Transfer(const Transfer& other) = delete;
-  Transfer& operator=(const Transfer& other) = delete;
+  Transfer(const Transfer&) = delete;
+  Transfer& operator=(const Transfer&) = delete;
 
-  Transfer(Transfer&& other) noexcept = delete;
-  Transfer& operator=(Transfer&& other) noexcept = delete;
+  Transfer(Transfer&&) noexcept = delete;
+  Transfer& operator=(Transfer&&) noexcept = delete;
 
   ~Transfer() override;
 

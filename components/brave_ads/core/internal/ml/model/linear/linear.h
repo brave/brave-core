@@ -22,11 +22,11 @@ class Linear final {
   Linear(std::map<std::string, VectorData> weights,
          std::map<std::string, double> biases);
 
-  Linear(const Linear& other);
-  Linear& operator=(const Linear& other);
+  Linear(const Linear&);
+  Linear& operator=(const Linear&);
 
-  Linear(Linear&& other) noexcept;
-  Linear& operator=(Linear&& other) noexcept;
+  Linear(Linear&&) noexcept;
+  Linear& operator=(Linear&&) noexcept;
 
   ~Linear();
 

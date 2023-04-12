@@ -18,11 +18,11 @@ namespace brave_ads {
 struct AdEventInfo final {
   AdEventInfo();
 
-  AdEventInfo(const AdEventInfo& other);
-  AdEventInfo& operator=(const AdEventInfo& other);
+  AdEventInfo(const AdEventInfo&);
+  AdEventInfo& operator=(const AdEventInfo&);
 
-  AdEventInfo(AdEventInfo&& other) noexcept;
-  AdEventInfo& operator=(AdEventInfo&& other) noexcept;
+  AdEventInfo(AdEventInfo&&) noexcept;
+  AdEventInfo& operator=(AdEventInfo&&) noexcept;
 
   ~AdEventInfo();
 

@@ -14,11 +14,11 @@ namespace brave_ads::ml::pipeline {
 struct TextEmbeddingInfo final {
   TextEmbeddingInfo();
 
-  TextEmbeddingInfo(const TextEmbeddingInfo& other);
-  TextEmbeddingInfo& operator=(const TextEmbeddingInfo& other);
+  TextEmbeddingInfo(const TextEmbeddingInfo&);
+  TextEmbeddingInfo& operator=(const TextEmbeddingInfo&);
 
-  TextEmbeddingInfo(TextEmbeddingInfo&& other) noexcept;
-  TextEmbeddingInfo& operator=(TextEmbeddingInfo&& other) noexcept;
+  TextEmbeddingInfo(TextEmbeddingInfo&&) noexcept;
+  TextEmbeddingInfo& operator=(TextEmbeddingInfo&&) noexcept;
 
   ~TextEmbeddingInfo();
 

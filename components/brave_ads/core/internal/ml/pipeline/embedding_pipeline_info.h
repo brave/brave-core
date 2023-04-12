@@ -17,11 +17,11 @@ namespace brave_ads::ml::pipeline {
 struct EmbeddingPipelineInfo final {
   EmbeddingPipelineInfo();
 
-  EmbeddingPipelineInfo(const EmbeddingPipelineInfo& other);
-  EmbeddingPipelineInfo& operator=(const EmbeddingPipelineInfo& other);
+  EmbeddingPipelineInfo(const EmbeddingPipelineInfo&);
+  EmbeddingPipelineInfo& operator=(const EmbeddingPipelineInfo&);
 
-  EmbeddingPipelineInfo(EmbeddingPipelineInfo&& other) noexcept;
-  EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&& other) noexcept;
+  EmbeddingPipelineInfo(EmbeddingPipelineInfo&&) noexcept;
+  EmbeddingPipelineInfo& operator=(EmbeddingPipelineInfo&&) noexcept;
 
   ~EmbeddingPipelineInfo();
 

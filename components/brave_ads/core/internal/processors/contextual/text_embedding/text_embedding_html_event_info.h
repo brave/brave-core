@@ -16,13 +16,11 @@ namespace brave_ads {
 struct TextEmbeddingHtmlEventInfo final {
   TextEmbeddingHtmlEventInfo();
 
-  TextEmbeddingHtmlEventInfo(const TextEmbeddingHtmlEventInfo& other);
-  TextEmbeddingHtmlEventInfo& operator=(
-      const TextEmbeddingHtmlEventInfo& other);
+  TextEmbeddingHtmlEventInfo(const TextEmbeddingHtmlEventInfo&);
+  TextEmbeddingHtmlEventInfo& operator=(const TextEmbeddingHtmlEventInfo&);
 
-  TextEmbeddingHtmlEventInfo(TextEmbeddingHtmlEventInfo&& other) noexcept;
-  TextEmbeddingHtmlEventInfo& operator=(
-      TextEmbeddingHtmlEventInfo&& other) noexcept;
+  TextEmbeddingHtmlEventInfo(TextEmbeddingHtmlEventInfo&&) noexcept;
+  TextEmbeddingHtmlEventInfo& operator=(TextEmbeddingHtmlEventInfo&&) noexcept;
 
   ~TextEmbeddingHtmlEventInfo();
 

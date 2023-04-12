@@ -16,19 +16,18 @@ namespace brave_ads {
 struct CatalogNewTabPageAdPayloadInfo final {
   CatalogNewTabPageAdPayloadInfo();
 
-  CatalogNewTabPageAdPayloadInfo(const CatalogNewTabPageAdPayloadInfo& other);
+  CatalogNewTabPageAdPayloadInfo(const CatalogNewTabPageAdPayloadInfo&);
   CatalogNewTabPageAdPayloadInfo& operator=(
-      const CatalogNewTabPageAdPayloadInfo& other);
+      const CatalogNewTabPageAdPayloadInfo&);
 
-  CatalogNewTabPageAdPayloadInfo(
-      CatalogNewTabPageAdPayloadInfo&& other) noexcept;
+  CatalogNewTabPageAdPayloadInfo(CatalogNewTabPageAdPayloadInfo&&) noexcept;
   CatalogNewTabPageAdPayloadInfo& operator=(
-      CatalogNewTabPageAdPayloadInfo&& other) noexcept;
+      CatalogNewTabPageAdPayloadInfo&&) noexcept;
 
   ~CatalogNewTabPageAdPayloadInfo();
 
-  bool operator==(const CatalogNewTabPageAdPayloadInfo& other) const;
-  bool operator!=(const CatalogNewTabPageAdPayloadInfo& other) const;
+  bool operator==(const CatalogNewTabPageAdPayloadInfo&) const;
+  bool operator!=(const CatalogNewTabPageAdPayloadInfo&) const;
 
   std::string company_name;
   GURL image_url;

@@ -22,13 +22,11 @@ class DismissedExclusionRule final
  public:
   explicit DismissedExclusionRule(AdEventList ad_events);
 
-  DismissedExclusionRule(const DismissedExclusionRule& other) = delete;
-  DismissedExclusionRule& operator=(const DismissedExclusionRule& other) =
-      delete;
+  DismissedExclusionRule(const DismissedExclusionRule&) = delete;
+  DismissedExclusionRule& operator=(const DismissedExclusionRule&) = delete;
 
-  DismissedExclusionRule(DismissedExclusionRule&& other) noexcept = delete;
-  DismissedExclusionRule& operator=(DismissedExclusionRule&& other) noexcept =
-      delete;
+  DismissedExclusionRule(DismissedExclusionRule&&) noexcept = delete;
+  DismissedExclusionRule& operator=(DismissedExclusionRule&&) noexcept = delete;
 
   ~DismissedExclusionRule() override;
 

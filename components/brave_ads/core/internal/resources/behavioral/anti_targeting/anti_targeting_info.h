@@ -26,11 +26,11 @@ using AntiTargetingMap = std::map<std::string, AntiTargetingSiteList>;
 struct AntiTargetingInfo final {
   AntiTargetingInfo();
 
-  AntiTargetingInfo(const AntiTargetingInfo& other);
-  AntiTargetingInfo& operator=(const AntiTargetingInfo& other);
+  AntiTargetingInfo(const AntiTargetingInfo&);
+  AntiTargetingInfo& operator=(const AntiTargetingInfo&);
 
-  AntiTargetingInfo(AntiTargetingInfo&& other) noexcept;
-  AntiTargetingInfo& operator=(AntiTargetingInfo&& other) noexcept;
+  AntiTargetingInfo(AntiTargetingInfo&&) noexcept;
+  AntiTargetingInfo& operator=(AntiTargetingInfo&&) noexcept;
 
   ~AntiTargetingInfo();
 

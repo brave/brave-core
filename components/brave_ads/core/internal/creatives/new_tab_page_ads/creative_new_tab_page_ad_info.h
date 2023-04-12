@@ -19,17 +19,16 @@ struct CreativeNewTabPageAdInfo final : CreativeAdInfo {
   CreativeNewTabPageAdInfo();
   explicit CreativeNewTabPageAdInfo(const CreativeAdInfo& creative_ad);
 
-  CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo& other);
-  CreativeNewTabPageAdInfo& operator=(const CreativeNewTabPageAdInfo& other);
+  CreativeNewTabPageAdInfo(const CreativeNewTabPageAdInfo&);
+  CreativeNewTabPageAdInfo& operator=(const CreativeNewTabPageAdInfo&);
 
-  CreativeNewTabPageAdInfo(CreativeNewTabPageAdInfo&& other) noexcept;
-  CreativeNewTabPageAdInfo& operator=(
-      CreativeNewTabPageAdInfo&& other) noexcept;
+  CreativeNewTabPageAdInfo(CreativeNewTabPageAdInfo&&) noexcept;
+  CreativeNewTabPageAdInfo& operator=(CreativeNewTabPageAdInfo&&) noexcept;
 
   ~CreativeNewTabPageAdInfo();
 
-  bool operator==(const CreativeNewTabPageAdInfo& other) const;
-  bool operator!=(const CreativeNewTabPageAdInfo& other) const;
+  bool operator==(const CreativeNewTabPageAdInfo&) const;
+  bool operator!=(const CreativeNewTabPageAdInfo&) const;
 
   std::string company_name;
   GURL image_url;
