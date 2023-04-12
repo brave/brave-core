@@ -15,7 +15,6 @@ import {
 } from '../../../constants/types'
 
 // Utils
-import { toProperCase } from '../../../utils/string-utils'
 import { formatDateAsRelative, serializedTimeDeltaToJSDate } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
@@ -322,11 +321,13 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
   const transactionIntentDescription = React.useMemo(() => {
     switch (true) {
       case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
-        const text = getLocale('braveWalletApprovalTransactionIntent')
+        const text = getLocale(
+          'braveWalletApprovalTransactionIntent'
+        ).toLocaleUpperCase()
         return (
           <DetailRow>
             <DetailTextDark>
-              {toProperCase(text)} {
+              <strong>{text}</strong> {
                 transaction.isApprovalUnlimited
                   ? getLocale('braveWalletTransactionApproveUnlimited')
                   : transaction.value
@@ -409,15 +410,19 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
   const transactionActionLocale = React.useMemo(() => {
     if (transaction.isSwap) {
-      const text = getLocale('braveWalletSwap')
-      return displayAccountName ? text.toLowerCase() : text
+      return <strong>
+        {getLocale('braveWalletSwap').toLocaleUpperCase()}
+      </strong>
     }
 
     if (transaction.txType === BraveWallet.TransactionType.ERC20Approve) {
-      const text = getLocale('braveWalletApprovalTransactionIntent')
       return (
         <>
-          {displayAccountName ? text : toProperCase(text)}{' '}
+          <strong>
+            {getLocale(
+              'braveWalletApprovalTransactionIntent'
+            ).toLocaleUpperCase()}{' '}
+          </strong>
           <AddressOrAsset onClick={onAssetClick(transaction.symbol)}>
             {transaction.symbol}
           </AddressOrAsset>
@@ -427,7 +432,9 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
 
     return (
       <>
-        {toProperCase(getLocale('braveWalletTransactionSent'))}{' '}
+        <strong>
+          {getLocale('braveWalletTransactionSent').toLocaleUpperCase()}{' '}
+        </strong>
         <AddressOrAsset
           // Disabled for ERC721 tokens until we have NFT meta data
           disabled={
