@@ -611,10 +611,12 @@ void RewardsServiceImpl::GetUserType(
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {
-  std::string declared_geo =
-      profile_->GetPrefs()->GetString(prefs::kDeclaredGeo);
-  return !declared_geo.empty() ? declared_geo
-                               : country_codes::GetCurrentCountryCode();
+  auto* prefs = profile_->GetPrefs();
+  std::string declared_geo = prefs->GetString(prefs::kDeclaredGeo);
+  return !declared_geo.empty()
+             ? declared_geo
+             : country_codes::CountryIDToCountryString(
+                   country_codes::GetCountryIDFromPrefs(prefs));
 }
 
 void RewardsServiceImpl::GetAvailableCountries(
