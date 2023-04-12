@@ -61,6 +61,14 @@ TEST(RustStripHtml, CantMakeATagWithComments) {
   EXPECT_EQ("foo", Strip("<<!--script-->>foo"));
 }
 
+TEST(RustStripHtml, CantCloseATagFromInsideAComment) {
+  EXPECT_EQ("Content", Strip("<dialog <!-- sneaky close tag > --> open=false>Content"));
+}
+
+TEST(RustStripHtml, CDataIsStripped) {
+  EXPECT_EQ("Some", Strip("Some<![CDATA[<p>foo</p>]]"));
+}
+
 TEST(RustStripHtml, CommentsCanCoverNewLines) {
   EXPECT_EQ("frob", Strip("<!-- foo\nbar\n-->frob"));
 }

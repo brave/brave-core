@@ -47,13 +47,19 @@ fn strip_html(subject: &str) -> String {
     let mut iterator = subject.chars();
 
     while let Some(c) = iterator.next() {
-        last_chars.push(c);
-        if last_chars.len() > last_chars_size {
-            last_chars = last_chars.chars().skip(1).collect();
+        // Only store the last characters if they're one of the ones we're
+        // interested in.
+        if c == '-' || c == '>' {
+            last_chars.push(c);
+            if last_chars.len() > last_chars_size {
+                last_chars = last_chars.chars().skip(1).collect();
+            }
+        } else {
+            last_chars.clear();
         }
 
         if c == '<' {
-            let is_comment = iterator.clone().take(3).collect::<String>() == "!--";
+            let is_comment = iterator.as_str().get(..3).map_or(false, |s| s == "!--");
             if is_comment {
                 depth_comment += 1;
             } else if depth_comment == 0 {
@@ -75,7 +81,7 @@ fn strip_html(subject: &str) -> String {
             continue;
         }
 
-        if depth_comment != 0 || depth_tag != 0 {
+        if depth_comment > 0 || depth_tag > 0 {
             continue;
         }
 

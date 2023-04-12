@@ -2558,16 +2558,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "stfu8"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "019f0c664fd85d5a87dcfb62b40b691055392a35a6e59f4df83d4b770db7e876"
-dependencies = [
- "lazy_static",
- "regex",
-]
-
-[[package]]
 name = "string_cache"
 version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
