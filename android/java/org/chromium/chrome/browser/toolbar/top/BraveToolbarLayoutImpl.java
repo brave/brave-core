@@ -482,11 +482,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 if (type != TabSelectionType.FROM_USER) {
                     dismissWalletPanelOrDialog();
                 }
+                findMediaFiles(tab);
             }
 
             @Override
             public void onHidden(Tab tab, @TabHidingType int reason) {
                 dismissCookieConsent();
+                hidePlaylistButton();
             }
 
             @Override
@@ -573,15 +575,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         && mBraveRewardsNativeWorker.IsSupported()) {
                     showBraveRewardsOnboardingModal();
                 }
-
-                if (isPlaylistEnabledByPrefsAndFlags() && mPlaylistService != null) {
-                    hidePlaylistButton();
-                    mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {
-                        if (playlistItems.length > 0) {
-                            showPlaylistButton(tab.getUrl().getSpec());
-                        }
-                    });
-                }
+                findMediaFiles(tab);
             }
 
             @Override
@@ -635,6 +629,17 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "hidePlaylistButton " + e);
+        }
+    }
+
+    private void findMediaFiles(Tab tab) {
+        if (isPlaylistEnabledByPrefsAndFlags() && mPlaylistService != null) {
+            hidePlaylistButton();
+            mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {
+                if (playlistItems.length > 0) {
+                    showPlaylistButton(tab.getUrl().getSpec());
+                }
+            });
         }
     }
 
@@ -694,23 +699,14 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         } else if (playlistOptionsModel.getOptionType()
                                 == PlaylistOptions.PLAYLIST_SETTINGS) {
                             BraveActivity.getBraveActivity().openBravePlaylistSettings();
-                        } else if (playlistOptionsModel.getOptionType()
-                                == PlaylistOptions.PLAYLIST_HIDE) {
-                            hidePlaylistButton();
-                            SharedPreferencesManager.getInstance().writeBoolean(
-                                    BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, false);
                         }
                     } catch (BraveActivity.BraveActivityNotFoundException e) {
                         Log.e(TAG, "showPlaylistButton onOptionClicked " + e);
                     }
                 }
             };
-
-            if (SharedPreferencesManager.getInstance().readBoolean(
-                        BravePlaylistPreferences.PREF_ADD_TO_PLAYLIST_BUTTON, true)) {
-                PlaylistViewUtils.showPlaylistButton(
-                        BraveActivity.getBraveActivity(), viewGroup, playlistOptionsListener);
-            }
+            PlaylistViewUtils.showPlaylistButton(
+                    BraveActivity.getBraveActivity(), viewGroup, playlistOptionsListener);
 
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "showPlaylistButton " + e);
