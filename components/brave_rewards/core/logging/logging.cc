@@ -10,7 +10,6 @@ namespace ledger {
 mojom::LedgerClient* g_ledger_client = nullptr;  // NOT OWNED
 
 void set_ledger_client_for_logging(mojom::LedgerClient* ledger_client) {
-  DCHECK(ledger_client);
   g_ledger_client = ledger_client;
 }
 
