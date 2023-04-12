@@ -198,7 +198,7 @@ export default function ConfigureShortcut(props: {
           <Button
             size="large"
             kind="filled"
-            disabled={!maxKeys.current.isValid()}
+            isDisabled={!maxKeys.current.isValid()}
             onClick={() => {
               props.onChange({
                 codes: keysToString(maxKeys.current.codes),

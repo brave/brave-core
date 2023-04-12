@@ -149,6 +149,9 @@ void AcceleratorService::BindInterface(
 void AcceleratorService::AssignAcceleratorToCommand(
     int command_id,
     const std::string& accelerator) {
+  if (accelerator.empty()) {
+    return;
+  }
   NotifyCommandsChanged(
       AssignAccelerator(command_id, FromCodesString(accelerator)));
 }
@@ -156,6 +159,9 @@ void AcceleratorService::AssignAcceleratorToCommand(
 void AcceleratorService::UnassignAcceleratorFromCommand(
     int command_id,
     const std::string& accelerator) {
+  if (accelerator.empty()) {
+    return;
+  }
   UnassignAccelerator(command_id, FromCodesString(accelerator));
   NotifyCommandsChanged({command_id});
 }
