@@ -4,6 +4,7 @@
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 import argparse
 import os
+import sys
 import json
 import logging
 import shutil
@@ -18,7 +19,8 @@ import components.perf_test_utils as perf_test_utils
 
 from components.perf_config import BenchmarkConfig, RunnerConfig
 from components.browser_type import BrowserType
-from components.browser_binary_fetcher import PrepareBinary, ParseTarget
+from components.browser_binary_fetcher import (BrowserBinary, PrepareBinary,
+                                               ParseTarget)
 
 
 class CommonOptions:
@@ -26,6 +28,7 @@ class CommonOptions:
   ci_mode: bool = False
   variations_repo_dir: Optional[str] = None
   working_directory: str = ''
+  target_os: str = sys.platform
 
   do_run_tests: bool = True
   do_report: bool = False
@@ -46,6 +49,8 @@ class CommonOptions:
     options.ci_mode = args.ci_mode
     options.variations_repo_dir = args.variations_repo_dir
     options.working_directory = args.working_directory
+    if args.target_os is not None:
+      options.target_os = args.target_os
     return options
 
 
@@ -108,7 +113,7 @@ class RunableConfiguration:
   common_options: CommonOptions
   benchmarks: List[BenchmarkConfig]
   config: RunnerConfig
-  binary_path: Optional[str] = None
+  binary: Optional[BrowserBinary] = None
   out_dir: str
   profile_dir: Optional[str] = None
   field_trial_config: Optional[str] = None
@@ -117,12 +122,12 @@ class RunableConfiguration:
   logs: List[str] = []
 
   def __init__(self, config: RunnerConfig, benchmarks: List[BenchmarkConfig],
-               binary_path: Optional[str], out_dir: str,
+               binary: Optional[BrowserBinary], out_dir: str,
                common_options: CommonOptions,
                field_trial_config: Optional[str]):
     self.config = config
     self.benchmarks = benchmarks
-    self.binary_path = binary_path
+    self.binary = binary
     self.out_dir = out_dir
     self.common_options = common_options
     self.field_trial_config = field_trial_config
@@ -139,9 +144,9 @@ class RunableConfiguration:
     return True
 
   def RebaseProfile(self) -> bool:
-    assert (self.binary_path is not None)
+    assert (self.binary is not None)
     logging.info('Rebasing dir %s using binary %s', self.profile_dir,
-                 self.binary_path)
+                 self.binary)
     rebase_runner_config = deepcopy(self.config)
     rebase_runner_config.extra_browser_args.extend(
         ['--update-source-profile', '--enable-brave-features-for-perf-testing'])
@@ -190,8 +195,14 @@ class RunableConfiguration:
     if self.profile_dir:
       args.append(f'--profile-dir={self.profile_dir}')
 
-    args.append('--browser=exact')
-    args.append(f'--browser-executable={self.binary_path}')
+    assert (self.binary)
+    if self.binary.binary_path:
+      assert (os.path.exists(self.binary.binary_path))
+      args.append('--browser=exact')
+      args.append(f'--browser-executable={self.binary.binary_path}')
+    else:
+      assert (self.binary.telemetry_browser_type)
+      args.append(f'--browser={self.binary.telemetry_browser_type}')
     args.append('--pageset-repeat=%d' % benchmark_config.pageset_repeat)
 
     if len(benchmark_config.stories) > 0:
@@ -223,7 +234,7 @@ class RunableConfiguration:
     return status_line
 
   def RunTests(self) -> bool:
-    assert (self.binary_path is not None)
+    assert (self.binary is not None)
     has_failure = False
 
     if not self.PrepareProfile():
@@ -242,7 +253,7 @@ class RunableConfiguration:
 
       if not test_success:
         has_failure = True
-        error = f'Test {benchmark.name} failed on binary {self.binary_path}'
+        error = f'Test {benchmark.name} failed on binary {self.binary}'
         error += '\nLogs: ' + os.path.join(test_out_dir, benchmark.name,
                                            benchmark.name, 'benchmark_log.txt')
         self.logs.append(error)
@@ -278,7 +289,7 @@ class RunableConfiguration:
 
   def Run(self) -> Tuple[bool, List[str]]:
     self.logs = []
-    logging.info('##Label: %s binary %s', self.config.label, self.binary_path)
+    logging.info('##Label: %s binary %s', self.config.label, self.binary)
     run_tests_ok = True
     report_ok = True
 
@@ -311,7 +322,7 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
                               description)
     artifacts_dir = os.path.join(common_options.working_directory, 'artifacts',
                                  description)
-    binary_path = None
+    binary: Optional[BrowserBinary] = None
     field_trial_config = None
 
     if common_options.do_run_tests:
@@ -319,16 +330,15 @@ def PrepareBinariesAndDirectories(configurations: List[RunnerConfig],
       shutil.rmtree(artifacts_dir, True)
       os.makedirs(binary_dir)
       os.makedirs(artifacts_dir)
-      binary_path = PrepareBinary(binary_dir, config.tag, config.location,
-                                  config.browser_type)
+      binary = PrepareBinary(binary_dir, config.tag, config.location,
+                             config.browser_type, common_options.target_os)
       assert config.tag is not None
       field_trial_config = config.browser_type.MakeFieldTrials(
           config.tag, artifacts_dir, common_options.variations_repo_dir,
           common_options.ci_mode)
-      logging.info('%s : %s directory %s', description, binary_path,
-                   artifacts_dir)
+      logging.info('%s : %s directory %s', description, binary, artifacts_dir)
     runable_configurations.append(
-        RunableConfiguration(config, benchmarks, binary_path, artifacts_dir,
+        RunableConfiguration(config, benchmarks, binary, artifacts_dir,
                              common_options, field_trial_config))
   return runable_configurations
 

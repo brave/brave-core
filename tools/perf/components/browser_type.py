@@ -91,17 +91,21 @@ def _DownloadArchiveAndUnpack(output_directory: str, url: str) -> str:
                       path_util.GetBinaryPath(output_directory))
 
 
+def _DownloadFile(url: str, target_file: str):
+  logging.info('Downloading %s', url)
+  f = urlopen(url)
+  data = f.read()
+  with open(target_file, 'wb') as output_file:
+    output_file.write(data)
+
+
 def _DownloadWinInstallerAndExtract(out_dir: str, url: str,
                                     expected_install_path: str,
                                     binary_name: str) -> str:
   if not os.path.exists(out_dir):
     os.makedirs(out_dir)
   installer_filename = os.path.join(out_dir, os.pardir, 'temp_installer.exe')
-  logging.info('Downloading %s', url)
-  f = urlopen(url)
-  data = f.read()
-  with open(installer_filename, 'wb') as output_file:
-    output_file.write(data)
+  _DownloadFile(url, installer_filename)
   GetProcessOutput(
       [installer_filename, '--chrome-sxs', '--do-not-launch-chrome'], None,
       True)
@@ -158,7 +162,8 @@ class BrowserType:
   def ReportAsReference(self) -> bool:
     return self._report_as_reference
 
-  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
+  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
+                            target_os: str) -> str:
     raise NotImplementedError()
 
   # pylint: disable=no-self-use
@@ -224,15 +229,21 @@ class BraveBrowserTypeImpl(BrowserType):
     return os.path.join(out_dir, app_name + '.app', 'Contents', 'MacOS',
                         app_name)
 
-  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
-    if sys.platform == 'darwin':
+  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
+                            target_os: str) -> str:
+    if target_os == 'darwin':
       return self._DownloadDmgAndExtract(tag, out_dir)
-    if (sys.platform == 'win32' and tag.version()[0] == 1
+    if (target_os == 'win32' and tag.version()[0] == 1
         and tag.version()[1] < 35):
       return _DownloadWinInstallerAndExtract(out_dir,
                                              self._GetSetupDownloadUrl(tag),
                                              self._GetWinInstallPath(),
                                              'brave.exe')
+    if target_os == 'android':
+      url = _GetBraveDownloadUrl(tag, 'BraveMonoarm64.apk')
+      apk_filename = os.path.join(out_dir, os.pardir, 'BraveMonoarm64.apk')
+      _DownloadFile(url, apk_filename)
+      return apk_filename
 
     return _DownloadArchiveAndUnpack(out_dir, self._GetZipDownloadUrl(tag))
 
@@ -284,7 +295,7 @@ def _MakeTestingFieldTrials(artifacts_dir: str, tag: BraveVersion,
   return target_path
 
 
-def _GetNearestChromiumUrl(tag: BraveVersion) -> ChromiumVersion:
+def _GetNearestChromiumUrl(tag: BraveVersion) -> str:
   chrome_versions = {}
   with open(path_util.GetChromeReleasesJsonPath(), 'r') as config_file:
     chrome_versions = json.load(config_file)
@@ -321,8 +332,9 @@ class ChromeBrowserTypeImpl(BrowserType):
     return os.path.join(os.path.expanduser('~'), 'AppData', 'Local', 'Google',
                         'Chrome ' + self._channel, 'Application')
 
-  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str) -> str:
-    if sys.platform == 'win32':
+  def DownloadBrowserBinary(self, tag: BraveVersion, out_dir: str,
+                            target_os: str) -> str:
+    if target_os == 'win32':
       return _DownloadWinInstallerAndExtract(out_dir,
                                              _GetNearestChromiumUrl(tag),
                                              self._GetWinInstallPath(),
