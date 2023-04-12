@@ -92,11 +92,11 @@ RegisterPolymerTemplateModifications({
               icon="settings:devices">
             </site-details-permission>
           `)
-        const localhostAccessSettings = templateContent.
-          querySelector(`div.list-frame > site-details-permission:nth-child(${curChild})`)
+        const localhostAccessSettings = templateContent.querySelector(
+          `div.list-frame > site-details-permission:nth-child(${curChild})`)
         if (!localhostAccessSettings) {
           console.error(
-            '[Brave Settings Overrides] Couldn\'t find localhost access settings')
+            '[Brave Settings Overrides] Localhost access settings not found')
         } else {
           localhostAccessSettings.setAttribute(
             'label', I18nBehavior.i18n('siteSettingsLocalhostAccess'))

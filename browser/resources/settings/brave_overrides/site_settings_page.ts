@@ -114,9 +114,11 @@ RegisterPolymerComponentReplacement(
                 enabledLabel: 'siteSettingsGoogleSignInAsk',
                 disabledLabel: 'siteSettingsGoogleSignInBlock'
               }
-              lists_.permissionsAdvanced.splice(currentIndex, 0, googleSignInItem)
+              lists_.permissionsAdvanced.splice(currentIndex, 0,
+                googleSignInItem)
             }
-            const isLocalhostAccessFeatureEnabled = loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+            const isLocalhostAccessFeatureEnabled =
+              loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
             if (isLocalhostAccessFeatureEnabled) {
               currentIndex++
               const localhostAccessItem = {
@@ -127,7 +129,8 @@ RegisterPolymerComponentReplacement(
                 enabledLabel: 'siteSettingsLocalhostAccessAsk',
                 disabledLabel: 'siteSettingsLocalhostAccessBlock'
               }
-              lists_.permissionsAdvanced.splice(currentIndex, 0, localhostAccessItem)
+              lists_.permissionsAdvanced.splice(currentIndex, 0,
+                localhostAccessItem)
             }
             const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
             if (isNativeBraveWalletEnabled) {

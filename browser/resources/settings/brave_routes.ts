@@ -68,9 +68,11 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     if (isGoogleSignInFeatureEnabled) {
       r.SITE_SETTINGS_GOOGLE_SIGN_IN = r.SITE_SETTINGS.createChild('googleSignIn')
     }
-    const isLocalhostAccessFeatureEnabled = loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
+    const isLocalhostAccessFeatureEnabled =
+      loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
     if (isLocalhostAccessFeatureEnabled) {
-      r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS.createChild('localhostAccess')
+      r.SITE_SETTINGS_LOCALHOST_ACCESS = r.SITE_SETTINGS
+        .createChild('localhostAccess')
     }
     const isNativeBraveWalletFeatureEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
     if (isNativeBraveWalletFeatureEnabled) {

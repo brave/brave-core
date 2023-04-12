@@ -433,7 +433,7 @@ RegisterPolymerTemplateModifications({
       if (isGoogleSignInFeatureEnabled) {
         InsertGoogleSignInSubpage(templateContent, pages)
       }
-      const isLocalhostAccessFeatureEnabled = 
+      const isLocalhostAccessFeatureEnabled =
         loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
       if (isLocalhostAccessFeatureEnabled) {
         InsertLocalhostAccessSubpage(templateContent, pages)
