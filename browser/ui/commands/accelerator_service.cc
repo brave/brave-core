@@ -34,7 +34,11 @@ mojom::CommandPtr ToMojoCommand(
   auto command = mojom::Command::New();
   command->id = command_id;
   command->name = std::string(commands::GetCommandName(command_id));
-  command->modified = accelerators != default_accelerators;
+  command->modified = accelerators.size() != default_accelerators.size() ||
+                      base::ranges::find_if(
+                          accelerators, [default_accelerators](const auto& a) {
+                            return !base::Contains(default_accelerators, a);
+                          }) != accelerators.end();
 
   for (const auto& accelerator : accelerators) {
     auto a = mojom::Accelerator::New();

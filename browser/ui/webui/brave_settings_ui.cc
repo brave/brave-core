@@ -1,7 +1,7 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 
@@ -16,8 +16,8 @@
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
-#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
@@ -28,6 +28,9 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/commands/browser/resources/grit/commands_generated_map.h"
+#include "brave/components/commands/common/commands.mojom.h"
+#include "brave/components/commands/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -61,13 +64,6 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/browser/ui/webui/settings/brave_extensions_manifest_v2_handler.h"
 #include "brave/browser/ui/webui/settings/brave_tor_snowflake_extension_handler.h"
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-#include "brave/browser/ui/commands/accelerator_service_factory.h"
-#include "brave/components/commands/browser/resources/grit/commands_generated_map.h"
-#include "brave/components/commands/common/commands.mojom.h"
-#include "brave/components/commands/common/features.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -110,12 +106,12 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource *html_source,
                                  kBraveSettingsResources[i].id);
   }
 
-#if !BUILDFLAG(IS_ANDROID)
-  for (size_t i = 0; i < kCommandsGeneratedSize; ++i) {
-    html_source->AddResourcePath(kCommandsGenerated[i].path,
-                                 kCommandsGenerated[i].id);
+  if (base::FeatureList::IsEnabled(commands::features::kBraveCommands)) {
+    for (size_t i = 0; i < kCommandsGeneratedSize; ++i) {
+      html_source->AddResourcePath(kCommandsGenerated[i].path,
+                                   kCommandsGenerated[i].id);
+    }
   }
-#endif
 
   html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
   html_source->AddString(
@@ -182,11 +178,9 @@ bool &BraveSettingsUI::ShouldExposeElementsForTesting() {
   return expose_elements;
 }
 
-#if !BUILDFLAG(IS_ANDROID)
 void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<commands::mojom::CommandsService> pending_receiver) {
   commands::AcceleratorServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext())
       ->BindInterface(std::move(pending_receiver));
 }
-#endif
