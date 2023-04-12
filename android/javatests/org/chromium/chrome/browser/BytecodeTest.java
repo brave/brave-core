@@ -328,6 +328,13 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/incognito/reauth/IncognitoReauthCoordinatorBase"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/incognito/reauth/BravePrivateTabReauthCoordinatorBase"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/firstrun/FreIntentCreator"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl"));
     }
 
     @Test
@@ -768,6 +775,12 @@ public class BytecodeTest {
                 AppMenuDelegate.class, StatusBarColorProvider.class, ObservableSupplierImpl.class,
                 IntentRequestTracker.class, int.class, Supplier.class, Function.class,
                 OneshotSupplier.class, boolean.class, BackPressManager.class));
+        Assert.assertTrue(constructorsMatch(
+                "org/chromium/chrome/browser/feedback/HelpAndFeedbackLauncherImpl",
+                "org/chromium/chrome/browser/feedback/BraveHelpAndFeedbackLauncherImpl",
+                Profile.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/firstrun/FreIntentCreator",
+                "org/chromium/chrome/browser/firstrun/BraveFreIntentCreator"));
     }
 
     @Test
