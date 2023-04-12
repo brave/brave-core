@@ -64,6 +64,8 @@ class BraveWalletAutoPinService
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest,
                            QueueCleared_WhenAutoPinDisabled);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest, RemoveQueuedTokens);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletAutoPinServiceTest, AddQueuedTokens);
   enum Operation { kAdd = 0, kDelete = 1, kValidate = 2 };
 
   struct IntentData {
@@ -112,7 +114,8 @@ class BraveWalletAutoPinService
   raw_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<BraveWalletPinService> brave_wallet_pin_service_;
 
-  std::set<BlockchainTokenPtr> tokens_;
+  // List of all known tokens, GetTokenPrefPath representation is used
+  std::set<std::string> tokens_;
   std::unique_ptr<IntentData> current_;
   std::deque<std::unique_ptr<IntentData>> queue_;
 

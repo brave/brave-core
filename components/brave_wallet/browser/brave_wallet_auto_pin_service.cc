@@ -13,6 +13,12 @@ bool ShouldRetryOnError(const mojom::PinErrorPtr& error) {
   return !error || error->error_code !=
                        mojom::WalletPinServiceErrorCode::ERR_NON_IPFS_TOKEN_URL;
 }
+
+absl::optional<std::string> GetTokenStringValue(
+    const mojom::BlockchainTokenPtr& token) {
+  return BraveWalletPinService::GetTokenPrefPath(absl::nullopt, token);
+}
+
 }  // namespace
 
 BraveWalletAutoPinService::IntentData::IntentData(
@@ -29,7 +35,9 @@ bool BraveWalletAutoPinService::IntentData::Equals(
     return false;
   }
   return (this->operation == other->operation &&
-          this->service == other->service && this->token == other->token);
+          BraveWalletPinService::GetTokenPrefPath(this->service, this->token) ==
+              BraveWalletPinService::GetTokenPrefPath(other->service,
+                                                      other->token));
 }
 
 BraveWalletAutoPinService::BraveWalletAutoPinService(
@@ -107,9 +115,14 @@ void BraveWalletAutoPinService::OnTokenAdded(BlockchainTokenPtr token) {
   if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
     return;
   }
-  tokens_.insert(token.Clone());
-  base::EraseIf(
-      queue_, [&token](const auto& intent) { return intent->token == token; });
+  auto token_str = GetTokenStringValue(token);
+  if (!token_str) {
+    return;
+  }
+  tokens_.insert(token_str.value());
+  base::EraseIf(queue_, [&token_str](const auto& intent) {
+    return GetTokenStringValue(intent->token) == token_str;
+  });
   AddOrExecute(
       std::make_unique<IntentData>(token, Operation::kAdd, absl::nullopt));
 }
@@ -121,9 +134,14 @@ void BraveWalletAutoPinService::OnTokenRemoved(BlockchainTokenPtr token) {
   if (!BraveWalletPinService::IsTokenSupportedForPinning(token)) {
     return;
   }
-  tokens_.erase(token);
-  base::EraseIf(
-      queue_, [&token](const auto& intent) { return intent->token == token; });
+  auto token_str = GetTokenStringValue(token);
+  if (!token_str) {
+    return;
+  }
+  tokens_.erase(token_str.value());
+  base::EraseIf(queue_, [&token_str](const auto& intent) {
+    return GetTokenStringValue(intent->token) == token_str;
+  });
   AddOrExecute(
       std::make_unique<IntentData>(token, Operation::kDelete, absl::nullopt));
 }
@@ -154,15 +172,17 @@ void BraveWalletAutoPinService::OnTokenListResolved(
       continue;
     }
 
-    tokens_.insert(token.Clone());
-
-    auto current_token_path =
+    auto token_path =
         BraveWalletPinService::GetTokenPrefPath(absl::nullopt, token);
-    if (!current_token_path) {
+    auto token_str = GetTokenStringValue(token);
+
+    // Currently they are same but may be different in the future
+    if (!token_path || !token_str) {
       continue;
     }
 
-    known_tokens.erase(current_token_path.value());
+    known_tokens.erase(token_path.value());
+    tokens_.insert(token_str.value());
 
     mojom::TokenPinStatusPtr status =
         brave_wallet_pin_service_->GetTokenStatus(absl::nullopt, token);
@@ -243,14 +263,19 @@ void BraveWalletAutoPinService::AddOrExecute(std::unique_ptr<IntentData> data) {
     return;
   }
 
+  auto token_str = GetTokenStringValue(data->token);
+  if (!token_str) {
+    return;
+  }
+
   if (data->operation == Operation::kAdd ||
       data->operation == Operation::kValidate) {
-    if (!base::Contains(tokens_, data->token)) {
+    if (!base::Contains(tokens_, token_str.value())) {
       return;
     }
   }
   if (data->operation == Operation::kDelete) {
-    if (base::Contains(tokens_, data->token)) {
+    if (base::Contains(tokens_, token_str.value())) {
       return;
     }
   }

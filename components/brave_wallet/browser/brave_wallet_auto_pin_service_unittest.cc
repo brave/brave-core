@@ -585,6 +585,128 @@ TEST_F(BraveWalletAutoPinServiceTest, QueueCleared_WhenAutoPinDisabled) {
 
   auto_pin_service.SetAutoPinEnabled(false);
   EXPECT_EQ(auto_pin_service.queue_.size(), 0u);
+  EXPECT_EQ(auto_pin_service.tokens_.size(), 0u);
+}
+
+TEST_F(BraveWalletAutoPinServiceTest, RemoveQueuedTokens) {
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
+                                              GetUserAssetsCallback callback) {
+        std::vector<mojom::BlockchainTokenPtr> result;
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  BraveWalletAutoPinService auto_pin_service(
+      GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
+  // First one is in progress
+  EXPECT_EQ(auto_pin_service.queue_.size(), 2u);
+
+  auto_pin_service.OnTokenRemoved(GetErc721Token(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
+
+  EXPECT_EQ(auto_pin_service.queue_.size(), 3u);
+  EXPECT_TRUE(auto_pin_service.queue_[2u]->Equals(
+      std::make_unique<BraveWalletAutoPinService::IntentData>(
+          GetErc721Token("nft.local.60.0x1."
+                         "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"),
+          BraveWalletAutoPinService::Operation::kDelete, absl::nullopt)));
+  auto_pin_service.OnTokenRemoved(GetErc721Token(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
+
+  EXPECT_EQ(auto_pin_service.queue_.size(), 3u);
+
+  EXPECT_TRUE(auto_pin_service.queue_[2u]->Equals(
+      std::make_unique<BraveWalletAutoPinService::IntentData>(
+          GetErc721Token("nft.local.60.0x1."
+                         "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"),
+          BraveWalletAutoPinService::Operation::kDelete, absl::nullopt)));
+}
+
+TEST_F(BraveWalletAutoPinServiceTest, AddQueuedTokens) {
+  std::set<std::string> known_tokens;
+
+  known_tokens.insert(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1");
+  known_tokens.insert(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2");
+  known_tokens.insert(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3");
+  known_tokens.insert(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4");
+
+  ON_CALL(*GetBraveWalletPinService(),
+          GetTokenStatus(testing::Eq(absl::nullopt), _))
+      .WillByDefault(
+          ::testing::Invoke([](absl::optional<std::string> service,
+                               const mojom::BlockchainTokenPtr& token)
+                                -> mojom::TokenPinStatusPtr {
+            mojom::TokenPinStatusPtr status = mojom::TokenPinStatus::New();
+            if ("0x1" == token->token_id) {
+              status->code = mojom::TokenPinStatusCode::STATUS_NOT_PINNED;
+            } else if ("0x2" == token->token_id) {
+              status->code = mojom::TokenPinStatusCode::STATUS_PINNED;
+              status->validate_time = base::Time::Now();
+            } else if ("0x3" == token->token_id) {
+              status->code = mojom::TokenPinStatusCode::STATUS_PINNED;
+              status->validate_time = base::Time::Now();
+            } else if ("0x4" == token->token_id) {
+              status->code = mojom::TokenPinStatusCode::STATUS_PINNED;
+            }
+            return status;
+          }));
+  ON_CALL(*GetBraveWalletPinService(), GetTokens(_))
+      .WillByDefault(::testing::Return(known_tokens));
+
+  ON_CALL(*GetBraveWalletService(), GetAllUserAssets(_))
+      .WillByDefault(::testing::Invoke([](BraveWalletService::
+                                              GetUserAssetsCallback callback) {
+        std::vector<mojom::BlockchainTokenPtr> result;
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x1"));
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x2"));
+        result.push_back(GetErc721Token(
+            "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x3"));
+        std::move(callback).Run(std::move(result));
+      }));
+
+  BraveWalletAutoPinService auto_pin_service(
+      GetPrefs(), GetBraveWalletService(), GetBraveWalletPinService());
+
+  // First one is in progress
+  EXPECT_EQ(auto_pin_service.queue_.size(), 1u);
+  EXPECT_TRUE(auto_pin_service.queue_[0]->Equals(
+      std::make_unique<BraveWalletAutoPinService::IntentData>(
+          GetErc721Token("nft.local.60.0x1."
+                         "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
+          BraveWalletAutoPinService::Operation::kDelete, absl::nullopt)));
+
+  auto_pin_service.OnTokenAdded(GetErc721Token(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"));
+  EXPECT_EQ(auto_pin_service.queue_.size(), 1u);
+
+  auto_pin_service.queue_[0u]->Equals(std::make_unique<
+                                      BraveWalletAutoPinService::IntentData>(
+      GetErc721Token(
+          "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x4"),
+      BraveWalletAutoPinService::Operation::kAdd, absl::nullopt));
+
+  auto_pin_service.OnTokenAdded(GetErc721Token(
+      "nft.local.60.0x1.0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x5"));
+
+  EXPECT_EQ(auto_pin_service.queue_.size(), 2u);
+
+  EXPECT_TRUE(auto_pin_service.queue_[1u]->Equals(
+      std::make_unique<BraveWalletAutoPinService::IntentData>(
+          GetErc721Token("nft.local.60.0x1."
+                         "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d.0x5"),
+          BraveWalletAutoPinService::Operation::kAdd, absl::nullopt)));
 }
 
 TEST_F(BraveWalletAutoPinServiceTest, RestoreNotCalled_WhenAutoPinDisabled) {
