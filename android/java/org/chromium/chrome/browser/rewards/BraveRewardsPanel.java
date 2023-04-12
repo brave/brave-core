@@ -1058,9 +1058,9 @@ public class BraveRewardsPanel
     @Override
     public void onBalance(boolean success) {
         try {
-            mWalletBalanceLayout.setAlpha(1.0f);
-            mWalletBalanceProgress.setVisibility(View.GONE);
             if (success) {
+                mWalletBalanceLayout.setAlpha(1.0f);
+                mWalletBalanceProgress.setVisibility(View.GONE);
                 if (mBraveRewardsNativeWorker != null) {
                     BraveRewardsBalance walletBalanceObject =
                             mBraveRewardsNativeWorker.GetWalletBalance();
