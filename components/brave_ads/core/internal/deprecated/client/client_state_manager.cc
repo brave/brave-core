@@ -22,14 +22,13 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 
 namespace {
-
-ClientStateManager* g_client_instance = nullptr;
 
 constexpr uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
@@ -95,25 +94,14 @@ void OnSaved(const bool success) {
 
 }  // namespace
 
-ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {
-  DCHECK(!g_client_instance);
-  g_client_instance = this;
-}
+ClientStateManager::ClientStateManager() : client_(new ClientInfo()) {}
 
-ClientStateManager::~ClientStateManager() {
-  DCHECK_EQ(this, g_client_instance);
-  g_client_instance = nullptr;
-}
+ClientStateManager::~ClientStateManager() {}
 
 // static
 ClientStateManager* ClientStateManager::GetInstance() {
-  DCHECK(g_client_instance);
-  return g_client_instance;
-}
-
-// static
-bool ClientStateManager::HasInstance() {
-  return !!g_client_instance;
+  DCHECK(GlobalState::GetInstance()->GetClientStateManager());
+  return GlobalState::GetInstance()->GetClientStateManager();
 }
 
 const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()

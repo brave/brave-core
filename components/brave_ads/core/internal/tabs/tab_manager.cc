@@ -9,37 +9,23 @@
 #include "base/hash/hash.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
 
-namespace {
-TabManager* g_tab_manager_instance = nullptr;
-}  // namespace
-
 TabManager::TabManager() {
-  DCHECK(!g_tab_manager_instance);
-  g_tab_manager_instance = this;
-
   AdsClientHelper::AddObserver(this);
 }
 
 TabManager::~TabManager() {
   AdsClientHelper::RemoveObserver(this);
-
-  DCHECK_EQ(this, g_tab_manager_instance);
-  g_tab_manager_instance = nullptr;
 }
 
 // static
 TabManager* TabManager::GetInstance() {
-  DCHECK(g_tab_manager_instance);
-  return g_tab_manager_instance;
-}
-
-// static
-bool TabManager::HasInstance() {
-  return !!g_tab_manager_instance;
+  DCHECK(GlobalState::GetInstance()->GetTabManager());
+  return GlobalState::GetInstance()->GetTabManager();
 }
 
 void TabManager::AddObserver(TabManagerObserver* observer) {

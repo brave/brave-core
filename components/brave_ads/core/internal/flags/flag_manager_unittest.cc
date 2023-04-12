@@ -10,6 +10,7 @@
 
 #include "base/strings/strcat.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/command_line_switch_info.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
@@ -98,13 +99,11 @@ class BatAdsFlagManagerTest : public UnitTestBase,
                               public ::testing::WithParamInterface<ParamInfo> {
  protected:
   void SetUpMocks() override {
-    const ParamInfo param = GetParam();
+    AppendCommandLineSwitches(GetParam().command_line_switches);
 
     ads_client_mock_->SetBooleanPref(
         brave_rewards::prefs::kUseRewardsStagingServer,
-        param.should_force_staging_environment);
-
-    AppendCommandLineSwitches(param.command_line_switches);
+        GetParam().should_force_staging_environment);
   }
 };
 
@@ -114,7 +113,7 @@ TEST_P(BatAdsFlagManagerTest, HasInstance) {
   // Act
 
   // Assert
-  EXPECT_TRUE(FlagManager::HasInstance());
+  EXPECT_TRUE(FlagManager::GetInstance());
 }
 
 TEST_P(BatAdsFlagManagerTest, Initialize) {

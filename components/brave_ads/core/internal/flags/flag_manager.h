@@ -24,8 +24,6 @@ class FlagManager final {
 
   static FlagManager* GetInstance();
 
-  static bool HasInstance();
-
   bool ShouldDebug() const { return should_debug_; }
   void SetShouldDebugForTesting(const bool should_debug) {
     should_debug_ = should_debug;

@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/filters/date_range_history_filter.h"
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_factory.h"
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
@@ -25,29 +26,14 @@
 
 namespace brave_ads {
 
-namespace {
-HistoryManager* g_history_manager_instance = nullptr;
-}  // namespace
+HistoryManager::HistoryManager() = default;
 
-HistoryManager::HistoryManager() {
-  DCHECK(!g_history_manager_instance);
-  g_history_manager_instance = this;
-}
-
-HistoryManager::~HistoryManager() {
-  DCHECK_EQ(this, g_history_manager_instance);
-  g_history_manager_instance = nullptr;
-}
+HistoryManager::~HistoryManager() = default;
 
 // static
 HistoryManager* HistoryManager::GetInstance() {
-  DCHECK(g_history_manager_instance);
-  return g_history_manager_instance;
-}
-
-// static
-bool HistoryManager::HasInstance() {
-  return !!g_history_manager_instance;
+  DCHECK(GlobalState::GetInstance()->GetHistoryManager());
+  return GlobalState::GetInstance()->GetHistoryManager();
 }
 
 void HistoryManager::AddObserver(HistoryManagerObserver* observer) {

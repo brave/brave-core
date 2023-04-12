@@ -15,13 +15,12 @@
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/last_notification_ad_was_clicked_predictor_variable.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/number_of_user_activity_events_predictor_variable.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/variables/time_since_last_user_activity_event_predictor_variable.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"
 
 namespace brave_ads {
 
 namespace {
-
-PredictorsManager* g_predictors_manager_instance = nullptr;
 
 constexpr auto kUserActivityEventToPredictorVariableTypeMapping =
     base::MakeFixedFlatMap<UserActivityEventType,
@@ -102,9 +101,6 @@ constexpr base::TimeDelta kAverageClickthroughRateTimeWindows[] = {
 }  // namespace
 
 PredictorsManager::PredictorsManager() {
-  DCHECK(!g_predictors_manager_instance);
-  g_predictors_manager_instance = this;
-
   SetPredictorVariable(
       std::make_unique<LastNotificationAdWasClickedPredictorVariable>());
 
@@ -129,20 +125,12 @@ PredictorsManager::PredictorsManager() {
   }
 }
 
-PredictorsManager::~PredictorsManager() {
-  DCHECK_EQ(this, g_predictors_manager_instance);
-  g_predictors_manager_instance = nullptr;
-}
+PredictorsManager::~PredictorsManager() {}
 
 // static
 PredictorsManager* PredictorsManager::GetInstance() {
-  DCHECK(g_predictors_manager_instance);
-  return g_predictors_manager_instance;
-}
-
-// static
-bool PredictorsManager::HasInstance() {
-  return g_predictors_manager_instance != nullptr;
+  DCHECK(GlobalState::GetInstance()->GetPredictorsManager());
+  return GlobalState::GetInstance()->GetPredictorsManager();
 }
 
 void PredictorsManager::SetPredictorVariable(

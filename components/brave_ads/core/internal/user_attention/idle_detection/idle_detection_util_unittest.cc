@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection_features.h"
 

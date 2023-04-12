@@ -12,7 +12,6 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/ads_client_mock.h"
 #include "brave/components/brave_ads/core/internal/ads_impl.h"
 #include "brave/components/brave_ads/core/internal/browser/browser_manager.h"
@@ -24,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
@@ -42,6 +42,7 @@ class ScopedDefaultLocale;
 
 namespace brave_ads {
 
+class GlobalState;
 class Database;
 
 class UnitTestBase : public AdsClientNotifier, public testing::Test {
@@ -168,7 +169,7 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
 
   std::unique_ptr<Database> database_;
 
-  std::unique_ptr<AdsClientHelper> ads_client_helper_;
+  std::unique_ptr<GlobalState> global_state_;
 
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<ClientStateManager> client_state_manager_;

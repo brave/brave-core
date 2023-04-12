@@ -35,8 +35,6 @@ class PredictorsManager final {
 
   static PredictorsManager* GetInstance();
 
-  static bool HasInstance();
-
   void SetPredictorVariable(
       std::unique_ptr<PredictorVariableInterface> predictor_variable);
   std::vector<brave_federated::mojom::CovariateInfoPtr> GetTrainingSample()

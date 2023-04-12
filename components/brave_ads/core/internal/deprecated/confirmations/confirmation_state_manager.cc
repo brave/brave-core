@@ -23,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/blinded_token.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/privacy/challenge_bypass_ristretto/token.h"
@@ -37,8 +38,6 @@
 namespace brave_ads {
 
 namespace {
-
-ConfirmationStateManager* g_confirmation_state_manager_instance = nullptr;
 
 uint64_t GenerateHash(const std::string& value) {
   return static_cast<uint64_t>(base::PersistentHash(value));
@@ -143,25 +142,14 @@ base::Value::Dict GetFailedConfirmationsAsDictionary(
 ConfirmationStateManager::ConfirmationStateManager()
     : unblinded_tokens_(std::make_unique<privacy::UnblindedTokens>()),
       unblinded_payment_tokens_(
-          std::make_unique<privacy::UnblindedPaymentTokens>()) {
-  DCHECK(!g_confirmation_state_manager_instance);
-  g_confirmation_state_manager_instance = this;
-}
+          std::make_unique<privacy::UnblindedPaymentTokens>()) {}
 
-ConfirmationStateManager::~ConfirmationStateManager() {
-  DCHECK_EQ(this, g_confirmation_state_manager_instance);
-  g_confirmation_state_manager_instance = nullptr;
-}
+ConfirmationStateManager::~ConfirmationStateManager() {}
 
 // static
 ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
-  DCHECK(g_confirmation_state_manager_instance);
-  return g_confirmation_state_manager_instance;
-}
-
-// static
-bool ConfirmationStateManager::HasInstance() {
-  return !!g_confirmation_state_manager_instance;
+  DCHECK(GlobalState::GetInstance()->GetConfirmationStateManager());
+  return GlobalState::GetInstance()->GetConfirmationStateManager();
 }
 
 void ConfirmationStateManager::Initialize(const WalletInfo& wallet,

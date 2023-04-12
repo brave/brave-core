@@ -15,17 +15,11 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/enabled_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/locale_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {
 
-namespace {
-DiagnosticManager* g_diagnostic_manager_instance = nullptr;
-}  // namespace
-
 DiagnosticManager::DiagnosticManager() {
-  DCHECK(!g_diagnostic_manager_instance);
-  g_diagnostic_manager_instance = this;
-
   SetEntry(std::make_unique<EnabledDiagnosticEntry>());
   SetEntry(std::make_unique<DeviceIdDiagnosticEntry>());
   SetEntry(std::make_unique<LocaleDiagnosticEntry>());
@@ -34,20 +28,12 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<LastUnIdleTimeDiagnosticEntry>());
 }
 
-DiagnosticManager::~DiagnosticManager() {
-  DCHECK_EQ(this, g_diagnostic_manager_instance);
-  g_diagnostic_manager_instance = nullptr;
-}
+DiagnosticManager::~DiagnosticManager() {}
 
 // static
 DiagnosticManager* DiagnosticManager::GetInstance() {
-  DCHECK(g_diagnostic_manager_instance);
-  return g_diagnostic_manager_instance;
-}
-
-// static
-bool DiagnosticManager::HasInstance() {
-  return !!g_diagnostic_manager_instance;
+  DCHECK(GlobalState::GetInstance()->GetDiagnosticManager());
+  return GlobalState::GetInstance()->GetDiagnosticManager();
 }
 
 void DiagnosticManager::SetEntry(

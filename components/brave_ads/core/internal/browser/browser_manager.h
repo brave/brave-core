@@ -26,8 +26,6 @@ class BrowserManager final : public AdsClientNotifierObserver {
 
   static BrowserManager* GetInstance();
 
-  static bool HasInstance();
-
   void AddObserver(BrowserManagerObserver* observer);
   void RemoveObserver(BrowserManagerObserver* observer);
 

@@ -13,14 +13,13 @@
 #include "brave/components/brave_ads/core/internal/flags/did_override/did_override_features_from_command_line_util.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_command_line_switch_parser_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager_constants.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
 
 namespace {
-
-FlagManager* g_flag_manager_instance = nullptr;
 
 bool ShouldForceStagingEnvironment() {
   return AdsClientHelper::GetInstance()->GetBooleanPref(
@@ -40,26 +39,15 @@ EnvironmentType ChooseEnvironmentType() {
 }  // namespace
 
 FlagManager::FlagManager() {
-  DCHECK(!g_flag_manager_instance);
-  g_flag_manager_instance = this;
-
   Initialize();
 }
 
-FlagManager::~FlagManager() {
-  DCHECK_EQ(this, g_flag_manager_instance);
-  g_flag_manager_instance = nullptr;
-}
+FlagManager::~FlagManager() {}
 
 // static
 FlagManager* FlagManager::GetInstance() {
-  DCHECK(g_flag_manager_instance);
-  return g_flag_manager_instance;
-}
-
-// static
-bool FlagManager::HasInstance() {
-  return !!g_flag_manager_instance;
+  DCHECK(GlobalState::GetInstance()->GetFlagManager());
+  return GlobalState::GetInstance()->GetFlagManager();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
