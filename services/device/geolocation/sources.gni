@@ -1,0 +1,20 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_services_device_geolocation_visibility =
+    [ "//brave/services/device/geolocation:*" ]
+
+brave_services_device_geolocation_sources = []
+
+brave_services_device_geolocation_deps = [ "//base" ]
+
+if (is_linux) {
+  brave_services_device_geolocation_sources += [
+    "//brave/services/device/geolocation/geoclue_location_provider.cc",
+    "//brave/services/device/geolocation/geoclue_location_provider.h",
+  ]
+
+  brave_services_device_geolocation_deps += [ "//dbus" ]
+}

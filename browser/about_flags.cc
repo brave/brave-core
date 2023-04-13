@@ -39,6 +39,7 @@
 #include "components/flags_ui/flags_state.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "net/base/features.h"
+#include "services/device/public/cpp/device_features.h"
 #include "third_party/blink/public/common/features.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -805,7 +806,10 @@
           "back to HTTP.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
-      })                                                                       \
+      },                                                                       \
+      {"geoclue-location-backend", "Use the GeoClue2 Location Provider",       \
+       "Attempt to get the location from the GeoClue2 service", kOsLinux,      \
+       FEATURE_VALUE_TYPE(features::kLinuxGeoClueLocationBackend)})            \
   BRAVE_IPFS_FEATURE_ENTRIES                                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \

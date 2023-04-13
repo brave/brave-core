@@ -1,0 +1,20 @@
+diff --git a/services/device/geolocation/BUILD.gn b/services/device/geolocation/BUILD.gn
+index 89da086564f98..290c720859a5e 100644
+--- a/services/device/geolocation/BUILD.gn
++++ b/services/device/geolocation/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/services/device/geolocation/sources.gni")
+ import("//build/config/chromeos/ui_mode.gni")
+ import("//build/config/chromeos/ui_mode.gni")
+ import("//build/config/features.gni")
+@@ -64,6 +65,7 @@ source_set("geolocation") {
+     "//services/device/public/mojom",
+     "//services/network/public/cpp",
+   ]
++  visibility += brave_services_device_geolocation_visibility sources += brave_services_device_geolocation_sources deps += brave_services_device_geolocation_deps
+ 
+   if (is_android) {
+     sources += [

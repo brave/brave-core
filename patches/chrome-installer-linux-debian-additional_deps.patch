@@ -1,0 +1,11 @@
+diff --git a/chrome/installer/linux/debian/additional_deps b/chrome/installer/linux/debian/additional_deps
+index 7646e729a5044..92bca46102841 100644
+--- a/chrome/installer/linux/debian/additional_deps
++++ b/chrome/installer/linux/debian/additional_deps
+@@ -31,3 +31,6 @@ libvulkan1
+ 
+ # For OS integration.
+ xdg-utils (>= 1.0.2)
++
++# Try and use GeoClue2 for Location services
++geoclue-2.0

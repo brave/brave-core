@@ -1,0 +1,13 @@
+diff --git a/services/device/geolocation/location_arbitrator.cc b/services/device/geolocation/location_arbitrator.cc
+index 03f08014526f1..6d437b33d9eba 100644
+--- a/services/device/geolocation/location_arbitrator.cc
++++ b/services/device/geolocation/location_arbitrator.cc
+@@ -159,7 +159,7 @@ LocationArbitrator::NewNetworkLocationProvider(
+ 
+ std::unique_ptr<LocationProvider>
+ LocationArbitrator::NewSystemLocationProvider() {
+-#if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++#if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
+   return nullptr;
+ #else
+   return device::NewSystemLocationProvider(main_task_runner_,

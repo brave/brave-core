@@ -1,0 +1,11 @@
+diff --git a/chrome/installer/linux/rpm/additional_deps b/chrome/installer/linux/rpm/additional_deps
+index ea05c3b2ef4e8..f7d62f920f4f7 100644
+--- a/chrome/installer/linux/rpm/additional_deps
++++ b/chrome/installer/linux/rpm/additional_deps
+@@ -44,3 +44,6 @@ libcurl.so.4()(64bit)
+ 
+ # For OS integration.
+ xdg-utils
++
++# Try and use GeoClue2 for Location services
++geoclue2.x86_64
