@@ -14,7 +14,7 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 preprocess_folder = "preprocessed"
 preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
-if (!is_official_build) {
+if (is_official_build) {
   assert(brave_zero_ex_api_key != "")
 }
 
