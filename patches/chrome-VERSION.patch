@@ -1,12 +1,12 @@
 diff --git a/chrome/VERSION b/chrome/VERSION
-index 6608ba84e2f81d88ddbeb73feb70f2aee8c31718..d666fc52ca375b77269d3fecaeb5da2ab6a1a0e7 100644
+index 957b3d5c78b93994f5f0744a793b4e5bcba83c34..2a7bb4134d62794e4eb421f210b59e9a3204d8a0 100644
 --- a/chrome/VERSION
 +++ b/chrome/VERSION
 @@ -1,4 +1,4 @@
  MAJOR=112
 -MINOR=0
 -BUILD=5615
--PATCH=49
+-PATCH=87
 +MINOR=1
 +BUILD=50
 +PATCH=117
