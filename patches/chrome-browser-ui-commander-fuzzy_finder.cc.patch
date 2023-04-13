@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/commander/fuzzy_finder.cc b/chrome/browser/ui/commander/fuzzy_finder.cc
-index 5166bb5d04388..0149fbaea6b93 100644
+index 5166bb5d043880ce14e8afb930a9d6e9469494a1..532eaac446e845d2b08b5085d81f7df05863d204 100644
 --- a/chrome/browser/ui/commander/fuzzy_finder.cc
 +++ b/chrome/browser/ui/commander/fuzzy_finder.cc
 @@ -236,7 +236,7 @@ FuzzyFinder::~FuzzyFinder() = default;
