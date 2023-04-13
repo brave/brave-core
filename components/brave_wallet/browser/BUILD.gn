@@ -11,13 +11,11 @@ import("//tools/json_schema_compiler/json_schema_api.gni")
 declare_args() {
   sardine_client_id = ""
   sardine_client_secret = ""
-  zero_ex_api_key = ""
 }
 
 if (is_official_build) {
   assert(sardine_client_id != "")
   assert(sardine_client_secret != "")
-  assert(zero_ex_api_key != "")
 }
 
 static_library("browser") {
@@ -221,10 +219,7 @@ static_library("browser") {
     deps += [ "//brave/components/ipfs" ]
   }
 
-  configs += [
-    ":sardine_config",
-    ":0x_config",
-  ]
+  configs += [ ":sardine_config" ]
 }
 
 if (!is_ios) {
@@ -374,8 +369,4 @@ config("sardine_config") {
     "SARDINE_CLIENT_ID=\"$sardine_client_id\"",
     "SARDINE_CLIENT_SECRET=\"$sardine_client_secret\"",
   ]
-}
-
-config("0x_config") {
-  defines = [ "ZERO_EX_API_KEY=\"$zero_ex_api_key\"" ]
 }

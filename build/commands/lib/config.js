@@ -94,7 +94,6 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 const Config = function () {
   this.sardineClientId = getNPMConfig(['sardine_client_id']) || ''
   this.sardineClientSecret = getNPMConfig(['sardine_client_secret']) || ''
-  this.zeroExApiKey = getNPMConfig(['zero_ex_api_key']) || ''
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
@@ -123,6 +122,7 @@ const Config = function () {
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
+  this.braveZeroExApiKey = getNPMConfig(['brave_zero_ex_api_key']) || ''
   this.bitflyerClientId = getNPMConfig(['bitflyer_client_id']) || ''
   this.bitflyerClientSecret = getNPMConfig(['bitflyer_client_secret']) || ''
   this.bitflyerStagingClientId = getNPMConfig(['bitflyer_staging_client_id']) || ''
@@ -264,7 +264,6 @@ Config.prototype.buildArgs = function () {
   let args = {
     sardine_client_id: this.sardineClientId,
     sardine_client_secret: this.sardineClientSecret,
-    zero_ex_api_key: this.zeroExApiKey,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
@@ -293,6 +292,7 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
+    brave_zero_ex_api_key: this.braveZeroExApiKey,
     bitflyer_client_id: this.bitflyerClientId,
     bitflyer_client_secret: this.bitflyerClientSecret,
     bitflyer_staging_client_id: this.bitflyerStagingClientId,
@@ -674,10 +674,6 @@ Config.prototype.update = function (options) {
     this.sardineClientId = options.sardine_client_id
   }
 
-  if (options.zero_ex_api_key) {
-    this.zeroExApiKey = options.zero_ex_api_key
-  }
-
   if (options.universal) {
     this.targetArch = 'arm64'
     this.isUniversalBinary = true
@@ -760,6 +756,10 @@ Config.prototype.update = function (options) {
 
   if (options.brave_infura_project_id) {
     this.infuraProjectId = options.brave_infura_project_id
+  }
+
+  if (options.brave_zero_ex_api_key) {
+    this.braveZeroExApiKey = options.brave_zero_ex_api_key
   }
 
   if (options.bitflyer_client_id) {
