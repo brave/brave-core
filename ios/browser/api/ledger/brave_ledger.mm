@@ -23,7 +23,6 @@
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/ledger_database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
-#include "brave/components/brave_rewards/core/option_keys.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave/ios/browser/api/ledger/brave_ledger_observer.h"
 #import "brave/ios/browser/api/ledger/ledger.mojom.objc+private.h"
@@ -95,17 +94,6 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 static const auto kOneDay =
     base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
-/// Ledger Prefs, keys will be defined in
-/// `brave/components/brave_rewards/core/option_keys.h`
-const std::map<std::string, bool> kBoolOptions = {
-    {ledger::option::kIsBitflyerRegion, false}};
-const std::map<std::string, int> kIntegerOptions = {};
-const std::map<std::string, double> kDoubleOptions = {};
-const std::map<std::string, std::string> kStringOptions = {};
-const std::map<std::string, int64_t> kInt64Options = {};
-const std::map<std::string, uint64_t> kUInt64Options = {
-    {ledger::option::kPublisherListRefreshInterval,
-     7 * base::Time::kHoursPerDay* base::Time::kSecondsPerHour}};
 /// ---
 
 @interface BraveLedger () <LedgerClientBridge> {
@@ -1151,70 +1139,9 @@ const std::map<std::string, uint64_t> kUInt64Options = {
   std::move(callback).Run();
 }
 
-- (void)booleanOption:(const std::string&)name
-             callback:(ledger::mojom::LedgerClient::GetBooleanOptionCallback)
-                          callback {
-  DCHECK(!name.empty());
-
-  const auto it = kBoolOptions.find(name);
-  DCHECK(it != kBoolOptions.end());
-
-  std::move(callback).Run(kBoolOptions.at(name));
-}
-
-- (void)integerOption:(const std::string&)name
-             callback:(ledger::mojom::LedgerClient::GetIntegerOptionCallback)
-                          callback {
-  DCHECK(!name.empty());
-
-  const auto it = kIntegerOptions.find(name);
-  DCHECK(it != kIntegerOptions.end());
-
-  std::move(callback).Run(kIntegerOptions.at(name));
-}
-
-- (void)doubleOption:(const std::string&)name
-            callback:
-                (ledger::mojom::LedgerClient::GetDoubleOptionCallback)callback {
-  DCHECK(!name.empty());
-
-  const auto it = kDoubleOptions.find(name);
-  DCHECK(it != kDoubleOptions.end());
-
-  std::move(callback).Run(kDoubleOptions.at(name));
-}
-
-- (void)stringOption:(const std::string&)name
-            callback:
-                (ledger::mojom::LedgerClient::GetStringOptionCallback)callback {
-  DCHECK(!name.empty());
-
-  const auto it = kStringOptions.find(name);
-  DCHECK(it != kStringOptions.end());
-
-  std::move(callback).Run(kStringOptions.at(name));
-}
-
-- (void)int64Option:(const std::string&)name
-           callback:
-               (ledger::mojom::LedgerClient::GetInt64OptionCallback)callback {
-  DCHECK(!name.empty());
-
-  const auto it = kInt64Options.find(name);
-  DCHECK(it != kInt64Options.end());
-
-  std::move(callback).Run(kInt64Options.at(name));
-}
-
-- (void)uint64Option:(const std::string&)name
-            callback:
-                (ledger::mojom::LedgerClient::GetUint64OptionCallback)callback {
-  DCHECK(!name.empty());
-
-  const auto it = kUInt64Options.find(name);
-  DCHECK(it != kUInt64Options.end());
-
-  std::move(callback).Run(kUInt64Options.at(name));
+- (void)isBitFlyerRegion:
+    (ledger::mojom::LedgerClient::IsBitFlyerRegionCallback)callback {
+  std::move(callback).Run(false);
 }
 
 #pragma mark - Notifications

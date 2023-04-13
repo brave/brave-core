@@ -28,7 +28,7 @@ inline int state_migration_target_version_for_testing = -1;
 inline int reconcile_interval = 0;  // minutes
 inline int retry_interval = 0;      // seconds
 
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
 inline constexpr uint64_t kPublisherListRefreshInterval =
     7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 #else

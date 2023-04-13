@@ -90,24 +90,8 @@ NS_ASSUME_NONNULL_BEGIN
                 (ledger::mojom::LedgerClient::SetTimeStateCallback)callback;
 - (void)clearState:(const std::string&)name
           callback:(ledger::mojom::LedgerClient::ClearStateCallback)callback;
-- (void)booleanOption:(const std::string&)name
-             callback:(ledger::mojom::LedgerClient::GetBooleanOptionCallback)
-                          callback;
-- (void)integerOption:(const std::string&)name
-             callback:(ledger::mojom::LedgerClient::GetIntegerOptionCallback)
-                          callback;
-- (void)doubleOption:(const std::string&)name
-            callback:
-                (ledger::mojom::LedgerClient::GetDoubleOptionCallback)callback;
-- (void)stringOption:(const std::string&)name
-            callback:
-                (ledger::mojom::LedgerClient::GetStringOptionCallback)callback;
-- (void)int64Option:(const std::string&)name
-           callback:
-               (ledger::mojom::LedgerClient::GetInt64OptionCallback)callback;
-- (void)uint64Option:(const std::string&)name
-            callback:
-                (ledger::mojom::LedgerClient::GetUint64OptionCallback)callback;
+- (void)isBitFlyerRegion:
+    (ledger::mojom::LedgerClient::IsBitFlyerRegionCallback)callback;
 - (void)onContributeUnverifiedPublishers:(ledger::mojom::Result)result
                             publisherKey:(const std::string&)publisherKey
                            publisherName:(const std::string&)publisherName;
