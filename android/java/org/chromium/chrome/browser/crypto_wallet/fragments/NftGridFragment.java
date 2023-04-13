@@ -121,6 +121,14 @@ public class NftGridFragment extends Fragment implements OnWalletListItemClick {
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPortfolioModel != null) {
+            mPortfolioModel.clearNftModels();
+        }
+    }
+
     private void setUpObservers() {
         if (mWalletModel == null) return;
         mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks.observe(

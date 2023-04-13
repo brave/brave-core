@@ -189,6 +189,10 @@ public class PortfolioModel implements BraveWalletServiceObserverImplDelegate {
         _mIsDiscoveringUserAssets.postValue(false);
     }
 
+    public void clearNftModels() {
+        _mNftModels.postValue(Collections.emptyList());
+    }
+
     private void addServiceObservers() {
         if (mBraveWalletService != null) {
             BraveWalletServiceObserverImpl walletServiceObserver =
