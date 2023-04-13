@@ -140,8 +140,6 @@ class MockLedgerClient : public mojom::LedgerClient {
   MOCK_METHOD2(RunDBTransaction,
                void(mojom::DBTransactionPtr, RunDBTransactionCallback));
 
-  MOCK_METHOD1(GetCreateScript, void(GetCreateScriptCallback));
-
   MOCK_METHOD1(PendingContributionSaved, void(mojom::Result));
 
   MOCK_METHOD4(Log,

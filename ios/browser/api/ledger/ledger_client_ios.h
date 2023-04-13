@@ -117,7 +117,6 @@ class LedgerClientIOS : public ledger::mojom::LedgerClient {
   void ReconcileStampReset() override;
   void RunDBTransaction(ledger::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;
-  void GetCreateScript(GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::mojom::Result result) override;
   void ClearAllNotifications() override;
   void ExternalWalletConnected() override;

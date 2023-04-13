@@ -125,8 +125,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)runDbTransaction:(ledger::mojom::DBTransactionPtr)transaction
                 callback:(ledger::mojom::LedgerClient::RunDBTransactionCallback)
                              callback;
-- (void)createScript:
-    (ledger::mojom::LedgerClient::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(ledger::mojom::Result)result;
 - (void)log:(const std::string&)file
             line:(int32_t)line

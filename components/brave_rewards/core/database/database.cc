@@ -46,9 +46,8 @@ Database::Database(LedgerImpl* ledger) : ledger_(ledger) {
 
 Database::~Database() = default;
 
-void Database::Initialize(bool execute_create_script,
-                          ledger::LegacyResultCallback callback) {
-  initialize_->Start(execute_create_script, callback);
+void Database::Initialize(ledger::LegacyResultCallback callback) {
+  initialize_->Start(callback);
 }
 
 void Database::Close(ledger::LegacyResultCallback callback) {

@@ -18,13 +18,13 @@ AddMockLedgerClient::~AddMockLedgerClient() = default;
 MockLedgerImpl::MockLedgerImpl()
     : LedgerImpl(mock_ledger_client_receiver_
                      .BindNewEndpointAndPassDedicatedRemote()) {
-  ON_CALL(*this, InitializeDatabase(_, _))
-      .WillByDefault([](bool, LegacyResultCallback callback) {
+  ON_CALL(*this, InitializeDatabase(_))
+      .WillByDefault([](LegacyResultCallback callback) {
         callback(mojom::Result::LEDGER_OK);
       });
   ON_CALL(*this, database()).WillByDefault(Return(&mock_database_));
 
-  const auto result = mojom::LedgerAsyncWaiter(this).Initialize(false);
+  const auto result = mojom::LedgerAsyncWaiter(this).Initialize();
   DCHECK(result == mojom::Result::LEDGER_OK);
 }
 

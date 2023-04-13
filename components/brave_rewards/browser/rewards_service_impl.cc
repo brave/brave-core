@@ -480,7 +480,6 @@ void RewardsServiceImpl::OnLedgerCreated() {
   PrepareLedgerEnvForTesting();
 
   ledger_->Initialize(
-      false,
       base::BindOnce(&RewardsServiceImpl::OnLedgerInitialized, AsWeakPtr()));
 }
 
@@ -2730,10 +2729,6 @@ void RewardsServiceImpl::OnRunDBTransaction(
     ledger::mojom::DBCommandResponsePtr response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::move(callback).Run(std::move(response));
-}
-
-void RewardsServiceImpl::GetCreateScript(GetCreateScriptCallback callback) {
-  std::move(callback).Run("", 0);
 }
 
 void RewardsServiceImpl::PendingContributionSaved(

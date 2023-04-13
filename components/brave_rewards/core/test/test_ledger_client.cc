@@ -338,10 +338,6 @@ void TestLedgerClient::RunDBTransaction(mojom::DBTransactionPtr transaction,
   std::move(callback).Run(std::move(response));
 }
 
-void TestLedgerClient::GetCreateScript(GetCreateScriptCallback callback) {
-  std::move(callback).Run("", 0);
-}
-
 void TestLedgerClient::PendingContributionSaved(mojom::Result result) {}
 
 void TestLedgerClient::Log(const std::string& file,

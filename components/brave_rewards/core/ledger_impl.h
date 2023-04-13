@@ -83,8 +83,7 @@ class LedgerImpl : public mojom::Ledger {
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   // mojom::Ledger implementation begin (in the order of appearance in Mojom)
-  void Initialize(bool execute_create_script,
-                  InitializeCallback callback) override;
+  void Initialize(InitializeCallback callback) override;
 
   void SetEnvironment(mojom::Environment environment) override;
 
@@ -476,8 +475,7 @@ class LedgerImpl : public mojom::Ledger {
 
   bool IsReady() const;
 
-  virtual void InitializeDatabase(bool execute_create_script,
-                                  LegacyResultCallback callback);
+  virtual void InitializeDatabase(LegacyResultCallback callback);
 
   void OnDatabaseInitialized(mojom::Result result,
                              LegacyResultCallback callback);

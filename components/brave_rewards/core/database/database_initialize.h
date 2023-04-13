@@ -22,22 +22,11 @@ class DatabaseInitialize {
   explicit DatabaseInitialize(LedgerImpl* ledger);
   ~DatabaseInitialize();
 
-  void Start(bool execute_create_script, ledger::LegacyResultCallback callback);
+  void Start(ledger::LegacyResultCallback callback);
 
  private:
   void OnInitialize(mojom::DBCommandResponsePtr response,
-                    bool execute_create_script,
                     ledger::LegacyResultCallback callback);
-
-  void GetCreateScript(ledger::LegacyResultCallback callback);
-
-  void ExecuteCreateScript(LegacyResultCallback callback,
-                           const std::string& script,
-                           int table_version);
-
-  void OnExecuteCreateScript(mojom::DBCommandResponsePtr response,
-                             int table_version,
-                             ledger::LegacyResultCallback callback);
 
   std::unique_ptr<ledger::database::DatabaseMigration> migration_;
   LedgerImpl* ledger_;  // NOT OWNED
