@@ -43,6 +43,8 @@ class IpfsBasePinService : public IpfsServiceObserver {
 
   void OnIpfsShutdown() override;
 
+  bool HasJobs();
+
  protected:
   // For testing
   IpfsBasePinService();
