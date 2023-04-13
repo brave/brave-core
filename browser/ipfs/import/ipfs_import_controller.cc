@@ -286,10 +286,12 @@ void IpfsImportController::OnWebPageImportCompleted(
 
 void IpfsImportController::OnImportCompleted(const ipfs::ImportedData& data) {
   auto link = CreateAndCopyShareableLink(data);
+#if BUILDFLAG(ENABLE_IPFS_INTERNALS_WEBUI)
   if (!link.is_valid()) {
     // Open node diagnostic page if import failed
     link = GURL(kIPFSWebUIURL);
   }
+#endif
   PushNotification(GetImportNotificationTitle(data.state),
                    GetImportNotificationBody(data.state, link), link);
   if (data.state == ipfs::IPFS_IMPORT_SUCCESS) {
