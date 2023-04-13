@@ -838,8 +838,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_SITE_BANNER_UNVERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
         This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
       </message>
-      <message name="IDS_BRAVE_UI_SITE_BANNER_DIFFERENT_VERIFIED_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
-        NOTE: This creator is currently not configured to receive tips from your Rewards custodial wallet service. Any tip you make will remain pending and retry automatically for 90 days.
+      <message name="IDS_BRAVE_UI_SITE_BANNER_DIFFERENT_VERIFIED_NOTICE_TEXT1" desc="A message on tipping page when a creator is not verified yet">
+        You're connected to <ph name="WALLET_PROVIDER">%1$s</ph>, but this creator is connected to <ph name="SUPPORTED_WALLET_PROVIDER">%2$s</ph>. This means your tip can't reach this creator. For now, any tip you make will remain pending and retry automatically for 90 days.
       </message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_WELCOME" desc="Tipping page title">
         Welcome!
