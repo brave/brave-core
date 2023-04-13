@@ -406,13 +406,11 @@ public class PortfolioFragment
                     mBalance.setText(mFiatSumString);
                     mBalance.invalidate();
 
-                    List<BlockchainToken> tokens = new ArrayList<>();
-                    tokens.addAll(mPortfolioHelper.getUserAssets());
-
                     LiveDataUtil.observeOnce(
                             mWalletModel.getCryptoModel().getNetworkModel().mCryptoNetworks,
                             networkInfos -> {
-                                setUpCoinList(tokens, mPortfolioHelper.getPerTokenCryptoSum(),
+                                setUpCoinList(mPortfolioHelper.getUserAssets(),
+                                        mPortfolioHelper.getPerTokenCryptoSum(),
                                         mPortfolioHelper.getPerTokenFiatSum(), networkInfos);
                             });
                     updatePortfolioGraph();
