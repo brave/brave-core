@@ -533,7 +533,6 @@
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_VOLUME_COLUMN" desc="Market data table volume column name">Volume</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_BUY_DEPOSIT_COLUMN" desc="Market data table buy/deposit column name">Buy/Deposit</message>
   <message name="IDS_BRAVE_WALLET_MARKET_DATA_NO_ASSETS_FOUND" desc="Text displayed when market data table rows are empty">No assets matching search or filter found</message>
-  <message name="IDS_BRAVE_WALLET_MARKET_DATA_COIN_NOT_SUPPORTED" desc="Text displayed market coin item is not supported in brave wallet">This asset is not supported by Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_BUY_WITH_RAMP" desc="Buy with Ramp option label">Buy with Ramp</message>
   <message name="IDS_BRAVE_WALLET_SELL_WITH_PROVIDER" desc="Sell with Provider option label">Sell with <ph name="OFFRAMP_PROVIDER">$1<ex>Ramp</ex></ph></message>
