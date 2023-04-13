@@ -31,7 +31,7 @@ export const NftIconWithNetworkIcon = (props: Props) => {
     coinType !== undefined && chainId !== undefined
       ? { chainId: chainId, coin: coinType }
       : undefined,
-    { skip: coinType !== undefined && chainId !== undefined }
+    { skip: coinType === undefined || chainId === undefined }
   )
 
   return (
