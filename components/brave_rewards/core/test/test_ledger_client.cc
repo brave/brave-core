@@ -124,11 +124,6 @@ void TestLedgerClient::LoadURL(mojom::UrlRequestPtr request,
   std::move(callback).Run(std::move(response));
 }
 
-void TestLedgerClient::URIEncode(const std::string& value,
-                                 URIEncodeCallback callback) {
-  std::move(callback).Run(base::EscapeQueryParamValue(value, false));
-}
-
 void TestLedgerClient::PublisherListNormalized(
     std::vector<mojom::PublisherInfoPtr> list) {}
 

@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/escape.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/ledger_impl.h"
@@ -359,8 +360,9 @@ void YouTube::OnMediaPublisherInfo(
     auto callback = std::bind(&YouTube::OnEmbedResponse, this, duration,
                               media_key, media_url, visit_data, window_id, _1);
 
-    const std::string url = (std::string)YOUTUBE_PROVIDER_URL +
-                            "?format=json&url=" + ledger_->URIEncode(media_url);
+    const std::string url =
+        (std::string)YOUTUBE_PROVIDER_URL +
+        "?format=json&url=" + base::EscapeQueryParamValue(media_url, false);
 
     FetchDataFromUrl(url, callback);
   } else {
