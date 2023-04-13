@@ -23,6 +23,7 @@ export const PortfolioTransactionItemWrapper = styled.div<{ isFocused?: boolean 
   background-color: ${(p) => p.isFocused ? `${p.theme.color.text01}10` : 'none'};
   padding: 10px;
   border-radius: 10px;
+  gap: 16px;
 `
 
 export const DetailRow = styled.div`
@@ -31,6 +32,10 @@ export const DetailRow = styled.div`
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
+`
+
+export const BalanceAndMoreRow = styled(DetailRow)`
+  width: 70%;
 `
 
 export const AddressText = styled.span`
@@ -137,6 +142,17 @@ export const BalanceColumn = styled.div`
   align-items: flex-end;
   justify-content: center;
   flex-direction: column;
+
+  & > * {
+    overflow-wrap: break-word;
+    word-break: break-all;
+  }
+
+  /**
+    Using a fixed width,
+    so that columns remain aligned across tx-item rows
+  */
+  width: 70%;
 `
 
 export const ArrowIcon = styled(ArrowRightIcon)`
@@ -152,6 +168,7 @@ export const OrbAndTxDescriptionContainer = styled.div`
   justify-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
+  width: 50%;
 `
 
 export const StatusRow = styled.div`
@@ -171,6 +188,12 @@ export const CoinsButton = styled(WalletButton)`
   outline: none;
   background: none;
   border: none;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+`
+
+export const CoinsButtonSpacer = styled(WalletButton)`
   width: 24px;
   height: 24px;
   padding: 4px;
@@ -210,6 +233,7 @@ export const StatusBalanceAndMoreContainer = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+  width: 50%;
 `
 
 export const OrbWrapper = styled(OrbContainer)`
