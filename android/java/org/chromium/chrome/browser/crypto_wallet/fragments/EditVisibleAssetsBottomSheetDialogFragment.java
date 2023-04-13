@@ -500,10 +500,9 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
             }
 
             if (tokenName.isEmpty() || tokenSymbol.isEmpty()
-                    || (mSelectedNetwork.coin == CoinType.ETH && mNftsOnly
-                            && tokenIdEdit.getText().toString().isEmpty())
                     || (mSelectedNetwork.coin == CoinType.ETH
-                            && tokenDecimalsEdit.getText().toString().isEmpty())) {
+                            && ((mNftsOnly && tokenIdEdit.getText().toString().isEmpty())
+                                    || tokenDecimalsEdit.getText().toString().isEmpty()))) {
                 return;
             }
 
