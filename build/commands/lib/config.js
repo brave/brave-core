@@ -539,6 +539,16 @@ Config.prototype.buildArgs = function () {
     // https://github.com/brave/brave-browser/issues/10334
     args.dcheck_always_on = this.isComponentBuild()
 
+    if (!args.is_official_build) {
+      // When building locally iOS needs dSYMs in order for Xcode to map source
+      // files correctly since we are using a framework build
+      args.enable_dsyms = true
+      if (args.use_goma) {
+        // Goma expects relative paths in dSYMs
+        args.strip_absolute_paths_from_debug_symbols = true
+      }
+    }
+
     args.ios_enable_content_widget_extension = false
     args.ios_enable_search_widget_extension = false
     args.ios_enable_share_extension = false
