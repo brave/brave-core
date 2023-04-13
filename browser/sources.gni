@@ -456,6 +456,10 @@ if (enable_widevine) {
   ]
 }
 
+if (is_linux) {
+  brave_chrome_browser_deps += [ "//brave/services/device/geolocation" ]
+}
+
 if (is_win) {
   brave_chrome_browser_sources += [
     "//brave/browser/brave_shell_integration_win.cc",

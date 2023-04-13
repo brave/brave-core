@@ -1,0 +1,37 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "geoclue_location_provider_unittest.cc" ]
+
+  deps = [
+    ":geolocation",
+    "//content/test:test_support",
+    "//dbus",
+    "//services/device/public/cpp:device_features",
+    "//testing/gtest",
+  ]
+}
+
+component("geolocation") {
+  output_name = "brave_geolocation"
+  defines = [ "IS_BRAVE_GEOLOCATION_IMPL" ]
+
+  sources = [
+    "geoclue_client_object.cc",
+    "geoclue_client_object.h",
+    "geoclue_location_provider.cc",
+    "geoclue_location_provider.h",
+  ]
+  deps = [
+    "//components/dbus/thread_linux",
+    "//dbus",
+    "//services/device/public/cpp:device_features",
+    "//services/device/public/cpp/geolocation",
+    "//services/device/public/mojom:mojom",
+  ]
+}

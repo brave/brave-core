@@ -15,6 +15,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "services/device/public/cpp/geolocation/location_provider.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
 
@@ -175,6 +176,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                                   const GURL& url) override;
 
   bool AllowSignedExchange(content::BrowserContext* context) override;
+
+  std::unique_ptr<device::LocationProvider> OverrideSystemLocationProvider()
+      override;
 
  private:
   void OnAllowGoogleAuthChanged();
