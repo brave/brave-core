@@ -59,8 +59,10 @@ UserActivityManager::~UserActivityManager() {
 
 // static
 UserActivityManager* UserActivityManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetUserActivityManager());
-  return GlobalState::GetInstance()->GetUserActivityManager();
+  auto* user_activity_manager =
+      GlobalState::GetInstance()->GetUserActivityManager();
+  DCHECK(user_activity_manager);
+  return user_activity_manager;
 }
 
 void UserActivityManager::RecordEvent(const UserActivityEventType event_type) {

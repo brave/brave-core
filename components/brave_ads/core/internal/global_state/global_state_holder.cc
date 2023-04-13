@@ -12,7 +12,7 @@ namespace brave_ads {
 
 namespace {
 GlobalState* g_global_state_instance = nullptr;
-}
+}  // namespace
 
 GlobalStateHolder::GlobalStateHolder(GlobalState* global_state) {
   DCHECK(!g_global_state_instance);

@@ -100,8 +100,10 @@ ClientStateManager::~ClientStateManager() {}
 
 // static
 ClientStateManager* ClientStateManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetClientStateManager());
-  return GlobalState::GetInstance()->GetClientStateManager();
+  auto* client_state_manager =
+      GlobalState::GetInstance()->GetClientStateManager();
+  DCHECK(client_state_manager);
+  return client_state_manager;
 }
 
 const FilteredAdvertiserList& ClientStateManager::GetFilteredAdvertisers()

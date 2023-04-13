@@ -8,7 +8,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
-#include "brave/components/brave_ads/core/build_channel.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/locale/country_code_util.h"
 #include "brave/components/l10n/common/locale_util.h"
 
@@ -24,7 +24,8 @@ constexpr char kOtherCountryCode[] = "??";
 base::Value::Dict GetLocale() {
   base::Value::Dict user_data;
 
-  if (!BuildChannel().is_release) {
+  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
+  if (!build_channel.is_release) {
     return user_data;
   }
 

@@ -83,6 +83,9 @@ class AdsImpl final : public Ads,
   ~AdsImpl() override;
 
   // Ads:
+  void SetSysInfo(mojom::SysInfoPtr sys_info) override;
+  void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) override;
+
   void Initialize(InitializeCallback callback) override;
   void Shutdown(ShutdownCallback callback) override;
 

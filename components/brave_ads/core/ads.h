@@ -43,6 +43,10 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
+  virtual void SetSysInfo(mojom::SysInfoPtr sys_info) = 0;
+
+  virtual void SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) = 0;
+
   // Called to initialize ads. The callback takes one argument - |bool| is set
   // to |true| if successful otherwise |false|.
   virtual void Initialize(InitializeCallback callback) = 0;

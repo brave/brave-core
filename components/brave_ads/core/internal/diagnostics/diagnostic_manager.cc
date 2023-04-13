@@ -32,8 +32,9 @@ DiagnosticManager::~DiagnosticManager() {}
 
 // static
 DiagnosticManager* DiagnosticManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetDiagnosticManager());
-  return GlobalState::GetInstance()->GetDiagnosticManager();
+  auto* diagnostic_manager = GlobalState::GetInstance()->GetDiagnosticManager();
+  DCHECK(diagnostic_manager);
+  return diagnostic_manager;
 }
 
 void DiagnosticManager::SetEntry(

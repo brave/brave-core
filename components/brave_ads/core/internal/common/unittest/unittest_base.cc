@@ -190,14 +190,18 @@ void UnitTestBase::Initialize() {
 
   global_state_ = std::make_unique<GlobalState>(ads_client_mock_.get());
 
-  GlobalState::GetInstance()->GetClientStateManager()->Initialize(
+  MockBuildChannel(BuildChannelType::kRelease);
+
+  auto* global_state = GlobalState::GetInstance();
+
+  global_state->GetClientStateManager()->Initialize(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  GlobalState::GetInstance()->GetConfirmationStateManager()->Initialize(
+  global_state->GetConfirmationStateManager()->Initialize(
       GetWalletForTesting(),  // IN-TEST
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
-  GlobalState::GetInstance()->GetDatabaseManager()->CreateOrOpen(
+  global_state->GetDatabaseManager()->CreateOrOpen(
       base::BindOnce([](const bool success) { ASSERT_TRUE(success); }));
 
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
@@ -416,6 +420,8 @@ void UnitTestBase::SetUpIntegrationTest() {
          "initialized for integration testing";
 
   ads_ = std::make_unique<AdsImpl>(ads_client_mock_.get());
+
+  MockBuildChannel(BuildChannelType::kRelease);
 
   ads_->OnRewardsWalletDidChange(kWalletPaymentId, kWalletRecoverySeed);
 

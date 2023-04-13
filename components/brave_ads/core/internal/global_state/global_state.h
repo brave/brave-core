@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 
 namespace brave_ads {
 
@@ -67,6 +68,10 @@ class GlobalState final {
 
   UserActivityManager* GetUserActivityManager();
 
+  mojom::BuildChannelInfo& BuildChannel();
+
+  mojom::SysInfo& SysInfo();
+
  private:
   raw_ptr<AdsClient> ads_client_ = nullptr;
 
@@ -84,6 +89,9 @@ class GlobalState final {
   std::unique_ptr<PredictorsManager> predictors_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivityManager> user_activity_manager_;
+
+  mojom::BuildChannelInfo build_channel_;
+  mojom::SysInfo sys_info_;
 };
 
 }  // namespace brave_ads

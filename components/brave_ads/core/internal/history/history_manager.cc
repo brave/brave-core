@@ -32,8 +32,9 @@ HistoryManager::~HistoryManager() = default;
 
 // static
 HistoryManager* HistoryManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetHistoryManager());
-  return GlobalState::GetInstance()->GetHistoryManager();
+  auto* history_manager = GlobalState::GetInstance()->GetHistoryManager();
+  DCHECK(history_manager);
+  return history_manager;
 }
 
 void HistoryManager::AddObserver(HistoryManagerObserver* observer) {

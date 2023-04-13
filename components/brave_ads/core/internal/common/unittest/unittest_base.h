@@ -23,7 +23,6 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager.h"
 #include "brave/components/brave_ads/core/internal/fl/predictors/predictors_manager.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_manager.h"
-#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_attention/idle_detection/idle_detection.h"
@@ -170,19 +169,6 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   std::unique_ptr<Database> database_;
 
   std::unique_ptr<GlobalState> global_state_;
-
-  std::unique_ptr<BrowserManager> browser_manager_;
-  std::unique_ptr<ClientStateManager> client_state_manager_;
-  std::unique_ptr<ConfirmationStateManager> confirmation_state_manager_;
-  std::unique_ptr<DatabaseManager> database_manager_;
-  std::unique_ptr<DiagnosticManager> diagnostic_manager_;
-  std::unique_ptr<FlagManager> flag_manager_;
-  std::unique_ptr<HistoryManager> history_manager_;
-  std::unique_ptr<IdleDetection> idle_detection_;
-  std::unique_ptr<NotificationAdManager> notification_ad_manager_;
-  std::unique_ptr<PredictorsManager> predictors_manager_;
-  std::unique_ptr<TabManager> tab_manager_;
-  std::unique_ptr<UserActivityManager> user_activity_manager_;
 };
 
 }  // namespace brave_ads

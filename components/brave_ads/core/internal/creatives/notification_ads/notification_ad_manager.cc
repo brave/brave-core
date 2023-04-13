@@ -37,8 +37,10 @@ NotificationAdManager::~NotificationAdManager() {}
 
 // static
 NotificationAdManager* NotificationAdManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetNotificationAdManager());
-  return GlobalState::GetInstance()->GetNotificationAdManager();
+  auto* notification_ad_manager =
+      GlobalState::GetInstance()->GetNotificationAdManager();
+  DCHECK(notification_ad_manager);
+  return notification_ad_manager;
 }
 
 absl::optional<NotificationAdInfo>

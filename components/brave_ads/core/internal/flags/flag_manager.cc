@@ -42,12 +42,13 @@ FlagManager::FlagManager() {
   Initialize();
 }
 
-FlagManager::~FlagManager() {}
+FlagManager::~FlagManager() = default;
 
 // static
 FlagManager* FlagManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetFlagManager());
-  return GlobalState::GetInstance()->GetFlagManager();
+  auto* flag_manager = GlobalState::GetInstance()->GetFlagManager();
+  DCHECK(flag_manager);
+  return flag_manager;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

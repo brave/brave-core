@@ -5,6 +5,7 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
+#include "brave/components/brave_ads/common/interfaces/ads.mojom.h"
 #include "brave/components/brave_ads/core/ad_content_value_util.h"
 
 #import "ads_client_bridge.h"
@@ -32,14 +33,12 @@
 #include "brave/components/brave_ads/core/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/ads_util.h"
-#include "brave/components/brave_ads/core/build_channel.h"
 #include "brave/components/brave_ads/core/database.h"
 #include "brave/components/brave_ads/core/history_filter_types.h"
 #include "brave/components/brave_ads/core/history_item_info.h"
 #include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/notification_ad_info.h"
-#include "brave/components/brave_ads/core/sys_info.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #import "brave_ads.h"
@@ -142,6 +141,8 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
 @property(nonatomic) NSTimer* updateAdsResourceTimer;
 @property(nonatomic) int64_t adsResourceRetryCount;
 @property(nonatomic, readonly) NSDictionary* componentPaths;
+@property(nonatomic) brave_ads::mojom::SysInfo adsSysInfo;
+@property(nonatomic) brave_ads::mojom::BuildChannelInfo adsBuildChannelInfo;
 @end
 
 @implementation BraveAds
@@ -226,28 +227,37 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   return brave_ads::IsSupportedRegion();
 }
 
-+ (BraveAdsSysInfo*)sysInfo {
+#pragma mark - SysInfo / BuildChannelInfo
+
+- (BraveAdsSysInfo*)sysInfo {
   auto sys_info = [[BraveAdsSysInfo alloc] init];
-  sys_info.deviceId = base::SysUTF8ToNSString(brave_ads::SysInfo().device_id);
+  sys_info.deviceId = base::SysUTF8ToNSString(self.adsSysInfo.device_id);
   return sys_info;
 }
 
-+ (void)setSysInfo:(BraveAdsSysInfo*)sysInfo {
-  brave_ads::SysInfo().device_id = base::SysNSStringToUTF8(sysInfo.deviceId);
+- (void)setSysInfo:(BraveAdsSysInfo*)sysInfo {
+  self.adsSysInfo.device_id = base::SysNSStringToUTF8(sysInfo.deviceId);
+  if ([self isAdsServiceRunning]) {
+    ads->SetSysInfo(brave_ads::mojom::SysInfo::New(self.adsSysInfo));
+  }
 }
 
-+ (BraveAdsBuildChannelInfo*)buildChannelInfo {
+- (BraveAdsBuildChannelInfo*)buildChannelInfo {
   auto build_channel = [[BraveAdsBuildChannelInfo alloc] init];
-  build_channel.isRelease = brave_ads::BuildChannel().is_release;
-  build_channel.name = base::SysUTF8ToNSString(brave_ads::BuildChannel().name);
+  build_channel.isRelease = self.adsBuildChannelInfo.is_release;
+  build_channel.name = base::SysUTF8ToNSString(self.adsBuildChannelInfo.name);
 
   return build_channel;
 }
 
-+ (void)setBuildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo {
-  brave_ads::BuildChannel().is_release = buildChannelInfo.isRelease;
-  brave_ads::BuildChannel().name =
+- (void)setBuildChannelInfo:(BraveAdsBuildChannelInfo*)buildChannelInfo {
+  self.adsBuildChannelInfo.is_release = (buildChannelInfo.isRelease == YES);
+  self.adsBuildChannelInfo.name =
       base::SysNSStringToUTF8(buildChannelInfo.name);
+  if ([self isAdsServiceRunning]) {
+    ads->SetBuildChannel(
+        brave_ads::mojom::BuildChannelInfo::New(self.adsBuildChannelInfo));
+  }
 }
 
 #pragma mark - Initialization / Shutdown
@@ -266,6 +276,9 @@ brave_ads::mojom::DBCommandResponseInfoPtr RunDBTransactionOnTaskRunner(
   adsClient = new AdsClientIOS(self);
   adsClientNotifier = new brave_ads::AdsClientNotifier();
   ads = brave_ads::Ads::CreateInstance(adsClient);
+  ads->SetSysInfo(brave_ads::mojom::SysInfo::New(self.adsSysInfo));
+  ads->SetBuildChannel(
+      brave_ads::mojom::BuildChannelInfo::New(self.adsBuildChannelInfo));
   ads->Initialize(base::BindOnce(^(const bool success) {
     [self periodicallyCheckForAdsResourceUpdates];
     [self registerAdsResources];

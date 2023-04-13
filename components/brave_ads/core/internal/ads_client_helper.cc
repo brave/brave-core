@@ -17,8 +17,9 @@ AdsClientHelper::~AdsClientHelper() = default;
 
 // static
 AdsClient* AdsClientHelper::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetAdsClient());
-  return GlobalState::GetInstance()->GetAdsClient();
+  AdsClient* ads_client = GlobalState::GetInstance()->GetAdsClient();
+  DCHECK(ads_client);
+  return ads_client;
 }
 
 // static

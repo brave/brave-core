@@ -148,8 +148,10 @@ ConfirmationStateManager::~ConfirmationStateManager() {}
 
 // static
 ConfirmationStateManager* ConfirmationStateManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetConfirmationStateManager());
-  return GlobalState::GetInstance()->GetConfirmationStateManager();
+  auto* confirmation_state_manager =
+      GlobalState::GetInstance()->GetConfirmationStateManager();
+  DCHECK(confirmation_state_manager);
+  return confirmation_state_manager;
 }
 
 void ConfirmationStateManager::Initialize(const WalletInfo& wallet,

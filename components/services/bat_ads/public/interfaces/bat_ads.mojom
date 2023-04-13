@@ -17,10 +17,6 @@ interface BatAdsService {
          pending_associated_receiver<BatAds> bat_ads,
          pending_receiver<BatAdsClientNotifier>
              bat_ads_client_notifier) => ();
-
-  SetSysInfo(brave_ads.mojom.SysInfo sys_info) => ();
-
-  SetBuildChannel(brave_ads.mojom.BuildChannelInfo build_channel) => ();
 };
 
 interface BatAdsClientNotifier {
@@ -149,6 +145,10 @@ interface BatAdsClient {
 
 interface BatAds {
   // See Ads for documentation.
+
+  SetSysInfo(brave_ads.mojom.SysInfo sys_info);
+
+  SetBuildChannel(brave_ads.mojom.BuildChannelInfo build_channel);
 
   Initialize() => (bool success);
   Shutdown() => (bool success);

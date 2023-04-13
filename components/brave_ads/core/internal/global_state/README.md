@@ -1,5 +1,5 @@
 # Global state
 
-Stores global state for brave ads.
+Stores global state for Brave Ads.
 
 Please add to it!

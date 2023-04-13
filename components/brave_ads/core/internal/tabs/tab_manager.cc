@@ -24,8 +24,9 @@ TabManager::~TabManager() {
 
 // static
 TabManager* TabManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetTabManager());
-  return GlobalState::GetInstance()->GetTabManager();
+  auto* tab_manager = GlobalState::GetInstance()->GetTabManager();
+  DCHECK(tab_manager);
+  return tab_manager;
 }
 
 void TabManager::AddObserver(TabManagerObserver* observer) {

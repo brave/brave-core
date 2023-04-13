@@ -453,16 +453,11 @@ void AdsServiceImpl::StartBatAdsService() {
 
   DCHECK(bat_ads_service_.is_bound());
 
-  SetSysInfo();
-
-  SetBuildChannel();
-
   bat_ads_service_->Create(
       bat_ads_client_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
       bat_ads_client_notifier_.BindNewPipeAndPassReceiver(),
-      base::BindOnce(&AdsServiceImpl::InitializeBasePathDirectory,
-                     AsWeakPtr()));
+      base::BindOnce(&AdsServiceImpl::OnBatAdsServiceCreated, AsWeakPtr()));
 }
 
 void AdsServiceImpl::RestartBatAdsServiceAfterDelay() {
@@ -483,7 +478,11 @@ void AdsServiceImpl::CancelRestartBatAdsService() {
   }
 }
 
-void AdsServiceImpl::InitializeBasePathDirectory() {
+void AdsServiceImpl::OnBatAdsServiceCreated() {
+  SetSysInfo();
+
+  SetBuildChannel();
+
   file_task_runner_->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
@@ -582,18 +581,21 @@ void AdsServiceImpl::ShutdownAndResetState() {
 }
 
 void AdsServiceImpl::SetSysInfo() {
-  DCHECK(bat_ads_service_.is_bound());
-  bat_ads_service_->SetSysInfo(sys_info_.Clone(), base::NullCallback());
+  if (bat_ads_.is_bound()) {
+    bat_ads_->SetSysInfo(sys_info_.Clone());
+  }
 }
 
 void AdsServiceImpl::SetBuildChannel() {
+  if (!bat_ads_.is_bound()) {
+    return;
+  }
+
   mojom::BuildChannelInfoPtr build_channel = mojom::BuildChannelInfo::New();
   build_channel->name = brave::GetChannelName();
   build_channel->is_release = build_channel->name == "release";
 
-  DCHECK(bat_ads_service_.is_bound());
-  bat_ads_service_->SetBuildChannel(std::move(build_channel),
-                                    base::NullCallback());
+  bat_ads_->SetBuildChannel(std::move(build_channel));
 }
 
 void AdsServiceImpl::CleanUpOnFirstRun() {

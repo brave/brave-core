@@ -12,8 +12,8 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/notreached.h"
-#include "brave/components/brave_ads/core/build_channel.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
@@ -24,22 +24,24 @@ using ::testing::Invoke;
 using ::testing::Return;
 
 void MockBuildChannel(const BuildChannelType type) {
+  CHECK(GlobalState::HasInstance());
+  auto& build_channel = GlobalState::GetInstance()->BuildChannel();
   switch (type) {
     case BuildChannelType::kNightly: {
-      BuildChannel().is_release = false;
-      BuildChannel().name = "nightly";
+      build_channel.is_release = false;
+      build_channel.name = "nightly";
       return;
     }
 
     case BuildChannelType::kBeta: {
-      BuildChannel().is_release = false;
-      BuildChannel().name = "beta";
+      build_channel.is_release = false;
+      build_channel.name = "beta";
       return;
     }
 
     case BuildChannelType::kRelease: {
-      BuildChannel().is_release = true;
-      BuildChannel().name = "release";
+      build_channel.is_release = true;
+      build_channel.name = "release";
       return;
     }
   }

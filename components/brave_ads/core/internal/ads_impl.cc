@@ -129,6 +129,17 @@ AdsImpl::~AdsImpl() {
   transfer_->RemoveObserver(this);
 }
 
+void AdsImpl::SetSysInfo(mojom::SysInfoPtr sys_info) {
+  auto& sys_info_state = GlobalState::GetInstance()->SysInfo();
+  sys_info_state.device_id = sys_info->device_id;
+}
+
+void AdsImpl::SetBuildChannel(mojom::BuildChannelInfoPtr build_channel) {
+  auto& build_channel_state = GlobalState::GetInstance()->BuildChannel();
+  build_channel_state.is_release = build_channel->is_release;
+  build_channel_state.name = build_channel->name;
+}
+
 void AdsImpl::Initialize(InitializeCallback callback) {
   BLOG(1, "Initializing ads");
 

@@ -54,10 +54,13 @@ OBJC_EXPORT
 /// Whether or not the users current region is supported
 + (BOOL)isSupportedRegion;
 
+#pragma mark - SysInfo / BuildChannelInfo
+
 /// System info
-@property(nonatomic, class) BraveAdsSysInfo* sysInfo;
+@property(nonatomic) BraveAdsSysInfo* sysInfo;
+
 /// The build channel info that ads is configured for
-@property(nonatomic, class) BraveAdsBuildChannelInfo* buildChannelInfo;
+@property(nonatomic) BraveAdsBuildChannelInfo* buildChannelInfo;
 
 #pragma mark - Initialization / Shutdown
 

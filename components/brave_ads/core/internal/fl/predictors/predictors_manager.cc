@@ -125,12 +125,13 @@ PredictorsManager::PredictorsManager() {
   }
 }
 
-PredictorsManager::~PredictorsManager() {}
+PredictorsManager::~PredictorsManager() = default;
 
 // static
 PredictorsManager* PredictorsManager::GetInstance() {
-  DCHECK(GlobalState::GetInstance()->GetPredictorsManager());
-  return GlobalState::GetInstance()->GetPredictorsManager();
+  auto* predictors_manager = GlobalState::GetInstance()->GetPredictorsManager();
+  DCHECK(predictors_manager);
+  return predictors_manager;
 }
 
 void PredictorsManager::SetPredictorVariable(

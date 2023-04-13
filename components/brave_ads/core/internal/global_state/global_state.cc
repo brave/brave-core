@@ -42,7 +42,7 @@ GlobalState::GlobalState(AdsClient* ads_client)
   user_activity_manager_ = std::make_unique<UserActivityManager>();
 }
 
-GlobalState::~GlobalState() {}
+GlobalState::~GlobalState() = default;
 
 // static
 GlobalState* GlobalState::GetInstance() {
@@ -102,6 +102,14 @@ TabManager* GlobalState::GetTabManager() {
 
 UserActivityManager* GlobalState::GetUserActivityManager() {
   return user_activity_manager_.get();
+}
+
+mojom::BuildChannelInfo& GlobalState::BuildChannel() {
+  return build_channel_;
+}
+
+mojom::SysInfo& GlobalState::SysInfo() {
+  return sys_info_;
 }
 
 }  // namespace brave_ads
