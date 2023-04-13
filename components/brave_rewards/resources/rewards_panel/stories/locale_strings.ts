@@ -12,7 +12,7 @@ export const localeStrings = {
 
   aboutRewardsText: 'Using Brave Rewards helps support content creators, and lets you earn BAT.',
   connectAccount: 'Connect account',
-  connectAccountText: '$1Ready to start earning BAT?$2 Just connect your custodial account to your Rewards profile. If you don’t have an account, you’ll get the chance to create one.',
+  connectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
   connectAccountNoProviders: 'To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available. For now, turning on Brave Rewards will automatically support creators.',
   learnMore: 'Learn more',
   publisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
@@ -20,7 +20,7 @@ export const localeStrings = {
   headerTextAdsEnabled: 'You are helping support content creators',
   headerTextAdsDisabled: 'Turn on to help support content creators',
   rewardsSettings: 'Rewards settings',
-  learnMoreAboutBAT: 'Learn more about BAT',
+  learnMoreAboutBAT: 'Learn more about earning BAT',
   summary: 'Summary',
   tip: 'Tip',
   unverifiedCreator: 'Unverified Creator',

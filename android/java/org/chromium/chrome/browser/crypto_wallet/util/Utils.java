@@ -259,12 +259,23 @@ public class Utils {
             BuySendSwapActivity.ActivityType activityType, String swapFromAssetSymbol,
             String chainId) {
         assert activity != null;
-        Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
-        buySendSwapActivityIntent.putExtra(
-                BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
-        buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_SYMBOL, swapFromAssetSymbol);
-        buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
-        activity.startActivity(buySendSwapActivityIntent);
+        if (activityType == BuySendSwapActivity.ActivityType.SWAP) {
+            try {
+                BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
+                        BraveActivity.BRAVE_SWAP_URL);
+                TabUtils.bringChromeTabbedActivityToTheTop(activity);
+            } catch (BraveActivity.BraveActivityNotFoundException e) {
+                Log.e(TAG, "on Swap tab: " + e);
+            }
+        } else {
+            Intent buySendSwapActivityIntent = new Intent(activity, BuySendSwapActivity.class);
+            buySendSwapActivityIntent.putExtra(
+                    BuySendSwapActivity.ACTIVITY_TYPE, activityType.getValue());
+            buySendSwapActivityIntent.putExtra(
+                    BuySendSwapActivity.ASSET_SYMBOL, swapFromAssetSymbol);
+            buySendSwapActivityIntent.putExtra(BuySendSwapActivity.ASSET_CHAIN_ID, chainId);
+            activity.startActivity(buySendSwapActivityIntent);
+        }
     }
 
     public static void openAssetDetailsActivity(
@@ -1105,8 +1116,7 @@ public class Utils {
                     blockExplorerUrl += toAppend;
                 }
             }
-            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-            TabUtils.bringChromeTabbedActivityToTheTop(activity);
+            TabUtils.openUrlInCustomTab(activity, blockExplorerUrl);
         });
     }
 

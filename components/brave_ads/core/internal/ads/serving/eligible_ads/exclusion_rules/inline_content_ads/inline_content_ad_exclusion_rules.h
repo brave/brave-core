@@ -20,7 +20,7 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class PerHourExclusionRule;
+class CreativeInstanceExclusionRule;
 
 namespace inline_content_ads {
 
@@ -40,7 +40,8 @@ class ExclusionRules final : public ExclusionRulesBase {
   ~ExclusionRules() override;
 
  private:
-  std::unique_ptr<PerHourExclusionRule> per_hour_exclusion_rule_;
+  std::unique_ptr<CreativeInstanceExclusionRule>
+      creative_instance_exclusion_rule_;
 };
 
 }  // namespace inline_content_ads

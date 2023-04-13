@@ -14,7 +14,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 // Note: If this test fails because an accelerated command isn't present just
-// add the missing command to |commands::GetCommandInfo| in command_utils.h.
+// add the missing command to |commands::GetCommands| in command_utils.h.
 TEST(CommandUtilsUnitTest, AllAcceleratedCommandsShouldBeAvailable) {
   base::flat_set<int> excluded_commands = {
       IDC_RUN_SCREEN_AI_VISUAL_ANNOTATIONS};

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/per_hour_exclusion_rule.h"
+#include "brave/components/brave_ads/core/internal/ads/serving/eligible_ads/exclusion_rules/creative_instance_exclusion_rule.h"
 
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
@@ -17,9 +17,9 @@ namespace {
 constexpr char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 }  // namespace
 
-class BatAdsPerHourExclusionRuleTest : public UnitTestBase {};
+class BatAdsCreativeInstanceExclusionRuleTest : public UnitTestBase {};
 
-TEST_F(BatAdsPerHourExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
+TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -27,14 +27,14 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AllowAdIfThereIsNoAdsHistory) {
   const AdEventList ad_events;
 
   // Act
-  PerHourExclusionRule exclusion_rule(ad_events);
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
   const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1Hour) {
+TEST_F(BatAdsCreativeInstanceExclusionRuleTest, AdAllowedAfter1Hour) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -49,14 +49,15 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1Hour) {
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  PerHourExclusionRule exclusion_rule(ad_events);
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
   const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1HourForMultipleTypes) {
+TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
+       AdAllowedAfter1HourForMultipleTypes) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -83,14 +84,15 @@ TEST_F(BatAdsPerHourExclusionRuleTest, AdAllowedAfter1HourForMultipleTypes) {
   AdvanceClockBy(base::Hours(1));
 
   // Act
-  PerHourExclusionRule exclusion_rule(ad_events);
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
   const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerHourExclusionRuleTest, DoNotAllowTheSameAdWithin1Hour) {
+TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
+       DoNotAllowTheSameAdWithin1Hour) {
   // Arrange
   CreativeAdInfo creative_ad;
   creative_ad.creative_instance_id = kCreativeInstanceId;
@@ -105,7 +107,7 @@ TEST_F(BatAdsPerHourExclusionRuleTest, DoNotAllowTheSameAdWithin1Hour) {
   AdvanceClockBy(base::Hours(1) - base::Seconds(1));
 
   // Act
-  PerHourExclusionRule exclusion_rule(ad_events);
+  CreativeInstanceExclusionRule exclusion_rule(ad_events);
   const bool should_exclude = exclusion_rule.ShouldExclude(creative_ad);
 
   // Assert

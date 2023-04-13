@@ -57,11 +57,11 @@ void TextClassification::Process(const std::string& text) {
     return;
   }
 
-  const ml::pipeline::TextProcessing* const text_proc_pipeline =
+  const ml::pipeline::TextProcessing* const processing_pipeline =
       resource_->Get();
 
   const targeting::TextClassificationProbabilityMap probabilities =
-      text_proc_pipeline->ClassifyPage(text);
+      processing_pipeline->ClassifyPage(text);
 
   if (probabilities.empty()) {
     BLOG(1, "Text not classified as not enough content");

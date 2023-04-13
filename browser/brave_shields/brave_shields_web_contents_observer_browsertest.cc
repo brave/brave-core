@@ -277,4 +277,53 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
   EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveShieldsWebContentsObserverBrowserTest,
+                       JavaScriptAllowedDataUrls) {
+  const GURL& url = GURL("a.com");
+
+  // Start with JavaScript blocking initially disabled.
+  ContentSetting block_javascript_setting =
+      content_settings()->GetContentSetting(url, url,
+                                            ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, block_javascript_setting);
+
+  // Enable JavaScript blocking globally now.
+  content_settings()->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+  block_javascript_setting = content_settings()->GetContentSetting(
+      url, url, ContentSettingsType::JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, block_javascript_setting);
+
+  // Load a simple HTML that attempts to load some JavaScript with data urls.
+  auto page_url =
+      embedded_test_server()->GetURL("a.com", "/load_js_dataurls.html");
+  EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), page_url));
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 4);
+  brave_shields_web_contents_observer()->Reset();
+  // Allow subframe script and check we still block his data urls.
+  std::string subframe_script =
+      url::Origin::Create(page_url).Serialize() + "/load_js_dataurls.js";
+  brave_shields_web_contents_observer()->AllowScriptsOnce(
+      std::vector<std::string>({subframe_script}));
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+  EXPECT_EQ(GetBlockedJsList().size(), 1u);
+  EXPECT_EQ(GetAllowedJsList().size(), 1u);
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 3);
+  brave_shields_web_contents_observer()->Reset();
+
+  // Allow all scripts for domain.
+  brave_shields_web_contents_observer()->AllowScriptsOnce(
+      std::vector<std::string>({url::Origin::Create(page_url).Serialize()}));
+  ClearAllResourcesList();
+  GetWebContents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(GetWebContents()));
+
+  EXPECT_EQ(GetAllowedJsList().size(), 2u);
+  EXPECT_EQ(brave_shields_web_contents_observer()->block_javascript_count(), 0);
+}
+
 }  // namespace brave_shields

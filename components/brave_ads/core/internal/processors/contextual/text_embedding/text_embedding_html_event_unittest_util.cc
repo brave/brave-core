@@ -17,7 +17,7 @@ ml::pipeline::TextEmbeddingInfo BuildTextEmbedding() {
   text_embedding.hashed_text_base64 =
       base::Base64Encode(crypto::Sha256(text_embedding.text));
   text_embedding.locale = kDefaultLocale;
-  text_embedding.embedding = ml::VectorData({0.0853, -0.1789, 0.4221});
+  text_embedding.embedding = {0.0853, -0.1789, 0.4221};
 
   return text_embedding;
 }

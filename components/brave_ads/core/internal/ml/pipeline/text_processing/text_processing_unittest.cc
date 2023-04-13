@@ -53,15 +53,19 @@ TEST_F(BatAdsTextProcessingTest, BuildSimplePipeline) {
   transformations.push_back(std::make_unique<HashedNGramsTransformation>(
       3, std::vector<int>{1, 2, 3}));
 
+  const std::vector<float> data_1 = {1.0, 2.0, 3.0};
+  const std::vector<float> data_2 = {3.0, 2.0, 1.0};
+  const std::vector<float> data_3 = {2.0, 2.0, 2.0};
   const std::map<std::string, VectorData> weights = {
-      {"class_1", VectorData({1.0, 2.0, 3.0})},
-      {"class_2", VectorData({3.0, 2.0, 1.0})},
-      {"class_3", VectorData({2.0, 2.0, 2.0})}};
+      {"class_1", VectorData(data_1)},
+      {"class_2", VectorData(data_2)},
+      {"class_3", VectorData(data_3)}};
 
   const std::map<std::string, double> biases = {
       {"class_1", 0.0}, {"class_2", 0.0}, {"class_3", 0.0}};
 
-  const VectorData data_point_3({1.0, 0.0, 0.0});
+  const std::vector<float> data_4 = {1.0, 0.0, 0.0};
+  const VectorData data_point_3(data_4);
 
   model::Linear linear_model(weights, biases);
   const PredictionMap data_point_3_predictions =

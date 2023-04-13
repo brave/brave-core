@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -74,7 +75,9 @@ void AcceleratorPrefManager::AddAccelerator(
     const ui::Accelerator& accelerator) {
   ScopedDictPrefUpdate update(prefs_, kAcceleratorsPrefs);
   auto* list = update->EnsureList(base::NumberToString(command_id));
-  list->Append(ToCodesString(accelerator));
+  auto accelerator_string = ToCodesString(accelerator);
+  DCHECK(!accelerator_string.empty());
+  list->Append(accelerator_string);
 }
 
 void AcceleratorPrefManager::RemoveAccelerator(

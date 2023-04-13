@@ -9,14 +9,12 @@
 #include <memory>
 #include <string>
 
-#include "content/public/browser/web_ui_controller.h"
-
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
-#include "brave/browser/ui/webui/brave_wallet/page_handler/wallet_page_handler.h"
-
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "content/public/browser/web_ui_controller.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
+class SwapPageHandler;
 class SwapPageUI : public ui::MojoWebUIController,
                    public brave_wallet::mojom::PageHandlerFactory {
  public:
@@ -63,7 +61,7 @@ class SwapPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_wallet::mojom::IpfsService>
           ipfs_service_receiver) override;
 
-  std::unique_ptr<WalletPageHandler> page_handler_;
+  std::unique_ptr<SwapPageHandler> page_handler_;
   std::unique_ptr<WalletHandler> wallet_handler_;
 
   mojo::Receiver<brave_wallet::mojom::PageHandlerFactory>

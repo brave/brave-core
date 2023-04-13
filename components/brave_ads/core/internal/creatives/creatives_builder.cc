@@ -97,6 +97,7 @@ CreativesInfo BuildCreatives(const CatalogInfo& catalog) {
         info.per_month = creative_set.per_month;
         info.total_max = creative_set.total_max;
         info.value = creative_set.value;
+        info.embedding = creative_set.embedding;
         info.split_test_group = creative_set.split_test_group;
         info.dayparts = creative_dayparts;
         info.geo_targets = geo_targets;

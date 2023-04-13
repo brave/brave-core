@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -23,8 +24,7 @@ TextEmbeddingHtmlEventInfo BuildTextEmbeddingHtmlEvent(
   text_embedding_html_event.locale = text_embedding.locale;
   text_embedding_html_event.hashed_text_base64 =
       text_embedding.hashed_text_base64;
-  text_embedding_html_event.embedding =
-      text_embedding.embedding.GetVectorAsString();
+  text_embedding_html_event.embedding = text_embedding.embedding;
 
   return text_embedding_html_event;
 }
@@ -56,17 +56,19 @@ void GetTextEmbeddingHtmlEventsFromDatabase(
     database::table::GetTextEmbeddingHtmlEventsCallback callback) {
   const database::table::TextEmbeddingHtmlEvents database_table;
   database_table.GetAll(base::BindOnce(
-      [](database::table::GetTextEmbeddingHtmlEventsCallback callback,
-         const bool success,
-         const TextEmbeddingHtmlEventList& text_embedding_html_events) {
-        if (!success) {
-          BLOG(1, "Failed to get text embedding HTML events");
-          return std::move(callback).Run(success,
-                                         /* text_embedding_html_events */ {});
-        }
-        std::move(callback).Run(success, text_embedding_html_events);
-      },
-      std::move(callback)));
+      &OnGetTextEmbeddingHtmlEventsFromDatabase, std::move(callback)));
+}
+
+void OnGetTextEmbeddingHtmlEventsFromDatabase(
+    database::table::GetTextEmbeddingHtmlEventsCallback callback,
+    const bool success,
+    const TextEmbeddingHtmlEventList& text_embedding_html_events) {
+  if (!success) {
+    BLOG(1, "Failed to get text embedding HTML events");
+    return std::move(callback).Run(success,
+                                   /* text_embedding_html_events */ {});
+  }
+  std::move(callback).Run(success, text_embedding_html_events);
 }
 
 }  // namespace brave_ads

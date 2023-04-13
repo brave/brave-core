@@ -5,13 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/ml/data/vector_data.h"
 
+#include <cstddef>
 #include <limits>
 #include <numeric>
 #include <utility>
+#include <vector>
 
 #include "base/check_op.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/string_util.h"
+#include "base/ranges/algorithm.h"
 
 namespace brave_ads::ml {
 
@@ -87,7 +88,7 @@ VectorData::VectorData(int dimension_count,
   size_t i = 0;
   for (auto iter = data.cbegin(); iter != data.cend(); iter++, i++) {
     points[i] = iter->first;
-    values[i] = iter->second;
+    values[i] = static_cast<float>(iter->second);
   }
   storage_ = std::make_unique<VectorDataStorage>(
       dimension_count, std::move(points), std::move(values));
@@ -105,24 +106,24 @@ VectorData& VectorData::operator=(VectorData&& vector_data) noexcept {
   return *this;
 }
 
-double operator*(const VectorData& lhs, const VectorData& rhs) {
-  if (!lhs.storage_->DimensionCount() || !rhs.storage_->DimensionCount()) {
-    return std::numeric_limits<double>::quiet_NaN();
+float operator*(const VectorData& lhs, const VectorData& rhs) {
+  if (lhs.IsEmpty() || rhs.IsEmpty()) {
+    return std::numeric_limits<float>::quiet_NaN();
   }
 
-  if (lhs.storage_->DimensionCount() != rhs.storage_->DimensionCount()) {
-    return std::numeric_limits<double>::quiet_NaN();
+  if (lhs.GetDimensionCount() != rhs.GetDimensionCount()) {
+    return std::numeric_limits<float>::quiet_NaN();
   }
 
-  double dot_product = 0.0;
+  float dot_product = 0.0;
   size_t lhs_index = 0;
   size_t rhs_index = 0;
   while (lhs_index < lhs.storage_->GetSize() &&
          rhs_index < rhs.storage_->GetSize()) {
     if (lhs.storage_->GetPointAt(lhs_index) ==
         rhs.storage_->GetPointAt(rhs_index)) {
-      dot_product += double{lhs.storage_->values()[lhs_index]} *
-                     rhs.storage_->values()[rhs_index];
+      dot_product +=
+          lhs.storage_->values()[lhs_index] * rhs.storage_->values()[rhs_index];
       ++lhs_index;
       ++rhs_index;
     } else {
@@ -138,58 +139,69 @@ double operator*(const VectorData& lhs, const VectorData& rhs) {
   return dot_product;
 }
 
-void VectorData::AddElementWise(const VectorData& v_add) {
-  if (!storage_->DimensionCount() || !v_add.storage_->DimensionCount()) {
+void VectorData::AddElementWise(const VectorData& other) {
+  if (IsEmpty() || other.IsEmpty()) {
     return;
   }
 
-  if (storage_->DimensionCount() != v_add.storage_->DimensionCount()) {
+  if (GetDimensionCount() != other.GetDimensionCount()) {
     return;
   }
 
-  size_t v_base_index = 0;
-  size_t v_add_index = 0;
-  while (v_base_index < storage_->GetSize() &&
-         v_add_index < v_add.storage_->GetSize()) {
-    if (storage_->GetPointAt(v_base_index) ==
-        v_add.storage_->GetPointAt(v_add_index)) {
-      storage_->values()[v_base_index] += v_add.storage_->values()[v_add_index];
-      ++v_base_index;
-      ++v_add_index;
+  size_t index = 0;
+  size_t other_index = 0;
+  while (index < storage_->GetSize() &&
+         other_index < other.storage_->GetSize()) {
+    if (storage_->GetPointAt(index) ==
+        other.storage_->GetPointAt(other_index)) {
+      storage_->values()[index] += other.storage_->values()[other_index];
+      ++index;
+      ++other_index;
     } else {
-      if (storage_->GetPointAt(v_base_index) <
-          v_add.storage_->GetPointAt(v_add_index)) {
-        ++v_base_index;
+      if (storage_->GetPointAt(index) <
+          other.storage_->GetPointAt(other_index)) {
+        ++index;
       } else {
-        ++v_add_index;
+        ++other_index;
       }
     }
   }
 }
 
 void VectorData::DivideByScalar(const float scalar) {
-  if (!storage_->DimensionCount()) {
+  if (IsEmpty()) {
     return;
   }
 
-  size_t v_index = 0;
-  while (v_index < storage_->GetSize()) {
-    storage_->values()[v_index] /= scalar;
-    ++v_index;
+  for (float& value : storage_->values()) {
+    value /= scalar;
   }
 }
 
-void VectorData::Normalize() {
-  const auto vector_length = sqrt(
+float VectorData::GetNorm() const {
+  return static_cast<float>(sqrt(
       std::accumulate(storage_->values().cbegin(), storage_->values().cend(),
-                      0.0, [](const double& lhs, float v) -> double {
-                        return lhs + double{v} * v;
-                      }));
-  if (vector_length > kMinimumVectorLength) {
-    for (float& entry : storage_->values()) {
-      entry /= vector_length;
+                      0.0, [](const float& lhs, const float rhs) -> float {
+                        return lhs + rhs * rhs;
+                      })));
+}
+
+void VectorData::Normalize() {
+  const float vector_norm = GetNorm();
+  if (vector_norm > kMinimumVectorLength) {
+    for (float& value : storage_->values()) {
+      value /= vector_norm;
     }
   }
+}
+
+float VectorData::ComputeSimilarity(const VectorData& other) const {
+  DCHECK(GetDimensionCount() == other.GetDimensionCount());
+  return (*this * other) / (GetNorm() * other.GetNorm());
+}
+
+bool VectorData::IsEmpty() const {
+  return GetDimensionCount() == 0;
 }
 
 int VectorData::GetDimensionCount() const {
@@ -197,43 +209,16 @@ int VectorData::GetDimensionCount() const {
 }
 
 int VectorData::GetNonZeroElementCount() const {
-  if (storage_->DimensionCount() == 0) {
+  if (IsEmpty()) {
     return 0;
   }
 
-  int non_zero_count = 0;
-  size_t v_index = 0;
-  while (v_index < storage_->GetSize()) {
-    if (storage_->values()[v_index] != 0) {
-      non_zero_count++;
-    }
-    ++v_index;
-  }
-  return non_zero_count;
+  return static_cast<int>(base::ranges::count_if(
+      storage_->values(), [](const float value) { return value != 0; }));
 }
 
-const std::vector<float>& VectorData::GetValuesForTesting() const {
+const std::vector<float>& VectorData::GetData() const {
   return storage_->values();
-}
-
-std::string VectorData::GetVectorAsString() const {
-  if (!storage_->DimensionCount()) {
-    return {};
-  }
-
-  const int storage_size = storage_->GetSize();
-  if (storage_size == 0) {
-    return {};
-  }
-
-  int v_index = 0;
-  std::vector<std::string> vector_as_string;
-  while (v_index < storage_size) {
-    vector_as_string.push_back(
-        base::NumberToString(storage_->values()[v_index]));
-    ++v_index;
-  }
-  return base::JoinString(vector_as_string, " ");
 }
 
 }  // namespace brave_ads::ml

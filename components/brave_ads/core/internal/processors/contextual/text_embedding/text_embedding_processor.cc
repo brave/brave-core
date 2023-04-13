@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_processor.h"
 
 #include "base/check.h"
+#include "base/ranges/algorithm.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_embedding/text_embedding_features.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -55,12 +56,19 @@ void TextEmbedding::Process(const std::string& html) {
     return;
   }
 
-  const ml::pipeline::EmbeddingProcessing* const embedding_proc_pipeline =
+  const ml::pipeline::EmbeddingProcessing* const processing_pipeline =
       resource_->Get();
   const ml::pipeline::TextEmbeddingInfo text_embedding =
-      embedding_proc_pipeline->EmbedText(text);
-  if (text_embedding.embedding.GetNonZeroElementCount() == 0) {
-    BLOG(1, "Failed to embed text");
+      processing_pipeline->EmbedText(text);
+
+  if (text_embedding.embedding.empty()) {
+    BLOG(1, "Embedding is empty");
+    return;
+  }
+
+  if (*base::ranges::min_element(text_embedding.embedding) == 0.0 &&
+      *base::ranges::max_element(text_embedding.embedding) == 0.0) {
+    BLOG(1, "Not enough words to embed text");
     return;
   }
 

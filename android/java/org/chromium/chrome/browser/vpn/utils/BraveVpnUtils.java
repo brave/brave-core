@@ -2,7 +2,7 @@
  * Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
 package org.chromium.chrome.browser.vpn.utils;
@@ -42,7 +42,6 @@ import org.chromium.chrome.browser.vpn.utils.InAppPurchaseWrapper;
 import org.chromium.chrome.browser.vpn.wireguard.WireguardConfigUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -233,11 +232,7 @@ public class BraveVpnUtils {
         } catch (Exception ex) {
             Log.e(TAG, "resetProfileConfiguration : " + ex.getMessage());
         }
-        BraveVpnPrefUtils.setHostname("");
-        BraveVpnPrefUtils.setHostnameDisplay("");
-        BraveVpnPrefUtils.setServerRegion(BraveVpnPrefUtils.PREF_BRAVE_VPN_AUTOMATIC);
         BraveVpnPrefUtils.setResetConfiguration(true);
-        BraveVpnPrefUtils.setExcludedPackages(Collections.emptySet());
         dismissProgressDialog();
     }
 
