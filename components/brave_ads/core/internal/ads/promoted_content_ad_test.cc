@@ -7,6 +7,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/permission_rules/permission_rules_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
@@ -16,13 +17,6 @@
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-
-constexpr char kPlacementId[] = "f0948316-df6f-4e31-814d-d0b5f2a1f28c";
-constexpr char kCreativeInstanceIdId[] = "75d4cbac-b661-4126-9ccb-7bbb6ee56ef3";
-
-}  // namespace
 
 class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
  protected:
@@ -34,7 +28,8 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 
   void SetUpMocks() override {
     const URLResponseMap url_responses = {
-        {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+        {"/v9/catalog",
+         {{net::HTTP_OK, "/catalog_with_promoted_content_ad.json"}}}};
     MockUrlResponses(ads_client_mock_, url_responses);
   }
 };
@@ -42,12 +37,12 @@ class BatAdsPromotedContentAdIntegrationTest : public UnitTestBase {
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
   // Arrange
   GetAds()->TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServed);
 
   // Act
   GetAds()->TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewed);
 
   // Assert
@@ -62,15 +57,15 @@ TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerViewedEvent) {
 TEST_F(BatAdsPromotedContentAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
   GetAds()->TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kServed);
   GetAds()->TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kViewed);
 
   // Act
   GetAds()->TriggerPromotedContentAdEvent(
-      kPlacementId, kCreativeInstanceIdId,
+      kPlacementId, kCreativeInstanceId,
       mojom::PromotedContentAdEventType::kClicked);
 
   // Assert

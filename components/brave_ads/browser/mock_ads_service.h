@@ -21,8 +21,8 @@ class MockAdsService : public AdsService {
   MockAdsService(const MockAdsService&) = delete;
   MockAdsService& operator=(const MockAdsService&) = delete;
 
-  MockAdsService(MockAdsService&& other) noexcept = delete;
-  MockAdsService& operator=(MockAdsService&& other) noexcept = delete;
+  MockAdsService(MockAdsService&&) noexcept = delete;
+  MockAdsService& operator=(MockAdsService&&) noexcept = delete;
 
   ~MockAdsService() override;
 

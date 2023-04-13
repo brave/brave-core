@@ -20,11 +20,9 @@ TEST_F(BatAdsAnonymousUrlHostTest, GetProductionUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetAnonymousUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://anonymous.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://anonymous.ads.brave.com", GetAnonymousUrlHost());
 }
 
 TEST_F(BatAdsAnonymousUrlHostTest, GetStagingUrlHost) {
@@ -33,12 +31,9 @@ TEST_F(BatAdsAnonymousUrlHostTest, GetStagingUrlHost) {
       EnvironmentType::kStaging);
 
   // Act
-  const std::string url_host = GetAnonymousUrlHost();
 
   // Assert
-  const std::string expected_url_host =
-      "https://anonymous.ads.bravesoftware.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://anonymous.ads.bravesoftware.com", GetAnonymousUrlHost());
 }
 
 }  // namespace brave_ads

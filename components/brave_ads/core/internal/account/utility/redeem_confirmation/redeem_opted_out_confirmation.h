@@ -18,14 +18,13 @@ struct ConfirmationInfo;
 // |FailedToRedeemConfirmation|.
 class RedeemOptedOutConfirmation final {
  public:
-  RedeemOptedOutConfirmation(const RedeemOptedOutConfirmation& other) = delete;
-  RedeemOptedOutConfirmation& operator=(
-      const RedeemOptedOutConfirmation& other) = delete;
-
-  RedeemOptedOutConfirmation(RedeemOptedOutConfirmation&& other) noexcept =
+  RedeemOptedOutConfirmation(const RedeemOptedOutConfirmation&) = delete;
+  RedeemOptedOutConfirmation& operator=(const RedeemOptedOutConfirmation&) =
       delete;
-  RedeemOptedOutConfirmation& operator=(
-      RedeemOptedOutConfirmation&& other) noexcept = delete;
+
+  RedeemOptedOutConfirmation(RedeemOptedOutConfirmation&&) noexcept = delete;
+  RedeemOptedOutConfirmation& operator=(RedeemOptedOutConfirmation&&) noexcept =
+      delete;
 
   ~RedeemOptedOutConfirmation();
 

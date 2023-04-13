@@ -18,16 +18,16 @@ namespace brave_ads {
 struct TransactionInfo final {
   TransactionInfo();
 
-  TransactionInfo(const TransactionInfo& other);
-  TransactionInfo& operator=(const TransactionInfo& other);
+  TransactionInfo(const TransactionInfo&);
+  TransactionInfo& operator=(const TransactionInfo&);
 
-  TransactionInfo(TransactionInfo&& other) noexcept;
-  TransactionInfo& operator=(TransactionInfo&& other) noexcept;
+  TransactionInfo(TransactionInfo&&) noexcept;
+  TransactionInfo& operator=(TransactionInfo&&) noexcept;
 
   ~TransactionInfo();
 
-  bool operator==(const TransactionInfo& other) const;
-  bool operator!=(const TransactionInfo& other) const;
+  bool operator==(const TransactionInfo&) const;
+  bool operator!=(const TransactionInfo&) const;
 
   bool IsValid() const;
 

@@ -19,11 +19,11 @@ namespace brave_ads {
 struct OptedInInfo final {
   OptedInInfo();
 
-  OptedInInfo(const OptedInInfo& other);
-  OptedInInfo& operator=(const OptedInInfo& other);
+  OptedInInfo(const OptedInInfo&);
+  OptedInInfo& operator=(const OptedInInfo&);
 
-  OptedInInfo(OptedInInfo&& other) noexcept;
-  OptedInInfo& operator=(OptedInInfo&& other) noexcept;
+  OptedInInfo(OptedInInfo&&) noexcept;
+  OptedInInfo& operator=(OptedInInfo&&) noexcept;
 
   ~OptedInInfo();
 
@@ -34,8 +34,8 @@ struct OptedInInfo final {
   absl::optional<std::string> credential_base64url;
 };
 
-bool operator==(const OptedInInfo& lhs, const OptedInInfo& rhs);
-bool operator!=(const OptedInInfo& lhs, const OptedInInfo& rhs);
+bool operator==(const OptedInInfo&, const OptedInInfo&);
+bool operator!=(const OptedInInfo&, const OptedInInfo&);
 
 }  // namespace brave_ads
 

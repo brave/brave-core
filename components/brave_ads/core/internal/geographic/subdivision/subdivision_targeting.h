@@ -21,12 +21,11 @@ class SubdivisionTargeting final : public AdsClientNotifierObserver {
  public:
   SubdivisionTargeting();
 
-  SubdivisionTargeting(const SubdivisionTargeting& other) = delete;
-  SubdivisionTargeting& operator=(const SubdivisionTargeting& other) = delete;
+  SubdivisionTargeting(const SubdivisionTargeting&) = delete;
+  SubdivisionTargeting& operator=(const SubdivisionTargeting&) = delete;
 
-  SubdivisionTargeting(SubdivisionTargeting&& other) noexcept = delete;
-  SubdivisionTargeting& operator=(SubdivisionTargeting&& other) noexcept =
-      delete;
+  SubdivisionTargeting(SubdivisionTargeting&&) noexcept = delete;
+  SubdivisionTargeting& operator=(SubdivisionTargeting&&) noexcept = delete;
 
   ~SubdivisionTargeting() override;
 

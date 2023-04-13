@@ -20,11 +20,11 @@ namespace brave_ads {
 struct ConfirmationInfo final {
   ConfirmationInfo();
 
-  ConfirmationInfo(const ConfirmationInfo& other);
-  ConfirmationInfo& operator=(const ConfirmationInfo& other);
+  ConfirmationInfo(const ConfirmationInfo&);
+  ConfirmationInfo& operator=(const ConfirmationInfo&);
 
-  ConfirmationInfo(ConfirmationInfo&& other) noexcept;
-  ConfirmationInfo& operator=(ConfirmationInfo&& other) noexcept;
+  ConfirmationInfo(ConfirmationInfo&&) noexcept;
+  ConfirmationInfo& operator=(ConfirmationInfo&&) noexcept;
 
   ~ConfirmationInfo();
 
@@ -37,8 +37,8 @@ struct ConfirmationInfo final {
   absl::optional<OptedInInfo> opted_in;
 };
 
-bool operator==(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
-bool operator!=(const ConfirmationInfo& lhs, const ConfirmationInfo& rhs);
+bool operator==(const ConfirmationInfo&, const ConfirmationInfo&);
+bool operator!=(const ConfirmationInfo&, const ConfirmationInfo&);
 
 using ConfirmationList = std::vector<ConfirmationInfo>;
 

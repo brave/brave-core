@@ -101,10 +101,9 @@ TEST_F(BatAdsNewTabPageAdServingTest, ServeAd) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeNewTabPageAdList creative_ads;
-  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -124,11 +123,10 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfMissingWallpapers) {
   // Arrange
   ForcePermissionRulesForTesting();
 
-  CreativeNewTabPageAdList creative_ads;
-  CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+  CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   creative_ad.wallpapers = {};
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(
@@ -163,10 +161,9 @@ TEST_F(BatAdsNewTabPageAdServingTest, DoNotServeAdIfNoEligibleAdsFound) {
 TEST_F(BatAdsNewTabPageAdServingTest,
        DoNotServeAdIfNotAllowedDueToPermissionRules) {
   // Arrange
-  CreativeNewTabPageAdList creative_ads;
-  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
+  SaveCreativeAds({creative_ad});
 
   // Act
   serving_->MaybeServeAd(base::BindOnce(

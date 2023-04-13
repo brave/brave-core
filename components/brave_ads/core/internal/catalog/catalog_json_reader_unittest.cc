@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/notification_ad/catalog_creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/campaign/creative_set/creative/promoted_content_ad/catalog_creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_file_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -148,7 +149,7 @@ CatalogCampaignInfo BuildCatalogCampaign1() {
 
   CatalogCreativeInlineContentAdInfo catalog_creative_inline_content_ad;
   catalog_creative_inline_content_ad.creative_instance_id =
-      "30db5f7b-dba3-48a3-b299-c9bd9c67da65";
+      "b0615969-6ee0-4559-b50c-f84be23302e4";
   CatalogTypeInfo catalog_type_inline_content_ad_type;
   catalog_type_inline_content_ad_type.code = "inline_content_all_v1";
   catalog_type_inline_content_ad_type.name = "inline_content";
@@ -451,7 +452,7 @@ TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithSingleCampaign) {
 
   // Assert
   CatalogInfo expected_catalog;
-  expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
+  expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
@@ -471,7 +472,7 @@ TEST_F(BatAdsCatalogJsonReaderTest, ParseCatalogWithMultipleCampaigns) {
 
   // Assert
   CatalogInfo expected_catalog;
-  expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
+  expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
   expected_catalog.campaigns.push_back(BuildCatalogCampaign1());
@@ -492,7 +493,7 @@ TEST_F(BatAdsCatalogJsonReaderTest, ParseEmptyCatalog) {
 
   // Assert
   CatalogInfo expected_catalog;
-  expected_catalog.id = "29e5c8bc0ba319069980bb390d8e8f9b58c05a20";
+  expected_catalog.id = kCatalogId;
   expected_catalog.version = 9;
   expected_catalog.ping = base::Milliseconds(7'200'000);
 

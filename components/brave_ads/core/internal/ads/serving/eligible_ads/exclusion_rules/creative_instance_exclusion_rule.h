@@ -20,15 +20,14 @@ class CreativeInstanceExclusionRule final
  public:
   explicit CreativeInstanceExclusionRule(AdEventList ad_events);
 
-  CreativeInstanceExclusionRule(const CreativeInstanceExclusionRule& other) =
+  CreativeInstanceExclusionRule(const CreativeInstanceExclusionRule&) = delete;
+  CreativeInstanceExclusionRule& operator=(
+      const CreativeInstanceExclusionRule&) = delete;
+
+  CreativeInstanceExclusionRule(CreativeInstanceExclusionRule&&) noexcept =
       delete;
   CreativeInstanceExclusionRule& operator=(
-      const CreativeInstanceExclusionRule& other) = delete;
-
-  CreativeInstanceExclusionRule(
-      CreativeInstanceExclusionRule&& other) noexcept = delete;
-  CreativeInstanceExclusionRule& operator=(
-      CreativeInstanceExclusionRule&& other) noexcept = delete;
+      CreativeInstanceExclusionRule&&) noexcept = delete;
 
   ~CreativeInstanceExclusionRule() override;
 

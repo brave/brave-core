@@ -215,22 +215,22 @@ TEST_P(BatAdsTopSegmentsTest, GetSegments) {
 }
 
 static std::string GetTestCaseName(
-    ::testing::TestParamInfo<ModelCombinationsParamInfo> param_info) {
+    ::testing::TestParamInfo<ModelCombinationsParamInfo> test_param) {
   const std::string epsilon_greedy_bandits_enabled =
-      param_info.param.epsilon_greedy_bandits_enabled
+      test_param.param.epsilon_greedy_bandits_enabled
           ? "EpsilonGreedyBanditEnabledAnd"
           : "";
 
   const std::string purchase_intent_enabled =
-      param_info.param.purchase_intent_enabled ? "PurchaseIntentEnabledAnd"
+      test_param.param.purchase_intent_enabled ? "PurchaseIntentEnabledAnd"
                                                : "";
 
   const std::string text_classification_enabled =
-      param_info.param.text_classification_enabled
+      test_param.param.text_classification_enabled
           ? "TextClassificationEnabledAnd"
           : "";
 
-  const std::string previously_processed = param_info.param.previously_processed
+  const std::string previously_processed = test_param.param.previously_processed
                                                ? "PreviouslyProcessed"
                                                : "NeverProcessed";
 

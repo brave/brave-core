@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -14,20 +15,12 @@
 
 namespace brave_ads::user_data {
 
-namespace {
-
-constexpr char kConversionId[] = "smartbrownfoxes42";
-constexpr char kEmptyConversionId[] = "";
-constexpr char kAdvertiserPublicKey[] =
-    "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-constexpr char kEmptyAdvertiserPublicKey[] = "";
-
-}  // namespace
-
 TEST(BatAdsConversionUserDataUtilTest, GetEnvelope) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(kConversionId, kAdvertiserPublicKey);
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ false);
 
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>
@@ -40,7 +33,9 @@ TEST(BatAdsConversionUserDataUtilTest, GetEnvelope) {
 TEST(BatAdsConversionUserDataUtilTest, DoNotGetEnvelopeIfConversionIdIsEmpty) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(kEmptyConversionId, kAdvertiserPublicKey);
+      BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
+                               kConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ false);
 
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>
@@ -54,7 +49,9 @@ TEST(BatAdsConversionUserDataUtilTest,
      DoNotGetEnvelopeIfAdvertiserPublicKeyIsEmpty) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(kConversionId, kEmptyAdvertiserPublicKey);
+      BuildConversionQueueItem(AdType::kNotificationAd, kConversionId,
+                               kEmptyConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ false);
 
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>
@@ -65,10 +62,12 @@ TEST(BatAdsConversionUserDataUtilTest,
 }
 
 TEST(BatAdsConversionUserDataUtilTest,
-     DoNotGetEnvelopeIfConversionIdAndAdvertiserPublicKeyIsEmpty) {
+     DoNotGetEnvelopeIfConversionIdAndAdvertiserPublicKeyAreEmpty) {
   // Arrange
   const ConversionQueueItemInfo conversion_queue_item =
-      BuildConversionQueueItem(kEmptyConversionId, kEmptyAdvertiserPublicKey);
+      BuildConversionQueueItem(AdType::kNotificationAd, kEmptyConversionId,
+                               kEmptyConversionAdvertiserPublicKey,
+                               /*should_use_random_guids*/ false);
 
   // Act
   const absl::optional<security::VerifiableConversionEnvelopeInfo>

@@ -16,11 +16,11 @@ namespace brave_ads {
 
 class PlatformHelperMac final : public PlatformHelper {
  public:
-  PlatformHelperMac(const PlatformHelperMac& other) = delete;
-  PlatformHelperMac& operator=(const PlatformHelperMac& other) = delete;
+  PlatformHelperMac(const PlatformHelperMac&) = delete;
+  PlatformHelperMac& operator=(const PlatformHelperMac&) = delete;
 
-  PlatformHelperMac(PlatformHelperMac&& other) noexcept = delete;
-  PlatformHelperMac& operator=(PlatformHelperMac&& other) noexcept = delete;
+  PlatformHelperMac(PlatformHelperMac&&) noexcept = delete;
+  PlatformHelperMac& operator=(PlatformHelperMac&&) noexcept = delete;
 
  protected:
   friend class base::NoDestructor<PlatformHelperMac>;

@@ -20,14 +20,13 @@ class AdsClientNotifierObserver : public base::CheckedObserver {
  public:
   AdsClientNotifierObserver();
 
-  AdsClientNotifierObserver(const AdsClientNotifierObserver& other) = delete;
-  AdsClientNotifierObserver& operator=(const AdsClientNotifierObserver& other) =
+  AdsClientNotifierObserver(const AdsClientNotifierObserver&) = delete;
+  AdsClientNotifierObserver& operator=(const AdsClientNotifierObserver&) =
       delete;
 
-  AdsClientNotifierObserver(AdsClientNotifierObserver&& other) noexcept =
+  AdsClientNotifierObserver(AdsClientNotifierObserver&&) noexcept = delete;
+  AdsClientNotifierObserver& operator=(AdsClientNotifierObserver&&) noexcept =
       delete;
-  AdsClientNotifierObserver& operator=(
-      AdsClientNotifierObserver&& other) noexcept = delete;
 
   ~AdsClientNotifierObserver() override;
 

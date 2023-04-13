@@ -15,20 +15,19 @@ namespace brave_ads {
 struct CatalogInlineContentAdPayloadInfo final {
   CatalogInlineContentAdPayloadInfo();
 
-  CatalogInlineContentAdPayloadInfo(
-      const CatalogInlineContentAdPayloadInfo& other);
+  CatalogInlineContentAdPayloadInfo(const CatalogInlineContentAdPayloadInfo&);
   CatalogInlineContentAdPayloadInfo& operator=(
-      const CatalogInlineContentAdPayloadInfo& other);
+      const CatalogInlineContentAdPayloadInfo&);
 
   CatalogInlineContentAdPayloadInfo(
-      CatalogInlineContentAdPayloadInfo&& other) noexcept;
+      CatalogInlineContentAdPayloadInfo&&) noexcept;
   CatalogInlineContentAdPayloadInfo& operator=(
-      CatalogInlineContentAdPayloadInfo&& other) noexcept;
+      CatalogInlineContentAdPayloadInfo&&) noexcept;
 
   ~CatalogInlineContentAdPayloadInfo();
 
-  bool operator==(const CatalogInlineContentAdPayloadInfo& other) const;
-  bool operator!=(const CatalogInlineContentAdPayloadInfo& other) const;
+  bool operator==(const CatalogInlineContentAdPayloadInfo&) const;
+  bool operator!=(const CatalogInlineContentAdPayloadInfo&) const;
 
   std::string title;
   std::string description;

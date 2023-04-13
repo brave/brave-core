@@ -20,12 +20,11 @@ class PerMonthExclusionRule final
  public:
   explicit PerMonthExclusionRule(AdEventList ad_events);
 
-  PerMonthExclusionRule(const PerMonthExclusionRule& other) = delete;
-  PerMonthExclusionRule& operator=(const PerMonthExclusionRule& other) = delete;
+  PerMonthExclusionRule(const PerMonthExclusionRule&) = delete;
+  PerMonthExclusionRule& operator=(const PerMonthExclusionRule&) = delete;
 
-  PerMonthExclusionRule(PerMonthExclusionRule&& other) noexcept = delete;
-  PerMonthExclusionRule& operator=(PerMonthExclusionRule&& other) noexcept =
-      delete;
+  PerMonthExclusionRule(PerMonthExclusionRule&&) noexcept = delete;
+  PerMonthExclusionRule& operator=(PerMonthExclusionRule&&) noexcept = delete;
 
   ~PerMonthExclusionRule() override;
 

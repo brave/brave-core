@@ -24,14 +24,13 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForUnitializedResource) {
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
   processor.Process(url);
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
@@ -50,14 +49,13 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   const GURL url_2 = GURL("https://www.basicattentiontoken.org/test?bar=foo");
   processor.Process(url_2);
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
@@ -66,14 +64,13 @@ TEST_F(BatAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   resource.Load();
   task_environment_.RunUntilIdle();
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsPurchaseIntentModelTest,
@@ -88,14 +85,13 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1");
   processor.Process(url);
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
-  const SegmentList expected_segments;
-
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
@@ -114,13 +110,13 @@ TEST_F(BatAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
 
   processor.Process(url_1);
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
   const SegmentList expected_segments = {"segment 3", "segment 2"};
-
   EXPECT_EQ(expected_segments, segments);
 }
 
@@ -138,13 +134,13 @@ TEST_F(BatAdsPurchaseIntentModelTest,
   processor.Process(url);
   processor.Process(url);
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
   const SegmentList expected_segments = {"segment 1"};
-
   EXPECT_EQ(expected_segments, segments);
 }
 
@@ -161,13 +157,13 @@ TEST_F(BatAdsPurchaseIntentModelTest,
       GURL("https://duckduckgo.com/?q=segment+keyword+1+funnel+keyword+2");
   processor.Process(url);
 
-  // Act
   const PurchaseIntent model;
+
+  // Act
   const SegmentList segments = model.GetSegments();
 
   // Assert
   const SegmentList expected_segments = {"segment 1"};
-
   EXPECT_EQ(expected_segments, segments);
 }
 

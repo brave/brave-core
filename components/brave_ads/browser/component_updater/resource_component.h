@@ -26,8 +26,8 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
   ResourceComponent(const ResourceComponent&) = delete;
   ResourceComponent& operator=(const ResourceComponent&) = delete;
 
-  ResourceComponent(ResourceComponent&& other) noexcept = delete;
-  ResourceComponent& operator=(ResourceComponent&& other) noexcept = delete;
+  ResourceComponent(ResourceComponent&&) noexcept = delete;
+  ResourceComponent& operator=(ResourceComponent&&) noexcept = delete;
 
   ~ResourceComponent() override;
 

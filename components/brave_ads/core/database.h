@@ -24,11 +24,11 @@ class ADS_EXPORT Database final {
  public:
   explicit Database(base::FilePath path);
 
-  Database(const Database& other) = delete;
-  Database& operator=(const Database& other) = delete;
+  Database(const Database&) = delete;
+  Database& operator=(const Database&) = delete;
 
-  Database(Database&& other) noexcept = delete;
-  Database& operator=(Database&& other) noexcept = delete;
+  Database(Database&&) noexcept = delete;
+  Database& operator=(Database&&) noexcept = delete;
 
   ~Database();
 

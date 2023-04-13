@@ -49,11 +49,10 @@ TEST_F(BatAdsEpsilonGreedyBanditResourceTest,
        SuccessfullyInitializeWithEmptyCatalog) {
   // Arrange
   Catalog catalog;
-  const CatalogInfo catalog_info;
 
   // Act
   EpsilonGreedyBandit resource(&catalog);
-  resource.LoadFromCatalog(catalog_info);
+  resource.LoadFromCatalog(/*catalog*/ {});
 
   // Assert
   EXPECT_TRUE(resource.IsInitialized());

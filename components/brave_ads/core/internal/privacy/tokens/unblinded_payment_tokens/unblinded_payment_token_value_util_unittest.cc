@@ -96,8 +96,7 @@ TEST_F(BatAdsUnblindedPaymentTokenValueUtilTest, FromEmptyValue) {
       UnblindedPaymentTokensFromValue(*list);
 
   // Assert
-  const UnblindedPaymentTokenList expected_unblinded_tokens;
-  EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
+  EXPECT_TRUE(unblinded_tokens.empty());
 }
 
 }  // namespace brave_ads::privacy

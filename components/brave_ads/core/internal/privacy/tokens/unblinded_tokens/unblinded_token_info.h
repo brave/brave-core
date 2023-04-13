@@ -15,8 +15,8 @@
 namespace brave_ads::privacy {
 
 struct UnblindedTokenInfo final {
-  bool operator==(const UnblindedTokenInfo& other) const;
-  bool operator!=(const UnblindedTokenInfo& other) const;
+  bool operator==(const UnblindedTokenInfo&) const;
+  bool operator!=(const UnblindedTokenInfo&) const;
 
   cbr::UnblindedToken value;
   cbr::PublicKey public_key;

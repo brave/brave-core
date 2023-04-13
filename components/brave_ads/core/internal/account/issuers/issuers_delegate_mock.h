@@ -17,11 +17,11 @@ class IssuersDelegateMock : public IssuersDelegate {
  public:
   IssuersDelegateMock();
 
-  IssuersDelegateMock(const IssuersDelegateMock& other) = delete;
-  IssuersDelegateMock& operator=(const IssuersDelegateMock& other) = delete;
+  IssuersDelegateMock(const IssuersDelegateMock&) = delete;
+  IssuersDelegateMock& operator=(const IssuersDelegateMock&) = delete;
 
-  IssuersDelegateMock(IssuersDelegateMock&& other) noexcept = delete;
-  IssuersDelegateMock& operator=(IssuersDelegateMock&& other) noexcept = delete;
+  IssuersDelegateMock(IssuersDelegateMock&&) noexcept = delete;
+  IssuersDelegateMock& operator=(IssuersDelegateMock&&) noexcept = delete;
 
   ~IssuersDelegateMock() override;
 

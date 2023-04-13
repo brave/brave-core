@@ -20,11 +20,9 @@ TEST_F(BatAdsStaticUrlHostTest, GetProductionUrlHost) {
       EnvironmentType::kProduction);
 
   // Act
-  const std::string url_host = GetStaticUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://static.ads.brave.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://static.ads.brave.com", GetStaticUrlHost());
 }
 
 TEST_F(BatAdsStaticUrlHostTest, GetStagingUrlHost) {
@@ -33,11 +31,9 @@ TEST_F(BatAdsStaticUrlHostTest, GetStagingUrlHost) {
       EnvironmentType::kStaging);
 
   // Act
-  const std::string url_host = GetStaticUrlHost();
 
   // Assert
-  const std::string expected_url_host = "https://static.ads.bravesoftware.com";
-  EXPECT_EQ(expected_url_host, url_host);
+  EXPECT_EQ("https://static.ads.bravesoftware.com", GetStaticUrlHost());
 }
 
 }  // namespace brave_ads

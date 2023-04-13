@@ -27,7 +27,9 @@ std::vector<double> GetPacingRandomNumbers() {
 TEST(BatAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.ptr = 0.0;
   creative_ads.push_back(creative_ad);
 
@@ -45,7 +47,9 @@ TEST(BatAdsPacingTest, PaceCreativeAdsWithMinPassThroughRate) {
 TEST(BatAdsPacingTest, DoNotPaceCreativeAdsWithMaxPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.ptr = 1.0;
   creative_ads.push_back(creative_ad);
 
@@ -66,7 +70,9 @@ TEST(BatAdsPacingTest,
      PaceCreativeAdIfPacingIsGreaterThanOrEqualToPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.ptr = 0.5;
   creative_ads.push_back(creative_ad);
 
@@ -83,11 +89,13 @@ TEST(BatAdsPacingTest, DoNotPaceCreativeAdWhenPacingIsLessThanPassThroughRate) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.ptr = 0.1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.ptr = 0.5;
   creative_ads.push_back(creative_ad_2);
 

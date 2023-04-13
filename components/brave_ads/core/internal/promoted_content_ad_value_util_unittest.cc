@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/promoted_content_ad_value_util.h"
 
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ad_unittest_util.h"
@@ -18,10 +19,8 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kPlacementId[] = "f0948316-df6f-4e31-814d-d0b5f2a1f28c";
-
 constexpr char kJson[] =
-    R"({"advertiser_id":"5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2","campaign_id":"84197fc8-830a-4a8e-8339-7a70c2bfa104","creative_instance_id":"3519f52c-46a4-4c48-9c2b-c264c0067f04","creative_set_id":"c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123","description":"Test Ad Description","segment":"untargeted","target_url":"https://brave.com/","title":"Test Ad Title","type":"promoted_content_ad","uuid":"f0948316-df6f-4e31-814d-d0b5f2a1f28c"})";
+    R"({"advertiser_id":"5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2","campaign_id":"84197fc8-830a-4a8e-8339-7a70c2bfa104","creative_instance_id":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","creative_set_id":"c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123","description":"Test Ad Description","segment":"untargeted","target_url":"https://brave.com/","title":"Test Ad Title","type":"promoted_content_ad","uuid":"8b742869-6e4a-490c-ac31-31b49130098a"})";
 
 }  // namespace
 

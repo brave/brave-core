@@ -18,18 +18,17 @@ struct CreativeInlineContentAdInfo final : CreativeAdInfo {
   CreativeInlineContentAdInfo();
   explicit CreativeInlineContentAdInfo(const CreativeAdInfo& creative_ad);
 
-  CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo& other);
-  CreativeInlineContentAdInfo& operator=(
-      const CreativeInlineContentAdInfo& other);
+  CreativeInlineContentAdInfo(const CreativeInlineContentAdInfo&);
+  CreativeInlineContentAdInfo& operator=(const CreativeInlineContentAdInfo&);
 
-  CreativeInlineContentAdInfo(CreativeInlineContentAdInfo&& other) noexcept;
+  CreativeInlineContentAdInfo(CreativeInlineContentAdInfo&&) noexcept;
   CreativeInlineContentAdInfo& operator=(
-      CreativeInlineContentAdInfo&& other) noexcept;
+      CreativeInlineContentAdInfo&&) noexcept;
 
   ~CreativeInlineContentAdInfo();
 
-  bool operator==(const CreativeInlineContentAdInfo& other) const;
-  bool operator!=(const CreativeInlineContentAdInfo& other) const;
+  bool operator==(const CreativeInlineContentAdInfo&) const;
+  bool operator!=(const CreativeInlineContentAdInfo&) const;
 
   std::string title;
   std::string description;

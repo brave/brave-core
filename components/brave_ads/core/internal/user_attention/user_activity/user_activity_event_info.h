@@ -17,10 +17,8 @@ struct UserActivityEventInfo final {
   base::Time created_at;
 };
 
-bool operator==(const UserActivityEventInfo& lhs,
-                const UserActivityEventInfo& rhs);
-bool operator!=(const UserActivityEventInfo& lhs,
-                const UserActivityEventInfo& rhs);
+bool operator==(const UserActivityEventInfo&, const UserActivityEventInfo&);
+bool operator!=(const UserActivityEventInfo&, const UserActivityEventInfo&);
 
 using UserActivityEventList = base::circular_deque<UserActivityEventInfo>;
 

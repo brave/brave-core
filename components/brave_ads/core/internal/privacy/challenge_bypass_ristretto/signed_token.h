@@ -24,16 +24,16 @@ class SignedToken {
   explicit SignedToken(
       const challenge_bypass_ristretto::SignedToken& signed_token);
 
-  SignedToken(const SignedToken& other);
-  SignedToken& operator=(const SignedToken& other);
+  SignedToken(const SignedToken&);
+  SignedToken& operator=(const SignedToken&);
 
-  SignedToken(SignedToken&& other) noexcept;
-  SignedToken& operator=(SignedToken&& other) noexcept;
+  SignedToken(SignedToken&&) noexcept;
+  SignedToken& operator=(SignedToken&&) noexcept;
 
   ~SignedToken();
 
-  bool operator==(const SignedToken& other) const;
-  bool operator!=(const SignedToken& other) const;
+  bool operator==(const SignedToken&) const;
+  bool operator!=(const SignedToken&) const;
 
   bool has_value() const { return signed_token_.has_value(); }
 

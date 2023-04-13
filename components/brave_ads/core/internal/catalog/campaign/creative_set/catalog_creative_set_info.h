@@ -22,16 +22,16 @@ namespace brave_ads {
 struct CatalogCreativeSetInfo final {
   CatalogCreativeSetInfo();
 
-  CatalogCreativeSetInfo(const CatalogCreativeSetInfo& other);
-  CatalogCreativeSetInfo& operator=(const CatalogCreativeSetInfo& other);
+  CatalogCreativeSetInfo(const CatalogCreativeSetInfo&);
+  CatalogCreativeSetInfo& operator=(const CatalogCreativeSetInfo&);
 
-  CatalogCreativeSetInfo(CatalogCreativeSetInfo&& other) noexcept;
-  CatalogCreativeSetInfo& operator=(CatalogCreativeSetInfo&& other) noexcept;
+  CatalogCreativeSetInfo(CatalogCreativeSetInfo&&) noexcept;
+  CatalogCreativeSetInfo& operator=(CatalogCreativeSetInfo&&) noexcept;
 
   ~CatalogCreativeSetInfo();
 
-  bool operator==(const CatalogCreativeSetInfo& other) const;
-  bool operator!=(const CatalogCreativeSetInfo& other) const;
+  bool operator==(const CatalogCreativeSetInfo&) const;
+  bool operator!=(const CatalogCreativeSetInfo&) const;
 
   bool DoesSupportOS() const;
 

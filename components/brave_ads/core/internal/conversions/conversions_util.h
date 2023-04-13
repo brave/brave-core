@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_UTIL_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CONVERSIONS_CONVERSIONS_UTIL_H_
 
+#include <string>
+
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {
@@ -15,6 +17,8 @@ struct VerifiableConversionInfo;
 namespace security {
 
 struct VerifiableConversionEnvelopeInfo;
+
+std::string GetAlgorithm();
 
 absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     const VerifiableConversionInfo& verifiable_conversion);

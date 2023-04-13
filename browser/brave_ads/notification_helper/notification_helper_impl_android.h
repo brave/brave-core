@@ -19,10 +19,10 @@ class NotificationHelperImplAndroid
   NotificationHelperImplAndroid& operator=(
       const NotificationHelperImplAndroid&) = delete;
 
-  NotificationHelperImplAndroid(
-      NotificationHelperImplAndroid&& other) noexcept = delete;
+  NotificationHelperImplAndroid(NotificationHelperImplAndroid&&) noexcept =
+      delete;
   NotificationHelperImplAndroid& operator=(
-      NotificationHelperImplAndroid&& other) noexcept = delete;
+      NotificationHelperImplAndroid&&) noexcept = delete;
 
   ~NotificationHelperImplAndroid() override;
 

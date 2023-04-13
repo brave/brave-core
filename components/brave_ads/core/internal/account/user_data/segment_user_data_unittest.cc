@@ -17,10 +17,9 @@ class BatAdsSegmentUserDataTest : public UnitTestBase {};
 
 TEST_F(BatAdsSegmentUserDataTest, GetEmptySegment) {
   // Arrange
-  const TransactionInfo transaction;
 
   // Act
-  const base::Value::Dict user_data = GetSegment(transaction);
+  const base::Value::Dict user_data = GetSegment({});
 
   // Assert
   const base::Value expected_user_data = base::test::ParseJson("{}");

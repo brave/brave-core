@@ -28,8 +28,8 @@ class PaddedImageButton : public views::ImageButton {
   PaddedImageButton(const PaddedImageButton&) = delete;
   PaddedImageButton& operator=(const PaddedImageButton&) = delete;
 
-  PaddedImageButton(PaddedImageButton&& other) noexcept = delete;
-  PaddedImageButton& operator=(PaddedImageButton&& other) noexcept = delete;
+  PaddedImageButton(PaddedImageButton&&) noexcept = delete;
+  PaddedImageButton& operator=(PaddedImageButton&&) noexcept = delete;
 
   ~PaddedImageButton() override = default;
 

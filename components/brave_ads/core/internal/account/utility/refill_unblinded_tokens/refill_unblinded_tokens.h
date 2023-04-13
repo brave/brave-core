@@ -30,12 +30,11 @@ class RefillUnblindedTokens final {
   explicit RefillUnblindedTokens(
       privacy::TokenGeneratorInterface* token_generator);
 
-  RefillUnblindedTokens(const RefillUnblindedTokens& other) = delete;
-  RefillUnblindedTokens& operator=(const RefillUnblindedTokens& other) = delete;
+  RefillUnblindedTokens(const RefillUnblindedTokens&) = delete;
+  RefillUnblindedTokens& operator=(const RefillUnblindedTokens&) = delete;
 
-  RefillUnblindedTokens(RefillUnblindedTokens&& other) noexcept = delete;
-  RefillUnblindedTokens& operator=(RefillUnblindedTokens&& other) noexcept =
-      delete;
+  RefillUnblindedTokens(RefillUnblindedTokens&&) noexcept = delete;
+  RefillUnblindedTokens& operator=(RefillUnblindedTokens&&) noexcept = delete;
 
   ~RefillUnblindedTokens();
 

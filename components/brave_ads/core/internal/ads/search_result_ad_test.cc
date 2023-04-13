@@ -36,7 +36,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
 
   // Act
   {
-    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+    const mojom::SearchResultAdInfoPtr search_result_ad =
+        BuildSearchResultAd(/*should_use_random_guids*/ true);
 
     GetAds()->TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
@@ -45,7 +46,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerViewedEvents) {
   }
 
   {
-    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+    const mojom::SearchResultAdInfoPtr search_result_ad =
+        BuildSearchResultAd(/*should_use_random_guids*/ true);
 
     GetAds()->TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
@@ -70,7 +72,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
   {
     // This ad viewed event triggering will be deferred.
-    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+    const mojom::SearchResultAdInfoPtr search_result_ad =
+        BuildSearchResultAd(/*should_use_random_guids*/ true);
 
     GetAds()->TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
@@ -81,8 +84,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
   {
     // This ad viewed event will be queued as the previous ad viewed event has
     // not completed.
-    const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
-
+    const mojom::SearchResultAdInfoPtr search_result_ad =
+        BuildSearchResultAd(/*should_use_random_guids*/ true);
     GetAds()->TriggerSearchResultAdEvent(
         search_result_ad.Clone(), mojom::SearchResultAdEventType::kServed);
     GetAds()->TriggerSearchResultAdEvent(
@@ -110,7 +113,8 @@ TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerQueuedViewedEvents) {
 
 TEST_F(BatAdsSearchResultAdIntegrationTest, TriggerClickedEvent) {
   // Arrange
-  const mojom::SearchResultAdInfoPtr search_result_ad = BuildSearchResultAd();
+  const mojom::SearchResultAdInfoPtr search_result_ad =
+      BuildSearchResultAd(/*should_use_random_guids*/ true);
 
   GetAds()->TriggerSearchResultAdEvent(search_result_ad->Clone(),
                                        mojom::SearchResultAdEventType::kServed);

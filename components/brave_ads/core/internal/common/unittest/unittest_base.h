@@ -48,11 +48,11 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
  public:
   UnitTestBase();
 
-  UnitTestBase(const UnitTestBase& other) = delete;
-  UnitTestBase& operator=(const UnitTestBase& other) = delete;
+  UnitTestBase(const UnitTestBase&) = delete;
+  UnitTestBase& operator=(const UnitTestBase&) = delete;
 
-  UnitTestBase(UnitTestBase&& other) noexcept = delete;
-  UnitTestBase& operator=(UnitTestBase&& other) noexcept = delete;
+  UnitTestBase(UnitTestBase&&) noexcept = delete;
+  UnitTestBase& operator=(UnitTestBase&&) noexcept = delete;
 
   ~UnitTestBase() override;
 
@@ -123,8 +123,8 @@ class UnitTestBase : public AdsClientNotifier, public testing::Test {
   bool HasPendingTasks() const;
 
   // Unlike |FastForwardClockToNextPendingTask|, |FastForwardClockTo| and
-  // |FastForwardClockBy| AdvanceClock does not run tasks. See |TaskEnvironment|
-  // for more detail.
+  // |FastForwardClockBy|, AdvanceClock does not run tasks. See
+  // |TaskEnvironment| for more detail.
   void AdvanceClockBy(base::TimeDelta time_delta);
   void AdvanceClockTo(base::Time time);
   void AdvanceClockToMidnight(bool is_local);

@@ -14,11 +14,11 @@ class FlagManager final {
  public:
   FlagManager();
 
-  FlagManager(const FlagManager& other) = delete;
-  FlagManager& operator=(const FlagManager& other) = delete;
+  FlagManager(const FlagManager&) = delete;
+  FlagManager& operator=(const FlagManager&) = delete;
 
-  FlagManager(FlagManager&& other) noexcept = delete;
-  FlagManager& operator=(FlagManager&& other) noexcept = delete;
+  FlagManager(FlagManager&&) noexcept = delete;
+  FlagManager& operator=(FlagManager&&) noexcept = delete;
 
   ~FlagManager();
 

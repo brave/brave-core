@@ -18,12 +18,11 @@ class NotificationAdManager final {
  public:
   NotificationAdManager();
 
-  NotificationAdManager(const NotificationAdManager& other) = delete;
-  NotificationAdManager& operator=(const NotificationAdManager& other) = delete;
+  NotificationAdManager(const NotificationAdManager&) = delete;
+  NotificationAdManager& operator=(const NotificationAdManager&) = delete;
 
-  NotificationAdManager(NotificationAdManager&& other) noexcept = delete;
-  NotificationAdManager& operator=(NotificationAdManager&& other) noexcept =
-      delete;
+  NotificationAdManager(NotificationAdManager&&) noexcept = delete;
+  NotificationAdManager& operator=(NotificationAdManager&&) noexcept = delete;
 
   ~NotificationAdManager();
 

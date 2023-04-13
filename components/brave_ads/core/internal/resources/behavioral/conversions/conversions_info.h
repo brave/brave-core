@@ -20,11 +20,11 @@ namespace brave_ads::resource {
 struct ConversionsInfo final {
   ConversionsInfo();
 
-  ConversionsInfo(const ConversionsInfo& other);
-  ConversionsInfo& operator=(const ConversionsInfo& other);
+  ConversionsInfo(const ConversionsInfo&);
+  ConversionsInfo& operator=(const ConversionsInfo&);
 
-  ConversionsInfo(ConversionsInfo&& other) noexcept;
-  ConversionsInfo& operator=(ConversionsInfo&& other) noexcept;
+  ConversionsInfo(ConversionsInfo&&) noexcept;
+  ConversionsInfo& operator=(ConversionsInfo&&) noexcept;
 
   ~ConversionsInfo();
 

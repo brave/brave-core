@@ -33,7 +33,8 @@ class BatAdsDatabaseMigrationTest : public UnitTestBase,
 
 TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Arrange
-  const CreativeAdInfo creative_ad = BuildCreativeAd();
+  const CreativeAdInfo creative_ad =
+      BuildCreativeAd(/*should_use_random_guids*/ true);
   const AdEventInfo ad_event = BuildAdEvent(
       creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now());
 
@@ -51,8 +52,8 @@ TEST_P(BatAdsDatabaseMigrationTest, MigrateFromSchema) {
   // Assert
 }
 
-std::string TestParamToString(::testing::TestParamInfo<int> param_info) {
-  return base::StringPrintf("%d_to_%d", param_info.param + 1,
+std::string TestParamToString(::testing::TestParamInfo<int> test_param) {
+  return base::StringPrintf("%d_to_%d", test_param.param + 1,
                             database::kVersion);
 }
 

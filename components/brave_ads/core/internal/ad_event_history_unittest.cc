@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/ad_event_history.h"
 
+#include "brave/components/brave_ads/core/ad_type.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 

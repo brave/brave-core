@@ -5,44 +5,31 @@
 
 #include "brave/components/brave_ads/core/inline_content_ad_value_util.h"
 
+#include "brave/components/brave_ads/core/inline_content_ad_constants.h"
 #include "brave/components/brave_ads/core/inline_content_ad_info.h"
 
 namespace brave_ads {
 
 namespace {
-
 constexpr char kTypeKey[] = "type";
-constexpr char kPlacementIdKey[] = "uuid";
-constexpr char kCreativeInstanceIdKey[] = "creativeInstanceId";
-constexpr char kCreativeSetIdKey[] = "creativeSetId";
-constexpr char kCampaignIdKey[] = "campaignId";
-constexpr char kAdvertiserIdKey[] = "advertiserId";
-constexpr char kSegmentKey[] = "segment";
-constexpr char kTitleKey[] = "title";
-constexpr char kDescriptionKey[] = "description";
-constexpr char kImageUrlKey[] = "imageUrl";
-constexpr char kDimensionsKey[] = "dimensions";
-constexpr char kCtaTextKey[] = "ctaText";
-constexpr char kTargetUrlKey[] = "targetUrl";
-
 }  // namespace
 
 base::Value::Dict InlineContentAdToValue(const InlineContentAdInfo& ad) {
   base::Value::Dict dict;
 
   dict.Set(kTypeKey, ad.type.ToString());
-  dict.Set(kPlacementIdKey, ad.placement_id);
-  dict.Set(kCreativeInstanceIdKey, ad.creative_instance_id);
-  dict.Set(kCreativeSetIdKey, ad.creative_set_id);
-  dict.Set(kCampaignIdKey, ad.campaign_id);
-  dict.Set(kAdvertiserIdKey, ad.advertiser_id);
-  dict.Set(kSegmentKey, ad.segment);
-  dict.Set(kTitleKey, ad.title);
-  dict.Set(kDescriptionKey, ad.description);
-  dict.Set(kImageUrlKey, ad.image_url.spec());
-  dict.Set(kDimensionsKey, ad.dimensions);
-  dict.Set(kCtaTextKey, ad.cta_text);
-  dict.Set(kTargetUrlKey, ad.target_url.spec());
+  dict.Set(kInlineContentAdPlacementIdKey, ad.placement_id);
+  dict.Set(kInlineContentAdCreativeInstanceIdKey, ad.creative_instance_id);
+  dict.Set(kInlineContentAdCreativeSetIdKey, ad.creative_set_id);
+  dict.Set(kInlineContentAdCampaignIdKey, ad.campaign_id);
+  dict.Set(kInlineContentAdAdvertiserIdKey, ad.advertiser_id);
+  dict.Set(kInlineContentAdSegmentKey, ad.segment);
+  dict.Set(kInlineContentAdTitleKey, ad.title);
+  dict.Set(kInlineContentAdDescriptionKey, ad.description);
+  dict.Set(kInlineContentAdImageUrlKey, ad.image_url.spec());
+  dict.Set(kInlineContentAdDimensionsKey, ad.dimensions);
+  dict.Set(kInlineContentAdCtaTextKey, ad.cta_text);
+  dict.Set(kInlineContentAdTargetUrlKey, ad.target_url.spec());
 
   return dict;
 }
@@ -54,51 +41,51 @@ InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& root) {
     ad.type = AdType(*value);
   }
 
-  if (const auto* value = root.FindString(kPlacementIdKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdPlacementIdKey)) {
     ad.placement_id = *value;
   }
 
-  if (const auto* value = root.FindString(kCreativeInstanceIdKey)) {
+  if (const auto* value =
+          root.FindString(kInlineContentAdCreativeInstanceIdKey)) {
     ad.creative_instance_id = *value;
   }
 
-  if (const auto* value = root.FindString(kCreativeSetIdKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdCreativeSetIdKey)) {
     ad.creative_set_id = *value;
   }
 
-  if (const auto* value = root.FindString(kCampaignIdKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdCampaignIdKey)) {
     ad.campaign_id = *value;
   }
 
-  if (const auto* value = root.FindString(kAdvertiserIdKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdAdvertiserIdKey)) {
     ad.advertiser_id = *value;
   }
 
-  if (const auto* value = root.FindString(kSegmentKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdSegmentKey)) {
     ad.segment = *value;
   }
 
-  if (const auto* value = root.FindString(kTitleKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdTitleKey)) {
     ad.title = *value;
   }
-
-  if (const auto* value = root.FindString(kDescriptionKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdDescriptionKey)) {
     ad.description = *value;
   }
 
-  if (const auto* value = root.FindString(kImageUrlKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdImageUrlKey)) {
     ad.image_url = GURL(*value);
   }
 
-  if (const auto* value = root.FindString(kDimensionsKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdDimensionsKey)) {
     ad.dimensions = *value;
   }
 
-  if (const auto* value = root.FindString(kCtaTextKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdCtaTextKey)) {
     ad.cta_text = *value;
   }
 
-  if (const auto* value = root.FindString(kTargetUrlKey)) {
+  if (const auto* value = root.FindString(kInlineContentAdTargetUrlKey)) {
     ad.target_url = GURL(*value);
   }
 

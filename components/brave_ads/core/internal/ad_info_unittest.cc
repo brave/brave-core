@@ -16,7 +16,8 @@ class BatAdsAdInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsAdInfoTest, IsValid) {
   // Arrange
-  const AdInfo ad = BuildAd();
+  const AdInfo ad =
+      BuildAd(AdType::kNotificationAd, /*should_use_random_guids*/ false);
 
   // Act
 

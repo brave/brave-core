@@ -23,11 +23,11 @@ class Timer final {
  public:
   Timer();
 
-  Timer(const Timer& other) = delete;
-  Timer& operator=(const Timer& other) = delete;
+  Timer(const Timer&) = delete;
+  Timer& operator=(const Timer&) = delete;
 
-  Timer(Timer&& other) noexcept = delete;
-  Timer& operator=(Timer&& other) noexcept = delete;
+  Timer(Timer&&) noexcept = delete;
+  Timer& operator=(Timer&&) noexcept = delete;
 
   ~Timer();
 

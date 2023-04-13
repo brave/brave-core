@@ -23,11 +23,11 @@ class TextEmbedding final {
  public:
   TextEmbedding();
 
-  TextEmbedding(const TextEmbedding& other) = delete;
-  TextEmbedding& operator=(const TextEmbedding& other) = delete;
+  TextEmbedding(const TextEmbedding&) = delete;
+  TextEmbedding& operator=(const TextEmbedding&) = delete;
 
-  TextEmbedding(TextEmbedding&& other) noexcept = delete;
-  TextEmbedding& operator=(TextEmbedding&& other) noexcept = delete;
+  TextEmbedding(TextEmbedding&&) noexcept = delete;
+  TextEmbedding& operator=(TextEmbedding&&) noexcept = delete;
 
   ~TextEmbedding();
 

@@ -8,9 +8,10 @@
 
 namespace brave_ads {
 
+class AdType;
 struct AdInfo;
 
-AdInfo BuildAd();
+AdInfo BuildAd(const AdType& ad_type, bool should_use_random_guids);
 
 }  // namespace brave_ads
 

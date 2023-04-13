@@ -168,7 +168,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
   redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(wallet);
 
   // Assert
-  EXPECT_EQ(1UL, GetPendingTaskCount());
+  EXPECT_EQ(1U, GetPendingTaskCount());
 }
 
 TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
@@ -275,8 +275,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
               OnDidScheduleNextUnblindedPaymentTokensRedemption(_))
       .Times(0);
 
-  const WalletInfo invalid_wallet;
-  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(invalid_wallet);
+  redeem_unblinded_payment_tokens_->MaybeRedeemAfterDelay(/*wallet*/ {});
 
   // Assert
   EXPECT_EQ(1, privacy::GetUnblindedPaymentTokens()->Count());

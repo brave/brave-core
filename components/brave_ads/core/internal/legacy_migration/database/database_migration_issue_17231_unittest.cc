@@ -541,7 +541,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionsDatabase) {
 
     ConversionList expected_conversions;
 
-    ASSERT_EQ(189UL, conversions.size());
+    ASSERT_EQ(189U, conversions.size());
     for (int i = 0; i < 189; i++) {
       ConversionInfo expected_conversion;
       expected_conversion.creative_set_id = creative_set_ids.at(i);

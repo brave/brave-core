@@ -16,7 +16,7 @@
 namespace brave_ads::database {
 
 std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
-  DCHECK_NE(0UL, parameters_count);
+  DCHECK_NE(0U, parameters_count);
 
   const std::vector<std::string> placeholders(parameters_count, "?");
 
@@ -26,7 +26,7 @@ std::string BuildBindingParameterPlaceholder(const size_t parameters_count) {
 
 std::string BuildBindingParameterPlaceholders(const size_t parameters_count,
                                               const size_t values_count) {
-  DCHECK_NE(0UL, values_count);
+  DCHECK_NE(0U, values_count);
 
   std::string value = BuildBindingParameterPlaceholder(parameters_count);
   if (values_count == 1) {

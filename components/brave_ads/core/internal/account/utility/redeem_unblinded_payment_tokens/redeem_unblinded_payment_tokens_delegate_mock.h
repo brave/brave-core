@@ -21,14 +21,14 @@ class RedeemUnblindedPaymentTokensDelegateMock
   RedeemUnblindedPaymentTokensDelegateMock();
 
   RedeemUnblindedPaymentTokensDelegateMock(
-      const RedeemUnblindedPaymentTokensDelegateMock& other) = delete;
+      const RedeemUnblindedPaymentTokensDelegateMock&) = delete;
   RedeemUnblindedPaymentTokensDelegateMock& operator=(
-      const RedeemUnblindedPaymentTokensDelegateMock& other) = delete;
+      const RedeemUnblindedPaymentTokensDelegateMock&) = delete;
 
   RedeemUnblindedPaymentTokensDelegateMock(
-      RedeemUnblindedPaymentTokensDelegateMock&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokensDelegateMock&&) noexcept = delete;
   RedeemUnblindedPaymentTokensDelegateMock& operator=(
-      RedeemUnblindedPaymentTokensDelegateMock&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokensDelegateMock&&) noexcept = delete;
 
   ~RedeemUnblindedPaymentTokensDelegateMock() override;
 

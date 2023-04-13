@@ -22,11 +22,11 @@ class Issuers {
  public:
   Issuers();
 
-  Issuers(const Issuers& other) = delete;
-  Issuers& operator=(const Issuers& other) = delete;
+  Issuers(const Issuers&) = delete;
+  Issuers& operator=(const Issuers&) = delete;
 
-  Issuers(Issuers&& other) noexcept = delete;
-  Issuers& operator=(Issuers&& other) noexcept = delete;
+  Issuers(Issuers&&) noexcept = delete;
+  Issuers& operator=(Issuers&&) noexcept = delete;
 
   ~Issuers();
 

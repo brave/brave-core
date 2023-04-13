@@ -26,11 +26,11 @@ class Confirmations final : public RedeemConfirmationDelegate {
  public:
   explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
 
-  Confirmations(const Confirmations& other) = delete;
-  Confirmations& operator=(const Confirmations& other) = delete;
+  Confirmations(const Confirmations&) = delete;
+  Confirmations& operator=(const Confirmations&) = delete;
 
-  Confirmations(Confirmations&& other) noexcept = delete;
-  Confirmations& operator=(Confirmations&& other) noexcept = delete;
+  Confirmations(Confirmations&&) noexcept = delete;
+  Confirmations& operator=(Confirmations&&) noexcept = delete;
 
   ~Confirmations() override;
 

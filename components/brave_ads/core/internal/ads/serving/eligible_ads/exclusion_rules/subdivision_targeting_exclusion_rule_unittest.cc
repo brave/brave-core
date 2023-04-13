@@ -9,6 +9,7 @@
 
 #include "base/strings/strcat.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/geographic/subdivision/subdivision_targeting.h"
@@ -20,8 +21,6 @@
 namespace brave_ads {
 
 namespace {
-
-constexpr char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
 struct SubdivisionTargetingExclusionRuleTestParam {
   const char* country;

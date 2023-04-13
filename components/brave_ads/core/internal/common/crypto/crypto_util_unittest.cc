@@ -32,7 +32,6 @@ TEST(BatAdsCryptoUtilTest, Sha256) {
   // Assert
   const std::string expected_sha256_base64 =
       "16j7swfXgJRpypq8sAguT41WUeRtPNt2LQLQvzfJ5ZI=";
-
   EXPECT_EQ(expected_sha256_base64, base::Base64Encode(sha256));
 }
 

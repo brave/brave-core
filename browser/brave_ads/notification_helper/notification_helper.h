@@ -26,8 +26,8 @@ class NotificationHelper final {
   NotificationHelper(const NotificationHelper&) = delete;
   NotificationHelper& operator=(const NotificationHelper&) = delete;
 
-  NotificationHelper(NotificationHelper&& other) noexcept = delete;
-  NotificationHelper& operator=(NotificationHelper&& other) noexcept = delete;
+  NotificationHelper(NotificationHelper&&) noexcept = delete;
+  NotificationHelper& operator=(NotificationHelper&&) noexcept = delete;
 
   static NotificationHelper* GetInstance();
 

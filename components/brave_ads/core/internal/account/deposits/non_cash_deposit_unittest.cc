@@ -6,15 +6,12 @@
 #include "brave/components/brave_ads/core/internal/account/deposits/non_cash_deposit.h"
 
 #include "base/functional/bind.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace brave_ads {
-
-namespace {
-constexpr char kCreativeInstanceId[] = "b77e16fd-e4bf-4bfb-b033-b8772ec6113b";
-}  // namespace
 
 class BatAdsNonCashDepositTest : public UnitTestBase {};
 

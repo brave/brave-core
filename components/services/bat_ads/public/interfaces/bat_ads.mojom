@@ -76,6 +76,8 @@ interface BatAdsClient {
   ShowNotificationAd(mojo_base.mojom.DictionaryValue value);
   CloseNotificationAd(string placement_id);
 
+  ShowReminder(brave_ads.mojom.ReminderType type);
+
   UpdateAdRewards();
 
   RecordAdEventForId(string id,

@@ -60,12 +60,11 @@ class NotificationAdHandler final
       geographic::SubdivisionTargeting* subdivision_targeting,
       resource::AntiTargeting* anti_targeting_resource);
 
-  NotificationAdHandler(const NotificationAdHandler& other) = delete;
-  NotificationAdHandler& operator=(const NotificationAdHandler& other) = delete;
+  NotificationAdHandler(const NotificationAdHandler&) = delete;
+  NotificationAdHandler& operator=(const NotificationAdHandler&) = delete;
 
-  NotificationAdHandler(NotificationAdHandler&& other) noexcept = delete;
-  NotificationAdHandler& operator=(NotificationAdHandler&& other) noexcept =
-      delete;
+  NotificationAdHandler(NotificationAdHandler&&) noexcept = delete;
+  NotificationAdHandler& operator=(NotificationAdHandler&&) noexcept = delete;
 
   ~NotificationAdHandler() override;
 

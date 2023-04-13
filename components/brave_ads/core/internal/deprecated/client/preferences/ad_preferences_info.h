@@ -19,11 +19,11 @@ namespace brave_ads {
 struct AdPreferencesInfo final {
   AdPreferencesInfo();
 
-  AdPreferencesInfo(const AdPreferencesInfo& other);
-  AdPreferencesInfo& operator=(const AdPreferencesInfo& other);
+  AdPreferencesInfo(const AdPreferencesInfo&);
+  AdPreferencesInfo& operator=(const AdPreferencesInfo&);
 
-  AdPreferencesInfo(AdPreferencesInfo&& other) noexcept;
-  AdPreferencesInfo& operator=(AdPreferencesInfo&& other) noexcept;
+  AdPreferencesInfo(AdPreferencesInfo&&) noexcept;
+  AdPreferencesInfo& operator=(AdPreferencesInfo&&) noexcept;
 
   ~AdPreferencesInfo();
 

@@ -28,10 +28,9 @@ class NotificationAdPopupHandler final {
   NotificationAdPopupHandler& operator=(const NotificationAdPopupHandler&) =
       delete;
 
-  NotificationAdPopupHandler(NotificationAdPopupHandler&& other) noexcept =
+  NotificationAdPopupHandler(NotificationAdPopupHandler&&) noexcept = delete;
+  NotificationAdPopupHandler& operator=(NotificationAdPopupHandler&&) noexcept =
       delete;
-  NotificationAdPopupHandler& operator=(
-      NotificationAdPopupHandler&& other) noexcept = delete;
 
   ~NotificationAdPopupHandler();
 

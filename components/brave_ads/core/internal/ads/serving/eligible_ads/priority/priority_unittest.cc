@@ -29,7 +29,9 @@ TEST(BatAdsPriorityTest, PrioritizeNoCreativeAds) {
 TEST(BatAdsPriorityTest, PrioritizeSingleCreativeAd) {
   // Arrange
   CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.priority = 1;
   creative_ads.push_back(creative_ad);
 
@@ -47,15 +49,18 @@ TEST(BatAdsPriorityTest, PrioritizeMultipleCreativeAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.priority = 2;
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.priority = 1;
   creative_ads.push_back(creative_ad_3);
 
@@ -74,11 +79,13 @@ TEST(BatAdsPriorityTest, DoNotPrioritizeZeroPriorityCreativeAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.priority = 0;
   creative_ads.push_back(creative_ad_2);
 

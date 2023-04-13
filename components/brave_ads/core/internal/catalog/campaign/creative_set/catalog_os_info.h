@@ -16,8 +16,8 @@ struct CatalogOsInfo final {
   std::string name;
 };
 
-bool operator==(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs);
-bool operator!=(const CatalogOsInfo& lhs, const CatalogOsInfo& rhs);
+bool operator==(const CatalogOsInfo&, const CatalogOsInfo&);
+bool operator!=(const CatalogOsInfo&, const CatalogOsInfo&);
 
 using CatalogOsList = std::vector<CatalogOsInfo>;
 

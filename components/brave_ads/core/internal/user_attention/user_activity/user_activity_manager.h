@@ -29,11 +29,11 @@ class UserActivityManager final : public AdsClientNotifierObserver,
  public:
   UserActivityManager();
 
-  UserActivityManager(const UserActivityManager& other) = delete;
-  UserActivityManager& operator=(const UserActivityManager& other) = delete;
+  UserActivityManager(const UserActivityManager&) = delete;
+  UserActivityManager& operator=(const UserActivityManager&) = delete;
 
-  UserActivityManager(UserActivityManager&& other) noexcept = delete;
-  UserActivityManager& operator=(UserActivityManager&& other) noexcept = delete;
+  UserActivityManager(UserActivityManager&&) noexcept = delete;
+  UserActivityManager& operator=(UserActivityManager&&) noexcept = delete;
 
   ~UserActivityManager() override;
 

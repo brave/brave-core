@@ -39,9 +39,7 @@ TEST_F(BatAdsTransactionsUtilTest, GetTransactionsForDateRange) {
       GetTransactionsForDateRange(transactions, from_time, to_time);
 
   // Assert
-  TransactionList expected_transactions_for_date_range;
-  expected_transactions_for_date_range.push_back(transaction_2);
-
+  const TransactionList expected_transactions_for_date_range = {transaction_2};
   EXPECT_EQ(expected_transactions_for_date_range, transactions_for_date_range);
 }
 
@@ -69,9 +67,7 @@ TEST_F(BatAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
       GetTransactionsForDateRange(transactions, from_time, to_time);
 
   // Assert
-  const TransactionList expected_transactions_for_date_range;
-
-  EXPECT_EQ(expected_transactions_for_date_range, transactions_for_date_range);
+  EXPECT_TRUE(transactions_for_date_range.empty());
 }
 
 }  // namespace brave_ads

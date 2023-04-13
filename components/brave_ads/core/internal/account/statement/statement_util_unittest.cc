@@ -139,11 +139,9 @@ TEST_F(BatAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   transactions.push_back(transaction_4);
 
   // Act
-  const int ads_received = GetAdsReceivedThisMonth(transactions);
 
   // Assert
-  constexpr int kExpectedAdsReceived = 2;
-  EXPECT_EQ(kExpectedAdsReceived, ads_received);
+  EXPECT_EQ(2, GetAdsReceivedThisMonth(transactions));
 }
 
 }  // namespace brave_ads

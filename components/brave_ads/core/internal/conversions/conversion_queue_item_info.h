@@ -17,16 +17,16 @@ namespace brave_ads {
 struct ConversionQueueItemInfo final {
   ConversionQueueItemInfo();
 
-  ConversionQueueItemInfo(const ConversionQueueItemInfo& other);
-  ConversionQueueItemInfo& operator=(const ConversionQueueItemInfo& other);
+  ConversionQueueItemInfo(const ConversionQueueItemInfo&);
+  ConversionQueueItemInfo& operator=(const ConversionQueueItemInfo&);
 
-  ConversionQueueItemInfo(ConversionQueueItemInfo&& other) noexcept;
-  ConversionQueueItemInfo& operator=(ConversionQueueItemInfo&& other) noexcept;
+  ConversionQueueItemInfo(ConversionQueueItemInfo&&) noexcept;
+  ConversionQueueItemInfo& operator=(ConversionQueueItemInfo&&) noexcept;
 
   ~ConversionQueueItemInfo();
 
-  bool operator==(const ConversionQueueItemInfo& other) const;
-  bool operator!=(const ConversionQueueItemInfo& other) const;
+  bool operator==(const ConversionQueueItemInfo&) const;
+  bool operator!=(const ConversionQueueItemInfo&) const;
 
   AdType ad_type = AdType::kUndefined;
   std::string creative_instance_id;

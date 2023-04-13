@@ -18,11 +18,11 @@ class TokenGeneratorMock : public TokenGenerator {
  public:
   TokenGeneratorMock();
 
-  TokenGeneratorMock(const TokenGeneratorMock& other) = delete;
-  TokenGeneratorMock& operator=(const TokenGeneratorMock& other) = delete;
+  TokenGeneratorMock(const TokenGeneratorMock&) = delete;
+  TokenGeneratorMock& operator=(const TokenGeneratorMock&) = delete;
 
-  TokenGeneratorMock(TokenGeneratorMock&& other) noexcept = delete;
-  TokenGeneratorMock& operator=(TokenGeneratorMock&& other) noexcept = delete;
+  TokenGeneratorMock(TokenGeneratorMock&&) noexcept = delete;
+  TokenGeneratorMock& operator=(TokenGeneratorMock&&) noexcept = delete;
 
   ~TokenGeneratorMock() override;
 

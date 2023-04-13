@@ -20,12 +20,11 @@ class TotalMaxExclusionRule final
  public:
   explicit TotalMaxExclusionRule(AdEventList ad_events);
 
-  TotalMaxExclusionRule(const TotalMaxExclusionRule& other) = delete;
-  TotalMaxExclusionRule& operator=(const TotalMaxExclusionRule& other) = delete;
+  TotalMaxExclusionRule(const TotalMaxExclusionRule&) = delete;
+  TotalMaxExclusionRule& operator=(const TotalMaxExclusionRule&) = delete;
 
-  TotalMaxExclusionRule(TotalMaxExclusionRule&& other) noexcept = delete;
-  TotalMaxExclusionRule& operator=(TotalMaxExclusionRule&& other) noexcept =
-      delete;
+  TotalMaxExclusionRule(TotalMaxExclusionRule&&) noexcept = delete;
+  TotalMaxExclusionRule& operator=(TotalMaxExclusionRule&&) noexcept = delete;
 
   ~TotalMaxExclusionRule() override;
 

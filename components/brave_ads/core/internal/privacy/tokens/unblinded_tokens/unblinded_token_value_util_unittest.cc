@@ -86,8 +86,7 @@ TEST_F(BatAdsUnblindedTokenValueUtilTest, FromEmptyValue) {
   const UnblindedTokenList unblinded_tokens = UnblindedTokensFromValue(*list);
 
   // Assert
-  const UnblindedTokenList expected_unblinded_tokens;
-  EXPECT_EQ(expected_unblinded_tokens, unblinded_tokens);
+  EXPECT_TRUE(unblinded_tokens.empty());
 }
 
 }  // namespace brave_ads::privacy

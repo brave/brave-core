@@ -22,11 +22,11 @@ class EventHandler final : public EventHandlerObserver {
  public:
   EventHandler();
 
-  EventHandler(const EventHandler& other) = delete;
-  EventHandler& operator=(const EventHandler& other) = delete;
+  EventHandler(const EventHandler&) = delete;
+  EventHandler& operator=(const EventHandler&) = delete;
 
-  EventHandler(EventHandler&& other) noexcept = delete;
-  EventHandler& operator=(EventHandler&& other) noexcept = delete;
+  EventHandler(EventHandler&&) noexcept = delete;
+  EventHandler& operator=(EventHandler&&) noexcept = delete;
 
   ~EventHandler() override;
 

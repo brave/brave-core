@@ -16,18 +16,18 @@ namespace brave_ads {
 struct ConversionInfo final {
   ConversionInfo();
 
-  ConversionInfo(const ConversionInfo& other);
-  ConversionInfo& operator=(const ConversionInfo& other);
+  ConversionInfo(const ConversionInfo&);
+  ConversionInfo& operator=(const ConversionInfo&);
 
-  ConversionInfo(ConversionInfo&& other) noexcept;
-  ConversionInfo& operator=(ConversionInfo&& other) noexcept;
+  ConversionInfo(ConversionInfo&&) noexcept;
+  ConversionInfo& operator=(ConversionInfo&&) noexcept;
 
   ~ConversionInfo();
 
   bool IsValid() const;
 
-  bool operator==(const ConversionInfo& other) const;
-  bool operator!=(const ConversionInfo& other) const;
+  bool operator==(const ConversionInfo&) const;
+  bool operator!=(const ConversionInfo&) const;
 
   std::string creative_set_id;
   std::string type;

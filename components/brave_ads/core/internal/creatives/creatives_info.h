@@ -17,11 +17,11 @@ namespace brave_ads {
 struct CreativesInfo final {
   CreativesInfo();
 
-  CreativesInfo(const CreativesInfo& other);
-  CreativesInfo& operator=(const CreativesInfo& other);
+  CreativesInfo(const CreativesInfo&);
+  CreativesInfo& operator=(const CreativesInfo&);
 
-  CreativesInfo(CreativesInfo&& other) noexcept;
-  CreativesInfo& operator=(CreativesInfo&& other) noexcept;
+  CreativesInfo(CreativesInfo&&) noexcept;
+  CreativesInfo& operator=(CreativesInfo&&) noexcept;
 
   ~CreativesInfo();
 

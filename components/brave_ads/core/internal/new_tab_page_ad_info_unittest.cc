@@ -18,7 +18,8 @@ class BatAdsNewTabPageAdInfoTest : public UnitTestBase {};
 
 TEST_F(BatAdsNewTabPageAdInfoTest, IsValid) {
   // Arrange
-  const CreativeNewTabPageAdInfo creative_ad = BuildCreativeNewTabPageAd();
+  const CreativeNewTabPageAdInfo creative_ad =
+      BuildCreativeNewTabPageAd(/*should_use_random_guids*/ true);
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad);
 
   // Act

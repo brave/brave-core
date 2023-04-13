@@ -26,16 +26,16 @@ class BlindedToken {
   explicit BlindedToken(
       const challenge_bypass_ristretto::BlindedToken& blinded_token);
 
-  BlindedToken(const BlindedToken& other);
-  BlindedToken& operator=(const BlindedToken& other);
+  BlindedToken(const BlindedToken&);
+  BlindedToken& operator=(const BlindedToken&);
 
-  BlindedToken(BlindedToken&& other) noexcept;
-  BlindedToken& operator=(BlindedToken&& other) noexcept;
+  BlindedToken(BlindedToken&&) noexcept;
+  BlindedToken& operator=(BlindedToken&&) noexcept;
 
   ~BlindedToken();
 
-  bool operator==(const BlindedToken& other) const;
-  bool operator!=(const BlindedToken& other) const;
+  bool operator==(const BlindedToken&) const;
+  bool operator!=(const BlindedToken&) const;
 
   bool has_value() const {
     return blinded_token_ && blinded_token_.has_value();

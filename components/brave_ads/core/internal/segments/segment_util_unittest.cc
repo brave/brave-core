@@ -28,12 +28,11 @@ TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromCatalog) {
       ReadFileFromTestPathToString(kCatalog);
   ASSERT_TRUE(json);
 
-  const absl::optional<CatalogInfo> catalog_info =
-      json::reader::ReadCatalog(*json);
-  ASSERT_TRUE(catalog_info);
+  const absl::optional<CatalogInfo> catalog = json::reader::ReadCatalog(*json);
+  ASSERT_TRUE(catalog);
 
   // Act
-  const SegmentList segments = GetSegments(*catalog_info);
+  const SegmentList segments = GetSegments(*catalog);
 
   // Assert
   const SegmentList expected_segments = {"technology & computing",
@@ -43,40 +42,33 @@ TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromCatalog) {
 
 TEST_F(BatAdsSegmentUtilTest, GetSegmentsFromEmptyCatalog) {
   // Arrange
-  const CatalogInfo catalog;
 
   // Act
-  const SegmentList segments = GetSegments(catalog);
+  const SegmentList segments = GetSegments({});
 
   // Assert
-  const SegmentList expected_segments;
-  EXPECT_EQ(expected_segments, segments);
+  EXPECT_TRUE(segments.empty());
 }
 
 TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentChildSegment) {
   // Arrange
-  const std::string segment = "technology & computing-software";
 
   // Act
-  const std::string parent_segment = GetParentSegment(segment);
+  const std::string parent_segment =
+      GetParentSegment("technology & computing-software");
 
   // Assert
-  const std::string expected_parent_segment = "technology & computing";
-
-  EXPECT_EQ(expected_parent_segment, parent_segment);
+  EXPECT_EQ("technology & computing", parent_segment);
 }
 
 TEST_F(BatAdsSegmentUtilTest, GetParentSegmentFromParentSegment) {
   // Arrange
-  const std::string segment = "technology & computing";
 
   // Act
-  const std::string parent_segment = GetParentSegment(segment);
+  const std::string parent_segment = GetParentSegment("technology & computing");
 
   // Assert
-  const std::string expected_parent_segment = "technology & computing";
-
-  EXPECT_EQ(expected_parent_segment, parent_segment);
+  EXPECT_EQ("technology & computing", parent_segment);
 }
 
 TEST_F(BatAdsSegmentUtilTest, GetParentSegments) {
@@ -97,15 +89,12 @@ TEST_F(BatAdsSegmentUtilTest, GetParentSegments) {
 
 TEST_F(BatAdsSegmentUtilTest, GetParentSegmentsForEmptyList) {
   // Arrange
-  const SegmentList segments;
 
   // Act
-  const SegmentList parent_segments = GetParentSegments(segments);
+  const SegmentList parent_segments = GetParentSegments({});
 
   // Assert
-  const SegmentList expected_parent_segments;
-
-  EXPECT_EQ(expected_parent_segments, parent_segments);
+  EXPECT_TRUE(parent_segments.empty());
 }
 
 TEST_F(BatAdsSegmentUtilTest, ShouldFilterMatchingParentChildSegment) {

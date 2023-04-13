@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_util_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
@@ -16,26 +18,12 @@
 
 namespace brave_ads::security {
 
-namespace {
-
-constexpr char kAdvertiserPublicKey[] =
-    "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-constexpr char kInvalidAdvertiserPublicKey[] = "invalid";
-constexpr char kAdvertiserSecretKey[] =
-    "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-
-constexpr char kShortMessage[] = "";
-constexpr char kLongMessage[] = "thismessageistoolongthismessageistoolong";
-constexpr char kValidMessage[] = "smartbrownfoxes42";
-constexpr char kInvalidMessage[] = "smart brown foxes 16";
-
-}  // namespace
-
 TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = kShortMessage;
-  verifiable_conversion.public_key = kAdvertiserPublicKey;
+  verifiable_conversion.id =
+      std::string(kMinVerifiableConversionMessageLength - 1, '-');
+  verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
   const absl::optional<VerifiableConversionEnvelopeInfo>
@@ -48,8 +36,9 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithShortMessage) {
 TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = kLongMessage;
-  verifiable_conversion.public_key = kAdvertiserPublicKey;
+  verifiable_conversion.id =
+      std::string(kMaxVerifiableConversionMessageLength + 1, '-');
+  verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
   const absl::optional<VerifiableConversionEnvelopeInfo>
@@ -62,8 +51,8 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithLongMessage) {
 TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = kInvalidMessage;
-  verifiable_conversion.public_key = kAdvertiserPublicKey;
+  verifiable_conversion.id = kInvalidConversionId;
+  verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
   const absl::optional<VerifiableConversionEnvelopeInfo>
@@ -76,8 +65,8 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidMessage) {
 TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = kValidMessage;
-  verifiable_conversion.public_key = kInvalidAdvertiserPublicKey;
+  verifiable_conversion.id = kConversionId;
+  verifiable_conversion.public_key = kInvalidConversionAdvertiserPublicKey;
 
   // Act
   const absl::optional<VerifiableConversionEnvelopeInfo>
@@ -90,16 +79,16 @@ TEST(BatAdsConversionsUtilTest, DoNotSealEnvelopeWithInvalidPublicKey) {
 TEST(BatAdsConversionsUtilTest, SealEnvelope) {
   // Arrange
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = kValidMessage;
-  verifiable_conversion.public_key = kAdvertiserPublicKey;
+  verifiable_conversion.id = kConversionId;
+  verifiable_conversion.public_key = kConversionAdvertiserPublicKey;
 
   // Act
   const absl::optional<VerifiableConversionEnvelopeInfo>
       verifiable_conversion_envelope = SealEnvelope(verifiable_conversion);
   ASSERT_TRUE(verifiable_conversion_envelope);
 
-  const absl::optional<std::string> message =
-      OpenEnvelope(*verifiable_conversion_envelope, kAdvertiserSecretKey);
+  const absl::optional<std::string> message = OpenEnvelope(
+      *verifiable_conversion_envelope, kConversionAdvertiserSecretKey);
   ASSERT_TRUE(message);
 
   // Assert

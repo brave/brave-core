@@ -22,9 +22,8 @@ class BackgroundHelperHolder final {
   BackgroundHelperHolder(const BackgroundHelperHolder&) = delete;
   BackgroundHelperHolder& operator=(const BackgroundHelperHolder&) = delete;
 
-  BackgroundHelperHolder(BackgroundHelperHolder&& other) noexcept = delete;
-  BackgroundHelperHolder& operator=(BackgroundHelperHolder&& other) noexcept =
-      delete;
+  BackgroundHelperHolder(BackgroundHelperHolder&&) noexcept = delete;
+  BackgroundHelperHolder& operator=(BackgroundHelperHolder&&) noexcept = delete;
 
   static BackgroundHelperHolder* GetInstance();
 

@@ -27,14 +27,14 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final
       base::Value::Dict user_data);
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
-      const RedeemUnblindedPaymentTokensUrlRequestBuilder& other) = delete;
+      const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
   RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
-      const RedeemUnblindedPaymentTokensUrlRequestBuilder& other) = delete;
+      const RedeemUnblindedPaymentTokensUrlRequestBuilder&) = delete;
 
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
-      RedeemUnblindedPaymentTokensUrlRequestBuilder&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokensUrlRequestBuilder&&) noexcept = delete;
   RedeemUnblindedPaymentTokensUrlRequestBuilder& operator=(
-      RedeemUnblindedPaymentTokensUrlRequestBuilder&& other) noexcept = delete;
+      RedeemUnblindedPaymentTokensUrlRequestBuilder&&) noexcept = delete;
 
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 

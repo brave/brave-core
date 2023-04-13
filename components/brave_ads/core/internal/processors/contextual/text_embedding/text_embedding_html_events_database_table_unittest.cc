@@ -18,11 +18,9 @@ TEST(BatAdsTextEmbeddingHtmlEventsDatabaseTableTest, TableName) {
   const TextEmbeddingHtmlEvents database_table;
 
   // Act
-  const std::string table_name = database_table.GetTableName();
 
   // Assert
-  const std::string expected_table_name = "text_embedding_html_events";
-  EXPECT_EQ(expected_table_name, table_name);
+  EXPECT_EQ("text_embedding_html_events", database_table.GetTableName());
 }
 
 }  // namespace brave_ads::database::table

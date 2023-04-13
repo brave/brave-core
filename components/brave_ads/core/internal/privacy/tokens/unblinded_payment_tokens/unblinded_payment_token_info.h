@@ -19,17 +19,16 @@ namespace brave_ads::privacy {
 struct UnblindedPaymentTokenInfo final {
   UnblindedPaymentTokenInfo();
 
-  UnblindedPaymentTokenInfo(const UnblindedPaymentTokenInfo& other);
-  UnblindedPaymentTokenInfo& operator=(const UnblindedPaymentTokenInfo& other);
+  UnblindedPaymentTokenInfo(const UnblindedPaymentTokenInfo&);
+  UnblindedPaymentTokenInfo& operator=(const UnblindedPaymentTokenInfo&);
 
-  UnblindedPaymentTokenInfo(UnblindedPaymentTokenInfo&& other) noexcept;
-  UnblindedPaymentTokenInfo& operator=(
-      UnblindedPaymentTokenInfo&& other) noexcept;
+  UnblindedPaymentTokenInfo(UnblindedPaymentTokenInfo&&) noexcept;
+  UnblindedPaymentTokenInfo& operator=(UnblindedPaymentTokenInfo&&) noexcept;
 
   ~UnblindedPaymentTokenInfo();
 
-  bool operator==(const UnblindedPaymentTokenInfo& other) const;
-  bool operator!=(const UnblindedPaymentTokenInfo& other) const;
+  bool operator==(const UnblindedPaymentTokenInfo&) const;
+  bool operator!=(const UnblindedPaymentTokenInfo&) const;
 
   std::string transaction_id;
   cbr::UnblindedToken value;

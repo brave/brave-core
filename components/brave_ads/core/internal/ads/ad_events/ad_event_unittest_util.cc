@@ -16,6 +16,7 @@
 #include "brave/components/brave_ads/core/confirmation_type.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_info.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/instance_id_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -77,10 +78,10 @@ AdEventInfo BuildAdEvent(const std::string& placement_id,
   ad_event.type = AdType::kNotificationAd;
   ad_event.confirmation_type = confirmation_type;
   ad_event.placement_id = placement_id;
-  ad_event.campaign_id = "604df73f-bc6e-4583-a56d-ce4e243c8537";
+  ad_event.campaign_id = kCampaignId;
   ad_event.creative_set_id = creative_set_id;
-  ad_event.creative_instance_id = "7a3b6d9f-d0b7-4da6-8988-8d5b8938c94f";
-  ad_event.advertiser_id = "f646c5f5-027a-4a35-b081-fce85e830b19";
+  ad_event.creative_instance_id = kCreativeInstanceId;
+  ad_event.advertiser_id = kAdvertiserId;
   ad_event.created_at = Now();
 
   return ad_event;

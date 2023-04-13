@@ -29,11 +29,11 @@ namespace notification_ads {
 
 class EligibleAdsBase {
  public:
-  EligibleAdsBase(const EligibleAdsBase& other) = delete;
-  EligibleAdsBase& operator=(const EligibleAdsBase& other) = delete;
+  EligibleAdsBase(const EligibleAdsBase&) = delete;
+  EligibleAdsBase& operator=(const EligibleAdsBase&) = delete;
 
-  EligibleAdsBase(EligibleAdsBase&& other) noexcept = delete;
-  EligibleAdsBase& operator=(EligibleAdsBase&& other) noexcept = delete;
+  EligibleAdsBase(EligibleAdsBase&&) noexcept = delete;
+  EligibleAdsBase& operator=(EligibleAdsBase&&) noexcept = delete;
 
   virtual ~EligibleAdsBase();
 

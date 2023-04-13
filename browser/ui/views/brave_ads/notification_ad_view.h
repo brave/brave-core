@@ -26,8 +26,8 @@ class NotificationAdView : public views::View {
   NotificationAdView(const NotificationAdView&) = delete;
   NotificationAdView& operator=(const NotificationAdView&) = delete;
 
-  NotificationAdView(NotificationAdView&& other) noexcept = delete;
-  NotificationAdView& operator=(NotificationAdView&& other) noexcept = delete;
+  NotificationAdView(NotificationAdView&&) noexcept = delete;
+  NotificationAdView& operator=(NotificationAdView&&) noexcept = delete;
 
   ~NotificationAdView() override;
 

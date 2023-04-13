@@ -14,15 +14,12 @@ namespace brave_ads::user_data {
 
 TEST(BatAdsTotalsUserDataUtilTest, GetBucketsForNoUnblindedPaymentTokens) {
   // Arrange
-  const privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
   // Act
-  const AdTypeBucketMap buckets = BuildBuckets(unblinded_payment_tokens);
+  const AdTypeBucketMap buckets = BuildBuckets({});
 
   // Assert
-  const AdTypeBucketMap expected_buckets;
-
-  EXPECT_EQ(expected_buckets, buckets);
+  EXPECT_TRUE(buckets.empty());
 }
 
 TEST(BatAdsTotalsUserDataUtilTest, GetBuckets) {
@@ -35,7 +32,6 @@ TEST(BatAdsTotalsUserDataUtilTest, GetBuckets) {
 
   // Assert
   const AdTypeBucketMap expected_buckets = {{"ad_notification", {{"view", 2}}}};
-
   EXPECT_EQ(expected_buckets, buckets);
 }
 

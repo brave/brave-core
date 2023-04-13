@@ -45,11 +45,13 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
@@ -59,10 +61,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing-software"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing-software"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -76,20 +79,20 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForChildSegment) {
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing-software"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing-software"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -103,17 +106,16 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForParentSegment) {
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"finance-banking"},
+      targeting::BuildUserModel({/*interest_segments*/ "finance-banking"},
                                 /*latent_interest_segments*/ {},
                                 /*purchase_intent_segments*/ {},
                                 /*text_embedding_html_events*/ {}),
@@ -132,15 +134,18 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -151,10 +156,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
                                                       creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -168,38 +174,38 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForMultipleSegments) {
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, GetAdsForNoSegments) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   CreativeNotificationAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      {}, base::BindOnce(
-              [](const CreativeNotificationAdList& expected_creative_ads,
-                 const bool had_opportunity,
-                 const CreativeNotificationAdList& creative_ads) {
-                // Assert
-                EXPECT_TRUE(had_opportunity);
-                EXPECT_EQ(expected_creative_ads, creative_ads);
-              },
-              std::move(expected_creative_ads)));
+      /*user_model*/ {},
+      base::BindOnce(
+          [](const CreativeNotificationAdList& expected_creative_ads,
+             const bool had_opportunity,
+             const CreativeNotificationAdList& creative_ads) {
+            // Assert
+            EXPECT_TRUE(had_opportunity);
+            EXPECT_EQ(expected_creative_ads, creative_ads);
+          },
+          std::move(expected_creative_ads)));
 }
 
 TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
-  CreativeNotificationAdList creative_ads;
-  CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"UNMATCHED"}, /*latent_interest_segments*/ {},
+      targeting::BuildUserModel({/*interest_segments*/ "UNMATCHED"},
+                                /*latent_interest_segments*/ {},
                                 /*purchase_intent_segments*/ {},
                                 /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
@@ -215,10 +221,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfNoEligibleAds) {
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce([](const bool had_opportunity,
                         const CreativeNotificationAdList& creative_ads) {
         // Assert
@@ -231,11 +238,13 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -248,10 +257,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -267,12 +277,14 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.ptr = 0.1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.ptr = 0.5;
   creative_ads.push_back(creative_ad_2);
@@ -285,10 +297,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, DoNotGetPacedAds) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -304,17 +317,20 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
   // Arrange
   CreativeNotificationAdList creative_ads;
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
@@ -325,10 +341,11 @@ TEST_F(BatAdsEligibleNotificationAdsV1Test, GetPrioritizedAds) {
   CreativeNotificationAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
       base::BindOnce(
           [](const CreativeNotificationAdList& expected_creative_ads,
              const bool had_opportunity,

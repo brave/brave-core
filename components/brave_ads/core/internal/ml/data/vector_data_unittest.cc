@@ -30,8 +30,9 @@ TEST_F(BatAdsVectorDataTest, DenseVectorDataInitialization) {
 TEST_F(BatAdsVectorDataTest, SparseVectorDataInitialization) {
   // Arrange
   constexpr int kDimensionCount = 6;
+
   const std::map<unsigned, double> sparse_vector_6 = {
-      {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
+      {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
   const VectorData sparse_vector_data_6(kDimensionCount, sparse_vector_6);
 
   // Act
@@ -69,12 +70,12 @@ TEST_F(BatAdsVectorDataTest, SparseSparseProduct) {
   constexpr double kTolerance = 1e-6;
 
   // Dense equivalent is [1, 0, 2]
-  const std::map<unsigned, double> sparse_vector_3 = {{0UL, 1.0}, {2UL, 2.0}};
+  const std::map<unsigned, double> sparse_vector_3 = {{0U, 1.0}, {2U, 2.0}};
   const VectorData sparse_vector_data_3(3, sparse_vector_3);
 
   // Dense equivalent is [1, 0, 3, 2, 0]
   const std::map<unsigned, double> sparse_vector_5 = {
-      {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
+      {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
   const VectorData sparse_vector_data_5(5, sparse_vector_5);
 
   // Act
@@ -97,12 +98,12 @@ TEST_F(BatAdsVectorDataTest, SparseDenseProduct) {
   const VectorData dense_vector_data_3(vector_3);
 
   // Dense equivalent is [1, 0, 2]
-  const std::map<unsigned, double> sparse_vector_3 = {{0UL, 1.0}, {2UL, 2.0}};
+  const std::map<unsigned, double> sparse_vector_3 = {{0U, 1.0}, {2U, 2.0}};
   const VectorData sparse_vector_data_3 = VectorData(3, sparse_vector_3);
 
   // Dense equivalent is [1, 0, 3, 2, 0]
   const std::map<unsigned, double> sparse_vector_5 = {
-      {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
+      {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
   const VectorData sparse_vector_data_5(5, sparse_vector_5);
 
   // Act
@@ -131,12 +132,12 @@ TEST_F(BatAdsVectorDataTest, NonsenseProduct) {
   const VectorData dense_vector_data_3(vector_3);
 
   // Dense equivalent is [1, 0, 2]
-  const std::map<unsigned, double> sparse_vector_3 = {{0UL, 1.0}, {2UL, 2.0}};
+  const std::map<unsigned, double> sparse_vector_3 = {{0U, 1.0}, {2U, 2.0}};
   const VectorData sparse_vector_data_3(3, sparse_vector_3);
 
   // Dense equivalent is [1, 0, 3, 2, 0]
   const std::map<unsigned, double> sparse_vector_5 = {
-      {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}};
+      {0U, 1.0}, {2U, 3.0}, {3U, -2.0}};
   const VectorData sparse_vector_data_5(5, sparse_vector_5);
 
   // Act
@@ -214,7 +215,7 @@ TEST_F(BatAdsVectorDataTest, NormalizeDenseVector) {
 TEST_F(BatAdsVectorDataTest, NormalizeSparseVector) {
   constexpr int kDimensionCount = 6;
   const std::map<unsigned, double> sparse_vector_5 = {
-      {0UL, 1.0}, {2UL, 3.0}, {3UL, -2.0}, {10UL, -1.0}, {30UL, 1.0}};
+      {0U, 1.0}, {2U, 3.0}, {3U, -2.0}, {10U, -1.0}, {30U, 1.0}};
   VectorData sparse_vector_data_5(kDimensionCount, sparse_vector_5);
   sparse_vector_data_5.Normalize();
   EXPECT_EQ(std::vector<float>(

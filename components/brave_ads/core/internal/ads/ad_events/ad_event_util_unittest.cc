@@ -22,7 +22,8 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
   // Arrange
   const AdEventList ad_events;
 
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   // Act
   const absl::optional<base::Time> last_seen_ad_time =
@@ -37,7 +38,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   const base::Time event_time = Now() - base::Hours(12);
   const AdEventInfo ad_event =
@@ -47,7 +48,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
 
   // Act
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const absl::optional<base::Time> last_seen_ad_time =
       GetLastSeenAdTime(ad_events, creative_ad_2);
 
@@ -60,10 +61,10 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   const base::Time now = Now();
 
@@ -100,7 +101,8 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
   // Arrange
   const AdEventList ad_events;
 
-  const CreativeNotificationAdInfo creative_ad = BuildCreativeNotificationAd();
+  const CreativeNotificationAdInfo creative_ad =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   // Act
   const absl::optional<base::Time> last_seen_advertiser_time =
@@ -115,7 +117,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
   AdEventList ad_events;
 
   const CreativeNotificationAdInfo creative_ad_1 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
 
   const AdEventInfo ad_event =
       BuildAdEvent(creative_ad_1, AdType::kNotificationAd,
@@ -124,7 +126,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
 
   // Act
   const CreativeNotificationAdInfo creative_ad_2 =
-      BuildCreativeNotificationAd();
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   const absl::optional<base::Time> last_seen_advertiser_time =
       GetLastSeenAdvertiserTime(ad_events, creative_ad_2);
 
@@ -139,13 +141,16 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {
   const std::string advertiser_2 =
       base::GUID::GenerateRandomV4().AsLowercaseString();
 
-  CreativeNotificationAdInfo creative_ad_1 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_1 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_1.advertiser_id = advertiser_1;
 
-  CreativeNotificationAdInfo creative_ad_2 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_2 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_2.advertiser_id = advertiser_2;
 
-  CreativeNotificationAdInfo creative_ad_3 = BuildCreativeNotificationAd();
+  CreativeNotificationAdInfo creative_ad_3 =
+      BuildCreativeNotificationAd(/*should_use_random_guids*/ true);
   creative_ad_3.advertiser_id = advertiser_1;
 
   AdEventList ad_events;

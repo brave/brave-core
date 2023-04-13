@@ -56,8 +56,8 @@ class NotificationAdPopup : public views::WidgetDelegateView,
   NotificationAdPopup(const NotificationAdPopup&) = delete;
   NotificationAdPopup& operator=(const NotificationAdPopup&) = delete;
 
-  NotificationAdPopup(NotificationAdPopup&& other) noexcept = delete;
-  NotificationAdPopup& operator=(NotificationAdPopup&& other) noexcept = delete;
+  NotificationAdPopup(NotificationAdPopup&&) noexcept = delete;
+  NotificationAdPopup& operator=(NotificationAdPopup&&) noexcept = delete;
 
   ~NotificationAdPopup() override;
 

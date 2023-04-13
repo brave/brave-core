@@ -45,11 +45,13 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "technology & computing-software";
   creative_ads.push_back(creative_ad_2);
 
@@ -59,11 +61,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing-software"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          /*interest_segments*/ {"technology & computing-software"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -77,21 +80,21 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForChildSegment) {
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing-software"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          /*interest_segments*/ {"technology & computing-software"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -105,21 +108,20 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForParentSegment) {
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForUntargetedSegment) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"finance-banking"},
+      targeting::BuildUserModel(/*interest_segments*/ {"finance-banking"},
                                 /*latent_interest_segments*/ {},
                                 /*purchase_intent_segments*/ {},
                                 /*text_embedding_html_events*/ {}),
-      "200x100",
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -135,15 +137,18 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "finance-banking";
   creative_ads.push_back(creative_ad_2);
 
-  CreativeInlineContentAdInfo creative_ad_3 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_3 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ads.push_back(creative_ad_3);
 
@@ -154,11 +159,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
                                                        creative_ad_3};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          /*interest_segments*/ {"technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -172,17 +178,16 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForMultipleSegments) {
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "untargeted";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   CreativeInlineContentAdList expected_creative_ads = {creative_ad};
 
   eligible_ads_->GetForUserModel(
-      {}, "200x100",
+      /*user_model*/ {}, /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -196,18 +201,18 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetAdsForNoSegments) {
 
 TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"UNMATCHED"}, /*latent_interest_segments*/ {},
+      targeting::BuildUserModel({/*interest_segments*/ "UNMATCHED"},
+                                /*latent_interest_segments*/ {},
                                 /*purchase_intent_segments*/ {},
                                 /*text_embedding_html_events*/ {}),
-      "200x100",
+      /*dimensions*/ "200x100",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -219,19 +224,19 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsForUnmatchedSegments) {
 TEST_F(BatAdsEligibleInlineContentAdsV1Test,
        DoNotGetAdsForNonExistentDimensions) {
   // Arrange
-  CreativeInlineContentAdList creative_ads;
-  CreativeInlineContentAdInfo creative_ad = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad.segment = "technology & computing";
-  creative_ads.push_back(creative_ad);
-  SaveCreativeAds(creative_ads);
+  SaveCreativeAds({creative_ad});
 
   // Act
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "?x?",
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "?x?",
       base::BindOnce([](const bool had_opportunity,
                         const CreativeInlineContentAdList& creative_ads) {
         // Assert
@@ -244,11 +249,13 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ads.push_back(creative_ad_2);
 
@@ -261,11 +268,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetAdsIfAlreadySeen) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -281,12 +289,14 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.ptr = 0.1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "food & drink";
   creative_ad_2.ptr = 0.5;
   creative_ads.push_back(creative_ad_2);
@@ -299,11 +309,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, DoNotGetPacedAds) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_2};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,
@@ -319,17 +330,20 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   // Arrange
   CreativeInlineContentAdList creative_ads;
 
-  CreativeInlineContentAdInfo creative_ad_1 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_1 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_1.segment = "technology & computing";
   creative_ad_1.priority = 1;
   creative_ads.push_back(creative_ad_1);
 
-  CreativeInlineContentAdInfo creative_ad_2 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_2 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_2.segment = "finance-banking";
   creative_ad_2.priority = 1;
   creative_ads.push_back(creative_ad_2);
 
-  CreativeInlineContentAdInfo creative_ad_3 = BuildCreativeInlineContentAd();
+  CreativeInlineContentAdInfo creative_ad_3 =
+      BuildCreativeInlineContentAd(/*should_use_random_guids*/ true);
   creative_ad_3.segment = "food & drink";
   creative_ad_3.priority = 2;
   creative_ads.push_back(creative_ad_3);
@@ -340,11 +354,12 @@ TEST_F(BatAdsEligibleInlineContentAdsV1Test, GetPrioritizedAds) {
   CreativeInlineContentAdList expected_creative_ads = {creative_ad_1};
 
   eligible_ads_->GetForUserModel(
-      targeting::BuildUserModel({"technology & computing", "food & drink"},
-                                /*latent_interest_segments*/ {},
-                                /*purchase_intent_segments*/ {},
-                                /*text_embedding_html_events*/ {}),
-      "200x100",
+      targeting::BuildUserModel(
+          {/*interest_segments*/ "technology & computing", "food & drink"},
+          /*latent_interest_segments*/ {},
+          /*purchase_intent_segments*/ {},
+          /*text_embedding_html_events*/ {}),
+      /*dimensions*/ "200x100",
       base::BindOnce(
           [](const CreativeInlineContentAdList& expected_creative_ads,
              const bool had_opportunity,

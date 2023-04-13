@@ -24,11 +24,11 @@ namespace brave_ads::targeting {
 struct PurchaseIntentInfo final {
   PurchaseIntentInfo();
 
-  PurchaseIntentInfo(const PurchaseIntentInfo& other) = delete;
-  PurchaseIntentInfo& operator=(const PurchaseIntentInfo& other) = delete;
+  PurchaseIntentInfo(const PurchaseIntentInfo&) = delete;
+  PurchaseIntentInfo& operator=(const PurchaseIntentInfo&) = delete;
 
-  PurchaseIntentInfo(PurchaseIntentInfo&& other) noexcept = delete;
-  PurchaseIntentInfo& operator=(PurchaseIntentInfo&& other) noexcept = delete;
+  PurchaseIntentInfo(PurchaseIntentInfo&&) noexcept = delete;
+  PurchaseIntentInfo& operator=(PurchaseIntentInfo&&) noexcept = delete;
 
   ~PurchaseIntentInfo();
 

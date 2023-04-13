@@ -19,10 +19,9 @@ class NotificationHelperImplMac
   NotificationHelperImplMac& operator=(const NotificationHelperImplMac&) =
       delete;
 
-  NotificationHelperImplMac(NotificationHelperImplMac&& other) noexcept =
+  NotificationHelperImplMac(NotificationHelperImplMac&&) noexcept = delete;
+  NotificationHelperImplMac& operator=(NotificationHelperImplMac&&) noexcept =
       delete;
-  NotificationHelperImplMac& operator=(
-      NotificationHelperImplMac&& other) noexcept = delete;
 
   ~NotificationHelperImplMac() override;
 

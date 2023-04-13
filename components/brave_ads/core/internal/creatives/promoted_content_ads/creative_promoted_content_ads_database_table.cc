@@ -282,6 +282,7 @@ void CreativePromotedContentAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativePromotedContentAdCallback callback) const {
   if (creative_instance_id.empty()) {
+    DCHECK(false) << "FOOBAR";
     return std::move(callback).Run(/*success*/ false, creative_instance_id, {});
   }
 

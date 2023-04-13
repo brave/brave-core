@@ -6,13 +6,13 @@
 #include "brave/components/brave_ads/core/internal/conversions/conversions_util.h"
 
 #include <cstdint>
-#include <string>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/check_op.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/key_pair_info.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_util_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_info.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_info.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -23,11 +23,7 @@ namespace brave_ads::security {
 namespace {
 
 constexpr char kAlgorithm[] = "crypto_box_curve25519xsalsa20poly1305";
-constexpr size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
-constexpr size_t kCryptoBoxPublicKeyBytes = crypto_box_PUBLICKEYBYTES;
-constexpr size_t kVacCipherTextLength = 32;
-constexpr size_t kVacMessageMaxLength = 30;
-constexpr size_t kVacMessageMinLength = 1;
+constexpr size_t kCipherTextLength = 32;
 
 bool IsConversionIdValid(const std::string& conversion_id) {
   return RE2::FullMatch(conversion_id, "^[a-zA-Z0-9-]*$");
@@ -35,13 +31,17 @@ bool IsConversionIdValid(const std::string& conversion_id) {
 
 }  // namespace
 
+std::string GetAlgorithm() {
+  return kAlgorithm;
+}
+
 absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     const VerifiableConversionInfo& verifiable_conversion) {
   const std::string message = verifiable_conversion.id;
   const std::string public_key_base64 = verifiable_conversion.public_key;
 
-  if (message.length() < kVacMessageMinLength ||
-      message.length() > kVacMessageMaxLength) {
+  if (message.length() < kMinVerifiableConversionMessageLength ||
+      message.length() > kMaxVerifiableConversionMessageLength) {
     return absl::nullopt;
   }
 
@@ -51,16 +51,15 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
 
   // Protocol requires at least 2 trailing zero-padding bytes
   std::vector<uint8_t> plaintext(message.cbegin(), message.cend());
-  plaintext.insert(plaintext.cend(), kVacCipherTextLength - plaintext.size(),
-                   0);
-  DCHECK_EQ(kVacCipherTextLength, plaintext.size());
+  plaintext.insert(plaintext.cend(), kCipherTextLength - plaintext.size(), 0);
+  DCHECK_EQ(kCipherTextLength, plaintext.size());
 
   const absl::optional<std::vector<uint8_t>> public_key =
       base::Base64Decode(public_key_base64);
   if (!public_key) {
     return absl::nullopt;
   }
-  if (public_key->size() != kCryptoBoxPublicKeyBytes) {
+  if (public_key->size() != crypto_box_PUBLICKEYBYTES) {
     return absl::nullopt;
   }
 
@@ -77,11 +76,11 @@ absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
   // The first 16 bytes of the resulting ciphertext is left as padding by the
   // C API and should be removed before sending out extraneously.
   const std::vector<uint8_t> ciphertext(
-      padded_ciphertext.cbegin() + kCryptoBoxZeroBytes,
+      padded_ciphertext.cbegin() + crypto_box_BOXZEROBYTES,
       padded_ciphertext.cend());
 
   VerifiableConversionEnvelopeInfo envelope;
-  envelope.algorithm = kAlgorithm;
+  envelope.algorithm = GetAlgorithm();
   envelope.ciphertext = base::Base64Encode(ciphertext);
   envelope.ephemeral_public_key =
       base::Base64Encode(ephemeral_key_pair.public_key);

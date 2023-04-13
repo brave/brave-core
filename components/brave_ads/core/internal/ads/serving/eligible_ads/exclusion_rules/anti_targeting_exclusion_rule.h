@@ -26,14 +26,13 @@ class AntiTargetingExclusionRule final
   AntiTargetingExclusionRule(resource::AntiTargeting* anti_targeting_resource,
                              BrowsingHistoryList browsing_history);
 
-  AntiTargetingExclusionRule(const AntiTargetingExclusionRule& other) = delete;
+  AntiTargetingExclusionRule(const AntiTargetingExclusionRule&) = delete;
   AntiTargetingExclusionRule& operator=(const AntiTargetingExclusionRule&) =
       delete;
 
-  AntiTargetingExclusionRule(AntiTargetingExclusionRule&& other) noexcept =
+  AntiTargetingExclusionRule(AntiTargetingExclusionRule&&) noexcept = delete;
+  AntiTargetingExclusionRule& operator=(AntiTargetingExclusionRule&&) noexcept =
       delete;
-  AntiTargetingExclusionRule& operator=(
-      AntiTargetingExclusionRule&& other) noexcept = delete;
 
   ~AntiTargetingExclusionRule() override;
 

@@ -21,8 +21,8 @@ class BackgroundHelperAndroid
   BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
   BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
 
-  BackgroundHelperAndroid(BackgroundHelperAndroid&& other) noexcept = delete;
-  BackgroundHelperAndroid& operator=(BackgroundHelperAndroid&& other) noexcept =
+  BackgroundHelperAndroid(BackgroundHelperAndroid&&) noexcept = delete;
+  BackgroundHelperAndroid& operator=(BackgroundHelperAndroid&&) noexcept =
       delete;
 
   ~BackgroundHelperAndroid() override;

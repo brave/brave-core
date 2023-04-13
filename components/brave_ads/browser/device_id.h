@@ -21,8 +21,8 @@ class DeviceId {
   DeviceId(const DeviceId&) = delete;
   DeviceId& operator=(const DeviceId&) = delete;
 
-  DeviceId(DeviceId&& other) noexcept = delete;
-  DeviceId& operator=(DeviceId&& other) noexcept = delete;
+  DeviceId(DeviceId&&) noexcept = delete;
+  DeviceId& operator=(DeviceId&&) noexcept = delete;
 
   virtual ~DeviceId();
 

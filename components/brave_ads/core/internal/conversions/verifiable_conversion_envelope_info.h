@@ -13,20 +13,18 @@ namespace brave_ads::security {
 struct VerifiableConversionEnvelopeInfo final {
   VerifiableConversionEnvelopeInfo();
 
-  VerifiableConversionEnvelopeInfo(
-      const VerifiableConversionEnvelopeInfo& other);
+  VerifiableConversionEnvelopeInfo(const VerifiableConversionEnvelopeInfo&);
   VerifiableConversionEnvelopeInfo& operator=(
-      const VerifiableConversionEnvelopeInfo& other);
+      const VerifiableConversionEnvelopeInfo&);
 
-  VerifiableConversionEnvelopeInfo(
-      VerifiableConversionEnvelopeInfo&& other) noexcept;
+  VerifiableConversionEnvelopeInfo(VerifiableConversionEnvelopeInfo&&) noexcept;
   VerifiableConversionEnvelopeInfo& operator=(
-      VerifiableConversionEnvelopeInfo&& other) noexcept;
+      VerifiableConversionEnvelopeInfo&&) noexcept;
 
   ~VerifiableConversionEnvelopeInfo();
 
-  bool operator==(const VerifiableConversionEnvelopeInfo& other) const;
-  bool operator!=(const VerifiableConversionEnvelopeInfo& other) const;
+  bool operator==(const VerifiableConversionEnvelopeInfo&) const;
+  bool operator!=(const VerifiableConversionEnvelopeInfo&) const;
 
   bool IsValid() const;
 

@@ -20,8 +20,8 @@ struct ADS_EXPORT HistoryItemInfo final {
   CategoryContentInfo category_content;
 };
 
-bool operator==(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs);
-bool operator!=(const HistoryItemInfo& lhs, const HistoryItemInfo& rhs);
+bool operator==(const HistoryItemInfo&, const HistoryItemInfo&);
+bool operator!=(const HistoryItemInfo&, const HistoryItemInfo&);
 
 using HistoryItemList = base::circular_deque<HistoryItemInfo>;
 

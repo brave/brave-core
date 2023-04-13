@@ -83,7 +83,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessText) {
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
-  EXPECT_EQ(1UL, list.size());
+  EXPECT_EQ(1U, list.size());
 }
 
 TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
@@ -104,7 +104,7 @@ TEST_F(BatAdsTextClassificationProcessorTest, ProcessMultipleText) {
       ClientStateManager::GetInstance()
           ->GetTextClassificationProbabilitiesHistory();
 
-  EXPECT_EQ(3UL, list.size());
+  EXPECT_EQ(3U, list.size());
 }
 
 }  // namespace brave_ads

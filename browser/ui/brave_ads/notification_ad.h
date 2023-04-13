@@ -27,18 +27,18 @@ class NotificationAd {
   // Creates a copy of the |other| notification ad. The delegate, if any, will
   // be identical for both notification ad instances. The |id| of the ad
   // notification will be replaced by the given value
-  NotificationAd(const std::string& id, const NotificationAd& other);
+  NotificationAd(const std::string& id, const NotificationAd&);
 
   // Creates a copy of the |other| notification ad. The delegate will be
   // replaced by |delegate|
   NotificationAd(scoped_refptr<NotificationAdDelegate> delegate,
-                 const NotificationAd& other);
+                 const NotificationAd&);
 
   // Creates a copy of the |other| notification ad. The delegate, if any, will
   // be identical for both notification ad instances
-  NotificationAd(const NotificationAd& other);
+  NotificationAd(const NotificationAd&);
 
-  NotificationAd& operator=(const NotificationAd& other);
+  NotificationAd& operator=(const NotificationAd&);
 
   virtual ~NotificationAd();
 

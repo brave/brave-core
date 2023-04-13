@@ -25,6 +25,7 @@ class BatAdsConfirmationPayloadJsonWriterTest : public UnitTestBase {};
 TEST_F(BatAdsConfirmationPayloadJsonWriterTest, WriteJson) {
   // Arrange
   privacy::SetUnblindedTokens(1);
+
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
 

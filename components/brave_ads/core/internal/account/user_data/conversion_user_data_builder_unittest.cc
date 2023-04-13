@@ -7,8 +7,10 @@
 
 #include "base/functional/bind.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/conversions/conversion_queue_item_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/conversions/conversions_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/conversions/verifiable_conversion_envelope_unittest_util.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -16,51 +18,41 @@
 
 namespace brave_ads::user_data::builder {
 
-namespace {
-
-constexpr char kCreativeInstanceId[] = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-constexpr char kMissingCreativeInstanceId[] =
-    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
-
-constexpr char kConversionId[] = "smartbrownfoxes42";
-constexpr char kEmptyConversionId[] = "";
-
-constexpr char kAdvertiserPublicKey[] =
-    "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-constexpr char kEmptyAdvertiserPublicKey[] = "";
-
-constexpr char kAdvertiserSecretKey[] =
-    "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-
-}  // namespace
-
 class BatAdsConversionUserDataBuilderTest : public UnitTestBase {};
 
 TEST_F(BatAdsConversionUserDataBuilderTest, BuildConversion) {
   // Arrange
-  BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
+  BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
+                                   kConversionAdvertiserPublicKey,
+                                   /*should_use_random_guids*/ false,
+                                   /*count*/ 1);
 
   // Act
+
+  // Assert
   BuildConversion(kCreativeInstanceId,
                   base::BindOnce([](base::Value::Dict user_data) {
                     const absl::optional<std::string> message =
                         security::OpenEnvelopeForUserDataAndAdvertiserSecretKey(
-                            user_data, kAdvertiserSecretKey);
+                            user_data, kConversionAdvertiserSecretKey);
                     ASSERT_TRUE(message);
 
                     const std::string expected_message = kConversionId;
                     EXPECT_EQ(expected_message, *message);
                   }));
-
-  // Assert
 }
 
 TEST_F(BatAdsConversionUserDataBuilderTest,
        DoNotBuildConversionForMissingCreativeInstanceId) {
   // Arrange
-  BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
+  BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kConversionId,
+                                   kConversionAdvertiserPublicKey,
+                                   /*should_use_random_guids*/ false,
+                                   /*count*/ 1);
 
   // Act
+
+  // Assert
   BuildConversion(kMissingCreativeInstanceId,
                   base::BindOnce([](base::Value::Dict user_data) {
                     // Assert
@@ -70,17 +62,19 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
 
                     EXPECT_EQ(expected_user_data, user_data);
                   }));
-
-  // Assert
 }
 
 TEST_F(BatAdsConversionUserDataBuilderTest,
-       DoNotBuildConversionIfConversionIdOrAdvertiserPublicKeyIsEmpty) {
+       DoNotBuildConversionIfConversionIdOrAdvertiserPublicKeyAreEmpty) {
   // Arrange
-  BuildAndSaveConversionQueueItem(kEmptyConversionId,
-                                  kEmptyAdvertiserPublicKey);
+  BuildAndSaveConversionQueueItems(AdType::kNotificationAd, kEmptyConversionId,
+                                   kEmptyConversionAdvertiserPublicKey,
+                                   /*should_use_random_guids*/ false,
+                                   /*count*/ 1);
 
   // Act
+
+  // Assert
   BuildConversion(
       kCreativeInstanceId, base::BindOnce([](base::Value::Dict user_data) {
         // Assert
@@ -89,8 +83,6 @@ TEST_F(BatAdsConversionUserDataBuilderTest,
 
         EXPECT_EQ(expected_user_data, user_data);
       }));
-
-  // Assert
 }
 
 }  // namespace brave_ads::user_data::builder

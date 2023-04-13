@@ -38,7 +38,7 @@ TEST_F(BatAdsConversionsDatabaseTableIntegrationTest,
   conversions.GetAll(
       base::BindOnce([](const bool success, const ConversionList& conversions) {
         EXPECT_TRUE(success);
-        EXPECT_EQ(2UL, conversions.size());
+        EXPECT_EQ(2U, conversions.size());
       }));
 }
 
