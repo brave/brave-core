@@ -352,7 +352,7 @@ public class ImageLoader {
         if (!isValidImgUrl(url)) return false;
         // Converts the URL to lowercase to make the matching case-insensitive.
         url = url.toLowerCase(Locale.ENGLISH);
-        return url.endsWith(".gif");
+        return url.endsWith(".gif") || url.endsWith("=gif");
     }
 
     private static boolean isValidImgUrl(String url) {
