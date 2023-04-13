@@ -20,7 +20,7 @@ import { findAccountName } from '../../../utils/account-utils'
 import { useUnsafePanelSelector, useUnsafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import { PanelSelectors } from '../../../panel/selectors'
-import { useGetDefaultNetworksQuery } from '../../../common/slices/api.slice'
+import { useGetNetworkQuery } from '../../../common/slices/api.slice'
 
 // Components
 import NavButton from '../buttons/nav-button/index'
@@ -84,18 +84,16 @@ export const SignTransactionPanel = ({ signMode }: Props) => {
   const signAllTransactionsRequests = useUnsafePanelSelector(
     PanelSelectors.signAllTransactionsRequests
   )
-
-  // queries
-  const { data: defaultNetworks } = useGetDefaultNetworksQuery()
-
   const signTransactionData =
     signMode === 'signTx'
       ? signTransactionRequests
       : signAllTransactionsRequests
 
-  const network = defaultNetworks?.find(
-    (net) => net.coin === signTransactionData[0].coin
-  )
+  // queries
+  const { data: network } = useGetNetworkQuery({
+    chainId: signTransactionData[0].chainId,
+    coin: signTransactionData[0].coin
+  })
 
   // state
   const [signStep, setSignStep] = React.useState<SignDataSteps>(SignDataSteps.SignRisk)

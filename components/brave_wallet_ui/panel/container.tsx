@@ -505,7 +505,6 @@ function Container () {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={selectedNetwork}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />

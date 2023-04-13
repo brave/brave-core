@@ -495,7 +495,6 @@ export const _SignData = () => {
       <SignPanel
         signMessageData={signMessageDataPayload}
         accounts={mockAccounts}
-        selectedNetwork={mockNetworks[0]}
         onCancel={onCancel}
         onSign={onSign}
         showWarning={true}
