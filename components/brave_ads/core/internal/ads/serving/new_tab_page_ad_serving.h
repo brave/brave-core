@@ -37,8 +37,8 @@ class EligibleAdsBase;
 
 class Serving final {
  public:
-  Serving(geographic::SubdivisionTargeting* subdivision_targeting,
-          resource::AntiTargeting* anti_targeting_resource);
+  Serving(const geographic::SubdivisionTargeting& subdivision_targeting,
+          const resource::AntiTargeting& anti_targeting_resource);
 
   Serving(const Serving&) = delete;
   Serving& operator=(const Serving&) = delete;

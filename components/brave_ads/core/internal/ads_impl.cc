@@ -118,14 +118,14 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       text_embedding_resource_.get());
 
   inline_content_ad_handler_ = std::make_unique<InlineContentAdHandler>(
-      account_.get(), transfer_.get(), subdivision_targeting_.get(),
-      anti_targeting_resource_.get());
+      account_.get(), transfer_.get(), *subdivision_targeting_,
+      *anti_targeting_resource_);
   new_tab_page_ad_handler_ = std::make_unique<NewTabPageAdHandler>(
-      account_.get(), transfer_.get(), subdivision_targeting_.get(),
-      anti_targeting_resource_.get());
+      account_.get(), transfer_.get(), *subdivision_targeting_,
+      *anti_targeting_resource_);
   notification_ad_handler_ = std::make_unique<NotificationAdHandler>(
       account_.get(), transfer_.get(), epsilon_greedy_bandit_processor_.get(),
-      subdivision_targeting_.get(), anti_targeting_resource_.get());
+      *subdivision_targeting_, *anti_targeting_resource_);
   promoted_content_ad_handler_ =
       std::make_unique<PromotedContentAd>(account_.get(), transfer_.get());
   search_result_ad_handler_ =

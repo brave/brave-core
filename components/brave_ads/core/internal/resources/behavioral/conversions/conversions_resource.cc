@@ -19,8 +19,7 @@ namespace {
 constexpr char kResourceId[] = "nnqccijfhvzwyrxpxwjrpmynaiazctqb";
 }  // namespace
 
-Conversions::Conversions()
-    : conversions_info_(std::make_unique<ConversionsInfo>()) {}
+Conversions::Conversions() = default;
 
 Conversions::~Conversions() = default;
 
@@ -31,25 +30,18 @@ void Conversions::Load() {
 }
 
 void Conversions::OnLoadAndParseResource(
-    ParsingResultPtr<ConversionsInfo> result) {
-  if (!result) {
-    BLOG(1, "Failed to load " << kResourceId << " conversions resource");
-    is_initialized_ = false;
-    return;
-  }
-
-  BLOG(1, "Successfully loaded " << kResourceId << " conversions resource");
-
-  if (!result->resource) {
-    BLOG(1, result->error_message);
+    ParsingErrorOr<ConversionsInfo> result) {
+  if (!result.has_value()) {
+    BLOG(1, result.error());
     BLOG(1, "Failed to initialize " << kResourceId << " conversions resource");
     is_initialized_ = false;
     return;
   }
 
-  conversions_info_ = std::move(result->resource);
+  BLOG(1, "Successfully loaded " << kResourceId << " conversions resource");
+  conversions_info_ = std::move(result).value();
 
-  BLOG(1, "Parsed conversions resource version " << conversions_info_->version);
+  BLOG(1, "Parsed conversions resource version " << conversions_info_.version);
 
   is_initialized_ = true;
 

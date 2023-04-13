@@ -41,8 +41,8 @@ class InlineContentAdHandler final
   InlineContentAdHandler(
       Account* account,
       Transfer* transfer,
-      geographic::SubdivisionTargeting* subdivision_targeting,
-      resource::AntiTargeting* anti_targeting_resource);
+      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const resource::AntiTargeting& anti_targeting_resource);
 
   InlineContentAdHandler(const InlineContentAdHandler&) = delete;
   InlineContentAdHandler& operator=(const InlineContentAdHandler&) = delete;

@@ -1072,7 +1072,7 @@ source_set("internal") {
     "resources/country_components.h",
     "resources/language_components.cc",
     "resources/language_components.h",
-    "resources/parsing_result.h",
+    "resources/parsing_error_or.h",
     "resources/resources_util.h",
     "resources/resources_util_impl.h",
     "segments/segment_alias.h",

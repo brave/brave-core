@@ -46,10 +46,10 @@ TEST_F(BatAdsEmbeddingPipelineValueUtilTest, FromValue) {
   };
 
   // Act
-  const absl::optional<EmbeddingPipelineInfo> pipeline =
+  absl::optional<EmbeddingPipelineInfo> pipeline =
       EmbeddingPipelineFromValue(*dict);
   ASSERT_TRUE(pipeline);
-  EmbeddingPipelineInfo embedding_pipeline = *pipeline;
+  EmbeddingPipelineInfo embedding_pipeline = std::move(pipeline).value();
 
   for (const auto& [token, expected_embedding] : k_samples) {
     const auto iter = embedding_pipeline.embeddings.find(token);

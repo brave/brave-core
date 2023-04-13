@@ -6,14 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_RESOURCES_BEHAVIORAL_CONVERSIONS_CONVERSIONS_RESOURCE_H_
 
-#include <memory>
-
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/internal/resources/parsing_result.h"
+#include "brave/components/brave_ads/core/internal/resources/behavioral/conversions/conversions_info.h"
+#include "brave/components/brave_ads/core/internal/resources/parsing_error_or.h"
 
 namespace brave_ads::resource {
-
-struct ConversionsInfo;
 
 class Conversions final {
  public:
@@ -31,14 +28,14 @@ class Conversions final {
 
   void Load();
 
-  const ConversionsInfo* get() const { return conversions_info_.get(); }
+  const ConversionsInfo* get() const { return &conversions_info_; }
 
  private:
-  void OnLoadAndParseResource(ParsingResultPtr<ConversionsInfo> result);
+  void OnLoadAndParseResource(ParsingErrorOr<ConversionsInfo> result);
 
   bool is_initialized_ = false;
 
-  std::unique_ptr<ConversionsInfo> conversions_info_;
+  ConversionsInfo conversions_info_;
 
   base::WeakPtrFactory<Conversions> weak_factory_{this};
 };

@@ -26,8 +26,8 @@ class EligibleAdsFactory final {
  public:
   static std::unique_ptr<EligibleAdsBase> Build(
       int version,
-      geographic::SubdivisionTargeting* subdivision_targeting,
-      resource::AntiTargeting* anti_targeting_resource);
+      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const resource::AntiTargeting& anti_targeting_resource);
 };
 
 }  // namespace notification_ads

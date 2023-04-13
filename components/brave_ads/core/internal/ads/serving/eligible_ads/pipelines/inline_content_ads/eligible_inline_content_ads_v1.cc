@@ -29,8 +29,8 @@
 namespace brave_ads::inline_content_ads {
 
 EligibleAdsV1::EligibleAdsV1(
-    geographic::SubdivisionTargeting* subdivision_targeting,
-    resource::AntiTargeting* anti_targeting_resource)
+    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const resource::AntiTargeting& anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 EligibleAdsV1::~EligibleAdsV1() = default;
@@ -251,8 +251,8 @@ CreativeInlineContentAdList EligibleAdsV1::FilterCreativeAds(
 
   CreativeInlineContentAdList eligible_creative_ads = creative_ads;
 
-  ExclusionRules exclusion_rules(ad_events, subdivision_targeting_,
-                                 anti_targeting_resource_, browsing_history);
+  ExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
+                                 *anti_targeting_resource_, browsing_history);
   eligible_creative_ads = ApplyExclusionRules(
       eligible_creative_ads, last_served_ad_, &exclusion_rules);
 

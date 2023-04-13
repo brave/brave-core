@@ -32,8 +32,8 @@ namespace new_tab_page_ads {
 
 class EligibleAdsV2 final : public EligibleAdsBase {
  public:
-  EligibleAdsV2(geographic::SubdivisionTargeting* subdivision_targeting,
-                resource::AntiTargeting* anti_targeting);
+  EligibleAdsV2(const geographic::SubdivisionTargeting& subdivision_targeting,
+                const resource::AntiTargeting& anti_targeting_resource);
   ~EligibleAdsV2() override;
 
   void GetForUserModel(

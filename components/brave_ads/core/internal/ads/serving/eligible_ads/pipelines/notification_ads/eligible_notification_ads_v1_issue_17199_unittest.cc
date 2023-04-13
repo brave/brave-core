@@ -37,7 +37,7 @@ TEST_F(BatAdsEligibleNotificationAdsV1Issue17199Test, GetEligibleAds) {
   // Act
   geographic::SubdivisionTargeting subdivision_targeting;
   resource::AntiTargeting anti_targeting_resource;
-  EligibleAdsV1 eligible_ads(&subdivision_targeting, &anti_targeting_resource);
+  EligibleAdsV1 eligible_ads(subdivision_targeting, anti_targeting_resource);
 
   eligible_ads.GetForUserModel(
       targeting::BuildUserModel(

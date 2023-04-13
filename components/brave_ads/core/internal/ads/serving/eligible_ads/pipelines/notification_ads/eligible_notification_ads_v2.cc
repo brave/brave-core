@@ -25,8 +25,8 @@
 namespace brave_ads::notification_ads {
 
 EligibleAdsV2::EligibleAdsV2(
-    geographic::SubdivisionTargeting* subdivision_targeting,
-    resource::AntiTargeting* anti_targeting_resource)
+    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const resource::AntiTargeting& anti_targeting_resource)
     : EligibleAdsBase(subdivision_targeting, anti_targeting_resource) {}
 
 EligibleAdsV2::~EligibleAdsV2() = default;
@@ -127,8 +127,8 @@ CreativeNotificationAdList EligibleAdsV2::FilterCreativeAds(
     return {};
   }
 
-  ExclusionRules exclusion_rules(ad_events, subdivision_targeting_,
-                                 anti_targeting_resource_, browsing_history);
+  ExclusionRules exclusion_rules(ad_events, *subdivision_targeting_,
+                                 *anti_targeting_resource_, browsing_history);
   return ApplyExclusionRules(creative_ads, last_served_ad_, &exclusion_rules);
 }
 

@@ -11,13 +11,10 @@
 namespace brave_ads::notification_ads {
 
 EligibleAdsBase::EligibleAdsBase(
-    geographic::SubdivisionTargeting* subdivision_targeting,
-    resource::AntiTargeting* anti_targeting_resource)
+    const geographic::SubdivisionTargeting& subdivision_targeting,
+    const resource::AntiTargeting& anti_targeting_resource)
     : subdivision_targeting_(subdivision_targeting),
-      anti_targeting_resource_(anti_targeting_resource) {
-  DCHECK(subdivision_targeting_);
-  DCHECK(anti_targeting_resource_);
-}
+      anti_targeting_resource_(anti_targeting_resource) {}
 
 EligibleAdsBase::~EligibleAdsBase() = default;
 

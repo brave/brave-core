@@ -54,10 +54,11 @@ class ExclusionRulesBase {
   virtual bool ShouldExcludeCreativeAd(const CreativeAdInfo& creative_ad);
 
  protected:
-  ExclusionRulesBase(const AdEventList& ad_events,
-                     geographic::SubdivisionTargeting* subdivision_targeting,
-                     resource::AntiTargeting* anti_targeting_resource,
-                     const BrowsingHistoryList& browsing_history);
+  ExclusionRulesBase(
+      const AdEventList& ad_events,
+      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const resource::AntiTargeting& anti_targeting_resource,
+      const BrowsingHistoryList& browsing_history);
 
   std::vector<ExclusionRuleInterface<CreativeAdInfo>*> exclusion_rules_;
 

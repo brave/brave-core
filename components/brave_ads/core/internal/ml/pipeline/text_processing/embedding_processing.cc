@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/base64.h"
-#include "base/check.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -24,32 +23,29 @@
 namespace brave_ads::ml::pipeline {
 
 // static
-std::unique_ptr<EmbeddingProcessing> EmbeddingProcessing::CreateFromValue(
-    base::Value resource_value,
-    std::string* error_message) {
-  DCHECK(error_message);
-
-  auto embedding_processing = std::make_unique<EmbeddingProcessing>();
-  if (!embedding_processing->SetEmbeddingPipeline(std::move(resource_value))) {
-    *error_message = "Failed to parse embedding pipeline JSON";
-    return nullptr;
+base::expected<EmbeddingProcessing, std::string>
+EmbeddingProcessing::CreateFromValue(base::Value::Dict dict) {
+  EmbeddingProcessing embedding_processing;
+  if (!embedding_processing.SetEmbeddingPipeline(std::move(dict))) {
+    return base::unexpected("Failed to parse embedding pipeline JSON");
   }
-
   return embedding_processing;
 }
 
-bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value resource_value) {
-  const base::Value::Dict* const value = resource_value.GetIfDict();
-  if (!value) {
-    return is_initialized_;
-  }
+EmbeddingProcessing::EmbeddingProcessing() = default;
+EmbeddingProcessing::EmbeddingProcessing(EmbeddingProcessing&& other) noexcept =
+    default;
+EmbeddingProcessing& EmbeddingProcessing::operator=(
+    EmbeddingProcessing&& other) noexcept = default;
+EmbeddingProcessing::~EmbeddingProcessing() = default;
 
-  const absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
-      EmbeddingPipelineFromValue(*value);
+bool EmbeddingProcessing::SetEmbeddingPipeline(base::Value::Dict dict) {
+  absl::optional<EmbeddingPipelineInfo> embedding_pipeline =
+      EmbeddingPipelineFromValue(dict);
   if (!embedding_pipeline) {
     is_initialized_ = false;
   } else {
-    embedding_pipeline_ = *embedding_pipeline;
+    embedding_pipeline_ = std::move(embedding_pipeline).value();
     is_initialized_ = true;
   }
 

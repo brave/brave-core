@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/resources/behavioral/purchase_intent/purchase_intent_info.h"
 
+#include <utility>
+
 #include "base/values.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/behavioral/purchase_intent/purchase_intent_features.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -13,57 +15,48 @@
 namespace brave_ads::targeting {
 
 PurchaseIntentInfo::PurchaseIntentInfo() = default;
-
+PurchaseIntentInfo::PurchaseIntentInfo(PurchaseIntentInfo&& other) noexcept =
+    default;
+PurchaseIntentInfo& PurchaseIntentInfo::operator=(
+    PurchaseIntentInfo&& other) noexcept = default;
 PurchaseIntentInfo::~PurchaseIntentInfo() = default;
 
 // static
-// TODO(https://github.com/brave/brave-browser/issues/24942): Reduce cognitive
-// complexity.
-std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
-    base::Value resource_value,
-    std::string* error_message) {
-  DCHECK(error_message);
-  auto purchase_intent = std::make_unique<PurchaseIntentInfo>();
+base::expected<PurchaseIntentInfo, std::string>
+PurchaseIntentInfo::CreateFromValue(const base::Value::Dict dict) {
+  // TODO(https://github.com/brave/brave-browser/issues/24942): Reduce cognitive
+  // complexity.
+  PurchaseIntentInfo purchase_intent;
 
-  base::Value::Dict* resource = resource_value.GetIfDict();
-  if (!resource) {
-    *error_message = "Failed to load from JSON, json is not a dictionary";
-    return {};
-  }
-
-  if (absl::optional<int> version = resource->FindInt("version")) {
+  if (absl::optional<int> version = dict.FindInt("version")) {
     if (features::GetPurchaseIntentResourceVersion() != *version) {
-      *error_message = "Failed to load from JSON, version missing";
-      return {};
+      return base::unexpected("Failed to load from JSON, version missing");
     }
 
-    purchase_intent->version = *version;
+    purchase_intent.version = *version;
   }
 
   // Parsing field: "segments"
-  const base::Value::List* const incoming_segments =
-      resource->FindList("segments");
+  const base::Value::List* const incoming_segments = dict.FindList("segments");
   if (!incoming_segments) {
-    *error_message = "Failed to load from JSON, segments missing";
-    return {};
+    return base::unexpected("Failed to load from JSON, segments missing");
   }
 
   std::vector<std::string> segments;
   for (const auto& item : *incoming_segments) {
     const std::string& segment = item.GetString();
     if (segment.empty()) {
-      *error_message = "Failed to load from JSON, empty segment found";
-      return {};
+      return base::unexpected("Failed to load from JSON, empty segment found");
     }
     segments.push_back(segment);
   }
 
   // Parsing field: "segment_keywords"
   const base::Value::Dict* const incoming_segment_keywords =
-      resource->FindDict("segment_keywords");
+      dict.FindDict("segment_keywords");
   if (!incoming_segment_keywords) {
-    *error_message = "Failed to load from JSON, segment keywords missing";
-    return {};
+    return base::unexpected(
+        "Failed to load from JSON, segment keywords missing");
   }
 
   for (const auto [keywords, indexes] : *incoming_segment_keywords) {
@@ -73,53 +66,50 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     for (const auto& index : indexes.GetList()) {
       DCHECK(index.is_int());
       if (static_cast<size_t>(index.GetInt()) >= segments.size()) {
-        *error_message =
-            "Failed to load from JSON, segment keywords are ill-formed";
-        return {};
+        return base::unexpected(
+            "Failed to load from JSON, segment keywords are ill-formed");
       }
       info.segments.push_back(segments.at(index.GetInt()));
     }
 
-    purchase_intent->segment_keywords.push_back(info);
+    purchase_intent.segment_keywords.push_back(std::move(info));
   }
 
   // Parsing field: "funnel_keywords"
   const base::Value::Dict* const incoming_funnel_keywords =
-      resource->FindDict("funnel_keywords");
+      dict.FindDict("funnel_keywords");
   if (!incoming_funnel_keywords) {
-    *error_message = "Failed to load from JSON, funnel keywords missing";
-    return {};
+    return base::unexpected(
+        "Failed to load from JSON, funnel keywords missing");
   }
 
   for (const auto [keywords, weight] : *incoming_funnel_keywords) {
     PurchaseIntentFunnelKeywordInfo info;
     info.keywords = keywords;
     info.weight = weight.GetInt();
-    purchase_intent->funnel_keywords.push_back(info);
+    purchase_intent.funnel_keywords.push_back(std::move(info));
   }
 
   // Parsing field: "funnel_sites"
   const base::Value::List* const incoming_funnel_sites =
-      resource->FindList("funnel_sites");
+      dict.FindList("funnel_sites");
   if (!incoming_funnel_sites) {
-    *error_message = "Failed to load from JSON, sites missing";
-    return {};
+    return base::unexpected("Failed to load from JSON, sites missing");
   }
 
   // For each set of sites and segments
   for (const auto& item : *incoming_funnel_sites) {
     if (!item.is_dict()) {
-      *error_message = "Failed to load from JSON, site set not of type dict";
-      return {};
+      return base::unexpected(
+          "Failed to load from JSON, site set not of type dict");
     }
     const auto& set = item.GetDict();
 
     // Get all segments...
     const base::Value::List* const seg_list = set.FindList("segments");
     if (!seg_list) {
-      *error_message =
-          "Failed to load from JSON, get site segment list as dict";
-      return {};
+      return base::unexpected(
+          "Failed to load from JSON, get site segment list as dict");
     }
 
     std::vector<std::string> site_segments;
@@ -131,8 +121,8 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
     // ...and for each site create info with appended segments
     const base::Value::List* const site_list = set.FindList("sites");
     if (!site_list) {
-      *error_message = "Failed to load from JSON, get site list as dict";
-      return {};
+      return base::unexpected(
+          "Failed to load from JSON, get site list as dict");
     }
 
     for (const auto& site : *site_list) {
@@ -142,7 +132,7 @@ std::unique_ptr<PurchaseIntentInfo> PurchaseIntentInfo::CreateFromValue(
       info.url_netloc = GURL(site.GetString());
       info.weight = 1;
 
-      purchase_intent->sites.push_back(info);
+      purchase_intent.sites.push_back(std::move(info));
     }
   }
 

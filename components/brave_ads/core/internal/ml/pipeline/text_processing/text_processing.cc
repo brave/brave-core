@@ -20,22 +20,20 @@
 namespace brave_ads::ml::pipeline {
 
 // static
-std::unique_ptr<TextProcessing> TextProcessing::CreateFromValue(
-    base::Value value,
-    std::string* error_message) {
-  DCHECK(error_message);
-
-  auto text_processing = std::make_unique<TextProcessing>();
-  if (!text_processing->SetPipeline(std::move(value))) {
-    *error_message = "Failed to parse text classification pipeline JSON";
-    return {};
+base::expected<TextProcessing, std::string> TextProcessing::CreateFromValue(
+    base::Value::Dict dict) {
+  TextProcessing text_processing;
+  if (!text_processing.SetPipeline(std::move(dict))) {
+    return base::unexpected(
+        "Failed to parse text classification pipeline JSON");
   }
-
   return text_processing;
 }
 
 TextProcessing::TextProcessing() = default;
-
+TextProcessing::TextProcessing(TextProcessing&& other) noexcept = default;
+TextProcessing& TextProcessing::operator=(TextProcessing&& other) noexcept =
+    default;
 TextProcessing::~TextProcessing() = default;
 
 TextProcessing::TextProcessing(TransformationVector transformations,
@@ -53,11 +51,11 @@ void TextProcessing::SetPipeline(PipelineInfo info) {
   transformations_ = std::move(info.transformations);
 }
 
-bool TextProcessing::SetPipeline(base::Value value) {
-  absl::optional<PipelineInfo> pipeline = ParsePipelineValue(std::move(value));
+bool TextProcessing::SetPipeline(base::Value::Dict dict) {
+  absl::optional<PipelineInfo> pipeline = ParsePipelineValue(std::move(dict));
 
   if (pipeline) {
-    SetPipeline(std::move(*pipeline));
+    SetPipeline(std::move(pipeline).value());
     is_initialized_ = true;
   } else {
     is_initialized_ = false;

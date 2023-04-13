@@ -57,8 +57,8 @@ class NotificationAdHandler final
       Account* account,
       Transfer* transfer,
       processor::EpsilonGreedyBandit* epsilon_greedy_bandit_processor,
-      geographic::SubdivisionTargeting* subdivision_targeting,
-      resource::AntiTargeting* anti_targeting_resource);
+      const geographic::SubdivisionTargeting& subdivision_targeting,
+      const resource::AntiTargeting& anti_targeting_resource);
 
   NotificationAdHandler(const NotificationAdHandler&) = delete;
   NotificationAdHandler& operator=(const NotificationAdHandler&) = delete;
