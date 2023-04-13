@@ -1264,6 +1264,8 @@ void AdsServiceImpl::Shutdown() {
 
   idle_state_timer_.Stop();
 
+  notification_ad_timers_.clear();
+
   prefetched_new_tab_page_ad_.reset();
   is_prefetching_new_tab_page_ad_ = false;
 
