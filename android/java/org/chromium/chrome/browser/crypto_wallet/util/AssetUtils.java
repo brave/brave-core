@@ -226,16 +226,4 @@ public class AssetUtils {
             return token.symbol;
         return token.contractAddress;
     }
-
-    /**
-     * Update missing {@link #BlockchainToken#logo} with network icon using <code>chainId</code>.
-     * @param tokens array to update missing logos
-     */
-    public static void updateMissingLogoWithNetworkIcon(BlockchainToken[] tokens) {
-        for (BlockchainToken token : tokens) {
-            if (TextUtils.isEmpty(token.logo)) {
-                token.logo = Utils.getNetworkIconName(token.chainId);
-            }
-        }
-    }
 }

@@ -63,15 +63,11 @@ public class UserAssetModel {
                                             nftsOnly ? TokenUtils.TokenType.NFTS
                                                      : TokenUtils.TokenType.NON_NFTS,
                                             tokens -> {
-                                                AssetUtils.updateMissingLogoWithNetworkIcon(
-                                                        userAssets);
-
+                                                var filteredTokens =
+                                                        TokenUtils.distinctiveConcatenatedArrays(
+                                                                tokens, userAssets);
                                                 _mAssetsResult.postValue(new AssetsResult(
-                                                        Arrays.asList(
-                                                                TokenUtils
-                                                                        .distinctiveConcatenatedArrays(
-                                                                                tokens,
-                                                                                userAssets)),
+                                                        Arrays.asList(filteredTokens),
                                                         Arrays.asList(userAssets)));
                                             });
                                 });
