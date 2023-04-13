@@ -9,7 +9,6 @@ import { LocaleContext, formatMessage } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
 import { Modal, ModalCloseButton } from '../../shared/components/modal'
 import { SelectProviderCaretIcon } from '../components/icons/select_provider_caret_icon'
-import { ArrowNextIcon } from '../../shared/components/icons/arrow_next_icon'
 import { NewTabLink } from '../../shared/components/new_tab_link'
 import { GeminiIcon } from '../../shared/components/icons/gemini_icon'
 import { UpholdIcon } from '../../shared/components/icons/uphold_icon'
@@ -29,8 +28,6 @@ function renderProviderIcon (provider: string) {
   }
 }
 
-type ModalState = 'info' | 'select'
-
 interface ExternalWalletProvider {
   type: string
   name: string
@@ -47,7 +44,6 @@ export function ConnectWalletModal (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const layoutKind = React.useContext(LayoutContext)
 
-  const [modalState, setModalState] = React.useState<ModalState>('info')
   const [selectedProvider, setSelectedProvider] =
     React.useState<ExternalWalletProvider | null>(null)
 
@@ -55,76 +51,50 @@ export function ConnectWalletModal (props: Props) {
     return null
   }
 
-  function renderInfo () {
-    const onContinueClick = () => {
-      setModalState('select')
-    }
-
-    return {
-      left: (
-        <style.infoPanel>
-          <style.panelHeader>
-            {getString('connectWalletInfoHeader')}
-          </style.panelHeader>
-          <style.panelText>
-            {getString('connectWalletInfoText')}
-            <style.infoListItem>
-              {getString('connectWalletInfoListItem1')}
-            </style.infoListItem>
-            <style.infoListItem>
-              {getString('connectWalletInfoListItem2')}
-            </style.infoListItem>
-            <style.infoListItem>
-              {getString('connectWalletInfoListItem3')}
-            </style.infoListItem>
-          </style.panelText>
-          {layoutKind === 'narrow' && <style.connectGraphic />}
-          <style.continueButton>
-            <button
-              data-test-id='connect-continue-button'
-              onClick={onContinueClick}
-            >
-              {getString('rewardsConnectAccount')}<ArrowNextIcon />
-            </button>
-          </style.continueButton>
-          <style.infoNote>
-            {
-              formatMessage(getString('connectWalletInfoNote'), {
-                tags: {
-                  $1: (content) => (
-                    <NewTabLink key='link' href={urls.privacyPolicyURL}>
-                      {content}
-                    </NewTabLink>
-                  )
-                }
-              })
-            }
-          </style.infoNote>
-        </style.infoPanel>
-      ),
-      right: layoutKind === 'wide' && <style.connectGraphic/>
-    }
+  function getDisclaimer () {
+    return formatMessage(getString('connectWalletDisclaimer'), {
+      tags: {
+        $1: (content) => (
+          <NewTabLink key='privacy-link' href={urls.privacyPolicyURL}>
+            {content}
+          </NewTabLink>
+        ),
+        $3: (content) => (
+          <NewTabLink key='bat-link' href={urls.aboutBATURL}>
+            {content}
+          </NewTabLink>
+        )
+      }
+    })
   }
 
-  function renderSelectWallet () {
+  function renderConnectWallet () {
     return {
       left: (
-        <style.selectWalletLeftPanel>
+        <style.connectWalletLeftPanel>
           <style.panelHeader>
-            {getString('connectWalletChooseHeader')}
+            {getString('connectWalletHeader')}
           </style.panelHeader>
-          <style.selectWalletContent>
+          <style.connectWalletContent>
             <style.panelText>
-              {getString('connectWalletChooseText')}
+              <style.panelListItem>
+               {getString('connectWalletListItem1')}
+              </style.panelListItem>
+              <style.panelListItem>
+                {getString('connectWalletListItem2')}
+              </style.panelListItem>
+              <style.panelListItem>
+                {getString('connectWalletListItem3')}
+              </style.panelListItem>
             </style.panelText>
-          </style.selectWalletContent>
+          </style.connectWalletContent>
           {
             layoutKind === 'wide' &&
-              <style.selectWalletNote>
-                {getString('connectWalletChooseNote')}
-              </style.selectWalletNote>
+              <style.connectWalletDisclaimer>
+                {getDisclaimer()}
+              </style.connectWalletDisclaimer>
           }
-        </style.selectWalletLeftPanel>
+        </style.connectWalletLeftPanel>
       ),
       right: (
         <style.providerButtons>
@@ -175,18 +145,16 @@ export function ConnectWalletModal (props: Props) {
           </style.learnMoreLink>
           {
             layoutKind === 'narrow' &&
-              <style.selectWalletNote>
-                {getString('connectWalletChooseNote')}
-              </style.selectWalletNote>
+              <style.connectWalletDisclaimer>
+                {getDisclaimer()}
+              </style.connectWalletDisclaimer>
           }
         </style.providerButtons>
       )
     }
   }
 
-  const { left, right } = modalState === 'info'
-    ? renderInfo()
-    : renderSelectWallet()
+  const { left, right } = renderConnectWallet()
 
   return (
     <Modal>
