@@ -41,12 +41,13 @@ namespace {
 
 const char kIframeID[] = "test";
 
-const char kPointInPathScript[] =
-    "var canvas = document.createElement('canvas');"
-    "var ctx = canvas.getContext('2d');"
-    "ctx.rect(10, 10, 100, 100);"
-    "ctx.stroke();"
-    "domAutomationController.send(ctx.isPointInPath(10, 10));";
+const char kPointInPathScript[] = R"(
+  var canvas = document.createElement('canvas');
+  var ctx = canvas.getContext('2d');
+  ctx.rect(10, 10, 100, 100);
+  ctx.stroke();
+  ctx.isPointInPath(10, 10);
+)";
 
 const char kGetImageDataScript[] =
     "var adder = (a, x) => a + x;"
@@ -313,12 +314,9 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     GURL link(link_url().spec() + link_query);
     EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), link));
 
-    std::string clickLink =
-        "domAutomationController.send(clickLink('" + url.spec() + "'));";
-    bool success = false;
-    EXPECT_TRUE(
-        ExecuteScriptAndExtractBool(contents(), clickLink.c_str(), &success));
-    EXPECT_TRUE(success);
+    EXPECT_EQ(true,
+              content::EvalJs(contents(),
+                              content::JsReplace("clickLink($1)", url.spec())));
     EXPECT_TRUE(WaitForLoadStop(contents()));
 
     return link;
@@ -526,43 +524,29 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
                        CanvasIsPointInPath) {
-  bool isPointInPath;
-
   // Farbling level: maximum
   // Canvas isPointInPath(): blocked
   BlockFingerprinting();
   NavigateToPageWithIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_FALSE(isPointInPath);
+  EXPECT_EQ(false, content::EvalJs(contents(), kPointInPathScript));
   NavigateIframe(cross_site_url());
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_FALSE(isPointInPath);
+  EXPECT_EQ(false, content::EvalJs(child_frame(), kPointInPathScript));
 
   // Farbling level: balanced (default)
   // Canvas isPointInPath(): allowed
   SetFingerprintingDefault();
   NavigateToPageWithIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
+  EXPECT_EQ(true, content::EvalJs(contents(), kPointInPathScript));
   NavigateIframe(cross_site_url());
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
+  EXPECT_EQ(true, content::EvalJs(child_frame(), kPointInPathScript));
 
   // Farbling level: off
   // Canvas isPointInPath(): allowed
   AllowFingerprinting();
   NavigateToPageWithIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
+  EXPECT_EQ(true, content::EvalJs(contents(), kPointInPathScript));
   NavigateIframe(cross_site_url());
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
+  EXPECT_EQ(true, content::EvalJs(child_frame(), kPointInPathScript));
 
   // Shields: down
   // Canvas isPointInPath(): allowed
@@ -570,13 +554,9 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplV2BrowserTest,
   ShieldsDown();
   AllowFingerprinting();
   NavigateToPageWithIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
+  EXPECT_EQ(true, content::EvalJs(contents(), kPointInPathScript));
   NavigateIframe(cross_site_url());
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
+  EXPECT_EQ(true, content::EvalJs(child_frame(), kPointInPathScript));
 }
 
 // TODO(iefremov): We should reduce the copy-paste amount in these tests.

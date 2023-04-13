@@ -318,10 +318,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteMagnetURLLink) {
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  bool value;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, "clickMagnetLink();", &value));
-  EXPECT_TRUE(value);
+  EXPECT_EQ(true, content::EvalJs(contents, "clickMagnetLink();"));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
@@ -446,10 +443,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), magnet_html_url()));
   ASSERT_TRUE(WaitForLoadStop(contents));
-  bool value;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractBool(contents, "clickMagnetLink();", &value));
-  EXPECT_TRUE(value);
+  EXPECT_EQ(true, content::EvalJs(contents, "clickMagnetLink();"));
   ASSERT_TRUE(WaitForLoadStop(contents));
 
   EXPECT_STREQ(contents->GetLastCommittedURL().spec().c_str(),
