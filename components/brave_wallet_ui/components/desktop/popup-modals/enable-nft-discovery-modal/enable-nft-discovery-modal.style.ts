@@ -47,6 +47,10 @@ export const Link = styled.a`
   font-weight: 600;
 `
 
+export const Underline = styled.span`
+  text-decoration: underline;
+`
+
 export const ButtonRow = styled.div`
   display: flex;
   justify-content: space-between;

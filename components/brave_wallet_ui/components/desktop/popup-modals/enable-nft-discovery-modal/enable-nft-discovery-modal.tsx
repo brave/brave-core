@@ -18,7 +18,8 @@ import {
   Description,
   Header,
   Link,
-  StyledWrapper
+  StyledWrapper,
+  Underline
 } from './enable-nft-discovery-modal.style'
 
 interface Props {
@@ -29,7 +30,8 @@ interface Props {
 const LEARN_MORE_LINK = 'https://github.com/brave/brave-browser/wiki/NFT-Discovery'
 
 export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
-  const { beforeTag, duringTag } = splitStringForTag(getLocale('braveWalletEnableNftAutoDiscoveryModalDescription'), 1)
+  const { beforeTag, duringTag, afterTag } = splitStringForTag(getLocale('braveWalletEnableNftAutoDiscoveryModalDescription'), 1)
+  const { beforeTag: beforeLink, duringTag: learnMore } = splitStringForTag(afterTag || '', 3)
 
   return (
     <PopupModal
@@ -42,7 +44,9 @@ export const EnableNftDiscoveryModal = ({ onConfirm, onCancel }: Props) => {
         <Header>{getLocale('braveWalletEnableNftAutoDiscoveryModalHeader')}</Header>
         <Description>
           {beforeTag}
-          <Link target='_blank' rel='noreferrer' href={LEARN_MORE_LINK}>{duringTag}</Link>
+          <Underline>{duringTag}</Underline>
+          {beforeLink}
+          <Link target='_blank' rel='noreferrer' href={LEARN_MORE_LINK}>{learnMore}</Link>
         </Description>
         <ButtonRow>
           <ConfirmButton onClick={onConfirm}>{getLocale('braveWalletEnableNftAutoDiscoveryModalConfirm')}</ConfirmButton>
