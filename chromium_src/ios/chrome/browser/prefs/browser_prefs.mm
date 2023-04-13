@@ -30,6 +30,7 @@ void BraveRegisterBrowserStatePrefs(
 void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_stats::RegisterLocalStatePrefs(registry);
   brave_wallet::RegisterLocalStatePrefs(registry);
+  brave_wallet::RegisterLocalStatePrefsForMigration(registry);
   decentralized_dns::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   p3a::P3AService::RegisterPrefs(registry, false);
