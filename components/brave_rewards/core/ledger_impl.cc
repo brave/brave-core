@@ -52,7 +52,9 @@ LedgerImpl::LedgerImpl(
   set_ledger_client_for_logging(ledger_client_.get());
 }
 
-LedgerImpl::~LedgerImpl() = default;
+LedgerImpl::~LedgerImpl() {
+  set_ledger_client_for_logging(nullptr);
+}
 
 // mojom::Ledger implementation begin (in the order of appearance in Mojom)
 void LedgerImpl::Initialize(InitializeCallback callback) {
