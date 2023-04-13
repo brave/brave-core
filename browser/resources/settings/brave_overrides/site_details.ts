@@ -99,7 +99,7 @@ RegisterPolymerTemplateModifications({
             '[Brave Settings Overrides] Localhost access settings not found')
         } else {
           localhostAccessSettings.setAttribute(
-            'label', I18nBehavior.i18n('siteSettingsLocalhostAccess'))
+            'label', loadTimeData.getString('siteSettingsLocalhostAccess'))
         }
         curChild++
       }

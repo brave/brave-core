@@ -109,7 +109,7 @@ function InsertLocalhostAccessSubpage (
         '[Brave Settings Overrides] Couldn\'t find localhost access subpage')
     } else {
       localhostAccessSubpage.setAttribute('page-title',
-        I18nBehavior.i18n('siteSettingsCategoryLocalhostAccess'))
+        loadTimeData.getString('siteSettingsCategoryLocalhostAccess'))
       const localhostAccessDefault =
         localhostAccessTemplate.content.getElementById('localhostAccessDefault')
       if (!localhostAccessDefault) {
@@ -118,10 +118,10 @@ function InsertLocalhostAccessSubpage (
       } else {
         localhostAccessDefault.setAttribute(
           'toggle-off-label',
-          I18nBehavior.i18n('siteSettingsLocalhostAccessAsk'))
+          loadTimeData.getString('siteSettingsLocalhostAccessAsk'))
           localhostAccessDefault.setAttribute(
           'toggle-on-label',
-          I18nBehavior.i18n('siteSettingsLocalhostAccessAsk'))
+          loadTimeData.getString('siteSettingsLocalhostAccessAsk'))
       }
       const localhostExceptions =
         localhostAccessTemplate.content.getElementById('localhostExceptions')
@@ -131,10 +131,10 @@ function InsertLocalhostAccessSubpage (
       } else {
         localhostExceptions.setAttribute(
           'block-header',
-          I18nBehavior.i18n('siteSettingsLocalhostAccessBlockExceptions'))
+          loadTimeData.getString('siteSettingsLocalhostAccessBlockExceptions'))
         localhostExceptions.setAttribute(
           'allow-header',
-          I18nBehavior.i18n('siteSettingsLocalhostAccessAllowExceptions'))
+          loadTimeData.getString('siteSettingsLocalhostAccessAllowExceptions'))
       }
     }
   }
