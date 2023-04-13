@@ -260,7 +260,7 @@ public class Utils {
                 BraveActivity.getBraveActivity().openNewOrSelectExistingTab(
                         BraveActivity.BRAVE_SWAP_URL);
                 TabUtils.bringChromeTabbedActivityToTheTop(activity);
-            } catch (BraveActivity.BraveActivityNotFoundException e) {
+            } catch (ActivityNotFoundException e) {
                 Log.e(TAG, "on Swap tab: " + e);
             }
         } else {
@@ -268,7 +268,7 @@ public class Utils {
             buySendSwapActivityIntent.putExtra("activityType", activityType.getValue());
             buySendSwapActivityIntent.putExtra("swapFromAssetSymbol", swapFromAssetSymbol);
             activity.startActivity(buySendSwapActivityIntent);
-        }    
+        }
     }
 
     public static void openBuySendSwapActivity(

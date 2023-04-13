@@ -14,7 +14,6 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
-#include "brave/browser/brave_wallet/brave_wallet_ipfs_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_provider_delegate_impl_helper.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
