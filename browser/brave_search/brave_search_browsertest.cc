@@ -223,7 +223,15 @@ IN_PROC_BROWSER_TEST_F(BraveSearchTest, CheckForAnUndefinedFunction) {
   EXPECT_EQ(base::Value(false), result_first.value);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled, DefaultAPIVisibleKnownHost) {
+// TODO(https://github.com/brave/brave-browser/issues/29631): Test flaky on
+// master for the mac build.
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_DefaultAPIVisibleKnownHost DISABLED_DefaultAPIVisibleKnownHost
+#else
+#define MAYBE_DefaultAPIVisibleKnownHost DefaultAPIVisibleKnownHost
+#endif  // BUILDFLAG(IS_MAC)
+IN_PROC_BROWSER_TEST_F(BraveSearchTestEnabled,
+                       MAYBE_DefaultAPIVisibleKnownHost) {
   // Opensearch providers are only allowed in the root of a site,
   // See SearchEngineTabHelper::GenerateKeywordFromNavigationEntry.
   GURL url = https_server()->GetURL(kAllowedDomain, "/");
