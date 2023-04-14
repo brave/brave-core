@@ -119,7 +119,7 @@ public class TokenUtils {
     }
 
     /**
-     * Get tokens of all networks in the <code>networkInfos<code/> list.
+     * Get tokens of all networks from <code>networkInfos<code/> list.
      * @param blockchainRegistry to get tokens from core
      * @param callback to get array of tokens
      */

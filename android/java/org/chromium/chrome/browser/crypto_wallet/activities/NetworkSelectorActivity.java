@@ -53,15 +53,21 @@ public class NetworkSelectorActivity
     private WalletModel mWalletModel;
     private NetworkSelectorModel mNetworkSelectorModel;
 
-    // should only be called if the wallet is setup and unlocked
+    /**
+     * Create and return an Intent object to open network selector activity to change default wallet
+     * network.
+     * @param context Intent source
+     * @return Intent object to open NetworkSelectorActivity in global/default wallet selection mode
+     * <b>Note:</b>: It should only be called if the wallet is set up and unlocked
+     */
     public static Intent createIntent(Context context) {
         return createIntent(context, DEFAULT_WALLET_NETWORK, null);
     }
 
     /**
-     * Open the network selector activity with key as an identifier to show the previously selected
-     * local network (if available otherwise All Networks as default) on {@link
-     * NetworkSelectorActivity}.
+     * Create and return an Intent object to open network selector activity with key as an
+     * identifier to show the previously selected local network (if available otherwise All Networks
+     * as default) on {@link NetworkSelectorActivity}.
      * @param mode Whether to open network selection for default/global network mode or
      *          in local network selection mode i.e.
      *          View <=> NetworkSelection state only with All Networks option.
