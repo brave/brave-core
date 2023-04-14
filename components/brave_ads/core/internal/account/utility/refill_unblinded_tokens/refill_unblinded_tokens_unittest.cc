@@ -970,7 +970,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, GetInvalidSignedTokens) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
   // Arrange
-  privacy::SetUnblindedTokens(50);
+  privacy::SetUnblindedTokens(/*count*/ 50);
 
   BuildAndSetIssuers();
 
@@ -1000,7 +1000,7 @@ TEST_F(BatAdsRefillUnblindedTokensTest, DoNotRefillIfAboveTheMinimumThreshold) {
 
 TEST_F(BatAdsRefillUnblindedTokensTest, RefillIfBelowTheMinimumThreshold) {
   // Arrange
-  privacy::SetUnblindedTokens(19);
+  privacy::SetUnblindedTokens(/*count*/ 19);
 
   const URLResponseMap url_responses = {
       {// Request signed tokens

@@ -16,18 +16,19 @@
 
 namespace brave_ads {
 
-class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {};
+class BatAdsFullScreenModePermissionRuleTest : public UnitTestBase {
+ protected:
+  FullScreenModePermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, AllowAd) {
   // Arrange
   MockIsBrowserInFullScreenMode(ads_client_mock_, false);
 
   // Act
-  FullScreenModePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
@@ -37,11 +38,9 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForAndroid) {
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
-  FullScreenModePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
@@ -51,11 +50,9 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, AlwaysAllowAdForIOS) {
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
-  FullScreenModePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
@@ -63,11 +60,9 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest, DoNotAllowAd) {
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
-  FullScreenModePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsFullScreenModePermissionRuleTest,
@@ -87,11 +82,9 @@ TEST_F(BatAdsFullScreenModePermissionRuleTest,
   MockIsBrowserInFullScreenMode(ads_client_mock_, true);
 
   // Act
-  FullScreenModePermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

@@ -73,7 +73,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Hours(48) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(48) - base::Milliseconds(1));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -127,7 +127,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
                    ConfirmationType::kTransferred, Now());
   ad_events.push_back(ad_event_3);
 
-  AdvanceClockBy(base::Hours(48) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(48) - base::Milliseconds(1));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -163,7 +163,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Hours(48) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(48) - base::Milliseconds(1));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);
@@ -199,7 +199,7 @@ TEST_F(BatAdsTransferredExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Hours(48) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(48) - base::Milliseconds(1));
 
   // Act
   TransferredExclusionRule exclusion_rule(ad_events);

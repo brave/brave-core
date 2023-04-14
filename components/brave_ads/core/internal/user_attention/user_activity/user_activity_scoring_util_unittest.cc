@@ -82,7 +82,7 @@ TEST_F(BatAdsUserActivityScoringUtilTest,
       UserActivityEventType::kClosedTab);
 
   const base::TimeDelta elapsed_time_window =
-      kUserActivityTimeWindow.Get() + base::Seconds(1);
+      kUserActivityTimeWindow.Get() + base::Milliseconds(1);
   AdvanceClockBy(elapsed_time_window);
 
   // Act

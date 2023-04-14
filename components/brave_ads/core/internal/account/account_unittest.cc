@@ -189,7 +189,7 @@ TEST_F(BatAdsAccountTest, GetWallet) {
 
 TEST_F(BatAdsAccountTest, GetIssuersWhenWalletIsCreated) {
   // Arrange
-  privacy::SetUnblindedTokens(50);
+  privacy::SetUnblindedTokens(/*count*/ 50);
 
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -211,7 +211,7 @@ TEST_F(BatAdsAccountTest, GetIssuersWhenWalletIsCreated) {
 TEST_F(BatAdsAccountTest,
        DoNotGetIssuersWhenWalletIsCreatedIfIssuersAlreadyExist) {
   // Arrange
-  privacy::SetUnblindedTokens(50);
+  privacy::SetUnblindedTokens(/*count*/ 50);
 
   MockUrlResponses(ads_client_mock_, GetValidIssuersUrlResponses());
 
@@ -368,9 +368,9 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
   BuildAndSetIssuers();
 
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(1)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);
@@ -410,9 +410,9 @@ TEST_F(BatAdsAccountTest, DepositForCash) {
 TEST_F(BatAdsAccountTest, DepositForNonCash) {
   // Arrange
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(1)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   // Act
   account_->Deposit(kCreativeInstanceId, AdType::kNotificationAd, kSegment,
@@ -448,7 +448,7 @@ TEST_F(BatAdsAccountTest, DepositForNonCash) {
 TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(1)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   const CreativeNotificationAdInfo creative_ad =
       BuildCreativeNotificationAd(/*should_use_random_guids*/ false);

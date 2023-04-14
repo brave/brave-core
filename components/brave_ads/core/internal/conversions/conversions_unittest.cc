@@ -1230,7 +1230,7 @@ TEST_F(BatAdsConversionsTest, ConvertAdWhenTheConversionIsOnTheCuspOfExpiring) {
       BuildAdEvent(conversion.creative_set_id, ConfirmationType::kViewed);
   FireAdEvent(ad_event);
 
-  AdvanceClockBy(base::Days(3) - base::Seconds(1));
+  AdvanceClockBy(base::Days(3) - base::Milliseconds(1));
 
   // Act
   conversions_->MaybeConvert({GURL("https://foo.bar.com/qux")}, {}, {});

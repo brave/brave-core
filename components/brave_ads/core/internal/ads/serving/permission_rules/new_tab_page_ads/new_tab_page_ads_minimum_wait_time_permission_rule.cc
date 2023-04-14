@@ -22,7 +22,7 @@ constexpr int kMinimumWaitTimeCap = 1;
 
 bool DoesRespectCap(const std::vector<base::Time>& history) {
   return DoesHistoryRespectRollingTimeConstraint(
-      history, kMinimumWaitTime.Get(), kMinimumWaitTimeCap);
+      history, /*time_constraint*/ kMinimumWaitTime.Get(), kMinimumWaitTimeCap);
 }
 
 }  // namespace

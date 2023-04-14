@@ -140,7 +140,7 @@ TEST_F(
   AddHistory(ad, ConfirmationType::kClicked);
   AddHistory(ad, ConfirmationType::kClicked);
 
-  AdvanceClockBy(kHistoryTimeWindow - base::Nanoseconds(1));
+  AdvanceClockBy(kHistoryTimeWindow - base::Milliseconds(1));
 
   // Act
   const HistoryItemInfo history_item =

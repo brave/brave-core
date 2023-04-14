@@ -51,7 +51,7 @@ TEST_F(BatAdsRotatingHashUserDataTest, RotatingHashMatchesBeforeNextHour) {
   const base::Value::Dict user_data_before = GetRotatingHash(transaction);
 
   // Act
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   const base::Value::Dict user_data_after = GetRotatingHash(transaction);
 

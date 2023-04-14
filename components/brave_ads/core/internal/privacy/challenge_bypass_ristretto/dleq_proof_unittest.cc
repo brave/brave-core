@@ -157,11 +157,10 @@ TEST(BatAdsDLEQProofTest, Verify) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const bool is_valid =
-      dleq_proof.Verify(GetBlindedToken(), GetSignedToken(), GetPublicKey());
 
   // Assert
-  EXPECT_TRUE(is_valid);
+  EXPECT_TRUE(
+      dleq_proof.Verify(GetBlindedToken(), GetSignedToken(), GetPublicKey()));
 }
 
 TEST(BatAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
@@ -169,11 +168,10 @@ TEST(BatAdsDLEQProofTest, FailToVerifyWhenUninitialized) {
   DLEQProof dleq_proof;
 
   // Act
-  const bool is_valid =
-      dleq_proof.Verify(GetBlindedToken(), GetSignedToken(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(
+      dleq_proof.Verify(GetBlindedToken(), GetSignedToken(), GetPublicKey()));
 }
 
 TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
@@ -181,11 +179,10 @@ TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidBlindedToken) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const bool is_valid = dleq_proof.Verify(GetInvalidBlindedToken(),
-                                          GetSignedToken(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(dleq_proof.Verify(GetInvalidBlindedToken(), GetSignedToken(),
+                                 GetPublicKey()));
 }
 
 TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
@@ -193,11 +190,10 @@ TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidSignedToken) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const bool is_valid = dleq_proof.Verify(
-      GetBlindedToken(), GetInvalidSignedToken(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(dleq_proof.Verify(GetBlindedToken(), GetInvalidSignedToken(),
+                                 GetPublicKey()));
 }
 
 TEST(BatAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
@@ -205,11 +201,10 @@ TEST(BatAdsDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const bool is_valid = dleq_proof.Verify(GetBlindedToken(), GetSignedToken(),
-                                          GetMismatchingPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(dleq_proof.Verify(GetBlindedToken(), GetSignedToken(),
+                                 GetMismatchingPublicKey()));
 }
 
 TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
@@ -217,11 +212,10 @@ TEST(BatAdsDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
   DLEQProof dleq_proof(kDLEQProofBase64);
 
   // Act
-  const bool is_valid = dleq_proof.Verify(GetBlindedToken(), GetSignedToken(),
-                                          GetInvalidPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(dleq_proof.Verify(GetBlindedToken(), GetSignedToken(),
+                                 GetInvalidPublicKey()));
 }
 
 TEST(BatAdsDLEQProofTest, IsEqual) {

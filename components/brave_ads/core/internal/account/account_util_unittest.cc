@@ -52,7 +52,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
   transactions.push_back(transaction);
   SaveTransactions(transactions);
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -60,7 +60,7 @@ TEST_F(BatAdsAccountUtilTest, ResetRewards) {
       *confirmation);
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->AddTokens(unblinded_payment_tokens);
 
   // Act

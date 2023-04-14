@@ -85,7 +85,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -113,7 +113,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest, Redeem) {
 
 TEST_F(BatAdsRedeemOptedInConfirmationTest, RetryRedeemingIfNoIssuers) {
   // Arrange
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -164,7 +164,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -214,7 +214,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -262,7 +262,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -313,7 +313,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -364,7 +364,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -423,7 +423,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -493,7 +493,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -567,7 +567,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -634,7 +634,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -707,7 +707,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -781,7 +781,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -854,7 +854,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -927,7 +927,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1001,7 +1001,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1072,7 +1072,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1143,7 +1143,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);
@@ -1217,7 +1217,7 @@ TEST_F(BatAdsRedeemOptedInConfirmationTest,
 
   BuildAndSetIssuers();
 
-  privacy::SetUnblindedTokens(1);
+  privacy::SetUnblindedTokens(/*count*/ 1);
 
   const absl::optional<ConfirmationInfo> confirmation = BuildConfirmation();
   ASSERT_TRUE(confirmation);

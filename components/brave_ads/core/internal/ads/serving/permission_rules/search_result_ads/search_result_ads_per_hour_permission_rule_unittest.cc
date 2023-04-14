@@ -29,6 +29,8 @@ class BatAdsSearchResultAdsPerHourPermissionRuleTest : public UnitTestBase {
     scoped_feature_list.InitWithFeaturesAndParameters(enabled_features,
                                                       disabled_features);
   }
+
+  AdsPerHourPermissionRule permission_rule_;
 };
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -36,25 +38,21 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   // Arrange
 
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
        AllowAdIfDoesNotExceedCap) {
   // Arrange
+
+  // Act
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
                  /*count*/ kMaximumAdsPerHour.Get() - 1);
 
-  // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -63,14 +61,11 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
                  /*count*/ kMaximumAdsPerHour.Get());
 
+  // Act
   AdvanceClockBy(base::Hours(1));
 
-  // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
-
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
@@ -79,14 +74,11 @@ TEST_F(BatAdsSearchResultAdsPerHourPermissionRuleTest,
   RecordAdEvents(AdType::kSearchResultAd, ConfirmationType::kServed,
                  /*count*/ kMaximumAdsPerHour.Get());
 
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
-
   // Act
-  AdsPerHourPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads::search_result_ads

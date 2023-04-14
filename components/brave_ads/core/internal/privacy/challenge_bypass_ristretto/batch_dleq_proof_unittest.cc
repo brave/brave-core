@@ -166,11 +166,10 @@ TEST(BatAdsBatchDLEQProofTest, Verify) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const bool is_valid = batch_dleq_proof.Verify(
-      GetBlindedTokens(), GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_TRUE(is_valid);
+  EXPECT_TRUE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
+                                      GetPublicKey()));
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyWhenUninitialized) {
@@ -178,11 +177,10 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyWhenUninitialized) {
   BatchDLEQProof batch_dleq_proof;
 
   // Act
-  const bool is_valid = batch_dleq_proof.Verify(
-      GetBlindedTokens(), GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
+                                       GetPublicKey()));
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithInvalidBlindedTokens) {
@@ -190,11 +188,10 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithInvalidBlindedTokens) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const bool is_valid = batch_dleq_proof.Verify(
-      GetInvalidBlindedTokens(), GetSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetInvalidBlindedTokens(),
+                                       GetSignedTokens(), GetPublicKey()));
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithInvalidSignedTokens) {
@@ -202,11 +199,10 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithInvalidSignedTokens) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const bool is_valid = batch_dleq_proof.Verify(
-      GetBlindedTokens(), GetInvalidSignedTokens(), GetPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(batch_dleq_proof.Verify(
+      GetBlindedTokens(), GetInvalidSignedTokens(), GetPublicKey()));
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
@@ -214,11 +210,10 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithMismatchingPublicKey) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const bool is_valid = batch_dleq_proof.Verify(
-      GetBlindedTokens(), GetSignedTokens(), GetMismatchingPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
+                                       GetMismatchingPublicKey()));
 }
 
 TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
@@ -226,11 +221,10 @@ TEST(BatAdsBatchDLEQProofTest, FailToVerifyWithInvalidPublicKey) {
   BatchDLEQProof batch_dleq_proof(kBatchDLEQProofBase64);
 
   // Act
-  const bool is_valid = batch_dleq_proof.Verify(
-      GetBlindedTokens(), GetSignedTokens(), GetInvalidPublicKey());
 
   // Assert
-  EXPECT_FALSE(is_valid);
+  EXPECT_FALSE(batch_dleq_proof.Verify(GetBlindedTokens(), GetSignedTokens(),
+                                       GetInvalidPublicKey()));
 }
 
 TEST(BatAdsBatchDLEQProofTest, VerifyAndUnblind) {

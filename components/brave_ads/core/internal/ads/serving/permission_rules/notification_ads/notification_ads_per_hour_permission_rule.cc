@@ -29,7 +29,7 @@ bool DoesRespectCap(const std::vector<base::Time>& history) {
   }
 
   return DoesHistoryRespectRollingTimeConstraint(history, kTimeConstraint,
-                                                 ads_per_hour);
+                                                 /*cap*/ ads_per_hour);
 }
 
 }  // namespace

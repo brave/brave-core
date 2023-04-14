@@ -47,7 +47,7 @@ TEST_F(BatAdsHistoryUtilTest, PurgeHistoryOlderThanTimeWindow) {
   const NotificationAdInfo ad_1 = BuildNotificationAd(creative_ad_1);
   HistoryManager::GetInstance()->Add(ad_1, ConfirmationType::kViewed);
 
-  AdvanceClockBy(kHistoryTimeWindow + base::Seconds(1));
+  AdvanceClockBy(kHistoryTimeWindow + base::Milliseconds(1));
 
   // Act
   const CreativeNotificationAdInfo creative_ad_2 =

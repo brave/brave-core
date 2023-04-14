@@ -47,7 +47,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForNonOptedInUser) {
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(1)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
@@ -79,7 +79,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
   privacy::SetUnblindedTokens(/*count*/ 1);
 
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(1)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);
@@ -98,7 +98,7 @@ TEST_F(BatAdsConfirmationUtilTest, CreateConfirmationForOptedInUser) {
 TEST_F(BatAdsConfirmationUtilTest, FailToCreateConfirmationForOptedInUser) {
   // Arrange
   ON_CALL(*token_generator_mock_, Generate(_))
-      .WillByDefault(Return(privacy::GetTokens(1)));
+      .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
   const TransactionInfo transaction =
       BuildTransaction(/*value*/ 0.0, ConfirmationType::kViewed);

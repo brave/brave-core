@@ -231,10 +231,9 @@ TEST_F(BatAdsIssuersUtilTest, IsIssuersValid) {
                     {"hJP1nDjTdHcVDw347oH0XO+XBPPh5wZA2xWZE8QUSSA=", 0.1}});
 
   // Act
-  const bool is_valid = IsIssuersValid(issuers);
 
   // Assert
-  EXPECT_TRUE(is_valid);
+  EXPECT_TRUE(IsIssuersValid(issuers));
 }
 
 TEST_F(BatAdsIssuersUtilTest, IsIssuersInvalid) {

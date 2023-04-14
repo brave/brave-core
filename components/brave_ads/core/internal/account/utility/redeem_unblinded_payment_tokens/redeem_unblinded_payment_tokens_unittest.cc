@@ -69,7 +69,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
@@ -139,7 +139,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
@@ -195,7 +195,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
@@ -250,7 +250,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act
@@ -357,7 +357,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
                                               Now());
 
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
-      privacy::GetUnblindedPaymentTokens(1);
+      privacy::GetUnblindedPaymentTokens(/*count*/ 1);
   privacy::GetUnblindedPaymentTokens()->SetTokens(unblinded_payment_tokens);
 
   // Act

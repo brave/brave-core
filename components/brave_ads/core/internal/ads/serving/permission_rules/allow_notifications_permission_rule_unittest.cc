@@ -12,18 +12,19 @@
 
 namespace brave_ads {
 
-class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {};
+class BatAdsAllowNotificationsPermissionRuleTest : public UnitTestBase {
+ protected:
+  AllowNotificationsPermissionRule permission_rule_;
+};
 
 TEST_F(BatAdsAllowNotificationsPermissionRuleTest, AllowAd) {
   // Arrange
   MockCanShowNotificationAds(ads_client_mock_, true);
 
   // Act
-  AllowNotificationsPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_TRUE(is_allowed);
+  EXPECT_TRUE(permission_rule_.ShouldAllow());
 }
 
 TEST_F(BatAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
@@ -31,11 +32,9 @@ TEST_F(BatAdsAllowNotificationsPermissionRuleTest, DoNotAllowAd) {
   MockCanShowNotificationAds(ads_client_mock_, false);
 
   // Act
-  AllowNotificationsPermissionRule permission_rule;
-  const bool is_allowed = permission_rule.ShouldAllow();
 
   // Assert
-  EXPECT_FALSE(is_allowed);
+  EXPECT_FALSE(permission_rule_.ShouldAllow());
 }
 
 }  // namespace brave_ads

@@ -13,120 +13,108 @@ namespace brave_ads {
 
 TEST(BatAdsNumberUtilTest, DoubleEquals) {
   // Arrange
-  const double value = 1.00001;
 
   // Act
-  const bool does_equal = DoubleEquals(value, 1.00002);
 
   // Assert
-  EXPECT_TRUE(does_equal);
+  EXPECT_TRUE(DoubleEquals(1.00001, 1.00002));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleNotEquals) {
   // Arrange
-  const double value = 1.0001;
 
   // Act
-  const bool does_equal = DoubleEquals(value, 1.0002);
 
   // Assert
-  EXPECT_FALSE(does_equal);
+  EXPECT_FALSE(DoubleEquals(1.0001, 1.0002));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsGreaterEqual) {
   // Arrange
-  const double value = 0.41749999999999687361196265555918216705322265625000;
 
   // Act
-  const bool is_greater_equal = DoubleIsGreaterEqual(
-      value, 0.41750000000000014876988529977097641676664352416992);
 
   // Assert
-  EXPECT_TRUE(is_greater_equal);
+  EXPECT_TRUE(DoubleIsGreaterEqual(
+      0.41749999999999687361196265555918216705322265625000,
+      0.41750000000000014876988529977097641676664352416992));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsNotGreaterEqual) {
   // Arrange
-  const double value = 0.41744999999999687361196265555918216705322265625000;
 
   // Act
-  const bool is_greater_equal = DoubleIsGreaterEqual(
-      value, 0.41750000000000014876988529977097641676664352416992);
 
   // Assert
-  EXPECT_FALSE(is_greater_equal);
+  EXPECT_FALSE(DoubleIsGreaterEqual(
+      0.41744999999999687361196265555918216705322265625000,
+      0.41750000000000014876988529977097641676664352416992));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsGreater) {
   // Arrange
-  const double value = 0.41759999999999687361196265555918216705322265625000;
 
   // Act
-  const bool is_greater = DoubleIsGreater(
-      value, 0.41750000000000014876988529977097641676664352416992);
 
   // Assert
-  EXPECT_TRUE(is_greater);
+  EXPECT_TRUE(
+      DoubleIsGreater(0.41759999999999687361196265555918216705322265625000,
+                      0.41750000000000014876988529977097641676664352416992));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsNotGreater) {
   // Arrange
-  const double value = 0.41749999999999687361196265555918216705322265625000;
 
   // Act
-  const bool is_greater = DoubleIsGreater(
-      value, 0.41750000000000014876988529977097641676664352416992);
 
   // Assert
-  EXPECT_FALSE(is_greater);
+  EXPECT_FALSE(
+      DoubleIsGreater(0.41749999999999687361196265555918216705322265625000,
+                      0.41750000000000014876988529977097641676664352416992));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsLessEqual) {
   // Arrange
-  const double value = 0.41750000000000014876988529977097641676664352416992;
 
   // Act
-  const bool is_less_equal = DoubleIsLessEqual(
-      value, 0.41749999999999687361196265555918216705322265625000);
 
   // Assert
-  EXPECT_TRUE(is_less_equal);
+  EXPECT_TRUE(
+      DoubleIsLessEqual(0.41750000000000014876988529977097641676664352416992,
+                        0.41749999999999687361196265555918216705322265625000));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsNotLessEqual) {
   // Arrange
-  const double value = 0.41750000000000014876988529977097641676664352416992;
 
   // Act
-  const bool is_less_equal = DoubleIsLessEqual(
-      value, 0.41744999999999687361196265555918216705322265625000);
 
   // Assert
-  EXPECT_FALSE(is_less_equal);
+  EXPECT_FALSE(
+      DoubleIsLessEqual(0.41750000000000014876988529977097641676664352416992,
+                        0.41744999999999687361196265555918216705322265625000));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsLess) {
   // Arrange
-  const double value = 0.41750000000000014876988529977097641676664352416992;
 
   // Act
-  const bool is_less =
-      DoubleIsLess(value, 0.41759999999999687361196265555918216705322265625000);
 
   // Assert
-  EXPECT_TRUE(is_less);
+  EXPECT_TRUE(
+      DoubleIsLess(0.41750000000000014876988529977097641676664352416992,
+                   0.41759999999999687361196265555918216705322265625000));
 }
 
 TEST(BatAdsNumberUtilTest, DoubleIsNotLess) {
   // Arrange
-  const double value = 0.41750000000000014876988529977097641676664352416992;
 
   // Act
-  const bool is_less =
-      DoubleIsLess(value, 0.41749999999999687361196265555918216705322265625000);
 
   // Assert
-  EXPECT_FALSE(is_less);
+  EXPECT_FALSE(
+      DoubleIsLess(0.41750000000000014876988529977097641676664352416992,
+                   0.41749999999999687361196265555918216705322265625000));
 }
 
 }  // namespace brave_ads

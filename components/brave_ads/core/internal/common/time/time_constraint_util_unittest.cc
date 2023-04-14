@@ -20,8 +20,8 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesRespectWhenNoHistoory) {
   const std::vector<base::Time> history;
 
   // Act
-  const bool does_respect =
-      DoesHistoryRespectRollingTimeConstraint(history, base::Days(1), 1);
+  const bool does_respect = DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint*/ base::Days(1), /*cap*/ 1);
 
   // Assert
   EXPECT_TRUE(does_respect);
@@ -35,8 +35,8 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesRespect) {
   AdvanceClockBy(base::Days(1));
 
   // Act
-  const bool does_respect =
-      DoesHistoryRespectRollingTimeConstraint(history, base::Days(1), 1);
+  const bool does_respect = DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint*/ base::Days(1), /*cap*/ 1);
 
   // Assert
   EXPECT_TRUE(does_respect);
@@ -48,8 +48,8 @@ TEST_F(BatAdsTimeConstraintUtilTest, DoesNotRespect) {
   history.push_back(Now());
 
   // Act
-  const bool does_respect =
-      DoesHistoryRespectRollingTimeConstraint(history, base::Days(1), 1);
+  const bool does_respect = DoesHistoryRespectRollingTimeConstraint(
+      history, /*time_constraint*/ base::Days(1), /*cap*/ 1);
 
   // Assert
   EXPECT_FALSE(does_respect);

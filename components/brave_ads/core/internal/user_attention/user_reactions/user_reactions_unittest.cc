@@ -45,9 +45,9 @@ class BatAdsUserReactionsTest : public AccountObserver, public UnitTestBase {
     user_reactions_ = std::make_unique<UserReactions>(account_.get());
 
     ON_CALL(*token_generator_mock_, Generate(_))
-        .WillByDefault(Return(privacy::GetTokens(1)));
+        .WillByDefault(Return(privacy::GetTokens(/*count*/ 1)));
 
-    privacy::SetUnblindedTokens(1);
+    privacy::SetUnblindedTokens(/*count*/ 1);
   }
 
   void TearDown() override {

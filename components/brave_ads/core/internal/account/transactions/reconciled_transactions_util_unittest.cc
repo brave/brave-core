@@ -145,7 +145,7 @@ TEST_F(BatAdsReconciledTransactionsUtilTest,
 
   // Act
   const bool did_reconcile_transaction = DidReconcileTransactionWithinDateRange(
-      transaction, Now() + base::Seconds(1), DistantFuture());
+      transaction, Now() + base::Milliseconds(1), DistantFuture());
 
   // Assert
   EXPECT_FALSE(did_reconcile_transaction);

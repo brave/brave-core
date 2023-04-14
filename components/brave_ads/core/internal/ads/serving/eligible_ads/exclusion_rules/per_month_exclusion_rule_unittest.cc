@@ -107,7 +107,7 @@ TEST_F(BatAdsPerMonthExclusionRuleTest, DoNotAllowAdIfExceedsCapWithin1Month) {
   ad_events.push_back(ad_event);
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Days(28) - base::Seconds(1));
+  AdvanceClockBy(base::Days(28) - base::Milliseconds(1));
 
   // Act
   PerMonthExclusionRule exclusion_rule(ad_events);

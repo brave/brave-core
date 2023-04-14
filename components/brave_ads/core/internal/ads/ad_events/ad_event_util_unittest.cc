@@ -30,7 +30,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForEmptyAdEvents) {
       GetLastSeenAdTime(ad_events, creative_ad);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, last_seen_ad_time);
+  EXPECT_FALSE(last_seen_ad_time);
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
@@ -53,7 +53,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdTimeForUnseenAd) {
       GetLastSeenAdTime(ad_events, creative_ad_2);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, last_seen_ad_time);
+  EXPECT_FALSE(last_seen_ad_time);
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdTime) {
@@ -109,7 +109,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForEmptyAdEvents) {
       GetLastSeenAdvertiserTime(ad_events, creative_ad);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, last_seen_advertiser_time);
+  EXPECT_FALSE(last_seen_advertiser_time);
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
@@ -131,7 +131,7 @@ TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTimeForUnseenAdvertiser) {
       GetLastSeenAdvertiserTime(ad_events, creative_ad_2);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, last_seen_advertiser_time);
+  EXPECT_FALSE(last_seen_advertiser_time);
 }
 
 TEST(BatAdsAdEventUtilTest, GetLastSeenAdvertiserTime) {

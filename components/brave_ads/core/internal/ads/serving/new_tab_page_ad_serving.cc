@@ -134,7 +134,7 @@ void Serving::ServeAd(const NewTabPageAdInfo& ad,
 void Serving::FailedToServeAd(MaybeServeNewTabPageAdCallback callback) {
   NotifyFailedToServeNewTabPageAd();
 
-  std::move(callback).Run(/*ads*/ absl::nullopt);
+  std::move(callback).Run(/*ad*/ absl::nullopt);
 }
 
 void Serving::NotifyOpportunityAroseToServeNewTabPageAd(

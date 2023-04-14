@@ -327,7 +327,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_day - 1);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();
@@ -361,7 +361,7 @@ TEST_F(BatAdsNewTabPageAdEventHandlerIfAdsDisabledTest,
       creative_ad, AdType::kNewTabPageAd, ConfirmationType::kViewed, Now());
   FireAdEvents(viewed_ad_event, ads_per_day);
 
-  AdvanceClockBy(base::Days(1) - base::Seconds(1));
+  AdvanceClockBy(base::Days(1) - base::Milliseconds(1));
 
   const std::string placement_id =
       base::GUID::GenerateRandomV4().AsLowercaseString();

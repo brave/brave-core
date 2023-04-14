@@ -78,7 +78,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(48) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -169,7 +169,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(48) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -256,7 +256,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(48) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -387,7 +387,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(48) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);
@@ -474,7 +474,7 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
 
   AdvanceClockBy(base::Hours(48) -
                  (base::Minutes(5) * confirmation_types.size()) -
-                 base::Seconds(1));
+                 base::Milliseconds(1));
 
   // Act
   DismissedExclusionRule exclusion_rule(ad_events);

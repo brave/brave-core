@@ -101,7 +101,7 @@ TEST_F(BatAdsCreativeInstanceExclusionRuleTest,
 
   ad_events.push_back(ad_event);
 
-  AdvanceClockBy(base::Hours(1) - base::Seconds(1));
+  AdvanceClockBy(base::Hours(1) - base::Milliseconds(1));
 
   // Act
   CreativeInstanceExclusionRule exclusion_rule(ad_events);
